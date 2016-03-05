@@ -34,6 +34,8 @@ public class EntityAICubeCenterOnSymbol extends EntityAIBase {
 			return false;
 		} else if (this.isCloseToSymbol()){
 			return true;
+		} else {
+			return true;
 		}
 	}
 
