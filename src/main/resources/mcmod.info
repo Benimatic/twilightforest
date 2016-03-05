@@ -1,15 +1,17 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "TwilightForest",
+  "name": "The Twilight Forest",
+  "description": "An enchanted forest dimension.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "http://www.minecraftforum.net/topic/561673-",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
+  "authors": [
+    "Benimatic (Ben Mazur)"
+  ],
+  "credits": "By Benimatic",
+  "logoFile": "assets/twilightforest/textures/twilightforest_logo.png",
   "screenshots": [],
   "dependencies": []
 }
