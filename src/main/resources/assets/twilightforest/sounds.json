@@ -1,0 +1,229 @@
+{
+  "mob.kobold.die": {
+    "category": "hostile",
+    "sounds": [
+      "mob/kobold/die0",
+      "mob/kobold/die1",
+      "mob/kobold/die2"
+    ]
+  },
+  "mob.kobold.kobold": {
+    "category": "hostile",
+    "sounds": [
+      "mob/kobold/kobold0",
+      "mob/kobold/kobold1",
+      "mob/kobold/kobold2",
+      "mob/kobold/kobold3",
+      "mob/kobold/kobold4",
+      "mob/kobold/kobold5"
+    ]
+  },
+  "mob.kobold.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "mob/kobold/hurt0",
+      "mob/kobold/hurt1",
+      "mob/kobold/hurt2"
+    ]
+  },
+  "mob.cicada": {
+    "category": "ambient",
+    "sounds": [
+      "mob/cicada0",
+      "mob/cicada1"
+    ]
+  },
+  "mob.naga.hiss": {
+    "category": "hostile",
+    "sounds": [
+      "mob/naga/hiss0",
+      "mob/naga/hiss1",
+      "mob/naga/hiss2"
+    ]
+  },
+  "mob.naga.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "mob/naga/hurt0",
+      "mob/naga/hurt1",
+      "mob/naga/hurt2"
+    ]
+  },
+  "mob.naga.rattle": {
+    "category": "hostile",
+    "sounds": [
+      "mob/naga/rattle0",
+      "mob/naga/rattle1"
+    ]
+  },
+  "mob.raven.caw": {
+    "category": "neutral",
+    "sounds": [
+      "mob/raven/caw0",
+      "mob/raven/caw1"
+    ]
+  },
+  "mob.raven.squawk": {
+    "category": "neutral",
+    "sounds": [
+      "mob/raven/squawk0",
+      "mob/raven/squawk1"
+    ]
+  },
+    "mob.redcap.die": {
+    "category": "hostile",
+    "sounds": [
+      "mob/redcap/die0",
+      "mob/redcap/die1",
+      "mob/redcap/die2"
+    ]
+  },
+  "mob.redcap.redcap": {
+    "category": "hostile",
+    "sounds": [
+      "mob/redcap/redcap0",
+      "mob/redcap/redcap1",
+      "mob/redcap/redcap2",
+      "mob/redcap/redcap3",
+      "mob/redcap/redcap4",
+      "mob/redcap/redcap5"
+    ]
+  },
+  "mob.redcap.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "mob/redcap/hurt0",
+      "mob/redcap/hurt1",
+      "mob/redcap/hurt2",
+      "mob/redcap/hurt3"
+    ]
+  },
+  "mob.tinybird.chirp": {
+    "category": "neutral",
+    "sounds": [
+      "mob/tinybird/chirp0",
+      "mob/tinybird/chirp1",
+      "mob/tinybird/chirp2"
+    ]
+  },
+  "mob.tinybird.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "mob/tinybird/hurt0",
+      "mob/tinybird/hurt1"
+    ]
+  },
+  "mob.tinybird.song": {
+    "category": "neutral",
+    "sounds": [
+      "mob/tinybird/song0",
+      "mob/tinybird/song1"
+    ]
+  },
+  "mob.urghast.trapactive": {
+    "category": "block",
+    "sounds": [
+      "mob/urghast/trapactive"
+    ]
+  },
+  "mob.urghast.trapon": {
+    "category": "block",
+    "sounds": [
+      "mob/urghast/trapon0",
+      "mob/urghast/trapon1",
+      "mob/urghast/trapon2",
+      "mob/urghast/trapon3",
+      "mob/urghast/trapon4"
+    ]
+  },
+  "mob.urghast.trapspindown": {
+    "category": "block",
+    "sounds": [
+      "mob/urghast/trapspindown"
+    ]
+  },
+  "mob.urghast.trapwarmup": {
+    "category": "block",
+    "sounds": [
+      "mob/urghast/trapwarmup"
+    ]
+  },
+  "mob.wraith.wraith": {
+    "category": "block",
+    "sounds": [
+      "mob/wraith/wraith0",
+      "mob/wraith/wraith1",
+      "mob/wraith/wraith2",
+      "mob/wraith/wraith3"
+    ]
+  },
+    "mob.hydra.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "mob/hydra/hurt0",
+      "mob/hydra/hurt1",
+      "mob/hydra/hurt2",
+      "mob/hydra/hurt3"
+    ]
+  },
+    "mob.hydra.death": {
+    "category": "hostile",
+    "sounds": [
+      "mob/hydra/death0"
+    ]
+  },
+    "mob.hydra.growl": {
+    "category": "hostile",
+    "sounds": [
+      "mob/hydra/growl0",
+      "mob/hydra/growl1",
+      "mob/hydra/growl2"
+    ]
+  },
+    "mob.hydra.roar": {
+    "category": "hostile",
+    "sounds": [
+      "mob/hydra/roar0",
+      "mob/hydra/roar1"
+    ]
+  },
+    "mob.hydra.warn": {
+    "category": "hostile",
+    "sounds": [
+      "mob/hydra/warn0"
+    ]
+  },
+    "mob.mosquito.mosquito": {
+    "category": "hostile",
+    "sounds": [
+      "mob/mosquito/animals132"
+    ]
+  },
+    "mob.ice.noise": {
+    "category": "hostile",
+    "sounds": [
+      "mob/ice/noise0",
+      "mob/ice/noise1"
+    ]
+  },
+    "mob.ice.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "mob/ice/hurt0",
+      "mob/ice/hurt1"
+    ]
+  },
+    "mob.ice.death": {
+    "category": "hostile",
+    "sounds": [
+      "mob/ice/death0",
+      "mob/ice/death1"
+    ]
+  },
+    "random.slider": {
+    "category": "block",
+    "sounds": [
+      "random/creakgo2"
+    ]
+  }
+}
