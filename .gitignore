@@ -27,3 +27,6 @@
 /*.ipr
 /*.iws
 /atlassian-ide-plugin.xml
+
+# Mac OS X
+.DS_Store
