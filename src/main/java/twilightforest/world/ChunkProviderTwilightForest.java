@@ -28,6 +28,7 @@ import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkProviderEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
@@ -933,6 +934,9 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 	public void populate(IChunkProvider ichunkprovider, int chunkX, int chunkZ) {
 		//long startTime = System.nanoTime();
 
+		// Allow the other mods to generate stuff in our biomes.
+		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(ichunkprovider, worldObj, rand, chunkX, chunkZ, false));
+		
 		BlockFalling.fallInstantly = true;
 		int mapX = chunkX * 16;
 		int mapY = chunkZ * 16;
