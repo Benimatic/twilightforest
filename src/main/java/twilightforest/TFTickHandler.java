@@ -162,7 +162,7 @@ public class TFTickHandler
 				
 			}
 			
-			// check to see if someone's thrown a diamond into the water
+			// check to see if someone's thrown the portal item into the water
 			for (EntityItem entityItem : itemList) 
 			{
 				if (entityItem.getEntityItem().getItem() == portalItem && world.isMaterialInBB(entityItem.boundingBox, Material.water))

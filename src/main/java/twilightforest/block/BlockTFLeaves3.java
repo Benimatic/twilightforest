@@ -99,7 +99,7 @@ public class BlockTFLeaves3 extends BlockLeaves {
     @Override
 	public Item getItemDropped(int par1, Random par2Random, int par3)
     {
-    	return null;
+    	return TFItems.magicBeans;
     }
     
     @Override
