@@ -31,7 +31,7 @@ public class TFGenWell extends TFGenerator {
 	 */	
 	public boolean generate3x3Well(World world, Random rand, int x, int y, int z)
 	{
-		if (!isAreaClear(world, rand, x, y, z, 3, 4, 3))
+		if (!isAreaSuitable(world, rand, x, y, z, 3, 4, 3))
 		{
 			return false;
 		}
@@ -115,7 +115,7 @@ public class TFGenWell extends TFGenerator {
 	 * Make a larger well
 	 */
 	public boolean generate4x4Well(World world, Random rand, int x, int y, int z) {
-		if (!isAreaClear(world, rand, x, y, z, 4, 4, 4))
+		if (!isAreaSuitable(world, rand, x, y, z, 4, 4, 4))
 		{
 			return false;
 		}

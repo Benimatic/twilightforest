@@ -16,7 +16,7 @@ public class TFGenFoundation extends TFGenerator {
 		int sz = 5 + rand.nextInt(5);
 		
 		
-		if (!isAreaClear(world, rand, x, y, z, sx, 4, sz))
+		if (!isAreaSuitable(world, rand, x, y, z, sx, 4, sz))
 		{
 			return false;
 		}

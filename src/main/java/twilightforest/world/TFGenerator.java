@@ -258,29 +258,35 @@ public abstract class TFGenerator extends WorldGenerator {
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 * 
 	 */
-	protected boolean isAreaClear(World world, Random rand, int x, int y, int z, int width, int height, int depth)
+	protected boolean isAreaSuitable(World world, Random rand, int x, int y, int z, int width, int height, int depth)
 	{
 		boolean flag = true;
+		
 
 		// check if there's anything within the diameter
 		for (int cx = 0; cx < width; cx++)
 		{
 			for (int cz = 0; cz < depth; cz++)
 			{
-				// is there grass, dirt or stone below?
-				Material m = world.getBlock(x + cx, y - 1, z + cz).getMaterial();
-				if (m != Material.ground && m != Material.grass && m != Material.rock)
-				{
-					flag = false;
-				}
-
-				for (int cy = 0; cy < height; cy++)
-				{
-					// blank space above?
-					if (!world.isAirBlock(x + cx, y + cy, z + cz))
+				// check if the blocks even exist?
+				if (world.blockExists(x + cx, y, z + cz)) {
+					// is there grass, dirt or stone below?
+					Material m = world.getBlock(x + cx, y - 1, z + cz).getMaterial();
+					if (m != Material.ground && m != Material.grass && m != Material.rock)
 					{
 						flag = false;
 					}
+
+					for (int cy = 0; cy < height; cy++)
+					{
+						// blank space above?
+						if (!world.isAirBlock(x + cx, y + cy, z + cz))
+						{
+							flag = false;
+						}
+					}
+				} else {
+					flag = false;
 				}
 			}
 		}
@@ -400,18 +406,18 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Does the block have at least 1 air block adjacent
 	 */
-	protected static boolean hasAirAround(IBlockAccess world, int bx, int by, int bz) {
+	protected static boolean hasAirAround(World world, int bx, int by, int bz) {
 		boolean airAround = false;
-		if (world.getBlock(bx + 1, by, bz) == Blocks.air) {
+		if (world.blockExists(bx + 1, by, bz) && world.getBlock(bx + 1, by, bz) == Blocks.air) {
 			airAround = true;
 		}
-		if (world.getBlock(bx - 1, by, bz) == Blocks.air) {
+		if (world.blockExists(bx - 1, by, bz) && world.getBlock(bx - 1, by, bz) == Blocks.air) {
 			airAround = true;
 		}
-		if (world.getBlock(bx, by, bz + 1) == Blocks.air) {
+		if (world.blockExists(bx, by, bz + 1) && world.getBlock(bx, by, bz + 1) == Blocks.air) {
 			airAround = true;
 		}
-		if (world.getBlock(bx, by, bz - 1) == Blocks.air) {
+		if (world.blockExists(bx, by, bz - 1) && world.getBlock(bx, by, bz - 1) == Blocks.air) {
 			airAround = true;
 		}
 		if (world.getBlock(bx, by + 1, bz) == Blocks.air) {
@@ -421,18 +427,18 @@ public abstract class TFGenerator extends WorldGenerator {
 		return airAround;
 	}	
 	
-	protected static boolean isNearSolid(IBlockAccess world, int bx, int by, int bz) {
+	protected static boolean isNearSolid(World world, int bx, int by, int bz) {
 		boolean nearSolid = false;
-		if (world.getBlock(bx + 1, by, bz).getMaterial().isSolid()) {
+		if (world.blockExists(bx + 1, by, bz) && world.getBlock(bx + 1, by, bz).getMaterial().isSolid()) {
 			nearSolid = true;
 		}
-		if (world.getBlock(bx - 1, by, bz).getMaterial().isSolid()) {
+		if (world.blockExists(bx - 1, by, bz) && world.getBlock(bx - 1, by, bz).getMaterial().isSolid()) {
 			nearSolid = true;
 		}
-		if (world.getBlock(bx, by, bz + 1).getMaterial().isSolid()) {
+		if (world.blockExists(bx, by, bz + 1) && world.getBlock(bx, by, bz + 1).getMaterial().isSolid()) {
 			nearSolid = true;
 		}
-		if (world.getBlock(bx, by, bz - 1).getMaterial().isSolid()) {
+		if (world.blockExists(bx, by, bz - 1) && world.getBlock(bx, by, bz - 1).getMaterial().isSolid()) {
 			nearSolid = true;
 		}
 

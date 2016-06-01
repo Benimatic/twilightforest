@@ -22,14 +22,14 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		// check area clear
 		if (goingX)
 		{
-			if (!isAreaClear(world, rand, x, y, z, length, 3, 2))
+			if (!isAreaSuitable(world, rand, x, y, z, length, 3, 2))
 			{
 				return false;
 			}
 		}
 		else
 		{
-			if (!isAreaClear(world, rand, x, y, z, 3, length, 2))
+			if (!isAreaSuitable(world, rand, x, y, z, 3, length, 2))
 			{
 				return false;
 			}

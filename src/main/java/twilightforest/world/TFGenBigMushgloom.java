@@ -13,7 +13,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 	public boolean generate(World world, Random rand, int x, int y, int z) {
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 		
-		if (!this.isAreaClear(world, rand, x - 1, y, z - 1, 3, height, 3)) {
+		if (!this.isAreaSuitable(world, rand, x - 1, y, z - 1, 3, height, 3)) {
 			return false;
 		}
 		

@@ -24,7 +24,7 @@ public class TFGenWitchHut extends TFGenerator {
 	 */
 	public boolean generateTinyHut(World world, Random rand, int x, int y, int z)
 	{
-		if (!isAreaClear(world, rand, x, y, z, 5, 7, 6))
+		if (!isAreaSuitable(world, rand, x, y, z, 5, 7, 6))
 		{
 			return false;
 		}

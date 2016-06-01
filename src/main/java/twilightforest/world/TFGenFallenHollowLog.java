@@ -19,7 +19,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 
 	private boolean makeLog4Z(World world, Random rand, int x, int y, int z) {
 		// +Z 4x4 log
-		if (!isAreaClear(world, rand, x, y, z, 9, 3, 4))
+		if (!isAreaSuitable(world, rand, x, y, z, 9, 3, 4))
 		{
 			return false;
 		}
@@ -133,7 +133,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 	 */
 	private boolean makeLog4X(World world, Random rand, int x, int y, int z) {
 		// +Z 4x4 log
-		if (!isAreaClear(world, rand, x, y, z, 4, 3, 9))
+		if (!isAreaSuitable(world, rand, x, y, z, 4, 3, 9))
 		{
 			return false;
 		}

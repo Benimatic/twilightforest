@@ -22,7 +22,7 @@ public class TFGenMonolith extends TFGenerator {
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;
 
-		if (!isAreaClear(world, rand, x, y, z, 2, ht, 2))
+		if (!isAreaSuitable(world, rand, x, y, z, 2, ht, 2))
 		{
 			return false;
 		}

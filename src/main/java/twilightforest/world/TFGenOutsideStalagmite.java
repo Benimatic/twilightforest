@@ -22,7 +22,7 @@ public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 	{
 		int length = rand.nextInt(10) + 5;
 		
-		if (!isAreaClear(world, rand, x, y, z, 1, length, 1))
+		if (!isAreaSuitable(world, rand, x, y, z, 1, length, 1))
 		{
 			return false;
 		}

@@ -18,7 +18,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 		
 		int radius = rand.nextInt(2) + 2;
 
-		if (!isAreaClear(world, rand, x - radius, y, z - radius, 2 * radius, 6, 2 * radius))
+		if (!isAreaSuitable(world, rand, x - radius, y, z - radius, 2 * radius, 6, 2 * radius))
 		{
 			return false;
 		}

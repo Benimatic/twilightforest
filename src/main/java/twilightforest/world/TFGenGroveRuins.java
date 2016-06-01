@@ -32,7 +32,7 @@ public class TFGenGroveRuins extends TFGenerator {
 	 * Generate a ruin with the larger arch
 	 */
 	private boolean generateLargeArch(World world, Random rand, int x, int y, int z) {
-		if (!isAreaClear(world, rand, x, y, z, 2, 7, 6))
+		if (!isAreaSuitable(world, rand, x, y, z, 2, 7, 6))
 		{
 			return false;
 		}
@@ -78,7 +78,7 @@ public class TFGenGroveRuins extends TFGenerator {
 	 * Generate a ruin with the smaller arch
 	 */
 	private boolean generateSmallArch(World world, Random rand, int x, int y, int z) {
-		if (!isAreaClear(world, rand, x, y, z, 7, 5, 9))
+		if (!isAreaSuitable(world, rand, x, y, z, 7, 5, 9))
 		{
 			return false;
 		}

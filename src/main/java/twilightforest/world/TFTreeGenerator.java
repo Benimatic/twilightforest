@@ -95,11 +95,11 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 	}
 
 	
-	protected static boolean isNearSolid(IBlockAccess world, int bx, int by, int bz) {
+	protected static boolean isNearSolid(World world, int bx, int by, int bz) {
 		return TFGenerator.isNearSolid(world, bx, by, bz);
 	}
 	
-	protected static boolean hasAirAround(IBlockAccess world, int bx, int by, int bz) {
+	protected static boolean hasAirAround(World world, int bx, int by, int bz) {
 		return TFGenerator.hasAirAround(world, bx, by, bz);
 	}
 	
