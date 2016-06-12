@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.block.TFBlocks;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class RenderBlockTFThorns implements ISimpleBlockRenderingHandler {
 	

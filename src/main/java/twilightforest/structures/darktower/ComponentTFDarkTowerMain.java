@@ -29,7 +29,7 @@ import twilightforest.structures.StructureTFDecorator;
 import twilightforest.structures.TFMaze;
 import twilightforest.world.TFGenSmallRainboak;
 import twilightforest.world.TFGenSmallTwilightOak;
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing 
 {

@@ -25,8 +25,8 @@ import twilightforest.world.TFGenSmallTwilightOak;
 import twilightforest.world.TFGenSortingTree;
 import twilightforest.world.TFGenTreeOfTime;
 import twilightforest.world.TFGenTreeOfTransformation;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFSapling extends BlockSapling
 {

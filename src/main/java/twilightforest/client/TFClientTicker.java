@@ -3,8 +3,8 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import twilightforest.world.WorldProviderTwilightForest;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class TFClientTicker {
 	

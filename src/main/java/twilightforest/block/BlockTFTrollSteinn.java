@@ -2,8 +2,8 @@ package twilightforest.block;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraft.block.Block;

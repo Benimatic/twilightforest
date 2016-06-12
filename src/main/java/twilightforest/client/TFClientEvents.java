@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.item.ItemTFBowBase;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TFClientEvents {
 

@@ -37,9 +37,9 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public abstract class TFBiomeBase extends BiomeGenBase  {

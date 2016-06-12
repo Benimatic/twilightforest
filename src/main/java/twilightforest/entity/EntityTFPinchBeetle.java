@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.ai.EntityAITFKidnapRider;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFPinchBeetle extends EntityMob
 {

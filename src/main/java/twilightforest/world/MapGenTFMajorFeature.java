@@ -11,7 +11,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.StructureTFMajorFeatureStart;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 
 public class MapGenTFMajorFeature extends MapGenStructure {

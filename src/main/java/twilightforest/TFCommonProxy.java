@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import twilightforest.client.GuiTFCinderFurnace;
 import twilightforest.inventory.ContainerTFCinderFurnace;
 import twilightforest.inventory.ContainerTFUncrafting;
-import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class TFCommonProxy implements IGuiHandler {
 	

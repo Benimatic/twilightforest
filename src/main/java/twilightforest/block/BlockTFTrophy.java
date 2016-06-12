@@ -20,8 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Head trophy similar to (and based partially on) BlockSkull

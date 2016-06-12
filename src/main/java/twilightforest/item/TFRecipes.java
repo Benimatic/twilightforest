@@ -15,7 +15,7 @@ import twilightforest.block.BlockTFPlant;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.enchantment.TFEnchantment;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 
 public class TFRecipes {

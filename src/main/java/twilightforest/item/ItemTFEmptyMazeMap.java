@@ -12,8 +12,8 @@ import twilightforest.TFFeature;
 import twilightforest.TFMazeMapData;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.WorldProviderTwilightForest;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFEmptyMazeMap extends ItemMapBase
 {

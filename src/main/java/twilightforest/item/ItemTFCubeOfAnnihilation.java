@@ -2,8 +2,8 @@ package twilightforest.item;
 
 import java.util.HashMap;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFChainBlock;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;

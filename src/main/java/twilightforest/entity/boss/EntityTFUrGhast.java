@@ -28,7 +28,7 @@ import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.TFWorldChunkManager;
 import twilightforest.world.WorldProviderTwilightForest;
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayData {
 

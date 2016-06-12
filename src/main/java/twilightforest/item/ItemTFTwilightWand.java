@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFTwilightWandBolt;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 

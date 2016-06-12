@@ -23,11 +23,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFMagicLogSpecial extends BlockTFMagicLog 
 {

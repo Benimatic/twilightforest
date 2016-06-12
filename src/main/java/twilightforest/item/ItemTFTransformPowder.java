@@ -35,8 +35,8 @@ import twilightforest.entity.passive.EntityTFBoar;
 import twilightforest.entity.passive.EntityTFDeer;
 import twilightforest.entity.passive.EntityTFPenguin;
 import twilightforest.entity.passive.EntityTFRaven;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFTransformPowder extends ItemTF 
 {

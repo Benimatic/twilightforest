@@ -19,8 +19,8 @@ import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.Multimap;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFGiantPick extends ItemPickaxe {
 

@@ -20,12 +20,12 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.WorldProviderTwilightForest;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 /**
  * This class listens for ticks in the world.  If the player is near a diamond in the water, this class attempts to open a portal.

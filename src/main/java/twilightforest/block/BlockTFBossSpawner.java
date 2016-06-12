@@ -19,8 +19,8 @@ import twilightforest.tileentity.TileEntityTFLichSpawner;
 import twilightforest.tileentity.TileEntityTFNagaSpawner;
 import twilightforest.tileentity.TileEntityTFSnowQueenSpawner;
 import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 

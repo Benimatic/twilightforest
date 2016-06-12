@@ -14,9 +14,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFLoyalZombie;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 

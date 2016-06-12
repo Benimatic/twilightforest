@@ -10,8 +10,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockTFPlant extends ItemBlock {
 
