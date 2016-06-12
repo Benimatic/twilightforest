@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import twilightforest.TFTreasure;
@@ -377,12 +377,12 @@ public class TFGenHollowTree extends TFGenerator
 	 * Make a root
 	 */
 	protected void makeRoot(World world, Random random, int x, int y, int z, int diameter, int branchHeight, double length, double angle, double tilt) {
-		ChunkCoordinates src = translateCoords(x, y + branchHeight, z, diameter, angle, 0.5);
-		ChunkCoordinates dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);		
+		BlockPos src = translateCoords(x, y + branchHeight, z, diameter, angle, 0.5);
+		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
 		
-		ChunkCoordinates[] lineArray = getBresehnamArrayCoords(src, dest);
+		BlockPos[] lineArray = getBresehnamArrayCoords(src, dest);
 		boolean stillAboveGround = true; 
-		for (ChunkCoordinates coord : lineArray) 
+		for (BlockPos coord : lineArray)
 		{
 			if (stillAboveGround && hasAirAround(world, coord.posX, coord.posY, coord.posZ)) {
 				this.setBlockAndMetadata(world, coord.posX, coord.posY, coord.posZ, treeBlock, branchMeta);

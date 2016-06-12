@@ -17,7 +17,7 @@ import net.minecraft.entity.item.EntityPainting.EnumArt;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -39,7 +39,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected int height;
 	protected Class<? extends ComponentTFTowerRoof> roofType;
 	
-	protected ArrayList<ChunkCoordinates> openings = new ArrayList<ChunkCoordinates>();
+	protected ArrayList<BlockPos> openings = new ArrayList<BlockPos>();
 	protected int highestOpening;
 	protected boolean [] openingTowards = new boolean[] {false, false, true, false};
 	
@@ -86,7 +86,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	private int[] getDoorsAsIntArray() {
 		IntBuffer ibuffer = IntBuffer.allocate(this.openings.size() * 3);
 		
-		for (ChunkCoordinates door : openings)
+		for (BlockPos door : openings)
 		{
 			ibuffer.put(door.posX);
 			ibuffer.put(door.posY);
@@ -121,7 +121,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	private void readOpeningsFromArray(int[] intArray) {
 		for (int i = 0; i < intArray.length; i += 3)
 		{
-			ChunkCoordinates door = new ChunkCoordinates(intArray[i], intArray[i + 1], intArray[i + 2]);
+			BlockPos door = new BlockPos(intArray[i], intArray[i + 1], intArray[i + 2]);
 			
 			this.openings.add(door);
 		}
@@ -233,7 +233,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		if (dy > highestOpening) {
 			highestOpening = dy;
 		}
-		openings.add(new ChunkCoordinates(dx, dy, dz));
+		openings.add(new BlockPos(dx, dy, dz));
 	}
 	
 	/**
@@ -614,10 +614,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		placeSpawnerAtCurrentPosition(world, rand, size / 2, bottom + 2, size / 2, "Skeleton", sbb);
 
 		// floor-to-ceiling chains
-		ArrayList<ChunkCoordinates> chainList = new ArrayList<ChunkCoordinates>();
-		chainList.add(new ChunkCoordinates(size / 2, bottom + 2, size / 2)); // don't block the spawner
+		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
+		chainList.add(new BlockPos(size / 2, bottom + 2, size / 2)); // don't block the spawner
 		for (int i = 0; i < size + 2; i++) {
-			ChunkCoordinates chain = new ChunkCoordinates(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
+			BlockPos chain = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
 			if (!chainCollides(chain, chainList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				for (int dy = bottom; dy < top; dy++) {
@@ -664,10 +664,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		}
 
 		// slab tables
-		ArrayList<ChunkCoordinates> slabList = new ArrayList<ChunkCoordinates>();
-		slabList.add(new ChunkCoordinates(size / 2, bottom + 2, size / 2)); // don't block the spawner
+		ArrayList<BlockPos> slabList = new ArrayList<BlockPos>();
+		slabList.add(new BlockPos(size / 2, bottom + 2, size / 2)); // don't block the spawner
 		for (int i = 0; i < size - 1; i++) {
-			ChunkCoordinates slab = new ChunkCoordinates(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
+			BlockPos slab = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
 			if (!chainCollides(slab, slabList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, slab.posX, bottom + 0, slab.posZ, sbb);
@@ -697,10 +697,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		}
 
 		// cacti
-		ArrayList<ChunkCoordinates> cactusList = new ArrayList<ChunkCoordinates>();
-		cactusList.add(new ChunkCoordinates(size / 2, bottom + 2, size / 2)); // don't block the spawner
+		ArrayList<BlockPos> cactusList = new ArrayList<BlockPos>();
+		cactusList.add(new BlockPos(size / 2, bottom + 2, size / 2)); // don't block the spawner
 		for (int i = 0; i < size + 12; i++) {
-			ChunkCoordinates cactus = new ChunkCoordinates(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
+			BlockPos cactus = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
 			if (!chainCollides(cactus, cactusList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				for (int dy = bottom; dy < top; dy++) {
@@ -1028,11 +1028,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * TODO: this could be much smarter.  Although since there's usually only one opening, I guess it's not bad.
 	 */
 	protected boolean isOpeningPos(int x, int y, int z) {
-		Iterator<ChunkCoordinates> itr = openings.iterator();
+		Iterator<BlockPos> itr = openings.iterator();
 		while(itr.hasNext()){
-			ChunkCoordinates door =  itr.next();
+			BlockPos door =  itr.next();
 			// determine which wall we're at
-			ChunkCoordinates inside = new ChunkCoordinates(door);
+			BlockPos inside = new BlockPos(door);
 			if (inside.posX == 0) {
 				inside.posX++;
 			}
@@ -1285,11 +1285,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateHangingChains(World world, Random rand, int decoTop, StructureBoundingBox sbb) {
 		// a list of existing chains
-		ArrayList<ChunkCoordinates> chainList = new ArrayList<ChunkCoordinates>();
+		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
 		// try size + 2 times to find a chain that does not collide
 		for (int i = 0; i < size + 2; i++) {
 			int filled = size < 15 ? 2 : 4;
-			ChunkCoordinates chain = new ChunkCoordinates(filled + rand.nextInt(size - (filled * 2)), decoTop - 2, filled + rand.nextInt(size - (filled * 2)));
+			BlockPos chain = new BlockPos(filled + rand.nextInt(size - (filled * 2)), decoTop - 2, filled + rand.nextInt(size - (filled * 2)));
 			if (!chainCollides(chain, chainList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				int length = 1 + rand.nextInt(decoTop - 7);
@@ -1304,10 +1304,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Return true if the specified coords are orthogonally adjacent to any other coords on the list.
 	 */
-	protected boolean chainCollides(ChunkCoordinates coords, List<ChunkCoordinates> list) {
-	    Iterator<ChunkCoordinates> itr = list.iterator();
+	protected boolean chainCollides(BlockPos coords, List<BlockPos> list) {
+	    Iterator<BlockPos> itr = list.iterator();
 	    while (itr.hasNext()) {
-	    	ChunkCoordinates existing = itr.next();
+	    	BlockPos existing = itr.next();
 	    	// if x is within 1 and z is equal, we collide
 	    	if (coords.posZ == existing.posZ && Math.abs(coords.posX - existing.posX) <= 1) {
 	    		return true;
@@ -1380,11 +1380,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateFloatingBooks(World world, Random rand, int decoTop, StructureBoundingBox sbb) {
 		// a list of existing bookshelves
-		ArrayList<ChunkCoordinates> shelfList = new ArrayList<ChunkCoordinates>();
+		ArrayList<BlockPos> shelfList = new ArrayList<BlockPos>();
 		// try size + 2 times to find a shelf that does not collide
 		for (int i = 0; i < size + 2; i++) {
 			int filled = size < 15 ? 2 : 4;
-			ChunkCoordinates shelf = new ChunkCoordinates(filled + rand.nextInt(size - (filled * 2)), decoTop - 2, filled + rand.nextInt(size - (filled * 2)));
+			BlockPos shelf = new BlockPos(filled + rand.nextInt(size - (filled * 2)), decoTop - 2, filled + rand.nextInt(size - (filled * 2)));
 			if (!chainCollides(shelf, shelfList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				int bottom = 2 + rand.nextInt(decoTop - 7);
@@ -1404,11 +1404,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateFloatingVines(World world, Random rand, int decoTop, StructureBoundingBox sbb) {
 		// a list of existing blocks
-		ArrayList<ChunkCoordinates> mossList = new ArrayList<ChunkCoordinates>();
+		ArrayList<BlockPos> mossList = new ArrayList<BlockPos>();
 		// try size + 2 times to find a rock pillar that does not collide
 		for (int i = 0; i < size + 2; i++) {
 			int filled = size < 15 ? 2 : 4;
-			ChunkCoordinates moss = new ChunkCoordinates(filled + rand.nextInt(size - (filled * 2)), decoTop - 2, filled + rand.nextInt(size - (filled * 2)));
+			BlockPos moss = new BlockPos(filled + rand.nextInt(size - (filled * 2)), decoTop - 2, filled + rand.nextInt(size - (filled * 2)));
 			if (!chainCollides(moss, mossList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				int bottom = 2 + rand.nextInt(decoTop - 7);
@@ -1612,7 +1612,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * Iterate through the openings on our list and add them to the tower
 	 */
 	protected void makeOpenings(World world, StructureBoundingBox sbb) {
-		for (ChunkCoordinates door : openings)
+		for (BlockPos door : openings)
 		{
 			makeDoorOpening(world, door.posX, door.posY, door.posZ, sbb);
 		}
@@ -2145,7 +2145,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected void generatePaintingsOnWall(World world, Random rand, int howMany, int floorLevel, int direction, int minSize, StructureBoundingBox sbb) {
 		for (int i = 0; i < howMany; i++) {
 			// get some random coordinates on the wall in the chunk
-			ChunkCoordinates pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
+			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 			
 			// initialize a painting object
 			EntityPainting painting = new EntityPainting(world, pCoords.posX, pCoords.posY, pCoords.posZ, direction); 
@@ -2231,7 +2231,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * This returns the real-world coordinates of a possible painting or torch spot on the specified wall of this tower.
 	 */
-	protected ChunkCoordinates getRandomWallSpot(Random rand, int floorLevel, int direction, StructureBoundingBox sbb) {
+	protected BlockPos getRandomWallSpot(Random rand, int floorLevel, int direction, StructureBoundingBox sbb) {
 		int minX = this.boundingBox.minX + 2;
 		int maxX = this.boundingBox.maxX - 2;
 
@@ -2268,7 +2268,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			
 			if (sbb.isVecInside(cx, cy, cz)) {
 //				System.out.println("Found a valid random spot on the wall.  It's " + cx + ", " + cy + ", " + cz );
-				return new ChunkCoordinates(cx, cy, cz);
+				return new BlockPos(cx, cy, cz);
 			}
 		}
 		

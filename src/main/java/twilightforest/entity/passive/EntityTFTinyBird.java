@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -28,10 +28,10 @@ public class EntityTFTinyBird extends EntityTFBird {
     private static final int DATA_BIRDFLAGS = 17;
 	
 	/**
-     * randomly selected ChunkCoordinates in a 7x6x7 box around the bat (y offset -2 to 4) towards which it will fly.
+     * randomly selected BlockPos in a 7x6x7 box around the bat (y offset -2 to 4) towards which it will fly.
      * upon getting close a new target will be selected
      */
-    private ChunkCoordinates currentFlightTarget;
+    private BlockPos currentFlightTarget;
     private int currentFlightTime;
 
     public EntityTFTinyBird(World par1World) {
@@ -263,7 +263,7 @@ public class EntityTFTinyBird extends EntityTFBird {
             {
             	int yTarget = this.currentFlightTime < 100 ? 2 : 4; 
             	
-                this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - yTarget, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
+                this.currentFlightTarget = new BlockPos((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - yTarget, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
             }
 
             double d0 = (double)this.currentFlightTarget.posX + 0.5D - this.posX;

@@ -2,7 +2,7 @@ package twilightforest.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -32,11 +32,11 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
 	protected void buildRoot(World world, int x, int y, int z, double offset, int b) {
-		ChunkCoordinates dest = translateCoords(x, y - b - 2, z, 5, 0.3 * b + offset, 0.8);
+		BlockPos dest = translateCoords(x, y - b - 2, z, 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
-		ChunkCoordinates[] lineArray = getBresehnamArrayCoords(x, y - b - 2, z, dest.posX, dest.posY, dest.posZ);
-		for (ChunkCoordinates coord : lineArray) 
+		BlockPos[] lineArray = getBresehnamArrayCoords(x, y - b - 2, z, dest.posX, dest.posY, dest.posZ);
+		for (BlockPos coord : lineArray)
 		{
 			this.placeRootBlock(world, coord.posX, coord.posY, coord.posZ, rootBlock, rootMeta);
 		}
@@ -76,21 +76,21 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 		return TFGenerator.translate(sx, sy, sz, distance, angle, tilt);
 	}
 
-	protected static ChunkCoordinates translateCoords(int sx, int sy, int sz, double length, double angle, double tilt) {
+	protected static BlockPos translateCoords(int sx, int sy, int sz, double length, double angle, double tilt) {
 		return TFGenerator.translateCoords(sx, sy, sz, length, angle, tilt);
 	}
 
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 */
-	public static ChunkCoordinates[] getBresehnamArrayCoords(ChunkCoordinates src, ChunkCoordinates dest) {
+	public static BlockPos[] getBresehnamArrayCoords(BlockPos src, BlockPos dest) {
 		return TFGenerator.getBresehnamArrayCoords(src.posX, src.posY, src.posZ, dest.posX, dest.posY, dest.posZ);
 	}
 	
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 */
-	public static ChunkCoordinates[] getBresehnamArrayCoords(int x1, int y1, int z1, int x2, int y2, int z2) {
+	public static BlockPos[] getBresehnamArrayCoords(int x1, int y1, int z1, int x2, int y2, int z2) {
 		return TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
 	}
 
@@ -136,8 +136,8 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 	 */
 	protected void drawBresehnam(World world, int x1, int y1, int z1, int x2, int y2, int z2, Block blockValue, int metaValue)
 	{
-		ChunkCoordinates[] lineArray = getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
-		for (ChunkCoordinates pixel : lineArray) 
+		BlockPos[] lineArray = getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
+		for (BlockPos pixel : lineArray)
 		{
 			setBlockAndMetadata(world, pixel.posX, pixel.posY, pixel.posZ, blockValue, metaValue);
 		}

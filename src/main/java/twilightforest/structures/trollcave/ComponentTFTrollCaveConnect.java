@@ -6,7 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -64,7 +64,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		if (this.getComponentType() < 3) {
 
 			for (int i = 0; i < 4; i++) {
-				ChunkCoordinates dest = getValidOpening(rand, 2, i);
+				BlockPos dest = getValidOpening(rand, 2, i);
 
 				if (rand.nextBoolean() || !makeGardenCave(list, rand, this.getComponentType() + 1, dest.posX, dest.posY, dest.posZ, 30, 15, i)) {
 					makeSmallerCave(list, rand, this.getComponentType() + 1, dest.posX, dest.posY, dest.posZ, 20, 15, i);
@@ -95,13 +95,13 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
     		// stone stalactites!
     		for (int i = 0; i < 32; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, true, dest.posX, 3, dest.posZ, sbb);
     		}
     		// stone stalagmites!
     		for (int i = 0; i < 8; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.posX, 3, dest.posZ, sbb);
     		}
     		
@@ -293,7 +293,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
 		int direction = (getCoordBaseMode() + rotation) % 4;
-		ChunkCoordinates dest = offsetTowerCCoords(x, y, z, caveSize, direction);
+		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
 		ComponentTFTrollCaveMain cave = new ComponentTFTrollCaveGarden(index, dest.posX, dest.posY, dest.posZ, caveSize, caveHeight, direction);
 		// check to see if it intersects something already there

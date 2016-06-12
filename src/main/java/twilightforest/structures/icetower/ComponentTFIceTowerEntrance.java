@@ -3,7 +3,7 @@ package twilightforest.structures.icetower;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -54,7 +54,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 		this.addOpening(x, y, z, rotation);
 
 		int direction = (getCoordBaseMode() + rotation) % 4;
-		ChunkCoordinates dx = offsetTowerCCoords(x, y, z, this.size, direction);
+		BlockPos dx = offsetTowerCCoords(x, y, z, this.size, direction);
 
 		ComponentTFIceTowerStairs entrance = new ComponentTFIceTowerStairs(index, dx.posX, dx.posY, dx.posZ, this.size, this.height, direction);
 

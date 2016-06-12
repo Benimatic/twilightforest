@@ -6,7 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -74,7 +74,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		// make 4 caves
 		for (int i = 0; i < 4; i++) {
-			ChunkCoordinates dest = getValidOpening(rand, 5, i);
+			BlockPos dest = getValidOpening(rand, 5, i);
 			
 			makeSmallerCave(list, rand, this.getComponentType() + 1, dest.posX, dest.posY, dest.posZ, 18, 15, i);
 
@@ -94,7 +94,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 
 	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
 		int direction = (getCoordBaseMode() + rotation) % 4;
-		ChunkCoordinates dest = offsetTowerCCoords(x, y, z, caveSize, direction);
+		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
 		ComponentTFTrollCaveConnect cave = new ComponentTFTrollCaveConnect(index, dest.posX, dest.posY, dest.posZ, caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
@@ -122,13 +122,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		// stone stalactites!
 		for (int i = 0; i < 128; i++)
 		{
-			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+			BlockPos dest = getCoordsInCave(decoRNG);
 			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++)
 		{
-			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+			BlockPos dest = getCoordsInCave(decoRNG);
 			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.posX, 3, dest.posZ, sbb);
 		}
 		
@@ -136,7 +136,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		// uberous!
 		for (int i = 0; i < 32; i++)
 		{
-			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+			BlockPos dest = getCoordsInCave(decoRNG);
 			
 			generateAtSurface(world, uberousGen, decoRNG, dest.posX, 60, dest.posZ, sbb);
 		}
@@ -145,8 +145,8 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	}
 
 	
-    protected ChunkCoordinates getCoordsInCave(Random rand) {
-		return new ChunkCoordinates(rand.nextInt(this.size - 1), rand.nextInt(this.height - 1), rand.nextInt(this.size - 1));
+    protected BlockPos getCoordsInCave(Random rand) {
+		return new BlockPos(rand.nextInt(this.size - 1), rand.nextInt(this.height - 1), rand.nextInt(this.size - 1));
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
-	public ChunkCoordinates getValidOpening(Random rand, int caveHeight, int direction) {
+	public BlockPos getValidOpening(Random rand, int caveHeight, int direction) {
 		// variables!
 		int offset = this.size / 4; // wall thickness
 		int wLength = size - (offset * 2); // wall length
@@ -195,7 +195,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 			int rz = offset + rand.nextInt(wLength);
 			int ry = (rand.nextInt(offset) - rand.nextInt(offset));
 			
-			return new ChunkCoordinates(rx, ry, rz);
+			return new BlockPos(rx, ry, rz);
 		}
 		
 		// for directions 1 or 3, the wall lies along the x axis
@@ -204,7 +204,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 			int rz = direction == 1 ? size - 1 : 0;
 			int ry = (rand.nextInt(offset) - rand.nextInt(offset));
 			
-			return new ChunkCoordinates(rx, ry, rz);
+			return new BlockPos(rx, ry, rz);
 		}
 		
 		
@@ -215,25 +215,25 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	/**
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
-	protected ChunkCoordinates offsetTowerCCoords(int x, int y, int z, int towerSize, int direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, int direction) {
 		
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		
 		if (direction == 0) {
-			return new ChunkCoordinates(dx - 1, dy - 1, dz - towerSize / 2);
+			return new BlockPos(dx - 1, dy - 1, dz - towerSize / 2);
 		} else if (direction == 1) {
-			return new ChunkCoordinates(dx + towerSize / 2, dy - 1, dz - 1);
+			return new BlockPos(dx + towerSize / 2, dy - 1, dz - 1);
 		} else if (direction == 2) {
-			return new ChunkCoordinates(dx + 1, dy - 1, dz + towerSize / 2);
+			return new BlockPos(dx + 1, dy - 1, dz + towerSize / 2);
 		} else if (direction == 3) {
-			return new ChunkCoordinates(dx - towerSize / 2, dy - 1, dz + 1);
+			return new BlockPos(dx - towerSize / 2, dy - 1, dz + 1);
 		}
 		
 		
 		// ugh?
-		return new ChunkCoordinates(x, y, z);
+		return new BlockPos(x, y, z);
 	}
 	
 

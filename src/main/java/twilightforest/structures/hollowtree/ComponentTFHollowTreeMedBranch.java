@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -16,7 +16,7 @@ import twilightforest.world.TFGenerator;
 
 public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 	
-	ChunkCoordinates src, dest;  // source and destination of branch, array of 3 ints representing x, y, z
+	BlockPos src, dest;  // source and destination of branch, array of 3 ints representing x, y, z
 	double length;
 	double angle;
 	double tilt;
@@ -30,7 +30,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 	protected ComponentTFHollowTreeMedBranch(int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
 		super(i);
 		
-		this.src = new ChunkCoordinates(sx, sy, sz);
+		this.src = new BlockPos(sx, sy, sz);
 		this.dest = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
 
 		this.length = length;
@@ -49,8 +49,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 	
 	private StructureBoundingBox makeExpandedBB(double outVar, double branchLength, double branchAngle, double branchTilt) 
 	{
-		ChunkCoordinates branchSrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, this.length * outVar, this.angle, this.tilt);
-		ChunkCoordinates branchDest = TFGenerator.translateCoords(branchSrc.posX, branchSrc.posY, branchSrc.posZ, branchLength, branchAngle, branchTilt);
+		BlockPos branchSrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, this.length * outVar, this.angle, this.tilt);
+		BlockPos branchDest = TFGenerator.translateCoords(branchSrc.posX, branchSrc.posY, branchSrc.posZ, branchLength, branchAngle, branchTilt);
 		
 		return new StructureBoundingBox(Math.min(branchSrc.posX, branchDest.posX), Math.min(branchSrc.posY, branchDest.posY), Math.min(branchSrc.posZ, branchDest.posZ), Math.max(branchSrc.posX, branchDest.posX), Math.max(branchSrc.posY, branchDest.posY), Math.max(branchSrc.posZ, branchDest.posZ));
 	}
@@ -84,8 +84,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 		super.func_143011_b(par1NBTTagCompound);
 		
 
-        this.src = new ChunkCoordinates(par1NBTTagCompound.getInteger("srcPosX"), par1NBTTagCompound.getInteger("srcPosY"), par1NBTTagCompound.getInteger("srcPosZ"));
-        this.dest = new ChunkCoordinates(par1NBTTagCompound.getInteger("destPosX"), par1NBTTagCompound.getInteger("destPosY"), par1NBTTagCompound.getInteger("destPosZ"));
+        this.src = new BlockPos(par1NBTTagCompound.getInteger("srcPosX"), par1NBTTagCompound.getInteger("srcPosY"), par1NBTTagCompound.getInteger("srcPosZ"));
+        this.dest = new BlockPos(par1NBTTagCompound.getInteger("destPosX"), par1NBTTagCompound.getInteger("destPosY"), par1NBTTagCompound.getInteger("destPosZ"));
         
         this.length = par1NBTTagCompound.getDouble("branchLength");
         this.angle = par1NBTTagCompound.getDouble("branchAngle");
@@ -133,7 +133,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 //			outVar = (rand.nextDouble() * 0.8) + 0.2;
 //			tiltVar = (rand.nextDouble() * 0.75) + 0.15;
 //
-//			ChunkCoordinates bSrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, length * outVar, angle, tilt);
+//			BlockPos bSrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, length * outVar, angle, tilt);
 //			double slength = length * 0.4;
 //
 //			makeSmallBranch(list, rand, index + 1, bSrc.posX, bSrc.posY, bSrc.posZ, slength, angle + angleVar, tilt * tiltVar, leafy);
@@ -151,8 +151,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
 		
-		ChunkCoordinates rSrc = new ChunkCoordinates(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		ChunkCoordinates rDest = new ChunkCoordinates(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
+		BlockPos rSrc = new BlockPos(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
+		BlockPos rDest = new BlockPos(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
 
 //		placeVoid(world, sbb, boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ, TFBlocks.wood, 0, false);
 //		System.out.println("Drawing a medium branch from " + rsrc.posX + ", " + rsrc.posY + ", " + rsrc.posZ + " to " + rdest.posX + ", " + rdest.posY + ", " + rdest.posZ);
@@ -176,7 +176,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 			outVar = (decoRNG.nextDouble() * 0.8) + 0.2;
 			tiltVar = (decoRNG.nextDouble() * 0.75) + 0.15;
 
-			ChunkCoordinates bSrc = TFGenerator.translateCoords(rSrc.posX, rSrc.posY, rSrc.posZ, length * outVar, angle, tilt);
+			BlockPos bSrc = TFGenerator.translateCoords(rSrc.posX, rSrc.posY, rSrc.posZ, length * outVar, angle, tilt);
 			double slength = length * 0.4;
 
 			drawSmallBranch(world, sbb, bSrc.posX, bSrc.posY, bSrc.posZ, Math.max(length * 0.3F, 2F), angle + angleVar, tilt, leafy);
@@ -188,7 +188,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 			for(int i = 0; i < numLeafBalls; i++) {
 
 				double slength = (decoRNG.nextFloat() * 0.6F + 0.2F) * length;
-				ChunkCoordinates bdst = TFGenerator.translateCoords(rSrc.posX, rSrc.posY, rSrc.posZ, slength, angle, tilt);
+				BlockPos bdst = TFGenerator.translateCoords(rSrc.posX, rSrc.posY, rSrc.posZ, slength, angle, tilt);
 
 				makeLeafBlob(world, sbb, bdst.posX, bdst.posY, bdst.posZ, decoRNG.nextBoolean() ? 2 : 3);		
 
@@ -207,9 +207,9 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 	 * Draws a line
 	 */
 	protected void drawBresehnam(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, Block blockValue, int metaValue) {
-		ChunkCoordinates lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
+		BlockPos lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
 		
-		for (ChunkCoordinates coords : lineCoords)
+		for (BlockPos coords : lineCoords)
 		{
 			this.placeBlockAtCurrentPosition(world, blockValue, metaValue, coords.posX, coords.posY, coords.posZ, sbb);
 		}
@@ -286,7 +286,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 	 */
 	protected void drawSmallBranch(World world, StructureBoundingBox sbb, int sx, int sy, int sz, double branchLength, double branchAngle, double branchTilt, boolean leafy) {
 		// draw a line
-		ChunkCoordinates branchDest = TFGenerator.translateCoords(sx, sy, sz, branchLength, branchAngle, branchTilt);
+		BlockPos branchDest = TFGenerator.translateCoords(sx, sy, sz, branchLength, branchAngle, branchTilt);
 
 		drawBresehnam(world, sbb, sx, sy, sz, branchDest.posX, branchDest.posY, branchDest.posZ, TFBlocks.log, 12);
 

@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -263,25 +263,25 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/**
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
-	protected ChunkCoordinates offsetTowerCCoords(int x, int y, int z, int towerSize, int direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, int direction) {
 		
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		
 		if (direction == 0) {
-			return new ChunkCoordinates(dx + 1, dy - 1, dz - towerSize / 2);
+			return new BlockPos(dx + 1, dy - 1, dz - towerSize / 2);
 		} else if (direction == 1) {
-			return new ChunkCoordinates(dx + towerSize / 2, dy - 1, dz + 1);
+			return new BlockPos(dx + towerSize / 2, dy - 1, dz + 1);
 		} else if (direction == 2) {
-			return new ChunkCoordinates(dx - 1, dy - 1, dz + towerSize / 2);
+			return new BlockPos(dx - 1, dy - 1, dz + towerSize / 2);
 		} else if (direction == 3) {
-			return new ChunkCoordinates(dx - towerSize / 2, dy - 1, dz - 1);
+			return new BlockPos(dx - towerSize / 2, dy - 1, dz - 1);
 		}
 		
 		
 		// ugh?
-		return new ChunkCoordinates(x, y, z);
+		return new BlockPos(x, y, z);
 	}
 
 

@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -471,10 +471,10 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			int floorLevel, int direction, StructureBoundingBox sbb) {
 		for (int i = 0; i < 10; i++) {
 			// get some random coordinates on the wall in the chunk
-			ChunkCoordinates wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
+			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// offset to see where the fence should be
-			ChunkCoordinates tCoords = new ChunkCoordinates(wCoords);
+			BlockPos tCoords = new BlockPos(wCoords);
 			if (direction == 0) {
 				tCoords.posZ++;
 			}

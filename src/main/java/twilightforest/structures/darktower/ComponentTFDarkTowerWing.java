@@ -11,7 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -102,7 +102,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	private void readOpeningsFromArray(int[] intArray) {
 		for (int i = 0; i < intArray.length; i += 3)
 		{
-			ChunkCoordinates door = new ChunkCoordinates(intArray[i], intArray[i + 1], intArray[i + 2]);
+			BlockPos door = new BlockPos(intArray[i], intArray[i + 1], intArray[i + 2]);
 			
 			this.openings.add(door);
 		}
@@ -1261,7 +1261,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	protected void addOpening(int dx, int dy, int dz, int direction, EnumDarkTowerDoor type) 
 	{
 		super.addOpening(dx, dy, dz, direction);
-		this.openingTypes.add(openings.indexOf(new ChunkCoordinates(dx, dy, dz)), type);
+		this.openingTypes.add(openings.indexOf(new BlockPos(dx, dy, dz)), type);
 	}
 
 	/**
@@ -1272,7 +1272,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	{
 		for (int i = 0; i < openings.size(); i++)
 		{
-			ChunkCoordinates doorCoords = openings.get(i);
+			BlockPos doorCoords = openings.get(i);
 			
 			EnumDarkTowerDoor doorType;
 			if (openingTypes.size() > i)

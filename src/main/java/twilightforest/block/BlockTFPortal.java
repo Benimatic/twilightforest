@@ -17,7 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -335,7 +335,7 @@ public class BlockTFPortal extends BlockBreakable
     					int spawnY = MathHelper.floor_double(playerMP.posY);
     					int spawnZ = MathHelper.floor_double(playerMP.posZ); 
     					
-    					playerMP.setSpawnChunk(new ChunkCoordinates(spawnX, spawnY, spawnZ), true, TwilightForestMod.dimensionID);
+    					playerMP.setSpawnChunk(new BlockPos(spawnX, spawnY, spawnZ), true, TwilightForestMod.dimensionID);
     				}
     				else {
     					//System.out.println("Player touched the portal block.  Sending the player to dimension 0");

@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -39,7 +39,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 	int ticksProgress;
 	Formation currentFormation;
 	
-    private ChunkCoordinates homePosition = new ChunkCoordinates(0, 0, 0);
+    private BlockPos homePosition = new BlockPos(0, 0, 0);
     /** If -1 there is no maximum distance */
     private float maximumHomeDistance = -1.0F;
     
@@ -924,7 +924,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeEntityToNBT(nbttagcompound);
-    	ChunkCoordinates home = this.getHomePosition();
+    	BlockPos home = this.getHomePosition();
         nbttagcompound.setTag("Home", newDoubleNBTList(new double[] {
         		home.posX, home.posY, home.posZ
             }));
@@ -974,7 +974,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
     }
 
-    public ChunkCoordinates getHomePosition()
+    public BlockPos getHomePosition()
     {
         return this.homePosition;
     }

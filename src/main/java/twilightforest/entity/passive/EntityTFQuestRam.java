@@ -18,7 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -119,7 +119,7 @@ public class EntityTFQuestRam extends EntityAnimal {
             else
             {
             	// set our home position to the center of the quest grove
-                ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
+                BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
                 this.setHomeArea(cc.posX, cc.posY, cc.posZ, 13);
                 
                 //System.out.println("Set home area to " + cc.posX + ", " + cc.posY + ", " + cc.posZ);

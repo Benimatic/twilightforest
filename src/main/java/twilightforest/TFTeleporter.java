@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
@@ -48,7 +48,7 @@ public class TFTeleporter extends Teleporter
 				if (!isSafeBiomeAt(px, pz, par1Entity)) {
 					System.out.println("[TwilightForest] Portal destination looks unsafe, rerouting!");
 					
-					ChunkCoordinates safeCoords = findSafeCoords(200, px, pz, par1Entity);
+					BlockPos safeCoords = findSafeCoords(200, px, pz, par1Entity);
 					
 					if (safeCoords != null) {
 			            par1Entity.setLocationAndAngles(safeCoords.posX, par1Entity.posY, safeCoords.posZ, 90.0F, 0.0F);
@@ -84,12 +84,12 @@ public class TFTeleporter extends Teleporter
 	 * 
 	 * This could sure be a more methodic algorithm
 	 */
-	private ChunkCoordinates findSafeCoords(int range, int x, int z, Entity par1Entity) {
+	private BlockPos findSafeCoords(int range, int x, int z, Entity par1Entity) {
 		for (int i = 0; i < 25; i++) {
 			int dx = x + (rand.nextInt(range) - rand.nextInt(range));
 			int dz = z + (rand.nextInt(range) - rand.nextInt(range));
 			if (isSafeBiomeAt(dx, dz, par1Entity)) {
-				return new ChunkCoordinates(dx, 100, dz);
+				return new BlockPos(dx, 100, dz);
 			}
 		}
 		return null;
@@ -202,7 +202,7 @@ public class TFTeleporter extends Teleporter
 
 	@Override
 	public boolean makePortal(Entity entity) {
-		ChunkCoordinates spot = findPortalCoords(entity, true);
+		BlockPos spot = findPortalCoords(entity, true);
         
         if (spot != null)
         {
@@ -237,7 +237,7 @@ public class TFTeleporter extends Teleporter
         return false;
 	}
 
-	public ChunkCoordinates findPortalCoords(Entity entity, boolean ideal) {
+	public BlockPos findPortalCoords(Entity entity, boolean ideal) {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = myWorld.provider.dimensionId == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
@@ -246,7 +246,7 @@ public class TFTeleporter extends Teleporter
 
         double spotWeight = -1D;
         
-        ChunkCoordinates spot = null;
+        BlockPos spot = null;
         
         byte range = 16;
         for(int rx = entityX - range; rx <= entityX + range; rx++)
@@ -273,7 +273,7 @@ public class TFTeleporter extends Teleporter
         				if(spotWeight < 0.0D || rPosWeight < spotWeight)
         				{
         					spotWeight = rPosWeight;
-        					spot = new ChunkCoordinates(rx, ry, rz);
+        					spot = new BlockPos(rx, ry, rz);
         				}
         			}
         		}

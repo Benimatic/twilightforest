@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
@@ -70,8 +70,8 @@ public class TFGenWoodRoots extends TFGenerator {
 		}
 		
 		// if both the start and the end are in stone, put a root there
-		ChunkCoordinates[] lineArray = getBresehnamArrayCoords(x, y, z, dest[0], dest[1], dest[2]);
-		for (ChunkCoordinates coord : lineArray) {
+		BlockPos[] lineArray = getBresehnamArrayCoords(x, y, z, dest[0], dest[1], dest[2]);
+		for (BlockPos coord : lineArray) {
 			this.placeRootBlock(world, coord.posX, coord.posY, coord.posZ, rootBlock, rootMeta);
 		}
 

@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -49,8 +49,8 @@ public abstract class TFGenerator extends WorldGenerator {
 	 * This goofy function takes a float between 0 and 1 for the angle, where 0 is 0 degrees, .5 is 180 degrees and 1 and 360 degrees.
 	 * For the tilt, it takes a float between 0 and 1 where 0 is straight up, 0.5 is straight out and 1 is straight down. 
 	 */
-	public static ChunkCoordinates translateCoords(int sx, int sy, int sz, double distance, double angle, double tilt) {
-		ChunkCoordinates dest = new ChunkCoordinates(sx, sy, sz);
+	public static BlockPos translateCoords(int sx, int sy, int sz, double distance, double angle, double tilt) {
+		BlockPos dest = new BlockPos(sx, sy, sz);
 		
 		double rangle = angle * 2.0D * Math.PI;
 		double rtilt = tilt * Math.PI;
@@ -68,8 +68,8 @@ public abstract class TFGenerator extends WorldGenerator {
 	 */
 	protected void drawBresehnam(World world, int x1, int y1, int z1, int x2, int y2, int z2, Block blockValue, int metaValue)
 	{
-		ChunkCoordinates[] lineArray = getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
-		for (ChunkCoordinates pixel : lineArray) 
+		BlockPos[] lineArray = getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
+		for (BlockPos pixel : lineArray)
 		{
 			setBlockAndMetadata(world, pixel.posX, pixel.posY, pixel.posZ, blockValue, metaValue);
 		}
@@ -78,18 +78,18 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 */
-	public static ChunkCoordinates[] getBresehnamArrayCoords(ChunkCoordinates src, ChunkCoordinates dest) {
+	public static BlockPos[] getBresehnamArrayCoords(BlockPos src, BlockPos dest) {
 		return getBresehnamArrayCoords(src.posX, src.posY, src.posZ, dest.posX, dest.posY, dest.posZ);
 	}
 	
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 */
-	public static ChunkCoordinates[] getBresehnamArrayCoords(int x1, int y1, int z1, int x2, int y2, int z2) {
+	public static BlockPos[] getBresehnamArrayCoords(int x1, int y1, int z1, int x2, int y2, int z2) {
 		int  i, dx, dy, dz, l, m, n, x_inc, y_inc, z_inc, err_1, err_2, dx2, dy2, dz2;
 
-		ChunkCoordinates pixel = new ChunkCoordinates(x1, y1, z1);
-		ChunkCoordinates lineArray[];
+		BlockPos pixel = new BlockPos(x1, y1, z1);
+		BlockPos lineArray[];
 
 		dx = x2 - x1;
 		dy = y2 - y1;
@@ -107,9 +107,9 @@ public abstract class TFGenerator extends WorldGenerator {
 		if ((l >= m) && (l >= n)) {
 			err_1 = dy2 - l;
 			err_2 = dz2 - l;
-			lineArray = new ChunkCoordinates[l + 1];
+			lineArray = new BlockPos[l + 1];
 			for (i = 0; i < l; i++) {
-				lineArray[i] = new ChunkCoordinates (pixel);
+				lineArray[i] = new BlockPos (pixel);
 				if (err_1 > 0) {
 					pixel.posY += y_inc;
 					err_1 -= dx2;
@@ -125,9 +125,9 @@ public abstract class TFGenerator extends WorldGenerator {
 		} else if ((m >= l) && (m >= n)) {
 			err_1 = dx2 - m;
 			err_2 = dz2 - m;
-			lineArray = new ChunkCoordinates[m + 1];
+			lineArray = new BlockPos[m + 1];
 			for (i = 0; i < m; i++) {
-				lineArray[i] = new ChunkCoordinates (pixel);
+				lineArray[i] = new BlockPos (pixel);
 				if (err_1 > 0) {
 					pixel.posX += x_inc;
 					err_1 -= dy2;
@@ -143,9 +143,9 @@ public abstract class TFGenerator extends WorldGenerator {
 		} else {
 			err_1 = dy2 - n;
 			err_2 = dx2 - n;
-			lineArray = new ChunkCoordinates[n + 1];
+			lineArray = new BlockPos[n + 1];
 			for (i = 0; i < n; i++) {
-				lineArray[i] = new ChunkCoordinates(pixel);
+				lineArray[i] = new BlockPos(pixel);
 				if (err_1 > 0) {
 					pixel.posY += y_inc;
 					err_1 -= dz2;
@@ -159,7 +159,7 @@ public abstract class TFGenerator extends WorldGenerator {
 				pixel.posZ += z_inc;
 			}
 		}
-		lineArray[lineArray.length - 1] = new ChunkCoordinates(pixel);
+		lineArray[lineArray.length - 1] = new BlockPos(pixel);
 
 		return lineArray;
 	}

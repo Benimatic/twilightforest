@@ -3,7 +3,7 @@ package twilightforest.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.Facing;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.block.BlockTFTowerDevice;
@@ -22,7 +22,7 @@ public class TileEntityTFTowerBuilder extends TileEntity
 	
 	int blocksMade = 0;
 	
-	protected ChunkCoordinates lastBlockCoords;
+	protected BlockPos lastBlockCoords;
 	protected int nextFacing;
 	
 	protected EntityPlayer trackedPlayer;
@@ -41,7 +41,7 @@ public class TileEntityTFTowerBuilder extends TileEntity
 	public void startBuilding() {
 		this.makingBlocks = true;
 		this.blocksMade = 0;
-		this.lastBlockCoords = new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
+		this.lastBlockCoords = new BlockPos(this.xCoord, this.yCoord, this.zCoord);
 	}
 
     /**

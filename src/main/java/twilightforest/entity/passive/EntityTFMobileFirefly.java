@@ -3,7 +3,7 @@ package twilightforest.entity.passive;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAmbientCreature;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,10 +12,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityTFMobileFirefly extends EntityAmbientCreature
 {
     /**
-     * randomly selected ChunkCoordinates in a 7x6x7 box around the bat (y offset -2 to 4) towards which it will fly.
+     * randomly selected BlockPos in a 7x6x7 box around the bat (y offset -2 to 4) towards which it will fly.
      * upon getting close a new target will be selected
      */
-    private ChunkCoordinates currentFlightTarget;
+    private BlockPos currentFlightTarget;
 
     public EntityTFMobileFirefly(World par1World)
     {
@@ -112,7 +112,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature
 
     	if (this.currentFlightTarget == null || this.rand.nextInt(30) == 0 || this.currentFlightTarget.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ) < 4.0F)
     	{
-    		this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
+    		this.currentFlightTarget = new BlockPos((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
     	}
 
     	double var1 = this.currentFlightTarget.posX + 0.5D - this.posX;

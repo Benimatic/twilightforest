@@ -9,7 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -17,7 +17,7 @@ import twilightforest.structures.StructureTFComponent;
 
 public abstract class StructureTFStrongholdComponent extends StructureTFComponent {
 
-	public List<ChunkCoordinates> doors = new ArrayList<ChunkCoordinates>();
+	public List<BlockPos> doors = new ArrayList<BlockPos>();
 
 	public StructureTFStrongholdComponent() {
 		super();
@@ -46,7 +46,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	private int[] getDoorsAsIntArray() {
 		IntBuffer ibuffer = IntBuffer.allocate(this.doors.size() * 3);
 		
-		for (ChunkCoordinates door : doors)
+		for (BlockPos door : doors)
 		{
 			ibuffer.put(door.posX);
 			ibuffer.put(door.posY);
@@ -73,7 +73,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	private void readOpeningsFromArray(int[] intArray) {
 		for (int i = 0; i < intArray.length; i += 3)
 		{
-			ChunkCoordinates door = new ChunkCoordinates(intArray[i], intArray[i + 1], intArray[i + 2]);
+			BlockPos door = new BlockPos(intArray[i], intArray[i + 1], intArray[i + 2]);
 			
 			this.doors.add(door);
 		}
@@ -473,7 +473,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	 * Add a door to our list
 	 */
 	public void addDoor(int dx, int dy, int dz) {
-		this.doors.add(new ChunkCoordinates(dx, dy, dz));
+		this.doors.add(new BlockPos(dx, dy, dz));
 	}
 
 	/**
@@ -544,7 +544,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     {
 		if (this.doors != null)
 		{
-			for (ChunkCoordinates doorCoords : doors)
+			for (BlockPos doorCoords : doors)
 			{
 				this.placeDoorwayAt(world, rand, doorCoords.posX, doorCoords.posY, doorCoords.posZ, sbb);
 				

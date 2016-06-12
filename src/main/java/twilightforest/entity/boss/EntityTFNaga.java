@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -967,7 +967,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	protected void despawnMe() {
 		if (isLeashed()) 
 		{
-			ChunkCoordinates home = this.getHomePosition();
+			BlockPos home = this.getHomePosition();
 			worldObj.setBlock(home.posX, home.posY, home.posZ, TFBlocks.bossSpawner, 0, 2);
 		}
 		setDead();
@@ -1126,7 +1126,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-    	ChunkCoordinates home = this.getHomePosition();
+    	BlockPos home = this.getHomePosition();
         nbttagcompound.setTag("Home", newDoubleNBTList(new double[] {
         		home.posX, home.posY, home.posZ
             }));

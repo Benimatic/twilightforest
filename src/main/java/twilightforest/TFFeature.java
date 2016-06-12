@@ -25,7 +25,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.StatisticsFile;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -692,7 +692,7 @@ public class TFFeature {
      * Maybe in the future we'll have to actually search for a feature chunk nearby, but for now this will work.
      * 
      */
-    public static ChunkCoordinates getNearestCenterXYZ(int cx, int cz, World world) {
+    public static BlockPos getNearestCenterXYZ(int cx, int cz, World world) {
     	// legacy support
 		if (TwilightForestMod.oldMapGen)
 		{
@@ -733,17 +733,17 @@ public class TFFeature {
 	    	ccx = (regionX * 16 + (16 - centerX) - 8) * 16 + 9;
 	    }
     	
-    	return new ChunkCoordinates(ccx, TFWorld.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ;
+    	return new BlockPos(ccx, TFWorld.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ;
     	
     	
     	
       }
     
-    private static ChunkCoordinates getNearestCenterXYZOld(int cx, int cz, World world) {
+    private static BlockPos getNearestCenterXYZOld(int cx, int cz, World world) {
       	int fx = (int) (Math.round(cx / 256.0) * 256 + 8);
     	int fz = (int) (Math.round(cz / 256.0) * 256 + 8);
     	
-    	return new ChunkCoordinates(fx, TFWorld.SEALEVEL, fz);
+    	return new BlockPos(fx, TFWorld.SEALEVEL, fz);
 
 	}
 

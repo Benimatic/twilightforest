@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
@@ -312,7 +312,7 @@ public class TFWorldChunkManager extends BiomeProvider
 		
 		int chunkX = mapX >> 4;
 		int chunkZ = mapZ >> 4;
-		ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
+		BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
 		
 		return chunkX == (cc.posX >> 4) && chunkZ == (cc.posZ >> 4);
     	

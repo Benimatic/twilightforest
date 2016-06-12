@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -355,7 +355,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 			break;
 		}
 		
-		for (ChunkCoordinates door : this.openings) {
+		for (BlockPos door : this.openings) {
 			if (exclusionBox.isVecInside(door.posX, door.posY, door.posZ)) {
 				isClear = false;
 				

@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
@@ -25,7 +25,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 	@Override
 	public boolean shouldExecute() {
 
-		ChunkCoordinates nearbyTNT = this.findBlockTNTNearby(8);
+		BlockPos nearbyTNT = this.findBlockTNTNearby(8);
 		
         if (this.delayTemptCounter > 0)
         {

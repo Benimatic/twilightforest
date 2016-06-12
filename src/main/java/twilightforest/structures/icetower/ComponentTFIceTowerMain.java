@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -69,8 +69,8 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
         }
         
         // TODO: make this more general
-        ChunkCoordinates myDoor = this.openings.get(0);
-        ChunkCoordinates entranceDoor = new ChunkCoordinates(myDoor);
+        BlockPos myDoor = this.openings.get(0);
+        BlockPos entranceDoor = new BlockPos(myDoor);
         
         
         if (myDoor.posX == 0) {
@@ -96,7 +96,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 
 	private void makeEntranceBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int length, int rotation) {
 		int direction = (getCoordBaseMode() + rotation) % 4;
-		ChunkCoordinates dest = offsetTowerCCoords(x, y, z, 5, direction);
+		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
 		ComponentTFIceTowerBridge bridge = new ComponentTFIceTowerBridge(index, dest.posX, dest.posY, dest.posZ, length, direction);
 

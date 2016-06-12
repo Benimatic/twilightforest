@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
@@ -45,8 +45,8 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
             //System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
         }
 		
-		ChunkCoordinates rSrc = new ChunkCoordinates(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		ChunkCoordinates rDest = new ChunkCoordinates(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
+		BlockPos rSrc = new BlockPos(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
+		BlockPos rDest = new BlockPos(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
 
 		drawRootLine(world, sbb, rSrc.posX, rSrc.posY, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.root, 0);
 		drawRootLine(world, sbb, rSrc.posX, rSrc.posY - 1, rSrc.posZ, rDest.posX, rDest.posY - 1, rDest.posZ, TFBlocks.root, 0);
@@ -60,9 +60,9 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 	 * Draws a line
 	 */
 	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, Block blockValue, int metaValue) {
-		ChunkCoordinates lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
+		BlockPos lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
 		
-		for (ChunkCoordinates coords : lineCoords)
+		for (BlockPos coords : lineCoords)
 		{
 			Block block = this.getBlockAtCurrentPosition(world, coords.posX, coords.posY, coords.posZ, sbb);
 			

@@ -3,7 +3,7 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
@@ -116,8 +116,8 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	 */
 	void buildBranch(World world, int x, int y, int z, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
 	{
-		ChunkCoordinates src = new ChunkCoordinates(x, y + height, z);
-		ChunkCoordinates dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = new BlockPos(x, y + height, z);
+		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
 		
 		// constrain branch spread
 		int limit = 5;

@@ -3,7 +3,7 @@ package twilightforest.structures.hollowtree;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -41,8 +41,8 @@ public class ComponentTFHollowTreeSmallBranch extends
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
 		
-		ChunkCoordinates rSrc = new ChunkCoordinates(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		ChunkCoordinates rDest = new ChunkCoordinates(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
+		BlockPos rSrc = new BlockPos(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
+		BlockPos rDest = new BlockPos(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
 
 		drawBresehnam(world, sbb, rSrc.posX, rSrc.posY, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.log, 12);
 		

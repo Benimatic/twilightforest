@@ -11,7 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -243,7 +243,7 @@ public class BlockTFFireJet extends Block {
     {
     	// idle jets may turn active
     	if (!world.isRemote && world.getBlockMetadata(x, y, z) == META_JET_IDLE) {
-    		ChunkCoordinates lavaPos = findLavaAround(world, x, y - 1, z);
+    		BlockPos lavaPos = findLavaAround(world, x, y - 1, z);
     		
     		if (isLava(world, lavaPos.posX, lavaPos.posY, lavaPos.posZ))
     		{
@@ -296,32 +296,32 @@ public class BlockTFFireJet extends Block {
      * 
      * 
      */
-    private ChunkCoordinates findLavaAround(World world, int x, int y, int z) {
+    private BlockPos findLavaAround(World world, int x, int y, int z) {
 		if (isLava(world, x, y, z)) {
-			return new ChunkCoordinates(x, y, z);
+			return new BlockPos(x, y, z);
 		}
 		// try three random spots nearby
 		int rx = x + world.rand.nextInt(3) - 1;
 		int rz = z + world.rand.nextInt(3) - 1;
 		if (isLava(world, rx, y, rz)) {
-			return new ChunkCoordinates(rx, y, rz);
+			return new BlockPos(rx, y, rz);
 		}
 		
 		rx = x + world.rand.nextInt(3) - 1;
 		rz = z + world.rand.nextInt(3) - 1;
 		if (isLava(world, rx, y, rz)) {
-			return new ChunkCoordinates(rx, y, rz);
+			return new BlockPos(rx, y, rz);
 		}
 		
 		rx = x + world.rand.nextInt(3) - 1;
 		rz = z + world.rand.nextInt(3) - 1;
 		if (isLava(world, rx, y, rz)) {
-			return new ChunkCoordinates(rx, y, rz);
+			return new BlockPos(rx, y, rz);
 		}
 		
 		
 		// finally, give up
-		return new ChunkCoordinates(x, y, z);
+		return new BlockPos(x, y, z);
 	}
     
     private boolean isLava(World world, int x, int y, int z)

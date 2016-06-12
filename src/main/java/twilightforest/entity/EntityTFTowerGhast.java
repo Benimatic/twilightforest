@@ -6,7 +6,7 @@ import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -31,7 +31,7 @@ public class EntityTFTowerGhast extends EntityGhast
 	
 	protected int inTrapCounter;
 
-    private ChunkCoordinates homePosition = new ChunkCoordinates(0, 0, 0);
+    private BlockPos homePosition = new BlockPos(0, 0, 0);
     /** If -1 there is no maximum distance */
     private float maximumHomeDistance = -1.0F;
 
@@ -201,7 +201,7 @@ public class EntityTFTowerGhast extends EntityGhast
         	    if (!this.isWithinHomeDistance(MathHelper.floor_double(waypointX), MathHelper.floor_double(waypointY), MathHelper.floor_double(waypointZ)))
         	    {
         	    	// change waypoint to be more towards home
-        	        ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
+        	        BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
         	    	
         	        Vec3d homeVector = Vec3d.createVectorHelper(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
         	        homeVector = homeVector.normalize();
@@ -478,7 +478,7 @@ public class EntityTFTowerGhast extends EntityGhast
     		else
     		{
     			// set our home position to the center of the tower
-    			ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
+    			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
     			this.setHomeArea(cc.posX, cc.posY + 128, cc.posZ, 64);
 
 //                System.out.println("Ghast is at  " + this.posX + ", " + this.posY + ", " + this.posZ);
@@ -498,7 +498,7 @@ public class EntityTFTowerGhast extends EntityGhast
     	}
     	else
     	{
-    		ChunkCoordinates home = this.getHomePosition();
+    		BlockPos home = this.getHomePosition();
     		
 //    		System.out.println("Checking home for " + x + ", " + y + ", " + z + " and home is " + home.posX + ", " + home.posY + ", " + home.posZ);
 //    		System.out.println("home.getDistanceSquared(x, home.posY, z) =  "  + home.getDistanceSquared(x, home.posY, z) + " compared to " + (this.getMaximumHomeDistance() * this.getMaximumHomeDistance()));
@@ -518,7 +518,7 @@ public class EntityTFTowerGhast extends EntityGhast
         this.maximumHomeDistance = (float)par4;
     }
 
-    public ChunkCoordinates getHomePosition()
+    public BlockPos getHomePosition()
     {
         return this.homePosition;
     }

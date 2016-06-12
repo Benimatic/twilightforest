@@ -20,7 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -570,7 +570,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-    	ChunkCoordinates home = this.getHomePosition();
+    	BlockPos home = this.getHomePosition();
         nbttagcompound.setTag("Home", newDoubleNBTList(new double[] {
         		home.posX, home.posY, home.posZ
             }));

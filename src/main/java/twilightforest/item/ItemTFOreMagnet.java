@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -195,7 +195,7 @@ public class ItemTFOreMagnet extends ItemTF
 	public static int doMagnet(World world, int useX, int useY, int useZ, int destX, int destY, int destZ) {
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
-		ChunkCoordinates[] lineArray = TFGenerator.getBresehnamArrayCoords(useX, useY, useZ, destX, destY, destZ);
+		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(useX, useY, useZ, destX, destY, destZ);
 		
 		//System.out.println("Searching from " + useX + ", " + useY + ", " + useZ + " to " + destX + ", " + destY + ", " + destZ);
 		
@@ -211,7 +211,7 @@ public class ItemTFOreMagnet extends ItemTF
 		
 		boolean isNetherrack = false;
 		
-		for (ChunkCoordinates coord : lineArray)
+		for (BlockPos coord : lineArray)
 		{
 			Block searchID = world.getBlock(coord.posX, coord.posY, coord.posZ);
 			int searchMeta = world.getBlockMetadata(coord.posX, coord.posY, coord.posZ);
@@ -255,7 +255,7 @@ public class ItemTFOreMagnet extends ItemTF
 		if (baseY != -1 && foundID != Blocks.AIR)
 		{
 			// find the whole vein
-			ArrayList<ChunkCoordinates> veinBlocks = new ArrayList<ChunkCoordinates>();
+			ArrayList<BlockPos> veinBlocks = new ArrayList<BlockPos>();
 			findVein(world, foundX, foundY, foundZ, foundID, foundMeta, veinBlocks);
 
 			// move it up into minable blocks or dirt
@@ -263,7 +263,7 @@ public class ItemTFOreMagnet extends ItemTF
 			int offY = baseY - foundY;
 			int offZ = baseZ - foundZ;
 			
-			for (ChunkCoordinates coord : veinBlocks)
+			for (BlockPos coord : veinBlocks)
 			{
 				int replaceX = coord.posX + offX;
 				int replaceY = coord.posY + offY;
@@ -340,9 +340,9 @@ public class ItemTFOreMagnet extends ItemTF
 		return false;
 	}
 
-	private static boolean findVein(World world, int x, int y, int z, Block oreID, int oreMeta, ArrayList<ChunkCoordinates> veinBlocks) 
+	private static boolean findVein(World world, int x, int y, int z, Block oreID, int oreMeta, ArrayList<BlockPos> veinBlocks)
 	{
-		ChunkCoordinates here = new ChunkCoordinates(x, y, z);
+		BlockPos here = new BlockPos(x, y, z);
 		
 		// is this already on the list? 
 		if (veinBlocks.contains(here))

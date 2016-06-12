@@ -6,7 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -145,21 +145,21 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 
 	
 	public void makeSmallBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		ChunkCoordinates bSrc = getBranchSrc(branchHeight, branchRotation);
+		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
         ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, leafy);
         list.add(branch);
         branch.buildComponent(this, list, rand);
 	}
 
 	public void makeMedBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		ChunkCoordinates bSrc = getBranchSrc(branchHeight, branchRotation);
+		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
         ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, leafy);
         list.add(branch);
         branch.buildComponent(this, list, rand);
 	}
 
 	public void makeLargeBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		ChunkCoordinates bSrc = getBranchSrc(branchHeight, branchRotation);
+		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
         ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeLargeBranch(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, leafy);
         list.add(branch);
         branch.buildComponent(this, list, rand);
@@ -167,7 +167,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 
 
 	public void makeRoot(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
-		ChunkCoordinates bSrc = getBranchSrc(branchHeight, branchRotation);
+		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
 	    ComponentTFHollowTreeRoot branch = new ComponentTFHollowTreeRoot(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, false);
 	    list.add(branch);
 	    branch.buildComponent(this, list, rand);
@@ -176,7 +176,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	/**
 	 * Where should we start this branch?
 	 */
-	private ChunkCoordinates getBranchSrc(int branchHeight, double branchRotation) {
+	private BlockPos getBranchSrc(int branchHeight, double branchRotation) {
 		return TFGenerator.translateCoords(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1, radius, branchRotation, 0.5);
 	}
 
@@ -247,7 +247,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 */
 	protected void addInsect(World world, int fHeight, double fAngle, Random random, StructureBoundingBox sbb)
 	{
-		ChunkCoordinates bugSpot = TFGenerator.translateCoords(this.radius + 1, fHeight, this.radius + 1, this.radius + 1, fAngle, 0.5);
+		BlockPos bugSpot = TFGenerator.translateCoords(this.radius + 1, fHeight, this.radius + 1, this.radius + 1, fAngle, 0.5);
 		
 		fAngle = fAngle % 1.0;
 		int insectMeta = 0;

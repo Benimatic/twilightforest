@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -44,8 +44,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     public double courseY;
     public double courseZ;
     
-    ArrayList<ChunkCoordinates> trapLocations;
-    ArrayList<ChunkCoordinates> travelCoords;
+    ArrayList<BlockPos> trapLocations;
+    ArrayList<BlockPos> travelCoords;
     
     int currentTravelCoordIndex;
     
@@ -71,8 +71,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 
     	this.noClip = true;
     	
-    	this.trapLocations = new ArrayList<ChunkCoordinates>();
-    	this.travelCoords = new ArrayList<ChunkCoordinates>();
+    	this.trapLocations = new ArrayList<BlockPos>();
+    	this.travelCoords = new ArrayList<BlockPos>();
     	
     	this.setInTantrum(false);
 
@@ -234,7 +234,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 	 */
 	protected void spawnGhastsAtTraps() {
 		// spawn ghasts around two of the traps
-		ArrayList<ChunkCoordinates> ghastSpawns = new ArrayList<ChunkCoordinates>(this.trapLocations);
+		ArrayList<BlockPos> ghastSpawns = new ArrayList<BlockPos>(this.trapLocations);
 		
 		int numSpawns = Math.min(2, ghastSpawns.size());
 
@@ -242,7 +242,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		{
 			int index = this.rand.nextInt(ghastSpawns.size());
 			
-			ChunkCoordinates spawnCoord = ghastSpawns.get(index);
+			BlockPos spawnCoord = ghastSpawns.get(index);
 			ghastSpawns.remove(index);
 			
 			spawnMinionGhastsAt(spawnCoord.posX, spawnCoord.posY, spawnCoord.posZ);
@@ -608,7 +608,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 	private boolean checkGhastsAtTraps() {
 		int trapsWithEnoughGhasts = 0;
 		
-		for (ChunkCoordinates trap : this.trapLocations)
+		for (BlockPos trap : this.trapLocations)
 		{
 			AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(trap.posX, trap.posY, trap.posZ, trap.posX + 1, trap.posY + 1, trap.posZ + 1).expand(8D, 16D, 8D);
 			
@@ -631,7 +631,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 
 	private void makeTravelPath() 
 	{
-		ArrayList<ChunkCoordinates> potentialPoints;
+		ArrayList<BlockPos> potentialPoints;
 
 		int px = MathHelper.floor_double(this.posX);
 		int py = MathHelper.floor_double(this.posY);
@@ -640,15 +640,15 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		if (!this.noTrapMode)
 		{
 			// make a copy of the trap locations list
-			potentialPoints = new ArrayList<ChunkCoordinates>(this.trapLocations);
+			potentialPoints = new ArrayList<BlockPos>(this.trapLocations);
 		}
 		else
 		{
-			potentialPoints = new ArrayList<ChunkCoordinates>();
-			potentialPoints.add(new ChunkCoordinates(px + 20, py - HOVER_ALTITUDE, pz));
-			potentialPoints.add(new ChunkCoordinates(px, py - HOVER_ALTITUDE, pz - 20));
-			potentialPoints.add(new ChunkCoordinates(px - 20, py - HOVER_ALTITUDE, pz));
-			potentialPoints.add(new ChunkCoordinates(px, py - HOVER_ALTITUDE, pz + 20));
+			potentialPoints = new ArrayList<BlockPos>();
+			potentialPoints.add(new BlockPos(px + 20, py - HOVER_ALTITUDE, pz));
+			potentialPoints.add(new BlockPos(px, py - HOVER_ALTITUDE, pz - 20));
+			potentialPoints.add(new BlockPos(px - 20, py - HOVER_ALTITUDE, pz));
+			potentialPoints.add(new BlockPos(px, py - HOVER_ALTITUDE, pz + 20));
 			
 			//System.out.println("Adding fake points to the potentials list");
 		}
@@ -668,7 +668,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		if (this.noTrapMode)
 		{
 			// if in no trap mode, head back to the middle when we're done
-			travelCoords.add(new ChunkCoordinates(px, py - HOVER_ALTITUDE, pz));	
+			travelCoords.add(new BlockPos(px, py - HOVER_ALTITUDE, pz));
 		}
 	}
 
@@ -723,7 +723,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 			// average the location of the traps we've found, and scan again from there
 			int ax = 0, ay = 0, az = 0;
 
-			for(ChunkCoordinates trapCoords : trapLocations)
+			for(BlockPos trapCoords : trapLocations)
 			{
 				ax += trapCoords.posX;
 				ay += trapCoords.posY;
@@ -747,7 +747,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 				for (int sy = -scanRangeY; sy <= scanRangeY; sy++) {
 					if (isTrapAt(px + sx, py + sy, pz + sz)) {
 						// add to list
-						ChunkCoordinates trapCoords = new ChunkCoordinates(px + sx, py + sy, pz + sz);
+						BlockPos trapCoords = new BlockPos(px + sx, py + sy, pz + sz);
 						if (!trapLocations.contains(trapCoords))
 						{
 							trapLocations.add(trapCoords);
@@ -850,7 +850,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         if (this.deathTime == 20 && !worldObj.isRemote)
         {
         	// make chest
-        	ChunkCoordinates chestCoords = this.findChestCoords();
+        	BlockPos chestCoords = this.findChestCoords();
         	TFTreasure.darktower_boss.generate(worldObj, null, chestCoords.posX, chestCoords.posY, chestCoords.posZ);
         }
     }
@@ -869,7 +869,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 
 		// mark the tower as defeated
 		if (!worldObj.isRemote && worldObj.provider instanceof WorldProviderTwilightForest) {
-        	ChunkCoordinates chestCoords = this.findChestCoords();
+        	BlockPos chestCoords = this.findChestCoords();
 			int dx = chestCoords.posX;
 			int dy = chestCoords.posY;
 			int dz = chestCoords.posZ;
@@ -883,13 +883,13 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		}
 	}
 
-    private ChunkCoordinates findChestCoords() {
+    private BlockPos findChestCoords() {
     	if (trapLocations.size() > 0)
     	{
     		// average the location of the traps we've found, and scan again from there
     		int ax = 0, ay = 0, az = 0;
 
-    		for(ChunkCoordinates trapCoords : trapLocations)
+    		for(BlockPos trapCoords : trapLocations)
     		{
     			ax += trapCoords.posX;
     			ay += trapCoords.posY;
@@ -901,11 +901,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     		az /= trapLocations.size();
 
 
-    		return new ChunkCoordinates(ax, ay + 2, az);
+    		return new BlockPos(ax, ay + 2, az);
     	}
     	else
     	{
-    		return new ChunkCoordinates(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+    		return new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
     	}
 	}
 }

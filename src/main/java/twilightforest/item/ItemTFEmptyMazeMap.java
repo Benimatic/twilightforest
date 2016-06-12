@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -40,7 +40,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
         int step = 128 * (1 << mapData.scale);
         // need to fix center for feature offset
         if (par2World.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World) == TFFeature.labyrinth) {
-        	ChunkCoordinates mc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World);
+        	BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World);
             mapData.xCenter = mc.posX;
             mapData.zCenter = mc.posZ;
             mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);

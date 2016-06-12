@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -56,21 +56,21 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
     		// dirt!
     		for (int i = 0; i < 24; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generate(world, dirtGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
     		}
     		
     		// mycelium!
     		for (int i = 0; i < 16; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generate(world, myceliumBlobGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
     		}
     		
     		// uberous!
     		for (int i = 0; i < 16; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generate(world, uberousGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
     			
     			generateAtSurface(world, uberousGen, decoRNG, dest.posX, 60, dest.posZ, sbb);
@@ -79,21 +79,21 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
     		// mushglooms first
     		for (int i = 0; i < 32; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generate(world, bigMushgloomGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
     		}
     		
     		// mushrooms!
     		for (int i = 0; i < 64; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generate(world, bigMushroomGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
     		}
     		
     		// stone stalactites!
     		for (int i = 0; i < 128; i++)
     		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
+    			BlockPos dest = getCoordsInCave(decoRNG);
     			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
     		}
 

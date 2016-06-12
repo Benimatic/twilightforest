@@ -4,7 +4,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.TFWorldChunkManager;
@@ -75,7 +75,7 @@ public class CommandTFFeature extends CommandBase {
 				//int dy = MathHelper.floor_double(player.posY); 
 				int dz = MathHelper.floor_double(player.posZ);
 				
-				ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.worldObj);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.worldObj);
 				
 				TFWorldChunkManager wcm = (TFWorldChunkManager)player.worldObj.provider.worldChunkMgr;
 				

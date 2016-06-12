@@ -8,7 +8,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFRedcap;
 
@@ -40,7 +40,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	 * @param range
 	 * @return
 	 */
-	public ChunkCoordinates findBlockTNTNearby(int range) {
+	public BlockPos findBlockTNTNearby(int range) {
 	    int entityPosX = MathHelper.floor_double(this.entityObj.posX);
 	    int entityPosY = MathHelper.floor_double(this.entityObj.posY);
 	    int entityPosZ = MathHelper.floor_double(this.entityObj.posZ);
@@ -53,7 +53,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	            {
 	            	if (entityObj.worldObj.getBlock(entityPosX + x, entityPosY + y, entityPosZ + z) == Blocks.TNT)
 	            	{
-	            		return new ChunkCoordinates(entityPosX + x, entityPosY + y, entityPosZ + z);
+	            		return new BlockPos(entityPosX + x, entityPosY + y, entityPosZ + z);
 	            	}
 	            }
 	        }

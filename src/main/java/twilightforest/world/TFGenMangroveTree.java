@@ -3,7 +3,7 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
@@ -80,8 +80,8 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	 */
 	void buildBranch(World world, Random random, int x, int y, int z, int height, double length, double angle, double tilt, boolean trunk)
 	{
-		ChunkCoordinates src = new ChunkCoordinates(x, y + height, z);
-		ChunkCoordinates dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = new BlockPos(x, y + height, z);
+		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
 		
 		
 		// constrain branch spread
@@ -131,12 +131,12 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	 */
 	void buildRoot(World world, int x, int y, int z, int height, double length, double angle, double tilt)
 	{
-		ChunkCoordinates src = new ChunkCoordinates(x, y + height, z);
-		ChunkCoordinates dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = new BlockPos(x, y + height, z);
+		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
 		
-		ChunkCoordinates[] lineArray = getBresehnamArrayCoords(src, dest);
+		BlockPos[] lineArray = getBresehnamArrayCoords(src, dest);
 		boolean stillAboveGround = true; 
-		for (ChunkCoordinates coord : lineArray) 
+		for (BlockPos coord : lineArray)
 		{
 			if (stillAboveGround && hasAirAround(world, coord.posX, coord.posY, coord.posZ)) {
 				this.setBlockAndMetadata(world, coord.posX, coord.posY, coord.posZ, treeBlock, branchMeta);
