@@ -2,6 +2,7 @@ package twilightforest.biomes;
 
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,15 +23,18 @@ public class TFGenHugeWaterLily extends WorldGenerator
 	private Random rand = new Random();
 
 
-    public boolean generate(World world, Random random, int x, int y, int z)
+	@Override
+    public boolean generate(World world, Random random, BlockPos pos)
     {
     	for (int i = 0; i < 4; i++) {
-    		int dx = x + random.nextInt(8) - random.nextInt(8);
-    		int dy = y + random.nextInt(4) - random.nextInt(4);
-    		int dz = z + random.nextInt(8) - random.nextInt(8);
+			BlockPos pos_ = pos.add(
+					random.nextInt(8) - random.nextInt(8),
+					random.nextInt(4) - random.nextInt(4),
+					random.nextInt(8) - random.nextInt(8)
+			);
 
-    		if (shouldPlacePadAt(world, dx, dy, dz)) {
-    			world.setBlock(dx, dy, dz, TFBlocks.hugeWaterLily);
+    		if (shouldPlacePadAt(world, pos_)) {
+    			world.setBlockState(pos_, TFBlocks.hugeWaterLily.getDefaultState());
     		}
     	}
 
@@ -38,7 +42,7 @@ public class TFGenHugeWaterLily extends WorldGenerator
     }
 
 
-	private boolean shouldPlacePadAt(World world, int dx, int dy, int dz) {
-		return world.isAirBlock(dx, dy, dz) && world.getBlock(dx, dy - 1, dz).getMaterial() == Material.WATER;
+	private boolean shouldPlacePadAt(World world, BlockPos pos) {
+		return world.isAirBlock(pos) && world.getBlockState(pos.down()).getMaterial() == Material.WATER;
 	}
 }

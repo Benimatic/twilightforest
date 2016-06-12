@@ -10,6 +10,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.math.MathHelper;
@@ -155,7 +156,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	 */
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS.id, 100, 0));
+			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0));
 			
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {

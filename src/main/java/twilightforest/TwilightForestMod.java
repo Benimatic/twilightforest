@@ -215,26 +215,6 @@ public class TwilightForestMod {
 	public static int idVehicleSpawnCubeOfAnnihilation = 19;
 	public static int idVehicleSpawnSlideBlock = 20;
 	
-	public static int idBiomeLake;
-	public static int idBiomeTwilightForest;
-	public static int idBiomeTwilightForestVariant;
-	public static int idBiomeHighlands;
-	public static int idBiomeMushrooms;
-	public static int idBiomeSwamp;
-	public static int idBiomeStream;
-	public static int idBiomeSnowfield;
-	public static int idBiomeGlacier;
-	public static int idBiomeClearing;
-	public static int idBiomeOakSavanna;
-	public static int idBiomeFireflyForest;
-	public static int idBiomeDeepMushrooms;
-	public static int idBiomeDarkForestCenter;
-	public static int idBiomeHighlandsCenter;
-	public static int idBiomeDarkForest;
-	public static int idBiomeEnchantedForest;
-	public static int idBiomeFireSwamp;
-	public static int idBiomeThornlands;
-	
 	// used to report conflicts
 	public static boolean hasBiomeIdConflicts = false;
 	public static boolean hasAssignedBiomeID = false;

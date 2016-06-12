@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -20,6 +22,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.stats.StatisticsFile;
+import net.minecraft.stats.StatisticsManager;
+import net.minecraft.stats.StatisticsManagerServer;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.Biome;
@@ -39,31 +43,25 @@ import net.minecraftforge.fml.common.FMLLog;
 
 public abstract class TFBiomeBase extends Biome  {
 	
-	static
-	{
-		assignBlankBiomeIds();
-		areThereBiomeIdConflicts();
-	}
-	
-	public static final Biome tfLake = (new TFBiomeTwilightLake(TwilightForestMod.idBiomeLake)).setColor(0x0000ff).setBiomeName("Twilight Lake").setHeight(height_DeepOceans);
-	public static final Biome twilightForest = (new TFBiomeTwilightForest(TwilightForestMod.idBiomeTwilightForest)).setColor(0x005500).setBiomeName("Twilight Forest");
-	public static final Biome twilightForest2 = (new TFBiomeTwilightForestVariant(TwilightForestMod.idBiomeTwilightForestVariant)).setColor(0x005522).setBiomeName("Dense Twilight Forest").setHeight(height_MidPlains);
-	public static final Biome highlands = (new TFBiomeHighlands(TwilightForestMod.idBiomeHighlands)).setColor(0x556644).setBiomeName("Twilight Highlands").setHeight(new Height(3.5F, 0.05F));
-	public static final Biome mushrooms = (new TFBiomeMushrooms(TwilightForestMod.idBiomeMushrooms)).setColor(0x226622).setBiomeName("Mushroom Forest");
-	public static final Biome tfSwamp = (new TFBiomeSwamp(TwilightForestMod.idBiomeSwamp)).setColor(0x334422).setBiomeName("Twilight Swamp").setHeight(new Height(-0.125F, 0.125F));
-	public static final Biome stream = (new TFBiomeStream(TwilightForestMod.idBiomeStream)).setColor(0x3253b7).setBiomeName("Twilight Stream").setHeight(height_ShallowWaters);
-	public static final Biome tfSnow = (new TFBiomeSnow(TwilightForestMod.idBiomeSnowfield)).setColor(0xccffff).setBiomeName("Snowy Forest").setHeight(height_MidPlains);
-	public static final Biome glacier = (new TFBiomeGlacier(TwilightForestMod.idBiomeGlacier)).setColor(0x7777bb).setBiomeName("Twilight Glacier");
-	public static final Biome clearing = (new TFBiomeClearing(TwilightForestMod.idBiomeClearing)).setColor(0x349b34).setBiomeName("Twilight Clearing").setHeight(height_LowPlains);
-	public static final Biome oakSavanna = (new TFBiomeOakSavanna(TwilightForestMod.idBiomeOakSavanna)).setColor(0x446622).setBiomeName("Oak Savanna").setHeight(height_MidPlains);
-	public static final Biome fireflyForest = (new TFBiomeFireflyForest(TwilightForestMod.idBiomeFireflyForest)).setColor(0x006633).setBiomeName("Firefly Forest").setHeight(height_LowPlains);
-	public static final Biome deepMushrooms = (new TFBiomeDeepMushrooms(TwilightForestMod.idBiomeDeepMushrooms)).setColor(0x663322).setBiomeName("Deep Mushroom Forest").setHeight(height_LowPlains);
-	public static final Biome darkForest = (new TFBiomeDarkForest(TwilightForestMod.idBiomeDarkForest)).setColor(0x003311).setBiomeName("Dark Forest").setHeight(height_LowPlains);
-	public static final Biome enchantedForest = (new TFBiomeEnchantedForest(TwilightForestMod.idBiomeEnchantedForest)).setColor(0x115566).setBiomeName("Enchanted Forest");
-	public static final Biome fireSwamp = (new TFBiomeFireSwamp(TwilightForestMod.idBiomeFireSwamp)).setColor(0x42231a).setBiomeName("Fire Swamp").setHeight(height_Default);
-	public static final Biome darkForestCenter = (new TFBiomeDarkForestCenter(TwilightForestMod.idBiomeDarkForestCenter)).setColor(0x002200).setBiomeName("Dark Forest Center").setHeight(height_LowPlains);
-	public static final Biome highlandsCenter = (new TFBiomeFinalPlateau(TwilightForestMod.idBiomeHighlandsCenter)).setColor(0x334422).setBiomeName("Highlands Center").setHeight(new Height(10.5F, 0.025F));
-	public static final Biome thornlands = (new TFBiomeThornlands(TwilightForestMod.idBiomeThornlands)).setColor(0x223322).setBiomeName("Thornlands").setHeight(new Height(6F, 0.1F));
+	public static final Biome tfLake = (new TFBiomeTwilightLake()).setColor(0x0000ff).setBiomeName("Twilight Lake").setHeight(height_DeepOceans);
+	public static final Biome twilightForest = (new TFBiomeTwilightForest()).setColor(0x005500).setBiomeName("Twilight Forest");
+	public static final Biome twilightForest2 = (new TFBiomeTwilightForestVariant()).setColor(0x005522).setBiomeName("Dense Twilight Forest").setHeight(height_MidPlains);
+	public static final Biome highlands = (new TFBiomeHighlands()).setColor(0x556644).setBiomeName("Twilight Highlands").setHeight(new Height(3.5F, 0.05F));
+	public static final Biome mushrooms = (new TFBiomeMushrooms()).setColor(0x226622).setBiomeName("Mushroom Forest");
+	public static final Biome tfSwamp = (new TFBiomeSwamp()).setColor(0x334422).setBiomeName("Twilight Swamp").setHeight(new Height(-0.125F, 0.125F));
+	public static final Biome stream = (new TFBiomeStream()).setColor(0x3253b7).setBiomeName("Twilight Stream").setHeight(height_ShallowWaters);
+	public static final Biome tfSnow = (new TFBiomeSnow()).setColor(0xccffff).setBiomeName("Snowy Forest").setHeight(height_MidPlains);
+	public static final Biome glacier = (new TFBiomeGlacier()).setColor(0x7777bb).setBiomeName("Twilight Glacier");
+	public static final Biome clearing = (new TFBiomeClearing()).setColor(0x349b34).setBiomeName("Twilight Clearing").setHeight(height_LowPlains);
+	public static final Biome oakSavanna = (new TFBiomeOakSavanna()).setColor(0x446622).setBiomeName("Oak Savanna").setHeight(height_MidPlains);
+	public static final Biome fireflyForest = (new TFBiomeFireflyForest()).setColor(0x006633).setBiomeName("Firefly Forest").setHeight(height_LowPlains);
+	public static final Biome deepMushrooms = (new TFBiomeDeepMushrooms()).setColor(0x663322).setBiomeName("Deep Mushroom Forest").setHeight(height_LowPlains);
+	public static final Biome darkForest = (new TFBiomeDarkForest()).setColor(0x003311).setBiomeName("Dark Forest").setHeight(height_LowPlains);
+	public static final Biome enchantedForest = (new TFBiomeEnchantedForest()).setColor(0x115566).setBiomeName("Enchanted Forest");
+	public static final Biome fireSwamp = (new TFBiomeFireSwamp()).setColor(0x42231a).setBiomeName("Fire Swamp").setHeight(height_Default);
+	public static final Biome darkForestCenter = (new TFBiomeDarkForestCenter()).setColor(0x002200).setBiomeName("Dark Forest Center").setHeight(height_LowPlains);
+	public static final Biome highlandsCenter = (new TFBiomeFinalPlateau()).setColor(0x334422).setBiomeName("Highlands Center").setHeight(new Height(10.5F, 0.025F));
+	public static final Biome thornlands = (new TFBiomeThornlands()).setColor(0x223322).setBiomeName("Thornlands").setHeight(new Height(6F, 0.1F));
 
 	protected WorldGenBigMushroom bigMushroomGen;
 	protected WorldGenBirchTree birchGen;
@@ -74,10 +72,10 @@ public abstract class TFBiomeBase extends Biome  {
     protected List<SpawnListEntry> undergroundMonsterList;
 
 	@SuppressWarnings("unchecked")
-	public TFBiomeBase(int i) 
+	public TFBiomeBase(BiomeProperties props)
 	{
-		super(i);
-		
+		super(props);
+
 		bigMushroomGen = new WorldGenBigMushroom();
 		birchGen = new WorldGenBirchTree(false, false);
 		
@@ -175,139 +173,14 @@ public abstract class TFBiomeBase extends Biome  {
     {
         if (par1Random.nextInt(4) == 0)
         {
-            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
+            return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
         }
         else
         {
-            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
+            return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
         }
     }
-    
-    /**
-     * If any biome IDs are -1, find an open ID for them.
-     */
-    public static boolean assignBlankBiomeIds() {
-		boolean assigned = false;
-		
-		boolean[] usedIDs = new boolean[Biome.getBiomeGenArray().length];
-		
-		checkUsedIDs(usedIDs);
-		
-		TwilightForestMod.idBiomeLake = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeLake);
-    	TwilightForestMod.idBiomeTwilightForest = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeTwilightForest);
-    	TwilightForestMod.idBiomeTwilightForestVariant = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeTwilightForestVariant);
-    	TwilightForestMod.idBiomeHighlands = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeHighlands);
-    	TwilightForestMod.idBiomeMushrooms = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeMushrooms);
-    	TwilightForestMod.idBiomeSwamp = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeSwamp);
-    	TwilightForestMod.idBiomeStream = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeStream);
-    	TwilightForestMod.idBiomeSnowfield = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeSnowfield);
-    	TwilightForestMod.idBiomeGlacier = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeGlacier);
-    	TwilightForestMod.idBiomeClearing = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeClearing);
-    	TwilightForestMod.idBiomeOakSavanna = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeOakSavanna);
-    	TwilightForestMod.idBiomeFireflyForest = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeFireflyForest);
-    	TwilightForestMod.idBiomeDeepMushrooms = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeDeepMushrooms);
-    	TwilightForestMod.idBiomeDarkForestCenter = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeDarkForestCenter);
-    	TwilightForestMod.idBiomeHighlandsCenter = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeHighlandsCenter);
-    	TwilightForestMod.idBiomeDarkForest = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeDarkForest);
-    	TwilightForestMod.idBiomeEnchantedForest = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeEnchantedForest);
-    	TwilightForestMod.idBiomeFireSwamp = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeFireSwamp);
-    	TwilightForestMod.idBiomeThornlands = assignIdIfNeeded(usedIDs, TwilightForestMod.idBiomeThornlands);
-		
-		return assigned;
-	}
 
-    /**
-     * Populate the array with whether there is a biome using that ID
-     */
-	private static void checkUsedIDs(boolean[] usedIDs) {
-		for (int i = 0; i < usedIDs.length; i++) {
-			usedIDs[i] = (Biome.getBiomeGenArray()[i] != null);
-		}
-	}
-
-	/**
-	 * Return a new biome ID if the given id is -1
-	 */
-	private static int assignIdIfNeeded(boolean[] usedIDs, int biomeID) {
-		if (biomeID == -1) {
-			biomeID = findNextOpenBiomeId(usedIDs);
-			TwilightForestMod.hasAssignedBiomeID = true;
-		}
-		
-		return biomeID;
-	}
-
-	/**
-	 * Find an open biome ID
-	 */
-	private static int findNextOpenBiomeId(boolean[] usedIDs) {
-		for (int i = 0; i < 256; i++) {
-			if (!usedIDs[i]) {
-				usedIDs[i] = true;
-				return i;
-			}
-		}
-		
-		// Uh oh...
-		FMLLog.warning("[TwilightForest] Could not find open biome ID.  Edit the Twilight Forest config to give all biomes unique IDs.");
-		return -1;
-	}
-
-	/**
-     * Check all of our biome IDs.  If there is a biome in them that is not null and does not inherit from TFBiomeBase, make a warning.
-     */
-    public static boolean areThereBiomeIdConflicts()
-    {
-    	boolean conflict = TwilightForestMod.hasBiomeIdConflicts;
-    	
-		//FMLLog.info("[TwilightForest] Starting biome conflict detection.  Conflict = " + conflict);
-    	
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeLake);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeTwilightForest);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeTwilightForestVariant);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeHighlands);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeMushrooms);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeSwamp);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeStream);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeSnowfield);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeGlacier);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeClearing);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeOakSavanna);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeFireflyForest);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeDeepMushrooms);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeDarkForestCenter);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeHighlandsCenter);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeDarkForest);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeEnchantedForest);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeFireSwamp);
-    	conflict |= isConflictAtBiomeID(TwilightForestMod.idBiomeThornlands);
-    	
-       	if (conflict) {
-			FMLLog.warning("[TwilightForest] Biome ID conflict detected.  Edit the Twilight Forest config to give all biomes unique IDs.");
-    	} else {
-			//FMLLog.info("[TwilightForest] No biome ID conflicts detected!  You're safe!");
-    	}
-       	
-       	TwilightForestMod.hasBiomeIdConflicts |= conflict;
-       	
-		return conflict;
-    }
-
-    /**
-     * Check the ID for conflicts
-     */
-	public static boolean isConflictAtBiomeID(int id) {
-		Biome biomeAt = Biome.getBiome(id);
-		
-		if (biomeAt == null || biomeAt instanceof TFBiomeBase) {
-			//FMLLog.warning("[TwilightForest] Biome ID %d contains a biome named %s.", id, biomeAt);
-			return false;
-		} else {
-			FMLLog.warning("[TwilightForest] Biome ID conflict.  Biome ID %d contains a biome named %s, but Twilight Forest is set to use that ID.", id, biomeAt.biomeName);
-			return true;
-		}
-	}
-	
 	/**
 	 * Register our biomes with the Forge biome dictionary
 	 */
@@ -508,11 +381,11 @@ public abstract class TFBiomeBase extends Biome  {
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
 		
 		if (getRequiredAchievement() != null && player instanceof EntityPlayerMP && ((EntityPlayerMP)player).func_147099_x() != null) {
-			StatisticsFile stats = ((EntityPlayerMP)player).func_147099_x();
+			StatisticsManagerServer stats = ((EntityPlayerMP)player).getStatFile();
 			
 			return stats.hasAchievementUnlocked(this.getRequiredAchievement());
-		} else if (getRequiredAchievement() != null && player instanceof EntityClientPlayerMP && ((EntityClientPlayerMP)player).getStatFileWriter() != null) {
-			StatFileWriter stats = ((EntityClientPlayerMP)player).getStatFileWriter();
+		} else if (getRequiredAchievement() != null && player instanceof EntityPlayerSP && ((EntityPlayerSP)player).getStatFileWriter() != null) {
+			StatisticsManager stats = ((EntityPlayerSP)player).getStatFileWriter();
 			
 			return stats.hasAchievementUnlocked(this.getRequiredAchievement());
 		} else {

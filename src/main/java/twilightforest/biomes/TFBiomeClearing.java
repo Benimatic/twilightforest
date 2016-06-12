@@ -2,6 +2,7 @@ package twilightforest.biomes;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -11,7 +12,8 @@ public class TFBiomeClearing extends TFBiomeBase {
 
 	public TFBiomeClearing(int i) {
 		super(i);
-		
+
+
         this.temperature = 0.8F;
         this.rainfall = 0.4F;
         
@@ -30,7 +32,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 	 */
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
-        return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
+        return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
     }
 
 }
