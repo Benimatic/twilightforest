@@ -55,7 +55,7 @@ public class EntityAIStayNearHome extends EntityAIBase {
 
         if (this.entity.getDistanceSq(this.entity.getHomePosition().posX, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ) > 256.0D)
         {
-            Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, Vec3d.createVectorHelper(this.entity.getHomePosition().posX + 0.5D, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ + 0.5D));
+            Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d(this.entity.getHomePosition().posX + 0.5D, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ + 0.5D));
 
             if (vec3 != null)
             {

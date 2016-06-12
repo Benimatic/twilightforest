@@ -129,7 +129,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-        Vec3d srcVec = Vec3d.createVectorHelper(this.entityHost.posX, this.entityHost.posY + 0.25, this.entityHost.posZ);
+        Vec3d srcVec = new Vec3d(this.entityHost.posX, this.entityHost.posY + 0.25, this.entityHost.posZ);
         Vec3d lookVec = this.entityHost.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;

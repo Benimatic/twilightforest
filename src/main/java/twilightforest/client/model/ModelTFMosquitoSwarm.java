@@ -82,7 +82,7 @@ public class ModelTFMosquitoSwarm extends ModelBase
 		int bugs = 16;
 		
 		for (int i = 0; i < bugs; i++) {
-			Vec3d vec = Vec3d.createVectorHelper(11, 0, 0);
+			Vec3d vec = new Vec3d(11, 0, 0);
 			float rotateY = ((i * (360F / bugs)) * 3.141593F) / 180F;
 			vec.rotateAroundY(rotateY);
 			ModelRenderer bug = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));

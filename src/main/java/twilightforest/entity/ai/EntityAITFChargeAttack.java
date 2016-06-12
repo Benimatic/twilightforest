@@ -56,7 +56,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
             }
             else {
             	Vec3d chargePos = findChargePoint(charger, chargeTarget, 2.1);
-            	boolean canSeeTargetFromDest = chargeTarget.worldObj.rayTraceBlocks(Vec3d.createVectorHelper(chargeTarget.posX, chargeTarget.posY + chargeTarget.getEyeHeight(), chargeTarget.posZ), chargePos) == null;
+            	boolean canSeeTargetFromDest = chargeTarget.worldObj.rayTraceBlocks(new Vec3d(chargeTarget.posX, chargeTarget.posY + chargeTarget.getEyeHeight(), chargeTarget.posZ), chargePos) == null;
             	if (chargePos == null || !canSeeTargetFromDest) 
             	{
             		return false;
@@ -179,7 +179,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 //        System.out.println("Target position is " + target.posX + ", " + target.posZ);
 
         // add that to the target entity's position, and we have our destination
-    	return Vec3d.createVectorHelper(attacker.posX + dx, target.posY, attacker.posZ + dz);
+    	return new Vec3d(attacker.posX + dx, target.posY, attacker.posZ + dz);
     }
 
 

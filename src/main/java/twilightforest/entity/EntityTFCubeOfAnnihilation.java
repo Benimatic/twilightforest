@@ -176,7 +176,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
 
     		// always head towards either the point or towards the player
-			Vec3d destPoint = Vec3d.createVectorHelper(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
+			Vec3d destPoint = new Vec3d(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
 
     		if (!this.isReturning()) {
     			Vec3d look = this.getThrower().getLookVec();
@@ -198,7 +198,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     		
     		
     		// set motions
-    		Vec3d velocity = Vec3d.createVectorHelper(this.posX - destPoint.xCoord, (this.posY + this.height / 2F) - destPoint.yCoord, this.posZ - destPoint.zCoord);
+    		Vec3d velocity = new Vec3d(this.posX - destPoint.xCoord, (this.posY + this.height / 2F) - destPoint.yCoord, this.posZ - destPoint.zCoord);
     		
     		this.motionX -= velocity.xCoord;
     		this.motionY -= velocity.yCoord;

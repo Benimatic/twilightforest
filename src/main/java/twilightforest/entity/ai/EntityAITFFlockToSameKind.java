@@ -59,7 +59,7 @@ public class EntityAITFFlockToSameKind extends EntityAIBase
     	}
     	else
     	{
-    		this.flockPosition = Vec3d.createVectorHelper(flockX, flockY, flockZ);
+    		this.flockPosition = new Vec3d(flockX, flockY, flockZ);
     		return true;
     	}
     }

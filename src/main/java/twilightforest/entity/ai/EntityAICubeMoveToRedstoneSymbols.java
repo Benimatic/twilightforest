@@ -84,7 +84,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 						this.myCube.symbolY = y;
 						this.myCube.symbolZ = z;
 						
-						return Vec3d.createVectorHelper(x, y, z);
+						return new Vec3d(x, y, z);
 					}
 				}
 			}

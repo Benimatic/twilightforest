@@ -164,7 +164,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return Vec3d.createVectorHelper(this.posX + var1, this.posY + this.getChainYOffset(), this.posZ + var3);
+		return new Vec3d(this.posX + var1, this.posY + this.getChainYOffset(), this.posZ + var3);
     }
     
     public boolean isSwingingChain()

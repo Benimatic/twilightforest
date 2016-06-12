@@ -822,7 +822,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		double dx = this.getHomePosition().posX + (alongX ? offset0 : offset1);
 		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.getHomePosition().posZ + (alongX ? offset1 : offset0);
-		return Vec3d.createVectorHelper(dx, dy, dz);
+		return new Vec3d(dx, dy, dz);
 	}
 
 	protected Vec3d getCirclePosition(float distance, boolean clockwise) {
@@ -838,7 +838,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		double dx = this.getHomePosition().posX + Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.getHomePosition().posZ + Math.sin((angle) * Math.PI / 180.0D) * distance;
-		return Vec3d.createVectorHelper(dx, dy, dz);
+		return new Vec3d(dx, dy, dz);
 	}
 
 	private Vec3d getHoverPosition(float distance) {
@@ -863,21 +863,21 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 			dz = this.getHomePosition().posZ + (oz / dDist * distance);
 		}
 		
-		return Vec3d.createVectorHelper(dx, dy, dz);
+		return new Vec3d(dx, dy, dz);
 	}
 
 	private Vec3d getLoiterPosition() {
 		double dx = this.getHomePosition().posX;
 		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.getHomePosition().posZ;
-		return Vec3d.createVectorHelper(dx, dy, dz);
+		return new Vec3d(dx, dy, dz);
 	}
 
 
 	private Vec3d getAttackPlayerPosition() {
 		if (isSwordKnight())
 		{
-			return Vec3d.createVectorHelper(this.chargePosX, this.chargePosY, this.chargePosZ);
+			return new Vec3d(this.chargePosX, this.chargePosY, this.chargePosZ);
 		}
 		else
 		{

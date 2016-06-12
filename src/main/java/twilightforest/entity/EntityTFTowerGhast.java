@@ -203,7 +203,7 @@ public class EntityTFTowerGhast extends EntityGhast
         	    	// change waypoint to be more towards home
         	        BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
         	    	
-        	        Vec3d homeVector = Vec3d.createVectorHelper(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
+        	        Vec3d homeVector = new Vec3d(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
         	        homeVector = homeVector.normalize();
         	        
         	    	this.waypointX = this.posX + homeVector.xCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);

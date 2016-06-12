@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
@@ -47,7 +47,7 @@ public class ContainerTFCinderFurnace extends Container
         }
     }
 
-	public void addCraftingToCrafters(ICrafting p_75132_1_)
+	public void addCraftingToCrafters(IContainerListener p_75132_1_)
     {
         super.addCraftingToCrafters(p_75132_1_);
         p_75132_1_.sendProgressBarUpdate(this, 0, this.tileFurnace.furnaceCookTime);
@@ -64,7 +64,7 @@ public class ContainerTFCinderFurnace extends Container
 
         for (int i = 0; i < this.crafters.size(); ++i)
         {
-            ICrafting icrafting = (ICrafting)this.crafters.get(i);
+            IContainerListener icrafting = (IContainerListener)this.crafters.get(i);
 
             if (this.lastCookTime != this.tileFurnace.furnaceCookTime)
             {

@@ -44,7 +44,7 @@ public class EntityTFCharmEffect extends Entity
 		//this.setOwner(orbiting.getEntityName());
 		this.setItemID(item);
 		
-		Vec3d look = Vec3d.createVectorHelper(DISTANCE, 0, 0);
+		Vec3d look = new Vec3d(DISTANCE, 0, 0);
 		
 		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
 		this.posX += look.xCoord * DISTANCE;
@@ -90,7 +90,7 @@ public class EntityTFCharmEffect extends Entity
         {
         	this.setLocationAndAngles(orbiting.posX, orbiting.posY + orbiting.getEyeHeight(), orbiting.posZ, orbiting.rotationYaw, orbiting.rotationPitch);
 
-        	Vec3d look = Vec3d.createVectorHelper(DISTANCE, 0, 0);
+        	Vec3d look = new Vec3d(DISTANCE, 0, 0);
         	look.rotateAroundY(rotation);
         	this.posX += look.xCoord;
 //        	this.posY += Math.sin(this.ticksExisted / 3.0F + offset);

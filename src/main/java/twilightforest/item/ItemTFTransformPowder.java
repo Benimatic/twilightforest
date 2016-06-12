@@ -163,7 +163,7 @@ public class ItemTFTransformPowder extends ItemTF
 	private AxisAlignedBB getEffectAABB(World world, EntityPlayer player) {
 		double range = 2.0D;
 		double radius = 1.0D;
-		Vec3d srcVec = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = player.getLookVec();
 		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
 		

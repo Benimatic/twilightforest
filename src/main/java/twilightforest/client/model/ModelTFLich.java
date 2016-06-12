@@ -135,7 +135,7 @@ public class ModelTFLich extends ModelBiped {
         		// make or remake a belt of shields around the lich
         		Vec3d vec;
         		for (int i = 0; i < shields; i++) {
-        			vec = Vec3d.createVectorHelper(11, 0, 0);
+        			vec = new Vec3d(11, 0, 0);
         			float rotateY = ((i * (360F / shields)) * 3.141593F) / 180F;
         			vec.rotateAroundY(rotateY);
         			ModelRenderer shield = new ModelRenderer(this, 26, 40);

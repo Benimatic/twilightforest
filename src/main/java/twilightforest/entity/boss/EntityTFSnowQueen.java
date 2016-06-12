@@ -435,7 +435,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return Vec3d.createVectorHelper(this.posX + var1, this.posY + this.getShieldYOffset(), this.posZ + var3);
+		return new Vec3d(this.posX + var1, this.posY + this.getShieldYOffset(), this.posZ + var3);
     }
     
     
@@ -649,14 +649,14 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         
         //System.out.println("I think we found a good destination at " + tx + ", " + ty + ", " + tz);
 //        System.out.println("canEntitySee = " + canEntitySee(targetEntity, tx, ty, tz));
-        return Vec3d.createVectorHelper(tx, ty, tz);
+        return new Vec3d(tx, ty, tz);
     }
     
     /**
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return worldObj.rayTraceBlocks(Vec3d.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3d.createVectorHelper(dx, dy, dz)) == null;
+        return worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
     

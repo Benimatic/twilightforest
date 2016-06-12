@@ -851,14 +851,14 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         
 //        System.out.println("I think we found a good destination at " + tx + ", " + ty + ", " + tz);
 //        System.out.println("canEntitySee = " + canEntitySee(targetEntity, tx, ty, tz));
-        return Vec3d.createVectorHelper(tx, ty, tz);
+        return new Vec3d(tx, ty, tz);
     }
     
     /**
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return worldObj.rayTraceBlocks(Vec3d.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3d.createVectorHelper(dx, dy, dz)) == null;
+        return worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
 

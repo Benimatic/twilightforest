@@ -165,7 +165,7 @@ public class BlockTFShield extends Block
 	 * @return
 	 */
 	private RayTraceResult getPlayerPointVec(World worldObj, EntityPlayer player, double range) {
-        Vec3d position = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3d look = player.getLook(1.0F);
         Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
         return worldObj.rayTraceBlocks(position, dest);

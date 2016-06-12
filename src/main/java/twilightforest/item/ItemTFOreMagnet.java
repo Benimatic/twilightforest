@@ -172,7 +172,7 @@ public class ItemTFOreMagnet extends ItemTF
 		
 		// find vector 32 blocks from look
 		double range = 32.0D;
-		Vec3d srcVec = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = getOffsetLook(player, yawOffset, pitchOffset);
 		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
 		
@@ -301,7 +301,7 @@ public class ItemTFOreMagnet extends ItemTF
         float var3 = MathHelper.sin(-(player.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
         float var4 = -MathHelper.cos(-(player.rotationPitch + pitchOffset) * 0.017453292F);
         float var5 = MathHelper.sin(-(player.rotationPitch + pitchOffset) * 0.017453292F);
-        return Vec3d.createVectorHelper(var3 * var4, var5, var2 * var4);
+        return new Vec3d(var3 * var4, var5, var2 * var4);
 	}
 
 	private static boolean isReplaceable(World world, Block replaceID, int replaceMeta, int x, int y, int z)

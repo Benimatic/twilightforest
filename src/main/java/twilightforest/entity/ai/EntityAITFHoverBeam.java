@@ -195,7 +195,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-        Vec3d srcVec = Vec3d.createVectorHelper(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
+        Vec3d srcVec = new Vec3d(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
         Vec3d lookVec = this.attacker.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
@@ -279,7 +279,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return entity.worldObj.rayTraceBlocks(Vec3d.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3d.createVectorHelper(dx, dy, dz)) == null;
+        return entity.worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
 }

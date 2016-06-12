@@ -86,7 +86,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
         else
         {
             Vec3d var3 = par1EntityPlayer.getLook(1.0F).normalize();
-            Vec3d var4 = Vec3d.createVectorHelper(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
+            Vec3d var4 = new Vec3d(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
             double var5 = var4.lengthVector();
             var4 = var4.normalize();
             double var7 = var3.dotProduct(var4);

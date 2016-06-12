@@ -49,11 +49,11 @@ public class EntitySeekerArrow extends EntityArrow {
         		AxisAlignedBB targetBB = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
 
         		// add two possible courses to our selection box
-				Vec3d courseVec = Vec3d.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
+				Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
         		courseVec.rotateAroundY((float) (Math.PI / 6F));
         		targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
 
-        		courseVec = Vec3d.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
+        		courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
         		courseVec.rotateAroundY(-(float) (Math.PI / 6F));
         		targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
         		
@@ -72,9 +72,9 @@ public class EntitySeekerArrow extends EntityArrow {
         				System.out.println("Possible target : " + living);
         				//System.out.println("Selection box =  " + targetBB);
 
-        				courseVec = Vec3d.createVectorHelper(this.motionX, this.motionY, this.motionZ);
+        				courseVec = new Vec3d(this.motionX, this.motionY, this.motionZ);
         				courseVec = courseVec.normalize();
-        				Vec3d targetVec = Vec3d.createVectorHelper(this.posX - living.posX, this.posY - (living.posY + (double)living.getEyeHeight()), this.posZ - living.posZ);
+        				Vec3d targetVec = new Vec3d(this.posX - living.posX, this.posY - (living.posY + (double)living.getEyeHeight()), this.posZ - living.posZ);
 
         				//double d0 = targetVec.lengthVector(); // do we need this?
         				targetVec = targetVec.normalize();
@@ -94,10 +94,10 @@ public class EntitySeekerArrow extends EntityArrow {
         		}
         	} else {
         		// find ideal heading
-				Vec3d targetVec = Vec3d.createVectorHelper(this.posX - this.homingTarget.posX, this.posY - (this.homingTarget.posY + this.homingTarget.getEyeHeight()), this.posZ - this.homingTarget.posZ);
+				Vec3d targetVec = new Vec3d(this.posX - this.homingTarget.posX, this.posY - (this.homingTarget.posY + this.homingTarget.getEyeHeight()), this.posZ - this.homingTarget.posZ);
 				targetVec = targetVec.normalize();
 				
-				Vec3d courseVec = Vec3d.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
+				Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
 				courseVec = courseVec.normalize();
 				
 				double dotProduct = courseVec.dotProduct(targetVec);

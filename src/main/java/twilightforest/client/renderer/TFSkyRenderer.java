@@ -288,7 +288,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	 * @return
 	 */
 	private Vec3d getTwilightSkyColor(World world) {
-		return Vec3d.createVectorHelper(32 / 256.0, 34 / 256.0, 74 / 256.0);
+		return new Vec3d(32 / 256.0, 34 / 256.0, 74 / 256.0);
 //		return Vec3.createVectorHelper(43 / 256.0, 46 / 256.0, 99 / 256.0);
  	}
 

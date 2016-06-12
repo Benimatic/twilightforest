@@ -74,7 +74,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	private Entity getPlayerLookTarget(World worldObj, EntityPlayer player) {
 		Entity pointedEntity = null;
 		double range = 20.0D;
-        Vec3d srcVec = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3d lookVec = player.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 1.0F;

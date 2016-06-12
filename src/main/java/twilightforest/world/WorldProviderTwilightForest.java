@@ -62,7 +62,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
         red *= bright * 0.94F + 0.06F;
         green *= bright * 0.94F + 0.06F;
         blue *= bright * 0.91F + 0.09F;
-        return Vec3d.createVectorHelper(red, green, blue);
+        return new Vec3d(red, green, blue);
     }
 	
     /**
@@ -179,7 +179,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
-		return Vec3d.createVectorHelper(43 / 256.0, 46 / 256.0, 99 / 256.0);
+		return new Vec3d(43 / 256.0, 46 / 256.0, 99 / 256.0);
 	}
 
 	@Override

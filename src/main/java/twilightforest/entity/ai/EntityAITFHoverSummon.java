@@ -193,7 +193,7 @@ public class EntityAITFHoverSummon extends EntityAIBase {
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return entity.worldObj.rayTraceBlocks(Vec3d.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3d.createVectorHelper(dx, dy, dz)) == null;
+        return entity.worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
 

@@ -594,7 +594,7 @@ public class HydraHeadContainer {
 	{
 		if (this.targetEntity != null)
 		{
-			Vec3d vect = Vec3d.createVectorHelper(this.targetEntity.posX - this.targetX, this.targetEntity.posY - this.targetY, this.targetEntity.posZ - this.targetZ);
+			Vec3d vect = new Vec3d(this.targetEntity.posX - this.targetX, this.targetEntity.posY - this.targetY, this.targetEntity.posZ - this.targetZ);
 
 			vect = vect.normalize();
 
@@ -692,38 +692,38 @@ public class HydraHeadContainer {
 		
 		if (headNum == 0)
 		{
-			vector = Vec3d.createVectorHelper(0, 3, -1);
+			vector = new Vec3d(0, 3, -1);
 			neckRotation = 0;
 		}
 		if (headNum == 1)
 		{
-			vector = Vec3d.createVectorHelper(-1, 3, 3);
+			vector = new Vec3d(-1, 3, 3);
 			neckRotation = 90;
 		}
 		if (headNum == 2)
 		{
-			vector = Vec3d.createVectorHelper(1, 3, 3);
+			vector = new Vec3d(1, 3, 3);
 			neckRotation = -90;
 		}
 		if (headNum == 3)
 		{
-			vector = Vec3d.createVectorHelper(-1, 3, 3);
+			vector = new Vec3d(-1, 3, 3);
 			neckRotation = 135;
 		}
 		if (headNum == 4)
 		{
-			vector = Vec3d.createVectorHelper(1, 3, 3);
+			vector = new Vec3d(1, 3, 3);
 			neckRotation = -135;
 		}
 		
 		if (headNum == 5)
 		{
-			vector = Vec3d.createVectorHelper(-1, 3, 5);
+			vector = new Vec3d(-1, 3, 5);
 			neckRotation = 135;
 		}
 		if (headNum == 6)
 		{
-			vector = Vec3d.createVectorHelper(1, 3, 5);
+			vector = new Vec3d(1, 3, 5);
 			neckRotation = -135;
 		}
 		
@@ -763,7 +763,7 @@ public class HydraHeadContainer {
 			xSwing = ySwing = 0;
 		}
 		
-		vector = Vec3d.createVectorHelper(0, 0, neckLength); // -53 = 3.3125
+		vector = new Vec3d(0, 0, neckLength); // -53 = 3.3125
 		vector.rotateAroundX((xRotation * 3.141593F + xSwing) / 180F);
 		vector.rotateAroundY((-(hydraObj.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
 
@@ -875,7 +875,7 @@ public class HydraHeadContainer {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-        Vec3d srcVec = Vec3d.createVectorHelper(headEntity.posX, headEntity.posY + 1.0, headEntity.posZ);
+        Vec3d srcVec = new Vec3d(headEntity.posX, headEntity.posY + 1.0, headEntity.posZ);
         Vec3d lookVec = headEntity.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
@@ -1029,7 +1029,7 @@ public class HydraHeadContainer {
 		if (endPitch > 0) 
 		{
 			// if we are looking down, don't raise the first neck position, it looks weird
-			Vec3d vector = Vec3d.createVectorHelper(0, 0, -1.0);
+			Vec3d vector = new Vec3d(0, 0, -1.0);
 			vector.rotateAroundY((-endYaw * 3.141593F) / 180F);
 			endX += vector.xCoord;
 			endY += vector.yCoord;

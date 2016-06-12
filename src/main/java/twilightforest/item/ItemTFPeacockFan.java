@@ -157,7 +157,7 @@ public class ItemTFPeacockFan extends ItemTF
 	private AxisAlignedBB getEffectAABB(World world, EntityPlayer player) {
 		double range = 3.0D;
 		double radius = 2.0D;
-		Vec3d srcVec = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = player.getLookVec();
 		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
 		

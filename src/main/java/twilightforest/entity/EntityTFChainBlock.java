@@ -261,7 +261,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         	
         	EntityLivingBase returnTo = this.getThrower();
         
-            Vec3d back = Vec3d.createVectorHelper(returnTo.posX - this.posX, returnTo.posY + (double)returnTo.getEyeHeight() - 1.200000023841858D - this.posY, returnTo.posZ - this.posZ).normalize();
+            Vec3d back = new Vec3d(returnTo.posX - this.posX, returnTo.posY + (double)returnTo.getEyeHeight() - 1.200000023841858D - this.posY, returnTo.posZ - this.posZ).normalize();
             
             float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
             

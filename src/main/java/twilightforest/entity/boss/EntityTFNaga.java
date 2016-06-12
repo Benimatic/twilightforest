@@ -764,7 +764,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         double dy = Math.min(boundingBox.minY, toCircle.posY);
 
         // add that to the target entity's position, and we have our destination
-    	return Vec3d.createVectorHelper(toCircle.posX + dx, dy, toCircle.posZ + dz);
+    	return new Vec3d(toCircle.posX + dx, dy, toCircle.posZ + dz);
     }
     
     public boolean hasTarget() {
@@ -1065,7 +1065,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	    	double idealZ = MathHelper.cos(angle) * straightenForce;
 			
 			
-			Vec3d diff = Vec3d.createVectorHelper(body[i].posX - followX, body[i].posY - followY, body[i].posZ - followZ);
+			Vec3d diff = new Vec3d(body[i].posX - followX, body[i].posY - followY, body[i].posZ - followZ);
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position
