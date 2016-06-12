@@ -55,13 +55,13 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 	public static boolean canRootGrowIn(World world, int x, int y, int z) {
 		Block blockID = world.getBlock(x, y, z);
 		
-		if (blockID == Blocks.air) {
+		if (blockID == Blocks.AIR) {
 			// roots can grow through air if they are near a solid block
 			return isNearSolid(world, x, y, z);
 		}
 		else
 		{
-			return blockID != Blocks.bedrock && blockID != Blocks.obsidian && blockID != TFBlocks.shield;
+			return blockID != Blocks.BEDROCK && blockID != Blocks.OBSIDIAN && blockID != TFBlocks.shield;
 		}
 	}
 	

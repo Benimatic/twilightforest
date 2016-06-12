@@ -68,7 +68,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity {
 					spawnMyBoss();
 
 					// destroy block
-					worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air, 0, 2);
+					worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.AIR, 0, 2);
 					
 					//System.out.println("Spawning boss!");
 				}

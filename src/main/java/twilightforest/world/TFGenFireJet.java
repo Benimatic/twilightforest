@@ -41,14 +41,14 @@ public class TFGenFireJet extends TFGenerator
                 		if ((rx == 1 || rx == 0 || rx == -1) && (rz == 1 || rz == 0 || rz == -1))
                 		{
                         	// lava reservoir
-                    		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.flowing_lava, 0, 0);
+                    		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.FLOWING_LAVA, 0, 0);
                 		}
                 		else if (world.getBlock(dx + rx, dy - 2, dz + rz).getMaterial() != Material.lava)
                 		{
                 			// only stone where there is no lava
-                    		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.stone, 0, 0);
+                    		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.STONE, 0, 0);
                 		}
-                		world.setBlock(dx + rx, dy - 3, dz + rz, Blocks.stone, 0, 0);
+                		world.setBlock(dx + rx, dy - 3, dz + rz, Blocks.STONE, 0, 0);
                 	}
             	}
             }

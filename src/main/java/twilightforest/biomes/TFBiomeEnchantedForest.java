@@ -112,13 +112,13 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
         if (par1Random.nextInt(3) > 0) {
-            return new WorldGenTallGrass(Blocks.tallgrass, 2);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
         }
         else if (par1Random.nextInt(3) == 0) {
             return new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_FIDDLEHEAD);
         }
         else {
-            return new WorldGenTallGrass(Blocks.tallgrass, 1);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
         }
     }
     

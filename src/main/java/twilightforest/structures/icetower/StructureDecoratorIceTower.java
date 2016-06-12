@@ -11,20 +11,20 @@ public class StructureDecoratorIceTower extends StructureTFDecorator {
 		this.blockID = TFBlocks.auroraBlock;
 		this.blockMeta = 0;
 		
-		this.accentID = Blocks.planks;
+		this.accentID = Blocks.PLANKS;
 		this.accentMeta = 2;
 		
-		this.fenceID = Blocks.fence;
+		this.fenceID = Blocks.FENCE;
 		
-		this.stairID = Blocks.birch_stairs;
+		this.stairID = Blocks.BIRCH_STAIRS;
 		
 		this.pillarID = TFBlocks.auroraPillar;
 		this.pillarMeta = 0;
 		
-		this.platformID = Blocks.wooden_slab;
+		this.platformID = Blocks.WOODEN_SLAB;
 		this.platformMeta = 2;
 
-		this.floorID = Blocks.planks;
+		this.floorID = Blocks.PLANKS;
 		this.floorMeta = 2;
 
 		this.randomBlocks = new StructureTFAuroraBricks();

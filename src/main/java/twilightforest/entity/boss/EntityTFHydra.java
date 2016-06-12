@@ -856,13 +856,13 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
                 {
                     Block currentID = this.worldObj.getBlock(dx, dy, dz);
                     
-                    if (currentID != Blocks.air)
+                    if (currentID != Blocks.AIR)
                     {
                     	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
                     	
-                    	if (currentID != Blocks.obsidian && currentID != Blocks.end_stone && currentID != Blocks.bedrock)
+                    	if (currentID != Blocks.OBSIDIAN && currentID != Blocks.END_STONE && currentID != Blocks.BEDROCK)
                         {
-                            this.worldObj.setBlock(dx, dy, dz, Blocks.air, 0, 2);
+                            this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
                             
                             // here, this effect will have to do
                 			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));

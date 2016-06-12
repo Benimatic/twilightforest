@@ -25,10 +25,10 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
     public TFGenCanopyMushroom(boolean par1)
     {
     	super(par1);
-    	treeBlock = Blocks.red_mushroom_block;
+    	treeBlock = Blocks.RED_MUSHROOM_BLOCK;
     	treeMeta = 10;
     	branchMeta = 15;
-    	leafBlock = Blocks.red_mushroom_block;
+    	leafBlock = Blocks.RED_MUSHROOM_BLOCK;
     	leafMeta = 5;
     }
 	
@@ -47,13 +47,13 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		
 		// check if we're on dirt or grass
 		Block blockUnder = world.getBlock(x, y - 1, z);
-		if(blockUnder != Blocks.grass && blockUnder != Blocks.dirt && blockUnder != Blocks.mycelium || y >= 256 - treeHeight - 1)
+		if(blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM || y >= 256 - treeHeight - 1)
 		{
 			return false;
 		}
 
 		
-		this.treeBlock = random.nextInt(3) == 0 ? Blocks.red_mushroom_block :  Blocks.brown_mushroom_block;
+		this.treeBlock = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK :  Blocks.BROWN_MUSHROOM_BLOCK;
 		this.leafBlock = treeBlock;
 
 		//okay build a tree!  Go up to the height

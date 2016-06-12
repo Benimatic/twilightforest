@@ -371,7 +371,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		
 		int initialRadius = decoRNG.nextInt(amount) + amount;
 		
-		drawBlob(world, x, y, z, initialRadius, Blocks.air, 0, sbb);
+		drawBlob(world, x, y, z, initialRadius, Blocks.AIR, 0, sbb);
 		
 		for (int i = 0; i < 3; i++)
 		{
@@ -380,7 +380,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			int dz = z + (initialRadius - 1) * (decoRNG.nextBoolean() ? 1 : -1);
 
 			netherTransformBlob(world, decoRNG, dx, dy, dz, initialRadius - 1, sbb);
-			drawBlob(world, dx, dy, dz, initialRadius - 2, Blocks.air, 0, sbb);
+			drawBlob(world, dx, dy, dz, initialRadius - 2, Blocks.AIR, 0, sbb);
 		}
 
 	}
@@ -432,13 +432,13 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 
 
 	private void testAndChangeToNetherrack(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
-		if (this.getBlockAtCurrentPosition(world, x, y, z, sbb) != Blocks.air)
+		if (this.getBlockAtCurrentPosition(world, x, y, z, sbb) != Blocks.AIR)
 		{
-			this.placeBlockAtCurrentPosition(world, Blocks.netherrack, 0, x, y, z, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.NETHERRACK, 0, x, y, z, sbb);
 			
-			if (this.getBlockAtCurrentPosition(world, x, y + 1, z, sbb) == Blocks.air && rand.nextBoolean())
+			if (this.getBlockAtCurrentPosition(world, x, y + 1, z, sbb) == Blocks.AIR && rand.nextBoolean())
 			{
-				this.placeBlockAtCurrentPosition(world, Blocks.fire, 0, x, y + 1, z, sbb);
+				this.placeBlockAtCurrentPosition(world, Blocks.FIRE, 0, x, y + 1, z, sbb);
 			}
 		}
 	}
@@ -581,8 +581,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	protected void makeFullFloor(World world, StructureBoundingBox sbb, int rotation, int y, int spacing) 
 	{
 		// half floor
-		this.fillWithMetadataBlocks(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockID, deco.blockMeta, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentID, deco.accentMeta, Blocks.air, 0, true);
+		this.fillWithMetadataBlocks(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockID, deco.blockMeta, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentID, deco.accentMeta, Blocks.AIR, 0, true);
 	}
 	
 	/**
@@ -666,7 +666,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		cx = this.size > 9 ? 5 : 3;
 		
 		placeBlockRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, cx, y + 1, cz + 0, rotation, sbb);
-		placeBlockRotated(world, Blocks.wooden_slab, 1 + 8, cx, y + 1, cz + 1, rotation, sbb);
+		placeBlockRotated(world, Blocks.WOODEN_SLAB, 1 + 8, cx, y + 1, cz + 1, rotation, sbb);
 		placeBlockRotated(world, deco.stairID, this.getStairMeta(1 + rotation) + 4, cx, y + 1, cz + 2, rotation, sbb);
 	}
 
@@ -677,8 +677,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		// floor
 		this.fillBlocksRotated(world, sbb, 4, y, 3, 7, y, 5, TFBlocks.towerDevice, BlockTFTowerDevice.META_REAPPEARING_INACTIVE, rotation);
 		// plates
-		this.fillBlocksRotated(world, sbb, 4, y + 1, 2, 7, y + 1, 2, Blocks.wooden_pressure_plate, 0, rotation);
-		this.fillBlocksRotated(world, sbb, 4, y + 1, 6, 7, y + 1, 6, Blocks.wooden_pressure_plate, 0, rotation);
+		this.fillBlocksRotated(world, sbb, 4, y + 1, 2, 7, y + 1, 2, Blocks.WOODEN_PRESSURE_PLATE, 0, rotation);
+		this.fillBlocksRotated(world, sbb, 4, y + 1, 6, 7, y + 1, 6, Blocks.WOODEN_PRESSURE_PLATE, 0, rotation);
 
 	}
 
@@ -690,12 +690,12 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		int cx = this.size > 9 ? 5 : 3;
 		int cz = this.size > 9 ? 5 : 4;
 		
-		placeBlockRotated(world, Blocks.sticky_piston, 1, cx, y + 1, cz, rotation, sbb);
-		placeBlockRotated(world, Blocks.redstone_lamp, 0, cx, y + 2, cz, rotation, sbb);
+		placeBlockRotated(world, Blocks.STICKY_PISTON, 1, cx, y + 1, cz, rotation, sbb);
+		placeBlockRotated(world, Blocks.REDSTONE_LAMP, 0, cx, y + 2, cz, rotation, sbb);
 		placeBlockRotated(world, deco.accentID, deco.accentMeta, cx, y + 1, cz + 1, rotation, sbb);
-		placeBlockRotated(world, Blocks.lever, getLeverMeta(rotation, 3), cx, y + 1, cz + 2, rotation, sbb);
+		placeBlockRotated(world, Blocks.LEVER, getLeverMeta(rotation, 3), cx, y + 1, cz + 2, rotation, sbb);
 		placeBlockRotated(world, deco.accentID, deco.accentMeta, cx, y + 3, cz - 1, rotation, sbb);
-		placeBlockRotated(world, Blocks.lever, getLeverMeta(rotation, 2) + 8, cx, y + 3, cz - 2, rotation, sbb);
+		placeBlockRotated(world, Blocks.LEVER, getLeverMeta(rotation, 2) + 8, cx, y + 3, cz - 2, rotation, sbb);
 	}
 	
 	/**
@@ -706,14 +706,14 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		int cx = this.size > 9 ? 6 : 5;
 		int cz = this.size > 9 ? 4 : 3;
 		
-		placeBlockRotated(world, Blocks.sticky_piston, 5 - getStairMeta(3 + rotation), cx, y + 1, cz + 1, rotation, sbb);
+		placeBlockRotated(world, Blocks.STICKY_PISTON, 5 - getStairMeta(3 + rotation), cx, y + 1, cz + 1, rotation, sbb);
 		placeBlockRotated(world, deco.accentID, deco.accentMeta, cx, y + 1, cz, rotation, sbb);
-		placeBlockRotated(world, Blocks.redstone_wire, 0, cx + 1, y + 1, cz, rotation, sbb);
-		placeBlockRotated(world, Blocks.wooden_pressure_plate, 0, cx + 2, y + 1, cz, rotation, sbb);
-		placeBlockRotated(world, Blocks.unpowered_repeater, (rotation + 1) % 4 + 4, cx - 1, y + 1, cz, rotation, sbb);
-		placeBlockRotated(world, Blocks.redstone_wire, 0, cx - 2, y + 1, cz, rotation, sbb);
-		placeBlockRotated(world, Blocks.redstone_wire, 0, cx - 2, y + 1, cz + 1, rotation, sbb);
-		placeBlockRotated(world, Blocks.redstone_wire, 0, cx - 1, y + 1, cz + 1, rotation, sbb);
+		placeBlockRotated(world, Blocks.REDSTONE_WIRE, 0, cx + 1, y + 1, cz, rotation, sbb);
+		placeBlockRotated(world, Blocks.WOODEN_PRESSURE_PLATE, 0, cx + 2, y + 1, cz, rotation, sbb);
+		placeBlockRotated(world, Blocks.UNPOWERED_REPEATER, (rotation + 1) % 4 + 4, cx - 1, y + 1, cz, rotation, sbb);
+		placeBlockRotated(world, Blocks.REDSTONE_WIRE, 0, cx - 2, y + 1, cz, rotation, sbb);
+		placeBlockRotated(world, Blocks.REDSTONE_WIRE, 0, cx - 2, y + 1, cz + 1, rotation, sbb);
+		placeBlockRotated(world, Blocks.REDSTONE_WIRE, 0, cx - 1, y + 1, cz + 1, rotation, sbb);
 
 	}
 
@@ -734,10 +734,10 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	protected void makeSmallBookshelf(World world, StructureBoundingBox sbb, int rotation, int y, int bx, int bz) {
 		placeBlockRotated(world, deco.stairID, this.getStairMeta(1 + rotation) + 0, bx, y + 1, bz + 0, rotation, sbb);
 		placeBlockRotated(world, deco.stairID, this.getStairMeta(1 + rotation) + 4, bx, y + 2, bz + 0, rotation, sbb);
-		placeBlockRotated(world, Blocks.bookshelf, 0, bx, y + 1, bz + 1, rotation, sbb);
-		placeBlockRotated(world, Blocks.bookshelf, 0, bx, y + 2, bz + 1, rotation, sbb);
-		placeBlockRotated(world, Blocks.bookshelf, 0, bx, y + 1, bz + 2, rotation, sbb);
-		placeBlockRotated(world, Blocks.bookshelf, 0, bx, y + 2, bz + 2, rotation, sbb);
+		placeBlockRotated(world, Blocks.BOOKSHELF, 0, bx, y + 1, bz + 1, rotation, sbb);
+		placeBlockRotated(world, Blocks.BOOKSHELF, 0, bx, y + 2, bz + 1, rotation, sbb);
+		placeBlockRotated(world, Blocks.BOOKSHELF, 0, bx, y + 1, bz + 2, rotation, sbb);
+		placeBlockRotated(world, Blocks.BOOKSHELF, 0, bx, y + 2, bz + 2, rotation, sbb);
 		placeBlockRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 0, bx, y + 1, bz + 3, rotation, sbb);
 		placeBlockRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, bx, y + 2, bz + 3, rotation, sbb);
 	}
@@ -762,11 +762,11 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		placeBlockRotated(world, deco.blockID, deco.blockMeta, x + 2, y + 3, z + 1, rotation, sbb);
 		placeBlockRotated(world, deco.blockID, deco.blockMeta, x + 0, y + 3, z + 1, rotation, sbb);
 		placeBlockRotated(world, deco.blockID, deco.blockMeta, x + 1, y + 3, z + 2, rotation, sbb);
-		placeBlockRotated(world, Blocks.air, 0, x + 1, y + 3, z + 0, rotation, sbb);
+		placeBlockRotated(world, Blocks.AIR, 0, x + 1, y + 3, z + 0, rotation, sbb);
 		placeBlockRotated(world, deco.blockID, deco.blockMeta, x + 1, y + 3, z + 1, rotation, sbb);
-		placeBlockRotated(world, Blocks.sticky_piston, 5 - getStairMeta(1 + rotation), x + 1, y + 3, z - 1, rotation, sbb);
+		placeBlockRotated(world, Blocks.STICKY_PISTON, 5 - getStairMeta(1 + rotation), x + 1, y + 3, z - 1, rotation, sbb);
 		placeBlockRotated(world, deco.accentID, deco.accentMeta, x + 1, y + 3, z - 2, rotation, sbb);
-		placeBlockRotated(world, Blocks.lever, getLeverMeta(rotation, 5), x + 2, y + 3, z - 2, rotation, sbb);
+		placeBlockRotated(world, Blocks.LEVER, getLeverMeta(rotation, 5), x + 2, y + 3, z - 2, rotation, sbb);
 		
 		placeTreasureRotated(world, x + 1, y + 2, z + 1, rotation, TFTreasure.darktower_cache, sbb);
 	}
@@ -908,11 +908,11 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 
 			this.placeBlockRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, y - i, sz, rotation, sbb);
 			this.placeBlockRotated(world, deco.accentID, deco.accentMeta, sx, y - 1 - i, sz, rotation, sbb);
-			this.placeBlockRotated(world, Blocks.air, 0, sx, y + 1 - i, sz, rotation, sbb);
-			this.placeBlockRotated(world, Blocks.air, 0, sx, y + 2 - i, sz, rotation, sbb);
-			this.placeBlockRotated(world, Blocks.air, 0, sx - 1, y + 2 - i, sz, rotation, sbb);
-			this.placeBlockRotated(world, Blocks.air, 0, sx, y + 3 - i, sz, rotation, sbb);
-			this.placeBlockRotated(world, Blocks.air, 0, sx - 1, y + 3 - i, sz, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, sx, y + 1 - i, sz, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, sx, y + 2 - i, sz, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, sx - 1, y + 2 - i, sz, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, sx, y + 3 - i, sz, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, sx - 1, y + 3 - i, sz, rotation, sbb);
 		}
 	}
 	
@@ -989,14 +989,14 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		for (int by = 1; by < 4; by++)
 		{
 			placeBlockRotated(world, beamID, beamMetaBase + beamMetaUD, 2, y - by, 2, rotation, sbb);
-			placeBlockRotated(world, Blocks.ladder, getLadderMeta(2 + rotation), 2 + 1, y - by, 2, rotation, sbb);
+			placeBlockRotated(world, Blocks.LADDER, getLadderMeta(2 + rotation), 2 + 1, y - by, 2, rotation, sbb);
 			placeBlockRotated(world, beamID, beamMetaBase + beamMetaUD, 6, y - by, 6, rotation, sbb);
-			placeBlockRotated(world, Blocks.ladder, getLadderMeta(4 + rotation), 6 - 1, y - by, 6, rotation, sbb);
+			placeBlockRotated(world, Blocks.LADDER, getLadderMeta(4 + rotation), 6 - 1, y - by, 6, rotation, sbb);
 		}
 		
 		// holes for entrance
-		placeBlockRotated(world, Blocks.air, 0, 3, y, 2, rotation, sbb);
-		placeBlockRotated(world, Blocks.air, 0, 5, y, 6, rotation, sbb);
+		placeBlockRotated(world, Blocks.AIR, 0, 3, y, 2, rotation, sbb);
+		placeBlockRotated(world, Blocks.AIR, 0, 5, y, 6, rotation, sbb);
 	}
 
 
@@ -1037,12 +1037,12 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			if (!bottom || checkPost(world, x1, y - 4, z1, rotation, sbb))
 			{
 				placeBlockRotated(world, beamID, beamMetaBase + beamMetaUD, x1, y - by, z1, rotation, sbb);
-				placeBlockRotated(world, Blocks.ladder, getLadderMeta(2 + rotation), x1 + 1, y - by, z1, rotation, sbb);
+				placeBlockRotated(world, Blocks.LADDER, getLadderMeta(2 + rotation), x1 + 1, y - by, z1, rotation, sbb);
 			}
 			if (!bottom || checkPost(world, x3, y - 4, z3, rotation, sbb))
 			{
 				placeBlockRotated(world, beamID, beamMetaBase + beamMetaUD, x3, y - by, z3, rotation, sbb);
-				placeBlockRotated(world, Blocks.ladder, getLadderMeta(4 + rotation), x3 - 1, y - by, z3, rotation, sbb);
+				placeBlockRotated(world, Blocks.LADDER, getLadderMeta(4 + rotation), x3 - 1, y - by, z3, rotation, sbb);
 			}
 		}
 
@@ -1055,11 +1055,11 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 //			for (int by = 1; by < 5; by++)
 //			{
 //				placeBlockAtCurrentPosition(world, beamID, beamMetaBase + beamMetaUD, ladderX, y + by, 9, sbb);
-//				placeBlockAtCurrentPosition(world, Blocks.ladder, getLadderMeta(ladderMeta), ladderX, y + by, ladderZ, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.LADDER, getLadderMeta(ladderMeta), ladderX, y + by, ladderZ, sbb);
 //			}
 //
 //			// fence thing
-//			placeBlockAtCurrentPosition(world, Blocks.air, 0, ladderX, y + 6, 9, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, ladderX, y + 6, 9, sbb);
 //			placeBlockAtCurrentPosition(world, deco.fenceID, deco.fenceMeta, ladderX + 1, y + 5, ladderZ, sbb);
 //			placeBlockAtCurrentPosition(world, deco.fenceID, deco.fenceMeta, ladderX - 1, y + 5, ladderZ, sbb);
 //			placeBlockAtCurrentPosition(world, deco.fenceID, deco.fenceMeta, ladderX + 1, y + 6, ladderZ, sbb);
@@ -1085,8 +1085,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 //		int lx = pickFrom(rand, 2, 12, 16);
 //		int lz = 2 + rand.nextInt(15);
 //
-//		placeBlockAtCurrentPosition(world, Blocks.redstone_lamp, 0, lx, y + 2, lz, sbb);
-//		placeBlockAtCurrentPosition(world, Blocks.lever, 7, lx, y + 1, lz, sbb);
+//		placeBlockAtCurrentPosition(world, Blocks.REDSTONE_LAMP, 0, lx, y + 2, lz, sbb);
+//		placeBlockAtCurrentPosition(world, Blocks.LEVER, 7, lx, y + 1, lz, sbb);
 	}
 
 
@@ -1134,9 +1134,9 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		int worldY = this.getYWithOffset(y);
 		int worldZ = this.getZWithOffsetAsIfRotated(x, z, rotation);
 		
-		Block blockID = sbb.isVecInside(worldX, worldY, worldZ) ? world.getBlock(worldX, worldY, worldZ) : Blocks.air;
+		Block blockID = sbb.isVecInside(worldX, worldY, worldZ) ? world.getBlock(worldX, worldY, worldZ) : Blocks.AIR;
 		
-		return !(blockID == Blocks.air || (blockID == deco.accentID && world.getBlockMetadata(worldX, worldY, worldZ) == deco.accentMeta));
+		return !(blockID == Blocks.AIR || (blockID == deco.accentID && world.getBlockMetadata(worldX, worldY, worldZ) == deco.accentMeta));
 	}
 
 
@@ -1168,7 +1168,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 						}
 //						else if (this.isKeyTower())
 //						{
-//	                        this.placeBlockAtCurrentPosition(world, Blocks.diamond_block, 0,  x, y, z, sbb);
+//	                        this.placeBlockAtCurrentPosition(world, Blocks.DIAMOND_BLOCK, 0,  x, y, z, sbb);
 //						}
 						else
 						{
@@ -1312,13 +1312,13 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
         // clear the door
 		if (dx == 0 || dx == size - 1) 
 		{
-			this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.AIR, 0, false);
 		}
 		if (dz == 0 || dz == size - 1) 
 		{
-			this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.AIR, 0, false);
 		}
 	}
 
@@ -1333,13 +1333,13 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
         // clear the door
 		if (dx == 0 || dx == size - 1) 
 		{
-			this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, TFBlocks.towerDevice, BlockTFTowerDevice.META_REAPPEARING_INACTIVE, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, TFBlocks.towerDevice, BlockTFTowerDevice.META_REAPPEARING_INACTIVE, Blocks.AIR, 0, false);
 		}
 		if (dz == 0 || dz == size - 1) 
 		{
-			this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, TFBlocks.towerDevice, BlockTFTowerDevice.META_REAPPEARING_INACTIVE, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, TFBlocks.towerDevice, BlockTFTowerDevice.META_REAPPEARING_INACTIVE, Blocks.AIR, 0, false);
 		}
 	}
 
@@ -1355,8 +1355,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
         // clear the door
 		if (dx == 0 || dx == size - 1) 
 		{
-			this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.AIR, 0, false);
 			this.placeBlockAtCurrentPosition(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_LOCKED, dx, dy + 0, dz + 1, sbb);
 			this.placeBlockAtCurrentPosition(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_LOCKED, dx, dy + 0, dz - 1, sbb);
 			this.placeBlockAtCurrentPosition(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_LOCKED, dx, dy + 2, dz + 1, sbb);
@@ -1364,8 +1364,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		}
 		if (dz == 0 || dz == size - 1) 
 		{
-			this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_INACTIVE, Blocks.AIR, 0, false);
 			this.placeBlockAtCurrentPosition(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_LOCKED, dx + 1, dy + 0, dz, sbb);
 			this.placeBlockAtCurrentPosition(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_LOCKED, dx - 1, dy + 0, dz, sbb);
 			this.placeBlockAtCurrentPosition(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_VANISH_LOCKED, dx + 1, dy + 2, dz, sbb);

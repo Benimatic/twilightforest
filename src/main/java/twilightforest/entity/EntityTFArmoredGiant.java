@@ -11,11 +11,11 @@ public class EntityTFArmoredGiant extends EntityTFGiantMiner {
 	public EntityTFArmoredGiant(World par1World) {
 		super(par1World);
 		
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.stone_sword));
-        this.setCurrentItemOrArmor(1, new ItemStack(Items.iron_helmet));
-        this.setCurrentItemOrArmor(2, new ItemStack(Items.iron_chestplate));
-        this.setCurrentItemOrArmor(3, new ItemStack(Items.iron_leggings));
-        this.setCurrentItemOrArmor(4, new ItemStack(Items.iron_boots));
+        this.setCurrentItemOrArmor(0, new ItemStack(Items.STONE_SWORD));
+        this.setCurrentItemOrArmor(1, new ItemStack(Items.IRON_HELMET));
+        this.setCurrentItemOrArmor(2, new ItemStack(Items.IRON_CHESTPLATE));
+        this.setCurrentItemOrArmor(3, new ItemStack(Items.IRON_LEGGINGS));
+        this.setCurrentItemOrArmor(4, new ItemStack(Items.IRON_BOOTS));
 
 	}
 

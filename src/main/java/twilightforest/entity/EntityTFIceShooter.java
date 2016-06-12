@@ -63,7 +63,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
      */
     protected Item getDropItem()
     {
-        return Items.snowball;
+        return Items.SNOWBALL;
     }
 
     

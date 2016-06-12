@@ -200,7 +200,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 	
 		// make walls
-		//fillWithMetadataBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockID, deco.blockMeta, Blocks.air, 0, false);
+		//fillWithMetadataBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockID, deco.blockMeta, Blocks.AIR, 0, false);
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, deco.randomBlocks);
 
 		// clear inside
@@ -280,7 +280,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
         
-        if (getBlockAtCurrentPosition(world, dx, dy + 2, dz, sbb) != Blocks.air) {
+        if (getBlockAtCurrentPosition(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
         	placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, dx, dy + 2, dz, sbb);
         }
 	}
@@ -299,13 +299,13 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		
 		switch (rand.nextInt(8)) {
 		case 0:
-			//this.fillBlocksRotated(world, sbb, 9, bottom + 5, 1, 10, top + 1, 7, Blocks.wool, ladderUpDir, ladderUpDir);
+			//this.fillBlocksRotated(world, sbb, 9, bottom + 5, 1, 10, top + 1, 7, Blocks.WOOL, ladderUpDir, ladderUpDir);
 			if (isNoDoorAreaRotated(9, bottom + 5, 1, 10, top + 1, 7, ladderUpDir)) {
 				decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
 				break;
 			} // fall through otherwise
 		case 1:
-			//this.fillBlocksRotated(world, sbb, 7, bottom, 0, 10, top + 1, 10, Blocks.wool, ladderUpDir, ladderUpDir);
+			//this.fillBlocksRotated(world, sbb, 7, bottom, 0, 10, top + 1, 10, Blocks.WOOL, ladderUpDir, ladderUpDir);
 			if (isNoDoorAreaRotated(7, bottom, 0, 10, top + 1, 10, ladderUpDir)) {
 				decorateFarWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
 				break;
@@ -450,7 +450,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// clear floor above
 		for (int z = 2; z < 7; z++)
 		{
-			this.placeBlockRotated(world, Blocks.air, 0, 9, top, z, ladderUpDir, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, 9, top, z, ladderUpDir, sbb);
 		}
 		
 		// treasure!
@@ -485,7 +485,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// clear floor above
 		for (int z = 2; z < 7; z++)
 		{
-			this.placeBlockRotated(world, Blocks.air, 0, 9, top, z, ladderUpDir, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, 9, top, z, ladderUpDir, sbb);
 		}
 		
 		// treasure!
@@ -548,13 +548,13 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 			int y = bottom + 4 + (x / 2);
 			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((x % 2 == 1) ? 8 : 0), x, y, 1, ladderUpDir, sbb);
 			if (x > 6) {
-				this.placeBlockRotated(world, Blocks.air, 0, x, top, 1, ladderUpDir, sbb);
+				this.placeBlockRotated(world, Blocks.AIR, 0, x, top, 1, ladderUpDir, sbb);
 			}
 		}
 		// one flight
 		for (int z = 2; z < 5; z++) {
 			int y = bottom + 8 + (z / 2);
-			this.placeBlockRotated(world, Blocks.air, 0, 9, top, z, ladderUpDir, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, 9, top, z, ladderUpDir, sbb);
 			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((z % 2 == 1) ? 8 : 0), 9, y, z, ladderUpDir, sbb);
 		}
 		
@@ -582,14 +582,14 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		for (int z = 7; z > 1; z--) {
 			int y = top - 2 - ((z - 1) / 2);
 			if (z < 4) {
-				this.placeBlockRotated(world, Blocks.air, 0, 8, top, z, ladderDownDir, sbb);
+				this.placeBlockRotated(world, Blocks.AIR, 0, 8, top, z, ladderDownDir, sbb);
 			}
 			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((z % 2 == 1) ? 8 : 0), 8, y, z, ladderDownDir, sbb);
 		}
 		// last flight
 		for (int x = 7; x > 3; x--) {
 			int y = top + 1 - ((x - 1) / 2);
-			this.placeBlockRotated(world, Blocks.air, 0, x, top, 2, ladderDownDir, sbb);
+			this.placeBlockRotated(world, Blocks.AIR, 0, x, top, 2, ladderDownDir, sbb);
 			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((x % 2 == 1) ? 8 : 0), x, y, 2, ladderDownDir, sbb);
 		}
 		

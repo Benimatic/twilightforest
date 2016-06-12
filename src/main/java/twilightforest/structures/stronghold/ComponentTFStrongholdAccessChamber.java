@@ -55,15 +55,15 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		placeSmallDoorwayAt(world, rand, 3, 8, 1, 4, sbb);
 		
 		// shaft down
-		this.fillWithMetadataBlocks(world, sbb, 2, -2, 2, 6, 0, 6, Blocks.stonebrick, 1, Blocks.air, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 2, -2, 2, 6, 0, 6, Blocks.STONEBRICK, 1, Blocks.AIR, 0, false);
 
 		this.fillWithAir(world, sbb, 3, -2, 3, 5, 2, 5);
 		
 		// stairs surrounding shaft
-		this.fillWithMetadataBlocks(world, sbb, 2, 0, 3, 2, 0, 6, deco.stairID, this.getStairMeta(2), Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 6, 0, 2, 6, 0, 6, deco.stairID, this.getStairMeta(0), Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 3, 0, 2, 5, 0, 2, deco.stairID, this.getStairMeta(3), Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 3, 0, 6, 5, 0, 6, deco.stairID, this.getStairMeta(1), Blocks.air, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 2, 0, 3, 2, 0, 6, deco.stairID, this.getStairMeta(2), Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 6, 0, 2, 6, 0, 6, deco.stairID, this.getStairMeta(0), Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 3, 0, 2, 5, 0, 2, deco.stairID, this.getStairMeta(3), Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 3, 0, 6, 5, 0, 6, deco.stairID, this.getStairMeta(1), Blocks.AIR, 0, false);
 		
 		// pillar
 		this.placeBlockAtCurrentPosition(world, deco.pillarID, deco.pillarMeta, 2, 0, 2, sbb);
@@ -72,7 +72,7 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		this.placeBlockAtCurrentPosition(world, TFBlocks.trophyPedestal, 15, 2, 1, 2, sbb);
 		
 		// block point
-		this.fillWithMetadataBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.shield, 15, Blocks.air, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.shield, 15, Blocks.AIR, 0, false);
 		
 		return true;
 	}

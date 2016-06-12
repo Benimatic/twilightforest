@@ -42,7 +42,7 @@ public class RenderTFCharm extends Render
     		EntityTFCharmEffect charm = (EntityTFCharmEffect)par1Entity;
     		if (charm.getItemID() > 0)
     		{
-    			//this.itemIcon = Items.itemsList[charm.getItemID()].getIconFromDamage(0);
+    			//this.itemIcon = Items.ITEMSLIST[charm.getItemID()].getIconFromDamage(0);
     			this.itemIcon = TFItems.charmOfKeeping1.getIconFromDamage(0);
     		}
     	}

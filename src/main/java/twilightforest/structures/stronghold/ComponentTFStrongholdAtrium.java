@@ -108,7 +108,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 		// balcony
 		this.fillWithRandomizedBlocks(world, sbb, 1, 6, 1, 16, 7, 16, false, rand, deco.randomBlocks);
-		this.fillWithBlocks(world, sbb, 5, 8, 5, 12, 8, 12, deco.fenceID, Blocks.air, false);
+		this.fillWithBlocks(world, sbb, 5, 8, 5, 12, 8, 12, deco.fenceID, Blocks.AIR, false);
 		this.fillWithAir(world, sbb, 6, 6, 6, 11, 8, 11);
 		
 		// balcony pillars
@@ -131,8 +131,8 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithRandomizedBlocks(world, sbb, 15, 1, 16, 15, 12, 16, false, rand, deco.randomBlocks);
 
 		// grass
-		this.randomlyFillWithBlocks(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, Blocks.grass, Blocks.grass, false);
-		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, Blocks.grass, Blocks.air, false);
+		this.randomlyFillWithBlocks(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, Blocks.GRASS, Blocks.GRASS, false);
+		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, Blocks.GRASS, Blocks.AIR, false);
 		
 		// tree
 		this.spawnATree(world, rand.nextInt(5), 8, 1, 8, sbb);

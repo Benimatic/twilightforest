@@ -36,7 +36,7 @@ public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
 		for (int x = 0; x <= size - 1; x++) {
 			for (int z = 0; z <= size - 1; z++) {
 				if (x == 0 || x == size - 1 || z == 0 || z == size - 1) {
-					placeBlockAtCurrentPosition(world, Blocks.fence, 0, x, y, z, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x, y, z, sbb);
 				}
 			}
 		}

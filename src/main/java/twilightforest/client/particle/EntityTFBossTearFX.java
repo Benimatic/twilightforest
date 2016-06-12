@@ -17,7 +17,7 @@ public class EntityTFBossTearFX extends EntityFX
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
         this.setParticleIcon(par8Item.getIconFromDamage(0));
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-        this.particleGravity = Blocks.snow.blockParticleGravity * 2F;
+        this.particleGravity = Blocks.SNOW.blockParticleGravity * 2F;
         this.particleScale = 16.0F;
         
         this.particleMaxAge = 20 + rand.nextInt(40);
@@ -60,7 +60,7 @@ public class EntityTFBossTearFX extends EntityFX
     		    double gaussX = rand.nextGaussian() * 0.1D;
     		    double gaussY = rand.nextGaussian() * 0.2D;
     		    double gaussZ = rand.nextGaussian() * 0.1D;
-    		    Item popItem = Items.ghast_tear;
+    		    Item popItem = Items.GHAST_TEAR;
     		    
     		    
     		    worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(popItem), this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ);

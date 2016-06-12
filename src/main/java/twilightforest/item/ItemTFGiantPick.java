@@ -61,7 +61,7 @@ public class ItemTFGiantPick extends ItemPickaxe {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister)
     {
-        this.itemIcon = Items.stone_pickaxe.getIconFromDamage(0);
+        this.itemIcon = Items.STONE_PICKAXE.getIconFromDamage(0);
         this.giantIcon = new GiantItemIcon(this.itemIcon, 0.0625F * 7F, 0.0625F * 2F);
 
     }

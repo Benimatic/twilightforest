@@ -56,7 +56,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
     {
         if (par1Random.nextInt(4) != 0)
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 2);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
         }
         else if (par1Random.nextBoolean())
         {
@@ -64,7 +64,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
         }
         else
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 1);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
         }
     }
     

@@ -189,12 +189,12 @@ public class BlockTFTowerTranslucent extends Block
 		case META_REVERTER_REPLACEMENT:
 			return TEX_REVERTER_REPLACEMENT;
 		case META_REACTOR_DEBRIS:
-			Block toMimic = sideRNG.nextBoolean() ? (sideRNG.nextBoolean() ? Blocks.portal : Blocks.netherrack) : (sideRNG.nextBoolean() ? Blocks.bedrock : Blocks.obsidian);
+			Block toMimic = sideRNG.nextBoolean() ? (sideRNG.nextBoolean() ? Blocks.PORTAL : Blocks.NETHERRACK) : (sideRNG.nextBoolean() ? Blocks.BEDROCK : Blocks.OBSIDIAN);
 			return toMimic.getIcon(side, meta);
 		case META_FAKE_GOLD:
-			return Blocks.gold_block.getIcon(side, meta);
+			return Blocks.GOLD_BLOCK.getIcon(side, meta);
 		case META_FAKE_DIAMOND:
-			return Blocks.diamond_block.getIcon(side, meta);
+			return Blocks.DIAMOND_BLOCK.getIcon(side, meta);
 		}
 	}
 	
@@ -222,7 +222,7 @@ public class BlockTFTowerTranslucent extends Block
 
             if (meta == META_BUILT_ACTIVE)
             {
-            	par1World.setBlock(x, y, z, Blocks.air, 0, 3);
+            	par1World.setBlock(x, y, z, Blocks.AIR, 0, 3);
                 par1World.notifyBlocksOfNeighborChange(x, y, z, this);
                 par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.3F, 0.5F);
                 //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);

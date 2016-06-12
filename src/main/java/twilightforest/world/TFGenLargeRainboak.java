@@ -175,7 +175,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                     var11[var9] = var10[var9] + var13;
                     Block var14 = this.worldObj.getBlock(var11[0], var11[1], var11[2]);
 
-                    if (var14 != Blocks.air && !var14.canBeReplacedByLeaves(this.worldObj, var11[0], var11[1], var11[2]))
+                    if (var14 != Blocks.AIR && !var14.canBeReplacedByLeaves(this.worldObj, var11[0], var11[1], var11[2]))
                     {
                         ++var13;
                     }
@@ -433,7 +433,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 var13[var7] = MathHelper.floor_double((double)par1ArrayOfInteger[var7] + (double)var14 * var11);
                 Block var16 = this.worldObj.getBlock(var13[0], var13[1], var13[2]);
 
-                if (var16 != Blocks.air && var16 != Blocks.leaves)
+                if (var16 != Blocks.AIR && var16 != Blocks.LEAVES)
                 {
                     break;
                 }
@@ -453,7 +453,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
         int[] var2 = new int[] {this.basePos[0], this.basePos[1] + this.heightLimit - 1, this.basePos[2]};
         Block var3 = this.worldObj.getBlock(this.basePos[0], this.basePos[1] - 1, this.basePos[2]);
 
-        if (var3 != Blocks.dirt && var3 != Blocks.grass)
+        if (var3 != Blocks.DIRT && var3 != Blocks.GRASS)
         {
             return false;
         }

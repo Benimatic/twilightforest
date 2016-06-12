@@ -327,8 +327,8 @@ public class TFFinalCastlePieces {
     		this.fillWithMetadataBlocks(world, sbb, 12, 10, 12, 24, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
     		
     		// doors in dungeon force field
-    		this.fillWithMetadataBlocks(world, sbb, 17, 1, 12, 19, 4, 12, TFBlocks.castleDoor, 2, Blocks.air, 0, false);
-    		this.fillWithMetadataBlocks(world, sbb, 17, 1, 24, 19, 4, 24, TFBlocks.castleDoor, 2, Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 17, 1, 12, 19, 4, 12, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 17, 1, 24, 19, 4, 24, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
     		
     		// stairs to stair towers
     		makeSmallTowerStairs(world, sbb, 0);
@@ -337,10 +337,10 @@ public class TFFinalCastlePieces {
     		makeLargeTowerStairs(world, sbb, 2);
     		
     		// door, first floor
-    		this.fillWithMetadataBlocks(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.castleDoor, 0, Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.castleDoor, 0, Blocks.AIR, 0, false);
     		
     		// door, second floor
-    		this.fillWithMetadataBlocks(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.castleDoor, 1, Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.castleDoor, 1, Blocks.AIR, 0, false);
             
     		return true;
     	}
@@ -374,11 +374,11 @@ public class TFFinalCastlePieces {
 		}
 
 		private void makePillarBase(World world, StructureBoundingBox sbb, int x, int z, int y, int metaBit) {
-			this.fillWithMetadataBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, deco.stairID, getStairMeta(3) | metaBit, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, deco.stairID, getStairMeta(1) | metaBit, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, deco.stairID, getStairMeta(3) | metaBit, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, deco.stairID, getStairMeta(1) | metaBit, Blocks.AIR, 0, false);
 
-			this.fillWithMetadataBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, deco.stairID, getStairMeta(2) | metaBit, Blocks.air, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, deco.stairID, getStairMeta(0) | metaBit, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, deco.stairID, getStairMeta(2) | metaBit, Blocks.AIR, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, deco.stairID, getStairMeta(0) | metaBit, Blocks.AIR, 0, false);
 		}
 
     }
@@ -694,7 +694,7 @@ public class TFFinalCastlePieces {
 			}
 			
 			// door
-    		this.fillWithMetadataBlocks(world, sbb, 23, 0, 12, 23, 3, 14, TFBlocks.castleDoor, 2, Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 23, 0, 12, 23, 3, 14, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
     		this.fillWithMetadataBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
 
 			
@@ -749,7 +749,7 @@ public class TFFinalCastlePieces {
 			super.addComponentParts(world, rand, sbb);
 			
 			// door
-    		this.fillWithMetadataBlocks(world, sbb, 7, 0, 16, 7, 3, 18, TFBlocks.castleDoor, 2, Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 7, 0, 16, 7, 3, 18, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
     		this.fillWithMetadataBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
 
 			
@@ -1031,7 +1031,7 @@ public class TFFinalCastlePieces {
     		
     		
     		// door, first floor
-    		this.fillWithMetadataBlocks(world, sbb, 0, 1, 1, 0, 3, 2, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 0, 1, 1, 0, 3, 2, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
     		
     		// stairs
     		for (int f = 0; f < 5; f++) {
@@ -1052,7 +1052,7 @@ public class TFFinalCastlePieces {
     		}
     		
     		// door, second floor
-    		this.fillWithMetadataBlocks(world, sbb, 1, 18, 0, 2, 20, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 1, 18, 0, 2, 20, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
     		
     		// second floor landing
     		this.fillWithMetadataBlocks(world, sbb, 1, 17, 1, 3, 17, 3, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
@@ -1062,7 +1062,7 @@ public class TFFinalCastlePieces {
     		this.fillWithMetadataBlocks(world, sbb, 1, 15, 5, 2, 15, 5, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
 
     		// door, roof
-    		this.fillWithMetadataBlocks(world, sbb, 1, 39, 0, 2, 41, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.air, 0, false);
+    		this.fillWithMetadataBlocks(world, sbb, 1, 39, 0, 2, 41, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
 
     		// stairs
     		for (int f = 0; f < 7; f++) {
@@ -1142,7 +1142,7 @@ public class TFFinalCastlePieces {
     		this.placeBlockAtCurrentPosition(world, deco.blockID, deco.blockMeta, 4, -7, 4, sbb);
     		
     		// door, first floor
-    		this.fillWithMetadataBlocks(world, sbb, 0, 1, 1, 0, 4, 3, TFBlocks.castleDoor, 0, Blocks.air, this.getGlyphMeta(), false);
+    		this.fillWithMetadataBlocks(world, sbb, 0, 1, 1, 0, 4, 3, TFBlocks.castleDoor, 0, Blocks.AIR, this.getGlyphMeta(), false);
 
 	        this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
     		
@@ -1928,15 +1928,15 @@ public class TFFinalCastlePieces {
 	        // clear the door
 			if (dx == 0 || dx == size - 1) 
 			{
-				this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 4, dz + 2, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
+				this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 4, dz + 2, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
 				//this.fillWithAir(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1);
-				this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.air, 0, false);
+				this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
 			}
 			if (dz == 0 || dz == size - 1) 
 			{
-				this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 4, dz, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
+				this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 4, dz, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
 				//this.fillWithAir(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz);
-				this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.air, 0, false);
+				this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
 			}
 		}
 	}

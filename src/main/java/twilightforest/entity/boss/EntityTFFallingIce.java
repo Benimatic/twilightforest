@@ -158,11 +158,11 @@ public class EntityTFFallingIce extends Entity {
 			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat()); 
 			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
 			
-			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.packed_ice) + "_0", dx, dy, dz, 0, 0, 0);
+			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.PACKED_ICE) + "_0", dx, dy, dz, 0, 0, 0);
 		}
 		
-		this.playSound(Blocks.anvil.stepSound.getBreakSound(), 3F, 0.5F);
-		this.playSound(Blocks.packed_ice.stepSound.getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.ANVIL.stepSound.getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.stepSound.getBreakSound(), 3F, 0.5F);
     }
     
 	/**
@@ -184,8 +184,8 @@ public class EntityTFFallingIce extends Entity {
     			for (int dz = minZ; dz <= maxZ; ++dz) {
     				Block block = this.worldObj.getBlock(dx, dy, dz);
 
-    				if (block == Blocks.ice || block == Blocks.packed_ice || block == Blocks.stone) {
-    					this.worldObj.setBlock(dx, dy, dz, Blocks.air, 0, 3);
+    				if (block == Blocks.ICE || block == Blocks.PACKED_ICE || block == Blocks.STONE) {
+    					this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 3);
     				}
     			}
     		}
@@ -215,7 +215,7 @@ public class EntityTFFallingIce extends Entity {
     }
     
     public Block getBlock() {
-    	return Blocks.packed_ice;
+    	return Blocks.PACKED_ICE;
     }
     
     public int getFallTime() {

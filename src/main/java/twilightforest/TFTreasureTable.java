@@ -70,7 +70,7 @@ public class TFTreasureTable {
 	 * Adds an enchanted book at the specified enchantment level
 	 */
 	public void addEnchantedBook(Enchantment ench1, int enchLevel1) {
-		ItemStack itemstack = Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(ench1, enchLevel1));
+		ItemStack itemstack = Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(ench1, enchLevel1));
 		list.add(new TFTreasureItem(itemstack, DEFAULT_RARITY));
 	}
 	

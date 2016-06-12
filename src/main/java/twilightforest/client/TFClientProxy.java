@@ -283,20 +283,20 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFRovingCube.class, new RenderTFRovingCube());
 
 		// projectiles
-		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFNatureBolt.class, new RenderSnowball(Items.wheat_seeds));
-		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFLichBolt.class, new RenderSnowball(Items.ender_pearl));
-		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFTwilightWandBolt.class, new RenderSnowball(Items.ender_pearl));
-		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFTomeBolt.class, new RenderSnowball(Items.paper));
+		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFNatureBolt.class, new RenderSnowball(Items.WHEAT_SEEDS));
+		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFLichBolt.class, new RenderSnowball(Items.ENDER_PEARL));
+		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFTwilightWandBolt.class, new RenderSnowball(Items.ENDER_PEARL));
+		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFTomeBolt.class, new RenderSnowball(Items.PAPER));
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFHydraMortar.class, new RenderTFHydraMortar());
-		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFSlimeProjectile.class, new RenderSnowball(Items.slime_ball));
+		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFSlimeProjectile.class, new RenderSnowball(Items.SLIME_BALL));
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFMoonwormShot.class, new RenderTFMoonwormShot());
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFCharmEffect.class, new RenderTFCharm(TFItems.charmOfLife1.getIconFromDamage(0)));
-		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFLichBomb.class, new RenderSnowball(Items.magma_cream));
+		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFLichBomb.class, new RenderSnowball(Items.MAGMA_CREAM));
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFThrownAxe.class, new RenderTFThrownAxe(TFItems.knightlyAxe));
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFThrownPick.class, new RenderTFThrownAxe(TFItems.knightlyPick));
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFFallingIce.class, new RenderTFFallingIce());
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.boss.EntityTFIceBomb.class, new RenderTFThrownIce());
-		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFIceSnowball.class, new RenderSnowball(Items.snowball));
+		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFIceSnowball.class, new RenderSnowball(Items.SNOWBALL));
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.EntityTFSlideBlock.class, new RenderTFSlideBlock());
 		
 		// I guess the hydra gets its own section
@@ -503,7 +503,7 @@ public class TFClientProxy extends TFCommonProxy {
 				}
 				else if (particleType.equals("bosstear"))
 				{
-					particle = new EntityTFBossTearFX(world, x, y, z, velX, velY, velZ, Items.ghast_tear);
+					particle = new EntityTFBossTearFX(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR);
 				}
 				else if (particleType.equals("ghasttrap"))
 				{

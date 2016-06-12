@@ -144,7 +144,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
      */
     protected Item getDropItem()
     {
-        return Items.snowball;
+        return Items.SNOWBALL;
     }
     
     /**
@@ -229,7 +229,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 //    	int fy = MathHelper.floor_double(this.posY);
 //    	int fz = MathHelper.floor_double(this.posZ);
 //    	
-//    	if (this.worldObj.getBlock(fx, fy, fz) != Blocks.air) {
+//    	if (this.worldObj.getBlock(fx, fy, fz) != Blocks.AIR) {
 //    		System.out.println("I am in a block!  World =" + this.worldObj);
 //    		this.posY += 1D;
 //    	}
@@ -291,14 +291,14 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         int totalDrops = this.rand.nextInt(4 + par2) + 1;
         for (int i = 0; i < totalDrops; ++i)
         {
-            this.dropItem(Item.getItemFromBlock(Blocks.packed_ice), 7);
+            this.dropItem(Item.getItemFromBlock(Blocks.PACKED_ICE), 7);
         }
 
         // snowballs
         totalDrops = this.rand.nextInt(5 + par2) + 5;
         for (int i = 0; i < totalDrops; ++i)
         {
-            this.dropItem(Items.snowball, 16);
+            this.dropItem(Items.SNOWBALL, 16);
         }
         
         // trophy
@@ -493,11 +493,11 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
                 for (int dz = minZ; dz <= maxZ; ++dz) {
                     Block block = this.worldObj.getBlock(dx, dy, dz);
                     
-                    if (block != Blocks.air) {
+                    if (block != Blocks.AIR) {
                     	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
                     	
-                    	if (block == Blocks.ice || block == Blocks.packed_ice) {
-                            this.worldObj.setBlock(dx, dy, dz, Blocks.air, 0, 2);
+                    	if (block == Blocks.ICE || block == Blocks.PACKED_ICE) {
+                            this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
                             
                             // here, this effect will have to do
                 			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(block) + (currentMeta << 12));
@@ -600,7 +600,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         	while (!groundFlag && ty > 0) 
         	{
                 Block whatsThere = worldObj.getBlock(bx, by - 1, bz);
-                if (whatsThere == Blocks.air || !whatsThere.getMaterial().isSolid())
+                if (whatsThere == Blocks.AIR || !whatsThere.getMaterial().isSolid())
                 {
                     ty--;
                     by--;

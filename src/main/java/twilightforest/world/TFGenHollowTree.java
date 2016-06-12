@@ -60,7 +60,7 @@ public class TFGenHollowTree extends TFGenerator
 //				for (int dy = 1; dy <= height; dy++)
 //				{
 //					int whatsThere = world.getBlock(dx + x, dy + y, dz + z);
-//					if(whatsThere != 0 && whatsThere != Blocks.leaves)
+//					if(whatsThere != 0 && whatsThere != Blocks.LEAVES)
 //					{
 //						System.out.println("Failed tree due to things at the base at height " + dy);
 //						return false;
@@ -77,7 +77,7 @@ public class TFGenHollowTree extends TFGenerator
 				for (int dy = height - crownRadius; dy <= height + crownRadius; dy++)
 				{
 					Block whatsThere = world.getBlock(dx + x, dy + y, dz + z);
-					if(whatsThere != Blocks.air && whatsThere != Blocks.leaves)
+					if(whatsThere != Blocks.AIR && whatsThere != Blocks.LEAVES)
 					{
 //						System.out.println("Failed tree due to things at the top");
 						return false;
@@ -91,7 +91,7 @@ public class TFGenHollowTree extends TFGenerator
 
 		// check if we're on dirt or grass
 		Block j1 = world.getBlock(x, y - 1, z);
-		if(j1 != Blocks.grass && j1 != Blocks.dirt)
+		if(j1 != Blocks.GRASS && j1 != Blocks.DIRT)
 		{
 			return false;
 		}
@@ -159,7 +159,7 @@ public class TFGenHollowTree extends TFGenerator
 		buildBranchRing(world, random, x, y, z, diameter, height, 0, (crownRadius / 2), 0, 0.05D, 0, bvar, bvar + 2, 1, true);
 		
 		// this glass sphere approximates where we want our crown		
-		//drawBlob(x, y + height, z, (byte)crownRadius, (byte)Blocks.glass, false);
+		//drawBlob(x, y + height, z, (byte)crownRadius, (byte)Blocks.GLASS, false);
 		
 	}
 	
@@ -270,13 +270,13 @@ public class TFGenHollowTree extends TFGenerator
 					// fill it with lava!
 					if (dist <= hollow) {
 						// just kidding!
-						//world.setBlock(dx + x, dy + y, dz + z, Blocks.lava);
+						//world.setBlock(dx + x, dy + y, dz + z, Blocks.LAVA);
 					}
 					
 					// how about a ladder?  is that okay?
 					if (dist == hollow && dx == hollow) {
-//						putBlockAndMetadata(dx + x, dy + y, dz + z, Blocks.ladder,  4, true);
-						setBlockAndMetadata(world, dx + x, dy + y, dz + z, Blocks.vine,  8);
+//						putBlockAndMetadata(dx + x, dy + y, dz + z, Blocks.LADDER,  4, true);
+						setBlockAndMetadata(world, dx + x, dy + y, dz + z, Blocks.VINE,  8);
 					}
 				}
 			}
@@ -462,11 +462,11 @@ public class TFGenHollowTree extends TFGenerator
 		// wood support
 		drawBlob(world, x, y, z, 3, treeBlock, branchMeta);
 		// air
-		drawBlob(world, x, y, z, 2, Blocks.air, 0);
+		drawBlob(world, x, y, z, 2, Blocks.AIR, 0);
 		
 		
 		// spawner
-        world.setBlock(x + 0, y + 1, z + 0, Blocks.mob_spawner, 0, 2);
+        world.setBlock(x + 0, y + 1, z + 0, Blocks.MOB_SPAWNER, 0, 2);
         TileEntityMobSpawner ms = (TileEntityMobSpawner)world.getTileEntity(x + 0, y + 1, z + 0);
         if (ms != null) {
         	ms.func_145881_a().setEntityName(TFCreatures.getSpawnerNameFor("Swarm Spider"));

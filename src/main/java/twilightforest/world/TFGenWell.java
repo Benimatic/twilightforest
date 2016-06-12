@@ -38,37 +38,37 @@ public class TFGenWell extends TFGenerator {
 		
 		
 		// make a cute well!
-		setBlock(world, x + 0, y, z + 0, Blocks.mossy_cobblestone);
-		setBlock(world, x + 1, y, z + 0, Blocks.mossy_cobblestone);
-		setBlock(world, x + 2, y, z + 0, Blocks.mossy_cobblestone);
-		setBlock(world, x + 0, y, z + 2, Blocks.mossy_cobblestone);
-		setBlock(world, x + 1, y, z + 2, Blocks.mossy_cobblestone);
-		setBlock(world, x + 2, y, z + 2, Blocks.mossy_cobblestone);
-		setBlock(world, x + 0, y, z + 1, Blocks.mossy_cobblestone);
-		setBlock(world, x + 2, y, z + 1, Blocks.mossy_cobblestone);
+		setBlock(world, x + 0, y, z + 0, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 1, y, z + 0, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 2, y, z + 0, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 0, y, z + 2, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 1, y, z + 2, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 2, y, z + 2, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 0, y, z + 1, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 2, y, z + 1, Blocks.MOSSY_COBBLESTONE);
 
-		setBlock(world, x + 1, y, z + 1, Blocks.water);
+		setBlock(world, x + 1, y, z + 1, Blocks.WATER);
 
-		setBlock(world, x + 0, y + 1, z + 0, Blocks.fence);
-		setBlock(world, x + 2, y + 1, z + 0, Blocks.fence);
-		setBlock(world, x + 0, y + 1, z + 2, Blocks.fence);
-		setBlock(world, x + 2, y + 1, z + 2, Blocks.fence);
+		setBlock(world, x + 0, y + 1, z + 0, Blocks.FENCE);
+		setBlock(world, x + 2, y + 1, z + 0, Blocks.FENCE);
+		setBlock(world, x + 0, y + 1, z + 2, Blocks.FENCE);
+		setBlock(world, x + 2, y + 1, z + 2, Blocks.FENCE);
 
-		setBlock(world, x + 0, y + 2, z + 0, Blocks.fence);
-		setBlock(world, x + 2, y + 2, z + 0, Blocks.fence);
-		setBlock(world, x + 0, y + 2, z + 2, Blocks.fence);
-		setBlock(world, x + 2, y + 2, z + 2, Blocks.fence);
+		setBlock(world, x + 0, y + 2, z + 0, Blocks.FENCE);
+		setBlock(world, x + 2, y + 2, z + 0, Blocks.FENCE);
+		setBlock(world, x + 0, y + 2, z + 2, Blocks.FENCE);
+		setBlock(world, x + 2, y + 2, z + 2, Blocks.FENCE);
 
-		setBlockAndMetadata(world, x + 0, y + 3, z + 0, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 0, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 2, y + 3, z + 0, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 0, y + 3, z + 2, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 2, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 2, y + 3, z + 2, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 0, y + 3, z + 1, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 2, y + 3, z + 1, Blocks.wooden_slab, 0);
+		setBlockAndMetadata(world, x + 0, y + 3, z + 0, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 1, y + 3, z + 0, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 2, y + 3, z + 0, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 0, y + 3, z + 2, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 1, y + 3, z + 2, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 2, y + 3, z + 2, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 0, y + 3, z + 1, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 2, y + 3, z + 1, Blocks.WOODEN_SLAB, 0);
 
-		setBlock(world, x + 1, y + 3, z + 1, Blocks.planks);
+		setBlock(world, x + 1, y + 3, z + 1, Blocks.PLANKS);
 
 
 		boolean madeTreasure = false;
@@ -77,7 +77,7 @@ public class TFGenWell extends TFGenerator {
 		{
 			Block dblock = world.getBlock(x + 1, y + dy, z + 1);
 			// we only drill through dirt, grass, gravel and stone
-			if (dblock != Blocks.dirt && dblock != Blocks.grass && dblock != Blocks.gravel && dblock != Blocks.stone)
+			if (dblock != Blocks.DIRT && dblock != Blocks.GRASS && dblock != Blocks.GRAVEL && dblock != Blocks.STONE)
 			{
 				break;
 			}
@@ -88,14 +88,14 @@ public class TFGenWell extends TFGenerator {
 			}
 
 			// okay, we're good to dig.
-			setBlock(world, x + 1, y + dy, z + 1, Blocks.water);
+			setBlock(world, x + 1, y + dy, z + 1, Blocks.WATER);
 			
 			// if we're below 15 squares, there's a small chance of treasure
 			if (dy < -15 && madeTreasure == false && rand.nextInt(8) == 0) {
 				//TODO: more directions
-				setBlock(world, x + 2, y + dy, z + 1, Blocks.water);
-				setBlock(world, x + 3, y + dy + 1, z + 1, Blocks.air);
-				setBlock(world, x + 3, y + dy, z + 1, Blocks.air);
+				setBlock(world, x + 2, y + dy, z + 1, Blocks.WATER);
+				setBlock(world, x + 3, y + dy + 1, z + 1, Blocks.AIR);
+				setBlock(world, x + 3, y + dy, z + 1, Blocks.AIR);
 				
 				//TODO: unique treasure table that is themed for underwater well exploration
 				TFTreasure.basement.generate(world, rand, x + 3, y + dy, z + 1);
@@ -121,51 +121,51 @@ public class TFGenWell extends TFGenerator {
 		}
 
 		// make a cute well!
-		setBlock(world, x + 0, y, z + 0, Blocks.mossy_cobblestone);
-		setBlock(world, x + 1, y, z + 0, Blocks.mossy_cobblestone);
-		setBlock(world, x + 2, y, z + 0, Blocks.mossy_cobblestone);
-		setBlock(world, x + 3, y, z + 0, Blocks.mossy_cobblestone);
-		setBlock(world, x + 0, y, z + 3, Blocks.mossy_cobblestone);
-		setBlock(world, x + 1, y, z + 3, Blocks.mossy_cobblestone);
-		setBlock(world, x + 2, y, z + 3, Blocks.mossy_cobblestone);
-		setBlock(world, x + 3, y, z + 3, Blocks.mossy_cobblestone);
-		setBlock(world, x + 0, y, z + 1, Blocks.mossy_cobblestone);
-		setBlock(world, x + 0, y, z + 2, Blocks.mossy_cobblestone);
-		setBlock(world, x + 3, y, z + 1, Blocks.mossy_cobblestone);
-		setBlock(world, x + 3, y, z + 2, Blocks.mossy_cobblestone);
+		setBlock(world, x + 0, y, z + 0, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 1, y, z + 0, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 2, y, z + 0, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 3, y, z + 0, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 0, y, z + 3, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 1, y, z + 3, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 2, y, z + 3, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 3, y, z + 3, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 0, y, z + 1, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 0, y, z + 2, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 3, y, z + 1, Blocks.MOSSY_COBBLESTONE);
+		setBlock(world, x + 3, y, z + 2, Blocks.MOSSY_COBBLESTONE);
 
-		setBlock(world, x + 1, y, z + 1, Blocks.water);
-		setBlock(world, x + 2, y, z + 1, Blocks.water);
-		setBlock(world, x + 1, y, z + 2, Blocks.water);
-		setBlock(world, x + 2, y, z + 2, Blocks.water);
+		setBlock(world, x + 1, y, z + 1, Blocks.WATER);
+		setBlock(world, x + 2, y, z + 1, Blocks.WATER);
+		setBlock(world, x + 1, y, z + 2, Blocks.WATER);
+		setBlock(world, x + 2, y, z + 2, Blocks.WATER);
 
-		setBlock(world, x + 0, y + 1, z + 0, Blocks.fence);
-		setBlock(world, x + 3, y + 1, z + 0, Blocks.fence);
-		setBlock(world, x + 0, y + 1, z + 3, Blocks.fence);
-		setBlock(world, x + 3, y + 1, z + 3, Blocks.fence);
+		setBlock(world, x + 0, y + 1, z + 0, Blocks.FENCE);
+		setBlock(world, x + 3, y + 1, z + 0, Blocks.FENCE);
+		setBlock(world, x + 0, y + 1, z + 3, Blocks.FENCE);
+		setBlock(world, x + 3, y + 1, z + 3, Blocks.FENCE);
 
-		setBlock(world, x + 0, y + 2, z + 0, Blocks.fence);
-		setBlock(world, x + 3, y + 2, z + 0, Blocks.fence);
-		setBlock(world, x + 0, y + 2, z + 3, Blocks.fence);
-		setBlock(world, x + 3, y + 2, z + 3, Blocks.fence);
+		setBlock(world, x + 0, y + 2, z + 0, Blocks.FENCE);
+		setBlock(world, x + 3, y + 2, z + 0, Blocks.FENCE);
+		setBlock(world, x + 0, y + 2, z + 3, Blocks.FENCE);
+		setBlock(world, x + 3, y + 2, z + 3, Blocks.FENCE);
 
-		setBlockAndMetadata(world, x + 0, y + 3, z + 0, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 0, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 2, y + 3, z + 0, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 3, y + 3, z + 0, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 0, y + 3, z + 3, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 3, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 2, y + 3, z + 3, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 3, y + 3, z + 3, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 0, y + 3, z + 1, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 0, y + 3, z + 2, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 3, y + 3, z + 1, Blocks.wooden_slab, 0);
-		setBlockAndMetadata(world, x + 3, y + 3, z + 2, Blocks.wooden_slab, 0);
+		setBlockAndMetadata(world, x + 0, y + 3, z + 0, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 1, y + 3, z + 0, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 2, y + 3, z + 0, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 3, y + 3, z + 0, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 0, y + 3, z + 3, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 1, y + 3, z + 3, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 2, y + 3, z + 3, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 3, y + 3, z + 3, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 0, y + 3, z + 1, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 0, y + 3, z + 2, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 3, y + 3, z + 1, Blocks.WOODEN_SLAB, 0);
+		setBlockAndMetadata(world, x + 3, y + 3, z + 2, Blocks.WOODEN_SLAB, 0);
 
-		setBlock(world, x + 1, y + 3, z + 1, Blocks.planks);
-		setBlock(world, x + 2, y + 3, z + 1, Blocks.planks);
-		setBlock(world, x + 1, y + 3, z + 2, Blocks.planks);
-		setBlock(world, x + 2, y + 3, z + 2, Blocks.planks);
+		setBlock(world, x + 1, y + 3, z + 1, Blocks.PLANKS);
+		setBlock(world, x + 2, y + 3, z + 1, Blocks.PLANKS);
+		setBlock(world, x + 1, y + 3, z + 2, Blocks.PLANKS);
+		setBlock(world, x + 2, y + 3, z + 2, Blocks.PLANKS);
 
 		
 		// now drill each of the 4 well squares down 20 squares, or until we hit something
@@ -177,7 +177,7 @@ public class TFGenWell extends TFGenerator {
 				{
 					Block dblock = world.getBlock(x + dx, y + dy, z + dz);
 					// we only drill through dirt, grass, gravel and stone
-					if (dblock != Blocks.dirt && dblock != Blocks.grass && dblock != Blocks.gravel && dblock != Blocks.stone)
+					if (dblock != Blocks.DIRT && dblock != Blocks.GRASS && dblock != Blocks.GRAVEL && dblock != Blocks.STONE)
 					{
 						break;
 					}
@@ -188,7 +188,7 @@ public class TFGenWell extends TFGenerator {
 					}
 					
 					// okay, we're good to dig.
-					setBlock(world, x + dx, y + dy, z + dz, Blocks.water);
+					setBlock(world, x + dx, y + dy, z + dz, Blocks.WATER);
 				}
 
 			}

@@ -72,7 +72,7 @@ public class BlockTFPortal extends BlockBreakable
     @Override
 	public IIcon getIcon(int side, int meta)
     {
-    	return Blocks.portal.getIcon(side, meta);
+    	return Blocks.PORTAL.getIcon(side, meta);
     }
     
     @Override
@@ -280,7 +280,7 @@ public class BlockTFPortal extends BlockBreakable
     	// if we're not good, remove this block
     	if (!good)
     	{
-    		world.setBlock(x, y, z, Blocks.water, 0, 3);
+    		world.setBlock(x, y, z, Blocks.WATER, 0, 3);
     	}
     }
     

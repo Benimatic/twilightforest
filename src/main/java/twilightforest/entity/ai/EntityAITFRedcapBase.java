@@ -51,7 +51,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	        {
 	            for (int z = -range; z <= range; z++)
 	            {
-	            	if (entityObj.worldObj.getBlock(entityPosX + x, entityPosY + y, entityPosZ + z) == Blocks.tnt)
+	            	if (entityObj.worldObj.getBlock(entityPosX + x, entityPosY + y, entityPosZ + z) == Blocks.TNT)
 	            	{
 	            		return new ChunkCoordinates(entityPosX + x, entityPosY + y, entityPosZ + z);
 	            	}

@@ -18,10 +18,10 @@ public class TFGenLargeWinter extends TFTreeGenerator {
     public TFGenLargeWinter(boolean par1)
     {
     	super(par1);
-    	treeBlock = Blocks.log;
+    	treeBlock = Blocks.LOG;
     	treeMeta = 1;
     	branchMeta = 13;
-    	leafBlock = Blocks.leaves;
+    	leafBlock = Blocks.LEAVES;
     	leafMeta = 1;
     	rootBlock = TFBlocks.root;
     	rootMeta = BlockTFRoots.ROOT_META;
@@ -42,7 +42,7 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 		
 		// check if we're on dirt or grass
 		Block blockUnder = world.getBlock(x, y - 1, z);
-		if(blockUnder != Blocks.grass && blockUnder != Blocks.dirt || y >= TFWorld.MAXHEIGHT - treeHeight)
+		if(blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT || y >= TFWorld.MAXHEIGHT - treeHeight)
 		{
 			return false;
 		}

@@ -7,7 +7,7 @@ public class BlockTFGiantCobble extends BlockTFGiantBlock  {
 
 
 	protected BlockTFGiantCobble() {
-		super(Blocks.cobblestone);
+		super(Blocks.COBBLESTONE);
 		this.setHardness(2.0F * 64F);
 		this.setResistance(10.0F);
 		

@@ -38,7 +38,7 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public void renderLivingPost(RenderLivingEvent.Post event) {
-		if (event.entity.getDataWatcher().getWatchableObjectInt(7) == Potion.potionTypes[Potion.moveSlowdown.getId()].getLiquidColor() && event.entity.getDataWatcher().getWatchableObjectByte(8) > 0) {
+		if (event.entity.getDataWatcher().getWatchableObjectInt(7) == MobEffects.POTIONTYPES[MobEffects.MOVESLOWDOWN.getId()].getLiquidColor() && event.entity.getDataWatcher().getWatchableObjectByte(8) > 0) {
 			
 			
 			//System.out.println("Rendering slowed entity");
@@ -97,7 +97,7 @@ public class TFClientEvents {
 			GL11.glRotatef(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
 
-			RenderBlocks.getInstance().renderBlockAsItem(Blocks.ice, 0, 1.0F);
+			RenderBlocks.getInstance().renderBlockAsItem(Blocks.ICE, 0, 1.0F);
 			GL11.glPopMatrix();
 		}
 

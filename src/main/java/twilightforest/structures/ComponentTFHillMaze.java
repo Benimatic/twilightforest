@@ -33,7 +33,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// clear the area
-		fillWithBlocks(world, sbb, 0, 1, 0, getDiameter(), 3, getDiameter(), Blocks.air, Blocks.air, false);
+		fillWithBlocks(world, sbb, 0, 1, 0, getDiameter(), 3, getDiameter(), Blocks.AIR, Blocks.AIR, false);
 		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, TFBlocks.mazestone, false);
 		fillWithBlocks(world, sbb, 0, 4, 0, getDiameter(), 4, getDiameter(), TFBlocks.mazestone, TFBlocks.mazestone, true);
 	

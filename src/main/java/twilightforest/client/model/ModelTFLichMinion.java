@@ -23,7 +23,7 @@ public class ModelTFLichMinion extends ModelZombie {
     {
         EntityTFLichMinion minion = (EntityTFLichMinion)par1EntityLiving;
         // make minions greener
-        if (minion.getActivePotionEffect(Potion.damageBoost) != null) {
+        if (minion.getActivePotionEffect(MobEffects.DAMAGEBOOST) != null) {
         	GL11.glColor3f(0.25F, 2.0F, 0.25F);
         }
         else {
@@ -35,7 +35,7 @@ public class ModelTFLichMinion extends ModelZombie {
     {
         EntityTFLichMinion minion = (EntityTFLichMinion)par1Entity;
         // make strong minions bigger
-        if (minion.getActivePotionEffect(Potion.damageBoost) != null) {
+        if (minion.getActivePotionEffect(MobEffects.DAMAGEBOOST) != null) {
         	super.render(par1Entity, par2, par3, par4, par5, par6, par7);
         }
         else {

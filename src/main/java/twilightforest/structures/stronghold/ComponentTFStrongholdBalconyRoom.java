@@ -121,7 +121,7 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 
 		// balcony
 		this.fillWithRandomizedBlocks(world, sbb, 1, 6, 1, 16, 7, 25, false, rand, deco.randomBlocks);
-		this.fillWithBlocks(world, sbb, 4, 8, 4, 13, 8, 22, deco.fenceID, Blocks.air, false);
+		this.fillWithBlocks(world, sbb, 4, 8, 4, 13, 8, 22, deco.fenceID, Blocks.AIR, false);
 		this.fillWithAir(world, sbb, 5, 6, 5, 12, 8, 21);
 		
 		// stairs & pillars
@@ -165,7 +165,7 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 		{
 			for (int z = 5; z < 8; z++)
 			{
-				this.placeBlockRotated(world, Blocks.air, 0, y + 6, y + 1, z, rotation, sbb);
+				this.placeBlockRotated(world, Blocks.AIR, 0, y + 6, y + 1, z, rotation, sbb);
 				this.placeBlockRotated(world, deco.stairID, this.getStairMeta(0 + rotation), y + 6, y, z, rotation, sbb);
 				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, y + 6, y - 1, z, rotation, sbb);
 			}

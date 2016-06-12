@@ -205,9 +205,9 @@ public class TFBlocks {
 		registerMyBlock(castleDoorVanished);
 
 		// fire info
-        Blocks.fire.setFireInfo(log, 5, 5);
-        Blocks.fire.setFireInfo(leaves, 30, 60);
-        Blocks.fire.setFireInfo(leaves3, 30, 60);
+        Blocks.FIRE.setFireInfo(log, 5, 5);
+        Blocks.FIRE.setFireInfo(leaves, 30, 60);
+        Blocks.FIRE.setFireInfo(leaves3, 30, 60);
 	}
 
 	private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, BlockSlab singleSlab, BlockSlab doubleSlab, boolean isDouble) {

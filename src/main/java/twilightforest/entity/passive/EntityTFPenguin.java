@@ -32,7 +32,7 @@ public class EntityTFPenguin extends EntityTFBird {
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIPanic(this, 1.75F));
         tasks.addTask(2, new EntityAIMate(this, 1.0F));
-        tasks.addTask(3, new EntityAITempt(this, 0.75F, Items.fish, false));
+        tasks.addTask(3, new EntityAITempt(this, 0.75F, Items.FISH, false));
         tasks.addTask(4, new EntityAIFollowParent(this, 1.15F));
         tasks.addTask(5, new EntityAIWander(this, 1.0F));
         tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
@@ -67,7 +67,7 @@ public class EntityTFPenguin extends EntityTFBird {
 	@Override
     public boolean isBreedingItem(ItemStack par1ItemStack)
     {
-        return par1ItemStack != null && par1ItemStack.getItem() == Items.fish;
+        return par1ItemStack != null && par1ItemStack.getItem() == Items.FISH;
     }
 
 

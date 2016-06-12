@@ -102,14 +102,14 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 			return false;
 		} else {
 			// we found an air block, is it surrounded by redstone?
-			if (this.myCube.worldObj.getBlock(x + 1, y, z) == Blocks.redstone_wire
-					&& this.myCube.worldObj.getBlock(x - 1, y, z) == Blocks.redstone_wire
-					&& this.myCube.worldObj.getBlock(x, y, z + 1) == Blocks.redstone_wire
-					&& this.myCube.worldObj.getBlock(x, y, z - 1) == Blocks.redstone_wire
-					&& this.myCube.worldObj.getBlock(x + 1, y, z + 1) == Blocks.redstone_wire
-					&& this.myCube.worldObj.getBlock(x - 1, y, z + 1) == Blocks.redstone_wire
-					&& this.myCube.worldObj.getBlock(x + 1, y, z - 1) == Blocks.redstone_wire
-					&& this.myCube.worldObj.getBlock(x - 1, y, z - 1) == Blocks.redstone_wire) {
+			if (this.myCube.worldObj.getBlock(x + 1, y, z) == Blocks.REDSTONE_WIRE
+					&& this.myCube.worldObj.getBlock(x - 1, y, z) == Blocks.REDSTONE_WIRE
+					&& this.myCube.worldObj.getBlock(x, y, z + 1) == Blocks.REDSTONE_WIRE
+					&& this.myCube.worldObj.getBlock(x, y, z - 1) == Blocks.REDSTONE_WIRE
+					&& this.myCube.worldObj.getBlock(x + 1, y, z + 1) == Blocks.REDSTONE_WIRE
+					&& this.myCube.worldObj.getBlock(x - 1, y, z + 1) == Blocks.REDSTONE_WIRE
+					&& this.myCube.worldObj.getBlock(x + 1, y, z - 1) == Blocks.REDSTONE_WIRE
+					&& this.myCube.worldObj.getBlock(x - 1, y, z - 1) == Blocks.REDSTONE_WIRE) {
 
 				return true;
 			} else {

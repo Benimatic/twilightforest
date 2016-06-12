@@ -208,7 +208,7 @@ public class EntityTFTowerGolem extends EntityMob
 
         for (int i = 0; i < var4; ++i)
         {
-            this.dropItem(Items.iron_ingot, 1);
+            this.dropItem(Items.IRON_INGOT, 1);
         }
         
         var4 = this.rand.nextInt(3);

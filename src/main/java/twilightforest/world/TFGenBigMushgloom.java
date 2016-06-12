@@ -18,7 +18,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 		}
 		
         Block blockUnder = world.getBlock(x, y - 1, z);
-        if (blockUnder != Blocks.dirt && blockUnder != Blocks.grass && blockUnder != Blocks.mycelium) {
+        if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS && blockUnder != Blocks.MYCELIUM) {
             return false;
         }
         

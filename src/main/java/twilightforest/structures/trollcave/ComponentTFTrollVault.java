@@ -50,14 +50,14 @@ public class ComponentTFTrollVault extends StructureTFComponent {
 		this.fillWithAir(world, sbb, 4, 4, 4, 7, 7, 7);
 		
 		// cobblestone platform
-		this.fillWithMetadataBlocks(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.cobblestone, 0, Blocks.cobblestone, 0, false); 
+		this.fillWithMetadataBlocks(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE, 0, Blocks.COBBLESTONE, 0, false);
 		
 		// chests
-		this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, 5, 6, 5, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.CHEST, 0, 5, 6, 5, sbb);
 		this.placeTreasureAtCurrentPosition(world, rand, 5, 6, 6, TFTreasure.troll_vault, false, sbb);
 		
 		this.placeTreasureAtCurrentPosition(world, rand, 6, 6, 5, TFTreasure.troll_garden, true, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.trapped_chest, 0, 6, 6, 6, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.TRAPPED_CHEST, 0, 6, 6, 6, sbb);
 
 		return true;
 	}

@@ -180,11 +180,11 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
     {
         if (par1Random.nextInt(4) == 0)
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 2);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
         }
         else
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 1);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
         }
     }
     
@@ -402,7 +402,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
 
             if (y <= 0 + rand.nextInt(5))
             {
-                blockStorage[index] = Blocks.bedrock;
+                blockStorage[index] = Blocks.BEDROCK;
             }
             else
             {
@@ -410,7 +410,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
 
                 if (currentBlock != null && currentBlock.getMaterial() != Material.air)
                 {
-                    if (currentBlock == Blocks.stone)
+                    if (currentBlock == Blocks.STONE)
                     {
                     	// ADDED STONE REPLACEMENT
                     	if (this.getStoneReplacementBlock() != null) {
@@ -424,7 +424,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
                             {
                                 topBlock = null;
                                 topMeta = 0;
-                                fillerBlock = Blocks.stone;
+                                fillerBlock = Blocks.STONE;
                                 fillerMeta = 0;
                             }
                             else if (y >= (seaLevel - 5) && y <= seaLevel)
@@ -439,12 +439,12 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
                             {
                                 if (this.getFloatTemperature(x, y, z) < 0.15F)
                                 {
-                                    topBlock = Blocks.ice;
+                                    topBlock = Blocks.ICE;
                                     topMeta = 0;
                                 }
                                 else
                                 {
-                                    topBlock = Blocks.water;
+                                    topBlock = Blocks.WATER;
                                     topMeta = 0;
                                 }
                             }
@@ -459,9 +459,9 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
                             else if (y < (seaLevel - 8) - maxFillerDepth)
                             {
                                 topBlock = null;
-                                fillerBlock = Blocks.stone;
+                                fillerBlock = Blocks.STONE;
                                 fillerMeta = 0;
-                                blockStorage[index] = Blocks.gravel;
+                                blockStorage[index] = Blocks.GRAVEL;
                             }
                             else
                             {
@@ -475,10 +475,10 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
                             blockStorage[index] = fillerBlock;
                             metaStorage[index] = fillerMeta;
 
-                            if (currentFillerDepth == 0 && fillerBlock == Blocks.sand)
+                            if (currentFillerDepth == 0 && fillerBlock == Blocks.SAND)
                             {
                                 currentFillerDepth = rand.nextInt(4) + Math.max(0, y - (seaLevel - 1));
-                                fillerBlock = Blocks.sandstone;
+                                fillerBlock = Blocks.SANDSTONE;
                                 fillerMeta = 0;
                             }
                         }

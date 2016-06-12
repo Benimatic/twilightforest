@@ -37,7 +37,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false));
 
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.golden_axe));
+        this.setCurrentItemOrArmor(0, new ItemStack(Items.GOLDEN_AXE));
 	}
 
 	/**

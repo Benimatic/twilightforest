@@ -36,42 +36,42 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 				// make part of the floor mycelium
 				if (rand.nextInt(dist + 1) > 0)
 				{
-					this.placeBlockAtCurrentPosition(world, Blocks.mycelium, 0, x, 0, z, sbb);
+					this.placeBlockAtCurrentPosition(world, Blocks.MYCELIUM, 0, x, 0, z, sbb);
 				}
 				// add small mushrooms all over
 				if (rand.nextInt(dist) > 0)
 				{
-					this.placeBlockAtCurrentPosition(world, rand.nextBoolean() ? Blocks.red_mushroom : Blocks.brown_mushroom, 0, x, 1, z, sbb);
+					this.placeBlockAtCurrentPosition(world, rand.nextBoolean() ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM, 0, x, 1, z, sbb);
 				}
 			}
 		}
 		
 		// add our medium mushrooms
-		makeMediumMushroom(world, sbb, 5, 2, 9, Blocks.red_mushroom_block);
-		makeMediumMushroom(world, sbb, 5, 3, 9, Blocks.red_mushroom_block);
-		makeMediumMushroom(world, sbb, 9, 2, 5, Blocks.red_mushroom_block);
-		makeMediumMushroom(world, sbb, 6, 3, 4, Blocks.brown_mushroom_block);
-		makeMediumMushroom(world, sbb, 10, 1, 9, Blocks.brown_mushroom_block);
+		makeMediumMushroom(world, sbb, 5, 2, 9, Blocks.RED_MUSHROOM_BLOCK);
+		makeMediumMushroom(world, sbb, 5, 3, 9, Blocks.RED_MUSHROOM_BLOCK);
+		makeMediumMushroom(world, sbb, 9, 2, 5, Blocks.RED_MUSHROOM_BLOCK);
+		makeMediumMushroom(world, sbb, 6, 3, 4, Blocks.BROWN_MUSHROOM_BLOCK);
+		makeMediumMushroom(world, sbb, 10, 1, 9, Blocks.BROWN_MUSHROOM_BLOCK);
 		
 		// bracket mushrooms on the wall
-		this.placeBlockAtCurrentPosition(world, Blocks.red_mushroom_block, 15, 1, 2, 1, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.red_mushroom_block, 5, 1, 3, 1, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.red_mushroom_block, 9, 2, 3, 1, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.red_mushroom_block, 9, 1, 3, 2, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.RED_MUSHROOM_BLOCK, 15, 1, 2, 1, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.RED_MUSHROOM_BLOCK, 5, 1, 3, 1, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.RED_MUSHROOM_BLOCK, 9, 2, 3, 1, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.RED_MUSHROOM_BLOCK, 9, 1, 3, 2, sbb);
 
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 15, 14, 3, 1, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 5, 14, 4, 1, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 7, 13, 4, 1, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 7, 14, 4, 2, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 15, 14, 3, 1, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 5, 14, 4, 1, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 7, 13, 4, 1, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 7, 14, 4, 2, sbb);
 
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 15, 1, 1, 14, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 5, 1, 2, 14, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 3, 2, 2, 14, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 3, 1, 2, 13, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 15, 1, 1, 14, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 5, 1, 2, 14, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 3, 2, 2, 14, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 3, 1, 2, 13, sbb);
 
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 5, 14, 1, 14, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 1, 13, 1, 14, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.brown_mushroom_block, 1, 14, 1, 13, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 5, 14, 1, 14, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 1, 13, 1, 14, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM_BLOCK, 1, 14, 1, 13, sbb);
 
 		// mushroom ceiling spots?
 		

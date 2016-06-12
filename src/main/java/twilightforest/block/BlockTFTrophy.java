@@ -245,7 +245,7 @@ public class BlockTFTrophy extends BlockContainer
     @SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta)
     {
-    	return Blocks.soul_sand.getIcon(side, meta);
+    	return Blocks.SOUL_SAND.getIcon(side, meta);
     }
     
     @Override

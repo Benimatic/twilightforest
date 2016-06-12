@@ -26,6 +26,6 @@ public class BlockTFTrollLjos extends Block {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = Blocks.lit_redstone_lamp.getIcon(0, 0);
+		this.blockIcon = Blocks.LIT_REDSTONE_LAMP.getIcon(0, 0);
 	}
 }

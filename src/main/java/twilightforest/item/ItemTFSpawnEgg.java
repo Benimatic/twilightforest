@@ -77,7 +77,7 @@ public class ItemTFSpawnEgg extends ItemMonsterPlacer {
             par6 += Facing.offsetsZForSide[par7];
             double var12 = 0.0D;
 
-            if (par7 == 1 && var11 == Blocks.fence || var11 == Blocks.nether_brick_fence)
+            if (par7 == 1 && var11 == Blocks.FENCE || var11 == Blocks.NETHER_BRICK_FENCE)
             {
                 var12 = 0.5D;
             }
@@ -151,7 +151,7 @@ public class ItemTFSpawnEgg extends ItemMonsterPlacer {
      */
     public IIcon getIconFromDamageForRenderPass(int par1, int par2)
     {
-        return Items.spawn_egg.getIconFromDamageForRenderPass(par1, par2);
+        return Items.SPAWN_EGG.getIconFromDamageForRenderPass(par1, par2);
     }
     
 	

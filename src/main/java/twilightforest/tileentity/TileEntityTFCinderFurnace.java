@@ -532,11 +532,11 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
         {
             Item item = p_145952_0_.getItem();
 
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air)
+            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR)
             {
                 Block block = Block.getBlockFromItem(item);
 
-                if (block == Blocks.wooden_slab)
+                if (block == Blocks.WOODEN_SLAB)
                 {
                     return 150;
                 }
@@ -546,7 +546,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
                     return 300;
                 }
 
-                if (block == Blocks.coal_block)
+                if (block == Blocks.COAL_BLOCK)
                 {
                     return 16000;
                 }
@@ -555,11 +555,11 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
             if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
             if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
             if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item == Items.stick) return 100;
-            if (item == Items.coal) return 1600;
-            if (item == Items.lava_bucket) return 20000;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
-            if (item == Items.blaze_rod) return 2400;
+            if (item == Items.STICK) return 100;
+            if (item == Items.COAL) return 1600;
+            if (item == Items.LAVA_BUCKET) return 20000;
+            if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
+            if (item == Items.BLAZE_ROD) return 2400;
             return GameRegistry.getFuelValue(p_145952_0_);
         }
     }
@@ -615,7 +615,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
      */
     public boolean canExtractItem(int slot, ItemStack itemStack, int side)
     {
-        return side != SLOT_INPUT || slot != SLOT_FUEL || itemStack.getItem() == Items.bucket;
+        return side != SLOT_INPUT || slot != SLOT_FUEL || itemStack.getItem() == Items.BUCKET;
     }
 
 }

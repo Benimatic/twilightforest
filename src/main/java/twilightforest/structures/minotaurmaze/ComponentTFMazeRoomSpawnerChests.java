@@ -40,11 +40,11 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		this.placeTreasureAtCurrentPosition(world, rand, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
 		
 		// trap
-		placeBlockAtCurrentPosition(world, Blocks.wooden_pressure_plate, 0, 11, 1, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.tnt, 0, 10, 0, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.tnt, 0, 11, 0, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.tnt, 0, 11, 0, 12, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.tnt, 0, 12, 0, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.WOODEN_PRESSURE_PLATE, 0, 11, 1, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 10, 0, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 11, 0, 10, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 11, 0, 12, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 12, 0, 11, sbb);
 
 		return true;
 	}
@@ -58,27 +58,27 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 			placeBlockAtCurrentPosition(world, TFBlocks.mazestone, 2, dx + 0, y, dz + 2, sbb);
 			placeBlockAtCurrentPosition(world, TFBlocks.mazestone, 2, dx + 2, y, dz + 2, sbb);
 		}
-		placeBlockAtCurrentPosition(world, Blocks.planks, 0, dx + 1, 1, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 0, dx + 1, 4, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, dx + 1, 1, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, dx + 1, 4, dz + 1, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(1), dx + 1, 1, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(0), dx + 0, 1, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(2), dx + 2, 1, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(3), dx + 1, 1, dz + 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(1), dx + 1, 1, dz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(0), dx + 0, 1, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(2), dx + 2, 1, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(3), dx + 1, 1, dz + 2, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(1) + 4, dx + 1, 4, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(0) + 4, dx + 0, 4, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(2) + 4, dx + 2, 4, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(3) + 4, dx + 1, 4, dz + 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(1) + 4, dx + 1, 4, dz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(0) + 4, dx + 0, 4, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(2) + 4, dx + 2, 4, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(3) + 4, dx + 1, 4, dz + 2, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 1, 2, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 0, 2, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 2, 2, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 1, 2, dz + 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 1, 3, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 0, 3, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 2, 3, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx + 1, 3, dz + 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 2, dz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 0, 2, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 2, 2, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 2, dz + 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 3, dz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 0, 3, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 2, 3, dz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 3, dz + 2, sbb);
 
 		
 	}

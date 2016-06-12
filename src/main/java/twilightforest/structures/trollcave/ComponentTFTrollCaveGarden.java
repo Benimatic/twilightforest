@@ -17,7 +17,7 @@ import twilightforest.world.TFGenMyceliumBlob;
 public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	
 	TFGenMyceliumBlob myceliumBlobGen = new TFGenMyceliumBlob(5);
-	TFGenMyceliumBlob dirtGen = new TFGenMyceliumBlob(Blocks.dirt, 5);
+	TFGenMyceliumBlob dirtGen = new TFGenMyceliumBlob(Blocks.DIRT, 5);
 	WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
 	TFGenBigMushgloom bigMushgloomGen = new TFGenBigMushgloom();
 
@@ -94,7 +94,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
     		for (int i = 0; i < 128; i++)
     		{
     			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generateBlockStalactite(world, decoRNG, Blocks.stone, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
+    			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
     		}
 
     		

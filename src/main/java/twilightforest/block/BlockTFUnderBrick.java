@@ -38,7 +38,7 @@ public class BlockTFUnderBrick extends Block {
 	{
 //		for (int i = 0; i < this.iconSide.length; i++)
 //		{
-//			this.iconFloor[i] = Blocks.stonebrick.getIcon(0, i);
+//			this.iconFloor[i] = Blocks.STONEBRICK.getIcon(0, i);
 //		}
 		
 		BlockTFUnderBrick.iconSide[0] =  par1IconRegister.registerIcon(TwilightForestMod.ID + ":knightbrick");

@@ -161,7 +161,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		{
 			for (int z = 0; z < this.size; z++)
 			{
-				this.func_151554_b(world, Blocks.cobblestone, 0, x, -1, z, sbb);
+				this.func_151554_b(world, Blocks.COBBLESTONE, 0, x, -1, z, sbb);
 			}
 
 		}
@@ -224,7 +224,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// place platform
 		for (int dx = 6; dx <= 8; dx++) {
 			for (int dz = 4; dz <= 10; dz++) {
-				placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, floorMeta, dx, floorLevel, dz, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, dx, floorLevel, dz, sbb);
 			}
 		}
 		
@@ -232,23 +232,23 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		floorLevel++;
 		int dx = 6;
 		for (int dz = 3; dz <= 11; dz++) {
-			placeBlockAtCurrentPosition(world, Blocks.fence, 0, dx, floorLevel, dz, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, dx, floorLevel, dz, sbb);
 		}
 		dx++;
 		for (int dz = 3; dz <= 11; dz++) {
-			placeBlockAtCurrentPosition(world, Blocks.air, 0, dx, floorLevel, dz, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, floorLevel, dz, sbb);
 		}
 		dx++;
 		for (int dz = 3; dz <= 11; dz++) {
-			placeBlockAtCurrentPosition(world, Blocks.fence, 0, dx, floorLevel, dz, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, dx, floorLevel, dz, sbb);
 		}
 
 		// we need 2 extra blocks and 2 extra fences to look good
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, floorMeta, 6, floorLevel - 1, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, floorMeta, 8, floorLevel - 1, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, 6, floorLevel - 1, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, 8, floorLevel - 1, 3, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 5, floorLevel, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 9, floorLevel, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 5, floorLevel, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 9, floorLevel, 3, sbb);
 		
 		// place spawner in the middle
 		String mobID = "Skeleton";
@@ -268,10 +268,10 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		placeSpawnerAtCurrentPosition(world, rand, 7, floorLevel + 2, 7, mobID, sbb);
 		
 		// make a fence arch support for the spawner
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 6, floorLevel + 1, 7, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 8, floorLevel + 1, 7, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 6, floorLevel + 2, 7, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 8, floorLevel + 2, 7, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 6, floorLevel + 1, 7, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 8, floorLevel + 1, 7, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 6, floorLevel + 2, 7, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 8, floorLevel + 2, 7, sbb);
 		
 		
 		this.setCoordBaseMode(temp);
@@ -336,47 +336,47 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 					// blank, leave room for stairs
 					if (fz == 6) {
 						// upside down plank slabs
-						placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 10, fx, floorLevel, fz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 10, fx, floorLevel, fz, sbb);
 					}
 				}
 				else if ((fx == 12 || fx == 13) && (fz >= 3 && fz <= 8)) {
 					// blank, leave room for stairs
 					if (fz == 8) {
 						// upside down plank slabs
-						placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 10, fx, floorLevel, fz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 10, fx, floorLevel, fz, sbb);
 					}
 				}
 				else if ((fx >= 4 && fx <= 10) && (fz >= 4 && fz <= 10)) {
 					// glass floor in center, aside from 2 corners
 					if ((fx == 4 && fz == 4) || (fx == 10 && fz == 10)) {
-						placeBlockAtCurrentPosition(world, Blocks.planks, 2, fx, floorLevel, fz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, fx, floorLevel, fz, sbb);
 					}
 					else {
-						placeBlockAtCurrentPosition(world, Blocks.glass, 0, fx, floorLevel, fz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.GLASS, 0, fx, floorLevel, fz, sbb);
 					}
 				}
 				else if ((fx == 2 || fx == 3) && (fz == 2 || fz == 3)) {
 					// glass blocks in the corners
-					placeBlockAtCurrentPosition(world, Blocks.glass, 0, fx, floorLevel, fz, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.GLASS, 0, fx, floorLevel, fz, sbb);
 				}
 				else if ((fx == 11 || fx == 12) && (fz == 11 || fz == 12)) {
 					// glass blocks in the corners
-					placeBlockAtCurrentPosition(world, Blocks.glass, 0, fx, floorLevel, fz, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.GLASS, 0, fx, floorLevel, fz, sbb);
 				}
 				else {
-					placeBlockAtCurrentPosition(world, Blocks.planks, 2, fx, floorLevel, fz, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, fx, floorLevel, fz, sbb);
 				}
 			}
 		}
 		
 		// eliminate the railings
-		placeBlockAtCurrentPosition(world, Blocks.air, 0, 3, floorLevel + 1, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.air, 0, 3, floorLevel + 1, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.air, 0, 3, floorLevel + 2, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 3, floorLevel + 1, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 3, floorLevel + 1, 10, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 3, floorLevel + 2, 11, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.air, 0, 11, floorLevel + 1, 3, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.air, 0, 11, floorLevel + 1, 4, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.air, 0, 11, floorLevel + 2, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 11, floorLevel + 1, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 11, floorLevel + 1, 4, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 11, floorLevel + 2, 3, sbb);
 		
 		this.setCoordBaseMode(temp);
 
@@ -390,41 +390,41 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		int cy = floorLevel + 4;
 		int cz = size / 2;
 
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 1, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 2, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 1, cy, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy, cz + 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx - 1, cy, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx - 1, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx - 2, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx - 1, cy, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy, cz - 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 1, cy, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 1, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 2, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 1, cy, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy, cz + 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx - 1, cy, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx - 1, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx - 2, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx - 1, cy, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy, cz - 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 1, cy, cz - 1, sbb);
 		
 		cy++;
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 1, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 2, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 1, cy, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 0, cy, cz + 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx - 1, cy, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx - 1, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx - 2, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx - 1, cy, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 0, cy, cz - 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 1, cy, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 1, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 2, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 1, cy, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 0, cy, cz + 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx - 1, cy, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx - 1, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx - 2, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx - 1, cy, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 0, cy, cz - 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 1, cy, cz - 1, sbb);
 		
 		cy++;
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 1, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 0, cy, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx - 1, cy, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 0, cy, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 1, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 0, cy, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx - 1, cy, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 0, cy, cz - 1, sbb);
 		
 		for (int y = floorLevel + 5; y < height - 1; y++) {
-			placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, y, cz + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, y, cz + 0, sbb);
 		}
 	}
 
@@ -491,11 +491,11 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
 			// is there a painting or another torch there?
 			AxisAlignedBB torchBox = AxisAlignedBB.getBoundingBox(tCoords.posX, tCoords.posY, tCoords.posZ, tCoords.posX + 1.0, tCoords.posY + 2.0, tCoords.posZ + 1.0);
-	        if (world.getBlock(tCoords.posX, tCoords.posY, tCoords.posZ) == Blocks.air && world.getBlock(tCoords.posX, tCoords.posY + 1, tCoords.posZ) == Blocks.air && world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
+	        if (world.getBlock(tCoords.posX, tCoords.posY, tCoords.posZ) == Blocks.AIR && world.getBlock(tCoords.posX, tCoords.posY + 1, tCoords.posZ) == Blocks.AIR && world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
 	        {
 	        	// if not, place a torch
-				world.setBlock(tCoords.posX, tCoords.posY, tCoords.posZ, Blocks.fence, 0, 2);
-				world.setBlock(tCoords.posX, tCoords.posY + 1, tCoords.posZ, Blocks.torch, 5, 2);
+				world.setBlock(tCoords.posX, tCoords.posY, tCoords.posZ, Blocks.FENCE, 0, 2);
+				world.setBlock(tCoords.posX, tCoords.posY + 1, tCoords.posZ, Blocks.TORCH, 5, 2);
 			}
 		}
 	}

@@ -88,7 +88,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
     {
         if (par1Random.nextInt(4) == 0)
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 2);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
         }
         else if (par1Random.nextInt(4) == 0)
         {
@@ -96,7 +96,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
         }
         else
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 1);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
         }
     }
     
@@ -184,12 +184,12 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
 			//System.out.println("Player " + player.getDisplayName() + " is in the swamp without the achievement");
 
-			PotionEffect currentHunger = player.getActivePotionEffect(Potion.hunger);
+			PotionEffect currentHunger = player.getActivePotionEffect(MobEffects.HUNGER);
 			
 			int hungerLevel = currentHunger != null ? currentHunger.getAmplifier() + 1 : 1;
 			
-			player.addPotionEffect(new PotionEffect(Potion.hunger.id, 100, hungerLevel));
-            //((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, duration * 20, 0));
+			player.addPotionEffect(new PotionEffect(MobEffects.HUNGER.id, 100, hungerLevel));
+            //((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER.id, duration * 20, 0));
 
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {

@@ -196,23 +196,23 @@ public class TFGenCaves extends MapGenCaves
                                         {
                                             Block blockAt = blockStorage[caveIndex];
 
-                                            if (blockAt == Blocks.grass)
+                                            if (blockAt == Blocks.GRASS)
                                             {
                                                 hitGrass = true;
                                             }
 
-                                            if (blockAt != null && (blockAt == Blocks.stone || blockAt == TFBlocks.trollSteinn || blockAt.getMaterial() == Material.ground || blockAt.getMaterial() == Material.grass))
+                                            if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollSteinn || blockAt.getMaterial() == Material.ground || blockAt.getMaterial() == Material.grass))
                                             {
                                             	if (var59 * var59 + var51 * var51 + var46 * var46 < 0.85D) {
-                                            		blockStorage[caveIndex] = caveY < 10 ?  Blocks.water : Blocks.air;
+                                            		blockStorage[caveIndex] = caveY < 10 ?  Blocks.WATER : Blocks.AIR;
                                             	}
                                             	else {
-                                            		Block localBlock = isHighlands ? (mossRNG.nextInt(6) == 0 ? TFBlocks.trollSteinn : Blocks.stone) : Blocks.dirt;
-													blockStorage[caveIndex] = hitGrass ? Blocks.grass : localBlock;
+                                            		Block localBlock = isHighlands ? (mossRNG.nextInt(6) == 0 ? TFBlocks.trollSteinn : Blocks.STONE) : Blocks.DIRT;
+													blockStorage[caveIndex] = hitGrass ? Blocks.GRASS : localBlock;
                                             		hitGrass = false;
                                             	}
 
-                                            	if (hitGrass && blockStorage[caveIndex - 1] == Blocks.dirt)
+                                            	if (hitGrass && blockStorage[caveIndex - 1] == Blocks.DIRT)
                                             	{
                                             		blockStorage[caveIndex - 1] = this.worldObj.getBiomeGenForCoords(genX + centerX * 16, genZ + centerZ * 16).topBlock;
                                             	}
@@ -277,6 +277,6 @@ public class TFGenCaves extends MapGenCaves
     
     protected boolean isOceanBlock(Block[] data, int index, int x, int y, int z, int chunkX, int chunkZ)
     {
-        return data[index] == Blocks.flowing_water || data[index] == Blocks.water;
+        return data[index] == Blocks.FLOWING_WATER || data[index] == Blocks.WATER;
     }
 }

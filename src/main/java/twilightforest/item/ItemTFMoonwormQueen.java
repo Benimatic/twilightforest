@@ -63,12 +63,12 @@ public class ItemTFMoonwormQueen extends ItemTF
 			return false;
 		}
         
-        if (currentBlockID == Blocks.snow)
+        if (currentBlockID == Blocks.SNOW)
         {
             side = 1;
         }
-        else if (currentBlockID != Blocks.vine && currentBlockID != Blocks.tallgrass && currentBlockID != Blocks.deadbush
-                && (currentBlockID == Blocks.air || !currentBlockID.isReplaceable(world, x, y, z)))
+        else if (currentBlockID != Blocks.VINE && currentBlockID != Blocks.TALLGRASS && currentBlockID != Blocks.DEADBUSH
+                && (currentBlockID == Blocks.AIR || !currentBlockID.isReplaceable(world, x, y, z)))
         {
             if (side == 0)
             {

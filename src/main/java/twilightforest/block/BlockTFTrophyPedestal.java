@@ -343,7 +343,7 @@ public class BlockTFTrophyPedestal extends Block {
 		    		
 		    		if (blockAt == TFBlocks.shield && metaAt == 15)
 		    		{
-		    			world.setBlock(x + sx, y + sy, z + sz, Blocks.air, 0, 2);
+		    			world.setBlock(x + sx, y + sy, z + sz, Blocks.AIR, 0, 2);
 		    			
 		    			// effect
 		    			world.playAuxSFX(2001, x + sx, y + sy, z + sz, Block.getIdFromBlock(blockAt) + (metaAt << 12));

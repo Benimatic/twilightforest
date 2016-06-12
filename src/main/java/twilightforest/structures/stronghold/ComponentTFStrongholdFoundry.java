@@ -100,7 +100,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 25, 17, rand, deco.randomBlocks);
 		
 		// lava bottom
-		this.fillWithBlocks(world, sbb, 1, 0, 1, 16, 4, 16, Blocks.lava, Blocks.lava, false);
+		this.fillWithBlocks(world, sbb, 1, 0, 1, 16, 4, 16, Blocks.LAVA, Blocks.LAVA, false);
 		
 		// top ledge
 		this.fillWithRandomizedBlocks(world, sbb, 1, 19, 1, 16, 19, 16, false, rand, deco.randomBlocks);
@@ -141,7 +141,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 					
 					if (c < r)
 					{
-						this.placeBlockAtCurrentPosition(world, Blocks.stone, 0, x, y, z, sbb);
+						this.placeBlockAtCurrentPosition(world, Blocks.STONE, 0, x, y, z, sbb);
 					}
 				}
 			}
@@ -154,11 +154,11 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 			int dz = massRandom.nextInt(9) + 5;
 			int dy = massRandom.nextInt(13) + 10;
 
-			if (this.getBlockAtCurrentPosition(world, dx, dy, dz, sbb) != Blocks.air)
+			if (this.getBlockAtCurrentPosition(world, dx, dy, dz, sbb) != Blocks.AIR)
 			{
 				for (int y = 0; y < 3; y++)
 				{
-					this.placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx, dy - y, dz, sbb);
+					this.placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx, dy - y, dz, sbb);
 				}
 			}
 		}
@@ -166,7 +166,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		// add some redstone ore
 		for (int i = 0; i < 8; i++)
 		{
-			Block blockID = Blocks.redstone_ore;
+			Block blockID = Blocks.REDSTONE_ORE;
 			int blockMeta = 0;
 			
 			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
@@ -175,7 +175,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		// add some iron ore
 		for (int i = 0; i < 8; i++)
 		{
-			Block blockID = Blocks.iron_ore;
+			Block blockID = Blocks.IRON_ORE;
 			int blockMeta = 0;
 			
 			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
@@ -184,7 +184,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		// add some gold ore
 		for (int i = 0; i < 6; i++)
 		{
-			Block blockID = Blocks.gold_ore;
+			Block blockID = Blocks.GOLD_ORE;
 			int blockMeta = 0;
 			
 			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
@@ -193,7 +193,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		// add some glowstone
 		for (int i = 0; i < 2; i++)
 		{
-			Block blockID = Blocks.glowstone;
+			Block blockID = Blocks.GLOWSTONE;
 			int blockMeta = 0;
 			
 			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
@@ -203,7 +203,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		// add some emerald ore
 		for (int i = 0; i < 2; i++)
 		{
-			Block blockID = Blocks.emerald_ore;
+			Block blockID = Blocks.EMERALD_ORE;
 			int blockMeta = 0;
 			
 			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
@@ -212,7 +212,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		// add some diamond ore
 		for (int i = 0; i < 4; i++)
 		{
-			Block blockID = Blocks.diamond_ore;
+			Block blockID = Blocks.DIAMOND_ORE;
 			int blockMeta = 0;
 			
 			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
@@ -234,7 +234,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 			int dz = massRandom.nextInt(9) + 5;
 			int dy = massRandom.nextInt(13) + 10;
 	
-			if (this.getBlockAtCurrentPosition(world, dx, dy, dz, sbb) != Blocks.air)
+			if (this.getBlockAtCurrentPosition(world, dx, dy, dz, sbb) != Blocks.AIR)
 			{
 				this.placeBlockAtCurrentPosition(world, blockID, blockMeta, dx, dy, dz, sbb);
 				// we have succeeded, stop looping

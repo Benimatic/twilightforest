@@ -434,7 +434,7 @@ public class BlockTFTowerDevice extends Block {
             {
             	if (meta == META_VANISH_ACTIVE)
             	{
-                    par1World.setBlock(x, y, z, Blocks.air, 0, 3);
+                    par1World.setBlock(x, y, z, Blocks.AIR, 0, 3);
             	}
             	else
             	{
@@ -511,12 +511,12 @@ public class BlockTFTowerDevice extends Block {
 	 */
 	private boolean isReactorReady(World world, int x, int y, int z) 
 	{
-		if (world.getBlock(x, y + 1, z) != Blocks.redstone_block
-				|| world.getBlock(x, y - 1, z) != Blocks.redstone_block
-				|| world.getBlock(x + 1, y, z) != Blocks.redstone_block
-				|| world.getBlock(x - 1, y, z) != Blocks.redstone_block
-				|| world.getBlock(x, y, z + 1) != Blocks.redstone_block
-				|| world.getBlock(x, y, z - 1) != Blocks.redstone_block)
+		if (world.getBlock(x, y + 1, z) != Blocks.REDSTONE_BLOCK
+				|| world.getBlock(x, y - 1, z) != Blocks.REDSTONE_BLOCK
+				|| world.getBlock(x + 1, y, z) != Blocks.REDSTONE_BLOCK
+				|| world.getBlock(x - 1, y, z) != Blocks.REDSTONE_BLOCK
+				|| world.getBlock(x, y, z + 1) != Blocks.REDSTONE_BLOCK
+				|| world.getBlock(x, y, z - 1) != Blocks.REDSTONE_BLOCK)
 		{
 			return false;
 		}

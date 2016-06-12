@@ -92,7 +92,7 @@ public class EntityTFLoyalZombie extends EntityTameable {
     {
     	// once our damage boost effect wears out, start to burn
     	// the effect here is that we die shortly after our 60 second lifespan
-        if (!this.worldObj.isRemote && this.getActivePotionEffect(Potion.damageBoost) == null)
+        if (!this.worldObj.isRemote && this.getActivePotionEffect(MobEffects.DAMAGEBOOST) == null)
         {
             this.setFire(100);
         }

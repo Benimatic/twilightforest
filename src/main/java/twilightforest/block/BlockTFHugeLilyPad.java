@@ -126,7 +126,7 @@ public class BlockTFHugeLilyPad extends BlockBush {
      */
     protected boolean canPlaceBlockOn(Block block)
     {
-        return block == Blocks.water;
+        return block == Blocks.WATER;
     }
 
 	/**
@@ -185,7 +185,7 @@ public class BlockTFHugeLilyPad extends BlockBush {
     		for (int dz = 0; dz < 2; dz++) {
     			if (!(x == bx + dx && z == bz + dz)) {
     				if (world.getBlock(bx + dx, y, bz + dz) == this) {
-    					world.setBlock(bx + dx, y, bz + dz, Blocks.air, 0, 2);
+    					world.setBlock(bx + dx, y, bz + dz, Blocks.AIR, 0, 2);
     				}
     			}
     		}

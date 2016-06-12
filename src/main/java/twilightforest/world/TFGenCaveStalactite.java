@@ -12,14 +12,14 @@ import net.minecraft.world.World;
 public class TFGenCaveStalactite extends TFGenerator {
 
 	
-	public static TFGenCaveStalactite diamond = new TFGenCaveStalactite(Blocks.diamond_ore, 0.5F, 4, 16); 
-	public static TFGenCaveStalactite lapis = new TFGenCaveStalactite(Blocks.lapis_ore, 0.8F, 8, 1); 
-	public static TFGenCaveStalactite emerald = new TFGenCaveStalactite(Blocks.emerald_ore, 0.5F, 3, 12); 
-	public static TFGenCaveStalactite gold = new TFGenCaveStalactite(Blocks.gold_ore, 0.6F, 6, 1); 
-	public static TFGenCaveStalactite redstone = new TFGenCaveStalactite(Blocks.redstone_ore, 0.8F, 8, 1); 
-	public static TFGenCaveStalactite iron = new TFGenCaveStalactite(Blocks.iron_ore, 0.7F, 8, 1); 
-	public static TFGenCaveStalactite coal = new TFGenCaveStalactite(Blocks.coal_ore, 0.8F, 12, 1); 
-	public static TFGenCaveStalactite glowstone = new TFGenCaveStalactite(Blocks.glowstone, 0.5F, 8, 1); 
+	public static TFGenCaveStalactite diamond = new TFGenCaveStalactite(Blocks.DIAMOND_ORE, 0.5F, 4, 16);
+	public static TFGenCaveStalactite lapis = new TFGenCaveStalactite(Blocks.LAPIS_ORE, 0.8F, 8, 1);
+	public static TFGenCaveStalactite emerald = new TFGenCaveStalactite(Blocks.EMERALD_ORE, 0.5F, 3, 12);
+	public static TFGenCaveStalactite gold = new TFGenCaveStalactite(Blocks.GOLD_ORE, 0.6F, 6, 1);
+	public static TFGenCaveStalactite redstone = new TFGenCaveStalactite(Blocks.REDSTONE_ORE, 0.8F, 8, 1);
+	public static TFGenCaveStalactite iron = new TFGenCaveStalactite(Blocks.IRON_ORE, 0.7F, 8, 1);
+	public static TFGenCaveStalactite coal = new TFGenCaveStalactite(Blocks.COAL_ORE, 0.8F, 12, 1);
+	public static TFGenCaveStalactite glowstone = new TFGenCaveStalactite(Blocks.GLOWSTONE, 0.5F, 8, 1);
 	
 	
 	public Block blockID;

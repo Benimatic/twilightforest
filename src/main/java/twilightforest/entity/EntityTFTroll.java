@@ -250,7 +250,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
                 {
                     Block currentID = this.worldObj.getBlock(dx, dy, dz);
                     
-                    if (currentID == Blocks.air)
+                    if (currentID == Blocks.AIR)
                     {
                     	this.worldObj.setBlock(dx, dy, dz, TFBlocks.trollSteinn);
                         // here, this effect will have to do

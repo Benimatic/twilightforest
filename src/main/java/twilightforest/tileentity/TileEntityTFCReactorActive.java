@@ -98,7 +98,7 @@ public class TileEntityTFCReactorActive extends TileEntity {
 
     			if (primary >= offset && primary <= 249)
     			{
-    				drawBlob(this.xCoord, this.yCoord, this.zCoord, (primary - offset) / 40, Blocks.air, 0, primary - offset, false);
+    				drawBlob(this.xCoord, this.yCoord, this.zCoord, (primary - offset) / 40, Blocks.AIR, 0, primary - offset, false);
     			}
     			if (primary <= 200)
     			{
@@ -110,11 +110,11 @@ public class TileEntityTFCReactorActive extends TileEntity {
     			
     			if (secondary >= offset && secondary <= 129)
     			{
-    				drawBlob(this.xCoord + secX, this.yCoord + secY, this.zCoord + secZ, (secondary - offset) / 40, Blocks.air, 0, secondary - offset, false);
+    				drawBlob(this.xCoord + secX, this.yCoord + secY, this.zCoord + secZ, (secondary - offset) / 40, Blocks.AIR, 0, secondary - offset, false);
     			}
     			if (secondary >= 0 && secondary <= 160)
     			{
-    				drawBlob(this.xCoord + secX, this.yCoord + secY, this.zCoord + secZ, secondary / 40, Blocks.air, 0, secondary, true);
+    				drawBlob(this.xCoord + secX, this.yCoord + secY, this.zCoord + secZ, secondary / 40, Blocks.AIR, 0, secondary, true);
     			}
     			
     			// tertiary burst
@@ -122,11 +122,11 @@ public class TileEntityTFCReactorActive extends TileEntity {
     			
     			if (tertiary >= offset && tertiary <= 129)
     			{
-    				drawBlob(this.xCoord + terX, this.yCoord + terY, this.zCoord + terZ, (tertiary - offset) / 40, Blocks.air, 0, tertiary - offset, false);
+    				drawBlob(this.xCoord + terX, this.yCoord + terY, this.zCoord + terZ, (tertiary - offset) / 40, Blocks.AIR, 0, tertiary - offset, false);
     			}
     			if (tertiary >= 0 && tertiary <= 160)
     			{
-    				drawBlob(this.xCoord + terX, this.yCoord + terY, this.zCoord + terZ, tertiary / 40, Blocks.air, 0, tertiary, true);
+    				drawBlob(this.xCoord + terX, this.yCoord + terY, this.zCoord + terZ, tertiary / 40, Blocks.AIR, 0, tertiary, true);
     			}
 
     		}
@@ -146,7 +146,7 @@ public class TileEntityTFCReactorActive extends TileEntity {
 				// deactivate & explode
 		        worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 2.0F, true);
 		        
-				worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.air, 0, 3);
+				worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.AIR, 0, 3);
 			}
     		
     	}
@@ -244,25 +244,25 @@ public class TileEntityTFCReactorActive extends TileEntity {
 		Block whatsThere = worldObj.getBlock(x, y, z);
 		int whatsMeta = worldObj.getBlockMetadata(x, y, z);
 		
-		if (whatsThere != Blocks.air && whatsThere.getBlockHardness(worldObj, x, y, z) == -1)
+		if (whatsThere != Blocks.AIR && whatsThere.getBlockHardness(worldObj, x, y, z) == -1)
 		{
 			// don't destroy unbreakable stuff
 			return;
 		}
 		
-		if (fuzz == 0 && whatsThere != Blocks.air)
+		if (fuzz == 0 && whatsThere != Blocks.AIR)
 		{
 			// make pop thing for original block
 			worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(whatsThere) + (whatsMeta << 12));
 		}
 		
-		if (netherTransform && whatsThere != Blocks.air)
+		if (netherTransform && whatsThere != Blocks.AIR)
 		{
-			worldObj.setBlock(x, y, z, Blocks.netherrack, 0, 3);
+			worldObj.setBlock(x, y, z, Blocks.NETHERRACK, 0, 3);
 			// fire on top?
-			if (worldObj.getBlock(x, y + 1, z) == Blocks.air && fuzz % 3 == 0)
+			if (worldObj.getBlock(x, y + 1, z) == Blocks.AIR && fuzz % 3 == 0)
 			{
-				worldObj.setBlock(x, y + 1, z, Blocks.fire, 0, 3);
+				worldObj.setBlock(x, y + 1, z, Blocks.FIRE, 0, 3);
 			}
 		}
 		else

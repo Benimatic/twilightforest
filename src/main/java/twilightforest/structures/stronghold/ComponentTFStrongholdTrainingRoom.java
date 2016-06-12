@@ -50,9 +50,9 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		placeCornerStatue(world, 15, 1, 15, 3, sbb);
 
 		// sand floor
-		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 4, 0, 4, 8, 0, 8, Blocks.sand, Blocks.sand, false);
-		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 9, 0, 4, 13, 0, 8, Blocks.sand, Blocks.sand, false);
-		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.sand, Blocks.sand, false);
+		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 4, 0, 4, 8, 0, 8, Blocks.SAND, Blocks.SAND, false);
+		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 9, 0, 4, 13, 0, 8, Blocks.SAND, Blocks.SAND, false);
+		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.SAND, Blocks.SAND, false);
 		
 		// training dummies
 		placeTrainingDummy(world, sbb, 0);
@@ -60,7 +60,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		placeTrainingDummy(world, sbb, 2);
 		
 		// anvil pad
-		this.fillWithBlocks(world, sbb, 5, 0, 10, 7, 0, 12, Blocks.cobblestone, Blocks.cobblestone, false);
+		this.fillWithBlocks(world, sbb, 5, 0, 10, 7, 0, 12, Blocks.COBBLESTONE, Blocks.COBBLESTONE, false);
 		
 		this.placeBlockAtCurrentPosition(world, deco.pillarID, deco.pillarMeta, 5, 1, 12, sbb);
 		this.placeBlockAtCurrentPosition(world, deco.pillarID, deco.pillarMeta, 5, 2, 12, sbb);
@@ -71,7 +71,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1), 5, 2, 11, sbb);
 		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1), 5, 1, 10, sbb);
 
-		this.placeBlockAtCurrentPosition(world, Blocks.anvil, 0, 6, 1, 11, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.ANVIL, 0, 6, 1, 11, sbb);
 
 		// doors
 		placeDoors(world, rand, sbb);
@@ -80,12 +80,12 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 	}
 
 	private void placeTrainingDummy(World world, StructureBoundingBox sbb, int rotation) {
-		this.fillBlocksRotated(world, sbb, 5, 0, 5, 7, 0, 7, Blocks.sand, 0, rotation);
+		this.fillBlocksRotated(world, sbb, 5, 0, 5, 7, 0, 7, Blocks.SAND, 0, rotation);
 		this.placeBlockRotated(world, deco.fenceID, deco.fenceMeta, 6, 1, 6, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.planks, 2, 6, 2, 6, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.fence, 0, 5, 2, 6, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.fence, 0, 7, 2, 6, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.pumpkin, this.getStairMeta(0 + rotation), 6, 3, 6, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.PLANKS, 2, 6, 2, 6, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.FENCE, 0, 5, 2, 6, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.FENCE, 0, 7, 2, 6, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.PUMPKIN, this.getStairMeta(0 + rotation), 6, 3, 6, rotation, sbb);
 	}
 
 }

@@ -87,7 +87,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 
 		boolean isNoPickup = entityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, itemstack) > 0;
 
-		if (isNoPickup || entityPlayer.inventory.hasItem(Items.arrow))
+		if (isNoPickup || entityPlayer.inventory.hasItem(Items.ARROW))
 		{
 			float velocity = (float)charge / 20.0F;
 			velocity = (velocity * velocity + velocity * 2.0F) / 3.0F;
@@ -137,7 +137,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 			}
 			else
 			{
-				entityPlayer.inventory.consumeInventoryItem(Items.arrow);
+				entityPlayer.inventory.consumeInventoryItem(Items.ARROW);
 			}
 
 			if (!world.isRemote)

@@ -50,16 +50,16 @@ public class ItemTFOreMeter extends ItemTF {
 		int chunkX = useX >> 4;
 		int chunkZ = useZ >> 4;
 
-		int countStone = countBlockInChunk(world, Blocks.stone, chunkX, chunkZ);
-		int countDirt = countBlockInChunk(world, Blocks.dirt, chunkX, chunkZ);
-		int countGravel = countBlockInChunk(world, Blocks.gravel, chunkX, chunkZ);
+		int countStone = countBlockInChunk(world, Blocks.STONE, chunkX, chunkZ);
+		int countDirt = countBlockInChunk(world, Blocks.DIRT, chunkX, chunkZ);
+		int countGravel = countBlockInChunk(world, Blocks.GRAVEL, chunkX, chunkZ);
 		
-		int countCoal = countBlockInChunk(world, Blocks.coal_ore, chunkX, chunkZ);
-		int countIron = countBlockInChunk(world, Blocks.iron_ore, chunkX, chunkZ);
-		int countGold = countBlockInChunk(world, Blocks.gold_ore, chunkX, chunkZ);
-		int countDiamond = countBlockInChunk(world, Blocks.diamond_ore, chunkX, chunkZ);
-		int countLapis = countBlockInChunk(world, Blocks.lapis_ore, chunkX, chunkZ);
-		int countRedstone = countBlockInChunk(world, Blocks.redstone_ore, chunkX, chunkZ);
+		int countCoal = countBlockInChunk(world, Blocks.COAL_ORE, chunkX, chunkZ);
+		int countIron = countBlockInChunk(world, Blocks.IRON_ORE, chunkX, chunkZ);
+		int countGold = countBlockInChunk(world, Blocks.GOLD_ORE, chunkX, chunkZ);
+		int countDiamond = countBlockInChunk(world, Blocks.DIAMOND_ORE, chunkX, chunkZ);
+		int countLapis = countBlockInChunk(world, Blocks.LAPIS_ORE, chunkX, chunkZ);
+		int countRedstone = countBlockInChunk(world, Blocks.REDSTONE_ORE, chunkX, chunkZ);
 		
 		int countRoots = countBlockInChunk(world, TFBlocks.root, BlockTFRoots.ROOT_META, chunkX, chunkZ);
 		int countOreRoots = countBlockInChunk(world, TFBlocks.root, BlockTFRoots.OREROOT_META, chunkX, chunkZ);
@@ -105,17 +105,17 @@ public class ItemTFOreMeter extends ItemTF {
 		for (int cx = chunkX - radius; cx <= chunkX + radius; cx++) {
 			for (int cz = chunkZ - radius; cz <= chunkZ + radius; cz++) {
 
-				countStone += countBlockInChunk(world, Blocks.stone, cx, cz);
-				countDirt += countBlockInChunk(world, Blocks.dirt, cx, cz);
-				countGravel += countBlockInChunk(world, Blocks.gravel, cx, cz);
+				countStone += countBlockInChunk(world, Blocks.STONE, cx, cz);
+				countDirt += countBlockInChunk(world, Blocks.DIRT, cx, cz);
+				countGravel += countBlockInChunk(world, Blocks.GRAVEL, cx, cz);
 
-				countCoal += countBlockInChunk(world, Blocks.coal_ore, cx, cz);
-				countIron += countBlockInChunk(world, Blocks.iron_ore, cx, cz);
-				countGold += countBlockInChunk(world, Blocks.gold_ore, cx, cz);
-				countDiamond += countBlockInChunk(world, Blocks.diamond_ore, cx, cz);
-				countLapis += countBlockInChunk(world, Blocks.lapis_ore, cx, cz);
-				countRedstone += countBlockInChunk(world, Blocks.redstone_ore, cx, cz);
-				countExposedDiamond += countExposedBlockInChunk(world, Blocks.diamond_ore, cx, cz);
+				countCoal += countBlockInChunk(world, Blocks.COAL_ORE, cx, cz);
+				countIron += countBlockInChunk(world, Blocks.IRON_ORE, cx, cz);
+				countGold += countBlockInChunk(world, Blocks.GOLD_ORE, cx, cz);
+				countDiamond += countBlockInChunk(world, Blocks.DIAMOND_ORE, cx, cz);
+				countLapis += countBlockInChunk(world, Blocks.LAPIS_ORE, cx, cz);
+				countRedstone += countBlockInChunk(world, Blocks.REDSTONE_ORE, cx, cz);
+				countExposedDiamond += countExposedBlockInChunk(world, Blocks.DIAMOND_ORE, cx, cz);
 
 				
 				countRoots += countBlockInChunk(world, TFBlocks.root, BlockTFRoots.ROOT_META, cx, cz);

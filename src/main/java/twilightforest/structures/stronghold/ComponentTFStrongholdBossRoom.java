@@ -54,10 +54,10 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.fillWithRandomizedBlocks(world, sbb, 4, 1, 23, 22, 5, 25, false, rand, deco.randomBlocks);
 		
 		// obsidian filler
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 1, 2, 5, 25, Blocks.obsidian, 0, Blocks.obsidian, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 24, 1, 1, 25, 5, 25, Blocks.obsidian, 0, Blocks.obsidian, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 4, 1, 1, 22, 5, 2, Blocks.obsidian, 0, Blocks.obsidian, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 4, 1, 24, 22, 5, 25, Blocks.obsidian, 0, Blocks.obsidian, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 1, 1, 1, 2, 5, 25, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 24, 1, 1, 25, 5, 25, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 4, 1, 1, 22, 5, 2, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 4, 1, 24, 22, 5, 25, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
 		
 		// corner pillars
 		this.fillWithRandomizedBlocks(world, sbb, 4, 1, 4, 4, 5, 7, false, rand, deco.randomBlocks);
@@ -94,7 +94,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		
 		// doorway
 		this.fillWithAir(world, sbb, 12, 1, 1, 14, 4, 2);
-		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.iron_bars, Blocks.iron_bars, false);
+		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS, Blocks.IRON_BARS, false);
 		
 		int var8 = this.getXWithOffset(0, 0);
 		int var9 = this.getYWithOffset(0);
@@ -130,7 +130,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.placeBlockRotated(world, Blocks.torch, 0, x + 1, y + 1, z + 0, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.TORCH, 0, x + 1, y + 1, z + 0, rotation, sbb);
 		}
 		else
 		{
@@ -138,7 +138,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		}
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.placeBlockRotated(world, Blocks.torch, 0, x - 1, y + 1, z + 0, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.TORCH, 0, x - 1, y + 1, z + 0, rotation, sbb);
 		}
 		else
 		{
@@ -146,7 +146,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		}
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.placeBlockRotated(world, Blocks.torch, 0, x + 1, y + 1, z + 3, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.TORCH, 0, x + 1, y + 1, z + 3, rotation, sbb);
 		}
 		else
 		{
@@ -154,7 +154,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		}
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.placeBlockRotated(world, Blocks.torch, 0, x - 1, y + 1, z + 3, rotation, sbb);
+			this.placeBlockRotated(world, Blocks.TORCH, 0, x - 1, y + 1, z + 3, rotation, sbb);
 		}
 		else
 		{
@@ -169,8 +169,8 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.placeBlockRotated(world, deco.stairID, this.getStairMeta(0 + rotation), x - 1, y, z + 1, rotation, sbb);
 		this.placeBlockRotated(world, deco.stairID, this.getStairMeta(0 + rotation), x - 1, y, z + 2, rotation, sbb);
 		
-		this.placeBlockRotated(world, Blocks.stone_slab, 0, x + 0, y + 1, z + 1, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.stone_slab, 0, x + 0, y + 1, z + 2, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.STONE_SLAB, 0, x + 0, y + 1, z + 1, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.STONE_SLAB, 0, x + 0, y + 1, z + 2, rotation, sbb);
 
 	}
 
@@ -193,11 +193,11 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		if (x == 0 || x == getXSize())
 		{
-			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.iron_bars, 0, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
 		}
 		else
 		{
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.iron_bars, 0, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
 		}
 	}
 	

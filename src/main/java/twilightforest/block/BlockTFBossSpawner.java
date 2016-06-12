@@ -136,7 +136,7 @@ public class BlockTFBossSpawner extends BlockContainer {
     @Override
 	public IIcon getIcon(int side, int metadata)
     {
-        return Blocks.mob_spawner.getIcon(side, metadata);
+        return Blocks.MOB_SPAWNER.getIcon(side, metadata);
     }
     
     @Override

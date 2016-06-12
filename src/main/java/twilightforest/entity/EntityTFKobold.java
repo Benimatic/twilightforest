@@ -105,7 +105,7 @@ public class EntityTFKobold extends EntityMob {
     @Override
 	protected Item getDropItem()
     {
-        return Items.wheat;
+        return Items.WHEAT;
     }
     
     @Override
@@ -115,7 +115,7 @@ public class EntityTFKobold extends EntityMob {
     	
         if (rand.nextInt(2) == 0)
         {
-            this.dropItem(Items.gold_nugget, 1 + i);
+            this.dropItem(Items.GOLD_NUGGET, 1 + i);
         }
     }
  

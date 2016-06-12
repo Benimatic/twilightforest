@@ -43,9 +43,9 @@ public class EntityTFQuestRam extends EntityAnimal {
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
-        this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Item.getItemFromBlock(Blocks.wool), false));
-        this.tasks.addTask(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.wool)));
-        this.tasks.addTask(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.wool)));
+        this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL), false));
+        this.tasks.addTask(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.WOOL)));
+        this.tasks.addTask(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL)));
         this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
 //        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -140,11 +140,11 @@ public class EntityTFQuestRam extends EntityAnimal {
      * Pay out!
      */
     private void rewardQuest() {
-    	func_145778_a(Item.getItemFromBlock(Blocks.diamond_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.iron_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.emerald_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.gold_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.lapis_block), 1, 1.0F);
+    	func_145778_a(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK), 1, 1.0F);
+    	func_145778_a(Item.getItemFromBlock(Blocks.IRON_BLOCK), 1, 1.0F);
+    	func_145778_a(Item.getItemFromBlock(Blocks.EMERALD_BLOCK), 1, 1.0F);
+    	func_145778_a(Item.getItemFromBlock(Blocks.GOLD_BLOCK), 1, 1.0F);
+    	func_145778_a(Item.getItemFromBlock(Blocks.LAPIS_BLOCK), 1, 1.0F);
     	func_145778_a(TFItems.crumbleHorn, 1, 1.0F);
     	
     	rewardNearbyPlayers(this.worldObj, this.posX, this.posY, this.posZ);
@@ -171,9 +171,9 @@ public class EntityTFQuestRam extends EntityAnimal {
     {
         ItemStack currentItem = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.wool) && !isColorPresent(currentItem.getItemDamage()))
+        if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(currentItem.getItemDamage()))
         {
-//            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Items.bucketMilk));
+//            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Items.BUCKETMILK));
         	this.setColorPresent(currentItem.getItemDamage());
         	this.animateAddColor(currentItem.getItemDamage(), 50);
         	

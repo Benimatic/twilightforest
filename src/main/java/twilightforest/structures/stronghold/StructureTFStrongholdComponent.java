@@ -237,16 +237,16 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		if (x == 0 || x == this.getXSize())
 		{
-			this.fillWithMetadataBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceID, deco.fenceMeta, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceID, deco.fenceMeta, Blocks.AIR, 0, false);
 			this.fillWithAir(world, sbb, x, y, z - 1, x, y + 3, z + 1);
 		}
 		else
 		{
-			this.fillWithMetadataBlocks(world, sbb, x - 2, y, z, x + 2, y + 3, z, deco.fenceID, deco.fenceMeta, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x - 2, y, z, x + 2, y + 3, z, deco.fenceID, deco.fenceMeta, Blocks.AIR, 0, false);
 			this.fillWithAir(world, sbb, x - 1, y, z, x + 1, y + 3, z);
 		}
 		
-		//this.placeBlockAtCurrentPosition(world, Blocks.wool, this.coordBaseMode, x, y, z, sbb);
+		//this.placeBlockAtCurrentPosition(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
 	}
 
 	protected int getXSize() {
@@ -268,16 +268,16 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	protected void placeSmallDoorwayAt(World world, Random rand, int facing, int x, int y, int z, StructureBoundingBox sbb) {
 		if (facing == 0 || facing == 2)
 		{
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.cobblestone_wall, 0, Blocks.air, 0, true);
+			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL, 0, Blocks.AIR, 0, true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 		}
 		else
 		{
-			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.cobblestone_wall, 0, Blocks.air, 0, true);
+			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.COBBLESTONE_WALL, 0, Blocks.AIR, 0, true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 		}
 		
-		//this.placeBlockAtCurrentPosition(world, Blocks.wool, this.coordBaseMode, x, y, z, sbb);
+		//this.placeBlockAtCurrentPosition(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
 	}
 
 	/**
@@ -320,8 +320,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 
 		// antlers
-		this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, x + 0, y + 4, z + oz, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, x + ox, y + 4, z + 0, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x + 0, y + 4, z + oz, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x + ox, y + 4, z + 0, sbb);
 
 		// arms
 		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 3, z + oz, sbb);
@@ -331,8 +331,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smx) + 4, x + ox, y + 2, z + oz, sbb);
 
 		// sword
-		this.placeBlockAtCurrentPosition(world, Blocks.cobblestone_wall, 0, x + ox, y + 0, z + oz, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.cobblestone_wall, 0, x + ox, y + 1, z + oz, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 0, z + oz, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 1, z + oz, sbb);
 
 		// feet
 		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 0, z + oz, sbb);
@@ -362,8 +362,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			}
 			
 			// antlers
-			this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, x - ox, y + 4, z, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, x + ox, y + 4, z, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x - ox, y + 4, z, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x + ox, y + 4, z, sbb);
 	
 			// arms
 			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 3, z, sbb);
@@ -378,8 +378,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z - oz, sbb);
 			
 			// sword
-			this.placeBlockAtCurrentPosition(world, Blocks.cobblestone_wall, 0, x, y + 0, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.cobblestone_wall, 0, x, y + 1, z - oz, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x, y + 0, z - oz, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x, y + 1, z - oz, sbb);
 			
 			// feet
 			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 0, z + 0, sbb);
@@ -394,8 +394,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			}
 			
 			// antlers
-			this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, x, y + 4, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, x, y + 4, z + oz, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x, y + 4, z - oz, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x, y + 4, z + oz, sbb);
 	
 			// arms
 			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 3, z - oz, sbb);
@@ -410,8 +410,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z + oz, sbb);
 			
 			// sword
-			this.placeBlockAtCurrentPosition(world, Blocks.cobblestone_wall, 0, x + ox, y + 0, z, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.cobblestone_wall, 0, x + ox, y + 1, z, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 0, z, sbb);
+			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 1, z, sbb);
 			
 			// feet
 			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 0, z - ox, sbb);
@@ -548,7 +548,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			{
 				this.placeDoorwayAt(world, rand, doorCoords.posX, doorCoords.posY, doorCoords.posZ, sbb);
 				
-				//this.placeBlockAtCurrentPosition(world, Blocks.wool, doorCoords.posX, doorCoords.posX, doorCoords.posY + 2, doorCoords.posZ, sbb);
+				//this.placeBlockAtCurrentPosition(world, Blocks.WOOL, doorCoords.posX, doorCoords.posX, doorCoords.posY + 2, doorCoords.posZ, sbb);
 			}
 		}
     }
@@ -566,12 +566,12 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     				boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
     				Block blockID = this.getBlockAtCurrentPosition(world, x, y, z, sbb);
 
-    				if (blockID == Blocks.air)
+    				if (blockID == Blocks.AIR)
     				{
     					// cobblestone to "fill in holes"
     					if (wall)
     					{
-    						this.placeBlockAtCurrentPosition(world, Blocks.cobblestone, 0, x, y, z, sbb);
+    						this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE, 0, x, y, z, sbb);
     					}
     				}
     				else if (y == sy || y == dy)
@@ -582,7 +582,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     					this.placeBlockAtCurrentPosition(world, strongBlocks.func_151561_a(), strongBlocks.getSelectedBlockMetaData(), x, y, z, sbb);
     					
     				}
-    				else if (!wall || blockID != Blocks.dirt)  // leave dirt there
+    				else if (!wall || blockID != Blocks.DIRT)  // leave dirt there
     				{
 						// and use decorator (with presumably underbricks) for walls
     					randomBlocks.selectBlocks(rand, x, y, z, wall);
@@ -607,8 +607,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     				boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
     				Block blockID = this.getBlockAtCurrentPosition(world, x, y, z, sbb);
 
-    				if ((blockID != Blocks.air && (blockID.getMaterial() == Material.rock || blockID.getMaterial() == Material.grass || blockID.getMaterial() == Material.ground))
-    						|| (blockID == Blocks.air && rand.nextInt(3) == 0) && this.getBlockAtCurrentPosition(world, x, y - 1, z, sbb) == Blocks.stonebrick)
+    				if ((blockID != Blocks.AIR && (blockID.getMaterial() == Material.rock || blockID.getMaterial() == Material.grass || blockID.getMaterial() == Material.ground))
+    						|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockAtCurrentPosition(world, x, y - 1, z, sbb) == Blocks.STONEBRICK)
     				{
     					if (y == sy || y == dy)
         				{

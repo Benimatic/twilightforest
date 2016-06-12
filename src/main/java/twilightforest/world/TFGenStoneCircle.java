@@ -21,14 +21,14 @@ public class TFGenStoneCircle extends TFGenerator {
 		// okay!  circle!
 		for (int cy = 0; cy <= 2; cy++)
 		{
-			setBlock(world, x - 3, y + cy, z, Blocks.mossy_cobblestone);
-			setBlock(world, x + 3, y + cy, z, Blocks.mossy_cobblestone);
-			setBlock(world, x, y + cy, z - 3, Blocks.mossy_cobblestone);
-			setBlock(world, x, y + cy, z + 3, Blocks.mossy_cobblestone);
-			setBlock(world, x - 2, y + cy, z - 2, Blocks.mossy_cobblestone);
-			setBlock(world, x + 2, y + cy, z - 2, Blocks.mossy_cobblestone);
-			setBlock(world, x - 2, y + cy, z + 2, Blocks.mossy_cobblestone);
-			setBlock(world, x + 2, y + cy, z + 2, Blocks.mossy_cobblestone);
+			setBlock(world, x - 3, y + cy, z, Blocks.MOSSY_COBBLESTONE);
+			setBlock(world, x + 3, y + cy, z, Blocks.MOSSY_COBBLESTONE);
+			setBlock(world, x, y + cy, z - 3, Blocks.MOSSY_COBBLESTONE);
+			setBlock(world, x, y + cy, z + 3, Blocks.MOSSY_COBBLESTONE);
+			setBlock(world, x - 2, y + cy, z - 2, Blocks.MOSSY_COBBLESTONE);
+			setBlock(world, x + 2, y + cy, z - 2, Blocks.MOSSY_COBBLESTONE);
+			setBlock(world, x - 2, y + cy, z + 2, Blocks.MOSSY_COBBLESTONE);
+			setBlock(world, x + 2, y + cy, z + 2, Blocks.MOSSY_COBBLESTONE);
 		}
 		
 		

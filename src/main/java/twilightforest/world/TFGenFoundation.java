@@ -40,7 +40,7 @@ public class TFGenFoundation extends TFGenerator {
 				{
 					// destroyed wooden plank floor
 					if (rand.nextInt(3) != 0) {
-						setBlock(world, x + cx, y - 1, z + cz, Blocks.planks);
+						setBlock(world, x + cx, y - 1, z + cz, Blocks.PLANKS);
 					}
 				}
 			}
@@ -55,8 +55,8 @@ public class TFGenFoundation extends TFGenerator {
 			{
 				for (int cz = 1; cz < sz; cz++)
 				{
-					setBlock(world, x + cx, y - 3, z + cz, Blocks.air);
-					setBlock(world, x + cx, y - 4, z + cz, Blocks.air);
+					setBlock(world, x + cx, y - 3, z + cz, Blocks.AIR);
+					setBlock(world, x + cx, y - 4, z + cz, Blocks.AIR);
 				}
 			}
 			

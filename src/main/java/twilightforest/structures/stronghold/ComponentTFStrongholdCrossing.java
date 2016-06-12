@@ -75,15 +75,15 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 
 	private void placeTableAndChairs(World world, StructureBoundingBox sbb, int rotation) {
 		// table
-		this.placeBlockRotated(world, Blocks.oak_stairs, this.getStairMeta(0 + rotation) + 4, 5, 1, 3, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.oak_stairs, this.getStairMeta(3 + rotation) + 4, 5, 1, 4, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.oak_stairs, this.getStairMeta(1 + rotation) + 4, 6, 1, 3, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.oak_stairs, this.getStairMeta(2 + rotation) + 4, 6, 1, 4, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(0 + rotation) + 4, 5, 1, 3, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(3 + rotation) + 4, 5, 1, 4, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(1 + rotation) + 4, 6, 1, 3, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(2 + rotation) + 4, 6, 1, 4, rotation, sbb);
 		// chairs
-		this.placeBlockRotated(world, Blocks.spruce_stairs, this.getStairMeta(3 + rotation), 5, 1, 2, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.spruce_stairs, this.getStairMeta(0 + rotation), 7, 1, 3, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.spruce_stairs, this.getStairMeta(1 + rotation), 6, 1, 5, rotation, sbb);
-		this.placeBlockRotated(world, Blocks.spruce_stairs, this.getStairMeta(2 + rotation), 4, 1, 4, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.SPRUCE_STAIRS, this.getStairMeta(3 + rotation), 5, 1, 2, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.SPRUCE_STAIRS, this.getStairMeta(0 + rotation), 7, 1, 3, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.SPRUCE_STAIRS, this.getStairMeta(1 + rotation), 6, 1, 5, rotation, sbb);
+		this.placeBlockRotated(world, Blocks.SPRUCE_STAIRS, this.getStairMeta(2 + rotation), 4, 1, 4, rotation, sbb);
 	}
 
 

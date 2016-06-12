@@ -135,7 +135,7 @@ public class ItemTFFieryPick extends ItemPickaxe {
      */
     public boolean func_150897_b(Block par1Block)
     {
-        return par1Block == Blocks.obsidian ? true : super.func_150897_b(par1Block);
+        return par1Block == Blocks.OBSIDIAN ? true : super.func_150897_b(par1Block);
     }
 	
 	/**

@@ -96,13 +96,13 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
     		for (int i = 0; i < 32; i++)
     		{
     			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generateBlockStalactite(world, decoRNG, Blocks.stone, 0.5F, true, dest.posX, 3, dest.posZ, sbb);
+    			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, true, dest.posX, 3, dest.posZ, sbb);
     		}
     		// stone stalagmites!
     		for (int i = 0; i < 8; i++)
     		{
     			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generateBlockStalactite(world, decoRNG, Blocks.stone, 0.5F, false, dest.posX, 3, dest.posZ, sbb);
+    			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.posX, 3, dest.posZ, sbb);
     		}
     		
     		// possible treasure
@@ -125,10 +125,10 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		int height = 7 + rand.nextInt(8);
 		int rotation = rand.nextInt(4);
 		
-		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid - 1, mid - 1, height, mid - 1, Blocks.obsidian, 0, rotation);
-		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid - 1, mid + 0, height - 2, mid - 1, Blocks.obsidian, 0, rotation);
-		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid + 0, mid - 1, height - 2, mid + 0, Blocks.obsidian, 0, rotation);
-		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid + 0, mid + 0, height - 4, mid + 0, Blocks.obsidian, 0, rotation);
+		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid - 1, mid - 1, height, mid - 1, Blocks.OBSIDIAN, 0, rotation);
+		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid - 1, mid + 0, height - 2, mid - 1, Blocks.OBSIDIAN, 0, rotation);
+		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid + 0, mid - 1, height - 2, mid + 0, Blocks.OBSIDIAN, 0, rotation);
+		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid + 0, mid + 0, height - 4, mid + 0, Blocks.OBSIDIAN, 0, rotation);
 	}
 
 	private int countExits() {
@@ -174,27 +174,27 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	private void makeSingleStoneFormation(World world, StructureBoundingBox sbb, Random decoRNG, int rotation, int z, int y, int width, int depth) {
 		if (decoRNG.nextInt(8) == 0) {
-			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.obsidian, 0, rotation);
+			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.OBSIDIAN, 0, rotation);
 		} else if (decoRNG.nextInt(4) == 0) {
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollSteinn, 0, rotation);
 		} else {
 			// normal stone
-			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.stone, 0, rotation);
+			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.STONE, 0, rotation);
 		}
-		//this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.5F, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollSteinn, 0, Blocks.stone, 0, rotation);
+		//this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.5F, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollSteinn, 0, Blocks.STONE, 0, rotation);
 	}
 
 	private void decorateStoneProjection(World world, StructureBoundingBox sbb, Random decoRNG, int rotation) {
 		int z = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		int y = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		
-		this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y, z, size - 2, y + 3, z + 3, TFBlocks.trollSteinn, 0, Blocks.stone, 0, rotation);
+		this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y, z, size - 2, y + 3, z + 3, TFBlocks.trollSteinn, 0, Blocks.STONE, 0, rotation);
 		if (decoRNG.nextBoolean()) {
 			// down
-			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, 1, z, size - 6, y - 1, z + 3, TFBlocks.trollSteinn, 0, Blocks.stone, 0, rotation);
+			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, 1, z, size - 6, y - 1, z + 3, TFBlocks.trollSteinn, 0, Blocks.STONE, 0, rotation);
 		} else {
 			// up
-			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y + 4, z, size - 6, height - 2, z + 3, TFBlocks.trollSteinn, 0, Blocks.stone, 0, rotation);
+			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y + 4, z, size - 6, height - 2, z + 3, TFBlocks.trollSteinn, 0, Blocks.STONE, 0, rotation);
 		}
 	}
 
@@ -209,7 +209,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 			
 			int width = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
 			int depth = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
-			Block mushBlock = ((decoRNG.nextInt(3) == 0) ? TFBlocks.hugeGloomBlock : (decoRNG.nextBoolean() ? Blocks.brown_mushroom_block : Blocks.red_mushroom_block));
+			Block mushBlock = ((decoRNG.nextInt(3) == 0) ? TFBlocks.hugeGloomBlock : (decoRNG.nextBoolean() ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK));
 			makeSingleBracketMushroom(world, sbb, rotation, z, y, width, depth, mushBlock);
 
 			// wiggle a little

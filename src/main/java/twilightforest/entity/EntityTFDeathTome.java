@@ -89,7 +89,7 @@ public class EntityTFDeathTome extends EntityMob {
         	// we took damage
     		if (this.rand.nextInt(2) == 0)
     		{
-    			func_145778_a(Items.paper, 1, 1.0F);
+    			func_145778_a(Items.PAPER, 1, 1.0F);
     		}
             return true;
         }
@@ -105,7 +105,7 @@ public class EntityTFDeathTome extends EntityMob {
     @Override
 	protected Item getDropItem()
     {
-        return Items.paper;
+        return Items.PAPER;
     }
 
     /**
@@ -119,16 +119,16 @@ public class EntityTFDeathTome extends EntityMob {
 
         for (var4 = 0; var4 < var3; ++var4)
         {
-            this.dropItem(Items.paper, 1);
+            this.dropItem(Items.PAPER, 1);
         }
 
         if (this.rand.nextInt(5) - par2 <= 0)
         {
-        	this.dropItem(Items.writable_book, 1);
+        	this.dropItem(Items.WRITABLE_BOOK, 1);
         }
         else
         {
-        	this.dropItem(Items.book, 1);
+        	this.dropItem(Items.BOOK, 1);
         }
     }
 

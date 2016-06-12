@@ -89,7 +89,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 		// then wood
 		drawBlockBlob(world, sbb, radius, radius, radius, 3, TFBlocks.log, 12, false);
 		// then air
-		drawBlockBlob(world, sbb, radius, radius, radius, 2, Blocks.air, 0, false);
+		drawBlockBlob(world, sbb, radius, radius, radius, 2, Blocks.AIR, 0, false);
 		
 		// then treasure chest
 		// which direction is this chest in?

@@ -123,7 +123,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     @Override
 	protected Item getDropItem()
     {
-        return Items.gunpowder;
+        return Items.GUNPOWDER;
     }
     
     /* (non-Javadoc)

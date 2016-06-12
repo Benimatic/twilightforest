@@ -34,7 +34,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 
 		// check if we're on dirt or grass
 		Block j1 = world.getBlock(x, y - 1, z);
-		if (j1 != Blocks.grass && j1 != Blocks.dirt) {
+		if (j1 != Blocks.GRASS && j1 != Blocks.DIRT) {
 			return false;
 		}
 

@@ -74,13 +74,13 @@ public class EntityTFIceBomb extends EntityThrowable {
      */
 	private void doTerrainEffect(int x, int y, int z) {
 		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.water) {
-			this.worldObj.setBlock(x, y, z, Blocks.ice);
+			this.worldObj.setBlock(x, y, z, Blocks.ICE);
 		}
 		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.lava) {
-			this.worldObj.setBlock(x, y, z, Blocks.obsidian);
+			this.worldObj.setBlock(x, y, z, Blocks.OBSIDIAN);
 		}
-		if (this.worldObj.isAirBlock(x, y, z) && Blocks.snow_layer.canPlaceBlockAt(this.worldObj, x, y, z)) {
-			this.worldObj.setBlock(x, y, z, Blocks.snow_layer);
+		if (this.worldObj.isAirBlock(x, y, z) && Blocks.SNOW_LAYER.canPlaceBlockAt(this.worldObj, x, y, z)) {
+			this.worldObj.setBlock(x, y, z, Blocks.SNOW_LAYER);
 		}
 	}
 
@@ -164,13 +164,13 @@ public class EntityTFIceBomb extends EntityThrowable {
 					int iy = MathHelper.floor_double(entity.lastTickPosY);
 					int iz = MathHelper.floor_double(entity.lastTickPosZ);
 					
-					worldObj.setBlock(ix, iy, iz, Blocks.ice);
-					worldObj.setBlock(ix, iy + 1, iz, Blocks.ice);
+					worldObj.setBlock(ix, iy, iz, Blocks.ICE);
+					worldObj.setBlock(ix, iy + 1, iz, Blocks.ICE);
 					
 				} else {
 					entity.attackEntityFrom(DamageSource.magic, 1);
 					int chillLevel = 2;
-					((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 20 * 5, chillLevel, true));
+					((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20 * 5, chillLevel, true));
 				}
 				
 			}
@@ -182,7 +182,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 	}
 
 	public Block getBlock() {
-		return Blocks.packed_ice;
+		return Blocks.PACKED_ICE;
 	}
 	
     @Override

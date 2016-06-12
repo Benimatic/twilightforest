@@ -99,7 +99,7 @@ public class ItemBlockTFPlant extends ItemBlock {
     {
         Block blockThereId = world.getBlock(x, y, z);
 
-        if (blockThereId == Blocks.snow) {
+        if (blockThereId == Blocks.SNOW) {
             direction = 1;
         }
         else if (!blockThereId.getMaterial().isReplaceable()) {

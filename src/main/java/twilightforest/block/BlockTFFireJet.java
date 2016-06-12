@@ -248,7 +248,7 @@ public class BlockTFFireJet extends Block {
     		if (isLava(world, lavaPos.posX, lavaPos.posY, lavaPos.posZ))
     		{
     			// deplete lava reservoir
-    			world.setBlock(lavaPos.posX, lavaPos.posY, lavaPos.posZ, Blocks.air, 0, 2);
+    			world.setBlock(lavaPos.posX, lavaPos.posY, lavaPos.posZ, Blocks.AIR, 0, 2);
     			// change jet state
     			world.setBlock(x, y, z, this, META_JET_POPPING, 0);
     		}

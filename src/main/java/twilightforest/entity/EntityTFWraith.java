@@ -268,7 +268,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     @Override
 	protected Item getDropItem()
     {
-        return Items.glowstone_dust;
+        return Items.GLOWSTONE_DUST;
     }
     
     public int courseChangeCooldown;

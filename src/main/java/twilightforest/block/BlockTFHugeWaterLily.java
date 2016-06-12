@@ -43,6 +43,6 @@ public class BlockTFHugeWaterLily extends BlockBush {
      */
     protected boolean canPlaceBlockOn(Block p_149854_1_)
     {
-        return p_149854_1_ == Blocks.water;
+        return p_149854_1_ == Blocks.WATER;
     }
 }

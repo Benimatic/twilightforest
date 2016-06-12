@@ -123,13 +123,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		for (int i = 0; i < 128; i++)
 		{
 			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, decoRNG, Blocks.stone, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++)
 		{
 			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, decoRNG, Blocks.stone, 0.5F, false, dest.posX, 3, dest.posZ, sbb);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.posX, 3, dest.posZ, sbb);
 		}
 		
 		
@@ -171,8 +171,8 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
                 	double dist = Math.sqrt(ex * ey * ez);
                 	
 					if (dist > threshold) {
-                		this.placeBlockAtCurrentPosition(par1World, Blocks.air, 0, x, y, z, par2StructureBoundingBox);
-                	} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockAtCurrentPosition(par1World, x, y, z, par2StructureBoundingBox) == Blocks.stone) {
+                		this.placeBlockAtCurrentPosition(par1World, Blocks.AIR, 0, x, y, z, par2StructureBoundingBox);
+                	} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockAtCurrentPosition(par1World, x, y, z, par2StructureBoundingBox) == Blocks.STONE) {
                 		this.placeBlockAtCurrentPosition(par1World, TFBlocks.trollSteinn, 0, x, y, z, par2StructureBoundingBox);
                 	}
                 }
@@ -293,7 +293,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	protected void makeTreasureCrate(World world, Random rand, StructureBoundingBox sbb) {
 		// treasure!
 		int mid = this.size / 2;
-		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.obsidian, Blocks.obsidian, false);
+		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN, Blocks.OBSIDIAN, false);
 		this.fillWithAir(world, sbb, mid - 1, 1, mid - 1, mid + 0, 2, mid + 0);
 		this.placeTreasureAtCurrentPosition(world, rand, mid, 1, mid, TFTreasure.troll_garden, false, sbb);
 	}

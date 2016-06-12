@@ -113,14 +113,14 @@ public class BlockTFSapling extends BlockSapling
 
     	if (largeTree)
     	{
-    		world.setBlock(x + var8, y, z + var9, Blocks.air, 0, 4);
-    		world.setBlock(x + var8 + 1, y, z + var9, Blocks.air, 0, 4);
-    		world.setBlock(x + var8, y, z + var9 + 1, Blocks.air, 0, 4);
-    		world.setBlock(x + var8 + 1, y, z + var9 + 1, Blocks.air, 0, 4);
+    		world.setBlock(x + var8, y, z + var9, Blocks.AIR, 0, 4);
+    		world.setBlock(x + var8 + 1, y, z + var9, Blocks.AIR, 0, 4);
+    		world.setBlock(x + var8, y, z + var9 + 1, Blocks.AIR, 0, 4);
+    		world.setBlock(x + var8 + 1, y, z + var9 + 1, Blocks.AIR, 0, 4);
     	}
     	else
     	{
-    		world.setBlock(x, y, z, Blocks.air, 0, 4);
+    		world.setBlock(x, y, z, Blocks.AIR, 0, 4);
     	}
 
     	if (!treeGenerator.generate(world, rand, x + var8, y, z + var9))

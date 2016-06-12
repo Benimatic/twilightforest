@@ -36,10 +36,10 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
 		// make floor
-		fillWithMetadataBlocks(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentID, deco.accentMeta, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockID, deco.blockMeta, Blocks.air, 0, false);
+		fillWithMetadataBlocks(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockID, deco.blockMeta, Blocks.AIR, 0, false);
 		
-		fillWithMetadataBlocks(world, sbb, 0, 1, 0, 2, 1, 4, deco.fenceID, deco.fenceMeta, Blocks.air, 0, false);
+		fillWithMetadataBlocks(world, sbb, 0, 1, 0, 2, 1, 4, deco.fenceID, deco.fenceMeta, Blocks.AIR, 0, false);
 
 		this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, 2, 1, 0, sbb);
 		this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, 2, 1, 4, sbb);

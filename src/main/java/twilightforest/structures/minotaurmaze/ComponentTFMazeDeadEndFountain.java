@@ -24,15 +24,15 @@ public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 		
 		// back wall brick
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.mazestone, 1, Blocks.air, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.mazestone, 1, Blocks.AIR, 0, false);
 
 		// water
-		this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, 2, 3, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, 3, 3, 4, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.FLOWING_WATER, 0, 2, 3, 4, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.FLOWING_WATER, 0, 3, 3, 4, sbb);
 
 		// receptacle
-		this.placeBlockAtCurrentPosition(world, Blocks.air, 0, 2, 0, 3, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.air, 0, 3, 0, 3, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 2, 0, 3, sbb);
+		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 3, 0, 3, sbb);
 		
 		return true;
 	}

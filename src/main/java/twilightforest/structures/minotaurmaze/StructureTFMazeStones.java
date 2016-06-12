@@ -12,7 +12,7 @@ public class StructureTFMazeStones extends StructureComponent.BlockSelector {
 	public void selectBlocks(Random par1Random, int par2, int par3, int par4, boolean wall) {
         if (!wall)
         {
-            this.field_151562_a = Blocks.air;
+            this.field_151562_a = Blocks.AIR;
             this.selectedBlockMetaData = 0;
         }
         else

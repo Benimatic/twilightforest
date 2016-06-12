@@ -182,7 +182,7 @@ public class TFItems {
     	spawnEgg = new ItemTFSpawnEgg().setUnlocalizedName("tfspawnegg");
     	venisonRaw = (new ItemTFFood(3, 0.3F, true)).setUnlocalizedName("venisonRaw");
     	venisonCooked = (new ItemTFFood(8, 0.8F, true)).setUnlocalizedName("venisonCooked");
-    	hydraChop = (new ItemTFHydraChops(18, 2.0F, true)).setPotionEffect(Potion.regeneration.id, 5, 0, 1.0F).setUnlocalizedName("hydraChop");
+    	hydraChop = (new ItemTFHydraChops(18, 2.0F, true)).setPotionEffect(MobEffects.REGENERATION.id, 5, 0, 1.0F).setUnlocalizedName("hydraChop");
     	fieryBlood = new ItemTF().makeRare().setUnlocalizedName("fieryBlood");
     	trophy = new ItemTFTrophy().setUnlocalizedName("trophy");
     	fieryIngot = new ItemTF().makeRare().setUnlocalizedName("fieryIngot");

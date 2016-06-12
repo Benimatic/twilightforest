@@ -268,7 +268,7 @@ public class TileEntityTFReverter extends TileEntity
 
 	private boolean revertBlock(int x, int y, int z, Block thereBlockID, byte thereMeta, Block replaceBlockID, byte replaceMeta) 
 	{
-		if (thereBlockID == Blocks.air && !replaceBlockID.getMaterial().blocksMovement())
+		if (thereBlockID == Blocks.AIR && !replaceBlockID.getMaterial().blocksMovement())
 		{
 			// do not revert
 			
@@ -284,7 +284,7 @@ public class TileEntityTFReverter extends TileEntity
 		else if (this.rand.nextInt(REVERT_CHANCE) == 0)
 		{
 			// don't revert everything instantly
-			if (replaceBlockID != Blocks.air)
+			if (replaceBlockID != Blocks.AIR)
 			{
 				replaceBlockID = TFBlocks.towerTranslucent;
 				replaceMeta = BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT;
@@ -293,11 +293,11 @@ public class TileEntityTFReverter extends TileEntity
 			worldObj.setBlock(x, y, z, replaceBlockID, replaceMeta, 2);
 			
 			// play a little animation
-			if (thereBlockID == Blocks.air)
+			if (thereBlockID == Blocks.AIR)
 			{
 				worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(replaceBlockID) + (replaceMeta << 12));
 			}
-			else if (replaceBlockID == Blocks.air)
+			else if (replaceBlockID == Blocks.AIR)
 			{
 				worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(thereBlockID) + (thereMeta << 12));
 				thereBlockID.dropBlockAsItem(worldObj, x, y, z, thereMeta, 0);
@@ -319,23 +319,23 @@ public class TileEntityTFReverter extends TileEntity
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.redstone_lamp && replaceBlockID == Blocks.lit_redstone_lamp)
+		if (thereBlockID == Blocks.REDSTONE_LAMP && replaceBlockID == Blocks.LIT_REDSTONE_LAMP)
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.lit_redstone_lamp && replaceBlockID == Blocks.redstone_lamp)
+		if (thereBlockID == Blocks.LIT_REDSTONE_LAMP && replaceBlockID == Blocks.REDSTONE_LAMP)
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.water || replaceBlockID == Blocks.flowing_water)
+		if (thereBlockID == Blocks.WATER || replaceBlockID == Blocks.FLOWING_WATER)
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.flowing_water || replaceBlockID == Blocks.water)
+		if (thereBlockID == Blocks.FLOWING_WATER || replaceBlockID == Blocks.WATER)
 		{
 			return true;
 		}
-		if (replaceBlockID == Blocks.tnt)
+		if (replaceBlockID == Blocks.TNT)
 		{
 			return true;
 		}

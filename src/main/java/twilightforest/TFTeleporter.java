@@ -345,27 +345,27 @@ public class TFTeleporter extends Teleporter
 
 		
 		// grass all around it
-		world.setBlock(px - 1, py + 0, pz - 1, Blocks.grass);
-		world.setBlock(px + 0, py + 0, pz - 1, Blocks.grass);
-		world.setBlock(px + 1, py + 0, pz - 1, Blocks.grass);
-		world.setBlock(px + 2, py + 0, pz - 1, Blocks.grass);
+		world.setBlock(px - 1, py + 0, pz - 1, Blocks.GRASS);
+		world.setBlock(px + 0, py + 0, pz - 1, Blocks.GRASS);
+		world.setBlock(px + 1, py + 0, pz - 1, Blocks.GRASS);
+		world.setBlock(px + 2, py + 0, pz - 1, Blocks.GRASS);
 
-		world.setBlock(px - 1, py + 0, pz + 0, Blocks.grass);
-		world.setBlock(px + 2, py + 0, pz + 0, Blocks.grass);
+		world.setBlock(px - 1, py + 0, pz + 0, Blocks.GRASS);
+		world.setBlock(px + 2, py + 0, pz + 0, Blocks.GRASS);
 
-		world.setBlock(px - 1, py + 0, pz + 1, Blocks.grass);
-		world.setBlock(px + 2, py + 0, pz + 1, Blocks.grass);
+		world.setBlock(px - 1, py + 0, pz + 1, Blocks.GRASS);
+		world.setBlock(px + 2, py + 0, pz + 1, Blocks.GRASS);
 
-		world.setBlock(px - 1, py + 0, pz + 2, Blocks.grass);
-		world.setBlock(px + 0, py + 0, pz + 2, Blocks.grass);
-		world.setBlock(px + 1, py + 0, pz + 2, Blocks.grass);
-		world.setBlock(px + 2, py + 0, pz + 2, Blocks.grass);
+		world.setBlock(px - 1, py + 0, pz + 2, Blocks.GRASS);
+		world.setBlock(px + 0, py + 0, pz + 2, Blocks.GRASS);
+		world.setBlock(px + 1, py + 0, pz + 2, Blocks.GRASS);
+		world.setBlock(px + 2, py + 0, pz + 2, Blocks.GRASS);
 
 		// dirt under it
-		world.setBlock(px + 0, py - 1, pz + 0, Blocks.dirt);
-		world.setBlock(px + 1, py - 1, pz + 0, Blocks.dirt);
-		world.setBlock(px + 0, py - 1, pz + 1, Blocks.dirt);
-		world.setBlock(px + 1, py - 1, pz + 1, Blocks.dirt);
+		world.setBlock(px + 0, py - 1, pz + 0, Blocks.DIRT);
+		world.setBlock(px + 1, py - 1, pz + 0, Blocks.DIRT);
+		world.setBlock(px + 0, py - 1, pz + 1, Blocks.DIRT);
+		world.setBlock(px + 1, py - 1, pz + 1, Blocks.DIRT);
 		
 		// portal in it
 		world.setBlock(px + 0, py + 0, pz + 0, TFBlocks.portal, 0, 2);
@@ -377,7 +377,7 @@ public class TFTeleporter extends Teleporter
 		for (int dx = -1; dx <= 2; dx++) {
 			for (int dz = -1; dz <= 2; dz++) {
 				for (int dy = 1; dy <=5; dy++) {
-					world.setBlock(px + dx, py + dy, pz + dz, Blocks.air);
+					world.setBlock(px + dx, py + dy, pz + dz, Blocks.AIR);
 				}
 			}
 		}
@@ -401,7 +401,7 @@ public class TFTeleporter extends Teleporter
 	}
 	
 	public Block randNatureBlock(Random random) {
-		Block[] block = {Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower};
+		Block[] block = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER};
 		
 		return block[random.nextInt(block.length)];
 	}

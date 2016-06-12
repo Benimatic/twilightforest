@@ -53,7 +53,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 			}
 			else
 			{
-				this.setBlockAndMetadata(world, x + 1, y - 1, z + dz + 3, Blocks.dirt, 0);
+				this.setBlockAndMetadata(world, x + 1, y - 1, z + dz + 3, Blocks.DIRT, 0);
 				this.setBlockAndMetadata(world, x + 1, y + 0, z + dz + 3, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
 			}
 			if (rand.nextBoolean())
@@ -66,7 +66,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 			}
 			else
 			{
-				this.setBlockAndMetadata(world, x + 2, y - 1, z + dz + 3, Blocks.dirt, 0);
+				this.setBlockAndMetadata(world, x + 2, y - 1, z + dz + 3, Blocks.DIRT, 0);
 				this.setBlockAndMetadata(world, x + 2, y + 0, z + dz + 3, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
 			}
 
@@ -167,7 +167,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 			}
 			else
 			{
-				this.setBlockAndMetadata(world, x + dx + 3, y - 1, z + 1, Blocks.dirt, 0);
+				this.setBlockAndMetadata(world, x + dx + 3, y - 1, z + 1, Blocks.DIRT, 0);
 				this.setBlockAndMetadata(world, x + dx + 3, y, z + 1, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
 			}
 			if (rand.nextBoolean())
@@ -180,7 +180,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 			}
 			else
 			{
-				this.setBlockAndMetadata(world, x + dx + 3, y - 1, z + 2, Blocks.dirt, 0);
+				this.setBlockAndMetadata(world, x + dx + 3, y - 1, z + 2, Blocks.DIRT, 0);
 				this.setBlockAndMetadata(world, x + dx + 3, y, z + 2, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
 			}
 	

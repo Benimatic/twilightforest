@@ -30,7 +30,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 	 */
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
-        return new WorldGenTallGrass(Blocks.tallgrass, 1);
+        return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
     }
 
 }

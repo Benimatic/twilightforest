@@ -200,7 +200,7 @@ public class ItemTFOreMagnet extends ItemTF
 		//System.out.println("Searching from " + useX + ", " + useY + ", " + useZ + " to " + destX + ", " + destY + ", " + destZ);
 		
 		// find some ore?
-		Block foundID = Blocks.air;
+		Block foundID = Blocks.AIR;
 		int foundMeta = -1;
 		int foundX = -1;
 		int foundY = -1;
@@ -235,7 +235,7 @@ public class ItemTFOreMagnet extends ItemTF
 				}
 			}
 			
-			if (searchID != Blocks.air && isOre(searchID, searchMeta))
+			if (searchID != Blocks.AIR && isOre(searchID, searchMeta))
 			{
 				//System.out.println("I found ore: " + searchID + " at " + coord.PosX + ", " + coord.PosY + ", " + coord.PosZ);
 				
@@ -252,7 +252,7 @@ public class ItemTFOreMagnet extends ItemTF
 		//System.out.println("I found ground at " + baseX + ", " + baseY + ", " + baseZ);
 
 		
-		if (baseY != -1 && foundID != Blocks.air)
+		if (baseY != -1 && foundID != Blocks.AIR)
 		{
 			// find the whole vein
 			ArrayList<ChunkCoordinates> veinBlocks = new ArrayList<ChunkCoordinates>();
@@ -272,10 +272,10 @@ public class ItemTFOreMagnet extends ItemTF
 				Block replaceID = world.getBlock(replaceX, replaceY, replaceZ);
 				int replaceMeta = world.getBlockMetadata(replaceX, replaceY, replaceZ);
 				
-				if ((isNetherrack ? isNetherReplaceable(world, replaceID, replaceMeta, replaceX, replaceY, replaceZ) : isReplaceable(world, replaceID, replaceMeta, replaceX, replaceY, replaceZ)) || replaceID == Blocks.air)
+				if ((isNetherrack ? isNetherReplaceable(world, replaceID, replaceMeta, replaceX, replaceY, replaceZ) : isReplaceable(world, replaceID, replaceMeta, replaceX, replaceY, replaceZ)) || replaceID == Blocks.AIR)
 				{
 					// set vein to stone / netherrack
-					world.setBlock(coord.posX, coord.posY, coord.posZ, isNetherrack ? Blocks.netherrack : Blocks.stone, 0, 2);
+					world.setBlock(coord.posX, coord.posY, coord.posZ, isNetherrack ? Blocks.NETHERRACK : Blocks.STONE, 0, 2);
 					
 					// set close to ore material
 					world.setBlock(replaceX, replaceY, replaceZ, foundID, foundMeta, 2);
@@ -306,19 +306,19 @@ public class ItemTFOreMagnet extends ItemTF
 
 	private static boolean isReplaceable(World world, Block replaceID, int replaceMeta, int x, int y, int z)
 	{
-		if (replaceID == Blocks.dirt)
+		if (replaceID == Blocks.DIRT)
 		{
 			return true;
 		}
-		if (replaceID == Blocks.grass)
+		if (replaceID == Blocks.GRASS)
 		{
 			return true;
 		}
-		if (replaceID == Blocks.gravel)
+		if (replaceID == Blocks.GRAVEL)
 		{
 			return true;
 		}
-		if (replaceID != Blocks.air && replaceID.isReplaceableOreGen(world, x, y, z, Blocks.stone))
+		if (replaceID != Blocks.AIR && replaceID.isReplaceableOreGen(world, x, y, z, Blocks.STONE))
 		{
 			return true;
 		}
@@ -328,11 +328,11 @@ public class ItemTFOreMagnet extends ItemTF
 
 	private static boolean isNetherReplaceable(World world, Block replaceID, int replaceMeta, int x, int y, int z)
 	{
-		if (replaceID == Blocks.netherrack)
+		if (replaceID == Blocks.NETHERRACK)
 		{
 			return true;
 		}
-		if (replaceID != Blocks.air && replaceID.isReplaceableOreGen(world, x, y, z, Blocks.netherrack))
+		if (replaceID != Blocks.AIR && replaceID.isReplaceableOreGen(world, x, y, z, Blocks.NETHERRACK))
 		{
 			return true;
 		}
@@ -380,39 +380,39 @@ public class ItemTFOreMagnet extends ItemTF
 
 	public static boolean isOre(Block blockID, int meta) {
 		
-		if (blockID == Blocks.coal_ore)
+		if (blockID == Blocks.COAL_ORE)
 		{
 			return false;
 		}
-		if (blockID == Blocks.iron_ore)
+		if (blockID == Blocks.IRON_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.diamond_ore)
+		if (blockID == Blocks.DIAMOND_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.emerald_ore)
+		if (blockID == Blocks.EMERALD_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.gold_ore)
+		if (blockID == Blocks.GOLD_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.lapis_ore)
+		if (blockID == Blocks.LAPIS_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.redstone_ore)
+		if (blockID == Blocks.REDSTONE_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.lit_redstone_ore)
+		if (blockID == Blocks.LIT_REDSTONE_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.quartz_ore)
+		if (blockID == Blocks.QUARTZ_ORE)
 		{
 			return true;
 		}

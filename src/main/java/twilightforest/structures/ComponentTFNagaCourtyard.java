@@ -39,18 +39,18 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 		for (int fx = 0; fx <= DIAMETER; fx++) {
 			for (int fz = 0; fz <= DIAMETER; fz++) {
 				if (rand.nextInt(3) == 0) {
-					placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, fx, 0, fz, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, fx, 0, fz, sbb);
 					
 					// put some half slabs around
 					if (rand.nextInt(20) == 0) {
-						placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, fx, 1, fz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, fx, 1, fz, sbb);
 					}
 					else {
-						placeBlockAtCurrentPosition(world, Blocks.air, 0, fx, 1, fz, sbb);  // clear out grass or flowers
+						placeBlockAtCurrentPosition(world, Blocks.AIR, 0, fx, 1, fz, sbb);  // clear out grass or flowers
 					}
 				}
 				else {
-					placeBlockAtCurrentPosition(world, Blocks.grass, 0, fx, 0, fz, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.GRASS, 0, fx, 0, fz, sbb);
 				}
 			}
 		}
@@ -65,8 +65,8 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 			randomBrick(world, rand, fx, 2, 0, sbb);
 			randomBrick(world, rand, fx, 3, DIAMETER, sbb);
 			randomBrick(world, rand, fx, 3, 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, fx, 4, DIAMETER, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, fx, 4, 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, fx, 4, DIAMETER, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, fx, 4, 0, sbb);
 
 
 			// make nagastone pattern!
@@ -153,13 +153,13 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 			}
 			
 //			if (fx % 2 == 0) {
-//				placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, fx, 4, DIAMETER, sbb);
-//				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, fx, 4, 0, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, fx, 4, DIAMETER, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, fx, 4, 0, sbb);
 //			}
 //			else
 //			{
-//				placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, fx, 4, 0, sbb);
-//				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, fx, 4, DIAMETER, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, fx, 4, 0, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, fx, 4, DIAMETER, sbb);
 //			}
 		}
 		
@@ -172,8 +172,8 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 			randomBrick(world, rand, 0, 2, fz, sbb);
 			randomBrick(world, rand, DIAMETER, 3, fz, sbb);
 			randomBrick(world, rand, 0, 3, fz, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, DIAMETER, 4, fz, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, 0, 4, fz, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, DIAMETER, 4, fz, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, 0, 4, fz, sbb);
 
 			// make nagastone pattern!
 			switch (fz % 23)
@@ -259,13 +259,13 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 			}
 			
 //			if (fz % 2 == 0) {
-//				placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, DIAMETER, 4, fz, sbb);
-//				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, 0, 4, fz, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, DIAMETER, 4, fz, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, 0, 4, fz, sbb);
 //			}
 //			else
 //			{
-//				placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, 0, 4, fz, sbb);
-//				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, DIAMETER, 4, fz, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, 0, 4, fz, sbb);
+//				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, DIAMETER, 4, fz, sbb);
 //			}
 		}
 		
@@ -295,14 +295,14 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 		int height = 8;
 		
 		// make the base
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x - 1, y + 0, z - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 0, y + 0, z - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 1, y + 0, z - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x - 1, y + 0, z + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 1, y + 0, z + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x - 1, y + 0, z + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 0, y + 0, z + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 1, y + 0, z + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x - 1, y + 0, z - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 0, y + 0, z - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 1, y + 0, z - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x - 1, y + 0, z + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 1, y + 0, z + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x - 1, y + 0, z + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 0, y + 0, z + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 1, y + 0, z + 1, sbb);
 		
 		// make the pillar
 		for (int i = 0; i < height; i++) {
@@ -312,16 +312,16 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 				switch (rand.nextInt(4))
 				{
 				case 0:
-					placeBlockAtCurrentPosition(world, Blocks.vine, 8, x - 1, y + i, z + 0, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, 8, x - 1, y + i, z + 0, sbb);
 					break;
 				case 1:
-					placeBlockAtCurrentPosition(world, Blocks.vine, 2, x + 1, y + i, z + 0, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, 2, x + 1, y + i, z + 0, sbb);
 					break;
 				case 2:
-					placeBlockAtCurrentPosition(world, Blocks.vine, 4, x + 0, y + i, z + 1, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, 4, x + 0, y + i, z + 1, sbb);
 					break;
 				case 3:
-					placeBlockAtCurrentPosition(world, Blocks.vine, 1, x + 0, y + i, z - 1, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, 1, x + 0, y + i, z - 1, sbb);
 					break;
 				}
 			}
@@ -347,15 +347,15 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 		
 		// top?
 		if (height == 8) {
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x - 1, y + 8, z - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 0, y + 8, z - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 1, y + 8, z - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x - 1, y + 8, z + 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, x + 0, y + 8, z + 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 1, y + 8, z + 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x - 1, y + 8, z + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 0, y + 8, z + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, x + 1, y + 8, z + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x - 1, y + 8, z - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 0, y + 8, z - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 1, y + 8, z - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x - 1, y + 8, z + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, x + 0, y + 8, z + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 1, y + 8, z + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x - 1, y + 8, z + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 0, y + 8, z + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, x + 1, y + 8, z + 1, sbb);
 			
 			
 		}
@@ -367,7 +367,7 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 	 * Places a random stone brick at the specified location
 	 */
 	public void randomBrick(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, rand.nextInt(3), x, y, z, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, rand.nextInt(3), x, y, z, sbb);
 	}
 	
 

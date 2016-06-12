@@ -21,7 +21,7 @@ public class TFGenMyceliumBlob extends WorldGenerator
 
     public TFGenMyceliumBlob(int i)
     {
-    	myceliumBlockId = Blocks.mycelium;
+    	myceliumBlockId = Blocks.MYCELIUM;
         numberOfBlocks = i;
     }
 
@@ -52,7 +52,7 @@ public class TFGenMyceliumBlob extends WorldGenerator
                 for (int dy = y - yRange; dy <= y + yRange; dy++)
                 {
                     Block blockThere = world.getBlock(dx, dy, dz);
-                    if (blockThere == Blocks.dirt || blockThere == Blocks.grass || blockThere == Blocks.stone)
+                    if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS || blockThere == Blocks.STONE)
                     {
                         world.setBlock(dx, dy, dz, myceliumBlockId, 0, 2);
                     }

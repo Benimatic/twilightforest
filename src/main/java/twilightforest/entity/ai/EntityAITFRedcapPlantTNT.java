@@ -46,7 +46,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
     	{
     		entityObj.setTntLeft(entityObj.getTntLeft() - 1);
     		entityObj.playLivingSound();
-    		entityObj.worldObj.setBlock(entityPosX, entityPosY, entityPosZ, Blocks.tnt, 0, 3);
+    		entityObj.worldObj.setBlock(entityPosX, entityPosY, entityPosZ, Blocks.TNT, 0, 3);
     	}
     }
     

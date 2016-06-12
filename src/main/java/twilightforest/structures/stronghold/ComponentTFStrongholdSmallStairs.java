@@ -109,7 +109,7 @@ public class ComponentTFStrongholdSmallStairs extends
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 13, 8, rand, deco.randomBlocks);
 		
 		// railing
-		this.fillWithMetadataBlocks(world, sbb, 1, 7, 1, 7, 7, 7, deco.platformID, deco.platformMeta, Blocks.air, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 1, 7, 1, 7, 7, 7, deco.platformID, deco.platformMeta, Blocks.AIR, 0, false);
 		this.fillWithAir(world, sbb, 2, 7, 2, 6, 7, 6);
 		
 		int rotation = this.enterBottom ? 0 : 2;
@@ -119,7 +119,7 @@ public class ComponentTFStrongholdSmallStairs extends
 		{
 			for (int x = 3; x < 6; x++)
 			{
-				this.placeBlockRotated(world, Blocks.air, 0, x, y + 1, y, rotation, sbb);
+				this.placeBlockRotated(world, Blocks.AIR, 0, x, y + 1, y, rotation, sbb);
 				this.placeBlockRotated(world, deco.stairID, this.getStairMeta(1 + rotation),x, y, y, rotation, sbb);
 				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, x, y - 1, y, rotation, sbb);
 			}
@@ -132,7 +132,7 @@ public class ComponentTFStrongholdSmallStairs extends
 			
 			if (this.chestTrapped)
 			{
-				this.placeBlockRotated(world, Blocks.tnt, 0, 4, 0, 6, rotation, sbb);
+				this.placeBlockRotated(world, Blocks.TNT, 0, 4, 0, 6, rotation, sbb);
 			}
 
 			for (int z = 5; z < 8; z++)

@@ -26,7 +26,7 @@ public class ItemTFIceSword extends ItemSword {
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
     	// repair with packed ice
-        return par2ItemStack.getItem() == Item.getItemFromBlock(Blocks.packed_ice) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return par2ItemStack.getItem() == Item.getItemFromBlock(Blocks.PACKED_ICE) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     /**
@@ -39,7 +39,7 @@ public class ItemTFIceSword extends ItemSword {
 		
 		if (result) {
 			int chillLevel = 2;
-			par2EntityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 20 * 10, chillLevel, true));
+			par2EntityLiving.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20 * 10, chillLevel, true));
 		}
 		
 		return result;

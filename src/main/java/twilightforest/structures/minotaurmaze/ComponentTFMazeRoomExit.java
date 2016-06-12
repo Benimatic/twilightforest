@@ -23,10 +23,10 @@ public class ComponentTFMazeRoomExit extends ComponentTFMazeRoom {
 		super.addComponentParts(world, rand, sbb);
 
 		// shaft down
-		this.fillWithMetadataBlocks(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.mazestone, 1, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.iron_bars, 0, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone, 3, Blocks.air, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.mazestone, 1, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone, 3, Blocks.AIR, 0, false);
 		this.fillWithAir(world, sbb, 6, -5, 6, 9, 4, 9);
 
 //		int var8 = this.getXWithOffset(0, 0);

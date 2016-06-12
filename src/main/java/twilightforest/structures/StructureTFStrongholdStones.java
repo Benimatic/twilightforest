@@ -11,12 +11,12 @@ public class StructureTFStrongholdStones extends StructureComponent.BlockSelecto
 	public void selectBlocks(Random par1Random, int par2, int par3, int par4, boolean par5) {
         if (!par5)
         {
-            this.field_151562_a = Blocks.air;
+            this.field_151562_a = Blocks.AIR;
             this.selectedBlockMetaData = 0;
         }
         else
         {
-            this.field_151562_a = Blocks.stonebrick;
+            this.field_151562_a = Blocks.STONEBRICK;
             float var6 = par1Random.nextFloat();
 
             if (var6 < 0.2F)
@@ -29,7 +29,7 @@ public class StructureTFStrongholdStones extends StructureComponent.BlockSelecto
             }
             else if (var6 < 0.55F)
             {
-                this.field_151562_a = Blocks.monster_egg;
+                this.field_151562_a = Blocks.MONSTER_EGG;
                 this.selectedBlockMetaData = 2;
             }
             else

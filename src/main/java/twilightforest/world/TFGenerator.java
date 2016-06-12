@@ -251,7 +251,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	 */
 	protected Block randStone(Random rand, int howMuch)
 	{
-		return rand.nextInt(howMuch) >= 1 ? Blocks.cobblestone : Blocks.mossy_cobblestone;
+		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE : Blocks.MOSSY_COBBLESTONE;
 	}
 
 	/**
@@ -408,19 +408,19 @@ public abstract class TFGenerator extends WorldGenerator {
 	 */
 	protected static boolean hasAirAround(World world, int bx, int by, int bz) {
 		boolean airAround = false;
-		if (world.blockExists(bx + 1, by, bz) && world.getBlock(bx + 1, by, bz) == Blocks.air) {
+		if (world.blockExists(bx + 1, by, bz) && world.getBlock(bx + 1, by, bz) == Blocks.AIR) {
 			airAround = true;
 		}
-		if (world.blockExists(bx - 1, by, bz) && world.getBlock(bx - 1, by, bz) == Blocks.air) {
+		if (world.blockExists(bx - 1, by, bz) && world.getBlock(bx - 1, by, bz) == Blocks.AIR) {
 			airAround = true;
 		}
-		if (world.blockExists(bx, by, bz + 1) && world.getBlock(bx, by, bz + 1) == Blocks.air) {
+		if (world.blockExists(bx, by, bz + 1) && world.getBlock(bx, by, bz + 1) == Blocks.AIR) {
 			airAround = true;
 		}
-		if (world.blockExists(bx, by, bz - 1) && world.getBlock(bx, by, bz - 1) == Blocks.air) {
+		if (world.blockExists(bx, by, bz - 1) && world.getBlock(bx, by, bz - 1) == Blocks.AIR) {
 			airAround = true;
 		}
-		if (world.getBlock(bx, by + 1, bz) == Blocks.air) {
+		if (world.getBlock(bx, by + 1, bz) == Blocks.AIR) {
 			airAround = true;
 		}
 

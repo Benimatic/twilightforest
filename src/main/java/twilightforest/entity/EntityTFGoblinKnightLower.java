@@ -251,9 +251,9 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 	 * Break our armor
 	 */
 	public void breakArmor() {
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		
 		this.setHasArmor(false);
 	}

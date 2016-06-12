@@ -129,19 +129,19 @@ public class BlockTFLeaves extends BlockLeaves {
     @Override
     public boolean isOpaqueCube()
     {
-        return Blocks.leaves.isOpaqueCube();
+        return Blocks.LEAVES.isOpaqueCube();
     }
 
     @Override
     public IIcon getIcon(int i, int j)
     {
-        return Blocks.leaves.getIcon(i, (j & 3) == 3 ? 0 : j);
+        return Blocks.LEAVES.getIcon(i, (j & 3) == 3 ? 0 : j);
     }
 
     @Override
     public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l)
     {
-    	return Blocks.leaves.shouldSideBeRendered(iblockaccess, i, j, k, l);
+    	return Blocks.LEAVES.shouldSideBeRendered(iblockaccess, i, j, k, l);
     }
     
     /**

@@ -122,7 +122,7 @@ public class EntityTFHelmetCrab extends EntityMob {
     	
         if (rand.nextInt(2) == 0)
         {
-            this.dropItem(Items.fish, 1 + i);
+            this.dropItem(Items.FISH, 1 + i);
         }
     }
 

@@ -37,7 +37,7 @@ public class ItemTFPeacockFan extends ItemTF
 		{
 			if (!player.onGround)
 			{
-				player.addPotionEffect(new PotionEffect(Potion.jump.id, 45, 0));
+				player.addPotionEffect(new PotionEffect(MobEffects.JUMP.id, 45, 0));
 			}
 			else
 			{
@@ -59,7 +59,7 @@ public class ItemTFPeacockFan extends ItemTF
 			
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
-			if (!player.onGround && !player.isPotionActive(Potion.jump.id))
+			if (!player.onGround && !player.isPotionActive(MobEffects.JUMP.id))
 			{
 				player.motionX *= 3F;
 				player.motionY = 1.5F;
@@ -204,7 +204,7 @@ public class ItemTFPeacockFan extends ItemTF
 		
 		Block currentID = world.getBlock(dx, dy, dz);
 		
-		if (currentID != Blocks.air)
+		if (currentID != Blocks.AIR)
 		{
 			int currentMeta = world.getBlockMetadata(dx, dy, dz);
 			
@@ -213,7 +213,7 @@ public class ItemTFPeacockFan extends ItemTF
 				if(currentID.canHarvestBlock(player, currentMeta) && itemRand.nextInt(3) == 0)
 				{
 					currentID.harvestBlock(world, player, dx, dy, dz, currentMeta);
-					world.setBlock(dx, dy, dz, Blocks.air, 0, 3);
+					world.setBlock(dx, dy, dz, Blocks.AIR, 0, 3);
 					world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
 				}
 			}

@@ -28,24 +28,24 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// doorways
-		if (this.getBlockAtCurrentPosition(world, 7, 1, 0, sbb) == Blocks.air)
+		if (this.getBlockAtCurrentPosition(world, 7, 1, 0, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.fence, Blocks.air, false);
+			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.FENCE, Blocks.AIR, false);
 		}
 
-		if (this.getBlockAtCurrentPosition(world, 7, 1, 15, sbb) == Blocks.air)
+		if (this.getBlockAtCurrentPosition(world, 7, 1, 15, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.fence, Blocks.air, false);
+			fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.FENCE, Blocks.AIR, false);
 		}
 
-		if (this.getBlockAtCurrentPosition(world, 0, 1, 7, sbb) == Blocks.air)
+		if (this.getBlockAtCurrentPosition(world, 0, 1, 7, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.fence, Blocks.air, false);
+			fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.FENCE, Blocks.AIR, false);
 		}
 
-		if (this.getBlockAtCurrentPosition(world, 15, 1, 7, sbb) == Blocks.air)
+		if (this.getBlockAtCurrentPosition(world, 15, 1, 7, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.fence, Blocks.air, false);
+			fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.FENCE, Blocks.AIR, false);
 		}
 
 		// mycelium / small mushrooms on floor
@@ -62,44 +62,44 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 				// make part of the floor mycelium
 				if (mycelium)
 				{
-					this.placeBlockAtCurrentPosition(world, Blocks.mycelium, 0, x, 0, z, sbb);
+					this.placeBlockAtCurrentPosition(world, Blocks.MYCELIUM, 0, x, 0, z, sbb);
 				}
 				// add small mushrooms all over
 				if (mushroom)
 				{
-					this.placeBlockAtCurrentPosition(world, mushRed ? Blocks.red_mushroom : Blocks.brown_mushroom, 0, x, 1, z, sbb);
+					this.placeBlockAtCurrentPosition(world, mushRed ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM, 0, x, 1, z, sbb);
 				}
 			}
 		}
 		
 		// mushroom chest shelves in corner
-		fillWithMetadataBlocks(world, sbb, 1, 1, 1, 3, 1, 3, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 1, 2, 1, 1, 3, 4, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 2, 2, 1, 4, 3, 1, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 1, 4, 1, 3, 4, 3, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
+		fillWithMetadataBlocks(world, sbb, 1, 1, 1, 3, 1, 3, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 1, 2, 1, 1, 3, 4, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 2, 2, 1, 4, 3, 1, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 1, 4, 1, 3, 4, 3, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
 		placeTreasureAtCurrentPosition(world, rand, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
 
-		fillWithMetadataBlocks(world, sbb, 12, 1, 12, 14, 1, 14, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 14, 2, 11, 14, 3, 14, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 11, 2, 14, 14, 3, 14, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 12, 4, 12, 14, 4, 14, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
+		fillWithMetadataBlocks(world, sbb, 12, 1, 12, 14, 1, 14, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 14, 2, 11, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 11, 2, 14, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 12, 4, 12, 14, 4, 14, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
 		placeTreasureAtCurrentPosition(world, rand, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
 
-		fillWithMetadataBlocks(world, sbb, 1, 1, 12, 3, 1, 14, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 1, 2, 11, 1, 3, 14, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 2, 2, 14, 4, 3, 14, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 1, 4, 12, 3, 4, 14, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
+		fillWithMetadataBlocks(world, sbb, 1, 1, 12, 3, 1, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 1, 2, 11, 1, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 2, 2, 14, 4, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 1, 4, 12, 3, 4, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
 		placeTreasureAtCurrentPosition(world, rand, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
 
-		fillWithMetadataBlocks(world, sbb, 12, 1, 1, 14, 1, 3, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 11, 2, 1, 14, 3, 1, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 14, 2, 2, 14, 3, 4, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 12, 4, 1, 14, 4, 3, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
+		fillWithMetadataBlocks(world, sbb, 12, 1, 1, 14, 1, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 11, 2, 1, 14, 3, 1, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 14, 2, 2, 14, 3, 4, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 12, 4, 1, 14, 4, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
 		placeTreasureAtCurrentPosition(world, rand, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		// a few more ceilingshrooms
-		fillWithMetadataBlocks(world, sbb, 5, 4, 5, 7, 5, 7, Blocks.brown_mushroom_block, 14, Blocks.air, 0, false);
-		fillWithMetadataBlocks(world, sbb, 8, 4, 8, 10, 5, 10, Blocks.red_mushroom_block, 14, Blocks.air, 0, false);
+		fillWithMetadataBlocks(world, sbb, 5, 4, 5, 7, 5, 7, Blocks.BROWN_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
+		fillWithMetadataBlocks(world, sbb, 8, 4, 8, 10, 5, 10, Blocks.RED_MUSHROOM_BLOCK, 14, Blocks.AIR, 0, false);
 
 		
 		// the moo-cen-mino-shrom-taur!

@@ -165,7 +165,7 @@ public class EntityTFSlimeBeetle extends EntityMob
     @Override
 	protected Item getDropItem()
     {
-        return Items.slime_ball;
+        return Items.SLIME_BALL;
     }
 	
 }

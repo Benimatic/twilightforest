@@ -49,14 +49,14 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 			mid = min + ((max - min) / 2);
 			for (int x = min; x <= max; x++) {
 				for (int z = min; z <= max; z++) {
-					placeBlockAtCurrentPosition(world, Blocks.planks, slabMeta, x, y, z, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, x, y, z, sbb);
 					// some of these are unnecessary and will just be overwritten by a normal block, but whatevs.
 					if ((x == min && (z == min || z == max)) || (x == max && (z == min || z == max))) {
-						placeBlockAtCurrentPosition(world, Blocks.wooden_slab, slabMeta, x, y + 1, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, slabMeta, x, y + 1, z, sbb);
 					}
 					// mid blocks
 					if (((((x == min || x == max) && z == mid) && x % 2 == 0) || (((z == min || z == max) && x == mid) && z % 2 == 0)) && mid != min + 1) {
-						placeBlockAtCurrentPosition(world, Blocks.wooden_slab, slabMeta, x, y + 1, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, slabMeta, x, y + 1, z, sbb);
 					}
 				}
 			}

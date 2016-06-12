@@ -44,11 +44,11 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 			for (int x = min; x <= max; x++) {
 				for (int z = min; z <= max; z++) {
 					if (x == min || x == max || z == min || z == max) {
-						placeBlockAtCurrentPosition(world, Blocks.wooden_slab, slabMeta, x, y, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, slabMeta, x, y, z, sbb);
 					}
 					else
 					{
-						placeBlockAtCurrentPosition(world, Blocks.planks, slabMeta, x, y, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, x, y, z, sbb);
 					}
 				}
 			}
@@ -63,11 +63,11 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 			for (int x = 0; x <= max; x++) {
 				for (int z = min; z <= max; z++) {
 					if (x == max || z == min || z == max) {
-						placeBlockAtCurrentPosition(world, Blocks.wooden_slab, slabMeta, x, y, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, slabMeta, x, y, z, sbb);
 					}
 					else
 					{
-						placeBlockAtCurrentPosition(world, Blocks.planks, slabMeta, x, y, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, x, y, z, sbb);
 					}
 				}
 			}

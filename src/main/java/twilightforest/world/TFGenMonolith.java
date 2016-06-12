@@ -60,19 +60,19 @@ public class TFGenMonolith extends TFGenerator {
 		
 		for (int cy = 0; cy <= h0; cy++)
 		{
-			setBlock(world, x + 0, y + cy - 1, z + 0, cy == ht ? Blocks.lapis_block : Blocks.obsidian);
+			setBlock(world, x + 0, y + cy - 1, z + 0, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
 		}
 		for (int cy = 0; cy <= h1; cy++)
 		{
-			setBlock(world, x + 1, y + cy - 1, z + 0, cy == ht ? Blocks.lapis_block : Blocks.obsidian);
+			setBlock(world, x + 1, y + cy - 1, z + 0, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
 		}
 		for (int cy = 0; cy <= h2; cy++)
 		{
-			setBlock(world, x + 0, y + cy - 1, z + 1, cy == ht ? Blocks.lapis_block : Blocks.obsidian);
+			setBlock(world, x + 0, y + cy - 1, z + 1, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
 		}
 		for (int cy = 0; cy <= h3; cy++)
 		{
-			setBlock(world, x + 1, y + cy - 1, z + 1, cy == ht ? Blocks.lapis_block : Blocks.obsidian);
+			setBlock(world, x + 1, y + cy - 1, z + 1, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
 		}
 
 		// spawn a few ravens nearby

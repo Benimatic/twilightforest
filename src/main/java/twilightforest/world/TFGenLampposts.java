@@ -14,7 +14,7 @@ public class TFGenLampposts extends TFGenerator {
 
 	public boolean generate(World world, Random rand, int x, int y, int z) {
 		// we should start on a grass block
-		if (world.getBlock(x, y - 1, z) == Blocks.grass) {
+		if (world.getBlock(x, y - 1, z) == Blocks.GRASS) {
 				// generate a height
 				int height = 1 + rand.nextInt(4);
 				boolean clear = true;
@@ -29,7 +29,7 @@ public class TFGenLampposts extends TFGenerator {
 				// generate lamp
 				if (clear) {
 					for (int dy = 0; dy < height; dy++) {
-						world.setBlock(x, y + dy, z, Blocks.fence);
+						world.setBlock(x, y + dy, z, Blocks.FENCE);
 						world.setBlock(x, y + height, z, TFBlocks.fireflyJar);
 					}
 				} 

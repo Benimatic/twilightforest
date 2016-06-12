@@ -38,7 +38,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
 		// we only start over water
-		if ((this.checkForWater && world.getBlock(x, y - 1, z) != Blocks.water) || y >= 128 - 18 - 1)
+		if ((this.checkForWater && world.getBlock(x, y - 1, z) != Blocks.WATER) || y >= 128 - 18 - 1)
 		{
 			return false;
 		}

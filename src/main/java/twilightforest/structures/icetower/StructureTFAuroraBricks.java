@@ -12,7 +12,7 @@ public class StructureTFAuroraBricks extends StructureComponent.BlockSelector {
 	public void selectBlocks(Random par1Random, int x, int y, int z, boolean wall) {
         if (!wall)
         {
-            this.field_151562_a = Blocks.air;
+            this.field_151562_a = Blocks.AIR;
             this.selectedBlockMetaData = 0;
         }
         else

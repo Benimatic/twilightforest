@@ -156,7 +156,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	 */
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100, 0));
+			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS.id, 100, 0));
 			
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {

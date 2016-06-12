@@ -123,7 +123,7 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 	 * TODO: This could be more efficient by combining the duplicate logic of the getBlockAtCurrentPosition and placeBlockAtCurrentPosition functions.
 	 */
 	protected void placeBlockIfEmpty(World world, Block blockID, int meta, int x, int y, int z, StructureBoundingBox sbb) {
-		if (getBlockAtCurrentPosition(world, x, y, z, sbb) == Blocks.air) {
+		if (getBlockAtCurrentPosition(world, x, y, z, sbb) == Blocks.AIR) {
 			placeBlockAtCurrentPosition(world, blockID, meta, x, y, z, sbb);
 		}
 	}

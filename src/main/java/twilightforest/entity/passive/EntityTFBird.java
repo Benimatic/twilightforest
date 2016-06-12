@@ -78,7 +78,7 @@ public abstract class EntityTFBird extends EntityAnimal {
 	protected void fall(float par1) {}
 
     /**
-     * returns if this entity triggers Blocks.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+     * returns if this entity triggers Blocks.ONENTITYWALKING on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
     @Override
@@ -92,7 +92,7 @@ public abstract class EntityTFBird extends EntityAnimal {
 	 */
 	@Override
 	protected Item getDropItem() {
-	    return Items.feather;
+	    return Items.FEATHER;
 	}
 
 	/**

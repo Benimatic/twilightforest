@@ -168,7 +168,7 @@ public class EntityTFSnowGuardian extends EntityMob {
      */
     protected Item getDropItem()
     {
-        return Items.snowball;
+        return Items.SNOWBALL;
     }
     
     /**

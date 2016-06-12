@@ -132,7 +132,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 //            return false;
 //        } else
 //        {
-//            return Blocks.blocksList[k].getMaterial().isSolid();
+//            return Blocks.BLOCKSLIST[k].getMaterial().isSolid();
 //        }
 //    }
 	

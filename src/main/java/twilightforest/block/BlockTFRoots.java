@@ -64,7 +64,7 @@ public class BlockTFRoots extends Block {
     	switch (meta) {
     	case ROOT_META :
     		// roots drop sticks
-    		return Items.stick;
+    		return Items.STICK;
     	case OREROOT_META :
     		// oreroots drop liveroot
     		return TFItems.liveRoot;

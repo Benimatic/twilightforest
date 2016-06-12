@@ -75,7 +75,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
     {
         ItemStack playerHeadArmor = par1EntityPlayer.inventory.armorInventory[3];
 
-        if (playerHeadArmor != null && playerHeadArmor.getItem() == Item.getItemFromBlock(Blocks.pumpkin))
+        if (playerHeadArmor != null && playerHeadArmor.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN))
         {
             return false;
         }

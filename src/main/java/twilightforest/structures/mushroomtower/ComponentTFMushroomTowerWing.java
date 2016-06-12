@@ -421,7 +421,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 					{
 						for (int dy = 1; dy <= height - 1; dy++)
 						{
-							placeBlockAtCurrentPosition(world, Blocks.air, 0, dx + cx, dy, dz + cz, sbb);
+							placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx + cx, dy, dz + cz, sbb);
 						}
 					}
 
@@ -494,7 +494,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
         
-        if (getBlockAtCurrentPosition(world, dx, dy + 2, dz, sbb) != Blocks.air) {
+        if (getBlockAtCurrentPosition(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
         	placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, dx, dy + 2, dz, sbb);
         }
 	}

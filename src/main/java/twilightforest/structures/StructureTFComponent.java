@@ -108,9 +108,9 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.mob_spawner)
+        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
         {
-            world.setBlock(dx, dy, dz, Blocks.mob_spawner, 0, 2);
+            world.setBlock(dx, dy, dz, Blocks.MOB_SPAWNER, 0, 2);
             tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(dx, dy, dz);
             if(tileEntitySpawner != null)
             {
@@ -133,9 +133,9 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffsetAsIfRotated(x, z, rotation);
         int dy = getYWithOffset(y);
         int dz = getZWithOffsetAsIfRotated(x, z, rotation);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.mob_spawner)
+        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
         {
-            world.setBlock(dx, dy, dz, Blocks.mob_spawner, 0, 2);
+            world.setBlock(dx, dy, dz, Blocks.MOB_SPAWNER, 0, 2);
             tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(dx, dy, dz);
             if(tileEntitySpawner != null)
             {
@@ -167,9 +167,9 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.chest)
+        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.CHEST)
         {
-            treasureType.generate(world, rand, dx, dy, dz, trapped ? Blocks.trapped_chest : Blocks.chest);
+            treasureType.generate(world, rand, dx, dy, dz, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
         }
     }
 
@@ -193,9 +193,9 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffsetAsIfRotated(x, z, rotation);
         int dy = getYWithOffset(y);
         int dz = getZWithOffsetAsIfRotated(x, z, rotation);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.chest)
+        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.CHEST)
         {
-            treasureType.generate(world, null, dx, dy, dz, trapped ? Blocks.trapped_chest : Blocks.chest);
+            treasureType.generate(world, null, dx, dy, dz, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
         }
     }
     
@@ -203,9 +203,9 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if (sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.standing_sign)
+        if (sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.STANDING_SIGN)
         {
-            world.setBlock(dx, dy, dz, Blocks.standing_sign, (this.coordBaseMode * 2), 2);
+            world.setBlock(dx, dy, dz, Blocks.STANDING_SIGN, (this.coordBaseMode * 2), 2);
             
             TileEntitySign teSign = (TileEntitySign)world.getTileEntity(dx, dy, dz);
             if (teSign != null)
@@ -432,7 +432,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         }
         else
         {
-        	return Blocks.air;
+        	return Blocks.AIR;
         }
     }
     
@@ -494,7 +494,7 @@ public abstract class StructureTFComponent extends StructureComponent {
      */
     protected void fillAirRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int rotation)
     {
-        this.fillBlocksRotated(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.air, 0, rotation);
+        this.fillBlocksRotated(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.AIR, 0, rotation);
     }
 
     public static StructureComponent.BlockSelector getStrongholdStones() {

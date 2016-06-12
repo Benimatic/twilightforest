@@ -148,7 +148,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	 */
 	private boolean tryToPlaceStalk(World world, int x, int y, int z) {
 		Block blockThere = world.getBlock(x, y, z);
-		if (blockThere == Blocks.air || blockThere.isReplaceable(world, x, y, z) || blockThere.canBeReplacedByLeaves(world, x, y, z) || blockThere.isLeaves(world, x, y, z) || blockThere.canSustainLeaves(world, x, y, z)) {
+		if (blockThere == Blocks.AIR || blockThere.isReplaceable(world, x, y, z) || blockThere.canBeReplacedByLeaves(world, x, y, z) || blockThere.isLeaves(world, x, y, z) || blockThere.canSustainLeaves(world, x, y, z)) {
 			world.setBlock(x, y, z, TFBlocks.hugeStalk);
 			return true;
 		} else {
@@ -159,7 +159,7 @@ public class ItemTFMagicBeans extends ItemTF {
 
 	private void tryToPlaceLeaves(World world, int x, int y, int z) {
 		Block blockThere = world.getBlock(x, y, z);
-		if (blockThere == Blocks.air || blockThere.canBeReplacedByLeaves(world, x, y, z)) {
+		if (blockThere == Blocks.AIR || blockThere.canBeReplacedByLeaves(world, x, y, z)) {
 			world.setBlock(x, y, z, TFBlocks.leaves3, 1, 2);
 		}
 	}

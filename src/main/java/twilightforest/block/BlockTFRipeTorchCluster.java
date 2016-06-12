@@ -75,7 +75,7 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
     public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta)
     {
     	// do not call normal harvest if the player is shearing
-        if (world.isRemote || player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != Items.shears)
+        if (world.isRemote || player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != Items.SHEARS)
         {
             super.harvestBlock(world, player, x, y, z, meta);
         }

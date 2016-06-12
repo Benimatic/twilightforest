@@ -138,20 +138,20 @@ public class ItemTFCrumbleHorn extends ItemTF
 		
 		Block currentID = world.getBlock(dx, dy, dz);
 		
-		if (currentID != Blocks.air)
+		if (currentID != Blocks.AIR)
 		{
 			int currentMeta = world.getBlockMetadata(dx, dy, dz);
 			
-			if (currentID == Blocks.stone && world.rand.nextInt(CHANCE_CRUMBLE) == 0)
+			if (currentID == Blocks.STONE && world.rand.nextInt(CHANCE_CRUMBLE) == 0)
 		    {
-		        world.setBlock(dx, dy, dz, Blocks.cobblestone, 0, 3);
+		        world.setBlock(dx, dy, dz, Blocks.COBBLESTONE, 0, 3);
 				world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
 		        cost++;
 		    }
 			
-			if (currentID == Blocks.stonebrick && currentMeta == 0 && world.rand.nextInt(CHANCE_CRUMBLE) == 0)
+			if (currentID == Blocks.STONEBRICK && currentMeta == 0 && world.rand.nextInt(CHANCE_CRUMBLE) == 0)
 		    {
-		        world.setBlock(dx, dy, dz, Blocks.stonebrick, 2, 3);
+		        world.setBlock(dx, dy, dz, Blocks.STONEBRICK, 2, 3);
 				world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
 		        cost++;
 		    }
@@ -163,18 +163,18 @@ public class ItemTFCrumbleHorn extends ItemTF
 		        cost++;
 		    }
 			
-			if (currentID == Blocks.cobblestone && world.rand.nextInt(CHANCE_CRUMBLE) == 0)
+			if (currentID == Blocks.COBBLESTONE && world.rand.nextInt(CHANCE_CRUMBLE) == 0)
 		    {
-		        world.setBlock(dx, dy, dz, Blocks.gravel, 0, 3);
+		        world.setBlock(dx, dy, dz, Blocks.GRAVEL, 0, 3);
 				world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
 		        cost++;
 		    }
 			
-			if (currentID == Blocks.gravel || currentID == Blocks.dirt)
+			if (currentID == Blocks.GRAVEL || currentID == Blocks.DIRT)
 			{
 				if (currentID.canHarvestBlock(player, currentMeta) && world.rand.nextInt(CHANCE_HARVEST) == 0)
 				{
-					world.setBlock(dx, dy, dz, Blocks.air, 0, 3);
+					world.setBlock(dx, dy, dz, Blocks.AIR, 0, 3);
 					currentID.harvestBlock(world, player, dx, dy, dz, currentMeta);
 					world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
 					cost++;

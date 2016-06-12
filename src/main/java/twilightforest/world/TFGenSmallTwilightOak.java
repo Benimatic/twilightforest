@@ -68,10 +68,10 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
 
                             Block block = blockID;
 
-                            if (blockID != Blocks.air &&
+                            if (blockID != Blocks.AIR &&
                                !block.isLeaves(par1World, cx, cy, cz) &&
-                                blockID != Blocks.grass &&
-                                blockID != Blocks.dirt &&
+                                blockID != Blocks.GRASS &&
+                                blockID != Blocks.DIRT &&
                                !block.isWood(par1World, cx, cy, cz))
                             {
                                 allClear = false;
@@ -93,9 +93,9 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
             {
                 Block blockUsing = par1World.getBlock(x, y - 1, z);
 
-                if ((blockUsing == Blocks.grass || blockUsing == Blocks.dirt) && y < 256 - height - 1)
+                if ((blockUsing == Blocks.GRASS || blockUsing == Blocks.DIRT) && y < 256 - height - 1)
                 {
-                    this.setBlock(par1World, x, y - 1, z, Blocks.dirt);
+                    this.setBlock(par1World, x, y - 1, z, Blocks.DIRT);
                     width = 3;
                     byte var18 = 0;
                     int treeWidth;
@@ -132,7 +132,7 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
 
                         Block block = blockID;
 
-                        if (blockID == Blocks.air || block == null || block.isLeaves(par1World, x, y + cz, z))
+                        if (blockID == Blocks.AIR || block == null || block.isLeaves(par1World, x, y + cz, z))
                         {
                             this.setBlockAndMetadata(par1World, x, y + cz, z, this.treeBlock, this.treeMeta);
                         }

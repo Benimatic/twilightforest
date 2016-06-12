@@ -68,7 +68,7 @@ public class EntityTFTowerTermite extends EntityMob
     }
 
     /**
-     * returns if this entity triggers Blocks.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+     * returns if this entity triggers Blocks.ONENTITYWALKING on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
     protected boolean canTriggerWalking()
@@ -175,7 +175,7 @@ public class EntityTFTowerTermite extends EntityMob
 					if (blockID == TFBlocks.towerWood && blockMeta == BlockTFTowerWood.META_INFESTED)
 		            {
 		                this.worldObj.playAuxSFX(2001, sx + dx, sy + dy, sz + dz, Block.getIdFromBlock(blockID) + (blockMeta << 12));
-		                this.worldObj.setBlock(sx + dx, sy + dy, sz + dz, Blocks.air, 0, 3);
+		                this.worldObj.setBlock(sx + dx, sy + dy, sz + dz, Blocks.AIR, 0, 3);
 		                TFBlocks.towerWood.onBlockDestroyedByPlayer(this.worldObj, sx + dx, sy + dy, sz + dz, BlockTFTowerWood.META_INFESTED);
 
 		                if (this.rand.nextBoolean())

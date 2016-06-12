@@ -213,10 +213,10 @@ public class TFEventListener {
     	}
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-    	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.planks) && itemStack.stackSize == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.planks, 64));
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.planks, 64));
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.planks, 64));
+    	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.stackSize == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
+    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
+    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
+    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
 
     	}
 	}
@@ -306,7 +306,7 @@ public class TFEventListener {
 		// this flag is set in reaction to the breakBlock event, but we need to remove the drops in this event
 		if (this.shouldMakeGiantCobble && event.drops.size() > 0) {
 			// turn the next 64 cobblestone drops into one giant cobble
-			if (event.drops.get(0).getItem() == Item.getItemFromBlock(Blocks.cobblestone)) {
+			if (event.drops.get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
 				event.drops.remove(0);
 				if (this.amountOfCobbleToReplace == 64) {
 					event.drops.add(new ItemStack(TFBlocks.giantCobble));
@@ -372,7 +372,7 @@ public class TFEventListener {
 			
 			if (chillLevel > 0) {
 				//System.out.println("Executing chill reaction.");
-				((EntityLivingBase)event.source.getEntity()).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, chillLevel * 5 + 5, chillLevel));
+				((EntityLivingBase)event.source.getEntity()).addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, chillLevel * 5 + 5, chillLevel));
 
 			}
 		}
@@ -394,7 +394,7 @@ public class TFEventListener {
 			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.iceBow) {
 
 				int chillLevel = 2;
-				event.entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 20 * 10, chillLevel, true));
+				event.entityLiving.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20 * 10, chillLevel, true));
 			}
 		}
 		
@@ -451,16 +451,16 @@ public class TFEventListener {
 				if (charm1)
 				{
 					player.setHealth(8);
-					player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 100, 0));
+					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION.id, 100, 0));
 				}
 				
 				if (charm2)
 				{
 					player.setHealth((float) player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
 					
-					player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 600, 3));
-					player.addPotionEffect(new PotionEffect(Potion.resistance.id, 600, 0));
-					player.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 600, 0));
+					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION.id, 600, 3));
+					player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE.id, 600, 0));
+					player.addPotionEffect(new PotionEffect(MobEffects.FIRERESISTANCE.id, 600, 0));
 				}
 				
 				// spawn effect thingers
@@ -494,8 +494,8 @@ public class TFEventListener {
         }
 
 		// maybe also potions?
-        if (living.isPotionActive(Potion.resistance)) {
-            int resistance = 25 - (living.getActivePotionEffect(Potion.resistance).getAmplifier() + 1) * 5;
+        if (living.isPotionActive(MobEffects.RESISTANCE)) {
+            int resistance = 25 - (living.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier() + 1) * 5;
             amount = amount * resistance / 25F;
         }
         //System.out.printf("I think the player is going to take %f damage and they have %f health.\n", Math.ceil(amount), living.getHealth());
@@ -751,13 +751,13 @@ public class TFEventListener {
 	    	int bz = (event.z >> 2) << 2;
 	    	
 	    	// pre-check for cobble!
-			boolean allCobble = event.block.getItemDropped(event.blockMetadata, event.world.rand, 0) == Item.getItemFromBlock(Blocks.cobblestone);
+			boolean allCobble = event.block.getItemDropped(event.blockMetadata, event.world.rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
 	    	for (int dx = 0; dx < 4; dx++) {
 	    		for (int dy = 0; dy < 4; dy++) {
 	    			for (int dz = 0; dz < 4; dz++) {
 	    				Block blockThere = event.world.getBlock(bx + dx, by + dy, bz + dz);
 	    				int metaThere = event.world.getBlockMetadata(bx + dx, by + dy, bz + dz);
-						allCobble &= blockThere.getItemDropped(metaThere, event.world.rand, 0) == Item.getItemFromBlock(Blocks.cobblestone);
+						allCobble &= blockThere.getItemDropped(metaThere, event.world.rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
 	    			}
 	    		}
 	    	}
@@ -829,8 +829,8 @@ public class TFEventListener {
 	private boolean isBlockProtectedFromInteraction(World world, int x, int y, int z) {
 		Block block = world.getBlock(x, y, z);
 		
-		if (block == TFBlocks.towerDevice || block == Blocks.chest || block == Blocks.trapped_chest 
-				|| block == Blocks.stone_button || block == Blocks.wooden_button || block == Blocks.lever) {
+		if (block == TFBlocks.towerDevice || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
+				|| block == Blocks.STONE_BUTTON || block == Blocks.WOODEN_BUTTON || block == Blocks.LEVER) {
 			return true;
 		} else {
 			return false;

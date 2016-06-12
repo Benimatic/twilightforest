@@ -48,7 +48,7 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.golden_hoe));
+        this.setCurrentItemOrArmor(0, new ItemStack(Items.GOLDEN_HOE));
 
 	}
 
@@ -130,7 +130,7 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
 
     	for (i = 0; i < numberOfItemsToDrop; ++i)
     	{
-    		this.dropItem(Items.bone, 1);
+    		this.dropItem(Items.BONE, 1);
     	}
     }
     

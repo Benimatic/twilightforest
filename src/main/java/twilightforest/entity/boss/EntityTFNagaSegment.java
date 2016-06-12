@@ -118,7 +118,7 @@ public class EntityTFNagaSegment extends Entity {
 ////        	
 ////        	if (worldObj.isAirBlock(dx, dy, dz))
 ////        	{
-////        		worldObj.setBlock(dx, dy, dz, Blocks.torch);
+////        		worldObj.setBlock(dx, dy, dz, Blocks.TORCH);
 ////        	}
 //        	
 //        }

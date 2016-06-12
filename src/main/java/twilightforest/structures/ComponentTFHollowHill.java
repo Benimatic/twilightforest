@@ -119,13 +119,13 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		for (int i = 0; i < sn; i++)
 		{
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < sn; i++)
 		{
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
 		
 		// level 3 hills get 2 mid-air wraith spawners
@@ -154,7 +154,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
     	placeTreasureAtCurrentPosition(world, chestRNG, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
     	
     	// make something for it to stand on, if necessary
-        func_151554_b(world, Blocks.cobblestone, 0, x, y - 1, z, sbb);
+        func_151554_b(world, Blocks.COBBLESTONE, 0, x, y - 1, z, sbb);
 
 	}
 
@@ -166,7 +166,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.mob_spawner)
+        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
         {
         	// generate an RNG for this stalactite
         	//TODO: MOAR RANDOM!
@@ -186,7 +186,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.mob_spawner)
+        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
         {
         	// generate an RNG for this stalactite
         	//TODO: MOAR RANDOM!

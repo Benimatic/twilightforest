@@ -376,8 +376,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		nullifySkyLightForBoundingBox(world);
         
         // marker blocks
-//        placeBlockAtCurrentPosition(world, Blocks.wool, this.coordBaseMode, size / 2, 2, size / 2, sbb);
-//        placeBlockAtCurrentPosition(world, Blocks.gold_block, 0, 0, 0, 0, sbb);
+//        placeBlockAtCurrentPosition(world, Blocks.WOOL, this.coordBaseMode, size / 2, 2, size / 2, sbb);
+//        placeBlockAtCurrentPosition(world, Blocks.GOLD_BLOCK, 0, 0, 0, 0, sbb);
         
         // stairs!
         if (highestOpening > 1) {
@@ -418,19 +418,19 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		if (size > 4) {
 	        for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 0);
-	        	placeBlockAtCurrentPosition(world, Blocks.wool, 0, spot[0], spot[1], spot[2], sbb);
+	        	placeBlockAtCurrentPosition(world, Blocks.WOOL, 0, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 1);
-	        	placeBlockAtCurrentPosition(world, Blocks.wool, 1, spot[0], spot[1], spot[2], sbb);
+	        	placeBlockAtCurrentPosition(world, Blocks.WOOL, 1, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 2);
-	        	placeBlockAtCurrentPosition(world, Blocks.wool, 2, spot[0], spot[1], spot[2], sbb);
+	        	placeBlockAtCurrentPosition(world, Blocks.WOOL, 2, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 3);
-	        	placeBlockAtCurrentPosition(world, Blocks.wool, 3, spot[0], spot[1], spot[2], sbb);
+	        	placeBlockAtCurrentPosition(world, Blocks.WOOL, 3, spot[0], spot[1], spot[2], sbb);
 	        }
         }
 	}
@@ -472,7 +472,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			// put down a floor
 			for (int x = 1; x < size - 1; x++) {
 				for (int z = 1; z < size - 1; z++) {
-					placeBlockAtCurrentPosition(world, Blocks.planks, 2, x, (i * floorHeight), z, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, x, (i * floorHeight), z, sbb);
 				}
 			}
 		}
@@ -523,7 +523,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			int dx = getLadderX(ladderUpDir);
 			int dz = getLadderZ(ladderUpDir);
 			for (int dy = bottom; dy < top; dy++) {
-				placeBlockAtCurrentPosition(world, Blocks.ladder, meta, dx, dy, dz, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.LADDER, meta, dx, dy, dz, sbb);
 			}
 		}
 		
@@ -533,7 +533,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			int dx = getLadderX(ladderDownDir);
 			int dz = getLadderZ(ladderDownDir);
 			for (int dy = bottom - 1; dy < bottom + 2; dy++) {
-				placeBlockAtCurrentPosition(world, Blocks.ladder, meta, dx, dy, dz, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.LADDER, meta, dx, dy, dz, sbb);
 			}
 		}
 		
@@ -583,23 +583,23 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cz = cx;
 		int cy = bottom;
 		
-		Block waterOrLava = rand.nextInt(4) == 0 ? Blocks.lava : Blocks.water;
+		Block waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA : Blocks.WATER;
 		
 		if (size > 5) {
 			// actual well structure
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, cy + 0, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx - 1, cy + 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 0, cy + 0, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, cy + 0, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx + 1, cy + 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, cy + 0, cz + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, cy + 0, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 0, cy + 0, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, cy + 0, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, cy + 0, cz + 0, sbb);
 			placeBlockAtCurrentPosition(world, waterOrLava, 0, cx + 0, cy + 0, cz + 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, cy + 0, cz + 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, cy + 0, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx - 1, cy + 1, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 0, cy + 0, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, cy + 0, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx + 1, cy + 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, cy + 0, cz + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, cy + 0, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 0, cy + 0, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, cy + 0, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz + 1, sbb);
 		}
 		
 		placeBlockAtCurrentPosition(world, waterOrLava, 0, cx + 0, cy - 1, cz + 0, sbb);
@@ -621,7 +621,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			if (!chainCollides(chain, chainList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				for (int dy = bottom; dy < top; dy++) {
-					placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, chain.posX, dy, chain.posZ, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, chain.posX, dy, chain.posZ, sbb);
 				}
 				chainList.add(chain);
 			}
@@ -635,7 +635,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 					// side of the room
 					if (!isWindowPos(dx, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 						// not an occupied position
-						placeBlockAtCurrentPosition(world, Blocks.web, 0, dx, top - 1, dz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WEB, 0, dx, top - 1, dz, sbb);
 					}
 				}
 			}
@@ -657,7 +657,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				if (!isWindowPos(dx, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 					// not an occupied position
 					if (rand.nextInt(5) == 0) {
-						placeBlockAtCurrentPosition(world, Blocks.brown_mushroom, 0, dx, bottom, dz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.BROWN_MUSHROOM, 0, dx, bottom, dz, sbb);
 					}
 				}
 			}
@@ -670,9 +670,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			ChunkCoordinates slab = new ChunkCoordinates(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
 			if (!chainCollides(slab, slabList)) {
 				// if it doesn't collide, manufacture it and add it to the list
-				placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, slab.posX, bottom + 0, slab.posZ, sbb);
-				placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 2, slab.posX, bottom + 1, slab.posZ, sbb);
-				placeBlockAtCurrentPosition(world, Blocks.soul_sand, 0, slab.posX, bottom + 2, slab.posZ, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, slab.posX, bottom + 0, slab.posZ, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, slab.posX, bottom + 1, slab.posZ, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.SOUL_SAND, 0, slab.posX, bottom + 2, slab.posZ, sbb);
 				slabList.add(slab);
 			}
 		}
@@ -686,11 +686,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
 				// sand
-				placeBlockAtCurrentPosition(world, Blocks.sand, 0, dx, bottom - 1, dz, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.SAND, 0, dx, bottom - 1, dz, sbb);
 				if (!isWindowPos(dx, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 					// not an occupied position
 					if (rand.nextInt(4) == 0) {
-						placeBlockAtCurrentPosition(world, Blocks.deadbush, 0, dx, bottom, dz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.DEADBUSH, 0, dx, bottom, dz, sbb);
 					}
 				}
 			}
@@ -704,7 +704,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			if (!chainCollides(cactus, cactusList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				for (int dy = bottom; dy < top; dy++) {
-					placeBlockAtCurrentPosition(world, Blocks.cactus, 0, cactus.posX, dy, cactus.posZ, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.CACTUS, 0, cactus.posX, dy, cactus.posZ, sbb);
 				}
 				cactusList.add(cactus);
 			}
@@ -722,43 +722,43 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cz = cx;
 		
 		// bottom decoration
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(1), cx + 0, bottom, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(0), cx - 1, bottom, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(2), cx + 1, bottom, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(3), cx + 0, bottom, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 0, bottom, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(1), cx + 0, bottom, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(0), cx - 1, bottom, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(2), cx + 1, bottom, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(3), cx + 0, bottom, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 0, bottom, cz + 0, sbb);
 
 		if (size > 5)
 		{
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, bottom, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, bottom, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, bottom, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, bottom, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, bottom, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, bottom, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, bottom, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, bottom, cz + 1, sbb);
 		}
 		
 		// top decoration
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(1) + 4, cx + 0, top - 1, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(0) + 4, cx - 1, top - 1, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(2) + 4, cx + 1, top - 1, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_brick_stairs, getStairMeta(3) + 4, cx + 0, top - 1, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 0, top - 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(1) + 4, cx + 0, top - 1, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(0) + 4, cx - 1, top - 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(2) + 4, cx + 1, top - 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(3) + 4, cx + 0, top - 1, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 0, top - 1, cz + 0, sbb);
 
 		if (size > 5)
 		{
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, top - 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, top - 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, top - 1, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, top - 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, top - 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, top - 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, top - 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, top - 1, cz + 1, sbb);
 		}
 		
 		if (size > 5)
 		{
 			// pillars
 			for (int cy = bottom + 1; cy < top - 1; cy++) {
-				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 5, cx - 1, cy, cz - 1, sbb);
-				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 5, cx + 1, cy, cz - 1, sbb);
-				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 5, cx - 1, cy, cz + 1, sbb);
-				placeBlockAtCurrentPosition(world, Blocks.stonebrick, 5, cx + 1, cy, cz + 1, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 5, cx - 1, cy, cz - 1, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 5, cx + 1, cy, cz - 1, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 5, cx - 1, cy, cz + 1, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 5, cx + 1, cy, cz + 1, sbb);
 			}
 		}
 
@@ -783,7 +783,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			for (int dx = 1; dx <= size - 2; dx++) {
 				for (int dz = 1; dz <= size - 2; dz++) {
 					if (!isLadderPos(dx, dz, ladderUpDir, ladderDownDir) && rand.nextInt(chance) == 0) {
-						placeBlockAtCurrentPosition(world, Blocks.web, 0, dx, dy, dz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.WEB, 0, dx, dy, dz, sbb);
 					}
 				}
 			}
@@ -824,22 +824,22 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected void decorateFurniture(World world, Random rand, int bottom, int freeSpace, StructureBoundingBox sbb) {
 		// 66% chance of a table
 		if (rand.nextInt(3) > 0) {
-			placeBlockAtCurrentPosition(world, Blocks.fence, 0, size / 2, bottom, size / 2, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.wooden_pressure_plate, 0, size / 2, bottom + 1, size / 2, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, size / 2, bottom, size / 2, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.WOODEN_PRESSURE_PLATE, 0, size / 2, bottom + 1, size / 2, sbb);
 		}
 		
 		// chairs!
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			placeBlockAtCurrentPosition(world, Blocks.spruce_stairs, getStairMeta(0), size / 2 + 1, bottom, size / 2, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.SPRUCE_STAIRS, getStairMeta(0), size / 2 + 1, bottom, size / 2, sbb);
 		}
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			placeBlockAtCurrentPosition(world, Blocks.spruce_stairs, getStairMeta(1), size / 2, bottom, size / 2 + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.SPRUCE_STAIRS, getStairMeta(1), size / 2, bottom, size / 2 + 1, sbb);
 		}
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			placeBlockAtCurrentPosition(world, Blocks.spruce_stairs, getStairMeta(2), size / 2 - 1, bottom, size / 2, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.SPRUCE_STAIRS, getStairMeta(2), size / 2 - 1, bottom, size / 2, sbb);
 		}
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			placeBlockAtCurrentPosition(world, Blocks.spruce_stairs, getStairMeta(3), size / 2, bottom, size / 2 - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.SPRUCE_STAIRS, getStairMeta(3), size / 2, bottom, size / 2 - 1, sbb);
 		}
 	}
 
@@ -852,7 +852,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			for (int dx = 1; dx <= size - 2; dx++) {
 				for (int dz = 1; dz <= size - 2; dz++) {
 					if (!isLadderPos(dx, dz, ladderUpDir, ladderDownDir) && rand.nextInt(9) != 0) {
-						placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx, dy, dz, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx, dy, dz, sbb);
 					}
 				}
 			}
@@ -875,7 +875,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 						// side of the room
 						if (!isWindowPos(dx, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 							// not an occupied position
-							placeBlockAtCurrentPosition(world, Blocks.bookshelf, 0, dx, dy, dz, sbb);
+							placeBlockAtCurrentPosition(world, Blocks.BOOKSHELF, 0, dx, dy, dz, sbb);
 						}
 					}
 				}
@@ -936,7 +936,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 						// concentric rings
 						if (!isWindowPos(dx, dy, dz) && !isOpeningPos(dx, dy, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 							// not an occupied position
-							placeBlockAtCurrentPosition(world, Blocks.bookshelf, 0, dx, dy, dz, sbb);
+							placeBlockAtCurrentPosition(world, Blocks.BOOKSHELF, 0, dx, dy, dz, sbb);
 						}
 					}
 				}
@@ -958,15 +958,15 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		for (int dx = 2; dx <= size - 3; dx++) {
 			for (int dz = 2; dz <= size - 3; dz++) {
 				if (dx == 2 || dx == size - 3 || dz == 2 || dz == size -3) {
-					placeBlockAtCurrentPosition(world, Blocks.tnt, 0, dx, -1, dz, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.TNT, 0, dx, -1, dz, sbb);
 				}
 			}
 		}
 		for (int dy = bottom - 2; dy < top - 2; dy++) {
-			placeBlockAtCurrentPosition(world, Blocks.tnt, 0, 1, dy, 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.tnt, 0, 1, dy, size - 2, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.tnt, 0, size - 2, dy, 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.tnt, 0, size - 2, dy, size - 2, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 1, dy, 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 1, dy, size - 2, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.TNT, 0, size - 2, dy, 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.TNT, 0, size - 2, dy, size - 2, sbb);
 		}
 	}
 
@@ -1132,7 +1132,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				// put down a floor
 				for (int x = 1; x < size - 1; x++) {
 					for (int z = 1; z < size - 1; z++) {
-						placeBlockAtCurrentPosition(world, Blocks.planks, 2, x, (i * floorHeight + base), z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, x, (i * floorHeight + base), z, sbb);
 					}
 				}
 			}
@@ -1147,7 +1147,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			int dx = getLadderX(ladderDir);
 			int dz = getLadderZ(ladderDir);
 			for (int dy = 1; dy < 3; dy++) {
-				placeBlockAtCurrentPosition(world, Blocks.ladder, meta, dx, base - dy, dz, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.LADDER, meta, dx, base - dy, dz, sbb);
 			}
 
 			// decorate middle floors
@@ -1258,20 +1258,20 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cy = decoTop - rand.nextInt(decoTop - 7) - 2;
 		int cz = size / 2;
 	
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy + 0, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx - 1, cy + 0, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 1, cy + 0, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy + 0, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy + 0, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy + 0, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx - 1, cy + 0, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 1, cy + 0, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy + 0, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy + 0, cz + 1, sbb);
 	
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, cy + 1, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx - 1, cy + 1, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 1, cy + 1, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 0, cy + 1, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.torch, 0, cx + 0, cy + 1, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, cy + 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx - 1, cy + 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 1, cy + 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 0, cy + 1, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, cx + 0, cy + 1, cz + 1, sbb);
 		
 		for (int y = cy; y < decoTop - 1; y++) {
-			placeBlockAtCurrentPosition(world, Blocks.fence, 0, cx + 0, y, cz + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, cx + 0, y, cz + 0, sbb);
 		}
 	}
 
@@ -1331,43 +1331,43 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */ 
 	protected void decorateOneChain(World world, Random rand, int dx, int decoTop, int length, int dz, StructureBoundingBox sbb) {
 		for (int y = 1; y <= length; y++) {
-			placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, dx, decoTop - y - 1, dz, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx, decoTop - y - 1, dz, sbb);
 		}		
 		// make the "ball" at the end.
 		Block ballBlock;
 		int ballMeta;
 		switch (rand.nextInt(10)) {
 		case 0:
-			ballBlock = Blocks.iron_block;
+			ballBlock = Blocks.IRON_BLOCK;
 			ballMeta = 0;
 			break;
 		case 1:
-			ballBlock = Blocks.bookshelf;
+			ballBlock = Blocks.BOOKSHELF;
 			ballMeta = 0;
 			break;
 		case 2:
-			ballBlock = Blocks.netherrack;
+			ballBlock = Blocks.NETHERRACK;
 			ballMeta = 0;
 			break;
 		case 3:
-			ballBlock = Blocks.soul_sand;
+			ballBlock = Blocks.SOUL_SAND;
 			ballMeta = 0;
 			break;
 		case 4:
-			ballBlock = Blocks.glass;
+			ballBlock = Blocks.GLASS;
 			ballMeta = 0;
 			break;
 		case 5:
-			ballBlock = Blocks.lapis_block;
+			ballBlock = Blocks.LAPIS_BLOCK;
 			ballMeta = 0;
 			break;
 		case 6:
-			ballBlock = Blocks.monster_egg;
+			ballBlock = Blocks.MONSTER_EGG;
 			ballMeta = 2;
 			break;
 		case 7:
 		default:
-			ballBlock = Blocks.glowstone;
+			ballBlock = Blocks.GLOWSTONE;
 			ballMeta = 0;
 			break;
 		}
@@ -1390,7 +1390,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				int bottom = 2 + rand.nextInt(decoTop - 7);
 				int top = rand.nextInt(bottom - 1) + 2;
 				for (int y = top; y <= bottom; y++) {
-					placeBlockAtCurrentPosition(world, Blocks.bookshelf, 0, shelf.posX, decoTop - y, shelf.posZ, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.BOOKSHELF, 0, shelf.posX, decoTop - y, shelf.posZ, sbb);
 				}		
 				shelfList.add(shelf);
 			}
@@ -1414,12 +1414,12 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				int bottom = 2 + rand.nextInt(decoTop - 7);
 				int top = rand.nextInt(bottom - 1) + 2;
 				for (int y = top; y <= bottom; y++) {
-					placeBlockAtCurrentPosition(world, Blocks.mossy_cobblestone, 0, moss.posX, decoTop - y, moss.posZ, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.MOSSY_COBBLESTONE, 0, moss.posX, decoTop - y, moss.posZ, sbb);
 					// surround it with vines
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(2), moss.posX + 1, decoTop - y, moss.posZ + 0, sbb);
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(0), moss.posX - 1, decoTop - y, moss.posZ + 0, sbb);
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(3), moss.posX + 0, decoTop - y, moss.posZ + 1, sbb);
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(1), moss.posX + 0, decoTop - y, moss.posZ - 1, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(2), moss.posX + 1, decoTop - y, moss.posZ + 0, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(0), moss.posX - 1, decoTop - y, moss.posZ + 0, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(3), moss.posX + 0, decoTop - y, moss.posZ + 1, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(1), moss.posX + 0, decoTop - y, moss.posZ - 1, sbb);
 				}		
 				mossList.add(moss);
 			}
@@ -1429,18 +1429,18 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		for (int y = highestOpening + 3; y < decoTop - 1; y++) {
 			for (int x = 1; x < size - 1; x++) {
 				if (rand.nextInt(3) == 0) {
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(3), x, y, 1, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(3), x, y, 1, sbb);
 				}
 				if (rand.nextInt(3) == 0) {
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(1), x, y, size - 2, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(1), x, y, size - 2, sbb);
 				}
 			}
 			for (int z = 1; z < size - 1; z++) {
 				if (rand.nextInt(3) == 0) {
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(2), 1, y, z, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(2), 1, y, z, sbb);
 				}
 				if (rand.nextInt(3) == 0) {
-					placeBlockAtCurrentPosition(world, Blocks.vine, getVineMeta(0), size - 2, y, z, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.VINE, getVineMeta(0), size - 2, y, z, sbb);
 				}
 			}
 		}
@@ -1477,62 +1477,62 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cx = size / 2;
 		int cz = cx;
 		
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, cx + 0, 1, cz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, cx + 0, 1, cz - 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, cx + 1, 1, cz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, cx - 1, 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, cx + 0, 1, cz + 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, cx + 0, 1, cz - 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, cx + 1, 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, cx - 1, 1, cz + 0, sbb);
 
 		if (size > 7)
 		{
-			placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, cx - 1, 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, cx + 1, 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, cx + 1, 1, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, cx - 1, 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, cx - 1, 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, cx + 1, 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, cx + 1, 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, cx - 1, 1, cz + 1, sbb);
 		}
 
 		// place a cute planted thing
-		placeBlockAtCurrentPosition(world, Blocks.grass, 0, cx + 0, 1, cz + 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.GRASS, 0, cx + 0, 1, cz + 0, sbb);
 
 		Block planterBlock;
 		int planterMeta;
 		switch (rand.nextInt(6)) {
 		case 0:
-			planterBlock = Blocks.sapling;
+			planterBlock = Blocks.SAPLING;
 			planterMeta = 0;
 			break;
 		case 1:
-			planterBlock = Blocks.sapling;
+			planterBlock = Blocks.SAPLING;
 			planterMeta = 1;
 			break;
 		case 2:
-			planterBlock = Blocks.sapling;
+			planterBlock = Blocks.SAPLING;
 			planterMeta = 2;
 			break;
 		case 3:
-			planterBlock = Blocks.sapling;
+			planterBlock = Blocks.SAPLING;
 			planterMeta = 3;
 			break;
 		case 4:
-			planterBlock = Blocks.brown_mushroom;
+			planterBlock = Blocks.BROWN_MUSHROOM;
 			planterMeta = 0;
 			break;
 		case 5:
 		default:
-			planterBlock = Blocks.red_mushroom;
+			planterBlock = Blocks.RED_MUSHROOM;
 			planterMeta = 0;
 			break;
 		}
 		placeBlockAtCurrentPosition(world, planterBlock, planterMeta, cx + 0, 2, cz + 0, sbb);
 		
 		// try to grow a tree
-		if (planterBlock == Blocks.sapling) {
+		if (planterBlock == Blocks.SAPLING) {
 	        int wx = getXWithOffset(cx, cz);
 	        int wy = getYWithOffset(2);
 	        int wz = getZWithOffset(cx, cz);
-	        ((BlockSapling)Blocks.sapling).func_149878_d(world, wx, wy, wz, world.rand);
+	        ((BlockSapling)Blocks.SAPLING).func_149878_d(world, wx, wy, wz, world.rand);
 		}
 		// or a mushroom
-		if (planterBlock == Blocks.brown_mushroom || planterBlock == Blocks.red_mushroom) {
+		if (planterBlock == Blocks.BROWN_MUSHROOM || planterBlock == Blocks.RED_MUSHROOM) {
 	        int wx = getXWithOffset(cx, cz);
 	        int wy = getYWithOffset(2);
 	        int wz = getZWithOffset(cx, cz);
@@ -1541,10 +1541,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		// otherwise, place the block into a flowerpot
 		Block whatHappened = this.getBlockAtCurrentPosition(world, cx + 0, 2, cz + 0, sbb);
-		if (whatHappened == planterBlock || whatHappened == Blocks.air)
+		if (whatHappened == planterBlock || whatHappened == Blocks.AIR)
 		{
 			int potMeta = 0;//BlockFlowerPot.getMetaForPlant(new ItemStack(planterBlock, 1, planterMeta));
-			placeBlockAtCurrentPosition(world, Blocks.flower_pot, potMeta, cx + 0, 2, cz + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.FLOWER_POT, potMeta, cx + 0, 2, cz + 0, sbb);
 		}
 	}
 	
@@ -1556,23 +1556,23 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cz = cx;
 		int cy = 1;
 		
-		Block waterOrLava = rand.nextInt(4) == 0 ? Blocks.lava : Blocks.water;
+		Block waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA : Blocks.WATER;
 		
 		if (size > 7) {
 			// actual well structure
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, cy + 0, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx - 1, cy + 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 0, cy + 0, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, cy + 0, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx + 1, cy + 1, cz - 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, cy + 0, cz + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, cy + 0, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 0, cy + 0, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, cy + 0, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz - 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, cy + 0, cz + 0, sbb);
 			placeBlockAtCurrentPosition(world, waterOrLava, 0, cx + 0, cy + 0, cz + 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, cy + 0, cz + 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx - 1, cy + 0, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx - 1, cy + 1, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 0, cy + 0, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, cx + 1, cy + 0, cz + 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.stone_slab, 5, cx + 1, cy + 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, cy + 0, cz + 0, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx - 1, cy + 0, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 0, cy + 0, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, cx + 1, cy + 0, cz + 1, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz + 1, sbb);
 		}
 		
 		placeBlockAtCurrentPosition(world, waterOrLava, 0, cx + 0, cy - 1, cz + 0, sbb);
@@ -1627,54 +1627,54 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
         // try to add blocks outside this door
 //		if (dx == 0) {
-//			placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx - 1, dy + 0, dz, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx - 1, dy + 1, dz, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx - 1, dy + 0, dz, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx - 1, dy + 1, dz, sbb);
 //		}
 //		if (dx == size - 1) {
-//			placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx + 1, dy + 0, dz, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx + 1, dy + 1, dz, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx + 1, dy + 0, dz, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx + 1, dy + 1, dz, sbb);
 //		}
 //		if (dz == 0) {
-//			placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx, dy + 0, dz - 1, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx, dy + 1, dz - 1, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx, dy + 0, dz - 1, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx, dy + 1, dz - 1, sbb);
 //		}
 //		if (dz == size - 1) {
-//			placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx, dy + 0, dz + 1, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.stone, 0, dx, dy + 1, dz + 1, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx, dy + 0, dz + 1, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx, dy + 1, dz + 1, sbb);
 //		}
 //		
 		
-		placeBlockAtCurrentPosition(world, Blocks.air, 0, dx, dy + 0, dz, sbb);
-        placeBlockAtCurrentPosition(world, Blocks.air, 0, dx, dy + 1, dz, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 0, dz, sbb);
+        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 1, dz, sbb);
 //        updateLight(world, dx, dy + 0, dz);
 //        updateLight(world, dx, dy + 1, dz);
         
-        if (getBlockAtCurrentPosition(world, dx, dy + 2, dz, sbb) != Blocks.air) {
-        	placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, dx, dy + 2, dz, sbb);
+        if (getBlockAtCurrentPosition(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
+        	placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, dx, dy + 2, dz, sbb);
         }
         
         // clear the door
 		if (dx == 0) {
-//			placeBlockAtCurrentPosition(world, Blocks.air, 0, dx - 1, dy + 0, dz, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.air, 0, dx - 1, dy + 1, dz, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx - 1, dy + 0, dz, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx - 1, dy + 1, dz, sbb);
 	        updateLight(world, dx - 1, dy + 0, dz);
 	        updateLight(world, dx - 1, dy + 1, dz);
 		}
 		if (dx == size - 1) {
-//			placeBlockAtCurrentPosition(world, Blocks.air, 0, dx + 1, dy + 0, dz, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.air, 0, dx + 1, dy + 1, dz, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx + 1, dy + 0, dz, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx + 1, dy + 1, dz, sbb);
 	        updateLight(world, dx + 1, dy + 0, dz);
 	        updateLight(world, dx + 1, dy + 1, dz);
 		}
 		if (dz == 0) {
-//			placeBlockAtCurrentPosition(world, Blocks.air, 0, dx, dy + 0, dz - 1, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.air, 0, dx, dy + 1, dz - 1, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 0, dz - 1, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 1, dz - 1, sbb);
 	        updateLight(world, dx, dy + 0, dz - 1);
 	        updateLight(world, dx, dy + 1, dz - 1);
 		}
 		if (dz == size - 1) {
-//			placeBlockAtCurrentPosition(world, Blocks.air, 0, dx, dy + 0, dz + 1, sbb);
-//	        placeBlockAtCurrentPosition(world, Blocks.air, 0, dx, dy + 1, dz + 1, sbb);
+//			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 0, dz + 1, sbb);
+//	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 1, dz + 1, sbb);
 	        updateLight(world, dx, dy + 0, dz + 1);
 	        updateLight(world, dx, dy + 1, dz + 1);
 		}
@@ -1836,12 +1836,12 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		Block inside = getBlockAtCurrentPosition(world, x - 1, y, z, sbb);
 		
 		// make a window!
-		if (realWindows && inside == Blocks.air && outside == Blocks.air) {
-			placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, x, y, z, sbb);
+		if (realWindows && inside == Blocks.AIR && outside == Blocks.AIR) {
+			placeBlockAtCurrentPosition(world, Blocks.GLASS_PANE, 0, x, y, z, sbb);
 		}
 		else {
 			// cobblestone where the window might have been
-			placeBlockAtCurrentPosition(world, Blocks.cobblestone, 0, x, y, z, sbb);
+			placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE, 0, x, y, z, sbb);
 		}
 		
 		this.setCoordBaseMode(temp);
@@ -1854,7 +1854,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected void makeWindowBase(World world, int x, int y, int z, int rotation, StructureBoundingBox sbb) {
 		int temp = this.getCoordBaseMode();
 		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, x, y, z, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, x, y, z, sbb);
 		this.setCoordBaseMode(temp);
 				
 	}
@@ -1905,8 +1905,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
 		
-		BlockSlab singleSlabBlock = meta == 0 ? Blocks.stone_slab : Blocks.wooden_slab;
-		Block doubleSlabBlock = meta == 0 ? Blocks.double_stone_slab : Blocks.planks;
+		BlockSlab singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
+		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
 		
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 2, 1 + height, 3, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 3, 1 + height, 3, sbb);
@@ -1919,11 +1919,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected boolean makeStairs7(World world, Random rand, StructureBoundingBox sbb) {
 		// foot of stairs
-		placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 2, 1, 1, 4, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 1, 1, 5, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, 1, 1, 4, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 1, 1, 5, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, 5, 1, 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 5, 1, 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, 5, 1, 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 5, 1, 1, sbb);
 		
 		// staircases rotating around the tower
 		int rise = 2;
@@ -1948,8 +1948,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
 		
-		BlockSlab singleSlabBlock = meta == 0 ? Blocks.stone_slab : Blocks.wooden_slab;
-		Block doubleSlabBlock = meta == 0 ? Blocks.double_stone_slab : Blocks.planks;
+		BlockSlab singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
+		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
 		
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 2, 1 + height, 5, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 3, 1 + height, 5, sbb);
@@ -1964,11 +1964,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected boolean makeStairs9(World world, Random rand, StructureBoundingBox sbb) {
 		// foot of stairs
-		placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 2, 1, 1, 6, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 1, 1, 7, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, 1, 1, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 1, 1, 7, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, 7, 1, 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 7, 1, 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, 7, 1, 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 7, 1, 1, sbb);
 		
 		// staircases rotating around the tower
 		int rise = 3;
@@ -1993,8 +1993,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
 		
-		Block singleSlabBlock = meta == 0 ? Blocks.stone_slab : Blocks.wooden_slab;
-		Block doubleSlabBlock = meta == 0 ? Blocks.double_stone_slab : Blocks.planks;
+		Block singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
+		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
 		
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 2, 1 + height, 7, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 3, 1 + height, 7, sbb);
@@ -2011,48 +2011,48 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected boolean makeStairs15(World world, Random rand, StructureBoundingBox sbb) {
 		// foot of stairs
-		placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 2, 1, 1, 9, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 2, 2, 1, 9, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 1, 1, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 2, 1, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 2, 1, 2, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.wooden_slab, 2, 2, 2, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 1, 2, 12, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 2, 2, 12, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 1, 2, 13, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 2, 2, 13, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, 1, 1, 9, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, 2, 1, 9, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 1, 1, 10, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 2, 1, 10, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, 1, 2, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, 2, 2, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 1, 2, 12, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 2, 2, 12, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 1, 2, 13, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 2, 2, 13, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 3, 2, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 3, 3, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 3, 4, 11, sbb);
-//		placeBlockAtCurrentPosition(world, Blocks.torch, 0, 3, 5, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 3, 1, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 3, 2, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 3, 3, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.planks, 2, 3, 1, 9, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 3, 2, 9, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 3, 2, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 3, 3, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 3, 4, 11, sbb);
+//		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, 3, 5, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 3, 1, 10, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 3, 2, 10, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 3, 3, 10, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, 3, 1, 9, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 3, 2, 9, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, 13, 1, 5, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, 12, 1, 5, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 13, 1, 4, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 12, 1, 4, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, 13, 2, 3, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, 12, 2, 3, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 13, 2, 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 12, 2, 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 13, 2, 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 12, 2, 1, sbb);
-//		placeBlockAtCurrentPosition(world, Blocks.stone_slab, 0, 7, 1, 2, sbb);
-//		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 7, 1, 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 11, 2, 3, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 11, 3, 3, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 11, 4, 3, sbb);
-//		placeBlockAtCurrentPosition(world, Blocks.torch, 0, 11, 5, 3, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 11, 1, 4, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 11, 2, 4, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 11, 3, 4, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.double_stone_slab, 0, 11, 1, 5, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 11, 2, 5, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, 13, 1, 5, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, 12, 1, 5, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 13, 1, 4, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 12, 1, 4, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, 13, 2, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, 12, 2, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 13, 2, 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 12, 2, 2, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 13, 2, 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 12, 2, 1, sbb);
+//		placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 0, 7, 1, 2, sbb);
+//		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 7, 1, 1, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 11, 2, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 11, 3, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 11, 4, 3, sbb);
+//		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, 11, 5, 3, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 11, 1, 4, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 11, 2, 4, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 11, 3, 4, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.DOUBLE_STONE_SLAB, 0, 11, 1, 5, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 11, 2, 5, sbb);
 		
 		
 		// staircases rotating around the tower
@@ -2078,8 +2078,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
 		
-		Block singleSlabBlock = meta == 0 ? Blocks.stone_slab : Blocks.wooden_slab;
-		Block doubleSlabBlock = meta == 0 ? Blocks.double_stone_slab : Blocks.planks;
+		Block singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
+		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
 		
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 3, 1 + height, 13, sbb);
 		randomlyPlaceBlock(world, sbb, rand, 0.9F, 4, 1 + height, 13, doubleSlabBlock, meta);
@@ -2114,22 +2114,22 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 10, 4 + height, 11, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 11, 5 + height, 11, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 4, 2 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 5, 3 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 6, 3 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 7, 4 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 8, 4 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 9, 5 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 10, 5 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 11, 6 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 4, 2 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 5, 3 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 6, 3 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 7, 4 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 8, 4 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 9, 5 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 10, 5 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 11, 6 + height, 11, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 4, 3 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 6, 4 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 8, 5 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 10, 6 + height, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.fence, 0, 11, 7 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 4, 3 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 6, 4 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 8, 5 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 10, 6 + height, 11, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 11, 7 + height, 11, sbb);
 
-//		placeBlockAtCurrentPosition(world, Blocks.torch, 0, 11, 8 + height, 11, sbb);
+//		placeBlockAtCurrentPosition(world, Blocks.TORCH, 0, 11, 8 + height, 11, sbb);
 
 		this.setCoordBaseMode(temp);
 	}

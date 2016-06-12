@@ -29,7 +29,7 @@ public class TFGenHangingLamps extends TFGenerator
             			if (above.isSolid() || above == Material.leaves) {
             				break;
             			} else {
-                    		par1World.setBlock(x, y + cy, z, Blocks.fence);
+                    		par1World.setBlock(x, y + cy, z, Blocks.FENCE);
             			}
             		}
             	}

@@ -15,9 +15,9 @@ public class StructureDecoratorDarkTower extends StructureTFDecorator
 		this.accentID = TFBlocks.towerWood;
 		this.accentMeta = 1;
 		
-		this.fenceID = Blocks.fence;
+		this.fenceID = Blocks.FENCE;
 		
-		this.stairID = Blocks.spruce_stairs;
+		this.stairID = Blocks.SPRUCE_STAIRS;
 		
 		this.pillarID = TFBlocks.towerWood;
 		this.pillarMeta = 1;

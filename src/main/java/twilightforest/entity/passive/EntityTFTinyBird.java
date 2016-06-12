@@ -46,7 +46,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		// bird AI
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAITFBirdFly(this));
-        this.tasks.addTask(1, new EntityAITempt(this, 1.0F, Items.wheat_seeds, true));
+        this.tasks.addTask(1, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
         this.tasks.addTask(4, new EntityAILookIdle(this));
@@ -298,7 +298,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	public boolean isSpooked() {
 		EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 4.0D);
 		
-		return this.hurtTime > 0 || (closestPlayer != null && (closestPlayer.inventory.getCurrentItem() == null || closestPlayer.inventory.getCurrentItem().getItem() != Items.wheat_seeds));
+		return this.hurtTime > 0 || (closestPlayer != null && (closestPlayer.inventory.getCurrentItem() == null || closestPlayer.inventory.getCurrentItem().getItem() != Items.WHEAT_SEEDS));
 	}
     
     
@@ -309,7 +309,7 @@ public class EntityTFTinyBird extends EntityTFBird {
     {
         Block block = this.worldObj.getBlock(x, y, z);
         
-        if (block == Blocks.air)
+        if (block == Blocks.AIR)
         {
             return false;
         }

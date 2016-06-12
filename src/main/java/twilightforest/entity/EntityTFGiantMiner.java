@@ -32,7 +32,7 @@ public class EntityTFGiantMiner extends EntityMob {
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.stone_pickaxe));
+        this.setCurrentItemOrArmor(0, new ItemStack(Items.STONE_PICKAXE));
         
         for (int i = 0; i < this.equipmentDropChances.length; ++i)
         {

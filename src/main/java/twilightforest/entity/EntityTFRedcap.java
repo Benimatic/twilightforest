@@ -30,9 +30,9 @@ import twilightforest.entity.ai.EntityAITFRedcapShy;
 public class EntityTFRedcap extends EntityMob {
 	
 
-    public static ItemStack heldPick = new ItemStack(Items.iron_pickaxe, 1);
-    public static ItemStack heldTNT = new ItemStack(Blocks.tnt, 1);
-    public static ItemStack heldFlint = new ItemStack(Items.flint_and_steel, 1);
+    public static ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
+    public static ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
+    public static ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
     
 	private boolean shy;
 	
@@ -59,7 +59,7 @@ public class EntityTFRedcap extends EntityMob {
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
         
         this.setCurrentItemOrArmor(0, heldPick);
-        this.setCurrentItemOrArmor(1, new ItemStack(Items.iron_boots));
+        this.setCurrentItemOrArmor(1, new ItemStack(Items.IRON_BOOTS));
         
         this.equipmentDropChances[0] = 0.2F;
         this.equipmentDropChances[1] = 0.2F;
@@ -113,7 +113,7 @@ public class EntityTFRedcap extends EntityMob {
     @Override
 	protected Item getDropItem()
     {
-        return Items.coal;
+        return Items.COAL;
     }
     
     public boolean isShy() 

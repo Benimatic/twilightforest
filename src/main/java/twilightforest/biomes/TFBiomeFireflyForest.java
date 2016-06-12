@@ -134,10 +134,10 @@ public class TFBiomeFireflyForest extends TFBiomeTwilightForest {
 		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT - 1; y++) {
 			Block blockID = chunk.getBlock(x & 15, y, z & 15);
 			// grass = return immediately
-			if (blockID == Blocks.grass) {
+			if (blockID == Blocks.GRASS) {
 				return y + 1;
 			}
-			else if (blockID == Blocks.dirt || blockID == Blocks.stone || blockID == Blocks.gravel) {
+			else if (blockID == Blocks.DIRT || blockID == Blocks.STONE || blockID == Blocks.GRAVEL) {
 				lastDirt = y + 1;
 			}
 		}

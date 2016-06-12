@@ -31,7 +31,7 @@ public class ComponentTFMazeCorridorRoots extends ComponentTFMazeCorridor {
 					int length = rand.nextInt(6);
 
 					//place dirt above ceiling
-					this.placeBlockAtCurrentPosition(world, Blocks.dirt, 0, x, 6, z, sbb);
+					this.placeBlockAtCurrentPosition(world, Blocks.DIRT, 0, x, 6, z, sbb);
 					
 					// roots
 					for (int y = 6 - length; y < 6; y++)
@@ -42,11 +42,11 @@ public class ComponentTFMazeCorridorRoots extends ComponentTFMazeCorridor {
 					// occasional gravel
 					if (rand.nextInt(freq + 1) > 1)
 					{
-						this.placeBlockAtCurrentPosition(world, Blocks.gravel, 0, x, 1, z, sbb);
+						this.placeBlockAtCurrentPosition(world, Blocks.GRAVEL, 0, x, 1, z, sbb);
 						
 						if (rand.nextInt(freq + 1) > 1)
 						{
-							this.placeBlockAtCurrentPosition(world, Blocks.gravel, 0, x, 2, z, sbb);
+							this.placeBlockAtCurrentPosition(world, Blocks.GRAVEL, 0, x, 2, z, sbb);
 						}
 					}
 				}

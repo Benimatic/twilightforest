@@ -48,7 +48,7 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 		{
 			for (int z = 0; z < this.size; z++)
 			{
-				this.func_151554_b(world, Blocks.cobblestone, 0, x, -1, z, sbb);
+				this.func_151554_b(world, Blocks.COBBLESTONE, 0, x, -1, z, sbb);
 			}
 		}
 		return super.addComponentParts(world, rand, sbb);

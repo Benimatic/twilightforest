@@ -149,7 +149,7 @@ public class BlockTFShield extends Block
         
         if (facing == meta)
         {
-        	return player.getBreakSpeed(Blocks.stone, false, 0, x, y, z) / 1.5F / 100F;
+        	return player.getBreakSpeed(Blocks.STONE, false, 0, x, y, z) / 1.5F / 100F;
         }
         else
         {

@@ -52,7 +52,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
     {
-        return Blocks.dirt.getItemDropped(0, p_149650_2_, p_149650_3_);
+        return Blocks.DIRT.getItemDropped(0, p_149650_2_, p_149650_3_);
     }
 
     /**
@@ -61,7 +61,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
     public void updateTick(World world, int x, int y, int z, Random rand) {
     	Material aboveMaterial = world.getBlock(x, y + 1, z).getMaterial();
     	if (aboveMaterial.isSolid()) {
-    		world.setBlock(x, y, z, Blocks.dirt);
+    		world.setBlock(x, y, z, Blocks.DIRT);
     	}    
     }
 
@@ -102,24 +102,24 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 
         if (aboveMaterial.isSolid())
         {
-        	world.setBlock(x, y, z, Blocks.dirt);
+        	world.setBlock(x, y, z, Blocks.DIRT);
         }
 
         if (above instanceof IPlantable) {
         	IPlantable plant = (IPlantable)above;
         	// revert to farmland or grass
         	if (plant.getPlantType(world, x, y + 1, z) == EnumPlantType.Crop) {
-        		world.setBlock(x, y, z, Blocks.farmland, 2, 2);
+        		world.setBlock(x, y, z, Blocks.FARMLAND, 2, 2);
         	} else if (plant.getPlantType(world, x, y + 1, z) == EnumPlantType.Plains) {
-        		world.setBlock(x, y, z, Blocks.grass);
+        		world.setBlock(x, y, z, Blocks.GRASS);
         	} else {
-        		world.setBlock(x, y, z, Blocks.dirt);
+        		world.setBlock(x, y, z, Blocks.DIRT);
         	}
         	// apply bonemeal
-        	ItemDye.applyBonemeal(new ItemStack(Items.dye), world, x, y + 1, z, null);
-        	ItemDye.applyBonemeal(new ItemStack(Items.dye), world, x, y + 1, z, null);
-        	ItemDye.applyBonemeal(new ItemStack(Items.dye), world, x, y + 1, z, null);
-        	ItemDye.applyBonemeal(new ItemStack(Items.dye), world, x, y + 1, z, null);
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, x, y + 1, z, null);
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, x, y + 1, z, null);
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, x, y + 1, z, null);
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, x, y + 1, z, null);
         	// green sparkles
         	if (!world.isRemote) {
         		world.playAuxSFX(2005, x, y + 1, z, 0);
@@ -159,7 +159,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 		}
 
 		Block blockAt = world.getBlock(gx, gy, gz);
-		if (world.isAirBlock(gx, gy + 1, gz) && (blockAt == Blocks.dirt || blockAt == Blocks.grass || blockAt == Blocks.farmland)) {
+		if (world.isAirBlock(gx, gy + 1, gz) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS || blockAt == Blocks.FARMLAND)) {
 			world.setBlock(gx, gy, gz, this);
 		}
 	}

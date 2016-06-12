@@ -34,7 +34,7 @@ public class EntityTFDeer extends EntityCow
 //        this.tasks.addTask(0, new EntityAISwimming(this));
 //        this.tasks.addTask(1, new EntityAITFPanicOnFlockDeath(this, 0.38F));
 //        this.tasks.addTask(2, new EntityAIMate(this, 0.2F));
-//        this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Items.wheat, false));
+//        this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Items.WHEAT, false));
 //        this.tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
 //        this.tasks.addTask(5, new EntityAIWander(this, 0.2F));
 //        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -73,7 +73,7 @@ public class EntityTFDeer extends EntityCow
     public boolean interact(EntityPlayer entityplayer)
     {
         ItemStack itemstack = entityplayer.inventory.getCurrentItem();
-        if(itemstack != null && itemstack.getItem() == Items.bucket)
+        if(itemstack != null && itemstack.getItem() == Items.BUCKET)
         {
         	// specifically do not respond to this
             return false;
@@ -95,7 +95,7 @@ public class EntityTFDeer extends EntityCow
 
         for (var4 = 0; var4 < var3; ++var4)
         {
-            this.dropItem(Items.leather, 1);
+            this.dropItem(Items.LEATHER, 1);
         }
 
         var3 = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + par2);

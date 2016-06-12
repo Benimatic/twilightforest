@@ -125,10 +125,10 @@ public class ItemTFMazeMap extends ItemMap
                             
                             // for stone, search up and down for ores
                             
-                            if (blockID == Blocks.stone && mapOres) {
+                            if (blockID == Blocks.STONE && mapOres) {
                             	for (int i = -YSEARCH; i <= YSEARCH; i++) {
                             		Block searchID = chunk.getBlock(x15, heightValue + i, z15);
-                            		if (searchID != Blocks.stone) {
+                            		if (searchID != Blocks.STONE) {
                             			blockID = searchID;
                             			if (i > 0) {
                             				tint = 2;
@@ -145,7 +145,7 @@ public class ItemTFMazeMap extends ItemMap
                             }
                             
 
-                            if (blockID != Blocks.air)
+                            if (blockID != Blocks.AIR)
                             {
                                 MapColor mapColor = blockID.getMaterial().getMaterialMapColor();
                                 colorIndex = mapColor.colorIndex;
@@ -154,28 +154,28 @@ public class ItemTFMazeMap extends ItemMap
                             if (mapOres) {
                             	// need to reobfuscate
                             	// recolor ores
-                            	if (blockID == Blocks.coal_ore) {
+                            	if (blockID == Blocks.COAL_ORE) {
                             		colorIndex = MapColor.obsidianColor.colorIndex;
                             	}
-                            	else if (blockID == Blocks.gold_ore) {
+                            	else if (blockID == Blocks.GOLD_ORE) {
                             		colorIndex = MapColor.goldColor.colorIndex;
                             	}
-                            	else if (blockID == Blocks.iron_ore) {
+                            	else if (blockID == Blocks.IRON_ORE) {
                             		colorIndex = MapColor.ironColor.colorIndex;
                             	}
-                            	else if (blockID == Blocks.lapis_ore) {
+                            	else if (blockID == Blocks.LAPIS_ORE) {
                             		colorIndex = MapColor.lapisColor.colorIndex;
                             	}
-                            	else if (blockID == Blocks.redstone_ore || blockID == Blocks.lit_redstone_ore) {
+                            	else if (blockID == Blocks.REDSTONE_ORE || blockID == Blocks.LIT_REDSTONE_ORE) {
                             		colorIndex = MapColor.redColor.colorIndex;
                             	}
-                            	else if (blockID == Blocks.diamond_ore) {
+                            	else if (blockID == Blocks.DIAMOND_ORE) {
                             		colorIndex = MapColor.diamondColor.colorIndex;
                             	}
-                            	else if (blockID == Blocks.emerald_ore) {
+                            	else if (blockID == Blocks.EMERALD_ORE) {
                             		colorIndex = MapColor.emeraldColor.colorIndex;
                             	}
-                            	else if (blockID != Blocks.air && blockID.getUnlocalizedName().toLowerCase().contains("ore"))
+                            	else if (blockID != Blocks.AIR && blockID.getUnlocalizedName().toLowerCase().contains("ore"))
                             	{
                             		// any other ore, catchall
                             		colorIndex = MapColor.pinkColor.colorIndex;

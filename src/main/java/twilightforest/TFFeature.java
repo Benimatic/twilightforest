@@ -888,7 +888,7 @@ public class TFFeature {
 	 * Create a hint book for the specified feature.  Only features with block protection will need this.
 	 */
 	public ItemStack createHintBook() {
-		ItemStack book = new ItemStack(Items.written_book);
+		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
 		
 		NBTTagList bookPages = new NBTTagList();
 		

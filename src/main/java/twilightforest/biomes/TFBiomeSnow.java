@@ -114,7 +114,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 	 */
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 100, 2));
+			player.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 100, 2));
 			
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {

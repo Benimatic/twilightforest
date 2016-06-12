@@ -14,9 +14,9 @@ public class TFAchievementPage extends net.minecraftforge.common.AchievementPage
 	public static Achievement twilightArrival = (new Achievement(TwilightForestMod.ID + 2, "twilightArrival", 0, 0, new ItemStack(TFBlocks.log, 1, 9), twilightPortal)).registerStat();
 	public static Achievement twilightHunter = (new Achievement(TwilightForestMod.ID + 3, "twilightHunter", 2, 2, TFItems.feather, twilightArrival)).registerStat();
 	public static Achievement twilightMagicMapFocus = (new Achievement(TwilightForestMod.ID + 5, "twilightMagicMapFocus", 2, 0, TFItems.magicMapFocus, twilightHunter)).registerStat();
-	public static Achievement twilightHill1 = (new Achievement(TwilightForestMod.ID + 10, "twilightHill1", -2, -1, Blocks.iron_ore, twilightArrival)).registerStat();
-	public static Achievement twilightHill2 = (new Achievement(TwilightForestMod.ID + 11, "twilightHill2", -3, -2, Blocks.gold_ore, twilightArrival)).registerStat();
-	public static Achievement twilightHill3 = (new Achievement(TwilightForestMod.ID + 12, "twilightHill3", -1, -3, Blocks.diamond_ore, twilightArrival)).registerStat();
+	public static Achievement twilightHill1 = (new Achievement(TwilightForestMod.ID + 10, "twilightHill1", -2, -1, Blocks.IRON_ORE, twilightArrival)).registerStat();
+	public static Achievement twilightHill2 = (new Achievement(TwilightForestMod.ID + 11, "twilightHill2", -3, -2, Blocks.GOLD_ORE, twilightArrival)).registerStat();
+	public static Achievement twilightHill3 = (new Achievement(TwilightForestMod.ID + 12, "twilightHill3", -1, -3, Blocks.DIAMOND_ORE, twilightArrival)).registerStat();
 	public static Achievement twilightHedge = (new Achievement(TwilightForestMod.ID + 13, "twilightHedge", 2, -3, TFBlocks.hedge, twilightArrival)).registerStat();
 	public static Achievement twilightMagicMap = (new Achievement(TwilightForestMod.ID + 14, "twilightMagicMap", 4, -1, TFItems.magicMap, twilightMagicMapFocus)).registerStat();
 
@@ -34,7 +34,7 @@ public class TFAchievementPage extends net.minecraftforge.common.AchievementPage
 	public static Achievement twilightProgressGlacier = (new Achievement(TwilightForestMod.ID + 24, "twilightProgressGlacier", -5, -5, new ItemStack(TFItems.trophy, 1, 4), twilightProgressYeti)).registerStat();
 	public static Achievement twilightProgressTroll = (new Achievement(TwilightForestMod.ID + 25, "twilightProgressTroll", -5, -7, TFItems.lampOfCinders, twilightProgressGlacier)).registerStat();
 	public static Achievement twilightProgressThorns = (new Achievement(TwilightForestMod.ID + 26, "twilightProgressThorns", -3, -7, TFBlocks.thorns, twilightProgressTroll)).registerStat();
-	public static Achievement twilightProgressCastle = (new Achievement(TwilightForestMod.ID + 27, "twilightProgressCastle", -1, -7, Blocks.stonebrick, twilightProgressThorns)).registerStat();
+	public static Achievement twilightProgressCastle = (new Achievement(TwilightForestMod.ID + 27, "twilightProgressCastle", -1, -7, Blocks.STONEBRICK, twilightProgressThorns)).registerStat();
 
 	public static Achievement twilightNagaArmors = (new Achievement(TwilightForestMod.ID + 7, "twilightNagaArmors", 5, 1, TFItems.plateNaga, twilightKillNaga)).setSpecial().registerStat();
 	public static Achievement twilightLichScepters = (new Achievement(TwilightForestMod.ID + 9, "twilightLichScepters", 3, 7, TFItems.scepterZombie, twilightKillLich)).setSpecial().registerStat();

@@ -78,7 +78,7 @@ public class ComponentTFStrongholdTreasureRoom extends
 		this.placeWallStatue(world, 4, 1, 16, 0, sbb);
 		
 		this.fillWithRandomizedBlocks(world, sbb, 1, 1, 8, 7, 5, 9, false, rand, deco.randomBlocks);
-		this.fillWithBlocks(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.iron_bars, Blocks.iron_bars, false);
+		this.fillWithBlocks(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS, Blocks.IRON_BARS, false);
 		
 		// spawnwers
 		this.placeSpawnerAtCurrentPosition(world, rand, 4, 1, 4, TFCreatures.getSpawnerNameFor("Helmet Crab"), sbb);
@@ -101,11 +101,11 @@ public class ComponentTFStrongholdTreasureRoom extends
 	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		if (x == 0 || x == getXSize())
 		{
-			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.iron_bars, 0, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
 		}
 		else
 		{
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.iron_bars, 0, Blocks.air, 0, false);
+			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
 		}
 	}
 

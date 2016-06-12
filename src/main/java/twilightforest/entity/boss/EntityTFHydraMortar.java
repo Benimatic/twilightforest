@@ -98,7 +98,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
     {
         float var6 = super.func_145772_a(par1Explosion, par2World, par3, par4, par5, par6Block);
 
-        if (this.megaBlast && par6Block != Blocks.bedrock && par6Block != Blocks.end_portal && par6Block != Blocks.end_portal_frame)
+        if (this.megaBlast && par6Block != Blocks.BEDROCK && par6Block != Blocks.END_PORTAL && par6Block != Blocks.END_PORTAL_FRAME)
         {
             var6 = Math.min(0.8F, var6);
         }

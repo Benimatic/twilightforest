@@ -78,7 +78,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 				byte poisonStrength = (byte) (worldObj.difficultySetting == EnumDifficulty.PEACEFUL ? 0 : worldObj.difficultySetting == EnumDifficulty.NORMAL ? 3 : 7);
 				if(poisonStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.poison.id, poisonStrength * 20, 0));
+					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON.id, poisonStrength * 20, 0));
 					
 //					System.out.println("Poisoning entityHit " + par1MovingObjectPosition.entityHit);
 				}
@@ -88,7 +88,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.leaves) + "_0", this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.LEAVES) + "_0", this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 		}
 
 		if (!this.worldObj.isRemote)
@@ -105,11 +105,11 @@ public class EntityTFNatureBolt extends EntityThrowable {
 			
 				if (materialHit == Material.grass && this.playerTarget != null) 
 				{
-					Items.dye.onItemUse(new ItemStack(Items.dye, 1, 15), playerTarget, worldObj, dx, dy, dz, 0, 0, 0, 0);
+					Items.DYE.onItemUse(new ItemStack(Items.DYE, 1, 15), playerTarget, worldObj, dx, dy, dz, 0, 0, 0, 0);
 				}			
 				else if (materialHit.isSolid() && canReplaceBlock(worldObj, dx, dy, dz)) 
 				{
-					worldObj.setBlock(dx, dy, dz, Blocks.leaves, 2, 3);
+					worldObj.setBlock(dx, dy, dz, Blocks.LEAVES, 2, 3);
 				}			
 			}
 		}

@@ -20,7 +20,7 @@ public class TFGenWoodRoots extends TFGenerator {
 	@Override
 	public boolean generate(World world, Random rand, int x, int y, int z) {
 		// start must be in stone
-		if (world.getBlock(x, y, z) != Blocks.stone) {
+		if (world.getBlock(x, y, z) != Blocks.STONE) {
 			return false;
 		}
 		
@@ -65,7 +65,7 @@ public class TFGenWoodRoots extends TFGenerator {
 		}
 
 		// end must be in stone
-		if (world.getBlock(dest[0], dest[1], dest[2]) != Blocks.stone) {
+		if (world.getBlock(dest[0], dest[1], dest[2]) != Blocks.STONE) {
 			return false;
 		}
 		

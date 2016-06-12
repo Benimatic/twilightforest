@@ -48,13 +48,13 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		for (int i = 0; i < stalacts; i++)
 		{
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < stalags; i++)
 		{
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
 
 		// boss spawner seems important

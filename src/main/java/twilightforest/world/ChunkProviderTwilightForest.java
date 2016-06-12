@@ -207,11 +207,11 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
                             {
                                 if ((d15 += d16) > 0.0D)
                                 {
-                                    blockStorage[j3 += short1] = Blocks.stone;
+                                    blockStorage[j3 += short1] = Blocks.STONE;
                                 }
                                 else if (k2 * 8 + l2 < seaLevel)
                                 {
-                                    blockStorage[j3 += short1] = Blocks.water;
+                                    blockStorage[j3 += short1] = Blocks.WATER;
                                 }
                                 else
                                 {
@@ -366,7 +366,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 						int twiceIndex = x * TFWorld.CHUNKHEIGHT * 16 | z * TFWorld.CHUNKHEIGHT | (y * 2 + 1);
 						blockStorage[index] = blockStorage[twiceIndex];
 					} else {
-						blockStorage[index] = Blocks.air;
+						blockStorage[index] = Blocks.AIR;
 					}
 				}
 			}
@@ -462,14 +462,14 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		for (int y = 0; y < TFWorld.CHUNKHEIGHT; y++) {
             int index = x * TFWorld.CHUNKHEIGHT * 16 | z * TFWorld.CHUNKHEIGHT | y;
 			Block currentTerrain = storage[index];
-			if (currentTerrain != Blocks.stone && !foundGroundLevel) {
+			if (currentTerrain != Blocks.STONE && !foundGroundLevel) {
 				// we found the top of the stone layer
 				newGround = y + hillHeight;
 
 				foundGroundLevel = true;
 			}
 			if (foundGroundLevel && y <= newGround) {
-				storage[index] = Blocks.stone;
+				storage[index] = Blocks.STONE;
 			}
 		}
 		// add the hollow part. Also turn water into stone below that
@@ -492,8 +492,8 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		for (int y = 0; y < TFWorld.CHUNKHEIGHT; y++) {
             int index = x * TFWorld.CHUNKHEIGHT * 16 | z * TFWorld.CHUNKHEIGHT | y;
 			// put a base on hills that go over open space or water
-			if (hillHeight > 0 && y < TFWorld.SEALEVEL && storage[index] != Blocks.stone) {
-				storage[index] = Blocks.stone;
+			if (hillHeight > 0 && y < TFWorld.SEALEVEL && storage[index] != Blocks.STONE) {
+				storage[index] = Blocks.STONE;
 			}
 			// hollow out the hollow parts
 			int hollowFloor = TFWorld.SEALEVEL - 3 - (hollow / 8);
@@ -502,7 +502,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 				hollowFloor = TFWorld.SEALEVEL;
 			}
 			if (y > hollowFloor && y < hollowFloor + hollow) {
-				storage[index] = Blocks.air;
+				storage[index] = Blocks.AIR;
 			}
 		}
 	}
@@ -536,7 +536,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			for (int y = 0; y <= 127; y++) {
 				int index = (x * 16 + z) * TFWorld.CHUNKHEIGHT + y;
 				Block currentTerrain = storage[index];
-				if (currentTerrain == Blocks.stone) {
+				if (currentTerrain == Blocks.STONE) {
 					// we're still in ground
 					continue;
 				} else {
@@ -554,11 +554,11 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		// sets the groundlevel to the mazeheight
 		for (int y = 0; y <= 127; y++) {
 			int index = (x * 16 + z) * TFWorld.CHUNKHEIGHT + y;
-			if (y < mazeheight && (storage[index] == Blocks.air || storage[index] == Blocks.water)) {
-				storage[index] = Blocks.stone;
+			if (y < mazeheight && (storage[index] == Blocks.AIR || storage[index] == Blocks.WATER)) {
+				storage[index] = Blocks.STONE;
 			}
-			if (y >= mazeheight && storage[index] != Blocks.water) {
-				storage[index] = Blocks.air;
+			if (y >= mazeheight && storage[index] != Blocks.WATER) {
+				storage[index] = Blocks.AIR;
 			}
 		}
 	}
@@ -614,7 +614,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			for (int y = 0; y <= 127; y++) {
 				int index = (x * 16 + z) * TFWorld.CHUNKHEIGHT + y;
 				Block currentTerrain = storage[index];
-				if (currentTerrain == Blocks.stone) {
+				if (currentTerrain == Blocks.STONE) {
 					// we're still in ground
 					continue;
 				} else {
@@ -636,18 +636,18 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			int index = (x * 16 + z) * TFWorld.CHUNKHEIGHT + y;
 			
 			// add stone
-			if (y < topHeight && (storage[index] == null || storage[index] == Blocks.air || storage[index] == Blocks.water)) {
-				storage[index] = Blocks.stone;
+			if (y < topHeight && (storage[index] == null || storage[index] == Blocks.AIR || storage[index] == Blocks.WATER)) {
+				storage[index] = Blocks.STONE;
 			}
 			
 			// hollow out inside
 			if (y > hollowFloor && y < hollowCeiling) {
-				storage[index] = Blocks.air;
+				storage[index] = Blocks.AIR;
 			}
 			
 			// ice floor
 			if (y == hollowFloor && y < hollowCeiling && y < TFWorld.SEALEVEL + 3) {
-				storage[index] = Blocks.packed_ice;
+				storage[index] = Blocks.PACKED_ICE;
 			}
 		}
 	}
@@ -674,15 +674,15 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		double cv = (dist - 9F) - (pr * 4F);
 		
 		if (dist < 9 || cv < 0.05F) {
-			storage[index] = Blocks.stained_glass;
-			storage[index - 1] = Blocks.quartz_block;
-			storage[index - 2] = Blocks.quartz_block;
-			storage[index - 3] = Blocks.quartz_block;
-			storage[index - 4] = Blocks.stained_glass;
+			storage[index] = Blocks.STAINED_GLASS;
+			storage[index - 1] = Blocks.QUARTZ_BLOCK;
+			storage[index - 2] = Blocks.QUARTZ_BLOCK;
+			storage[index - 3] = Blocks.QUARTZ_BLOCK;
+			storage[index - 4] = Blocks.STAINED_GLASS;
 		} else if (dist < 10 || cv < 1F) {
-			storage[index - 1] = Blocks.stained_glass;
-			storage[index - 2] = Blocks.stained_glass;
-			storage[index - 3] = Blocks.stained_glass;
+			storage[index - 1] = Blocks.STAINED_GLASS;
+			storage[index - 2] = Blocks.STAINED_GLASS;
+			storage[index - 3] = Blocks.STAINED_GLASS;
 		}
 
 	}
@@ -788,10 +788,10 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 						// look at where we are
 			            int index = x * TFWorld.CHUNKHEIGHT * 16 | z * TFWorld.CHUNKHEIGHT | y;
 						Block currentBlock = blocks[index];
-						if (currentBlock == Blocks.stone) {
+						if (currentBlock == Blocks.STONE) {
 							topLevel = y;
 							// make that block gravel
-							blocks[index] = Blocks.gravel;
+							blocks[index] = Blocks.GRAVEL;
 							break;
 						}
 					}
@@ -802,7 +802,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 
 					for (int y = topLevel + 1; y <= gTop && y < 128; y++) {
 			            int index = x * TFWorld.CHUNKHEIGHT * 16 | z * TFWorld.CHUNKHEIGHT | y;
-						blocks[index] = Blocks.ice;
+						blocks[index] = Blocks.ICE;
 					}
 				}
 			}
@@ -889,11 +889,11 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			            int index = x * TFWorld.CHUNKHEIGHT * 16 | z * TFWorld.CHUNKHEIGHT | y;
 						// int index = (x * 16 + z) * 128 + y;
 						Block currentBlock = blocks[index];
-						if (currentBlock == Blocks.water) {
+						if (currentBlock == Blocks.WATER) {
 							// don't generate over water
 							break;
 						}
-						if (currentBlock == Blocks.stone) {
+						if (currentBlock == Blocks.STONE) {
 							topLevel = y;
 							break;
 						}
@@ -955,7 +955,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			int i1 = mapX + rand.nextInt(16) + 8;
 			int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
 			int i3 = mapY + rand.nextInt(16) + 8;
-			(new WorldGenLakes(Blocks.water)).generate(worldObj, rand, i1, i2, i3);
+			(new WorldGenLakes(Blocks.WATER)).generate(worldObj, rand, i1, i2, i3);
 		}
 		
 		if (!disableFeatures && rand.nextInt(32) == 0) // reduced from 8
@@ -964,7 +964,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			int j2 = rand.nextInt(rand.nextInt(TFWorld.CHUNKHEIGHT - 8) + 8);
 			int j3 = mapY + rand.nextInt(16) + 8;
 			if (j2 < TFWorld.SEALEVEL || rand.nextInt(10) == 0) {
-				(new WorldGenLakes(Blocks.lava)).generate(worldObj, rand, j1, j2, j3);
+				(new WorldGenLakes(Blocks.LAVA)).generate(worldObj, rand, j1, j2, j3);
 			}
 		}
 		for (int k1 = 0; k1 < 8; k1++) {
@@ -982,10 +982,10 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			for (int j3 = 0; j3 < 16; j3++) {
 				int j4 = worldObj.getPrecipitationHeight(mapX + i2, mapY + j3);
 				if (worldObj.isBlockFreezable(i2 + mapX, j4 - 1, j3 + mapY)) {
-					worldObj.setBlock(i2 + mapX, j4 - 1, j3 + mapY, Blocks.ice, 0, 2);
+					worldObj.setBlock(i2 + mapX, j4 - 1, j3 + mapY, Blocks.ICE, 0, 2);
 				}
 				if (worldObj.func_147478_e(i2 + mapX, j4, j3 + mapY, true)) {
-					worldObj.setBlock(i2 + mapX, j4, j3 + mapY, Blocks.snow_layer, 0, 2);
+					worldObj.setBlock(i2 + mapX, j4, j3 + mapY, Blocks.SNOW_LAYER, 0, 2);
 				}
 			}
 		}

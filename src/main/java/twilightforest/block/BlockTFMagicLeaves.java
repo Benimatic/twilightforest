@@ -215,7 +215,7 @@ public class BlockTFMagicLeaves extends BlockLeaves {
     @Override
     public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int side)
     {
-    	return Blocks.leaves.shouldSideBeRendered(iblockaccess, i, j, k, side);
+    	return Blocks.LEAVES.shouldSideBeRendered(iblockaccess, i, j, k, side);
     }
     
     /**

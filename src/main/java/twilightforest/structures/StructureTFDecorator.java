@@ -16,10 +16,10 @@ import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;
  */
 public class StructureTFDecorator 
 {
-	public Block blockID = Blocks.stone;
+	public Block blockID = Blocks.STONE;
 	public int blockMeta;
 	
-	public Block accentID = Blocks.cobblestone;
+	public Block accentID = Blocks.COBBLESTONE;
 	public int accentMeta;
 	
 	public Block stairID;

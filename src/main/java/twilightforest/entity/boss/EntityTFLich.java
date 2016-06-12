@@ -48,7 +48,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 
 	EntityTFLich masterLich;
 
-	private static final ItemStack heldItems[] = {new ItemStack(TFItems.scepterTwilight, 1), new ItemStack(TFItems.scepterZombie, 1), new ItemStack(Items.golden_sword, 1)};
+	private static final ItemStack heldItems[] = {new ItemStack(TFItems.scepterTwilight, 1), new ItemStack(TFItems.scepterZombie, 1), new ItemStack(Items.GOLDEN_SWORD, 1)};
 	public static final int MAX_SHADOW_CLONES = 2;
 	public static final int INITIAL_SHIELD_STRENGTH = 5;
 	public static final int MAX_ACTIVE_MINIONS = 3;
@@ -136,14 +136,14 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         totalDrops = this.rand.nextInt(4 + par2) + 1;
         for (int i = 0; i < totalDrops; ++i)
         {
-            this.dropItem(Items.ender_pearl, 1);
+            this.dropItem(Items.ENDER_PEARL, 1);
         }
 
         // bones
         totalDrops = this.rand.nextInt(5 + par2) + 5;
         for (int i = 0; i < totalDrops; ++i)
         {
-            this.dropItem(Items.bone, 1);
+            this.dropItem(Items.BONE, 1);
         }
         
         // trophy
@@ -167,19 +167,19 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		ItemStack goldThing;
 		int thingType = rand.nextInt(5);
 		if (thingType == 0) {
-			goldThing = new ItemStack(Items.golden_sword);
+			goldThing = new ItemStack(Items.GOLDEN_SWORD);
 		}
 		else if (thingType == 1) {
-			goldThing = new ItemStack(Items.golden_helmet);
+			goldThing = new ItemStack(Items.GOLDEN_HELMET);
 		}
 		else if (thingType == 2) {
-			goldThing = new ItemStack(Items.golden_chestplate);
+			goldThing = new ItemStack(Items.GOLDEN_CHESTPLATE);
 		}
 		else if (thingType == 3) {
-			goldThing = new ItemStack(Items.golden_leggings);
+			goldThing = new ItemStack(Items.GOLDEN_LEGGINGS);
 		}
 		else {
-			goldThing = new ItemStack(Items.golden_boots);
+			goldThing = new ItemStack(Items.GOLDEN_BOOTS);
 		}
 		// enchant!
 		EnchantmentHelper.addRandomEnchantment(rand, goldThing, 10 + rand.nextInt(30));
@@ -803,7 +803,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         	while (!groundFlag && ty > 0) 
         	{
                 Block whatsThere = worldObj.getBlock(bx, by - 1, bz);
-                if (whatsThere == Blocks.air || !whatsThere.getMaterial().isSolid())
+                if (whatsThere == Blocks.AIR || !whatsThere.getMaterial().isSolid())
                 {
                     ty--;
                     by--;

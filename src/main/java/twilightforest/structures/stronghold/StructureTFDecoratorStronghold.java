@@ -15,14 +15,14 @@ public class StructureTFDecoratorStronghold extends StructureTFDecorator {
 		this.accentID = TFBlocks.underBrick;
 		this.accentMeta = 3;
 		
-		this.fenceID = Blocks.cobblestone_wall;
+		this.fenceID = Blocks.COBBLESTONE_WALL;
 		
-		this.stairID = Blocks.stone_brick_stairs;
+		this.stairID = Blocks.STONE_BRICK_STAIRS;
 		
-		this.pillarID = Blocks.stonebrick;
+		this.pillarID = Blocks.STONEBRICK;
 		this.pillarMeta = 1;
 		
-		this.platformID = Blocks.stone_slab;
+		this.platformID = Blocks.STONE_SLAB;
 		this.platformMeta = 5 + 8;
 
 		this.randomBlocks = new StructureTFKnightStones();

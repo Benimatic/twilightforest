@@ -309,7 +309,7 @@ public class TwilightForestMod {
 		Item portalItem;
 		if (Item.itemRegistry.containsKey(portalCreationItemString)) {
 			portalItem = (Item) Item.itemRegistry.getObject(portalCreationItemString);
-			if (portalItem != Items.diamond) {
+			if (portalItem != Items.DIAMOND) {
 				FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
 			}
 		} else if (Block.blockRegistry.containsKey(portalCreationItemString)) {
@@ -317,7 +317,7 @@ public class TwilightForestMod {
 			FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
 		} else {
 			FMLLog.info("Twilight Forest config lists portal item as '%s'.  Not found, defaulting to diamond.", portalCreationItemString);
-			portalItem = Items.diamond;
+			portalItem = Items.DIAMOND;
 		}
 		tickHandler.portalItem = portalItem;
 		

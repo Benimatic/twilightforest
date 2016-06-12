@@ -57,7 +57,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		this.setHasArmor(true);
 		this.setHasShield(true);
 		
-        //this.setCurrentItemOrArmor(0, new ItemStack(Items.swordSteel));
+        //this.setCurrentItemOrArmor(0, new ItemStack(Items.SWORDSTEEL));
 
 		
 		this.shieldHits = 0;
@@ -388,9 +388,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	 * Break our armor
 	 */
 	public void breakArmor() {
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		
 		this.setHasArmor(false);
 	}
@@ -400,9 +400,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	 */
 	public void breakShield() {
 		
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
-		this.renderBrokenItemStack(new ItemStack(Items.iron_chestplate));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
+		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		
 		this.setHasShield(false);
 	}

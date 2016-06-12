@@ -36,7 +36,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
     private static final WorldGenTaiga2 taigaGen2 = new WorldGenTaiga2(false);
     private static final WorldGenMegaPineTree megaPineGen1 = new WorldGenMegaPineTree(false, false);
     private static final WorldGenMegaPineTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
-    private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.mossy_cobblestone, 0);
+    private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
     private static final TFGenTrollRoots genTrollRoots = new TFGenTrollRoots();
     private static final WorldGenTallGrass worldGenMushgloom = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MUSHGLOOM);
     
@@ -88,25 +88,25 @@ public class TFBiomeHighlands extends TFBiomeBase {
      */
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
-        return par1Random.nextInt(5) > 0 ? new WorldGenTallGrass(Blocks.tallgrass, 2) : new WorldGenTallGrass(Blocks.tallgrass, 1);
+        return par1Random.nextInt(5) > 0 ? new WorldGenTallGrass(Blocks.TALLGRASS, 2) : new WorldGenTallGrass(Blocks.TALLGRASS, 1);
     }
 
     public void genTerrainBlocks(World world, Random rand, Block[] blockStorage, byte[] metaStorage, int x, int z, double noiseVal)
     {
         if (true)
         {
-            this.topBlock = Blocks.grass;
+            this.topBlock = Blocks.GRASS;
             this.field_150604_aj = 0;
-            this.fillerBlock = Blocks.dirt;
+            this.fillerBlock = Blocks.DIRT;
 
             if (noiseVal > 1.75D)
             {
-                this.topBlock = Blocks.dirt;
+                this.topBlock = Blocks.DIRT;
                 this.field_150604_aj = 1;
             }
             else if (noiseVal > -0.95D)
             {
-                this.topBlock = Blocks.dirt;
+                this.topBlock = Blocks.DIRT;
                 this.field_150604_aj = 2;
             }
         }

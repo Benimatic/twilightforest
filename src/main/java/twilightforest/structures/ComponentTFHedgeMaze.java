@@ -54,20 +54,20 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 		// grass underneath
 		for (int fx = 0; fx <= DIAMETER; fx++) {
 			for (int fz = 0; fz <= DIAMETER; fz++) {
-				placeBlockAtCurrentPosition(world, Blocks.grass, 0, fx, FLOOR_LEVEL - 1, fz, sbb);
+				placeBlockAtCurrentPosition(world, Blocks.GRASS, 0, fx, FLOOR_LEVEL - 1, fz, sbb);
 			}
 		}
 
 		// plunk down some jack-o-lanterns outside for decoration
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 1, 0, FLOOR_LEVEL, 24, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 1, 0, FLOOR_LEVEL, 29, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 3, 50, FLOOR_LEVEL, 24, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 3, 50, FLOOR_LEVEL, 29, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 1, 0, FLOOR_LEVEL, 24, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 1, 0, FLOOR_LEVEL, 29, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 3, 50, FLOOR_LEVEL, 24, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 3, 50, FLOOR_LEVEL, 29, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 2, 24, FLOOR_LEVEL, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 2, 29, FLOOR_LEVEL, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 0, 24, FLOOR_LEVEL, 50, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, 0, 29, FLOOR_LEVEL, 50, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 2, 24, FLOOR_LEVEL, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 2, 29, FLOOR_LEVEL, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 0, 24, FLOOR_LEVEL, 50, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, 0, 29, FLOOR_LEVEL, 50, sbb);
 		
 		
 		int nrooms = MSIZE / 3;
@@ -220,7 +220,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeBlockAtCurrentPosition(world, Blocks.lit_pumpkin, rand.nextInt(4), rx, FLOOR_LEVEL, rz, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.LIT_PUMPKIN, rand.nextInt(4), rx, FLOOR_LEVEL, rz, sbb);
 	}
 
 

@@ -38,13 +38,13 @@ public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 				if (gravel > 0)
 				{
 					gravel++; // get it out of the floor
-					this.fillWithBlocks(world, sbb, x, 1, z, x, gravel, z, Blocks.gravel, Blocks.air, false);
+					this.fillWithBlocks(world, sbb, x, 1, z, x, gravel, z, Blocks.GRAVEL, Blocks.AIR, false);
 					this.fillWithAir(world, sbb, x, gravel, z, x, gravel + 5, z);
 				}
 				else if (root > 0)
 				{
-					this.fillWithBlocks(world, sbb, x, 5, z, x, 5 + root, z, Blocks.dirt, Blocks.air, true);
-					this.fillWithMetadataBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.plant, BlockTFPlant.META_ROOT_STRAND, Blocks.air, 0, false);
+					this.fillWithBlocks(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT, Blocks.AIR, true);
+					this.fillWithMetadataBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.plant, BlockTFPlant.META_ROOT_STRAND, Blocks.AIR, 0, false);
 				}
 				else if (rand.nextInt(dist + 1) > 0)
 				{

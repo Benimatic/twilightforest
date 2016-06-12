@@ -55,7 +55,7 @@ public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
     {
         if (par1Random.nextInt(10) == 0)
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 2);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
         }
         else if (par1Random.nextInt(10) == 0)
         {
@@ -63,7 +63,7 @@ public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
         }
         else
         {
-            return new WorldGenTallGrass(Blocks.tallgrass, 1);
+            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
         }
     }
     

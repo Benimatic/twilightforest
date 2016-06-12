@@ -58,7 +58,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		    double gaussZ = itemRand.nextGaussian() * 0.02D;
 		    double gaussFactor = 10.0D;
 		    
-		    Item popItem = getTargetDropItemId(target) != null ? getTargetDropItemId(target) : Items.rotten_flesh;
+		    Item popItem = getTargetDropItemId(target) != null ? getTargetDropItemId(target) : Items.ROTTEN_FLESH;
 		    
 		    worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(popItem), target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ);
 		}
@@ -66,7 +66,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	
 	public static Item getTargetDropItemId(EntityLivingBase target) {
 		//TODO: make this actually work
-		return Items.rotten_flesh;
+		return Items.ROTTEN_FLESH;
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 			if (pointedEntity != null && pointedEntity instanceof EntityLivingBase) {
 				EntityLivingBase target =  (EntityLivingBase)pointedEntity;
 
-				if (target.getActivePotionEffect(Potion.moveSlowdown) != null || target.getHealth() < 1) {
+				if (target.getActivePotionEffect(MobEffects.MOVESLOWDOWN) != null || target.getHealth() < 1) {
 
 					if (target.getHealth() <= 3) {
 						// make it explode
@@ -164,7 +164,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 								target.motionZ = 0;
 							}
 
-							target.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 20, 2));
+							target.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20, 2));
 
 							if (count % 10 == 0) {
 								// heal the player
@@ -191,7 +191,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 							target.motionZ = 0;
 						}
 
-						target.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 20, 2));
+						target.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20, 2));
 					}
 				}
 

@@ -43,29 +43,29 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 			for (int z = 10; z < 17; z++) {
 				if (x == 10 || x == 16 || z == 10 || z == 16) {
 					if (rand.nextInt(2) > 0) {
-						placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, x, -1, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, x, -1, z, sbb);
 					}
 				}
 				else if (x == 11 || x == 15 || z == 11 || z == 15) {
 					if (rand.nextInt(3) > 0) {
-						placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, x, -1, z, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, x, -1, z, sbb);
 					}				
 				}
 				else {
-					placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, x, -1, z, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, x, -1, z, sbb);
 				}
 			}
 		}
 		
 		// dispenser frame and button
-		placeBlockAtCurrentPosition(world, Blocks.stone_button, 4, 13, 5, 19, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONE_BUTTON, 4, 13, 5, 19, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, 12, 7, 20, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, 13, 7, 20, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, 14, 7, 20, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, 12, 7, 21, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, 13, 7, 21, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, 14, 7, 21, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, 12, 7, 20, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, 13, 7, 20, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, 14, 7, 20, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, 12, 7, 21, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, 13, 7, 21, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, 14, 7, 21, sbb);
 		
 		
 		// the dispenser
@@ -77,12 +77,12 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 			if (sbb.isVecInside(bx, by, bz)) {
 				dispenserPlaced = true;
 				
-				world.setBlock(bx, by, bz, Blocks.dispenser, 2, 4);
+				world.setBlock(bx, by, bz, Blocks.DISPENSER, 2, 4);
 				TileEntityDispenser ted = (TileEntityDispenser)world.getTileEntity(bx, by, bz);
 				
 				// add 4 random wool blocks
 				for (int i = 0; i < 4; i++) {
-					ted.setInventorySlotContents(i, new ItemStack(Blocks.wool, 1, rand.nextInt(16)));
+					ted.setInventorySlotContents(i, new ItemStack(Blocks.WOOL, 1, rand.nextInt(16)));
 				}
 				
 			}
@@ -118,48 +118,48 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 		placeOuterArch(world, 19, -1, sbb);
 		
 		// connecting thingers
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 0, 0, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 0, 1, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 0, 2, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 0, 0, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 0, 1, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 0, 2, 0, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 0, 3, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 1, 3, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 2, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 0, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 1, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 2, 3, 0, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 8, 3, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 9, 3, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 10, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 8, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 9, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 10, 3, 0, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 16, 3, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 17, 3, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 18, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 16, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 17, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 18, 3, 0, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 24, 3, 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 25, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 24, 3, 0, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 25, 3, 0, sbb);
 		
 		// inner arch
 		for (int x = 0; x < 9; x++) {
 			for (int y = 0; y < 9; y++) {
 				for (int z = 0; z < 2; z++) {
 					if (x == 0 || x == 1 || x == 7 || x == 8 || y == 0 || y == 1 || y == 7 || y == 8) {
-						placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, x + 9, y - 2, z + 5, sbb);
+						placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, x + 9, y - 2, z + 5, sbb);
 					}
 				}
 			}
 		}
 		
 		// connecting thingers
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 6, 0, 6, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 6, 1, 6, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 6, 2, 6, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 6, 3, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 6, 0, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 6, 1, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 6, 2, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 6, 3, 6, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 6, 4, 6, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 7, 4, 6, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 8, 4, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 6, 4, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 7, 4, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 8, 4, 6, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 18, 4, 6, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.stonebrick, 3, 19, 4, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 18, 4, 6, sbb);
+		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 3, 19, 4, 6, sbb);
 		
 		this.setCoordBaseMode(temp);
 	}
@@ -168,7 +168,7 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 6; y++) {
 				if (x == 0 || x == 4 || y == 0 || y == 5) {
-					placeBlockAtCurrentPosition(world, Blocks.stonebrick, 1, x + ox, y + oy, 0, sbb);
+					placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 1, x + ox, y + oy, 0, sbb);
 				}
 			}
 		}

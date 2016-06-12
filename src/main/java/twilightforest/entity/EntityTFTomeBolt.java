@@ -73,7 +73,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 				byte potionStrength = (byte) (worldObj.difficultySetting == EnumDifficulty.PEACEFUL ? 3 : worldObj.difficultySetting == EnumDifficulty.NORMAL ? 7 : 9);
 				if(potionStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, potionStrength * 20, 1));
+					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, potionStrength * 20, 1));
 				}
 
 			}
@@ -82,7 +82,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.fire_charge), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.FIRE_CHARGE), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 		}
 
 		if (!this.worldObj.isRemote)

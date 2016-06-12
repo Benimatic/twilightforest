@@ -196,7 +196,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
                     Block block = this.worldObj.getBlock(dx, dy, dz);
                     int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
                     
-                    if (block != Blocks.air && block.getExplosionResistance(this) < 7F && block.getBlockHardness(worldObj, dx, dy, dz) >= 0) {
+                    if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && block.getBlockHardness(worldObj, dx, dy, dz) >= 0) {
 
                     	if (entity != null && entity instanceof EntityPlayer) {
                     		EntityPlayer player = (EntityPlayer)entity;

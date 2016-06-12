@@ -111,7 +111,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
                 	Block block = this.worldObj.getBlock(dx, dy, dz);
                 	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
 
-                	if (block != Blocks.air) {
+                	if (block != Blocks.AIR) {
                 		if (canAnnihilate(dx, dy, dz, block, currentMeta)) {
                 			this.worldObj.setBlockToAir(dx, dy, dz);
 

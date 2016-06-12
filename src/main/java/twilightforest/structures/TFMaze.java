@@ -84,7 +84,7 @@ public class TFMaze {
 		wallBlockMeta = 2;
 		rootBlockID = TFBlocks.mazestone;
 		rootBlockMeta = 0;
-		torchBlockID = Blocks.torch;
+		torchBlockID = Blocks.TORCH;
 		pillarBlockID = null;
 
 		torchBlockMeta = 0;
@@ -591,7 +591,7 @@ public class TFMaze {
 	 */
 	protected void carveBlock(World world, int x, int y, int z)
 	{
-		world.setBlock(x, y, z, Blocks.air, 0, 2);
+		world.setBlock(x, y, z, Blocks.AIR, 0, 2);
 	}
 	
 	protected void putHeadBlock(World world, int x, int y, int z)

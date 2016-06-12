@@ -65,7 +65,7 @@ public class ComponentTFMazeMound extends StructureTFComponent {
         }
 
         
-        //this.fillWithBlocks(world, sbb, 0, 0, 0, 25, 8, 25, Blocks.dirt, 0, false);
+        //this.fillWithBlocks(world, sbb, 0, 0, 0, 25, 8, 25, Blocks.DIRT, 0, false);
         
         for (int x = 0; x < DIAMETER; x++)
         {
@@ -80,16 +80,16 @@ public class ComponentTFMazeMound extends StructureTFComponent {
         		// leave a hole in the middle
         		if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) 
         		{
-	        		this.placeBlockAtCurrentPosition(world, Blocks.grass, 0, x, hheight, z, sbb);
+	        		this.placeBlockAtCurrentPosition(world, Blocks.GRASS, 0, x, hheight, z, sbb);
 	        		
 	        		// only fill to the bottom when we're not in the entrances
 	        		if (!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1))
 	        		{
-		        		this.func_151554_b(world, Blocks.dirt, 0, x, hheight - 1, z, sbb);
+		        		this.func_151554_b(world, Blocks.DIRT, 0, x, hheight - 1, z, sbb);
 	        		}
 	        		else if (hheight > 6)
 	        		{
-	        			this.fillWithBlocks(world, sbb, x, 6, z, x, hheight - 1, z, Blocks.dirt, Blocks.air, false);
+	        			this.fillWithBlocks(world, sbb, x, 6, z, x, hheight - 1, z, Blocks.DIRT, Blocks.AIR, false);
 	        		}
         		}
             }

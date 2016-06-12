@@ -55,8 +55,8 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 	}
 
     protected void placeCloud(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		this.fillWithMetadataBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.stained_glass, 0, Blocks.stained_glass, 0, false); 
-		this.fillWithMetadataBlocks(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.quartz_block, 0, Blocks.quartz_block, 0, false); 
+		this.fillWithMetadataBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.STAINED_GLASS, 0, Blocks.STAINED_GLASS, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.QUARTZ_BLOCK, 0, Blocks.QUARTZ_BLOCK, 0, false);
 		
 	}
 

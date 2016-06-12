@@ -568,7 +568,7 @@ public class ContainerTFUncrafting extends Container {
 	 * @return
 	 */
     public boolean isDamageableComponent(ItemStack itemStack) {
-    	return itemStack != null && itemStack.getItem() != Items.stick;
+    	return itemStack != null && itemStack.getItem() != Items.STICK;
     }
     
     /**

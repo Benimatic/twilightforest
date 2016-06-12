@@ -62,10 +62,10 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT - 1; y++) {
 			Block blockID = chunk.getBlock(x & 15, y, z & 15);
 			// grass = return immediately
-			if (blockID == Blocks.grass) {
+			if (blockID == Blocks.GRASS) {
 				return y + 1;
 			}
-			else if (blockID == Blocks.dirt || blockID == Blocks.stone || blockID == Blocks.gravel || blockID == Blocks.sandstone || blockID == Blocks.sand || blockID == Blocks.clay || blockID == TFBlocks.deadrock) {
+			else if (blockID == Blocks.DIRT || blockID == Blocks.STONE || blockID == Blocks.GRAVEL || blockID == Blocks.SANDSTONE || blockID == Blocks.SAND || blockID == Blocks.CLAY || blockID == TFBlocks.deadrock) {
 				lastDirt = y + 1;
 			}
 		}

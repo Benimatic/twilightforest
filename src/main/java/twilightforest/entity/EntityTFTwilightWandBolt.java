@@ -72,7 +72,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 
         for (int i = 0; i < 8; ++i)
         {
-            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ender_pearl), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ENDER_PEARL), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
         }
 
         if (!this.worldObj.isRemote)

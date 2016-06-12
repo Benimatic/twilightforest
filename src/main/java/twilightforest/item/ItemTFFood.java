@@ -97,7 +97,7 @@ public class ItemTFFood extends ItemFood {
         
         if (isSoup)
         {
-        	return new ItemStack(Items.bowl);
+        	return new ItemStack(Items.BOWL);
         }
         else
         {

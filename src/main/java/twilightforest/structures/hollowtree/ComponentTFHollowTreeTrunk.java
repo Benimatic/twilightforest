@@ -226,7 +226,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 				
 				// add vines
 				if (dist == hollow && dx == hollow + radius) {
-					this.func_151554_b(world, Blocks.vine, 8, dx + 1, height, dz + 1, sbb);
+					this.func_151554_b(world, Blocks.VINE, 8, dx + 1, height, dz + 1, sbb);
 				}
 			}
 		}

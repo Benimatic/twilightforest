@@ -79,7 +79,7 @@ public class TFTreasure {
 	 */
 	public boolean generate(World world, Random rand, int cx, int cy, int cz) {
 
-		return this.generate(world, rand, cx, cy, cz, Blocks.chest);
+		return this.generate(world, rand, cx, cy, cz, Blocks.CHEST);
 	}
 
 	/**
@@ -191,74 +191,74 @@ public class TFTreasure {
 	 * refactored into seperate functions someday.
 	 */
 	protected void fill(int i) {
-		useless.add(Blocks.red_flower, 4);
-		useless.add(Blocks.yellow_flower, 4);
-		useless.add(Items.feather, 3);
-		useless.add(Items.wheat_seeds, 2);
-		useless.add(Items.flint, 2);
-		useless.add(Blocks.cactus, 2);
-		useless.add(Items.reeds, 4);
-		useless.add(Blocks.sand, 4);
-		useless.add(Items.flower_pot, 1);
-		useless.add(new ItemStack(Items.dye, 1, 0));
+		useless.add(Blocks.RED_FLOWER, 4);
+		useless.add(Blocks.YELLOW_FLOWER, 4);
+		useless.add(Items.FEATHER, 3);
+		useless.add(Items.WHEAT_SEEDS, 2);
+		useless.add(Items.FLINT, 2);
+		useless.add(Blocks.CACTUS, 2);
+		useless.add(Items.REEDS, 4);
+		useless.add(Blocks.SAND, 4);
+		useless.add(Items.FLOWER_POT, 1);
+		useless.add(new ItemStack(Items.DYE, 1, 0));
 
 		if (i == 1) {
 			// hill type 1 chest
-			common.add(Items.iron_ingot, 4);
-			common.add(Items.wheat, 4);
-			common.add(Items.string, 4);
-			common.add(Items.bucket, 1);
+			common.add(Items.IRON_INGOT, 4);
+			common.add(Items.WHEAT, 4);
+			common.add(Items.STRING, 4);
+			common.add(Items.BUCKET, 1);
 
-			uncommon.add(Items.bread, 1);
+			uncommon.add(Items.BREAD, 1);
 			uncommon.add(TFItems.oreMagnet, 1);
-			uncommon.add(Items.gunpowder, 4);
-			uncommon.add(Items.arrow, 12);
-			uncommon.add(Blocks.torch, 12);
+			uncommon.add(Items.GUNPOWDER, 4);
+			uncommon.add(Items.ARROW, 12);
+			uncommon.add(Blocks.TORCH, 12);
 
-			rare.add(Items.gold_ingot, 3);
-			rare.add(Items.iron_pickaxe, 1);
+			rare.add(Items.GOLD_INGOT, 3);
+			rare.add(Items.IRON_PICKAXE, 1);
 			rare.add(TFItems.liveRoot, 3);
 
 			ultrarare.add(TFItems.transformPowder, 12);
-			ultrarare.add(Items.diamond, 1);
+			ultrarare.add(Items.DIAMOND, 1);
 			ultrarare.add(TFItems.steeleafIngot, 3);
 		}
 		
 		if (i == 2) {
 			// hill type 2 chest
-			common.add(Items.iron_ingot, 4);
-			common.add(Items.carrot, 4);
-			common.add(Blocks.ladder, 6);
-			common.add(Items.bucket, 1);
+			common.add(Items.IRON_INGOT, 4);
+			common.add(Items.CARROT, 4);
+			common.add(Blocks.LADDER, 6);
+			common.add(Items.BUCKET, 1);
 
-			uncommon.add(Items.baked_potato, 2);
+			uncommon.add(Items.BAKED_POTATO, 2);
 			uncommon.add(TFItems.oreMagnet, 1);
 			uncommon.add(TFItems.ironwoodIngot, 4);
-			uncommon.add(Items.arrow, 12);
-			uncommon.add(Blocks.torch, 12);
+			uncommon.add(Items.ARROW, 12);
+			uncommon.add(Blocks.TORCH, 12);
 
 			rare.add(TFItems.nagaScale, 1);
 			rare.add(TFBlocks.uncraftingTable, 1);
 			rare.add(TFItems.transformPowder, 12);
 
 			ultrarare.add(TFItems.peacockFan, 1);
-			ultrarare.add(Items.emerald, 6);
-			ultrarare.add(Items.diamond, 1);
+			ultrarare.add(Items.EMERALD, 6);
+			ultrarare.add(Items.DIAMOND, 1);
 			ultrarare.add(TFItems.charmOfLife1, 1);
 		}
 		
 		if (i == 3) {
 			// hill type 3 chest
-			common.add(Items.gold_nugget, 9);
-			common.add(Items.potato, 4);
-			common.add(Items.fish, 4);
+			common.add(Items.GOLD_NUGGET, 9);
+			common.add(Items.POTATO, 4);
+			common.add(Items.FISH, 4);
 			common.add(TFItems.torchberries, 5);
 
-			uncommon.add(Items.pumpkin_pie, 1);
+			uncommon.add(Items.PUMPKIN_PIE, 1);
 			uncommon.add(TFItems.oreMagnet, 1);
-			uncommon.add(Items.gunpowder, 4);
-			uncommon.add(Items.arrow, 12);
-			uncommon.add(Blocks.torch, 12);
+			uncommon.add(Items.GUNPOWDER, 4);
+			uncommon.add(Items.ARROW, 12);
+			uncommon.add(Blocks.TORCH, 12);
 			uncommon.add(TFItems.steeleafIngot, 4);
 
 			rare.add(TFItems.nagaScale, 1);
@@ -267,48 +267,48 @@ public class TFTreasure {
 
 			ultrarare.add(TFItems.moonwormQueen, 1);
 			ultrarare.add(TFBlocks.sapling, 1, 4);
-			ultrarare.add(Items.diamond, 2);
+			ultrarare.add(Items.DIAMOND, 2);
 			ultrarare.add(TFItems.charmOfLife1, 1);
 			ultrarare.add(TFItems.charmOfKeeping1, 1);
 		}
 
 		if (i == 4) {
 			// hedge maze chest
-			common.add(Blocks.planks, 4);
-			common.add(Blocks.brown_mushroom, 4);
-			common.add(Blocks.red_mushroom, 4);
-			common.add(Items.wheat, 4);
-			common.add(Items.string, 4);
-			common.add(Items.stick, 6);
+			common.add(Blocks.PLANKS, 4);
+			common.add(Blocks.BROWN_MUSHROOM, 4);
+			common.add(Blocks.RED_MUSHROOM, 4);
+			common.add(Items.WHEAT, 4);
+			common.add(Items.STRING, 4);
+			common.add(Items.STICK, 6);
 
-			uncommon.add(Items.melon, 4);
-			uncommon.add(Items.melon_seeds, 4);
-			uncommon.add(Items.pumpkin_seeds, 4);
-			uncommon.add(Items.arrow, 12);
+			uncommon.add(Items.MELON, 4);
+			uncommon.add(Items.MELON_SEEDS, 4);
+			uncommon.add(Items.PUMPKIN_SEEDS, 4);
+			uncommon.add(Items.ARROW, 12);
 			uncommon.add(TFBlocks.firefly, 4);
 
-			rare.add(Blocks.web, 3);
-			rare.add(Items.shears, 1);
-			rare.add(Items.saddle, 1);
-			rare.add(Items.bow, 1);
-			rare.add(Items.apple, 2);
+			rare.add(Blocks.WEB, 3);
+			rare.add(Items.SHEARS, 1);
+			rare.add(Items.SADDLE, 1);
+			rare.add(Items.BOW, 1);
+			rare.add(Items.APPLE, 2);
 
-			ultrarare.add(Items.diamond_hoe, 1);
-			ultrarare.add(Items.diamond, 1);
-			ultrarare.add(Items.mushroom_stew, 1);
-			ultrarare.add(Items.golden_apple, 1);
+			ultrarare.add(Items.DIAMOND_HOE, 1);
+			ultrarare.add(Items.DIAMOND, 1);
+			ultrarare.add(Items.MUSHROOM_STEW, 1);
+			ultrarare.add(Items.GOLDEN_APPLE, 1);
 		}
 
 		if (i == 5) {
 			// labyrinth room chest
 			useless.clear();
 			
-			common.add(Items.iron_ingot, 4);
+			common.add(Items.IRON_INGOT, 4);
 			common.add(TFItems.mazeWafer, 12);
-			common.add(Items.gunpowder, 4);
+			common.add(Items.GUNPOWDER, 4);
 			common.add(TFItems.ironwoodIngot, 4);
 			common.add(TFBlocks.firefly, 5);
-			common.add(Items.milk_bucket, 1);
+			common.add(Items.MILK_BUCKET, 1);
 
 			uncommon.add(TFItems.steeleafIngot, 6);
 			uncommon.add(TFItems.steeleafLegs, 1);
@@ -321,46 +321,46 @@ public class TFTreasure {
 			uncommon.add(TFItems.charmOfKeeping1, 1);
 			
 			rare.add(TFItems.mazeMapFocus, 1);
-			rare.add(Blocks.tnt, 3);
-			rare.add(new ItemStack(Items.potionitem, 1, 16373)); // health ii
+			rare.add(Blocks.TNT, 3);
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 16373)); // health ii
 		}
 
 		if (i == 6) {
 			// labyrinth dead end chest
-			common.add(Items.stick, 12);
-			common.add(Items.coal, 12);
-			common.add(Items.arrow, 12);
+			common.add(Items.STICK, 12);
+			common.add(Items.COAL, 12);
+			common.add(Items.ARROW, 12);
 			common.add(TFItems.mazeWafer, 9);
-			common.add(Items.paper, 12);
-			common.add(Items.leather, 4);
-			common.add(Items.mushroom_stew, 1);
+			common.add(Items.PAPER, 12);
+			common.add(Items.LEATHER, 4);
+			common.add(Items.MUSHROOM_STEW, 1);
 
-			uncommon.add(Items.milk_bucket, 1);
-			uncommon.add(Items.paper, 5);
-			uncommon.add(Items.iron_ingot, 6);
+			uncommon.add(Items.MILK_BUCKET, 1);
+			uncommon.add(Items.PAPER, 5);
+			uncommon.add(Items.IRON_INGOT, 6);
 			uncommon.add(TFItems.ironwoodIngot, 8);
 			uncommon.add(TFBlocks.firefly, 5);
 			uncommon.add(TFItems.charmOfKeeping1, 1);
 
 			rare.add(TFItems.steeleafIngot, 8);
-			rare.add(Items.golden_apple, 1);
-			rare.add(Items.blaze_rod, 2);
+			rare.add(Items.GOLDEN_APPLE, 1);
+			rare.add(Items.BLAZE_ROD, 2);
 		}
 		
 		if (i == 10) {
 			// labyrinth vault chest
 			useless.clear();
 			
-			common.add(Items.iron_ingot, 9);
-			common.add(Items.emerald, 5);
+			common.add(Items.IRON_INGOT, 9);
+			common.add(Items.EMERALD, 5);
 			common.add(TFItems.mazeWafer, 12);
 			common.add(TFItems.ironwoodIngot, 9);
-			common.add(new ItemStack(Items.potionitem, 1, 16369)); // regen ii
-			common.add(new ItemStack(Items.potionitem, 1, 16373)); // health ii
-			common.add(new ItemStack(Items.potionitem, 1, 16370)); // extended swiftness ii
+			common.add(new ItemStack(Items.POTIONITEM, 1, 16369)); // regen ii
+			common.add(new ItemStack(Items.POTIONITEM, 1, 16373)); // health ii
+			common.add(new ItemStack(Items.POTIONITEM, 1, 16370)); // extended swiftness ii
 
-			uncommon.addEnchanted(new ItemStack(Items.bow), Enchantment.infinity, 1, Enchantment.punch, 2);					
-			uncommon.addEnchanted(new ItemStack(Items.bow), Enchantment.power, 3, Enchantment.flame, 1);		
+			uncommon.addEnchanted(new ItemStack(Items.BOW), Enchantment.infinity, 1, Enchantment.punch, 2);
+			uncommon.addEnchanted(new ItemStack(Items.BOW), Enchantment.power, 3, Enchantment.flame, 1);
 			uncommon.addEnchanted(new ItemStack(TFItems.steeleafShovel), Enchantment.efficiency, 4, Enchantment.unbreaking, 2);	
 			uncommon.addEnchanted(new ItemStack(TFItems.steeleafAxe), Enchantment.efficiency, 5);
 			uncommon.add(TFItems.steeleafIngot, 12);
@@ -369,8 +369,8 @@ public class TFTreasure {
 			uncommon.addEnchanted(new ItemStack(TFItems.steeleafBoots), Enchantment.protection, 2);
 			uncommon.addEnchanted(new ItemStack(TFItems.steeleafHelm), Enchantment.respiration, 3);
 			
-			rare.add(Blocks.emerald_block, 1);
-			rare.add(Blocks.ender_chest, 1);
+			rare.add(Blocks.EMERALD_BLOCK, 1);
+			rare.add(Blocks.ENDER_CHEST, 1);
 			rare.addEnchanted(new ItemStack(TFItems.steeleafPick), Enchantment.efficiency, 4, Enchantment.silkTouch, 1);
 			rare.addEnchanted(new ItemStack(TFItems.steeleafSword), Enchantment.sharpness, 4, Enchantment.knockback, 2);
 			rare.addEnchanted(new ItemStack(TFItems.steeleafSword), Enchantment.baneOfArthropods, 5, Enchantment.fireAspect, 2);
@@ -379,128 +379,128 @@ public class TFTreasure {
 
 		if (i == 7) {
 			// wizards tower treasure room chest
-			common.add(Items.glass_bottle, 6);
-			common.add(new ItemStack(Items.potionitem, 1, 0));
-			common.add(Items.sugar, 5);
-			common.add(Items.spider_eye, 3);
-			common.add(Items.ghast_tear, 1);
-			common.add(Items.magma_cream, 2);
-			common.add(Items.fermented_spider_eye, 1);
-			common.add(Items.speckled_melon, 2);
-			common.add(Items.blaze_powder, 3);
-			common.add(Items.paper, 6);
+			common.add(Items.GLASS_BOTTLE, 6);
+			common.add(new ItemStack(Items.POTIONITEM, 1, 0));
+			common.add(Items.SUGAR, 5);
+			common.add(Items.SPIDER_EYE, 3);
+			common.add(Items.GHAST_TEAR, 1);
+			common.add(Items.MAGMA_CREAM, 2);
+			common.add(Items.FERMENTED_SPIDER_EYE, 1);
+			common.add(Items.SPECKLED_MELON, 2);
+			common.add(Items.BLAZE_POWDER, 3);
+			common.add(Items.PAPER, 6);
 
-			uncommon.addRandomEnchanted(Items.golden_sword, 10);
-			uncommon.addRandomEnchanted(Items.golden_boots, 7);
-			uncommon.add(new ItemStack(Items.potionitem, 1, 16274)); // swiftness
-			uncommon.add(new ItemStack(Items.potionitem, 1, 16341)); // healing
-			uncommon.add(new ItemStack(Items.potionitem, 1, 16307)); // fire resist
-			uncommon.add(new ItemStack(Items.potionitem, 1, 16348)); // harm
+			uncommon.addRandomEnchanted(Items.GOLDEN_SWORD, 10);
+			uncommon.addRandomEnchanted(Items.GOLDEN_BOOTS, 7);
+			uncommon.add(new ItemStack(Items.POTIONITEM, 1, 16274)); // swiftness
+			uncommon.add(new ItemStack(Items.POTIONITEM, 1, 16341)); // healing
+			uncommon.add(new ItemStack(Items.POTIONITEM, 1, 16307)); // fire resist
+			uncommon.add(new ItemStack(Items.POTIONITEM, 1, 16348)); // harm
 			
-			rare.addRandomEnchanted(Items.golden_helmet, 18);
-			rare.add(new ItemStack(Items.potionitem, 1, 16306)); // swiftness ii
-			rare.add(new ItemStack(Items.potionitem, 1, 16305)); // regen ii
-			rare.add(new ItemStack(Items.potionitem, 1, 32725)); // splash health
-			rare.add(new ItemStack(Items.potionitem, 1, 32764)); // harming ii splash
+			rare.addRandomEnchanted(Items.GOLDEN_HELMET, 18);
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 16306)); // swiftness ii
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 16305)); // regen ii
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 32725)); // splash health
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 32764)); // harming ii splash
 			rare.add(TFItems.transformPowder, 12);
 			rare.add(TFItems.charmOfLife1, 1);
 			rare.add(TFItems.charmOfKeeping1, 1);
 
-			ultrarare.addRandomEnchanted(Items.golden_axe, 20);
-			ultrarare.add(Items.ender_pearl, 1);
-			ultrarare.add(Blocks.obsidian, 4);
-			ultrarare.add(Items.diamond, 1);
+			ultrarare.addRandomEnchanted(Items.GOLDEN_AXE, 20);
+			ultrarare.add(Items.ENDER_PEARL, 1);
+			ultrarare.add(Blocks.OBSIDIAN, 4);
+			ultrarare.add(Items.DIAMOND, 1);
 			ultrarare.add(TFItems.moonwormQueen, 1);
 			ultrarare.add(TFItems.peacockFan, 1);
 		}
 
 		if (i == 8) {
 			// wizards tower library chest
-			common.add(Items.glass_bottle, 6);
-			common.add(new ItemStack(Items.potionitem, 1, 0));
-			common.add(Blocks.ladder, 6);
-			common.add(Items.paper, 6);
-			common.add(Items.bone, 6);
-			common.add(Items.gold_nugget, 6);
-			common.add(Items.clay_ball, 12);
+			common.add(Items.GLASS_BOTTLE, 6);
+			common.add(new ItemStack(Items.POTIONITEM, 1, 0));
+			common.add(Blocks.LADDER, 6);
+			common.add(Items.PAPER, 6);
+			common.add(Items.BONE, 6);
+			common.add(Items.GOLD_NUGGET, 6);
+			common.add(Items.CLAY_BALL, 12);
 
-			uncommon.addRandomEnchanted(Items.iron_leggings, 5);
-			uncommon.add(Items.fire_charge, 3);
-			uncommon.add(Items.book, 5);
-			uncommon.add(Items.map, 1);
-			uncommon.add(new ItemStack(Items.potionitem, 1, 16));
-			uncommon.add(new ItemStack(Items.potionitem, 1, 16276)); // poison
-			uncommon.add(new ItemStack(Items.potionitem, 1, 16312)); // weakness
+			uncommon.addRandomEnchanted(Items.IRON_LEGGINGS, 5);
+			uncommon.add(Items.FIRE_CHARGE, 3);
+			uncommon.add(Items.BOOK, 5);
+			uncommon.add(Items.MAP, 1);
+			uncommon.add(new ItemStack(Items.POTIONITEM, 1, 16));
+			uncommon.add(new ItemStack(Items.POTIONITEM, 1, 16276)); // poison
+			uncommon.add(new ItemStack(Items.POTIONITEM, 1, 16312)); // weakness
 			
-			rare.addRandomEnchanted(Items.bow, 5);
-			rare.addRandomEnchanted(Items.stone_sword, 10);
-			rare.addRandomEnchanted(Items.wooden_sword, 15);
-			rare.add(new ItemStack(Items.potionitem, 1, 32696)); // splash weakness
-			rare.add(new ItemStack(Items.potionitem, 1, 16369)); // regen ii
-			rare.add(new ItemStack(Items.potionitem, 1, 16373)); // health ii
-			rare.add(new ItemStack(Items.potionitem, 1, 16370)); // extended swiftness ii
+			rare.addRandomEnchanted(Items.BOW, 5);
+			rare.addRandomEnchanted(Items.STONE_SWORD, 10);
+			rare.addRandomEnchanted(Items.WOODEN_SWORD, 15);
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 32696)); // splash weakness
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 16369)); // regen ii
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 16373)); // health ii
+			rare.add(new ItemStack(Items.POTIONITEM, 1, 16370)); // extended swiftness ii
 			rare.add(TFItems.transformPowder, 12);
 			rare.add(TFItems.charmOfKeeping1, 1);
 			
-			ultrarare.addRandomEnchanted(Items.golden_pickaxe, 10);
-			ultrarare.addRandomEnchanted(Items.iron_sword, 20);
-			ultrarare.addRandomEnchanted(Items.bow, 30);
-			ultrarare.add(Blocks.bookshelf, 5);
-			ultrarare.add(Items.ender_pearl, 2);
-			ultrarare.add(Items.experience_bottle, 6);
+			ultrarare.addRandomEnchanted(Items.GOLDEN_PICKAXE, 10);
+			ultrarare.addRandomEnchanted(Items.IRON_SWORD, 20);
+			ultrarare.addRandomEnchanted(Items.BOW, 30);
+			ultrarare.add(Blocks.BOOKSHELF, 5);
+			ultrarare.add(Items.ENDER_PEARL, 2);
+			ultrarare.add(Items.EXPERIENCE_BOTTLE, 6);
 		}
 		
 		if (i == 9) {
 			// basement treasure cache, mostly full of food!
-			common.add(new ItemStack(Items.potionitem, 1, 0));
-			common.add(Items.rotten_flesh, 6);
-			common.add(Items.poisonous_potato, 2);
-			common.add(Items.wheat, 6);
-			common.add(Items.potato, 6);
-			common.add(Items.carrot, 6);
-			common.add(Items.melon, 6);
-			common.add(Items.water_bucket, 1);
-			common.add(Blocks.torch, 12);
-			common.add(Items.mushroom_stew, 1);
-			common.add(Items.milk_bucket, 1);
-			common.add(Items.melon_seeds, 5);
+			common.add(new ItemStack(Items.POTIONITEM, 1, 0));
+			common.add(Items.ROTTEN_FLESH, 6);
+			common.add(Items.POISONOUS_POTATO, 2);
+			common.add(Items.WHEAT, 6);
+			common.add(Items.POTATO, 6);
+			common.add(Items.CARROT, 6);
+			common.add(Items.MELON, 6);
+			common.add(Items.WATER_BUCKET, 1);
+			common.add(Blocks.TORCH, 12);
+			common.add(Items.MUSHROOM_STEW, 1);
+			common.add(Items.MILK_BUCKET, 1);
+			common.add(Items.MELON_SEEDS, 5);
 			
-			uncommon.add(Items.bread, 8);
-			uncommon.add(Items.cooked_beef, 6);
-			uncommon.add(Items.cooked_porkchop, 8);
-			uncommon.add(Items.baked_potato, 8);
-			uncommon.add(Items.cooked_chicken, 10);
-			uncommon.add(Items.cooked_fished, 8);
+			uncommon.add(Items.BREAD, 8);
+			uncommon.add(Items.COOKED_BEEF, 6);
+			uncommon.add(Items.COOKED_PORKCHOP, 8);
+			uncommon.add(Items.BAKED_POTATO, 8);
+			uncommon.add(Items.COOKED_CHICKEN, 10);
+			uncommon.add(Items.COOKED_FISHED, 8);
 			
-			rare.add(Items.speckled_melon, 12);
-			rare.add(Items.apple, 12);
-			rare.add(Items.map, 1);
+			rare.add(Items.SPECKLED_MELON, 12);
+			rare.add(Items.APPLE, 12);
+			rare.add(Items.MAP, 1);
 			rare.add(TFItems.charmOfKeeping1, 1);
 			
-			ultrarare.add(Items.golden_apple, 2);
-			ultrarare.add(Items.golden_carrot, 2);
-			ultrarare.add(Items.cake, 1);
-			ultrarare.add(Items.boat, 1);
+			ultrarare.add(Items.GOLDEN_APPLE, 2);
+			ultrarare.add(Items.GOLDEN_CARROT, 2);
+			ultrarare.add(Items.CAKE, 1);
+			ultrarare.add(Items.BOAT, 1);
 			ultrarare.add(new ItemStack(TFBlocks.sapling, 1, 4));
 		}
 
 		if (i == 11) {
 			// dark tower regular treasure cache, contains supplies
-			common.add(Items.stick, 12);
-			common.add(new ItemStack(Items.coal, 12, 1));
-			common.add(Items.arrow, 12);
+			common.add(Items.STICK, 12);
+			common.add(new ItemStack(Items.COAL, 12, 1));
+			common.add(Items.ARROW, 12);
 			common.add(TFItems.experiment115, 9);
-			common.add(new ItemStack(Blocks.wool, 1, 14));
-			common.add(Items.redstone, 6);
+			common.add(new ItemStack(Blocks.WOOL, 1, 14));
+			common.add(Items.REDSTONE, 6);
 
-			uncommon.add(Blocks.redstone_lamp, 3);
-			uncommon.add(Items.iron_ingot, 6);
+			uncommon.add(Blocks.REDSTONE_LAMP, 3);
+			uncommon.add(Items.IRON_INGOT, 6);
 			uncommon.add(TFItems.ironwoodIngot, 8);
 			uncommon.add(TFBlocks.firefly, 5);
 			uncommon.add(TFItems.charmOfKeeping1, 1);
 
 			rare.add(TFItems.steeleafIngot, 8);
-			rare.add(Items.diamond, 2);
+			rare.add(Items.DIAMOND, 2);
 
 		}
 
@@ -509,13 +509,13 @@ public class TFTreasure {
 			// key will be added seperately
 			useless.clear();
 			
-			common.add(Items.iron_ingot, 4);
+			common.add(Items.IRON_INGOT, 4);
 			common.add(TFItems.experiment115, 12);
-			common.add(Items.gunpowder, 4);
+			common.add(Items.GUNPOWDER, 4);
 			common.add(TFItems.ironwoodIngot, 4);
 			common.add(TFBlocks.firefly, 5);
-			common.add(Items.redstone, 12);
-			common.add(Items.glowstone_dust, 12);
+			common.add(Items.REDSTONE, 12);
+			common.add(Items.GLOWSTONE_DUST, 12);
 
 			uncommon.add(TFItems.steeleafIngot, 6);
 			uncommon.add(TFItems.steeleafLegs, 1);
@@ -544,14 +544,14 @@ public class TFTreasure {
 
 		if (i == 14) {
 			// tree branch treasure cache, food and saplings
-			common.add(Items.poisonous_potato, 2);
-			common.add(Items.wheat, 6);
-			common.add(Items.potato, 6);
-			common.add(Items.carrot, 6);
-			common.add(Items.melon, 6);
-			common.add(Items.water_bucket, 1);
-			common.add(Items.milk_bucket, 1);
-			common.add(Items.melon_seeds, 5);
+			common.add(Items.POISONOUS_POTATO, 2);
+			common.add(Items.WHEAT, 6);
+			common.add(Items.POTATO, 6);
+			common.add(Items.CARROT, 6);
+			common.add(Items.MELON, 6);
+			common.add(Items.WATER_BUCKET, 1);
+			common.add(Items.MILK_BUCKET, 1);
+			common.add(Items.MELON_SEEDS, 5);
 			
 			uncommon.add(new ItemStack(TFBlocks.firefly, 12));
 			uncommon.add(new ItemStack(TFBlocks.sapling, 4, 0));
@@ -559,8 +559,8 @@ public class TFTreasure {
 			uncommon.add(new ItemStack(TFBlocks.sapling, 4, 2));
 			uncommon.add(new ItemStack(TFBlocks.sapling, 4, 3));
 			
-			rare.add(Items.pumpkin_pie, 12);
-			rare.add(Items.apple, 12);
+			rare.add(Items.PUMPKIN_PIE, 12);
+			rare.add(Items.APPLE, 12);
 			rare.add(TFItems.charmOfLife1, 1);
 			rare.add(TFItems.charmOfKeeping1, 1);
 
@@ -573,23 +573,23 @@ public class TFTreasure {
 		
 		if (i == 15) {
 			// stronghold regular treasure cache, contains supplies
-			common.add(Items.stick, 12);
-			common.add(new ItemStack(Items.coal, 12));
-			common.add(Items.arrow, 12);
+			common.add(Items.STICK, 12);
+			common.add(new ItemStack(Items.COAL, 12));
+			common.add(Items.ARROW, 12);
 			common.add(TFItems.mazeWafer, 9);
-			common.add(new ItemStack(Blocks.wool, 1, 11));
-			common.add(Items.iron_ingot, 2);
+			common.add(new ItemStack(Blocks.WOOL, 1, 11));
+			common.add(Items.IRON_INGOT, 2);
 
-			uncommon.add(Items.bucket, 1);
-			uncommon.add(Items.iron_ingot, 6);
+			uncommon.add(Items.BUCKET, 1);
+			uncommon.add(Items.IRON_INGOT, 6);
 			uncommon.add(TFItems.ironwoodIngot, 6);
 			uncommon.add(TFBlocks.firefly, 5);
 			uncommon.add(TFItems.charmOfKeeping1, 1);
 			uncommon.add(TFItems.armorShard, 3);
 
 			rare.add(TFItems.knightMetal, 8);
-			rare.addRandomEnchanted(Items.bow, 20);
-			rare.addRandomEnchanted(Items.iron_sword, 20);
+			rare.addRandomEnchanted(Items.BOW, 20);
+			rare.addRandomEnchanted(Items.IRON_SWORD, 20);
 			rare.addRandomEnchanted(TFItems.ironwoodSword, 15);
 			rare.addRandomEnchanted(TFItems.steeleafSword, 10);
 			
@@ -608,12 +608,12 @@ public class TFTreasure {
 			// stronghold treasure room chest - kinda rare
 			useless.clear();
 			
-			common.add(Items.iron_ingot, 4);
+			common.add(Items.IRON_INGOT, 4);
 			common.add(TFItems.mazeWafer, 12);
-			common.add(Items.gunpowder, 4);
+			common.add(Items.GUNPOWDER, 4);
 			common.add(TFItems.ironwoodIngot, 4);
 			common.add(TFBlocks.firefly, 5);
-			common.add(Items.milk_bucket, 1);
+			common.add(Items.MILK_BUCKET, 1);
 
 			uncommon.add(TFItems.steeleafIngot, 6);
 			uncommon.add(TFItems.steeleafLegs, 1);
@@ -626,11 +626,11 @@ public class TFTreasure {
 			uncommon.add(TFItems.charmOfLife1, 1);
 			
 			rare.add(TFItems.mazeMapFocus, 1);
-			rare.addRandomEnchanted(Items.bow, 30);
-			rare.addRandomEnchanted(Items.iron_sword, 30);
+			rare.addRandomEnchanted(Items.BOW, 30);
+			rare.addRandomEnchanted(Items.IRON_SWORD, 30);
 			rare.addRandomEnchanted(TFItems.ironwoodSword, 25);
 			rare.addRandomEnchanted(TFItems.steeleafSword, 20);
-			rare.addRandomEnchanted(Items.diamond_sword, 15);
+			rare.addRandomEnchanted(Items.DIAMOND_SWORD, 15);
 
 		}
 		
@@ -649,12 +649,12 @@ public class TFTreasure {
 
 		if (i == 18) {
 			// aurora cache
-			common.add(Items.stick, 12);
-			common.add(new ItemStack(Items.coal, 12));
-			common.add(Items.arrow, 12);
+			common.add(Items.STICK, 12);
+			common.add(new ItemStack(Items.COAL, 12));
+			common.add(Items.ARROW, 12);
 			common.add(TFItems.mazeWafer, 9);
-			common.add(Blocks.ice, 4);
-			common.add(Blocks.packed_ice, 4);
+			common.add(Blocks.ICE, 4);
+			common.add(Blocks.PACKED_ICE, 4);
 			common.add(TFItems.ironwoodIngot, 2);
 
 			uncommon.add(TFBlocks.auroraBlock, 12);
@@ -681,8 +681,8 @@ public class TFTreasure {
 			// aurora treasure
 			useless.clear();
 			
-			common.add(Blocks.ice, 4);
-			common.add(Blocks.packed_ice, 4);
+			common.add(Blocks.ICE, 4);
+			common.add(Blocks.PACKED_ICE, 4);
 			common.add(TFItems.mazeWafer, 12);
 			common.add(TFItems.iceBomb, 4);
 			common.add(TFBlocks.firefly, 5);
@@ -707,13 +707,13 @@ public class TFTreasure {
 			// troll garden
 			useless.clear();
 			
-			common.add(Blocks.red_mushroom, 4);
-			common.add(Blocks.brown_mushroom, 4);
-			common.add(Items.wheat_seeds, 6);
-			common.add(Items.carrot, 6);
-			common.add(Items.potato, 6);
-			common.add(Items.melon_seeds, 6);
-			common.add(new ItemStack(Items.dye, 12, 15));
+			common.add(Blocks.RED_MUSHROOM, 4);
+			common.add(Blocks.BROWN_MUSHROOM, 4);
+			common.add(Items.WHEAT_SEEDS, 6);
+			common.add(Items.CARROT, 6);
+			common.add(Items.POTATO, 6);
+			common.add(Items.MELON_SEEDS, 6);
+			common.add(new ItemStack(Items.DYE, 12, 15));
 
 			uncommon.add(TFBlocks.uberousSoil, 6);
 			
@@ -727,12 +727,12 @@ public class TFTreasure {
 			
 			useless.clear();
 			
-			common.add(Items.coal, 32);
+			common.add(Items.COAL, 32);
 			common.add(TFItems.torchberries, 16);
-			common.add(Items.emerald, 6);
+			common.add(Items.EMERALD, 6);
 
 			uncommon.add(TFBlocks.trollSteinn, 6);
-			uncommon.add(Blocks.obsidian, 6);
+			uncommon.add(Blocks.OBSIDIAN, 6);
 			
 			rare.add(TFItems.lampOfCinders, 1);
 

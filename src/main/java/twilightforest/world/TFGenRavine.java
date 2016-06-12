@@ -127,7 +127,7 @@ public class TFGenRavine extends MapGenBase
                         {
                             continue;
                         }
-                        if (blockStorage[k3] == Blocks.water || blockStorage[k3] == Blocks.water)
+                        if (blockStorage[k3] == Blocks.WATER || blockStorage[k3] == Blocks.WATER)
                         {
                             flag1 = true;
                         }
@@ -167,14 +167,14 @@ public class TFGenRavine extends MapGenBase
                         if ((d12 * d12 + d13 * d13) * (double)field_35627_a[j4] + (d14 * d14) / 6D < 1.0D)
                         {
                             Block curentBlock = blockStorage[i4];
-                            if (curentBlock == Blocks.grass)
+                            if (curentBlock == Blocks.GRASS)
                             {
                             	flag2 = true;
                             }
-                            if (curentBlock == Blocks.stone || curentBlock == TFBlocks.trollSteinn || curentBlock == Blocks.dirt || curentBlock == Blocks.grass)
+                            if (curentBlock == Blocks.STONE || curentBlock == TFBlocks.trollSteinn || curentBlock == Blocks.DIRT || curentBlock == Blocks.GRASS)
                             {
-                            	blockStorage[i4] = Blocks.air;
-                            	if (flag2 && blockStorage[i4 - 1] == Blocks.dirt)
+                            	blockStorage[i4] = Blocks.AIR;
+                            	if (flag2 && blockStorage[i4 - 1] == Blocks.DIRT)
                             	{
                             		blockStorage[i4 - 1] = this.worldObj.getBiomeGenForCoords(l2 + i * 16, l3 + j * 16).topBlock;
                             	}

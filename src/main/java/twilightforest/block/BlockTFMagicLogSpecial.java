@@ -194,11 +194,11 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	
 			Block thereID = world.getBlock(x + dx, y + dy, z + dz);
 	
-			if (thereID != Blocks.air && thereID.getTickRandomly())
+			if (thereID != Blocks.AIR && thereID.getTickRandomly())
 			{
 				thereID.updateTick(world, x + dx, y + dy, z + dz, rand);
 	
-				//System.out.println("tree of time ticked a block at " + (x + dx) + ", " + (y + dy) + ", " + (z + dz) + " and the block was " + Blocks.blocksList[thereID] );
+				//System.out.println("tree of time ticked a block at " + (x + dx) + ", " + (y + dy) + ", " + (z + dz) + " and the block was " + Blocks.BLOCKSLIST[thereID] );
 	
 				successes++;
 			}
@@ -304,9 +304,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 			{
 				for (int sz = z - ZSEARCH; sz < z + ZSEARCH; sz++)
 				{
-					if (world.getBlock(sx, sy, sz) == Blocks.chest)
+					if (world.getBlock(sx, sy, sz) == Blocks.CHEST)
 					{
-						IInventory thisChest = Blocks.chest.func_149951_m(world, sx, sy, sz);
+						IInventory thisChest = Blocks.CHEST.func_149951_m(world, sx, sy, sz);
 						
 						// make sure we haven't counted this chest
 						if (thisChest != null && !checkIfChestsContains(chests, (IInventory)world.getTileEntity(sx, sy, sz)))

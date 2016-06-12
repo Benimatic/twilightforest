@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 
 	public TFGenOutsideStalagmite() {
-		super(Blocks.stone, 1.0F, false);
+		super(Blocks.STONE, 1.0F, false);
 	}
 	
 	public boolean generate(World world, Random rand, int x, int y, int z)

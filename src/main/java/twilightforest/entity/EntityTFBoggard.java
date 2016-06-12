@@ -98,7 +98,7 @@ public class EntityTFBoggard extends EntityMob {
     @Override
 	protected Item getDropItem()
     {
-        return Items.iron_boots;
+        return Items.IRON_BOOTS;
     }
     
     @Override
@@ -110,11 +110,11 @@ public class EntityTFBoggard extends EntityMob {
         }
         if (rand.nextInt(6) == 0)
         {
-            this.dropItem(Items.iron_boots, 1 + i);
+            this.dropItem(Items.IRON_BOOTS, 1 + i);
         }
         if (rand.nextInt(9) == 0)
         {
-        	this.dropItem(Items.iron_pickaxe, 1 + i);
+        	this.dropItem(Items.IRON_PICKAXE, 1 + i);
         }
     }
     

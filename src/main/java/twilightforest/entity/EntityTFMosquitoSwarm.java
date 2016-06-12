@@ -91,7 +91,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 
                 if (duration > 0)
                 {
-                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, duration * 20, 0));
+                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER.id, duration * 20, 0));
                 }
             }
 

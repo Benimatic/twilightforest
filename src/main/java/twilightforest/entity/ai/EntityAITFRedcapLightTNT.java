@@ -53,7 +53,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
     @Override
 	public boolean continueExecuting()
     {
-        return entityObj.worldObj.getBlock(tntX, tntY, tntZ) == Blocks.tnt;
+        return entityObj.worldObj.getBlock(tntX, tntY, tntZ) == Blocks.TNT;
     }
     
     /**
@@ -89,8 +89,8 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
         	// light it!
         	entityObj.playLivingSound();
         	
-        	Blocks.tnt.onBlockDestroyedByPlayer(entityObj.worldObj, tntX, tntY, tntZ, 1);
-        	entityObj.worldObj.setBlock(tntX, tntY, tntZ, Blocks.air, 0, 2);
+        	Blocks.TNT.onBlockDestroyedByPlayer(entityObj.worldObj, tntX, tntY, tntZ, 1);
+        	entityObj.worldObj.setBlock(tntX, tntY, tntZ, Blocks.AIR, 0, 2);
             this.entityObj.getNavigator().clearPathEntity();
         }
         else

@@ -82,8 +82,8 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         	}
         }
         
-        this.icons[META_FORESTGRASS] = Blocks.tallgrass.getIcon(2, 1);
-        this.icons[META_DEADBUSH] = Blocks.deadbush.getBlockTextureFromSide(2);
+        this.icons[META_FORESTGRASS] = Blocks.TALLGRASS.getIcon(2, 1);
+        this.icons[META_DEADBUSH] = Blocks.DEADBUSH.getBlockTextureFromSide(2);
         
         BlockTFPlant.mayappleSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mayapple_side");
     }
@@ -109,7 +109,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     	// we need to get the metadata
     	Block blockAt = par1World.getBlock(x, y, z);
     	
-        return (blockAt == Blocks.air || blockAt.getMaterial().isReplaceable()) && canBlockStay(par1World, x, y, z, par6ItemStack.getItemDamage());
+        return (blockAt == Blocks.AIR || blockAt.getMaterial().isReplaceable()) && canBlockStay(par1World, x, y, z, par6ItemStack.getItemDamage());
     }
 
 	/**
@@ -442,7 +442,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta)
     {
     	// do not call normal harvest if the player is shearing
-        if (world.isRemote || player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != Items.shears)
+        if (world.isRemote || player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != Items.SHEARS)
         {
             super.harvestBlock(world, player, x, y, z, meta);
         }

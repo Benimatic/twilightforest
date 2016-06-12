@@ -95,12 +95,12 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		mangroveTreeGen = new TFGenMangroveTree();
 		myceliumBlobGen = new TFGenMyceliumBlob(5);
 		hollowTreeGen = new TFGenHollowTree();
-		extraLakeGen = new WorldGenLakes(Blocks.water);
-		extraLavaPoolGen = new WorldGenLakes(Blocks.lava);
+		extraLakeGen = new WorldGenLakes(Blocks.WATER);
+		extraLavaPoolGen = new WorldGenLakes(Blocks.LAVA);
 		
 		plantRootGen = new TFGenPlantRoots();
 		woodRootGen = new TFGenWoodRoots();
-		caveWaterGen = new WorldGenLiquids(Blocks.flowing_water);
+		caveWaterGen = new WorldGenLiquids(Blocks.FLOWING_WATER);
 		torchBerryGen = new TFGenTorchBerries();
 
 		canopyPerChunk = TwilightForestMod.canopyCoverage;

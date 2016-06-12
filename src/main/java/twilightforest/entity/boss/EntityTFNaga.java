@@ -479,7 +479,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
                     for(int dz = minz; dz <= maxz; dz++)
                     {
                         Block i5 = worldObj.getBlock(dx, dy, dz);
-                        if(i5 != Blocks.air)
+                        if(i5 != Blocks.AIR)
                         {
                             breakBlock(dx, dy, dz);
                         }
@@ -636,7 +636,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 			}
 
 //			System.out.println("Crumbling block at " + dx + ", " + dy + ", " + dz);
-			if (worldObj.getBlock(dx, dy, dz) != Blocks.air)
+			if (worldObj.getBlock(dx, dy, dz) != Blocks.AIR)
 			{
 				breakBlock(dx, dy, dz);
 				
@@ -663,9 +663,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		Block whatsThere = worldObj.getBlock(dx, dy, dz);
 		int whatsMeta = worldObj.getBlockMetadata(dx, dy, dz);
 		
-		if (whatsThere != Blocks.air) {
+		if (whatsThere != Blocks.AIR) {
 			whatsThere.dropBlockAsItem(worldObj, dx, dy, dz, whatsMeta, 0);
-            this.worldObj.setBlock(dx, dy, dz, Blocks.air, 0, 2);
+            this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
 	
 			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(whatsThere) + (whatsMeta << 12));
 		}

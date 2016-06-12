@@ -63,7 +63,7 @@ public class EntityTFIceExploder extends EntityMob {
      */
     protected Item getDropItem()
     {
-        return Items.snowball;
+        return Items.SNOWBALL;
     }
 
     
@@ -214,9 +214,9 @@ public class EntityTFIceExploder extends EntityMob {
 
 			// do appropriate transformation
 			if (this.shouldTransformGlass(block, x, y, z)) {
-				this.worldObj.setBlock(x, y, z, Blocks.stained_glass, this.getMetaForColor(blockColor), 3);
+				this.worldObj.setBlock(x, y, z, Blocks.STAINED_GLASS, this.getMetaForColor(blockColor), 3);
 			} else if (this.shouldTransformClay(block, x, y, z)) {
-				this.worldObj.setBlock(x, y, z, Blocks.stained_hardened_clay, this.getMetaForColor(blockColor), 3);
+				this.worldObj.setBlock(x, y, z, Blocks.STAINED_HARDENED_CLAY, this.getMetaForColor(blockColor), 3);
 			}
 		}
 	}
@@ -228,7 +228,7 @@ public class EntityTFIceExploder extends EntityMob {
 
 
 	private boolean shouldTransformGlass(Block block, int x, int y, int z) {
-		return block != Blocks.air && this.isBlockNormalBounds(block, x, y, z) && (!block.getMaterial().isOpaque() || block.isLeaves(this.worldObj, x, y, z) || block == Blocks.ice || block == TFBlocks.auroraBlock);
+		return block != Blocks.AIR && this.isBlockNormalBounds(block, x, y, z) && (!block.getMaterial().isOpaque() || block.isLeaves(this.worldObj, x, y, z) || block == Blocks.ICE || block == TFBlocks.auroraBlock);
 	}
 
 
@@ -247,7 +247,7 @@ public class EntityTFIceExploder extends EntityMob {
 		int bestDifference = 1024;
 		
 		for (int i = 0; i < 15; i++) {
-			int iColor = Blocks.wool.getMapColor(i).colorValue;
+			int iColor = Blocks.WOOL.getMapColor(i).colorValue;
 			
 			int iRed = (iColor >> 16) & 255; 
 			int iGreen = (iColor >> 8) & 255; 

@@ -53,8 +53,8 @@ public class EntityTFLichMinion extends EntityZombie {
 				setAttackTarget(prevTarget);
 				setRevengeTarget(prevTarget);
 				// but speed up
-				addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 200, 4));
-				addPotionEffect(new PotionEffect(Potion.damageBoost.id, 200, 1));
+				addPotionEffect(new PotionEffect(MobEffects.MOVESPEED.id, 200, 4));
+				addPotionEffect(new PotionEffect(MobEffects.DAMAGEBOOST.id, 200, 1));
 			}
 			return true;
 		}
