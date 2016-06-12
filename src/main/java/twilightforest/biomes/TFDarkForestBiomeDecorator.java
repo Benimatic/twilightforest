@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenPumpkin;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
@@ -39,7 +39,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
      * Decorates the world. Calls code that was formerly (pre-1.8) in ChunkProviderGenerate.populate
      */
 	@Override
-	public void decorateChunk(World world, Random rand, BiomeGenBase biome, int mapX, int mapZ) {
+	public void decorateChunk(World world, Random rand, Biome biome, int mapX, int mapZ) {
 		// just decorate with what we need here
 	   	TFFeature nearFeature = TFFeature.getNearestFeature(mapX >> 4, mapZ >> 4, world);
     	if (nearFeature.areChunkDecorationsEnabled) {

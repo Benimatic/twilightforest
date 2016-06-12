@@ -22,7 +22,7 @@ import net.minecraft.stats.StatFileWriter;
 import net.minecraft.stats.StatisticsFile;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
@@ -37,7 +37,7 @@ import twilightforest.entity.passive.EntityTFMobileFirefly;
 import net.minecraftforge.fml.common.FMLLog;
 
 
-public abstract class TFBiomeBase extends BiomeGenBase  {
+public abstract class TFBiomeBase extends Biome  {
 	
 	static
 	{
@@ -45,25 +45,25 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
 		areThereBiomeIdConflicts();
 	}
 	
-	public static final BiomeGenBase tfLake = (new TFBiomeTwilightLake(TwilightForestMod.idBiomeLake)).setColor(0x0000ff).setBiomeName("Twilight Lake").setHeight(height_DeepOceans);
-	public static final BiomeGenBase twilightForest = (new TFBiomeTwilightForest(TwilightForestMod.idBiomeTwilightForest)).setColor(0x005500).setBiomeName("Twilight Forest");
-	public static final BiomeGenBase twilightForest2 = (new TFBiomeTwilightForestVariant(TwilightForestMod.idBiomeTwilightForestVariant)).setColor(0x005522).setBiomeName("Dense Twilight Forest").setHeight(height_MidPlains);
-	public static final BiomeGenBase highlands = (new TFBiomeHighlands(TwilightForestMod.idBiomeHighlands)).setColor(0x556644).setBiomeName("Twilight Highlands").setHeight(new Height(3.5F, 0.05F));
-	public static final BiomeGenBase mushrooms = (new TFBiomeMushrooms(TwilightForestMod.idBiomeMushrooms)).setColor(0x226622).setBiomeName("Mushroom Forest");
-	public static final BiomeGenBase tfSwamp = (new TFBiomeSwamp(TwilightForestMod.idBiomeSwamp)).setColor(0x334422).setBiomeName("Twilight Swamp").setHeight(new Height(-0.125F, 0.125F));
-	public static final BiomeGenBase stream = (new TFBiomeStream(TwilightForestMod.idBiomeStream)).setColor(0x3253b7).setBiomeName("Twilight Stream").setHeight(height_ShallowWaters);
-	public static final BiomeGenBase tfSnow = (new TFBiomeSnow(TwilightForestMod.idBiomeSnowfield)).setColor(0xccffff).setBiomeName("Snowy Forest").setHeight(height_MidPlains);
-	public static final BiomeGenBase glacier = (new TFBiomeGlacier(TwilightForestMod.idBiomeGlacier)).setColor(0x7777bb).setBiomeName("Twilight Glacier");
-	public static final BiomeGenBase clearing = (new TFBiomeClearing(TwilightForestMod.idBiomeClearing)).setColor(0x349b34).setBiomeName("Twilight Clearing").setHeight(height_LowPlains);
-	public static final BiomeGenBase oakSavanna = (new TFBiomeOakSavanna(TwilightForestMod.idBiomeOakSavanna)).setColor(0x446622).setBiomeName("Oak Savanna").setHeight(height_MidPlains);
-	public static final BiomeGenBase fireflyForest = (new TFBiomeFireflyForest(TwilightForestMod.idBiomeFireflyForest)).setColor(0x006633).setBiomeName("Firefly Forest").setHeight(height_LowPlains);
-	public static final BiomeGenBase deepMushrooms = (new TFBiomeDeepMushrooms(TwilightForestMod.idBiomeDeepMushrooms)).setColor(0x663322).setBiomeName("Deep Mushroom Forest").setHeight(height_LowPlains);
-	public static final BiomeGenBase darkForest = (new TFBiomeDarkForest(TwilightForestMod.idBiomeDarkForest)).setColor(0x003311).setBiomeName("Dark Forest").setHeight(height_LowPlains);
-	public static final BiomeGenBase enchantedForest = (new TFBiomeEnchantedForest(TwilightForestMod.idBiomeEnchantedForest)).setColor(0x115566).setBiomeName("Enchanted Forest");
-	public static final BiomeGenBase fireSwamp = (new TFBiomeFireSwamp(TwilightForestMod.idBiomeFireSwamp)).setColor(0x42231a).setBiomeName("Fire Swamp").setHeight(height_Default);
-	public static final BiomeGenBase darkForestCenter = (new TFBiomeDarkForestCenter(TwilightForestMod.idBiomeDarkForestCenter)).setColor(0x002200).setBiomeName("Dark Forest Center").setHeight(height_LowPlains);
-	public static final BiomeGenBase highlandsCenter = (new TFBiomeFinalPlateau(TwilightForestMod.idBiomeHighlandsCenter)).setColor(0x334422).setBiomeName("Highlands Center").setHeight(new Height(10.5F, 0.025F));
-	public static final BiomeGenBase thornlands = (new TFBiomeThornlands(TwilightForestMod.idBiomeThornlands)).setColor(0x223322).setBiomeName("Thornlands").setHeight(new Height(6F, 0.1F));
+	public static final Biome tfLake = (new TFBiomeTwilightLake(TwilightForestMod.idBiomeLake)).setColor(0x0000ff).setBiomeName("Twilight Lake").setHeight(height_DeepOceans);
+	public static final Biome twilightForest = (new TFBiomeTwilightForest(TwilightForestMod.idBiomeTwilightForest)).setColor(0x005500).setBiomeName("Twilight Forest");
+	public static final Biome twilightForest2 = (new TFBiomeTwilightForestVariant(TwilightForestMod.idBiomeTwilightForestVariant)).setColor(0x005522).setBiomeName("Dense Twilight Forest").setHeight(height_MidPlains);
+	public static final Biome highlands = (new TFBiomeHighlands(TwilightForestMod.idBiomeHighlands)).setColor(0x556644).setBiomeName("Twilight Highlands").setHeight(new Height(3.5F, 0.05F));
+	public static final Biome mushrooms = (new TFBiomeMushrooms(TwilightForestMod.idBiomeMushrooms)).setColor(0x226622).setBiomeName("Mushroom Forest");
+	public static final Biome tfSwamp = (new TFBiomeSwamp(TwilightForestMod.idBiomeSwamp)).setColor(0x334422).setBiomeName("Twilight Swamp").setHeight(new Height(-0.125F, 0.125F));
+	public static final Biome stream = (new TFBiomeStream(TwilightForestMod.idBiomeStream)).setColor(0x3253b7).setBiomeName("Twilight Stream").setHeight(height_ShallowWaters);
+	public static final Biome tfSnow = (new TFBiomeSnow(TwilightForestMod.idBiomeSnowfield)).setColor(0xccffff).setBiomeName("Snowy Forest").setHeight(height_MidPlains);
+	public static final Biome glacier = (new TFBiomeGlacier(TwilightForestMod.idBiomeGlacier)).setColor(0x7777bb).setBiomeName("Twilight Glacier");
+	public static final Biome clearing = (new TFBiomeClearing(TwilightForestMod.idBiomeClearing)).setColor(0x349b34).setBiomeName("Twilight Clearing").setHeight(height_LowPlains);
+	public static final Biome oakSavanna = (new TFBiomeOakSavanna(TwilightForestMod.idBiomeOakSavanna)).setColor(0x446622).setBiomeName("Oak Savanna").setHeight(height_MidPlains);
+	public static final Biome fireflyForest = (new TFBiomeFireflyForest(TwilightForestMod.idBiomeFireflyForest)).setColor(0x006633).setBiomeName("Firefly Forest").setHeight(height_LowPlains);
+	public static final Biome deepMushrooms = (new TFBiomeDeepMushrooms(TwilightForestMod.idBiomeDeepMushrooms)).setColor(0x663322).setBiomeName("Deep Mushroom Forest").setHeight(height_LowPlains);
+	public static final Biome darkForest = (new TFBiomeDarkForest(TwilightForestMod.idBiomeDarkForest)).setColor(0x003311).setBiomeName("Dark Forest").setHeight(height_LowPlains);
+	public static final Biome enchantedForest = (new TFBiomeEnchantedForest(TwilightForestMod.idBiomeEnchantedForest)).setColor(0x115566).setBiomeName("Enchanted Forest");
+	public static final Biome fireSwamp = (new TFBiomeFireSwamp(TwilightForestMod.idBiomeFireSwamp)).setColor(0x42231a).setBiomeName("Fire Swamp").setHeight(height_Default);
+	public static final Biome darkForestCenter = (new TFBiomeDarkForestCenter(TwilightForestMod.idBiomeDarkForestCenter)).setColor(0x002200).setBiomeName("Dark Forest Center").setHeight(height_LowPlains);
+	public static final Biome highlandsCenter = (new TFBiomeFinalPlateau(TwilightForestMod.idBiomeHighlandsCenter)).setColor(0x334422).setBiomeName("Highlands Center").setHeight(new Height(10.5F, 0.025F));
+	public static final Biome thornlands = (new TFBiomeThornlands(TwilightForestMod.idBiomeThornlands)).setColor(0x223322).setBiomeName("Thornlands").setHeight(new Height(6F, 0.1F));
 
 	protected WorldGenBigMushroom bigMushroomGen;
 	protected WorldGenBirchTree birchGen;
@@ -112,7 +112,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
 		undergroundMonsterList.add(new SpawnListEntry(EntityTFKobold.class, 10, 4, 8));
 
 		this.spawnableCaveCreatureList.clear();
-        this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityBat.class, 10, 8, 8));
+        this.spawnableCaveCreatureList.add(new Biome.SpawnListEntry(EntityBat.class, 10, 8, 8));
         this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityTFMobileFirefly.class, 10, 8, 8));
         
         getTFBiomeDecorator().setTreesPerChunk(10);
@@ -136,7 +136,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
     }
 
     /**
-     * Allocate a new BiomeDecorator for this BiomeGenBase
+     * Allocate a new BiomeDecorator for this Biome
      */
     @Override
     public BiomeDecorator createBiomeDecorator()
@@ -189,7 +189,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
     public static boolean assignBlankBiomeIds() {
 		boolean assigned = false;
 		
-		boolean[] usedIDs = new boolean[BiomeGenBase.getBiomeGenArray().length];
+		boolean[] usedIDs = new boolean[Biome.getBiomeGenArray().length];
 		
 		checkUsedIDs(usedIDs);
 		
@@ -221,7 +221,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
      */
 	private static void checkUsedIDs(boolean[] usedIDs) {
 		for (int i = 0; i < usedIDs.length; i++) {
-			usedIDs[i] = (BiomeGenBase.getBiomeGenArray()[i] != null);
+			usedIDs[i] = (Biome.getBiomeGenArray()[i] != null);
 		}
 	}
 
@@ -297,7 +297,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
      * Check the ID for conflicts
      */
 	public static boolean isConflictAtBiomeID(int id) {
-		BiomeGenBase biomeAt = BiomeGenBase.getBiome(id);
+		Biome biomeAt = Biome.getBiome(id);
 		
 		if (biomeAt == null || biomeAt instanceof TFBiomeBase) {
 			//FMLLog.warning("[TwilightForest] Biome ID %d contains a biome named %s.", id, biomeAt);

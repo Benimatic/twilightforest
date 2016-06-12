@@ -7,7 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldProviderSurface;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
@@ -195,8 +195,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	public BiomeGenBase getBiomeGenForCoords(int x, int z) {
-		BiomeGenBase biome = super.getBiomeGenForCoords(x, z);
+	public Biome getBiomeGenForCoords(int x, int z) {
+		Biome biome = super.getBiomeGenForCoords(x, z);
 		if (biome == null)
 		{
 			biome = TFBiomeBase.twilightForest;

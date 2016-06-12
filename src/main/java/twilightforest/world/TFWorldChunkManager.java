@@ -9,7 +9,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
@@ -23,19 +23,19 @@ public class TFWorldChunkManager extends BiomeProvider
 {
     private GenLayer unzoomedBiomes;
 
-    /** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
+    /** A GenLayer containing the indices into Biome.biomeList[] */
     private GenLayer zoomedBiomes;
 
     /** The BiomeCache object for this world. */
     private BiomeCache myBiomeCache;
 
     /** A list of biomes that the player can spawn in. */
-    private List<BiomeGenBase> myBiomesToSpawnIn;
+    private List<Biome> myBiomesToSpawnIn;
 
     protected TFWorldChunkManager()
     {
         myBiomeCache = new BiomeCache(this);
-        myBiomesToSpawnIn = new ArrayList<BiomeGenBase>();
+        myBiomesToSpawnIn = new ArrayList<Biome>();
         myBiomesToSpawnIn.add(TFBiomeBase.twilightForest);
         myBiomesToSpawnIn.add(TFBiomeBase.twilightForest2);
         myBiomesToSpawnIn.add(TFBiomeBase.clearing);
@@ -75,11 +75,11 @@ public class TFWorldChunkManager extends BiomeProvider
     }
 
     /**
-     * Returns the BiomeGenBase related to the x, z position on the world.
+     * Returns the Biome related to the x, z position on the world.
      */
-    public BiomeGenBase getBiomeGenAt(int par1, int par2)
+    public Biome getBiomeGenAt(int par1, int par2)
     {
-    	BiomeGenBase biome = myBiomeCache.getBiomeGenAt(par1, par2);
+    	Biome biome = myBiomeCache.getBiomeGenAt(par1, par2);
     	if (biome == null)
     	{
     		//FMLLog.warning("[TwilightForest] Suppressing bad biome data in getBiomeGenAt, %s at %d, %d", biome, par1, par2);
@@ -110,8 +110,8 @@ public class TFWorldChunkManager extends BiomeProvider
         for (int i = 0; i < par4 * par5; i++)
         {
         	// this keeps NPEing, I wonder why
-        	if (ai[i] >= 0 && BiomeGenBase.getBiome(ai[i]) != null) {
-        		float f = (float)BiomeGenBase.getBiome(ai[i]).getIntRainfall() / 65536F;
+        	if (ai[i] >= 0 && Biome.getBiome(ai[i]) != null) {
+        		float f = (float)Biome.getBiome(ai[i]).getIntRainfall() / 65536F;
 
         		if (f > 1.0F)
         		{
@@ -140,13 +140,13 @@ public class TFWorldChunkManager extends BiomeProvider
     /**
      * Returns an array of biomes for the location input.
      */
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase par1ArrayOfBiomeGenBase[], int x, int z, int length, int width)
+    public Biome[] getBiomesForGeneration(Biome par1ArrayOfBiome[], int x, int z, int length, int width)
     {
         IntCache.resetIntCache();
 
-        if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < length * width)
+        if (par1ArrayOfBiome == null || par1ArrayOfBiome.length < length * width)
         {
-            par1ArrayOfBiomeGenBase = new BiomeGenBase[length * width];
+            par1ArrayOfBiome = new Biome[length * width];
         }
 
         int arrayOfInts[] = unzoomedBiomes.getInts(x, z, length, width);
@@ -156,45 +156,45 @@ public class TFWorldChunkManager extends BiomeProvider
         	// biome validity check
         	if (arrayOfInts[i] >= 0)
         	{
-                par1ArrayOfBiomeGenBase[i] = BiomeGenBase.getBiome(arrayOfInts[i]);
+                par1ArrayOfBiome[i] = Biome.getBiome(arrayOfInts[i]);
         	}
         	else
         	{
         		//System.err.println("Got bad biome data : " + ai[i]);
-        		par1ArrayOfBiomeGenBase[i] = TFBiomeBase.twilightForest;
+        		par1ArrayOfBiome[i] = TFBiomeBase.twilightForest;
         	}
         }
 
-        return par1ArrayOfBiomeGenBase;
+        return par1ArrayOfBiome;
     }
 
     /**
      * Returns biomes to use for the blocks and loads the other data like temperature and humidity onto the
      * WorldChunkManager Args: oldBiomeList, x, z, width, depth
      */
-    public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5)
+    public Biome[] loadBlockGeneratorData(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5)
     {
-        return getBiomeGenAt(par1ArrayOfBiomeGenBase, par2, par3, par4, par5, true);
+        return getBiomeGenAt(par1ArrayOfBiome, par2, par3, par4, par5, true);
     }
 
     /**
      * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if false,
      * don't check biomeCache to avoid infinite loop in BiomeCacheBlock)
      */
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase par1ArrayOfBiomeGenBase[], int x, int y, int width, int length, boolean cacheFlag)
+    public Biome[] getBiomeGenAt(Biome par1ArrayOfBiome[], int x, int y, int width, int length, boolean cacheFlag)
     {
         IntCache.resetIntCache();
 
-        if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < width * length)
+        if (par1ArrayOfBiome == null || par1ArrayOfBiome.length < width * length)
         {
-            par1ArrayOfBiomeGenBase = new BiomeGenBase[width * length];
+            par1ArrayOfBiome = new Biome[width * length];
         }
 
         if (cacheFlag && width == 16 && length == 16 && (x & 0xf) == 0 && (y & 0xf) == 0)
         {
-            BiomeGenBase abiomegenbase[] = myBiomeCache.getCachedBiomes(x, y);
-            System.arraycopy(abiomegenbase, 0, par1ArrayOfBiomeGenBase, 0, width * length);
-            return par1ArrayOfBiomeGenBase;
+            Biome abiomegenbase[] = myBiomeCache.getCachedBiomes(x, y);
+            System.arraycopy(abiomegenbase, 0, par1ArrayOfBiome, 0, width * length);
+            return par1ArrayOfBiome;
         }
 
         int ai[] = zoomedBiomes.getInts(x, y, width, length);
@@ -204,16 +204,16 @@ public class TFWorldChunkManager extends BiomeProvider
         	// biome validity check
         	if (ai[i] >= 0)
         	{
-                par1ArrayOfBiomeGenBase[i] = BiomeGenBase.getBiome(ai[i]);
+                par1ArrayOfBiome[i] = Biome.getBiome(ai[i]);
         	}
         	else
         	{
         		//System.err.println("Got bad biome data : " + ai[i]);
-        		par1ArrayOfBiomeGenBase[i] = TFBiomeBase.twilightForest;
+        		par1ArrayOfBiome[i] = TFBiomeBase.twilightForest;
         	}
         }
 
-        return par1ArrayOfBiomeGenBase;
+        return par1ArrayOfBiome;
     }
 
     /**
@@ -232,7 +232,7 @@ public class TFWorldChunkManager extends BiomeProvider
 
         for (int k1 = 0; k1 < i1 * j1; k1++)
         {
-            BiomeGenBase biomegenbase = BiomeGenBase.getBiome(ai[k1]);
+            Biome biomegenbase = Biome.getBiome(ai[k1]);
 
             if (!par4List.contains(biomegenbase))
             {
@@ -263,7 +263,7 @@ public class TFWorldChunkManager extends BiomeProvider
         {
             int i2 = i + l1 % i1 << 2;
             int j2 = j + l1 / i1 << 2;
-            BiomeGenBase biomegenbase = BiomeGenBase.getBiome(ai[l1]);
+            Biome biomegenbase = Biome.getBiome(ai[l1]);
 
             if (par4List.contains(biomegenbase) && (chunkposition == null || par5Random.nextInt(k1 + 1) == 0))
             {

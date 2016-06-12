@@ -8,7 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenLiquids;
 import twilightforest.TFFeature;
@@ -115,7 +115,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
      * Decorates the world. Calls code that was formerly (pre-1.8) in ChunkProviderGenerate.populate
      */
 	@Override
-    public void decorateChunk(World world, Random rand, BiomeGenBase biome, int mapX, int mapZ)
+    public void decorateChunk(World world, Random rand, Biome biome, int mapX, int mapZ)
     {
 
     	// check for features
@@ -145,7 +145,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
     /**
      * The method that does the work of actually decorating chunks
      */
-    protected void genDecorations(BiomeGenBase biome)
+    protected void genDecorations(Biome biome)
     {
         
     	// random features!

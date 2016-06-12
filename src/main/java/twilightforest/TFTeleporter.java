@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
@@ -99,7 +99,7 @@ public class TFTeleporter extends Teleporter
 	 * Check if the destination is safe
 	 */
 	boolean isSafeBiomeAt(int x, int z, Entity par1Entity) {
-		BiomeGenBase biomeAt = myWorld.getBiomeGenForCoords(x, z);
+		Biome biomeAt = myWorld.getBiomeGenForCoords(x, z);
 
 		if (biomeAt instanceof TFBiomeBase && par1Entity instanceof EntityPlayerMP) {
 			TFBiomeBase tfBiome = (TFBiomeBase)biomeAt;

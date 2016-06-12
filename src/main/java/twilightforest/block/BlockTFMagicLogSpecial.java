@@ -16,7 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
@@ -223,7 +223,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 
 			if (Math.sqrt(dx * dx + dz * dz) < 16)
 			{
-				BiomeGenBase biomeAt = world.getBiomeGenForCoords(x + dx, z + dz);
+				Biome biomeAt = world.getBiomeGenForCoords(x + dx, z + dz);
 
 				if (biomeAt != TFBiomeBase.enchantedForest)
 				{

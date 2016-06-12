@@ -10,7 +10,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.MapData.MapInfo;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
@@ -117,7 +117,7 @@ public class ItemTFMagicMap extends ItemMap
                                     biomeFrequencies[biomeID]++;
                                     
                                     // make rivers and streams 3x more prominent
-                                    if (biomeID == BiomeGenBase.river.biomeID || biomeID == TFBiomeBase.stream.biomeID) {
+                                    if (biomeID == Biome.river.biomeID || biomeID == TFBiomeBase.stream.biomeID) {
                                     	biomeFrequencies[biomeID] += 2;
                                     }
                                     // add in TF features

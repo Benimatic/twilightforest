@@ -28,8 +28,8 @@ import net.minecraft.stats.StatisticsFile;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.EntityTFAdherent;
 import twilightforest.entity.EntityTFArmoredGiant;
@@ -328,7 +328,7 @@ public class TFFeature {
 //		}
 
 		// what biome is at the center of the chunk?
-    	BiomeGenBase biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
+    	Biome biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
     	
     	// get random value 
     	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
@@ -429,7 +429,7 @@ public class TFFeature {
     	chunkZ = Math.round(chunkZ / 16F) * 16;
 		
     	// what biome is at the center of the chunk?
-    	BiomeGenBase biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
+    	Biome biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
     	
     	// get random value 
     	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);

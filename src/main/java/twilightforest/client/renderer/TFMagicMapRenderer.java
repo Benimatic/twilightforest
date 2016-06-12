@@ -13,7 +13,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapData.MapCoord;
 
@@ -125,7 +125,7 @@ public class TFMagicMapRenderer implements net.minecraftforge.client.IItemRender
         	}
         	else {
                 int biomeID = colorByte - 1;
-                BiomeGenBase biome = BiomeGenBase.getBiomeGenArray()[biomeID];
+                Biome biome = Biome.getBiomeGenArray()[biomeID];
                 if (biome != null) {
                 	this.intArray[i] = -16777216 | biome.color;
                 }

@@ -7,7 +7,7 @@ import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -202,7 +202,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	if (world.getWorldChunkManager() instanceof TFWorldChunkManager)
     	{
     		// determine the biome at the origin
-    		BiomeGenBase biomeAt = world.getBiomeGenForCoords(x, z);
+    		Biome biomeAt = world.getBiomeGenForCoords(x, z);
 
     		int offY = (int) ((biomeAt.rootHeight + biomeAt.heightVariation) * 8);
     		

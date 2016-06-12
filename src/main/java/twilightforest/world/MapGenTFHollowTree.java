@@ -15,7 +15,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -102,7 +102,7 @@ public class MapGenTFHollowTree extends MapGenBase {
 	}
 
 	/** A list of all the biomes twilight oaks can spawn in. */
-    public static List<BiomeGenBase> oakSpawnBiomes = Arrays.asList(new BiomeGenBase[] {TFBiomeBase.twilightForest, TFBiomeBase.twilightForest2, 
+    public static List<Biome> oakSpawnBiomes = Arrays.asList(new Biome[] {TFBiomeBase.twilightForest, TFBiomeBase.twilightForest2,
     		TFBiomeBase.mushrooms, TFBiomeBase.tfSwamp, TFBiomeBase.clearing, TFBiomeBase.oakSavanna, 
     		TFBiomeBase.fireflyForest, TFBiomeBase.deepMushrooms, TFBiomeBase.enchantedForest, TFBiomeBase.fireSwamp});
 

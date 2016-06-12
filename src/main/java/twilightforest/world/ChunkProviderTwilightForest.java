@@ -17,8 +17,8 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
@@ -36,7 +36,7 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 // Referenced classes of package net.minecraft.src:
 //            IChunkProvider, MapGenCaves, MapGenStronghold, MapGenVillage, 
 //            MapGenMineshaft, MapGenRavine, NoiseGeneratorOctaves, World, 
-//            WorldChunkManager, Block, BiomeGenBase, Chunk, 
+//            WorldChunkManager, Block, Biome, Chunk,
 //            MapGenBase, MathHelper, BlockSand, WorldGenLakes, 
 //            WorldGenDungeons, SpawnerAnimals, IProgressUpdate
 
@@ -53,7 +53,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 	private double stoneNoise[];
 	private TFGenCaves caveGenerator;
 	private TFGenRavine ravineGenerator;
-	private BiomeGenBase biomesForGeneration[];
+	private Biome biomesForGeneration[];
 	double noise3[];
 	double noise1[];
 	double noise2[];
@@ -251,13 +251,13 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
                 float totalHeight = 0.0F;
                 float totalFactor = 0.0F;
                 byte two = 2;
-                BiomeGenBase biomegenbase = this.biomesForGeneration[ax + 2 + (az + 2) * 10];
+                Biome biomegenbase = this.biomesForGeneration[ax + 2 + (az + 2) * 10];
 
                 for (int ox = -two; ox <= two; ++ox)
                 {
                     for (int oz = -two; oz <= two; ++oz)
                     {
-                        BiomeGenBase biomegenbase1 = this.biomesForGeneration[ax + ox + 2 + (az + oz + 2) * 10];
+                        Biome biomegenbase1 = this.biomesForGeneration[ax + ox + 2 + (az + oz + 2) * 10];
                         float rootHeight = biomegenbase1.rootHeight;
                         float heightVariation = biomegenbase1.heightVariation;
 
@@ -376,7 +376,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 	/**
 	 * Replaces the stone that was placed in with blocks that match the biome
 	 */
-    public void replaceBlocksForBiome(int chunkX, int chunkZ, Block[] blockStorage, byte[] metaStorage, BiomeGenBase[] biomes)
+    public void replaceBlocksForBiome(int chunkX, int chunkZ, Block[] blockStorage, byte[] metaStorage, Biome[] biomes)
     {
         ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, blockStorage, biomes);
         MinecraftForge.EVENT_BUS.post(event);
@@ -389,7 +389,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
         {
             for (int x = 0; x < 16; ++x)
             {
-                BiomeGenBase biomegenbase = biomes[x + z * 16];
+                Biome biomegenbase = biomes[x + z * 16];
                 biomegenbase.genTerrainBlocks(this.worldObj, this.rand, blockStorage, metaStorage, chunkX * 16 + z, chunkZ * 16 + x, this.stoneNoise[x + z * 16]);
             }
         }
@@ -777,10 +777,10 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 	 * @param chunkZ
 	 * @param blocks
 	 */
-	public void addGlaciers(int chunkX, int chunkZ, Block blocks[], byte meta[], BiomeGenBase biomes[]) {
+	public void addGlaciers(int chunkX, int chunkZ, Block blocks[], byte meta[], Biome biomes[]) {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
-				BiomeGenBase biome = biomes[x & 15 | (z & 15) << 4];
+				Biome biome = biomes[x & 15 | (z & 15) << 4];
 				if (biome == TFBiomeBase.glacier) {
 					// find the (current) top block
 					int topLevel = -1;
@@ -822,7 +822,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 
 				for (int bx = -1 ; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
-						BiomeGenBase biome = biomesForGeneration[x + bx + 2 + (z + bz + 2) * (10)];
+						Biome biome = biomesForGeneration[x + bx + 2 + (z + bz + 2) * (10)];
 						
 						if (biome == TFBiomeBase.darkForest || biome == TFBiomeBase.darkForestCenter) {
 							thicks[x + z * 5]++;
@@ -937,7 +937,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		int mapX = chunkX * 16;
 		int mapY = chunkZ * 16;
 
-		BiomeGenBase biomeGen = worldObj.getBiomeGenForCoords(mapX + 16, mapY + 16);
+		Biome biomeGen = worldObj.getBiomeGenForCoords(mapX + 16, mapY + 16);
 
 		rand.setSeed(worldObj.getSeed());
 		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
@@ -1047,7 +1047,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			}
 		}
 
-		BiomeGenBase biome = worldObj.getBiomeGenForCoords(mapX, mapZ);
+		Biome biome = worldObj.getBiomeGenForCoords(mapX, mapZ);
 
 		if (biome == null) {
 			return null;

@@ -11,7 +11,7 @@ import twilightforest.biomes.TFBiomeBase;
 
 
 // Referenced classes of package net.minecraft.src:
-//            GenLayer, IntCache, BiomeGenBase
+//            GenLayer, IntCache, Biome
 
 public class GenLayerTFStream extends GenLayer
 {
