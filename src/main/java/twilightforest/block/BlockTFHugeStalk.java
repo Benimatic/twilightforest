@@ -16,7 +16,7 @@ public class BlockTFHugeStalk extends Block {
 	private IIcon topIcon;
 
 	protected BlockTFHugeStalk() {
-		super(Material.wood);
+		super(Material.WOOD);
 		
 		this.setHardness(1.25F);
 		this.setResistance(7.0F);

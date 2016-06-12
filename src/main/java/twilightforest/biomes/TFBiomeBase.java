@@ -403,7 +403,7 @@ public abstract class TFBiomeBase extends Biome  {
             {
                 Block currentBlock = blockStorage[index];
 
-                if (currentBlock != null && currentBlock.getMaterial() != Material.air)
+                if (currentBlock != null && currentBlock.getMaterial() != Material.AIR)
                 {
                     if (currentBlock == Blocks.STONE)
                     {
@@ -430,7 +430,7 @@ public abstract class TFBiomeBase extends Biome  {
                                 fillerMeta = (byte)(this.field_76754_C & 255);
                             }
 
-                            if (y < (seaLevel - 1) && (topBlock == null || topBlock.getMaterial() == Material.air))
+                            if (y < (seaLevel - 1) && (topBlock == null || topBlock.getMaterial() == Material.AIR))
                             {
                                 if (this.getFloatTemperature(x, y, z) < 0.15F)
                                 {

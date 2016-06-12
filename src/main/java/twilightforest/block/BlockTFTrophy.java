@@ -32,7 +32,7 @@ public class BlockTFTrophy extends BlockContainer
 
 	public BlockTFTrophy() 
 	{
-        super(Material.circuits);
+        super(Material.CIRCUITS);
         this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 	}
 

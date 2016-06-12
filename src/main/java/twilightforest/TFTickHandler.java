@@ -52,7 +52,7 @@ public class TFTickHandler
 			// skip non admin players when the option is on
 			if (TwilightForestMod.adminOnlyPortals) {
 				try {
-					//if (MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getCommandSenderName().toString())) {
+					//if (MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getName().toString())) {
 					if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
 						// reduce range to 4.0 when the option is on
 						checkForPortalCreation(player, world, 4.0F);
@@ -147,11 +147,11 @@ public class TFTickHandler
 	private void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
 		// make sure we are allowed to make a portal in this dimension
 		if (world != null && player != null 
-				&& (world.provider.dimensionId == 0 || world.provider.dimensionId == TwilightForestMod.dimensionID 
+				&& (world.provider.getDimension() == 0 || world.provider.getDimension() == TwilightForestMod.dimensionID
 				|| TwilightForestMod.allowPortalsInOtherDimensions)) 
 		{
 			@SuppressWarnings("unchecked")
-			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(rangeToCheck, rangeToCheck, rangeToCheck));
+			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
 			
 			// do we have the item set?  if not, can we set it?
 			if (this.portalItem == null) {
@@ -163,7 +163,7 @@ public class TFTickHandler
 			// check to see if someone's thrown the portal item into the water
 			for (EntityItem entityItem : itemList) 
 			{
-				if (entityItem.getEntityItem().getItem() == portalItem && world.isMaterialInBB(entityItem.boundingBox, Material.water))
+				if (entityItem.getEntityItem().getItem() == portalItem && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER))
 				{
 					//System.out.println("There is a diamond in the water");
 	
@@ -184,7 +184,7 @@ public class TFTickHandler
 					int dz = MathHelper.floor_double(entityItem.posZ);
 	
 					if (((BlockTFPortal)TFBlocks.portal).tryToCreatePortal(world, dx, dy, dz)) {
-						player.triggerAchievement(TFAchievementPage.twilightPortal);
+						player.addStat(TFAchievementPage.twilightPortal);
 					}
 				}
 			}

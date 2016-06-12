@@ -29,10 +29,10 @@ public class TFMazeMapData extends MapData
      * write data to NBTTagCompound from this MapDataBase, similar to Entities and TileEntities
      */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeToNBT(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setInteger("yCenter", this.yCenter);
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
+		NBTTagCompound ret = super.writeToNBT(par1NBTTagCompound);
+        ret.setInteger("yCenter", this.yCenter);
+		return ret;
 
 	}    
 

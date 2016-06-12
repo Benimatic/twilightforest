@@ -22,7 +22,7 @@ public class BlockTFAuroraBrick extends Block {
 
 
 	public BlockTFAuroraBrick() {
-		super(Material.packedIce);
+		super(Material.PACKEDICE);
 		
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);

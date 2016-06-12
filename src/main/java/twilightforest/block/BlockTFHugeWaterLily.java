@@ -12,7 +12,7 @@ import twilightforest.item.TFItems;
 public class BlockTFHugeWaterLily extends BlockBush {
 
 	protected BlockTFHugeWaterLily() {
-		super(Material.plants);
+		super(Material.PLANTS);
 		
 		this.setStepSound(soundTypeGrass);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -34,7 +34,7 @@ public class BlockTFHugeWaterLily extends BlockBush {
      * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
      */
 	public boolean canBlockStay(World world, int x, int y, int z) {
-		return world.getBlock(x, y - 1, z).getMaterial() == Material.water && world.getBlockMetadata(x, y - 1, z) == 0;
+		return world.getBlock(x, y - 1, z).getMaterial() == Material.WATER && world.getBlockMetadata(x, y - 1, z) == 0;
 	}
 
 

@@ -20,12 +20,13 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
-import net.minecraft.stats.StatisticsFile;
-import net.minecraft.util.BlockPos;
+import net.minecraft.stats.StatisticsManagerServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -296,9 +297,9 @@ public class TFFeature {
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
 		
-		if (world != null && world.getWorldChunkManager() instanceof TFWorldChunkManager)
+		if (world != null && world.getBiomeProvider() instanceof TFWorldChunkManager)
 		{
-			TFWorldChunkManager tfManager  = (TFWorldChunkManager) world.getWorldChunkManager();
+			TFWorldChunkManager tfManager  = (TFWorldChunkManager) world.getBiomeProvider();
 			
 			if (tfManager.isInFeatureChunk(world, chunkX << 4, chunkZ << 4))
 			{
@@ -752,15 +753,15 @@ public class TFFeature {
      */
     public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType)
     {
-    	if (par1EnumCreatureType == EnumCreatureType.monster)
+    	if (par1EnumCreatureType == EnumCreatureType.MONSTER)
     	{
-    		return this.getSpawnableList(EnumCreatureType.monster, 0);
+    		return this.getSpawnableList(EnumCreatureType.MONSTER, 0);
     	}
-    	else if (par1EnumCreatureType == EnumCreatureType.ambient)
+    	else if (par1EnumCreatureType == EnumCreatureType.AMBIENT)
     	{
     		return this.ambientCreatureList;
     	}
-    	else if (par1EnumCreatureType == EnumCreatureType.waterCreature)
+    	else if (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE)
     	{
     		return this.waterCreatureList;
     	}
@@ -775,7 +776,7 @@ public class TFFeature {
      */
     public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType, int index) 
     {
-    	if (par1EnumCreatureType == EnumCreatureType.monster)
+    	if (par1EnumCreatureType == EnumCreatureType.MONSTER)
     	{
     		if (index >= 0 && index < this.spawnableMonsterLists.size())
     		{
@@ -801,8 +802,8 @@ public class TFFeature {
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
 		if (this.requiredAchievement != null) {
 			// can we get the player's stats here at all?
-			if (player instanceof EntityPlayerMP && ((EntityPlayerMP)player).func_147099_x() != null) {
-				StatisticsFile stats = ((EntityPlayerMP)player).func_147099_x();
+			if (player instanceof EntityPlayerMP && ((EntityPlayerMP)player).getStatFile() != null) {
+				StatisticsManagerServer stats = ((EntityPlayerMP)player).getStatFile();
 				
 				return stats.hasAchievementUnlocked(this.requiredAchievement);
 			} else {
@@ -863,15 +864,15 @@ public class TFFeature {
 		hinty.setPosition(dx, dy, dz);
 		
 		// check if the bounding box is clear
-		boolean isClearSpawn = world.checkNoEntityCollision(hinty.boundingBox) && world.getCollidingBoundingBoxes(hinty, hinty.boundingBox).isEmpty() && !world.isAnyLiquid(hinty.boundingBox);
+		boolean isClearSpawn = world.checkNoEntityCollision(hinty.getEntityBoundingBox()) && world.getCollisionBoxes(hinty, hinty.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(hinty.getEntityBoundingBox());
 		
 		if (isClearSpawn && hinty.canEntityBeSeen(player)) {
 			
 			// add items and hint book
 			ItemStack book = this.createHintBook();
 
-			hinty.setCurrentItemOrArmor(0, book);
-			hinty.setEquipmentDropChance(0, 1.0F);
+			hinty.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, book);
+			hinty.setDropChance(EntityEquipmentSlot.MAINHAND, 1.0F);
 			
 			world.spawnEntityInWorld(hinty);
 			return true;

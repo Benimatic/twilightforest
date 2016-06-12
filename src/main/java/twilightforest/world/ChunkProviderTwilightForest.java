@@ -131,7 +131,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		squishTerrain(blockStorage);
 		
 		addDarkForestCanopy2(cx, cz, blockStorage, metaStorage);
-		biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, cx * 16, cz * 16, 16, 16);
+		biomesForGeneration = worldObj.getBiomeProvider().loadBlockGeneratorData(biomesForGeneration, cx * 16, cz * 16, 16, 16);
 		addGlaciers(cx, cz, blockStorage, metaStorage, biomesForGeneration);
 		deformTerrainForFeature(cx, cz, blockStorage, metaStorage);
 		replaceBlocksForBiome(cx, cz, blockStorage, metaStorage, biomesForGeneration);
@@ -159,7 +159,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 	public void generateTerrain2(int chunkX, int chunkZ, Block[] blockStorage)
     {
         byte seaLevel = 63;
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
+        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
         this.makeLandPerBiome2(chunkX * 4, 0, chunkZ * 4);
 
         for (int k = 0; k < 4; ++k)

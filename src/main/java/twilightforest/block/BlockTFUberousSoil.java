@@ -21,7 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class BlockTFUberousSoil extends Block implements IGrowable {
 
 	protected BlockTFUberousSoil() {
-		super(Material.ground);
+		super(Material.GROUND);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
         this.setLightOpacity(255);
         this.setHardness(0.6F);

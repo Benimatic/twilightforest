@@ -199,7 +199,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     @SuppressWarnings("unchecked")
 	protected void moveToAvgGroundLevel(World world, int x, int z)
     {
-    	if (world.getWorldChunkManager() instanceof TFWorldChunkManager)
+    	if (world.getBiomeProvider() instanceof TFWorldChunkManager)
     	{
     		// determine the biome at the origin
     		Biome biomeAt = world.getBiomeGenForCoords(x, z);

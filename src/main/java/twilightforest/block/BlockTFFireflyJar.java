@@ -25,7 +25,7 @@ public class BlockTFFireflyJar extends Block {
 	public static IIcon jarCork;
 	
 	protected BlockTFFireflyJar() {
-		super(Material.glass);
+		super(Material.GLASS);
 		this.setBlockBounds(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
 		this.setHardness(0.3F);
 		this.setStepSound(Block.soundTypeWood);

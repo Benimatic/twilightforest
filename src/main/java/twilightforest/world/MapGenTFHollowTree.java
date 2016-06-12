@@ -108,7 +108,7 @@ public class MapGenTFHollowTree extends MapGenBase {
 
 	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
 		return rand.nextInt(TwilightForestMod.twilightOakChance) == 0 && TFFeature.getNearestFeature(chunkX, chunkZ, worldObj).areChunkDecorationsEnabled 
-				&&  this.worldObj.getWorldChunkManager().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, oakSpawnBiomes);
+				&&  this.worldObj.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, oakSpawnBiomes);
 	}
 
 	protected StructureStart getStructureStart(int chunkX, int chunkZ) {

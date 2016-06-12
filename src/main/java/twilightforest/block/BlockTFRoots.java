@@ -26,7 +26,7 @@ public class BlockTFRoots extends Block {
     public static final int OREROOT_META = 1;
 
 	public BlockTFRoots() {
-		super(Material.wood);
+		super(Material.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
         this.setHardness(2.0F);
         this.setStepSound(Block.soundTypeWood);

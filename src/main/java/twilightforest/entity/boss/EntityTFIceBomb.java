@@ -72,10 +72,10 @@ public class EntityTFIceBomb extends EntityThrowable {
      * Freeze water, put snow on snowable surfaces
      */
 	private void doTerrainEffect(int x, int y, int z) {
-		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.water) {
+		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.WATER) {
 			this.worldObj.setBlock(x, y, z, Blocks.ICE);
 		}
-		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.lava) {
+		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.LAVA) {
 			this.worldObj.setBlock(x, y, z, Blocks.OBSIDIAN);
 		}
 		if (this.worldObj.isAirBlock(x, y, z) && Blocks.SNOW_LAYER.canPlaceBlockAt(this.worldObj, x, y, z)) {

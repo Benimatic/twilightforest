@@ -46,7 +46,7 @@ public class BlockTFMazestone extends Block {
 	 */
     public BlockTFMazestone()
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(100F);
         this.setResistance(5F);
         this.setStepSound(Block.soundTypeStone);

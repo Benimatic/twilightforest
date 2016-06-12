@@ -26,7 +26,7 @@ public class TFGenHangingLamps extends TFGenerator
             		
             		for (int cy = 1; cy < MAX_HANG; cy++) {
             			Material above = par1World.getBlock(x, y + cy, z).getMaterial();
-            			if (above.isSolid() || above == Material.leaves) {
+            			if (above.isSolid() || above == Material.LEAVES) {
             				break;
             			} else {
                     		par1World.setBlock(x, y + cy, z, Blocks.FENCE);
@@ -44,7 +44,7 @@ public class TFGenHangingLamps extends TFGenerator
 		boolean areLeavesAbove = false;
 		for (int cy = 1; cy < MAX_HANG; cy++) {
 			Material above = par1World.getBlock(x, y + cy, z).getMaterial();
-			if (above.isSolid() || above == Material.leaves) {
+			if (above.isSolid() || above == Material.LEAVES) {
 				areLeavesAbove = true;
 			}
 		}

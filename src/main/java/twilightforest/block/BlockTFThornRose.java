@@ -10,7 +10,7 @@ import twilightforest.item.TFItems;
 public class BlockTFThornRose extends Block {
 
 	protected BlockTFThornRose() {
-		super(Material.plants);
+		super(Material.PLANTS);
 		
 		this.setHardness(10.0F);
 		this.setStepSound(soundTypeGrass);

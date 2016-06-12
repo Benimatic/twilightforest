@@ -16,7 +16,7 @@ public class ItemTFHydraChops extends ItemTFFood {
     public ItemStack onEaten(ItemStack itemStack, World world, EntityPlayer player) {
     	// if the player is at zero food, achievements
         if (player.getFoodStats().getFoodLevel() <= 0) {
-        	player.triggerAchievement(TFAchievementPage.twilightHydraChop);
+        	player.addStat(TFAchievementPage.twilightHydraChop);
         }
         // then normal effects
         return super.onEaten(itemStack, world, player);

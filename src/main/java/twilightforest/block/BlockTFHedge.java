@@ -34,7 +34,7 @@ public class BlockTFHedge extends BlockLeavesBase {
 	public static IIcon sprDarkwoodLeaves;
 
 	protected BlockTFHedge() {
-		super(Material.cactus, false);
+		super(Material.CACTUS, false);
 		this.damageDone = 3;
 		this.setHardness(2F);
 		this.setResistance(10F);

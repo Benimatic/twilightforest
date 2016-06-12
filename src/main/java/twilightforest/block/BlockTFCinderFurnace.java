@@ -30,7 +30,7 @@ public class BlockTFCinderFurnace  extends BlockContainer{
 	private Random furnaceRandom = new Random();
 
 	protected BlockTFCinderFurnace(Boolean isLit) {
-		super(Material.wood);
+		super(Material.WOOD);
 		
 		this.isLit = isLit;
 		

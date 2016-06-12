@@ -126,12 +126,12 @@ public class TFGenCaveStalactite extends TFGenerator {
         {
         	Material m = world.getBlock(x, ty, z).getMaterial();
         	// if we're in air, continue
-        	if (m == Material.air)
+        	if (m == Material.AIR)
         	{
         		continue;
         	}
         	// if we get something that's not cave material, fail!
-        	if (m != Material.ground && m != Material.rock)
+        	if (m != Material.GROUND && m != Material.ROCK)
         	{
         		return false;
         	}
@@ -150,13 +150,13 @@ public class TFGenCaveStalactite extends TFGenerator {
         {
         	Material m = world.getBlock(x, ty, z).getMaterial();
         	// if we're in air, continue
-        	if (m == Material.air)
+        	if (m == Material.AIR)
         	{
         		continue;
         	}
         	// if we get something that's not cave material, fail!
         	// actually stalactites can hang above water or lava
-        	if (m != Material.ground && m != Material.rock && (!hang && m != Material.water) && (!hang && m != Material.lava) )
+        	if (m != Material.GROUND && m != Material.ROCK && (!hang && m != Material.WATER) && (!hang && m != Material.LAVA) )
         	{
         		return false;
         	}

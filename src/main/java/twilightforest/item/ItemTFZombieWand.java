@@ -45,7 +45,7 @@ public class ItemTFZombieWand extends ItemTF {
 					zombie.setTamed(true);
 					try {
 						zombie.func_152115_b(player.getUniqueID().toString());
-						//zombie.setOwner(player.getCommandSenderName());
+						//zombie.setOwner(player.getName());
 					} catch (NoSuchMethodError ex) {
 						// ignore?
 						FMLLog.warning("[TwilightForest] Could not determine player name for loyal zombie, ignoring error.");

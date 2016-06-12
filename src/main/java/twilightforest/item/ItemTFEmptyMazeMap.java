@@ -55,10 +55,10 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
         
         //cheevos
     	if (mapItem.getItem() == TFItems.mazeMap) {
-    		par3EntityPlayer.triggerAchievement(TFAchievementPage.twilightMazeMap);
+    		par3EntityPlayer.addStat(TFAchievementPage.twilightMazeMap);
     	}
     	if (mapItem.getItem() == TFItems.oreMap) {
-    		par3EntityPlayer.triggerAchievement(TFAchievementPage.twilightOreMap);
+    		par3EntityPlayer.addStat(TFAchievementPage.twilightOreMap);
     	}		
 
         if (par1ItemStack.stackSize <= 0)

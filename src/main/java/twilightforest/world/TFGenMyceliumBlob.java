@@ -33,7 +33,7 @@ public class TFGenMyceliumBlob extends WorldGenerator
 
     public boolean generate(World world, Random random, int x, int y, int z)
     {
-//        if (world.getBlock(i, j, k).getMaterial() != Material.water)
+//        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
 //            return false;
 //        }

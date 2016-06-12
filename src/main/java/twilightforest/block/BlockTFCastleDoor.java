@@ -31,7 +31,7 @@ public class BlockTFCastleDoor extends Block
 
 	public BlockTFCastleDoor(boolean isVanished)
     {
-        super(isVanished ? Material.glass : Material.rock);
+        super(isVanished ? Material.GLASS : Material.ROCK);
         
         this.isVanished = isVanished;
         this.lightOpacity = isVanished ? 0 : 255;

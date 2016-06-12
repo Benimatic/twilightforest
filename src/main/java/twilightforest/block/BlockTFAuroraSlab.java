@@ -22,7 +22,7 @@ public class BlockTFAuroraSlab extends BlockSlab {
 	private IIcon sideIcon;
 
 	public BlockTFAuroraSlab(boolean isDouble) {
-		super(isDouble, Material.packedIce);
+		super(isDouble, Material.PACKEDICE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);

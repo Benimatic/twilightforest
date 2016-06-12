@@ -158,7 +158,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             float downwardsMotion;
                             double xDist;
 
-                            if (worldclient.getWorldChunkManager().getTemperatureAtHeight(f9, k1) >= 0.15F)
+                            if (worldclient.getBiomeProvider().getTemperatureAtHeight(f9, k1) >= 0.15F)
                             {
                                 if (b1 != 0)
                                 {

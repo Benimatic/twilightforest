@@ -35,7 +35,7 @@ public class BlockTFPortal extends BlockBreakable
 
     public BlockTFPortal()
     {
-        super("TFPortal", Material.portal, false);
+        super("TFPortal", Material.PORTAL, false);
         this.setHardness(-1F);
         this.setStepSound(Block.soundTypeGlass);
         this.setLightLevel(0.75F);
@@ -111,11 +111,11 @@ public class BlockTFPortal extends BlockBreakable
     	int pz = dz;
     	
     	// adjust so that the other 3 water squares are in the +x, +z directions.
-    	if (world.getBlock(px - 1, dy, pz).getMaterial() == Material.water)
+    	if (world.getBlock(px - 1, dy, pz).getMaterial() == Material.WATER)
     	{
     		px--;
     	}
-    	if (world.getBlock(px, dy, pz - 1).getMaterial() == Material.water)
+    	if (world.getBlock(px, dy, pz - 1).getMaterial() == Material.WATER)
     	{
     		pz--;
     	}
@@ -168,10 +168,10 @@ public class BlockTFPortal extends BlockBreakable
     	boolean flag = true;
     	
     	// 4 squares of water
-    	flag &= world.getBlock(dx + 0, dy, dz + 0).getMaterial() == Material.water;
-    	flag &= world.getBlock(dx + 1, dy, dz + 0).getMaterial() == Material.water;
-    	flag &= world.getBlock(dx + 1, dy, dz + 1).getMaterial() == Material.water;
-    	flag &= world.getBlock(dx + 0, dy, dz + 1).getMaterial() == Material.water;
+    	flag &= world.getBlock(dx + 0, dy, dz + 0).getMaterial() == Material.WATER;
+    	flag &= world.getBlock(dx + 1, dy, dz + 0).getMaterial() == Material.WATER;
+    	flag &= world.getBlock(dx + 1, dy, dz + 1).getMaterial() == Material.WATER;
+    	flag &= world.getBlock(dx + 0, dy, dz + 1).getMaterial() == Material.WATER;
     	
     	//System.out.println("water in 4 squares = " + flag);
     	
@@ -235,7 +235,7 @@ public class BlockTFPortal extends BlockBreakable
     {
     	Material mat = world.getBlock(dx, dy, dz).getMaterial();
     	
-    	if (mat == Material.plants || mat == Material.vine || mat == Material.leaves) {
+    	if (mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES) {
     		return true;
     	}
     	
@@ -286,7 +286,7 @@ public class BlockTFPortal extends BlockBreakable
     
     protected boolean isGrassOrDirt(World world, int dx, int dy, int dz)
     {
-    	return world.getBlock(dx, dy, dz).getMaterial() == Material.grass || world.getBlock(dx, dy, dz).getMaterial() == Material.ground;
+    	return world.getBlock(dx, dy, dz).getMaterial() == Material.GRASS || world.getBlock(dx, dy, dz).getMaterial() == Material.GROUND;
     	// grass = grass
     	// ground = dirt
     }
@@ -321,14 +321,14 @@ public class BlockTFPortal extends BlockBreakable
 
     				// send to twilight
     				if (playerMP.dimension != TwilightForestMod.dimensionID) {
-    					playerMP.triggerAchievement(TFAchievementPage.twilightPortal);
-    					playerMP.triggerAchievement(TFAchievementPage.twilightArrival);
+    					playerMP.addStat(TFAchievementPage.twilightPortal);
+    					playerMP.addStat(TFAchievementPage.twilightArrival);
     					FMLLog.info("[TwilightForest] Player touched the portal block.  Sending the player to dimension " + TwilightForestMod.dimensionID);
 
     					playerMP.mcServer.getConfigurationManager().transferPlayerToDimension(playerMP, TwilightForestMod.dimensionID, new TFTeleporter(playerMP.mcServer.worldServerForDimension(TwilightForestMod.dimensionID)));
     					playerMP.addExperienceLevel(0);
-    					playerMP.triggerAchievement(TFAchievementPage.twilightPortal);
-    					playerMP.triggerAchievement(TFAchievementPage.twilightArrival);
+    					playerMP.addStat(TFAchievementPage.twilightPortal);
+    					playerMP.addStat(TFAchievementPage.twilightArrival);
     					
     					// set respawn point for TF dimension to near the arrival portal
     					int spawnX = MathHelper.floor_double(playerMP.posX); 

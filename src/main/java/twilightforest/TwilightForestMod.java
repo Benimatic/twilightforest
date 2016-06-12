@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -306,14 +307,15 @@ public class TwilightForestMod {
 		FMLCommonHandler.instance().bus().register(tickHandler);
 		
 		// set up portal item
+		ResourceLocation loc = new ResourceLocation(portalCreationItemString);
 		Item portalItem;
-		if (Item.itemRegistry.containsKey(portalCreationItemString)) {
-			portalItem = (Item) Item.itemRegistry.getObject(portalCreationItemString);
+		if (Item.REGISTRY.containsKey(loc)) {
+			portalItem = Item.REGISTRY.getObject(loc);
 			if (portalItem != Items.DIAMOND) {
 				FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
 			}
-		} else if (Block.blockRegistry.containsKey(portalCreationItemString)) {
-			portalItem = Item.getItemFromBlock((Block) Block.blockRegistry.getObject(portalCreationItemString));
+		} else if (Block.REGISTRY.containsKey(loc)) {
+			portalItem = Item.getItemFromBlock(Block.REGISTRY.getObject(loc);
 			FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
 		} else {
 			FMLLog.info("Twilight Forest config lists portal item as '%s'.  Not found, defaulting to diamond.", portalCreationItemString);

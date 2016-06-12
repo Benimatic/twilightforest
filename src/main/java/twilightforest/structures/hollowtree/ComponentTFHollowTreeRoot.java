@@ -67,12 +67,12 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 			Block block = this.getBlockAtCurrentPosition(world, coords.posX, coords.posY, coords.posZ, sbb);
 			
 			// three choices here
-			if (!block.isNormalCube(world, coords.posX, coords.posY, coords.posZ) || (block != null && block.getMaterial() == Material.grass))
+			if (!block.isNormalCube(world, coords.posX, coords.posY, coords.posZ) || (block != null && block.getMaterial() == Material.GRASS))
 			{
 				// air, other non-solid, or grass, make wood block
 				this.placeBlockAtCurrentPosition(world, TFBlocks.log, 12, coords.posX, coords.posY, coords.posZ, sbb);
 			}
-			else if (block != null && block.getMaterial() == Material.wood)
+			else if (block != null && block.getMaterial() == Material.WOOD)
 			{
 				// wood, do nothing
 

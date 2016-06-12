@@ -272,7 +272,7 @@ public abstract class TFGenerator extends WorldGenerator {
 				if (world.blockExists(x + cx, y, z + cz)) {
 					// is there grass, dirt or stone below?
 					Material m = world.getBlock(x + cx, y - 1, z + cz).getMaterial();
-					if (m != Material.ground && m != Material.grass && m != Material.rock)
+					if (m != Material.GROUND && m != Material.GRASS && m != Material.ROCK)
 					{
 						flag = false;
 					}

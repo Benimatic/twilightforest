@@ -41,7 +41,7 @@ public class BlockTFTowerWood extends Block {
 	
     public BlockTFTowerWood()
     {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setHardness(40F);
         this.setResistance(10F);
         this.setStepSound(Block.soundTypeWood);

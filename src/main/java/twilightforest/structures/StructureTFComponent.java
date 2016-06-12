@@ -630,7 +630,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	    	int cz = sbb.getCenterZ();
 	    	
 	    	Material material = world.getBlock(cx, y, cz).getMaterial();
-	    	if (material == Material.ground || material == Material.rock || material == Material.grass)
+	    	if (material == Material.GROUND || material == Material.ROCK || material == Material.GRASS)
 	    	{
 	    		dirtLevel = y;
 	    		break;

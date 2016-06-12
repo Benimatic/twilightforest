@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 public class BlockTFCastleUnlock extends Block {
 
 	protected BlockTFCastleUnlock() {
-		super(Material.rock);
+		super(Material.ROCK);
 		// TODO Auto-generated constructor stub
 	}
 

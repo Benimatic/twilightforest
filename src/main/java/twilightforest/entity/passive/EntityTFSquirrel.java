@@ -84,13 +84,13 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
     {
     	// prefer standing on leaves
 		Material underMaterial = this.worldObj.getBlock(par1, par2 - 1, par3).getMaterial();
-		if (underMaterial == Material.leaves) {
+		if (underMaterial == Material.LEAVES) {
 			return 12.0F;
 		}
-		if (underMaterial == Material.wood) {
+		if (underMaterial == Material.WOOD) {
 			return 15.0F;
 		}
-		if (underMaterial == Material.grass) {
+		if (underMaterial == Material.GRASS) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
@@ -113,7 +113,7 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
+			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 }

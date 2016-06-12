@@ -42,7 +42,7 @@ public class BlockTFCastleBlock extends Block {
 	 */
     public BlockTFCastleBlock()
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(100F);
         this.setResistance(15F);
         this.setStepSound(Block.soundTypeStone);

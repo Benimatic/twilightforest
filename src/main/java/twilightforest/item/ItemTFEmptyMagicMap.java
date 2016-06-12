@@ -40,7 +40,7 @@ public class ItemTFEmptyMagicMap extends ItemMapBase
         
         //cheevo
     	if (mapItem.getItem() == TFItems.magicMap) {
-    		par3EntityPlayer.triggerAchievement(TFAchievementPage.twilightMagicMap);
+    		par3EntityPlayer.addStat(TFAchievementPage.twilightMagicMap);
     	}	
 
         if (par1ItemStack.stackSize <= 0)

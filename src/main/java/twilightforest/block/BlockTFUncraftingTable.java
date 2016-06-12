@@ -22,7 +22,7 @@ public class BlockTFUncraftingTable extends Block {
 	public static IIcon tinkerSide;
 	
 	protected BlockTFUncraftingTable() {
-		super(Material.wood);
+		super(Material.WOOD);
 		this.setHardness(2.5F);
 		this.setStepSound(Block.soundTypeWood);
 		this.setCreativeTab(TFItems.creativeTab);

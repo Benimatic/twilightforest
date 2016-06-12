@@ -43,7 +43,7 @@ public class BlockTFTrophyPedestal extends Block {
 	private IIcon sprUrghast;
 
 	public BlockTFTrophyPedestal() {
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(2.0F);
 		this.setResistance(2000.0F);
         this.setStepSound(Block.soundTypeStone);
@@ -324,7 +324,7 @@ public class BlockTFTrophyPedestal extends Block {
 		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityPlayer player : nearbyPlayers) {
-			player.triggerAchievement(TFAchievementPage.twilightProgressTrophyPedestal);
+			player.addStat(TFAchievementPage.twilightProgressTrophyPedestal);
 		}
 	}
 

@@ -168,7 +168,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
      */
     public void onUpdate()
     {
-        if (this.myBlock == null || this.myBlock.getMaterial() == Material.air)
+        if (this.myBlock == null || this.myBlock.getMaterial() == Material.AIR)
         {
             this.setDead();
         }

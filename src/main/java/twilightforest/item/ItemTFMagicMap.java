@@ -121,9 +121,9 @@ public class ItemTFMagicMap extends ItemMap
                                     	biomeFrequencies[biomeID] += 2;
                                     }
                                     // add in TF features
-                                    if (par1World.getWorldChunkManager() instanceof TFWorldChunkManager)
+                                    if (par1World.getBiomeProvider() instanceof TFWorldChunkManager)
                                     {
-                                    	TFWorldChunkManager tfManager  = (TFWorldChunkManager) par1World.getWorldChunkManager();
+                                    	TFWorldChunkManager tfManager  = (TFWorldChunkManager) par1World.getBiomeProvider();
                                     	
                                     	if (tfManager.isInFeatureChunk(par1World, xDraw2 + xStep2, zDraw2 + zStep2) && zStep >= 0 && xOffset * xOffset + zOffset * zOffset < drawSize * drawSize)
                                     	{

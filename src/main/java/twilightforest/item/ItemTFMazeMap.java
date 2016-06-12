@@ -233,7 +233,7 @@ public class ItemTFMazeMap extends ItemMap
             	if (yProximity < -YSEARCH || yProximity > YSEARCH) {
             		// fix player icon so that it's a dot
             		
-            		MapCoord mapCoord = (MapCoord) mapData.playersVisibleOnMap.get(player.getCommandSenderName());
+            		MapCoord mapCoord = (MapCoord) mapData.playersVisibleOnMap.get(player.getName());
             		if (mapCoord != null)
             		{
             			mapCoord.iconSize = 6;

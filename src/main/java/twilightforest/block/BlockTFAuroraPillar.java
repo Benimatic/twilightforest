@@ -18,7 +18,7 @@ public class BlockTFAuroraPillar extends BlockRotatedPillar {
 	private IIcon topIcon;
 
 	protected BlockTFAuroraPillar() {
-		super(Material.packedIce);
+		super(Material.PACKEDICE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);

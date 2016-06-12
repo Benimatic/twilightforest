@@ -26,9 +26,9 @@ public class TFGenFireJet extends TFGenerator
             int dy = y + rand.nextInt(4) - rand.nextInt(4);
             int dz = z + rand.nextInt(8) - rand.nextInt(8);
 
-            if (world.isAirBlock(dx, dy, dz) && world.canBlockSeeTheSky(dx, dy, dz) && world.getBlock(dx, dy - 1, dz).getMaterial() == Material.grass
-            		 && world.getBlock(dx + 1, dy - 1, dz).getMaterial() == Material.grass && world.getBlock(dx - 1, dy - 1, dz).getMaterial() == Material.grass
-            		 && world.getBlock(dx, dy - 1, dz + 1).getMaterial() == Material.grass && world.getBlock(dx, dy - 1, dz - 1).getMaterial() == Material.grass)
+            if (world.isAirBlock(dx, dy, dz) && world.canBlockSeeTheSky(dx, dy, dz) && world.getBlock(dx, dy - 1, dz).getMaterial() == Material.GRASS
+            		 && world.getBlock(dx + 1, dy - 1, dz).getMaterial() == Material.GRASS && world.getBlock(dx - 1, dy - 1, dz).getMaterial() == Material.GRASS
+            		 && world.getBlock(dx, dy - 1, dz + 1).getMaterial() == Material.GRASS && world.getBlock(dx, dy - 1, dz - 1).getMaterial() == Material.GRASS)
             {
             	// jet
             	world.setBlock(dx, dy - 1, dz, this.plantBlockId, this.plantBlockMeta, 0);
@@ -43,7 +43,7 @@ public class TFGenFireJet extends TFGenerator
                         	// lava reservoir
                     		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.FLOWING_LAVA, 0, 0);
                 		}
-                		else if (world.getBlock(dx + rx, dy - 2, dz + rz).getMaterial() != Material.lava)
+                		else if (world.getBlock(dx + rx, dy - 2, dz + rz).getMaterial() != Material.LAVA)
                 		{
                 			// only stone where there is no lava
                     		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.STONE, 0, 0);

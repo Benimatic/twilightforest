@@ -70,20 +70,20 @@ public class TFMapPacketHandler
 	{
 //		System.out.println("Incoming packet detected!");
 		
-		if (event.packet.channel().equals(ItemTFMagicMap.STR_ID))
+		if (event.getPacket().channel().equals(ItemTFMagicMap.STR_ID))
 		{
 			//System.out.println("Incoming magic map packet detected!");
-			SPacketMaps mapPacket = readMapPacket(event.packet.payload());
-			ItemTFMagicMap.getMPMapData(mapPacket.func_149188_c(), TwilightForestMod.proxy.getClientWorld()).updateMPMapData(mapPacket.func_149187_d());
+			SPacketMaps mapPacket = readMapPacket(event.getPacket().payload());
+			ItemTFMagicMap.getMPMapData(mapPacket.getMapId(), TwilightForestMod.proxy.getClientWorld()).updateMPMapData(mapPacket.func_149187_d());
 		}
-		else if (event.packet.channel().equals(ItemTFMazeMap.STR_ID))
+		else if (event.getPacket().channel().equals(ItemTFMazeMap.STR_ID))
 		{
 			//System.out.println("Incoming maze map packet detected!");
 
-			SPacketMaps mapPacket = readMapPacket(event.packet.payload());
-			TFMazeMapData data = ItemTFMazeMap.getMPMapData(mapPacket.func_149188_c(), TwilightForestMod.proxy.getClientWorld());
+			SPacketMaps mapPacket = readMapPacket(event.getPacket().payload());
+			TFMazeMapData data = ItemTFMazeMap.getMPMapData(mapPacket.getMapId(), TwilightForestMod.proxy.getClientWorld());
 			data.updateMPMapData(mapPacket.func_149187_d());
-	        Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().func_148246_a(data);
+	        Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().updateMapTexture(data);
 		}
 	}
 

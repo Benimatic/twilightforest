@@ -11,7 +11,7 @@ import net.minecraft.init.Blocks;
 public class BlockTFTrollLjos extends Block {
 	
 	protected BlockTFTrollLjos() {
-		super(Material.rock);
+		super(Material.ROCK);
 
         this.setHardness(2F);
         this.setResistance(15F);

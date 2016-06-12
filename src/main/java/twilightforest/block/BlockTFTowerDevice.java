@@ -76,7 +76,7 @@ public class BlockTFTowerDevice extends Block {
 
     public BlockTFTowerDevice()
     {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setHardness(10F);
         this.setResistance(35F);
         this.setStepSound(Block.soundTypeWood);

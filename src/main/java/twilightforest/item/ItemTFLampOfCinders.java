@@ -100,7 +100,7 @@ public class ItemTFLampOfCinders extends ItemTF {
     		doBurnEffect(world, player);
     		
     		// trigger achievement
-    		player.triggerAchievement(TFAchievementPage.twilightProgressTroll);
+    		player.addStat(TFAchievementPage.twilightProgressTroll);
     	}
 
     }

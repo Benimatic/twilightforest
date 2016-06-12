@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -83,57 +84,57 @@ public class TFEventListener {
 			// the player has picked up a scepter.  Check if they have them all in their inventory, and if so, achievement
 			//System.out.println("Player picked up a scepter");
 			checkPlayerForScepterMastery(event.entityPlayer);
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressLich);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressLich);
 		}
 		
 		// naga scale gives naga progress achievement
 		if (item == TFItems.nagaScale) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressNaga);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressNaga);
 		}
 		// trophy gives kill achievement
 		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 0) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightKillHydra);
+			event.entityPlayer.addStat(TFAchievementPage.twilightKillHydra);
 		}
 		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 1) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightKillNaga);
+			event.entityPlayer.addStat(TFAchievementPage.twilightKillNaga);
 		}
 		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 2) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightKillLich);
+			event.entityPlayer.addStat(TFAchievementPage.twilightKillLich);
 		}
 		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 3) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressUrghast);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressUrghast);
 		}		
 		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 4) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressGlacier);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressGlacier);
 		}
 		// mazebreaker
 		if (item == TFItems.mazebreakerPick) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightMazebreaker);
+			event.entityPlayer.addStat(TFAchievementPage.twilightMazebreaker);
 		}
 		// meef stroganoff (or axe)
 		if (item == TFItems.meefStroganoff || item == TFItems.minotaurAxe) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressLabyrinth);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressLabyrinth);
 		}
 		// fiery blood
 		if (item == TFItems.fieryBlood) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressHydra);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressHydra);
 		}
 		// phantom helm/plate
 		if (item == TFItems.phantomHelm || item == TFItems.phantomPlate) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressKnights);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressKnights);
 		}
 		// fiery tears
 		if (item == TFItems.fieryTears) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressUrghast);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressUrghast);
 		}
 		// yeti items
 		if (item == TFItems.alphaFur || item == TFItems.yetiBoots || item == TFItems.yetiHelm
 				|| item == TFItems.yetiPlate || item == TFItems.yetiLegs) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressYeti);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressYeti);
 		}
 		// lamp of cinders
 		if (item == TFItems.lampOfCinders) {
-			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressTroll);
+			event.entityPlayer.addStat(TFAchievementPage.twilightProgressTroll);
 		}
 	}
 
@@ -169,7 +170,7 @@ public class TFEventListener {
 		
 		if (scepterTwilight && scepterLifeDrain && scepterZombie)
 		{
-			player.triggerAchievement(TFAchievementPage.twilightLichScepters);
+			player.addStat(TFAchievementPage.twilightLichScepters);
 		}
 	}
 
@@ -192,16 +193,16 @@ public class TFEventListener {
     	
     	// trigger achievements
     	if (itemStack.getItem() == TFItems.magicMapFocus) {
-    		player.triggerAchievement(TFAchievementPage.twilightMagicMapFocus);
+    		player.addStat(TFAchievementPage.twilightMagicMapFocus);
     	}
     	if (itemStack.getItem() == TFItems.emptyMagicMap) {
-    		player.triggerAchievement(TFAchievementPage.twilightMagicMap);
+    		player.addStat(TFAchievementPage.twilightMagicMap);
     	}
     	if (itemStack.getItem() == TFItems.emptyMazeMap) {
-    		player.triggerAchievement(TFAchievementPage.twilightMazeMap);
+    		player.addStat(TFAchievementPage.twilightMazeMap);
     	}
     	if (itemStack.getItem() == TFItems.emptyOreMap) {
-    		player.triggerAchievement(TFAchievementPage.twilightOreMap);
+    		player.addStat(TFAchievementPage.twilightOreMap);
     	}
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
@@ -215,7 +216,7 @@ public class TFEventListener {
 
 	private void addToPlayerInventoryOrDrop(EntityPlayer player, ItemStack planks) {
 		if (!player.inventory.addItemStackToInventory(planks)) {
-			player.dropPlayerItemWithRandomChoice(planks, false);
+			player.dropItem(planks, false);
 		}
 	}
 
@@ -258,7 +259,7 @@ public class TFEventListener {
 		
 		if (nagaScale && legsNaga)
 		{
-			player.triggerAchievement(TFAchievementPage.twilightNagaArmors);
+			player.addStat(TFAchievementPage.twilightNagaArmors);
 		}
 	}
 	
@@ -539,7 +540,7 @@ public class TFEventListener {
 				}
 				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping3));
 
-				playerKeepsMap.put(player.getCommandSenderName(), keepInventory);
+				playerKeepsMap.put(player.getName(), keepInventory);
 			}
 			else if (player.inventory.consumeInventoryItem(TFItems.charmOfKeeping2))
 			{
@@ -554,7 +555,7 @@ public class TFEventListener {
 				}
 				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping2));
 
-				playerKeepsMap.put(player.getCommandSenderName(), keepInventory);
+				playerKeepsMap.put(player.getName(), keepInventory);
 			}
 			else if (player.inventory.consumeInventoryItem(TFItems.charmOfKeeping1))
 			{
@@ -569,7 +570,7 @@ public class TFEventListener {
 				}
 				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping1));
 
-				playerKeepsMap.put(player.getCommandSenderName(), keepInventory);
+				playerKeepsMap.put(player.getName(), keepInventory);
 			}
 			
 			// check for tower keys
@@ -585,7 +586,7 @@ public class TFEventListener {
 						player.inventory.mainInventory[i] = null;
 					}
 				}
-				playerKeepsMap.put(player.getCommandSenderName(), keepInventory);
+				playerKeepsMap.put(player.getName(), keepInventory);
 			}
 		}
 		
@@ -600,9 +601,9 @@ public class TFEventListener {
 	 */
 	private InventoryPlayer retrieveOrMakeKeepInventory(EntityPlayer player) 
 	{
-		if (playerKeepsMap.containsKey(player.getCommandSenderName()))
+		if (playerKeepsMap.containsKey(player.getName()))
 		{
-			return playerKeepsMap.get(player.getCommandSenderName());
+			return playerKeepsMap.get(player.getName());
 		}
 		else
 		{
@@ -626,11 +627,11 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		EntityPlayer player = event.player;
-		if (playerKeepsMap.containsKey(player.getCommandSenderName()))
+		if (playerKeepsMap.containsKey(player.getName()))
 		{
-			FMLLog.info("[TwilightForest] Player %s respawned and recieved items held in storage", player.getCommandSenderName());
+			FMLLog.info("[TwilightForest] Player %s respawned and recieved items held in storage", player.getName());
 			
-			InventoryPlayer keepInventory = playerKeepsMap.get(player.getCommandSenderName());
+			InventoryPlayer keepInventory = playerKeepsMap.get(player.getName());
 			
 			for (int i = 0; i < player.inventory.armorInventory.length; i++)
 			{
@@ -660,7 +661,7 @@ public class TFEventListener {
 				player.worldObj.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
 			}
 
-			playerKeepsMap.remove(player.getCommandSenderName());
+			playerKeepsMap.remove(player.getName());
 		}
 	}
 
@@ -670,16 +671,16 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void onPlayerLogout(PlayerLoggedOutEvent event) { 
 		EntityPlayer player = event.player;
-		if (playerKeepsMap.containsKey(player.getCommandSenderName()))
+		if (playerKeepsMap.containsKey(player.getName()))
 		{
-			FMLLog.warning("[TwilightForest] Mod was keeping inventory items in reserve for player %s but they logged out!  Items are being dropped.", player.getCommandSenderName());
-			InventoryPlayer keepInventory = playerKeepsMap.get(player.getCommandSenderName());
+			FMLLog.warning("[TwilightForest] Mod was keeping inventory items in reserve for player %s but they logged out!  Items are being dropped.", player.getName());
+			InventoryPlayer keepInventory = playerKeepsMap.get(player.getName());
 			
 			// set player to the player logging out
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 			
-			playerKeepsMap.remove(player.getCommandSenderName());
+			playerKeepsMap.remove(player.getName());
 		}
 	}
 	
@@ -810,7 +811,7 @@ public class TFEventListener {
 		if (currentItem != null && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
 			// are they also wearing the armor
 			if (checkPlayerForFieryArmor(event.entityPlayer)) {
-				event.entityPlayer.triggerAchievement(TFAchievementPage.twilightFierySet);
+				event.entityPlayer.addStat(TFAchievementPage.twilightFierySet);
 			}
 		}
 	}

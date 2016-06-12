@@ -200,7 +200,7 @@ public class TFGenCaves extends MapGenCaves
                                                 hitGrass = true;
                                             }
 
-                                            if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollSteinn || blockAt.getMaterial() == Material.ground || blockAt.getMaterial() == Material.grass))
+                                            if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollSteinn || blockAt.getMaterial() == Material.GROUND || blockAt.getMaterial() == Material.GRASS))
                                             {
                                             	if (var59 * var59 + var51 * var51 + var46 * var46 < 0.85D) {
                                             		blockStorage[caveIndex] = caveY < 10 ?  Blocks.WATER : Blocks.AIR;

@@ -161,7 +161,7 @@ public class EntityTFTowerGolem extends EntityMob
             int var3 = MathHelper.floor_double(this.posZ);
             Block block = this.worldObj.getBlock(var1, var2, var3);
 
-            if (block.getMaterial() != Material.air)
+            if (block.getMaterial() != Material.AIR)
             {
                 this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(var1, var2, var3), this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.boundingBox.minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D);
             }

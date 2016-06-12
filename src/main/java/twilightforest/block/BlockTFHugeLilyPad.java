@@ -31,7 +31,7 @@ public class BlockTFHugeLilyPad extends BlockBush {
 
 
 	protected BlockTFHugeLilyPad() {
-		super(Material.plants);
+		super(Material.PLANTS);
 		
         float f = 0.5F;
         float f1 = 0.015625F;
@@ -208,7 +208,7 @@ public class BlockTFHugeLilyPad extends BlockBush {
     	for (int dx = 0; dx < 2; dx++) {
     		for (int dz = 0; dz < 2; dz++) {
     			allThisBlock &= world.getBlock(bx + dx, y, bz + dz) == this;
-    			allWater &= (world.getBlock(bx + dx, y - 1, bz + dz).getMaterial() == Material.water && world.getBlockMetadata(bx + dx, y - 1, bz + dz) == 0);
+    			allWater &= (world.getBlock(bx + dx, y - 1, bz + dz).getMaterial() == Material.WATER && world.getBlockMetadata(bx + dx, y - 1, bz + dz) == 0);
     		}
     	}
 

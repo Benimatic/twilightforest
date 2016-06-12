@@ -38,7 +38,7 @@ public class BlockTFNagastone extends Block {
 
 
 	public BlockTFNagastone() {
-		super(Material.rock);
+		super(Material.ROCK);
         this.setHardness(1.5F);
         this.setResistance(10.0F);
         this.setStepSound(Block.soundTypeStone);

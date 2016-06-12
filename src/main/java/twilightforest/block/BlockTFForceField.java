@@ -31,7 +31,7 @@ public class BlockTFForceField extends BlockPane {
 	public static IIcon top;
 
     protected BlockTFForceField() {
-        super("glass", "glass_pane_top", Material.grass, false);
+        super("glass", "glass_pane_top", Material.GRASS, false);
 		this.setLightLevel(2F / 15F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}

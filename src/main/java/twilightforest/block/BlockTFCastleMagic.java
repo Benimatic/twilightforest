@@ -34,7 +34,7 @@ public class BlockTFCastleMagic extends Block {
 
     public BlockTFCastleMagic()
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(100F);
         this.setResistance(15F);
         this.setStepSound(Block.soundTypeStone);

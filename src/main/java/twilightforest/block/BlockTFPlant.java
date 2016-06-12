@@ -49,7 +49,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 
 	
 	protected BlockTFPlant() {
-		super(Material.plants);
+		super(Material.PLANTS);
         this.setTickRandomly(true);
         float var3 = 0.4F;
         this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.8F, 0.5F + var3);
@@ -306,7 +306,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
      */
     public static boolean canPlaceRootBelow(World world, int x, int y, int z) {
     	Block blockID = world.getBlock(x, y, z);
-    	if (blockID != null && (blockID.getMaterial() == Material.ground || blockID.getMaterial() == Material.grass)) {
+    	if (blockID != null && (blockID.getMaterial() == Material.GROUND || blockID.getMaterial() == Material.GRASS)) {
     		// can always hang below dirt blocks
     		return true;
     	}

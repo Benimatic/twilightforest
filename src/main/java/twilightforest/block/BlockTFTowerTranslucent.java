@@ -41,7 +41,7 @@ public class BlockTFTowerTranslucent extends Block
 	
     public BlockTFTowerTranslucent()
     {
-        super(Material.glass);
+        super(Material.GLASS);
         this.setHardness(50.0F);
         this.setResistance(2000.0F);
         this.setStepSound(Block.soundTypeMetal);

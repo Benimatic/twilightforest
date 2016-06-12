@@ -32,7 +32,7 @@ public class BlockTFThorns extends BlockRotatedPillar {
 	private IIcon topIcons[];
 
 	protected BlockTFThorns() {
-		super(Material.wood);
+		super(Material.WOOD);
 		
 		this.setNames(new String[] {"brown", "green"});
 		

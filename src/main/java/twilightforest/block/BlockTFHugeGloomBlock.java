@@ -23,7 +23,7 @@ public class BlockTFHugeGloomBlock extends Block {
     
     public BlockTFHugeGloomBlock()
     {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setHardness(0.2F);
         this.setStepSound(soundTypeWood);
         this.setBlockTextureName(TwilightForestMod.ID + ":huge_gloom");

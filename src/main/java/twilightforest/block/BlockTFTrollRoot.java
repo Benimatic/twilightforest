@@ -18,7 +18,7 @@ import net.minecraftforge.common.IShearable;
 public class BlockTFTrollRoot extends Block implements IShearable {
 
 	protected BlockTFTrollRoot() {
-		super(Material.plants);
+		super(Material.PLANTS);
         this.setTickRandomly(true);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setStepSound(soundTypeGrass);
@@ -52,7 +52,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
     public static boolean canPlaceRootBelow(World world, int x, int y, int z) {
     	Block blockAbove = world.getBlock(x, y, z);
     	
-    	return blockAbove.getMaterial() == Material.rock || blockAbove == TFBlocks.trollVidr || blockAbove == TFBlocks.trollBer || blockAbove == TFBlocks.unripeTrollBer;    
+    	return blockAbove.getMaterial() == Material.ROCK || blockAbove == TFBlocks.trollVidr || blockAbove == TFBlocks.trollBer || blockAbove == TFBlocks.unripeTrollBer;
     }
     
     /**

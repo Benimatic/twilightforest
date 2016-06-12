@@ -102,7 +102,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 
 				Material materialHit = worldObj.getBlock(dx, dy, dz).getMaterial();
 			
-				if (materialHit == Material.grass && this.playerTarget != null) 
+				if (materialHit == Material.GRASS && this.playerTarget != null)
 				{
 					Items.DYE.onItemUse(new ItemStack(Items.DYE, 1, 15), playerTarget, worldObj, dx, dy, dz, 0, 0, 0, 0);
 				}			

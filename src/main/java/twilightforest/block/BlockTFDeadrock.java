@@ -20,7 +20,7 @@ public class BlockTFDeadrock extends Block {
 	private IIcon[] icons;
 
 	protected BlockTFDeadrock() {
-		super(Material.rock);
+		super(Material.ROCK);
         this.setHardness(100F);
 		this.setResistance(6000000.0F);
 		this.setStepSound(soundTypePiston);

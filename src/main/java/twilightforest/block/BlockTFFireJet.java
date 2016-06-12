@@ -43,7 +43,7 @@ public class BlockTFFireJet extends Block {
 	private IIcon iconJetActive;
 	
 	protected BlockTFFireJet() {
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(1.5F);
 		//this.setResistance(10.0F);
 		this.setStepSound(Block.soundTypeWood);
@@ -326,7 +326,7 @@ public class BlockTFFireJet extends Block {
     
     private boolean isLava(World world, int x, int y, int z)
     {
-    	return world.getBlock(x, y, z).getMaterial() == Material.lava && world.getBlockMetadata(x, y, z) == 0;
+    	return world.getBlock(x, y, z).getMaterial() == Material.LAVA && world.getBlockMetadata(x, y, z) == 0;
     }
 
 

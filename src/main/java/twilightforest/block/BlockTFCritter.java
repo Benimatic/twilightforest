@@ -30,7 +30,7 @@ public abstract class BlockTFCritter extends Block {
 	
     protected BlockTFCritter()
     {
-        super(Material.circuits);
+        super(Material.CIRCUITS);
 		this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
 		
@@ -254,7 +254,7 @@ public abstract class BlockTFCritter extends Block {
      */
     public boolean canPlaceAt(World world, int x, int y, int z)
     {
-    	return world.isBlockNormalCubeDefault(x, y, z, true) || world.getBlock(x, y, z).getMaterial() == Material.leaves || world.getBlock(x, y, z).getMaterial() == Material.cactus;
+    	return world.isBlockNormalCubeDefault(x, y, z, true) || world.getBlock(x, y, z).getMaterial() == Material.LEAVES || world.getBlock(x, y, z).getMaterial() == Material.CACTUS;
     }	
 	
     /**

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 public class BlockTFWispyCloud extends BlockBreakable  {
 
 	protected BlockTFWispyCloud() {
-		super("", Material.craftedSnow, false);
+		super("", Material.CRAFTEDSNOW, false);
 		this.setStepSound(soundTypeCloth);
 		this.setCreativeTab(TFItems.creativeTab);
 

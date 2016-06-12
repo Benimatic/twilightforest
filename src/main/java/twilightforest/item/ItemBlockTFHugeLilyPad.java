@@ -75,7 +75,7 @@ public class ItemBlockTFHugeLilyPad extends ItemLilyPad {
             return false;
         }
         
-        return world.getBlock(x, y, z).getMaterial() == Material.water && world.getBlockMetadata(x, y, z) == 0 && world.isAirBlock(x, y + 1, z);
+        return world.getBlock(x, y, z).getMaterial() == Material.WATER && world.getBlockMetadata(x, y, z) == 0 && world.isAirBlock(x, y + 1, z);
         
     }
 

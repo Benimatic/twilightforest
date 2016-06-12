@@ -541,7 +541,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
                     return 150;
                 }
 
-                if (block.getMaterial() == Material.wood)
+                if (block.getMaterial() == Material.WOOD)
                 {
                     return 300;
                 }

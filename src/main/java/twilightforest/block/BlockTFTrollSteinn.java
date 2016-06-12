@@ -20,7 +20,7 @@ public class BlockTFTrollSteinn extends Block {
 	private IIcon blockIconLight;
 
 	protected BlockTFTrollSteinn() {
-		super(Material.rock);
+		super(Material.ROCK);
 
         this.setHardness(2F);
         this.setResistance(15F);

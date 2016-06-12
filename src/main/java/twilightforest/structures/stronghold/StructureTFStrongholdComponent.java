@@ -607,7 +607,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     				boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
     				Block blockID = this.getBlockAtCurrentPosition(world, x, y, z, sbb);
 
-    				if ((blockID != Blocks.AIR && (blockID.getMaterial() == Material.rock || blockID.getMaterial() == Material.grass || blockID.getMaterial() == Material.ground))
+    				if ((blockID != Blocks.AIR && (blockID.getMaterial() == Material.ROCK || blockID.getMaterial() == Material.GRASS || blockID.getMaterial() == Material.GROUND))
     						|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockAtCurrentPosition(world, x, y - 1, z, sbb) == Blocks.STONEBRICK)
     				{
     					if (y == sy || y == dy)

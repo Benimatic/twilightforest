@@ -28,7 +28,7 @@ public class BlockTFBossSpawner extends BlockContainer {
 
 	protected BlockTFBossSpawner()
 	{
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(20F);
 		//this.setResistance(10F);
 		this.setCreativeTab(TFItems.creativeTab);

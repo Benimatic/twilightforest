@@ -45,14 +45,14 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		Material materialUnder;
 		for (int dy = y; dy >= TFWorld.SEALEVEL; dy--) {
 			materialUnder = world.getBlock(x, dy - 1, z).getMaterial();
-			if (materialUnder == Material.grass || materialUnder == Material.ground)
+			if (materialUnder == Material.GRASS || materialUnder == Material.GROUND)
 			{
 				// yes!
 				foundDirt = true;
 				y = dy;
 				break;
 			}
-			else if (materialUnder == Material.rock || materialUnder == Material.sand) {
+			else if (materialUnder == Material.ROCK || materialUnder == Material.SAND) {
 				// nope
 				break;
 			}
@@ -63,8 +63,8 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		}
 		
 		// do not grow next to another tree
-		if (world.getBlock(x + 1, y, z + 0).getMaterial() == Material.wood || world.getBlock(x - 1, y, z + 0).getMaterial() == Material.wood 
-				|| world.getBlock(x + 0, y, z + 1).getMaterial() == Material.wood || world.getBlock(x + 0, y, z - 1).getMaterial() == Material.wood) {
+		if (world.getBlock(x + 1, y, z + 0).getMaterial() == Material.WOOD || world.getBlock(x - 1, y, z + 0).getMaterial() == Material.WOOD
+				|| world.getBlock(x + 0, y, z + 1).getMaterial() == Material.WOOD || world.getBlock(x + 0, y, z - 1).getMaterial() == Material.WOOD) {
 			return false;
 		}
 

@@ -42,7 +42,7 @@ public class TFTeleporter extends Teleporter
 		if (!this.placeInExistingPortal(par1Entity, x, y, z, facing))
 		{
 			// if we're in enforced progression mode, check the biomes for safety
-			if (par1Entity.worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+			if (par1Entity.worldObj.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 				int px = MathHelper.floor_double(par1Entity.posX);
 				int pz = MathHelper.floor_double(par1Entity.posZ);
 				if (!isSafeBiomeAt(px, pz, par1Entity)) {
@@ -293,7 +293,7 @@ public class TFTeleporter extends Teleporter
 					int tx = rx + (potentialX - 1);
 					int ty = ry + potentialY;
 					int tz = rz + (potentialZ - 1);
-					if (potentialY == -1 && myWorld.getBlock(tx, ty, tz).getMaterial() != Material.grass || potentialY >= 0 && !myWorld.getBlock(tx, ty, tz).getMaterial().isReplaceable())
+					if (potentialY == -1 && myWorld.getBlock(tx, ty, tz).getMaterial() != Material.GRASS || potentialY >= 0 && !myWorld.getBlock(tx, ty, tz).getMaterial().isReplaceable())
 					{
 						return false;
 					}

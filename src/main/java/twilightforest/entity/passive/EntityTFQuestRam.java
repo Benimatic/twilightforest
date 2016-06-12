@@ -159,7 +159,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityPlayer player : nearbyPlayers) {
-			player.triggerAchievement(TFAchievementPage.twilightQuestRam);
+			player.addStat(TFAchievementPage.twilightQuestRam);
 		}
 	}
     

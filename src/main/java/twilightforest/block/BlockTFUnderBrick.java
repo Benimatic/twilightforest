@@ -22,7 +22,7 @@ public class BlockTFUnderBrick extends Block {
 
 
 	public BlockTFUnderBrick() {
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(1.5F);
 		this.setResistance(10.0F);
         this.setStepSound(Block.soundTypeStone);

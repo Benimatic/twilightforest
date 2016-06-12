@@ -35,7 +35,7 @@ public class TFGenericPacketHandler {
 	@SubscribeEvent
 	public void incomingPacket(ClientCustomPacketEvent event)
 	{
-		ByteBuf buf = event.packet.payload();
+		ByteBuf buf = event.getPacket().payload();
 		
 		// read first byte to see what kind of packet
 		int discriminatorByte = buf.readByte();

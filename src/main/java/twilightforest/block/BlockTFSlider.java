@@ -35,7 +35,7 @@ public class BlockTFSlider extends BlockRotatedPillar {
 	private IIcon topIcon;
 
 	protected BlockTFSlider() {
-		super(Material.iron);
+		super(Material.IRON);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);

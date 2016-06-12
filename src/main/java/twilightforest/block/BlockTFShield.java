@@ -31,7 +31,7 @@ public class BlockTFShield extends Block
 	
     public BlockTFShield()
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setBlockUnbreakable();
         //this.setResistance(2000.0F);
         this.setResistance(6000000.0F);

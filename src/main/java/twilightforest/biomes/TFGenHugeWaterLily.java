@@ -39,6 +39,6 @@ public class TFGenHugeWaterLily extends WorldGenerator
 
 
 	private boolean shouldPlacePadAt(World world, int dx, int dy, int dz) {
-		return world.isAirBlock(dx, dy, dz) && world.getBlock(dx, dy - 1, dz).getMaterial() == Material.water;
+		return world.isAirBlock(dx, dy, dz) && world.getBlock(dx, dy - 1, dz).getMaterial() == Material.WATER;
 	}
 }

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockTFDarkLeaves extends Block {
 
 	protected BlockTFDarkLeaves() {
-		super(Material.leaves);
+		super(Material.LEAVES);
 		this.setHardness(2F);
 		this.setResistance(10F);
 		this.setStepSound(Block.soundTypeGrass);
