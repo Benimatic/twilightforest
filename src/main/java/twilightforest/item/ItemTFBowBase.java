@@ -85,7 +85,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 		}
 		charge = event.charge;
 
-		boolean isNoPickup = entityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, itemstack) > 0;
+		boolean isNoPickup = entityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY.effectId, itemstack) > 0;
 
 		if (isNoPickup || entityPlayer.inventory.hasItem(Items.ARROW))
 		{
@@ -109,21 +109,21 @@ public abstract class ItemTFBowBase extends ItemBow {
 				entityarrow.setIsCritical(true);
 			}
 
-			int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, itemstack);
+			int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER.effectId, itemstack);
 
 			if (powerLevel > 0)
 			{
 				entityarrow.setDamage(entityarrow.getDamage() + (double)powerLevel * 0.5D + 0.5D);
 			}
 
-			int punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, itemstack);
+			int punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH.effectId, itemstack);
 
 			if (punchLevel > 0)
 			{
 				entityarrow.setKnockbackStrength(punchLevel);
 			}
 
-			if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, itemstack) > 0)
+			if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME.effectId, itemstack) > 0)
 			{
 				entityarrow.setFire(100);
 			}

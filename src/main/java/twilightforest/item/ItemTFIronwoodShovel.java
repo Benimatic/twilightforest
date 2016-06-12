@@ -27,7 +27,7 @@ public class ItemTFIronwoodShovel extends ItemSpade {
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
     	ItemStack istack = new ItemStack(par1, 1, 0);
-    	istack.addEnchantment(Enchantment.unbreaking, 1);
+    	istack.addEnchantment(Enchantments.UNBREAKING, 1);
         par3List.add(istack);
     }
        

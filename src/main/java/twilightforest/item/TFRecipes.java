@@ -51,8 +51,8 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(Blocks.PLANKS, 4, 2), new Object[] {"w", 'w', new ItemStack(TFBlocks.log, 1, 2)});
 		GameRegistry.addRecipe(new ItemStack(Blocks.PLANKS, 4, 1), new Object[] {"w", 'w', new ItemStack(TFBlocks.log, 1, 3)});
 
-		addEnchantedRecipe(TFItems.plateNaga, Enchantment.fireProtection, 3, new Object[] {"# #", "###", "###", '#', TFItems.nagaScale});
-		addEnchantedRecipe(TFItems.legsNaga, Enchantment.protection, 3, new Object[] {"###", "# #", "# #", '#', TFItems.nagaScale});
+		addEnchantedRecipe(TFItems.plateNaga, Enchantments.FIREPROTECTION, 3, new Object[] {"# #", "###", "###", '#', TFItems.nagaScale});
+		addEnchantedRecipe(TFItems.legsNaga, Enchantments.PROTECTION, 3, new Object[] {"###", "# #", "# #", '#', TFItems.nagaScale});
 
 		GameRegistry.addShapelessRecipe(new ItemStack(TFBlocks.fireflyJar, 1, 0), new Object[] {TFBlocks.firefly, Items.GLASS_BOTTLE});
 
@@ -81,14 +81,14 @@ public class TFRecipes {
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.ironwoodRaw), new Object[] {TFItems.liveRoot, Items.IRON_INGOT, Items.GOLD_NUGGET});
 		GameRegistry.addSmelting(TFItems.ironwoodRaw, new ItemStack(TFItems.ironwoodIngot, 2), 1.0F);
 
-		addEnchantedRecipe(TFItems.ironwoodHelm, Enchantment.aquaAffinity, 1, new Object[] {"###", "# #", '#', TFItems.ironwoodIngot});
-		addEnchantedRecipe(TFItems.ironwoodPlate, Enchantment.protection, 1, new Object[] {"# #", "###", "###", '#', TFItems.ironwoodIngot});
-		addEnchantedRecipe(TFItems.ironwoodLegs, Enchantment.protection, 1, new Object[] {"###", "# #", "# #", '#', TFItems.ironwoodIngot});
-		addEnchantedRecipe(TFItems.ironwoodBoots, Enchantment.featherFalling, 1, new Object[] {"# #", "# #", '#', TFItems.ironwoodIngot});
-		addEnchantedRecipe(TFItems.ironwoodSword, Enchantment.knockback, 1, new Object[] {"#", "#", "X", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
-		addEnchantedRecipe(TFItems.ironwoodShovel, Enchantment.unbreaking, 1, new Object[] {"#", "X", "X", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
-		addEnchantedRecipe(TFItems.ironwoodPick, Enchantment.efficiency, 1, new Object[] {"###", " X ", " X ", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
-		addEnchantedRecipe(TFItems.ironwoodAxe, Enchantment.fortune, 1, new Object[] {"##", "#X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.ironwoodHelm, Enchantments.AQUAAFFINITY, 1, new Object[] {"###", "# #", '#', TFItems.ironwoodIngot});
+		addEnchantedRecipe(TFItems.ironwoodPlate, Enchantments.PROTECTION, 1, new Object[] {"# #", "###", "###", '#', TFItems.ironwoodIngot});
+		addEnchantedRecipe(TFItems.ironwoodLegs, Enchantments.PROTECTION, 1, new Object[] {"###", "# #", "# #", '#', TFItems.ironwoodIngot});
+		addEnchantedRecipe(TFItems.ironwoodBoots, Enchantments.FEATHERFALLING, 1, new Object[] {"# #", "# #", '#', TFItems.ironwoodIngot});
+		addEnchantedRecipe(TFItems.ironwoodSword, Enchantments.KNOCKBACK, 1, new Object[] {"#", "#", "X", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.ironwoodShovel, Enchantments.UNBREAKING, 1, new Object[] {"#", "X", "X", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.ironwoodPick, Enchantments.EFFICIENCY, 1, new Object[] {"###", " X ", " X ", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.ironwoodAxe, Enchantments.FORTUNE, 1, new Object[] {"##", "#X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
 		addEnchantedRecipe(TFItems.ironwoodHoe, null, 0, new Object[] {"##", " X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK});
 
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.uncraftingTable), new Object[] {"###", "#X#", "###", '#', Blocks.CRAFTING_TABLE, 'X', TFItems.mazeMapFocus});
@@ -101,17 +101,17 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(TFItems.fieryPlate), new Object[] {"# #", "###", "###", '#', TFItems.fieryIngot});
 		GameRegistry.addRecipe(new ItemStack(TFItems.fieryLegs), new Object[] {"###", "# #", "# #", '#', TFItems.fieryIngot});
 		GameRegistry.addRecipe(new ItemStack(TFItems.fieryBoots), new Object[] {"# #", "# #", '#', TFItems.fieryIngot});
-		addEnchantedRecipe(TFItems.fierySword, Enchantment.fireAspect, 2, new Object[] {"#", "#", "X", '#', TFItems.fieryIngot, 'X', Items.BLAZE_ROD});
+		addEnchantedRecipe(TFItems.fierySword, Enchantments.FIREASPECT, 2, new Object[] {"#", "#", "X", '#', TFItems.fieryIngot, 'X', Items.BLAZE_ROD});
 		GameRegistry.addRecipe(new ItemStack(TFItems.fieryPick), new Object[] {"###", " X ", " X ", '#', TFItems.fieryIngot, 'X', Items.BLAZE_ROD});
 
-		addEnchantedRecipe(TFItems.steeleafHelm, Enchantment.projectileProtection, 2, new Object[] {"###", "# #", '#', TFItems.steeleafIngot});
-		addEnchantedRecipe(TFItems.steeleafPlate, Enchantment.blastProtection, 2, new Object[] {"# #", "###", "###", '#', TFItems.steeleafIngot});
-		addEnchantedRecipe(TFItems.steeleafLegs, Enchantment.fireProtection, 2, new Object[] {"###", "# #", "# #", '#', TFItems.steeleafIngot});
-		addEnchantedRecipe(TFItems.steeleafBoots, Enchantment.featherFalling, 2, new Object[] {"# #", "# #", '#', TFItems.steeleafIngot});
-		addEnchantedRecipe(TFItems.steeleafSword, Enchantment.looting, 2, new Object[] {"#", "#", "X", '#', TFItems.steeleafIngot, 'X', Items.STICK});
-		addEnchantedRecipe(TFItems.steeleafShovel, Enchantment.efficiency, 2, new Object[] {"#", "X", "X", '#', TFItems.steeleafIngot, 'X', Items.STICK});
-		addEnchantedRecipe(TFItems.steeleafPick, Enchantment.fortune, 2, new Object[] {"###", " X ", " X ", '#', TFItems.steeleafIngot, 'X', Items.STICK});
-		addEnchantedRecipe(TFItems.steeleafAxe, Enchantment.efficiency, 2, new Object[] {"##", "#X", " X", '#', TFItems.steeleafIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.steeleafHelm, Enchantments.PROJECTILEPROTECTION, 2, new Object[] {"###", "# #", '#', TFItems.steeleafIngot});
+		addEnchantedRecipe(TFItems.steeleafPlate, Enchantments.BLASTPROTECTION, 2, new Object[] {"# #", "###", "###", '#', TFItems.steeleafIngot});
+		addEnchantedRecipe(TFItems.steeleafLegs, Enchantments.FIREPROTECTION, 2, new Object[] {"###", "# #", "# #", '#', TFItems.steeleafIngot});
+		addEnchantedRecipe(TFItems.steeleafBoots, Enchantments.FEATHERFALLING, 2, new Object[] {"# #", "# #", '#', TFItems.steeleafIngot});
+		addEnchantedRecipe(TFItems.steeleafSword, Enchantments.LOOTING, 2, new Object[] {"#", "#", "X", '#', TFItems.steeleafIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.steeleafShovel, Enchantments.EFFICIENCY, 2, new Object[] {"#", "X", "X", '#', TFItems.steeleafIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.steeleafPick, Enchantments.FORTUNE, 2, new Object[] {"###", " X ", " X ", '#', TFItems.steeleafIngot, 'X', Items.STICK});
+		addEnchantedRecipe(TFItems.steeleafAxe, Enchantments.EFFICIENCY, 2, new Object[] {"##", "#X", " X", '#', TFItems.steeleafIngot, 'X', Items.STICK});
 		addEnchantedRecipe(TFItems.steeleafHoe, null, 0, new Object[] {"##", " X", " X", '#', TFItems.steeleafIngot, 'X', Items.STICK});
 
 		GameRegistry.addSmelting(TFItems.meefRaw, new ItemStack(TFItems.meefSteak), 0.3F);
@@ -156,10 +156,10 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyAxe), new Object[] {"##", "#X", " X", '#', TFItems.knightMetal, 'X', Items.STICK});
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyAxe), new Object[] {"##", "X#", "X ", '#', TFItems.knightMetal, 'X', Items.STICK});
 		
-		addEnchantedRecipe(TFItems.yetiHelm, Enchantment.protection, 2, new Object[] {"###", "# #", '#', TFItems.alphaFur});
-		addEnchantedRecipe(TFItems.yetiPlate, Enchantment.protection, 2, new Object[] {"# #", "###", "###", '#', TFItems.alphaFur});
-		addEnchantedRecipe(TFItems.yetiLegs, Enchantment.protection, 2, new Object[] {"###", "# #", "# #", '#', TFItems.alphaFur});
-		addEnchantedRecipe(TFItems.yetiBoots, Enchantment.protection, 2, Enchantment.featherFalling, 4, new Object[] {"# #", "# #", '#', TFItems.alphaFur});
+		addEnchantedRecipe(TFItems.yetiHelm, Enchantments.PROTECTION, 2, new Object[] {"###", "# #", '#', TFItems.alphaFur});
+		addEnchantedRecipe(TFItems.yetiPlate, Enchantments.PROTECTION, 2, new Object[] {"# #", "###", "###", '#', TFItems.alphaFur});
+		addEnchantedRecipe(TFItems.yetiLegs, Enchantments.PROTECTION, 2, new Object[] {"###", "# #", "# #", '#', TFItems.alphaFur});
+		addEnchantedRecipe(TFItems.yetiBoots, Enchantments.PROTECTION, 2, Enchantments.FEATHERFALLING, 4, new Object[] {"# #", "# #", '#', TFItems.alphaFur});
 
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticHelm), new Object[] {"###", "# #", '#', TFItems.arcticFur});
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticPlate), new Object[] {"# #", "###", "###", '#', TFItems.arcticFur});

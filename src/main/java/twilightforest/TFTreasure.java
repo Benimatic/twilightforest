@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
@@ -262,7 +263,7 @@ public class TFTreasure {
 			uncommon.add(TFItems.steeleafIngot, 4);
 
 			rare.add(TFItems.nagaScale, 1);
-			rare.addEnchanted(new ItemStack(TFItems.ironwoodPick, 1), Enchantment.efficiency, 1, Enchantment.fortune, 1);
+			rare.addEnchanted(new ItemStack(TFItems.ironwoodPick, 1), Enchantments.EFFICIENCY, 1, Enchantments.FORTUNE, 1);
 			rare.add(TFItems.transformPowder, 12);
 
 			ultrarare.add(TFItems.moonwormQueen, 1);
@@ -359,22 +360,22 @@ public class TFTreasure {
 			common.add(new ItemStack(Items.POTIONITEM, 1, 16373)); // health ii
 			common.add(new ItemStack(Items.POTIONITEM, 1, 16370)); // extended swiftness ii
 
-			uncommon.addEnchanted(new ItemStack(Items.BOW), Enchantment.infinity, 1, Enchantment.punch, 2);
-			uncommon.addEnchanted(new ItemStack(Items.BOW), Enchantment.power, 3, Enchantment.flame, 1);
-			uncommon.addEnchanted(new ItemStack(TFItems.steeleafShovel), Enchantment.efficiency, 4, Enchantment.unbreaking, 2);	
-			uncommon.addEnchanted(new ItemStack(TFItems.steeleafAxe), Enchantment.efficiency, 5);
+			uncommon.addEnchanted(new ItemStack(Items.BOW), Enchantments.INFINITY, 1, Enchantments.PUNCH, 2);
+			uncommon.addEnchanted(new ItemStack(Items.BOW), Enchantments.POWER, 3, Enchantments.FLAME, 1);
+			uncommon.addEnchanted(new ItemStack(TFItems.steeleafShovel), Enchantments.EFFICIENCY, 4, Enchantments.UNBREAKING, 2);
+			uncommon.addEnchanted(new ItemStack(TFItems.steeleafAxe), Enchantments.EFFICIENCY, 5);
 			uncommon.add(TFItems.steeleafIngot, 12);
-			uncommon.addEnchanted(new ItemStack(TFItems.steeleafPlate), Enchantment.protection, 3);
-			uncommon.addEnchanted(new ItemStack(TFItems.steeleafLegs), Enchantment.fireProtection, 4);
-			uncommon.addEnchanted(new ItemStack(TFItems.steeleafBoots), Enchantment.protection, 2);
-			uncommon.addEnchanted(new ItemStack(TFItems.steeleafHelm), Enchantment.respiration, 3);
+			uncommon.addEnchanted(new ItemStack(TFItems.steeleafPlate), Enchantments.PROTECTION, 3);
+			uncommon.addEnchanted(new ItemStack(TFItems.steeleafLegs), Enchantments.FIREPROTECTION, 4);
+			uncommon.addEnchanted(new ItemStack(TFItems.steeleafBoots), Enchantments.PROTECTION, 2);
+			uncommon.addEnchanted(new ItemStack(TFItems.steeleafHelm), Enchantments.RESPIRATION, 3);
 			
 			rare.add(Blocks.EMERALD_BLOCK, 1);
 			rare.add(Blocks.ENDER_CHEST, 1);
-			rare.addEnchanted(new ItemStack(TFItems.steeleafPick), Enchantment.efficiency, 4, Enchantment.silkTouch, 1);
-			rare.addEnchanted(new ItemStack(TFItems.steeleafSword), Enchantment.sharpness, 4, Enchantment.knockback, 2);
-			rare.addEnchanted(new ItemStack(TFItems.steeleafSword), Enchantment.baneOfArthropods, 5, Enchantment.fireAspect, 2);
-			rare.addEnchanted(new ItemStack(TFItems.mazebreakerPick), Enchantment.efficiency, 4, Enchantment.unbreaking, 3, Enchantment.fortune, 2);
+			rare.addEnchanted(new ItemStack(TFItems.steeleafPick), Enchantments.EFFICIENCY, 4, Enchantments.SILKTOUCH, 1);
+			rare.addEnchanted(new ItemStack(TFItems.steeleafSword), Enchantments.SHARPNESS, 4, Enchantments.KNOCKBACK, 2);
+			rare.addEnchanted(new ItemStack(TFItems.steeleafSword), Enchantments.BANEOFARTHROPODS, 5, Enchantments.FIREASPECT, 2);
+			rare.addEnchanted(new ItemStack(TFItems.mazebreakerPick), Enchantments.EFFICIENCY, 4, Enchantments.UNBREAKING, 3, Enchantments.FORTUNE, 2);
 		}
 
 		if (i == 7) {
@@ -528,9 +529,9 @@ public class TFTreasure {
 			uncommon.add(TFItems.charmOfKeeping1, 1);
 			
 			rare.add(TFItems.charmOfLife1, 1);
-			rare.addEnchantedBook(Enchantment.featherFalling, 3);
-			rare.addEnchantedBook(Enchantment.knockback, 2);
-			rare.addEnchantedBook(Enchantment.efficiency, 3);
+			rare.addEnchantedBook(Enchantments.FEATHERFALLING, 3);
+			rare.addEnchantedBook(Enchantments.KNOCKBACK, 2);
+			rare.addEnchantedBook(Enchantments.EFFICIENCY, 3);
 		}
 
 		if (i == 13) {
@@ -593,14 +594,14 @@ public class TFTreasure {
 			rare.addRandomEnchanted(TFItems.ironwoodSword, 15);
 			rare.addRandomEnchanted(TFItems.steeleafSword, 10);
 			
-			ultrarare.addEnchantedBook(Enchantment.baneOfArthropods, 4);
-			ultrarare.addEnchantedBook(Enchantment.sharpness, 4);
-			ultrarare.addEnchantedBook(Enchantment.smite, 4);
-			ultrarare.addEnchantedBook(Enchantment.unbreaking, 2);
-			ultrarare.addEnchantedBook(Enchantment.unbreaking, 2);
-			ultrarare.addEnchantedBook(Enchantment.protection, 3);
-			ultrarare.addEnchantedBook(Enchantment.projectileProtection, 3);
-			ultrarare.addEnchantedBook(Enchantment.featherFalling, 3);
+			ultrarare.addEnchantedBook(Enchantments.BANEOFARTHROPODS, 4);
+			ultrarare.addEnchantedBook(Enchantments.SHARPNESS, 4);
+			ultrarare.addEnchantedBook(Enchantments.SMITE, 4);
+			ultrarare.addEnchantedBook(Enchantments.UNBREAKING, 2);
+			ultrarare.addEnchantedBook(Enchantments.UNBREAKING, 2);
+			ultrarare.addEnchantedBook(Enchantments.PROTECTION, 3);
+			ultrarare.addEnchantedBook(Enchantments.PROJECTILEPROTECTION, 3);
+			ultrarare.addEnchantedBook(Enchantments.FEATHERFALLING, 3);
 
 		}
 		
@@ -668,12 +669,12 @@ public class TFTreasure {
 			rare.add(TFItems.enderBow, 1);
 			rare.add(TFItems.iceSword, 1);
 			
-			ultrarare.addEnchantedBook(Enchantment.sharpness, 4);
-			ultrarare.addEnchantedBook(Enchantment.power, 4);
-			ultrarare.addEnchantedBook(Enchantment.punch, 2);
-			ultrarare.addEnchantedBook(Enchantment.unbreaking, 2);
-			ultrarare.addEnchantedBook(Enchantment.unbreaking, 2);
-			ultrarare.addEnchantedBook(Enchantment.infinity, 1);
+			ultrarare.addEnchantedBook(Enchantments.SHARPNESS, 4);
+			ultrarare.addEnchantedBook(Enchantments.POWER, 4);
+			ultrarare.addEnchantedBook(Enchantments.PUNCH, 2);
+			ultrarare.addEnchantedBook(Enchantments.UNBREAKING, 2);
+			ultrarare.addEnchantedBook(Enchantments.UNBREAKING, 2);
+			ultrarare.addEnchantedBook(Enchantments.INFINITY, 1);
 
 		}
 

@@ -34,7 +34,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
         }
         j = event.charge;
 
-        boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
+        boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY.effectId, par1ItemStack) > 0;
 
         if (flag || par3EntityPlayer.inventory.hasItem(Items.ARROW))
         {
@@ -67,7 +67,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
                 entityarrow2.setIsCritical(true);
             }
 
-            int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
+            int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER.effectId, par1ItemStack);
 
             if (k > 0)
             {
@@ -76,7 +76,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
                 entityarrow2.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
             }
 
-            int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
+            int l = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH.effectId, par1ItemStack);
 
             if (l > 0)
             {
@@ -85,7 +85,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
                 entityarrow2.setKnockbackStrength(l);
             }
 
-            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, par1ItemStack) > 0)
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME.effectId, par1ItemStack) > 0)
             {
                 entityarrow.setFire(100);
                 entityarrow1.setFire(100);

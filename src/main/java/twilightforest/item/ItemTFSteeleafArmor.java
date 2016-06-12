@@ -51,16 +51,16 @@ public class ItemTFSteeleafArmor extends ItemArmor {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	switch (this.armorType) {
     	case 0:
-    		istack.addEnchantment(Enchantment.projectileProtection, 2);
+    		istack.addEnchantment(Enchantments.PROJECTILEPROTECTION, 2);
             break;	
     	case 1:
-    		istack.addEnchantment(Enchantment.blastProtection, 2);
+    		istack.addEnchantment(Enchantments.BLASTPROTECTION, 2);
             break;	
     	case 2:
-    		istack.addEnchantment(Enchantment.fireProtection, 2);
+    		istack.addEnchantment(Enchantments.FIREPROTECTION, 2);
             break;	
     	case 3:
-    		istack.addEnchantment(Enchantment.featherFalling, 2);
+    		istack.addEnchantment(Enchantments.FEATHERFALLING, 2);
             break;	
     	}
     	par3List.add(istack);

@@ -228,7 +228,7 @@ public class ContainerTFUncrafting extends Container {
 	    			{
 	    				int enchID = ((Integer)key).intValue();
 	    				//int level = ((Integer)inputEnchantments.get(key)).intValue();
-	    				Enchantment ench = Enchantment.enchantmentsList[enchID];
+	    				Enchantment ench = Enchantments.ENCHANTMENTSLIST[enchID];
 	    				
 	    				// remove enchantments that won't work
 	    				if (!ench.canApply(result))
@@ -266,7 +266,7 @@ public class ContainerTFUncrafting extends Container {
 	    			{
 	    				int enchID = ((Integer)key).intValue();
 	    				int level = ((Integer)resultInnateEnchantments.get(key)).intValue();
-	    				Enchantment ench = Enchantment.enchantmentsList[enchID];
+	    				Enchantment ench = Enchantments.ENCHANTMENTSLIST[enchID];
 	    				
 	    				if (EnchantmentHelper.getEnchantmentLevel(enchID, result) > level)
 	    				{
@@ -423,7 +423,7 @@ public class ContainerTFUncrafting extends Container {
 		int count = 0;
 		
 		// go through all 256 enchantment IDs, and see if the item has that enchantment, and at what level
-		for (Enchantment ench : Enchantment.enchantmentsList) {
+		for (Enchantment ench : Enchantments.ENCHANTMENTSLIST) {
 			if (ench != null) {
 				int level = EnchantmentHelper.getEnchantmentLevel(ench.effectId, itemStack);
 				if (level > count) {
@@ -445,7 +445,7 @@ public class ContainerTFUncrafting extends Container {
 		int count = 0;
 		
 		// go through all 256 enchantment IDs, and see if the item has that enchantment, and at what level
-		for (Enchantment ench : Enchantment.enchantmentsList) {
+		for (Enchantment ench : Enchantments.ENCHANTMENTSLIST) {
 			if (ench != null) {
 				int level = EnchantmentHelper.getEnchantmentLevel(ench.effectId, itemStack);
 				if (level > 0) {

@@ -27,7 +27,7 @@ public class ItemTFSteeleafPick extends ItemPickaxe {
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
     	ItemStack istack = new ItemStack(par1, 1, 0);
-    	istack.addEnchantment(Enchantment.fortune, 2);
+    	istack.addEnchantment(Enchantments.FORTUNE, 2);
         par3List.add(istack);
     }
     

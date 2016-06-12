@@ -56,16 +56,16 @@ public class ItemTFIronwoodArmor extends ItemArmor {
     	switch (this.armorType)
     	{
     	case 0:
-    		istack.addEnchantment(Enchantment.aquaAffinity, 1);
+    		istack.addEnchantment(Enchantments.AQUAAFFINITY, 1);
             break;	
     	case 1:
-    		istack.addEnchantment(Enchantment.protection, 1);
+    		istack.addEnchantment(Enchantments.PROTECTION, 1);
             break;	
     	case 2:
-    		istack.addEnchantment(Enchantment.protection, 1);
+    		istack.addEnchantment(Enchantments.PROTECTION, 1);
             break;	
     	case 3:
-    		istack.addEnchantment(Enchantment.featherFalling, 1);
+    		istack.addEnchantment(Enchantments.FEATHERFALLING, 1);
             break;	
     	}
     	par3List.add(istack);

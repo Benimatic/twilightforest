@@ -26,7 +26,7 @@ public class ItemTFIronwoodSword extends ItemSword {
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
     	ItemStack istack = new ItemStack(par1, 1, 0);
-    	istack.addEnchantment(Enchantment.knockback, 1);
+    	istack.addEnchantment(Enchantments.KNOCKBACK, 1);
         par3List.add(istack);
     }
     

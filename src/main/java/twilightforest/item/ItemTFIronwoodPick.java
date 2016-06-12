@@ -26,7 +26,7 @@ public class ItemTFIronwoodPick extends ItemPickaxe {
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
     	ItemStack istack = new ItemStack(par1, 1, 0);
-    	istack.addEnchantment(Enchantment.efficiency, 1);
+    	istack.addEnchantment(Enchantments.EFFICIENCY, 1);
         par3List.add(istack);
     }
     
