@@ -5,10 +5,12 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 
-public class TileEntityTFReverter extends TileEntity 
+public class TileEntityTFReverter extends TileEntity implements ITickable
 {
 	private static final int REVERT_CHANCE = 10;
 	
@@ -24,21 +26,8 @@ public class TileEntityTFReverter extends TileEntity
 	private Block[] blockData;
 	private byte[] metaData;
 			
-    /**
-     * Determines if this TileEntity requires update calls.
-     * @return True if you want updateEntity() to be called, false if not
-     */
 	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
-	@Override
-	public void updateEntity() 
+	public void update()
 	{
 		if (this.anyPlayerInRange())
 		{
@@ -228,7 +217,7 @@ public class TileEntityTFReverter extends TileEntity
     		double tx = srcX + (destX - srcX) * trailFactor + rand.nextFloat() * 0.005;
     		double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * 0.005;
     		double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextFloat() * 0.005;
-    		worldObj.spawnParticle("reddust", tx, ty, tz, 0, 0, 0);
+    		worldObj.spawnParticle(EnumParticleTypes.REDSTONE, tx, ty, tz, 0, 0, 0);
     	}
 	}
 

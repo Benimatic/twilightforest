@@ -3,14 +3,15 @@ package twilightforest.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Facing;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 
-public class TileEntityTFTowerBuilder extends TileEntity
+public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 {
 	private static final int RANGE = 16;
 
@@ -23,7 +24,7 @@ public class TileEntityTFTowerBuilder extends TileEntity
 	int blocksMade = 0;
 	
 	protected BlockPos lastBlockCoords;
-	protected int nextFacing;
+	protected EnumFacing nextFacing;
 	
 	protected EntityPlayer trackedPlayer;
 	
@@ -41,24 +42,11 @@ public class TileEntityTFTowerBuilder extends TileEntity
 	public void startBuilding() {
 		this.makingBlocks = true;
 		this.blocksMade = 0;
-		this.lastBlockCoords = new BlockPos(this.xCoord, this.yCoord, this.zCoord);
+		this.lastBlockCoords = getPos();
 	}
 
-    /**
-     * Determines if this TileEntity requires update calls.
-     * @return True if you want updateEntity() to be called, false if not
-     */
 	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
-	@Override
-	public void updateEntity() 
+	public void update()
 	{
 		if (!worldObj.isRemote && this.makingBlocks)
 		{
@@ -74,23 +62,19 @@ public class TileEntityTFTowerBuilder extends TileEntity
 			++this.ticksRunning;
 			
 			// if we are at the half second marker, make a block and advance the block cursor
-			if (this.ticksRunning % 10 == 0 && lastBlockCoords != null && nextFacing != -1)
+			if (this.ticksRunning % 10 == 0 && lastBlockCoords != null && nextFacing != null)
 			{
-				int nextX = lastBlockCoords.posX + Facing.offsetsXForSide[nextFacing];
-				int nextY = lastBlockCoords.posY + Facing.offsetsYForSide[nextFacing];
-				int nextZ = lastBlockCoords.posZ + Facing.offsetsZForSide[nextFacing];
+				BlockPos nextPos = pos.offset(nextFacing);
 				
 				// make a block
-				if (blocksMade <= RANGE && worldObj.isAirBlock(nextX, nextY, nextZ))
+				if (blocksMade <= RANGE && worldObj.isAirBlock(nextPos))
 				{
 					worldObj.setBlock(nextX, nextY, nextZ,blockBuiltID, blockBuiltMeta, 3);
 					
-					worldObj.playAuxSFX(1001, nextX, nextY, nextZ, 0);
-					
-					this.lastBlockCoords.posX = nextX;
-					this.lastBlockCoords.posY = nextY;
-					this.lastBlockCoords.posZ = nextZ;
-					
+					worldObj.playEvent(1001, nextPos, 0);
+
+					this.lastBlockCoords = nextPos;
+
 					blockedCounter = 0;
 					blocksMade++;
 				}
@@ -120,20 +104,7 @@ public class TileEntityTFTowerBuilder extends TileEntity
 		}
 	}
 
-	/**
-	 * Are the specified destination coordinates within our build range?
-	 */
-	private boolean isInBounds(int nextX, int nextY, int nextZ) 
-	{
-		return nextX > this.xCoord - RANGE && nextX < this.xCoord + RANGE 
-				&& nextY > this.yCoord - RANGE && nextY < this.yCoord + RANGE 
-				&& nextZ > this.zCoord - RANGE && nextZ < this.zCoord + RANGE;
-	}
-
-	/**
-	 * Which direction is the player facing, in terms of directions in java.util.Facing
-	 */
-	private int findNextFacing() 
+	private EnumFacing findNextFacing()
 	{
 		if (this.trackedPlayer != null)
 		{
@@ -142,31 +113,19 @@ public class TileEntityTFTowerBuilder extends TileEntity
 			
 			if (pitch == 0)
 			{
-				return 1;
+				return EnumFacing.UP; // todo 1.9 recheck this and down
 			}
 			else if (pitch == 2)
 			{
-				return 0;
+				return EnumFacing.DOWN;
 			}
 			else
 			{
-				int direction = MathHelper.floor_double((double)(trackedPlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-				switch (direction)
-				{
-				case 0: // south
-					return 3;
-				case 1: // west
-					return 4;
-				case 2: // north
-					return 2;
-				case 3: // east
-					return 5;
-				}
+				return trackedPlayer.getHorizontalFacing();
 			}
 		}
 
-		return -1;
+		return null;
 	}
 
 	/**
@@ -174,7 +133,7 @@ public class TileEntityTFTowerBuilder extends TileEntity
 	 */
 	private EntityPlayer findClosestValidPlayer() 
 	{
-		return worldObj.getClosestPlayer(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 16);
+		return worldObj.getClosestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, false);
 	}
 	
 	

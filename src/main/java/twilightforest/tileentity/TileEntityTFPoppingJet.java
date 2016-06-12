@@ -1,11 +1,14 @@
 package twilightforest.tileentity;
 
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
 
-public class TileEntityTFPoppingJet extends TileEntity {
+public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 
 	int counter = 0;
 	int nextMeta;
@@ -18,18 +21,14 @@ public class TileEntityTFPoppingJet extends TileEntity {
 		this.nextMeta = parNextMeta;
 	}
 
-	/**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     @Override
-	public void updateEntity()
+	public void update()
     {
 		if (++counter >= 80)
 		{
 			counter = 0;
 	    	// turn to flame
-			if (!worldObj.isRemote && worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == TFBlocks.fireJet)
+			if (!worldObj.isRemote && worldObj.getBlockState(pos).getBlock() == TFBlocks.fireJet)
 			{
 				worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, TFBlocks.fireJet, this.nextMeta, 3);
 			}
@@ -39,7 +38,7 @@ public class TileEntityTFPoppingJet extends TileEntity {
 		{
 			if (counter % 20 == 0) {
 				worldObj.spawnParticle("lava", this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5, 0.0D, 0.0D, 0.0D);
-				worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "liquid.lavapop", 0.2F + worldObj.rand.nextFloat() * 0.2F, 0.9F + worldObj.rand.nextFloat() * 0.15F);
+				worldObj.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + worldObj.rand.nextFloat() * 0.2F, 0.9F + worldObj.rand.nextFloat() * 0.15F);
 			}
 
 		}
@@ -58,9 +57,10 @@ public class TileEntityTFPoppingJet extends TileEntity {
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-    	super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("NextMeta", this.nextMeta);
+    	NBTTagCompound ret = super.writeToNBT(par1NBTTagCompound);
+        ret.setInteger("NextMeta", this.nextMeta);
+		return ret;
     }
 }

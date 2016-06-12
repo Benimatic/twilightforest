@@ -13,18 +13,18 @@ public class TileEntityTFTowerBossSpawner extends TileEntityTFBossSpawner {
     @Override
 	public boolean anyPlayerInRange()
     {
-    	EntityPlayer closestPlayer = worldObj.getClosestPlayer(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 9D);
+    	EntityPlayer closestPlayer = worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 9D, false);
     	
-        return closestPlayer != null && closestPlayer.posY > yCoord - 4;
+        return closestPlayer != null && closestPlayer.posY > pos.getY() - 4;
     }
 
 	protected void spawnMyBoss() {
 		// spawn creature
 		EntityLiving myCreature = makeMyCreature();
 
-		double rx = xCoord + 0.5D;
-		double ry = yCoord + 0.5D;
-		double rz = zCoord + 0.5D;
+		double rx = pos.getX() + 0.5D;
+		double ry = pos.getY() + 0.5D;
+		double rz = pos.getZ() + 0.5D;
 		myCreature.setLocationAndAngles(rx, ry, rz, worldObj.rand.nextFloat() * 360F, 0.0F);
 
 		// set creature's home to this

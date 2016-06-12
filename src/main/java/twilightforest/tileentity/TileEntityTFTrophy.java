@@ -12,9 +12,9 @@ public class TileEntityTFTrophy extends TileEntitySkull
 	 * ticks and creates a new spawn inside its implementation.
 	 */
 	@Override
-	public void updateEntity()
+	public void update()
 	{
-		super.updateEntity();
+		super.update();
 		this.ticksExisted++;
 	}
 

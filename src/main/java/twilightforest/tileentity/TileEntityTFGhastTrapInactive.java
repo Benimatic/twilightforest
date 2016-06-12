@@ -6,34 +6,22 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMiniGhast;
 
-public class TileEntityTFGhastTrapInactive extends TileEntity {
+public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickable {
 	
 	int counter;
 	Random rand = new Random();
 
 	ArrayList<EntityTFMiniGhast> dyingGhasts = new ArrayList<EntityTFMiniGhast>();
 	
-    /**
-     * Determines if this TileEntity requires update calls.
-     * @return True if you want updateEntity() to be called, false if not
-     */
 	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
-	@Override
-	public void updateEntity() 
+	public void update()
 	{
 		// check to see if there are any dying mini ghasts within our scan range
 		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(10D, 16D, 10D);

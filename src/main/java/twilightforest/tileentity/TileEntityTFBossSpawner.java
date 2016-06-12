@@ -6,10 +6,12 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.EnumDifficulty;
 
 
-public abstract class TileEntityTFBossSpawner extends TileEntity {
+public abstract class TileEntityTFBossSpawner extends TileEntity implements ITickable {
 	
     protected String mobID = "Pig";
     protected int counter;
@@ -26,24 +28,11 @@ public abstract class TileEntityTFBossSpawner extends TileEntity {
 	 */
 	public boolean anyPlayerInRange()
     {
-        return worldObj.getClosestPlayer(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, getRange()) != null;
+        return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false) != null;
     }
-	
-    /**
-     * Determines if this TileEntity requires update calls.
-     * @return True if you want updateEntity() to be called, false if not
-     */
+
 	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-	
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
-	@Override
-	public void updateEntity()
+	public void update()
     {
 		this.counter++;
 
@@ -52,23 +41,23 @@ public abstract class TileEntityTFBossSpawner extends TileEntity {
 			if (worldObj.isRemote)
 			{
 				// particles
-				double rx = xCoord + worldObj.rand.nextFloat();
-				double ry = yCoord + worldObj.rand.nextFloat();
-				double rz = zCoord + worldObj.rand.nextFloat();
-				worldObj.spawnParticle("smoke", rx, ry, rz, 0.0D, 0.0D, 0.0D);
-				worldObj.spawnParticle("flame", rx, ry, rz, 0.0D, 0.0D, 0.0D);
+				double rx = pos.getX() + worldObj.rand.nextFloat();
+				double ry = pos.getY() + worldObj.rand.nextFloat();
+				double rz = pos.getZ() + worldObj.rand.nextFloat();
+				worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+				worldObj.spawnParticle(EnumParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 			}
 			else
 			{
 				//System.out.println("Thinking about boss!");
 
 				
-				if (worldObj.difficultySetting != EnumDifficulty.PEACEFUL) 
+				if (worldObj.getDifficulty() != EnumDifficulty.PEACEFUL)
 				{
 					spawnMyBoss();
 
 					// destroy block
-					worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.AIR, 0, 2);
+					worldObj.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
 					
 					//System.out.println("Spawning boss!");
 				}
@@ -84,9 +73,9 @@ public abstract class TileEntityTFBossSpawner extends TileEntity {
 		// spawn creature
 		EntityLiving myCreature = makeMyCreature();
 
-		double rx = xCoord + 0.5D;
-		double ry = yCoord + 0.5D;
-		double rz = zCoord + 0.5D;
+		double rx = pos.getX() + 0.5D;
+		double ry = pos.getY() + 0.5D;
+		double rz = pos.getZ() + 0.5D;
 		myCreature.setLocationAndAngles(rx, ry, rz, worldObj.rand.nextFloat() * 360F, 0.0F);
 
 		// set creature's home to this
@@ -115,7 +104,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity {
 	protected void initializeCreature(EntityLiving myCreature) {
 		if (myCreature instanceof EntityCreature)
 		{
-			((EntityCreature) myCreature).setHomeArea(xCoord, yCoord, zCoord, 46);
+			((EntityCreature) myCreature).setHomePosAndDistance(pos, 46);
 		}
 	}
 

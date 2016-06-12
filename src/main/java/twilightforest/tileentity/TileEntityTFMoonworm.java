@@ -10,8 +10,6 @@ public class TileEntityTFMoonworm extends TileEntityTFCritter {
     public int desiredYaw;
 
 	public TileEntityTFMoonworm() {
-		super();
-		
 		currentYaw = -1;
 		yawDelay = 0;
 		desiredYaw = 0;
@@ -22,9 +20,9 @@ public class TileEntityTFMoonworm extends TileEntityTFCritter {
      * ticks and creates a new spawn inside its implementation.
      */
     @Override
-	public void updateEntity()
+	public void update()
     {
-    	super.updateEntity();
+    	super.update();
     	
     	if (currentYaw == -1)
     	{

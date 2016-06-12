@@ -12,7 +12,7 @@ public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
 	
 	public boolean anyPlayerInRange()
     {
-        return worldObj.getClosestPlayer(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 50D) != null;
+        return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 50D, false) != null;
     }
     
 	/**
@@ -22,7 +22,7 @@ public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
 		
 		if (myCreature instanceof EntityCreature)
 		{
-			((EntityCreature) myCreature).setHomeArea(xCoord, yCoord, zCoord, 46);
+			((EntityCreature) myCreature).setHomePosAndDistance(pos, 46);
 		}
 	}
 
