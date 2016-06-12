@@ -202,7 +202,7 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 	
 	private boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.width / 2F;
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
+		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
 		
 		boolean isOccupied = this.attacker.worldObj.getCollidingBoundingBoxes(attacker, aabb).isEmpty();
 		

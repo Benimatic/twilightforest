@@ -53,10 +53,10 @@ public class BlockTFHedge extends BlockLeavesBase {
     	switch (meta) {
     	case 0:
     		float f = 0.0625F;
-        	return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1 - f, z + 1);
+        	return new AxisAlignedBB(x, y, z, x + 1, y + 1 - f, z + 1);
     	default :
     	case 1 :
-    		return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
+    		return new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
     	}
     	
     }
@@ -189,7 +189,7 @@ public class BlockTFHedge extends BlockLeavesBase {
     	double range = 4.0; // do we need to get this with a better method than hardcoding it?
 
     	// find players within harvest range
-    	List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(range, range, range));
+    	List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1).expand(range, range, range));
 
     	// are they swinging?
     	for (EntityPlayer player : nearbyPlayers) {

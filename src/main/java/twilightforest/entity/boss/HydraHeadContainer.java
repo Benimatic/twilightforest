@@ -936,7 +936,7 @@ public class HydraHeadContainer {
 	private EntityTFHydraHead findNearbyHead(String string)
 	{
 		
-		List<EntityTFHydraHead> nearbyHeads = hydraObj.worldObj.getEntitiesWithinAABB(EntityTFHydraHead.class, AxisAlignedBB.getBoundingBox(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).expand(16.0D, 16.0D, 16.0D));
+		List<EntityTFHydraHead> nearbyHeads = hydraObj.worldObj.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityTFHydraHead nearbyHead : nearbyHeads)
 		{

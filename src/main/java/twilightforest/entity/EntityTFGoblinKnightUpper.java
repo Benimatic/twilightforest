@@ -213,7 +213,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		// damage things in front that aren't us or our "mount"
 		double radius = 1.5D;
 
-		AxisAlignedBB spearBB =  AxisAlignedBB.getBoundingBox(px - radius, py - radius, pz - radius, px + radius, py + radius, pz + radius);
+		AxisAlignedBB spearBB =  new AxisAlignedBB(px - radius, py - radius, pz - radius, px + radius, py + radius, pz + radius);
 
 		List<Entity> inBox = worldObj.getEntitiesWithinAABB(Entity.class, spearBB);
 		

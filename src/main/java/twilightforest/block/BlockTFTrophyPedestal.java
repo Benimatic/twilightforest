@@ -271,7 +271,7 @@ public class BlockTFTrophyPedestal extends Block {
 
 	private void warnIneligiblePlayers(World world, int x, int y, int z) {
 		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityPlayer player : nearbyPlayers) {
 			if (!isPlayerEligible(player)) {
@@ -283,7 +283,7 @@ public class BlockTFTrophyPedestal extends Block {
 	private boolean areNearbyPlayersEligible(World world, int x, int y, int z) {
 		boolean isEligible = false;
 		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityPlayer player : nearbyPlayers) {
 			isEligible |= isPlayerEligible(player);
@@ -321,7 +321,7 @@ public class BlockTFTrophyPedestal extends Block {
     @SuppressWarnings("unchecked")
 	private void rewardNearbyPlayers(World world, int x, int y, int z) {
 		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityPlayer player : nearbyPlayers) {
 			player.addStat(TFAchievementPage.twilightProgressTrophyPedestal);

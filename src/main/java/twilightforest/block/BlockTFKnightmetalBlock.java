@@ -35,7 +35,7 @@ public class BlockTFKnightmetalBlock extends BlockCompressed {
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
 		float f = 1F / 16F;
-		return AxisAlignedBB.getBoundingBox(x + f, y + f, z + f, x + 1 - f, y + 1 - f, z + 1 - f);
+		return new AxisAlignedBB(x + f, y + f, z + f, x + 1 - f, y + 1 - f, z + 1 - f);
 
 	}
 	

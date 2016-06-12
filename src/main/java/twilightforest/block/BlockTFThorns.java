@@ -83,11 +83,11 @@ public class BlockTFThorns extends BlockRotatedPillar {
     	switch (rotation) {
     	case 0:
     	default:
-        	return AxisAlignedBB.getBoundingBox(x + pixel * 3F, y, z + pixel * 3F, x + 1F - pixel * 3F, y + 1F, z + 1F - pixel * 3F);
+        	return new AxisAlignedBB(x + pixel * 3F, y, z + pixel * 3F, x + 1F - pixel * 3F, y + 1F, z + 1F - pixel * 3F);
     	case 4:
-        	return AxisAlignedBB.getBoundingBox(x, y + pixel * 3F, z + pixel * 3F, x + 1F, y + 1F - pixel * 3F, z + 1F - pixel * 3F);
+        	return new AxisAlignedBB(x, y + pixel * 3F, z + pixel * 3F, x + 1F, y + 1F - pixel * 3F, z + 1F - pixel * 3F);
     	case 8:
-        	return AxisAlignedBB.getBoundingBox(x + pixel * 3F, y + pixel * 3F, z, x + 1F - pixel * 3F, y + 1F - pixel * 3F, z + 1F);
+        	return new AxisAlignedBB(x + pixel * 3F, y + pixel * 3F, z, x + 1F - pixel * 3F, y + 1F - pixel * 3F, z + 1F);
     	}
 
     }

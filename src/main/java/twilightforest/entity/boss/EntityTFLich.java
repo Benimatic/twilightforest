@@ -550,7 +550,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      */
     @SuppressWarnings("unchecked")
 	protected void popNearbyMob() {
-		List<Entity> nearbyMobs = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<Entity> nearbyMobs = worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 
 		for (Entity entity : nearbyMobs) {
 			if (entity instanceof EntityLiving && canPop(entity) && canEntityBeSeen(entity)) {
@@ -605,7 +605,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	@SuppressWarnings("unchecked")
 	protected int countMyClones() {
     	// check if there are enough clones.  we check a 32x16x32 area
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		int count = 0;
 
 		for (EntityTFLich nearbyLich : nearbyLiches) {
@@ -646,7 +646,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void despawnClones() {
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(this.getClass(), AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(this.getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (nearbyLich.isShadowClone()) {
@@ -673,7 +673,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	@SuppressWarnings("unchecked")
 	protected int countMyMinions() {
     	// check if there are enough clones.  we check a 32x16x32 area
-		List<EntityTFLichMinion> nearbyMinons = worldObj.getEntitiesWithinAABB(EntityTFLichMinion.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLichMinion> nearbyMinons = worldObj.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		int count = 0;
 		
 		for (EntityTFLichMinion nearbyMinon : nearbyMinons) {
@@ -732,7 +732,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	 */
 	@SuppressWarnings("unchecked")
 	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(this)) {
@@ -829,7 +829,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         	
         	// check that we're not colliding and not in liquid
         	float halfWidth = this.width / 2.0F;
-        	AxisAlignedBB destBox = AxisAlignedBB.getBoundingBox(tx - halfWidth, ty - yOffset + ySize, tz - halfWidth, tx + halfWidth, ty - yOffset + ySize + height, tz + halfWidth);
+        	AxisAlignedBB destBox = new AxisAlignedBB(tx - halfWidth, ty - yOffset + ySize, tz - halfWidth, tx + halfWidth, ty - yOffset + ySize + height, tz + halfWidth);
         	if (worldObj.getCollidingBoundingBoxes(this, destBox).size() > 0)
             {
 //        		System.out.println("teleport find failed because of collision");

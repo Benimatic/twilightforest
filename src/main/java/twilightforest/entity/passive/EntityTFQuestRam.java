@@ -156,7 +156,7 @@ public class EntityTFQuestRam extends EntityAnimal {
     @SuppressWarnings("unchecked")
 	private void rewardNearbyPlayers(World world, double posX, double posY, double posZ) {
 		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D));
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityPlayer player : nearbyPlayers) {
 			player.addStat(TFAchievementPage.twilightQuestRam);

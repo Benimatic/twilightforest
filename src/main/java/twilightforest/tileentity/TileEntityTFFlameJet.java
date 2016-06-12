@@ -79,7 +79,7 @@ public class TileEntityTFFlameJet extends TileEntity {
 			{
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = worldObj.getEntitiesWithinAABB(Entity.class, 
-						AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2,
+						new AxisAlignedBB(this.xCoord - 2, this.yCoord, this.zCoord - 2,
 								this.xCoord + 2, this.yCoord + 4, this.zCoord + 2));
 				// fire!
 				for (Entity entity : entitiesInRange)

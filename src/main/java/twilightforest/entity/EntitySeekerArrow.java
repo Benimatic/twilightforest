@@ -46,7 +46,7 @@ public class EntitySeekerArrow extends EntityArrow {
         		double maxZ = this.lastTickPosZ;
 
 
-        		AxisAlignedBB targetBB = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+        		AxisAlignedBB targetBB = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
 
         		// add two possible courses to our selection box
 				Vec3d courseVec = Vec3d.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);

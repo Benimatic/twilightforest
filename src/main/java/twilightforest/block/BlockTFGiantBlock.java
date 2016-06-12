@@ -106,7 +106,7 @@ public abstract class BlockTFGiantBlock extends Block {
     	int by = (y >> 2) << 2;
     	int bz = (z >> 2) << 2;
     	
-        return AxisAlignedBB.getBoundingBox((double)bx + this.minX, (double)by + this.minY, (double)bz + this.minZ, (double)bx + this.maxX * 4F, (double)by + this.maxY * 4F, (double)bz + this.maxZ * 4F);
+        return new AxisAlignedBB((double)bx + this.minX, (double)by + this.minY, (double)bz + this.minZ, (double)bx + this.maxX * 4F, (double)by + this.maxY * 4F, (double)bz + this.maxZ * 4F);
     }
     
     /**

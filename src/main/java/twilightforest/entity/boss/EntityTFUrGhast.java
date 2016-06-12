@@ -610,7 +610,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		
 		for (BlockPos trap : this.trapLocations)
 		{
-			AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(trap.posX, trap.posY, trap.posZ, trap.posX + 1, trap.posY + 1, trap.posZ + 1).expand(8D, 16D, 8D);
+			AxisAlignedBB aabb = new AxisAlignedBB(trap.posX, trap.posY, trap.posZ, trap.posX + 1, trap.posY + 1, trap.posZ + 1).expand(8D, 16D, 8D);
 			
 			List<EntityTFMiniGhast> nearbyGhasts = worldObj.getEntitiesWithinAABB(EntityTFMiniGhast.class, aabb);
 			

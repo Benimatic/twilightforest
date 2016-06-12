@@ -490,7 +490,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
 
 			// is there a painting or another torch there?
-			AxisAlignedBB torchBox = AxisAlignedBB.getBoundingBox(tCoords.posX, tCoords.posY, tCoords.posZ, tCoords.posX + 1.0, tCoords.posY + 2.0, tCoords.posZ + 1.0);
+			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.posX, tCoords.posY, tCoords.posZ, tCoords.posX + 1.0, tCoords.posY + 2.0, tCoords.posZ + 1.0);
 	        if (world.getBlock(tCoords.posX, tCoords.posY, tCoords.posZ) == Blocks.AIR && world.getBlock(tCoords.posX, tCoords.posY + 1, tCoords.posZ) == Blocks.AIR && world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
 	        {
 	        	// if not, place a torch

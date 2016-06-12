@@ -729,7 +729,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         double closestRange = -1.0D;
         EntityLivingBase closestEntity = null;
 
-		List<EntityLiving> nearbyEntities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range));
+		List<EntityLiving> nearbyEntities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range));
 
 		for (EntityLivingBase nearbyLiving : nearbyEntities)
 		{
