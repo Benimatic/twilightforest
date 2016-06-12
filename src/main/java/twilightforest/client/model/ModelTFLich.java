@@ -5,8 +5,8 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.boss.EntityTFLich;
 
 
@@ -133,9 +133,9 @@ public class ModelTFLich extends ModelBiped {
 	        		shieldBelt.childModels.clear();
         		}
         		// make or remake a belt of shields around the lich
-        		Vec3 vec;
+        		Vec3d vec;
         		for (int i = 0; i < shields; i++) {
-        			vec = Vec3.createVectorHelper(11, 0, 0);
+        			vec = Vec3d.createVectorHelper(11, 0, 0);
         			float rotateY = ((i * (360F / shields)) * 3.141593F) / 180F;
         			vec.rotateAroundY(rotateY);
         			ModelRenderer shield = new ModelRenderer(this, 26, 40);

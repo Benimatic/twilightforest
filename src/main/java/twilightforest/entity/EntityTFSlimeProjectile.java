@@ -3,7 +3,7 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityTFSlimeProjectile extends EntityThrowable {
@@ -63,7 +63,7 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	 * What happens when we hit something?
 	 */
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
+	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		// only damage living things
 		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
 		{

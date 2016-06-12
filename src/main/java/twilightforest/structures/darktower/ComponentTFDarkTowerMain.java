@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenForest;
+import net.minecraft.world.gen.feature.WorldGenBirchTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -1275,7 +1275,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
     			break;
     		case 2:
     			// birch
-    			treeGen = new WorldGenForest(true, false);
+    			treeGen = new WorldGenBirchTree(true, false);
     			break;
     		case 3:
     			treeGen = new TFGenSmallTwilightOak(false);

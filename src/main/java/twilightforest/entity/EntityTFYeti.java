@@ -13,8 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.biomes.TFBiomeBase;
@@ -107,7 +107,7 @@ public class EntityTFYeti extends EntityMob
 
             
             // push out of user in wall
-            Vec3 riderPos = this.getRiderPosition();
+            Vec3d riderPos = this.getRiderPosition();
             this.func_145771_j(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord); // push out of block
             
 
@@ -212,7 +212,7 @@ public class EntityTFYeti extends EntityMob
     {
         if (this.riddenByEntity != null)
         {
-        	Vec3 riderPos = this.getRiderPosition();
+        	Vec3d riderPos = this.getRiderPosition();
         	
             this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
         }
@@ -230,7 +230,7 @@ public class EntityTFYeti extends EntityMob
     /**
      * Used to both get a rider position and to push out of blocks
      */
-    public Vec3 getRiderPosition()
+    public Vec3d getRiderPosition()
     {
     	if (this.riddenByEntity != null)
     	{
@@ -239,11 +239,11 @@ public class EntityTFYeti extends EntityMob
     		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
     		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-    		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
+    		return Vec3d.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
     	}
     	else
     	{
-    		return Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+    		return Vec3d.createVectorHelper(this.posX, this.posY, this.posZ);
     	}
     }
     

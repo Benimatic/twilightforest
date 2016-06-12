@@ -3,7 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 
@@ -122,7 +122,7 @@ public class EntityTFLichBomb extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
+	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		boolean passThrough = false;
 		
 		// pass through other lich bolts

@@ -10,7 +10,7 @@ import java.io.IOException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.S34PacketMaps;
+import net.minecraft.network.play.server.SPacketMaps;
 import twilightforest.item.ItemTFMagicMap;
 import twilightforest.item.ItemTFMazeMap;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,9 +27,9 @@ public class TFMapPacketHandler
 	/**
 	 * Extract a Packet131MapData packet from a Packet250CustomPayload.  This is a little silly, huh?
 	 */
-	public S34PacketMaps readMapPacket(ByteBuf byteBuf) {
+	public SPacketMaps readMapPacket(ByteBuf byteBuf) {
 		
-		S34PacketMaps mapPacket = new S34PacketMaps();
+		SPacketMaps mapPacket = new SPacketMaps();
 		try {
 			mapPacket.readPacketData(new PacketBuffer(byteBuf));
 		} catch (IOException e) {
@@ -44,7 +44,7 @@ public class TFMapPacketHandler
 	 */
 	public static Packet makeMagicMapPacket(String mapChannel, short mapID, byte[] datas) {
 		
-		S34PacketMaps mapPacket = new S34PacketMaps(mapID, datas);
+		SPacketMaps mapPacket = new SPacketMaps(mapID, datas);
         PacketBuffer payload = new PacketBuffer(Unpooled.buffer());
 
         try {
@@ -73,14 +73,14 @@ public class TFMapPacketHandler
 		if (event.packet.channel().equals(ItemTFMagicMap.STR_ID))
 		{
 			//System.out.println("Incoming magic map packet detected!");
-			S34PacketMaps mapPacket = readMapPacket(event.packet.payload());
+			SPacketMaps mapPacket = readMapPacket(event.packet.payload());
 			ItemTFMagicMap.getMPMapData(mapPacket.func_149188_c(), TwilightForestMod.proxy.getClientWorld()).updateMPMapData(mapPacket.func_149187_d());
 		}
 		else if (event.packet.channel().equals(ItemTFMazeMap.STR_ID))
 		{
 			//System.out.println("Incoming maze map packet detected!");
 
-			S34PacketMaps mapPacket = readMapPacket(event.packet.payload());
+			SPacketMaps mapPacket = readMapPacket(event.packet.payload());
 			TFMazeMapData data = ItemTFMazeMap.getMPMapData(mapPacket.func_149188_c(), TwilightForestMod.proxy.getClientWorld());
 			data.updateMPMapData(mapPacket.func_149187_d());
 	        Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().func_148246_a(data);

@@ -1,37 +1,24 @@
 package twilightforest.structures;
 
-import java.awt.Rectangle;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.math.MathHelper;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
-import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.TFFinalCastlePieces.EntranceTower;
-import twilightforest.structures.TFFinalCastlePieces.MazeTower13;
-import twilightforest.structures.icetower.ComponentTFIceTowerStairs;
-import twilightforest.structures.icetower.StructureDecoratorIceTower;
-import twilightforest.structures.lichtower.ComponentTFTowerBridge;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
-import twilightforest.structures.minotaurmaze.ComponentTFMazeUpperEntrance;
-import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStainedGlassPane;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureNetherBridgePieces;
 
 public class TFFinalCastlePieces {
 

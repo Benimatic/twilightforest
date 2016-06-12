@@ -2,24 +2,20 @@ package twilightforest.entity;
 
 import java.util.List;
 
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.item.ItemTFChainBlock;
-import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 
@@ -99,7 +95,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 
 	@Override
-	protected void onImpact(MovingObjectPosition mop) {
+	protected void onImpact(RayTraceResult mop) {
 		// only hit living things
         if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase && mop.entityHit != this.getThrower()) {
             if (mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10)) {
@@ -265,7 +261,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         	
         	EntityLivingBase returnTo = this.getThrower();
         
-            Vec3 back = Vec3.createVectorHelper(returnTo.posX - this.posX, returnTo.posY + (double)returnTo.getEyeHeight() - 1.200000023841858D - this.posY, returnTo.posZ - this.posZ).normalize();
+            Vec3d back = Vec3d.createVectorHelper(returnTo.posX - this.posX, returnTo.posY + (double)returnTo.getEyeHeight() - 1.200000023841858D - this.posY, returnTo.posZ - this.posZ).normalize();
             
             float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
             
@@ -297,7 +293,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         // set chain positions, client only
         if (this.attachedTo != null) {
     		// interpolate chain position
-        	Vec3 handVec = this.attachedTo.getLookVec();
+        	Vec3d handVec = this.attachedTo.getLookVec();
         	
         	handVec.rotateAroundY(-0.4F);
         	

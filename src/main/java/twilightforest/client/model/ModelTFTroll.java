@@ -1,11 +1,11 @@
 package twilightforest.client.model;
 
+import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFTroll;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
 
 public class ModelTFTroll extends ModelBiped {
 	

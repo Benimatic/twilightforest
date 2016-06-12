@@ -6,11 +6,9 @@ import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemLilyPad;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 
@@ -27,12 +25,12 @@ public class ItemBlockTFHugeLilyPad extends ItemLilyPad {
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
+    	RayTraceResult movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
 
         if (movingobjectposition == null) {
             return itemStack;
         } else {
-            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+            if (movingobjectposition.typeOfHit == RayTraceResult.MovingObjectType.BLOCK)
             {
                 int x = movingobjectposition.blockX;
                 int y = movingobjectposition.blockY;

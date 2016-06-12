@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAITFFlockToSameKind extends EntityAIBase
 {
@@ -12,7 +12,7 @@ public class EntityAITFFlockToSameKind extends EntityAIBase
 	private static final double MIN_DIST = 25.0D;
 	/** The child that is following its parent. */
     EntityLiving flockCreature;
-    Vec3 flockPosition;
+    Vec3d flockPosition;
     double speed;
     private int moveTimer;
 
@@ -59,7 +59,7 @@ public class EntityAITFFlockToSameKind extends EntityAIBase
     	}
     	else
     	{
-    		this.flockPosition = Vec3.createVectorHelper(flockX, flockY, flockZ);
+    		this.flockPosition = Vec3d.createVectorHelper(flockX, flockY, flockZ);
     		return true;
     	}
     }

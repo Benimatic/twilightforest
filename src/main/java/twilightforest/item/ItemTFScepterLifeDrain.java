@@ -13,12 +13,11 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
@@ -75,9 +74,9 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	private Entity getPlayerLookTarget(World worldObj, EntityPlayer player) {
 		Entity pointedEntity = null;
 		double range = 20.0D;
-        Vec3 srcVec = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 lookVec = player.getLook(1.0F);
-        Vec3 destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+        Vec3d srcVec = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d lookVec = player.getLook(1.0F);
+        Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 1.0F;
         List<Entity> possibleList = worldObj.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
@@ -90,7 +89,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
             {
                 float borderSize = possibleEntity.getCollisionBorderSize();
                 AxisAlignedBB collisionBB = possibleEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
-                MovingObjectPosition interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+                RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
                 if (collisionBB.isVecInside(srcVec))
                 {

@@ -16,10 +16,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -332,7 +332,7 @@ public class BlockTFPortal extends BlockBreakable
     					
     					// set respawn point for TF dimension to near the arrival portal
     					int spawnX = MathHelper.floor_double(playerMP.posX); 
-    					int spawnY = MathHelper.floor_double(playerMP.posY); 
+    					int spawnY = MathHelper.floor_double(playerMP.posY);
     					int spawnZ = MathHelper.floor_double(playerMP.posZ); 
     					
     					playerMP.setSpawnChunk(new ChunkCoordinates(spawnX, spawnY, spawnZ), true, TwilightForestMod.dimensionID);

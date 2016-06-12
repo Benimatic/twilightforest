@@ -4,8 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
@@ -38,7 +38,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
         else
         {
         	this.entityTarget = attackTarget;
-        	Vec3 avoidPos = findCirclePoint(me, entityTarget, 5, lefty ? 1 : -1);
+        	Vec3d avoidPos = findCirclePoint(me, entityTarget, 5, lefty ? 1 : -1);
         	
             if (avoidPos == null)
             {
@@ -115,7 +115,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 	/**
      * Finds a point that allows us to circle the player clockwise.
      */
-    protected Vec3 findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
+    protected Vec3d findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
  
     	// compute angle
         double vecx = circler.posX - toCircle.posX;
@@ -130,7 +130,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
         double dz = MathHelper.sin(rangle) * radius;
 
         // add that to the target entity's position, and we have our destination
-    	return Vec3.createVectorHelper(toCircle.posX + dx, circler.boundingBox.minY, toCircle.posZ + dz);
+    	return Vec3d.createVectorHelper(toCircle.posX + dx, circler.boundingBox.minY, toCircle.posZ + dz);
     }
 
     

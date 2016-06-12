@@ -8,11 +8,10 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
@@ -68,7 +67,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 	 * What happens when we hit something?
 	 */
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
+	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		// only damage living things
 		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
 		{

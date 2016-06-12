@@ -1,7 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 

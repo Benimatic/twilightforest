@@ -2,7 +2,7 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {

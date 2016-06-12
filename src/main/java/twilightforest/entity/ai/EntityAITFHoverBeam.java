@@ -2,16 +2,16 @@ package twilightforest.entity.ai;
 
 import java.util.List;
 
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
 
 public class EntityAITFHoverBeam extends EntityAIBase {
 
@@ -157,7 +157,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-		distanceDesired = (double)MathHelper.sqrt_double(distanceDesired);
+		distanceDesired = (double) MathHelper.sqrt_double(distanceDesired);
 
 		if (distanceDesired > 0.5) {
 
@@ -195,9 +195,9 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-        Vec3 srcVec = Vec3.createVectorHelper(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
-        Vec3 lookVec = this.attacker.getLook(1.0F);
-        Vec3 destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+        Vec3d srcVec = Vec3d.createVectorHelper(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
+        Vec3d lookVec = this.attacker.getLook(1.0F);
+        Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
         List<Entity> possibleList = this.attacker.worldObj.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
@@ -208,7 +208,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
             {
                 float borderSize = possibleEntity.getCollisionBorderSize();
                 AxisAlignedBB collisionBB = possibleEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
-                MovingObjectPosition interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+                RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
                 if (collisionBB.isVecInside(srcVec))
                 {
@@ -279,7 +279,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return entity.worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3.createVectorHelper(dx, dy, dz)) == null;
+        return entity.worldObj.rayTraceBlocks(Vec3d.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3d.createVectorHelper(dx, dy, dz)) == null;
 
     }
 }

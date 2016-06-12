@@ -1,12 +1,12 @@
 package twilightforest.item;
 
+import net.minecraft.util.math.MathHelper;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class ItemTFMagicBeans extends ItemTF {

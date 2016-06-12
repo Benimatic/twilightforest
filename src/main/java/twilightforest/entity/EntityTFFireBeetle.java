@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
@@ -164,7 +164,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     	// when breathing fire, spew particles
     	if (isBreathing())
     	{
-    		Vec3 look = this.getLookVec();
+    		Vec3d look = this.getLookVec();
 
     		double dist = 0.9;
     		double px = this.posX + look.xCoord * dist;

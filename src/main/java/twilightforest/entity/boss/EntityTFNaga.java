@@ -17,8 +17,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -378,7 +378,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         
         //rotationPitch = 0.0F;
         
-        Vec3 vec3d = hasPath() ? pathToEntity.getPosition(this) : null;
+        Vec3d vec3d = hasPath() ? pathToEntity.getPosition(this) : null;
         
         // if we are very close to the path point, go to the next point, unless the path is finished
         for(double d = width * 4.0F; vec3d != null && vec3d.squareDistanceTo(posX, vec3d.yCoord, posZ) < d * d;)
@@ -577,7 +577,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     	{
     		chargeCount--;
 
-    		Vec3 tpoint = findCirclePoint(targetEntity, 14, Math.PI);
+    		Vec3d tpoint = findCirclePoint(targetEntity, 14, Math.PI);
     		pathToEntity = worldObj.getEntityPathToXYZ(this, MathHelper.floor_double(tpoint.xCoord), MathHelper.floor_double(tpoint.yCoord), MathHelper.floor_double(tpoint.zCoord), 40F, true, true, true, true);
 
     		if (chargeCount == 0) 
@@ -605,7 +605,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     			rotation = 0.1;
     		}
     		
-    		Vec3 tpoint = findCirclePoint(targetEntity, radius, rotation);
+    		Vec3d tpoint = findCirclePoint(targetEntity, radius, rotation);
     		
     		pathToEntity = worldObj.getEntityPathToXYZ(this, (int)tpoint.xCoord, (int)tpoint.yCoord, (int)tpoint.zCoord, 40F, true, true, true, true);
     		
@@ -747,7 +747,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	/**
      * Finds a point that allows us to circle the player clockwise.
      */
-    protected Vec3 findCirclePoint(Entity toCircle, double radius, double rotation) 
+    protected Vec3d findCirclePoint(Entity toCircle, double radius, double rotation)
     {
     	// compute angle
         double vecx = posX - toCircle.posX;
@@ -764,7 +764,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         double dy = Math.min(boundingBox.minY, toCircle.posY);
 
         // add that to the target entity's position, and we have our destination
-    	return Vec3.createVectorHelper(toCircle.posX + dx, dy, toCircle.posZ + dz);
+    	return Vec3d.createVectorHelper(toCircle.posX + dx, dy, toCircle.posZ + dz);
     }
     
     public boolean hasTarget() {
@@ -1065,7 +1065,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	    	double idealZ = MathHelper.cos(angle) * straightenForce;
 			
 			
-			Vec3 diff = Vec3.createVectorHelper(body[i].posX - followX, body[i].posY - followY, body[i].posZ - followZ);
+			Vec3d diff = Vec3d.createVectorHelper(body[i].posX - followX, body[i].posY - followY, body[i].posZ - followZ);
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position

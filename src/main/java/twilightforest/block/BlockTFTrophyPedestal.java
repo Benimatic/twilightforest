@@ -16,10 +16,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.stats.StatisticsFile;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -275,7 +275,7 @@ public class BlockTFTrophyPedestal extends Block {
 		
 		for (EntityPlayer player : nearbyPlayers) {
 			if (!isPlayerEligible(player)) {
-				player.addChatMessage(new ChatComponentText("You are unworthy."));
+				player.addChatMessage(new TextComponentString("You are unworthy."));
 			}
 		}
 	}

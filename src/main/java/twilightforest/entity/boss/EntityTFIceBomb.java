@@ -8,11 +8,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFYeti;
@@ -34,7 +33,7 @@ public class EntityTFIceBomb extends EntityThrowable {
      * Called when this EntityThrowable hits a block or entity.
      */
 	@Override
-	protected void onImpact(MovingObjectPosition mop) {
+	protected void onImpact(RayTraceResult mop) {
 		if (this.getThrower() != null && this.getThrower() instanceof EntityTFYetiAlpha) {
 			double dist = this.getDistanceSqToEntity(this.getThrower());
 

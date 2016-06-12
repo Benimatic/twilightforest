@@ -9,8 +9,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -79,7 +79,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
      * Called when this EntityThrowable hits a block or entity.
      */
 	@Override
-	protected void onImpact(MovingObjectPosition mop) {
+	protected void onImpact(RayTraceResult mop) {
 		if (mop.entityHit == null && !megaBlast)
 		{
 			// we hit the ground
@@ -145,7 +145,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
         setBeenAttacked();
         if (damagesource.getEntity() != null && !this.worldObj.isRemote)
         {
-            Vec3 vec3d = damagesource.getEntity().getLookVec();
+            Vec3d vec3d = damagesource.getEntity().getLookVec();
             if (vec3d != null)
             {
             	this.setThrowableHeading(vec3d.xCoord, vec3d.yCoord + 1, vec3d.zCoord, 1.5F, 0.1F);  // reflect faster and more accurately

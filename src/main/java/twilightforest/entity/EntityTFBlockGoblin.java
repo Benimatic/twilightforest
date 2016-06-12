@@ -20,7 +20,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
@@ -151,7 +151,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     /**
      * Get the block & chain position
      */
-    public Vec3 getChainPosition()
+    public Vec3d getChainPosition()
     {
     	return this.getChainPosition(getChainAngle(), getChainLength());
     }
@@ -159,12 +159,12 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     /**
      * Get the block & chain position
      */
-    public Vec3 getChainPosition(float angle, float distance)
+    public Vec3d getChainPosition(float angle, float distance)
     {
 		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getChainYOffset(), this.posZ + var3);
+		return Vec3d.createVectorHelper(this.posX + var1, this.posY + this.getChainYOffset(), this.posZ + var3);
     }
     
     public boolean isSwingingChain()
@@ -224,7 +224,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         }
         
         // set block position
-		Vec3 blockPos = this.getChainPosition();
+		Vec3d blockPos = this.getChainPosition();
 		this.block.setPosition(blockPos.xCoord, blockPos.yCoord, blockPos.zCoord);
 		this.block.rotationYaw = getChainAngle();
 		

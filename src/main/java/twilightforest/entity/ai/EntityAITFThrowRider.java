@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
@@ -46,7 +46,7 @@ public class EntityAITFThrowRider extends EntityAIBase {
     	EntityLivingBase rider = (EntityLivingBase) this.theEntityCreature.riddenByEntity;
         rider.mountEntity(null);
         
-        Vec3 throwVec = this.theEntityCreature.getLookVec();
+        Vec3d throwVec = this.theEntityCreature.getLookVec();
         throwVec.xCoord *= 2F;
         throwVec.yCoord *= 2F;
         throwVec.zCoord *= 2F;

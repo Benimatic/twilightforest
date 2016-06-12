@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import twilightforest.TwilightForestMod;
 
 import com.google.common.collect.Multimap;
@@ -101,7 +101,7 @@ public class ItemTFMinotaurAxe extends ItemAxe {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip"));
+		par3List.add(I18n.translateToLocal(getUnlocalizedName() + ".tooltip"));
 	}
 	
 	/**

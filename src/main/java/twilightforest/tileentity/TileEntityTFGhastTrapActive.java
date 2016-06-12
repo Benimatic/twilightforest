@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;

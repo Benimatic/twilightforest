@@ -5,11 +5,11 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
@@ -203,7 +203,7 @@ public class EntityTFTowerGhast extends EntityGhast
         	    	// change waypoint to be more towards home
         	        ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
         	    	
-        	        Vec3 homeVector = Vec3.createVectorHelper(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
+        	        Vec3d homeVector = Vec3d.createVectorHelper(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
         	        homeVector = homeVector.normalize();
         	        
         	    	this.waypointX = this.posX + homeVector.xCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
@@ -313,7 +313,7 @@ public class EntityTFTowerGhast extends EntityGhast
 		EntityLargeFireball entityFireball = new EntityLargeFireball(this.worldObj, this, offsetX, offsetY, offsetZ);
 		//var17.field_92012_e = this.explosionPower;
 		double shotSpawnDistance = 0.5D;
-		Vec3 lookVec = this.getLook(1.0F);
+		Vec3d lookVec = this.getLook(1.0F);
 		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
 		entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
 		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;

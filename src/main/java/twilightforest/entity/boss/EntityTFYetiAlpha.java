@@ -7,7 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -19,11 +19,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
@@ -60,7 +60,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 		this.tasks.addTask(3, new EntityAIStayNearHome(this, 2.0F));
 		this.tasks.addTask(4, new EntityAITFYetiRampage(this, 10, 180));
 
-		this.tasks.addTask(5, new EntityAIArrowAttack(this, 1.0D, 40, 40, 40.0F));
+		this.tasks.addTask(5, new EntityAIAttackRanged(this, 1.0D, 40, 40, 40.0F));
         this.tasks.addTask(6, new EntityAIWander(this, 2.0F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -272,7 +272,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     {
         if (this.riddenByEntity != null)
         {
-        	Vec3 riderPos = this.getRiderPosition();
+        	Vec3d riderPos = this.getRiderPosition();
         	
             this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
         }
@@ -290,7 +290,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     /**
      * Used to both get a rider position and to push out of blocks
      */
-    public Vec3 getRiderPosition()
+    public Vec3d getRiderPosition()
     {
     	if (this.riddenByEntity != null)
     	{
@@ -299,11 +299,11 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
     		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-    		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
+    		return Vec3d.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
     	}
     	else
     	{
-    		return Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+    		return Vec3d.createVectorHelper(this.posX, this.posY, this.posZ);
     	}
     }
     

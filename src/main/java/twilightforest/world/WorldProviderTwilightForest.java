@@ -4,8 +4,8 @@
 package twilightforest.world;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -45,7 +45,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	 * Fog color
 	 */
 	@Override
-    public Vec3 getFogColor(float f, float f1)
+    public Vec3d getFogColor(float f, float f1)
     {
         float bright = MathHelper.cos(0.25f * 3.141593F * 2.0F) * 2.0F + 0.5F;
         if(bright < 0.0F)
@@ -62,7 +62,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
         red *= bright * 0.94F + 0.06F;
         green *= bright * 0.94F + 0.06F;
         blue *= bright * 0.91F + 0.09F;
-        return Vec3.createVectorHelper(red, green, blue);
+        return Vec3d.createVectorHelper(red, green, blue);
     }
 	
     /**
@@ -178,8 +178,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks) {
-		return Vec3.createVectorHelper(43 / 256.0, 46 / 256.0, 99 / 256.0);
+	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
+		return Vec3d.createVectorHelper(43 / 256.0, 46 / 256.0, 99 / 256.0);
 	}
 
 	@Override

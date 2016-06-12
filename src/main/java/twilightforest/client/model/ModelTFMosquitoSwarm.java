@@ -6,8 +6,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 public class ModelTFMosquitoSwarm extends ModelBase 
 {
@@ -82,7 +82,7 @@ public class ModelTFMosquitoSwarm extends ModelBase
 		int bugs = 16;
 		
 		for (int i = 0; i < bugs; i++) {
-			Vec3 vec = Vec3.createVectorHelper(11, 0, 0);
+			Vec3d vec = Vec3d.createVectorHelper(11, 0, 0);
 			float rotateY = ((i * (360F / bugs)) * 3.141593F) / 180F;
 			vec.rotateAroundY(rotateY);
 			ModelRenderer bug = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));

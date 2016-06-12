@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFKobold;
 
 public class EntityAITFPanicOnFlockDeath extends EntityAIBase
@@ -52,7 +52,7 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase
         }
         else
         {
-            Vec3 var1 = RandomPositionGenerator.findRandomTarget(this.flockCreature, 5, 4);
+            Vec3d var1 = RandomPositionGenerator.findRandomTarget(this.flockCreature, 5, 4);
 
             if (var1 == null)
             {

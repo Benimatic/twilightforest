@@ -20,16 +20,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.stats.StatisticsFile;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenForest;
+import net.minecraft.world.gen.feature.WorldGenBirchTree;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.BiomeDictionary;
@@ -38,8 +35,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public abstract class TFBiomeBase extends BiomeGenBase  {
@@ -71,7 +66,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
 	public static final BiomeGenBase thornlands = (new TFBiomeThornlands(TwilightForestMod.idBiomeThornlands)).setColor(0x223322).setBiomeName("Thornlands").setHeight(new Height(6F, 0.1F));
 
 	protected WorldGenBigMushroom bigMushroomGen;
-	protected WorldGenForest birchGen;
+	protected WorldGenBirchTree birchGen;
 	
     /**
      * Holds the classes of IMobs (hostile mobs) that can be spawned in the biome.
@@ -84,7 +79,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
 		super(i);
 		
 		bigMushroomGen = new WorldGenBigMushroom();
-		birchGen = new WorldGenForest(false, false);
+		birchGen = new WorldGenBirchTree(false, false);
 		
 		// try to stop world leaks
 		this.worldGeneratorBigTree = null;

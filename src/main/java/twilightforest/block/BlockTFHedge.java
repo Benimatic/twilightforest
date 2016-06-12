@@ -13,11 +13,11 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -195,7 +195,7 @@ public class BlockTFHedge extends BlockLeavesBase {
     	for (EntityPlayer player : nearbyPlayers) {
     		if (player.isSwingInProgress) {
      			// are they pointing at this block?
-    			MovingObjectPosition mop = getPlayerPointVec(world, player, range);
+    			RayTraceResult mop = getPlayerPointVec(world, player, range);
 
     			if (mop != null && world.getBlock(mop.blockX, mop.blockY, mop.blockZ) == this) {
     				// prick them!  prick them hard!
@@ -216,10 +216,10 @@ public class BlockTFHedge extends BlockLeavesBase {
 	 * 
 	 * @return
 	 */
-	private MovingObjectPosition getPlayerPointVec(World worldObj, EntityPlayer player, double range) {
-        Vec3 position = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 look = player.getLook(1.0F);
-        Vec3 dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
+	private RayTraceResult getPlayerPointVec(World worldObj, EntityPlayer player, double range) {
+        Vec3d position = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d look = player.getLook(1.0F);
+        Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
         return worldObj.rayTraceBlocks(position, dest);
 	}
 	
@@ -315,7 +315,7 @@ public class BlockTFHedge extends BlockLeavesBase {
      * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
      */
     @Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	public ItemStack getPickBlock(RayTraceResult target, World world, int x, int y, int z)
     {
         return new ItemStack(this, 1, world.getBlockMetadata(x, y, z));
     }

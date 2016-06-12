@@ -3,7 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityTFThrownAxe extends EntityThrowable  {
@@ -23,7 +23,7 @@ public class EntityTFThrownAxe extends EntityThrowable  {
 
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
+	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		boolean passThru = false;
 
 		if (par1MovingObjectPosition.entityHit != null)

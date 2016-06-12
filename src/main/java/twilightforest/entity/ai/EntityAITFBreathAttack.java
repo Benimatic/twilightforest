@@ -6,10 +6,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.IBreathAttacker;
 
 public class EntityAITFBreathAttack extends EntityAIBase {
@@ -129,9 +129,9 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-        Vec3 srcVec = Vec3.createVectorHelper(this.entityHost.posX, this.entityHost.posY + 0.25, this.entityHost.posZ);
-        Vec3 lookVec = this.entityHost.getLook(1.0F);
-        Vec3 destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+        Vec3d srcVec = Vec3d.createVectorHelper(this.entityHost.posX, this.entityHost.posY + 0.25, this.entityHost.posZ);
+        Vec3d lookVec = this.entityHost.getLook(1.0F);
+        Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
         List<Entity> possibleList = this.entityHost.worldObj.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
@@ -142,7 +142,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
             {
                 float borderSize = possibleEntity.getCollisionBorderSize();
                 AxisAlignedBB collisionBB = possibleEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
-                MovingObjectPosition interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+                RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
                 if (collisionBB.isVecInside(srcVec))
                 {

@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFireJet;
@@ -79,7 +79,7 @@ public class TileEntityTFFlameJet extends TileEntity {
 			{
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = worldObj.getEntitiesWithinAABB(Entity.class, 
-						AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2, 
+						AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2,
 								this.xCoord + 2, this.yCoord + 4, this.zCoord + 2));
 				// fire!
 				for (Entity entity : entitiesInRange)

@@ -18,10 +18,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 import twilightforest.item.TFItems;
@@ -196,7 +196,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		
     	
     	// find vector in front of us
-		Vec3 vector = this.getLookVec();
+		Vec3d vector = this.getLookVec();
 		
 		double dist = 1.25;
 		double px = this.posX + vector.xCoord * dist;

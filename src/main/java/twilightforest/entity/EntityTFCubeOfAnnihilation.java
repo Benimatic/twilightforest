@@ -2,31 +2,23 @@ package twilightforest.entity;
 
 import java.util.List;
 
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.item.ItemTFChainBlock;
 import twilightforest.item.ItemTFCubeOfAnnihilation;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 
 public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
@@ -69,7 +61,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
 
 	@Override
-	protected void onImpact(MovingObjectPosition mop) {
+	protected void onImpact(RayTraceResult mop) {
 		// only hit living things
         if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase)
         {
@@ -184,10 +176,10 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
 
     		// always head towards either the point or towards the player
-			Vec3 destPoint = Vec3.createVectorHelper(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
+			Vec3d destPoint = Vec3d.createVectorHelper(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
 
     		if (!this.isReturning()) {
-    			Vec3 look = this.getThrower().getLookVec();
+    			Vec3d look = this.getThrower().getLookVec();
     			
     			
     			
@@ -206,7 +198,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     		
     		
     		// set motions
-    		Vec3 velocity = Vec3.createVectorHelper(this.posX - destPoint.xCoord, (this.posY + this.height / 2F) - destPoint.yCoord, this.posZ - destPoint.zCoord);
+    		Vec3d velocity = Vec3d.createVectorHelper(this.posX - destPoint.xCoord, (this.posY + this.height / 2F) - destPoint.yCoord, this.posZ - destPoint.zCoord);
     		
     		this.motionX -= velocity.xCoord;
     		this.motionY -= velocity.yCoord;

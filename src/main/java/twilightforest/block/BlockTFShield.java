@@ -14,8 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
@@ -140,7 +140,7 @@ public class BlockTFShield extends Block
 	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z)
     {
         // why can't we just pass the side to this method?  This is annoying and failure-prone
-        MovingObjectPosition mop = getPlayerPointVec(world, player, 6.0);
+        RayTraceResult mop = getPlayerPointVec(world, player, 6.0);
     	
         int facing = mop != null ? mop.sideHit : -1;
         int meta = world.getBlockMetadata(x, y, z);
@@ -164,10 +164,10 @@ public class BlockTFShield extends Block
 	 * 
 	 * @return
 	 */
-	private MovingObjectPosition getPlayerPointVec(World worldObj, EntityPlayer player, double range) {
-        Vec3 position = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 look = player.getLook(1.0F);
-        Vec3 dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
+	private RayTraceResult getPlayerPointVec(World worldObj, EntityPlayer player, double range) {
+        Vec3d position = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d look = player.getLook(1.0F);
+        Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
         return worldObj.rayTraceBlocks(position, dest);
 	}
 }

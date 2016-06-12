@@ -21,10 +21,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
@@ -627,7 +627,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		
 		
 		// find a good spot
-		Vec3 cloneSpot = findVecInLOSOf(targetedEntity);
+		Vec3d cloneSpot = findVecInLOSOf(targetedEntity);
 		
 		// put a clone there
 		EntityTFLich newClone = new EntityTFLich(worldObj, this);
@@ -688,7 +688,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	protected void spawnMinionAt(EntityLivingBase targetedEntity) {
 		
 		// find a good spot
-		Vec3 minionSpot = findVecInLOSOf(targetedEntity);
+		Vec3d minionSpot = findVecInLOSOf(targetedEntity);
 		
 		// put a clone there
 		EntityTFLichMinion minion = new EntityTFLichMinion(worldObj, this);
@@ -755,7 +755,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      */
     protected void teleportToSightOfEntity(Entity entity)
     {
-    	Vec3 dest = findVecInLOSOf(entity);
+    	Vec3d dest = findVecInLOSOf(entity);
     	double srcX = posX;
     	double srcY = posY;
     	double srcZ = posZ;
@@ -779,7 +779,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      * 
      * Returns null if we can't find anything
      */
-    protected Vec3 findVecInLOSOf(Entity targetEntity) 
+    protected Vec3d findVecInLOSOf(Entity targetEntity)
     {
     	// for some reason we occasionally get null here
     	if (targetEntity == null)
@@ -851,14 +851,14 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         
 //        System.out.println("I think we found a good destination at " + tx + ", " + ty + ", " + tz);
 //        System.out.println("canEntitySee = " + canEntitySee(targetEntity, tx, ty, tz));
-        return Vec3.createVectorHelper(tx, ty, tz);
+        return Vec3d.createVectorHelper(tx, ty, tz);
     }
     
     /**
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3.createVectorHelper(dx, dy, dz)) == null;
+        return worldObj.rayTraceBlocks(Vec3d.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3d.createVectorHelper(dx, dy, dz)) == null;
 
     }
 

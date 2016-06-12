@@ -23,10 +23,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
@@ -193,7 +193,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     	// when ice beaming, spew particles
     	if (isBreathing() && this.isEntityAlive())
     	{
-    		Vec3 look = this.getLookVec();
+    		Vec3d look = this.getLookVec();
 
     		double dist = 0.5;
     		double px = this.posX + look.xCoord * dist;
@@ -250,7 +250,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 			
 			if (i < this.iceArray.length - 1) {
 		        // set block position
-				Vec3 blockPos = this.getIceShieldPosition(i);
+				Vec3d blockPos = this.getIceShieldPosition(i);
 				
 				//System.out.println("Got position for block " + i + " and it is" + blockPos);
 				
@@ -413,7 +413,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     }
     
 	
-    private Vec3 getIceShieldPosition(int i) {
+    private Vec3d getIceShieldPosition(int i) {
     	return this.getIceShieldPosition(getIceShieldAngle(i), 1F);
 	}
 
@@ -430,12 +430,12 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	/**
      * Get the ice shield position
      */
-    public Vec3 getIceShieldPosition(float angle, float distance)
+    public Vec3d getIceShieldPosition(float angle, float distance)
     {
 		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getShieldYOffset(), this.posZ + var3);
+		return Vec3d.createVectorHelper(this.posX + var1, this.posY + this.getShieldYOffset(), this.posZ + var3);
     }
     
     
@@ -556,7 +556,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	public void summonMinionAt(EntityLivingBase targetedEntity) {
 		
 		// find a good spot
-		Vec3 minionSpot = findVecInLOSOf(targetedEntity);
+		Vec3d minionSpot = findVecInLOSOf(targetedEntity);
 		
 		// put a minion there
 		EntityTFIceCrystal minion = new EntityTFIceCrystal(worldObj);
@@ -576,7 +576,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
      * 
      * Returns null if we can't find anything
      */
-    protected Vec3 findVecInLOSOf(Entity targetEntity) 
+    protected Vec3d findVecInLOSOf(Entity targetEntity)
     {
     	// for some reason we occasionally get null here
     	if (targetEntity == null)
@@ -649,14 +649,14 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         
         //System.out.println("I think we found a good destination at " + tx + ", " + ty + ", " + tz);
 //        System.out.println("canEntitySee = " + canEntitySee(targetEntity, tx, ty, tz));
-        return Vec3.createVectorHelper(tx, ty, tz);
+        return Vec3d.createVectorHelper(tx, ty, tz);
     }
     
     /**
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3.createVectorHelper(dx, dy, dz)) == null;
+        return worldObj.rayTraceBlocks(Vec3d.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3d.createVectorHelper(dx, dy, dz)) == null;
 
     }
     

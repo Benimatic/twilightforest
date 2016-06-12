@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityTFUrGhastFireball extends EntityLargeFireball {
@@ -18,7 +18,7 @@ public class EntityTFUrGhastFireball extends EntityLargeFireball {
     /**
      * Called when this EntityFireball hits a block or entity.
      */
-    protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
+    protected void onImpact(RayTraceResult par1MovingObjectPosition)
     {
         if (!this.worldObj.isRemote && !(par1MovingObjectPosition.entityHit instanceof EntityFireball))
         {

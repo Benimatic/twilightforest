@@ -10,8 +10,8 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
@@ -88,7 +88,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     	// when breathing fire, spew particles
     	if (isBreathing())
     	{
-    		Vec3 look = this.getLookVec();
+    		Vec3d look = this.getLookVec();
 
     		double dist = 0.5;
     		double px = this.posX + look.xCoord * dist;

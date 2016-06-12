@@ -7,11 +7,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import twilightforest.TwilightForestMod;
 
@@ -547,7 +547,7 @@ public class HydraHeadContainer {
 			}
 			
 			// make the target vector be a point off in the distance in the direction we're already facing
-			Vec3 look = this.headEntity.getLookVec();
+			Vec3d look = this.headEntity.getLookVec();
 			double distance = 16.0D;
 			this.targetX = headEntity.posX + look.xCoord * distance;
 			this.targetY = headEntity.posY + 1.5 + look.yCoord * distance;
@@ -594,7 +594,7 @@ public class HydraHeadContainer {
 	{
 		if (this.targetEntity != null)
 		{
-			Vec3 vect = Vec3.createVectorHelper(this.targetEntity.posX - this.targetX, this.targetEntity.posY - this.targetY, this.targetEntity.posZ - this.targetZ);
+			Vec3d vect = Vec3d.createVectorHelper(this.targetEntity.posX - this.targetX, this.targetEntity.posY - this.targetY, this.targetEntity.posZ - this.targetZ);
 
 			vect = vect.normalize();
 
@@ -608,7 +608,7 @@ public class HydraHeadContainer {
 	 * During certain states, animate particles coming out of the mouth
 	 */
 	protected void addMouthParticles() {
-		Vec3 vector = headEntity.getLookVec();
+		Vec3d vector = headEntity.getLookVec();
 	
 		double dist = 3.5;
 		double px = headEntity.posX + vector.xCoord * dist;
@@ -625,7 +625,7 @@ public class HydraHeadContainer {
 		
 		if (headEntity.getState() == STATE_FLAME_BREATHING)
 		{
-			Vec3 look = headEntity.getLookVec();
+			Vec3d look = headEntity.getLookVec();
 			for (int i = 0; i < 5; i++)
 			{
 				double dx = look.xCoord;
@@ -687,43 +687,43 @@ public class HydraHeadContainer {
 	 */
 	protected void setNeckPosition() {
 		// set neck positions
-		Vec3 vector = null;
+		Vec3d vector = null;
 		float neckRotation = 0;
 		
 		if (headNum == 0)
 		{
-			vector = Vec3.createVectorHelper(0, 3, -1);
+			vector = Vec3d.createVectorHelper(0, 3, -1);
 			neckRotation = 0;
 		}
 		if (headNum == 1)
 		{
-			vector = Vec3.createVectorHelper(-1, 3, 3);
+			vector = Vec3d.createVectorHelper(-1, 3, 3);
 			neckRotation = 90;
 		}
 		if (headNum == 2)
 		{
-			vector = Vec3.createVectorHelper(1, 3, 3);
+			vector = Vec3d.createVectorHelper(1, 3, 3);
 			neckRotation = -90;
 		}
 		if (headNum == 3)
 		{
-			vector = Vec3.createVectorHelper(-1, 3, 3);
+			vector = Vec3d.createVectorHelper(-1, 3, 3);
 			neckRotation = 135;
 		}
 		if (headNum == 4)
 		{
-			vector = Vec3.createVectorHelper(1, 3, 3);
+			vector = Vec3d.createVectorHelper(1, 3, 3);
 			neckRotation = -135;
 		}
 		
 		if (headNum == 5)
 		{
-			vector = Vec3.createVectorHelper(-1, 3, 5);
+			vector = Vec3d.createVectorHelper(-1, 3, 5);
 			neckRotation = 135;
 		}
 		if (headNum == 6)
 		{
-			vector = Vec3.createVectorHelper(1, 3, 5);
+			vector = Vec3d.createVectorHelper(1, 3, 5);
 			neckRotation = -135;
 		}
 		
@@ -738,7 +738,7 @@ public class HydraHeadContainer {
 	 */
 	protected void setHeadPosition() {
 		// set head positions
-		Vec3 vector;
+		Vec3d vector;
 		double dx, dy, dz;
 
 		// head1 is above
@@ -763,7 +763,7 @@ public class HydraHeadContainer {
 			xSwing = ySwing = 0;
 		}
 		
-		vector = Vec3.createVectorHelper(0, 0, neckLength); // -53 = 3.3125
+		vector = Vec3d.createVectorHelper(0, 0, neckLength); // -53 = 3.3125
 		vector.rotateAroundX((xRotation * 3.141593F + xSwing) / 180F);
 		vector.rotateAroundY((-(hydraObj.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
 
@@ -795,7 +795,7 @@ public class HydraHeadContainer {
 			{
 				EntityTFHydraMortar mortar = new EntityTFHydraMortar(headEntity.worldObj, this.headEntity);
 
-				Vec3 vector = headEntity.getLookVec();
+				Vec3d vector = headEntity.getLookVec();
 
 				double dist = 3.5;
 				double px = headEntity.posX + vector.xCoord * dist;
@@ -875,9 +875,9 @@ public class HydraHeadContainer {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-        Vec3 srcVec = Vec3.createVectorHelper(headEntity.posX, headEntity.posY + 1.0, headEntity.posZ);
-        Vec3 lookVec = headEntity.getLook(1.0F);
-        Vec3 destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+        Vec3d srcVec = Vec3d.createVectorHelper(headEntity.posX, headEntity.posY + 1.0, headEntity.posZ);
+        Vec3d lookVec = headEntity.getLook(1.0F);
+        Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
         List<Entity> possibleList = headEntity.worldObj.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
@@ -888,7 +888,7 @@ public class HydraHeadContainer {
             {
                 float borderSize = possibleEntity.getCollisionBorderSize();
                 AxisAlignedBB collisionBB = possibleEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
-                MovingObjectPosition interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+                RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
                 if (collisionBB.isVecInside(srcVec))
                 {
@@ -1029,7 +1029,7 @@ public class HydraHeadContainer {
 		if (endPitch > 0) 
 		{
 			// if we are looking down, don't raise the first neck position, it looks weird
-			Vec3 vector = Vec3.createVectorHelper(0, 0, -1.0);
+			Vec3d vector = Vec3d.createVectorHelper(0, 0, -1.0);
 			vector.rotateAroundY((-endYaw * 3.141593F) / 180F);
 			endX += vector.xCoord;
 			endY += vector.yCoord;
@@ -1038,7 +1038,7 @@ public class HydraHeadContainer {
 		else
 		{
 			// but if we are looking up, lower it or it goes through the crest
-			Vec3 vector = headEntity.getLookVec();
+			Vec3d vector = headEntity.getLookVec();
 			float dist = 1.0f;
 			
 			endX -= vector.xCoord * dist;

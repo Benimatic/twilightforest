@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Facing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;

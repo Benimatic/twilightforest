@@ -2,25 +2,17 @@ package twilightforest.client;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLivingEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import twilightforest.TwilightForestMod;
 import twilightforest.item.ItemTFBowBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -74,7 +66,7 @@ public class TFClientEvents {
 	 * Render an entity with the ice effect.
 	 * This just displays a bunch of ice cubes around on their model
 	 */
-	private void renderIcedEntity(EntityLivingBase entity, RendererLivingEntity renderer, double x, double y, double z) {
+	private void renderIcedEntity(EntityLivingBase entity, RenderLivingBase renderer, double x, double y, double z) {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 

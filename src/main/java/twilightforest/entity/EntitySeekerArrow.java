@@ -6,9 +6,9 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntitySeekerArrow extends EntityArrow {
@@ -49,11 +49,11 @@ public class EntitySeekerArrow extends EntityArrow {
         		AxisAlignedBB targetBB = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 
         		// add two possible courses to our selection box
-				Vec3 courseVec = Vec3.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
+				Vec3d courseVec = Vec3d.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
         		courseVec.rotateAroundY((float) (Math.PI / 6F));
         		targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
 
-        		courseVec = Vec3.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
+        		courseVec = Vec3d.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
         		courseVec.rotateAroundY(-(float) (Math.PI / 6F));
         		targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
         		
@@ -72,9 +72,9 @@ public class EntitySeekerArrow extends EntityArrow {
         				System.out.println("Possible target : " + living);
         				//System.out.println("Selection box =  " + targetBB);
 
-        				courseVec = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ);
+        				courseVec = Vec3d.createVectorHelper(this.motionX, this.motionY, this.motionZ);
         				courseVec = courseVec.normalize();
-        				Vec3 targetVec = Vec3.createVectorHelper(this.posX - living.posX, this.posY - (living.posY + (double)living.getEyeHeight()), this.posZ - living.posZ);
+        				Vec3d targetVec = Vec3d.createVectorHelper(this.posX - living.posX, this.posY - (living.posY + (double)living.getEyeHeight()), this.posZ - living.posZ);
 
         				//double d0 = targetVec.lengthVector(); // do we need this?
         				targetVec = targetVec.normalize();
@@ -94,10 +94,10 @@ public class EntitySeekerArrow extends EntityArrow {
         		}
         	} else {
         		// find ideal heading
-				Vec3 targetVec = Vec3.createVectorHelper(this.posX - this.homingTarget.posX, this.posY - (this.homingTarget.posY + this.homingTarget.getEyeHeight()), this.posZ - this.homingTarget.posZ);
+				Vec3d targetVec = Vec3d.createVectorHelper(this.posX - this.homingTarget.posX, this.posY - (this.homingTarget.posY + this.homingTarget.getEyeHeight()), this.posZ - this.homingTarget.posZ);
 				targetVec = targetVec.normalize();
 				
-				Vec3 courseVec = Vec3.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
+				Vec3d courseVec = Vec3d.createVectorHelper(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
 				courseVec = courseVec.normalize();
 				
 				double dotProduct = courseVec.dotProduct(targetVec);

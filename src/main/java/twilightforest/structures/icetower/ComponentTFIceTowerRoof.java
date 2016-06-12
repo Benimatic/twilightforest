@@ -2,7 +2,7 @@ package twilightforest.structures.icetower;
 
 import java.util.Random;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;

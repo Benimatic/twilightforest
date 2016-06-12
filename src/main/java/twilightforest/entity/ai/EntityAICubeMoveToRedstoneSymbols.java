@@ -1,11 +1,10 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFRovingCube;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 
 public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 
@@ -30,7 +29,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
         {
         	//System.out.println("Cube scanning for symbol");
         	
-            Vec3 vec3 = this.searchForRedstoneSymbol(this.myCube, 16, 5);
+            Vec3d vec3 = this.searchForRedstoneSymbol(this.myCube, 16, 5);
 
             if (vec3 == null)
             {
@@ -65,7 +64,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
     /**
      * Search the area for a redstone circle (8 redstone dust around a blank square)
      */
-	private Vec3 searchForRedstoneSymbol(EntityTFRovingCube myCube2, int xzRange, int yRange) {
+	private Vec3d searchForRedstoneSymbol(EntityTFRovingCube myCube2, int xzRange, int yRange) {
 		
         int curX = MathHelper.floor_double(myCube2.posX);
         int curY = MathHelper.floor_double(myCube2.posY);
@@ -85,7 +84,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 						this.myCube.symbolY = y;
 						this.myCube.symbolZ = z;
 						
-						return Vec3.createVectorHelper(x, y, z);
+						return Vec3d.createVectorHelper(x, y, z);
 					}
 				}
 			}

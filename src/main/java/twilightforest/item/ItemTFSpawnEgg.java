@@ -18,7 +18,7 @@ import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFCreatures;
@@ -47,12 +47,12 @@ public class ItemTFSpawnEgg extends ItemMonsterPlacer {
 	@SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack par1ItemStack)
     {
-        String prefix = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
+        String prefix = ("" + I18n.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
         String entityname = TFCreatures.getStringFromID(par1ItemStack.getItemDamage());
 
         if (entityname != null)
         {
-            prefix = prefix + " " + StatCollector.translateToLocal(String.format("entity.%s.%s.name", TwilightForestMod.ID, entityname));
+            prefix = prefix + " " + I18n.translateToLocal(String.format("entity.%s.%s.name", TwilightForestMod.ID, entityname));
         }
         
         return prefix;

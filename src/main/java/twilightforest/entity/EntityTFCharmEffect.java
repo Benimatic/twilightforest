@@ -4,8 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.item.TFItems;
 
@@ -44,7 +44,7 @@ public class EntityTFCharmEffect extends Entity
 		//this.setOwner(orbiting.getEntityName());
 		this.setItemID(item);
 		
-		Vec3 look = Vec3.createVectorHelper(DISTANCE, 0, 0);
+		Vec3d look = Vec3d.createVectorHelper(DISTANCE, 0, 0);
 		
 		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
 		this.posX += look.xCoord * DISTANCE;
@@ -90,7 +90,7 @@ public class EntityTFCharmEffect extends Entity
         {
         	this.setLocationAndAngles(orbiting.posX, orbiting.posY + orbiting.getEyeHeight(), orbiting.posZ, orbiting.rotationYaw, orbiting.rotationPitch);
 
-        	Vec3 look = Vec3.createVectorHelper(DISTANCE, 0, 0);
+        	Vec3d look = Vec3d.createVectorHelper(DISTANCE, 0, 0);
         	look.rotateAroundY(rotation);
         	this.posX += look.xCoord;
 //        	this.posY += Math.sin(this.ticksExisted / 3.0F + offset);

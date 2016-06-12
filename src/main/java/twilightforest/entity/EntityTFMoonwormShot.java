@@ -5,8 +5,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
@@ -108,11 +108,11 @@ public class EntityTFMoonwormShot extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(MovingObjectPosition mop) {
+	protected void onImpact(RayTraceResult mop) {
 
 		// did we hit a block?  Make a worm there!
 		
-		if (mop.typeOfHit == MovingObjectType.BLOCK)
+		if (mop.typeOfHit == Type.BLOCK)
 		{
 			if (!worldObj.isRemote)
 			{

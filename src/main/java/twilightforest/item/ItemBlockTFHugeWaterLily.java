@@ -1,13 +1,12 @@
 package twilightforest.item;
 
+import net.minecraft.util.math.RayTraceResult;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class ItemBlockTFHugeWaterLily extends ItemBlock {
@@ -23,7 +22,7 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 	 */
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_)
 	{
-		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(p_77659_2_, p_77659_3_, true);
+		RayTraceResult movingobjectposition = this.getMovingObjectPositionFromPlayer(p_77659_2_, p_77659_3_, true);
 
         if (movingobjectposition == null)
         {
@@ -31,7 +30,7 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
         }
         else
         {
-            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+            if (movingobjectposition.typeOfHit == RayTraceResult.MovingObjectType.BLOCK)
             {
                 int i = movingobjectposition.blockX;
                 int j = movingobjectposition.blockY;

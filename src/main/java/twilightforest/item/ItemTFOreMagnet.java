@@ -10,8 +10,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFRoots;
@@ -172,9 +172,9 @@ public class ItemTFOreMagnet extends ItemTF
 		
 		// find vector 32 blocks from look
 		double range = 32.0D;
-		Vec3 srcVec = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		Vec3 lookVec = getOffsetLook(player, yawOffset, pitchOffset);
-		Vec3 destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+		Vec3d srcVec = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d lookVec = getOffsetLook(player, yawOffset, pitchOffset);
+		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
 		
 		int useX = MathHelper.floor_double(srcVec.xCoord);
 		int useY = MathHelper.floor_double(srcVec.yCoord);
@@ -296,12 +296,12 @@ public class ItemTFOreMagnet extends ItemTF
 	 * Get the player look vector, but offset by the specified parameters.  We use to scan the area around where the player is looking
 	 * in the likely case there's no ore in the exact look direction.
 	 */
-	private Vec3 getOffsetLook(EntityPlayer player, float yawOffset, float pitchOffset) {
+	private Vec3d getOffsetLook(EntityPlayer player, float yawOffset, float pitchOffset) {
         float var2 = MathHelper.cos(-(player.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
         float var3 = MathHelper.sin(-(player.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
         float var4 = -MathHelper.cos(-(player.rotationPitch + pitchOffset) * 0.017453292F);
         float var5 = MathHelper.sin(-(player.rotationPitch + pitchOffset) * 0.017453292F);
-        return Vec3.createVectorHelper(var3 * var4, var5, var2 * var4);
+        return Vec3d.createVectorHelper(var3 * var4, var5, var2 * var4);
 	}
 
 	private static boolean isReplaceable(World world, Block replaceID, int replaceMeta, int x, int y, int z)

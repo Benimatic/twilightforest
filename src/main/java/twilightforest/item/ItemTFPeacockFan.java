@@ -11,11 +11,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
@@ -69,7 +68,7 @@ public class ItemTFPeacockFan extends ItemTF
 			else
 			{
 				AxisAlignedBB fanBox = getEffectAABB(world, player);
-				Vec3 lookVec = player.getLookVec();
+				Vec3d lookVec = player.getLookVec();
 
 				// particle effect
 				for (int i = 0; i < 30; i++)
@@ -137,7 +136,7 @@ public class ItemTFPeacockFan extends ItemTF
 	 */
 	private void fanEntitiesInAABB(World world, EntityPlayer player, AxisAlignedBB fanBox) 
 	{
-		Vec3 moveVec = player.getLookVec();
+		Vec3d moveVec = player.getLookVec();
 		
 		List<Entity> inBox = world.getEntitiesWithinAABB(Entity.class, fanBox);
 		
@@ -158,9 +157,9 @@ public class ItemTFPeacockFan extends ItemTF
 	private AxisAlignedBB getEffectAABB(World world, EntityPlayer player) {
 		double range = 3.0D;
 		double radius = 2.0D;
-		Vec3 srcVec = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		Vec3 lookVec = player.getLookVec();
-		Vec3 destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+		Vec3d srcVec = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d lookVec = player.getLookVec();
+		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
 		
 		AxisAlignedBB crumbleBox =  AxisAlignedBB.getBoundingBox(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
 		return crumbleBox;

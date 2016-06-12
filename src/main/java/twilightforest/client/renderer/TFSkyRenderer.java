@@ -7,7 +7,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IRenderHandler;
 
@@ -85,7 +85,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Vec3 var2 = getTwilightSkyColor(world);//Vec3 var2 = world.getSkyColor(mc.renderViewEntity, partialTicks);
+        Vec3d var2 = getTwilightSkyColor(world);//Vec3 var2 = world.getSkyColor(mc.renderViewEntity, partialTicks);
         float var3 = (float)var2.xCoord;
         float var4 = (float)var2.yCoord;
         float var5 = (float)var2.zCoord;
@@ -287,8 +287,8 @@ public class TFSkyRenderer extends IRenderHandler {
 	 * Maybe in the future we can get the return of sky color by biome?
 	 * @return
 	 */
-	private Vec3 getTwilightSkyColor(World world) {
-		return Vec3.createVectorHelper(32 / 256.0, 34 / 256.0, 74 / 256.0);
+	private Vec3d getTwilightSkyColor(World world) {
+		return Vec3d.createVectorHelper(32 / 256.0, 34 / 256.0, 74 / 256.0);
 //		return Vec3.createVectorHelper(43 / 256.0, 46 / 256.0, 99 / 256.0);
  	}
 

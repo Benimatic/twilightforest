@@ -7,10 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFLoyalZombie;
@@ -37,7 +36,7 @@ public class ItemTFZombieWand extends ItemTF {
 			
 			if (!worldObj.isRemote) {
 				// what block is the player pointing at?
-				MovingObjectPosition mop = getPlayerPointVec(worldObj, player, 20.0F);
+				RayTraceResult mop = getPlayerPointVec(worldObj, player, 20.0F);
 				
 				if (mop != null) {
 					// make a zombie there
@@ -72,10 +71,10 @@ public class ItemTFZombieWand extends ItemTF {
 	 * 
 	 * @return
 	 */
-	private MovingObjectPosition getPlayerPointVec(World worldObj, EntityPlayer player, float range) {
-        Vec3 position = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 look = player.getLook(1.0F);
-        Vec3 dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
+	private RayTraceResult getPlayerPointVec(World worldObj, EntityPlayer player, float range) {
+        Vec3d position = Vec3d.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d look = player.getLook(1.0F);
+        Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
         return worldObj.rayTraceBlocks(position, dest);
 	}
 

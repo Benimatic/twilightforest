@@ -5,8 +5,8 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 
@@ -88,7 +88,7 @@ public class EntityTFLichBolt extends EntityThrowable {
         setBeenAttacked();
         if (damagesource.getEntity() != null)
         {
-            Vec3 vec3d = damagesource.getEntity().getLookVec();
+            Vec3d vec3d = damagesource.getEntity().getLookVec();
             if (vec3d != null)
             {
             	this.setThrowableHeading(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.5F, 0.1F);  // reflect faster and more accurately
@@ -131,7 +131,7 @@ public class EntityTFLichBolt extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
+	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		boolean passThrough = false;
 		
 		// pass through other lich bolts
