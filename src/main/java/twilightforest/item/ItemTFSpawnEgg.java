@@ -29,7 +29,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFSpawnEgg extends ItemMonsterPlacer {
 
 	protected ItemTFSpawnEgg() {
-		super();
         this.setHasSubtypes(true);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
@@ -144,24 +143,5 @@ public class ItemTFSpawnEgg extends ItemMonsterPlacer {
         	TFEntityEggInfo var5 = (TFEntityEggInfo)var4.next();
             par3List.add(new ItemStack(par1, 1, var5.spawnedID));
         }
-    }
-    
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
-    public IIcon getIconFromDamageForRenderPass(int par1, int par2)
-    {
-        return Items.SPAWN_EGG.getIconFromDamageForRenderPass(par1, par2);
-    }
-    
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        ; // don't load anything
     }
 }

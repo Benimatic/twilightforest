@@ -22,7 +22,7 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 	 */
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_)
 	{
-		RayTraceResult movingobjectposition = this.getMovingObjectPositionFromPlayer(p_77659_2_, p_77659_3_, true);
+		RayTraceResult movingobjectposition = this.rayTrace(p_77659_2_, p_77659_3_, true);
 
         if (movingobjectposition == null)
         {
@@ -30,7 +30,7 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
         }
         else
         {
-            if (movingobjectposition.typeOfHit == RayTraceResult.MovingObjectType.BLOCK)
+            if (movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK)
             {
                 int i = movingobjectposition.blockX;
                 int j = movingobjectposition.blockY;

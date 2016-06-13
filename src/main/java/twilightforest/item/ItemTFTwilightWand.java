@@ -83,7 +83,7 @@ public class ItemTFTwilightWand extends ItemTF {
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
     
     /**
@@ -91,7 +91,7 @@ public class ItemTFTwilightWand extends ItemTF {
      */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+    	return EnumRarity.RARE;
 	}
 
     /**
@@ -104,14 +104,4 @@ public class ItemTFTwilightWand extends ItemTF {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
 	}
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

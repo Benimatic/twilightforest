@@ -23,7 +23,7 @@ public class BehaviorTFMobEggDispense extends BehaviorDefaultDispenseItem
     {
         EnumFacing facing = EnumFacing.getFront(par1IBlockSource.getBlockMetadata());
         double x = par1IBlockSource.getX() + (double)facing.getFrontOffsetX();
-        double y = (double)((float)par1IBlockSource.getYInt() + 0.2F);
+        double y = (double)((float)par1IBlockSource.getY() + 0.2F);
         double z = par1IBlockSource.getZ() + (double)facing.getFrontOffsetZ();
         ItemTFSpawnEgg.spawnCreature(par1IBlockSource.getWorld(), par2ItemStack.getItemDamage(), x, y, z);
         par2ItemStack.splitStack(1);

@@ -10,7 +10,6 @@ public class ItemTFSeekerBow extends ItemTFBowBase {
 	
     
     public ItemTFSeekerBow() {
-    	this.setTextureName(TwilightForestMod.ID + ":seekerbow");
 		this.setCreativeTab(TFItems.creativeTab);
     }
 

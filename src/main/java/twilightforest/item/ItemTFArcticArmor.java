@@ -27,7 +27,7 @@ public class ItemTFArcticArmor extends ItemArmor {
 	 */    
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 	
     /**
@@ -75,16 +75,6 @@ public class ItemTFArcticArmor extends ItemArmor {
     {
     	// repair with ?????
         return par2ItemStack.getItem() == TFItems.arcticFur ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
     }
     
     /**

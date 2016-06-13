@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class TFMapCloningRecipe implements IRecipe
 {
@@ -122,5 +123,10 @@ public class TFMapCloningRecipe implements IRecipe
 	public ItemStack getRecipeOutput()
     {
         return null;
+    }
+
+    @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }
 }

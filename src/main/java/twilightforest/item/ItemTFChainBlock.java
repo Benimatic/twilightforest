@@ -29,7 +29,7 @@ public class ItemTFChainBlock extends ItemTool {
 	private HashMap<ItemStack, Entity> launchedBlocksMap = new HashMap<ItemStack, Entity>();
 
 	protected ItemTFChainBlock() {
-		super(6, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(new Block[] {Blocks.STONE}));
+		super(6, 1.6F, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(new Block[] {Blocks.STONE})); // todo 1.9 attack speed
         this.maxStackSize = 1;
         this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);

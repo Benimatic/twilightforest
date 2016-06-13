@@ -202,8 +202,8 @@ public class TFItems {
     	steeleafPick = new ItemTFSteeleafPick(TOOL_STEELEAF).setUnlocalizedName("steeleafPick").setMaxStackSize(1);
     	steeleafAxe = new ItemTFSteeleafAxe(TOOL_STEELEAF).setUnlocalizedName("steeleafAxe").setMaxStackSize(1);
     	steeleafHoe = new ItemTFSteeleafHoe(TOOL_STEELEAF).setUnlocalizedName("steeleafHoe").setMaxStackSize(1);
-    	minotaurAxe = new ItemTFMinotaurAxe(Item.ToolMaterial.EMERALD).setUnlocalizedName("minotaurAxe").setMaxStackSize(1);
-    	mazebreakerPick = new ItemTFMazebreakerPick(Item.ToolMaterial.EMERALD).setUnlocalizedName("mazebreakerPick").setMaxStackSize(1);
+    	minotaurAxe = new ItemTFMinotaurAxe(Item.ToolMaterial.DIAMOND).setUnlocalizedName("minotaurAxe").setMaxStackSize(1);
+    	mazebreakerPick = new ItemTFMazebreakerPick(Item.ToolMaterial.DIAMOND).setUnlocalizedName("mazebreakerPick").setMaxStackSize(1);
     	transformPowder = new ItemTFTransformPowder().makeRare().setUnlocalizedName("transformPowder");
     	meefRaw = (new ItemTFFood(2, 0.3F, true)).setUnlocalizedName("meefRaw");
     	meefSteak = (new ItemTFFood(6, 0.6F, true)).setUnlocalizedName("meefSteak");

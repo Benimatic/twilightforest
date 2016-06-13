@@ -4,10 +4,14 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -29,10 +33,10 @@ public class ItemTFZombieWand extends ItemTF {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player, EnumHand hand) {
 		
 		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) {
-			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+			player.setActiveHand(hand);
 			
 			if (!worldObj.isRemote) {
 				// what block is the player pointing at?
@@ -50,7 +54,7 @@ public class ItemTFZombieWand extends ItemTF {
 						// ignore?
 						FMLLog.warning("[TwilightForest] Could not determine player name for loyal zombie, ignoring error.");
 					}
-					zombie.addPotionEffect(new PotionEffect(MobEffects.DAMAGEBOOST.id, 1200, 1));
+					zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
 					worldObj.spawnEntityInWorld(zombie);
 
 					par1ItemStack.damageItem(1, player);
@@ -58,10 +62,10 @@ public class ItemTFZombieWand extends ItemTF {
 			}
 		}
 		else {
-			player.stopUsingItem();
+			player.resetActiveHand();
 		}
 		
-		return par1ItemStack;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 	
 	/**
@@ -94,7 +98,7 @@ public class ItemTFZombieWand extends ItemTF {
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
     
     /**
@@ -102,7 +106,7 @@ public class ItemTFZombieWand extends ItemTF {
      */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+    	return EnumRarity.RARE;
 	}
     
     /**
@@ -113,14 +117,4 @@ public class ItemTFZombieWand extends ItemTF {
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
 	}
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

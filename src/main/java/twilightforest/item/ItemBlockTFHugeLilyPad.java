@@ -25,12 +25,12 @@ public class ItemBlockTFHugeLilyPad extends ItemLilyPad {
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	RayTraceResult movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
+    	RayTraceResult movingobjectposition = this.rayTrace(world, player, true);
 
         if (movingobjectposition == null) {
             return itemStack;
         } else {
-            if (movingobjectposition.typeOfHit == RayTraceResult.MovingObjectType.BLOCK)
+            if (movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK)
             {
                 int x = movingobjectposition.blockX;
                 int y = movingobjectposition.blockY;
