@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
@@ -13,8 +14,8 @@ import twilightforest.item.ItemTFYetiArmor;
 public class TFEnchantment extends Enchantment
 {
 
-	protected TFEnchantment(int par1, int par2, EnumEnchantmentType par3EnumEnchantmentType) {
-		super(par1, par2, par3EnumEnchantmentType);
+	protected TFEnchantment(Rarity rarity, EnumEnchantmentType type, EntityEquipmentSlot[] slots) {
+		super(rarity, type, slots);
 	}
 
 
