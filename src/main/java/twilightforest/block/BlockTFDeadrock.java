@@ -3,6 +3,7 @@ package twilightforest.block;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,7 +24,7 @@ public class BlockTFDeadrock extends Block {
 		super(Material.ROCK);
         this.setHardness(100F);
 		this.setResistance(6000000.0F);
-		this.setStepSound(soundTypePiston);
+		this.setSoundType(SoundType.STONE);
 		this.disableStats();
 		this.setCreativeTab(TFItems.creativeTab);
 	}

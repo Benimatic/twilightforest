@@ -13,11 +13,6 @@ public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
 	
 	private static final int RIPEN_THRESHHOLD = 6;
 
-
-	protected BlockTFUnripeTorchCluster() {
-        this.setBlockTextureName(TwilightForestMod.ID + ":unripe_torch_cluster");
-	}
-
 	@Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         super.updateTick(world, pos, state, rand);

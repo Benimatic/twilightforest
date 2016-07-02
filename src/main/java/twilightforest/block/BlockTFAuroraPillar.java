@@ -23,7 +23,6 @@ public class BlockTFAuroraPillar extends BlockRotatedPillar {
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
 	}
-	
 
 	/**
 	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called

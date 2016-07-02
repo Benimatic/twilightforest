@@ -1,10 +1,13 @@
 package twilightforest.block;
 
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -12,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import twilightforest.TwilightForestMod;
@@ -22,10 +26,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFAuroraSlab extends BlockSlab {
 
+    private static final PropertyEnum<Dummy> DUMMY_PROP = PropertyEnum.create("dummy", Dummy.class);
+
 	private IIcon sideIcon;
+    private final boolean isDouble;
 
 	public BlockTFAuroraSlab(boolean isDouble) {
-		super(isDouble, Material.PACKED_ICE);
+		super(Material.PACKED_ICE);
+        this.isDouble = isDouble;
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
@@ -42,28 +50,28 @@ public class BlockTFAuroraSlab extends BlockSlab {
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z) {
 		return TFBlocks.auroraPillar.colorMultiplier(par1IBlockAccess, -x, y, -z);
 	}
-	
-	
-	@SideOnly(Side.CLIENT)
-	public int getBlockColor() {
-		return this.colorMultiplier(null, 0, 0, 16);
-	}
 
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int meta) {
-        return this.getBlockColor();
-    }
-	
 	@Override
-	public String func_150002_b(int var1) {
+	public String getUnlocalizedName(int meta) {
 		return super.getUnlocalizedName();
 	}
 
-	
-	   /**
+    @Override
+    public boolean isDouble() {
+        return isDouble;
+    }
+
+    @Override
+    public IProperty<?> getVariantProperty() {
+        return DUMMY_PROP;
+    }
+
+    @Override
+    public Comparable<?> getTypeForItem(ItemStack stack) {
+        return Dummy.SINGLETON;
+    }
+
+    /**
      * Gets the block's texture. Args: side, meta
      */
     @SideOnly(Side.CLIENT)
@@ -93,32 +101,20 @@ public class BlockTFAuroraSlab extends BlockSlab {
     {
         return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        if (this.field_150004_a)
-        {
-            return super.shouldSideBeRendered(world, x, y, z, side);
-        }
-        else if (side != 1 && side != 0 && !super.shouldSideBeRendered(world, x, y, z, side))
-        {
-            return false;
-        }
-        else
-        {
-            int i1 = x + Facing.offsetsXForSide[Facing.oppositeSide[side]];
-            int j1 = y + Facing.offsetsYForSide[Facing.oppositeSide[side]];
-            int k1 = z + Facing.offsetsZForSide[Facing.oppositeSide[side]];
-            boolean flag = (world.getBlockMetadata(i1, j1, k1) & 8) != 0;
-            return flag ? (side == 0 ? true : (side == 1 && super.shouldSideBeRendered(world, x, y, z, side) ? true : !isSingleSlab(world.getBlock(x, y, z)) || (world.getBlockMetadata(x, y, z) & 8) == 0)) : (side == 1 ? true : (side == 0 && super.shouldSideBeRendered(world, x, y, z, side) ? true : !isSingleSlab(world.getBlock(x, y, z)) || (world.getBlockMetadata(x, y, z) & 8) != 0));
-        }
-    }
     
     @SideOnly(Side.CLIENT)
     private static boolean isSingleSlab(Block p_150003_0_)
     {
         return p_150003_0_ == TFBlocks.auroraSlab;
     }
+
+    private enum Dummy implements IStringSerializable {
+        SINGLETON {
+            @Override
+            public String getName() {
+                return name().toLowerCase(Locale.ROOT);
+            }
+        }
+    }
+
 }

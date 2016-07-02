@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import twilightforest.block.state.StateProps;
+import twilightforest.block.state.enums.SpawnerVariant;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFHydraSpawner;
 import twilightforest.tileentity.TileEntityTFKnightPhantomsSpawner;
@@ -35,6 +37,17 @@ public class BlockTFBossSpawner extends Block {
 		this.setHardness(20F);
 		//this.setResistance(10F);
 		this.setCreativeTab(TFItems.creativeTab);
+		this.setDefaultState(blockState.getBaseState().withProperty(StateProps.SPAWNER_VARIANT, SpawnerVariant.NAGA));
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(StateProps.SPAWNER_VARIANT).ordinal();
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(StateProps.SPAWNER_VARIANT, SpawnerVariant.values()[meta]);
 	}
 
 	@Override
@@ -46,36 +59,16 @@ public class BlockTFBossSpawner extends Block {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
     {
-		if (metadata == 0) 
-		{
-			return new TileEntityTFNagaSpawner();
-		}
-		else if (metadata == 1)
-		{
-			return new TileEntityTFLichSpawner();
-		}
-		else if (metadata == 2) 
-		{
-			return new TileEntityTFHydraSpawner();
-		}
-		else if (metadata == 3) 
-		{
-			return new TileEntityTFTowerBossSpawner();
-		}
-		else if (metadata == 4) 
-		{
-			return new TileEntityTFKnightPhantomsSpawner();
-		}
-		else if (metadata == 5) 
-		{
-			return new TileEntityTFSnowQueenSpawner();
-		}
-		else 
-		{
-			return null;
+		switch (state.getValue(StateProps.SPAWNER_VARIANT)) {
+			case NAGA: return new TileEntityTFNagaSpawner();
+			case LICH: return new TileEntityTFLichSpawner();
+			case HYDRA: return new TileEntityTFHydraSpawner();
+			case TOWER: return new TileEntityTFTowerBossSpawner();
+			case KNIGHT_PHANTOM: return new TileEntityTFKnightPhantomsSpawner();
+			case SNOW_QUEEN: return new TileEntityTFSnowQueenSpawner();
+			default: return null;
 		}
     }
-
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int fortune)

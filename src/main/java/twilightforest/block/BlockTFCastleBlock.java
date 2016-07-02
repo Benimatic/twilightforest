@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,6 +18,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.state.StateProps;
+import twilightforest.block.state.enums.CastleBrickVariant;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,18 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class BlockTFCastleBlock extends Block {
-	
-	private static IIcon brickIcon;
-	private static IIcon crackIcon;
-	private static IIcon fadedIcon;
-	private static IIcon roofIcon;
 
-	/**
-	 * Note that the texture called for here will only be used when the meta value is not a good block to mimic
-	 * 
-	 * @param id
-	 * @param texture
-	 */
     public BlockTFCastleBlock()
     {
         super(Material.ROCK);
@@ -51,49 +43,35 @@ public class BlockTFCastleBlock extends Block {
         this.setResistance(15F);
         this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-
+		this.setDefaultState(blockState.getBaseState().withProperty(StateProps.CASTLEBRICK_VARIANT, CastleBrickVariant.NORMAL));
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		switch (meta)
-		{
-		case 0:
-		default:
-			return brickIcon;
-		case 1:
-			return fadedIcon;
-		case 2:
-			return crackIcon;
-		case 3:
-			return roofIcon;
-		}
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, StateProps.CASTLEBRICK_VARIANT);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		BlockTFCastleBlock.brickIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_brick");
-		BlockTFCastleBlock.fadedIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_faded");
-		BlockTFCastleBlock.crackIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_cracked");
-		BlockTFCastleBlock.roofIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_roof");
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(StateProps.CASTLEBRICK_VARIANT).ordinal();
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(StateProps.CASTLEBRICK_VARIANT, CastleBrickVariant.values()[meta]);
 	}
 
 	@Override
 	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
 	{
 		// damage the player's pickaxe
-    	ItemStack cei = entityplayer.getCurrentEquippedItem();
+    	ItemStack cei = entityplayer.getHeldItemMainhand();
         if(cei != null && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) 
         {
             cei.damageItem(16, entityplayer);
         }
     	
-		super.harvestBlock(world, entityplayer, x, y, z, meta);
+		super.harvestBlock(world, entityplayer, pos, state, te, stack);
     }
     
 	@Override
@@ -107,7 +85,7 @@ public class BlockTFCastleBlock extends Block {
     
     @Override
 	public int damageDropped(IBlockState state) {
-    	return meta;
+    	return getMetaFromState(state);
 	}
 
 }

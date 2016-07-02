@@ -3,6 +3,7 @@ package twilightforest.block;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ public class BlockTFDarkLeaves extends Block {
 		super(Material.LEAVES);
 		this.setHardness(2F);
 		this.setResistance(10F);
-		this.setStepSound(Block.soundTypeGrass);
+		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
 		
 		this.textureName = TwilightForestMod.ID + ":darkwood_leaves2";

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,9 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.state.StateProps;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,6 +37,20 @@ public class BlockTFAuroraBrick extends Block {
 
 	}
 
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, StateProps.AURORA_VARIANT);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(StateProps.AURORA_VARIANT);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(StateProps.AURORA_VARIANT, MathHelper.clamp_int(meta, 0, 15));
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -117,20 +134,6 @@ public class BlockTFAuroraBrick extends Block {
 		return red << 16 | blue << 8 | green;
 	}
 
-
-	@SideOnly(Side.CLIENT)
-	public int getBlockColor() {
-		return this.colorMultiplier(null, 16, 0, 16);
-	}
-
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int meta) {
-        return this.getBlockColor();
-    }
-	
 	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
@@ -143,15 +146,9 @@ public class BlockTFAuroraBrick extends Block {
     	return 0;
 	}
 
-	@Override
+    @Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return Math.abs(x + z) % 16;
-    }
-
-    @Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-    	world.setBlockMetadataWithNotify(x, y, z, Math.abs(x + z) % 16, 2);
+		return getDefaultState().withProperty(StateProps.AURORA_VARIANT, Math.abs(pos.getX() + pos.getZ()) % 16);
     }
 }
