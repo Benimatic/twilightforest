@@ -8,13 +8,19 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -25,65 +31,83 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public abstract class BlockTFCritter extends Block {
-	
 
-	
+    private final float WIDTH = getWidth();
+    private final AxisAlignedBB DOWN_BB = new AxisAlignedBB(0.5F - WIDTH, 1.0F - WIDTH * 2.0F, 0.2F, 0.5F + WIDTH, 1.0F, 0.8F);;
+    private final AxisAlignedBB UP_BB = new AxisAlignedBB(0.5F - WIDTH, 0.0F, 0.2F, 0.5F + WIDTH, WIDTH * 2.0F, 0.8F);;
+    private final AxisAlignedBB NORTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 1.0F - WIDTH * 2.0F, 0.5F + WIDTH, 0.8F, 1.0F);;
+    private final AxisAlignedBB SOUTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 0.0F, 0.5F + WIDTH, 0.8F, WIDTH * 2.0F);;
+    private final AxisAlignedBB WEST_BB = new AxisAlignedBB(1.0F - WIDTH * 2.0F, 0.2F, 0.5F - WIDTH, 1.0F, 0.8F, 0.5F + WIDTH);;
+    private final AxisAlignedBB EAST_BB = new AxisAlignedBB(0.0F, 0.2F, 0.5F - WIDTH, WIDTH * 2.0F, 0.8F, 0.5F + WIDTH);
+
     protected BlockTFCritter()
     {
         super(Material.CIRCUITS);
 		this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
-		
-		this.stepSound = new StepSoundTFInsect("squish", 0.25F, 0.6F);
+		this.setSoundType(SoundType.SLIME);
+        this.setDefaultState(blockState.getBaseState().withProperty(StateProps.FACING, EnumFacing.UP));
+    }
+
+    public float getWidth() {
+        return 0.15F;
+    }
+
+    @Override
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, StateProps.FACING);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        switch (state.getValue(StateProps.FACING)) {
+            case DOWN: return 6;
+            case UP: return 5;
+            case NORTH: return 4;
+            case SOUTH: return 3;
+            case WEST: return 2;
+            case EAST: return 1;
+        }
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        EnumFacing facing = EnumFacing.UP;
+        switch (meta) {
+            case 6: facing = EnumFacing.DOWN; break;
+            case 5: facing = EnumFacing.UP; break;
+            case 4: facing = EnumFacing.NORTH; break;
+            case 3: facing = EnumFacing.SOUTH; break;
+            case 2: facing = EnumFacing.WEST; break;
+            case 1: facing = EnumFacing.EAST; break;
+        }
+        return getDefaultState().withProperty(StateProps.FACING, facing);
     }
     
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) 
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-    	int facing = world.getBlockMetadata(x, y, z) & 7;
-    	float wide = 0.15F;
-    	if (facing == 1)
-    	{
-    		setBlockBounds(0.0F, 0.2F, 0.5F - wide, wide * 2.0F, 0.8F, 0.5F + wide);
-    	} 
-    	else if(facing == 2)
-    	{
-    		setBlockBounds(1.0F - wide * 2.0F, 0.2F, 0.5F - wide, 1.0F, 0.8F, 0.5F + wide);
-    	} 
-    	else if(facing == 3)
-    	{
-    		setBlockBounds(0.5F - wide, 0.2F, 0.0F, 0.5F + wide, 0.8F, wide * 2.0F);
-    	} 
-    	else if(facing == 4)
-    	{
-    		setBlockBounds(0.5F - wide, 0.2F, 1.0F - wide * 2.0F, 0.5F + wide, 0.8F, 1.0F);
-    	} 
-    	else if(facing == 5)
-    	{
-    		setBlockBounds(0.5F - wide, 0.0F, 0.2F, 0.5F + wide, wide * 2.0F, 0.8F);
-    	} 
-    	else if(facing == 6)
-    	{
-    		setBlockBounds(0.5F - wide, 1.0F - wide * 2.0F, 0.2F, 0.5F + wide, 1.0F, 0.8F);
-    	} 
-    	else
-    	{
-    		float f1 = 0.1F;
-    		setBlockBounds(0.5F - f1, 0.0F, 0.5F - f1, 0.5F + f1, 0.6F, 0.5F + f1);
-    	}   
+        switch (state.getValue(StateProps.FACING)) {
+            case DOWN: return DOWN_BB;
+            case UP: default: return UP_BB;
+            case NORTH: return NORTH_BB;
+            case SOUTH: return SOUTH_BB;
+            case WEST: return WEST_BB;
+            case EAST: return EAST_BB;
+        }
     }
     
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
     {
-        return null;
+        return NULL_AABB;
     }
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
@@ -94,103 +118,65 @@ public abstract class BlockTFCritter extends Block {
 		return false;
 	}
 	
-    /**
-     * The type of render function that is called for this block
-     */
 	@Override
 	public int getRenderType()
 	{
 		return TwilightForestMod.proxy.getCritterBlockRenderID();
 	}
-	
 
 	@Override
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		if (canPlaceAt(world, x - 1, y, z)) {
-			return true;
-		} else if (canPlaceAt(world, x + 1, y, z)) {
-			return true;
-		} else if (canPlaceAt(world, x, y, z - 1)) {
-			return true;
-		} else if (canPlaceAt(world, x, y, z + 1)) {
-			return true;
-		} else if (canPlaceAt(world, x, y - 1, z)) {
-			return true;
-		} else if (canPlaceAt(world, x, y + 1, z)) {
-			return true;
-		} else {
-			return false;
-		}
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+        for (EnumFacing e : EnumFacing.VALUES) {
+            if (!canPlaceAt(world, pos.offset(e))) {
+                return false;
+            }
+        }
+
+		return true;
 	}
 
 	
 	@Override
-    public int onBlockPlaced(World par1World, int x, int y, int z, int placementFacing, float par6, float par7, float par8, int meta)
+    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing placementFacing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        if (placementFacing == 1 && this.canPlaceAt(par1World, x, y - 1, z))
+        if (placementFacing == EnumFacing.UP && this.canPlaceAt(world, pos.down()))
         {
             meta = 5;
         }
 
-        if (placementFacing == 0 && this.canPlaceAt(par1World, x, y + 1, z))
+        if (placementFacing == EnumFacing.DOWN && this.canPlaceAt(world, pos.up()))
         {
             meta = 6;
         }
 
-        if (placementFacing == 2 && par1World.isSideSolid(x, y, z + 1, NORTH, true))
+        if (placementFacing == EnumFacing.NORTH && world.isSideSolid(pos.south(), EnumFacing.NORTH, true))
         {
             meta = 4;
         }
 
-        if (placementFacing == 3 && par1World.isSideSolid(x, y, z - 1, SOUTH, true))
+        if (placementFacing == EnumFacing.SOUTH && world.isSideSolid(pos.north(), EnumFacing.SOUTH, true))
         {
             meta = 3;
         }
 
-        if (placementFacing == 4 && par1World.isSideSolid(x + 1, y, z, WEST, true))
+        if (placementFacing == EnumFacing.WEST && world.isSideSolid(pos.east(), EnumFacing.WEST, true))
         {
             meta = 2;
         }
 
-        if (placementFacing == 5 && par1World.isSideSolid(x - 1, y, z, EAST, true))
+        if (placementFacing == EnumFacing.EAST && world.isSideSolid(pos.west(), EnumFacing.EAST, true))
         {
             meta = 1;
         }
         
-        return meta;
+        return getStateFromMeta(meta);
     }
 
-    
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     @Override
-	public void onBlockAdded(World world, int x, int y, int z)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-    	if (world.getBlockMetadata(x, y, z) == 0)
-    	{
-    		if (canPlaceAt(world, x - 1, y, z)) {
-    			world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-    		} 
-    		else if (canPlaceAt(world, x + 1, y, z)) {
-    			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-    		} 
-    		else if (canPlaceAt(world, x, y, z - 1)) {
-    			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-    		} 
-    		else if (canPlaceAt(world, x, y, z + 1)) {
-    			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-    		} 
-    		else if (canPlaceAt(world, x, y - 1, z)) {
-    			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-    		}
-    		else if (canPlaceAt(world, x, y + 1, z)) {
-    			world.setBlockMetadataWithNotify(x, y, z, 6, 2);
-    		}
-    	}    	
+        dropCritterIfCantStay(world, pos);
 
-        dropCritterIfCantStay(world, x, y, z);
-        
         // for fireflies, schedule a lighting update 
         int meta = world.getBlockMetadata(x, y, z);
         if (meta == 0) {
@@ -198,12 +184,11 @@ public abstract class BlockTFCritter extends Block {
         }
     }
 
-    public boolean dropCritterIfCantStay(World world, int x, int y, int z)
+    public boolean dropCritterIfCantStay(World world, BlockPos pos)
     {
-        if(!canPlaceBlockAt(world, x, y, z))
+        if(!canPlaceBlockAt(world, pos))
         {
-            dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-            world.setBlockToAir(x, y, z);
+            world.destroyBlock(pos, true);
             return false;
         } else
         {
@@ -211,84 +196,33 @@ public abstract class BlockTFCritter extends Block {
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     @Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block blockID)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID)
     {
-        if(dropCritterIfCantStay(world, x, y, z))
+        if(dropCritterIfCantStay(world, pos))
         {
-            int facing = world.getBlockMetadata(x, y, z) & 7;
-            
-            boolean flag = false;
-            if (!canPlaceAt(world, x - 1, y, z) && facing == 1) {
-                flag = true;
-            }
-            if (!canPlaceAt(world, x + 1, y, z) && facing == 2) {
-                flag = true;
-            }
-            if (!canPlaceAt(world, x, y, z - 1) && facing == 3) {
-                flag = true;
-            }
-            if (!canPlaceAt(world, x, y, z + 1) && facing == 4) {
-                flag = true;
-            }
-            if (!canPlaceAt(world, x, y - 1, z) && facing == 5) {
-                flag = true;
-            }
-            if (!canPlaceAt(world, x, y + 1, z) && facing == 6) {
-                flag = true;
-            }
-            if (flag) {
-                dropBlockAsItem(world, x, y, z, 0, 0);
-                world.setBlockToAir(x, y, z);
+            EnumFacing facing = state.getValue(StateProps.FACING);
+            if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
+                world.destroyBlock(pos, true);
             }
         }
     }
 
-
-    /**
-     * We can place fireflies on any normal block or on leaves.
-     */
-    public boolean canPlaceAt(World world, int x, int y, int z)
+    private boolean canPlaceAt(World world, BlockPos pos)
     {
-    	return world.isBlockNormalCubeDefault(x, y, z, true) || world.getBlock(x, y, z).getMaterial() == Material.LEAVES || world.getBlock(x, y, z).getMaterial() == Material.CACTUS;
+    	return world.isBlockNormalCube(pos, true) || world.getBlockState(pos).getMaterial() == Material.LEAVES || world.getBlockState(pos).getMaterial() == Material.CACTUS;
     }	
-	
-    /**
-     * Called throughout the code as a replacement for block instanceof BlockContainer
-     * Moving this to the Block base class allows for mods that wish to extend vinella 
-     * blocks, and also want to have a tile entity on that block, may.
-     * 
-     * Return true from this function to specify this block has a tile entity.
-     * 
-     * @param metadata Metadata of the current block
-     * @return True if block has a tile entity, false otherwise
-     */
+
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
     	return true;
     }
     
-    /**
-     * Called throughout the code as a replacement for BlockContainer.getBlockEntity
-     * Return the same thing you would from that function.
-     * This will fall back to BlockContainer.getBlockEntity if this block is a BlockContainer.
-     * 
-     * @param metadata The Metadata of the current block
-     * @return A instance of a class extending TileEntity
-     */
     @Override
-    public abstract TileEntity createTileEntity(World world, int metadata);
+    public abstract TileEntity createTileEntity(World world, IBlockState state);
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }
