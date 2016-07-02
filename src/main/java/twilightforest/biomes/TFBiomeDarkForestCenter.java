@@ -1,5 +1,7 @@
 package twilightforest.biomes;
 
+import net.minecraft.util.math.BlockPos;
+
 public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 
 	public TFBiomeDarkForestCenter(BiomeProperties props) {
@@ -7,16 +9,16 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 	}
 	
     @Override
-    public int getBiomeGrassColor(int x, int y, int z)
+    public int getGrassColorAtPos(BlockPos pos)
     {
-        double d0 = plantNoise.func_151601_a((double)x * 0.0225D, (double)z * 0.0225D);
+        double d0 = GRASS_COLOR_NOISE.getValue(pos.getX() * 0.0225D, pos.getZ() * 0.0225D);
         return d0 < -0.2D ? 0x667540 : 0x554114;
     }
 
     @Override
-    public int getBiomeFoliageColor(int x, int y, int z)
+    public int getFoliageColorAtPos(BlockPos pos)
     {
-        double d0 = plantNoise.func_151601_a((double)x * 0.0225D, (double)z * 0.0225D);
+        double d0 = GRASS_COLOR_NOISE.getValue(pos.getX() * 0.0225D, pos.getZ() * 0.0225D);
         return d0 < -0.1D ? 0xf9821e : 0xe94e14;
     }
 }

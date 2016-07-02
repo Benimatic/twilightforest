@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.Achievement;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
@@ -45,10 +46,6 @@ public class TFBiomeDarkForest extends TFBiomeBase {
         getTFBiomeDecorator().setMushroomsPerChunk(2);
         getTFBiomeDecorator().setDeadBushPerChunk(10);
 
-        
-        this.rootHeight = 0.05F;
-        this.heightVariation = 0.05F;
-        
         this.monsterRNG = new Random();
         
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
@@ -81,29 +78,26 @@ public class TFBiomeDarkForest extends TFBiomeBase {
             return this.birchGen;
         }
         else {
-            return worldGeneratorTrees;
+            return TREE_FEATURE;
         }
     }
 
     @Override
-    public int getBiomeGrassColor(int x, int y, int z)
+    public int getGrassColorAtPos(BlockPos pos)
     {
-        double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(x, y, z), 0.0F, 1.0F);
-        double var3 = (double)MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
+        double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(pos), 0.0F, 1.0F);
+        double var3 = (double)MathHelper.clamp_float(this.getRainfall(), 0.0F, 1.0F);
         return ((ColorizerGrass.getGrassColor(var1, var3) & 0xFEFEFE) + 0x1E0E4E) / 2;
-        
-//        return 0x554114;
     }
 
     @Override
-    public int getBiomeFoliageColor(int x, int y, int z)
+    public int getFoliageColorAtPos(BlockPos pos)
     {
-        double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(x, y, z), 0.0F, 1.0F);
-        double var3 = (double)MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
+        double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(pos), 0.0F, 1.0F);
+        double var3 = (double)MathHelper.clamp_float(this.getRainfall(), 0.0F, 1.0F);
         return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x1E0E4E) / 2;
     }
-    
-    
+
 	@Override
     public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType)
     {

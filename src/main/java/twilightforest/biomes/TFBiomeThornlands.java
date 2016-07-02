@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.stats.Achievement;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import twilightforest.TFAchievementPage;
@@ -25,9 +26,6 @@ public class TFBiomeThornlands extends TFBiomeBase {
         this.fillerBlock = TFBlocks.deadrock;
         this.field_76754_C = 1;
         
-        this.temperature = 0.3F;
-        this.rainfall = 0.2F;
-        
         getTFBiomeDecorator().canopyPerChunk = -999;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
         this.theBiomeDecorator.deadBushPerChunk = 2;
@@ -39,28 +37,28 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		this.theBiomeDecorator.generateLakes = false;
 	}
 	
-	
-    public void decorate(World world, Random rand, int mapX, int mapZ)
+	@Override
+    public void decorate(World world, Random rand, BlockPos pos)
     {
-        super.decorate(world, rand, mapX, mapZ);
+        super.decorate(world, rand, pos);
         
         // add thorns!
         for (int i = 0; i < 128; i++)
         {
-			int rx = mapX + rand.nextInt(16) + 8;
-			int rz = mapZ + rand.nextInt(16) + 8;
-			int ry = getGroundLevel(world, rx, rz);
+			int rx = pos.getX() + rand.nextInt(16) + 8;
+			int rz = pos.getZ() + rand.nextInt(16) + 8;
+			int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
 
 			this.tfGenThorns.generate(world, rand, rx, ry, rz);
         } 
     }
 
-	public int getGroundLevel(World world, int x, int z) {
+	private int getGroundLevel(World world, BlockPos pos) {
 		// go from sea level up.  If we get grass, return that, otherwise return the last dirt, stone or gravel we got
-		Chunk chunk = world.getChunkFromBlockCoords(x, z);
+		Chunk chunk = world.getChunkFromBlockCoords(pos);
 		int lastDirt = TFWorld.SEALEVEL;
 		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT - 1; y++) {
-			Block blockID = chunk.getBlock(x & 15, y, z & 15);
+			Block blockID = chunk.getBlockState(new BlockPos(pos.getX(), y, pos.getZ())).getBlock();
 			// grass = return immediately
 			if (blockID == Blocks.GRASS) {
 				return y + 1;
@@ -82,7 +80,8 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	public byte getStoneReplacementMeta() {
 		return 2;
 	}
-	
+
+	@Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressGlacier;
 	}

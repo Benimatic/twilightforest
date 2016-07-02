@@ -2,8 +2,11 @@ package twilightforest.biomes;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -94,7 +97,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
         } 
         else
         {
-            return worldGeneratorTrees;
+            return TREE_FEATURE;
         }
     }
     
@@ -102,44 +105,44 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
         if (par1Random.nextInt(3) > 0) {
-            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
+            return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
         }
         else if (par1Random.nextInt(3) == 0) {
             return new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_FIDDLEHEAD);
         }
         else {
-            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
+            return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
         }
     }
     
     @Override
-    public void decorate(World par1World, Random par2Random, int par3, int par4)
+    public void decorate(World world, Random rand, BlockPos pos)
     {
         WorldGenVines worldgenvines = new WorldGenVines();
 
+        BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(0, 0, 0);
+
         for (int i = 0; i < 20; i++)
         {
-            int j = par3 + par2Random.nextInt(16) + 8;
-            byte byte0 = (byte) TFWorld.SEALEVEL;
-            int k = par4 + par2Random.nextInt(16) + 8;
-            worldgenvines.generate(par1World, par2Random, j, byte0, k);
+            int x = pos.getX() + rand.nextInt(16) + 8;
+            int y = TFWorld.SEALEVEL;
+            int z = pos.getZ() + rand.nextInt(16) + 8;
+            mutPos.setPos(x, y, z);
+            worldgenvines.generate(world, rand, mutPos);
         }
 
         // tall ferns
-        genTallFlowers.func_150548_a(3);
+        DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
 
         for (int i = 0; i < 20; ++i) {
-        	int rx = par3 + par2Random.nextInt(16) + 8;
-        	int rz = par4 + par2Random.nextInt(16) + 8;
-        	int ry = par2Random.nextInt(par1World.getHeightValue(rx, rz) + 32);
-        	genTallFlowers.generate(par1World, par2Random, rx, ry, rz);
+        	int rx = pos.getX() + rand.nextInt(16) + 8;
+        	int rz = pos.getZ() + rand.nextInt(16) + 8;
+            mutPos.setPos(rx, 0, rz);
+        	int ry = rand.nextInt(world.getHeight(mutPos).getY() + 32);
+            mutPos.setPos(rx, ry, rz);
+        	DOUBLE_PLANT_GENERATOR.generate(world, rand, mutPos);
         }
 
-        super.decorate(par1World, par2Random, par3, par4);
-    }
-    
-    public String func_150572_a(Random p_150572_1_, int p_150572_2_, int p_150572_3_, int p_150572_4_)
-    {
-        return p_150572_1_.nextInt(3) > 0 ? BlockFlower.field_149859_a[1] : p_150572_1_.nextBoolean() ? BlockFlower.field_149859_a[2] : BlockFlower.field_149859_a[3];
+        super.decorate(world, rand, pos);
     }
 }

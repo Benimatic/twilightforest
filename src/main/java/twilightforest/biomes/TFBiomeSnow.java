@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.Achievement;
@@ -40,9 +41,6 @@ public class TFBiomeSnow extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(7);
 		getTFBiomeDecorator().setGrassPerChunk(1);
         
-        this.temperature = 0.125F;
-        this.rainfall = 0.9F;
-        
         getTFBiomeDecorator().canopyPerChunk = -999;
         getTFBiomeDecorator().generateLakes = false;
         
@@ -51,6 +49,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	}
 
+	@Override
     public WorldGenAbstractTree genBigTreeChance(Random random)
     {
     	if (random.nextInt(3) == 0) {
@@ -64,53 +63,39 @@ public class TFBiomeSnow extends TFBiomeBase {
     	}
     }
 
-    /**
-     * Let it snow!
-     */
     @Override
     public boolean getEnableSnow()
     {
         return true;
     }
 
-    /**
-     * Required for actual snow?
-     */
     @Override
-    public boolean canSpawnLightningBolt()
+    public boolean canRain()
     {
     	return false;
     }
-    
-    /**
-     * Returns the correspondent list of the EnumCreatureType informed.
-     */
-    @SuppressWarnings("rawtypes")
+
 	@Override
-    public List getSpawnableList(EnumCreatureType par1EnumCreatureType)
+    public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType)
     {
     	// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-    	if (par1EnumCreatureType == EnumCreatureType.monster) {
+    	if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : emptyList;
     	}
     	else {
-    		return par1EnumCreatureType == EnumCreatureType.creature ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.waterCreature ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.ambient ? this.spawnableCaveCreatureList : null));
+    		return par1EnumCreatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.waterCreature ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
     	}
     }
     
-	/**
-	 * If there is a required achievement to be here, return it, otherwise return null
-	 */
+	@Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressUrghast;
 	}
 
-	/**
-	 * Do something bad to a player in the wrong biome.
-	 */
+	@Override
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 100, 2));
+			player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
 			
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {

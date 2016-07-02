@@ -21,12 +21,6 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
         this.field_150604_aj = 0;
         this.fillerBlock = TFBlocks.deadrock;
         this.field_76754_C = 1;
-		
-//		this.rootHeight = 7F;
-//		this.heightVariation = 0.4F;
-        
-        this.temperature = 0.3F;
-        this.rainfall = 0.2F;
         
         getTFBiomeDecorator().canopyPerChunk = -999;
 		getTFBiomeDecorator().setTreesPerChunk(-999);

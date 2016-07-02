@@ -184,7 +184,7 @@ public class TFBiomeBase extends Biome  {
     }
 
     // Copy of super's generateBiomeTerrain, relevant edits noted.
-    private void genTwilightBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
+    protected void genTwilightBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
     {
         int i = 32; // TF - set sea level to 32
         IBlockState iblockstate = this.topBlock;

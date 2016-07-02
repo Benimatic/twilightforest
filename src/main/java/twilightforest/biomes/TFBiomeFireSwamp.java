@@ -4,10 +4,13 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.Achievement;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
 import net.minecraft.world.gen.feature.WorldGenVines;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFFireJet;
@@ -19,9 +22,6 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 
 	protected TFBiomeFireSwamp(BiomeProperties props) {
 		super(props);
-
-//		this.rootHeight = -0.25F;
-//		this.heightVariation = 0.0F;
 
         getTFBiomeDecorator().setDeadBushPerChunk(2);
         getTFBiomeDecorator().setMushroomsPerChunk(8);
@@ -35,10 +35,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
         getTFBiomeDecorator().mangrovesPerChunk = 3;
 	}
 	
-
-    /**
-     * Gets a WorldGen appropriate for this biome.
-     */
+	@Override
     public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if (random.nextInt(3) == 0)
@@ -46,7 +43,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
             return new WorldGenShrub(3, 0);
         }
 
-        return worldGeneratorSwamp;
+        return SWAMP_FEATURE;
     }
 
     /**
@@ -91,34 +88,26 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
     	}
     }
     
-    /**
-     * Provides the basic grass color based on the biome temperature and rainfall
-     */
     @Override
-    public int getBiomeGrassColor(int x, int y, int z)
+	@SideOnly(Side.CLIENT)
+	public int getGrassColorAtPos(BlockPos pos)
     {
-        return 0x572e23;//0x8c4c35;//0x3f3555;// 0x8C0C0C;//0xd79e2f;//
+        return 0x572e23;
     }
 
-    /**
-     * Provides the basic foliage color based on the biome temperature and rainfall
-     */
     @Override
-    public int getBiomeFoliageColor(int x, int y, int z)
+	@SideOnly(Side.CLIENT)
+	public int getFoliageColorAtPos(BlockPos pos)
     {
-        return 0x64260f;//0x6C2020;//0x8f2839;//0x6c464d;//
+        return 0x64260f;
     }
     
-	/**
-	 * If there is a required achievement to be here, return it, otherwise return null
-	 */
+	@Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressLabyrinth;
 	}
 
-	/**
-	 * Do something bad to a player in the wrong biome.
-	 */
+	@Override
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
 			player.setFire(8);

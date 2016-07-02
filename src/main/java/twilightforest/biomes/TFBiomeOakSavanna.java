@@ -2,8 +2,11 @@ package twilightforest.biomes;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
@@ -14,7 +17,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenCanopyOak;
 import twilightforest.world.TFGenNoTree;
 
-public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
+public class TFBiomeOakSavanna extends TFBiomeBase {
 
 	public TFBiomeOakSavanna(BiomeProperties props) {
 		super(props);
@@ -29,10 +32,7 @@ public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
         this.theBiomeDecorator.grassPerChunk = 20;
 	}
 
-	
-    /**
-     * Oak trees all over
-     */
+    @Override
     public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(10) == 0)
@@ -40,18 +40,16 @@ public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
             return new WorldGenBigTree(false);
         } else
         {
-            return worldGeneratorTrees;
+            return TREE_FEATURE;
         }
     }
     
-    /**
-     * Oak savanna fern mix
-     */
+    @Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
         if (par1Random.nextInt(10) == 0)
         {
-            return new WorldGenTallGrass(Blocks.TALLGRASS, 2);
+            return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
         }
         else if (par1Random.nextInt(10) == 0)
         {
@@ -59,7 +57,7 @@ public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
         }
         else
         {
-            return new WorldGenTallGrass(Blocks.TALLGRASS, 1);
+            return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
         }
     }
     
@@ -87,19 +85,19 @@ public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
         }
     }
 
-    public void decorate(World par1World, Random par2Random, int par3, int par4)
+    @Override
+    public void decorate(World par1World, Random par2Random, BlockPos pos)
     {
-    	// 2-tall grass!
-        genTallFlowers.func_150548_a(2);
+        DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.GRASS);
 
         for (int k = 0; k < 7; ++k)
         {
-            int l = par3 + par2Random.nextInt(16) + 8;
-            int i1 = par4 + par2Random.nextInt(16) + 8;
-            int j1 = par2Random.nextInt(par1World.getHeightValue(l, i1) + 32);
-            genTallFlowers.generate(par1World, par2Random, l, j1, i1);
+            int l = pos.getX() + par2Random.nextInt(16) + 8;
+            int i1 = pos.getZ() + par2Random.nextInt(16) + 8;
+            int j1 = par2Random.nextInt(par1World.getHeight(new BlockPos(l, 0, i1)).getY() + 32);
+            DOUBLE_PLANT_GENERATOR.generate(par1World, par2Random, new BlockPos(l, j1, i1));
         }
 
-        super.decorate(par1World, par2Random, par3, par4);
+        super.decorate(par1World, par2Random, pos);
     }
 }

@@ -3,7 +3,10 @@ package twilightforest.biomes;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
@@ -13,7 +16,9 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBlockBlob;
 import net.minecraft.world.gen.feature.WorldGenMegaPineTree;
@@ -50,21 +55,14 @@ public class TFBiomeHighlands extends TFBiomeBase {
         this.theBiomeDecorator.deadBushPerChunk = 1;
         this.theBiomeDecorator.generateLakes = false; // actually underground water sources
 
-		
-        //this.spawnableMonsterList.add(new SpawnListEntry(EntityTFTroll.class, 10, 4, 4));
-
-		
         undergroundMonsterList.clear();
         undergroundMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 10, 4, 4));
         undergroundMonsterList.add(new SpawnListEntry(EntityCreeper.class, 1, 4, 4));
         undergroundMonsterList.add(new SpawnListEntry(EntitySlime.class, 10, 4, 4));
-        
         undergroundMonsterList.add(new SpawnListEntry(EntityTFTroll.class, 10, 4, 4));
 	}
 	
-    /**
-     * Birches and large trees only
-     */
+    @Override
     public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(4) == 0){
@@ -80,84 +78,74 @@ public class TFBiomeHighlands extends TFBiomeBase {
         }
     }
 	
-    /**
-     * Gets a WorldGen appropriate for this biome.
-     */
+    @Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
-        return par1Random.nextInt(5) > 0 ? new WorldGenTallGrass(Blocks.TALLGRASS, 2) : new WorldGenTallGrass(Blocks.TALLGRASS, 1);
+        return par1Random.nextInt(5) > 0 ? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN) : new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
     }
 
-    public void genTerrainBlocks(World world, Random rand, Block[] blockStorage, byte[] metaStorage, int x, int z, double noiseVal)
+    @Override
+    public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal)
     {
-        if (true)
-        {
-            this.topBlock = Blocks.GRASS;
-            this.field_150604_aj = 0;
-            this.fillerBlock = Blocks.DIRT;
+        this.topBlock = Blocks.GRASS.getDefaultState();
+        this.fillerBlock = Blocks.DIRT.getDefaultState();
 
-            if (noiseVal > 1.75D)
-            {
-                this.topBlock = Blocks.DIRT;
-                this.field_150604_aj = 1;
-            }
-            else if (noiseVal > -0.95D)
-            {
-                this.topBlock = Blocks.DIRT;
-                this.field_150604_aj = 2;
-            }
+        if (noiseVal > 1.75D)
+        {
+            this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT);
+        }
+        else if (noiseVal > -0.95D)
+        {
+            this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL);
         }
 
-        this.genTwilightBiomeTerrain(world, rand, blockStorage, metaStorage, x, z, noiseVal);
+        this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
     }
 
-    /**
-     * Add extra decorations
-     */
-    public void decorate(World par1World, Random par2Random, int mapX, int mapZ)
+    @Override
+    public void decorate(World world, Random rand, BlockPos pos)
     {
     	int dx, dy, dz;
 
     	// boulders
-    	int maxBoulders = par2Random.nextInt(2);
+    	int maxBoulders = rand.nextInt(2);
     	for (int i = 0; i < maxBoulders; ++i)
     	{
-    		dx = mapX + par2Random.nextInt(16) + 8;
-    		dz = mapZ + par2Random.nextInt(16) + 8;
-    		dy = par1World.getHeightValue(dx, dz);
-    		genBoulder.generate(par1World, par2Random, dx, dy, dz);
+    		dx = pos.getX() + rand.nextInt(16) + 8;
+    		dz = pos.getZ() + rand.nextInt(16) + 8;
+    		genBoulder.generate(world, rand, world.getHeight(new BlockPos(dx, 0, dz)));
     	}
 
     	// giant ferns
-    	genTallFlowers.func_150548_a(3);
+    	DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
     	for (int i = 0; i < 7; ++i)
     	{
-    		dx = mapX + par2Random.nextInt(16) + 8;
-    		dz = mapZ + par2Random.nextInt(16) + 8;
-    		dy = par2Random.nextInt(par1World.getHeightValue(dx, dz) + 32);
-    		genTallFlowers.generate(par1World, par2Random, dx, dy, dz);
+    		dx = pos.getX() + rand.nextInt(16) + 8;
+    		dz = pos.getZ() + rand.nextInt(16) + 8;
+    		dy = rand.nextInt(world.getHeight(new BlockPos(dx, 0, dz)).getY() + 32);
+    		DOUBLE_PLANT_GENERATOR.generate(world, rand, new BlockPos(dx, dy, dz));
     	}
     	
     	// mushglooms
     	for (int i = 0; i < 1; ++i)
     	{
-    		int rx = mapX + par2Random.nextInt(16) + 8;
-    		int rz = mapZ + par2Random.nextInt(16) + 8;
-    		int ry = par2Random.nextInt(64);
+    		int rx = pos.getX() + rand.nextInt(16) + 8;
+    		int rz = pos.getZ() + rand.nextInt(16) + 8;
+    		int ry = rand.nextInt(64);
     		// mushglooms
-    		worldGenMushgloom.generate(par1World, par2Random, rx, ry, rz);
+    		worldGenMushgloom.generate(world, rand, new BlockPos(rx, ry, rz));
     	}
 
 		// generate roots
 		for (int i = 0; i < 24; ++i)
 		{
-		    int rx = mapX + par2Random.nextInt(16) + 8;
+		    int rx = pos.getX() + rand.nextInt(16) + 8;
 		    byte ry = 64;
-		    int rz = mapZ + par2Random.nextInt(16) + 8;
-		    genTrollRoots.generate(par1World, par2Random, rx, ry, rz);
+		    int rz = pos.getZ() + rand.nextInt(16) + 8;
+		    genTrollRoots.generate(world, rand, rx, ry, rz);
 		}
 
-    	super.decorate(par1World, par2Random, mapX, mapZ);
+    	super.decorate(world, rand, pos);
     }
     
     /**
@@ -168,18 +156,12 @@ public class TFBiomeHighlands extends TFBiomeBase {
         return rand.nextBoolean() ? BlockFlower.field_149858_b[0] : BlockFlower.field_149859_a[8];
     }
     
-    
-    
-	/**
-	 * If there is a required achievement to be here, return it, otherwise return null
-	 */
+    @Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressGlacier;
 	}
 
-	/**
-	 * Do something bad to a player in the wrong biome.
-	 */
+	@Override
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 5 == 0) {
 			player.attackEntityFrom(DamageSource.magic, 0.5F);
