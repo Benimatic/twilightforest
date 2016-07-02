@@ -1,5 +1,6 @@
 package twilightforest.world.layer;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import twilightforest.biomes.TFBiomeBase;
@@ -34,21 +35,21 @@ public class GenLayerTFCompanionBiomes extends GenLayer {
                 int up = input[dx + 1 + (dz + 0) * nwidth];
                 int down = input[dx + 1 + (dz + 2) * nwidth];
                 int center = input[dx + 1 + (dz + 1) * nwidth];
-                if (isKey(TFBiomeBase.fireSwamp.biomeID, center, right, left, up, down))
+                if (isKey(Biome.getIdForBiome(TFBiomeBase.fireSwamp), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.tfSwamp.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.tfSwamp);
                 }
-                else if (isKey(TFBiomeBase.glacier.biomeID, center, right, left, up, down))
+                else if (isKey(Biome.getIdForBiome(TFBiomeBase.glacier), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.tfSnow.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.tfSnow);
                 }
-                else if (isKey(TFBiomeBase.darkForestCenter.biomeID, center, right, left, up, down))
+                else if (isKey(Biome.getIdForBiome(TFBiomeBase.darkForestCenter), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.darkForest.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.darkForest);
                 }
-                else if (isKey(TFBiomeBase.highlandsCenter.biomeID, center, right, left, up, down))
+                else if (isKey(Biome.getIdForBiome(TFBiomeBase.highlandsCenter), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.highlands.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.highlands);
                 }
                 else
                 {

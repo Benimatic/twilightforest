@@ -1,5 +1,6 @@
 package twilightforest.world.layer;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import twilightforest.biomes.TFBiomeBase;
@@ -37,7 +38,7 @@ public class GenLayerTFRiverMix extends GenLayer {
 		int[] outputs = IntCache.getIntCache(par3 * par4);
 
 		for (int i = 0; i < par3 * par4; ++i) {
-			if (riverInputs[i] == TFBiomeBase.stream.biomeID) {
+			if (riverInputs[i] == Biome.getIdForBiome(TFBiomeBase.stream)) {
 				outputs[i] = riverInputs[i] & 255;
 			} else {
 				outputs[i] = biomeInputs[i];

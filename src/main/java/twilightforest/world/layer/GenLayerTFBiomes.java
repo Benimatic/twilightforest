@@ -42,11 +42,11 @@ public class GenLayerTFBiomes extends GenLayer
                 initChunkSeed(dx + x, dz + z);
                 if (nextInt(15) == 0 ) {
                 	// make rare biome
-                	dest[dx + dz * width] = rareBiomes[nextInt(rareBiomes.length)].biomeID;
+                	dest[dx + dz * width] = Biome.getIdForBiome(rareBiomes[nextInt(rareBiomes.length)]);
                 }
                 else {
                 	// make common biome
-                	dest[dx + dz * width] = commonBiomes[nextInt(commonBiomes.length)].biomeID;
+                	dest[dx + dz * width] = Biome.getIdForBiome(commonBiomes[nextInt(commonBiomes.length)]);
                 }
             }
 

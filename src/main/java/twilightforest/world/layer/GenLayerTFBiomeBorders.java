@@ -1,5 +1,6 @@
 package twilightforest.world.layer;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import twilightforest.biomes.TFBiomeBase;
@@ -34,21 +35,21 @@ public class GenLayerTFBiomeBorders extends GenLayer {
                 int up = input[dx + 1 + (dz + 0) * nwidth];
                 int down = input[dx + 1 + (dz + 2) * nwidth];
                 int center = input[dx + 1 + (dz + 1) * nwidth];
-                if (onBorder(TFBiomeBase.tfLake.biomeID, center, right, left, up, down))
+                if (onBorder(Biome.getIdForBiome(TFBiomeBase.tfLake), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.fireflyForest.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.fireflyForest);
                 }
-                else if (onBorder(TFBiomeBase.clearing.biomeID, center, right, left, up, down))
+                else if (onBorder(Biome.getIdForBiome(TFBiomeBase.clearing), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.oakSavanna.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.oakSavanna);
                 }
-                else if (onBorder(TFBiomeBase.deepMushrooms.biomeID, center, right, left, up, down))
+                else if (onBorder(Biome.getIdForBiome(TFBiomeBase.deepMushrooms), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.mushrooms.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.mushrooms);
                 }
-                else if (onBorder(TFBiomeBase.glacier.biomeID, center, right, left, up, down))
+                else if (onBorder(Biome.getIdForBiome(TFBiomeBase.glacier), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = TFBiomeBase.tfSnow.biomeID;
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.tfSnow);
                 }
                 else
                 {
@@ -64,7 +65,7 @@ public class GenLayerTFBiomeBorders extends GenLayer {
 	/**
 	 * Returns true if the center biome is the specified biome and any of the surrounding biomes are not
 	 */
-	boolean onBorder(int biome, int center, int right, int left, int up, int down) {
+    private boolean onBorder(int biome, int center, int right, int left, int up, int down) {
 		
 		if (center != biome) {
 			return false;

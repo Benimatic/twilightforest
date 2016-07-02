@@ -1,5 +1,6 @@
 package twilightforest.world.layer;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
@@ -28,11 +29,11 @@ public class GenLayerTF7x7Preset extends GenLayer {
             	
                 if (sx >= 0 && sx < 8 && sz >= 0 && sz < 8)
                 {
-                	dest[dx + dz * width] = preset[sx][sz].biomeID;
+                	dest[dx + dz * width] = Biome.getIdForBiome(preset[sx][sz]);
                 }
                 else
                 {
-                	dest[dx + dz * width] = Biome.ocean.biomeID;
+                	dest[dx + dz * width] = Biome.getIdForBiome(Biomes.OCEAN);
                 }
             }
 
@@ -71,7 +72,7 @@ public class GenLayerTF7x7Preset extends GenLayer {
 		switch (c)
 		{
 		default :
-			return Biome.ocean;
+			return Biomes.OCEAN;
 //		case 'P' :
 //			return Biome.plains;
 		case 'F' :
