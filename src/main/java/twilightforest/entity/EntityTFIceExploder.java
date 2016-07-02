@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -16,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -31,7 +33,7 @@ public class EntityTFIceExploder extends EntityMob {
 		super(par1World);
 		
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
@@ -40,37 +42,21 @@ public class EntityTFIceExploder extends EntityMob {
         this.setSize(0.8F, 1.8F);
 	}
 
-
+	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
-    
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
- 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
+	@Override
     protected Item getDropItem()
     {
         return Items.SNOWBALL;
     }
 
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
+    @Override
     public void onLivingUpdate()
     {
     	super.onLivingUpdate();
@@ -91,32 +77,24 @@ public class EntityTFIceExploder extends EntityMob {
     	return TwilightForestMod.ID + ":mob.ice.noise";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    protected String getHurtSound()
+	@Override
+	protected String getHurtSound()
     {
     	return TwilightForestMod.ID + ":mob.ice.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
+	@Override
     protected String getDeathSound()
     {
     	return TwilightForestMod.ID + ":mob.ice.death";
     }
 
-
-
+	@Override
     public float getEyeHeight()
     {
         return this.height * 0.6F;
     }
-    
-    /**
-     * Trigger achievement when killed
-     */
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -125,9 +103,7 @@ public class EntityTFIceExploder extends EntityMob {
 		}
 	}
 	
-    /**
-	 * handles entity death timer, experience orb and particle creation
-	 */
+    @Override
 	protected void onDeathUpdate() {
         ++this.deathTime;
 
@@ -136,14 +112,14 @@ public class EntityTFIceExploder extends EntityMob {
             int i;
             
             
-            boolean flag = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
+            boolean flag = this.worldObj.getGameRules().getBoolean("mobGriefing");
             this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)EntityTFIceExploder.EXPLOSION_RADIUS, flag);
 
             if (flag) {
             	this.detonate();
             }
 
-            if (!this.worldObj.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && this.func_146066_aG() && this.worldObj.getGameRules().getGameRuleBooleanValue("doMobLoot"))
+            if (!this.worldObj.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && this.canDropLoot() && this.worldObj.getGameRules().getBoolean("doMobLoot"))
             {
                 i = this.getExperiencePoints(this.attackingPlayer);
 
@@ -162,7 +138,7 @@ public class EntityTFIceExploder extends EntityMob {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.worldObj.spawnParticle("explode", this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1);
+                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1);
             }
         }
 	}
@@ -264,9 +240,7 @@ public class EntityTFIceExploder extends EntityMob {
 		return bestColor;
 	}
 	
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 8;

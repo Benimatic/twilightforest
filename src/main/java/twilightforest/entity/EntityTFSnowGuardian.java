@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -12,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -24,7 +26,7 @@ public class EntityTFSnowGuardian extends EntityMob {
 		super(par1World);
 		
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
@@ -33,22 +35,13 @@ public class EntityTFSnowGuardian extends EntityMob {
         this.setSize(0.6F, 1.8F);
 	}
 
-
+	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-    }
-    
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    protected boolean isAIEnabled()
-    {
-        return true;
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
     }
     
     @Override
@@ -57,33 +50,24 @@ public class EntityTFSnowGuardian extends EntityMob {
     	return TwilightForestMod.ID + ":mob.ice.noise";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
+    @Override
     protected String getHurtSound()
     {
     	return TwilightForestMod.ID + ":mob.ice.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
+    @Override
     protected String getDeathSound()
     {
     	return TwilightForestMod.ID + ":mob.ice.death";
     }
     
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
+    @Override
     protected float getSoundPitch()
     {
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.8F;
     }
-    
-    /**
-     * Makes entity wear random armor based on difficulty
-     */
+
     protected void addRandomArmor()
     {
         // always random armor
@@ -91,15 +75,15 @@ public class EntityTFSnowGuardian extends EntityMob {
     	// random armor type
     	int type = rand.nextInt(4);
     	
-    	this.setCurrentItemOrArmor(0, new ItemStack(this.makeItemForSlot(0, type)));
+    	this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.MAINHAND, type)));
     	
-    	this.setCurrentItemOrArmor(3, new ItemStack(this.makeItemForSlot(3, type)));
-    	this.setCurrentItemOrArmor(4, new ItemStack(this.makeItemForSlot(4, type)));
+    	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.CHEST, type)));
+    	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.HEAD, type)));
     }
     
-    protected Item makeItemForSlot(int slot, int type) {
+    protected Item makeItemForSlot(EntityEquipmentSlot slot, int type) {
     	switch (slot) {
-    	case 0: // sword
+		case MAINHAND:
     	default:
     		switch (type) {
     		case 0:
@@ -112,7 +96,7 @@ public class EntityTFSnowGuardian extends EntityMob {
     		case 3:
     			return TFItems.knightlySword;
     		}
-    	case 1: // boots
+    	case FEET:
     		switch (type) {
     		case 0:
     		default:
@@ -124,7 +108,7 @@ public class EntityTFSnowGuardian extends EntityMob {
     		case 3:
     			return TFItems.arcticBoots;
     		}
-    	case 2: // legs
+    	case LEGS:
     		switch (type) {
     		case 0:
     		default:
@@ -136,7 +120,7 @@ public class EntityTFSnowGuardian extends EntityMob {
     		case 3:
     			return TFItems.arcticLegs;
     		}
-    	case 3: // chest
+    	case CHEST:
     		switch (type) {
     		case 0:
     		default:
@@ -148,7 +132,7 @@ public class EntityTFSnowGuardian extends EntityMob {
     		case 3:
     			return TFItems.arcticPlate;
     		}
-    	case 4: // helm
+    	case HEAD:
     		switch (type) {
     		case 0:
     		default:
@@ -163,20 +147,10 @@ public class EntityTFSnowGuardian extends EntityMob {
     	}
     }
     
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
+    @Override
     protected Item getDropItem()
     {
         return Items.SNOWBALL;
-    }
-    
-    /**
-     * Enchants the entity's armor and held item based on difficulty
-     */
-    protected void enchantEquipment()
-    {
-        super.enchantEquipment();
     }
 
     public IEntityLivingData onSpawnWithEgg(IEntityLivingData par1EntityLivingData)
@@ -190,10 +164,7 @@ public class EntityTFSnowGuardian extends EntityMob {
 
     }
     
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
+    @Override
     public void onLivingUpdate()
     {
     	super.onLivingUpdate();
@@ -208,9 +179,7 @@ public class EntityTFSnowGuardian extends EntityMob {
 
     }
     
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 8;

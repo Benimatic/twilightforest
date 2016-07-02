@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -13,6 +14,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -32,7 +34,7 @@ public class EntityTFPinchBeetle extends EntityMob
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAITFKidnapRider(this, 2.0F));
 		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		//this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -40,31 +42,15 @@ public class EntityTFPinchBeetle extends EntityMob
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 	}
 
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
     @Override
 	public int getTotalArmorValue()
     {
@@ -77,47 +63,31 @@ public class EntityTFPinchBeetle extends EntityMob
 
         return var1;
     }
-	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
+
     @Override
 	protected String getLivingSound()
     {
         return null;
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     @Override
 	protected String getHurtSound()
     {
         return "mob.spider.say";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     @Override
 	protected String getDeathSound()
     {
         return "mob.spider.death";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     @Override
-	protected void func_145780_a(int var1, int var2, int var3, Block var4)
+	protected void playStepSound(BlockPos pos, Block var4)
     {
         this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     @Override
 	public void onLivingUpdate()
     {
@@ -155,10 +125,7 @@ public class EntityTFPinchBeetle extends EntityMob
 
     	}
     }
-    
-    /**
-     * Trigger achievement when killed
-     */
+
     @Override
     public void onDeath(DamageSource par1DamageSource) {
     	super.onDeath(par1DamageSource);
@@ -167,9 +134,6 @@ public class EntityTFPinchBeetle extends EntityMob
     	}
     }
 
-    /**
-     * Attack strength
-     */
     public int getAttackStrength(Entity par1Entity)
     {
         return 8;
@@ -181,10 +145,7 @@ public class EntityTFPinchBeetle extends EntityMob
 	{
 		return 1.1F;
 	}
-	
-	/**
-	 * Pick up things we attack!
-	 */
+
     @Override
 	public boolean attackEntityAsMob(Entity par1Entity) 
     {
@@ -196,10 +157,6 @@ public class EntityTFPinchBeetle extends EntityMob
 		return super.attackEntityAsMob(par1Entity);
 	}
 
-
-	/**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     @Override
 	public boolean interact(EntityPlayer par1EntityPlayer)
     {
@@ -223,20 +180,14 @@ public class EntityTFPinchBeetle extends EntityMob
 		return 0.25F;
 	}
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
     @Override
 	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
     }
-    
-    /**
-     * Put the player out in front of where we are
-     */
+
     @Override
-	public void updateRiderPosition()
+	public void updatePassenger(Entity passenger)
     {
         if (this.riddenByEntity != null)
         {
@@ -245,19 +196,13 @@ public class EntityTFPinchBeetle extends EntityMob
             this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
         }
     }
-    
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
+
     @Override
 	public double getMountedYOffset()
     {
         return 0.75D;
     }
-    
-    /**
-     * Used to both get a rider position and to push out of blocks
-     */
+
     public Vec3d getRiderPosition()
     {
     	if (this.riddenByEntity != null)
@@ -275,12 +220,7 @@ public class EntityTFPinchBeetle extends EntityMob
     	}
     }
     
-    /**
-     * If a rider of this entity can interact with this entity. Should return true on the
-     * ridden entity if so.
-     *
-     * @return if the entity can be interacted with from a rider
-     */
+    @Override
     public boolean canRiderInteract()
     {
         return true;

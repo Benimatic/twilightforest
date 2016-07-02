@@ -2,9 +2,11 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -16,6 +18,8 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
@@ -37,7 +41,7 @@ public class EntityTFTowerGolem extends EntityMob
 
         
         this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
@@ -45,25 +49,13 @@ public class EntityTFTowerGolem extends EntityMob
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(9.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(9.0D);
     }
 
     /**
@@ -81,7 +73,8 @@ public class EntityTFTowerGolem extends EntityMob
 
         return var1;
     }
-	
+
+    @Override
     public boolean attackEntityAsMob(Entity par1Entity)
     {
         this.attackTimer = 10;
@@ -97,39 +90,31 @@ public class EntityTFTowerGolem extends EntityMob
         return attackSuccess;
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
+    @Override
     protected String getLivingSound()
     {
         return "none";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
+    @Override
     protected String getHurtSound()
     {
         return "mob.irongolem.hit";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
+    @Override
     protected String getDeathSound()
     {
         return "mob.irongolem.death";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    protected void func_145780_a(int par1, int par2, int par3, Block par4)
+    @Override
+    protected void playStepSound(BlockPos pos, Block block)
     {
         this.playSound("mob.irongolem.walk", 1.0F, 1.0F);
     }
     
-    
+    @Override
     protected void collideWithEntity(Entity par1Entity)
     {
         if (par1Entity instanceof IMob && this.getRNG().nextInt(10) == 0)
@@ -140,11 +125,7 @@ public class EntityTFTowerGolem extends EntityMob
         super.collideWithEntity(par1Entity);
     }
 
-
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
+    @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
@@ -157,27 +138,29 @@ public class EntityTFTowerGolem extends EntityMob
         if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D && this.rand.nextInt(5) == 0)
         {
             int var1 = MathHelper.floor_double(this.posX);
-            int var2 = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
+            int var2 = MathHelper.floor_double(this.posY - 0.20000000298023224D - this.getYOffset());
             int var3 = MathHelper.floor_double(this.posZ);
-            Block block = this.worldObj.getBlock(var1, var2, var3);
+            BlockPos pos = new BlockPos(var1, var2, var3);
+            IBlockState state = worldObj.getBlockState(pos);
 
-            if (block.getMaterial() != Material.AIR)
+            if (state.getMaterial() != Material.AIR)
             {
-                this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(var1, var2, var3), this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.boundingBox.minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D);
+                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.boundingBox.minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D, Block.getStateId(state));
             }
         }
         
         // redstone sparkles?
         if (this.rand.nextBoolean())
         {
-            this.worldObj.spawnParticle("reddust", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+            this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
         }
 
     }
 
     
     @SideOnly(Side.CLIENT)
-    public void handleHealthUpdate(byte par1)
+    @Override
+    public void handleStatusUpdate(byte par1)
     {
         if (par1 == 4)
         {
@@ -186,7 +169,7 @@ public class EntityTFTowerGolem extends EntityMob
         }
         else
         {
-            super.handleHealthUpdate(par1);
+            super.handleStatusUpdate(par1);
         }
     }
 
@@ -196,10 +179,7 @@ public class EntityTFTowerGolem extends EntityMob
         return this.attackTimer;
     }
 
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-     * par2 - Level of Looting used to kill this mob.
-     */
+    @Override
     protected void dropFewItems(boolean par1, int par2)
     {
         int var4;
@@ -219,9 +199,7 @@ public class EntityTFTowerGolem extends EntityMob
         }
     }
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 16;

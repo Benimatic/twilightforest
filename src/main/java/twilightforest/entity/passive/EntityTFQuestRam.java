@@ -17,8 +17,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -26,6 +27,8 @@ import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
 import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 
 public class EntityTFQuestRam extends EntityAnimal {
@@ -57,15 +60,12 @@ public class EntityTFQuestRam extends EntityAnimal {
 		return null;
 	}
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(70.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
     }
 	
     @Override
@@ -76,19 +76,6 @@ public class EntityTFQuestRam extends EntityAnimal {
         this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
     }
 
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	public boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
     @Override
 	protected boolean canDespawn()
     {
@@ -100,7 +87,7 @@ public class EntityTFQuestRam extends EntityAnimal {
      * main AI tick function, replaces updateEntityActionState
      */
     @Override
-	protected void updateAITick()
+	protected void updateAITasks()
     {
         if (--this.randomTickDivider <= 0)
         {
@@ -120,7 +107,7 @@ public class EntityTFQuestRam extends EntityAnimal {
             {
             	// set our home position to the center of the quest grove
                 BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
-                this.setHomeArea(cc.posX, cc.posY, cc.posZ, 13);
+                this.setHomePosAndDistance(cc, 13);
                 
                 //System.out.println("Set home area to " + cc.posX + ", " + cc.posY + ", " + cc.posZ);
             }
@@ -133,19 +120,19 @@ public class EntityTFQuestRam extends EntityAnimal {
             
         }
 
-        super.updateAITick();
+        super.updateAITasks();
     }
     
     /**
      * Pay out!
      */
     private void rewardQuest() {
-    	func_145778_a(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.IRON_BLOCK), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.EMERALD_BLOCK), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.GOLD_BLOCK), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.LAPIS_BLOCK), 1, 1.0F);
-    	func_145778_a(TFItems.crumbleHorn, 1, 1.0F);
+    	dropItemWithOffset(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK), 1, 1.0F);
+        dropItemWithOffset(Item.getItemFromBlock(Blocks.IRON_BLOCK), 1, 1.0F);
+        dropItemWithOffset(Item.getItemFromBlock(Blocks.EMERALD_BLOCK), 1, 1.0F);
+        dropItemWithOffset(Item.getItemFromBlock(Blocks.GOLD_BLOCK), 1, 1.0F);
+        dropItemWithOffset(Item.getItemFromBlock(Blocks.LAPIS_BLOCK), 1, 1.0F);
+        dropItemWithOffset(TFItems.crumbleHorn, 1, 1.0F);
     	
     	rewardNearbyPlayers(this.worldObj, this.posX, this.posY, this.posZ);
 	}
@@ -163,13 +150,10 @@ public class EntityTFQuestRam extends EntityAnimal {
 		}
 	}
     
-	/**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
+    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
     {
-        ItemStack currentItem = par1EntityPlayer.inventory.getCurrentItem();
+        ItemStack currentItem = player.inventory.getCurrentItem();
 
         if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(currentItem.getItemDamage()))
         {
@@ -177,13 +161,13 @@ public class EntityTFQuestRam extends EntityAnimal {
         	this.setColorPresent(currentItem.getItemDamage());
         	this.animateAddColor(currentItem.getItemDamage(), 50);
         	
-            if (!par1EntityPlayer.capabilities.isCreativeMode)
+            if (!player.capabilities.isCreativeMode)
             {
                 --currentItem.stackSize;
 
                 if (currentItem.stackSize <= 0)
                 {
-                    par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                 }
             }
         	
@@ -193,15 +177,10 @@ public class EntityTFQuestRam extends EntityAnimal {
         }
         else
         {
-            return super.interact(par1EntityPlayer);
+            return super.processInteract(player);
         }
     }
     
-	
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     @Override
 	public void onLivingUpdate()
     {
@@ -213,7 +192,6 @@ public class EntityTFQuestRam extends EntityAnimal {
 //        }
     	checkAndAnimateColors();
     }
-    
 
     /**
      * Called every tick.  If we have got all the colors and have not paid out the reward yet, do a colorful animation.
@@ -224,9 +202,6 @@ public class EntityTFQuestRam extends EntityAnimal {
 		}
 	}
 
-	/**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     @Override
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -235,9 +210,6 @@ public class EntityTFQuestRam extends EntityAnimal {
         par1NBTTagCompound.setBoolean("Rewarded", this.getRewarded());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -331,67 +303,45 @@ public class EntityTFQuestRam extends EntityAnimal {
     	return count;
     }
     
-
-
-    
-    /**
-     * Plays living's sound at its position
-     */
     @Override
 	public void playLivingSound()
     {
         this.worldObj.playSoundAtEntity(this, "mob.sheep.say", this.getSoundVolume(), this.getSoundPitch());
     }
-    
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
+
     @Override
 	protected float getSoundVolume()
     {
         return 5.0F;
     }
     
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
     @Override
 	protected float getSoundPitch()
     {
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.7F;
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
+    @Override
     protected String getLivingSound()
     {
         return "mob.sheep.say";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
+    @Override
     protected String getHurtSound()
     {
         return "mob.sheep.say";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
+    @Override
     protected String getDeathSound()
     {
         return "mob.sheep.say";
     }
 
-    protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_)
+    @Override
+    protected void playStepSound(BlockPos pos, Block p_145780_4_)
     {
         this.playSound("mob.sheep.step", 0.15F, 1.0F);
-    }
-
-    public float getMaximumHomeDistance()
-    {
-        return this.func_110174_bM();
     }
 }

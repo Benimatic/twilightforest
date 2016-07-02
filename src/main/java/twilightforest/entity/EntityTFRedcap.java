@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -14,6 +15,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,19 +53,18 @@ public class EntityTFRedcap extends EntityMob {
 		this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityTNTPrimed.class, 2.0F, 1.0F, 2.0F));
 		this.tasks.addTask(2, new EntityAITFRedcapShy(this, 1.0F));
 		this.tasks.addTask(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
-        this.tasks.addTask(5, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
         
-        this.setCurrentItemOrArmor(0, heldPick);
-        this.setCurrentItemOrArmor(1, new ItemStack(Items.IRON_BOOTS));
-        
-        this.equipmentDropChances[0] = 0.2F;
-        this.equipmentDropChances[1] = 0.2F;
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
+        this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 
+        this.setDropChance(EntityEquipmentSlot.MAINHAND, 0.2F);
+        this.setDropChance(EntityEquipmentSlot.FEET, 0.2F);
     }
     
     public EntityTFRedcap(World world, double x, double y, double z)
@@ -72,24 +73,12 @@ public class EntityTFRedcap extends EntityMob {
         this.setPosition(x, y, z);
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
     }
 
     @Override
@@ -133,10 +122,7 @@ public class EntityTFRedcap extends EntityMob {
 	{
 		return heldPick;
 	}
-	
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
+
 	@Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -144,19 +130,13 @@ public class EntityTFRedcap extends EntityMob {
         par1NBTTagCompound.setInteger("TNTLeft", this.getTntLeft());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
 	@Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         this.setTntLeft(par1NBTTagCompound.getInteger("TNTLeft"));
     }
-	
-    /**
-     * Trigger achievement when killed
-     */
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

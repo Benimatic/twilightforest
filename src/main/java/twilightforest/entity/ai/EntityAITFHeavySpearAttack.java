@@ -13,17 +13,11 @@ public class EntityAITFHeavySpearAttack extends EntityAIBase {
         this.setMutexBits(7);
     }
 	
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
 	@Override
 	public boolean shouldExecute() {
        return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
 	}
 	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {

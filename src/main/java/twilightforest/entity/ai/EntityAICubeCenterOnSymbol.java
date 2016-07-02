@@ -44,10 +44,8 @@ public class EntityAICubeCenterOnSymbol extends EntityAIBase {
 			return false;
 		}
 	}
-	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
+
+	@Override
     public boolean continueExecuting()
     {
 

@@ -19,18 +19,6 @@ public abstract class EntityTFBird extends EntityAnimal {
 		super(par1World);
 	}
 
-	/**
-	 * Returns true if the newer Entity AI code should be run
-	 */
-	@Override
-	public boolean isAIEnabled() {
-	    return true;
-	}
-
-	/**
-	 * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-	 * use this to react to sunlight and start to burn.
-	 */
 	@Override
 	public void onLivingUpdate() {
 	    super.onLivingUpdate();
@@ -71,33 +59,20 @@ public abstract class EntityTFBird extends EntityAnimal {
 //        }
 	}
 
-	/**
-	 * Called when the mob is falling. Calculates and applies fall damage.
-	 */
 	@Override
-	protected void fall(float par1) {}
+	public void fall(float dist, float damageMultiplier) {}
 
-    /**
-     * returns if this entity triggers Blocks.ONENTITYWALKING on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     @Override
 	protected boolean canTriggerWalking()
     {
         return false;
     }
 	
-	/**
-	 * Returns the item ID for the item the mob drops on death.
-	 */
 	@Override
 	protected Item getDropItem() {
 	    return Items.FEATHER;
 	}
 
-	/**
-	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-	 */
 	@Override
 	public EntityAnimal createChild(EntityAgeable entityanimal)
 	{

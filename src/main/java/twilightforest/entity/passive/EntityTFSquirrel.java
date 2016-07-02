@@ -48,37 +48,21 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
     }
 	
 	/**
-	 * Called when the mob is falling. Calculates and applies fall damage.
 	 * TODO: maybe they should just take less damage?
 	 */
 	@Override
-	protected void fall(float par1) {}
+	public void fall(float dmg, float mult) {}
 
-	/**
-	 * Returns true if the newer Entity AI code should be run
-	 */
-	@Override
-	public boolean isAIEnabled() {
-	    return true;
-	}
-
-	/**
-	 * Actually only used for the shadow
-	 */
 	@Override
 	public float getRenderSizeModifier() {
 		 return 0.3F;
 	}
 	
-    /**
-     * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
-     * Args: x, y, z
-     */
 	@Override
     public float getBlockPathWeight(int par1, int par2, int par3)
     {
@@ -97,18 +81,12 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 		return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
     }
 	
-	/**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
     @Override
 	protected boolean canDespawn()
     {
         return false;
     }
 	
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

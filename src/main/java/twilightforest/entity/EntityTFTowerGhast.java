@@ -5,9 +5,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
@@ -31,7 +32,7 @@ public class EntityTFTowerGhast extends EntityGhast
 	
 	protected int inTrapCounter;
 
-    private BlockPos homePosition = new BlockPos(0, 0, 0);
+    private BlockPos homePosition = BlockPos.ORIGIN;
     /** If -1 there is no maximum distance */
     private float maximumHomeDistance = -1.0F;
 
@@ -53,36 +54,27 @@ public class EntityTFTowerGhast extends EntityGhast
 //    {
 //        return 30;
 //    }
-    
-	/**
-	 * Set monster attributes
-	 */
+
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
     }
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
+    @Override
     protected float getSoundVolume()
     {
         return 0.5F;
     }
     
-    /**
-     * Get number of ticks, at least during which the living entity will be silent.
-     */
+    @Override
     public int getTalkInterval()
     {
         return 160;
     }
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 8;
@@ -113,10 +105,7 @@ public class EntityTFTowerGhast extends EntityGhast
     	return this.dataWatcher.getWatchableObjectByte(AGGRO_STATUS);
     }
 
-	/**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
+	@Override
     public void onLivingUpdate()
     {
     	// age when in light, like mobs
@@ -129,18 +118,16 @@ public class EntityTFTowerGhast extends EntityGhast
         
         if (this.rand.nextBoolean())
         {
-            this.worldObj.spawnParticle("reddust", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+            this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
         }
 
         super.onLivingUpdate();
     }
-    
-    /**
-     * Altered Ghast AI
-     */
-    protected void updateEntityActionState()
+
+    @Override
+    protected void updateAITasks()
     {
-        if (!this.worldObj.isRemote && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+        if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
             this.setDead();
         }
@@ -303,7 +290,7 @@ public class EntityTFTowerGhast extends EntityGhast
      */
 	protected void spitFireball() {
 		double offsetX = this.targetedEntity.posX - this.posX;
-		double offsetY = this.targetedEntity.boundingBox.minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
+		double offsetY = this.targetedEntity.getEntityBoundingBox().minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
 		double offsetZ = this.targetedEntity.posZ - this.posZ;
 		
 		// fireball sound effect
@@ -333,7 +320,7 @@ public class EntityTFTowerGhast extends EntityGhast
      * @return
      */
     protected EntityLivingBase findPlayerInRange() {
-    	EntityPlayer closest = this.worldObj.getClosestVulnerablePlayerToEntity(this, aggroRange);
+    	EntityPlayer closest = this.worldObj.getNearestAttackablePlayer(this, aggroRange, aggroRange);
     	
     	if (closest != null)
     	{
@@ -380,11 +367,7 @@ public class EntityTFTowerGhast extends EntityGhast
      */
     protected boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer)
     {
-    	int dx = MathHelper.floor_double(par1EntityPlayer.posX);
-    	int dy = MathHelper.floor_double(par1EntityPlayer.posY);
-    	int dz = MathHelper.floor_double(par1EntityPlayer.posZ);
-    	
-        return worldObj.canBlockSeeTheSky(dx, dy, dz) && par1EntityPlayer.canEntityBeSeen(this);
+        return worldObj.canSeeSky(new BlockPos(par1EntityPlayer)) && par1EntityPlayer.canEntityBeSeen(this);
     }
 
 
@@ -412,9 +395,7 @@ public class EntityTFTowerGhast extends EntityGhast
         return true;
     }
     
-    /**
-     * Called when the entity is attacked.
-     */
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
     	boolean wasAttacked = super.attackEntityFrom(par1DamageSource, par2);
@@ -433,15 +414,13 @@ public class EntityTFTowerGhast extends EntityGhast
         }
     }
     
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
+    @Override
     public boolean getCanSpawnHere()
     {
-        return this.worldObj.checkNoEntityCollision(this.boundingBox) 
-        		&& this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() 
-        		&& !this.worldObj.isAnyLiquid(this.boundingBox) 
-        		&& this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL
+        return this.worldObj.checkNoEntityCollision(getEntityBoundingBox())
+        		&& this.worldObj.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+        		&& !this.worldObj.containsAnyLiquid(getEntityBoundingBox())
+        		&& this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL
         		&& this.isValidLightLevel();
     }
     
@@ -479,7 +458,7 @@ public class EntityTFTowerGhast extends EntityGhast
     		{
     			// set our home position to the center of the tower
     			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
-    			this.setHomeArea(cc.posX, cc.posY + 128, cc.posZ, 64);
+    			this.setHomeArea(cc.up(128), 64);
 
 //                System.out.println("Ghast is at  " + this.posX + ", " + this.posY + ", " + this.posZ);
 //    			System.out.println("Set home area to " + cc.posX + ", " + (cc.posY + 128) + ", " + cc.posZ);
@@ -503,7 +482,7 @@ public class EntityTFTowerGhast extends EntityGhast
 //    		System.out.println("Checking home for " + x + ", " + y + ", " + z + " and home is " + home.posX + ", " + home.posY + ", " + home.posZ);
 //    		System.out.println("home.getDistanceSquared(x, home.posY, z) =  "  + home.getDistanceSquared(x, home.posY, z) + " compared to " + (this.getMaximumHomeDistance() * this.getMaximumHomeDistance()));
     		
-    		return y > 64 && y < 210 && home.getDistanceSquared(x, home.posY, z) < this.getMaximumHomeDistance() * this.getMaximumHomeDistance();
+    		return y > 64 && y < 210 && home.distanceSq(x, home.getY(), z) < this.getMaximumHomeDistance() * this.getMaximumHomeDistance();
     	}
     }
     
@@ -512,9 +491,9 @@ public class EntityTFTowerGhast extends EntityGhast
     	this.inTrapCounter = 10;
     }
     
-    public void setHomeArea(int par1, int par2, int par3, int par4)
+    public void setHomeArea(BlockPos pos, int par4)
     {
-        this.homePosition.set(par1, par2, par3);
+        this.homePosition = pos;
         this.maximumHomeDistance = (float)par4;
     }
 

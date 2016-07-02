@@ -20,18 +20,11 @@ public class EntityTFGoblinChain extends Entity {
 		this.goblin = goblin;
 	}
 
-	/**
-	 * Don't take damage from attacks
-	 */
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		return false;
 	}
 
-	
-	/**
-	 * Keep position updated
-	 */
     @Override
     public void onUpdate() {
     	super.onUpdate();
@@ -53,22 +46,19 @@ public class EntityTFGoblinChain extends Entity {
 
     }
     
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
+    @Override
     public boolean canBeCollidedWith()
     {
         return false;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
+    @Override
     public boolean canBePushed()
     {
         return false;
     }
-    
+
+	@Override
     public boolean isEntityEqual(Entity entity)
     {
         return this == entity || this.goblin == entity;

@@ -29,10 +29,6 @@ public class EntityTFHedgeSpider extends EntitySpider {
         this.setPosition(x, y, z);
     }
     
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
     @Override
 	protected Entity findPlayerToAttack()
     {
@@ -40,10 +36,7 @@ public class EntityTFHedgeSpider extends EntitySpider {
     	double var2 = 16.0D;
     	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
     }
-	
-	/**
-     * Checks to make sure the light is not too bright where the mob is spawning
-	 */
+
 	@Override
     protected boolean isValidLightLevel()
     {
@@ -60,9 +53,6 @@ public class EntityTFHedgeSpider extends EntitySpider {
 		}
     }
 	
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

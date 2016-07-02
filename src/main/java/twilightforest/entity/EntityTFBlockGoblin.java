@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -55,7 +56,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         
         this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityTNTPrimed.class, 2.0F, 0.8F, 1.5F));
-        this.tasks.addTask(5, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0F, false));
+        this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0F, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
@@ -80,18 +81,6 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         this.dataWatcher.addObject(DATA_CHAINPOS, Byte.valueOf((byte) 0));
     }
     
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
@@ -120,18 +109,12 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         return TwilightForestMod.ID + ":mob.redcap.die";
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
-    protected Item getDropItemId()
+    @Override
+    protected Item getDropItem()
     {
         return TFItems.armorShard;
     }
     
-	
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -172,9 +155,6 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     	return this.isSwingInProgress || (this.getAttackTarget() != null && this.recoilCounter == 0);
     }
 
-    /**
-     * Do not deal damage by colliding with the goblin
-     */
 	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
 		
@@ -187,9 +167,6 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		//return super.attackEntityAsMob(par1Entity);
 	}
 	
-    /**
-     * Keep block position updated
-     */
     @Override
 	public void onUpdate() {
 		
@@ -252,10 +229,9 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     /**
      * Check if the block is colliding with any nearby entities
      */
-    @SuppressWarnings("unchecked")
 	protected void applyBlockCollisions(Entity collider)
     {
-        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(collider, collider.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && !list.isEmpty())
         {
@@ -338,7 +314,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public World func_82194_d() {
+	public World getWorld() {
 		return this.worldObj;
 	}
 
@@ -366,7 +342,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
         if (i > 20)
         {
-            i = 20;
+            i = 20; // todo 1.9 attributes
         }
 
         return i;

@@ -42,16 +42,15 @@ public class EntityTFProtectionBox extends Entity {
         }
 
     }
-    
-    /**
-     * Gets how bright this entity is.
-     */
+
+	@Override
     public float getBrightness(float par1)
     {
         return 1.0F;
     }
 
     @SideOnly(Side.CLIENT)
+	@Override
     public int getBrightnessForRender(float par1)
     {
         return 15728880;
@@ -74,11 +73,9 @@ public class EntityTFProtectionBox extends Entity {
 		// TODO Auto-generated method stub
 		
 	}
-	
-    /**
-     * Return whether this entity should be rendered as on fire.
-     */
+
     @SideOnly(Side.CLIENT)
+	@Override
     public boolean canRenderOnFire()
     {
         return false;

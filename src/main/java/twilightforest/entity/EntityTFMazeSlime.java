@@ -36,16 +36,13 @@ public class EntityTFMazeSlime extends EntitySlime
         super.setSlimeSize(par1);
         this.experienceValue = par1 + 3;
     }
-    
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
+
     @Override
 	public boolean getCanSpawnHere()
     {
-    	return this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL && this.worldObj.checkNoEntityCollision(this.boundingBox) 
-        		&& this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() 
-        		&& !this.worldObj.isAnyLiquid(this.boundingBox) && this.isValidLightLevel();
+    	return this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && this.worldObj.checkNoEntityCollision(getEntityBoundingBox())
+        		&& this.worldObj.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+        		&& !this.worldObj.containsAnyLiquid(getEntityBoundingBox()) && this.isValidLightLevel();
     }
     
 	/**
@@ -56,21 +53,15 @@ public class EntityTFMazeSlime extends EntitySlime
     {
         super.applyEntityAttributes();
         int size = this.getSlimeSize();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(2.0D * size * size); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(2.0D * size * size);
     }
-    
-    /**
-     * Indicates weather the slime is able to damage the player (based upon the slime's size)
-     */
+
     @Override
 	protected boolean canDamagePlayer()
     {
         return true;
     }
 
-    /**
-     * Gets the amount of damage dealt to the player when "attacked" by the slime.
-     */
     @Override
 	protected int getAttackStrength()
     {
@@ -120,11 +111,7 @@ public class EntityTFMazeSlime extends EntitySlime
             return var4 <= this.rand.nextInt(8);
         }
     }
-    
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
     @Override
 	protected float getSoundVolume()
     {

@@ -23,18 +23,12 @@ public class EntityTFBoar extends EntityPig {
         this.setPosition(x, y, z);
     }
 
-    /**
-     * What is our baby?!
-     */
     @Override
 	public EntityPig createChild(EntityAgeable entityanimal)
     {
         return new EntityTFBoar(worldObj);
     }
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

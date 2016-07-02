@@ -41,9 +41,6 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 
 	}
 
-	/**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean shouldExecute() {
     	EntityLivingBase target = this.attacker.getAttackTarget();
@@ -64,9 +61,6 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
 	@Override
 	public boolean continueExecuting() {
 		EntityLivingBase target = this.attacker.getAttackTarget();
@@ -91,9 +85,6 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 		}
 	}
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
 	@Override
 	public void startExecuting() {
         EntityLivingBase target = this.attacker.getAttackTarget();
@@ -104,18 +95,12 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
         }
 	}
 
-	/**
-	 * Resets the task
-	 */
 	@Override
 	public void resetTask() {
 		this.hoverTimer = 0;
 		this.dropTimer = 0;
 	}
 
-    /**
-     * Updates the task
-     */
 	@Override
 	public void updateTask() {
 		
@@ -164,7 +149,7 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 			this.dropTimer++;
 			
 			if (this.attacker.posY > this.dropY) {
-				this.attacker.destroyBlocksInAABB(this.attacker.boundingBox.expand(1, 0.5F, 1));
+				this.attacker.destroyBlocksInAABB(this.attacker.getEntityBoundingBox().expand(1, 0.5F, 1));
 			}
 		}
 	}
@@ -204,7 +189,7 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 		float radius = this.attacker.width / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
 		
-		boolean isOccupied = this.attacker.worldObj.getCollidingBoundingBoxes(attacker, aabb).isEmpty();
+		boolean isOccupied = this.attacker.worldObj.getCollisionBoxes(attacker, aabb).isEmpty();
 		
 		return isOccupied;
 	}

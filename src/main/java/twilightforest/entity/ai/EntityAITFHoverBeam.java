@@ -44,9 +44,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		this.isInPosition = false;
 	}
 
-	/**
-     * Returns whether the EntityAIBase should begin execution.
-     */
 	@Override
 	public boolean shouldExecute() {
         EntityLivingBase target = this.attacker.getAttackTarget();
@@ -67,9 +64,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 
 	}
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
 	@Override
 	public boolean continueExecuting() {
 		EntityLivingBase target = this.attacker.getAttackTarget();
@@ -87,9 +81,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		}
 	}
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
 	@Override
 	public void startExecuting() {
         EntityLivingBase target = this.attacker.getAttackTarget();
@@ -100,9 +91,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
         }
 	}
 
-	/**
-	 * Resets the task
-	 */
 	@Override
 	public void resetTask() {
 		this.seekTimer = 0;
@@ -113,9 +101,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		this.attacker.setBreathing(false);
 	}
 
-    /**
-     * Updates the task
-     */
 	@Override
 	public void updateTask() {
 		
@@ -199,7 +184,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
         Vec3d lookVec = this.attacker.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
-        List<Entity> possibleList = this.attacker.worldObj.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+        List<Entity> possibleList = this.attacker.worldObj.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList)
@@ -207,7 +192,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
             if (possibleEntity.canBeCollidedWith() && possibleEntity != this.attacker)
             {
                 float borderSize = possibleEntity.getCollisionBorderSize();
-                AxisAlignedBB collisionBB = possibleEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
+                AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().expand((double)borderSize, (double)borderSize, (double)borderSize);
                 RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
                 if (collisionBB.isVecInside(srcVec))
@@ -270,7 +255,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		float radius = this.attacker.width / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
 		
-		boolean isOccupied = this.attacker.worldObj.getCollidingBoundingBoxes(attacker, aabb).isEmpty();
+		boolean isOccupied = this.attacker.worldObj.getCollisionBoxes(attacker, aabb).isEmpty();
 		
 		return isOccupied;
 	}

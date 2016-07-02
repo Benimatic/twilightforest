@@ -35,15 +35,12 @@ public class EntityTFSwarmSpider extends EntitySpider {
         this.setPosition(x, y, z);
     }
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 	
 
@@ -56,21 +53,14 @@ public class EntityTFSwarmSpider extends EntitySpider {
         return 0.5F;
     }
 
-	/**
-	 * Actually only used for the shadow
-	 */
 	@Override
 	public float getRenderSizeModifier() {
 		 return 0.5F;
 	}
 
-	/**
-	 * Spawn more if that flag is set.
-	 */
 	@Override
 	public void onUpdate() {
 		if (shouldSpawnMore()) {
-			// don't spawn if we're connected in multiplayer 
 			if (!worldObj.isRemote) {
 				int more = 1 + rand.nextInt(2);
 				for (int i = 0; i < more; i++) {
@@ -101,11 +91,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
     	}
 
     }
-    
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
+
     @Override
 	protected Entity findPlayerToAttack()
     {
@@ -114,11 +100,6 @@ public class EntityTFSwarmSpider extends EntitySpider {
     	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
     }
 
-	/**
-	 * Spawn another spider!
-	 * 
-	 * @return
-	 */
 	protected boolean spawnAnother() {
 		EntityTFSwarmSpider another = new EntityTFSwarmSpider(worldObj, false);
 
@@ -137,9 +118,6 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		return true;
 	}
 
-	/**
-     * Checks to make sure the light is not too bright where the mob is spawning
-	 */
 	@Override
     protected boolean isValidLightLevel()
     {
@@ -197,19 +175,14 @@ public class EntityTFSwarmSpider extends EntitySpider {
 			}
 		}
 	}
-	
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
+
     @Override
 	protected float getSoundPitch()
     {
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F;
     }
-	
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
+
+	@Override
     public int getMaxSpawnedInChunk()
     {
         return 16;

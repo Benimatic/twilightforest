@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
@@ -24,7 +25,7 @@ public class EntityTFKingSpider extends EntitySpider {
         
         this.getNavigator().setAvoidsWater(true);
 		//this.tasks.addTask(1, new EntityAITFChargeAttack(this, 0.4F));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.3F));
         this.tasks.addTask(6, new EntityAIWander(this, 0.2F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -33,33 +34,16 @@ public class EntityTFKingSpider extends EntitySpider {
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 
 	}
-	
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-	/**
-	 * Set monster attributes
-	 */
+
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
     }
 
-	
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
     @Override
 	protected Entity findPlayerToAttack()
     {
@@ -67,28 +51,19 @@ public class EntityTFKingSpider extends EntitySpider {
     	double var2 = 16.0D;
     	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
     }
-	
-    /**
-     * How large the spider should be scaled.
-     */
+
 	//@Override
     public float spiderScaleAmount()
     {
         return 1.9F;
     }
 
-	/**
-	 * Actually only used for the shadow
-	 */
 	@Override
 	public float getRenderSizeModifier() {
 		 return 2.0F;
 	}
 
-    
-    /**
-     * returns true if this entity is by a ladder, false otherwise
-     */
+    @Override
     public boolean isOnLadder()
     {
     	// let's not climb
@@ -112,9 +87,7 @@ public class EntityTFKingSpider extends EntitySpider {
         return (IEntityLivingData)par1EntityLivingData1;
     }
 
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
+    @Override
     public double getMountedYOffset()
     {
         return (double)this.height * 0.5D;

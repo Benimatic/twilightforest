@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
@@ -47,10 +48,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 
         makeTrail();
 	}
-	
-    /**
-     * Gets how bright this entity is.
-     */
+
 	@Override
     public float getBrightness(float par1)
     {
@@ -80,27 +78,18 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 //		}
 	}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
 	public boolean canBeCollidedWith()
     {
         return true;
     }
-    
-    /**
-     * We need to set this so that the player can attack and reflect the bolt
-     */
+
     @Override
 	public float getCollisionBorderSize()
     {
         return 1.0F;
     }
 
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
     protected float getGravityVelocity()
     {
@@ -132,7 +121,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 
         for (int var3 = 0; var3 < 8; ++var3)
         {
-            this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(TFBlocks.moonworm) + "_0", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
         }
 
         if (!this.worldObj.isRemote)

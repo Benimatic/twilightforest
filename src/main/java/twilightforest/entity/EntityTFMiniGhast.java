@@ -27,22 +27,17 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
     	
 	}
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 16;
     }
-    
-	/**
-	 * Set monster attributes
-	 */
+
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.isMinion ? 6 : 10); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isMinion ? 6 : 10);
     }
     
     @Override
@@ -67,10 +62,9 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
 	}
 
     /**
-     * Checks to see if this mini ghast should be attacking this player.
-     * 
      * Very similar to endermen code, but we also attack at a certain range
      */
+    @Override
     protected boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer)
     {
         ItemStack playerHeadArmor = par1EntityPlayer.inventory.armorInventory[3];
@@ -86,18 +80,15 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
         else
         {
             Vec3d var3 = par1EntityPlayer.getLook(1.0F).normalize();
-            Vec3d var4 = new Vec3d(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
+            Vec3d var4 = new Vec3d(this.posX - par1EntityPlayer.posX, this.getEntityBoundingBox().minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
             double var5 = var4.lengthVector();
             var4 = var4.normalize();
             double var7 = var3.dotProduct(var4);
             return var7 > 1.0D - 0.025D / var5 ? par1EntityPlayer.canEntityBeSeen(this) : false;
         }
     }
-    
-    
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
+
+    @Override
     protected boolean isValidLightLevel()
     {
     	if (isMinion)
@@ -106,7 +97,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
     	}
     	
         int myX = MathHelper.floor_double(this.posX);
-        int myY = MathHelper.floor_double(this.boundingBox.minY);
+        int myY = MathHelper.floor_double(this.getEntityBoundingBox().minY);
         int myZ = MathHelper.floor_double(this.posZ);
 
         if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, myX, myY, myZ) > this.rand.nextInt(32))
@@ -139,10 +130,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
 		this.setHealth(this.getMaxHealth());
 	}
 	
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-     * par2 - Level of Looting used to kill this mob.
-     */
+    @Override
     protected void dropFewItems(boolean par1, int par2)
     {
     	// no loot from minions

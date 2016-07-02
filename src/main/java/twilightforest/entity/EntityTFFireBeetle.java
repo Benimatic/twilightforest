@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -38,7 +40,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
 
         this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAITFBreathAttack(this, 1.0F, 5F, 30, 0.1F));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0F, false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
         //this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         //this.tasks.addTask(7, new EntityAILookIdle(this));
@@ -60,84 +62,51 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
         dataWatcher.addObject(17, Byte.valueOf((byte)0));
     }
 	
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
     
-
-	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     @Override
 	protected String getLivingSound()
     {
         return null;
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     @Override
 	protected String getHurtSound()
     {
         return "mob.spider.say";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     @Override
 	protected String getDeathSound()
     {
         return "mob.spider.death";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     @Override
-	protected void func_145780_a(int var1, int var2, int var3, Block var4)
+	protected void playStepSound(BlockPos pos, Block var4)
     {
         this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
     }
-
 
     @Override
 	protected Item getDropItem()
     {
         return Items.GUNPOWDER;
     }
-    
-    /* (non-Javadoc)
-	 * @see twilightforest.entity.IBreathAttacker#isBreathing()
-	 */
+
     @Override
 	public boolean isBreathing()
     {
         return dataWatcher.getWatchableObjectByte(17) != 0;
     }
 
-    /* (non-Javadoc)
-	 * @see twilightforest.entity.IBreathAttacker#setBreathing(boolean)
-	 */
     @Override
 	public void setBreathing(boolean flag)
     {
@@ -151,11 +120,6 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
         }
     }
 
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     @Override
 	public void onLivingUpdate()
     {
@@ -217,9 +181,6 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
 		}
 	}
 
-	/**
-     * Trigger achievement when killed
-     */
     @Override
     public void onDeath(DamageSource par1DamageSource) {
     	super.onDeath(par1DamageSource);
@@ -228,9 +189,6 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     	}
     }
 
-	/**
-	 * Rather than speed, this seems to control how far up or down the heads can tilt?
-	 */
 	@Override
     public int getVerticalFaceSpeed()
     {
@@ -249,18 +207,12 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
 		return 0.25F;
 	}
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
     @Override
 	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
     }
 
-	/* (non-Javadoc)
-	 * @see twilightforest.entity.IBreathAttacker#doBreathAttack(net.minecraft.entity.Entity)
-	 */
 	@Override
 	public void doBreathAttack(Entity target) 
 	{

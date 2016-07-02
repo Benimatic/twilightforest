@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -17,7 +18,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Facing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFTowerWood;
@@ -37,7 +40,7 @@ public class EntityTFTowerTermite extends EntityMob
         //this.moveSpeed = 0.27F;
         
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(4, new EntityAILookIdle(this));
@@ -45,32 +48,16 @@ public class EntityTFTowerTermite extends EntityMob
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 	}
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-	
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.27D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.27D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D); // attack damage
     }
 
-    /**
-     * returns if this entity triggers Blocks.ONENTITYWALKING on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
+    @Override
     protected boolean canTriggerWalking()
     {
         return false;
@@ -110,12 +97,10 @@ public class EntityTFTowerTermite extends EntityMob
         return "mob.silverfish.kill";
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    @Override
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-        if (this.isEntityInvulnerable())
+        if (this.isEntityInvulnerable(par1DamageSource))
         {
             return false;
         }
@@ -129,7 +114,8 @@ public class EntityTFTowerTermite extends EntityMob
             return super.attackEntityFrom(par1DamageSource, par2);
         }
     }
-    
+
+    @Override
     protected void updateAITasks()
     {
         super.updateAITasks();
@@ -193,15 +179,10 @@ public class EntityTFTowerTermite extends EntityMob
      * Look at a random nearby block.  Is it the proper tower wood?  If so, burrow.
      */
 	protected void tryToBurrow() {
-		int x = MathHelper.floor_double(this.posX);
-		int y = MathHelper.floor_double(this.posY + 0.5D);
-		int z = MathHelper.floor_double(this.posZ);
-		int randomFacing = this.rand.nextInt(6);
-		
-		x += Facing.offsetsXForSide[randomFacing];
-		y += Facing.offsetsYForSide[randomFacing];
-		z += Facing.offsetsZForSide[randomFacing];
-		
+        BlockPos pos = new BlockPos(posX, posY + 0.5, posZ);
+        EnumFacing randomFacing = EnumFacing.random(rand);
+        pos = pos.offset(randomFacing);
+
 		Block blockIDNearby = this.worldObj.getBlock(x, y, z);
 		int blockMetaNearby = this.worldObj.getBlockMetadata(x, y, z);
 
@@ -237,27 +218,20 @@ public class EntityTFTowerTermite extends EntityMob
         this.playSound("mob.silverfish.step", 0.15F, 1.0F);
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
+    @Override
     protected Item getDropItem()
     {
         return TFItems.borerEssence;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
     public void onUpdate()
     {
         this.renderYawOffset = this.rotationYaw;
         super.onUpdate();
     }
 
-
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
+    @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;

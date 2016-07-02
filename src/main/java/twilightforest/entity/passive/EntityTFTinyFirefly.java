@@ -42,25 +42,14 @@ public class EntityTFTinyFirefly extends EntityWeatherEffect {
     		return 1.0f - (((float)lifeTime - halfLife) / halfLife);
     	}
     }
-    
-	
-	
-	@Override
-	protected void entityInit() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
-
-	}
+	protected void entityInit() {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
 
-	}
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {}
 
 }

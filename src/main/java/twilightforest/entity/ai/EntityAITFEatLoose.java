@@ -31,10 +31,6 @@ public class EntityAITFEatLoose extends EntityAIBase {
 		this.setMutexBits(0);
 	}
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
-    @SuppressWarnings("unchecked")
 	@Override
 	public boolean shouldExecute()
     {
@@ -47,7 +43,7 @@ public class EntityAITFEatLoose extends EntityAIBase {
         {
         	this.temptingItem = null;
         	
-            List<EntityItem> nearbyItems = this.temptedQuestRam.worldObj.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.boundingBox.expand(2.0D, 2.0D, 2.0D));
+            List<EntityItem> nearbyItems = this.temptedQuestRam.worldObj.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().expand(2.0D, 2.0D, 2.0D));
             
             for (EntityItem itemNearby : nearbyItems) {
             	if (itemNearby.getEntityItem().getItem() == temptID && !temptedQuestRam.isColorPresent(itemNearby.getEntityItem().getItemDamage()) && itemNearby.isEntityAlive()) { // is a wool block really "alive"?
@@ -66,27 +62,15 @@ public class EntityAITFEatLoose extends EntityAIBase {
     }
 
     
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {
         return this.shouldExecute();
     }
     
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
-	public void startExecuting()
-    {
-    	;
-    }
+	public void startExecuting() {}
 
-    /**
-     * Resets the task
-     */
     @Override
 	public void resetTask()
     {
@@ -95,9 +79,6 @@ public class EntityAITFEatLoose extends EntityAIBase {
         this.delayTemptCounter = 100;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
 	public void updateTask()
     {

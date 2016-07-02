@@ -34,9 +34,6 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		this.setMutexBits(3);
 	}
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
 	@Override
 	public boolean shouldExecute() {
         this.chargeTarget = this.charger.getAttackTarget();
@@ -76,28 +73,18 @@ public class EntityAITFChargeAttack extends EntityAIBase {
         }
 	}
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
 	public void startExecuting()
     {
     	this.windup = 15 + this.charger.getRNG().nextInt(30);
     }
 
-
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {
         return windup > 0 || !this.charger.getNavigator().noPath();
     }
     
-    /**
-     * Updates the task
-     */
     @Override
 	public void updateTask()
     {
@@ -127,7 +114,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
     	// attack the target when we get in range
         double var1 = this.charger.width * 2.1F * this.charger.width * 2.1F;
 
-        if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.boundingBox.minY, this.chargeTarget.posZ) <= var1)
+        if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getEntityBoundingBox().minY, this.chargeTarget.posZ) <= var1)
         {
             if (!this.hasAttacked)
             {
@@ -138,10 +125,6 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 
     }
 
-
-    /**
-     * Resets the task
-     */
     @Override
 	public void resetTask()
     {

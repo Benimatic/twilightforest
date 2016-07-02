@@ -5,6 +5,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -44,7 +45,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			worldObj.spawnParticle("mobSpell", dx, dy, dz, s1, s2, s3);
+			worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
@@ -72,7 +73,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 
         for (int i = 0; i < 8; ++i)
         {
-            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ENDER_PEARL), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
         }
 
         if (!this.worldObj.isRemote)

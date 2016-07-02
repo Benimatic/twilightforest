@@ -28,10 +28,6 @@ public class EntityAITFFindLoose extends EntityAIBase {
         this.setMutexBits(3);
 	}
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
-    @SuppressWarnings("unchecked")
 	@Override
 	public boolean shouldExecute()
     {
@@ -44,7 +40,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
         {
         	this.temptingItem = null;
         	
-            List<EntityItem> nearbyItems = this.temptedEntity.worldObj.getEntitiesWithinAABB(EntityItem.class, this.temptedEntity.boundingBox.expand(16.0D, 4.0D, 16.0D));
+            List<EntityItem> nearbyItems = this.temptedEntity.worldObj.getEntitiesWithinAABB(EntityItem.class, this.temptedEntity.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
             
             for (EntityItem itemNearby : nearbyItems) {
             	if (itemNearby.getEntityItem().getItem() == temptID && itemNearby.isEntityAlive()) {
@@ -62,28 +58,18 @@ public class EntityAITFFindLoose extends EntityAIBase {
         }
     }
 
-    
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {
         return this.shouldExecute();
     }
     
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
 	public void startExecuting()
     {
     	;
     }
 
-    /**
-     * Resets the task
-     */
     @Override
 	public void resetTask()
     {
@@ -92,9 +78,6 @@ public class EntityAITFFindLoose extends EntityAIBase {
         this.delayTemptCounter = 100;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
 	public void updateTask()
     {

@@ -19,14 +19,10 @@ public class EntityAITFFlockTarget extends EntityAITarget
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
-    @SuppressWarnings("unchecked")
 	@Override
 	public boolean shouldExecute()
     {
-    	List<EntityLivingBase> flockList = this.flockCreature.worldObj.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.boundingBox.expand(16.0D, 4.0D, 16.0D));
+    	List<EntityLivingBase> flockList = this.flockCreature.worldObj.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
     	List<EntityLivingBase> targetList = new ArrayList<EntityLivingBase>();
     	
     	for (EntityLivingBase flocker : flockList)
@@ -51,9 +47,6 @@ public class EntityAITFFlockTarget extends EntityAITarget
     	}
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
 	public void startExecuting()
     {

@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import twilightforest.entity.ai.EntityAITFGiantAttackOnCollide;
 import twilightforest.item.TFItems;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -32,41 +33,30 @@ public class EntityTFGiantMiner extends EntityMob {
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.STONE_PICKAXE));
-        
-        for (int i = 0; i < this.equipmentDropChances.length; ++i)
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
+
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values())
         {
-            this.equipmentDropChances[i] = 0F;
+            setDropChance(slot, 0);
         }
 	}
 
+    @Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
 	}
 	
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     @Override
-	protected boolean isAIEnabled() {
-        return true;
-    }
-
-    
     protected Item getDropItem()
     {
         return TFItems.giantPick;
     }
-    
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-     * par2 - Level of Looting used to kill this mob.
-     */
+
+    @Override
     protected void dropFewItems(boolean par1, int par2)
     {
         Item item = this.getDropItem();
@@ -77,7 +67,7 @@ public class EntityTFGiantMiner extends EntityMob {
     }
     
     public void makeNonDespawning() {
-    	this.func_110163_bv();
+    	this.enablePersistence();
     }
 
 }

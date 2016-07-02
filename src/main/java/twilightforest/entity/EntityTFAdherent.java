@@ -47,30 +47,14 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
         dataWatcher.addObject(CHARGE_FLAG, Byte.valueOf((byte)0));
     }
 	
-	/**
-	 * Returns true if the newer Entity AI code should be run
-	 */
-	@Override
-	public boolean isAIEnabled()
-	{
-		return true;
-	}
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
-	
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -79,9 +63,6 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 		}
 	}
 
-    /**
-     * Attack the specified entity using a ranged attack.
-     */
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
 		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.worldObj, this);

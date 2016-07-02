@@ -20,6 +20,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -34,8 +37,8 @@ import twilightforest.item.TFItems;
 
 public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 {
-    private static final int ROCK_FLAG = 16;
-    
+    private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
+
     private EntityAIAttackRanged aiArrowAttack = new EntityAIAttackRanged(this, 1.0D, 20, 60, 15.0F);
     private EntityAITFCollideAttackFixed aiAttackOnCollide = new EntityAITFCollideAttackFixed(this, EntityPlayer.class, 1.2D, false);
 
@@ -58,64 +61,39 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
             this.setCombatTask();
         }
     }
-	
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
     }
-	
+
+    @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(ROCK_FLAG, Byte.valueOf((byte)0));
+        this.dataManager.register(ROCK_FLAG, false);
     }
-
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-	public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
-    }
-    
     
     /**
      * Determines whether this troll has a rock or not.
      */
     public boolean hasRock() {
-        return (this.dataWatcher.getWatchableObjectByte(ROCK_FLAG) & 2) != 0;
+        return this.dataManager.get(ROCK_FLAG);
     }
 
     /**
      * Sets whether this troll has a rock or not.
      */
     public void setHasRock(boolean rock) {
-        byte b0 = this.dataWatcher.getWatchableObjectByte(ROCK_FLAG);
-
         if (rock) {
-            this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-            this.dataWatcher.updateObject(ROCK_FLAG, Byte.valueOf((byte)(b0 | 2)));
+            this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
+            this.dataManager.set(ROCK_FLAG, true);
         } else {
-            this.dataWatcher.updateObject(ROCK_FLAG, Byte.valueOf((byte)(b0 & -3)));
+            this.dataManager.set(ROCK_FLAG, false);
         }
         
         this.setCombatTask();
@@ -131,19 +109,15 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 		
 		return super.attackEntityAsMob(par1Entity);
 	}
-    
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
+
+    @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setBoolean("HasRock", this.hasRock());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
+    @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
@@ -154,7 +128,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     /**
      * sets this entity's combat AI.
      */
-    public void setCombatTask()
+    private void setCombatTask()
     {
         this.tasks.removeTask(this.aiAttackOnCollide);
         this.tasks.removeTask(this.aiArrowAttack);
@@ -169,6 +143,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     /**
 	 * handles entity death timer, experience orb and particle creation
 	 */
+    @Override
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
 		
@@ -213,16 +188,12 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 	}
 
 
-	/**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
-		
 	}
 		
 	/**
@@ -257,7 +228,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
             }
         }
     }
-    
+
+    @Override
     protected Item getDropItem()
     {
         return null;
@@ -268,9 +240,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         this.dropItem(TFItems.magicBeans, 1);
     }
 
-    /**
-     * Attack the specified entity using a ranged attack.
-     */
+    @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float par2)
     {
     	if (this.hasRock()) {
@@ -307,6 +277,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     /**
      * Updates the arm swing progress counters and animation progress
      */
+    @Override
     protected void updateArmSwingProgress()
     {
         int maxSwing = this.getArmSwingAnimationEnd();

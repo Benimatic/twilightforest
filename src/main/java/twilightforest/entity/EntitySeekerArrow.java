@@ -6,6 +6,8 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -144,6 +146,11 @@ public class EntitySeekerArrow extends EntityArrow {
         
 
     }
+
+	@Override
+	protected ItemStack getArrowStack() {
+		return new ItemStack(Items.ARROW);
+	}
 
 	private boolean isThisArrowFlying() {
 		return MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) > 1.0;

@@ -133,7 +133,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
         Vec3d lookVec = this.entityHost.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
-        List<Entity> possibleList = this.entityHost.worldObj.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+        List<Entity> possibleList = this.entityHost.worldObj.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList)
@@ -141,7 +141,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
             if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost)
             {
                 float borderSize = possibleEntity.getCollisionBorderSize();
-                AxisAlignedBB collisionBB = possibleEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
+                AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().expand((double)borderSize, (double)borderSize, (double)borderSize);
                 RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
                 if (collisionBB.isVecInside(srcVec))
@@ -188,7 +188,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
      */
     private float updateRotation(float par1, float par2, float par3) 
 	{
-        float var4 = MathHelper.wrapAngleTo180_float(par2 - par1);
+        float var4 = MathHelper.wrapDegrees(par2 - par1);
 
         if (var4 > par3)
         {

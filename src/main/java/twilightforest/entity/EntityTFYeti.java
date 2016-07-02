@@ -2,7 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -11,8 +11,14 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -21,11 +27,12 @@ import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nullable;
+
 public class EntityTFYeti extends EntityMob
 {
 
-	
-    private static final int ANGER_FLAG = 16;
+	private static final DataParameter<Byte> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BYTE);
 
 	public EntityTFYeti(World par1World)
     {
@@ -33,43 +40,31 @@ public class EntityTFYeti extends EntityMob
         this.setSize(1.4F, 2.4F);
 
         
-        this.getNavigator().setAvoidsWater(true);
+        // todo 1.9 this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0F));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(3, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(4, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
     }
-	
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.38D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(0.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
     }
-	
+
+    @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(ANGER_FLAG, Byte.valueOf((byte)0));
+        this.dataManager.register(ANGER_FLAG, (byte) 0);
     }
 
     /**
@@ -79,16 +74,16 @@ public class EntityTFYeti extends EntityMob
     @Override
 	public void onLivingUpdate()
     {
-    	if (this.riddenByEntity != null)
+    	if (!this.getPassengers().isEmpty())
     	{
     		this.setSize(1.4F, 2.4F);
     		
             // stop player sneaking so that they can't dismount!
-            if (this.riddenByEntity.isSneaking())
+            if (this.getPassengers().get(0).isSneaking())
             {
             	//System.out.println("Pinch beetle sneaking detected!");
             	
-            	this.riddenByEntity.setSneaking(false);
+            	this.getPassengers().get(0).setSneaking(false);
             }
     	}
     	else
@@ -100,28 +95,22 @@ public class EntityTFYeti extends EntityMob
     	super.onLivingUpdate();
 
     	// look at things in our jaws
-    	if (this.riddenByEntity != null)
+    	if (!this.getPassengers().isEmpty())
     	{
-            this.getLookHelper().setLookPositionWithEntity(riddenByEntity, 100F, 100F);
-    		//this.faceEntity(riddenByEntity, 100F, 100F);
+            this.getLookHelper().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
 
-            
             // push out of user in wall
-            Vec3d riderPos = this.getRiderPosition();
-            this.func_145771_j(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord); // push out of block
+            Vec3d riderPos = this.getRiderPosition(getPassengers().get(0));
+            this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
             
 
     	}
     }
-    
 
-	/**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
     {
-        if (super.interact(par1EntityPlayer))
+        if (super.processInteract(player, hand, stack))
         {
             return true;
         }
@@ -135,24 +124,19 @@ public class EntityTFYeti extends EntityMob
             return false;
         }
     }
-	
-	/**
-	 * Pick up things we attack!
-	 */
+
     @Override
 	public boolean attackEntityAsMob(Entity par1Entity) 
     {
-    	if (this.riddenByEntity == null && par1Entity.ridingEntity == null)
+    	if (this.getPassengers().isEmpty() && par1Entity.getRidingEntity() == null)
     	{
-    		par1Entity.mountEntity(this);
+    		par1Entity.startRiding(this);
     	}
     	
 		return super.attackEntityAsMob(par1Entity);
 	}
-    
-    /**
-     * Called when the entity is attacked.
-     */
+
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
     	if (par1DamageSource.getSourceOfDamage() != null) {
@@ -169,35 +153,31 @@ public class EntityTFYeti extends EntityMob
      * Determines whether this yeti is angry or not.
      */
     public boolean isAngry() {
-        return (this.dataWatcher.getWatchableObjectByte(ANGER_FLAG) & 2) != 0;
+        return (this.dataManager.get(ANGER_FLAG) & 2) != 0;
     }
 
     /**
      * Sets whether this yeti is angry or not.
      */
     public void setAngry(boolean anger) {
-        byte b0 = this.dataWatcher.getWatchableObjectByte(ANGER_FLAG);
+        byte b0 = this.dataManager.get(ANGER_FLAG);
 
         if (anger) {
-            this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-            this.dataWatcher.updateObject(ANGER_FLAG, Byte.valueOf((byte)(b0 | 2)));
+            this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
+            this.dataManager.set(ANGER_FLAG, (byte) (b0 | 2));
         } else {
-            this.dataWatcher.updateObject(ANGER_FLAG, Byte.valueOf((byte)(b0 & -3)));
+            this.dataManager.set(ANGER_FLAG, (byte) (b0 & -3));
         }
     }
-    
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
+
+    @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setBoolean("Angry", this.isAngry());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
+    @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
@@ -208,14 +188,10 @@ public class EntityTFYeti extends EntityMob
      * Put the player out in front of where we are
      */
     @Override
-	public void updateRiderPosition()
+	public void updatePassenger(Entity passenger)
     {
-        if (this.riddenByEntity != null)
-        {
-        	Vec3d riderPos = this.getRiderPosition();
-        	
-            this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
-        }
+        Vec3d riderPos = this.getRiderPosition(passenger);
+        passenger.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
     }
     
     /**
@@ -230,37 +206,29 @@ public class EntityTFYeti extends EntityMob
     /**
      * Used to both get a rider position and to push out of blocks
      */
-    public Vec3d getRiderPosition()
+    private Vec3d getRiderPosition(@Nullable Entity passenger)
     {
-    	if (this.riddenByEntity != null)
+    	if (passenger != null)
     	{
     		float distance = 0.4F;
 
     		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
     		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-    		return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
+    		return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + var3);
     	}
     	else
     	{
     		return new Vec3d(this.posX, this.posY, this.posZ);
     	}
     }
-    
-    /**
-     * If a rider of this entity can interact with this entity. Should return true on the
-     * ridden entity if so.
-     *
-     * @return if the entity can be interacted with from a rider
-     */
+
+    @Override
     public boolean canRiderInteract()
     {
         return true;
     }
-    
-    /**
-     * Trigger achievement when killed
-     */
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -268,17 +236,14 @@ public class EntityTFYeti extends EntityMob
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
-	
-	/**
-	 * We're allowed to spawn in bright light only in sniw
-	 */
+
 	@Override
 	public boolean getCanSpawnHere()
     {
 		// are we in the snow
-		if (worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ)) == TFBiomeBase.tfSnow) {
+		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSnow) {
 			// don't check light level
-	        return worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0;
+	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		}
 		else {
 			// normal EntityMob spawn check, checks light level
@@ -291,16 +256,14 @@ public class EntityTFYeti extends EntityMob
      */
 	@Override
 	protected boolean isValidLightLevel() {
-        int x = MathHelper.floor_double(this.posX);
-        int z = MathHelper.floor_double(this.posZ);
-        
-		if (worldObj.getBiomeGenForCoords(x, z) == TFBiomeBase.tfSnow) {
+		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSnow) {
 			return true;
 		} else {
 			return super.isValidLightLevel();
 		}
 	}
-	
+
+    @Override
     protected Item getDropItem()
     {
         return TFItems.arcticFur;

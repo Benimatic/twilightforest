@@ -23,15 +23,11 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(7.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(7.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
-	/**
-	 * Spawn another spider!
-	 * 
-	 * @return
-	 */
+	@Override
 	protected boolean spawnAnother() 
 	{
 		EntityTFSwarmSpider another = new EntityTFTowerBroodling(worldObj, false);

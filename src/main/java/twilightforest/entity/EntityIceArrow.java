@@ -2,6 +2,8 @@ package twilightforest.entity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class EntityIceArrow extends EntityArrow {
@@ -14,10 +16,9 @@ public class EntityIceArrow extends EntityArrow {
 		super(world, player, velocity);
 	}
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    public void onUpdate() {
-        super.onUpdate();
-    }
+	@Override
+	protected ItemStack getArrowStack() {
+		return new ItemStack(Items.ARROW);
+	}
+
 }

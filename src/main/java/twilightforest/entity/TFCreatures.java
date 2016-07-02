@@ -22,21 +22,11 @@ public class TFCreatures {
 	}	
 	
 	public static void registerTFCreature(Class <? extends Entity > entityClass, String entityName, int id, int backgroundEggColour, int foregroundEggColour, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		if (TwilightForestMod.creatureCompatibility)
-		{
-			// only register global id if flag is set
-			EntityRegistry.registerGlobalEntityID(entityClass, entityName, id);
-		}
 		EntityRegistry.registerModEntity(entityClass, entityName, id, TwilightForestMod.instance, trackingRange, updateFrequency, sendsVelocityUpdates);
 		entityEggs.put(Integer.valueOf(id), new TFEntityEggInfo(id, backgroundEggColour, foregroundEggColour));
 	}
 
 	public static void registerTFCreature(Class <? extends Entity > entityClass, String entityName, int id) {
-		if (TwilightForestMod.creatureCompatibility)
-		{
-			// only register global id if flag is set
-			EntityRegistry.registerGlobalEntityID(entityClass, entityName, id);
-		}
 		EntityRegistry.registerModEntity(entityClass, entityName, id, TwilightForestMod.instance, 80, 3, true);
 	}
 
@@ -88,19 +78,8 @@ public class TFCreatures {
 		return null;
 	}
 
-	/**
-	 * Return a string suitable for setting as the mobID in spawners.  If the compatibility flag is set, then use the base monster name
-	 * If the flag is false, return TwilightForest.mobName
-	 */
 	public static String getSpawnerNameFor(String baseName) {
-		if (TwilightForestMod.creatureCompatibility)
-		{
-			return baseName;
-		}
-		else
-		{
-			return "TwilightForest." + baseName;
-		}
+		return "TwilightForest." + baseName;
 	}
 	
 	

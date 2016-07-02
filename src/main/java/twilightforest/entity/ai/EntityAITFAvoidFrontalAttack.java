@@ -55,9 +55,6 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 
 	}
 	
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
 	public void startExecuting()
     {
@@ -65,10 +62,6 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
         this.me.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
     }
 
-	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {
@@ -91,27 +84,19 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
         return shouldContinue;
      }
     
-    /**
-     * Updates the task
-     */
     @Override
 	public void updateTask()
     {
         this.me.getLookHelper().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
     }
 
-	
-    /**
-     * Resets the task
-     */
     @Override
 	public void resetTask()
     {
         this.entityTarget = null;
         this.me.getNavigator().clearPathEntity();
     }
-    
-	
+
 	/**
      * Finds a point that allows us to circle the player clockwise.
      */
@@ -130,7 +115,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
         double dz = MathHelper.sin(rangle) * radius;
 
         // add that to the target entity's position, and we have our destination
-    	return new Vec3d(toCircle.posX + dx, circler.boundingBox.minY, toCircle.posZ + dz);
+    	return new Vec3d(toCircle.posX + dx, circler.getEntityBoundingBox().minY, toCircle.posZ + dz);
     }
 
     

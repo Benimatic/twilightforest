@@ -61,9 +61,6 @@ public class EntityAITFMagicAttack extends EntityAIBase
         this.setMutexBits(3);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
 	public boolean shouldExecute()
     {
@@ -80,32 +77,23 @@ public class EntityAITFMagicAttack extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {
         return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
     }
 
-    /**
-     * Resets the task
-     */
     @Override
 	public void resetTask()
     {
         this.attackTarget = null;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
 	public void updateTask()
     {
         double maxRange = 100.0D;
-        double targetDistance = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
+        double targetDistance = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ);
         boolean canSee = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
         if (canSee)

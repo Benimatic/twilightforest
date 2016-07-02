@@ -27,7 +27,7 @@ public class EntityAITFThrowRider extends EntityAIBase {
     @Override
 	public boolean shouldExecute()
     {
-        if (this.theEntityCreature.riddenByEntity == null || this.theEntityCreature.getRNG().nextInt(5) > 0)
+        if (this.theEntityCreature.getRidingEntity() == null || this.theEntityCreature.getRNG().nextInt(5) > 0)
         {
             return false;
         }
@@ -43,16 +43,13 @@ public class EntityAITFThrowRider extends EntityAIBase {
     @Override
 	public void startExecuting()
     {
-    	EntityLivingBase rider = (EntityLivingBase) this.theEntityCreature.riddenByEntity;
-        rider.mountEntity(null);
+    	EntityLivingBase rider = (EntityLivingBase) this.theEntityCreature.getRidingEntity();
+        rider.dismountEntity(theEntityCreature);
         
-        Vec3d throwVec = this.theEntityCreature.getLookVec();
-        throwVec.xCoord *= 2F;
-        throwVec.yCoord *= 2F;
-        throwVec.zCoord *= 2F;
-        
+        Vec3d throwVec = this.theEntityCreature.getLookVec().scale(2);
+
         // let's throw the player a fixed value in the air
-        throwVec.yCoord = 0.9;
+        throwVec = new Vec3d(throwVec.xCoord, 0.9, throwVec.zCoord);
         
         rider.addVelocity(throwVec.xCoord, throwVec.yCoord, throwVec.zCoord);
 
@@ -75,7 +72,7 @@ public class EntityAITFThrowRider extends EntityAIBase {
     @Override
 	public boolean continueExecuting()
     {
-    	if (this.theEntityCreature.riddenByEntity == null) {
+    	if (this.theEntityCreature.getRidingEntity() == null) {
     		this.throwTimer++;
     	}
     	

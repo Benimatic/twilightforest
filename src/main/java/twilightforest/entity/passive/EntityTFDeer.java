@@ -7,9 +7,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 
 /**
@@ -48,20 +52,14 @@ public class EntityTFDeer extends EntityCow
     }
 
 
-    /**
-     * No sounds when idle
-     */
     @Override
     protected String getLivingSound()
     {
     	return null;
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     @Override
-	protected void func_145780_a(int par1, int par2, int par3, Block par4)
+	protected void playStepSound(BlockPos pos, Block par4)
     {
         //this.worldObj.playSoundAtEntity(this, "mob.cow.step", 0.15F, 1.0F);
     }
@@ -70,7 +68,7 @@ public class EntityTFDeer extends EntityCow
      * Not milkable
      */
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean processInteract(EntityPlayer entityplayer, EnumHand hand, @Nullable ItemStack stack)
     {
         ItemStack itemstack = entityplayer.inventory.getCurrentItem();
         if(itemstack != null && itemstack.getItem() == Items.BUCKET)
@@ -79,14 +77,10 @@ public class EntityTFDeer extends EntityCow
             return false;
         } else
         {
-            return super.interact(entityplayer);
+            return super.processInteract(entityplayer, hand, stack);
         }
     }
-    
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     @Override
     protected void dropFewItems(boolean par1, int par2)
     {
@@ -113,20 +107,13 @@ public class EntityTFDeer extends EntityCow
         }
     }
 
-    
-    /**
-     * What is our baby going to be?  Another deer?!
-     */
     @Override
 	public EntityCow createChild(EntityAgeable entityanimal)
     {
         return new EntityTFDeer(worldObj);
     }
-    
-    /**
-     * Trigger achievement when killed
-     */
-	@Override
+
+    @Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {

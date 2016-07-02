@@ -42,83 +42,56 @@ public class EntityTFRaven extends EntityTFTinyBird {
         this.tasks.addTask(7, new EntityAILookIdle(this));
  	}
 	
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000001192092896D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
     }
     
-    /**
-     * We have our own getLookHelper
-     */
     @Override
 	protected void updateAITasks() {
 		super.updateAITasks();
 		this.ravenLook.onUpdateLook();
 	}
 
-    /**
-     * We have our own getLookHelper
-     */
 	@Override
 	public EntityLookHelper getLookHelper()
     {
         return this.ravenLook;
     }
 	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
 	@Override
     protected String getLivingSound()
     {
         return TwilightForestMod.ID + ":mob.raven.caw";
     }
  
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
 	@Override
     protected String getHurtSound()
     {
         return TwilightForestMod.ID + ":mob.raven.squawk";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
 	@Override
     protected String getDeathSound()
     {
         return TwilightForestMod.ID + ":mob.raven.squawk";
     }
 	
-	/**
-	 * Returns the item ID for the item the mob drops on death.
-	 */
     @Override
 	protected Item getDropItem()
     {
         return TFItems.feather;
     }
 
-	/**
-	 * Actually only used for the shadow
-	 */
 	@Override
 	public float getRenderSizeModifier() {
 		 return 0.3F;
 	}
 
-
-    /**
-     * Return true if the bird is spooked
-     */
+    @Override
 	public boolean isSpooked() {
 		return this.hurtTime > 0;
 	}

@@ -3,9 +3,11 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -36,31 +38,22 @@ public class EntityTFTomeBolt extends EntityThrowable {
 
         makeTrail();
 	}
-	
-	/**
-	 * How much this entity falls each tick
-	 */
+
 	@Override
     protected float getGravityVelocity()
     {
 		return 0.003F;
     }
-	
-	/**
-	 * Make sparkly trail
-	 */
+
 	public void makeTrail() {
 		for (int i = 0; i < 5; i++) {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			worldObj.spawnParticle("crit", dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			worldObj.spawnParticle(EnumParticleTypes.CRIT, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
-	/**
-	 * What happens when we hit something?
-	 */
 	@Override
 	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		// only damage living things
@@ -69,10 +62,10 @@ public class EntityTFTomeBolt extends EntityThrowable {
 			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6))
 			{
 				// inflict move slowdown
-				byte potionStrength = (byte) (worldObj.difficultySetting == EnumDifficulty.PEACEFUL ? 3 : worldObj.difficultySetting == EnumDifficulty.NORMAL ? 7 : 9);
+				byte potionStrength = (byte) (worldObj.getDifficulty() == EnumDifficulty.PEACEFUL ? 3 : worldObj.getDifficulty() == EnumDifficulty.NORMAL ? 7 : 9);
 				if(potionStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, potionStrength * 20, 1));
+					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, potionStrength * 20, 1));
 				}
 
 			}
@@ -81,7 +74,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.FIRE_CHARGE), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
 		}
 
 		if (!this.worldObj.isRemote)

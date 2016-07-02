@@ -7,9 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumDifficulty;
@@ -41,31 +43,22 @@ public class EntityTFNatureBolt extends EntityThrowable {
 
         makeTrail();
 	}
-	
-	/**
-	 * How much this entity falls each tick
-	 */
+
 	@Override
     protected float getGravityVelocity()
     {
 		return 0.003F;
     }
-	
-	/**
-	 * Make sparkly trail
-	 */
+
 	public void makeTrail() {
 		for (int i = 0; i < 5; i++) {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			worldObj.spawnParticle("happyVillager", dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			worldObj.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
-	/**
-	 * What happens when we hit something?
-	 */
 	@Override
 	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		// only damage living things
@@ -74,10 +67,10 @@ public class EntityTFNatureBolt extends EntityThrowable {
 			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
 			{
 				// similar to EntityCaveSpider
-				byte poisonStrength = (byte) (worldObj.difficultySetting == EnumDifficulty.PEACEFUL ? 0 : worldObj.difficultySetting == EnumDifficulty.NORMAL ? 3 : 7);
+				byte poisonStrength = (byte) (worldObj.getDifficulty() == EnumDifficulty.PEACEFUL ? 0 : worldObj.getDifficulty() == EnumDifficulty.NORMAL ? 3 : 7);
 				if(poisonStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON.id, poisonStrength * 20, 0));
+					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, poisonStrength * 20, 0));
 					
 //					System.out.println("Poisoning entityHit " + par1MovingObjectPosition.entityHit);
 				}
@@ -87,7 +80,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.LEAVES) + "_0", this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Block.getStateId(Blocks.LEAVES.getDefaultState()));
 		}
 
 		if (!this.worldObj.isRemote)

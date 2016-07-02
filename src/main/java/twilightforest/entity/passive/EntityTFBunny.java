@@ -46,16 +46,12 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
 	}
 
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
     }
 	
 	@Override
@@ -65,14 +61,6 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
         this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
     }
 
-	/**
-	 * Returns true if the newer Entity AI code should be run
-	 */
-	@Override
-	public boolean isAIEnabled() {
-	    return true;
-	}
-	
 //    /**
 //     * Returns the texture's file path as a String.
 //     */
@@ -98,9 +86,6 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 //        }
 //    }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
 	@Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -108,9 +93,6 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
         par1NBTTagCompound.setInteger("BunnyType", this.getBunnyType());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
 	@Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -128,24 +110,16 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
         this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
     }
 	
-
-	/**
-	 * Actually only used for the shadow
-	 */
 	@Override
 	public float getRenderSizeModifier() {
 		 return 0.3F;
 	}
 	
-	/**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
 	@Override
     protected boolean canDespawn()
     {
         return false;
     }
-	
 	
     /**
      * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
@@ -169,9 +143,6 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
     }
 	
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

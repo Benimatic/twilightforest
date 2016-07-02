@@ -13,17 +13,11 @@ public class EntityAITFBirdFly extends EntityAIBase {
         this.setMutexBits(5);
     }
 	
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
 	@Override
 	public boolean shouldExecute() {
        return !entity.isBirdLanded();
 	}
 	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {

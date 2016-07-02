@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -18,14 +19,11 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
         //this.texture = TwilightForestMod.MODEL_DIR + "mistwolf.png";
 	}
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
     }
 
     /**
@@ -35,7 +33,8 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
     {
         return 6;
     }
-    
+
+    @Override
     public boolean attackEntityAsMob(Entity par1Entity)
     {
     	int damage = this.getAttackStrength(par1Entity);
@@ -49,13 +48,13 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
             {
                 byte effectDuration = 0;
 
-                if (this.worldObj.difficultySetting != EnumDifficulty.EASY)
+                if (this.worldObj.getDifficulty() != EnumDifficulty.EASY)
                 {
-                    if (this.worldObj.difficultySetting == EnumDifficulty.NORMAL)
+                    if (this.worldObj.getDifficulty() == EnumDifficulty.NORMAL)
                     {
                         effectDuration = 7;
                     }
-                    else if (this.worldObj.difficultySetting == EnumDifficulty.HARD)
+                    else if (this.worldObj.getDifficulty() == EnumDifficulty.HARD)
                     {
                         effectDuration = 15;
                     }
@@ -63,7 +62,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 
                 if (effectDuration > 0)
                 {
-                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS.id, effectDuration * 20, 0));
+                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, effectDuration * 20, 0));
                 }
             }
 

@@ -2,15 +2,18 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -20,9 +23,7 @@ import twilightforest.item.TFItems;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathAttacker {
 
-	private static final int BREATH_FLAG = 21;
-    public static final int BREATH_DURATION = 10;
-    public static final int BREATH_DAMAGE = 2;
+	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 
 	public EntityTFWinterWolf(World world) {
 		super(world);
@@ -31,7 +32,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
         this.tasks.taskEntries.clear();
         this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAITFBreathAttack(this, 1.0F, 5F, 30, 0.1F));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0F, false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
  
         this.targetTasks.taskEntries.clear();
@@ -39,20 +40,18 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 	}
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
     }
-	
+
+	@Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(BREATH_FLAG, Byte.valueOf((byte)0));
+        this.dataManager.register(BREATH_FLAG, false);
     }
 
     /**
@@ -121,7 +120,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
     }
     
-	public void playBreathSound() {
+	private void playBreathSound() {
 		worldObj.playSoundEffect(this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5, "mob.ghast.fireball", rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 	}
 
@@ -135,13 +134,13 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	public boolean isBreathing() {
-        return this.getDataWatcher().getWatchableObjectByte(BREATH_FLAG) == 1;
+        return this.dataManager.get(BREATH_FLAG);
 
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-        this.getDataWatcher().updateObject(BREATH_FLAG, Byte.valueOf((byte)(flag ? 1 : 0)));
+        this.dataManager.set(BREATH_FLAG, flag);
 	}
 
 	@Override
@@ -151,23 +150,17 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 //    		target.setFire(BREATH_DURATION);
 //    	}
 	}
-	
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
+
 	@Override
 	protected boolean isValidLightLevel() {
-        int x = MathHelper.floor_double(this.posX);
-        int z = MathHelper.floor_double(this.posZ);
-        
-		if (worldObj.getBiomeGenForCoords(x, z) == TFBiomeBase.tfSnow) {
+		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSnow) {
 			return true;
 		} else {
 			return super.isValidLightLevel();
 		}
 	}
 	
-
+	@Override
     protected Item getDropItem()
     {
         return TFItems.arcticFur;

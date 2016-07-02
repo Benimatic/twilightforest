@@ -6,10 +6,13 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 
+import javax.annotation.Nullable;
 
 
 public class EntityTFBighorn extends EntitySheep
@@ -30,19 +33,16 @@ public class EntityTFBighorn extends EntitySheep
 
     /**
      * 50% brown, 50% any other color
-     * 
-     * @param random
-     * @return
      */
-    public static int getRandomFleeceColor(Random random)
+    private static EnumDyeColor getRandomFleeceColor(Random random)
     {
     	if (random.nextInt(2) == 0)
     	{
-    		return 12;
+    		return EnumDyeColor.BROWN;
     	}
     	else
     	{
-        	return random.nextInt(15);
+        	return EnumDyeColor.byMetadata(random.nextInt(15));
     	}
     }
     
@@ -51,16 +51,13 @@ public class EntityTFBighorn extends EntitySheep
      * Entity init, set our fleece color
      */
     @Override
-    public IEntityLivingData onSpawnWithEgg(IEntityLivingData par1EntityLivingData)
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
-        par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
         this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
-        return par1EntityLivingData;
+        return livingdata;
     }
     
-    /**
-     * What is our baby?!
-     */
     @Override
 	public EntitySheep createChild(EntityAgeable entityanimal)
     {
@@ -76,9 +73,6 @@ public class EntityTFBighorn extends EntitySheep
         return babySheep;
     }
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

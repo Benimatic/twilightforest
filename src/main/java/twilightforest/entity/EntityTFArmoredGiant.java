@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import twilightforest.item.TFItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -11,11 +12,11 @@ public class EntityTFArmoredGiant extends EntityTFGiantMiner {
 	public EntityTFArmoredGiant(World par1World) {
 		super(par1World);
 		
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.STONE_SWORD));
-        this.setCurrentItemOrArmor(1, new ItemStack(Items.IRON_HELMET));
-        this.setCurrentItemOrArmor(2, new ItemStack(Items.IRON_CHESTPLATE));
-        this.setCurrentItemOrArmor(3, new ItemStack(Items.IRON_LEGGINGS));
-        this.setCurrentItemOrArmor(4, new ItemStack(Items.IRON_BOOTS));
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+        this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
+        this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
+        this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
+        this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 
 	}
 

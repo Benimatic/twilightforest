@@ -18,9 +18,11 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -48,58 +50,38 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.GOLDEN_HOE));
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
 
 	}
 
-	/**
-	 * Returns true if the newer Entity AI code should be run
-	 */
-	@Override
-	public boolean isAIEnabled()
-	{
-		return true;
-	}
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
+    @Override
     protected String getLivingSound()
     {
         return "mob.skeleton.say";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
+    @Override
     protected String getHurtSound()
     {
         return "mob.skeleton.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
+    @Override
     protected String getDeathSound()
     {
         return "mob.skeleton.death";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    protected void func_145780_a(int par1, int par2, int par3, Block par4)
+    @Override
+    protected void playStepSound(BlockPos pos, Block par4)
     {
         this.playSound("mob.skeleton.step", 0.15F, 1.0F);
     }
@@ -110,10 +92,7 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
         return TFItems.torchberries;
     }
     
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-     * par2 - Level of Looting used to kill this mob.
-     */
+    @Override
     protected void dropFewItems(boolean par1, int lootingModifier)
     {
     	int numberOfItemsToDrop;
@@ -134,18 +113,12 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
     	}
     }
     
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
+    @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
     }
 
-
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -154,9 +127,6 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
 		}
 	}
 
-    /**
-     * Attack the specified entity using a ranged attack.
-     */
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
 		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.worldObj, this);
@@ -173,23 +143,22 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
 
 	}
 	
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
+    @Override
     protected boolean isValidLightLevel()
     {
     	boolean valid = false;
         int dx = MathHelper.floor_double(this.posX);
-        int dy = MathHelper.floor_double(this.boundingBox.minY);
+        int dy = MathHelper.floor_double(this.getEntityBoundingBox().minY);
         int dz = MathHelper.floor_double(this.posZ);
+		BlockPos pos = new BlockPos(dx, dy, dz);
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, dx, dy, dz) > this.rand.nextInt(32))
+        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, pos) > this.rand.nextInt(32))
         {
         	valid = false;
         }
         else
         {
-            int light = this.worldObj.getBlockLightValue(dx, dy, dz);
+            int light = this.worldObj.getLight(pos);
 
              valid = light <= this.rand.nextInt(12);
 

@@ -35,42 +35,27 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
         this.setSize(0.8F, 1.8F);
 	}
 
-
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
     
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-    
+    @Override
     public float getEyeHeight()
     {
         return this.height * 0.6F;
     }
  
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
+    @Override
     protected Item getDropItem()
     {
         return Items.SNOWBALL;
     }
 
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
+    @Override
     public void onLivingUpdate()
     {
     	super.onLivingUpdate();
@@ -91,25 +76,18 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
         return TwilightForestMod.ID + ":mob.ice.noise";
     }
     
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
+    @Override
     protected String getHurtSound()
     {
         return TwilightForestMod.ID + ":mob.ice.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
+    @Override
     protected String getDeathSound()
     {
         return TwilightForestMod.ID + ":mob.ice.death";
     }
-    
-    /**
-     * Trigger achievement when killed
-     */
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -118,19 +96,12 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 		}
 	}
 
-
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
 	@Override
     public int getMaxSpawnedInChunk()
     {
         return 8;
     }
-    
-    /**
-     * Attack the specified entity using a ranged attack.
-     */
+
 	@Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
     {

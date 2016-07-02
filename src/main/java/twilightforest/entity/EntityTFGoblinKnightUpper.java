@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -18,6 +19,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -47,7 +49,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
         this.tasks.addTask(0, new EntityAITFHeavySpearAttack(this));
 		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
@@ -62,21 +64,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		
 		this.shieldHits = 0;
 	}
-	
-	
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
 
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
@@ -133,9 +121,6 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         }
     }
     
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
 	@Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -144,9 +129,6 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         par1NBTTagCompound.setBoolean("hasShield", this.hasShield());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
 	@Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -155,9 +137,6 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         this.setHasShield(par1NBTTagCompound.getBoolean("hasShield"));
     }
     
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         if (this.isEntityAlive())
@@ -200,14 +179,14 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		
 		double dist = 1.25;
 		double px = this.posX + vector.xCoord * dist;
-		double py = this.boundingBox.minY - 0.75;
+		double py = this.getEntityBoundingBox().minY - 0.75;
 		double pz = this.posZ + vector.zCoord * dist;
 
 		
 		for (int i = 0; i < 50; i++)
 		{
 			//worldObj.spawnParticle("crit", px + (rand.nextFloat() - rand.nextFloat()) * 0.5F, py + rand.nextFloat(), pz + (rand.nextFloat() - rand.nextFloat()) * 0.5F, 0, 0.5, 0);
-			worldObj.spawnParticle("largesmoke", px, py, pz, (rand.nextFloat() - rand.nextFloat()) * 0.25F, 0, (rand.nextFloat() - rand.nextFloat()) * 0.25F);
+			worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, px, py, pz, (rand.nextFloat() - rand.nextFloat()) * 0.25F, 0, (rand.nextFloat() - rand.nextFloat()) * 0.25F);
 		}
 		
 		// damage things in front that aren't us or our "mount"
@@ -219,17 +198,14 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		
 		for (Entity entity : inBox)
 		{
-			if (this.ridingEntity != null && entity != this.ridingEntity && entity != this)
+			if (!getPassengers().contains(entity) && entity != this)
 			{
 				super.attackEntityAsMob(entity);
 			}
 		}
 
 	}
-    
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
+
     public int getAttackStrength(Entity par1Entity)
     {
     	if (this.heavySpearTimer > 0)
@@ -242,11 +218,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     	}
     }
 
-
-
-	/**
-     * Handles updating while being ridden by an entity
-     */
+	@Override
 	public void updateRidden()
 	{
 //		if (this.ridingEntity != null)
@@ -262,7 +234,8 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	
 
     @SideOnly(Side.CLIENT)
-    public void handleHealthUpdate(byte par1)
+	@Override
+    public void handleStatusUpdate(byte par1)
     {
         if (par1 == 4)
         {
@@ -271,14 +244,10 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         }
         else
         {
-            super.handleHealthUpdate(par1);
+            super.handleStatusUpdate(par1);
         }
     }
 
-
-	/**
-	 * Swing arm when attacking
-	 */
 	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
 		
@@ -312,14 +281,10 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         this.worldObj.setEntityState(this, (byte)4);
 	}
 
-
-	/**
-     * Called when the entity is attacked.
-     */
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float damageAmount) {
 		// don't take suffocation damage while riding
-		if (par1DamageSource == DamageSource.inWall && this.ridingEntity != null)
+		if (par1DamageSource == DamageSource.inWall && !this.getPassengers().isEmpty())
 		{
 			return false;
 		}
@@ -383,10 +348,6 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		return attackSuccess;
 	}
 
-
-	/**
-	 * Break our armor
-	 */
 	public void breakArmor() {
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
@@ -395,9 +356,6 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		this.setHasArmor(false);
 	}
 	
-	/**
-	 * Break our shield
-	 */
 	public void breakShield() {
 		
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
@@ -460,17 +418,15 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 			this.breakShield();
 		}
 	}
-	
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
+
+	@Override
     public int getTotalArmorValue()
     {
         int armor = super.getTotalArmorValue();
         
         if (this.hasArmor())
         {
-        	armor += 20;
+        	armor += 20; // todo 1.9 attributes
         }
 
         if (armor > 20)
@@ -481,9 +437,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         return armor;
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
+    @Override
     protected Item getDropItem()
     {
         return TFItems.armorShard;

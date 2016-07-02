@@ -8,7 +8,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFRedcap;
 
@@ -36,14 +36,9 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 
 	/**
 	 * Check within the specified range to see if any of the blocks nearby are TNT
-	 * 
-	 * @param range
-	 * @return
 	 */
 	public BlockPos findBlockTNTNearby(int range) {
-	    int entityPosX = MathHelper.floor_double(this.entityObj.posX);
-	    int entityPosY = MathHelper.floor_double(this.entityObj.posY);
-	    int entityPosZ = MathHelper.floor_double(this.entityObj.posZ);
+	    BlockPos entityPos = new BlockPos(entityObj);
 	    
 	    for (int x = -range; x <= range; x++)
 	    {
@@ -51,9 +46,9 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	        {
 	            for (int z = -range; z <= range; z++)
 	            {
-	            	if (entityObj.worldObj.getBlock(entityPosX + x, entityPosY + y, entityPosZ + z) == Blocks.TNT)
+	            	if (entityObj.worldObj.getBlockState(entityPos.add(x, y, z)).getBlock() == Blocks.TNT)
 	            	{
-	            		return new BlockPos(entityPosX + x, entityPosY + y, entityPosZ + z);
+	            		return entityPos.add(x, y, z);
 	            	}
 	            }
 	        }
@@ -71,11 +66,9 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	@SuppressWarnings("unchecked")
 	public boolean isLitTNTNearby(int range) 
 	{
-		AxisAlignedBB expandedBox = entityObj.boundingBox.expand(range, range, range);
+		AxisAlignedBB expandedBox = entityObj.getEntityBoundingBox().expand(range, range, range);
 		
-	    List<Entity> nearbyTNT = entityObj.worldObj.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox);
-	    
-	    return nearbyTNT.size() > 0;
+	    return !entityObj.worldObj.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
 	}
 
 }

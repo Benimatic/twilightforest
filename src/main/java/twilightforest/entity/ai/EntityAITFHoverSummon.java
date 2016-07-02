@@ -34,9 +34,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 
 	}
 
-	/**
-     * Returns whether the EntityAIBase should begin execution.
-     */
 	@Override
 	public boolean shouldExecute() {
         EntityLivingBase target = this.attacker.getAttackTarget();
@@ -57,9 +54,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 
 	}
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
 	@Override
 	public boolean continueExecuting() {
 		EntityLivingBase target = this.attacker.getAttackTarget();
@@ -82,9 +76,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 		}
 	}
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
 	@Override
 	public void startExecuting() {
         EntityLivingBase target = this.attacker.getAttackTarget();
@@ -95,17 +86,9 @@ public class EntityAITFHoverSummon extends EntityAIBase {
         }
 	}
 
-	/**
-	 * Resets the task
-	 */
 	@Override
-	public void resetTask() {
-		//
-	}
+	public void resetTask() {}
 
-    /**
-     * Updates the task
-     */
 	@Override
 	public void updateTask() {
 		this.seekTimer++;
@@ -184,7 +167,7 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 		float radius = this.attacker.width / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
 		
-		boolean isOccupied = this.attacker.worldObj.getCollidingBoundingBoxes(attacker, aabb).isEmpty();
+		boolean isOccupied = this.attacker.worldObj.getCollisionBoxes(attacker, aabb).isEmpty();
 		
 		return isOccupied;
 	}

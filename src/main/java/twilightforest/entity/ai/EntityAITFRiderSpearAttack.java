@@ -24,9 +24,9 @@ public class EntityAITFRiderSpearAttack extends EntityAIBase {
 
 	public boolean isRiderDoingSpearAttack()
 	{
-		if (this.entity.riddenByEntity != null && this.entity.riddenByEntity instanceof EntityTFGoblinKnightUpper)
+		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof EntityTFGoblinKnightUpper)
 		{
-			int timer = ((EntityTFGoblinKnightUpper)this.entity.riddenByEntity).heavySpearTimer;
+			int timer = ((EntityTFGoblinKnightUpper)this.entity.getPassengers().get(0)).heavySpearTimer;
 			return timer > 0 && timer < 50;
 		}
 		else

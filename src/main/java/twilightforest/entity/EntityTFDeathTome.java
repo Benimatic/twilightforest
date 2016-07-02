@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.entity.ai.EntityAITFMagicAttack;
@@ -41,25 +42,12 @@ public class EntityTFDeathTome extends EntityMob {
         return 4;
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-	
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
 	@Override
@@ -68,14 +56,11 @@ public class EntityTFDeathTome extends EntityMob {
 		
         for (int i = 0; i < 1; ++i)
         {
-            this.worldObj.spawnParticle("enchantmenttable", this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, 
+            this.worldObj.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
             		0, 0.5, 0);
         }
 	}
 	
-    /**
-     * Called when the entity is attacked.
-     */
     @Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
@@ -89,7 +74,7 @@ public class EntityTFDeathTome extends EntityMob {
         	// we took damage
     		if (this.rand.nextInt(2) == 0)
     		{
-    			func_145778_a(Items.PAPER, 1, 1.0F);
+    			dropItemWithOffset(Items.PAPER, 1, 1.0F);
     		}
             return true;
         }
@@ -99,18 +84,12 @@ public class EntityTFDeathTome extends EntityMob {
         }
     }
 	
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     @Override
 	protected Item getDropItem()
     {
         return Items.PAPER;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     @Override
 	protected void dropFewItems(boolean par1, int par2)
     {
@@ -137,11 +116,7 @@ public class EntityTFDeathTome extends EntityMob {
     {
         this.dropItem(TFItems.magicMapFocus, 1);
     }
-	
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

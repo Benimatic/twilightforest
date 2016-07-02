@@ -69,10 +69,8 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 		
 		this.isReturning = false;
 	}
-	
-    /**
-     * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
-     */
+
+	@Override
     public void setThrowableHeading(double x, double y, double z, float speed, float accuracy)
     {
     	super.setThrowableHeading(x, y, z, speed, accuracy);
@@ -83,15 +81,11 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
     	this.velZ = this.motionZ;
     }
 
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
     protected float getGravityVelocity()
     {
         return 0.05F;
     }
-
 
 
 	@Override
@@ -104,7 +98,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
             }
         }
         
-        if (!this.worldObj.isAirBlock(mop.blockX, mop.blockY, mop.blockZ)) {
+        if (mop.getBlockPos() != null && !this.worldObj.isAirBlock(mop.getBlockPos())) {
 
         	// clang!
         	if (!this.isReturning) {
@@ -112,7 +106,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         	}
 
         	if (!this.worldObj.isRemote && this.blocksSmashed < MAX_SMASH) {
-        		if (this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ).getBlockHardness(worldObj, mop.blockX, mop.blockY, mop.blockZ) > 0.3F) {
+        		if (this.worldObj.getBlockState(mop.getBlockPos()).getBlockHardness(worldObj, mop.getBlockPos()) > 0.3F) {
         			// riccochet
         			double bounce = 0.6;
         			this.velX *= bounce;
@@ -121,32 +115,32 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         			
         			
         			switch (mop.sideHit) {
-        			case 0:
+        			case DOWN:
         				if (this.velY > 0) {
         					this.velY *= -bounce;
         				}
         				break;
-        			case 1:
+        			case UP:
         				if (this.velY < 0) {
         					this.velY *= -bounce;
         				}
         				break;
-        			case 2:
+        			case NORTH:
         				if (this.velZ > 0) {
         					this.velZ *= -bounce;
         				}
         				break;
-        			case 3:
+        			case SOUTH:
         				if (this.velZ < 0) {
         					this.velZ *= -bounce;
         				}
         				break;
-        			case 4:
+        			case WEST:
         				if (this.velX > 0) {
         					this.velX *= -bounce;
         				}
         				break;
-        			case 5:
+        			case EAST:
         				if (this.velX < 0) {
         					this.velX *= -bounce;
         				}
@@ -155,7 +149,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         		}
         		
             	// demolish some blocks
-        		this.affectBlocksInAABB(this.boundingBox, this.getThrower());
+        		this.affectBlocksInAABB(this.getEntityBoundingBox(), this.getThrower());
         	}
 
         	// head back to owner
@@ -218,10 +212,6 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         return hitBlock;
     }
 
-	
-	/**
-	 * Skip most of the living update things
-	 */
     @Override
     public void onUpdate() {
     	super.onUpdate();
@@ -275,7 +265,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         
         // on the client, if we are not attached, assume we have just spawned, and attach to the player
         if (this.worldObj.isRemote && !this.isAttached) {
-            List nearbyEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(-this.motionX, -this.motionY, -this.motionZ).expand(2.0D, 2.0D, 2.0D));
+            List nearbyEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(-this.motionX, -this.motionY, -this.motionZ).expand(2.0D, 2.0D, 2.0D));
             for (int i = 0; i < nearbyEntities.size(); ++i) {
                 Entity nearby = (Entity)nearbyEntities.get(i);
                 
@@ -325,7 +315,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 
 	@Override
-	public World func_82194_d() {
+	public World getWorld() {
 		return this.worldObj;
 	}
 

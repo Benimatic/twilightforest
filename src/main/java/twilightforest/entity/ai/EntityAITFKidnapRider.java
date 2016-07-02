@@ -20,13 +20,10 @@ public class EntityAITFKidnapRider extends EntityAIBase
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
 	public boolean shouldExecute()
     {
-        if (this.theEntityCreature.riddenByEntity == null || this.theEntityCreature.getRNG().nextInt(5) > 0)
+        if (this.theEntityCreature.getRidingEntity() == null || this.theEntityCreature.getRNG().nextInt(5) > 0)
         {
             return false;
         }
@@ -48,18 +45,12 @@ public class EntityAITFKidnapRider extends EntityAIBase
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
 	public void startExecuting()
     {
         this.theEntityCreature.getNavigator().tryMoveToXYZ(this.randPosX, this.randPosY, this.randPosZ, this.speed);
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {

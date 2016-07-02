@@ -27,17 +27,13 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase
         this.fleeTimer = 0;
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
-    @SuppressWarnings("unchecked")
 	@Override
 	public boolean shouldExecute()
     {
     	boolean yikes = fleeTimer > 0;
     	
     	// check if any of us is dead within 4 squares
-    	List<EntityLiving> flockList = this.flockCreature.worldObj.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.boundingBox.expand(4.0D, 2.0D, 4.0D));
+    	List<EntityCreature> flockList = this.flockCreature.worldObj.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(4.0D, 2.0D, 4.0D));
     	for (EntityLiving flocker : flockList)
     	{
     		if (flocker.deathTime > 0) {

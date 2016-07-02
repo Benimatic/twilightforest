@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -40,7 +41,7 @@ public class EntityTFBoggard extends EntityMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
 //        this.tasks.addTask(1, new EntityAITFRedcapShy(this, this.moveSpeed));
         this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0F, false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
@@ -55,26 +56,13 @@ public class EntityTFBoggard extends EntityMob {
         this.setPosition(x, y, z);
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(14.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(14.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
 
     @Override
@@ -117,40 +105,7 @@ public class EntityTFBoggard extends EntityMob {
         	this.dropItem(Items.IRON_PICKAXE, 1 + i);
         }
     }
-    
-    /**
-     * The redcap is hesitant, and when he is getting close to the player, he may suddenly veer off to the side
-     * 
-     * This is our old AI, no longer used
-     *
-    protected void updateEntityActionState()
-    {
-    	super.updateEntityActionState();
-    	
-    	if (entityToAttack != null) {
-    		float enemyDist = entityToAttack.getDistanceToEntity(this);
-    		
-    		// speed up when very close to enemy or feeling bold
-    		if (enemyDist < 4 || !shy) {
-    			moveSpeed = 0.8F;
-    		} else {
-    			moveSpeed = 0.5F;
-    		}
-    		
-    		// avoid frontal assault
-    		if (enemyDist > 4 && enemyDist < 6 && shy) {
- 
-    			if (isTargetLookingAtMe()) {
-    				// strafe to the side
-    				moveStrafing = lefty ? moveForward : -moveForward;
-    				moveForward = 0;
-    			}
-    		}
-    	}
 
-    }
-    */
-    
     public boolean isShy() {
     	return shy && this.recentlyHit <= 0;
     }
@@ -212,9 +167,4 @@ public class EntityTFBoggard extends EntityMob {
 //		System.out.println("legYaw = " + this.limbYaw);
 
 	}
-
-
-	
-
-
 }

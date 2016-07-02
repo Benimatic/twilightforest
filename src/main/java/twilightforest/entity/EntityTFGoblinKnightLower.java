@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -35,7 +36,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         
         this.tasks.addTask(0, new EntityAITFRiderSpearAttack(this));
 		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
@@ -45,28 +46,15 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 		this.setHasArmor(true);
     }
 
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 	
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
 	@Override
     protected void entityInit()
     {
@@ -94,9 +82,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         }
     }
     
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
 	@Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -104,9 +89,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         par1NBTTagCompound.setBoolean("hasArmor", this.hasArmor());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
 	@Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -114,10 +96,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         this.setHasArmor(par1NBTTagCompound.getBoolean("hasArmor"));
     }
 
-    
-    /**
-     * Initialize this creature.
-     */
     public void initCreature()
     {
     	// we start with the upper guy riding us
@@ -125,12 +103,9 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         upper.onSpawnWithEgg((IEntityLivingData)null);
         this.worldObj.spawnEntityInWorld(upper);
-        upper.mountEntity(this);
+        upper.startRiding(this);
     }
     
-    /**
-     * Init creature with mount
-     */
     public IEntityLivingData onSpawnWithEgg(IEntityLivingData par1EntityLivingData)
     {
         Object par1EntityLivingData1 = super.onSpawnWithEgg(par1EntityLivingData);
@@ -145,18 +120,13 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         return (IEntityLivingData)par1EntityLivingData1;
     }
 
-    
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
+    @Override
     public double getMountedYOffset()
     {
         return 1.0D;
     }
     
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
     public void onUpdate()
     {
         if (this.isEntityAlive())
@@ -171,9 +141,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         super.onUpdate();
     }
     
-	/**
-	 * Do not attack if we have a rider
-	 */
 	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
 		
@@ -188,9 +155,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 
 	}
 	
-    /**
-     * Called when the entity is attacked.
-     */
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float damageAmount) {
 		// check the angle of attack, if applicable
@@ -247,9 +211,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 		return attackSuccess;
 	}
 	
-	/**
-	 * Break our armor
-	 */
 	public void breakArmor() {
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
@@ -257,17 +218,15 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 		
 		this.setHasArmor(false);
 	}
-	
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
+
+    @Override
     public int getTotalArmorValue()
     {
         int armor = super.getTotalArmorValue();
         
         if (this.hasArmor())
         {
-        	armor += 17;
+        	armor += 17; // todo 1.9 attributes
         }
 
         if (armor > 20)
@@ -278,11 +237,8 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         return armor;
     }
 
-    
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
-    protected Item getDropItemId()
+    @Override
+    protected Item getDropItem()
     {
         return TFItems.armorShard;
     }

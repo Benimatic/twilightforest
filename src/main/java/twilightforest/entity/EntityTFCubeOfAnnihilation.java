@@ -48,17 +48,11 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 		this.isImmuneToFire = true;
 	}
 
-
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
     protected float getGravityVelocity()
     {
         return 0F;
     }
-
-
 
 	@Override
 	protected void onImpact(RayTraceResult mop) {
@@ -71,11 +65,11 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
             }
         }
         
-        if (!this.worldObj.isAirBlock(mop.blockX, mop.blockY, mop.blockZ)) {
+        if (mop.getBlockPos() != null && !this.worldObj.isAirBlock(mop.getBlockPos())) {
 
         	// demolish some blocks
         	if (!this.worldObj.isRemote) {
-        		this.affectBlocksInAABB(this.boundingBox.expand(0.2F, 0.2F, 0.2F), this.getThrower());
+        		this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F), this.getThrower());
         	}
 
         }
@@ -145,9 +139,6 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
 	}
 	
-	/**
-	 * Skip most of the living update things
-	 */
     @Override
     public void onUpdate() {
     	super.onUpdate();
@@ -223,7 +214,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     		
     		
         	// demolish some blocks
-        	this.affectBlocksInAABB(this.boundingBox.expand(0.2F, 0.2F, 0.2F), this.getThrower());
+        	this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F), this.getThrower());
 
     	}
 
@@ -238,7 +229,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     	} else {
     		EntityPlayer player = (EntityPlayer) this.getThrower();
     		
-    		return !player.isUsingItem();
+    		return !player.isHandActive();
     	}
     }
 

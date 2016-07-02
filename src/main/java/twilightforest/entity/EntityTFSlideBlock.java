@@ -4,7 +4,9 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -18,18 +20,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import twilightforest.block.TFBlocks;
 
 public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 	private static final int WARMUP_TIME = 20;
-	private Block myBlock;
-	private int myMeta;
+	private IBlockState myState;
 	private short slideTime;
 	private boolean canDropItem = true;
 	
-	float moveX;
-	float moveY;
-	float moveZ;
+	private float moveX;
+	private float moveY;
+	private float moveZ;
 	
 	public EntityTFSlideBlock(World world) {
 		super(world);
@@ -68,65 +70,69 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		this.moveY = 0F;
 		this.moveZ = 0F;
 		
-        int bx = MathHelper.floor_double(this.posX);
-        int by = MathHelper.floor_double(this.posY);
-        int bz = MathHelper.floor_double(this.posZ);
+        BlockPos pos = new BlockPos(this);
+        BlockPos up = pos.up();
+        BlockPos down = pos.down();
+        BlockPos north = pos.north();
+        BlockPos south = pos.south();
+        BlockPos west = pos.west();
+        BlockPos east = pos.east();
 		
         if ((this.myMeta & 12) == 4) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
-        	if (!this.worldObj.isAirBlock(bx, by + 1, bz) && this.worldObj.isAirBlock(bx, by - 1, bz)) {
+        	if (!this.worldObj.isAirBlock(up) && this.worldObj.isAirBlock(down)) {
         		this.moveY = -1F;
-        	} else if (!this.worldObj.isAirBlock(bx, by - 1, bz) && this.worldObj.isAirBlock(bx, by + 1, bz)) {
+        	} else if (!this.worldObj.isAirBlock(down) && this.worldObj.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (!this.worldObj.isAirBlock(bx, by, bz + 1) && this.worldObj.isAirBlock(bx, by, bz - 1)) { // then try Z
+        	} else if (!this.worldObj.isAirBlock(south) && this.worldObj.isAirBlock(north)) { // then try Z
         		this.moveZ = -1F;
-        	} else if (!this.worldObj.isAirBlock(bx, by, bz - 1) && this.worldObj.isAirBlock(bx, by, bz + 1)) {
+        	} else if (!this.worldObj.isAirBlock(north) && this.worldObj.isAirBlock(south)) {
         		this.moveZ = 1F;
-        	} else if (this.worldObj.isAirBlock(bx, by - 1, bz)) { // if no wall, travel towards open air
+        	} else if (this.worldObj.isAirBlock(down)) { // if no wall, travel towards open air
         		this.moveY = -1F;
-        	} else if (this.worldObj.isAirBlock(bx, by + 1, bz)) {
+        	} else if (this.worldObj.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (this.worldObj.isAirBlock(bx, by, bz - 1)) {
+        	} else if (this.worldObj.isAirBlock(north)) {
         		this.moveZ = -1F;
-        	} else if (this.worldObj.isAirBlock(bx, by, bz + 1)) {
+        	} else if (this.worldObj.isAirBlock(south)) {
         		this.moveZ = 1F;
         	}
         } else if ((this.myMeta & 12) == 8) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
-        	if (!this.worldObj.isAirBlock(bx, by + 1, bz) && this.worldObj.isAirBlock(bx, by - 1, bz)) {
+        	if (!this.worldObj.isAirBlock(up) && this.worldObj.isAirBlock(down)) {
         		this.moveY = -1F;
-        	} else if (!this.worldObj.isAirBlock(bx, by - 1, bz) && this.worldObj.isAirBlock(bx, by + 1, bz)) {
+        	} else if (!this.worldObj.isAirBlock(down) && this.worldObj.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (!this.worldObj.isAirBlock(bx + 1, by, bz) && this.worldObj.isAirBlock(bx - 1, by, bz)) { // then try X
+        	} else if (!this.worldObj.isAirBlock(east) && this.worldObj.isAirBlock(west)) { // then try X
         		this.moveX = -1F;
-        	} else if (!this.worldObj.isAirBlock(bx - 1, by, bz) && this.worldObj.isAirBlock(bx + 1, by, bz)) {
+        	} else if (!this.worldObj.isAirBlock(west) && this.worldObj.isAirBlock(east)) {
         		this.moveX = 1F;
-        	} else if (this.worldObj.isAirBlock(bx, by - 1, bz)) { // if no wall, travel towards open air
+        	} else if (this.worldObj.isAirBlock(down)) { // if no wall, travel towards open air
         		this.moveY = -1F;
-        	} else if (this.worldObj.isAirBlock(bx, by + 1, bz)) {
+        	} else if (this.worldObj.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (this.worldObj.isAirBlock(bx - 1, by, bz)) {
+        	} else if (this.worldObj.isAirBlock(west)) {
         		this.moveX = -1F;
-        	} else if (this.worldObj.isAirBlock(bx + 1, by, bz)) {
+        	} else if (this.worldObj.isAirBlock(east)) {
         		this.moveX = 1F;
         	}
         } else if ((this.myMeta & 12) == 0) {
         	// vertical blocks priority is -x, +x, -z, +z
-        	if (!this.worldObj.isAirBlock(bx + 1, by, bz) && this.worldObj.isAirBlock(bx - 1, by, bz)) {
+        	if (!this.worldObj.isAirBlock(east) && this.worldObj.isAirBlock(west)) {
         		this.moveX = -1F;
-        	} else if (!this.worldObj.isAirBlock(bx - 1, by, bz) && this.worldObj.isAirBlock(bx + 1, by, bz)) {
+        	} else if (!this.worldObj.isAirBlock(west) && this.worldObj.isAirBlock(east)) {
         		this.moveX = 1F;
-        	} else if (!this.worldObj.isAirBlock(bx, by, bz + 1) && this.worldObj.isAirBlock(bx, by, bz - 1)) {
+        	} else if (!this.worldObj.isAirBlock(south) && this.worldObj.isAirBlock(north)) {
         		this.moveZ = -1F;
-        	} else if (!this.worldObj.isAirBlock(bx, by, bz - 1) && this.worldObj.isAirBlock(bx, by, bz + 1)) {
+        	} else if (!this.worldObj.isAirBlock(north) && this.worldObj.isAirBlock(south)) {
         		this.moveZ = 1F;
-        	} else if (this.worldObj.isAirBlock(bx - 1, by, bz)) { // if no wall, travel towards open air
+        	} else if (this.worldObj.isAirBlock(west)) { // if no wall, travel towards open air
         		this.moveX = -1F;
-        	} else if (this.worldObj.isAirBlock(bx + 1, by, bz)) {
+        	} else if (this.worldObj.isAirBlock(east)) {
         		this.moveX = 1F;
-        	} else if (this.worldObj.isAirBlock(bx, by, bz - 1)) {
+        	} else if (this.worldObj.isAirBlock(north)) {
         		this.moveZ = -1F;
-        	} else if (this.worldObj.isAirBlock(bx, by, bz + 1)) {
+        	} else if (this.worldObj.isAirBlock(south)) {
         		this.moveZ = 1F;
         	}
         	
@@ -134,28 +140,20 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 	}
 
-
 	@Override
 	protected void entityInit() { }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
+    @Override
     protected boolean canTriggerWalking()
     {
         return false;
     }
     
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
+    @Override
     public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
-
-
 
     @SideOnly(Side.CLIENT)
     public float getShadowSize()
@@ -163,12 +161,10 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         return 0.0F;
     }
     
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
     public void onUpdate()
     {
-        if (this.myBlock == null || this.myBlock.getMaterial() == Material.AIR)
+        if (this.myState == null || this.myState.getMaterial() == Material.AIR)
         {
             this.setDead();
         }
@@ -197,19 +193,17 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
             if (!this.worldObj.isRemote)
             {
-                int bx = MathHelper.floor_double(this.posX);
-                int by = MathHelper.floor_double(this.posY);
-                int bz = MathHelper.floor_double(this.posZ);
+                BlockPos pos = new BlockPos(this);
 
                 if (this.slideTime == 1)
                 {
-                    if (this.worldObj.getBlock(bx, by, bz) != this.myBlock)
+                    if (this.worldObj.getBlockState(pos) != this.myState)
                     {
                         this.setDead();
                         return;
                     }
 
-                    this.worldObj.setBlockToAir(bx, by, bz);
+                    this.worldObj.setBlockToAir(pos);
                 }
                 
                 // if we have not hit anything after 2 seconds of movement, reverse direction
@@ -329,13 +323,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	public int getMeta() {
 		return this.myMeta;
 	}
-	
-    /**
-     * Called by the server when constructing the spawn packet.
-     * Data should be added to the provided stream.
-     *
-     * @param buffer The packet data stream
-     */
+
 	@Override
 	public void writeSpawnData(ByteBuf buffer) {
 		int blockData = Block.getIdFromBlock(this.myBlock) + (this.myMeta << 16);
@@ -344,13 +332,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		
 		//System.out.println("Wrote additional spawn data as " + blockData);
 	}
-	
-	/**
-     * Called by the client when it receives a Entity spawn packet.
-     * Data should be read out of the stream in the same way as it was written.
-     *
-     * @param data The packet data stream
-     */
+
 	@Override
 	public void readSpawnData(ByteBuf additionalData) {
 		int blockData = additionalData.readInt();
@@ -362,14 +344,13 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 	}
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
+    @Override
     public boolean canBePushed()
     {
         return false;
     }
-    
+
+    @Override
     public boolean isPushedByWater()
     {
         return false;

@@ -1,7 +1,9 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.block.BlockTNT;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
@@ -9,9 +11,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 	
 	private float pursueSpeed;
 	private int delayTemptCounter;
-	private int tntX;
-	private int tntY;
-	private int tntZ;
+	private BlockPos tntPos = BlockPos.ORIGIN;
 
 	public EntityAITFRedcapLightTNT(EntityTFRedcap hostEntity, float speed) {
 		this.entityObj = hostEntity;
@@ -35,67 +35,50 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 		
 		if (nearbyTNT != null)
 		{
-			this.tntX = nearbyTNT.posX;
-			this.tntY = nearbyTNT.posY;
-			this.tntZ = nearbyTNT.posZ;
-			
+			this.tntPos = nearbyTNT;
 			return true;
 		}
 		
 		return false;
 	}
 
-	
-	 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
 	public boolean continueExecuting()
     {
-        return entityObj.worldObj.getBlock(tntX, tntY, tntZ) == Blocks.TNT;
+        return entityObj.worldObj.getBlockState(tntPos).getBlock() == Blocks.TNT;
     }
     
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
 	public void startExecuting()
     {
-    	this.entityObj.setCurrentItemOrArmor(0, EntityTFRedcap.heldFlint);
+    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, EntityTFRedcap.heldFlint);
     }
 
-    /**
-     * Resets the task
-     */
     @Override
 	public void resetTask()
     {
         this.entityObj.getNavigator().clearPathEntity();
-    	this.entityObj.setCurrentItemOrArmor(0, entityObj.getPick());
+    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.getPick());
         this.delayTemptCounter = 20;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
 	public void updateTask()
     {
-        this.entityObj.getLookHelper().setLookPosition(tntX, tntY, tntZ, 30.0F, this.entityObj.getVerticalFaceSpeed());
+        this.entityObj.getLookHelper().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.entityObj.getVerticalFaceSpeed());
 
-        if (this.entityObj.getDistance(tntX, tntY, tntZ) < 2.4D)
+        if (this.entityObj.getDistanceSq(tntPos) < 2.4D * 2.4D)
         {
         	// light it!
         	entityObj.playLivingSound();
         	
-        	Blocks.TNT.onBlockDestroyedByPlayer(entityObj.worldObj, tntX, tntY, tntZ, 1);
-        	entityObj.worldObj.setBlock(tntX, tntY, tntZ, Blocks.AIR, 0, 2);
+        	Blocks.TNT.onBlockDestroyedByPlayer(entityObj.worldObj, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
+        	entityObj.worldObj.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
             this.entityObj.getNavigator().clearPathEntity();
         }
         else
         {
-            this.entityObj.getNavigator().tryMoveToXYZ(tntX, tntY, tntZ, this.pursueSpeed);
+            this.entityObj.getNavigator().tryMoveToXYZ(tntPos.getX(), tntPos.getY(), tntPos.getZ(), this.pursueSpeed);
         }
     }
 

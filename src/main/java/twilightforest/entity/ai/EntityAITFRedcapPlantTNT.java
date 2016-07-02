@@ -2,6 +2,8 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFRedcap;
 
@@ -34,29 +36,23 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
     @Override
 	public void startExecuting()
     {
-        int entityPosX = MathHelper.floor_double(this.entityObj.posX);
-        int entityPosY = MathHelper.floor_double(this.entityObj.posY);
-        int entityPosZ = MathHelper.floor_double(this.entityObj.posZ);
+        BlockPos entityPos = new BlockPos(entityObj);
         
         //System.out.println("Redcap trying to plant TNT");
         
-    	this.entityObj.setCurrentItemOrArmor(0, EntityTFRedcap.heldTNT);
+    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, EntityTFRedcap.heldTNT);
 
-    	if (this.entityObj.worldObj.isAirBlock(entityPosX, entityPosY, entityPosZ))
+    	if (this.entityObj.worldObj.isAirBlock(entityPos))
     	{
     		entityObj.setTntLeft(entityObj.getTntLeft() - 1);
     		entityObj.playLivingSound();
-    		entityObj.worldObj.setBlock(entityPosX, entityPosY, entityPosZ, Blocks.TNT, 0, 3);
+    		entityObj.worldObj.setBlockState(entityPos, Blocks.TNT.getDefaultState(), 3);
     	}
     }
     
-
-    /**
-     * Resets the task
-     */
     @Override
 	public void resetTask()
     {
-    	this.entityObj.setCurrentItemOrArmor(0, entityObj.getPick());
+    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.getPick());
     }
 }

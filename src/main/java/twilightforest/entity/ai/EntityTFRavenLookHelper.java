@@ -35,7 +35,7 @@ public class EntityTFRavenLookHelper extends EntityLookHelper
         }
         else
         {
-            this.posY = (par1Entity.boundingBox.minY + par1Entity.boundingBox.maxY) / 2.0D;
+            this.posY = (par1Entity.getEntityBoundingBox().minY + par1Entity.getEntityBoundingBox().maxY) / 2.0D;
         }
 
         this.posZ = par1Entity.posZ;

@@ -55,9 +55,6 @@ public class EntityTFCharmEffect extends Entity
 
 	}
 	
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         this.lastTickPosX = this.posX;
@@ -71,7 +68,7 @@ public class EntityTFCharmEffect extends Entity
             double var1 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
             double var3 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
             double var5 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
-            double var7 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - (double)this.rotationYaw);
+            double var7 = MathHelper.wrapDegrees(this.newRotationYaw - (double)this.rotationYaw);
             this.rotationYaw = (float)((double)this.rotationYaw + var7 / this.newPosRotationIncrements);
             this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / this.newPosRotationIncrements);
             --this.newPosRotationIncrements;
@@ -133,6 +130,7 @@ public class EntityTFCharmEffect extends Entity
     }
 
 
+    @Override
     protected void entityInit()
     {
         this.dataWatcher.addObject(DATA_ITEMID, Integer.valueOf(0));

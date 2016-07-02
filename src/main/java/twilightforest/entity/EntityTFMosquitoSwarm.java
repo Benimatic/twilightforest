@@ -3,16 +3,17 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -28,46 +29,28 @@ public class EntityTFMosquitoSwarm extends EntityMob {
         this.stepHeight = 2.1f;
         
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 	}
 
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-	
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(12.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
-    
 
-	
     @Override
 	protected String getLivingSound()
     {
         return TwilightForestMod.ID + ":mob.mosquito.mosquito";
     }
 
-
-    /**
-     * Like cave spiders, but we add the hunger effect
-     */
+    @Override
     public boolean attackEntityAsMob(Entity par1Entity)
     {
         if (super.attackEntityAsMob(par1Entity))
@@ -76,13 +59,13 @@ public class EntityTFMosquitoSwarm extends EntityMob {
             {
                 byte duration = 7;
 
-                if (this.worldObj.difficultySetting != EnumDifficulty.EASY)
+                if (this.worldObj.getDifficulty() != EnumDifficulty.EASY)
                 {
-                    if (this.worldObj.difficultySetting == EnumDifficulty.NORMAL)
+                    if (this.worldObj.getDifficulty() == EnumDifficulty.NORMAL)
                     {
                         duration = 15;
                     }
-                    else if (this.worldObj.difficultySetting == EnumDifficulty.HARD)
+                    else if (this.worldObj.getDifficulty() == EnumDifficulty.HARD)
                     {
                         duration = 30;
                     }
@@ -90,7 +73,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 
                 if (duration > 0)
                 {
-                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER.id, duration * 20, 0));
+                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
                 }
             }
 
@@ -102,18 +85,13 @@ public class EntityTFMosquitoSwarm extends EntityMob {
         }
     }
 
-    
-	
-	/**
-	 * We're allowed to spawn in bright light only in swamps
-	 */
 	@Override
 	public boolean getCanSpawnHere()
     {
 		// are we in the swamp
-		if (worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ)) == TFBiomeBase.tfSwamp) {
+		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSwamp) {
 			// don't check light level
-	        return worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0;
+	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		}
 		else {
 			// normal EntityMob spawn check, checks light level
@@ -121,9 +99,6 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 		}
     }
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
     @Override
 	public int getMaxSpawnedInChunk()
     {
@@ -131,9 +106,6 @@ public class EntityTFMosquitoSwarm extends EntityMob {
         return 1;
     }
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

@@ -7,12 +7,15 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+
+import javax.annotation.Nullable;
 
 
 public class EntityTFHostileWolf extends EntityWolf implements IMob {
@@ -29,31 +32,24 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
         this(world);
         this.setPosition(x, y, z);
     }
-    
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
     }
 
     @Override
 	public void onUpdate()
     {
         super.onUpdate();
-        if(!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+        if(!worldObj.isRemote && worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
         	setDead();
         }
     }
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -61,10 +57,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
-	
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
+
     @Override
 	public boolean getCanSpawnHere()
     {
@@ -73,10 +66,10 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		int chunkZ = MathHelper.floor_double(posZ) >> 4;
 		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
 			// don't check light level
-	        return worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
+	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !worldObj.containsAnyLiquid(getEntityBoundingBox());
 		}
 		else {
-			return isValidLightLevel() && worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
+			return isValidLightLevel() && worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !worldObj.containsAnyLiquid(getEntityBoundingBox());
 		}
     }
     
@@ -110,21 +103,14 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
         }
     }
 
-    /**
-     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
-     * the animal type)
-     */
     @Override
 	public boolean isBreedingItem(ItemStack par1ItemStack)
     {
     	return false;
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
+    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
     {
     	return false;
     }
