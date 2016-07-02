@@ -121,7 +121,6 @@ public class TwilightForestMod {
 	public static int dimensionProviderID;
     
 	// misc options
-    public static boolean creatureCompatibility;
     public static boolean silentCicadas;
     public static boolean allowPortalsInOtherDimensions;
     public static boolean adminOnlyPortals;
@@ -215,10 +214,6 @@ public class TwilightForestMod {
 	public static int idVehicleSpawnCubeOfAnnihilation = 19;
 	public static int idVehicleSpawnSlideBlock = 20;
 	
-	// used to report conflicts
-	public static boolean hasBiomeIdConflicts = false;
-	public static boolean hasAssignedBiomeID = false;
-
 	public static final TFEventListener eventListener = new TFEventListener();
 	public static final TFTickHandler tickHandler = new TFTickHandler();
 	public static FMLEventChannel genericChannel;
@@ -254,15 +249,6 @@ public class TwilightForestMod {
 		
 		// just call this so that we register structure IDs correctly
 		new StructureTFMajorFeatureStart();
-		
-
-    	// check for biome conflicts, load biomes
-		TFBiomeBase.assignBlankBiomeIds();
-		if (TwilightForestMod.hasAssignedBiomeID) {
-			FMLLog.info("[TwilightForest] Twilight Forest mod has auto-assigned some biome IDs.  This will break any existing Twilight Forest saves.");
-			saveBiomeIds(config);
-		}
-		TwilightForestMod.hasBiomeIdConflicts = TFBiomeBase.areThereBiomeIdConflicts();
 	}
 
     @EventHandler
@@ -295,7 +281,7 @@ public class TwilightForestMod {
 				FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
 			}
 		} else if (Block.REGISTRY.containsKey(loc)) {
-			portalItem = Item.getItemFromBlock(Block.REGISTRY.getObject(loc);
+			portalItem = Item.getItemFromBlock(Block.REGISTRY.getObject(loc));
 			FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
 		} else {
 			FMLLog.info("Twilight Forest config lists portal item as '%s'.  Not found, defaulting to diamond.", portalCreationItemString);
@@ -348,9 +334,6 @@ public class TwilightForestMod {
 		{
 			FMLLog.info("[TwilightForest] Did not find Thaumcraft, did not load ThaumcraftApi integration.");
 		}
-		
-		// final check for biome ID conflicts
-		TwilightForestMod.hasBiomeIdConflicts = TFBiomeBase.areThereBiomeIdConflicts();
 	}
 	
     @EventHandler
@@ -635,7 +618,7 @@ public class TwilightForestMod {
 	 */
 	private void registerDispenseBehaviors(MinecraftServer minecraftServer)
 	{
-		BlockDispenser.dispenseBehaviorRegistry.putObject(TFItems.spawnEgg, new BehaviorTFMobEggDispense(minecraftServer));
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(TFItems.spawnEgg, new BehaviorTFMobEggDispense(minecraftServer));
 	}
 	
 	/**
@@ -645,7 +628,7 @@ public class TwilightForestMod {
 		configFile.load();
 		
 		dimensionID = configFile.get("dimension", "dimensionID", 7).getInt();
-		configFile.get("dimension", "dimensionID", 7).comment = "What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.";
+		configFile.get("dimension", "dimensionID", 7).setComment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.");
 		
 		dimensionProviderID = configFile.get("dimension", "dimensionProviderID", -777).getInt();
 		configFile.get("dimension", "dimensionProviderID", 7).comment = "Dimension provider ID.  Does not normally need to be changed, but the option is provided to work around a bug in MCPC+";
@@ -733,58 +716,10 @@ public class TwilightForestMod {
     	idMobIceCrystal = 235;
     	idMobHarbingerCube = 236;
     	idMobAdherent = 237;
-	    
-	    // biomes
-	    idBiomeLake = configFile.get("biome", "biome.id.Lake", -1).getInt();
-	    idBiomeTwilightForest = configFile.get("biome", "biome.id.TwilightForest", -1).getInt();
-	    idBiomeTwilightForestVariant = configFile.get("biome", "biome.id.TwilightForestVariant", -1).getInt();
-	    idBiomeHighlands = configFile.get("biome", "biome.id.Highlands", -1).getInt();
-	    idBiomeMushrooms = configFile.get("biome", "biome.id.Mushrooms", -1).getInt();
-	    idBiomeSwamp = configFile.get("biome", "biome.id.Swamp", -1).getInt();
-	    idBiomeStream = configFile.get("biome", "biome.id.Stream", -1).getInt();
-	    idBiomeSnowfield = configFile.get("biome", "biome.id.Snowfield", -1).getInt();
-	    idBiomeGlacier = configFile.get("biome", "biome.id.Glacier", -1).getInt();
-	    idBiomeClearing = configFile.get("biome", "biome.id.Clearing", -1).getInt();
-	    idBiomeOakSavanna = configFile.get("biome", "biome.id.OakSavanna", -1).getInt();
-	    idBiomeFireflyForest = configFile.get("biome", "biome.id.LightedForest", -1).getInt();
-	    idBiomeDeepMushrooms = configFile.get("biome", "biome.id.DeepMushrooms", -1).getInt();
-	    idBiomeDarkForestCenter = configFile.get("biome", "biome.id.DarkForestCenter", -1).getInt();
-	    idBiomeHighlandsCenter = configFile.get("biome", "biome.id.HighlandsCenter", -1).getInt();
-	    idBiomeDarkForest = configFile.get("biome", "biome.id.DarkForest", -1).getInt();
-	    idBiomeEnchantedForest = configFile.get("biome", "biome.id.EnchantedForest", -1).getInt();
-	    idBiomeFireSwamp = configFile.get("biome", "biome.id.FireSwamp", -1).getInt();
-	    idBiomeThornlands = configFile.get("biome", "biome.id.Thornlands", -1).getInt();
 
 	    if (configFile.hasChanged()) {
 	    	configFile.save();
 	    }
-	}
-
-	/**
-	 * Write changed biome IDs back to the config file
-	 */
-	private void saveBiomeIds(Configuration config) {
-		config.get("biome", "biome.id.Lake", -1).set(idBiomeLake);
-		config.get("biome", "biome.id.TwilightForest", -1).set(idBiomeTwilightForest);
-		config.get("biome", "biome.id.TwilightForestVariant", -1).set(idBiomeTwilightForestVariant);
-		config.get("biome", "biome.id.Highlands", -1).set(idBiomeHighlands);
-		config.get("biome", "biome.id.Mushrooms", -1).set(idBiomeMushrooms);
-		config.get("biome", "biome.id.Swamp", -1).set(idBiomeSwamp);
-		config.get("biome", "biome.id.Stream", -1).set(idBiomeStream);
-		config.get("biome", "biome.id.Snowfield", -1).set(idBiomeSnowfield);
-		config.get("biome", "biome.id.Glacier", -1).set(idBiomeGlacier);
-		config.get("biome", "biome.id.Clearing", -1).set(idBiomeClearing);
-		config.get("biome", "biome.id.OakSavanna", -1).set(idBiomeOakSavanna);
-		config.get("biome", "biome.id.LightedForest", -1).set(idBiomeFireflyForest);
-		config.get("biome", "biome.id.DeepMushrooms", -1).set(idBiomeDeepMushrooms);
-		config.get("biome", "biome.id.DarkForestCenter", -1).set(idBiomeDarkForestCenter);
-		config.get("biome", "biome.id.HighlandsCenter", -1).set(idBiomeHighlandsCenter);
-		config.get("biome", "biome.id.DarkForest", -1).set(idBiomeDarkForest);
-		config.get("biome", "biome.id.EnchantedForest", -1).set(idBiomeEnchantedForest);
-		config.get("biome", "biome.id.FireSwamp", -1).set(idBiomeFireSwamp);
-		config.get("biome", "biome.id.Thornlands", -1).set(idBiomeThornlands);
-
-		config.save();
 	}
 
 	/**

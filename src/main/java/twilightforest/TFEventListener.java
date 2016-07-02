@@ -35,7 +35,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -78,63 +77,63 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void pickupItem(EntityItemPickupEvent event) {
-		Item item = event.item.getEntityItem().getItem();
+		Item item = event.getItem().getEntityItem().getItem();
 		if (item == TFItems.scepterTwilight || item == TFItems.scepterLifeDrain
 				|| item == TFItems.scepterZombie) {
 			// the player has picked up a scepter.  Check if they have them all in their inventory, and if so, achievement
 			//System.out.println("Player picked up a scepter");
-			checkPlayerForScepterMastery(event.entityPlayer);
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressLich);
+			checkPlayerForScepterMastery(event.getEntityPlayer());
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressLich);
 		}
 		
 		// naga scale gives naga progress achievement
 		if (item == TFItems.nagaScale) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressNaga);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressNaga);
 		}
 		// trophy gives kill achievement
-		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 0) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightKillHydra);
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 0) {
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillHydra);
 		}
-		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 1) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightKillNaga);
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 1) {
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillNaga);
 		}
-		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 2) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightKillLich);
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 2) {
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillLich);
 		}
-		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 3) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressUrghast);
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 3) {
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressUrghast);
 		}		
-		if (item == TFItems.trophy && event.item.getEntityItem().getItemDamage() == 4) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressGlacier);
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 4) {
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressGlacier);
 		}
 		// mazebreaker
 		if (item == TFItems.mazebreakerPick) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightMazebreaker);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightMazebreaker);
 		}
 		// meef stroganoff (or axe)
 		if (item == TFItems.meefStroganoff || item == TFItems.minotaurAxe) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressLabyrinth);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressLabyrinth);
 		}
 		// fiery blood
 		if (item == TFItems.fieryBlood) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressHydra);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressHydra);
 		}
 		// phantom helm/plate
 		if (item == TFItems.phantomHelm || item == TFItems.phantomPlate) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressKnights);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressKnights);
 		}
 		// fiery tears
 		if (item == TFItems.fieryTears) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressUrghast);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressUrghast);
 		}
 		// yeti items
 		if (item == TFItems.alphaFur || item == TFItems.yetiBoots || item == TFItems.yetiHelm
 				|| item == TFItems.yetiPlate || item == TFItems.yetiLegs) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressYeti);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressYeti);
 		}
 		// lamp of cinders
 		if (item == TFItems.lampOfCinders) {
-			event.entityPlayer.addStat(TFAchievementPage.twilightProgressTroll);
+			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressTroll);
 		}
 	}
 
@@ -284,7 +283,7 @@ public class TFEventListener {
 						removeThese.add(input);
 
 						// spawn XP
-						spawnSpeltXP(result, event.world, event.x, event.y, event.z);
+						spawnSpeltXP(result, event.getWorld(), event.x, event.y, event.z);
 					}
 				}
 
@@ -318,7 +317,7 @@ public class TFEventListener {
 	 * Spawn XP for smelting the specified item at the specified location
 	 */
 	private void spawnSpeltXP(ItemStack smelted, World world, int x, int y, int z) {
-		float floatXP = FurnaceRecipes.smelting().func_151398_b(smelted);
+		float floatXP = FurnaceRecipes.instance().getSmeltingExperience(smelted);
 		int smeltXP = (int)floatXP;
 		// random chance of +1 XP to handle fractions
 		if (floatXP > smeltXP && world.rand.nextFloat() < (floatXP - smeltXP))
@@ -341,59 +340,61 @@ public class TFEventListener {
 	public void entityHurts(LivingHurtEvent event) 
 	{
 		// fire aura
-		if (event.entityLiving instanceof EntityPlayer && event.source.damageType.equals("mob") && event.source.getEntity() != null)
+		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getEntity() != null)
 		{
-			EntityPlayer player = (EntityPlayer)event.entityLiving;
-			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.source);
+			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.getSource());
 			
 			//System.out.println("Detecting a fire reaction event.  Reaction level is " + fireLevel);
 			
 			if (fireLevel > 0 && player.getRNG().nextInt(25) < fireLevel)
 			{
 				//System.out.println("Executing fire reaction.");
-				event.source.getEntity().setFire(fireLevel / 2);
+				event.getSource().getEntity().setFire(fireLevel / 2);
 			}
 		}
 		
 		// chill aura
-		if (event.entityLiving instanceof EntityPlayer && event.source.damageType.equals("mob") 
-				&& event.source.getEntity() != null && event.source.getEntity() instanceof EntityLivingBase) {
-			EntityPlayer player = (EntityPlayer)event.entityLiving;
-			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.source);
+		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob") 
+				&& event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityLivingBase) {
+			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.getSource());
 			
 			//System.out.println("Detecting a chill aura event.  Reaction level is " + chillLevel);
 			
 			if (chillLevel > 0) {
 				//System.out.println("Executing chill reaction.");
-				((EntityLivingBase)event.source.getEntity()).addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, chillLevel * 5 + 5, chillLevel));
+				((EntityLivingBase)event.getSource().getEntity()).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS.id, chillLevel * 5 + 5, chillLevel));
 
 			}
 		}
 		
 		// triple bow strips hurtResistantTime
-		if (event.source.damageType.equals("arrow") && event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.source.getEntity();
+		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
 			
-			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.tripleBow) {
+			if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
+					|| player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
 				//System.out.println("Triplebow Arrows!");
-				event.entityLiving.hurtResistantTime = 0;
+				event.getEntityLiving().hurtResistantTime = 0;
 			}
 		}
 		
 		// ice bow freezes
-		if (event.source.damageType.equals("arrow") && event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.source.getEntity();
-			
-			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.iceBow) {
+		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
+
+			if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == TFItems.iceBow
+					|| player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.iceBow) {
 
 				int chillLevel = 2;
-				event.entityLiving.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20 * 10, chillLevel, true));
+				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 10, chillLevel, true, true));
 			}
 		}
 		
 		// enderbow teleports
-		if (event.source.damageType.equals("arrow") && event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.source.getEntity();
+		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
 			
 			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.enderBow) {
 				
@@ -404,15 +405,15 @@ public class TFEventListener {
 				float sourcePitch = player.rotationPitch;
 				
 				// this is the only method that will move the player properly
-				player.rotationYaw = event.entityLiving.rotationYaw;
-				player.rotationPitch = event.entityLiving.rotationPitch;
-				player.setPositionAndUpdate(event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ);
+				player.rotationYaw = event.getEntityLiving().rotationYaw;
+				player.rotationPitch = event.getEntityLiving().rotationPitch;
+				player.setPositionAndUpdate(event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ);
 				player.playSound("mob.endermen.portal", 1.0F, 1.0F);
 
 				
 				// monsters are easy to move
-				event.entityLiving.setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
-				event.entityLiving.playSound("mob.endermen.portal", 1.0F, 1.0F);
+				event.getEntityLiving().setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
+				event.getEntityLiving().playSound("mob.endermen.portal", 1.0F, 1.0F);
 				 
 
 				//System.out.println("Enderbow Arrow!");
@@ -420,9 +421,9 @@ public class TFEventListener {
 		}
 		
 		// charm of life?
-		if (event.entityLiving instanceof EntityPlayer && willEntityDie(event))
+		if (event.getEntityLiving() instanceof EntityPlayer && willEntityDie(event))
 		{
-			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
 			
 			boolean charm1 = false;
 			boolean charm2 = player.inventory.consumeInventoryItem(TFItems.charmOfLife2);
@@ -439,21 +440,21 @@ public class TFEventListener {
 				// cancel damage
 				event.setResult(Result.DENY);
 				event.setCanceled(true);
-				event.ammount = 0;
+				event.setAmount(0);
 
 				if (charm1)
 				{
 					player.setHealth(8);
-					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION.id, 100, 0));
+					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0));
 				}
 				
 				if (charm2)
 				{
-					player.setHealth((float) player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
+					player.setHealth((float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
 					
-					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION.id, 600, 3));
-					player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE.id, 600, 0));
-					player.addPotionEffect(new PotionEffect(MobEffects.FIRERESISTANCE.id, 600, 0));
+					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 600, 3));
+					player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 600, 0));
+					player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 600, 0));
 				}
 				
 				// spawn effect thingers
@@ -476,9 +477,9 @@ public class TFEventListener {
 	 */
 	public boolean willEntityDie(LivingHurtEvent event) 
 	{
-		float amount = event.ammount;
-		DamageSource source = event.source;
-		EntityLivingBase living = event.entityLiving;
+		float amount = event.getAmount();
+		DamageSource source = event.getSource();
+		EntityLivingBase living = event.getEntityLiving();
 		// reduce damage by armor
         if (!source.isUnblockable()){
             int armor = 25 - living.getTotalArmorValue();
@@ -502,11 +503,11 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void bonemealUsed(BonemealEvent event)
 	{
-		if (event.block == TFBlocks.sapling)
+		if (event.getBlock().getBlock() == TFBlocks.sapling)
 		{
-            if (!event.world.isRemote)
+            if (!event.getWorld().isRemote)
             {
-                ((BlockSapling)TFBlocks.sapling).func_149878_d(event.world, event.x, event.y, event.z, event.world.rand);
+                ((BlockSapling)TFBlocks.sapling).func_149878_d(event.getWorld(), event.x, event.y, event.z, event.getWorld().rand);
 
                 event.setResult(Result.ALLOW);
             }
@@ -522,9 +523,9 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void livingDies(LivingDeathEvent event)
 	{
-		if (event.entityLiving instanceof EntityPlayer && !event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
 		{
-			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
 			
 			if (player.inventory.consumeInventoryItem(TFItems.charmOfKeeping3))
 			{
@@ -691,7 +692,7 @@ public class TFEventListener {
 	@SideOnly(Side.CLIENT)
 	public boolean preOverlay(RenderGameOverlayEvent.Pre event)
 	{
-		if (event.type == RenderGameOverlayEvent.ElementType.HEALTHMOUNT)
+		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT)
 		{
 			if (isRidingUnfriendly(Minecraft.getMinecraft().thePlayer))
 			{
@@ -710,9 +711,9 @@ public class TFEventListener {
 	@SubscribeEvent
 	public boolean livingUpdate(LivingUpdateEvent event)
 	{
-		if (event.entity instanceof EntityPlayer && event.entity.isSneaking() && isRidingUnfriendly(event.entityLiving))
+		if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().isSneaking() && isRidingUnfriendly(event.getEntityLiving()))
 		{
-			event.entity.setSneaking(false);
+			event.getEntityLiving().setSneaking(false);
 		}
 		return true;
 	}
@@ -721,7 +722,7 @@ public class TFEventListener {
 	 * Is the specified entity riding an unfriendly creature (pinch beetle?)
 	 */
 	private boolean isRidingUnfriendly(EntityLivingBase entity) {
-		return entity.isRiding() && (entity.ridingEntity instanceof EntityTFPinchBeetle || entity.ridingEntity instanceof EntityTFYeti);
+		return entity.isRiding() && (entity.getRidingEntity() instanceof EntityTFPinchBeetle || entity.getRidingEntity() instanceof EntityTFYeti);
 	}
 	
 	/**
@@ -730,7 +731,7 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void breakBlock(BreakEvent event) {
-		if (!event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.world, event.getPlayer(), event.x, event.y, event.z) && isBlockProtectedFromBreaking(event.world, event.x, event.y, event.z)) {
+		if (!event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.x, event.y, event.z) && isBlockProtectedFromBreaking(event.getWorld(), event.x, event.y, event.z)) {
 			event.setCanceled(true);
 		} else if (!this.isBreakingWithGiantPick && event.getPlayer().getCurrentEquippedItem() != null && event.getPlayer().getCurrentEquippedItem().getItem() == TFItems.giantPick && event.getPlayer().getCurrentEquippedItem().getItem().func_150897_b(event.block)) {
 			//System.out.println("Breaking with giant pick!");
@@ -744,13 +745,13 @@ public class TFEventListener {
 	    	int bz = (event.z >> 2) << 2;
 	    	
 	    	// pre-check for cobble!
-			boolean allCobble = event.block.getItemDropped(event.blockMetadata, event.world.rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
+			boolean allCobble = event.block.getItemDropped(event.blockMetadata, event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
 	    	for (int dx = 0; dx < 4; dx++) {
 	    		for (int dy = 0; dy < 4; dy++) {
 	    			for (int dz = 0; dz < 4; dz++) {
-	    				Block blockThere = event.world.getBlock(bx + dx, by + dy, bz + dz);
-	    				int metaThere = event.world.getBlockMetadata(bx + dx, by + dy, bz + dz);
-						allCobble &= blockThere.getItemDropped(metaThere, event.world.rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
+	    				Block blockThere = event.getWorld().getBlock(bx + dx, by + dy, bz + dz);
+	    				int metaThere = event.getWorld().getBlockMetadata(bx + dx, by + dy, bz + dz);
+						allCobble &= blockThere.getItemDropped(metaThere, event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
 	    			}
 	    		}
 	    	}
@@ -768,8 +769,8 @@ public class TFEventListener {
 	    	for (int dx = 0; dx < 4; dx++) {
 	    		for (int dy = 0; dy < 4; dy++) {
 	    			for (int dz = 0; dz < 4; dz++) {
-	    				Block blockThere = event.world.getBlock(bx + dx, by + dy, bz + dz);
-	    				int metaThere = event.world.getBlockMetadata(bx + dx, by + dy, bz + dz);
+	    				Block blockThere = event.getWorld().getBlock(bx + dx, by + dy, bz + dz);
+	    				int metaThere = event.getWorld().getBlockMetadata(bx + dx, by + dy, bz + dz);
 	    						
 	    				if (!(event.x == bx + dx && event.y == by + dy && event.z == bz + dz) && blockThere == event.block && metaThere == event.blockMetadata) {
 	    					// try to break that block too!
@@ -794,10 +795,10 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void rightClickBlock(PlayerInteractEvent event) {
-		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.provider instanceof WorldProviderTwilightForest && !event.entityPlayer.capabilities.isCreativeMode) {
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.getEntityPlayer().worldObj.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
 
-			World world = event.entityPlayer.worldObj;
-			EntityPlayer player = event.entityPlayer;
+			World world = event.getEntityPlayer().worldObj;
+			EntityPlayer player = event.getEntityPlayer();
 			int x = event.x;
 			int y = event.y;
 			int z = event.z;
@@ -807,11 +808,11 @@ public class TFEventListener {
 			}
 		}
 		
-		ItemStack currentItem = event.entityPlayer.inventory.getCurrentItem();
+		ItemStack currentItem = event.getEntityPlayer().inventory.getCurrentItem();
 		if (currentItem != null && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
 			// are they also wearing the armor
-			if (checkPlayerForFieryArmor(event.entityPlayer)) {
-				event.entityPlayer.addStat(TFAchievementPage.twilightFierySet);
+			if (checkPlayerForFieryArmor(event.getEntityPlayer())) {
+				event.getEntityPlayer().addStat(TFAchievementPage.twilightFierySet);
 			}
 		}
 	}
@@ -867,7 +868,7 @@ public class TFEventListener {
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
 	private boolean isAreaProtected(World world, EntityPlayer player, int x, int y, int z) {
-		if (world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
+		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
 
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
 			
@@ -907,19 +908,19 @@ public class TFEventListener {
 	public void livingAttack(LivingAttackEvent event) {
 
 		// area protection check
-		if (event.entityLiving instanceof IMob && event.source.getEntity() instanceof EntityPlayer && !((EntityPlayer)event.source.getEntity()).capabilities.isCreativeMode && event.entityLiving.worldObj.provider instanceof WorldProviderTwilightForest && event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (event.getEntityLiving() instanceof IMob && event.getSource().getEntity() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getEntity()).capabilities.isCreativeMode && event.getEntityLiving().worldObj.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.entityLiving.worldObj.provider).getChunkProvider();
+			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().worldObj.provider).getChunkProvider();
 
-			int mx = MathHelper.floor_double(event.entityLiving.posX);
-			int my = MathHelper.floor_double(event.entityLiving.posY);
-			int mz = MathHelper.floor_double(event.entityLiving.posZ);
+			int mx = MathHelper.floor_double(event.getEntityLiving().posX);
+			int my = MathHelper.floor_double(event.getEntityLiving().posY);
+			int mz = MathHelper.floor_double(event.getEntityLiving().posZ);
 
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(mx, my, mz) && chunkProvider.isBlockProtected(mx, my, mz)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFWorldChunkManager)event.entityLiving.worldObj.provider.worldChunkMgr).getFeatureAt(mx, mz, event.entityLiving.worldObj);
+				TFFeature nearbyFeature = ((TFWorldChunkManager)event.getEntityLiving().worldObj.provider.worldChunkMgr).getFeatureAt(mx, mz, event.getEntityLiving().worldObj);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.source.getEntity())) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getEntity())) {
 					event.setResult(Result.DENY);
 					event.setCanceled(true);
 					
@@ -927,7 +928,7 @@ public class TFEventListener {
 					// particle effect
 					for (int i = 0; i < 20; i++) {
 			            //worldObj.spawnParticle("mobSpell", blockX + 0.5F, blockY + 0.5F, blockZ + 0.5F, red, grn, blu);
-						TwilightForestMod.proxy.spawnParticle(event.entityLiving.worldObj, "protection", event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, 0, 0, 0);
+						TwilightForestMod.proxy.spawnParticle(event.getEntityLiving().worldObj, "protection", event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, 0, 0, 0);
 
 					}
 				}
@@ -940,11 +941,6 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void playerLogsIn(PlayerLoggedInEvent event) {
-		TwilightForestMod.hasBiomeIdConflicts = TFBiomeBase.areThereBiomeIdConflicts();
-		if (TwilightForestMod.hasBiomeIdConflicts) {
-			event.player.addChatMessage(new TextComponentString("[TwilightForest] Biome ID conflict detected.  Fix by editing the config file."));
-		}
-		
 		// check enforced progression
 		if (!event.player.worldObj.isRemote && event.player instanceof EntityPlayerMP) {
 			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
@@ -972,10 +968,10 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void worldLoaded(WorldEvent.Load event) {
 		// check rule
-		if (!event.world.isRemote && !event.world.getGameRules().hasRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (!event.getWorld().isRemote && !event.getWorld().getGameRules().hasRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			FMLLog.info("[TwilightForest] Loaded a world with the tfEnforcedProgression game rule not defined.  Defining it.");
 			
-			event.world.getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, "true");
+			event.getWorld().getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, "true");
 		}
 	}
 	
@@ -984,8 +980,8 @@ public class TFEventListener {
      */
 	@SubscribeEvent
 	public void commandSent(CommandEvent event) {
-		if (event.command instanceof CommandGameRule && event.parameters.length > 1 && TwilightForestMod.ENFORCED_PROGRESSION_RULE.equals(event.parameters[0])) {
-			boolean isEnforced = Boolean.valueOf(event.parameters[1]);
+		if (event.getCommand() instanceof CommandGameRule && event.getParameters().length > 1 && TwilightForestMod.ENFORCED_PROGRESSION_RULE.equals(event.getParameters()[0])) {
+			boolean isEnforced = Boolean.valueOf(event.getParameters()[1]);
 			TwilightForestMod.genericChannel.sendToAll(TFGenericPacketHandler.makeEnforcedProgressionStatusPacket(isEnforced));
 		}
 	}

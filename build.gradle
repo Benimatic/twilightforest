@@ -22,7 +22,7 @@ group= "twilightforest" // http://maven.apache.org/guides/mini/guide-naming-conv
 archivesBaseName = "twilightforest-1.9.4"
 
 minecraft {
-    version = "1.9.4-12.17.0.1960"
+    version = "1.9.4-12.17.0.1965"
     mappings = "snapshot_20160518"
     runDir = "eclipse"
 }

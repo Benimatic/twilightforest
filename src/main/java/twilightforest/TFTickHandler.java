@@ -9,11 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
@@ -52,11 +55,9 @@ public class TFTickHandler
 			// skip non admin players when the option is on
 			if (TwilightForestMod.adminOnlyPortals) {
 				try {
-					//if (MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getName().toString())) {
-					if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
+					if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null) {
 						// reduce range to 4.0 when the option is on
 						checkForPortalCreation(player, world, 4.0F);
-
 					}
 				} catch (NoSuchMethodError ex) {
 					// stop checking admin
@@ -175,7 +176,7 @@ public class TFTickHandler
 						double d1 = rand.nextGaussian() * 0.02D;
 						double d2 = rand.nextGaussian() * 0.02D;
 	
-						world.spawnParticle("spell", entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
+						world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 					}
 	
 					// try to make a portal
@@ -195,7 +196,7 @@ public class TFTickHandler
 	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
 	 */
 	private void checkBiomeForProgression(EntityPlayer player, World world) {
-		Biome currentBiome = world.getBiomeGenForCoords(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
+		Biome currentBiome = world.getBiomeGenForCoords(new BlockPos(player));
 		
 		if (currentBiome instanceof TFBiomeBase) {
 			TFBiomeBase tfBiome = (TFBiomeBase)currentBiome;
