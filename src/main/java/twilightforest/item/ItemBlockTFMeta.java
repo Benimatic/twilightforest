@@ -37,22 +37,15 @@ public class ItemBlockTFMeta extends ItemBlock {
     	return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
     }
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     @Override
     public IIcon getIconFromDamage(int par1)
     {
         return this.myBlock.getIcon(2, par1);
     }
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4)
 	{
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		

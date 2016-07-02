@@ -1,5 +1,7 @@
 package twilightforest.item;
 
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
@@ -15,18 +17,14 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 		super(block);
 	}
 
-	/**
-	 * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-	 * 
-	 * Copied from ItemWaterlily
-	 */
-	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_)
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
 	{
-		RayTraceResult movingobjectposition = this.rayTrace(p_77659_2_, p_77659_3_, true);
+		RayTraceResult movingobjectposition = this.rayTrace(world, player, true);
 
         if (movingobjectposition == null)
         {
-            return p_77659_1_;
+            return stack;
         }
         else
         {
@@ -36,35 +34,35 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
                 int j = movingobjectposition.blockY;
                 int k = movingobjectposition.blockZ;
 
-                if (!p_77659_2_.canMineBlock(p_77659_3_, i, j, k))
+                if (!world.canMineBlock(player, i, j, k))
                 {
-                    return p_77659_1_;
+                    return stack;
                 }
 
-                if (!p_77659_3_.canPlayerEdit(i, j, k, movingobjectposition.sideHit, p_77659_1_))
+                if (!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack))
                 {
-                    return p_77659_1_;
+                    return stack;
                 }
 
-                if (p_77659_2_.getBlock(i, j, k).getMaterial() == Material.WATER && p_77659_2_.getBlockMetadata(i, j, k) == 0 && p_77659_2_.isAirBlock(i, j + 1, k))
+                if (world.getBlock(i, j, k).getMaterial() == Material.WATER && world.getBlockMetadata(i, j, k) == 0 && world.isAirBlock(i, j + 1, k))
                 {
                     // special case for handling block placement with water lilies
-                    net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(p_77659_2_, i, j + 1, k);
-                    p_77659_2_.setBlock(i, j + 1, k, TFBlocks.hugeWaterLily);
-                    if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(p_77659_3_, blocksnapshot, net.minecraftforge.common.util.ForgeDirection.UP).isCanceled()) 
+                    net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(world, i, j + 1, k);
+                    world.setBlock(i, j + 1, k, TFBlocks.hugeWaterLily);
+                    if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(player, blocksnapshot, net.minecraftforge.common.util.ForgeDirection.UP).isCanceled())
                     {
                         blocksnapshot.restore(true, false);
-                        return p_77659_1_;
+                        return stack;
                     }
 
-                    if (!p_77659_3_.capabilities.isCreativeMode)
+                    if (!player.capabilities.isCreativeMode)
                     {
-                        --p_77659_1_.stackSize;
+                        --stack.stackSize;
                     }
                 }
             }
 
-            return p_77659_1_;
+            return stack;
         }
     }
 

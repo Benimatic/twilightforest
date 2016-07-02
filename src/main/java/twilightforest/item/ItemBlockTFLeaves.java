@@ -14,9 +14,6 @@ public class ItemBlockTFLeaves extends ItemBlock {
         setMaxDamage(0);
 	}
 	
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     @Override
     public IIcon getIconFromDamage(int par1)
     {

@@ -11,9 +11,6 @@ public class CreativeTabTwilightForest extends CreativeTabs
 		super(label);
 	}
 	
-    /**
-     * Get the ItemStack that will be rendered to the tab.
-     */
 	@Override
     public Item getTabIconItem()
     {

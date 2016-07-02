@@ -8,17 +8,14 @@ import net.minecraft.util.EnumFacing;
 
 public class BehaviorTFMobEggDispense extends BehaviorDefaultDispenseItem
 {
-    /** Reference to the MinecraftServer object. */
-    final MinecraftServer mcServer;
+    private final MinecraftServer mcServer;
 
     public BehaviorTFMobEggDispense(MinecraftServer par1)
     {
         this.mcServer = par1;
     }
 
-    /**
-     * Dispense the specified stack, play the dispense sound and spawn particles.
-     */
+    @Override
     public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
         EnumFacing facing = EnumFacing.getFront(par1IBlockSource.getBlockMetadata());

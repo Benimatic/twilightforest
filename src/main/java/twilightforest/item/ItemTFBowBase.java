@@ -30,9 +30,6 @@ public abstract class ItemTFBowBase extends ItemBow {
 		}
 	}
 
-	/**
-	 * used to cycle through icons based on their used duration, i.e. for the bow
-	 */
 	@SideOnly(Side.CLIENT)
 	public IIcon getItemIconForUseDuration(int par1) {
 		return this.iconArray[par1];

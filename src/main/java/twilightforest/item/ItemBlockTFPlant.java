@@ -5,8 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
@@ -21,9 +23,6 @@ public class ItemBlockTFPlant extends ItemBlock {
         setMaxDamage(0);
 	}
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     @Override
     public IIcon getIconFromDamage(int par1)
     {
@@ -43,9 +42,6 @@ public class ItemBlockTFPlant extends ItemBlock {
     	return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     @Override
     public int getMetadata(int i) {
         return i;
@@ -57,7 +53,7 @@ public class ItemBlockTFPlant extends ItemBlock {
      * Returns true if the given ItemBlock can be placed on the given side of the given block position.
      */
     @Override
-    public boolean func_150936_a(World par1World, int x, int y, int z, int direction, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack)
+    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack)
     {
     	int meta = par7ItemStack.getItemDamage();
 
@@ -68,7 +64,7 @@ public class ItemBlockTFPlant extends ItemBlock {
     	}
     	else
     	{
-    		return super.func_150936_a(par1World, x, y, z, direction, par6EntityPlayer, par7ItemStack);
+    		return super.canPlaceBlockOnSide(world, pos, side, player, stack);
     	}
     }
     

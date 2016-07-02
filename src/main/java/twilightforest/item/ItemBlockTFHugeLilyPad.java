@@ -2,6 +2,8 @@ package twilightforest.item;
 
 import java.util.Random;
 
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -14,17 +16,14 @@ import net.minecraft.world.World;
 
 public class ItemBlockTFHugeLilyPad extends ItemLilyPad {
 	
-	Random rand = new Random();
+	private final Random rand = new Random();
 
 	public ItemBlockTFHugeLilyPad(Block block) {
 		super(block);
 	}
 
-	
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
     	RayTraceResult movingobjectposition = this.rayTrace(world, player, true);
 
         if (movingobjectposition == null) {

@@ -1,8 +1,10 @@
 package twilightforest.item;
 
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.EnumHelper;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -182,7 +184,7 @@ public class TFItems {
     	spawnEgg = new ItemTFSpawnEgg().setUnlocalizedName("tfspawnegg");
     	venisonRaw = (new ItemTFFood(3, 0.3F, true)).setUnlocalizedName("venisonRaw");
     	venisonCooked = (new ItemTFFood(8, 0.8F, true)).setUnlocalizedName("venisonCooked");
-    	hydraChop = (new ItemTFHydraChops(18, 2.0F, true)).setPotionEffect(MobEffects.REGENERATION.id, 5, 0, 1.0F).setUnlocalizedName("hydraChop");
+    	hydraChop = (new ItemTFHydraChops(18, 2.0F, true)).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0), 1.0F).setUnlocalizedName("hydraChop");
     	fieryBlood = new ItemTF().makeRare().setUnlocalizedName("fieryBlood");
     	trophy = new ItemTFTrophy().setUnlocalizedName("trophy");
     	fieryIngot = new ItemTF().makeRare().setUnlocalizedName("fieryIngot");
@@ -379,12 +381,13 @@ public class TFItems {
     }
 
 	private static void registerTFItem(Item item, String englishName) {
-		//LanguageRegistry.instance().addNameForObject(item, "en_US", englishName);
-		GameRegistry.registerItem(item, item.getUnlocalizedName(), TwilightForestMod.ID);
+        registerTFItem(item);
+        // todo 1.9 get rid of this
 	}
 
 	private static void registerTFItem(Item item) {
-		GameRegistry.registerItem(item, item.getUnlocalizedName(), TwilightForestMod.ID);
+        item.setRegistryName(TwilightForestMod.ID, item.getUnlocalizedName());
+        GameRegistry.register(item);
 	}
 
 }

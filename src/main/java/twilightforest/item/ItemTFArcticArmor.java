@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -17,14 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFArcticArmor extends ItemArmor {
 
-	public ItemTFArcticArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, int armorType) {
+	public ItemTFArcticArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, renderIndex, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-	/**
-	 * Return an item rarity from EnumRarity
-	 */    
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
 		return EnumRarity.UNCOMMON;
@@ -43,7 +41,8 @@ public class ItemTFArcticArmor extends ItemArmor {
      * @param layer The render layer, either 1 or 2, 2 is only used for CLOTH armor by default
      * @return Path of texture to bind, or null to use default
      */
-	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot, String layer) {
+	@Override
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
 		switch (slot) {
 		case 0 : 
 		case 1 : 
@@ -56,38 +55,22 @@ public class ItemTFArcticArmor extends ItemArmor {
 		}
 	}
 	
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	//istack.addEnchantment(TFEnchantment.reactFire, 2);
         par3List.add(istack);
     }
     
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
     	// repair with ?????
         return par2ItemStack.getItem() == TFItems.arcticFur ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
-    
-    /**
-     * Override this method to have an item handle its own armor rendering.
-     * 
-     * @param  entityLiving  The entity wearing the armor 
-     * @param  itemStack  The itemStack to render the model of 
-     * @param  armorSlot  0=head, 1=torso, 2=legs, 3=feet
-     * 
-     * @return  A ModelBiped to render instead of the default
-     */
+
     @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot)
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped oldM)
     {
         return TwilightForestMod.proxy.getArcticArmorModel(armorSlot);
     }
