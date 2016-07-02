@@ -1,5 +1,6 @@
 package twilightforest.tileentity;
 
+import net.minecraft.util.EnumParticleTypes;
 import twilightforest.TwilightForestMod;
 
 
@@ -14,14 +15,10 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
     public boolean singing;
     public int singDelay;
     
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     @Override
-	public void updateEntity()
+	public void update()
     {
-    	super.updateEntity();
+    	super.update();
     	
 //    	if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != 1) {
 //    		//System.out.println("Cicada tile entity block has invalid metadata, fixing");
@@ -96,10 +93,10 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
     {
     	if (worldObj.rand.nextInt(5) == 0)
     	{
-    		double rx = xCoord + worldObj.rand.nextFloat();
-    		double ry = yCoord + worldObj.rand.nextFloat();
-    		double rz = zCoord + worldObj.rand.nextFloat();
-    		worldObj.spawnParticle("note", rx, ry, rz, 0.0D, 0.0D, 0.0D);
+    		double rx = pos.getX() + worldObj.rand.nextFloat();
+    		double ry = pos.getY() + worldObj.rand.nextFloat();
+    		double rz = pos.getZ() + worldObj.rand.nextFloat();
+    		worldObj.spawnParticle(EnumParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
     	}
     }
     

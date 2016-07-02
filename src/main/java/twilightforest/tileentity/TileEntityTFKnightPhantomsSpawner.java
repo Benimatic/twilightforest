@@ -14,14 +14,12 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
     @Override
 	public boolean anyPlayerInRange()
     {
-    	EntityPlayer closestPlayer = worldObj.getClosestPlayer(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 9D);
+    	EntityPlayer closestPlayer = worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 9D, false);
     	
-        return closestPlayer != null && closestPlayer.posY > yCoord - 2;
+        return closestPlayer != null && closestPlayer.posY > pos.getY() - 2;
     }
-    
-	/**
-	 * Spawn the boss
-	 */
+
+	@Override
 	protected void spawnMyBoss() {
 		
 		for (int i = 0; i < 6; i++)
@@ -33,9 +31,9 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			float angle = 60F * i;
 			float distance = 4F;
 
-			double rx = xCoord + 0.5D + Math.cos((angle) * Math.PI / 180.0D) * distance;
-			double ry = yCoord + 0.5D;
-			double rz = zCoord + 0.5D + Math.sin((angle) * Math.PI / 180.0D) * distance;
+			double rx = pos.getX() + 0.5D + Math.cos((angle) * Math.PI / 180.0D) * distance;
+			double ry = pos.getY() + 0.5D;
+			double rz = pos.getZ() + 0.5D + Math.sin((angle) * Math.PI / 180.0D) * distance;
 						
 			myCreature.setLocationAndAngles(rx, ry, rz, worldObj.rand.nextFloat() * 360F, 0.0F);
 
@@ -48,10 +46,8 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			worldObj.spawnEntityInWorld(myCreature);
 		}
 	}
-	
-	/**
-	 * Any post-creation initialization goes here
-	 */
+
+	@Override
 	protected void initializeCreature(EntityLiving myCreature) {
 		if (myCreature instanceof EntityTFKnightPhantom)
 		{

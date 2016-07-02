@@ -5,11 +5,12 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMiniGhast;
 
-public class TileEntityTFCReactorActive extends TileEntity {
+public class TileEntityTFCReactorActive extends TileEntity implements ITickable {
 	
 	int counter = 0;
 	
@@ -37,13 +38,8 @@ public class TileEntityTFCReactorActive extends TileEntity {
     	}
 	}
 
-
-	/**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     @Override
-	public void updateEntity()
+	public void update()
     {
     	counter++;
     	

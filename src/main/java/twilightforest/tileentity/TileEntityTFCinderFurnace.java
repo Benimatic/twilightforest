@@ -2,6 +2,7 @@ package twilightforest.tileentity;
 
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import twilightforest.block.BlockTFCinderFurnace;
 import twilightforest.block.TFBlocks;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -305,21 +306,21 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
      * Turn a nearby log into a cinder log
      */
     private void cinderizeNearbyLog() {
-    	Random rand = this.getWorldObj().rand;
+    	Random rand = this.getWorld().rand;
     	
 		int dx = rand.nextInt(2) - rand.nextInt(2);
 		int dy = rand.nextInt(2) - rand.nextInt(2);
 		int dz = rand.nextInt(2) - rand.nextInt(2);
 
 		if (this.worldObj.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz)) {
-			Block nearbyBlock = this.getWorldObj().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz);
+			Block nearbyBlock = this.getWorld().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz);
 
 			if (nearbyBlock != TFBlocks.cinderLog && this.isLog(nearbyBlock)) {
-				this.getWorldObj().setBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, TFBlocks.cinderLog, getCinderMetaFor(dx, dy, dz), 2);
+				this.getWorld().setBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, TFBlocks.cinderLog, getCinderMetaFor(dx, dy, dz), 2);
 				// special effect?
-				this.getWorldObj().playAuxSFX(2004, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, 0);
-				this.getWorldObj().playAuxSFX(2004, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, 0);
-				this.getWorldObj().playSoundEffect(this.xCoord + dx + 0.5F, this.yCoord + dy + 0.5F, this.zCoord + dz + 0.5F, "fire.fire", 1.0F, 1.0F);
+				this.getWorld().playAuxSFX(2004, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, 0);
+				this.getWorld().playAuxSFX(2004, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, 0);
+				this.getWorld().playSoundEffect(this.xCoord + dx + 0.5F, this.yCoord + dy + 0.5F, this.zCoord + dz + 0.5F, "fire.fire", 1.0F, 1.0F);
 			}
 		}
 	}
@@ -383,7 +384,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
-					if (this.worldObj.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) && this.getWorldObj().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) == TFBlocks.cinderLog) {
+					if (this.worldObj.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) && this.getWorld().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) == TFBlocks.cinderLog) {
 						count++;
 					}
 				}
@@ -396,9 +397,6 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 		return count;
 	}
 
-	/**
-     * Returns true if the furnace can smelt an item, i.e. has a source item, destination stack isn't full, etc.
-     */
     private boolean canSmelt()
     {
         if (this.furnaceItemStacks[SLOT_INPUT] == null)
@@ -407,7 +405,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
         }
         else
         {
-            ItemStack outputStack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[SLOT_INPUT]);
+            ItemStack outputStack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[SLOT_INPUT]);
             if (outputStack == null) {
             	return false;
             }
@@ -435,14 +433,11 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
     	}
     }
 
-    /**
-     * Turn one item from the furnace source stack into the appropriate smelted item in the furnace result stack
-     */
     public void smeltItem()
     {
         if (this.canSmelt())
         {
-            ItemStack outputStack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[SLOT_INPUT]);
+            ItemStack outputStack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[SLOT_INPUT]);
             
             if (this.canMultiply(this.furnaceItemStacks[SLOT_INPUT], outputStack)) {
 	            
@@ -479,9 +474,6 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
     }
     
 
-    /**
-     * Can we multiply the output?  We currently multiply logs->charcoal, ore->ingots, and food
-     */
     public boolean canMultiply(ItemStack input, ItemStack output) {
 
     	// check the input ore ID for ores
@@ -518,10 +510,6 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 	}
 
 
-    /**
-     * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-     * fuel
-     */
     public static int getItemBurnTime(ItemStack p_145952_0_)
     {
         if (p_145952_0_ == null)
@@ -566,10 +554,6 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 
     public static boolean isItemFuel(ItemStack p_145954_0_)
     {
-        /**
-         * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-         * fuel
-         */
         return getItemBurnTime(p_145954_0_) > 0;
     }
 
@@ -580,15 +564,15 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 
 	}
 
 	@Override
-	public void openInventory() {;}
+	public void openInventory(EntityPlayer player) {}
 
 	@Override
-	public void closeInventory() {;}
+	public void closeInventory(EntityPlayer player) {}
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
@@ -596,8 +580,8 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return p_94128_1_ == 0 ? slotsBottom : (p_94128_1_ == 1 ? slotsTop : slotsSides);
+	public int[] getSlotsForFace(EnumFacing p_94128_1_) {
+        return p_94128_1_ == EnumFacing.DOWN ? slotsBottom : (p_94128_1_ == EnumFacing.UP ? slotsTop : slotsSides);
 	}
 
     /**

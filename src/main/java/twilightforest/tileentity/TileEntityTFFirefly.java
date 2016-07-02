@@ -15,14 +15,10 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
     public boolean glowing;
     public int glowDelay;
     
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     @Override
-	public void updateEntity()
+	public void update()
     {
-    	super.updateEntity();
+    	super.update();
     	
 //    	if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != 0) {
 //    		//System.out.println("Firefly tile entity block has invalid metadata, fixing");
@@ -85,7 +81,7 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
     
     public boolean anyPlayerInRange()
     {
-        return worldObj.getClosestPlayer(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 16D) != null;
+        return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 16D, false) != null;
     }
 	
 
@@ -107,11 +103,11 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
      */
     void doFireflyFX()
     {
-    	double rx = xCoord + worldObj.rand.nextFloat();
-    	double ry = yCoord + worldObj.rand.nextFloat();
-    	double rz = zCoord + worldObj.rand.nextFloat();
-//    	EntityTFFireflyFX fireflyfx = new EntityTFFireflyFX(worldObj, rx, ry, rz, 0.0F, 0.0F, 0.0F);
+    	double rx = pos.getX() + worldObj.rand.nextFloat();
+    	double ry = pos.getY() + worldObj.rand.nextFloat();
+    	double rz = pos.getZ() + worldObj.rand.nextFloat();
 //    	ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
+		// ^ keeping here only for pure lolz
     	EntityTFTinyFirefly tinyfly = new EntityTFTinyFirefly(worldObj, rx, ry, rz);
     	worldObj.addWeatherEffect(tinyfly);
     }

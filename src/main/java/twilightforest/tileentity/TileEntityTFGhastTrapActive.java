@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
@@ -13,24 +14,14 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
-public class TileEntityTFGhastTrapActive extends TileEntity {
+public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable {
 	
 	public int counter = 0;
 	
 	public Random rand = new Random();
 
-	
-	public boolean canUpdate()
-	{
-		return true;
-	}
-	
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
 	@Override
-	public void updateEntity()
+	public void update()
 	{    	
 
 		++counter;
@@ -74,7 +65,7 @@ public class TileEntityTFGhastTrapActive extends TileEntity {
 		if (!worldObj.isRemote)
 		{
 			// trap nearby ghasts
-			AxisAlignedBB aabb = new AxisAlignedBB((double)this.xCoord, (double)this.yCoord + 16, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 16 + 1), (double)(this.zCoord + 1)).expand(6D, 16D, 6D);
+			AxisAlignedBB aabb = new AxisAlignedBB(pos.up(16), pos.up(16).add(1, 1, 1)).expand(6D, 16D, 6D);
 
 			List<EntityGhast> nearbyGhasts = worldObj.getEntitiesWithinAABB(EntityGhast.class, aabb);
 
@@ -86,9 +77,9 @@ public class TileEntityTFGhastTrapActive extends TileEntity {
 					((EntityTFUrGhast)ghast).stopTantrum();
 
 					// move boss to this point
-					ghast.motionX = (ghast.posX - this.xCoord - 0.5) * -0.1;
-					ghast.motionY = (ghast.posY - this.yCoord - 2.5) * -0.1;
-					ghast.motionZ = (ghast.posZ - this.zCoord - 0.5) * -0.1;
+					ghast.motionX = (ghast.posX - this.pos.getX() - 0.5) * -0.1;
+					ghast.motionY = (ghast.posY - this.pos.getY() - 2.5) * -0.1;
+					ghast.motionZ = (ghast.posZ - this.pos.getZ() - 0.5) * -0.1;
 
 					if (rand.nextInt(10) == 0)
 					{
@@ -99,9 +90,9 @@ public class TileEntityTFGhastTrapActive extends TileEntity {
 				else
 				{
 					// move ghasts to this point
-					ghast.motionX = (ghast.posX - this.xCoord - 0.5) * -0.1;
-					ghast.motionY = (ghast.posY - this.yCoord - 1.5) * -0.1;
-					ghast.motionZ = (ghast.posZ - this.zCoord - 0.5) * -0.1;
+					ghast.motionX = (ghast.posX - this.pos.getX() - 0.5) * -0.1;
+					ghast.motionY = (ghast.posY - this.pos.getY() - 1.5) * -0.1;
+					ghast.motionZ = (ghast.posZ - this.pos.getZ() - 0.5) * -0.1;
 
 					if (rand.nextInt(10) == 0)
 					{

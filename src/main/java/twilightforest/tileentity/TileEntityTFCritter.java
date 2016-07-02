@@ -9,7 +9,6 @@ public abstract class TileEntityTFCritter extends TileEntity implements ITickabl
     @Override
 	public void update() {}
     
-    
 //	/**
 //	 * Fix imported tileentities from version 1.9
 //	 */

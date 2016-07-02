@@ -11,9 +11,7 @@ public class TileEntityTFHydraSpawner extends TileEntityTFBossSpawner {
 		this.mobID = TFCreatures.getSpawnerNameFor("Hydra");
 	}
 
-	/**
-	 * Get a temporary copy of the creature we're going to summon for display purposes
-	 */
+	@Override
 	public Entity getDisplayEntity()
 	{
 		if (this.displayCreature == null)

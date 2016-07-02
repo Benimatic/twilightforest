@@ -23,9 +23,6 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		;
 	}
 	
-	/**
-	 * Is there a player in our detection range?
-	 */
 	public boolean anyPlayerInRange()
     {
         return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false) != null;
@@ -108,16 +105,10 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		}
 	}
 
-	/**
-	 * Range?
-	 */
 	protected int getRange() {
 		return 50;
 	}
 
-	/**
-	 * Create a copy of what we spawn
-	 */
 	protected EntityLiving makeMyCreature() {
 		return (EntityLiving)EntityList.createEntityByName(mobID, worldObj);
 	}

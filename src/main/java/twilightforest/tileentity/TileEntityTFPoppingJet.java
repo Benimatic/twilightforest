@@ -3,6 +3,7 @@ package twilightforest.tileentity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import twilightforest.block.BlockTFFireJet;
@@ -37,7 +38,7 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 		else
 		{
 			if (counter % 20 == 0) {
-				worldObj.spawnParticle("lava", this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5, 0.0D, 0.0D, 0.0D);
+				worldObj.spawnParticle(EnumParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 				worldObj.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + worldObj.rand.nextFloat() * 0.2F, 0.9F + worldObj.rand.nextFloat() * 0.15F);
 			}
 

@@ -5,13 +5,15 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
 
-public class TileEntityTFFlameJet extends TileEntity {
+public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	
 	int counter = 0;
 	private int nextMeta;
@@ -24,18 +26,14 @@ public class TileEntityTFFlameJet extends TileEntity {
 		this.nextMeta = parNextMeta;
 	}
 
-	/**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     @Override
-	public void updateEntity()
+	public void update()
     {
 		if (++counter > 60)
 		{
 			counter = 0;
 	    	// idle again
-			if (!worldObj.isRemote && worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == TFBlocks.fireJet)
+			if (!worldObj.isRemote && worldObj.getBlockState(pos).getBlock() == TFBlocks.fireJet)
 			{
 				worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, TFBlocks.fireJet, this.nextMeta, 3);
 			}
@@ -43,7 +41,7 @@ public class TileEntityTFFlameJet extends TileEntity {
 		}
 		else if (counter % 2 == 0)
 		{
-			worldObj.spawnParticle("largesmoke", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.0D, 0.0D, 0.0D);
+			worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 			TwilightForestMod.proxy.spawnParticle(this.worldObj, "largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.0D, 0.5D, 0.0D);
 //			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 
 //    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
@@ -79,8 +77,7 @@ public class TileEntityTFFlameJet extends TileEntity {
 			{
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = worldObj.getEntitiesWithinAABB(Entity.class, 
-						new AxisAlignedBB(this.xCoord - 2, this.yCoord, this.zCoord - 2,
-								this.xCoord + 2, this.yCoord + 4, this.zCoord + 2));
+						new AxisAlignedBB(pos.add(-2, 0, -2), pos.add(2, 4, 2)));
 				// fire!
 				for (Entity entity : entitiesInRange)
 				{
@@ -94,21 +91,18 @@ public class TileEntityTFFlameJet extends TileEntity {
 		}
     }
     
-    /**
-     * Reads a tile entity from NBT.
-     */
+    @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readFromNBT(par1NBTTagCompound);
         this.nextMeta = par1NBTTagCompound.getInteger("NextMeta");
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("NextMeta", this.nextMeta);
+		return par1NBTTagCompound;
     }
 }

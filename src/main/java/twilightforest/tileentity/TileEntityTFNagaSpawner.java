@@ -9,15 +9,14 @@ public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
 	public TileEntityTFNagaSpawner() {
 		this.mobID = TFCreatures.getSpawnerNameFor("Naga");
 	}
-	
+
+	@Override
 	public boolean anyPlayerInRange()
     {
         return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 50D, false) != null;
     }
     
-	/**
-	 * Any post-creation initialization goes here
-	 */
+	@Override
 	protected void initializeCreature(EntityLiving myCreature) {
 		
 		if (myCreature instanceof EntityCreature)
@@ -26,9 +25,7 @@ public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
 		}
 	}
 
-	/**
-	 * Range?
-	 */
+	@Override
 	protected int getRange() {
 		return 50;
 	}
