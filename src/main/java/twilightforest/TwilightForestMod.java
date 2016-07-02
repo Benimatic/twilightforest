@@ -1,55 +1,19 @@
 package twilightforest;
 
-import com.google.common.base.Function;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.biomes.TFBiomeBase;
-import twilightforest.block.BlockTFAuroraBrick;
-import twilightforest.block.BlockTFAuroraPillar;
-import twilightforest.block.BlockTFAuroraSlab;
-import twilightforest.block.BlockTFBurntThorns;
-import twilightforest.block.BlockTFCastleBlock;
-import twilightforest.block.BlockTFCastleMagic;
-import twilightforest.block.BlockTFDarkLeaves;
-import twilightforest.block.BlockTFDeadrock;
-import twilightforest.block.BlockTFFluffyCloud;
-import twilightforest.block.BlockTFForceField;
-import twilightforest.block.BlockTFGiantCobble;
-import twilightforest.block.BlockTFGiantLeaves;
-import twilightforest.block.BlockTFGiantLog;
-import twilightforest.block.BlockTFGiantObsidian;
-import twilightforest.block.BlockTFHugeGloomBlock;
-import twilightforest.block.BlockTFHugeLilyPad;
-import twilightforest.block.BlockTFHugeStalk;
-import twilightforest.block.BlockTFHugeWaterLily;
-import twilightforest.block.BlockTFKnightmetalBlock;
-import twilightforest.block.BlockTFLeaves3;
-import twilightforest.block.BlockTFRipeTorchCluster;
-import twilightforest.block.BlockTFShield;
-import twilightforest.block.BlockTFSlider;
-import twilightforest.block.BlockTFThornRose;
-import twilightforest.block.BlockTFThorns;
-import twilightforest.block.BlockTFTrollRoot;
-import twilightforest.block.BlockTFTrollSteinn;
-import twilightforest.block.BlockTFTrophy;
-import twilightforest.block.BlockTFTrophyPedestal;
-import twilightforest.block.BlockTFUberousSoil;
-import twilightforest.block.BlockTFUnderBrick;
-import twilightforest.block.BlockTFUnripeTorchCluster;
-import twilightforest.block.BlockTFWispyCloud;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
 import twilightforest.item.BehaviorTFMobEggDispense;
@@ -82,7 +46,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -92,10 +55,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLMessage.EntitySpawnMessage;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.EntityRegistry.EntityRegistration;
 import thaumcraft.api.*;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -117,6 +78,7 @@ public class TwilightForestMod {
 
 
 	public static int dimensionID;
+	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
 	public static int dimensionProviderID;
     
@@ -267,10 +229,9 @@ public class TwilightForestMod {
 		
 		// event listener, for those events that seem worth listening to
 		MinecraftForge.EVENT_BUS.register(eventListener);
-		FMLCommonHandler.instance().bus().register(eventListener); // we're getting events off this bus too
 
 		// tick listener
-		FMLCommonHandler.instance().bus().register(tickHandler);
+		MinecraftForge.EVENT_BUS.register(tickHandler);
 		
 		// set up portal item
 		ResourceLocation loc = new ResourceLocation(portalCreationItemString);
@@ -301,7 +262,8 @@ public class TwilightForestMod {
 		proxy.doOnLoadRegistration();
 		
 		// dimension provider
-		DimensionManager.registerProviderType(TwilightForestMod.dimensionProviderID, WorldProviderTwilightForest.class, false);
+		dimType = DimensionType.register("Twilight Forest", "_twilightforest", dimensionID, WorldProviderTwilightForest.class, false);
+		DimensionManager.registerDimension(TwilightForestMod.dimensionProviderID, dimType);
 
 		// enter biomes into dictionary
 		TFBiomeBase.registerWithBiomeDictionary();
@@ -631,30 +593,30 @@ public class TwilightForestMod {
 		configFile.get("dimension", "dimensionID", 7).setComment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.");
 		
 		dimensionProviderID = configFile.get("dimension", "dimensionProviderID", -777).getInt();
-		configFile.get("dimension", "dimensionProviderID", 7).comment = "Dimension provider ID.  Does not normally need to be changed, but the option is provided to work around a bug in MCPC+";
+		configFile.get("dimension", "dimensionProviderID", 7).setComment("Dimension provider ID.  Does not normally need to be changed, but the option is provided to work around a bug in MCPC+");
 
 	    // other misc otions
 	    silentCicadas = configFile.get(Configuration.CATEGORY_GENERAL, "SilentCicadas", false).getBoolean(false);
-		configFile.get(Configuration.CATEGORY_GENERAL, "SilentCicadas", false).comment = "Make cicadas silent  for those having sound library problems, or otherwise finding them annoying";
+		configFile.get(Configuration.CATEGORY_GENERAL, "SilentCicadas", false).setComment("Make cicadas silent  for those having sound library problems, or otherwise finding them annoying");
 	    allowPortalsInOtherDimensions = configFile.get(Configuration.CATEGORY_GENERAL, "AllowPortalsInOtherDimensions", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "AllowPortalsInOtherDimensions", false).comment = "Allow portals to the Twilight Forest to be made outside of dimension 0.  May be considered an exploit.";
+	    configFile.get(Configuration.CATEGORY_GENERAL, "AllowPortalsInOtherDimensions", false).setComment("Allow portals to the Twilight Forest to be made outside of dimension 0.  May be considered an exploit.");
 	    adminOnlyPortals = configFile.get(Configuration.CATEGORY_GENERAL, "AdminOnlyPortals", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "AdminOnlyPortals", false).comment = "Allow portals only for admins (ops).  This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.";
+	    configFile.get(Configuration.CATEGORY_GENERAL, "AdminOnlyPortals", false).setComment("Allow portals only for admins (ops).  This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.");
 	    twilightForestSeed = configFile.get(Configuration.CATEGORY_GENERAL, "TwilightForestSeed", "").getString();
-	    configFile.get(Configuration.CATEGORY_GENERAL, "TwilightForestSeed", "").comment = "If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.";
+	    configFile.get(Configuration.CATEGORY_GENERAL, "TwilightForestSeed", "").setComment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.");
 	    disablePortalCreation = configFile.get(Configuration.CATEGORY_GENERAL, "DisablePortalCreation", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "DisablePortalCreation", false).comment = "Disable Twilight Forest portal creation entirely.  Provided for server operators looking to restrict action to the dimension.";
+	    configFile.get(Configuration.CATEGORY_GENERAL, "DisablePortalCreation", false).setComment("Disable Twilight Forest portal creation entirely.  Provided for server operators looking to restrict action to the dimension.");
 	    disableUncrafting = configFile.get(Configuration.CATEGORY_GENERAL, "DisableUncrafting", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "DisableUncrafting", false).comment = "Disable the uncrafting function of the uncrafting table.  Provided as an option when interaction with other mods produces exploitable recipes.";
+	    configFile.get(Configuration.CATEGORY_GENERAL, "DisableUncrafting", false).setComment("Disable the uncrafting function of the uncrafting table.  Provided as an option when interaction with other mods produces exploitable recipes.");
 	    oldMapGen = configFile.get(Configuration.CATEGORY_GENERAL, "OldMapGen", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "OldMapGen", false).comment = "Use old (pre Minecraft 1.7) map gen.  May not be fully supported.";
+	    configFile.get(Configuration.CATEGORY_GENERAL, "OldMapGen", false).setComment("Use old (pre Minecraft 1.7) map gen.  May not be fully supported.");
 	    portalCreationItemString = configFile.get(Configuration.CATEGORY_GENERAL, "PortalCreationItem", "diamond").getString();
-	    configFile.get(Configuration.CATEGORY_GENERAL, "PortalCreationItem", "diamond").comment = "Item to create the Twilight Forest Portal.  Defaults to 'diamond'";
+	    configFile.get(Configuration.CATEGORY_GENERAL, "PortalCreationItem", "diamond").setComment("Item to create the Twilight Forest Portal.  Defaults to 'diamond'");
 
 	    canopyCoverage = (float) (configFile.get("Performance", "CanopyCoverage", 1.7).getDouble(1.7));
-		configFile.get("performance", "CanopyCoverage", 1.7).comment = "Amount of canopy coverage, from 0.0 on up.  Lower numbers improve chunk generation speed at the cost of a thinner forest.";
+		configFile.get("performance", "CanopyCoverage", 1.7).setComment("Amount of canopy coverage, from 0.0 on up.  Lower numbers improve chunk generation speed at the cost of a thinner forest.");
 		twilightOakChance = configFile.get("Performance", "TwilightOakChance", 48).getInt(48);
-		configFile.get("Performance", "TwilightOakChance", 48).comment = "Chance that a chunk in the Twilight Forest will contain a twilight oak tree.  Higher numbers reduce the number of trees, increasing performance.";
+		configFile.get("Performance", "TwilightOakChance", 48).setComment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree.  Higher numbers reduce the number of trees, increasing performance.");
 
     	// fixed values, don't even read the config
     	idMobWildBoar = 177;

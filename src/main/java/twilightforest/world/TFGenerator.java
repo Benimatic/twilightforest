@@ -4,16 +4,15 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 
 public abstract class TFGenerator extends WorldGenerator {
-	
-	//protected World worldObj;
 
     public TFGenerator() {
     	this(false);
@@ -55,23 +54,22 @@ public abstract class TFGenerator extends WorldGenerator {
 		double rangle = angle * 2.0D * Math.PI;
 		double rtilt = tilt * Math.PI;
 		
-		
-		dest.posX += Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance);
-		dest.posY += Math.round(Math.cos(rtilt) * distance);
-		dest.posZ += Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance);
-		
-		return dest;
+		return dest.add(
+				Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance),
+				Math.round(Math.cos(rtilt) * distance),
+				Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance)
+		);
 	}
 
 	/**
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 */
-	protected void drawBresehnam(World world, int x1, int y1, int z1, int x2, int y2, int z2, Block blockValue, int metaValue)
+	protected void drawBresehnam(World world, int x1, int y1, int z1, int x2, int y2, int z2, IBlockState state)
 	{
 		BlockPos[] lineArray = getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
 		for (BlockPos pixel : lineArray)
 		{
-			setBlockAndMetadata(world, pixel.posX, pixel.posY, pixel.posZ, blockValue, metaValue);
+			setBlockAndNotifyAdequately(world, pixel, state);
 		}
 	}
 
@@ -79,7 +77,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	 * Get an array of values that represent a line from point A to point B
 	 */
 	public static BlockPos[] getBresehnamArrayCoords(BlockPos src, BlockPos dest) {
-		return getBresehnamArrayCoords(src.posX, src.posY, src.posZ, dest.posX, dest.posY, dest.posZ);
+		return getBresehnamArrayCoords(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
 	}
 	
 	/**
@@ -233,13 +231,12 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Put a leaf only in spots where leaves can go!
 	 */
-	public void putLeafBlock(World world, int x, int y, int z, Block blockValue, int metaValue) {
-        Block whatsThere = world.getBlock(x, y, z);
-        Block block = whatsThere;
+	public void putLeafBlock(World world, BlockPos pos, IBlockState state) {
+        IBlockState whatsThere = world.getBlockState(pos);
 
-        if (block == null || block.canBeReplacedByLeaves(world, x, y, z))
+		if (whatsThere.getBlock().canBeReplacedByLeaves(state, world, pos))
         {
-            this.setBlockAndMetadata(world, x, y, z, blockValue, metaValue);
+            this.setBlockAndNotifyAdequately(world, pos, state);
         }
 	}
 
@@ -258,7 +255,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 * 
 	 */
-	protected boolean isAreaSuitable(World world, Random rand, int x, int y, int z, int width, int height, int depth)
+	protected boolean isAreaSuitable(World world, Random rand, BlockPos pos, int width, int height, int depth)
 	{
 		boolean flag = true;
 		
@@ -268,10 +265,11 @@ public abstract class TFGenerator extends WorldGenerator {
 		{
 			for (int cz = 0; cz < depth; cz++)
 			{
+				BlockPos pos_ = pos.add(cx, 0, cz);
 				// check if the blocks even exist?
-				if (world.blockExists(x + cx, y, z + cz)) {
+				if (world.isBlockLoaded(pos_)) {
 					// is there grass, dirt or stone below?
-					Material m = world.getBlock(x + cx, y - 1, z + cz).getMaterial();
+					Material m = world.getBlockState(pos_.down()).getMaterial();
 					if (m != Material.GROUND && m != Material.GRASS && m != Material.ROCK)
 					{
 						flag = false;
@@ -280,7 +278,7 @@ public abstract class TFGenerator extends WorldGenerator {
 					for (int cy = 0; cy < height; cy++)
 					{
 						// blank space above?
-						if (!world.isAirBlock(x + cx, y + cy, z + cz))
+						if (!world.isAirBlock(pos_.up(cy)))
 						{
 							flag = false;
 						}
@@ -443,19 +441,5 @@ public abstract class TFGenerator extends WorldGenerator {
 		}
 
 		return nearSolid;
-	}
-	
-
-	/**
-	 * Temporary override
-	 */
-	protected void setBlock(World world, int x, int y, int z, Block block) {
-		this.func_150515_a(world, x, y, z, block);
-	}
-	/**
-	 * Temporary override
-	 */
-	protected void setBlockAndMetadata(World world, int x, int y, int z, Block block, int meta) {
-		this.setBlockAndNotifyAdequately(world, x, y, z, block, meta);
 	}
 }
