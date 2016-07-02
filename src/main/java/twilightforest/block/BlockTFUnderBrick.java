@@ -3,7 +3,9 @@ package twilightforest.block;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -25,7 +27,7 @@ public class BlockTFUnderBrick extends Block {
 		super(Material.ROCK);
 		this.setHardness(1.5F);
 		this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(SoundType.STONE);
 		
 		this.setCreativeTab(TFItems.creativeTab);
 
@@ -93,22 +95,16 @@ public class BlockTFUnderBrick extends Block {
     }
 
 	
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
         par3List.add(new ItemStack(par1, 1, 2));
     }
     
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	return meta;
 	}
 }

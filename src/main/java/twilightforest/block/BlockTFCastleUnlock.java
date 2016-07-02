@@ -8,7 +8,6 @@ public class BlockTFCastleUnlock extends Block {
 
 	protected BlockTFCastleUnlock() {
 		super(Material.ROCK);
-		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -1,6 +1,11 @@
 package twilightforest.block;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,23 +70,14 @@ public class BlockTFCastleDoor extends Block
         }
     }
     
-    
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return !this.isVanished;
     }
     
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos)
 	{
 		if (this.isVanished)
 		{
@@ -95,17 +91,13 @@ public class BlockTFCastleDoor extends Block
 	}
 	
     @Override
-	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public boolean isPassable(IBlockAccess par1IBlockAccess, BlockPos pos)
     {
     	return !this.isVanished;
     }
 
-    
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     @Override
-	public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -174,31 +166,21 @@ public class BlockTFCastleDoor extends Block
 	public static boolean isMetaActive(int meta) {
 		return (meta & 8) != 0;
 	}
-    
-	  
-    /**
-     * How many world ticks before ticking
-     */
-    public int tickRate()
+
+    @Override
+    public int tickRate(World world)
     {
         return 5;
     }
-    
 
-    /**
-     * The type of render function that is called for this block
-     */
     @Override
-	public int getRenderType()
+	public EnumBlockRenderType getRenderType(IBlockState state)
     {
     	return TwilightForestMod.proxy.getCastleMagicBlockRenderID();
     }
     
-    /**
-     * Ticks the block if it's been scheduled
-     */
     @Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
     	if (!par1World.isRemote)
     	{
@@ -290,11 +272,7 @@ public class BlockTFCastleDoor extends Block
     
 	@Override
 	@SideOnly(Side.CLIENT)
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+    public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
     {
     	int meta = par1World.getBlockMetadata(x, y, z);
 

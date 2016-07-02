@@ -5,7 +5,9 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -15,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,11 +45,8 @@ public class BlockTFThorns extends BlockRotatedPillar {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 	
-    /**
-     * The type of render function that is called for this block
-     */
     @Override
-	public int getRenderType()
+	public int getRenderType(IBlockState state)
     {
     	return TwilightForestMod.proxy.getThornsBlockRenderID();
     }
@@ -59,21 +59,14 @@ public class BlockTFThorns extends BlockRotatedPillar {
         return false;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
+	@Override
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
     
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
     {
     	int meta = world.getBlockMetadata(x, y, z);
     	
@@ -92,20 +85,15 @@ public class BlockTFThorns extends BlockRotatedPillar {
 
     }
 
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
+	@Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos)
     {
-        return this.getCollisionBoundingBoxFromPool(world, x, y, z);
+        return this.getCollisionBoundingBox(state, world, pos);
     }
-    
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+	@Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
     	entity.attackEntityFrom(DamageSource.cactus, THORN_DAMAGE);
     }
@@ -128,14 +116,11 @@ public class BlockTFThorns extends BlockRotatedPillar {
     	
     	return true;
     }
-    
-    /**
-     * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
-     * and stop pistons
-     */
-    public int getMobilityFlag()
+
+	@Override
+    public EnumPushReaction getMobilityFlag(IBlockState state)
     {
-        return 2;
+        return EnumPushReaction.BLOCK;
     }
 
     /**
@@ -206,10 +191,8 @@ public class BlockTFThorns extends BlockRotatedPillar {
 		}
 	}
 	
-	/**
-	 * Like logs, we start leaf decay when broken
-	 */
-    public void breakBlock(World world, int x, int y, int z, Block logBlock, int metadata)
+	@Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
         byte range = 4;
         int exRange = range + 1;
@@ -232,10 +215,8 @@ public class BlockTFThorns extends BlockRotatedPillar {
             }
         }
     }
-	
-	/**
-     * Returns the quantity of items to drop on block destruction.
-     */
+
+	@Override
     public int quantityDropped(Random p_149745_1_)
     {
         return 0;
@@ -266,17 +247,13 @@ public class BlockTFThorns extends BlockRotatedPillar {
     }
     
     @Override
-    public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z)
+    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return true;
     }
-    
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	@Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
     	for (int i = 0; i < getNames().length; i++) {
             par3List.add(new ItemStack(par1, 1, i));

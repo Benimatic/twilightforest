@@ -3,14 +3,18 @@ package twilightforest.block;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.ItemTFMazebreakerPick;
@@ -45,7 +49,7 @@ public class BlockTFCastleBlock extends Block {
         super(Material.ROCK);
         this.setHardness(100F);
         this.setResistance(15F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 
     }
@@ -80,7 +84,7 @@ public class BlockTFCastleBlock extends Block {
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, int x, int y, int z, int meta)
+	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
 	{
 		// damage the player's pickaxe
     	ItemStack cei = entityplayer.getCurrentEquippedItem();
@@ -92,13 +96,8 @@ public class BlockTFCastleBlock extends Block {
 		super.harvestBlock(world, entityplayer, x, y, z, meta);
     }
     
-    
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -106,11 +105,8 @@ public class BlockTFCastleBlock extends Block {
         par3List.add(new ItemStack(par1, 1, 3));
     }
     
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	return meta;
 	}
 

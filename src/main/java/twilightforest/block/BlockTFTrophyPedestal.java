@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,7 +48,7 @@ public class BlockTFTrophyPedestal extends Block {
 		super(Material.ROCK);
 		this.setHardness(2.0F);
 		this.setResistance(2000.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(SoundType.STONE);
 		
 		this.setCreativeTab(TFItems.creativeTab);
 	}
@@ -149,21 +151,12 @@ public class BlockTFTrophyPedestal extends Block {
         return false;
     }
 
-
-	/**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
-    
-    /**
-     * The type of render function that is called for this block
-     */
     @Override
 	public int getRenderType()
     {
@@ -353,20 +346,12 @@ public class BlockTFTrophyPedestal extends Block {
 		}
 	}
 
-	
-    /**
-     * How many world ticks before ticking
-     */
     @Override
 	public int tickRate(World world)
     {
         return 10;
     }
     
-    /**
-     * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
-     * EntityPlayer.
-     */
     @Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer, World world, int x, int y, int z)
     {

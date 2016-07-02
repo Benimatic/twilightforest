@@ -3,12 +3,15 @@ package twilightforest.block;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -24,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 
-public class BlockTFBossSpawner extends BlockContainer {
+public class BlockTFBossSpawner extends Block {
 
 	protected BlockTFBossSpawner()
 	{
@@ -33,30 +36,15 @@ public class BlockTFBossSpawner extends BlockContainer {
 		//this.setResistance(10F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
-	
-    /**
-     * Called throughout the code as a replacement for block instanceof BlockContainer
-     * Moving this to the Block base class allows for mods that wish to extend vinella
-     * blocks, and also want to have a tile entity on that block, may.
-     *
-     * Return true from this function to specify this block has a tile entity.
-     *
-     * @param metadata Metadata of the current block
-     * @return True if block has a tile entity, false otherwise
-     */
+
 	@Override
-	public boolean hasTileEntity(int metadata) 
+	public boolean hasTileEntity(IBlockState state)
 	{
 		return true;
 	}
 
-	
-	/**
-	 * This is where we actually give out our tile entity
-	 */
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) 
+	public TileEntity createTileEntity(World world, IBlockState state)
     {
 		if (metadata == 0) 
 		{
@@ -88,21 +76,13 @@ public class BlockTFBossSpawner extends BlockContainer {
 		}
     }
 
-	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
-		return createTileEntity(var1, var2);
-	}
-
 
 	@Override
-	public Item getItemDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int fortune)
 	{
 		return null;
 	}
 
-	/**
-	 * quantity dropped
-	 */
 	@Override
 	public int quantityDropped(Random random)
 	{
@@ -110,17 +90,13 @@ public class BlockTFBossSpawner extends BlockContainer {
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
 
-	
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         //par3List.add(new ItemStack(par1, 1, 0));
         //par3List.add(new ItemStack(par1, 1, 1));

@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,17 +15,13 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 		super();
 		this.setHardness(0.01F);
 		this.setResistance(0.0F);
-		this.setStepSound(soundTypeSand);
+		this.setSoundType(SoundType.SAND);
 		this.setCreativeTab(TFItems.creativeTab);
 		
 		this.setNames(new String[] {"burnt"});
 
 	}
-	
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
     {
     	// dissolve

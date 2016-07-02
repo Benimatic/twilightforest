@@ -5,11 +5,14 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
@@ -22,7 +25,7 @@ public class BlockTFAuroraSlab extends BlockSlab {
 	private IIcon sideIcon;
 
 	public BlockTFAuroraSlab(boolean isDouble) {
-		super(isDouble, Material.PACKEDICE);
+		super(isDouble, Material.PACKED_ICE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
@@ -79,27 +82,21 @@ public class BlockTFAuroraSlab extends BlockSlab {
         this.sideIcon = iconRegister.registerIcon(TwilightForestMod.ID + ":aurora_slab_side");
     }
 
-    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(TFBlocks.auroraSlab);
     }
 
-    /**
-     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
-     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
-     */
-    protected ItemStack createStackedBlock(int meta)
+    @Override
+    protected ItemStack createStackedBlock(IBlockState state)
     {
         return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
     }
 
-    
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
+    @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         if (this.field_150004_a)
         {

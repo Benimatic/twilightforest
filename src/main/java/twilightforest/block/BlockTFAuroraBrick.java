@@ -4,11 +4,15 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -22,7 +26,7 @@ public class BlockTFAuroraBrick extends Block {
 
 
 	public BlockTFAuroraBrick() {
-		super(Material.PACKEDICE);
+		super(Material.PACKED_ICE);
 		
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
@@ -127,38 +131,26 @@ public class BlockTFAuroraBrick extends Block {
         return this.getBlockColor();
     }
 	
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
+
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	return 0;
 	}
-    
-    /**
-     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
-     */
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
+
+	@Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return Math.abs(x + z) % 16;
     }
-    
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
+
     @Override
-	public void onBlockAdded(World world, int x, int y, int z)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
     	world.setBlockMetadataWithNotify(x, y, z, Math.abs(x + z) % 16, 2);
     }

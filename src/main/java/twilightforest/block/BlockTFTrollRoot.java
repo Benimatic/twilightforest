@@ -1,8 +1,12 @@
 package twilightforest.block;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
@@ -21,25 +25,23 @@ public class BlockTFTrollRoot extends Block implements IShearable {
 		super(Material.PLANTS);
         this.setTickRandomly(true);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setStepSound(soundTypeGrass);
+		this.setSoundType(SoundType.PLANT);
 		
         this.setBlockTextureName(TwilightForestMod.ID + ":troll_root");
 
 	}
 
 	@Override
-	public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z) {
+	public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune) {
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         ret.add(new ItemStack(this));
         return ret;
 	}
-
-	
 	
 	/**
      * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
@@ -68,8 +70,8 @@ public class BlockTFTrollRoot extends Block implements IShearable {
      * cleared to be reused)
      */
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z) {
-    	return null;
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos) {
+    	return NULL_AABB;
     }
     
     /**
@@ -77,7 +79,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
     @Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
@@ -101,7 +103,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
      * Ticks the block if it's been scheduled
      */
 	@Override
-    public void updateTick(World world, int x, int y, int z, Random rand) {
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         this.checkAndDropBlock(world, x, y, z);
     }
 	
@@ -123,16 +125,8 @@ public class BlockTFTrollRoot extends Block implements IShearable {
         }
     }
     
-    /**
-     * Metadata and fortune sensitive version, this replaces the old (int meta, Random rand)
-     * version in 1.1.
-     *
-     * @param meta Blocks Metadata
-     * @param fortune Current item fortune level
-     * @param random Random number generator
-     * @return The number of items to drop
-     */
-    public int quantityDropped(int meta, int fortune, Random random) {
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random) {
         return 0;
     }
 }

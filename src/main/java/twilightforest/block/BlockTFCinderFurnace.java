@@ -2,6 +2,11 @@ package twilightforest.block;
 
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
@@ -22,7 +27,9 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class BlockTFCinderFurnace  extends BlockContainer{
+import javax.annotation.Nullable;
+
+public class BlockTFCinderFurnace extends Block {
 
 	private static boolean isUpdating;
 	private Boolean isLit;
@@ -45,11 +52,10 @@ public class BlockTFCinderFurnace  extends BlockContainer{
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+	public TileEntity createTileEntity(World p_149915_1_, IBlockState state) {
         return new TileEntityTFCinderFurnace();
 	}
 
-	
     /**
      * Gets the block's texture. Args: side, meta
      */
@@ -65,12 +71,9 @@ public class BlockTFCinderFurnace  extends BlockContainer{
         this.blockIcon = p_149651_1_.registerIcon(this.isLit ? "furnace_front_on" : "furnace_front_off");
         this.topIcon = p_149651_1_.registerIcon("furnace_top");
     }
-    
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (world.isRemote)
         {
@@ -129,11 +132,9 @@ public class BlockTFCinderFurnace  extends BlockContainer{
         }
     }
     
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random random)
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random)
     {
    	
         if (this.isLit)
@@ -168,12 +169,9 @@ public class BlockTFCinderFurnace  extends BlockContainer{
             }
         }
     }
-    
-    
-    /**
-     * Dump things all over if broken
-     */
-    public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_)
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
         if (!isUpdating)
         {
@@ -223,18 +221,16 @@ public class BlockTFCinderFurnace  extends BlockContainer{
 
         super.breakBlock(world, x, y, z, block, p_149749_6_);
     }
-    
-    public Item getItemDropped(int meta, Random rand, int fortune)
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(TFBlocks.cinderFurnace);
     }
     
-    /**
-     * Gets an item for the block being called on. Args: world, x, y, z
-     */
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World world, int x, int y, int z)
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return Item.getItemFromBlock(TFBlocks.cinderFurnace);
+        return new ItemStack(Item.getItemFromBlock(TFBlocks.cinderFurnace));
     }
 }

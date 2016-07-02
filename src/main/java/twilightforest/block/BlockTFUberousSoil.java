@@ -2,6 +2,9 @@ package twilightforest.block;
 
 import java.util.Random;
 
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
@@ -25,19 +28,16 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
         this.setLightOpacity(255);
         this.setHardness(0.6F);
-        this.setStepSound(soundTypeGravel);
+        this.setSoundType(SoundType.GROUND);
         this.setTickRandomly(true);
         
         this.setBlockTextureName(TwilightForestMod.ID + ":uberous_soil");
         
 		this.setCreativeTab(TFItems.creativeTab);
     }
-	
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
+
+	@Override
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -50,18 +50,17 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
         return false;
     }
 
-    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
+	@Override
+    public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_)
     {
-        return Blocks.DIRT.getItemDropped(0, p_149650_2_, p_149650_3_);
+        return Blocks.DIRT.getItemDropped(Blocks.DIRT.getDefaultState(), p_149650_2_, p_149650_3_);
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World world, int x, int y, int z, Random rand) {
-    	Material aboveMaterial = world.getBlock(x, y + 1, z).getMaterial();
+	@Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+    	Material aboveMaterial = world.getBlockState(pos.up()).getMaterial();
     	if (aboveMaterial.isSolid()) {
-    		world.setBlock(x, y, z, Blocks.DIRT);
+    		world.setBlockState(pos, Blocks.DIRT.getDefaultState());
     	}    
     }
 
@@ -127,27 +126,18 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
         }
     }
 
-    /**
-     * Is is possible for us to grow?
-     */
 	@Override
-	public boolean func_149851_a(World world, int x, int y, int z, boolean var5) {
+	public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean var5) {
 		return true;
 	}
 
-	/**
-	 * Have we randomly decided it's okay to grow?
-	 */
 	@Override
-	public boolean func_149852_a(World world, Random rand, int x, int y, int z) {
+	public boolean canUseBonemeal(World world, Random rand, BlockPos pos, IBlockState state) {
 		return true;
 	}
 
-	/**
-	 * Do the growth!
-	 */
 	@Override
-	public void func_149853_b(World world, Random rand, int x, int y, int z) {
+	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
 		int gx = x;
 		int gy = y;
 		int gz = z;
