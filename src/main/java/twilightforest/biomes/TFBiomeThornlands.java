@@ -17,8 +17,8 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	private TFGenThorns tfGenThorns;
 
 
-	public TFBiomeThornlands(int i) {
-		super(i);
+	public TFBiomeThornlands(BiomeProperties props) {
+		super(props);
 		
         this.topBlock = TFBlocks.deadrock;
         this.field_150604_aj = 0;
@@ -73,16 +73,12 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		return lastDirt;
 	}
 	
-    /**
-     * Return a block if you want it to replace stone in the terrain generation
-     */
+    @Override
 	public Block getStoneReplacementBlock() {
 		return TFBlocks.deadrock;
 	}
 	
-    /**
-     * Metadata for the stone replacement block
-     */
+    @Override
 	public byte getStoneReplacementMeta() {
 		return 2;
 	}

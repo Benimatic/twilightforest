@@ -27,8 +27,6 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 
 
 	public TFDarkForestBiomeDecorator() {
-		super();
-
 		darkCanopyTreeGen = new TFGenDarkCanopyTree();
 		worldGenDeadBush = new TFGenTallGrass(TFBlocks.plant, BlockTFPlant.META_DEADBUSH, 8);
 		worldGenForestGrass = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_FORESTGRASS);
@@ -58,7 +56,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
     			int ry = getGroundLevel(world, rx, rz);
-    			WorldGenerator var5 = biome.func_150567_a(rand);
+    			WorldGenerator var5 = biome.genBigTreeChance(rand);
     			var5.setScale(1.0D, 1.0D, 1.0D);
     			var5.generate(world, rand, rx, ry, rz);
     		}

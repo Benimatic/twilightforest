@@ -10,13 +10,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class TFBiomeClearing extends TFBiomeBase {
 
-	public TFBiomeClearing(int i) {
-		super(i);
+	public TFBiomeClearing(BiomeProperties props) {
+		super(props);
 
-
-        this.temperature = 0.8F;
-        this.rainfall = 0.4F;
-        
 //        this.rootHeight = 0.01F;
 //        this.heightVariation = 0F;
 
@@ -27,9 +23,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 		getTFBiomeDecorator().setGrassPerChunk(10);
 	}
 
-	/**
-	 * No ferns
-	 */
+	@Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
         return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);

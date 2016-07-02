@@ -1,9 +1,9 @@
 package twilightforest.biomes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -32,15 +32,10 @@ import twilightforest.entity.EntityTFSkeletonDruid;
 public class TFBiomeDarkForest extends TFBiomeBase {
 	
 	private static final int MONSTER_SPAWN_RATE = 20;
-	Random monsterRNG;
-	ArrayList<SpawnListEntry> emptyList = new ArrayList<SpawnListEntry>();
+	private Random monsterRNG;
 
-	@SuppressWarnings("unchecked")
-	public TFBiomeDarkForest(int i) {
-		super(i);
-		
-		this.temperature = 0.7F;
-		this.rainfall = 0.8F;
+	public TFBiomeDarkForest(BiomeProperties props) {
+		super(props);
 
 		getTFBiomeDecorator().canopyPerChunk = 5.5F;
 		
@@ -68,18 +63,14 @@ public class TFBiomeDarkForest extends TFBiomeBase {
         this.theBiomeDecorator.generateLakes = false;
 	}
 	
-	/**
-	 * We have our own decorator since we have strange generation
-	 */
+	@Override
     public BiomeDecorator createBiomeDecorator()
     {
         return new TFDarkForestBiomeDecorator();
     }
 	
-    /**
-     * Occasional shrub, no big trees
-     */
-    public WorldGenAbstractTree func_150567_a(Random random)
+    @Override
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(5) == 0)
         {
@@ -93,10 +84,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
             return worldGeneratorTrees;
         }
     }
-    
-    /**
-     * Provides the basic grass color based on the biome temperature and rainfall
-     */
+
     @Override
     public int getBiomeGrassColor(int x, int y, int z)
     {
@@ -107,9 +95,6 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 //        return 0x554114;
     }
 
-    /**
-     * Provides the basic foliage color based on the biome temperature and rainfall
-     */
     @Override
     public int getBiomeFoliageColor(int x, int y, int z)
     {
@@ -119,41 +104,29 @@ public class TFBiomeDarkForest extends TFBiomeBase {
     }
     
     
-    /**
-     * Returns the correspondent list of the EnumCreatureType informed.
-     */
-    @SuppressWarnings("rawtypes")
 	@Override
-    public List getSpawnableList(EnumCreatureType par1EnumCreatureType)
+    public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType)
     {
     	// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-    	if (par1EnumCreatureType == EnumCreatureType.monster) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : emptyList;
+    	if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
+			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : ImmutableList.<SpawnListEntry>of();
     	}
     	else {
-    		return par1EnumCreatureType == EnumCreatureType.creature ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.waterCreature ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.ambient ? this.spawnableCaveCreatureList : null));
+    		return par1EnumCreatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
     	}
     }
 
-    /**
-     * This just seems to act as a fire discouragement
-     */
 	@Override
 	public boolean isHighHumidity() {
 		return true;
 	}
-    
-    
-	/**
-	 * If there is a required achievement to be here, return it, otherwise return null
-	 */
+
+    @Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressHydra;
 	}
 
-	/**
-	 * Do something bad to a player in the wrong biome.
-	 */
+	@Override
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0));

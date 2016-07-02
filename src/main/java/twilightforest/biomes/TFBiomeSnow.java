@@ -31,15 +31,11 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	
 	private static final int MONSTER_SPAWN_RATE = 10;
-	Random monsterRNG = new Random(53439L);
-	ArrayList<SpawnListEntry> emptyList = new ArrayList<SpawnListEntry>();
-	
-	/**
-	 * @param i
-	 */
-	@SuppressWarnings("unchecked")
-	public TFBiomeSnow(int i) {
-		super(i);
+	private Random monsterRNG = new Random(53439L);
+	private ArrayList<SpawnListEntry> emptyList = new ArrayList<SpawnListEntry>();
+
+	public TFBiomeSnow(BiomeProperties props) {
+		super(props);
 		
 		getTFBiomeDecorator().setTreesPerChunk(7);
 		getTFBiomeDecorator().setGrassPerChunk(1);
@@ -55,7 +51,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	}
 
-    public WorldGenAbstractTree func_150567_a(Random random)
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
     	if (random.nextInt(3) == 0) {
     		return new WorldGenTaiga1();

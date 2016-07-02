@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -20,13 +20,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.stats.Achievement;
-import net.minecraft.stats.StatFileWriter;
-import net.minecraft.stats.StatisticsFile;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.stats.StatisticsManagerServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
@@ -35,40 +35,34 @@ import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
-import net.minecraftforge.fml.common.FMLLog;
 
+public class TFBiomeBase extends Biome  {
 
-public abstract class TFBiomeBase extends Biome  {
-	
-	public static final Biome tfLake = (new TFBiomeTwilightLake()).setColor(0x0000ff).setBiomeName("Twilight Lake").setHeight(height_DeepOceans);
-	public static final Biome twilightForest = (new TFBiomeTwilightForest()).setColor(0x005500).setBiomeName("Twilight Forest");
-	public static final Biome twilightForest2 = (new TFBiomeTwilightForestVariant()).setColor(0x005522).setBiomeName("Dense Twilight Forest").setHeight(height_MidPlains);
-	public static final Biome highlands = (new TFBiomeHighlands()).setColor(0x556644).setBiomeName("Twilight Highlands").setHeight(new Height(3.5F, 0.05F));
-	public static final Biome mushrooms = (new TFBiomeMushrooms()).setColor(0x226622).setBiomeName("Mushroom Forest");
-	public static final Biome tfSwamp = (new TFBiomeSwamp()).setColor(0x334422).setBiomeName("Twilight Swamp").setHeight(new Height(-0.125F, 0.125F));
-	public static final Biome stream = (new TFBiomeStream()).setColor(0x3253b7).setBiomeName("Twilight Stream").setHeight(height_ShallowWaters);
-	public static final Biome tfSnow = (new TFBiomeSnow()).setColor(0xccffff).setBiomeName("Snowy Forest").setHeight(height_MidPlains);
-	public static final Biome glacier = (new TFBiomeGlacier()).setColor(0x7777bb).setBiomeName("Twilight Glacier");
-	public static final Biome clearing = (new TFBiomeClearing()).setColor(0x349b34).setBiomeName("Twilight Clearing").setHeight(height_LowPlains);
-	public static final Biome oakSavanna = (new TFBiomeOakSavanna()).setColor(0x446622).setBiomeName("Oak Savanna").setHeight(height_MidPlains);
-	public static final Biome fireflyForest = (new TFBiomeFireflyForest()).setColor(0x006633).setBiomeName("Firefly Forest").setHeight(height_LowPlains);
-	public static final Biome deepMushrooms = (new TFBiomeDeepMushrooms()).setColor(0x663322).setBiomeName("Deep Mushroom Forest").setHeight(height_LowPlains);
-	public static final Biome darkForest = (new TFBiomeDarkForest()).setColor(0x003311).setBiomeName("Dark Forest").setHeight(height_LowPlains);
-	public static final Biome enchantedForest = (new TFBiomeEnchantedForest()).setColor(0x115566).setBiomeName("Enchanted Forest");
-	public static final Biome fireSwamp = (new TFBiomeFireSwamp()).setColor(0x42231a).setBiomeName("Fire Swamp").setHeight(height_Default);
-	public static final Biome darkForestCenter = (new TFBiomeDarkForestCenter()).setColor(0x002200).setBiomeName("Dark Forest Center").setHeight(height_LowPlains);
-	public static final Biome highlandsCenter = (new TFBiomeFinalPlateau()).setColor(0x334422).setBiomeName("Highlands Center").setHeight(new Height(10.5F, 0.025F));
-	public static final Biome thornlands = (new TFBiomeThornlands()).setColor(0x223322).setBiomeName("Thornlands").setHeight(new Height(6F, 0.1F));
+    // todo 1.9 removed all setColor calls, check if theyre needed
+	public static final Biome tfLake = new TFBiomeTwilightLake(new BiomeProperties("Twilight Lake").setTemperature(0.66F).setRainfall(1).setBaseHeight(-1.8F).setHeightVariation(0.1F));
+	public static final Biome twilightForest = new TFBiomeBase(new BiomeProperties("Twilight Forest"));
+	public static final Biome twilightForest2 = new TFBiomeTwilightForestVariant(new BiomeProperties("Dense Twilight Forest").setWaterColor(0x005522).setTemperature(0.7F).setRainfall(0.8F).setBaseHeight(0.2F).setHeightVariation(0.2F));
+	public static final Biome highlands = new TFBiomeHighlands(new BiomeProperties("Twilight Highlands").setTemperature(0.4F).setRainfall(0.7F).setBaseHeight(3.5F).setHeightVariation(0.05F));
+	public static final Biome mushrooms = new TFBiomeMushrooms(new BiomeProperties("Mushroom Forest").setTemperature(0.8F).setRainfall(0.8F));
+	public static final Biome tfSwamp = new TFBiomeSwamp(new BiomeProperties("Twilight Swamp").setTemperature(0.8F).setRainfall(0.9F).setBaseHeight(-0.125F).setHeightVariation(0.125F).setWaterColor(0xE0FFAE));
+	public static final Biome stream = new TFBiomeStream(new BiomeProperties("Twilight Stream").setTemperature(0.5F).setRainfall(0.1F).setBaseHeight(-0.5F).setHeightVariation(0));
+	public static final Biome tfSnow = new TFBiomeSnow(new BiomeProperties("Snowy Forest").setTemperature(0.125F).setRainfall(0.9F).setBaseHeight(0.2F).setHeightVariation(0.2F));
+	public static final Biome glacier = new TFBiomeGlacier(new BiomeProperties("Twilight Glacier").setTemperature(0).setRainfall(0.1F));
+	public static final Biome clearing = new TFBiomeClearing(new BiomeProperties("Twilight Clearing").setTemperature(0.8F).setRainfall(0.4F).setBaseHeight(0.125F).setHeightVariation(0.05F));
+	public static final Biome oakSavanna = new TFBiomeOakSavanna(new BiomeProperties("Oak Savanna").setTemperature(0.9F).setRainfall(0).setBaseHeight(0.2F).setHeightVariation(0.2F));
+	public static final Biome fireflyForest = new TFBiomeFireflyForest(new BiomeProperties("Firefly Forest").setTemperature(0.5F).setRainfall(1).setBaseHeight(0.125F).setHeightVariation(0.05F));
+	public static final Biome deepMushrooms = new TFBiomeDeepMushrooms(new BiomeProperties("Deep Mushroom Forest").setTemperature(0.8F).setRainfall(1).setBaseHeight(0.125F).setHeightVariation(0.05F));
+	public static final Biome darkForest = new TFBiomeDarkForest(new BiomeProperties("Dark Forest").setTemperature(0.7F).setRainfall(0.8F).setBaseHeight(0.125F).setHeightVariation(0.05F));
+	public static final Biome enchantedForest = new TFBiomeEnchantedForest(new BiomeProperties("Enchanted Forest"));
+	public static final Biome fireSwamp = new TFBiomeFireSwamp(new BiomeProperties("Fire Swamp").setTemperature(1).setRainfall(0.4F).setWaterColor(0x6C2C2C).setBaseHeight(0.1F).setHeightVariation(0.2F));
+	public static final Biome darkForestCenter = new TFBiomeDarkForestCenter(new BiomeProperties("Dark Forest Center").setBaseHeight(0.125F).setHeightVariation(0.05F));
+	public static final Biome highlandsCenter = new TFBiomeFinalPlateau(new BiomeProperties("Highlands Center").setTemperature(0.3F).setRainfall(0.2F).setBaseHeight(10.5F).setHeightVariation(0.025F));
+	public static final Biome thornlands = new TFBiomeThornlands(new BiomeProperties("Thornlands").setTemperature(0.3F).setRainfall(0.2F).setBaseHeight(6).setHeightVariation(0.1F));
 
 	protected WorldGenBigMushroom bigMushroomGen;
 	protected WorldGenBirchTree birchGen;
-	
-    /**
-     * Holds the classes of IMobs (hostile mobs) that can be spawned in the biome.
-     */
     protected List<SpawnListEntry> undergroundMonsterList;
 
 	@SuppressWarnings("unchecked")
@@ -78,9 +72,6 @@ public abstract class TFBiomeBase extends Biome  {
 
 		bigMushroomGen = new WorldGenBigMushroom();
 		birchGen = new WorldGenBirchTree(false, false);
-		
-		// try to stop world leaks
-		this.worldGeneratorBigTree = null;
 		
     	// remove normal monster spawns
         spawnableMonsterList.clear();
@@ -116,16 +107,7 @@ public abstract class TFBiomeBase extends Biome  {
         getTFBiomeDecorator().setTreesPerChunk(10);
         getTFBiomeDecorator().setGrassPerChunk(2);
 	}
-	
-	@Override
-    public TFBiomeBase setColor(int par1) {
-    	return (TFBiomeBase) super.setColor(par1);
-    }
 
-	
-    /**
-     * returns the chance a creature has to spawn.
-     */
     @Override
     public float getSpawningChance()
     {
@@ -133,9 +115,6 @@ public abstract class TFBiomeBase extends Biome  {
         return 0.12F;
     }
 
-    /**
-     * Allocate a new BiomeDecorator for this Biome
-     */
     @Override
     public BiomeDecorator createBiomeDecorator()
     {
@@ -146,12 +125,8 @@ public abstract class TFBiomeBase extends Biome  {
     	return (TFBiomeDecorator)this.theBiomeDecorator;
     }
 
-    /**
-     * Forest trees all over
-     * 
-     * used to be getRandomWorldGenForTrees()
-     */
-    public WorldGenAbstractTree func_150567_a(Random random)
+    @Override
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(5) == 0)
         {
@@ -162,13 +137,11 @@ public abstract class TFBiomeBase extends Biome  {
             return new WorldGenBigTree(false);
         } else
         {
-            return worldGeneratorTrees;
+            return TREE_FEATURE;
         }
     }
-	
-    /**
-     * Ferns!
-     */
+
+    @Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
         if (par1Random.nextInt(4) == 0)
@@ -181,9 +154,6 @@ public abstract class TFBiomeBase extends Biome  {
         }
     }
 
-	/**
-	 * Register our biomes with the Forge biome dictionary
-	 */
 	public static void registerWithBiomeDictionary()
 	{
 		BiomeDictionary.registerBiomeType(tfLake, Type.OCEAN);
@@ -206,155 +176,99 @@ public abstract class TFBiomeBase extends Biome  {
 		BiomeDictionary.registerBiomeType(highlandsCenter, Type.MESA, Type.DEAD, Type.DRY, Type.WASTELAND);
 		BiomeDictionary.registerBiomeType(thornlands, Type.HILLS, Type.DEAD, Type.DRY, Type.WASTELAND);
 	}
-	
 
-//    /**
-//     * Provides the basic grass color based on the biome temperature and rainfall
-//     */
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public int getBiomeGrassColor(int x, int y, int z)
-//    {
-//    	// I hate to be grumpy, but using events for this is a waste of memory and GC resources
-//        double d0 = (double)MathHelper.clamp_float(this.getFloatTemperature(x, y, z), 0.0F, 1.0F);
-//        double d1 = (double)MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
-//        return ColorizerGrass.getGrassColor(d0, d1);
-//    }    
-    
-//    /**
-//     * Provides the basic foliage color based on the biome temperature and rainfall
-//     */
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public int getBiomeFoliageColor(int x, int y, int z)
-//    {
-//    	// I hate to be grumpy, but using events for this is a waste of memory and GC resources
-//        double d0 = (double)MathHelper.clamp_float(this.getFloatTemperature(x, y, z), 0.0F, 1.0F);
-//        double d1 = (double)MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
-//        return ColorizerFoliage.getFoliageColor(d0, d1);
-//    }
-    
-    
-//    @SideOnly(Side.CLIENT)
-//    public int getWaterColorMultiplier()
-//    {
-//    	// I hate to be grumpy, but using events for this is a waste of memory and GC resources
-//        return this.waterColorMultiplier;
-//    }
-    
-    public void genTerrainBlocks(World world, Random rand, Block[] blockStorage, byte[] metaStorage, int x, int z, double stoneNoise)
+    @Override
+    public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal)
     {
-        this.genTwilightBiomeTerrain(world, rand, blockStorage, metaStorage, x, z, stoneNoise);
+        this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
     }
 
-    /**
-     * This is just the biome terrain gen function modified to have sea level at 32 instead of 64
-     */
-    public void genTwilightBiomeTerrain(World world, Random rand, Block[] blockStorage, byte[] metaStorage, int x, int z, double stoneNoise)
+    // Copy of super's generateBiomeTerrain, relevant edits noted.
+    private void genTwilightBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
     {
-        Block topBlock = this.topBlock;
-        byte topMeta = (byte)(this.field_150604_aj & 255);
-        Block fillerBlock = this.fillerBlock;
-        byte fillerMeta = (byte)(this.field_76754_C & 255);
-        int currentFillerDepth = -1;
-        int maxFillerDepth = (int)(stoneNoise / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
-        int maskX = x & 15;
-        int maskZ = z & 15;
-        int worldHeight = blockStorage.length / 256;
-        
-        int seaLevel = 32;
+        int i = 32; // TF - set sea level to 32
+        IBlockState iblockstate = this.topBlock;
+        IBlockState iblockstate1 = this.fillerBlock;
+        int j = -1;
+        int k = (int)(noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
+        int l = x & 15;
+        int i1 = z & 15;
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for (int y = 255; y >= 0; --y)
+        for (int j1 = 255; j1 >= 0; --j1)
         {
-            int index = (maskZ * 16 + maskX) * worldHeight + y;
-
-            if (y <= 0 + rand.nextInt(5))
+            if (j1 <= rand.nextInt(5))
             {
-                blockStorage[index] = Blocks.BEDROCK;
+                chunkPrimerIn.setBlockState(i1, j1, l, BEDROCK);
             }
             else
             {
-                Block currentBlock = blockStorage[index];
+                IBlockState iblockstate2 = chunkPrimerIn.getBlockState(i1, j1, l);
 
-                if (currentBlock != null && currentBlock.getMaterial() != Material.AIR)
+                if (iblockstate2.getMaterial() == Material.AIR)
                 {
-                    if (currentBlock == Blocks.STONE)
+                    // j = -1; TF - commented out? todo 1.9
+                }
+                else if (iblockstate2.getBlock() == Blocks.STONE)
+                {
+                    // TF - Replace stone
+                    if (getStoneReplacementState() != null) {
+                        chunkPrimerIn.setBlockState(i1, j1, l, getStoneReplacementState());
+                    }
+
+                    if (j == -1)
                     {
-                    	// ADDED STONE REPLACEMENT
-                    	if (this.getStoneReplacementBlock() != null) {
-                    		blockStorage[index] = this.getStoneReplacementBlock();
-                    		metaStorage[index] = this.getStoneReplacementMeta();
-                    	}
-                        
-                        if (currentFillerDepth == -1)
+                        if (k <= 0)
                         {
-                            if (maxFillerDepth <= 0)
-                            {
-                                topBlock = null;
-                                topMeta = 0;
-                                fillerBlock = Blocks.STONE;
-                                fillerMeta = 0;
-                            }
-                            else if (y >= (seaLevel - 5) && y <= seaLevel)
-                            {
-                                topBlock = this.topBlock;
-                                topMeta = (byte)(this.field_150604_aj & 255);
-                                fillerBlock = this.fillerBlock;
-                                fillerMeta = (byte)(this.field_76754_C & 255);
-                            }
+                            iblockstate = AIR;
+                            iblockstate1 = STONE;
+                        }
+                        else if (j1 >= i - 4 && j1 <= i + 1)
+                        {
+                            iblockstate = this.topBlock;
+                            iblockstate1 = this.fillerBlock;
+                        }
 
-                            if (y < (seaLevel - 1) && (topBlock == null || topBlock.getMaterial() == Material.AIR))
+                        if (j1 < i && (iblockstate == null || iblockstate.getMaterial() == Material.AIR))
+                        {
+                            if (this.getFloatTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F)
                             {
-                                if (this.getFloatTemperature(x, y, z) < 0.15F)
-                                {
-                                    topBlock = Blocks.ICE;
-                                    topMeta = 0;
-                                }
-                                else
-                                {
-                                    topBlock = Blocks.WATER;
-                                    topMeta = 0;
-                                }
-                            }
-
-                            currentFillerDepth = maxFillerDepth;
-
-                            if (y >= (seaLevel - 2))
-                            {
-                                blockStorage[index] = topBlock;
-                                metaStorage[index] = topMeta;
-                            }
-                            else if (y < (seaLevel - 8) - maxFillerDepth)
-                            {
-                                topBlock = null;
-                                fillerBlock = Blocks.STONE;
-                                fillerMeta = 0;
-                                blockStorage[index] = Blocks.GRAVEL;
+                                iblockstate = ICE;
                             }
                             else
                             {
-                                blockStorage[index] = fillerBlock;
-                                metaStorage[index] = fillerMeta;
+                                iblockstate = WATER;
                             }
                         }
-                        else if (currentFillerDepth > 0)
-                        {
-                            --currentFillerDepth;
-                            blockStorage[index] = fillerBlock;
-                            metaStorage[index] = fillerMeta;
 
-                            if (currentFillerDepth == 0 && fillerBlock == Blocks.SAND)
-                            {
-                                currentFillerDepth = rand.nextInt(4) + Math.max(0, y - (seaLevel - 1));
-                                fillerBlock = Blocks.SANDSTONE;
-                                fillerMeta = 0;
-                            }
+                        j = k;
+
+                        if (j1 >= i - 1)
+                        {
+                            chunkPrimerIn.setBlockState(i1, j1, l, iblockstate);
+                        }
+                        else if (j1 < i - 7 - k)
+                        {
+                            iblockstate = AIR;
+                            iblockstate1 = STONE;
+                            chunkPrimerIn.setBlockState(i1, j1, l, GRAVEL);
+                        }
+                        else
+                        {
+                            chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
                         }
                     }
-                }
-                else
-                {
-                    //currentFillerDepth = -1;
+                    else if (j > 0)
+                    {
+                        --j;
+                        chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
+
+                        if (j == 0 && iblockstate1.getBlock() == Blocks.SAND)
+                        {
+                            j = rand.nextInt(4) + Math.max(0, j1 - 63);
+                            iblockstate1 = iblockstate1.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND ? RED_SANDSTONE : SANDSTONE;
+                        }
+                    }
                 }
             }
         }
@@ -363,24 +277,17 @@ public abstract class TFBiomeBase extends Biome  {
     /**
      * Return a block if you want it to replace stone in the terrain generation
      */
-	public Block getStoneReplacementBlock() {
+	public IBlockState getStoneReplacementState() {
 		return null;
 	}
 	
-    /**
-     * Metadata for the stone replacement block
-     */
-	public byte getStoneReplacementMeta() {
-		return 0;
-	}
-
 	/**
 	 * Does the player have the achievement needed to be in this biome?
 	 * Defaults to true for no achievement required biomes.
 	 */
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
 		
-		if (getRequiredAchievement() != null && player instanceof EntityPlayerMP && ((EntityPlayerMP)player).func_147099_x() != null) {
+		if (getRequiredAchievement() != null && player instanceof EntityPlayerMP && ((EntityPlayerMP)player).getStatFile() != null) {
 			StatisticsManagerServer stats = ((EntityPlayerMP)player).getStatFile();
 			
 			return stats.hasAchievementUnlocked(this.getRequiredAchievement());

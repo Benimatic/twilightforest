@@ -26,18 +26,12 @@ import twilightforest.world.TFWorld;
  */
 public class TFBiomeGlacier extends TFBiomeBase {
 
-	/**
-	 * @param i
-	 */
-	@SuppressWarnings("unchecked")
-	public TFBiomeGlacier(int i) {
-		super(i);
+	public TFBiomeGlacier(BiomeProperties props) {
+		super(props);
 		
 		getTFBiomeDecorator().setTreesPerChunk(1);
 		getTFBiomeDecorator().setGrassPerChunk(0);
 
-        this.temperature = 0.0F;
-        this.rainfall = 0.1F;
         getTFBiomeDecorator().canopyPerChunk = -999;
 		
         spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFPenguin.class, 10, 4, 4));
@@ -45,7 +39,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	}
 	
 	
-    public WorldGenAbstractTree func_150567_a(Random random)
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(3) == 0)
         {

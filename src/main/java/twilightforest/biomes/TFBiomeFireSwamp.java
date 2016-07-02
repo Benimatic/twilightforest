@@ -17,14 +17,11 @@ import twilightforest.world.TFWorld;
 
 public class TFBiomeFireSwamp extends TFBiomeBase {
 
-	protected TFBiomeFireSwamp(int i) {
-		super(i);
+	protected TFBiomeFireSwamp(BiomeProperties props) {
+		super(props);
 
 //		this.rootHeight = -0.25F;
 //		this.heightVariation = 0.0F;
-
-		this.temperature = 1.0F;
-        this.rainfall = 0.4F;
 
         getTFBiomeDecorator().setDeadBushPerChunk(2);
         getTFBiomeDecorator().setMushroomsPerChunk(8);
@@ -32,8 +29,6 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
         getTFBiomeDecorator().setClayPerChunk(1);
         getTFBiomeDecorator().setTreesPerChunk(3);
         getTFBiomeDecorator().setWaterlilyPerChunk(6);
-        waterColorMultiplier = 0x6C2C2C;
-
 		
         getTFBiomeDecorator().canopyPerChunk = -999;
         getTFBiomeDecorator().lavaPoolChance = 0.125F;
@@ -44,7 +39,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
     /**
      * Gets a WorldGen appropriate for this biome.
      */
-    public WorldGenAbstractTree func_150567_a(Random random)
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if (random.nextInt(3) == 0)
         {

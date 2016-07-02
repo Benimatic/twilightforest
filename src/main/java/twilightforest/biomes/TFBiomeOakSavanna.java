@@ -16,18 +16,14 @@ import twilightforest.world.TFGenNoTree;
 
 public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
 
-	public TFBiomeOakSavanna(int i) {
-		super(i);
+	public TFBiomeOakSavanna(BiomeProperties props) {
+		super(props);
 		
 		getTFBiomeDecorator().canopyTreeGen = new TFGenCanopyOak();
 		
         getTFBiomeDecorator().alternateCanopyChance = 0.8F;
         getTFBiomeDecorator().alternateCanopyGen = new TFGenNoTree();
 		
-		this.temperature = 0.9F;
-        this.rainfall = 0.0F;
-
-        
         this.theBiomeDecorator.treesPerChunk = 1;
         this.theBiomeDecorator.flowersPerChunk = 4;
         this.theBiomeDecorator.grassPerChunk = 20;
@@ -37,7 +33,7 @@ public class TFBiomeOakSavanna extends TFBiomeTwilightForest {
     /**
      * Oak trees all over
      */
-    public WorldGenAbstractTree func_150567_a(Random random)
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(10) == 0)
         {

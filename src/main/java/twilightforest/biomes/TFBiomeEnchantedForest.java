@@ -21,10 +21,10 @@ import twilightforest.world.TFWorld;
 
 public class TFBiomeEnchantedForest extends TFBiomeBase {
 	
-	Random colorRNG;
+	private final Random colorRNG;
 
-	public TFBiomeEnchantedForest(int i) {
-		super(i);
+	public TFBiomeEnchantedForest(BiomeProperties props) {
+		super(props);
 		colorRNG = new Random();
 		
 
@@ -32,18 +32,12 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		getTFBiomeDecorator().setFlowersPerChunk(8);
 	}
     
-    /**
-     * Provides the basic grass color based on the biome temperature and rainfall
-     */
     @Override
     public int getBiomeGrassColor(int x, int y, int z)
     {
     	return (super.getBiomeGrassColor(x, y, z) & 0xFFFF00) + getEnchantedColor(x, z);
     }
 
-    /**
-     * Provides the basic foliage color based on the biome temperature and rainfall
-     */
     @Override
     public int getBiomeFoliageColor(int x, int y, int z)
     {
@@ -78,11 +72,9 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
     	
 		return color;
 	}
-    
-    /**
-     * Occasional shrub, no big trees
-     */
-    public WorldGenAbstractTree func_150567_a(Random random)
+
+    @Override
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if (random.nextInt(15) == 0)
         {
@@ -106,9 +98,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
         }
     }
     
-    /**
-     * EVEN MOAR FERNZ!
-     */
+    @Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
         if (par1Random.nextInt(3) > 0) {
@@ -122,9 +112,6 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
         }
     }
     
-    /**
-     * Decorate this biome with extra decorations!
-     */
     @Override
     public void decorate(World par1World, Random par2Random, int par3, int par4)
     {
@@ -151,9 +138,6 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
         super.decorate(par1World, par2Random, par3, par4);
     }
     
-    /**
-     * Customize flower colors
-     */
     public String func_150572_a(Random p_150572_1_, int p_150572_2_, int p_150572_3_, int p_150572_4_)
     {
         return p_150572_1_.nextInt(3) > 0 ? BlockFlower.field_149859_a[1] : p_150572_1_.nextBoolean() ? BlockFlower.field_149859_a[2] : BlockFlower.field_149859_a[3];

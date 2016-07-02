@@ -23,16 +23,13 @@ public class TFBiomeFireflyForest extends TFBiomeTwilightForest {
 	TFGenLampposts tfGenLampposts;
 	WorldGenTallGrass worldGenMushgloom;
 	
-	public TFBiomeFireflyForest(int i) {
-		super(i);
+	public TFBiomeFireflyForest(BiomeProperties props) {
+		super(props);
 
 		this.worldGenMushgloom = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MUSHGLOOM);
 		this.tfGenHangingLamps = new TFGenHangingLamps();
 		this.tfGenLampposts = new TFGenLampposts();
 
-		this.temperature = 0.5F;
-        this.rainfall = 1.0F;
-        
         this.theBiomeDecorator.flowersPerChunk = 4;
         this.theBiomeDecorator.grassPerChunk = 1;
 

@@ -14,8 +14,8 @@ import twilightforest.block.TFBlocks;
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {
 
-	public TFBiomeFinalPlateau(int i) {
-		super(i);
+	public TFBiomeFinalPlateau(BiomeProperties props) {
+		super(props);
 		
         this.topBlock = TFBlocks.deadrock;
         this.field_150604_aj = 0;
@@ -37,21 +37,18 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
         spawnableCreatureList.clear();
         spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFRaven.class, 10, 4, 4));
 	}
-	
-    /**
-     * Return a block if you want it to replace stone in the terrain generation
-     */
+
+	@Override
 	public Block getStoneReplacementBlock() {
 		return TFBlocks.deadrock;
 	}
 	
-    /**
-     * Metadata for the stone replacement block
-     */
+    @Override
 	public byte getStoneReplacementMeta() {
 		return 2;
 	}
 
+	@Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressGlacier;
 	}

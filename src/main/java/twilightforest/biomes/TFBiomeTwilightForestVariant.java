@@ -15,11 +15,8 @@ import twilightforest.block.TFBlocks;
 
 public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 
-	public TFBiomeTwilightForestVariant(int i) {
-		super(i);
-		
-		this.temperature = 0.7F;
-		this.rainfall = 0.8F;
+	public TFBiomeTwilightForestVariant(BiomeProperties props) {
+		super(props);
 		
 //		this.rootHeight = 0.15F;
 //		this.heightVariation = 0.4F;
@@ -33,7 +30,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
     /**
      * Occasional shrub, no birches
      */
-    public WorldGenAbstractTree func_150567_a(Random random)
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(5) == 0)
         {

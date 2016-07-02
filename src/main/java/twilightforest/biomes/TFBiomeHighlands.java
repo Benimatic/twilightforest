@@ -41,12 +41,9 @@ public class TFBiomeHighlands extends TFBiomeBase {
     private static final WorldGenTallGrass worldGenMushgloom = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MUSHGLOOM);
     
 
-	public TFBiomeHighlands(int i) {
-		super(i);
+	public TFBiomeHighlands(BiomeProperties props) {
+		super(props);
 		
-        this.temperature = 0.4F;
-        this.rainfall = 0.7F;
-        
 		((TFBiomeDecorator)theBiomeDecorator).canopyPerChunk = -999;
 		
         this.theBiomeDecorator.grassPerChunk = 7;
@@ -68,7 +65,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
     /**
      * Birches and large trees only
      */
-    public WorldGenAbstractTree func_150567_a(Random random)
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if(random.nextInt(4) == 0){
         	return taigaGen1;

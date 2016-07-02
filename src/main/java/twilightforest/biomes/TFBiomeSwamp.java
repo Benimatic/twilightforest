@@ -40,17 +40,11 @@ public class TFBiomeSwamp extends TFBiomeBase {
     WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
     WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
 
-
-
-	@SuppressWarnings("unchecked")
-	public TFBiomeSwamp(int i) {
-		super(i);
+	public TFBiomeSwamp(BiomeProperties props) {
+		super(props);
 		
 //		this.rootHeight = -0.25F;
 //		this.heightVariation = 0.0F;
-
-		this.temperature = 0.8F;
-        this.rainfall = 0.9F;
 
         getTFBiomeDecorator().setDeadBushPerChunk(1);
         getTFBiomeDecorator().setMushroomsPerChunk(8);
@@ -58,7 +52,6 @@ public class TFBiomeSwamp extends TFBiomeBase {
         getTFBiomeDecorator().setClayPerChunk(1);
         getTFBiomeDecorator().setTreesPerChunk(2);
         getTFBiomeDecorator().setWaterlilyPerChunk(20);
-        waterColorMultiplier = 0xE0FFAE;
 
 		
         getTFBiomeDecorator().canopyPerChunk = -999;
@@ -70,7 +63,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
         this.spawnableMonsterList.add(new SpawnListEntry(EntityZombie.class, 10, 4, 4));
 	}
 
-    public WorldGenAbstractTree func_150567_a(Random random)
+    public WorldGenAbstractTree genBigTreeChance(Random random)
     {
         if (random.nextInt(3) == 0)
         {

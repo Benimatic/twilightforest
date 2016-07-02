@@ -20,9 +20,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class TFGenHugeWaterLily extends WorldGenerator
 {
 
-	private Random rand = new Random();
-
-
 	@Override
     public boolean generate(World world, Random random, BlockPos pos)
     {

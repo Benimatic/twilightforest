@@ -2,14 +2,10 @@ package twilightforest.biomes;
 
 public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 
-	public TFBiomeDarkForestCenter(int i) {
-		super(i);
+	public TFBiomeDarkForestCenter(BiomeProperties props) {
+		super(props);
 	}
 	
-	
-    /**
-     * Provides the basic grass color based on the biome temperature and rainfall
-     */
     @Override
     public int getBiomeGrassColor(int x, int y, int z)
     {
@@ -17,9 +13,6 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
         return d0 < -0.2D ? 0x667540 : 0x554114;
     }
 
-    /**
-     * Provides the basic foliage color based on the biome temperature and rainfall
-     */
     @Override
     public int getBiomeFoliageColor(int x, int y, int z)
     {

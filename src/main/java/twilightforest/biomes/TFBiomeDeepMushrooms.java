@@ -3,13 +3,9 @@ package twilightforest.biomes;
 
 public class TFBiomeDeepMushrooms extends TFBiomeBase {
 
-	public TFBiomeDeepMushrooms(int i) {
-		super(i);
+	public TFBiomeDeepMushrooms(BiomeProperties props) {
+		super(props);
 
-		
-		this.temperature = 0.8F;
-		this.rainfall = 1.0F;
-		
 		this.rootHeight = 0.15F;
 		this.heightVariation = 0.4F;
 		
