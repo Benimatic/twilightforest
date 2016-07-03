@@ -137,7 +137,8 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         this.setHasShield(par1NBTTagCompound.getBoolean("hasShield"));
     }
     
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         if (this.isEntityAlive())
         {

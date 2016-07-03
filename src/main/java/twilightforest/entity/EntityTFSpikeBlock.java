@@ -54,7 +54,8 @@ public class EntityTFSpikeBlock extends Entity {
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean canBeCollidedWith()
+    @Override
+	public boolean canBeCollidedWith()
     {
         return false;
     }
@@ -62,12 +63,14 @@ public class EntityTFSpikeBlock extends Entity {
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.
      */
-    public boolean canBePushed()
+    @Override
+	public boolean canBePushed()
     {
         return false;
     }
     
-    public boolean isEntityEqual(Entity entity)
+    @Override
+	public boolean isEntityEqual(Entity entity)
     {
         return this == entity || this.goblin == entity;
     }

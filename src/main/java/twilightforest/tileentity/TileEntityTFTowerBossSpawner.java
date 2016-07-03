@@ -18,6 +18,7 @@ public class TileEntityTFTowerBossSpawner extends TileEntityTFBossSpawner {
         return closestPlayer != null && closestPlayer.posY > pos.getY() - 4;
     }
 
+	@Override
 	protected void spawnMyBoss() {
 		// spawn creature
 		EntityLiving myCreature = makeMyCreature();

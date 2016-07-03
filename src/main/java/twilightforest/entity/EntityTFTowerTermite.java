@@ -84,6 +84,7 @@ public class EntityTFTowerTermite extends EntityMob
     /**
      * Returns the sound this mob makes when it is hurt.
      */
+    @Override
     protected String getHurtSound()
     {
         return "mob.silverfish.hit";
@@ -92,6 +93,7 @@ public class EntityTFTowerTermite extends EntityMob
     /**
      * Returns the sound this mob makes on death.
      */
+    @Override
     protected String getDeathSound()
     {
         return "mob.silverfish.kill";

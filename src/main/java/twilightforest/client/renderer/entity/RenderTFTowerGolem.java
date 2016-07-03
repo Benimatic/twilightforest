@@ -22,6 +22,7 @@ public class RenderTFTowerGolem extends RenderLiving
 	}
 
 	
+    @Override
     protected void rotateCorpse(EntityLivingBase par1EntityLiving, float par2, float par3, float par4)
     {
         this.rotateTowerGolem((EntityTFTowerGolem)par1EntityLiving, par2, par3, par4);
@@ -44,6 +45,7 @@ public class RenderTFTowerGolem extends RenderLiving
 	/**
 	 * Return our specific texture
 	 */
+    @Override
     protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return textureLoc;

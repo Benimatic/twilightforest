@@ -68,7 +68,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     /**
      * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
      */
-    public float calculateCelestialAngle(long par1, float par3)
+    @Override
+	public float calculateCelestialAngle(long par1, float par3)
     {
     	//return super.calculateCelestialAngle(par1, par3);
         return 0.225f;
@@ -86,7 +87,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     /**
      * Returns a new chunk provider which generates chunks for this world
      */
-    public IChunkProvider createChunkGenerator()
+    @Override
+	public IChunkProvider createChunkGenerator()
     {
     	// save chunk generator?
     	if (this.chunkProvider == null) {
@@ -118,7 +120,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 //        return 64F;
 //    }
 	
-    public int getAverageGroundLevel()
+    @Override
+	public int getAverageGroundLevel()
     {
         return 30;
     }
@@ -241,6 +244,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     }
 
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IRenderHandler getSkyRenderer()
 	{
@@ -252,7 +256,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return super.getSkyRenderer();
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public IRenderHandler getWeatherRenderer()
     {
     	if (super.getWeatherRenderer() == null)
@@ -267,7 +272,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
      * the y level at which clouds are rendered.
      */
     //@SideOnly(Side.CLIENT) // need for magic beans, even on server
-    public float getCloudHeight()
+    @Override
+	public float getCloudHeight()
     {
         return 161.0F;
     }

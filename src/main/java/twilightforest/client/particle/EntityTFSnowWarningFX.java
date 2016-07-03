@@ -13,6 +13,7 @@ public class EntityTFSnowWarningFX extends EntityTFSnowFX {
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate()
     {
     	super.onUpdate();

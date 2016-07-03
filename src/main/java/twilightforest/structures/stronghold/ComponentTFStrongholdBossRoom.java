@@ -25,6 +25,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 	/**
 	 * Make a bounding box for this room
 	 */
+	@Override
 	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
 	{
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 27, 7, 27, facing);
@@ -190,6 +191,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 	/**
 	 * Make a doorway - this is the iron fence door
 	 */
+	@Override
 	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		if (x == 0 || x == getXSize())
 		{
@@ -204,6 +206,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 	/**
 	 * Is the specified point a valid spot to break in?
 	 */
+	@Override
 	protected boolean isValidBreakInPoint(int wx, int wy, int wz) {
 		return false;
 	}

@@ -80,6 +80,7 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 	/**
 	 * Does this component fall under block protection when progression is turned on, normally true
 	 */
+	@Override
 	public boolean isComponentProtected() {
 		return false;
 	}

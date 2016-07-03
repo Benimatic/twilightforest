@@ -48,6 +48,7 @@ public class ModelTFGhast extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
+    @Override
     public void setRotationAngles(float par1, float par2, float par3, float yaw, float pitch, float par6, Entity par7Entity)
     {
     	// wave tentacles
@@ -64,6 +65,7 @@ public class ModelTFGhast extends ModelBase
     /**
      * Sets the models various rotation angles then renders the model.
      */
+    @Override
     public void render(Entity par1Entity, float par2, float par3, float par4, float yaw, float pitch, float time)
     {
         this.setRotationAngles(par2, par3, par4, yaw, pitch, time, par1Entity);

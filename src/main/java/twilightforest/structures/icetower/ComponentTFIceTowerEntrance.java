@@ -18,6 +18,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	}
 	
 	
+	@Override
 	protected boolean shouldHaveBase(Random rand) {
 		return true;
 	}
@@ -66,6 +67,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	/**
 	 * Make a new wing
 	 */
+	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 		return false;
 	}
@@ -73,6 +75,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	/**
 	 * No floors
 	 */
+	@Override
 	protected void makeFloorsForTower(World world, Random rand, StructureBoundingBox sbb) {
 		
 		decoratePillarsCornersHigh(world, rand, 0, 11, 0, sbb);

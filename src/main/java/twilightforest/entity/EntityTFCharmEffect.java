@@ -55,6 +55,7 @@ public class EntityTFCharmEffect extends Entity
 
 	}
 	
+    @Override
     public void onUpdate()
     {
         this.lastTickPosX = this.posX;

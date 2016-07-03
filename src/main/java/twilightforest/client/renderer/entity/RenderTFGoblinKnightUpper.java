@@ -14,7 +14,8 @@ public class RenderTFGoblinKnightUpper extends RenderTFBiped {
 	}
 
 	
-    protected void rotateCorpse(EntityLivingBase par1EntityLiving, float par2, float par3, float par4)
+    @Override
+	protected void rotateCorpse(EntityLivingBase par1EntityLiving, float par2, float par3, float par4)
     {
         this.rotateGoblinKnight((EntityTFGoblinKnightUpper)par1EntityLiving, par2, par3, par4);
     }

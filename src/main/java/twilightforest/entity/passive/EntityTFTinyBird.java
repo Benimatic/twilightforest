@@ -211,6 +211,7 @@ public class EntityTFTinyBird extends EntityTFBird {
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -224,6 +225,7 @@ public class EntityTFTinyBird extends EntityTFBird {
         
     }
 
+    @Override
     protected void updateAITasks()
     {
         super.updateAITasks();
@@ -320,6 +322,7 @@ public class EntityTFTinyBird extends EntityTFBird {
     }
 
     
+    @Override
     public boolean isBirdLanded()
     {
         return (this.dataWatcher.getWatchableObjectByte(DATA_BIRDFLAGS) & 1) != 0;
@@ -342,11 +345,13 @@ public class EntityTFTinyBird extends EntityTFBird {
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.
      */
+    @Override
     public boolean canBePushed()
     {
         return false;
     }
 
+    @Override
     protected void collideWithEntity(Entity par1Entity) {}
 
     protected void func_85033_bc() {}

@@ -200,6 +200,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		roofType = roof.getClass();
 	}
 	
+	@Override
 	protected void makeAttachedRoof(List<StructureComponent> list, Random rand) {
 		int index = this.getComponentType();
 		ComponentTFTowerRoof roof;
@@ -1248,6 +1249,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Add an opening to the outside (or another tower) in the specified direction.
 	 */
+	@Override
 	public void addOpening(int dx, int dy, int dz, int direction) {
 		this.addOpening(dx, dy, dz, direction, EnumDarkTowerDoor.VANISHING);
 	}
@@ -1379,7 +1381,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 * 
 	 * TODO: is this really the best way?
 	 */
-	public boolean isDeadEnd() 
+	@Override
+	public boolean isDeadEnd()
 	{
 		// we have to modify this to ignore door type 2 since that leads to balconies
 		int nonBalconies = 0;

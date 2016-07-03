@@ -24,6 +24,7 @@ public class RenderTFBunny extends RenderLiving {
 	/**
 	 * Return our specific texture
 	 */
+	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity)
 	{
 		if (par1Entity instanceof EntityTFBunny)

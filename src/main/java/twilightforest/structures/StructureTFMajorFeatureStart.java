@@ -187,7 +187,8 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     /**
      * currently only defined for Villages, returns true if Village has more than 2 non-road components
      */
-    public boolean isSizeableStructure()
+    @Override
+	public boolean isSizeableStructure()
     {
         return feature.isStructureEnabled;
     }

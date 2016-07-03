@@ -22,6 +22,7 @@ public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdCo
 	/**
 	 * Make a bounding box for this room
 	 */
+	@Override
 	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
 	{
 		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 5, 5, facing);
@@ -65,6 +66,7 @@ public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdCo
 	/**
 	 * Does this component fall under block protection when progression is turned on, normally true
 	 */
+	@Override
 	public boolean isComponentProtected() {
 		return false;
 	}

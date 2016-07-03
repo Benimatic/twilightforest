@@ -38,7 +38,8 @@ public class SlotTFGoblinUncrafting extends Slot {
     /**
      * Return whether this slot's stack can be taken from this slot.
      */
-    public boolean canTakeStack(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean canTakeStack(EntityPlayer par1EntityPlayer)
     {
     	// if there is anything in the assembly matrix, then you cannot have these items
     	for (int i = 0; i < this.assemblyMatrix.getSizeInventory(); i++)

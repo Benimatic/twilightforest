@@ -77,6 +77,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
     /**
      * Gets the pitch of living sounds in living entities.
      */
+    @Override
     protected float getSoundPitch()
     {
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;

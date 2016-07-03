@@ -33,6 +33,7 @@ public class EntityAIStayNearHome extends EntityAIBase {
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
+	@Override
 	public boolean continueExecuting()
 	{
 		return !this.entity.getNavigator().noPath();
@@ -46,7 +47,8 @@ public class EntityAIStayNearHome extends EntityAIBase {
 //		this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().posX, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ, this.speed);
 //	}
 	
-    public void startExecuting()
+    @Override
+	public void startExecuting()
     {
         //this.insidePosX = -1;
 

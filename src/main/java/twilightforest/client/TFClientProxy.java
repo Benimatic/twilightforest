@@ -415,42 +415,52 @@ public class TFClientProxy extends TFCommonProxy {
 
 	}
 	
+	@Override
 	public int getCritterBlockRenderID() {
 		return critterRenderID;
 	}
 
+	@Override
 	public int getPlantBlockRenderID() {
 		return plantRenderID;
 	}
 
+	@Override
 	public int getComplexBlockRenderID() {
 		return blockComplexRenderID;
 	}
 	
+	@Override
 	public int getNagastoneBlockRenderID() {
 		return nagastoneRenderID;
 	}
 	
+	@Override
 	public int getMagicLeavesBlockRenderID() {
 		return magicLeavesRenderID;
 	}
 	
+	@Override
 	public int getPedestalBlockRenderID() {
 		return pedestalRenderID;
 	}
 	
+	@Override
 	public int getThornsBlockRenderID() {
 		return thornsRenderID;
 	}
 	
+	@Override
 	public int getKnightmetalBlockRenderID() {
 		return knightmetalBlockRenderID;
 	}
 	
+	@Override
 	public int getHugeLilyPadBlockRenderID() {
 		return hugeLilyPadBlockRenderID;
 	}
 	
+	@Override
 	public int getCastleMagicBlockRenderID() {
 		return castleMagicBlockRenderID;
 	}
@@ -458,6 +468,7 @@ public class TFClientProxy extends TFCommonProxy {
 	/**
 	 * The prefix is not actually used, but we do need a render ID
 	 */
+	@Override
 	public int registerArmorRenderID(String prefix) {
 		return RenderingRegistry.addNewArmourRendererPrefix(prefix);
 	}
@@ -471,6 +482,7 @@ public class TFClientProxy extends TFCommonProxy {
 	/**
 	 * Spawns a particle.  This is my copy of RenderGlobal.spawnParticle where I implement custom particles.
 	 */
+	@Override
 	public void spawnParticle(World world, String particleType, double x, double y, double z, double velX, double velY, double velZ)
 	{
 		Minecraft mc = FMLClientHandler.instance().getClient();
@@ -550,23 +562,28 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 	
 
+	@Override
 	public ModelBiped getKnightlyArmorModel(int armorSlot) {
 		return knightlyArmorModel[armorSlot];
 	}
 	
+	@Override
 	public ModelBiped getPhantomArmorModel(int armorSlot) {
 		return phantomArmorModel[armorSlot];
 	}
 	
+	@Override
 	public ModelBiped getYetiArmorModel(int armorSlot) {
 		return yetiArmorModel[armorSlot];
 	}
 
+	@Override
 	public ModelBiped getArcticArmorModel(int armorSlot) {
 		return arcticArmorModel[armorSlot];
 	}
 	
 	
+	@Override
 	public ModelBiped getFieryArmorModel(int armorSlot) {
 		return this.fieryArmorModel[armorSlot];
 	}
@@ -580,6 +597,7 @@ public class TFClientProxy extends TFCommonProxy {
 		
 	}
 	
+	@Override
 	public void doBlockAnnihilateEffect(World worldObj, int blockX, int blockY, int blockZ) {
 		// particles from the block?
 //		for (int i = 0; i < 10; i++) {

@@ -66,6 +66,7 @@ public class RenderTFTowerGhast extends RenderTFMiniGhast {
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
+    @Override
     protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
     {
         this.preRenderGhast((EntityGhast)par1EntityLiving, par2);

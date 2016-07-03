@@ -334,6 +334,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		return null;
 	}
 	
+	@Override
 	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
 		if (super.makeSmallerCave(list, rand, index, x, y, z, caveSize, caveHeight, rotation)) {
 			this.openingTowards[rotation] = true;

@@ -30,7 +30,8 @@ public class EntitySeekerArrow extends EntityArrow {
     /**
      * Called to update the entity's position/logic.
      */
-    @SuppressWarnings("rawtypes")
+    @Override
+	@SuppressWarnings("rawtypes")
 	public void onUpdate()
     {
         // seek!

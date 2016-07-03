@@ -213,6 +213,7 @@ public class TFFinalCastlePieces {
 		/**
 		 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 		 */
+		@Override
 		protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, int direction) {
 			
 			int dx = getXWithOffset(x, z);
@@ -688,10 +689,12 @@ public class TFFinalCastlePieces {
 			return true;
 		}
 
+		@Override
 		protected int getForceFieldMeta(Random decoRNG) {
 			return 1; 
 		}
 
+		@Override
 		protected int getRuneMeta(int fieldMeta) {
 			return 0;
 		}
@@ -763,10 +766,12 @@ public class TFFinalCastlePieces {
 			return absoluteDir;
 		}
 		
+		@Override
 		protected int getForceFieldMeta(Random decoRNG) {
 			return 1; 
 		}
 
+		@Override
 		protected int getRuneMeta(int fieldMeta) {
 			return 0;
 		}
@@ -1788,6 +1793,7 @@ public class TFFinalCastlePieces {
 		/**
 		 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 		 */
+		@Override
 		protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, int direction) {
 			
 			int dx = getXWithOffset(x, z);
@@ -2036,6 +2042,7 @@ public class TFFinalCastlePieces {
 		/**
 		 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 		 */
+		@Override
 		public BlockPos getValidOpeningCC(Random rand, int direction) {
 			// for directions 0 or 2, the wall lies along the z axis
 			if (direction == 0 || direction == 2) {
@@ -2136,6 +2143,7 @@ public class TFFinalCastlePieces {
     		return true;
     	}
     	
+		@Override
 		protected boolean hasAccessibleRoof() {
 			return false;
 		}
@@ -2311,6 +2319,7 @@ public class TFFinalCastlePieces {
     	}
     	
 
+		@Override
 		protected MazeTower13 makeNewDamagedTower(Random rand, int direction, BlockPos tc) {
 			return new WreckedTower(rand, this.getComponentType() + 1, tc.posX, tc.posY, tc.posZ, direction);
 		}
@@ -2476,11 +2485,13 @@ public class TFFinalCastlePieces {
 //    		this.buildNonCriticalTowers(parent, list, rand);
     	}
 		
+		@Override
 		public int getGlyphMeta() {
 			return 1;
 		}
 		
 		
+		@Override
 		protected void determineBlockDestroyed(World world, ArrayList<DestroyArea> areas, int y, int x, int z) {
 			boolean isInside = false;
 			for (DestroyArea dArea : areas) {
@@ -2496,6 +2507,7 @@ public class TFFinalCastlePieces {
 		}
 		
 
+		@Override
 		protected ArrayList<DestroyArea> makeInitialDestroyList(Random rand) {
 			ArrayList<DestroyArea> areas = new ArrayList<DestroyArea>(2);
 			

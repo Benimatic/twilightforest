@@ -145,6 +145,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 	/**
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
+	@Override
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
 		

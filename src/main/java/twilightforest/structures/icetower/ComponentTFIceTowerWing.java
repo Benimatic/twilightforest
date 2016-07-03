@@ -131,6 +131,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make a new wing
 	 */
+	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 		int direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
@@ -188,6 +189,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 * Gets a Y value where the stairs meet the specified X coordinate.
 	 * Also works for Z coordinates.
 	 */
+	@Override
 	protected int getYByStairs(int rx, Random rand, int direction) {
 		
 		int floors = this.height / 10;
@@ -234,6 +236,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	/**
 	 * Nullify all the sky light in this component bounding box
 	 */
+	@Override
 	public void nullifySkyLightForBoundingBox(World world) {
 		this.nullifySkyLight(world, boundingBox.minX + 1, boundingBox.minY + 1, boundingBox.minZ + 1, boundingBox.maxX - 1, boundingBox.maxY - 1, boundingBox.maxZ - 1);
 	}
@@ -277,6 +280,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
+	@Override
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
         
@@ -294,6 +298,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 * @param ladderUpDir
 	 * @param laddderDownDir
 	 */
+	@Override
 	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		boolean hasTreasure = (this.treasureFloor == floor);
 		
@@ -711,6 +716,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 * 
 	 * This function keeps trying roofs starting with the largest and fanciest, and then keeps trying smaller and plainer ones
 	 */
+	@Override
 	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		int index = this.getComponentType();
 		tryToFitRoof(list, rand, new ComponentTFIceTowerRoof(index + 1, this));
@@ -719,6 +725,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	/**
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
+	@Override
 	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		int index = this.getComponentType();
 		ComponentTFIceTowerBeard beard;

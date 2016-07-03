@@ -24,7 +24,8 @@ public class RenderTFSnowQueen extends RenderBiped {
 	/**
 	 * Return our specific texture
 	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    @Override
+	protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
     	return textureLoc;
     }
@@ -33,7 +34,8 @@ public class RenderTFSnowQueen extends RenderBiped {
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+    @Override
+	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
     	float scale = 1.2F;
         GL11.glScalef(scale, scale, scale);

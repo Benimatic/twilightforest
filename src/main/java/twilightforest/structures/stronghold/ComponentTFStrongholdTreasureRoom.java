@@ -48,6 +48,7 @@ public class ComponentTFStrongholdTreasureRoom extends
 	/**
 	 * Make a bounding box for this room
 	 */
+	@Override
 	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
 	{
 		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
@@ -98,6 +99,7 @@ public class ComponentTFStrongholdTreasureRoom extends
 	/**
 	 * Make a doorway
 	 */
+	@Override
 	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		if (x == 0 || x == getXSize())
 		{

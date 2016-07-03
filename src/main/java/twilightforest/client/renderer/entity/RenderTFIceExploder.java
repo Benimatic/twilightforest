@@ -17,7 +17,8 @@ public class RenderTFIceExploder extends RenderTFBiped {
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTick)
+    @Override
+	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTick)
     {
 		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
 		
@@ -47,7 +48,8 @@ public class RenderTFIceExploder extends RenderTFBiped {
 		}
     }
     
-    protected void rotateCorpse(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4)
+    @Override
+	protected void rotateCorpse(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4)
     {
         GL11.glRotatef(180.0F - par3, 0.0F, 1.0F, 0.0F);
     }
@@ -56,7 +58,8 @@ public class RenderTFIceExploder extends RenderTFBiped {
     /**
      * Returns an ARGB int color back. Args: entityLiving, lightBrightness, partialTickTime
      */
-    protected int getColorMultiplier(EntityLivingBase par1EntityLivingBase, float par2, float par3)
+    @Override
+	protected int getColorMultiplier(EntityLivingBase par1EntityLivingBase, float par2, float par3)
     {
     	if (par1EntityLivingBase.deathTime > 0) {
     		float f2 = par1EntityLivingBase.deathTime + par3;

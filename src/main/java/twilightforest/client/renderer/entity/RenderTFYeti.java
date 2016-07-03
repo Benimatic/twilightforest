@@ -15,6 +15,7 @@ public class RenderTFYeti extends RenderTFBiped {
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
+    @Override
     protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
     	float scale = 1.0F;

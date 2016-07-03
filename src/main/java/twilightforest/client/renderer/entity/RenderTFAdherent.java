@@ -22,6 +22,7 @@ public class RenderTFAdherent extends RenderTFBiped {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
+    @Override
     public void doRender(EntityLiving p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
     	//GL11.glTranslatef(0.0F, 1.0F, 0.0F);

@@ -27,7 +27,8 @@ public class CommandTFProgress extends CommandBase {
     /**
      * Return the required permission level for this command.
      */
-    public int getRequiredPermissionLevel()
+    @Override
+	public int getRequiredPermissionLevel()
     {
         return 2;
     }
@@ -133,7 +134,8 @@ public class CommandTFProgress extends CommandBase {
     /**
      * Return whether the specified command parameter index is a username parameter.
      */
-    public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_)
+    @Override
+	public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_)
     {
         return p_82358_2_ == 0;
     }

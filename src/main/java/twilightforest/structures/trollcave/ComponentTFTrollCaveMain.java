@@ -215,6 +215,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	/**
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
+	@Override
 	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, int direction) {
 		
 		int dx = getXWithOffset(x, z);

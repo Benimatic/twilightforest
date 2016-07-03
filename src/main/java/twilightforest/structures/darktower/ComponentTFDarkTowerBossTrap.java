@@ -58,6 +58,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 	/**
 	 * Attach a roof to this tower.
 	 */
+	@Override
 	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		//nope;
 	}

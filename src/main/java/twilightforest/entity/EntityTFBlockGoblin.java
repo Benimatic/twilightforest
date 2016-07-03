@@ -336,6 +336,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     /**
      * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
      */
+    @Override
     public int getTotalArmorValue()
     {
         int i = super.getTotalArmorValue() + 11;

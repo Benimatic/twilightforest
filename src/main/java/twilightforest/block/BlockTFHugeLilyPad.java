@@ -117,7 +117,8 @@ public class BlockTFHugeLilyPad extends BlockBush {
 		this.setGiantBlockToAir(world, x, y, z);
     }
 
-    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
+    @Override
+	public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
     {
         world.setBlockToAir(x, y, z);
 		this.setGiantBlockToAir(world, x, y, z);

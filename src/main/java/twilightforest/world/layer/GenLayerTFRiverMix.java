@@ -20,7 +20,8 @@ public class GenLayerTFRiverMix extends GenLayer {
      * Initialize layer's local worldGenSeed based on its own baseSeed and the world's global seed (passed in as an
      * argument).
      */
-    public void initWorldGenSeed(long par1)
+    @Override
+	public void initWorldGenSeed(long par1)
     {
         this.biomeLayer.initWorldGenSeed(par1);
         this.riverLayer.initWorldGenSeed(par1);
@@ -32,6 +33,7 @@ public class GenLayerTFRiverMix extends GenLayer {
 	 * interpreted as temperatures, rainfall amounts, or biomeList[] indices
 	 * based on the particular GenLayer subclass.
 	 */
+	@Override
 	public int[] getInts(int par1, int par2, int par3, int par4) {
 		int[] biomeInputs = this.biomeLayer.getInts(par1, par2, par3, par4);
 		int[] riverInputs = this.riverLayer.getInts(par1, par2, par3, par4);

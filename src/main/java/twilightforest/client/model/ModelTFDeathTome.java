@@ -51,6 +51,7 @@ public class ModelTFDeathTome extends ModelBook {
     /**
      * Sets the models various rotation angles then renders the model.
      */
+    @Override
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float scale)
     {
     	//this.everything.rotateAngleX = par6 / (180F / (float)Math.PI);

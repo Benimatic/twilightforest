@@ -62,7 +62,8 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
         return 6;
     }
     
-    public boolean attackEntityAsMob(Entity par1Entity)
+    @Override
+	public boolean attackEntityAsMob(Entity par1Entity)
     {
     	int damage = this.getAttackStrength(par1Entity);
         if (par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage))
@@ -127,7 +128,8 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 	/**
      * Gets the pitch of living sounds in living entities.
      */
-    protected float getSoundPitch()
+    @Override
+	protected float getSoundPitch()
     {
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;
     }

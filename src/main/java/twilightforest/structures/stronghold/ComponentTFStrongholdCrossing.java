@@ -22,6 +22,7 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 	/**
 	 * Make a bounding box for this room
 	 */
+	@Override
 	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
 	{
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);

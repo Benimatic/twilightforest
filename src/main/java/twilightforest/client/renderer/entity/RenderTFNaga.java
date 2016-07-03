@@ -51,7 +51,8 @@ public class RenderTFNaga extends RenderLiving {
 	/**
 	 * Return our specific texture
 	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    @Override
+	protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return textureLoc;
     }

@@ -22,6 +22,7 @@ public class ModelTFTowerBoss extends ModelTFGhast {
         }
     }
 	
+	@Override
 	protected void makeTentacle(byte yOffset, Random random, int num) {
 		this.tentacles[num] = new ModelRenderer(this, num % 3, 0);
 		
@@ -139,7 +140,8 @@ public class ModelTFTowerBoss extends ModelTFGhast {
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float par1, float par2, float timeAlive, float yaw, float pitch, float par6, Entity par7Entity)
+    @Override
+	public void setRotationAngles(float par1, float par2, float timeAlive, float yaw, float pitch, float par6, Entity par7Entity)
     {
     	super.setRotationAngles(par1, par2, timeAlive, yaw, pitch, par6, par7Entity);
     	

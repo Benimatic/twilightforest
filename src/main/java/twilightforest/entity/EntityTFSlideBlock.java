@@ -275,6 +275,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
      * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
      * pushable on contact, like boats or minecarts.
      */
+    @Override
     public AxisAlignedBB getCollisionBox(Entity p_70114_1_)
     {
         return null;
@@ -288,6 +289,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	/**
      * Return whether this entity should be rendered as on fire.
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean canRenderOnFire()
     {

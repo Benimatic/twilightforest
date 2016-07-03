@@ -129,6 +129,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make a new wing
 	 */
+	@Override
 	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
 		int direction = (getCoordBaseMode() + rotation) % 4;
@@ -267,6 +268,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	}
 
 
+	@Override
 	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 		return this.makeBridge(list, rand, index, x, y, z, wingSize, wingHeight, rotation, false);
 	}
@@ -320,6 +322,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
+	@Override
 	public int[] getValidOpening(Random rand, int direction) {
 		// variables!
 		int wLength = Math.min(size / 3, 3); // wall length
@@ -352,6 +355,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * Gets a Y value where the stairs meet the specified X coordinate.
 	 * Also works for Z coordinates.
 	 */
+	@Override
 	protected int getYByStairs(int rx, Random rand, int direction) {
 		
 		int floors = this.height / FLOOR_HEIGHT;
@@ -491,6 +495,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
+	@Override
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
         
@@ -508,6 +513,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * @param ladderUpDir
 	 * @param laddderDownDir
 	 */
+	@Override
 	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		//decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 

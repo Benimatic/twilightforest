@@ -52,6 +52,7 @@ public class ComponentTFStrongholdSmallStairs extends
 	/**
 	 * Make a bounding box for this room
 	 */
+	@Override
 	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
 	{
 		

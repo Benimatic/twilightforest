@@ -29,7 +29,8 @@ public class RenderTFKnightPhantom extends RenderBiped {
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+    @Override
+	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
         float scale = ((EntityTFKnightPhantom)par1EntityLivingBase).isChargingAtPlayer() ? 1.8F : 1.2F;
 		GL11.glScalef(scale, scale, scale);

@@ -20,6 +20,7 @@ public class EntityTFArmoredGiant extends EntityTFGiantMiner {
 
 	}
 
+    @Override
     protected Item getDropItem()
     {
         return TFItems.giantSword;

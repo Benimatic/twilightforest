@@ -91,6 +91,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
      * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
      * levels in the BB's horizontal rectangle).
      */
+    @Override
     protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox)
     {
         int var3 = 0;

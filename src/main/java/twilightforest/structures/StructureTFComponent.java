@@ -299,7 +299,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
 
-	protected int getXWithOffset(int x, int z)
+	@Override
+    protected int getXWithOffset(int x, int z)
     {
         switch(getCoordBaseMode())
         {
@@ -315,11 +316,13 @@ public abstract class StructureTFComponent extends StructureComponent {
         return x;
     }
 	
+    @Override
     protected int getYWithOffset(int par1)
     {
         return super.getYWithOffset(par1);
     }
 
+    @Override
     protected int getZWithOffset(int x, int z)
     {
         switch(getCoordBaseMode())
@@ -383,7 +386,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 		}
     }
 
-	public int getCoordBaseMode() {
+	@Override
+    public int getCoordBaseMode() {
 		return coordBaseMode;
 	}
 

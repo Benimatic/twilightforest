@@ -18,6 +18,7 @@ public class ModelTFWraith extends ModelBiped {
 
 	}
 	
+    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         setRotationAngles(f, f1, f2, f3, f4, f5, entity);
@@ -38,6 +39,7 @@ public class ModelTFWraith extends ModelBiped {
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
+    @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
         super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);

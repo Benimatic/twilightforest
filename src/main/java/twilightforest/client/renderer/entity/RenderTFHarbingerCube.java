@@ -21,6 +21,7 @@ public class RenderTFHarbingerCube extends RenderLiving {
 	/**
 	 * Return our specific texture
 	 */
+    @Override
     protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return textureLoc;
@@ -30,6 +31,7 @@ public class RenderTFHarbingerCube extends RenderLiving {
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
+    @Override
     protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
     	float scale = 1.0F;

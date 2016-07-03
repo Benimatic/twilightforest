@@ -34,6 +34,7 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing
 	/**
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
+	@Override
 	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		//nope;
 	}

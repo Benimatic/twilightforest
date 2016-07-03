@@ -86,6 +86,7 @@ public class RenderTFHydraMortar extends Render {
 	/**
 	 * Return our specific texture
 	 */
+    @Override
     protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return textureLoc;

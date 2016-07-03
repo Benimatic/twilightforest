@@ -83,12 +83,14 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
      * In this case we're not charging like a bull, but charging up a ranged attack
      * @return
      */
-    public boolean isCharging()
+    @Override
+	public boolean isCharging()
     {
         return dataWatcher.getWatchableObjectByte(CHARGE_FLAG) != 0;
     }
 
-    public void setCharging(boolean flag)
+    @Override
+	public void setCharging(boolean flag)
     {
         if (flag)
         {

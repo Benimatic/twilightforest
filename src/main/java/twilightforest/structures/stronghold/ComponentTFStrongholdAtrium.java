@@ -48,6 +48,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	/**
 	 * Make a bounding box for this room
 	 */
+	@Override
 	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
 	{
 		

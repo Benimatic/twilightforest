@@ -63,6 +63,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
+    @Override
     public ItemStack decrStackSize(int slot, int amount)
     {
         if (this.furnaceItemStacks[slot] != null)
@@ -114,6 +115,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
+    @Override
     public void setInventorySlotContents(int slot, ItemStack itemStack)
     {
         this.furnaceItemStacks[slot] = itemStack;
@@ -141,6 +143,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
     }
     
     
+    @Override
     public void readFromNBT(NBTTagCompound nbtTags)
     {
         super.readFromNBT(nbtTags);
@@ -168,6 +171,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
         }
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound nbtTags)
     {
         super.writeToNBT(nbtTags);

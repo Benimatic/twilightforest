@@ -52,6 +52,7 @@ public class ModelTFIceExploder extends ModelBiped {
         }
 	}
 	
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
@@ -77,7 +78,8 @@ public class ModelTFIceExploder extends ModelBiped {
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time)
+    @Override
+	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time)
     {
         for (int i = 0; i < spikes.length; i++) {
          	// rotate the spikes

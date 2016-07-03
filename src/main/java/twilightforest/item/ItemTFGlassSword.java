@@ -32,7 +32,8 @@ public class ItemTFGlassSword extends ItemSword {
 		return result;
 	}
     
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+    @Override
+	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
     	if (player.worldObj.isRemote) {
 			// snow animation!

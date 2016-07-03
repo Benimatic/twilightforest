@@ -49,7 +49,8 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readFromNBT(par1NBTTagCompound);
         this.nextMeta = par1NBTTagCompound.getInteger("NextMeta");
@@ -58,7 +59,8 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
     /**
      * Writes a tile entity to NBT.
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	NBTTagCompound ret = super.writeToNBT(par1NBTTagCompound);
         ret.setInteger("NextMeta", this.nextMeta);

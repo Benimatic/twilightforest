@@ -18,6 +18,7 @@ public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 		super(Blocks.STONE, 1.0F, false);
 	}
 	
+	@Override
 	public boolean generate(World world, Random rand, int x, int y, int z)
 	{
 		int length = rand.nextInt(10) + 5;

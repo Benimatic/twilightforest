@@ -62,6 +62,7 @@ public class ModelTFTroll extends ModelBiped {
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
+    @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
 		EntityTFTroll troll = (EntityTFTroll)par7Entity;

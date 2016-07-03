@@ -67,7 +67,8 @@ public class ItemTFFieryArmor extends ItemArmor {
 		par3List.add(I18n.translateToLocal(getUnlocalizedName() + ".tooltip"));
 	}
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped oldModel)
     {
         return TwilightForestMod.proxy.getFieryArmorModel(armorSlot);

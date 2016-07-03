@@ -25,6 +25,7 @@ public class EntityTFRavenLookHelper extends EntityLookHelper
     /**
      * Sets position to look at using entity
      */
+    @Override
     public void setLookPositionWithEntity(Entity par1Entity, float par2, float par3)
     {
         this.posX = par1Entity.posX;

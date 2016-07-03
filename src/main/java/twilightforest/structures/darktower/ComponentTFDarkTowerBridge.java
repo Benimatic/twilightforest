@@ -38,6 +38,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing
 	}
 	
 	
+	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 		// kill too-small towers
 		if (wingHeight < 6) {

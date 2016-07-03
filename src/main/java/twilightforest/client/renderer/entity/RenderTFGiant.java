@@ -22,7 +22,8 @@ public class RenderTFGiant extends RenderBiped {
 	/**
 	 * Return our specific texture
 	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    @Override
+	protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
     	if (Minecraft.getMinecraft().thePlayer.getLocationSkin() != null) {
     		return Minecraft.getMinecraft().thePlayer.getLocationSkin();
@@ -35,7 +36,8 @@ public class RenderTFGiant extends RenderBiped {
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+    @Override
+	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
     	float scale = 4.0F;
         GL11.glScalef(scale, scale, scale);

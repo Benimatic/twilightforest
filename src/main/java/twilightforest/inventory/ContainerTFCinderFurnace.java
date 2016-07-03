@@ -58,6 +58,7 @@ public class ContainerTFCinderFurnace extends Container
     /**
      * Looks for changes made in the container, sends them to every listener.
      */
+    @Override
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
@@ -87,6 +88,7 @@ public class ContainerTFCinderFurnace extends Container
         this.lastItemBurnTime = this.tileFurnace.currentItemBurnTime;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int p_75137_1_, int p_75137_2_)
     {
@@ -106,6 +108,7 @@ public class ContainerTFCinderFurnace extends Container
         }
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer p_75145_1_)
     {
         return this.tileFurnace.isUseableByPlayer(p_75145_1_);
@@ -114,6 +117,7 @@ public class ContainerTFCinderFurnace extends Container
     /**
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_)
     {
         ItemStack itemstack = null;

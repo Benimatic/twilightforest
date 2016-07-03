@@ -39,6 +39,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	/**
 	 *  This function builds the hollow trunk of the tree
 	 */
+	@Override
 	protected void buildTrunk(World world, Random random, int x, int y, int z, int diameter, int maxHeight) {
 
 		int hollow = diameter / 2;

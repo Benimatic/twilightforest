@@ -54,6 +54,7 @@ public class MapGenTFHollowTree extends MapGenBase {
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Feature being prepared");
                 crashreportcategory.addCrashSectionCallable("Is feature chunk", new Callable() {
                     private static final String __OBFID = "CL_00000506";
+                    @Override
                     public String call() {
                         return MapGenTFHollowTree.this.canSpawnStructureAtCoords(chunkX, chunkZ) ? "True" : "False";
                     }
@@ -61,12 +62,14 @@ public class MapGenTFHollowTree extends MapGenBase {
                 crashreportcategory.addCrashSection("Chunk location", String.format("%d,%d", new Object[] {Integer.valueOf(chunkX), Integer.valueOf(chunkZ)}));
                 crashreportcategory.addCrashSectionCallable("Chunk pos hash", new Callable() {
                     private static final String __OBFID = "CL_00000507";
+                    @Override
                     public String call() {
                         return String.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ));
                     }
                 });
                 crashreportcategory.addCrashSectionCallable("Structure type", new Callable() {
                     private static final String __OBFID = "CL_00000508";
+                    @Override
                     public String call() {
                         return MapGenTFHollowTree.this.getClass().getCanonicalName();
                     }

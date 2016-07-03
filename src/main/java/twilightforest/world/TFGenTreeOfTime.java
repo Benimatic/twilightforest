@@ -19,6 +19,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		this.leafMeta = 0;
 	}
 
+	@Override
 	public boolean generate(World world, Random random, int x, int y, int z) {
 
 		int height = 8;

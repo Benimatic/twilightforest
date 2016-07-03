@@ -26,6 +26,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 	 * @param cz
 	 * @return true if the coordinates would be inside the hill on the "floor" of the hill
 	 */
+	@Override
 	boolean isInHill(int cx, int cz)
 	{
 		// yeti cave is square
@@ -35,6 +36,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 	/**
 	 * @return true if the coordinates are inside the hill in 3D
 	 */
+	@Override
 	boolean isInHill(int mapX, int mapY, int mapZ)
 	{
 		// yeti cave is square and 16 blocks tall

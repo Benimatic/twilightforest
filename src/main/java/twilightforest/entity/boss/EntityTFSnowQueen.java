@@ -475,11 +475,13 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         return wasBlocked;
     }
 
+	@Override
 	public boolean isBreathing() {
         return this.getDataWatcher().getWatchableObjectByte(BEAM_FLAG) == 1;
 
 	}
 
+	@Override
 	public void setBreathing(boolean flag) {
         this.getDataWatcher().updateObject(BEAM_FLAG, Byte.valueOf((byte)(flag ? 1 : 0)));
 	}

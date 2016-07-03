@@ -98,6 +98,7 @@ public class ModelTFSquirrel extends ModelBase
 		fluff2.addChild(fluff3);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -123,7 +124,8 @@ public class ModelTFSquirrel extends ModelBase
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float par4)
+    @Override
+	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float par4)
     {
         //EntityTFSquirrel squirrel = (EntityTFSquirrel)par1EntityLiving;
         

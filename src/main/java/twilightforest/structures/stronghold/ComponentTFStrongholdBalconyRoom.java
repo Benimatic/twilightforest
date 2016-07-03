@@ -44,6 +44,7 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 	/**
 	 * Make a bounding box for this room
 	 */
+	@Override
 	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
 	{
 		

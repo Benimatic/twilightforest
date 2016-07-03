@@ -409,6 +409,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     }
 
     2Override
+    @Override
     public boolean canDespawn() {
     	return false;
     }

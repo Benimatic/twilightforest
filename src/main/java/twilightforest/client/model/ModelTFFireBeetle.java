@@ -144,6 +144,7 @@ public class ModelTFFireBeetle extends ModelBase
 
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -173,6 +174,7 @@ public class ModelTFFireBeetle extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
+	@Override
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
 	{
 		this.head.rotateAngleY = par4 / (180F / (float)Math.PI);

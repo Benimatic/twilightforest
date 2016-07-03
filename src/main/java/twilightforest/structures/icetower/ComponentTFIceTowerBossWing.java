@@ -22,6 +22,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 		this.spawnListIndex = -1;
 	}
 	
+	@Override
 	protected boolean shouldHaveBase(Random rand) {
 		return false;
 	}
@@ -30,6 +31,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 	/**
 	 * Put down planks or whatevs for a floor
 	 */
+	@Override
 	protected void placeFloor(World world, Random rand, StructureBoundingBox sbb, int floorHeight, int floor) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
@@ -53,6 +55,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 	 * @param ladderUpDir
 	 * @param laddderDownDir
 	 */
+	@Override
 	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 
 		for (int y = 0; y < 3; y++) {
@@ -77,6 +80,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 		this.randomlyFillBlocksRotated(world, sbb, rand, 0.5F, 11, y + 2, 4, 13, y + 2, 6, Blocks.PACKED_ICE, 0, Blocks.AIR, 0, rotation);
 	}
 	
+	@Override
 	protected void decorateTopFloor(World world, Random rand, int floor, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
