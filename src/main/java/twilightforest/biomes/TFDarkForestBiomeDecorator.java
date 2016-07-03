@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -20,10 +21,10 @@ import twilightforest.world.TFWorld;
 
 public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 	
-	TFTreeGenerator darkCanopyTreeGen;
-	TFGenTallGrass worldGenDeadBush;
-	WorldGenTallGrass worldGenForestGrass;
-	WorldGenTallGrass worldGenMushgloom;
+	private TFTreeGenerator darkCanopyTreeGen;
+	private TFGenTallGrass worldGenDeadBush;
+	private WorldGenTallGrass worldGenForestGrass;
+	private WorldGenTallGrass worldGenMushgloom;
 
 
 	public TFDarkForestBiomeDecorator() {
@@ -33,9 +34,6 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 		worldGenMushgloom = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MUSHGLOOM);
 	}
 
-    /**
-     * Decorates the world. Calls code that was formerly (pre-1.8) in ChunkProviderGenerate.populate
-     */
 	@Override
 	public void decorateChunk(World world, Random rand, Biome biome, int mapX, int mapZ) {
 		// just decorate with what we need here
@@ -46,8 +44,8 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
     		for (int i = 0; i < nc; i++) {
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
-    			int ry = world.getHeightValue(rx, rz);
-    			darkCanopyTreeGen.generate(world, rand, rx, ry, rz);
+    			int ry = world.getHeight(new BlockPos(rx, 0, rz)).getY();
+    			darkCanopyTreeGen.generate(world, rand, new BlockPos(rx, ry, rz));
     		}
 
     		// regular trees
@@ -55,10 +53,10 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
     		{
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
-    			int ry = getGroundLevel(world, rx, rz);
+    			int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
     			WorldGenerator var5 = biome.genBigTreeChance(rand);
-    			var5.setScale(1.0D, 1.0D, 1.0D);
-    			var5.generate(world, rand, rx, ry, rz);
+    			// todo 1.9 var5.setScale(1.0D, 1.0D, 1.0D);
+    			var5.generate(world, rand, new BlockPos(rx, ry, rz));
     		}
 
     		// dead bushes
@@ -76,7 +74,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
     			int ry = rand.nextInt(128);
-				worldGenForestGrass.generate(world, rand, rx, ry, rz);
+				worldGenForestGrass.generate(world, rand, new BlockPos(rx, ry, rz));
     		}
 
     		// mushrooms
@@ -85,42 +83,42 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
     			if (rand.nextInt(8) == 0) {
     				int rx = mapX + rand.nextInt(16) + 8;
     				int rz = mapZ + rand.nextInt(16) + 8;
-    				int ry = getGroundLevel(world, rx, rz);
-    				this.mushroomBrownGen.generate(world, rand, rx, ry, rz);
+    				int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
+    				this.mushroomBrownGen.generate(world, rand, new BlockPos(rx, ry, rz));
     			}
     			if (rand.nextInt(16) == 0) {
     				int rx = mapX + rand.nextInt(16) + 8;
     				int rz = mapZ + rand.nextInt(16) + 8;
-    				int ry = getGroundLevel(world, rx, rz);
-    				this.mushroomRedGen.generate(world, rand, rx, ry, rz);
+    				int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
+    				this.mushroomRedGen.generate(world, rand, new BlockPos(rx, ry, rz));
     			}
     			if (rand.nextInt(24) == 0) {
     				int rx = mapX + rand.nextInt(16) + 8;
     				int rz = mapZ + rand.nextInt(16) + 8;
-    				int ry = getGroundLevel(world, rx, rz);
+    				int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
     				// mushglooms
-					worldGenMushgloom.generate(world, rand, rx, ry, rz);
+					worldGenMushgloom.generate(world, rand, new BlockPos(rx, ry, rz));
     			}
     		}
     		if (rand.nextInt(4) == 0) {
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
     			int ry = rand.nextInt(128);
-    			this.mushroomBrownGen.generate(world, rand, rx, ry, rz);
+    			this.mushroomBrownGen.generate(world, rand, new BlockPos(rx, ry, rz));
     		}
     		if (rand.nextInt(8) == 0) {
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
     			int ry = rand.nextInt(128);
-    			this.mushroomRedGen.generate(world, rand, rx, ry, rz);
+    			this.mushroomRedGen.generate(world, rand, new BlockPos(rx, ry, rz));
     		}
     		
     		// pumpkins
     		if (rand.nextInt(32) == 0) {
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
-				int ry = getGroundLevel(world, rx, rz);
-    			(new WorldGenPumpkin()).generate(world, rand, rx, ry, rz);
+				int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
+    			(new WorldGenPumpkin()).generate(world, rand, new BlockPos(rx, ry, rz));
     		}
 
     	}
@@ -132,12 +130,12 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 	}
 	
     
-    public int getGroundLevel(World world, int x, int z) {
+    public int getGroundLevel(World world, BlockPos pos) {
     	// go from sea level up.  If we get grass, return that, otherwise return the last dirt, stone or gravel we got
-    	Chunk chunk = world.getChunkFromBlockCoords(x, z);
+    	Chunk chunk = world.getChunkFromBlockCoords(pos);
     	int lastDirt = TFWorld.SEALEVEL;
     	for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT - 1; y++) {
-    		Block blockID = chunk.getBlock(x & 15, y, z & 15);
+    		Block blockID = chunk.getBlockState(new BlockPos(pos.getX(), y, pos.getZ())).getBlock();
     		// grass = return immediately
     		if (blockID == Blocks.GRASS) {
     			return y + 1;

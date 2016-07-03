@@ -13,9 +13,6 @@ public class TFBiomeClearing extends TFBiomeBase {
 	public TFBiomeClearing(BiomeProperties props) {
 		super(props);
 
-//        this.rootHeight = 0.01F;
-//        this.heightVariation = 0F;
-
         getTFBiomeDecorator().canopyPerChunk = -999;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
         

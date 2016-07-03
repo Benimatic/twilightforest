@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -68,7 +71,9 @@ public class TFBiomeSwamp extends TFBiomeBase {
     {
         if (random.nextInt(3) == 0)
         {
-            return new WorldGenShrub(3, 0);
+            new WorldGenShrub(
+                    Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
+                    Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK))
         }
 
         return SWAMP_FEATURE;

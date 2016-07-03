@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.Achievement;
@@ -71,7 +75,9 @@ public class TFBiomeDarkForest extends TFBiomeBase {
     {
         if(random.nextInt(5) == 0)
         {
-        	return new WorldGenShrub(3, 0);
+        	return new WorldGenShrub(
+                    Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
+                    Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK));
         }
         if(random.nextInt(8) == 0)
         {

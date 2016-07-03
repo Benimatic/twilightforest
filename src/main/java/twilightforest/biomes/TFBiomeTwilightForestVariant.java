@@ -3,6 +3,9 @@ package twilightforest.biomes;
 import java.util.Random;
 
 import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +34,9 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
     {
         if(random.nextInt(5) == 0)
         {
-        	return new WorldGenShrub(3, 0);
+            new WorldGenShrub(
+                    Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
+                    Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK))
         }
         else if(random.nextInt(10) == 0)
         {
