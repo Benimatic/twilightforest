@@ -73,7 +73,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
         {
             new WorldGenShrub(
                     Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-                    Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK))
+                    Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK));
         }
 
         return SWAMP_FEATURE;

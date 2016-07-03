@@ -25,7 +25,12 @@ minecraft {
     version = "1.9.4-12.17.0.1965"
     mappings = "snapshot_20160518"
     runDir = "eclipse"
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 dependencies {
     // you may put jars on which you depend on in ./libs
