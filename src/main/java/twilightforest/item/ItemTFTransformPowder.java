@@ -19,6 +19,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -45,7 +47,6 @@ public class ItemTFTransformPowder extends ItemTF
 
 	protected ItemTFTransformPowder() 
 	{
-		super();
         this.maxStackSize = 64;
 		this.setCreativeTab(TFItems.creativeTab);
         
@@ -72,11 +73,8 @@ public class ItemTFTransformPowder extends ItemTF
     	transformMap.put(class2, class1);
 	}
 
-	/**
-     * dye sheep, place saddles, etc ...
-     */
 	@Override
-	public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, EntityLivingBase target) 
+	public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, EntityLivingBase target, EnumHand hand)
 	{
 		// this is where we transform normal entities into twilight entities and vice versa
 		
@@ -134,12 +132,8 @@ public class ItemTFTransformPowder extends ItemTF
 		}
 	}
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand)
 	{
 		if (world.isRemote)
 		{
@@ -177,14 +171,4 @@ public class ItemTFTransformPowder extends ItemTF
 	{
 		return transformMap.get(originalMonster);
 	}
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

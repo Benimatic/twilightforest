@@ -3,10 +3,14 @@ package twilightforest.item;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFTwilightWandBolt;
@@ -18,89 +22,68 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFTwilightWand extends ItemTF {
 
 	protected ItemTFTwilightWand() {
-		super();
         this.maxStackSize = 1;
         this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
-
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player, EnumHand hand) {
 		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
 		{
-			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+			player.setActiveHand(hand);
 		}
 		else 
 		{
-			player.stopUsingItem();
+			player.resetActiveHand();
 		}
 		
-		return par1ItemStack;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 	
-    /**
-     * Called each tick while using an item.
-     * @param stack The Item being used
-     * @param player The Player using the item
-     * @param count The amount of time in tick the item has been used for continuously
-     */
     @Override
-	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
+	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
 		if (stack.getItemDamage() >= this.getMaxDamage()) {
 			// do not use
-			player.stopUsingItem();
+			living.resetActiveHand();
 			return;
 		}
     	
     	if (count % 6 == 0) {
-    		World worldObj = player.worldObj;
+    		World worldObj = living.worldObj;
 	    	
-			worldObj.playSoundAtEntity(player, "mob.ghast.fireball", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
+			worldObj.playSoundAtEntity(living, "mob.ghast.fireball", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
 			
 			if (!worldObj.isRemote) {
-				worldObj.spawnEntityInWorld(new EntityTFTwilightWandBolt(worldObj, player));
+				worldObj.spawnEntityInWorld(new EntityTFTwilightWandBolt(worldObj, living));
 				
-				stack.damageItem(1, player);
+				stack.damageItem(1, living);
 			}
     	}
 
 
 	}
 
-	/**
-     * How long it takes to use or consume an item
-     */
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 72000;
     }
     
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
         return EnumAction.BOW;
     }
     
-    /**
-     * Return an item rarity from EnumRarity
-     */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
     	return EnumRarity.RARE;
 	}
 
-    /**
-     * Display charges left in tooltip
-     */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
 	}

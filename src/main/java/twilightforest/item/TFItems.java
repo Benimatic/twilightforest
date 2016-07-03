@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.potion.Potion;
@@ -242,16 +243,16 @@ public class TFItems {
     	lampOfCinders = new ItemTFLampOfCinders().setUnlocalizedName("lampOfCinders");
     	fieryTears = new ItemTF().makeRare().setUnlocalizedName("fieryTears");
     	alphaFur = new ItemTF().makeRare().setUnlocalizedName("alphaFur");
-    	yetiHelm = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, 0).setUnlocalizedName("yetiHelm").setMaxStackSize(1);
-    	yetiPlate = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, 1).setUnlocalizedName("yetiPlate").setMaxStackSize(1);
-    	yetiLegs = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, 2).setUnlocalizedName("yetiLegs").setMaxStackSize(1);
-    	yetiBoots = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, 3).setUnlocalizedName("yetiBoots").setMaxStackSize(1);
+    	yetiHelm = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, EntityEquipmentSlot.HEAD).setUnlocalizedName("yetiHelm").setMaxStackSize(1);
+    	yetiPlate = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, EntityEquipmentSlot.CHEST).setUnlocalizedName("yetiPlate").setMaxStackSize(1);
+    	yetiLegs = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, EntityEquipmentSlot.LEGS).setUnlocalizedName("yetiLegs").setMaxStackSize(1);
+    	yetiBoots = new ItemTFYetiArmor(ARMOR_YETI, yetiRenderID, EntityEquipmentSlot.FEET).setUnlocalizedName("yetiBoots").setMaxStackSize(1);
     	iceBomb = new ItemTFIceBomb().makeRare().setUnlocalizedName("iceBomb").setMaxStackSize(16);
     	arcticFur = new ItemTF().setUnlocalizedName("arcticFur");
-    	arcticHelm = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, 0).setUnlocalizedName("arcticHelm").setMaxStackSize(1);
-    	arcticPlate = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, 1).setUnlocalizedName("arcticPlate").setMaxStackSize(1);
-    	arcticLegs = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, 2).setUnlocalizedName("arcticLegs").setMaxStackSize(1);
-    	arcticBoots = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, 3).setUnlocalizedName("arcticBoots").setMaxStackSize(1);
+    	arcticHelm = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, EntityEquipmentSlot.HEAD).setUnlocalizedName("arcticHelm").setMaxStackSize(1);
+    	arcticPlate = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, EntityEquipmentSlot.CHEST).setUnlocalizedName("arcticPlate").setMaxStackSize(1);
+    	arcticLegs = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, EntityEquipmentSlot.LEGS).setUnlocalizedName("arcticLegs").setMaxStackSize(1);
+    	arcticBoots = new ItemTFArcticArmor(ARMOR_ARCTIC, arcticRenderID, EntityEquipmentSlot.FEET).setUnlocalizedName("arcticBoots").setMaxStackSize(1);
     	magicBeans = new ItemTFMagicBeans().setUnlocalizedName("magicBeans");
     	giantPick = new ItemTFGiantPick(TOOL_GIANT).setUnlocalizedName("giantPick").setMaxStackSize(1);
     	giantSword = new ItemTFGiantSword(TOOL_GIANT).setUnlocalizedName("giantSword").setMaxStackSize(1);

@@ -2,6 +2,9 @@ package twilightforest.item;
 
 import java.util.HashMap;
 
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
@@ -27,25 +30,14 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	private HashMap<ItemStack, Entity> launchedCubesMap = new HashMap<ItemStack, Entity>();
 	
 	protected ItemTFCubeOfAnnihilation() {
-		super();
         this.maxStackSize = 1;
 		this.setCreativeTab(TFItems.creativeTab);
 
 	}
 	
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-	{
-		return false;
-	}
-
-	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World worldObj, EntityPlayer player) {
-		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldObj, EntityPlayer player, EnumHand hand) {
+		player.setActiveHand(hand);
 
 		if (!worldObj.isRemote && !this.hasLaunchedCube(stack)) {
 			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(worldObj, player);
@@ -57,7 +49,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		}
 
 
-		return stack;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 	
 	/**
@@ -137,14 +129,8 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		this.launchedCubesMap.put(stack, launchedCube);
 	}
 
-	/**
-	 * Called each tick while using an item.
-	 * @param stack The Item being used
-	 * @param player The Player using the item
-     * @param count The amount of time in tick the item has been used for continuously
-     */
     @Override
-	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
+	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
 //		if (stack.getItemDamage() >= this.getMaxDamage()) {
 //			// do not use
 //			player.stopUsingItem();
@@ -155,22 +141,16 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 
 	}
 
-	/**
-     * How long it takes to use or consume an item
-     */
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 72000;
     }
     
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.block;
+        return EnumAction.BLOCK;
     }
 
 	

@@ -1,15 +1,14 @@
 package twilightforest.item;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -36,17 +35,13 @@ public class ItemTFOreMagnet extends ItemTF
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player) {
-		player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-		return par1ItemStack;
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
+		player.setActiveHand(hand);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 
-	
-    /**
-     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-     */
     @Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityPlayer player, int useRemaining)
+	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining)
     {
     	int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
 
@@ -54,53 +49,53 @@ public class ItemTFOreMagnet extends ItemTF
     	{
     		//player.addChatMessage("Ore Magnet!");
 
-    		int moved = doMagnet(world, player, 0, 0);
+    		int moved = doMagnet(world, living, 0, 0);
 
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, WIGGLE, 0);
+    			moved = doMagnet(world, living, WIGGLE, 0);
     		}
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, WIGGLE, WIGGLE);
+    			moved = doMagnet(world, living, WIGGLE, WIGGLE);
     		}
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, 0, WIGGLE);
+    			moved = doMagnet(world, living, 0, WIGGLE);
     		}
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, -WIGGLE, WIGGLE);
+    			moved = doMagnet(world, living, -WIGGLE, WIGGLE);
     		}
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, -WIGGLE, 0);
+    			moved = doMagnet(world, living, -WIGGLE, 0);
     		}
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, -WIGGLE, -WIGGLE);
+    			moved = doMagnet(world, living, -WIGGLE, -WIGGLE);
     		}
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, 0, -WIGGLE);
+    			moved = doMagnet(world, living, 0, -WIGGLE);
     		}
     		if (moved == 0)
     		{
-    			moved = doMagnet(world, player, WIGGLE, -WIGGLE);
+    			moved = doMagnet(world, living, WIGGLE, -WIGGLE);
     		}
 
     		//player.addChatMessage("Cost: " + moved);
 
     		if (moved > 0)
     		{
-    			par1ItemStack.damageItem(moved, player);
+    			par1ItemStack.damageItem(moved, living);
     			
     			if (par1ItemStack.stackSize == 0)
     			{
-    				player.destroyCurrentEquippedItem();
+    				living.destroyCurrentEquippedItem();
     			}
 
-    			world.playSoundAtEntity(player, "mob.endermen.portal", 1.0F, 1.0F);
+    			world.playSoundAtEntity(living, "mob.endermen.portal", 1.0F, 1.0F);
     		}
     	}
 
@@ -147,18 +142,12 @@ public class ItemTFOreMagnet extends ItemTF
         }
     }
 
-	/**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
     
-    /**
-     * How long it takes to use or consume an item
-     */
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {

@@ -16,12 +16,8 @@ public class ItemTFIceSword extends ItemSword {
 	public ItemTFIceSword(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setTextureName(TwilightForestMod.ID + ":iceSword");
 	}
 
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
@@ -29,10 +25,6 @@ public class ItemTFIceSword extends ItemSword {
         return par2ItemStack.getItem() == Item.getItemFromBlock(Blocks.PACKED_ICE) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
-    /**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
-     */
     @Override
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
@@ -44,18 +36,8 @@ public class ItemTFIceSword extends ItemSword {
 		
 		return result;
 	}
-    
-    
-    /**
-     * Called when the player Left Clicks (attacks) an entity.
-     * Processed before damage is done, if return value is true further processing is canceled
-     * and the entity is not attacked.
-     *
-     * @param stack The Item being used
-     * @param player The player that is attacking
-     * @param entity The entity being attacked
-     * @return True to cancel the rest of the interaction.
-     */
+
+	@Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
     	if (player.worldObj.isRemote) {

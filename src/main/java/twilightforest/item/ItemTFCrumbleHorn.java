@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
@@ -21,7 +22,6 @@ public class ItemTFCrumbleHorn extends ItemTF
 	private static final int CHANCE_CRUMBLE = 5;
 
 	protected ItemTFCrumbleHorn() {
-		super();
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
         this.setMaxDamage(1024);
@@ -36,45 +36,32 @@ public class ItemTFCrumbleHorn extends ItemTF
 
 		return par1ItemStack;
 	}
-	
-	
-    /**
-     * Called each tick while using an item.
-     * @param stack The Item being used
-     * @param player The Player using the item
-     * @param count The amount of time in tick the item has been used for continuously
-     */
+
     @Override
-	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) 
+	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count)
     {
-		if (count > 10 && count % 5 == 0 && !player.worldObj.isRemote) 
+		if (count > 10 && count % 5 == 0 && !living.worldObj.isRemote)
 		{
-			int crumbled = doCrumble(player.worldObj, player);
+			int crumbled = doCrumble(living.worldObj, living);
 
 			if (crumbled > 0)
 			{
-				stack.damageItem(crumbled, player);
+				stack.damageItem(crumbled, living);
 
 			}
 			
-			player.worldObj.playSoundAtEntity(player, "mob.sheep.say", 1.0F, 0.8F);
+			living.worldObj.playSoundAtEntity(living, "mob.sheep.say", 1.0F, 0.8F);
 
 		}
 		
     }
 	
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
     
-    /**
-     * How long it takes to use or consume an item
-     */
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
@@ -185,14 +172,4 @@ public class ItemTFCrumbleHorn extends ItemTF
 		
 		return cost;
 	}
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

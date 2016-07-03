@@ -12,6 +12,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -30,7 +32,7 @@ public class ItemTFPeacockFan extends ItemTF
 	}
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
 
 		if (!world.isRemote) 
 		{
@@ -90,27 +92,18 @@ public class ItemTFPeacockFan extends ItemTF
 		return par1ItemStack;
 	}
 	
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.block;
+        return EnumAction.BLOCK;
     }
     
-    /**
-     * How long it takes to use or consume an item
-     */
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 20;
     }
     
-    /**
-     * Returns True is the item is renderer in full 3D when hold.
-     */
     @Override
 	public boolean isFull3D()
     {
@@ -221,14 +214,4 @@ public class ItemTFPeacockFan extends ItemTF
 		
 		return cost;
 	}
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

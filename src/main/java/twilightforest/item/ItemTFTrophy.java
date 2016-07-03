@@ -11,7 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -28,39 +32,26 @@ public class ItemTFTrophy extends ItemTF
 	
 	public ItemTFTrophy() 
 	{
-		super();
         this.setCreativeTab(TFItems.creativeTab);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
 	}
 	
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+    @Override
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
         for (int j = 0; j < trophyTypes.length; ++j) {
             par3List.add(new ItemStack(par1, 1, j));
         }
     }
 
-	
-    /**
-     * Return an item rarity from EnumRarity
-     * 
-     * This is automatically uncommon
-     */    
     @Override
     @SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+    	return EnumRarity.RARE;
 	}
-	
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int direction, float par8, float par9, float par10)
+
+    @Override
+    public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10)
     {
         if (direction == 0)
         {
@@ -144,10 +135,7 @@ public class ItemTFTrophy extends ItemTF
         }
     }
     
-    /**
-     * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
-     * different names based on their damage or NBT.
-     */
+    @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
         int i = par1ItemStack.getItemDamage();

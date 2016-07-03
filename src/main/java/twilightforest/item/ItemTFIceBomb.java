@@ -3,6 +3,9 @@ package twilightforest.item;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -17,7 +20,6 @@ public class ItemTFIceBomb extends ItemTF {
 
 	
 	public ItemTFIceBomb() {
-		super();
 		this.setMaxStackSize(16);
 	}
 	
@@ -37,11 +39,9 @@ public class ItemTFIceBomb extends ItemTF {
     public IIcon getSnowIcon(int i) {
     	return snowIcon[i];
     }
-    
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, EnumHand hand) {
         if (!par3EntityPlayer.capabilities.isCreativeMode) {
         	--par1ItemStack.stackSize;
         }
@@ -52,6 +52,6 @@ public class ItemTFIceBomb extends ItemTF {
         	par2World.spawnEntityInWorld(new EntityTFIceBomb(par2World, par3EntityPlayer));
         }
 
-        return par1ItemStack;
+        return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
     }
 }

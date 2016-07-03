@@ -26,37 +26,19 @@ public class ItemTFKnightlySword extends ItemSword {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
     
-    /**
-     * Return an item rarity from EnumRarity
-     * 
-     * This is automatically rare
-     */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+    	return EnumRarity.RARE;
 	}
 
     
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
     	// repair with knightmetal ingots
         return par2ItemStack.getItem() == TFItems.knightMetal ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
-    
-    /**
-     * Called when the player Left Clicks (attacks) an entity.
-     * Processed before damage is done, if return value is true further processing is canceled
-     * and the entity is not attacked.
-     * 
-     * @param stack The Item being used
-     * @param player The player that is attacking
-     * @param entity The entity being attacked
-     * @return True to cancel the rest of the interaction.
-     */
+
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) 
     {
@@ -90,23 +72,9 @@ public class ItemTFKnightlySword extends ItemSword {
 //       	}
 //    }
 
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
-    
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add(I18n.translateToLocal(getUnlocalizedName() + ".tooltip"));
 	}

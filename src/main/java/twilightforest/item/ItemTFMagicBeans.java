@@ -1,5 +1,9 @@
 package twilightforest.item;
 
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.WorldProviderTwilightForest;
@@ -14,13 +18,9 @@ public class ItemTFMagicBeans extends ItemTF {
 	public ItemTFMagicBeans() {
 		this.makeRare();
 	}
-	
-	
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+
+	@Override
+	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
 		Block blockAt = world.getBlock(x, y, z);
 		

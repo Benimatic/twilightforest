@@ -13,9 +13,6 @@ public class ItemTFSeekerBow extends ItemTFBowBase {
 		this.setCreativeTab(TFItems.creativeTab);
     }
 
-	/**
-	 * Get the arrow for this specific bow
-	 */
     @Override
 	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer, float velocity) {
 		return new EntitySeekerArrow(world, entityPlayer, velocity * 0.5F);

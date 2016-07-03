@@ -189,11 +189,8 @@ public class ItemTFMagicMap extends ItemMap
             }
         }
     }
-    
-    /**
-     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-     * update it's contents.
-     */
+
+    @Override
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
     {
         if (!par2World.isRemote)
@@ -213,26 +210,17 @@ public class ItemTFMagicMap extends ItemMap
         }
     }
 
-    /**
-     * Called when item is crafted/smelted. Used only by maps so far.
-     */
     @Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
     	// we don't need to do anything here, I think
     }
     
-    /**
-     * Return an item rarity from EnumRarity
-     */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.uncommon;
+    	return EnumRarity.UNCOMMON;
 	}
 
-    /**
-     * Do the enchanted shimmer thing
-     */
     @Override
 	public boolean hasEffect(ItemStack par1ItemStack)
     {
@@ -270,21 +258,9 @@ public class ItemTFMagicMap extends ItemMap
         }
     }
 
-	/**
-	 * Add the map number to the tooltip
-	 */
+    @Override
 	public String getItemStackDisplayName(ItemStack par1ItemStack)
 	{
 		return ("" + I18n.translateToLocal(this.getUnlocalizedNameInefficiently(par1ItemStack) + ".name") + " #" + par1ItemStack.getItemDamage()).trim();
-    }
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
     }
 }

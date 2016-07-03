@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
@@ -68,13 +69,11 @@ public abstract class ItemTFBowBase extends ItemBow {
 		return getIcon(stack, renderPass);
 	}
 
-	/**
-	 * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-	 */
-	public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityPlayer, int itemInUseCount) {
+	@Override
+	public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityLivingBase living, int itemInUseCount) {
 		int charge = this.getMaxItemUseDuration(itemstack) - itemInUseCount;
 
-		ArrowLooseEvent event = new ArrowLooseEvent(entityPlayer, itemstack, charge);
+		ArrowLooseEvent event = new ArrowLooseEvent(living, itemstack, charge);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.isCanceled())
 		{
@@ -82,9 +81,9 @@ public abstract class ItemTFBowBase extends ItemBow {
 		}
 		charge = event.charge;
 
-		boolean isNoPickup = entityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY.effectId, itemstack) > 0;
+		boolean isNoPickup = living.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY.effectId, itemstack) > 0;
 
-		if (isNoPickup || entityPlayer.inventory.hasItem(Items.ARROW))
+		if (isNoPickup || living.inventory.hasItem(Items.ARROW))
 		{
 			float velocity = (float)charge / 20.0F;
 			velocity = (velocity * velocity + velocity * 2.0F) / 3.0F;
@@ -99,7 +98,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 				velocity = 1.0F;
 			}
 
-			EntityArrow entityarrow = getArrow(world, entityPlayer, velocity * 2.0F);
+			EntityArrow entityarrow = getArrow(world, living, velocity * 2.0F);
 
 			if (velocity == 1.0F)
 			{
@@ -125,8 +124,8 @@ public abstract class ItemTFBowBase extends ItemBow {
 				entityarrow.setFire(100);
 			}
 
-			itemstack.damageItem(1, entityPlayer);
-			world.playSoundAtEntity(entityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+			itemstack.damageItem(1, living);
+			world.playSoundAtEntity(living, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
 			if (isNoPickup)
 			{
@@ -134,7 +133,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 			}
 			else
 			{
-				entityPlayer.inventory.consumeInventoryItem(Items.ARROW);
+				living.inventory.consumeInventoryItem(Items.ARROW);
 			}
 
 			if (!world.isRemote)

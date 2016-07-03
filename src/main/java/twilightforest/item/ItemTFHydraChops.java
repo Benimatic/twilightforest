@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.entity.EntityLivingBase;
 import twilightforest.TFAchievementPage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,13 +13,13 @@ public class ItemTFHydraChops extends ItemTFFood {
 		super(par2, par3, par4);
 	}
 
-	
-    public ItemStack onEaten(ItemStack itemStack, World world, EntityPlayer player) {
+    @Override
+    public ItemStack onItemUseFinish(ItemStack itemStack, World world, EntityLivingBase living) {
     	// if the player is at zero food, achievements
-        if (player.getFoodStats().getFoodLevel() <= 0) {
-        	player.addStat(TFAchievementPage.twilightHydraChop);
+        if (living.getFoodStats().getFoodLevel() <= 0) {
+        	living.addStat(TFAchievementPage.twilightHydraChop);
         }
         // then normal effects
-        return super.onEaten(itemStack, world, player);
+        return super.onItemUseFinish(itemStack, world, living);
     }
 }

@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import com.google.common.collect.Sets;
 
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
@@ -37,8 +40,8 @@ public class ItemTFChainBlock extends ItemTool {
 	}
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World worldObj, EntityPlayer player) {
-		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldObj, EntityPlayer player, EnumHand hand) {
+		player.setActiveHand(hand);
 
 		if (!worldObj.isRemote && !this.hasLaunchedBlock(stack)) {
 
@@ -54,7 +57,7 @@ public class ItemTFChainBlock extends ItemTool {
 			stack.damageItem(1, player);
 
 		}
-		return stack;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	/**
@@ -119,16 +122,6 @@ public class ItemTFChainBlock extends ItemTool {
 	}
 	
 	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
-
-	/**
 	 * Player, Render pass, and item usage sensitive version of getIconIndex.
 	 *
 	 * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
@@ -147,32 +140,18 @@ public class ItemTFChainBlock extends ItemTool {
 		}
 	}
 	
-	/**
-     * How long it takes to use or consume an item
-     */
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 72000;
     }
     
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.block;
+        return EnumAction.BLOCK;
     }
     
-
-    /**
-     * Called when a entity tries to play the 'swing' animation.
-     *
-     * @param entityLiving The entity swinging the item.
-     * @param stack The Item stack
-     * @return True to cancel any further processing by EntityLiving
-     */
 	@Override
 	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
 		return false;
@@ -189,9 +168,6 @@ public class ItemTFChainBlock extends ItemTool {
         }
     }
 	
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {

@@ -4,7 +4,9 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -21,16 +23,12 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
 	
     protected ItemTFEmptyMazeMap(boolean mapOres)
     {
-        super();
 		this.setCreativeTab(TFItems.creativeTab);
         this.mapOres = mapOres;
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     @Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, EnumHand hand)
     {
         ItemStack mapItem = new ItemStack(mapOres ? TFItems.oreMap : TFItems.mazeMap, 1, par2World.getUniqueDataId(ItemTFMazeMap.STR_ID));
         String var5 = "mazemap_" + mapItem.getItemDamage();
@@ -74,15 +72,5 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
 
             return par1ItemStack;
         }
-    }
-    
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
     }
 }

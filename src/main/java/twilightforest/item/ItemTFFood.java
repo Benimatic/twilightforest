@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -88,12 +89,10 @@ public class ItemTFFood extends ItemFood {
         this.setMaxStackSize(1);
 	}
 
-	/**
-	 * Give a bowl back if we are soup
-	 */
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+	@Override
+    public ItemStack onItemUseFinish(ItemStack par1ItemStack, World par2World, EntityLivingBase living)
     {
-        super.onEaten(par1ItemStack, par2World, par3EntityPlayer);
+        super.onItemUseFinish(par1ItemStack, par2World, living);
         
         if (isSoup)
         {

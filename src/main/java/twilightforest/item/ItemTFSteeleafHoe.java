@@ -11,9 +11,6 @@ public class ItemTFSteeleafHoe extends ItemHoe {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
     
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {

@@ -22,32 +22,20 @@ public class ItemTFFierySword extends ItemSword {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	//istack.addEnchantment(Enchantments.FIREASPECT, 1);
         par3List.add(istack);
     }
     
-    /**
-     * Return an item rarity from EnumRarity
-     * 
-     * This is automatically rare
-     */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+    	return EnumRarity.RARE;
 	}
 
     
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
@@ -55,20 +43,6 @@ public class ItemTFFierySword extends ItemSword {
         return par2ItemStack.getItem() == TFItems.fieryIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
-    
-    /**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
-     */
     @Override
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
@@ -96,12 +70,9 @@ public class ItemTFFierySword extends ItemSword {
 		return result;
 	}
     
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add(I18n.translateToLocal(getUnlocalizedName() + ".tooltip"));
 	}

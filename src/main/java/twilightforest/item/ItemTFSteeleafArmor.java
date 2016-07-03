@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -16,21 +17,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFSteeleafArmor extends ItemArmor {
 
-	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, int armorType) {
+	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, renderIndex, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-	/**
-	 * Return an item rarity from EnumRarity
-	 */    
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot, String layer) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
 		if(itemstack.getItem() == TFItems.steeleafPlate || itemstack.getItem() == TFItems.steeleafHelm || itemstack.getItem() == TFItems.steeleafBoots)
 		{
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
@@ -42,48 +40,30 @@ public class ItemTFSteeleafArmor extends ItemArmor {
 		return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
 	}
 	
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	switch (this.armorType) {
-    	case 0:
+    	case HEAD:
     		istack.addEnchantment(Enchantments.PROJECTILEPROTECTION, 2);
             break;	
-    	case 1:
+    	case CHEST:
     		istack.addEnchantment(Enchantments.BLASTPROTECTION, 2);
             break;	
-    	case 2:
+    	case LEGS:
     		istack.addEnchantment(Enchantments.FIREPROTECTION, 2);
             break;	
-    	case 3:
+    	case FEET:
     		istack.addEnchantment(Enchantments.FEATHERFALLING, 2);
             break;	
     	}
     	par3List.add(istack);
     }
 
-    
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
     	// repair with steeleaf ingots
         return par2ItemStack.getItem() == TFItems.steeleafIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
     }
 }

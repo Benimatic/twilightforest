@@ -14,6 +14,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
@@ -27,7 +29,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFScepterLifeDrain extends ItemTF {
 
 	protected ItemTFScepterLifeDrain() {
-		super();
         this.maxStackSize = 1;
         this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -35,7 +36,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	}
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player, EnumHand hand) {
 		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) {
 			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		}
@@ -116,19 +117,19 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	
 	
 	@Override
-	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-		World worldObj = player.worldObj;
+	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
+		World worldObj = living.worldObj;
 		
 		if (stack.getItemDamage() >= this.getMaxDamage()) {
 			// do not use
-			player.stopUsingItem();
+			living.stopUsingItem();
 			return;
 		}
 
 		if (count % 5 == 0) {
 
 			// is the player looking at an entity
-			Entity pointedEntity = getPlayerLookTarget(worldObj, player);
+			Entity pointedEntity = getPlayerLookTarget(worldObj, living);
 
 			if (pointedEntity != null && pointedEntity instanceof EntityLivingBase) {
 				EntityLivingBase target =  (EntityLivingBase)pointedEntity;
@@ -138,7 +139,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 					if (target.getHealth() <= 3) {
 						// make it explode
 
-						makeRedMagicTrail(worldObj,  player.posX, player.posY + player.getEyeHeight(), player.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
+						makeRedMagicTrail(worldObj,  living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
 						if (target instanceof EntityLiving)
 						{
 							((EntityLiving) target).spawnExplosionParticle();
@@ -147,17 +148,17 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 						animateTargetShatter(worldObj, (EntityLivingBase) target);
 						if (!worldObj.isRemote) {
 							target.setDead();
-							target.onDeath(DamageSource.causeIndirectMagicDamage(player, player));
+							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));
 						}
-						player.stopUsingItem();
+						living.stopUsingItem();
 					}
 					else {
 						// we have hit this creature recently
 						if (!worldObj.isRemote) {
-							target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(player, player), 3);
+							target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 3);
 
 							// only do lifting effect on creatures weaker than the player
-							if (getMaxHealth(target) <= getMaxHealth(player)) {
+							if (getMaxHealth(target) <= getMaxHealth(living)) {
 								target.motionX = 0;
 								target.motionY = 0.2;
 								target.motionZ = 0;
@@ -167,24 +168,24 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 
 							if (count % 10 == 0) {
 								// heal the player
-								player.heal(1);
+								living.heal(1);
 								// and give foods
-								player.getFoodStats().addStats(1, 0.1F);
+								living.getFoodStats().addStats(1, 0.1F);
 							}
 						}
 					}
 				}
 				else {
 					// this is a new creature to start draining
-					makeRedMagicTrail(worldObj,  player.posX, player.posY + player.getEyeHeight(), player.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
+					makeRedMagicTrail(worldObj,  living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
 
-					worldObj.playSoundAtEntity(player, "fire.ignite", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
+					worldObj.playSoundAtEntity(living, "fire.ignite", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
 
 					if (!worldObj.isRemote) {
-						target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(player, player), 1);
+						target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 1);
 						
 						// only do lifting effect on creatures weaker than the player
-						if (getMaxHealth(target) <= getMaxHealth(player)) {
+						if (getMaxHealth(target) <= getMaxHealth(living)) {
 							target.motionX = 0;
 							target.motionY = 0.2;
 							target.motionZ = 0;
@@ -195,7 +196,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 				}
 
 				if (!worldObj.isRemote) {
-					stack.damageItem(1, player);
+					stack.damageItem(1, living);
 				}
 
 			}
@@ -227,50 +228,27 @@ public class ItemTFScepterLifeDrain extends ItemTF {
     	}
 	}
 	
-    /**
-     * How long it takes to use or consume an item
-     */
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 72000;
     }
     
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
 
-    
-    /**
-     * Return an item rarity from EnumRarity
-     */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+    	return EnumRarity.RARE;
 	}
 
-    /**
-     * Display charges left in tooltip
-     */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<ItemStack> par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
 	}
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

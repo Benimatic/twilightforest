@@ -30,7 +30,6 @@ public class ItemTFMazeMap extends ItemMap
 
 	protected ItemTFMazeMap(boolean par2MapOres)
     {
-        super();
         this.mapOres = par2MapOres;
 		//this.setCreativeTab(TFItems.creativeTab);
     }
@@ -214,10 +213,7 @@ public class ItemTFMazeMap extends ItemMap
         }
     }
 
-    /**
-     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-     * update it's contents.
-     */
+    @Override
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean isActiveItem)
     {
         if (!par2World.isRemote)
@@ -248,9 +244,6 @@ public class ItemTFMazeMap extends ItemMap
         }
     }
 
-    /**
-     * Called when item is crafted/smelted. Used only by maps so far.
-     */
     @Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
@@ -262,21 +255,15 @@ public class ItemTFMazeMap extends ItemMap
         mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
         mapData.zCenter = MathHelper.floor_double(par3EntityPlayer.posZ);
         mapData.scale = 0;
-        mapData.dimension = par2World.provider.dimensionId;
+        mapData.dimension = par2World.provider.getDimension();
         mapData.markDirty();
     }
     
-    /**
-     * Return an item rarity from EnumRarity
-     */    
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return mapOres ? EnumRarity.epic : EnumRarity.uncommon;
+    	return mapOres ? EnumRarity.EPIC : EnumRarity.UNCOMMON;
 	}
     
-    /**
-     * Do the enchanted shimmer thing
-     */
     @Override
 	public boolean hasEffect(ItemStack par1ItemStack)
     {
@@ -306,21 +293,9 @@ public class ItemTFMazeMap extends ItemMap
         }
     }
 
-	/**
-	 * Add the map number to the tooltip
-	 */
+    @Override
 	public String getItemStackDisplayName(ItemStack par1ItemStack)
 	{
 		return ("" + I18n.translateToLocal(this.getUnlocalizedNameInefficiently(par1ItemStack) + ".name") + " #" + par1ItemStack.getItemDamage()).trim();
-    }
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
     }
 }
