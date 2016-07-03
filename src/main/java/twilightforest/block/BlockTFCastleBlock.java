@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,14 +18,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.state.StateProps;
-import twilightforest.block.state.enums.CastleBrickVariant;
+import twilightforest.block.enums.CastleBrickVariant;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 
 
 /**
@@ -36,29 +32,31 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockTFCastleBlock extends Block {
 
-    public BlockTFCastleBlock()
+    public static final PropertyEnum<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
+
+	public BlockTFCastleBlock()
     {
         super(Material.ROCK);
         this.setHardness(100F);
         this.setResistance(15F);
         this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(StateProps.CASTLEBRICK_VARIANT, CastleBrickVariant.NORMAL));
+		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, CastleBrickVariant.NORMAL));
     }
 
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, StateProps.CASTLEBRICK_VARIANT);
+		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(StateProps.CASTLEBRICK_VARIANT).ordinal();
+		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(StateProps.CASTLEBRICK_VARIANT, CastleBrickVariant.values()[meta]);
+		return getDefaultState().withProperty(VARIANT, CastleBrickVariant.values()[meta]);
 	}
 
 	@Override

@@ -21,9 +21,9 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.state.StateProps;
-import twilightforest.block.state.enums.SpawnerVariant;
+import twilightforest.block.enums.SpawnerVariant;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.TFBiomeProvider;
@@ -898,7 +898,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		if (isLeashed()) 
 		{
 			BlockPos home = this.getHomePosition();
-			worldObj.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(StateProps.SPAWNER_VARIANT, SpawnerVariant.NAGA), 2);
+			worldObj.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, SpawnerVariant.NAGA), 2);
 		}
 		setDead();
 	}

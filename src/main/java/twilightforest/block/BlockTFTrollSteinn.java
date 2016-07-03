@@ -1,35 +1,70 @@
 package twilightforest.block;
 
+import java.util.Map;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTFTrollSteinn extends Block {
 
-	private static final int LIGHT_THRESHHOLD = 7;
-	private IIcon blockIconLight;
+    public static final PropertyBool DOWN_LIT = PropertyBool.create("down");
+    public static final PropertyBool UP_LIT = PropertyBool.create("up");
+    public static final PropertyBool NORTH_LIT = PropertyBool.create("north");
+    public static final PropertyBool SOUTH_LIT = PropertyBool.create("south");
+    public static final PropertyBool WEST_LIT = PropertyBool.create("west");
+    public static final PropertyBool EAST_LIT = PropertyBool.create("east");
+
+    private static final Map<EnumFacing, PropertyBool> PROPS = ImmutableMap.<EnumFacing, PropertyBool>builder()
+            .put(EnumFacing.DOWN, DOWN_LIT).put(EnumFacing.UP, UP_LIT)
+            .put(EnumFacing.NORTH, NORTH_LIT).put(EnumFacing.SOUTH, SOUTH_LIT)
+            .put(EnumFacing.WEST, WEST_LIT).put(EnumFacing.EAST, EAST_LIT).build();
+    private static final int LIGHT_THRESHHOLD = 7;
 
 	protected BlockTFTrollSteinn() {
 		super(Material.ROCK);
 
         this.setHardness(2F);
         this.setResistance(15F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-        this.setBlockTextureName(TwilightForestMod.ID + ":trollsteinn");
+        this.setDefaultState(blockState.getBaseState()
+            .withProperty(DOWN_LIT, false).withProperty(UP_LIT, false)
+            .withProperty(NORTH_LIT, false).withProperty(SOUTH_LIT, false)
+            .withProperty(WEST_LIT, false).withProperty(EAST_LIT, false));
 	}
+
+    @Override
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        for (EnumFacing e : EnumFacing.VALUES) {
+            state = state.withProperty(PROPS.get(e), isBlockLit(world, pos.offset(e)));
+        }
+
+        return state;
+    }
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -44,99 +79,60 @@ public class BlockTFTrollSteinn extends Block {
         double pixel = 0.0625D;
         int threshhold = LIGHT_THRESHHOLD;
 
-        for (int side = 0; side < 6; ++side)
+        for (EnumFacing side : EnumFacing.VALUES)
         {
-            double rx = (double)((float)x + random.nextFloat());
-            double ry = (double)((float)y + random.nextFloat());
-            double rz = (double)((float)z + random.nextFloat());
+            double rx = (double)((float)pos.getX() + random.nextFloat());
+            double ry = (double)((float)pos.getY() + random.nextFloat());
+            double rz = (double)((float)pos.getZ() + random.nextFloat());
 
-			if (side == 0 && !world.getBlock(x, y - 1, z).isOpaqueCube() && world.getBlockLightValue(x, y - 1, z) <= threshhold)
+			if (side == EnumFacing.DOWN && !world.getBlockState(pos.down()).isOpaqueCube() && world.getLight(pos.down()) <= threshhold)
             {
-                ry = (double)(y + 0) - pixel;
+                ry = (double)(pos.getY() + 0) - pixel;
             }
 
-            if (side == 1 && !world.getBlock(x, y + 1, z).isOpaqueCube() && world.getBlockLightValue(x, y + 1, z) <= threshhold)
+            if (side == EnumFacing.UP && !world.getBlockState(pos.up()).isOpaqueCube() && world.getLight(pos.up()) <= threshhold)
             {
-                ry = (double)(y + 1) + pixel;
+                ry = (double)(pos.getY() + 1) + pixel;
             }
 
-            if (side == 2 && !world.getBlock(x, y, z + 1).isOpaqueCube() && world.getBlockLightValue(x, y, z + 1) <= threshhold)
+            if (side == EnumFacing.NORTH && !world.getBlockState(pos.north()).isOpaqueCube() && world.getLight(pos.north()) <= threshhold)
             {
-                rz = (double)(z + 1) + pixel;
+                rz = (double)(pos.getZ() + 1) + pixel;
+            }
+            // todo 1.9 discrepancy in original code in these two cases, recheck
+            if (side == EnumFacing.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube() && world.getLight(pos.south()) <= threshhold)
+            {
+                rz = (double)(pos.getZ() + 0) - pixel;
             }
 
-            if (side == 3 && !world.getBlock(x, y, z - 1).isOpaqueCube() && world.getBlockLightValue(x, y, z - 1) <= threshhold)
+            if (side == EnumFacing.WEST && !world.getBlockState(pos.west()).isOpaqueCube() && world.getLight(pos.west()) <= threshhold)
             {
-                rz = (double)(z + 0) - pixel;
+                rx = (double)(pos.getX() + 1) + pixel;
+            }
+            // todo 1.9 discrepancy in original code in these two cases, recheck
+            if (side == EnumFacing.EAST && !world.getBlockState(pos.east()).isOpaqueCube() && world.getLight(pos.east()) <= threshhold)
+            {
+                rx = (double)(pos.getX() + 0) - pixel;
             }
 
-            if (side == 4 && !world.getBlock(x + 1, y, z).isOpaqueCube() && world.getBlockLightValue(x + 1, y, z) <= threshhold)
+            if (rx < (double)pos.getX() || rx > (double)(pos.getX() + 1) || ry < 0.0D || ry > (double)(pos.getY() + 1) || rz < (double)pos.getZ() || rz > (double)(pos.getZ() + 1))
             {
-                rx = (double)(x + 1) + pixel;
-            }
-
-            if (side == 5 && !world.getBlock(x - 1, y, z).isOpaqueCube() && world.getBlockLightValue(x - 1, y, z) <= threshhold)
-            {
-                rx = (double)(x + 0) - pixel;
-            }
-
-            if (rx < (double)x || rx > (double)(x + 1) || ry < 0.0D || ry > (double)(y + 1) || rz < (double)z || rz > (double)(z + 1))
-            {
-                world.spawnParticle("reddust", rx, ry, rz, 0.25D, -1.0D, 0.5D);
+                world.spawnParticle(EnumParticleTypes.REDSTONE, rx, ry, rz, 0.25D, -1.0D, 0.5D);
             }
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        
-		// check brightness for the side
-		if (side == 0 && isBlockLit(world, x, y - 1, z)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 1 && isBlockLit(world, x, y + 1, z)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 2 && isBlockLit(world, x, y, z - 1)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 3 && isBlockLit(world, x, y, z + 1)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 4 && isBlockLit(world, x - 1, y, z)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 5 && isBlockLit(world, x + 1, y, z)) {
-            return this.blockIconLight;
-        }
-    	
-        return this.getIcon(side, world.getBlockMetadata(x, y, z));
     }
 	
-    private boolean isBlockLit(IBlockAccess world, int x, int y, int z) {
+    private boolean isBlockLit(IBlockAccess world, BlockPos pos) {
         int threshhold = LIGHT_THRESHHOLD << 4;
 
-        if (world.getBlock(x, y, z).isOpaqueCube()) {
+        if (world.getBlockState(pos).isOpaqueCube()) {
     		return false;
         } else {
-        	int light = world.getLightBrightnessForSkyBlocks(x, y, z, 0);
+        	int light = world.getCombinedLight(pos, 0);
             int sky = light % 65536;
             int block = light / 65536;
         	
         	return sky > threshhold || block > threshhold;
         }
 	}
-
-
-	@Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.blockIcon = par1IconRegister.registerIcon(this.getTextureName());
-        this.blockIconLight = par1IconRegister.registerIcon(this.getTextureName() + "_light");
-    }
 }

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockCompressed;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.MapColor;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import twilightforest.TwilightForestMod;
@@ -11,6 +12,8 @@ import twilightforest.item.ItemBlockTFMeta;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TFBlocks {
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
     public static Block log;
     public static Block leaves;

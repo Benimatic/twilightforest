@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,6 +28,7 @@ public class BlockTFAuroraBrick extends Block {
 	
 	private static IIcon[] icons;
 
+	public static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 15);
 
 	public BlockTFAuroraBrick() {
 		super(Material.PACKED_ICE);
@@ -44,12 +46,12 @@ public class BlockTFAuroraBrick extends Block {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(StateProps.AURORA_VARIANT);
+		return state.getValue(VARIANT);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(StateProps.AURORA_VARIANT, MathHelper.clamp_int(meta, 0, 15));
+		return getDefaultState().withProperty(VARIANT, MathHelper.clamp_int(meta, 0, 15));
 	}
 
 	@Override
@@ -149,6 +151,6 @@ public class BlockTFAuroraBrick extends Block {
     @Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-		return getDefaultState().withProperty(StateProps.AURORA_VARIANT, Math.abs(pos.getX() + pos.getZ()) % 16);
+		return getDefaultState().withProperty(VARIANT, Math.abs(pos.getX() + pos.getZ()) % 16);
     }
 }

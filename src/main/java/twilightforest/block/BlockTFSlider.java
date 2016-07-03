@@ -32,9 +32,6 @@ public class BlockTFSlider extends BlockRotatedPillar {
 	private static final int OFFSET_TIME = 20;
 	private static final int PLAYER_RANGE = 32;
 	private static final float BLOCK_DAMAGE = 5;
-	private IIcon horiIcon;
-	private IIcon vertIcon;
-	private IIcon topIcon;
 
 	protected BlockTFSlider() {
 		super(Material.IRON);
@@ -53,12 +50,12 @@ public class BlockTFSlider extends BlockRotatedPillar {
     	float inset = 5F;
     	
 		switch (rotation) {
-    	case 0:
+    	case Y:
     	default:
         	return new AxisAlignedBB(x + pixel * inset, y, z + pixel * inset, x + 1F - pixel * inset, y + 1F, z + 1F - pixel * inset);
-    	case 4:
+    	case X:
         	return new AxisAlignedBB(x, y + pixel * inset, z + pixel * inset, x + 1F, y + 1F - pixel * inset, z + 1F - pixel * inset);
-    	case 8:
+    	case Z:
         	return new AxisAlignedBB(x + pixel * inset, y + pixel * inset, z, x + 1F - pixel * inset, y + 1F - pixel * inset, z + 1F);
     	}
 
@@ -107,85 +104,6 @@ public class BlockTFSlider extends BlockRotatedPillar {
         return false;
     }
     
-    /**
-     * The type of render function that is called for this block
-     */
-    public int getRenderType()
-    {
-        return 0;
-    }
-    
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        int rotation = meta & 12;
-        
-        if (rotation == 0) {
-        	switch (side) {
-        	case 0:
-        	case 1:
-        		return this.topIcon;
-        	default:
-        		return this.vertIcon;
-        	}
-        } else if (rotation == 4) {
-        	switch (side) {
-        	case 4:
-        	case 5:
-        		return this.topIcon;
-        	default:
-        		return this.horiIcon;
-        	}
-        } else { // rotation == 8
-        	switch (side) {
-        	case 2:
-        	case 3:
-        		return this.topIcon;
-        	case 0:
-        	case 1:     
-        		return this.vertIcon;
-        	default:
-        		return this.horiIcon;
-        	}
-        }
-        
-        
-//        int type = 0;
-//        return rotation == 0 && (side == 1 || side == 0) ? this.getTopIcon(type) : (rotation == 4 && (side == 5 || side == 4) ? this.getTopIcon(type) : (rotation == 8 && (side == 2 || side == 3) ? this.getTopIcon(type) : this.getSideIcon(type)));
-    }
-
-    @SideOnly(Side.CLIENT)
-	@Override
-    protected IIcon getSideIcon(int meta)
-    {
-        if ((meta & 12) == 0) {
-            return this.horiIcon;
-        } else if ((meta & 12) == 8) {
-            return this.horiIcon;
-        }
-        return this.vertIcon;
-    }
-
-    @SideOnly(Side.CLIENT)
-	@Override
-    protected IIcon getTopIcon(int p_150161_1_)
-    {
-        return this.topIcon;
-    }
-    
-    
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.horiIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":slider_h");
-		this.vertIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":slider_v");
-		this.topIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":slider_top");
-	}
-	
     @Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random par5Random)
     {

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,8 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import twilightforest.block.state.StateProps;
-import twilightforest.block.state.enums.SpawnerVariant;
+import twilightforest.block.enums.SpawnerVariant;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFHydraSpawner;
 import twilightforest.tileentity.TileEntityTFKnightPhantomsSpawner;
@@ -27,9 +26,9 @@ import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-
-
 public class BlockTFBossSpawner extends Block {
+
+    public static final PropertyEnum<SpawnerVariant> VARIANT = PropertyEnum.create("variant", SpawnerVariant.class);
 
 	protected BlockTFBossSpawner()
 	{
@@ -37,17 +36,17 @@ public class BlockTFBossSpawner extends Block {
 		this.setHardness(20F);
 		//this.setResistance(10F);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(StateProps.SPAWNER_VARIANT, SpawnerVariant.NAGA));
+		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, SpawnerVariant.NAGA));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(StateProps.SPAWNER_VARIANT).ordinal();
+		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(StateProps.SPAWNER_VARIANT, SpawnerVariant.values()[meta]);
+		return getDefaultState().withProperty(VARIANT, SpawnerVariant.values()[meta]);
 	}
 
 	@Override
@@ -59,7 +58,7 @@ public class BlockTFBossSpawner extends Block {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
     {
-		switch (state.getValue(StateProps.SPAWNER_VARIANT)) {
+		switch (state.getValue(VARIANT)) {
 			case NAGA: return new TileEntityTFNagaSpawner();
 			case LICH: return new TileEntityTFLichSpawner();
 			case HYDRA: return new TileEntityTFHydraSpawner();
