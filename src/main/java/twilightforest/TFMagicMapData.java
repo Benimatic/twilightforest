@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.Vec4b;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import twilightforest.world.TFWorldChunkManager;
@@ -13,16 +14,13 @@ public class TFMagicMapData extends MapData
 {
 
     private static final int FEATURE_DATA_BYTE = 18;
-	public List<MapCoord> featuresVisibleOnMap = new ArrayList<MapCoord>();
+	public List<Vec4b> featuresVisibleOnMap = new ArrayList<>();
 	
     public TFMagicMapData(String par1Str)
     {
         super(par1Str);
     }
     
-    /**
-     * reads in data from the NBTTagCompound into this MapDataBase
-     */
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readFromNBT(par1NBTTagCompound);
@@ -36,18 +34,16 @@ public class TFMagicMapData extends MapData
 //		}
 	}
 
-    /**
-     * write data to NBTTagCompound from this MapDataBase, similar to Entities and TileEntities
-     */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeToNBT(par1NBTTagCompound);
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
+		par1NBTTagCompound = super.writeToNBT(par1NBTTagCompound);
 		
 		if (this.featuresVisibleOnMap.size() > 0) {
 			byte[] featureStorage = makeFeatureStorageArray();
 			par1NBTTagCompound.setByteArray("features", featureStorage);
 		}
 
+        return par1NBTTagCompound;
 	}
 
 
@@ -70,8 +66,8 @@ public class TFMagicMapData extends MapData
             boolean featureFound = false;
             
             // look for a feature already at those coordinates
-            for (MapCoord existingCoord : featuresVisibleOnMap) {
-            	if (existingCoord.centerX == mapX && existingCoord.centerZ == mapZ) {
+            for (Vec4b existingCoord : featuresVisibleOnMap) {
+            	if (existingCoord.getX() == mapX && existingCoord.getY() == mapZ) {
             		featureFound = true;
             	}
             }
@@ -79,7 +75,7 @@ public class TFMagicMapData extends MapData
             // if we didn't find it, add it
             if (!featureFound)
             {
-                this.featuresVisibleOnMap.add(new MapCoord(markerIcon, mapX, mapZ, mapRotation));
+                this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
             }
         }
     }
@@ -89,9 +85,9 @@ public class TFMagicMapData extends MapData
      */
     public void checkExistingFeatures(World world)
     {
-    	ArrayList<MapCoord> toRemove = null;
+    	ArrayList<Vec4b> toRemove = null;
 
-            for (MapCoord coord : featuresVisibleOnMap) 
+            for (Vec4b coord : featuresVisibleOnMap)
             {
 
             	//System.out.printf("Existing feature at %d, %d.\n", coord.centerX,  coord.centerZ);
@@ -104,11 +100,11 @@ public class TFMagicMapData extends MapData
         			TFWorldChunkManager tfManager  = (TFWorldChunkManager) world.getBiomeProvider();
         			coord.iconSize = (byte) tfManager.getFeatureID(worldX, worldZ, world);
         			
-        			if (coord.iconSize == 0)
+        			if (coord.getType() == 0)
         			{
         				if (toRemove == null)
         				{
-        					toRemove = new ArrayList<MapCoord>();
+        					toRemove = new ArrayList<>();
         				}
         				toRemove.add(coord);
         				
@@ -140,7 +136,7 @@ public class TFMagicMapData extends MapData
                 byte mapX = par1ArrayOfByte[i * 3 + 2];
                 byte mapZ = par1ArrayOfByte[i * 3 + 3];
                 byte mapRotation = 8;
-                this.featuresVisibleOnMap.add(new MapCoord(markerIcon, mapX, mapZ, mapRotation));
+                this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
             }
         }
         else
@@ -159,10 +155,10 @@ public class TFMagicMapData extends MapData
 
         for (int i = 0; i < featuresVisibleOnMap.size(); ++i)
         {
-            MapCoord featureCoord = this.featuresVisibleOnMap.get(i);
-            storage[i * 3 + 1] = (featureCoord.iconSize);
-            storage[i * 3 + 2] = featureCoord.centerX;
-            storage[i * 3 + 3] = featureCoord.centerZ;
+            Vec4b featureCoord = this.featuresVisibleOnMap.get(i);
+            storage[i * 3 + 1] = (featureCoord.getType());
+            storage[i * 3 + 2] = featureCoord.getX();
+            storage[i * 3 + 3] = featureCoord.getY();
         }
         
         return storage;

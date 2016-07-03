@@ -24,6 +24,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -268,15 +269,15 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void harvestDrops(HarvestDropsEvent event) {
-		if (event.harvester != null && event.harvester.inventory.getCurrentItem() != null && event.harvester.inventory.getCurrentItem().getItem().func_150897_b(event.block)) {
-			if (event.harvester.inventory.getCurrentItem().getItem() == TFItems.fieryPick) {
+		if (event.getHarvester() != null && event.getHarvester().inventory.getCurrentItem() != null && event.getHarvester().inventory.getCurrentItem().getItem().func_150897_b(event.block)) {
+			if (event.getHarvester().inventory.getCurrentItem().getItem() == TFItems.fieryPick) {
 				ArrayList<ItemStack> removeThese = new ArrayList<ItemStack>(1);
 				ArrayList<ItemStack> addThese = new ArrayList<ItemStack>(1);
 
-				for (ItemStack input : event.drops)
+				for (ItemStack input : event.getDrops())
 				{
 					// does it smelt?
-					ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(input);
+					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
 					if (result != null)
 					{
 						addThese.add(new ItemStack(result.getItem(), input.stackSize));
@@ -288,20 +289,20 @@ public class TFEventListener {
 				}
 
 				// remove things we've decided to remove
-				event.drops.removeAll(removeThese);
+				event.getDrops().removeAll(removeThese);
 				
 				// add things we add
-				event.drops.addAll(addThese);
+				event.getDrops().addAll(addThese);
 			} 
 		} 
 		
 		// this flag is set in reaction to the breakBlock event, but we need to remove the drops in this event
-		if (this.shouldMakeGiantCobble && event.drops.size() > 0) {
+		if (this.shouldMakeGiantCobble && event.getDrops().size() > 0) {
 			// turn the next 64 cobblestone drops into one giant cobble
-			if (event.drops.get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
-				event.drops.remove(0);
+			if (event.getDrops().get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
+				event.getDrops().remove(0);
 				if (this.amountOfCobbleToReplace == 64) {
-					event.drops.add(new ItemStack(TFBlocks.giantCobble));
+					event.getDrops().add(new ItemStack(TFBlocks.giantCobble));
 				}
 				
 				this.amountOfCobbleToReplace--;
@@ -507,7 +508,7 @@ public class TFEventListener {
 		{
             if (!event.getWorld().isRemote)
             {
-                ((BlockSapling)TFBlocks.sapling).func_149878_d(event.getWorld(), event.x, event.y, event.z, event.getWorld().rand);
+                ((BlockSapling)TFBlocks.sapling).grow(event.getWorld(), event.getPos(), event.getBlock(), event.getWorld().rand);
 
                 event.setResult(Result.ALLOW);
             }
@@ -745,7 +746,7 @@ public class TFEventListener {
 	    	int bz = (event.z >> 2) << 2;
 	    	
 	    	// pre-check for cobble!
-			boolean allCobble = event.block.getItemDropped(event.blockMetadata, event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
+			boolean allCobble = event.getState().getBlock().getItemDropped(event.getState(), event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
 	    	for (int dx = 0; dx < 4; dx++) {
 	    		for (int dy = 0; dy < 4; dy++) {
 	    			for (int dz = 0; dz < 4; dz++) {
@@ -777,7 +778,7 @@ public class TFEventListener {
 	    					if (event.getPlayer() instanceof EntityPlayerMP) {
 	    						EntityPlayerMP playerMP = (EntityPlayerMP)event.getPlayer();
 	    						
-	    						playerMP.theItemInWorldManager.tryHarvestBlock(bx + dx, by + dy, bz + dz);
+	    						playerMP.interactionManager.tryHarvestBlock(bx + dx, by + dy, bz + dz);
 	    					}
 	    				}
 	    			}
@@ -971,7 +972,7 @@ public class TFEventListener {
 		if (!event.getWorld().isRemote && !event.getWorld().getGameRules().hasRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			FMLLog.info("[TwilightForest] Loaded a world with the tfEnforcedProgression game rule not defined.  Defining it.");
 			
-			event.getWorld().getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, "true");
+			event.getWorld().getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, "true", GameRules.ValueType.BOOLEAN_VALUE);
 		}
 	}
 	
