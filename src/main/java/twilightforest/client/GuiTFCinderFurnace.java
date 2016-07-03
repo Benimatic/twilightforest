@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -27,14 +28,10 @@ public class GuiTFCinderFurnace extends GuiContainer
         this.tileFurnace = furnace;
     }
 
-    public GuiTFCinderFurnace(InventoryPlayer inventory, World world, int x,
-		int y, int z) {
-    	this(inventory, (TileEntityTFCinderFurnace)world.getTileEntity(x, y, z));
+    public GuiTFCinderFurnace(InventoryPlayer inventory, World world, BlockPos pos) {
+    	this(inventory, (TileEntityTFCinderFurnace)world.getTileEntity(pos));
     }	
 
-	/**
-     * Draw the foreground layer for the GuiContainer (everything in front of the items)
-     */
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {

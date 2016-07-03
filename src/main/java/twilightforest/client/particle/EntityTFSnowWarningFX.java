@@ -9,10 +9,6 @@ public class EntityTFSnowWarningFX extends EntityTFSnowFX {
 		this.particleMaxAge = 50;
 	}
 
-	
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
     public void onUpdate()
     {

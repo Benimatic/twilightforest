@@ -67,7 +67,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
         GL11.glPopMatrix();
         
         // show the costs if there are any
-        FontRenderer fontRendererObj = this.mc.fontRenderer;
+        FontRenderer fontRendererObj = this.mc.fontRendererObj;
         RenderHelper.disableStandardItemLighting();
         
         int costVal =  tfContainer.getUncraftingCost();
@@ -113,8 +113,8 @@ public class GuiTFGoblinCrafting extends GuiContainer {
         this.zLevel = 50.0F;
         itemRender.zLevel = 50.0F;
 
-        itemRender.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemStackToRender, screenX, screenY);
-        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemStackToRender, screenX, screenY);
+        itemRender.renderItemIntoGUI(itemStackToRender, screenX, screenY);
+        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, itemStackToRender, screenX, screenY, "");
         
         boolean itemBroken = false;
         

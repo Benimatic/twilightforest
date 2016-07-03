@@ -1,9 +1,10 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.EntityEnchantmentTableParticleFX;
+import net.minecraft.client.particle.ParticleEnchantmentTable;
 import net.minecraft.world.World;
 
-public class EntityTFLeafRuneFX extends EntityEnchantmentTableParticleFX {
+public class EntityTFLeafRuneFX extends ParticleEnchantmentTable {
 
 	public EntityTFLeafRuneFX(World world, double x, double y, double z, double velX, double velY, double velZ)
 	{
@@ -17,10 +18,7 @@ public class EntityTFLeafRuneFX extends EntityEnchantmentTableParticleFX {
 		this.noClip = false;
 	}
 
-	
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
     public void onUpdate()
     {
         this.prevPosX = this.posX;
@@ -33,7 +31,7 @@ public class EntityTFLeafRuneFX extends EntityEnchantmentTableParticleFX {
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
     }
 }

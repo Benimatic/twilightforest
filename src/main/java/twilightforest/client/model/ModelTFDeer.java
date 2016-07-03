@@ -11,7 +11,7 @@ public class ModelTFDeer extends ModelQuadruped
 		super(12, 0.0F);
 
 		// head height for baby
-		field_78145_g = 10F;
+		childYOffset = 10F;
 		
 		head = new ModelRenderer(this, 0, 5);
 		head.addBox(-2F, -8F, -6F, 4, 6, 6, 0F);

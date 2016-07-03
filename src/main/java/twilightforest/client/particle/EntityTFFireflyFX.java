@@ -6,7 +6,10 @@ package twilightforest.client.particle;
 
 
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -15,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 // Referenced classes of package net.minecraft.src:
 //            EntityFX, World, Tessellator
 
-public class EntityTFFireflyFX extends EntityFX
+public class EntityTFFireflyFX extends Particle
 {
 
     public EntityTFFireflyFX(World world, double d, double d1, double d2, 
@@ -47,7 +50,8 @@ public class EntityTFFireflyFX extends EntityFX
         noClip = false;
     }
 
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    @Override
+    public void renderParticle(VertexBuffer buffer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         float f6 = (float)this.particleTextureIndexX / 16.0F;
         float f7 = f6 + 0.0624375F;
@@ -77,7 +81,7 @@ public class EntityTFFireflyFX extends EntityFX
         GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
     }
 
-
+    @Override
     public void onUpdate()
     {
         prevPosX = posX;
@@ -85,7 +89,7 @@ public class EntityTFFireflyFX extends EntityFX
         prevPosZ = posZ;
         if(particleAge++ >= particleMaxAge)
         {
-            setDead();
+            setExpired();
         }
         if (particleAge < fireflyHalfLife)
         {
@@ -104,7 +108,7 @@ public class EntityTFFireflyFX extends EntityFX
         motionX *= 0.95999997854232788D;
         motionY *= 0.95999997854232788D;
         motionZ *= 0.95999997854232788D;
-        if(onGround)
+        if(isCollided)
         {
             motionX *= 0.69999998807907104D;
             motionZ *= 0.69999998807907104D;

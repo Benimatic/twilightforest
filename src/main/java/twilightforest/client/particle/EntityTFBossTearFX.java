@@ -1,7 +1,10 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -10,7 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityTFBossTearFX extends EntityFX
+public class EntityTFBossTearFX extends Particle
 {
     public EntityTFBossTearFX(World par1World, double par2, double par4, double par6, Item par8Item)
     {
@@ -34,19 +37,18 @@ public class EntityTFBossTearFX extends EntityFX
         this.motionZ += par12;
     }
 
+    @Override
     public int getFXLayer()
     {
         return 2;
     }
-    
-    /**
-     * Called to update the entity's position/logic.
-     */
+
+    @Override
     public void onUpdate()
     {
 	    super.onUpdate();    
     	
-        if (this.onGround && rand.nextBoolean())
+        if (this.isCollided && rand.nextBoolean())
         {
         	//worldObj.playSoundEffect(this.posX, this.posY + 1D, this.posZ, "random.fizz", 2.0F, 2.0F);
             //worldObj.spawnParticle("lava", this.posX, this.posY, this.posZ, 0, 0, 0);
@@ -69,7 +71,8 @@ public class EntityTFBossTearFX extends EntityFX
         }
     }
 
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    @Override
+    public void renderParticle(VertexBuffer buffer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         float f6 = ((float)this.particleTextureIndexX) / 16.0F;
         float f7 = f6 + 0.015609375F * 4F;

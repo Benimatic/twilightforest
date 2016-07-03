@@ -11,7 +11,7 @@ public class ModelTFBoar extends ModelQuadruped
 		super(6, 0.0F);
 		
 		// head height for baby
-		field_78145_g = 4F;
+		childYOffset = 4F;
 		
 		head = new ModelRenderer(this, 0, 0);
 		head.addBox(-4F, -2F, -6F, 8, 7, 6, 0F);

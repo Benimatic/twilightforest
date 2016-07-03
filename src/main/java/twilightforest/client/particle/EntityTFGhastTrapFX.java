@@ -1,13 +1,16 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityTFGhastTrapFX extends EntityFX
+public class EntityTFGhastTrapFX extends Particle
 {
     float reddustParticleScale;
 	private double originX;
@@ -46,7 +49,8 @@ public class EntityTFGhastTrapFX extends EntityFX
         this.noClip = false;
     }
 
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    @Override
+    public void renderParticle(VertexBuffer buffer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         float f6 = ((float)this.particleAge + par2) / (float)this.particleMaxAge * 32.0F;
 
@@ -61,7 +65,7 @@ public class EntityTFGhastTrapFX extends EntityFX
         }
 
         this.particleScale = this.reddustParticleScale * f6;
-        super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
+        super.renderParticle(buffer, entity, par2, par3, par4, par5, par6, par7);
     }
 
 //    /**
@@ -91,17 +95,14 @@ public class EntityTFGhastTrapFX extends EntityFX
 //        this.motionY *= 0.9599999785423279D;
 //        this.motionZ *= 0.9599999785423279D;
 //
-//        if (this.onGround)
+//        if (this.isCollided)
 //        {
 //            this.motionX *= 0.699999988079071D;
 //            this.motionZ *= 0.699999988079071D;
 //        }
 //    }
     
-    
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
     public void onUpdate()
     {
     	
@@ -121,7 +122,7 @@ public class EntityTFGhastTrapFX extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
     }
 }
