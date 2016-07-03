@@ -105,20 +105,14 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         this.setPosition(x, y, z);
     }
 
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
     }
 	
-	
-	@SuppressWarnings("unchecked")
 	@Override
     public void onLivingUpdate()
     {
@@ -192,7 +186,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
             double var1 = this.posX + (this.newPosX - this.posX) / this.newPosRotationIncrements;
             double var3 = this.posY + (this.newPosY - this.posY) / this.newPosRotationIncrements;
             double var5 = this.posZ + (this.newPosZ - this.posZ) / this.newPosRotationIncrements;
-            double var7 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - this.rotationYaw);
+            double var7 = MathHelper.wrapDegrees(this.newRotationYaw - this.rotationYaw);
             this.rotationYaw = (float)(this.rotationYaw + var7 / this.newPosRotationIncrements);
             this.rotationPitch = (float)(this.rotationPitch + (this.newRotationPitch - this.rotationPitch) / this.newPosRotationIncrements);
             --this.newPosRotationIncrements;
@@ -224,7 +218,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
             this.moveForward = 0.0F;
             this.randomYawVelocity = 0.0F;
         }
-        else if (this.isClientWorld())
+        else if (this.isServerWorld())
         {
         	this.worldObj.theProfiler.startSection("oldAi");
         	this.updateEntityActionState();
@@ -296,14 +290,14 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         // destroy blocks
         if (!this.worldObj.isRemote)
         {
-            this.destroyBlocksInAABB(this.body.boundingBox);
-            this.destroyBlocksInAABB(this.tail.boundingBox);
+            this.destroyBlocksInAABB(this.body.getEntityBoundingBox());
+            this.destroyBlocksInAABB(this.tail.getEntityBoundingBox());
             
         	for (int i = 0; i < numHeads; i++)
         	{
         		if (hc[i].headEntity != null && hc[i].isActive())
         		{
-        			this.destroyBlocksInAABB(this.hc[i].headEntity.boundingBox);
+        			this.destroyBlocksInAABB(this.hc[i].headEntity.getEntityBoundingBox());
         		}
         	}
         	
@@ -313,7 +307,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         		//
         		if (isUnsteadySurfaceBeneath())
         		{
-        			this.destroyBlocksInAABB(this.boundingBox.offset(0, -1, 0));
+        			this.destroyBlocksInAABB(this.getEntityBoundingBox().offset(0, -1, 0));
 
         		}
         	}
@@ -348,9 +342,6 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         }
     }
     
-    /**
-     * Save to disk.
-     */
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
@@ -359,9 +350,6 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         nbttagcompound.setByte("NumHeads", (byte) countActiveHeads());
     }
 
-    /**
-     * Load from disk.  Return state to roughly where we saved it.
-     */
     @Override
 	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
     {
@@ -370,10 +358,8 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         activateNumberOfHeads(nbttagcompound.getByte("NumHeads"));
     }
 
-
-
 	@Override
-	protected void updateEntityActionState()
+	protected void updateAITasks()
 	{
 //		System.out.println("Calling updateEntityActionState");
 //		System.out.println("Current target = " + currentTarget);
@@ -404,7 +390,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 
 		if (rand.nextFloat() < 0.7F)
 		{
-			EntityPlayer entityplayer1 = worldObj.getClosestVulnerablePlayerToEntity(this, f);
+			EntityPlayer entityplayer1 = worldObj.getNearestAttackablePlayer(this, f, f);
 			//EntityPlayer entityplayer1 = worldObj.getClosestPlayerToEntity(this, f);
 
 			if (entityplayer1 != null)
@@ -485,7 +471,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 	 * Make some of the mechanics harder on hard mode
 	 */
 	private void setDifficultyVariables() {
-		if (worldObj.difficultySetting != EnumDifficulty.HARD)
+		if (worldObj.getDifficulty() != EnumDifficulty.HARD)
 		{
 			EntityTFHydra.HEADS_ACTIVITY_FACTOR = 0.3F;
 		}
@@ -546,7 +532,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		int FLAME_CHANCE = 100;
 		int MORTAR_CHANCE = 160;
 		
-		boolean targetAbove = target.boundingBox.minY > this.boundingBox.maxY;
+		boolean targetAbove = target.getEntityBoundingBox().minY > this.getEntityBoundingBox().maxY;
 
 		// three main heads can do these kinds of attacks
 		for (int i = 0; i < 3; i++)
@@ -729,7 +715,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         double closestRange = -1.0D;
         EntityLivingBase closestEntity = null;
 
-		List<EntityLiving> nearbyEntities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range));
+		List<EntityLivingBase> nearbyEntities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range));
 
 		for (EntityLivingBase nearbyLiving : nearbyEntities)
 		{
@@ -764,7 +750,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         return closestEntity;
     }
     
-    boolean isAnyHeadTargeting(Entity targetEntity)
+    private boolean isAnyHeadTargeting(Entity targetEntity)
     {
     	for (int i = 0; i < numHeads; i++)
     	{

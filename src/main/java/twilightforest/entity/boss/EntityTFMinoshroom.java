@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -16,32 +17,23 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		
         this.experienceValue = 100;
         
-        this.setCurrentItemOrArmor(0, new ItemStack(TFItems.minotaurAxe));
-        this.equipmentDropChances[0] = 0.0F;
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaurAxe));
+        this.setDropChance(EntityEquipmentSlot.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
 	}
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(120.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120.0D);
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     @Override
 	protected Item getDropItem()
     {
         return TFItems.meefStroganoff;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     @Override
 	protected void dropFewItems(boolean par1, int par2)
     {
@@ -53,24 +45,10 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
         }
     }
     
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
     @Override
 	protected boolean canDespawn()
     {
         return false;
     }
-    
-    /**
-     * Drop the equipment for this entity.
-     */
-    protected void dropEquipment(boolean par1, int par2)
-    {
-        super.dropEquipment(par1, par2);
-        this.entityDropItem(new ItemStack(TFItems.minotaurAxe), 0.0F);
 
-    }
-
-    
 }

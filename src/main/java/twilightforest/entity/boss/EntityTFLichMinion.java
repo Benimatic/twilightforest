@@ -5,11 +5,13 @@ import java.util.List;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -36,12 +38,6 @@ public class EntityTFLichMinion extends EntityZombie {
 		this.master = entityTFLich;
 	}
 
-	
-    /**
-     * Called when we get attacked.
-     * 
-     * If we are hit by a lich, still take the damage, but attack stronger and move faster.
-     */
     @Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		EntityLivingBase prevTarget = getAttackTarget();
@@ -52,8 +48,8 @@ public class EntityTFLichMinion extends EntityZombie {
 				setAttackTarget(prevTarget);
 				setRevengeTarget(prevTarget);
 				// but speed up
-				addPotionEffect(new PotionEffect(MobEffects.MOVESPEED.id, 200, 4));
-				addPotionEffect(new PotionEffect(MobEffects.DAMAGEBOOST.id, 200, 1));
+				addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 4));
+				addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 1));
 			}
 			return true;
 		}
@@ -62,9 +58,6 @@ public class EntityTFLichMinion extends EntityZombie {
 		}
 	}
     
-    /**
-     * Check and see if our master is dead.  If so, die
-     */
     @Override
 	public void onLivingUpdate() {
     	if (master == null) {
@@ -77,7 +70,6 @@ public class EntityTFLichMinion extends EntityZombie {
     	super.onLivingUpdate();
     }
 
-	@SuppressWarnings("unchecked")
 	private void findNewMaster() {
 		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		
@@ -97,9 +89,6 @@ public class EntityTFLichMinion extends EntityZombie {
 		}
 	}
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -107,28 +96,16 @@ public class EntityTFLichMinion extends EntityZombie {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
-	
-	
-//    /**
-//     * Initialize this creature.
-//     */
-//    @Override
-//	public void initCreature()
-//    {
-//        this.addRandomArmor();
-//        this.func_82162_bC();
-//    }
     
-    
-    @Override
-	protected void addRandomArmor()
+    /*@Override todo 1.9 seems to be close copy of super super class
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
         float[] equipChances = new float[] {0.0F, 0.25F, 0.75F, 1F};
     	
         if (this.rand.nextFloat() < equipChances[2]) //this.worldObj.difficultySetting])
         {
             int var1 = this.rand.nextInt(2);
-            float var2 = this.worldObj.difficultySetting == EnumDifficulty.HARD ? 0.1F : 0.25F;
+            float var2 = this.worldObj.getDifficulty() == EnumDifficulty.HARD ? 0.1F : 0.25F;
 
             if (this.rand.nextFloat() < 0.07F)
             {
@@ -156,7 +133,7 @@ public class EntityTFLichMinion extends EntityZombie {
 
                 if (var4 == null)
                 {
-                    Item var5 = getArmorItemForSlot(var3 + 1, var1);
+                    Item var5 = getArmorByChance(var3 + 1, var1);
 
                     if (var5 != null)
                     {
@@ -165,6 +142,6 @@ public class EntityTFLichMinion extends EntityZombie {
                 }
             }
         }
-    }
+    }*/
 
 }

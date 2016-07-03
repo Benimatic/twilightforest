@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -19,9 +20,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -71,17 +73,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 
     }
 	
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-	
+	@Override
     protected void entityInit()
     {
         super.entityInit();
@@ -89,42 +81,31 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         this.dataWatcher.addObject(TIRED_FLAG, Byte.valueOf((byte)0));
     }
     
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.38D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     @Override
 	public void onLivingUpdate()
     {
-    	if (this.riddenByEntity != null)
+    	if (!this.getPassengers().isEmpty())
     	{
     		
             // stop player sneaking so that they can't dismount!
-            if (this.riddenByEntity.isSneaking())
+            if (this.getPassengers().get(0).isSneaking())
             {
             	//System.out.println("Pinch beetle sneaking detected!");
             	
-            	this.riddenByEntity.setSneaking(false);
+            	this.getPassengers().get(0).setSneaking(false);
             }
     	}
-    	else
-    	{
 
-    	}
-    	
     	super.onLivingUpdate();
 
     	// look at things we are holding
@@ -139,7 +120,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	
     	if (this.collisionCounter >= 15) {
     		if (!this.worldObj.isRemote) {
-    			this.destroyBlocksInAABB(this.boundingBox);
+    			this.destroyBlocksInAABB(this.getEntityBoundingBox());
     		}
     		this.collisionCounter = 0;
     	}
@@ -163,7 +144,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	{
     		for (int i = 0; i < 20; i++)
     		{
-    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+    			this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
     		}
     	}
 
@@ -200,24 +181,18 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         }
     }
 	
-	/**
-	 * Pick up things we attack!
-	 */
     @Override
 	public boolean attackEntityAsMob(Entity par1Entity) 
     {
-    	if (this.riddenByEntity == null && par1Entity.ridingEntity == null)
+    	if (this.getPassengers().isEmpty() && par1Entity.getRidingEntity() == null)
     	{
-    		par1Entity.mountEntity(this);
+    		par1Entity.startRiding(this);
     	}
     	
 		return super.attackEntityAsMob(par1Entity);
 	}
     
-    
-    /**
-     * Called when the entity is attacked.
-     */
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
     	// no arrow damage when in ranged mode
@@ -232,10 +207,6 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         return success;
     }
     
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-     * par2 - Level of Looting used to kill this mob.
-     */
     @Override
     protected void dropFewItems(boolean flag, int looting) {
     	Item fur = getDropItem();
@@ -264,23 +235,17 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         return TFItems.alphaFur;
     }
     
-    /**
-     * Put the player out in front of where we are
-     */
     @Override
-	public void updateRiderPosition()
+	public void updatePassenger(Entity passenger)
     {
-        if (this.riddenByEntity != null)
+        if (passenger != null)
         {
         	Vec3d riderPos = this.getRiderPosition();
         	
-            this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
+            passenger.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
         }
     }
     
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
     @Override
 	public double getMountedYOffset()
     {
@@ -306,13 +271,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     		return new Vec3d(this.posX, this.posY, this.posZ);
     	}
     }
-    
-    /**
-     * If a rider of this entity can interact with this entity. Should return true on the
-     * ridden entity if so.
-     *
-     * @return if the entity can be interacted with from a rider
-     */
+
+    @Override
     public boolean canRiderInteract()
     {
         return true;
@@ -431,11 +391,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 
 	}
 
-
-
-    /**
-     * Attack the specified entity using a ranged attack.
-     */
+    @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float par2)
     {
     	if (!this.canRampage) {
@@ -452,7 +408,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     		this.worldObj.spawnEntityInWorld(ice);
     	}
     }
-    
+
+    2Override
     public boolean canDespawn() {
     	return false;
     }
@@ -494,19 +451,17 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         return this.getDataWatcher().getWatchableObjectByte(TIRED_FLAG) == 1;
     }
     
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
-    protected void fall(float par1)
+    @Override
+    public void fall(float par1, float mult)
     {
-        super.fall(par1);
+        super.fall(par1, mult);
         
         if (this.isRampaging()) {
         	// make jump effects
 			this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			
             int i = MathHelper.floor_double(this.posX);
-            int j = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
+            int j = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.getYOffset());
             int k = MathHelper.floor_double(this.posZ);			
 
             this.worldObj.playAuxSFX(2006, i, j, k, 20);
@@ -521,9 +476,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     }
 
 
-	@SuppressWarnings("unchecked")
 	private void hitNearbyEntities() {
-		ArrayList<Entity> nearby = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(5, 0, 5)));
+		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(5, 0, 5));
 		
 		for (Entity entity : nearby) {
 			if (entity instanceof EntityLivingBase) {
@@ -538,10 +492,6 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 		}
 	}
 
-	
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -572,7 +522,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     {
     	BlockPos home = this.getHomePosition();
         nbttagcompound.setTag("Home", newDoubleNBTList(new double[] {
-        		home.posX, home.posY, home.posZ
+        		home.getX(), home.getY(), home.getZ()
             }));
         nbttagcompound.setBoolean("HasHome", this.hasHome());
         super.writeEntityToNBT(nbttagcompound);
@@ -585,10 +535,10 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         if (nbttagcompound.hasKey("Home", 9))
         {
             NBTTagList nbttaglist = nbttagcompound.getTagList("Home", 6);
-            int hx = (int) nbttaglist.func_150309_d(0);
-            int hy = (int) nbttaglist.func_150309_d(1);
-            int hz = (int) nbttaglist.func_150309_d(2);
-            this.setHomeArea(hx, hy, hz, 30);
+            int hx = (int) nbttaglist.getDoubleAt(0);
+            int hy = (int) nbttaglist.getDoubleAt(1);
+            int hz = (int) nbttaglist.getDoubleAt(2);
+            this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 30);
         }
         if (!nbttagcompound.getBoolean("HasHome"))
         {

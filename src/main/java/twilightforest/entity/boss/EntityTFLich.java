@@ -21,6 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -186,37 +187,21 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		this.entityDropItem(goldThing, 0);
 	}
 
-	/**
-     * Sets the Entity inside a web block.
-     * We are immune to webs.
-     */
     @Override
-    public void setInWeb() {
-    	// nope!
-    }
+    public void setInWeb() {}
 
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
     @Override
 	protected boolean canDespawn()
     {
         return false;
     }
 
-    
-    /**
-     * Do not get slowed by lava.
-     */
     @Override
-    public boolean handleLavaMovement()
+    public boolean isInLava()
     {
         return false;
     }
-    
-    /**
-     * Do not get slowed by water.
-     */
+
     @Override
     public boolean isInWater()
     {
@@ -242,9 +227,6 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		}
 	}
 
-    /**
-     * For now we'll just add some cute particles.
-     */
     @Override
 	public void onLivingUpdate() {
         // determine the hand position
@@ -279,7 +261,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
                 blu = 0.00F * sparkle;
         	}
             
-            worldObj.spawnParticle("mobSpell", dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
+            worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
         }
         
 		if (isShadowClone()) {
@@ -307,8 +289,8 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     @Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float damage) {
     	// if we're in a wall, teleport for gosh sakes
-    	if (par1DamageSource.getDamageType() == "inWall" && entityToAttack != null) {
-    		teleportToSightOfEntity(entityToAttack);
+    	if (par1DamageSource.getDamageType() == "inWall" && getAttackTarget() != null) {
+    		teleportToSightOfEntity(getAttackTarget());
     	}
     	
     	if (isShadowClone()) {
@@ -316,7 +298,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     		return false;
     	}
     	
-		Entity prevTarget = this.entityToAttack;
+		EntityLivingBase prevTarget = this.getAttackTarget();
 		
 //		System.out.println("Damage source is " + par1DamageSource);
 //		System.out.println("Damage type is " + par1DamageSource.getDamageType());
@@ -344,7 +326,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 				// HACK for creative mode: but get annoyed at what's causing it.
 				if (par1DamageSource.getEntity() instanceof EntityPlayer) 
 				{
-					this.entityToAttack = par1DamageSource.getEntity();
+					this.setAttackTarget((EntityPlayer) par1DamageSource.getEntity());
 				}
 			}
 			
@@ -355,15 +337,15 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		//TODO: this could better check who is actually attacking against the masterLich variable thing
 		if (super.attackEntityFrom(par1DamageSource, damage)) 
 		{
-			if (entityToAttack instanceof EntityTFLich) {
-				this.entityToAttack = prevTarget;
+			if (getAttackTarget() instanceof EntityTFLich) {
+				this.setAttackTarget(prevTarget);
 			}
 			
 			// if we were attacked successfully during phase 1 or 2, teleport
 			// during phase 3, 1 in 4 chance of teleport
 			if (this.getPhase() < 3 || rand.nextInt(4) == 0)
 			{
-				this.teleportToSightOfEntity(this.entityToAttack);
+				this.teleportToSightOfEntity(getAttackTarget());
 			}
 			
 			return true;
@@ -992,34 +974,24 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		this.dataWatcher.updateObject(DATA_ATTACKTYPE, Byte.valueOf((byte) attackType));
 	}
 
-	/**
-     * Returns the sound this mob makes while it's alive.
-     */
     @Override
-	protected String getLivingSound()
+	protected String getAmbientSound()
     {
         return "mob.blaze.breathe";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     @Override
 	protected String getHurtSound()
     {
         return "mob.blaze.hit";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     @Override
 	protected String getDeathSound()
     {
         return "mob.blaze.death";
     }
 
-    
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
@@ -1038,10 +1010,6 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         setMinionsToSummon(nbttagcompound.getByte("MinionsToSummon"));
     }
 
-
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -1059,7 +1027,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
 				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 
 				if (nearbyFeature == TFFeature.lichTower) {
 					chunkProvider.setStructureConquered(dx, dy, dz, true);
@@ -1068,16 +1036,6 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		}
 	}
 
-//	@Override
-//	public int getBossHealth() {
-//        return this.dataWatcher.getWatchableObjectInt(EntityTFLich.DATA_BOSSHEALTH);
-//	}
-
-    
-
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
     @Override
 	public EnumCreatureAttribute getCreatureAttribute()
     {

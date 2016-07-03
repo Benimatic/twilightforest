@@ -4,12 +4,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 
 public class EntityTFHydraPart extends EntityLiving {
+    private static final DataParameter<String> PART_NAME = EntityDataManager.createKey(EntityTFHydraPart.class, DataSerializers.STRING);
+
     public EntityTFHydra hydraObj;
 
     public EntityTFHydraPart(World world)
@@ -34,20 +39,18 @@ public class EntityTFHydraPart extends EntityLiving {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(17, "");
+        dataManager.register(PART_NAME, "");
     }
-    
-	
+
     public String getPartName()
     {
-        return dataWatcher.getWatchableObjectString(17);
+        return dataManager.get(PART_NAME);
     }
 
     public void setPartName(String name)
     {
-        dataWatcher.updateObject(17, name);
+        dataManager.set(PART_NAME, name);
     }
-    
 
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
@@ -63,9 +66,6 @@ public class EntityTFHydraPart extends EntityLiving {
         setPartName(nbttagcompound.getString("PartName"));
     }
 
-	/**
-	 * We need this to display bounding boxes
-	 */
     @Override
     public void onUpdate() {
     	if (this.hydraObj != null && this.hydraObj.deathTime > 190)
@@ -87,12 +87,12 @@ public class EntityTFHydraPart extends EntityLiving {
     	
         if (this.newPosRotationIncrements > 0)
         {
-            double var1 = this.posX + (this.newPosX - this.posX) / this.newPosRotationIncrements;
-            double var3 = this.posY + (this.newPosY - this.posY) / this.newPosRotationIncrements;
-            double var5 = this.posZ + (this.newPosZ - this.posZ) / this.newPosRotationIncrements;
-            double var7 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - this.rotationYaw);
+            double var1 = this.posX + (this.interpTargetX - this.posX) / this.newPosRotationIncrements;
+            double var3 = this.posY + (this.interpTargetY - this.posY) / this.newPosRotationIncrements;
+            double var5 = this.posZ + (this.interpTargetZ - this.posZ) / this.newPosRotationIncrements;
+            double var7 = MathHelper.wrapDegrees(this.interpTargetYaw - this.rotationYaw);
             this.rotationYaw = (float)(this.rotationYaw + var7 / this.newPosRotationIncrements);
-            this.rotationPitch = (float)(this.rotationPitch + (this.newRotationPitch - this.rotationPitch) / this.newPosRotationIncrements);
+            this.rotationPitch = (float)(this.rotationPitch + (this.interpTargetPitch - this.rotationPitch) / this.newPosRotationIncrements);
             --this.newPosRotationIncrements;
             this.setPosition(var1, var3, var5);
             this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -119,17 +119,12 @@ public class EntityTFHydraPart extends EntityLiving {
 
     }
 
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1000D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1000D);
     }
-	
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i)
@@ -144,14 +139,12 @@ public class EntityTFHydraPart extends EntityLiving {
 		}
     }
 
+    @Override
     public boolean isEntityEqual(Entity entity)
     {
         return this == entity || hydraObj == entity;
     }
 
-    /**
-     * Sets the rotation of the entity
-     */
     @Override
 	protected void setRotation(float par1, float par2)
     {

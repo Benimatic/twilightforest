@@ -10,8 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
@@ -84,19 +84,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 
 	}
 	
-//    public int getMaxHealth()
-//    {
-//        return 250;
-//    }
-    
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(250); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250);
     }
 	
 	@Override
@@ -107,18 +99,12 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         this.dataWatcher.addObject(DATA_TANTRUM, Byte.valueOf((byte) 0));
     }
 
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
     @Override
 	protected boolean canDespawn()
     {
         return false;
     }
 	
-    /**
-     * Keep health updated
-     */
     @Override
 	public void onUpdate() {
 		
@@ -137,10 +123,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
             }
 		}
     }
-    
-    /**
-     * Called when the entity is attacked.
-     */
+
+	@Override
     public boolean attackEntityFrom(DamageSource source, float damage)
     {
     	// ignore suffocation
@@ -217,7 +201,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		// start raining
 		int rainTime = 300 * 20;
 		
-        WorldInfo worldInfo = MinecraftServer.getServer().worldServers[0].getWorldInfo();
+        WorldInfo worldInfo = worldObj.getWorldInfo();
 		
 		//System.out.println("Starting rain and thunder.  world = " + worldObj);
 		
@@ -308,10 +292,10 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 	/**
      * Altered Ghast AI
      */
-    @SuppressWarnings("unchecked")
-	protected void updateEntityActionState()
+    @Override
+	protected void updateAITasks()
     {
-        if (!this.worldObj.isRemote && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+        if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
             this.setDead();
         }
@@ -672,9 +656,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		}
 	}
 
-	/**
-     * Spit a fireball
-     */
+	@Override
 	protected void spitFireball() {
 		double offsetX = this.targetedEntity.posX - this.posX;
 		double offsetY = this.targetedEntity.boundingBox.minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
@@ -764,20 +746,13 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 				&& worldObj.getBlock(x, y, z) == TFBlocks.towerDevice 
 				&& (worldObj.getBlockMetadata(x, y, z) == BlockTFTowerDevice.META_GHASTTRAP_INACTIVE || worldObj.getBlockMetadata(x, y, z) == BlockTFTowerDevice.META_GHASTTRAP_ACTIVE);
 	}
-    
-    /**
-     * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
-     */
+
     @Override
 	public boolean isBurning()
     {
-    	// never burn
     	return false;
     }
 
-    /**
-     * No point in ever being pushed
-     */
 	@Override
 	public boolean canBePushed() {
 		return false;
@@ -802,17 +777,13 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     	this.damageUntilNextPhase = 48;
     }
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
+    @Override
     protected float getSoundVolume()
     {
         return 16F;
     }
     
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
+    @Override
     protected float getSoundPitch()
     {
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.5F;
@@ -839,10 +810,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         super.readEntityFromNBT(nbttagcompound);
         this.setInTantrum(nbttagcompound.getBoolean("inTantrum"));
     }
-    
-    /**
-     * handles entity death timer, experience orb and particle creation
-     */
+
+	@Override
     protected void onDeathUpdate()
     {
     	super.onDeathUpdate();
@@ -875,7 +844,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 			int dz = chestCoords.posZ;
 
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+			TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 
 			if (nearbyFeature == TFFeature.darkTower) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);

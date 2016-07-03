@@ -1,15 +1,19 @@
 package twilightforest.entity.boss;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -29,9 +33,6 @@ public class EntityTFIceBomb extends EntityThrowable {
 		super(par1World, thrower);
 	}
 
-    /**
-     * Called when this EntityThrowable hits a block or entity.
-     */
 	@Override
 	protected void onImpact(RayTraceResult mop) {
 		if (this.getThrower() != null && this.getThrower() instanceof EntityTFYetiAlpha) {
@@ -71,21 +72,19 @@ public class EntityTFIceBomb extends EntityThrowable {
     /**
      * Freeze water, put snow on snowable surfaces
      */
-	private void doTerrainEffect(int x, int y, int z) {
-		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.WATER) {
-			this.worldObj.setBlock(x, y, z, Blocks.ICE);
+	private void doTerrainEffect(BlockPos pos) {
+		IBlockState state = worldObj.getBlockState(pos);
+		if (state.getMaterial() == Material.WATER) {
+			this.worldObj.setBlockState(pos, Blocks.ICE.getDefaultState());
 		}
-		if (this.worldObj.getBlock(x, y, z).getMaterial() == Material.LAVA) {
-			this.worldObj.setBlock(x, y, z, Blocks.OBSIDIAN);
+		if (state.getMaterial() == Material.LAVA) {
+			this.worldObj.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
 		}
-		if (this.worldObj.isAirBlock(x, y, z) && Blocks.SNOW_LAYER.canPlaceBlockAt(this.worldObj, x, y, z)) {
-			this.worldObj.setBlock(x, y, z, Blocks.SNOW_LAYER);
+		if (this.worldObj.isAirBlock(pos) && Blocks.SNOW_LAYER.canPlaceBlockAt(this.worldObj, pos)) {
+			this.worldObj.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState());
 		}
 	}
 
-	/**
-     * Called to update the entity's position/logic.
-     */
     @Override
 	public void onUpdate()
     {
@@ -149,9 +148,8 @@ public class EntityTFIceBomb extends EntityThrowable {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void hitNearbyEntities() {
-		ArrayList<Entity> nearby = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(3, 2, 3)));
+		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(3, 2, 3));
 		
 		for (Entity entity : nearby) {
 			if (entity instanceof EntityLivingBase && entity != this.getThrower()) {
@@ -159,17 +157,15 @@ public class EntityTFIceBomb extends EntityThrowable {
 				if (entity instanceof EntityTFYeti) {
 					// TODO: make "frozen yeti" entity?
 					entity.setDead();
-					int ix = MathHelper.floor_double(entity.lastTickPosX);
-					int iy = MathHelper.floor_double(entity.lastTickPosY);
-					int iz = MathHelper.floor_double(entity.lastTickPosZ);
-					
-					worldObj.setBlock(ix, iy, iz, Blocks.ICE);
-					worldObj.setBlock(ix, iy + 1, iz, Blocks.ICE);
+					BlockPos pos = new BlockPos(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
+
+					worldObj.setBlockState(pos, Blocks.ICE.getDefaultState());
+					worldObj.setBlockState(pos.up(), Blocks.ICE.getDefaultState());
 					
 				} else {
 					entity.attackEntityFrom(DamageSource.magic, 1);
 					int chillLevel = 2;
-					((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20 * 5, chillLevel, true));
+					((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 5, chillLevel, true, true));
 				}
 				
 			}
@@ -191,9 +187,6 @@ public class EntityTFIceBomb extends EntityThrowable {
         return 0.75F;
     }
     
-    /**
-     * Gets the amount of gravity to apply to the thrown entity with each tick.
-     */
     @Override
 	protected float getGravityVelocity()
     {

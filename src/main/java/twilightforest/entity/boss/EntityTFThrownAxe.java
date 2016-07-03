@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -19,8 +20,6 @@ public class EntityTFThrownAxe extends EntityThrowable  {
 		super(par1World);
         this.setSize(0.5F, 0.5F);
 	}
-
-
 
 	@Override
 	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
@@ -42,7 +41,7 @@ public class EntityTFThrownAxe extends EntityThrowable  {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("largesmoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 		}
 		
 		if (!passThru && !this.worldObj.isRemote)
@@ -51,18 +50,12 @@ public class EntityTFThrownAxe extends EntityThrowable  {
 		}
 	}
 	
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
 	public boolean canBeCollidedWith()
     {
         return true;
     }
     
-    /**
-     * We need to set this so that the player can attack and reflect the bolt
-     */
     @Override
 	public float getCollisionBorderSize()
     {
@@ -76,10 +69,8 @@ public class EntityTFThrownAxe extends EntityThrowable  {
     {
         return 0.1F;
     }
-    
-    /**
-     * Gets the amount of gravity to apply to the thrown entity with each tick.
-     */
+
+	@Override
     protected float getGravityVelocity()
     {
         return 0.001F;

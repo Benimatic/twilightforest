@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
@@ -37,15 +39,12 @@ public class EntityTFHydraMortar extends EntityThrowable {
         this.setSize(0.75F, 0.75F);
 	}
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
 	public void onUpdate()
     {
     	super.onUpdate();
     	
-        this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ); // push out of block
+        this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
 
     	if (this.onGround)
     	{
@@ -74,10 +73,6 @@ public class EntityTFHydraMortar extends EntityThrowable {
 		this.megaBlast = true;
 	}
 
-	
-    /**
-     * Called when this EntityThrowable hits a block or entity.
-     */
 	@Override
 	protected void onImpact(RayTraceResult mop) {
 		if (mop.entityHit == null && !megaBlast)
@@ -94,11 +89,11 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	}
 	
 	@Override
-    public float func_145772_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
+    public float getExplosionResistance(Explosion par1Explosion, World par2World, BlockPos pos, IBlockState state)
     {
-        float var6 = super.func_145772_a(par1Explosion, par2World, par3, par4, par5, par6Block);
+        float var6 = super.getExplosionResistance(par1Explosion, par2World, pos, state);
 
-        if (this.megaBlast && par6Block != Blocks.BEDROCK && par6Block != Blocks.END_PORTAL && par6Block != Blocks.END_PORTAL_FRAME)
+        if (this.megaBlast && state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.END_PORTAL && state.getBlock() != Blocks.END_PORTAL_FRAME)
         {
             var6 = Math.min(0.8F, var6);
         }
@@ -106,8 +101,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
         return var6;
     }
 	
-	@SuppressWarnings("unchecked")
-	protected void detonate()
+	private void detonate()
 	{
 		//this.worldObj.playAuxSFX(2004, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), 32764);
 		
@@ -120,7 +114,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 		if (!worldObj.isRemote)
 		{
 			// damage nearby things
-			List<Entity> nearbyList = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 1.0D, 1.0D)));
+			List<Entity> nearbyList = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D));
 
 			for (Entity nearby : nearbyList)
 			{
@@ -134,9 +128,6 @@ public class EntityTFHydraMortar extends EntityThrowable {
         this.setDead();
     }
 	
-	/**
-	 * Reflect!
-	 */
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
@@ -165,10 +156,6 @@ public class EntityTFHydraMortar extends EntityThrowable {
         }
     }
 	
-	
-	/**
-	 * Return who threw this projectile
-	 */
     @Override
 	public EntityLivingBase getThrower()
     {
@@ -182,18 +169,12 @@ public class EntityTFHydraMortar extends EntityThrowable {
         }
     }
 
-	/**
-	 * Always be on fire!
-	 */
 	@Override
 	public boolean isBurning()
 	{
 		return true;
 	}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
 	public boolean canBeCollidedWith()
     {
@@ -209,9 +190,6 @@ public class EntityTFHydraMortar extends EntityThrowable {
         return 1.5F;
     }
 
-    /**
-     * Gets the amount of gravity to apply to the thrown entity with each tick.
-     */
     @Override
 	protected float getGravityVelocity()
     {

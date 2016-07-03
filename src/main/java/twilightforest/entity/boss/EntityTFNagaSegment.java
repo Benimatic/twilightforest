@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +32,7 @@ public class EntityTFNagaSegment extends Entity {
 	}
 
 	public EntityTFNagaSegment(EntityTFNaga myNaga, int segNum) {
-		this(myNaga.func_82194_d());
+		this(myNaga.getWorld());
 		this.naga = myNaga;
 		this.segment = segNum;
 	}
@@ -62,7 +63,7 @@ public class EntityTFNagaSegment extends Entity {
     	}
 	}
 
-	
+
 	/**
 	 * Skip most of the living update things
 	 */
@@ -148,10 +149,9 @@ public class EntityTFNagaSegment extends Entity {
 
     }
     
-    @SuppressWarnings("unchecked")
 	protected void collideWithOthers()
     {
-        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         for (Entity entity : list)
         {
@@ -182,40 +182,33 @@ public class EntityTFNagaSegment extends Entity {
 
 		
 	}
-    
-    /**
-     * Sets the rotation of the entity
-     */
+
+	@Override
     public void setRotation(float par1, float par2)
     {
-        this.rotationYaw = MathHelper.wrapAngleTo180_float(par1 % 360.0F);
+        this.rotationYaw = MathHelper.wrapDegrees(par1 % 360.0F);
         this.rotationPitch = par2 % 360.0F;
     }
 
-	/**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
+	@Override
     public boolean canBeCollidedWith()
     {
         return true;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
+    @Override
     public boolean canBePushed()
     {
         return false;
     }
     
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
+    @Override
     protected boolean canDespawn()
     {
         return false;
     }
-    
+
+	@Override
     public boolean isEntityEqual(Entity entity)
     {
         return this == entity || this.naga == entity;
@@ -229,12 +222,9 @@ public class EntityTFNagaSegment extends Entity {
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) { }
-    
-	
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    protected void func_145780_a(int par1, int par2, int par3, Block par4)
+
+	@Override
+    protected void playStepSound(BlockPos pos, Block par4)
     {
         ;
     }

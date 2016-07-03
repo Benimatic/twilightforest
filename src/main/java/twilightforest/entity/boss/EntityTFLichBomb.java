@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -21,10 +22,7 @@ public class EntityTFLichBomb extends EntityThrowable {
 		super(par1World);
 	}
 
-
-	/**
-	 * projectile speed
-	 */
+	@Override
     protected float func_40077_c()
     {
         return 0.35F;
@@ -50,42 +48,28 @@ public class EntityTFLichBomb extends EntityThrowable {
 			double dy = posY + sy; 
 			double dz = posZ + sz; 
 
-			worldObj.spawnParticle("flame", dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
+			worldObj.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
 	}
 	
-
-	/**
-	 * Always be on fire!
-	 */
 	@Override
 	public boolean isBurning()
 	{
 		return true;
 	}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
 	public boolean canBeCollidedWith()
     {
         return true;
     }
     
-    /**
-     * We need to set this so that the player can attack and reflect the bolt
-     */
     @Override
 	public float getCollisionBorderSize()
     {
         return 1.0F;
     }
 
-	
-	/**
-	 * Reflect!
-	 */
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
@@ -112,9 +96,6 @@ public class EntityTFLichBomb extends EntityThrowable {
         this.setDead();
 	}
 
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
     protected float getGravityVelocity()
     {

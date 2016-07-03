@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -65,7 +66,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         this.tasks.addTask(1, new EntityAITFHoverSummon(this, EntityPlayer.class, 1.0D));
         this.tasks.addTask(2, new EntityAITFHoverThenDrop(this, EntityPlayer.class, 80, 20));
         this.tasks.addTask(3, new EntityAITFHoverBeam(this, EntityPlayer.class, 80, 100));
-        this.tasks.addTask(6, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, true));
+        this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -85,23 +86,23 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 	}
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
+    @Override
     public boolean canBePushed()
     {
         return false;
     }
 
+	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
     }
-    
+
+	@Override
     protected void entityInit()
     {
         super.entityInit();
@@ -109,52 +110,31 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         this.dataWatcher.addObject(PHASE_FLAG, Byte.valueOf((byte)0));
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
+
     @Override
-    protected String getLivingSound()
+    protected String getAmbientSound()
     {
     	return TwilightForestMod.ID + ":mob.ice.noise";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
+	@Override
     protected String getHurtSound()
     {
     	return TwilightForestMod.ID + ":mob.ice.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
+	@Override
     protected String getDeathSound()
     {
     	return TwilightForestMod.ID + ":mob.ice.death";
     }
-    
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
+
+	@Override
     protected Item getDropItem()
     {
         return Items.SNOWBALL;
     }
     
-    /**
-     * Enchants the entity's armor and held item based on difficulty
-     */
-    protected void enchantEquipment()
-    {
-        super.enchantEquipment();
-    }
-
     public IEntityLivingData onSpawnWithEgg(IEntityLivingData par1EntityLivingData)
     {
     	IEntityLivingData data = super.onSpawnWithEgg(par1EntityLivingData);
@@ -163,10 +143,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
     }
     
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
+    @Override
     public void onLivingUpdate()
     {
     	super.onLivingUpdate();
@@ -282,7 +259,6 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		}
     }
 
-    
 	@Override
 	protected void dropFewItems(boolean par1, int par2) {
     	dropBow();
@@ -314,9 +290,6 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		}
 	}
 	
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -334,7 +307,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
 				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 
 				if (nearbyFeature == TFFeature.lichTower) {
 					chunkProvider.setStructureConquered(dx, dy, dz, true);
@@ -343,7 +316,6 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		}
 	}
     
-    @SuppressWarnings("unchecked")
 	private void applyShieldCollisions(Entity collider) {
         List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(collider, collider.boundingBox.expand(-0.2F, -0.2F, -0.2F));
         
@@ -380,8 +352,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		}
     }
 
-
-
+	@Override
 	protected void updateAITasks() {
         super.updateAITasks();
         
@@ -397,9 +368,6 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         }
     }
     
-    /**
-     * Called when we get attacked.
-     */
     @Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float damage) {
     	boolean result = super.attackEntityFrom(par1DamageSource, damage);
@@ -447,17 +415,13 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         return 0.1F;
     }
     
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
 	@Override
-	protected void fall(float par1) {
+	public void fall(float par1, float mult) {
 		; // no falling
 	}
 
-
 	@Override
-	public World func_82194_d() {
+	public World getWorld() {
 		return this.worldObj;
 	}
 
@@ -466,7 +430,6 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		return false;
 	}
 	
-    
     /**
      * We need to do this for the bounding boxes on the parts to become active
      */

@@ -1,13 +1,16 @@
 package twilightforest.entity.boss;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -42,30 +45,23 @@ public class EntityTFFallingIce extends Entity {
         this.prevPosY = y;
         this.prevPosZ = z;
 	}
-	
-	  /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
+
+	@Override
     protected boolean canTriggerWalking()
     {
         return false;
     }
 
+	@Override
     protected void entityInit() {}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
+    @Override
     public boolean canBeCollidedWith()
     {
     	return !this.isDead;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    @SuppressWarnings("unchecked")
+    @Override
 	public void onUpdate()
     {
     	this.prevPosX = this.posX;
@@ -104,7 +100,7 @@ public class EntityTFFallingIce extends Entity {
     	
     	// kill other nearby blocks if they are not as old as this one
     	if (!this.worldObj.isRemote) {
-    		ArrayList<Entity> nearby = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox));
+    		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
 
     		for (Entity entity : nearby) {
     			if (entity instanceof EntityTFFallingIce) {
@@ -116,7 +112,7 @@ public class EntityTFFallingIce extends Entity {
     			}
     		}
     		
-    		destroyIceInAABB(this.boundingBox.expand(0.5, 0, 0.5));
+    		destroyIceInAABB(this.getEntityBoundingBox().expand(0.5, 0, 0.5));
     	}
     	
     	makeTrail();
@@ -134,17 +130,15 @@ public class EntityTFFallingIce extends Entity {
 		}
 	}
 
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
-    @SuppressWarnings({ "unchecked" })
-    protected void fall(float par1)
+
+	@Override
+    public void fall(float dist, float multiplier)
     {
-    	int distance = MathHelper.ceiling_float_int(par1 - 1.0F);
+    	int distance = MathHelper.ceiling_float_int(dist - 1.0F);
 
     	if (distance > 0)
     	{
-    		ArrayList<Entity> nearby = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(2, 0, 2)));
+    		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(2, 0, 2));
     		DamageSource damagesource = DamageSource.fallingBlock;
     		for (Entity entity : nearby) {
     			if (!(entity instanceof EntityTFYetiAlpha)) {
@@ -158,11 +152,11 @@ public class EntityTFFallingIce extends Entity {
 			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat()); 
 			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
 			
-			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.PACKED_ICE) + "_0", dx, dy, dz, 0, 0, 0);
+			this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 		}
 		
-		this.playSound(Blocks.ANVIL.stepSound.getBreakSound(), 3F, 0.5F);
-		this.playSound(Blocks.PACKED_ICE.stepSound.getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.ANVIL.getSoundType().getBreakSound(), 3F, 0.5F); // todo 1.9 this gon crash
+		this.playSound(Blocks.PACKED_ICE.getSoundType().getBreakSound(), 3F, 0.5F);
     }
     
 	/**
@@ -182,33 +176,25 @@ public class EntityTFFallingIce extends Entity {
     	for (int dx = minX; dx <= maxX; ++dx) {
     		for (int dy = minY; dy <= maxY; ++dy) {
     			for (int dz = minZ; dz <= maxZ; ++dz) {
-    				Block block = this.worldObj.getBlock(dx, dy, dz);
+					BlockPos pos = new BlockPos(dx, dy, dz);
+    				Block block = this.worldObj.getBlockState(pos).getBlock();
 
     				if (block == Blocks.ICE || block == Blocks.PACKED_ICE || block == Blocks.STONE) {
-    					this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 3);
+						this.worldObj.destroyBlock(pos, false);
     				}
     			}
     		}
     	}
     }
 
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound var1) {}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void writeEntityToNBT(NBTTagCompound var1) {}
 	
-    /**
-     * Return whether this entity should be rendered as on fire.
-     */
     @SideOnly(Side.CLIENT)
+	@Override
     public boolean canRenderOnFire()
     {
         return false;

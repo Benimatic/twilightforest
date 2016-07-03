@@ -14,10 +14,7 @@ public class EntityTFUrGhastFireball extends EntityLargeFireball {
 		super(worldObj, entityTFTowerBoss, x, y, z);
 	}
 
-	
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
+    @Override
     protected void onImpact(RayTraceResult par1MovingObjectPosition)
     {
         if (!this.worldObj.isRemote && !(par1MovingObjectPosition.entityHit instanceof EntityFireball))

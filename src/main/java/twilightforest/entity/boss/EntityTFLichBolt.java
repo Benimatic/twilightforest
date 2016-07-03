@@ -5,6 +5,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -26,15 +27,11 @@ public class EntityTFLichBolt extends EntityThrowable {
 		super(par1World);
 	}
 
-
-	/**
-	 * projectile speed
-	 */
+	@Override
     protected float func_70182_d()
     {
         return 0.5F;
     }
-	
 	
 	@Override
 	public void onUpdate() {
@@ -54,32 +51,22 @@ public class EntityTFLichBolt extends EntityThrowable {
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-			worldObj.spawnParticle("mobSpell", dx, dy, dz, s1, s2, s3);
+			worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
 	public boolean canBeCollidedWith()
     {
         return true;
     }
     
-    /**
-     * We need to set this so that the player can attack and reflect the bolt
-     */
     @Override
 	public float getCollisionBorderSize()
     {
         return 1.0F;
     }
 
-	
-	/**
-	 * Reflect!
-	 */
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
@@ -105,9 +92,6 @@ public class EntityTFLichBolt extends EntityThrowable {
         }
     }
 	
-	/**
-	 * Return who threw this projectile
-	 */
     @Override
 	public EntityLivingBase getThrower()
     {
@@ -121,9 +105,6 @@ public class EntityTFLichBolt extends EntityThrowable {
         }
     }
 
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
     protected float getGravityVelocity()
     {
@@ -158,7 +139,7 @@ public class EntityTFLichBolt extends EntityThrowable {
         if (!passThrough) {
 	        for (int i = 0; i < 8; ++i)
 	        {
-	            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ENDER_PEARL), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+	            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
 	        }
 	
 	        if (!this.worldObj.isRemote)

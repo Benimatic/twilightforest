@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
@@ -25,6 +24,8 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.state.StateProps;
+import twilightforest.block.state.enums.SpawnerVariant;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.TFWorldChunkManager;
@@ -95,25 +96,17 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         super.entityInit();
     }
 	
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
 	public float getMaxHealthPerDifficulty() {
 		if (worldObj != null) {
-			if (worldObj.difficultySetting == EnumDifficulty.EASY)
+			if (worldObj.getDifficulty() == EnumDifficulty.EASY)
 			{
 				return 120;
 			}
-			else if (worldObj.difficultySetting == EnumDifficulty.NORMAL)
+			else if (worldObj.getDifficulty() == EnumDifficulty.NORMAL)
 			{
 				return 200;
 			}
-			else if (worldObj.difficultySetting == EnumDifficulty.HARD)
+			else if (worldObj.getDifficulty() == EnumDifficulty.HARD)
 			{
 				return 250;
 			}
@@ -129,25 +122,20 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		}
 
 	}
-	
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
+
+	@Override
     protected boolean canDespawn()
     {
         return false;
     }
 	
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(getMaxHealthPerDifficulty()); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(2.0D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
     }
     
 
@@ -202,7 +190,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		
 		
 		
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(movementFactor); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(movementFactor); // movement speed
 
 //        landMovementFactor = 0.6F - (currentSegments / 12f * 0.2f); 
 //        jumpMovementFactor = landMovementFactor / 2F;
@@ -215,29 +203,18 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 //        }
 	}
 
-    /**
-     * Supress walking sounds
-     */
     @Override
     public boolean canTriggerWalking()
     {
         return false;
     }
     
-    /**
-     * Do not get slowed by lava.
-     */
     @Override
-	public boolean handleLavaMovement()
+	public boolean isInLava()
     {
         return false;
     }
 
-
-	
-    /**
-     * Die on peaceful
-     */
     @Override
 	public void onUpdate() {
 		despawnIfInvalid();
@@ -248,7 +225,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
                 double d = rand.nextGaussian() * 0.02D;
                 double d1 = rand.nextGaussian() * 0.02D;
                 double d2 = rand.nextGaussian() * 0.02D;
-                String explosionType = rand.nextBoolean() ?  "hugeexplosion" : "explode";
+                EnumParticleTypes explosionType = rand.nextBoolean() ?  EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
                 
                 worldObj.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
             }
@@ -306,11 +283,6 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		}
     }
 
-
-    /**
-     * Semi-copied from EntityCreature, but this adds the capability to just path around and not target the player
-     * 
-     */
     @Override
     protected void updateAITasks()
     {
@@ -374,7 +346,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         }
 
         boolean inWater = isInWater();
-        boolean inLava = handleLavaMovement();
+        boolean inLava = isInLava();
         
         //rotationPitch = 0.0F;
         
@@ -464,13 +436,13 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
      * Breaks blocks near the naga
      */
     protected void breakNearbyBlocks() {
-        int minx = MathHelper.floor_double(boundingBox.minX - 0.5D);
-        int miny = MathHelper.floor_double(boundingBox.minY + 1.01D);
-        int minz = MathHelper.floor_double(boundingBox.minZ - 0.5D);
-        int maxx = MathHelper.floor_double(boundingBox.maxX + 0.5D);
-        int maxy = MathHelper.floor_double(boundingBox.maxY + 0.001D);
-        int maxz = MathHelper.floor_double(boundingBox.maxZ + 0.5D);
-        if(worldObj.checkChunksExist(minx, miny, minz, maxx, maxy, maxz))
+        int minx = MathHelper.floor_double(getEntityBoundingBox().minX - 0.5D);
+        int miny = MathHelper.floor_double(getEntityBoundingBox().minY + 1.01D);
+        int minz = MathHelper.floor_double(getEntityBoundingBox().minZ - 0.5D);
+        int maxx = MathHelper.floor_double(getEntityBoundingBox().maxX + 0.5D);
+        int maxy = MathHelper.floor_double(getEntityBoundingBox().maxY + 0.001D);
+        int maxz = MathHelper.floor_double(getEntityBoundingBox().maxZ + 0.5D);
+        if(worldObj.isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz)))
         {
             for(int dx = minx; dx <= maxx; dx++)
             {
@@ -478,42 +450,26 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
                 {
                     for(int dz = minz; dz <= maxz; dz++)
                     {
-                        Block i5 = worldObj.getBlock(dx, dy, dz);
-                        if(i5 != Blocks.AIR)
-                        {
-                            breakBlock(dx, dy, dz);
-                        }
+						// todo limit what can be broken
+						worldObj.destroyBlock(new BlockPos(dx, dy, dz), true);
                     }
-
                 }
-
             }
-
         }
     }
     
-    
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
 	@Override
-    protected String getLivingSound()
+    protected String getAmbientSound()
     {
         return rand.nextInt(3) != 0 ? TwilightForestMod.ID + ":mob.naga.hiss" : TwilightForestMod.ID + ":mob.naga.rattle";
     }
  
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
 	@Override
     protected String getHurtSound()
     {
         return TwilightForestMod.ID + ":mob.naga.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
 	@Override
     protected String getDeathSound()
     {
@@ -622,8 +578,8 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
      * Crumbles blocks below our current targetEntity.
      */
     protected void crumbleBelowTarget(int range) {
-		int floor = (int) boundingBox.minY; // the block level the naga is standing on.
-		int targetY = (int) targetEntity.boundingBox.minY; // the block level the target is standing on.
+		int floor = (int) getEntityBoundingBox().minY; // the block level the naga is standing on.
+		int targetY = (int) targetEntity.getEntityBoundingBox().minY; // the block level the target is standing on.
 		
 		if (targetY > floor)
 		{
@@ -636,9 +592,12 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 			}
 
 //			System.out.println("Crumbling block at " + dx + ", " + dy + ", " + dz);
-			if (worldObj.getBlock(dx, dy, dz) != Blocks.AIR)
+			BlockPos pos = new BlockPos(dx, dy, dz);
+
+			if (!worldObj.isAirBlock(pos))
 			{
-				breakBlock(dx, dy, dz);
+				// todo limit what can be broken
+				worldObj.destroyBlock(pos, true);
 				
 				// sparkle!!
 	            for(int k = 0; k < 20; k++)
@@ -647,27 +606,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	                double d1 = rand.nextGaussian() * 0.02D;
 	                double d2 = rand.nextGaussian() * 0.02D;
 	                
-	                worldObj.spawnParticle("crit", (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+	                worldObj.spawnParticle(EnumParticleTypes.CRIT, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
 	            }
 			}
-		}
-	}
-	
-	/**
-	 * Breaks a block, no questions asked.
-	 * 
-	 * TODO: there should be some limits on what kinds of blocks we can break.
-	 */
-    protected void breakBlock(int dx, int dy, int dz)
-	{
-		Block whatsThere = worldObj.getBlock(dx, dy, dz);
-		int whatsMeta = worldObj.getBlockMetadata(dx, dy, dz);
-		
-		if (whatsThere != Blocks.AIR) {
-			whatsThere.dropBlockAsItem(worldObj, dx, dy, dz, whatsMeta, 0);
-            this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
-	
-			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(whatsThere) + (whatsMeta << 12));
 		}
 	}
 
@@ -735,10 +676,6 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		setMoveSpeed(1.0F);
     }
 
-    
-    /**
-     * Do not get pushed while we're intimidating.
-     */
     @Override
 	public boolean canBePushed() {
 		return false;
@@ -789,9 +726,6 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         }
     }
 
-    /**
-     * We take damage from another entity.
-     */
     @Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
@@ -931,8 +865,6 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         return TFItems.nagaScale;
     }
 
-
-
     @Override
     protected void dropFewItems(boolean flag, int z) {
     	Item i = getDropItem();
@@ -955,7 +887,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
      */
 	protected void despawnIfInvalid() {
 		// check to see if we're valid
-        if(!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+        if(!worldObj.isRemote && worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
         	despawnMe();
         }
@@ -968,7 +900,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		if (isLeashed()) 
 		{
 			BlockPos home = this.getHomePosition();
-			worldObj.setBlock(home.posX, home.posY, home.posZ, TFBlocks.bossSpawner, 0, 2);
+			worldObj.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(StateProps.SPAWNER_VARIANT, SpawnerVariant.NAGA), 2);
 		}
 		setDead();
 	}
@@ -979,12 +911,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	public boolean isLeashed() {
 		return this.getMaximumHomeDistance() > -1;
 	}
-	
-	/**
-	 * The naga does not keep a circular home
-	 */
-	//@Override
-    public boolean isWithinHomeDistance(int x, int y, int z)
+
+	@Override
+	public boolean isWithinHomeDistanceFromPosition(BlockPos pos)
     {
 		if (this.getMaximumHomeDistance() == -1)
 		{
@@ -992,9 +921,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		}
 		else
 		{
-			int distX = Math.abs(this.getHomePosition().posX - x);
-			int distY = Math.abs(this.getHomePosition().posY - y);
-			int distZ = Math.abs(this.getHomePosition().posZ - z);
+			int distX = Math.abs(this.getHomePosition().getX() - pos.getX());
+			int distY = Math.abs(this.getHomePosition().getY() - pos.getY());
+			int distZ = Math.abs(this.getHomePosition().getZ() - pos.getZ());
 
 			return distX <= LEASH_X && distY <= LEASH_Y && distZ <= LEASH_Z;
 		}
@@ -1101,7 +1030,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             
             if (i == 0)
             {
-            	diff.yCoord -= 0.15D;
+				diff = diff.addVector(0, -0.15, 0);
             }
             
             body[i].setRotation((float) (Math.atan2(diff.zCoord, diff.xCoord) * 180.0D / Math.PI) + 90.0F, -(float)(Math.atan2(diff.yCoord, distance) * 180.0D / Math.PI));
@@ -1128,7 +1057,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     {
     	BlockPos home = this.getHomePosition();
         nbttagcompound.setTag("Home", newDoubleNBTList(new double[] {
-        		home.posX, home.posY, home.posZ
+        		home.getX(), home.getY(), home.getZ()
             }));
         nbttagcompound.setBoolean("HasHome", this.hasHome());
         super.writeEntityToNBT(nbttagcompound);
@@ -1141,10 +1070,10 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         if (nbttagcompound.hasKey("Home", 9))
         {
             NBTTagList nbttaglist = nbttagcompound.getTagList("Home", 6);
-            int hx = (int) nbttaglist.func_150309_d(0);
-            int hy = (int) nbttaglist.func_150309_d(1);
-            int hz = (int) nbttaglist.func_150309_d(2);
-            this.setHomeArea(hx, hy, hz, 20);
+            int hx = (int) nbttaglist.getDoubleAt(0);
+            int hy = (int) nbttaglist.getDoubleAt(1);
+            int hz = (int) nbttaglist.getDoubleAt(2);
+            this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 20);
         }
         if (!nbttagcompound.getBoolean("HasHome"))
         {
@@ -1173,7 +1102,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 			int dz = MathHelper.floor_double(this.posZ);
 			
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+			TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 			
 			if (nearbyFeature == TFFeature.nagaCourtyard) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);
@@ -1194,9 +1123,8 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 //        return this.dataWatcher.getWatchableObjectInt(EntityTFNaga.DATA_BOSSHEALTH);
 //	}
 
-	
 	@Override
-	public World func_82194_d() {
+	public World getWorld() {
 		return this.worldObj;
 	}
 
@@ -1204,19 +1132,10 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	public boolean attackEntityFromPart(EntityDragonPart entitydragonpart, DamageSource damagesource, float i) {
 		return false;
 	}
-	
-    
-    /**
-     * We need to do this for the bounding boxes on the parts to become active
-     */
+
     @Override
     public Entity[] getParts()
     {
         return body;
-    }
-
-    public float getMaximumHomeDistance()
-    {
-        return this.func_110174_bM();
     }
 }
