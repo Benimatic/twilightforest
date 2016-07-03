@@ -5,11 +5,14 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -28,7 +31,6 @@ public class BlockTFLeaves extends BlockLeaves {
 
 
 	protected BlockTFLeaves() {
-		super();
 		this.setHardness(0.2F);
 		this.setLightOpacity(2);
 		this.setStepSound(Block.soundTypeGrass);
@@ -122,12 +124,8 @@ public class BlockTFLeaves extends BlockLeaves {
     	}
     }
     
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return Blocks.LEAVES.isOpaqueCube();
     }
@@ -139,17 +137,13 @@ public class BlockTFLeaves extends BlockLeaves {
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l)
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess iblockaccess, BlockPos pos, EnumFacing side)
     {
-    	return Blocks.LEAVES.shouldSideBeRendered(iblockaccess, i, j, k, l);
+    	return Blocks.LEAVES.shouldSideBeRendered(state, iblockaccess, pos, side);
     }
     
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
     	par3List.add(new ItemStack(par1, 1, 0));
     	par3List.add(new ItemStack(par1, 1, 1));
@@ -158,40 +152,28 @@ public class BlockTFLeaves extends BlockLeaves {
 
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     @Override
 	public int quantityDropped(Random par1Random)
     {
     	return par1Random.nextInt(40) == 0 ? 1 : 0;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     @Override
-	public Item getItemDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
     	return Item.getItemFromBlock(TFBlocks.sapling);
     }
     
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int par1)
+	public int damageDropped(IBlockState state)
     {
     	int leafType = par1 & 3;
     	
     	return leafType;
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     @Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int meta, float par6, int par7)
+	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int par7)
     {
     	if (!par1World.isRemote)
     	{

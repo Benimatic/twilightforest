@@ -114,12 +114,6 @@ public abstract class BlockTFCritter extends Block {
 	}
 
 	@Override
-	public boolean renderAsNormalBlock()
-	{
-		return false;
-	}
-	
-	@Override
 	public int getRenderType()
 	{
 		return TwilightForestMod.proxy.getCritterBlockRenderID();

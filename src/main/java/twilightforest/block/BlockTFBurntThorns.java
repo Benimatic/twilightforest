@@ -2,9 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.item.TFItems;
@@ -12,7 +14,6 @@ import twilightforest.item.TFItems;
 public class BlockTFBurntThorns extends BlockTFThorns {
 
 	protected BlockTFBurntThorns() {
-		super();
 		this.setHardness(0.01F);
 		this.setResistance(0.0F);
 		this.setSoundType(SoundType.SAND);
@@ -22,7 +23,8 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 
 	}
 
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+	@Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
     	// dissolve
     	if (!world.isRemote && entity instanceof EntityLivingBase) {
@@ -32,24 +34,20 @@ public class BlockTFBurntThorns extends BlockTFThorns {
     	}
     }
 
-    /**
-     * Break normally
-     */
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    	world.setBlockToAir(x, y, z);
-    	return true;
-    }
-    
+	@Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean harvest) {
+		world.setBlockToAir(x, y, z);
+		return true;
+	}
+
     @Override
-    public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z)
+    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return false;
     }
-    
-	/**
-	 * no need for leaf decay, I think
-	 */
-    public void breakBlock(World world, int x, int y, int z, Block logBlock, int metadata)
+
+	@Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
     	;
     }

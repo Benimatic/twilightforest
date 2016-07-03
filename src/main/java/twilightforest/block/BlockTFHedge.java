@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -14,9 +15,12 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
@@ -43,12 +47,8 @@ public class BlockTFHedge extends BlockLeaves {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
     {
     	int meta = world.getBlockMetadata(x, y, z);
     	switch (meta) {
@@ -62,34 +62,22 @@ public class BlockTFHedge extends BlockLeaves {
     	
     }
     
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
     {
         return true;
     }
 
     @SideOnly(Side.CLIENT)
-
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side)
     {
         Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
         return !this.field_150121_P && i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
     }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
+
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	if (meta == 2) {
     		// temporary workaround
     		meta = 0;
@@ -119,7 +107,7 @@ public class BlockTFHedge extends BlockLeaves {
     }
 
     @Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
     	int meta = world.getBlockMetadata(x, y, z);
 
@@ -134,7 +122,7 @@ public class BlockTFHedge extends BlockLeaves {
     }
 
     @Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity entity)
+	public void onEntityWalk(World world, BlockPos pos, Entity entity)
     {
     	int meta = world.getBlockMetadata(x, y, z);
     	if (meta == 2) {
@@ -148,7 +136,7 @@ public class BlockTFHedge extends BlockLeaves {
     }
 
     @Override
-	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer entityplayer)
+	public void onBlockClicked(World world, BlockPos pos, EntityPlayer entityplayer)
     {
     	int meta = world.getBlockMetadata(x, y, z);
     	if (meta == 2) {
@@ -161,12 +149,8 @@ public class BlockTFHedge extends BlockLeaves {
     	}
     }
     
-    /**
-     * Called when the player destroys a block with an item that can harvest it. (i, j, k) are the coordinates of the
-     * block and l is the block's subtype/damage.
-     */
     @Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, int i, int j, int k, int meta)
+	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
     {
     	super.harvestBlock(world, entityplayer, i, j, k, meta);
     	if (meta == 2) {
@@ -179,13 +163,8 @@ public class BlockTFHedge extends BlockLeaves {
     }
     
     
-    /**
-     * This should be called 5 ticks after we've received a click event from a player.
-     * If we see player nearby swinging at a hedge block, prick them
-     */
-    @SuppressWarnings("unchecked")
 	@Override
-    public void updateTick(World world, int x, int y, int z, Random random)
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
     {
     	double range = 4.0; // do we need to get this with a better method than hardcoding it?
 
@@ -248,56 +227,26 @@ public class BlockTFHedge extends BlockLeaves {
     private boolean shouldDamage(Entity entity) {
     	return !(entity instanceof EntitySpider) && !(entity instanceof EntityItem) && !entity.doesEntityNotTriggerPressurePlate();
     }
-    
-    /**
-     * Chance that fire will spread and consume this block.
-     * 300 being a 100% chance, 0, being a 0% chance.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number ranging from 0 to 300 relating used to determine if the block will be consumed by fire
-     */
+
     @Override
-	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing side) {
     	int metadata = world.getBlockMetadata(x, y, z);
 		return metadata == 1 ? 1 : 0;
 	}
 
-    /**
-     * Called when fire is updating on a neighbor block.
-     * The higher the number returned, the faster fire will spread around this block.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number that is used to determine the speed of fire growth around the block
-     */
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return 0;
 	}
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     @Override
 	public int quantityDropped(Random par1Random)
     {
     	return par1Random.nextInt(40) == 0 ? 1 : 0;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     @Override
-	public Item getItemDropped(int meta, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
     	if (meta == 1)
     	{
@@ -309,23 +258,14 @@ public class BlockTFHedge extends BlockLeaves {
     	}
     }
 
-    /**
-     * Called when a user uses the creative pick block button on this block
-     *
-     * @param target The full target the player is looking at
-     * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
-     */
     @Override
-	public ItemStack getPickBlock(RayTraceResult target, World world, int x, int y, int z)
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(this, 1, world.getBlockMetadata(x, y, z));
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     @Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int meta, float par6, int fortune)
+	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int fortune)
     {
     	if (!par1World.isRemote && meta == 1)
     	{

@@ -12,8 +12,6 @@ public class BlockTFFluffyCloud extends Block {
 		this.setStepSound(soundTypeCloth);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(0.8F);
-		
-        this.setBlockTextureName(TwilightForestMod.ID + ":fluffy_cloud");
 	}
 
 

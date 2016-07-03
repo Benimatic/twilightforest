@@ -5,11 +5,14 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -110,11 +113,8 @@ public class BlockTFTowerWood extends Block {
         BlockTFTowerWood.TEX_INFESTED = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerwood_infested");
     }
 	
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -123,25 +123,13 @@ public class BlockTFTowerWood extends Block {
         par3List.add(new ItemStack(par1, 1, META_INFESTED));
     }
     
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	return meta;
 	}
-    
-    /**
-     * Metadata and fortune sensitive version, this replaces the old (int meta, Random rand)
-     * version in 1.1.
-     *
-     * @param meta Blocks Metadata
-     * @param fortune Current item fortune level
-     * @param random Random number generator
-     * @return The number of items to drop
-     */
+
     @Override
-	public int quantityDropped(int meta, int fortune, Random random)
+	public int quantityDropped(IBlockState state, int fortune, Random random)
     {
     	if (meta == META_INFESTED)
     	{
@@ -153,11 +141,8 @@ public class BlockTFTowerWood extends Block {
     	}
     }
     
-    /**
-     * Returns the block hardness at a location. Args: world, x, y, z
-     */
     @Override
-	public float getBlockHardness(World world, int x, int y, int z)
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos)
     {
     	// infested block is not very hard
     	int meta = world.getBlockMetadata(x, y, z);
@@ -172,11 +157,8 @@ public class BlockTFTowerWood extends Block {
     	}
     }
     
-    /**
-     * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
-     */
     @Override
-	public void dropBlockAsItemWithChance(World par1World, int x, int y, int z, int meta, float chance, int something)
+	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float chance, int something)
     {
         if (!par1World.isRemote && meta == META_INFESTED)
         {
@@ -189,37 +171,13 @@ public class BlockTFTowerWood extends Block {
         super.dropBlockAsItemWithChance(par1World, x, y, z, meta, chance, something);
     }
 
-    /**
-     * Chance that fire will spread and consume this block.
-     * 300 being a 100% chance, 0, being a 0% chance.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number ranging from 0 to 300 relating used to determine if the block will be consumed by fire
-     */
     @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing side) {
     	return 1;
     }
 
-    /**
-     * Called when fire is updating on a neighbor block.
-     * The higher the number returned, the faster fire will spread around this block.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number that is used to determine the speed of fire growth around the block
-     */
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return 0;
 	}
 

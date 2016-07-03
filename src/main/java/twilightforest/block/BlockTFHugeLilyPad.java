@@ -2,7 +2,10 @@ package twilightforest.block;
 
 import java.util.List;
 
+import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,35 +42,15 @@ public class BlockTFHugeLilyPad extends BlockBush {
 		this.setStepSound(soundTypeGrass);
 
 		this.setCreativeTab(TFItems.creativeTab);
-		
-		Item lily;
-
 	}
 	
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
     	return TwilightForestMod.proxy.getHugeLilyPadBlockRenderID();
     }
-
-	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
-    {
-        return new AxisAlignedBB((double)p_149668_2_ + this.minX, (double)p_149668_3_ + this.minY, (double)p_149668_4_ + this.minZ, (double)p_149668_2_ + this.maxX, (double)p_149668_3_ + this.maxY, (double)p_149668_4_ + this.maxZ);
-    }
     
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }
@@ -129,25 +112,12 @@ public class BlockTFHugeLilyPad extends BlockBush {
         return block == Blocks.WATER;
     }
 
-	/**
-     * Called when the block is attempted to be harvested
-     */
-    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+	@Override
+    public void onBlockHarvested(World world, BlockPos ois, IBlockState state, EntityPlayer player) {
 		this.setGiantBlockToAir(world, x, y, z);
     }
-    
-    /**
-     * Called when the block is destroyed by an explosion.
-     * Useful for allowing the block to take into account tile entities,
-     * metadata, etc. when exploded, before it is removed.
-     *
-     * @param world The current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
-     * @param Explosion The explosion instance affecting the block
-     */
-    public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
+
+    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
     {
         world.setBlockToAir(x, y, z);
 		this.setGiantBlockToAir(world, x, y, z);
@@ -226,14 +196,11 @@ public class BlockTFHugeLilyPad extends BlockBush {
             p_149855_1_.setBlock(p_149855_2_, p_149855_3_, p_149855_4_, getBlockById(0), 0, 2);
         }
     }
-    
-    /**
-     * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
-     * and stop pistons
-     */
-    public int getMobilityFlag()
+
+	@Override
+    public EnumPushReaction getMobilityFlag(IBlockState state)
     {
-        return 2;
+        return EnumPushReaction.BLOCK;
     }
     
     @SideOnly(Side.CLIENT)

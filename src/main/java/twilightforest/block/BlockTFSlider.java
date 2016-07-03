@@ -3,8 +3,10 @@ package twilightforest.block;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
 
+import net.minecraft.util.math.BlockPos;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSlideBlock;
 import twilightforest.item.TFItems;
@@ -40,13 +42,9 @@ public class BlockTFSlider extends BlockRotatedPillar {
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
 	}
-	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
+
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
     {
     	int meta = world.getBlockMetadata(x, y, z);
     	
@@ -67,13 +65,11 @@ public class BlockTFSlider extends BlockRotatedPillar {
     }
     
 
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
+    @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos)
     {
-        return this.getCollisionBoundingBoxFromPool(world, x, y, z);
+        return this.getCollisionBoundingBox(state, world, pos);
     }
     
     /**
@@ -105,19 +101,8 @@ public class BlockTFSlider extends BlockRotatedPillar {
     	}
 	}
     
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
+	@Override
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -201,11 +186,8 @@ public class BlockTFSlider extends BlockRotatedPillar {
 		this.topIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":slider_top");
 	}
 	
-    /**
-     * Ticks the block if it's been scheduled
-     */
     @Override
-	public void updateTick(World world, int x, int y, int z, Random par5Random)
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random par5Random)
     {
     	if (!world.isRemote && this.isConnectedInRange(world, x, y, z))
     	{
@@ -271,17 +253,11 @@ public class BlockTFSlider extends BlockRotatedPillar {
 		//System.out.println("The current world time is " + world.getWorldTime() + " so update scheduled for " + update + " ticks.");
 	}
 
-	/**
-	 * Schedule an update to try to get lighting right
-	 */
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		scheduleBlockUpdate(world, x, y, z);
 	}
 	
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -290,19 +266,9 @@ public class BlockTFSlider extends BlockRotatedPillar {
         par3List.add(new ItemStack(par1, 1, 2));
         par3List.add(new ItemStack(par1, 1, 3));
     }
-    
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
-    public void setBlockBoundsForItemRender()
-    {
-        this.setBlockBoundsBasedOnMeta(0);
-    }
-    
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+
+	@Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
     	entity.attackEntityFrom(DamageSource.generic, BLOCK_DAMAGE);
     	if (entity instanceof EntityLivingBase) {

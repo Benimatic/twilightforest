@@ -2,8 +2,10 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -48,24 +50,13 @@ public class BlockTFHugeStalk extends Block {
     	}
     }
 
-    /**
-     * Determines if this block can prevent leaves connected to it from decaying.
-     *
-     * @param world The current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
-     * @return true if the presence this block can prevent leaves from decaying.
-     */
 	@Override
-	public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z) {
+	public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 	
-	/**
-	 * Begin leaf decay when this block is broken
-	 */
-    public void breakBlock(World world, int x, int y, int z, Block myBlock, int meta) {
+	@Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
         byte radius = 4;
         int rad1 = radius + 1;
 

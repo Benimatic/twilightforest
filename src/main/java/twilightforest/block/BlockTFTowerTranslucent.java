@@ -5,12 +5,16 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -49,47 +53,30 @@ public class BlockTFTowerTranslucent extends Block
 
     }
     
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
-    /**
-     * How many world ticks before ticking
-     */
-    public int tickRate()
+	@Override
+    public int tickRate(World world)
     {
         return 15;
     }
     
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
 	@Override
-	public Item getItemDropped(int par1, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
 		return null;
 	}
 	
-    /**
-     * Return true if a player with Silk Touch can harvest this block directly, and not its normal drops.
-     */
     @Override
-	protected boolean canSilkHarvest()
-    {
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         return false;
     }
 	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos)
 	{
 		int meta = par1World.getBlockMetadata(par2, par3, par4) & 7;
 
@@ -104,12 +91,8 @@ public class BlockTFTowerTranslucent extends Block
 		}
 	}
 
-
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos)
     {
         int meta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
@@ -128,11 +111,8 @@ public class BlockTFTowerTranslucent extends Block
         }
     }
     
-    /**
-     * Returns the block hardness at a location. Args: world, x, y, z
-     */
     @Override
-	public float getBlockHardness(World world, int x, int y, int z)
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos)
     {
     	// reverter replacement is like glass
     	int meta = world.getBlockMetadata(x, y, z);
@@ -146,12 +126,9 @@ public class BlockTFTowerTranslucent extends Block
     		return super.getBlockHardness(world, x, y, z);
     	}
     }
-    
-
-
 
     @Override
-	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public boolean isPassable(IBlockAccess par1IBlockAccess, BlockPos pos)
     {
     	int meta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
@@ -210,11 +187,8 @@ public class BlockTFTowerTranslucent extends Block
         BlockTFTowerTranslucent.TEX_REVERTER_REPLACEMENT = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerdev_antibuilt");
     }
 	
-    /**
-     * Ticks the block if it's been scheduled
-     */
     @Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
         if (!par1World.isRemote)
         {
@@ -251,14 +225,7 @@ public class BlockTFTowerTranslucent extends Block
         }
     }
 
-	
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-    	// none!
-    }
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {}
 
 }

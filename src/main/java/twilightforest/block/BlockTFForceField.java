@@ -7,7 +7,10 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
@@ -75,41 +78,30 @@ public class BlockTFForceField extends BlockPane {
     {
     	return 15 << 20 | 15 << 4;
     }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    public int damageDropped(int meta)
+
+    @Override
+    public int damageDropped(IBlockState state)
     {
         return meta % names.length;
     }
     
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < names.length; i++) {
             par3List.add(new ItemStack(par1, 1, i));
         }
     }
     
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
     @SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
+    @Override
+    public BlockRenderLayer getBlockLayer()
     {
-        return 1;
+        return BlockRenderLayer.TRANSLUCENT;
     }
-    
-    /**
-     * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
-     * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
-     */
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity)
+
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity)
     {
     	super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
     	

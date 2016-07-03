@@ -5,12 +5,15 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -41,7 +44,6 @@ public class BlockTFMagicLeaves extends BlockLeaves {
 
 
 	protected BlockTFMagicLeaves() {
-		super();
 		this.setHardness(0.2F);
 		this.setLightOpacity(2);
 		this.setStepSound(Block.soundTypeGrass);
@@ -160,22 +162,8 @@ public class BlockTFMagicLeaves extends BlockLeaves {
     	return TwilightForestMod.proxy.getMagicLeavesBlockRenderID();
     }
 
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
-    @Override
-	public int getRenderBlockPass()
-    {
-        return 0;
-    }
-
-    
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
 	@Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -207,36 +195,23 @@ public class BlockTFMagicLeaves extends BlockLeaves {
         BlockTFMagicLeaves.SPR_SORTLEAVES = par1IconRegister.registerIcon(TwilightForestMod.ID + ":sort_leaves");
     }
     
-
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int side)
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess iblockaccess, BlockPos pos, EnumFacing side)
     {
-    	return Blocks.LEAVES.shouldSideBeRendered(iblockaccess, i, j, k, side);
+    	return Blocks.LEAVES.shouldSideBeRendered(state, iblockaccess, pos, side);
     }
     
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
     	par3List.add(new ItemStack(par1, 1, 0));
     	par3List.add(new ItemStack(par1, 1, 1));
     	par3List.add(new ItemStack(par1, 1, 2));
     	par3List.add(new ItemStack(par1, 1, 3));
-
     }
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     @Override
-	public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
     {
     	int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -295,12 +270,5 @@ public class BlockTFMagicLeaves extends BlockLeaves {
     		TwilightForestMod.proxy.spawnParticle(world, "leafrune", rx, ry, rz, 0.0D, 0.0D, 0.0D);
     	}
     }
-
-
-	@Override
-	public String[] func_150125_e() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

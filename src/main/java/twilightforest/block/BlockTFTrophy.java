@@ -1,8 +1,10 @@
 package twilightforest.block;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -15,8 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -29,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Head trophy similar to (and based partially on) BlockSkull
  *
  */
-public class BlockTFTrophy extends BlockContainer 
+public class BlockTFTrophy extends Block
 {
 
 	public BlockTFTrophy() 
@@ -50,29 +54,11 @@ public class BlockTFTrophy extends BlockContainer
         return false;
     }
 
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-    {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-    
-
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z)
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos)
     {
         int meta = par1IBlockAccess.getBlockMetadata(x, y, z) & 7;
     	TileEntityTFTrophy trophy = (TileEntityTFTrophy)par1IBlockAccess.getTileEntity(x, y, z);
@@ -125,22 +111,15 @@ public class BlockTFTrophy extends BlockContainer
         }
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
     @Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack itemStack)
+	public IBlockState onBlockPlaced(World par1World, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase par5EntityLiving)
     {
         int rotation = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 2.5D) & 3;
         par1World.setBlockMetadataWithNotify(par2, par3, par4, rotation, 2);
     }
 
-
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     @Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createTileEntity(World var1, IBlockState state) {
         return new TileEntityTFTrophy();
 	}
 
@@ -164,11 +143,8 @@ public class BlockTFTrophy extends BlockContainer
         return var5 != null && var5 instanceof TileEntitySkull ? ((TileEntitySkull)var5).func_145904_a() : super.getDamageValue(par1World, par2, par3, par4);
     }
 
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int par1)
+	public int damageDropped(IBlockState state)
     {
         return par1;
     }
@@ -177,7 +153,7 @@ public class BlockTFTrophy extends BlockContainer
      * Called when the block is attempted to be harvested
      */
     @Override
-	public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
+	public void onBlockHarvested(World par1World, BlockPos pos, IBlockState state, EntityPlayer par6EntityPlayer)
     {
         if (par6EntityPlayer.capabilities.isCreativeMode)
         {
@@ -199,7 +175,7 @@ public class BlockTFTrophy extends BlockContainer
 //    }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
         if ((metadata & 8) == 0)
@@ -221,31 +197,10 @@ public class BlockTFTrophy extends BlockContainer
         return drops;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     @Override
-	public Item getItemDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
         return TFItems.trophy;
     }
-    
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int meta)
-    {
-    	return Blocks.SOUL_SAND.getIcon(side, meta);
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        ; // don't load anything
-    }
-
 
 }

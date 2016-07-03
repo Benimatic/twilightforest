@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TwilightForestMod;
@@ -41,11 +43,8 @@ public class BlockTFSapling extends BlockSapling
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 	
-    /**
-     * Ticks the block if it's been scheduled
-     */
     @Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
         if (!par1World.isRemote)
         {
@@ -58,12 +57,8 @@ public class BlockTFSapling extends BlockSapling
         }
     }
 
-
-    /**
-     * Attempts to grow a sapling into a tree
-     */
     @Override
-	public void func_149878_d(World world, int x, int y, int z, Random rand) {
+	public void grow(World world, BlockPos pos, IBlockState state, Random rand) {
     	int meta = world.getBlockMetadata(x, y, z);
     	WorldGenerator treeGenerator = null;
     	int var8 = 0;
@@ -167,23 +162,15 @@ public class BlockTFSapling extends BlockSapling
         }
     }
 
-	/**
-	 * Determines the damage on the item the block drops. Used in cloth and wood.
-	 */
 	@Override
-	public int damageDropped(int par1)
+	public int damageDropped(IBlockState state)
 	{
         return par1;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

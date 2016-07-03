@@ -42,11 +42,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
         ret.add(new ItemStack(this));
         return ret;
 	}
-	
-	/**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
-    @Override
+
 	public boolean canBlockStay(World world, int x, int y, int z) {
     	return canPlaceRootBelow(world, x, y + 1, z);
     }
@@ -56,41 +52,22 @@ public class BlockTFTrollRoot extends Block implements IShearable {
     	
     	return blockAbove.getMaterial() == Material.ROCK || blockAbove == TFBlocks.trollVidr || blockAbove == TFBlocks.trollBer || blockAbove == TFBlocks.unripeTrollBer;
     }
-    
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
+
+    @Override
+    public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return super.canPlaceBlockAt(world, x, y, z) && this.canBlockStay(world, x, y, z);
     }
     
-    
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     @Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos) {
     	return NULL_AABB;
     }
     
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
 	public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock() {
-        return false;
-    }
-	
     /**
      * The type of render function that is called for this block
      */
@@ -99,26 +76,20 @@ public class BlockTFTrollRoot extends Block implements IShearable {
         return 1;
 	}
 	
-    /**
-     * Ticks the block if it's been scheduled
-     */
 	@Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        this.checkAndDropBlock(world, x, y, z);
+        this.checkAndDropBlock(world, pos);
     }
 	
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor Block
-     */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        this.checkAndDropBlock(world, x, y, z);
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+        this.checkAndDropBlock(world, pos);
     }
     
     /**
      * checks if the block can stay, if not drop as item
      */
-    protected void checkAndDropBlock(World world, int x, int y, int z) {
+    protected void checkAndDropBlock(World world, BlockPos pos) {
         if (!this.canBlockStay(world, x, y, z)) {
             this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
         	world.setBlockToAir(x, y, z);

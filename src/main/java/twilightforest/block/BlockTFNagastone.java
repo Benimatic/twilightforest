@@ -4,12 +4,16 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -163,7 +167,7 @@ public class BlockTFNagastone extends Block {
      * 15     weird middle piece
      */
     @Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
+    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int metadata, EntityLivingBase placer)
     {
         int type = metadata & 12;
         int orient = 0;
@@ -213,12 +217,8 @@ public class BlockTFNagastone extends Block {
     	return type | orient;
     }
     
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     @Override
-	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block neighborID)
+	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block neighborID)
     {
 //    	// is the block that changed nagastone?
 //    	if (true || neighborID == this) { // this seems to be lies
@@ -759,21 +759,15 @@ public class BlockTFNagastone extends Block {
         return null;
     }
     
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 1));
         par3List.add(new ItemStack(par1, 1, 13));
     }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
+
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	return meta;
 //    	// only drop meta 1 for head or 13 for body
 //    	if (meta < 4)

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -54,12 +55,9 @@ public class BlockTFRoots extends Block {
 		BlockTFRoots.spRootSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":rootblock");
 		BlockTFRoots.spOreRootSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":oreroots");
 	}
-	
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
+
     @Override
-    public Item getItemDropped(int meta, Random random, int j)
+    public Item getItemDropped(IBlockState state, Random random, int j)
     {
     	switch (meta) {
     	case ROOT_META :
@@ -73,12 +71,8 @@ public class BlockTFRoots extends Block {
     	}
     }
     
-
- 	/**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int meta)
+	public int damageDropped(IBlockState state)
     {
     	switch (meta) {
     	case ROOT_META :
@@ -93,17 +87,8 @@ public class BlockTFRoots extends Block {
     	}
     }
     
-    /**
-     * Metadata and fortune sensitive version, this replaces the old (int meta, Random rand)
-     * version in 1.1. 
-     * 
-     * @param meta Blocks Metadata
-     * @param fortune Current item fortune level
-     * @param random Random number generator
-     * @return The number of items to drop
-     */
     @Override
-	public int quantityDropped(int meta, int fortune, Random random) {
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
     	switch (meta) {
     	case ROOT_META :
     		// roots drop several sticks
@@ -113,13 +98,9 @@ public class BlockTFRoots extends Block {
     	}
 	}
     
-
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

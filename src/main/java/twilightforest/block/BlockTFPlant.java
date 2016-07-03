@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +15,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
@@ -94,16 +98,13 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         return ColorizerGrass.getGrassColor(var1, var3);
     }
     
-	/**
-	 * Schedule an update to try to get lighting right
-	 */
 	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		world.scheduleBlockUpdate(i, j, k, this, world.rand.nextInt(50) + 20);
 	}
 	
     @Override
-	public boolean canReplace(World par1World, int x, int y, int z, int par5, ItemStack par6ItemStack)
+	public boolean canReplace(World par1World, BlockPos pos, EnumFacing side, ItemStack par6ItemStack)
     {
     	// we need to get the metadata
     	Block blockAt = par1World.getBlock(x, y, z);
@@ -146,10 +147,6 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     	}
     }
     
-
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     @Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z)
     {
@@ -229,52 +226,25 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     	return isGrassColor[meta] ? par1IBlockAccess.getBiomeGenForCoords(x, z).getBiomeGrassColor(x, y, z) : 0xFFFFFF; 
     }
     
-    
-    
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos)
     {
-    	par1World.getBlockMetadata(x, y, z);
-    	
-    	return null;
+    	return NULL_AABB;
     }
     
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     @Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-	
-    /**
-     * The type of render function that is called for this block
-     */
 	@Override
 	public int getRenderType() {
 		return TwilightForestMod.proxy.getPlantBlockRenderID();
 	}
 	
-    /**
-     * Ticks the block if it's been scheduled
-     */
     @Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
     	int meta = par1World.getBlockMetadata(x, y, z);
 		if (par1World.getBlockLightValue(x, y, z) < lightValue[meta]) {
@@ -283,22 +253,12 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 		}
 
     }
-	
-    /**
-     * Get a light value for this block, normal ranges are between 0 and 15
-     * 
-     * @param world The current world
-     * @param x X Position
-     * @param y Y position
-     * @param z Z position
-     * @return The light value
-     */
+
 	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
     	int meta = world.getBlockMetadata(x, y, z);
     	return lightValue[meta]; 
 	}
-	
     
     /**
      * Root-specific method.
@@ -341,20 +301,9 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 //        }
 //    }
 //    
-    
-    /**
-     * This returns a complete list of items dropped from this block.
-     * 
-     * @param world The current world
-     * @param x X Position
-     * @param Y Y Position
-     * @param Z Z Position
-     * @param metadata Current metadata
-     * @param fortune Breakers fortune level
-     * @return A ArrayList containing all items this block drops
-     */
+
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune)
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         
@@ -381,64 +330,27 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         return ret;
     }
 
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int par1)
+	public int damageDropped(IBlockState state)
     {
         return par1;
     }
 
-	/**
-     * Checks if the object is currently shearable
-     * Example: Sheep return false when they have no wool
-     *
-     * @param item The itemstack that is being used, Possible to be null
-     * @param world The current world
-     * @param x The X Position
-     * @param y The Y Position
-     * @param z The Z Position
-     * @return If this is shearable, and onSheared should be called.
-     */
 	@Override
-	public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z) {
-		// TODO Auto-generated method stub
+	public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) {
 		return true;
 	}
-	
-    /**
-     * Performs the shear function on this object.
-     * This is called for both client, and server.
-     * The object should perform all actions related to being sheared,
-     * except for dropping of the items.
-     *
-     * Returns a list of items that resulted from the shearing process.
-     *
-     * For entities, they should trust there internal location information
-     * over the values passed into this function.
-     *
-     * @param item The itemstack that is being used, Possible to be null
-     * @param world The current world
-     * @param x The X Position
-     * @param y The Y Position
-     * @param z The Z Position
-     * @param fortune The fortune level of the shears being used
-     * @return A ArrayList containing all items from this shearing. Possible to be null.
-     */
+
 	@Override
-	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune) {
+	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         ret.add(new ItemStack(this, 1, world.getBlockMetadata(x, y, z)));
         //world.setBlockToAir(x, y, z);
         return ret;
 	}
-	
-    /**
-     * Called when the player destroys a block with an item that can harvest it. (i, j, k) are the coordinates of the
-     * block and l is the block's subtype/damage.
-     */
-    public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta)
+
+    @Override
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
     {
     	// do not call normal harvest if the player is shearing
         if (world.isRemote || player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != Items.SHEARS)
@@ -447,12 +359,8 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         }
     }
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(this, 1, META_MOSSPATCH));
         par3List.add(new ItemStack(this, 1, META_MAYAPPLE));
@@ -466,16 +374,8 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 
     }
 	
-	/**
-	 * 
-	 */
-	@Override
-	public void setBlockBoundsForItemRender() {
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-	}
-	
     @Override
-    public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
     	int meta = world.getBlockMetadata(x, y, z);
 
@@ -490,24 +390,14 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     }
 
     @Override
-    public Block getPlant(IBlockAccess world, int x, int y, int z)
+    public IBlockState getPlant(IBlockAccess world, BlockPos pos)
     {
         return this;
     }
 
     @Override
-    public int getPlantMetadata(IBlockAccess world, int x, int y, int z)
-    {
-        return world.getBlockMetadata(x, y, z);
-    }
-	
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    @Override
 	@SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+    public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
     {
         super.randomDisplayTick(par1World, x, y, z, par5Random);
 

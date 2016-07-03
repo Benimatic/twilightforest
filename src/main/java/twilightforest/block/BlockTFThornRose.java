@@ -2,7 +2,9 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import twilightforest.item.TFItems;
@@ -20,54 +22,32 @@ public class BlockTFThornRose extends Block {
         this.setBlockBounds(0.5F - radius, 0.5F - radius, 0.5F - radius, 0.5F + radius, .5F + radius, 0.5F + radius);
 	}
 	
-    /**
-     * The type of render function that is called for this block
-     */
     @Override
 	public int getRenderType()
     {
     	return 1;
     }
     
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
     
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
-    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    @Override
+    public boolean canPlaceBlockAt(World world, BlockPos pos)
     {
         return canBlockStay(world, x, y, z);
     }
     
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
     {
-        return null;
+        return NULL_AABB;
     }
     
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor Block
-     */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block)
     {
         if (!canBlockStay(world, x, y, z)) {
         	this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);

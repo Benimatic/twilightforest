@@ -66,9 +66,6 @@ public class BlockTFFireflyJar extends Block {
     	return AABB;
     }
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     @Override
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)

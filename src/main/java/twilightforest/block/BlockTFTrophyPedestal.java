@@ -8,6 +8,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +19,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.stats.StatisticsFile;
+import net.minecraft.stats.StatisticsManager;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.math.MathHelper;
@@ -31,7 +35,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFTrophyPedestal extends Block {
-	
+
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
+
 	private IIcon sprTopActive;
 	private IIcon sprTop;
 	private IIcon sprBottom;
@@ -123,34 +129,18 @@ public class BlockTFTrophyPedestal extends Block {
     	this.sprUrghast = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_urghast");
     }
     
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 15));
     }
     
-    
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-    	this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+    	return AABB;
     }
     
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
     @Override
 	public boolean isOpaqueCube(IBlockState state)
     {
@@ -163,23 +153,15 @@ public class BlockTFTrophyPedestal extends Block {
     	return TwilightForestMod.proxy.getPedestalBlockRenderID();
     }
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
     
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     @Override
-	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block myBlockID)
+	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block myBlockID)
     {
         int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -194,11 +176,8 @@ public class BlockTFTrophyPedestal extends Block {
         
     }
     
-    /**
-     * Called when the block is placed in the world.
-     */
     @Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
         int facing = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         
@@ -236,7 +215,7 @@ public class BlockTFTrophyPedestal extends Block {
      * Ticks the block if it's been scheduled
      */
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random par5Random)
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random par5Random)
     {
 		if (!world.isRemote) {
 			int meta = world.getBlockMetadata(x, y, z);
@@ -245,7 +224,7 @@ public class BlockTFTrophyPedestal extends Block {
 				// is the pedestal still "latent"?
 				if (meta > 7) {
 					// check enforced progression
-					if (world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+					if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 						if (this.areNearbyPlayersEligible(world, x, y, z)) {
 							doPedestalEffect(world, x, y, z, meta);
 						}
@@ -286,16 +265,15 @@ public class BlockTFTrophyPedestal extends Block {
 	}
 
 	private boolean isPlayerEligible(EntityPlayer player) {
-		if (player instanceof EntityPlayerMP && ((EntityPlayerMP)player).func_147099_x() != null) {
-			StatisticsFile stats = ((EntityPlayerMP)player).func_147099_x();
+		if (player instanceof EntityPlayerMP && ((EntityPlayerMP)player).getStatFile() != null) {
+			StatisticsManager stats = ((EntityPlayerMP)player).getStatFile();
 			
 			return stats.hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement);
-		} else if (player instanceof EntityClientPlayerMP && ((EntityClientPlayerMP)player).getStatFileWriter() != null) {
-			StatFileWriter stats = ((EntityClientPlayerMP)player).getStatFileWriter();
+		} else if (player instanceof EntityPlayerSP && ((EntityPlayerSP)player).getStatFileWriter() != null) {
+			StatisticsManager stats = ((EntityPlayerSP)player).getStatFileWriter();
 			
 			return stats.hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement);
 		}
-		// uh, not a player?
 		return false;
 	}
 
@@ -353,7 +331,7 @@ public class BlockTFTrophyPedestal extends Block {
     }
     
     @Override
-	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer, World world, int x, int y, int z)
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos)
     {
     	// not breakable if meta > 0
 		int meta = world.getBlockMetadata(x, y, z);

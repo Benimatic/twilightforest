@@ -5,8 +5,11 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -71,72 +74,36 @@ public class BlockTFDarkLeaves extends Block {
         return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
     }
 
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
+
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	return 3;
 	}
 
-
-    /**
-     * Chance that fire will spread and consume this block.
-     * 300 being a 100% chance, 0, being a 0% chance.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number ranging from 0 to 300 relating used to determine if the block will be consumed by fire
-     */
     @Override
-	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return 1;
 	}
 
-    /**
-     * Called when fire is updating on a neighbor block.
-     * The higher the number returned, the faster fire will spread around this block.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number that is used to determine the speed of fire growth around the block
-     */
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return 0;
 	}
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     @Override
 	public int quantityDropped(Random par1Random)
     {
     	return par1Random.nextInt(40) == 0 ? 1 : 0;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     @Override
-	public Item getItemDropped(int meta, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
     	return Item.getItemFromBlock(TFBlocks.sapling);
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     @Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int meta, float par6, int fortune)
+	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int fortune)
     {
     	if (!par1World.isRemote)
     	{

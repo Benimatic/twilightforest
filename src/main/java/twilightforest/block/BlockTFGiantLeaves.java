@@ -1,5 +1,8 @@
 package twilightforest.block;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.item.TFItems;
@@ -11,18 +14,13 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 
 	public BlockTFGiantLeaves() {
 		super(Blocks.LEAVES);
-		
         this.setHardness(0.2F * 64F);
         this.setLightOpacity(1);
-        
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -36,19 +34,12 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
         return ColorizerFoliage.getFoliageColor(d0, d1);
     }
 
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
     @SideOnly(Side.CLIENT)
     public int getRenderColor(int p_149741_1_)
     {
         return ColorizerFoliage.getFoliageColorBasic();
     }
 
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
     @SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess world, int x, int y, int z)
     {
@@ -70,13 +61,9 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
         return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
     }
 
-
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    @Override
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         switch (side) {
         case 0:
         	return (y & 3) == 3; 
@@ -92,6 +79,6 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
         	return (x & 3) == 0; 
         }
         
-        return super.shouldSideBeRendered(world, x, y, z, side);
+        return super.shouldSideBeRendered(state, world, pos, side);
     }
 }

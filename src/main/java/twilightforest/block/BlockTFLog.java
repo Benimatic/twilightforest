@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -30,7 +31,6 @@ public class BlockTFLog extends BlockLog {
     //public static int sprRottenSide = 15;
 	
 	protected BlockTFLog() {
-		super();
 		this.setHardness(2.0F);
 		this.setStepSound(Block.soundTypeWood);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -74,21 +74,14 @@ public class BlockTFLog extends BlockLog {
         BlockTFLog.sprDarkwoodTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":darkwood_top");
     }
 
-
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     @Override
-	public Item getItemDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
         return Item.getItemFromBlock(TFBlocks.log); // hey that's my block ID!
     }
     
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
 	@Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

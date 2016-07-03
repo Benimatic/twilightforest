@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSourceImpl;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -14,7 +15,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -82,11 +87,9 @@ public class BlockTFTowerDevice extends Block {
         this.setStepSound(Block.soundTypeWood);
 		this.setCreativeTab(TFItems.creativeTab);
     }
-    
-    /**
-     * How many world ticks before ticking
-     */
-    public int tickRate()
+
+	@Override
+    public int tickRate(World world)
     {
         return 15;
     }
@@ -178,11 +181,8 @@ public class BlockTFTowerDevice extends Block {
         BlockTFTowerDevice.TEX_FIREJET_ACTIVE = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerdev_firejet_on");
     }
 
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, META_REAPPEARING_INACTIVE));
         par3List.add(new ItemStack(par1, 1, META_VANISH_INACTIVE));
@@ -194,11 +194,8 @@ public class BlockTFTowerDevice extends Block {
         par3List.add(new ItemStack(par1, 1, META_REACTOR_INACTIVE));
     }
     
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     @Override
-	public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, ItemStack stack, EnumFacing side, float par7, float par8, float par9)
     {
         int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -246,7 +243,7 @@ public class BlockTFTowerDevice extends Block {
      * @return The amount of the explosion absorbed.
      */
     @Override
-	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
         int meta = world.getBlockMetadata(x, y, z);
 
@@ -260,15 +257,12 @@ public class BlockTFTowerDevice extends Block {
         }
         else
         {
-        	return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        	return super.getExplosionResistance(world, pos, exploder, explosion);
         }
     }
     
-    /**
-     * Returns the block hardness at a location. Args: world, x, y, z
-     */
     @Override
-	public float getBlockHardness(World world, int x, int y, int z)
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos)
     {
     	// most vanish blocks can't be broken
     	int meta = world.getBlockMetadata(x, y, z);
@@ -342,11 +336,8 @@ public class BlockTFTowerDevice extends Block {
 		}
 	}
     
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     @Override
-	public void onBlockAdded(World par1World, int x, int y, int z)
+	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
     {
         int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -362,12 +353,8 @@ public class BlockTFTowerDevice extends Block {
 
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     @Override
-	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block myBlockID)
+	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block myBlockID)
     {
         int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -419,12 +406,9 @@ public class BlockTFTowerDevice extends Block {
         	}
         }
     }
-    
-    /**
-     * Ticks the block if it's been scheduled
-     */
+
     @Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
         if (!par1World.isRemote)
         {
@@ -526,11 +510,7 @@ public class BlockTFTowerDevice extends Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+    public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
     {
     	int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -642,17 +622,8 @@ public class BlockTFTowerDevice extends Block {
 		return 15;
 	}
 
-	/**
-     * Get a light value for this block, normal ranges are between 0 and 15
-     * 
-     * @param world The current world
-     * @param x X Position
-     * @param y Y position
-     * @param z Z position
-     * @return The light value
-     */
     @Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) 
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         Block blockID = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
@@ -678,27 +649,16 @@ public class BlockTFTowerDevice extends Block {
     		return 0;
         }
 	}
-    
-    
-    /**
-     * Called throughout the code as a replacement for block instanceof BlockContainer
-     * Moving this to the Block base class allows for mods that wish to extend vinella
-     * blocks, and also want to have a tile entity on that block, may.
-     *
-     * Return true from this function to specify this block has a tile entity.
-     *
-     * @param metadata Metadata of the current block
-     * @return True if block has a tile entity, false otherwise
-     */
+
 	@Override
-	public boolean hasTileEntity(int metadata) 
+	public boolean hasTileEntity(IBlockState state)
 	{
 		return metadata == META_BUILDER_ACTIVE || metadata == META_ANTIBUILDER || metadata == META_REACTOR_ACTIVE
 				|| metadata == META_GHASTTRAP_INACTIVE || metadata == META_GHASTTRAP_ACTIVE;
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) 
+	public TileEntity createTileEntity(World world, IBlockState state)
 	{
 		if (metadata == META_BUILDER_ACTIVE)
 		{
@@ -725,13 +685,9 @@ public class BlockTFTowerDevice extends Block {
 			return null;
 		}
 	}
-	
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     @Override
-	public Item getItemDropped(int meta, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
         switch (meta)
         {
@@ -742,11 +698,8 @@ public class BlockTFTowerDevice extends Block {
         }
     }
 
-	/**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int meta) 
+	public int damageDropped(IBlockState state)
     {
         switch (meta)
         {

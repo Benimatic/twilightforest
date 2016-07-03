@@ -51,14 +51,6 @@ public class BlockTFThorns extends BlockRotatedPillar {
     	return TwilightForestMod.proxy.getThornsBlockRenderID();
     }
     
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
 	@Override
     public boolean isOpaqueCube(IBlockState state)
     {
@@ -97,11 +89,9 @@ public class BlockTFThorns extends BlockRotatedPillar {
     {
     	entity.attackEntityFrom(DamageSource.cactus, THORN_DAMAGE);
     }
-    
-    /**
-     * When we are chopped, things get bad
-     */
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+
+	@Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean harvest) {
     	int meta = world.getBlockMetadata(x, y, z);
     	if (!player.capabilities.isCreativeMode) {
     		if (!world.isRemote) {

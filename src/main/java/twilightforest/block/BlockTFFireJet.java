@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -51,13 +53,8 @@ public class BlockTFFireJet extends Block {
 		this.setTickRandomly(true);
 	}
 
-
-
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     @Override
-	public int damageDropped(int meta) {
+	public int damageDropped(IBlockState state) {
     	switch (meta)
     	{
     	default :
@@ -203,18 +200,8 @@ public class BlockTFFireJet extends Block {
     	}
     }
 
-
-    /**
-     * Get a light value for this block, normal ranges are between 0 and 15
-     * 
-     * @param world The current world
-     * @param x X Position
-     * @param y Y position
-     * @param z Z position
-     * @return The light value
-     */
     @Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) 
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
     	if (world.getBlock(x, y, z) == this)
     	{
@@ -235,11 +222,8 @@ public class BlockTFFireJet extends Block {
     	}
     }
     
-    /**
-     * Ticks the block if it's been scheduled
-     */
     @Override
-    public void updateTick(World world, int x, int y, int z, Random random)
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
     {
     	// idle jets may turn active
     	if (!world.isRemote && world.getBlockMetadata(x, y, z) == META_JET_IDLE) {
@@ -259,12 +243,8 @@ public class BlockTFFireJet extends Block {
     	}
 	}
     
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     @Override
-	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block myBlockID)
+	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block myBlockID)
     {
         int meta = par1World.getBlockMetadata(x, y, z);
 
@@ -329,20 +309,8 @@ public class BlockTFFireJet extends Block {
     	return world.getBlock(x, y, z).getMaterial() == Material.LAVA && world.getBlockMetadata(x, y, z) == 0;
     }
 
-
-
-	/**
-     * Called throughout the code as a replacement for block instanceof BlockContainer
-     * Moving this to the Block base class allows for mods that wish to extend vinella 
-     * blocks, and also want to have a tile entity on that block, may.
-     * 
-     * Return true from this function to specify this block has a tile entity.
-     * 
-     * @param metadata Metadata of the current block
-     * @return True if block has a tile entity, false otherwise
-     */
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
     	if (metadata == META_SMOKER || metadata == META_JET_POPPING || metadata == META_JET_FLAME
     			|| metadata == META_ENCASED_SMOKER_ON || metadata == META_ENCASED_JET_POPPING || metadata == META_ENCASED_JET_FLAME)
     	{
@@ -353,17 +321,9 @@ public class BlockTFFireJet extends Block {
     		return false;
     	}
     }
-    
-    /**
-     * Called throughout the code as a replacement for BlockContainer.getBlockEntity
-     * Return the same thing you would from that function.
-     * This will fall back to BlockContainer.getBlockEntity if this block is a BlockContainer.
-     * 
-     * @param metadata The Metadata of the current block
-     * @return A instance of a class extending TileEntity
-     */
+
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
     	if (metadata == META_SMOKER || metadata == META_ENCASED_SMOKER_ON)
     	{
     		return new TileEntityTFSmoker();
@@ -390,12 +350,8 @@ public class BlockTFFireJet extends Block {
     	}
     }
 
-
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, META_SMOKER));
         par3List.add(new ItemStack(par1, 1, META_JET_IDLE));
