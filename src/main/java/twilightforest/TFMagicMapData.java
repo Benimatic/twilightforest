@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec4b;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 
 
 public class TFMagicMapData extends MapData
@@ -95,9 +95,9 @@ public class TFMagicMapData extends MapData
             	int worldX = (coord.centerX << this.scale - 1) + this.xCenter;
             	int worldZ = (coord.centerZ << this.scale - 1) + this.zCenter;
 
-         		if (world != null && world.getBiomeProvider() instanceof TFWorldChunkManager)
+         		if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider)
         		{
-        			TFWorldChunkManager tfManager  = (TFWorldChunkManager) world.getBiomeProvider();
+        			TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
         			coord.iconSize = (byte) tfManager.getFeatureID(worldX, worldZ, world);
         			
         			if (coord.getType() == 0)

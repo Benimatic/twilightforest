@@ -78,7 +78,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
     public void registerWorldChunkManager()
     {
-		this.worldChunkMgr = new TFWorldChunkManager(worldObj);
+		this.worldChunkMgr = new TFBiomeProvider(worldObj);
         this.dimensionId = TwilightForestMod.dimensionID;
     }
    

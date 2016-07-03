@@ -21,7 +21,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
@@ -39,7 +38,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
@@ -47,7 +45,7 @@ import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -875,7 +873,7 @@ public class TFEventListener {
 			
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(x, y, z)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFWorldChunkManager)world.provider.worldChunkMgr).getFeatureAt(x, z, world);
+				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.worldChunkMgr).getFeatureAt(x, z, world);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAchievement(player) && chunkProvider.isBlockProtected(x, y, z)) {
 					
@@ -919,7 +917,7 @@ public class TFEventListener {
 
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(mx, my, mz) && chunkProvider.isBlockProtected(mx, my, mz)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFWorldChunkManager)event.getEntityLiving().worldObj.provider.worldChunkMgr).getFeatureAt(mx, mz, event.getEntityLiving().worldObj);
+				TFFeature nearbyFeature = ((TFBiomeProvider)event.getEntityLiving().worldObj.provider.worldChunkMgr).getFeatureAt(mx, mz, event.getEntityLiving().worldObj);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getEntity())) {
 					event.setResult(Result.DENY);

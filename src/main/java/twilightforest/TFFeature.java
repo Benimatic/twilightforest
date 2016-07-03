@@ -61,7 +61,7 @@ import twilightforest.entity.EntityTFTroll;
 import twilightforest.entity.EntityTFWraith;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.world.TFWorld;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 
 
 
@@ -298,9 +298,9 @@ public class TFFeature {
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
 		
-		if (world != null && world.getBiomeProvider() instanceof TFWorldChunkManager)
+		if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider)
 		{
-			TFWorldChunkManager tfManager  = (TFWorldChunkManager) world.getBiomeProvider();
+			TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
 			
 			if (tfManager.isInFeatureChunk(world, chunkX << 4, chunkZ << 4))
 			{

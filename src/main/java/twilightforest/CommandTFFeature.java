@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class CommandTFFeature extends CommandBase {
@@ -41,7 +41,7 @@ public class CommandTFFeature extends CommandBase {
 					throw new WrongUsageException("commands.tffeature.not_in_twilight_forest", new Object[0]);
 				} else {
 					// nearest feature
-					TFFeature nearbyFeature = ((TFWorldChunkManager)player.worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, player.worldObj);
+					TFFeature nearbyFeature = ((TFBiomeProvider)player.worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, player.worldObj);
 					
 					sender.addChatMessage(new TextComponentTranslation("The nearest feature is %s", new Object[] {nearbyFeature.name}));
 					
@@ -80,7 +80,7 @@ public class CommandTFFeature extends CommandBase {
 				
 				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.worldObj);
 				
-				TFWorldChunkManager wcm = (TFWorldChunkManager)player.worldObj.provider.getBiomeProvider();
+				TFBiomeProvider wcm = (TFBiomeProvider)player.worldObj.provider.getBiomeProvider();
 				
 				boolean fc = wcm.isInFeatureChunk(player.worldObj, dx, dz);
 				sender.addChatMessage(new TextComponentTranslation("Center of feature = %s.", new Object[] {cc}));

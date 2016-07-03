@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
@@ -19,7 +20,7 @@ import twilightforest.biomes.TFBiomeBase;
 import twilightforest.world.layer.GenLayerTF;
 
 
-public class TFWorldChunkManager extends BiomeProvider
+public class TFBiomeProvider extends BiomeProvider
 {
     private GenLayer unzoomedBiomes;
 
@@ -32,7 +33,7 @@ public class TFWorldChunkManager extends BiomeProvider
     /** A list of biomes that the player can spawn in. */
     private List<Biome> myBiomesToSpawnIn;
 
-    protected TFWorldChunkManager()
+    protected TFBiomeProvider()
     {
         myBiomeCache = new BiomeCache(this);
         myBiomesToSpawnIn = new ArrayList<Biome>();
@@ -43,7 +44,7 @@ public class TFWorldChunkManager extends BiomeProvider
         myBiomesToSpawnIn.add(TFBiomeBase.mushrooms);
     }
 
-    public TFWorldChunkManager(long par1, WorldType par3WorldType)
+    public TFBiomeProvider(long par1, WorldType par3WorldType)
     {
         this();
         GenLayer agenlayer[];
@@ -60,16 +61,13 @@ public class TFWorldChunkManager extends BiomeProvider
         zoomedBiomes = agenlayer[1];
     }
 
-    public TFWorldChunkManager(World par1World)
+    public TFBiomeProvider(World par1World)
     {
         this(par1World.getSeed(), par1World.getWorldInfo().getTerrainType());
     }
 
-    /**
-     * Gets the list of valid biomes for the player to spawn in.
-     */
-    @SuppressWarnings("rawtypes")
-	public List getBiomesToSpawnIn()
+    @Override
+	public List<Biome> getBiomesToSpawnIn()
     {
         return myBiomesToSpawnIn;
     }
@@ -129,17 +127,13 @@ public class TFWorldChunkManager extends BiomeProvider
         return par1ArrayOfFloat;
     }
 
-    /**
-     * Return an adjusted version of a given temperature based on the y height
-     */
+    @Override
     public float getTemperatureAtHeight(float par1, int par2)
     {
         return par1;
     }
 
-    /**
-     * Returns an array of biomes for the location input.
-     */
+    @Override
     public Biome[] getBiomesForGeneration(Biome par1ArrayOfBiome[], int x, int z, int length, int width)
     {
         IntCache.resetIntCache();
@@ -168,19 +162,13 @@ public class TFWorldChunkManager extends BiomeProvider
         return par1ArrayOfBiome;
     }
 
-    /**
-     * Returns biomes to use for the blocks and loads the other data like temperature and humidity onto the
-     * WorldChunkManager Args: oldBiomeList, x, z, width, depth
-     */
+    @Override
     public Biome[] loadBlockGeneratorData(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5)
     {
         return getBiomeGenAt(par1ArrayOfBiome, par2, par3, par4, par5, true);
     }
 
-    /**
-     * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if false,
-     * don't check biomeCache to avoid infinite loop in BiomeCacheBlock)
-     */
+    @Override
     public Biome[] getBiomeGenAt(Biome par1ArrayOfBiome[], int x, int y, int width, int length, boolean cacheFlag)
     {
         IntCache.resetIntCache();
@@ -216,11 +204,8 @@ public class TFWorldChunkManager extends BiomeProvider
         return par1ArrayOfBiome;
     }
 
-    /**
-     * checks given Chunk's Biomes against List of allowed ones
-     */
-    @SuppressWarnings("rawtypes")
-	public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
+    @Override
+	public boolean areBiomesViable(int par1, int par2, int par3, List<Biome> par4List)
     {
         int i = par1 - par3 >> 2;
         int j = par2 - par3 >> 2;
@@ -243,11 +228,8 @@ public class TFWorldChunkManager extends BiomeProvider
         return true;
     }
 
-    /**
-     * Finds a valid position within a range, that is once of the listed biomes.
-     */
-    @SuppressWarnings("rawtypes")
-	public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
+    @Override
+	public BlockPos findBiomePosition(int par1, int par2, int par3, List<Biome> par4List, Random par5Random)
     {
         int i = par1 - par3 >> 2;
         int j = par2 - par3 >> 2;
@@ -256,7 +238,7 @@ public class TFWorldChunkManager extends BiomeProvider
         int i1 = (k - i) + 1;
         int j1 = (l - j) + 1;
         int ai[] = unzoomedBiomes.getInts(i, j, i1, j1);
-        ChunkPosition chunkposition = null;
+        BlockPos chunkposition = null;
         int k1 = 0;
 
         for (int l1 = 0; l1 < ai.length; l1++)
@@ -267,7 +249,7 @@ public class TFWorldChunkManager extends BiomeProvider
 
             if (par4List.contains(biomegenbase) && (chunkposition == null || par5Random.nextInt(k1 + 1) == 0))
             {
-                chunkposition = new ChunkPosition(i2, 0, j2);
+                chunkposition = new BlockPos(i2, 0, j2);
                 k1++;
             }
         }
@@ -275,9 +257,7 @@ public class TFWorldChunkManager extends BiomeProvider
         return chunkposition;
     }
 
-    /**
-     * Calls the WorldChunkManager's biomeCache.cleanupCache()
-     */
+    @Override
     public void cleanupCache()
     {
         myBiomeCache.cleanupCache();

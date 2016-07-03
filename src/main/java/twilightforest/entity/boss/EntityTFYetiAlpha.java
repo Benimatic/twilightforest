@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -36,7 +35,7 @@ import twilightforest.entity.ai.EntityAITFYetiRampage;
 import twilightforest.entity.ai.EntityAITFYetiTired;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
@@ -508,7 +507,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
 				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+				TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
 
 				if (nearbyFeature == TFFeature.yetiCave) {
 					chunkProvider.setStructureConquered(dx, dy, dz, true);

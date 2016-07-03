@@ -27,7 +27,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
 
@@ -1081,7 +1081,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 			int dz = MathHelper.floor_double(this.posZ);
 			
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
 			
 			if (nearbyFeature == TFFeature.hydraLair) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);

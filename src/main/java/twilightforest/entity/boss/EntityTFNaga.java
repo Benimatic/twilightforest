@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -8,7 +7,6 @@ import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,7 +26,7 @@ import twilightforest.block.state.StateProps;
 import twilightforest.block.state.enums.SpawnerVariant;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
 
@@ -1102,7 +1100,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 			int dz = MathHelper.floor_double(this.posZ);
 			
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 			
 			if (nearbyFeature == TFFeature.nagaCourtyard) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);

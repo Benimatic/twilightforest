@@ -15,9 +15,8 @@ import net.minecraft.world.storage.MapData.MapInfo;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.TFMapPacketHandler;
-import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -121,9 +120,9 @@ public class ItemTFMagicMap extends ItemMap
                                     	biomeFrequencies[biomeID] += 2;
                                     }
                                     // add in TF features
-                                    if (par1World.getBiomeProvider() instanceof TFWorldChunkManager)
+                                    if (par1World.getBiomeProvider() instanceof TFBiomeProvider)
                                     {
-                                    	TFWorldChunkManager tfManager  = (TFWorldChunkManager) par1World.getBiomeProvider();
+                                    	TFBiomeProvider tfManager  = (TFBiomeProvider) par1World.getBiomeProvider();
                                     	
                                     	if (tfManager.isInFeatureChunk(par1World, xDraw2 + xStep2, zDraw2 + zStep2) && zStep >= 0 && xOffset * xOffset + zOffset * zOffset < drawSize * drawSize)
                                     	{

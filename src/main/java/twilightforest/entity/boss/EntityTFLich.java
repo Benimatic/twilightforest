@@ -32,7 +32,7 @@ import twilightforest.TFFeature;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
 
@@ -1027,7 +1027,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
 				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+				TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 
 				if (nearbyFeature == TFFeature.lichTower) {
 					chunkProvider.setStructureConquered(dx, dy, dz, true);

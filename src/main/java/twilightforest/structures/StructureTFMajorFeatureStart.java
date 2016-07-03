@@ -33,7 +33,7 @@ import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.world.TFWorld;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 
 
 public class StructureTFMajorFeatureStart extends StructureStart {
@@ -199,7 +199,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     @SuppressWarnings("unchecked")
 	protected void moveToAvgGroundLevel(World world, int x, int z)
     {
-    	if (world.getBiomeProvider() instanceof TFWorldChunkManager)
+    	if (world.getBiomeProvider() instanceof TFBiomeProvider)
     	{
     		// determine the biome at the origin
     		Biome biomeAt = world.getBiomeGenForCoords(x, z);

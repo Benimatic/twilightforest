@@ -8,7 +8,6 @@ import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -26,7 +25,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
+import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.FMLLog;
 
@@ -844,7 +843,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 			int dz = chestCoords.posZ;
 
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 
 			if (nearbyFeature == TFFeature.darkTower) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);
