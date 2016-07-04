@@ -4,20 +4,23 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.FireJetVariant;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFFlameJet;
 import twilightforest.tileentity.TileEntityTFPoppingJet;
@@ -27,143 +30,30 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFFireJet extends Block {
 
-	public static final int META_SMOKER = 0;
-	public static final int META_ENCASED_SMOKER_OFF = 1;
-	public static final int META_ENCASED_SMOKER_ON = 2;
-	public static final int META_JET_IDLE = 8;
-	public static final int META_JET_POPPING = 9;
-	public static final int META_JET_FLAME = 10;
-	public static final int META_ENCASED_JET_IDLE = 11;
-	public static final int META_ENCASED_JET_POPPING = 12;
-	public static final int META_ENCASED_JET_FLAME = 13;
-	
-	private IIcon iconJet;
-	private IIcon iconSide;
-	private IIcon iconSmokerInactive;
-	private IIcon iconSmokerActive;
-	private IIcon iconJetInactive;
-	private IIcon iconJetActive;
-	
+	public static final PropertyEnum<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
+
 	protected BlockTFFireJet() {
 		super(Material.ROCK);
 		this.setHardness(1.5F);
 		//this.setResistance(10.0F);
-		this.setStepSound(Block.soundTypeWood);
+		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setTickRandomly(true);
 	}
 
     @Override
 	public int damageDropped(IBlockState state) {
-    	switch (meta)
-    	{
-    	default :
-    		return meta;
-    	case META_ENCASED_SMOKER_ON :
-    		return META_ENCASED_SMOKER_OFF;
-    	case META_ENCASED_JET_POPPING :
-    	case META_ENCASED_JET_FLAME :
-    		return META_ENCASED_JET_IDLE;
-    	case META_JET_POPPING :
-    	case META_JET_FLAME :
-    		return META_JET_IDLE;
-    	}
-		
+		switch (state.getValue(VARIANT)) {
+			case ENCASED_SMOKER_ON: state = state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF); break;
+			case ENCASED_JET_POPPING: state = state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_IDLE); break;
+			case ENCASED_JET_FLAME: state = state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_IDLE); break;
+			case JET_POPPING: state = state.withProperty(VARIANT, FireJetVariant.JET_IDLE); break;
+			case JET_FLAME: state = state.withProperty(VARIANT, FireJetVariant.JET_IDLE); break;
+		}
+
+		return getMetaFromState(state);
 	}
 
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	if (meta == META_ENCASED_SMOKER_OFF)
-    	{
-			if (side >= 2)
-			{	
-				return iconSmokerInactive;
-			}
-			else if (side == 1)
-			{
-				return TFBlocks.towerDevice.getIcon(side, BlockTFTowerDevice.META_GHASTTRAP_INACTIVE);
-			}
-			else
-			{
-				return TFBlocks.towerWood.getIcon(side, 1);
-			}    	
-		}
-    	else if (meta == META_ENCASED_SMOKER_ON)
-    	{
-			if (side >= 2)
-			{	
-				return iconSmokerActive;
-			}
-			else if (side == 1)
-			{
-				return TFBlocks.towerDevice.getIcon(side, BlockTFTowerDevice.META_GHASTTRAP_ACTIVE);
-			}
-			else
-			{
-				return TFBlocks.towerWood.getIcon(side, 1);
-			}    	
-		}
-    	if (meta == META_ENCASED_JET_IDLE)
-    	{
-			if (side >= 2)
-			{	
-				return iconJetInactive;
-			}
-			else if (side == 1)
-			{
-				return TFBlocks.towerDevice.getIcon(side, BlockTFTowerDevice.META_GHASTTRAP_INACTIVE);
-			}
-			else
-			{
-				return TFBlocks.towerWood.getIcon(side, 1);
-			}    	
-		}
-    	else if (meta == META_ENCASED_JET_POPPING || meta == META_ENCASED_JET_FLAME)
-    	{
-			if (side >= 2)
-			{	
-				return iconJetActive;
-			}
-			else if (side == 1)
-			{
-				return TFBlocks.towerDevice.getIcon(side, BlockTFTowerDevice.META_GHASTTRAP_ACTIVE);
-			}
-			else
-			{
-				return TFBlocks.towerWood.getIcon(side, 1);
-			}    	
-		}
-    	else
-    	{
-    		// normal fire jet
-        	if (side == 1)
-        	{
-        		return iconJet;
-        	}
-        	else
-        	{
-        		return iconSide;
-        	}
-    	}
-    }
-    
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":firejet_side");
-        this.iconJet = par1IconRegister.registerIcon(TwilightForestMod.ID + ":firejet_top");
-        this.iconSmokerInactive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerdev_smoker_off");
-        this.iconSmokerActive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerdev_smoker_on");
-        this.iconJetInactive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerdev_firejet_off");
-        this.iconJetActive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerdev_firejet_on");    }
-    
     /**
      * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
      * when first determining what to render.
@@ -203,18 +93,14 @@ public class BlockTFFireJet extends Block {
     @Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-    	if (world.getBlock(x, y, z) == this)
+    	if (world.getBlockState(pos) == state)
     	{
-    		int meta = world.getBlockMetadata(x, y, z);
-
-    		switch (meta) {
-    		case META_SMOKER:
-    		default :
-    			return 0;
-    		case META_JET_FLAME :
-    		case META_ENCASED_JET_FLAME :
-    			return 15;
-    		}
+			switch (state.getValue(VARIANT)) {
+				case JET_FLAME:
+				case ENCASED_JET_FLAME: return 15;
+				case SMOKER:
+				default: return 0;
+			}
     	}
     	else
     	{
@@ -226,15 +112,15 @@ public class BlockTFFireJet extends Block {
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
     {
     	// idle jets may turn active
-    	if (!world.isRemote && world.getBlockMetadata(x, y, z) == META_JET_IDLE) {
-    		BlockPos lavaPos = findLavaAround(world, x, y - 1, z);
+    	if (!world.isRemote && state.getValue(VARIANT) == FireJetVariant.JET_IDLE) {
+    		BlockPos lavaPos = findLavaAround(world, pos.down());
     		
-    		if (isLava(world, lavaPos.posX, lavaPos.posY, lavaPos.posZ))
+    		if (isLava(world, lavaPos))
     		{
     			// deplete lava reservoir
-    			world.setBlock(lavaPos.posX, lavaPos.posY, lavaPos.posZ, Blocks.AIR, 0, 2);
+    			world.setBlockState(lavaPos, Blocks.AIR.getDefaultState(), 2);
     			// change jet state
-    			world.setBlock(x, y, z, this, META_JET_POPPING, 0);
+    			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.JET_POPPING), 0);
     		}
     		else
     		{
@@ -244,28 +130,29 @@ public class BlockTFFireJet extends Block {
 	}
     
     @Override
-	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block myBlockID)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block myBlockID)
     {
-        int meta = par1World.getBlockMetadata(x, y, z);
-
-        if (!par1World.isRemote)
+        if (!world.isRemote)
         {
-        	if (meta == META_ENCASED_SMOKER_OFF && par1World.isBlockIndirectlyGettingPowered(x, y, z))
+			FireJetVariant variant = state.getValue(VARIANT);
+			boolean powered = world.isBlockIndirectlyGettingPowered(pos) > 0;
+			
+        	if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered)
         	{
-    			par1World.setBlock(x, y, z, this, META_ENCASED_SMOKER_ON, 3);
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+    			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
+                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
         	}
         	
-        	if (meta == META_ENCASED_SMOKER_ON && !par1World.isBlockIndirectlyGettingPowered(x, y, z))
+        	if (variant == FireJetVariant.ENCASED_SMOKER_ON && !powered)
         	{
-    			par1World.setBlock(x, y, z, this, META_ENCASED_SMOKER_OFF, 3);
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
+                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
         	}
         	
-        	if (meta == META_ENCASED_JET_IDLE && par1World.isBlockIndirectlyGettingPowered(x, y, z))
+        	if (variant == FireJetVariant.ENCASED_JET_IDLE && powered)
         	{
-    			par1World.setBlock(x, y, z, this, META_ENCASED_JET_POPPING, 3);
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
+                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
         	}
 
         }
@@ -273,76 +160,72 @@ public class BlockTFFireJet extends Block {
 
     /**
      * Find a full block of lava near the designated block.  This is intentionally not really that reliable.
-     * 
-     * 
      */
-    private BlockPos findLavaAround(World world, int x, int y, int z) {
-		if (isLava(world, x, y, z)) {
-			return new BlockPos(x, y, z);
+    private BlockPos findLavaAround(World world, BlockPos pos) {
+		if (isLava(world, pos)) {
+			return pos;
 		}
+
 		// try three random spots nearby
-		int rx = x + world.rand.nextInt(3) - 1;
-		int rz = z + world.rand.nextInt(3) - 1;
-		if (isLava(world, rx, y, rz)) {
-			return new BlockPos(rx, y, rz);
+		for (int i = 0; i < 3; i++) {
+			BlockPos randPos = pos.add(world.rand.nextInt(3) - 1, 0, world.rand.nextInt(3) - 1);
+			if (isLava(world, randPos)) {
+				return randPos;
+			}
 		}
-		
-		rx = x + world.rand.nextInt(3) - 1;
-		rz = z + world.rand.nextInt(3) - 1;
-		if (isLava(world, rx, y, rz)) {
-			return new BlockPos(rx, y, rz);
-		}
-		
-		rx = x + world.rand.nextInt(3) - 1;
-		rz = z + world.rand.nextInt(3) - 1;
-		if (isLava(world, rx, y, rz)) {
-			return new BlockPos(rx, y, rz);
-		}
-		
 		
 		// finally, give up
-		return new BlockPos(x, y, z);
+		return pos;
 	}
     
-    private boolean isLava(World world, int x, int y, int z)
+    private boolean isLava(World world, BlockPos pos)
     {
-    	return world.getBlock(x, y, z).getMaterial() == Material.LAVA && world.getBlockMetadata(x, y, z) == 0;
+		IBlockState state = world.getBlockState(pos);
+		Block b = state.getBlock();
+		IProperty<Integer> levelProp = b instanceof BlockLiquid
+				? BlockLiquid.LEVEL
+				: b instanceof BlockFluidBase
+					? BlockFluidBase.LEVEL
+					: null;
+    	return state.getMaterial() == Material.LAVA
+				&& (levelProp == null || state.getValue(levelProp) == 0);
     }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
-    	if (metadata == META_SMOKER || metadata == META_JET_POPPING || metadata == META_JET_FLAME
-    			|| metadata == META_ENCASED_SMOKER_ON || metadata == META_ENCASED_JET_POPPING || metadata == META_ENCASED_JET_FLAME)
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
-    	}
+		FireJetVariant variant = state.getValue(VARIANT);
+		
+		return variant == FireJetVariant.SMOKER
+				|| variant == FireJetVariant.JET_POPPING
+				|| variant == FireJetVariant.JET_FLAME
+				|| variant == FireJetVariant.ENCASED_SMOKER_ON
+				|| variant == FireJetVariant.ENCASED_JET_POPPING
+				|| variant == FireJetVariant.ENCASED_JET_FLAME;
     }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-    	if (metadata == META_SMOKER || metadata == META_ENCASED_SMOKER_ON)
+		FireJetVariant variant = state.getValue(VARIANT);
+		
+    	if (variant == FireJetVariant.SMOKER || variant == FireJetVariant.ENCASED_SMOKER_ON)
     	{
     		return new TileEntityTFSmoker();
     	}
-    	else if (metadata == META_JET_POPPING)
+    	else if (variant == FireJetVariant.JET_POPPING)
     	{
-    		return new TileEntityTFPoppingJet(META_JET_FLAME);
+    		return new TileEntityTFPoppingJet(FireJetVariant.JET_FLAME);
     	}
-    	else if (metadata == META_JET_FLAME)
+    	else if (variant == FireJetVariant.JET_FLAME)
     	{
-    		return new TileEntityTFFlameJet(META_JET_IDLE);
+    		return new TileEntityTFFlameJet(FireJetVariant.JET_IDLE);
     	}
-    	else if (metadata == META_ENCASED_JET_POPPING)
+    	else if (variant == FireJetVariant.ENCASED_JET_POPPING)
     	{
-    		return new TileEntityTFPoppingJet(META_ENCASED_JET_FLAME);
+    		return new TileEntityTFPoppingJet(FireJetVariant.ENCASED_JET_FLAME);
     	}
-    	else if (metadata == META_ENCASED_JET_FLAME)
+    	else if (variant == FireJetVariant.ENCASED_JET_FLAME)
     	{
-    		return new TileEntityTFFlameJet(META_ENCASED_JET_IDLE);
+    		return new TileEntityTFFlameJet(FireJetVariant.ENCASED_JET_IDLE);
     	}
     	else
     	{
@@ -353,10 +236,10 @@ public class BlockTFFireJet extends Block {
     @Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
-        par3List.add(new ItemStack(par1, 1, META_SMOKER));
-        par3List.add(new ItemStack(par1, 1, META_JET_IDLE));
-        par3List.add(new ItemStack(par1, 1, META_ENCASED_SMOKER_OFF));
-        par3List.add(new ItemStack(par1, 1, META_ENCASED_JET_IDLE));
+        par3List.add(new ItemStack(par1, 1, FireJetVariant.SMOKER.ordinal()));
+        par3List.add(new ItemStack(par1, 1, FireJetVariant.JET_IDLE.ordinal()));
+        par3List.add(new ItemStack(par1, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
+        par3List.add(new ItemStack(par1, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
     }
 
 

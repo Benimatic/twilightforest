@@ -2,40 +2,52 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.BlockFluidBase;
 import twilightforest.item.TFItems;
 
 public class BlockTFHugeWaterLily extends BlockBush {
 
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9);
+
 	protected BlockTFHugeWaterLily() {
 		super(Material.PLANTS);
-		
-		this.setStepSound(soundTypeGrass);
+		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
-		
-        float radius = 0.4F;
-        this.setBlockBounds(0.5F - radius, 0.5F - radius, 0.5F - radius, 0.5F + radius, .5F + radius, 0.5F + radius);
-	}
-	
-    /**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
-	public boolean canBlockStay(World world, int x, int y, int z) {
-		return world.getBlock(x, y - 1, z).getMaterial() == Material.WATER && world.getBlockMetadata(x, y - 1, z) == 0;
 	}
 
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return AABB;
+    }
 
-    /**
-     * is the block grass, dirt or farmland
-     */
-    protected boolean canPlaceBlockOn(Block p_149854_1_)
+    @Override
+	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+        IBlockState down = world.getBlockState(pos.down());
+        Block b = down.getBlock();
+        IProperty<Integer> levelProp = b instanceof BlockLiquid
+                ? BlockLiquid.LEVEL
+                : b instanceof BlockFluidBase
+                    ? BlockFluidBase.LEVEL
+                    : null;
+
+        return down.getMaterial() == Material.WATER
+                && (levelProp == null || down.getValue(levelProp) == 0);
+	}
+
+    @Override
+    protected boolean canSustainBush(IBlockState state)
     {
-        return p_149854_1_ == Blocks.WATER;
+        return state.getBlock() == Blocks.WATER;
     }
 }

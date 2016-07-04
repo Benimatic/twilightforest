@@ -7,16 +7,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.EntityTFTinyFirefly;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,14 +37,11 @@ public class BlockTFFireflyJar extends Block {
     {
         return false;
     }
-    
-    /**
-     * The type of render function that is called for this block
-     */
+
     @Override
-	public int getRenderType()
-    {
-    	return TwilightForestMod.proxy.getComplexBlockRenderID();
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

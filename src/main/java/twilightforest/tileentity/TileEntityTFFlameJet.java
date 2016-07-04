@@ -12,18 +12,15 @@ import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.FireJetVariant;
 
 public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	
-	int counter = 0;
-	private int nextMeta;
+	private int counter = 0;
+	private FireJetVariant nextVariant;
 	
-    public TileEntityTFFlameJet() {
-		this(BlockTFFireJet.META_JET_IDLE);
-	}
-	
-    public TileEntityTFFlameJet(int parNextMeta) {
-		this.nextMeta = parNextMeta;
+    public TileEntityTFFlameJet(FireJetVariant variant) {
+		this.nextVariant = variant;
 	}
 
     @Override
@@ -35,7 +32,7 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	    	// idle again
 			if (!worldObj.isRemote && worldObj.getBlockState(pos).getBlock() == TFBlocks.fireJet)
 			{
-				worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, TFBlocks.fireJet, this.nextMeta, 3);
+				worldObj.setBlockState(pos, TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, this.nextVariant), 3);
 			}
 			this.invalidate();
 		}
@@ -95,14 +92,14 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readFromNBT(par1NBTTagCompound);
-        this.nextMeta = par1NBTTagCompound.getInteger("NextMeta");
+        this.nextVariant = FireJetVariant.values()[par1NBTTagCompound.getInteger("NextMeta")];
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("NextMeta", this.nextMeta);
+        par1NBTTagCompound.setInteger("NextMeta", this.nextVariant.ordinal());
 		return par1NBTTagCompound;
     }
 }
