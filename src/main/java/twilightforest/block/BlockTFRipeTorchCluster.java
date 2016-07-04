@@ -17,9 +17,7 @@ import twilightforest.item.TFItems;
 public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 
 	protected BlockTFRipeTorchCluster() {
-        this.setBlockTextureName(TwilightForestMod.ID + ":ripe_torch_cluster");
         this.setLightLevel(1.0F);
-
 	}
 
     @Override
@@ -42,7 +40,7 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
     @Override
     public int quantityDroppedWithBonus(int bonus, Random rand)
     {
-        if (bonus > 0 && Item.getItemFromBlock(this) != this.getItemDropped(0, rand, bonus))
+        if (bonus > 0 && Item.getItemFromBlock(this) != this.getItemDropped(getDefaultState(), rand, bonus))
         {
             int j = rand.nextInt(bonus + 2) - 1;
 
@@ -63,9 +61,9 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
     {
     	// do not call normal harvest if the player is shearing
-        if (world.isRemote || player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != Items.SHEARS)
+        if (world.isRemote || stack == null || stack.getItem() != Items.SHEARS)
         {
-            super.harvestBlock(world, player, x, y, z, meta);
+            super.harvestBlock(world, player, pos, state, te, stack);
         }
     }
 }

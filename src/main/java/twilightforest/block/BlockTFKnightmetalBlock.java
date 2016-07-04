@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -7,35 +9,29 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCompressed;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 public class BlockTFKnightmetalBlock extends Block {
 
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(1/16F, 1/16F, 1/16F, 15/16F, 15/16F, 15/16F);
 	private static final float BLOCK_DAMAGE = 4;
 
 	public BlockTFKnightmetalBlock() {
-		super(MapColor.ironColor);
+		super(Material.IRON);
 		this.setHardness(5.0F);
 		this.setResistance(41.0F);
-		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(TwilightForestMod.ID + ":knightmetal_block");
+		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
-
 	}
 	
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
 	{
-		float f = 1F / 16F;
-		return new AxisAlignedBB(x + f, y + f, z + f, x + 1 - f, y + 1 - f, z + 1 - f);
-
+		return AABB;
 	}
 
     @Override
@@ -48,12 +44,6 @@ public class BlockTFKnightmetalBlock extends Block {
 	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
-    }
-
-    @Override
-	public int getRenderType()
-    {
-    	return TwilightForestMod.proxy.getKnightmetalBlockRenderID();
     }
 
     @Override

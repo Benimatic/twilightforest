@@ -3,18 +3,19 @@ package twilightforest.block;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.SaplingVariant;
 import twilightforest.item.TFItems;
 import twilightforest.world.TFGenCanopyTree;
 import twilightforest.world.TFGenDarkCanopyTree;
@@ -33,139 +34,51 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockTFSapling extends BlockSapling
 {
 
-	private IIcon[] icons;
-	private String[] iconNames = new String[] {"sapling_oak", "sapling_canopy", "sapling_mangrove", "sapling_darkwood", "sapling_hollow_oak", "sapling_time", "sapling_transformation", "sapling_mining", "sapling_sorting", "sapling_rainboak"};
+	public static final PropertyEnum<SaplingVariant> TF_TYPE = PropertyEnum.create("tf_type", SaplingVariant.class);
 
 	protected BlockTFSapling() {
-		super();
-        float var3 = 0.4F;
-        this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, var3 * 2.0F, 0.5F + var3);
 		this.setCreativeTab(TFItems.creativeTab);
+		this.setDefaultState(blockState.getBaseState()
+				.withProperty(STAGE, 0)
+				.withProperty(TYPE, BlockPlanks.EnumType.OAK)
+				.withProperty(TF_TYPE, SaplingVariant.OAK));
+	}
+
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, STAGE, TYPE, TF_TYPE);
 	}
 	
     @Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
-    {
-        if (!par1World.isRemote)
-        {
-            //this.checkFlowerChange(par1World, x, y, z);
-
-            if (par1World.getBlockLightValue(x, y + 1, z) >= 9 && par5Random.nextInt(7) == 0)
-            {
-                this.func_149878_d(par1World, x, y, z, par5Random);
-            }
-        }
-    }
-
-    @Override
 	public void grow(World world, BlockPos pos, IBlockState state, Random rand) {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	WorldGenerator treeGenerator = null;
-    	int var8 = 0;
-    	int var9 = 0;
-    	boolean largeTree = false;
+		WorldGenerator treeGenerator;
 
-    	if (meta == 1)
-    	{
-    		treeGenerator = new TFGenCanopyTree(true);
-    	}
-    	else if (meta == 2)
-    	{
-    		treeGenerator = new TFGenMangroveTree(true);
-    	}
-    	else if (meta == 3)
-    	{
-    		treeGenerator = new TFGenDarkCanopyTree(true);
-    	}
-    	else if (meta == 4)
-    	{
-    		treeGenerator = new TFGenHollowTree(true);
-    	}
-    	else if (meta == 5)
-    	{
-    		treeGenerator = new TFGenTreeOfTime(true);
-    	}
-    	else if (meta == 6)
-    	{
-    		treeGenerator = new TFGenTreeOfTransformation(true);
-    	}
-    	else if (meta == 7)
-    	{
-    		treeGenerator = new TFGenMinersTree(true);
-    	}
-    	else if (meta == 8)
-    	{
-    		treeGenerator = new TFGenSortingTree(true);
-    	}
-    	else if (meta == 9)
-    	{
-    		treeGenerator = rand.nextInt(7) == 0 ? new TFGenLargeRainboak(true) : new TFGenSmallRainboak(true);
-    	}
-    	else
-    	{
-    		treeGenerator = new TFGenSmallTwilightOak(true);
-    	}
+		switch (state.getValue(TF_TYPE)) {
+			case CANOPY: treeGenerator = new TFGenCanopyTree(true); break;
+			case MANGROVE: treeGenerator = new TFGenMangroveTree(true); break;
+			case DARKWOOD: treeGenerator = new TFGenDarkCanopyTree(true); break;
+			case HOLLOW_OAK: treeGenerator = new TFGenHollowTree(true); break;
+			case TIME: treeGenerator = new TFGenTreeOfTime(true); break;
+			case TRANSFORMATION: treeGenerator = new TFGenTreeOfTransformation(true); break;
+			case MINING: treeGenerator = new TFGenMinersTree(true); break;
+			case SORTING: treeGenerator = new TFGenSortingTree(true); break;
+			case RAINBOW: treeGenerator = rand.nextInt(7) == 0 ? new TFGenLargeRainboak(true) : new TFGenSmallRainboak(true); break;
+			case OAK:
+			default: treeGenerator = new TFGenSmallTwilightOak(true); break;
+		}
 
-    	if (largeTree)
-    	{
-    		world.setBlock(x + var8, y, z + var9, Blocks.AIR, 0, 4);
-    		world.setBlock(x + var8 + 1, y, z + var9, Blocks.AIR, 0, 4);
-    		world.setBlock(x + var8, y, z + var9 + 1, Blocks.AIR, 0, 4);
-    		world.setBlock(x + var8 + 1, y, z + var9 + 1, Blocks.AIR, 0, 4);
-    	}
-    	else
-    	{
-    		world.setBlock(x, y, z, Blocks.AIR, 0, 4);
-    	}
+		world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
 
-    	if (!treeGenerator.generate(world, rand, x + var8, y, z + var9))
+    	if (!treeGenerator.generate(world, rand, pos))
     	{
-    		if (largeTree)
-    		{
-    			world.setBlock(x + var8, y, z + var9, this, meta, 4);
-    			world.setBlock(x + var8 + 1, y, z + var9, this, meta, 4);
-    			world.setBlock(x + var8, y, z + var9 + 1, this, meta, 4);
-    			world.setBlock(x + var8 + 1, y, z + var9 + 1, this, meta, 4);
-    		}
-    		else
-    		{
-    			world.setBlock(x, y, z, this, meta, 4);
-    		}
+			world.setBlockState(pos, state, 4);
     	}
     }
     
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int metadata)
-    {
-    	if (metadata < this.icons.length)
-    	{
-    		return this.icons[metadata];
-    	}
-    	else
-    	{
-    		return null;
-    	}
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.icons = new IIcon[iconNames.length];
-
-        for (int i = 0; i < this.icons.length; ++i)
-        {
-            this.icons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + iconNames[i]);
-        }
-    }
-
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-        return par1;
+        return getMetaFromState(state);
     }
 
 	@Override

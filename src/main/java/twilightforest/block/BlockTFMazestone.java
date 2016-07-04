@@ -3,25 +3,22 @@ package twilightforest.block;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-
 
 /**
  * 
@@ -31,78 +28,44 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class BlockTFMazestone extends Block {
-	
-	private static IIcon TEX_PLAIN;
-	private static IIcon TEX_BRICK;
-	private static IIcon TEX_PILLAR;
-	private static IIcon TEX_DECO;
-	private static IIcon TEX_CRACKED;
-	private static IIcon TEX_MOSSY;
-	private static IIcon TEX_MOSAIC;
-	private static IIcon TEX_BORDER;
+
+	public static final PropertyEnum<MazestoneVariant> VARIANT = PropertyEnum.create("variant", MazestoneVariant.class);
 
     public BlockTFMazestone()
     {
         super(Material.ROCK);
         this.setHardness(100F);
         this.setResistance(5F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-
+		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, MazestoneVariant.PLAIN));
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		switch (meta)
-		{
-		case 0:
-		default:
-			return TEX_PLAIN;
-		case 1:
-			return TEX_BRICK;
-		case 2:
-			return side > 1 ? TEX_PILLAR : TEX_PLAIN;
-		case 3:
-			return side > 1 ? TEX_DECO : TEX_BRICK;
-		case 4:
-			return TEX_CRACKED;
-		case 5:
-			return TEX_MOSSY;
-		case 6:
-			return side > 1 ? TEX_BRICK : TEX_MOSAIC;
-		case 7:
-			return side > 1 ? TEX_BRICK : TEX_BORDER;
-		}
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		BlockTFMazestone.TEX_PLAIN = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_plain");
-		BlockTFMazestone.TEX_BRICK = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_brick");
-		BlockTFMazestone.TEX_PILLAR = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_pillar");
-		BlockTFMazestone.TEX_DECO = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_decorative");
-		BlockTFMazestone.TEX_CRACKED = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_cracked");
-		BlockTFMazestone.TEX_MOSSY = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_mossy");
-		BlockTFMazestone.TEX_MOSAIC = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_mosaic");
-		BlockTFMazestone.TEX_BORDER = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mazestone_border");
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(VARIANT, MazestoneVariant.values()[meta]);
 	}
 
 	@Override
 	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
 	{
 		// damage the player's pickaxe
-    	ItemStack cei = entityplayer.getCurrentEquippedItem();
-        if(cei != null && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) 
+        if(stack != null && stack.getItem() instanceof ItemTool && !(stack.getItem() instanceof ItemTFMazebreakerPick))
         {
-            cei.damageItem(16, entityplayer);
+            stack.damageItem(16, entityplayer);
         }
     	
-		super.harvestBlock(world, entityplayer, x, y, z, meta);
+		super.harvestBlock(world, entityplayer, pos, state, te, stack);
     }
     
 	@Override
@@ -120,7 +83,7 @@ public class BlockTFMazestone extends Block {
     
     @Override
 	public int damageDropped(IBlockState state) {
-    	return meta;
+    	return getMetaFromState(state);
 	}
 
 }

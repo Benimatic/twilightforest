@@ -5,67 +5,50 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFShield extends Block 
 {
 
-	public static IIcon sprSide;
-	private IIcon sprInside;
-	private IIcon sprOutside;
-	
     public BlockTFShield()
     {
         super(Material.ROCK);
         this.setBlockUnbreakable();
         //this.setResistance(2000.0F);
         this.setResistance(6000000.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
+        this.setDefaultState(blockState.getBaseState().withProperty(TFBlocks.FACING, EnumFacing.DOWN));
     }
-    
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
+
     @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	if (side == meta)
-    	{
-    		return sprInside;
-    	}
-    	else
-    	{
-    		return sprOutside;
-    	}
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TFBlocks.FACING);
     }
-    
-	/**
-	 * Properly register icon source
-	 */
+
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-    	this.sprInside = par1IconRegister.registerIcon(TwilightForestMod.ID + ":shield_inside");
-    	this.sprOutside = par1IconRegister.registerIcon(TwilightForestMod.ID + ":shield_outside");
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TFBlocks.FACING).getIndex();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.getFront(meta));
     }
     
 	@Override
@@ -87,10 +70,8 @@ public class BlockTFShield extends Block
     }
     
     @Override
-	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack)
-    {
-        int l = BlockPistonBase.determineOrientation(par1World, par2, par3, par4, par5EntityLiving);
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return getDefaultState().withProperty(TFBlocks.FACING, BlockPistonBase.getFacingFromEntity(pos, placer));
     }
     
     @Override
@@ -99,18 +80,18 @@ public class BlockTFShield extends Block
         // why can't we just pass the side to this method?  This is annoying and failure-prone
         RayTraceResult mop = getPlayerPointVec(world, player, 6.0);
     	
-        int facing = mop != null ? mop.sideHit : -1;
-        int meta = world.getBlockMetadata(x, y, z);
+        EnumFacing hitFace = mop != null ? mop.sideHit : null;
+        EnumFacing blockFace = state.getValue(TFBlocks.FACING);
         
         //System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
         
-        if (facing == meta)
+        if (hitFace == blockFace)
         {
-        	return player.getBreakSpeed(Blocks.STONE, false, 0, x, y, z) / 1.5F / 100F;
+        	return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos) / 1.5F / 100F;
         }
         else
         {
-        	return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
+        	return super.getPlayerRelativeBlockHardness(state, player, world, pos);
         }
     }
     
