@@ -578,10 +578,7 @@ public class TwilightForestMod {
 	/**
 	 * Register all dispenser behaviors.
 	 */
-	private void registerDispenseBehaviors(MinecraftServer minecraftServer)
-	{
-		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(TFItems.spawnEgg, new BehaviorTFMobEggDispense(minecraftServer));
-	}
+	private void registerDispenseBehaviors(MinecraftServer minecraftServer) {}
 	
 	/**
 	 * Load our config file and set default values

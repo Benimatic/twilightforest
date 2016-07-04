@@ -57,7 +57,6 @@ public class TFItems {
     public static Item ironwoodAxe;
     public static Item ironwoodHoe;
     public static Item torchberries;
-    public static Item spawnEgg;
     public static Item venisonRaw;
     public static Item venisonCooked;
     public static Item hydraChop;
@@ -182,7 +181,6 @@ public class TFItems {
     	ironwoodAxe = new ItemTFIronwoodAxe(TOOL_IRONWOOD).setUnlocalizedName("ironwoodAxe").setMaxStackSize(1);
     	ironwoodHoe = new ItemTFIronwoodHoe(TOOL_IRONWOOD).setUnlocalizedName("ironwoodHoe").setMaxStackSize(1);
     	torchberries = new ItemTF().setUnlocalizedName("torchberries");
-    	spawnEgg = new ItemTFSpawnEgg().setUnlocalizedName("tfspawnegg");
     	venisonRaw = (new ItemTFFood(3, 0.3F, true)).setUnlocalizedName("venisonRaw");
     	venisonCooked = (new ItemTFFood(8, 0.8F, true)).setUnlocalizedName("venisonCooked");
     	hydraChop = (new ItemTFHydraChops(18, 2.0F, true)).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0), 1.0F).setUnlocalizedName("hydraChop");
@@ -377,8 +375,6 @@ public class TFItems {
         registerTFItem(chainBlock);
         registerTFItem(cubeTalisman);
         registerTFItem(cubeOfAnnihilation);
-
-        registerTFItem(spawnEgg, "Spawn");
     }
 
 	private static void registerTFItem(Item item, String englishName) {
