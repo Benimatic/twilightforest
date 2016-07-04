@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 
@@ -33,7 +33,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
     }
 	
 	@Override
-	public boolean generate(World world, Random random, int x, int y, int z)
+	public boolean generate(World world, Random random, BlockPos pos)
 	{
 		// determine a height
 		int treeHeight = 12;
@@ -46,7 +46,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		}
 		
 		// check if we're on dirt or grass
-		Block blockUnder = world.getBlock(x, y - 1, z);
+		Block blockUnder = world.getBlockState(pos.down()).getBlock();
 		if(blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM || y >= 256 - treeHeight - 1)
 		{
 			return false;
@@ -78,37 +78,37 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	 * @param angle
 	 * @param tilt
 	 */
-	void buildBranch(World world, int x, int y, int z, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
+	void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
 	{
-		BlockPos src = new BlockPos(x, y + height, z);
-		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = pos.up(height);
+		BlockPos dest = translateCoords(src.getX(), src.getY(), src.getZ(), length, angle, tilt);
 		
 		// constrain branch spread
-		if ((dest.posX - x) < -4)
+		if ((dest.getX() - pos.getX()) < -4)
 		{
-			dest.posX = x - 4;
+			dest.getX() = x - 4;
 		}
-		if ((dest.posX - x) > 4)
+		if ((dest.getX() - x) > 4)
 		{
-			dest.posX = x + 4;
+			dest.getX() = x + 4;
 		}
-		if ((dest.posZ - z) < -4)
+		if ((dest.getZ() - z) < -4)
 		{
-			dest.posZ = z - 4;
+			dest.getZ() = z - 4;
 		}
-		if ((dest.posZ - z) > 4)
+		if ((dest.getZ() - z) > 4)
 		{
-			dest.posZ = z + 4;
+			dest.getZ() = z + 4;
 		}
 		
-		if (src.posX != dest.posX || src.posZ != dest.posZ) {
+		if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
 			// branch
-			drawBresehnam(world, src.posX, src.posY, src.posZ, dest.posX, src.posY, dest.posZ, treeBlock, branchMeta);
-			drawBresehnam(world, dest.posX, src.posY + 1, dest.posZ, dest.posX, dest.posY - 1, dest.posZ, treeBlock, treeMeta);
+			drawBresehnam(world, src.getX(), src.getY(), src.getZ(), dest.getX(), src.getY(), dest.getZ(), treeBlock, branchMeta);
+			drawBresehnam(world, dest.getX(), src.getY() + 1, dest.getZ(), dest.getX(), dest.getY() - 1, dest.getZ(), treeBlock, treeMeta);
 		}
 		else {
 			// trunk
-			drawBresehnam(world, src.posX, src.posY, src.posZ, dest.posX, dest.posY - 1, dest.posZ, treeBlock, treeMeta);
+			drawBresehnam(world, src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY() - 1, dest.getZ(), treeBlock, treeMeta);
 		}
 		
 		// do this here until that bug with the lighting is fixed
@@ -117,7 +117,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 		}
 		
-		drawMushroomCircle(world, dest.posX, dest.posY, dest.posZ, 4, leafBlock);	
+		drawMushroomCircle(world, dest.getX(), dest.getY(), dest.getZ(), 4, leafBlock);	
 	}
 	
 	/**
@@ -192,24 +192,24 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	 * @param height how far up the tree
 	 * @param angle from 0 - 1 rotation around the tree
 	 */
-	private void addFirefly(World world, int x, int y, int z, int height, double angle)
+	private void addFirefly(World world, BlockPos pos, int height, double angle)
 	{
 		int iAngle = (int)(angle * 4.0);
 		if (iAngle == 0)
 		{
-			setBlockAndMetadata(world, x + 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndMetadata(world, pos.east().up(height), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndMetadata(world, x - 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndMetadata(world, pos.west().up(height), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndMetadata(world, x, y + height, z + 1, TFBlocks.firefly, 0);
+			setBlockAndMetadata(world, pos.south().up(height), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndMetadata(world, x, y + height, z - 1, TFBlocks.firefly, 0);
+			setBlockAndMetadata(world, pos.north().up(height), TFBlocks.firefly.getDefaultState());
 		}
 	}
 

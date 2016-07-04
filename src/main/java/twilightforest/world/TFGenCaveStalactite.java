@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 
@@ -30,9 +31,6 @@ public class TFGenCaveStalactite extends TFGenerator {
 
 	/**
 	 * Initializes a stalactite builder.  Actually also makes stalagmites
-	 * 
-	 * @param size
-	 * @param stone
 	 */
 	public TFGenCaveStalactite(Block blockType, float size, boolean down)
 	{
@@ -116,7 +114,8 @@ public class TFGenCaveStalactite extends TFGenerator {
 	 * The coordinates should be inside a cave.
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
 	 */
-	public boolean generate(World world, Random random, int x, int y, int z)
+	@Override
+	public boolean generate(World world, Random random, BlockPos pos)
 	{
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;

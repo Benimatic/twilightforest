@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
@@ -38,7 +39,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
     }
 	
 	@Override
-	public boolean generate(World world, Random random, int x, int y, int z)
+	public boolean generate(World world, Random random, BlockPos pos)
 	{
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
@@ -112,7 +113,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 	 * @param angle
 	 * @param tilt
 	 */
-	void buildBranch(World world, int x, int y, int z, int height, double length, double angle, double tilt, Random random)
+	private void buildBranch(World world, int x, int y, int z, int height, double length, double angle, double tilt, Random random)
 	{
 		BlockPos src = new BlockPos(x, y + height, z);
 		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);

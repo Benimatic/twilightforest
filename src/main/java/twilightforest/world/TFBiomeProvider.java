@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeCache;
@@ -70,61 +68,6 @@ public class TFBiomeProvider extends BiomeProvider
 	public List<Biome> getBiomesToSpawnIn()
     {
         return myBiomesToSpawnIn;
-    }
-
-    /**
-     * Returns the Biome related to the x, z position on the world.
-     */
-    public Biome getBiomeGenAt(int par1, int par2)
-    {
-    	Biome biome = myBiomeCache.getBiomeGenAt(par1, par2);
-    	if (biome == null)
-    	{
-    		//FMLLog.warning("[TwilightForest] Suppressing bad biome data in getBiomeGenAt, %s at %d, %d", biome, par1, par2);
-    		
-    		//throw new IllegalArgumentException();
-    		return TFBiomeBase.twilightForest;
-    	}
-    	else
-    	{
-            return biome;
-    	}
-    }
-
-    /**
-     * Returns a list of rainfall values for the specified blocks. Args: listToReuse, x, z, width, length.
-     */
-    public float[] getRainfall(float par1ArrayOfFloat[], int par2, int par3, int par4, int par5)
-    {
-        IntCache.resetIntCache();
-
-        if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5)
-        {
-            par1ArrayOfFloat = new float[par4 * par5];
-        }
-
-        int ai[] = zoomedBiomes.getInts(par2, par3, par4, par5);
-
-        for (int i = 0; i < par4 * par5; i++)
-        {
-        	// this keeps NPEing, I wonder why
-        	if (ai[i] >= 0 && Biome.getBiome(ai[i]) != null) {
-        		float f = (float)Biome.getBiome(ai[i]).getIntRainfall() / 65536F;
-
-        		if (f > 1.0F)
-        		{
-        			f = 1.0F;
-        		}
-
-        		par1ArrayOfFloat[i] = f;
-        	}
-        	else
-        	{
-        		// nothing
-        	}
-        }
-
-        return par1ArrayOfFloat;
     }
 
     @Override
@@ -294,7 +237,7 @@ public class TFBiomeProvider extends BiomeProvider
 		int chunkZ = mapZ >> 4;
 		BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
 		
-		return chunkX == (cc.posX >> 4) && chunkZ == (cc.posZ >> 4);
+		return chunkX == (cc.getX() >> 4) && chunkZ == (cc.getZ() >> 4);
     	
 //    	logic moved to TFFeature.getNearestCenterXYZ :
 		

@@ -36,9 +36,9 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 		
 		return new StructureTFMajorFeatureStart(worldObj, rand, chunkX, chunkZ);
 	}
-	
-	
-    public String func_143025_a()
+
+	@Override
+    public String getStructureName()
     {
         return "TFFeature";
     }

@@ -8,18 +8,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenBase;
-import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -36,23 +33,21 @@ public class MapGenTFHollowTree extends MapGenBase {
      * placed.
      */
     protected Map<Long, StructureStart> structureMap = new HashMap<Long, StructureStart>();
-    
-    /**
-     * Generate recursively
-     */
-    protected void func_151538_a(World world, final int chunkX, final int chunkZ, int centerX, int centerZ, Block[] blockData) {
-        if (!this.structureMap.containsKey(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ)))){
+
+    @Override
+    protected void recursiveGenerate(World worldIn, final int chunkX, final int chunkZ, int centerX, int centerZ, ChunkPrimer chunkPrimerIn) {
+        if (!this.structureMap.containsKey(ChunkPos.chunkXZ2Int(chunkX, chunkZ))){
             this.rand.nextInt();
 
             try {
                 if (this.canSpawnStructureAtCoords(chunkX, chunkZ)){
                     StructureStart structurestart = this.getStructureStart(chunkX, chunkZ);
-                    this.structureMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ)), structurestart);
+                    this.structureMap.put(ChunkPos.chunkXZ2Int(chunkX, chunkZ), structurestart);
                 }
             } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception preparing hollow tree");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Feature being prepared");
-                crashreportcategory.addCrashSectionCallable("Is feature chunk", new Callable() {
+                crashreportcategory.addCrashSection("Is feature chunk", new Callable() {
                     private static final String __OBFID = "CL_00000506";
                     @Override
                     public String call() {
@@ -60,14 +55,14 @@ public class MapGenTFHollowTree extends MapGenBase {
                     }
                 });
                 crashreportcategory.addCrashSection("Chunk location", String.format("%d,%d", new Object[] {Integer.valueOf(chunkX), Integer.valueOf(chunkZ)}));
-                crashreportcategory.addCrashSectionCallable("Chunk pos hash", new Callable() {
+                crashreportcategory.addCrashSection("Chunk pos hash", new Callable() {
                     private static final String __OBFID = "CL_00000507";
                     @Override
                     public String call() {
-                        return String.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ));
+                        return String.valueOf(ChunkPos.chunkXZ2Int(chunkX, chunkZ));
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Structure type", new Callable() {
+                crashreportcategory.addCrashSection("Structure type", new Callable() {
                     private static final String __OBFID = "CL_00000508";
                     @Override
                     public String call() {
@@ -77,9 +72,6 @@ public class MapGenTFHollowTree extends MapGenBase {
                 throw new ReportedException(crashreport);
             }
         }
-
-    	
-    	
     }
 
     
@@ -105,16 +97,16 @@ public class MapGenTFHollowTree extends MapGenBase {
 	}
 
 	/** A list of all the biomes twilight oaks can spawn in. */
-    public static List<Biome> oakSpawnBiomes = Arrays.asList(new Biome[] {TFBiomeBase.twilightForest, TFBiomeBase.twilightForest2,
-    		TFBiomeBase.mushrooms, TFBiomeBase.tfSwamp, TFBiomeBase.clearing, TFBiomeBase.oakSavanna, 
-    		TFBiomeBase.fireflyForest, TFBiomeBase.deepMushrooms, TFBiomeBase.enchantedForest, TFBiomeBase.fireSwamp});
+    private static final List<Biome> oakSpawnBiomes = Arrays.asList(TFBiomeBase.twilightForest, TFBiomeBase.twilightForest2,
+            TFBiomeBase.mushrooms, TFBiomeBase.tfSwamp, TFBiomeBase.clearing, TFBiomeBase.oakSavanna,
+            TFBiomeBase.fireflyForest, TFBiomeBase.deepMushrooms, TFBiomeBase.enchantedForest, TFBiomeBase.fireSwamp);
 
-	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
+	private boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
 		return rand.nextInt(TwilightForestMod.twilightOakChance) == 0 && TFFeature.getNearestFeature(chunkX, chunkZ, worldObj).areChunkDecorationsEnabled 
 				&&  this.worldObj.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, oakSpawnBiomes);
 	}
 
-	protected StructureStart getStructureStart(int chunkX, int chunkZ) {
+	private StructureStart getStructureStart(int chunkX, int chunkZ) {
 		return new StructureTFHollowTreeStart(worldObj, rand, chunkX, chunkZ);
 	}
 	

@@ -1,23 +1,19 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 
 public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 
-	protected Block treeBlock = TFBlocks.log;
-	protected int treeMeta = 3;
-	protected int branchMeta = 15;
-	protected Block leafBlock = TFBlocks.hedge;
-	protected int leafMeta = 1;
-	protected Block rootBlock = TFBlocks.root;
-	protected int rootMeta = BlockTFRoots.ROOT_META;
+	protected IBlockState treeState = TFBlocks.log.getDefaultState();
+	protected IBlockState branchState = TFBlocks.log.getStateFromMeta(15); // todo 1.9
+	protected IBlockState leafState = TFBlocks.hedge.getStateFromMeta(1); // todo 1.9
+	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
 
 	public TFTreeGenerator() {
