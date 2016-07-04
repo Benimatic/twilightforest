@@ -5,50 +5,55 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFFireJet;
+import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.FireJetVariant;
 
 public class TFGenFireJet extends TFGenerator
 {
-    private Block plantBlockId;
-    private int plantBlockMeta;
+	private final FireJetVariant variant;
 
-    public TFGenFireJet(Block fireJet, int meta)
+    public TFGenFireJet(FireJetVariant variant)
     {
-        this.plantBlockId = fireJet;
-        this.plantBlockMeta = meta;
+        this.variant = variant;
     }
 
 	@Override
-	public boolean generate(World world, Random rand, int x, int y, int z) {
+	public boolean generate(World world, Random rand, BlockPos pos) {
         for (int var6 = 0; var6 < 4; ++var6)
         {
-            int dx = x + rand.nextInt(8) - rand.nextInt(8);
-            int dy = y + rand.nextInt(4) - rand.nextInt(4);
-            int dz = z + rand.nextInt(8) - rand.nextInt(8);
+			BlockPos dPos = pos.add(
+					rand.nextInt(8) - rand.nextInt(8),
+					rand.nextInt(4) - rand.nextInt(4),
+					rand.nextInt(8) - rand.nextInt(8)
+			);
 
-            if (world.isAirBlock(dx, dy, dz) && world.canBlockSeeTheSky(dx, dy, dz) && world.getBlock(dx, dy - 1, dz).getMaterial() == Material.GRASS
-            		 && world.getBlock(dx + 1, dy - 1, dz).getMaterial() == Material.GRASS && world.getBlock(dx - 1, dy - 1, dz).getMaterial() == Material.GRASS
-            		 && world.getBlock(dx, dy - 1, dz + 1).getMaterial() == Material.GRASS && world.getBlock(dx, dy - 1, dz - 1).getMaterial() == Material.GRASS)
+            if (world.isAirBlock(dPos) && world.canSeeSky(dPos) && world.getBlockState(dPos.down()).getMaterial() == Material.GRASS
+            		 && world.getBlockState(dPos.east().down()).getMaterial() == Material.GRASS && world.getBlockState(dPos.west().down()).getMaterial() == Material.GRASS
+            		 && world.getBlockState(dPos.south().down()).getMaterial() == Material.GRASS && world.getBlockState(dPos.north().down()).getMaterial() == Material.GRASS)
             {
             	// jet
-            	world.setBlock(dx, dy - 1, dz, this.plantBlockId, this.plantBlockMeta, 0);
+            	world.setBlockState(dPos.down(), TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, variant), 0);
 
             	// create reservoir with stone walls
             	for (int rx = -2; rx <= 2; rx++)
             	{
                 	for (int rz = -2; rz <= 2; rz++)
                 	{
+						BlockPos dPos2 = dPos.add(rx, -2, rz);
                 		if ((rx == 1 || rx == 0 || rx == -1) && (rz == 1 || rz == 0 || rz == -1))
                 		{
                         	// lava reservoir
-                    		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.FLOWING_LAVA, 0, 0);
+                    		world.setBlockState(dPos2, Blocks.FLOWING_LAVA.getDefaultState(), 0);
                 		}
-                		else if (world.getBlock(dx + rx, dy - 2, dz + rz).getMaterial() != Material.LAVA)
+                		else if (world.getBlockState(dPos2).getMaterial() != Material.LAVA)
                 		{
                 			// only stone where there is no lava
-                    		world.setBlock(dx + rx, dy - 2, dz + rz, Blocks.STONE, 0, 0);
+                    		world.setBlockState(dPos2, Blocks.STONE.getDefaultState(), 0);
                 		}
-                		world.setBlock(dx + rx, dy - 3, dz + rz, Blocks.STONE, 0, 0);
+						world.setBlockState(dPos2.down(), Blocks.STONE.getDefaultState(), 0);
                 	}
             	}
             }

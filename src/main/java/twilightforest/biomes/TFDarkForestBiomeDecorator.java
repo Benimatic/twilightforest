@@ -14,6 +14,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
 import twilightforest.world.TFGenDarkCanopyTree;
 import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFTreeGenerator;
@@ -23,15 +24,15 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 	
 	private TFTreeGenerator darkCanopyTreeGen;
 	private TFGenTallGrass worldGenDeadBush;
-	private WorldGenTallGrass worldGenForestGrass;
-	private WorldGenTallGrass worldGenMushgloom;
+	private TFGenTallGrass worldGenForestGrass;
+	private TFGenTallGrass worldGenMushgloom;
 
 
 	public TFDarkForestBiomeDecorator() {
 		darkCanopyTreeGen = new TFGenDarkCanopyTree();
-		worldGenDeadBush = new TFGenTallGrass(TFBlocks.plant, BlockTFPlant.META_DEADBUSH, 8);
-		worldGenForestGrass = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_FORESTGRASS);
-		worldGenMushgloom = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MUSHGLOOM);
+		worldGenDeadBush = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
+		worldGenForestGrass = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FORESTGRASS));
+		worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
     			int rx = mapX + rand.nextInt(16) + 8;
     			int rz = mapZ + rand.nextInt(16) + 8;
     			int ry = rand.nextInt(128);
-				worldGenDeadBush.generate(world, rand, rx, ry, rz);
+				worldGenDeadBush.generate(world, rand, new BlockPos(rx, ry, rz));
     		}
 
     		// forest grass bushes

@@ -17,6 +17,8 @@ import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
+import twilightforest.world.TFGenTallGrass;
 
 
 public class TFBiomeTwilightForestVariant extends TFBiomeBase {
@@ -41,11 +43,9 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
         else if(random.nextInt(10) == 0)
         {
             return new WorldGenBigTree(false);
-        } 
-        else
-        {
-            return TREE_FEATURE;
         }
+
+        return TREE_FEATURE;
     }
 	
     @Override
@@ -57,7 +57,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
         }
         else if (par1Random.nextBoolean())
         {
-            return new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MAYAPPLE);
+            return new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
         }
         else
         {

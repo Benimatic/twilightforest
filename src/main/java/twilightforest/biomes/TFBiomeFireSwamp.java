@@ -19,6 +19,7 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.FireJetVariant;
 import twilightforest.world.TFGenFireJet;
 import twilightforest.world.TFWorld;
 
@@ -56,40 +57,40 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
      * Decorate this biome.  This is stolen from the jungle code
      */
     @Override
-    public void decorate(World par1World, Random par2Random, int mapX, int mapZ)
+    public void decorate(World par1World, Random par2Random, BlockPos pos)
     {
-    	super.decorate(par1World, par2Random, mapX, mapZ);
+    	super.decorate(par1World, par2Random, pos);
 
-    	TFFeature nearFeature = TFFeature.getNearestFeature(mapX >> 4, mapZ >> 4, par1World);
+    	TFFeature nearFeature = TFFeature.getNearestFeature(pos.getX() >> 4, pos.getZ() >> 4, par1World);
     	if (nearFeature.areChunkDecorationsEnabled) {
     		WorldGenVines worldgenvines = new WorldGenVines();
 
     		for (int i = 0; i < 50; i++)
     		{
-    			int j = mapX + par2Random.nextInt(16) + 8;
+    			int j = pos.getX() + par2Random.nextInt(16) + 8;
     			byte byte0 = (byte) TFWorld.SEALEVEL;
-    			int k = mapZ + par2Random.nextInt(16) + 8;
-    			worldgenvines.generate(par1World, par2Random, j, byte0, k);
+    			int k = pos.getZ() + par2Random.nextInt(16) + 8;
+    			worldgenvines.generate(par1World, par2Random, new BlockPos(j, byte0, k));
     		}
 
-    		TFGenFireJet genSmoker = new TFGenFireJet(TFBlocks.fireJet, BlockTFFireJet.META_SMOKER);
+    		TFGenFireJet genSmoker = new TFGenFireJet(FireJetVariant.SMOKER);
 
     		if (par2Random.nextInt(4) == 0)
     		{
-    			int j = mapX + par2Random.nextInt(16) + 8;
+    			int j = pos.getX() + par2Random.nextInt(16) + 8;
     			byte byte0 = (byte) TFWorld.SEALEVEL;
-    			int k = mapZ + par2Random.nextInt(16) + 8;
-    			genSmoker.generate(par1World, par2Random, j, byte0, k);
+    			int k = pos.getZ() + par2Random.nextInt(16) + 8;
+    			genSmoker.generate(par1World, par2Random, new BlockPos(j, byte0, k));
     		}
 
-    		TFGenFireJet genFireJet = new TFGenFireJet(TFBlocks.fireJet, BlockTFFireJet.META_JET_IDLE);
+    		TFGenFireJet genFireJet = new TFGenFireJet(FireJetVariant.JET_IDLE);
 
     		for (int i = 0; i < 1; i++)
     		{
-    			int j = mapX + par2Random.nextInt(16) + 8;
+    			int j = pos.getX() + par2Random.nextInt(16) + 8;
     			byte byte0 = (byte) TFWorld.SEALEVEL;
-    			int k = mapZ + par2Random.nextInt(16) + 8;
-    			genFireJet.generate(par1World, par2Random, j, byte0, k);
+    			int k = pos.getZ() + par2Random.nextInt(16) + 8;
+    			genFireJet.generate(par1World, par2Random, new BlockPos(j, byte0, k));
     		}
     	}
     }

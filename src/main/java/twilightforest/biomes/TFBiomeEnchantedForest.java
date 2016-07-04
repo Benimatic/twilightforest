@@ -16,8 +16,10 @@ import net.minecraft.world.gen.feature.WorldGenVines;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
 import twilightforest.world.TFGenLargeRainboak;
 import twilightforest.world.TFGenSmallRainboak;
+import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFWorld;
 
 
@@ -106,7 +108,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
             return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
         }
         else if (par1Random.nextInt(3) == 0) {
-            return new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_FIDDLEHEAD);
+            return new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FIDDLEHEAD));
         }
         else {
             return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);

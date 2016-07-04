@@ -3,13 +3,16 @@ package twilightforest.biomes;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import twilightforest.TFAchievementPage;
+import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.DeadrockVariant;
 import twilightforest.world.TFGenThorns;
 import twilightforest.world.TFWorld;
 
@@ -21,11 +24,9 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	public TFBiomeThornlands(BiomeProperties props) {
 		super(props);
 		
-        this.topBlock = TFBlocks.deadrock;
-        this.field_150604_aj = 0;
-        this.fillerBlock = TFBlocks.deadrock;
-        this.field_76754_C = 1;
-        
+        this.topBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
+        this.fillerBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
+
         getTFBiomeDecorator().canopyPerChunk = -999;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
         this.theBiomeDecorator.deadBushPerChunk = 2;
@@ -70,17 +71,12 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		
 		return lastDirt;
 	}
-	
-    @Override
-	public Block getStoneReplacementBlock() {
-		return TFBlocks.deadrock;
-	}
-	
-    @Override
-	public byte getStoneReplacementMeta() {
-		return 2;
-	}
 
+	@Override
+	public IBlockState getStoneReplacementState() {
+		return TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
+	}
+	
 	@Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressGlacier;

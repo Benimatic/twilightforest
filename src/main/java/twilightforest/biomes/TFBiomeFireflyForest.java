@@ -17,8 +17,10 @@ import net.minecraft.world.gen.feature.WorldGenPumpkin;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
 import twilightforest.world.TFGenHangingLamps;
 import twilightforest.world.TFGenLampposts;
+import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFWorld;
 
 public class TFBiomeFireflyForest extends TFBiomeBase {
@@ -26,12 +28,12 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 	private static final int LAMPPOST_CHANCE = 4;
 	TFGenHangingLamps tfGenHangingLamps;
 	TFGenLampposts tfGenLampposts;
-	WorldGenTallGrass worldGenMushgloom;
+	TFGenTallGrass worldGenMushgloom;
 	
 	public TFBiomeFireflyForest(BiomeProperties props) {
 		super(props);
 
-		this.worldGenMushgloom = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MUSHGLOOM);
+		this.worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 		this.tfGenHangingLamps = new TFGenHangingLamps();
 		this.tfGenLampposts = new TFGenLampposts();
 

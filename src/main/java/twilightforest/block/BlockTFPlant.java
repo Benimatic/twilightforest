@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,11 +29,14 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.ForgeDirection;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.PlantVariant;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFPlant extends BlockBush implements IShearable {
+
+    public static final PropertyEnum<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
 
     boolean[] isGrassColor = {false, false, false, false, true, true, false, false, true, false, true, false, false, false, false, false};
     int[] lightValue = {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 8, 0, 0};
@@ -41,24 +45,12 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	private String[] iconNames = new String[] {null, null, null, "mosspatch", "mayapple", "cloverpatch", null, null, "fiddlehead", "mushgloom", null, null, null, "torchberry", "rootstrand", null};
 	public static IIcon mayappleSide;
     
-    public static final int META_MOSSPATCH = 3;
-    public static final int META_MAYAPPLE = 4;
-    public static final int META_CLOVERPATCH = 5;
-    public static final int META_FIDDLEHEAD = 8;
-    public static final int META_MUSHGLOOM = 9;
-    public static final int META_FORESTGRASS = 10;
-    public static final int META_DEADBUSH = 11;
-    public static final int META_TORCHBERRY = 13;
-	public static final int META_ROOT_STRAND = 14;
-
-	
 	protected BlockTFPlant() {
 		super(Material.PLANTS);
         this.setTickRandomly(true);
         float var3 = 0.4F;
         this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.8F, 0.5F + var3);
         this.setHardness(0.0F);
-        this.setStepSound(Block.soundTypeGrass);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

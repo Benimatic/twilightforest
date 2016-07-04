@@ -13,6 +13,10 @@ public class TFGenTallGrass extends WorldGenerator {
     private final IBlockState state;
 	private final int amount;
 
+    public TFGenTallGrass(IBlockState state) {
+        this(state, 128); // Default vanilla amount
+    }
+
 	public TFGenTallGrass(IBlockState state, int amount) { // TF - Allow any blockstate, allow amount to be changed
 		this.state = state;
         this.amount = amount;

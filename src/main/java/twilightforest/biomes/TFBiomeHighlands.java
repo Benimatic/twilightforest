@@ -30,7 +30,9 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
 import twilightforest.entity.EntityTFTroll;
+import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFGenTrollRoots;
 
 
@@ -43,7 +45,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
     private static final WorldGenMegaPineTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
     private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
     private static final TFGenTrollRoots genTrollRoots = new TFGenTrollRoots();
-    private static final WorldGenTallGrass worldGenMushgloom = new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MUSHGLOOM);
+    private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
     
 
 	public TFBiomeHighlands(BiomeProperties props) {

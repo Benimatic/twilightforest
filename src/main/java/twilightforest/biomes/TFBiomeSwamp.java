@@ -30,8 +30,10 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
 import twilightforest.entity.EntityTFMosquitoSwarm;
 import twilightforest.world.TFGenHugeLilyPad;
+import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFWorld;
 
 
@@ -88,7 +90,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
         }
         else if (par1Random.nextInt(4) == 0)
         {
-            return new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MAYAPPLE);
+            return new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
         }
         else
         {
