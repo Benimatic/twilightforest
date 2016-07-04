@@ -6,11 +6,15 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -108,7 +112,7 @@ public abstract class StructureTFComponent extends StructureComponent {
             tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(dx, dy, dz);
             if(tileEntitySpawner != null)
             {
-            	tileEntitySpawner.func_145881_a().setEntityName(monsterID);
+            	tileEntitySpawner.getSpawnerBaseLogic().setEntityName(monsterID);
             }
         }
         
@@ -133,7 +137,7 @@ public abstract class StructureTFComponent extends StructureComponent {
             tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(dx, dy, dz);
             if(tileEntitySpawner != null)
             {
-            	tileEntitySpawner.func_145881_a().setEntityName(monsterID);
+            	tileEntitySpawner.getSpawnerBaseLogic().setEntityName(monsterID);
             }
         }
         
@@ -204,8 +208,8 @@ public abstract class StructureTFComponent extends StructureComponent {
             TileEntitySign teSign = (TileEntitySign)world.getTileEntity(dx, dy, dz);
             if (teSign != null)
             {
-            	teSign.signText[1] = string0;
-            	teSign.signText[2] = string1;
+            	teSign.signText[1] = new TextComponentString(string0);
+            	teSign.signText[2] = new TextComponentString(string1);
             }
         }
 	}
@@ -278,47 +282,60 @@ public abstract class StructureTFComponent extends StructureComponent {
 		return new BlockPos(x, y, z);
 	}
 
-
-	public int[] getOffsetAsIfRotated(int src[], int rotation) {
-		int temp = this.getCoordBaseMode();
-		int[] dest = new int[3];
-		this.setCoordBaseMode(rotation);
-		
-		dest[0] = getXWithOffset(src[0], src[2]);
-		dest[1] = getYWithOffset(src[1]);
-		dest[2] = getZWithOffset(src[0], src[2]);
-		
-		this.setCoordBaseMode(temp);
-		return dest;
-	}
-
-
 	@Override
     protected int getXWithOffset(int x, int z)
     {
-        switch(getCoordBaseMode())
+        // [VanillaCopy] of super, edits noted.
+        EnumFacing enumfacing = this.getCoordBaseMode();
+
+        if (enumfacing == null)
         {
-        case 0: // '\0'
-            return boundingBox.minX + x;
-        case 1: // '\001'
-            return boundingBox.maxX - z;
-        case 2: // '\002'
-            return boundingBox.maxX - x;
-        case 3: // '\003'
-            return boundingBox.minX + z;
+            return x;
         }
-        return x;
+        else
+        {
+            switch (enumfacing)
+            {
+                case NORTH:
+                    return this.boundingBox.maxX - x; // TF - Add case for NORTH todo 1.9 is this correct?
+                case SOUTH:
+                    return this.boundingBox.minX + x;
+                case WEST:
+                    return this.boundingBox.maxX - z;
+                case EAST:
+                    return this.boundingBox.minX + z;
+                default:
+                    return x;
+            }
+        }
     }
 	
     @Override
-    protected int getYWithOffset(int par1)
-    {
-        return super.getYWithOffset(par1);
-    }
-
-    @Override
     protected int getZWithOffset(int x, int z)
     {
+        // [VanillaCopy] of super, edits noted.
+        EnumFacing enumfacing = this.getCoordBaseMode();
+
+        if (enumfacing == null)
+        {
+            return z;
+        }
+        else
+        {
+            switch (enumfacing)
+            {
+                case NORTH:
+                    return this.boundingBox.maxZ - z;
+                case SOUTH:
+                    return this.boundingBox.minZ + z;
+                case WEST: // todo 1.9 incomplete - discrepancy vs old code
+                case EAST:
+                    return this.boundingBox.minZ + x;
+                default:
+                    return z;
+            }
+        }
+
         switch(getCoordBaseMode())
         {
         case 0: // '\0'
@@ -333,105 +350,59 @@ public abstract class StructureTFComponent extends StructureComponent {
         return z;
     }
 
+    private EnumFacing fakeBaseMode(int rotationsCW) {
+        EnumFacing oldBaseMode = getCoordBaseMode();
+
+        if (oldBaseMode != null) {
+            EnumFacing pretendBaseMode = oldBaseMode;
+            for (int i = 0; i < rotationsCW; i++) {
+                pretendBaseMode = pretendBaseMode.rotateY();
+            }
+
+            setCoordBaseMode(pretendBaseMode);
+        }
+
+        return oldBaseMode;
+    }
+
 	/**
 	 * Pretend as though the structure is rotated beyond what it already is
 	 */
-	protected int getXWithOffsetAsIfRotated(int x, int z, int rotation)
+	protected int getXWithOffsetAsIfRotated(int x, int z, int rotationsCW)
 	{
-		if (coordBaseMode < 0)
-		{
-			return x;
-		}
-		
-	    switch((coordBaseMode + rotation) % 4)
-	    {
-	    case 0:
-	        return boundingBox.minX + x;
-	    case 1:
-	        return boundingBox.maxX - z;
-	    case 2:
-	        return boundingBox.maxX - x;
-	    case 3:
-	        return boundingBox.minX + z;
-	    }
-	    return x;
+        EnumFacing oldMode = fakeBaseMode(rotationsCW);
+        int ret = getXWithOffset(x, z);
+        setCoordBaseMode(oldMode);
+        return ret;
 	}
 
-    protected int getZWithOffsetAsIfRotated(int x, int z, int rotation)
+    protected int getZWithOffsetAsIfRotated(int x, int z, int rotationsCW)
     {
-		if (coordBaseMode < 0)
-		{
-			return x;
-		}
-		else
-		{
-			switch((coordBaseMode + rotation) % 4)
-			{
-			case 0:
-				return boundingBox.minZ + z;
-			case 1:
-				return boundingBox.minZ + x;
-			case 2:
-				return boundingBox.maxZ - z;
-			case 3:
-				return boundingBox.maxZ - x;
-			}
-			return z;
-		}
+        EnumFacing oldMode = fakeBaseMode(rotationsCW);
+        int ret = getZWithOffset(x, z);
+        setCoordBaseMode(oldMode);
+        return ret;
     }
 
-	@Override
-    public int getCoordBaseMode() {
-		return coordBaseMode;
-	}
-
-	public void setCoordBaseMode(int coordBaseMode) {
-		this.coordBaseMode = coordBaseMode;
-	}
-	
-    protected Block getBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, StructureBoundingBox par5StructureBoundingBox) {
-    	return super.getBlockAtCurrentPosition(par1World, par2, par3, par4, par5StructureBoundingBox);
-    }
-    
-    /**
-     * current Position depends on currently set Coordinates mode, is computed here
-     */
-    protected void placeBlockAtCurrentPosition(World par1World, Block par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox) {
-    	super.placeBlockAtCurrentPosition(par1World, par2, par3, par4, par5, par6, par7StructureBoundingBox);
-    }
-    
     /**
      * Place a block as though the entire structure were rotated the specified amount beyond what it already is
      */
-    protected void placeBlockRotated(World world, Block blockID, int meta, int x, int y, int z, int rotation, StructureBoundingBox sbb)
+    protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, int rotationsCW, StructureBoundingBox sbb)
     {
-        int dx = this.getXWithOffsetAsIfRotated(x, z, rotation);
-        int dy = this.getYWithOffset(y);
-        int dz = this.getZWithOffsetAsIfRotated(x, z, rotation);
-
-        if (sbb.isVecInside(dx, dy, dz))
-        {
-            world.setBlock(dx, dy, dz, blockID, meta, 2);
-        }
+        EnumFacing oldMode = fakeBaseMode(rotationsCW);
+        setBlockState(world, state, x, y, z, sbb);
+        setCoordBaseMode(oldMode);
     }
     
     /**
      * Get a block ID as though the entire structure were rotated the specified amount beyond what it already is
      */
-    protected Block getBlockIDRotated(World world, int x, int y, int z, int rotation, StructureBoundingBox sbb)
+    protected IBlockState getBlockStateFromPosRotated(World world, int x, int y, int z, int rotationsCW, StructureBoundingBox sbb)
     {
-        int dx = this.getXWithOffsetAsIfRotated(x, z, rotation);
-        int dy = this.getYWithOffset(y);
-        int dz = this.getZWithOffsetAsIfRotated(x, z, rotation);
-
-        if (sbb.isVecInside(dx, dy, dz))
-        {
-            return world.getBlock(dx, dy, dz);
-        }
-        else
-        {
-        	return Blocks.AIR;
-        }
+        EnumFacing oldMode = fakeBaseMode(rotationsCW);
+        IBlockState ret = getBlockStateFromPos(world, x, y, z, sbb);
+        setCoordBaseMode(oldMode);
+        return ret;
     }
     
     /**
@@ -578,7 +549,7 @@ public abstract class StructureTFComponent extends StructureComponent {
          	{
              	for (int y = sy; y <= dy; y++) 
              	{
-             		world.setLightValue(EnumSkyBlock.Sky, x, y, z, 0);
+             		world.setLightFor(EnumSkyBlock.SKY, x, y, z, 0);
              	}
          	}
      	}
@@ -621,13 +592,11 @@ public abstract class StructureTFComponent extends StructureComponent {
 	 */
 	protected int getSampledDirtLevel(World world, StructureBoundingBox sbb) {
 	    int dirtLevel = 256;
-	    
-	    for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)
+
+        Vec3i center = sbb.getCenter();
+        for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)
 	    {
-	    	int cx = sbb.getCenterX();
-	    	int cz = sbb.getCenterZ();
-	    	
-	    	Material material = world.getBlock(cx, y, cz).getMaterial();
+	    	Material material = world.getBlockState(new BlockPos(center.getX(), y, center.getZ())).getMaterial();
 	    	if (material == Material.GROUND || material == Material.ROCK || material == Material.GRASS)
 	    	{
 	    		dirtLevel = y;

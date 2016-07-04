@@ -5,7 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -60,13 +63,13 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	TFFinalCastlePieces.registerFinalCastlePieces();
     	
     	// register one-off pieces here
-        MapGenStructureIO.func_143031_a(ComponentTFHedgeMaze.class, "TFHedge");
-        MapGenStructureIO.func_143031_a(ComponentTFHillMaze.class, "TFHillMaze");
-        MapGenStructureIO.func_143031_a(ComponentTFHollowHill.class, "TFHill");
-        MapGenStructureIO.func_143031_a(ComponentTFHydraLair.class, "TFHydra");
-        MapGenStructureIO.func_143031_a(ComponentTFNagaCourtyard.class, "TFNaga");
-        MapGenStructureIO.func_143031_a(ComponentTFQuestGrove.class, "TFQuest1");
-        MapGenStructureIO.func_143031_a(ComponentTFYetiCave.class, "TFYeti");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
+        MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
+        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
+        MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 }
     
     public StructureTFMajorFeatureStart() {}
@@ -94,7 +97,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
         
 		if (firstComponent instanceof StructureStrongholdPieces.Stairs2)
 		{
-			List var6 = ((StructureStrongholdPieces.Stairs2) firstComponent).field_75026_c;
+			List var6 = ((StructureStrongholdPieces.Stairs2) firstComponent).pendingChildren;
 
 			while (!var6.isEmpty())
 			{
@@ -183,10 +186,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		return null;
 	}
 
-	
-    /**
-     * currently only defined for Villages, returns true if Village has more than 2 non-road components
-     */
     @Override
 	public boolean isSizeableStructure()
     {
@@ -203,9 +202,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	if (world.getBiomeProvider() instanceof TFBiomeProvider)
     	{
     		// determine the biome at the origin
-    		Biome biomeAt = world.getBiomeGenForCoords(x, z);
+    		Biome biomeAt = world.getBiomeGenForCoords(new BlockPos(x, 0, z));
 
-    		int offY = (int) ((biomeAt.rootHeight + biomeAt.heightVariation) * 8);
+    		int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
     		
     		// dark forest doesn't seem to get the right value.  Why is my calculation so bad?
     		if (biomeAt == TFBiomeBase.darkForest)
@@ -308,14 +307,15 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 				{
 					if (x == shieldBox.minX || x == shieldBox.maxX || y == shieldBox.minY || y == shieldBox.maxY || z == shieldBox.minZ || z == shieldBox.maxZ)
 					{
-						if (chunkBox.isVecInside(x, y, z))
+						BlockPos pos = new BlockPos(x, y, z);
+						if (chunkBox.isVecInside(pos))
 						{
 							// test other boxes
 							boolean notIntersecting = true;
 							
 							for (StructureComponent other : intersecting)
 							{
-								if (other.getBoundingBox().isVecInside(x, y, z))
+								if (other.getBoundingBox().isVecInside(pos))
 								{
 									notIntersecting = false;
 								}
@@ -324,7 +324,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 							if (notIntersecting)
 							{
-								world.setBlock(x, y, z, TFBlocks.shield, calculateShieldMeta(shieldBox, x, y, z), 2);
+								world.setBlockState(pos, TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, calculateShieldFacing(shieldBox, x, y, z)), 2);
 							}
 
 						}
@@ -334,38 +334,39 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		}
 	}
 
-	private int calculateShieldMeta(StructureBoundingBox shieldBox, int x, int y, int z) {
-		int shieldMeta = 0;
+	private EnumFacing calculateShieldFacing(StructureBoundingBox shieldBox, int x, int y, int z) {
+		EnumFacing facing = EnumFacing.DOWN;
 		if (x == shieldBox.minX)
 		{
-			shieldMeta = 5;
+			facing = EnumFacing.EAST;
 		}
 		if (x == shieldBox.maxX)
 		{
-			shieldMeta = 4;
+			facing = EnumFacing.WEST;
 		}
 		if (z == shieldBox.minZ)
 		{
-			shieldMeta = 3;
+			facing = EnumFacing.SOUTH;
 		}
 		if (z == shieldBox.maxZ)
 		{
-			shieldMeta = 2;
+			facing = EnumFacing.NORTH;
 		}
 		if (y == shieldBox.minY)
 		{
-			shieldMeta = 1;
+			facing = EnumFacing.UP;
 		}
 		if (y == shieldBox.maxY)
 		{
-			shieldMeta = 0;
+			facing = EnumFacing.DOWN;
 		}
-		return shieldMeta;
+		return facing;
 	}
-	
-    public void func_143022_a(NBTTagCompound par1NBTTagCompound)
+
+	@Override
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        super.func_143022_a(par1NBTTagCompound);
+        super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setBoolean("Conquered", this.isConquered);
         par1NBTTagCompound.setInteger("FeatureID", this.feature.featureID);
         par1NBTTagCompound.setByteArray("Locks", this.lockBytes);
@@ -373,9 +374,10 @@ public class StructureTFMajorFeatureStart extends StructureStart {
         //System.out.println("Saved structure for feature " + feature.name);
     }
 
-    public void func_143017_b(NBTTagCompound nbttagcompound)
+	@Override
+    public void readFromNBT(NBTTagCompound nbttagcompound)
     {
-        super.func_143017_b(nbttagcompound);
+        super.readFromNBT(nbttagcompound);
         this.isConquered = nbttagcompound.getBoolean("Conquered");
         this.feature = TFFeature.featureList[nbttagcompound.getInteger("FeatureID")];
         this.lockBytes = nbttagcompound.getByteArray("Locks");
