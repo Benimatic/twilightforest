@@ -46,7 +46,7 @@ public class EntityTFBoggard extends EntityMob {
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, false, false, null));
 
     }
     
@@ -66,7 +66,7 @@ public class EntityTFBoggard extends EntityMob {
     }
 
     @Override
-	protected String getLivingSound()
+	protected String getAmbientSound()
     {
         return TwilightForestMod.ID + ":mob.redcap.redcap";
     }
@@ -116,11 +116,11 @@ public class EntityTFBoggard extends EntityMob {
      */
     public boolean isTargetLookingAtMe() {
     	// find angle of approach
-    	double dx = posX - entityToAttack.posX;
-    	double dz = posZ - entityToAttack.posZ;
+    	double dx = posX - getAttackTarget().posX;
+    	double dz = posZ - getAttackTarget().posZ;
     	float angle = (float)((Math.atan2(dz, dx) * 180D) / 3.1415927410125732D) - 90F;
 
-    	float difference = MathHelper.abs((entityToAttack.rotationYaw - angle) % 360);
+    	float difference = MathHelper.abs((getAttackTarget().rotationYaw - angle) % 360);
     	
 //    	System.out.println("Difference in angle of approach is " + difference);
 

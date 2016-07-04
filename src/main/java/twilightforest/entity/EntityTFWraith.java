@@ -9,6 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
@@ -31,19 +32,16 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         this.setPosition(x, y, z);
     }
     
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
         
         // need to initialize damage since we're not an EntityMob
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D); // attack damage
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
     }
 
     @Override
@@ -52,7 +50,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         if(worldObj.isDaytime())
         {
             float f = getBrightness(1.0F);
-            if(f > 0.5F && worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
+            if(f > 0.5F && worldObj.canSeeSky(new BlockPos(this)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
             {
 //                fire = 300;
             }
@@ -60,9 +58,6 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         super.onLivingUpdate();
     }
     
-    /**
-     * Supress walking sounds
-     */
     @Override
     public boolean canTriggerWalking()
     {
@@ -75,9 +70,9 @@ public class EntityTFWraith extends EntityFlying implements IMob {
      * TODO: pathfinding!
      */
     @Override
-	protected void updateEntityActionState()
+	protected void updateAITasks()
     {
-        if(!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+        if(!worldObj.isRemote && worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
         	setDead();
         }
@@ -248,7 +243,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     }
 
     @Override
-	protected String getLivingSound()
+	protected String getAmbientSound()
     {
         return TwilightForestMod.ID + ":mob.wraith.wraith";
     }
@@ -280,9 +275,6 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     public int prevAttackCounter;
     public int attackCounter;
     
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -327,12 +319,9 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         }
     }
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
     @Override
     public boolean getCanSpawnHere()
     {
-        return this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
+        return this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
     }
 }

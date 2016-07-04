@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import java.util.List;
 
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -16,8 +15,7 @@ import net.minecraft.world.World;
 public class EntitySeekerArrow extends EntityArrow {
 
 	private EntityLivingBase homingTarget;
-	double seekDistance = 5.0;
-
+	private static final double seekDistance = 5.0;
 
 	public EntitySeekerArrow(World par1World) {
 		super(par1World);
@@ -27,11 +25,7 @@ public class EntitySeekerArrow extends EntityArrow {
 		super(world, player, velocity);
 	}
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
-	@SuppressWarnings("rawtypes")
 	public void onUpdate()
     {
         // seek!
@@ -53,18 +47,17 @@ public class EntitySeekerArrow extends EntityArrow {
 
         		// add two possible courses to our selection box
 				Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
-        		courseVec.rotateAroundY((float) (Math.PI / 6F));
+        		courseVec.rotateYaw((float) (Math.PI / 6F));
         		targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
 
         		courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
-        		courseVec.rotateAroundY(-(float) (Math.PI / 6F));
+        		courseVec.rotateYaw(-(float) (Math.PI / 6F));
         		targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
-        		
-        		targetBB.minY -= 3;
-        		targetBB.maxY += 3;
+
+				targetBB = targetBB.expand(0, 3, 0);
 
         		// find targets in box
-        		List targets = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, targetBB, IEntitySelector.selectAnything);
+        		List targets = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, targetBB);
 
         		double closestDot = 1;
 
@@ -112,11 +105,9 @@ public class EntitySeekerArrow extends EntityArrow {
 	        		float currentSpeed = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 	        		
 	        		currentSpeed *= 1.0;
-	        		
-	        		targetVec.xCoord *= currentSpeed;
-	        		targetVec.yCoord *= currentSpeed;
-	        		targetVec.zCoord *= currentSpeed;
-	
+
+					targetVec = targetVec.scale(currentSpeed);
+
 	        		// adjust current heading
 	        		double dx = MathHelper.clamp_double(targetVec.xCoord, -2.0, 2.0);
 	        		double dy = MathHelper.clamp_double(targetVec.yCoord, -1.0, 1.0);

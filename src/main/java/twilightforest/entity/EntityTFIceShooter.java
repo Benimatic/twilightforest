@@ -31,7 +31,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
         this.setSize(0.8F, 1.8F);
 	}
 
@@ -71,7 +71,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
     }
     
     @Override
-	protected String getLivingSound()
+	protected String getAmbientSound()
     {
         return TwilightForestMod.ID + ":mob.ice.noise";
     }

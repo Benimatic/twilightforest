@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -14,7 +13,11 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -26,9 +29,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker 
 {
-	
-    public static final int BREATH_DURATION = 10;
-    public static final int BREATH_DAMAGE = 2;
+
+    private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntityTFFireBeetle.class, DataSerializers.BOOLEAN);
+    private static final int BREATH_DURATION = 10;
+    private static final int BREATH_DAMAGE = 2;
 
 
     public EntityTFFireBeetle(World world)
@@ -45,7 +49,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
         //this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         //this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 
     }
     
@@ -59,7 +63,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(17, Byte.valueOf((byte)0));
+        dataManager.register(BREATHING, false);
     }
 	
 	@Override
@@ -72,7 +76,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     }
     
     @Override
-	protected String getLivingSound()
+	protected String getAmbientSound()
     {
         return null;
     }
@@ -104,20 +108,13 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     @Override
 	public boolean isBreathing()
     {
-        return dataWatcher.getWatchableObjectByte(17) != 0;
+        return dataManager.get(BREATHING);
     }
 
     @Override
 	public void setBreathing(boolean flag)
     {
-        if (flag)
-        {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)127));
-        }
-        else
-        {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)0));
-        }
+        dataManager.set(BREATHING, flag);
     }
 
     @Override
@@ -160,8 +157,8 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
 
     }
 
-    public String getFlameParticle() {
-		return "flame";
+    public EnumParticleTypes getFlameParticle() {
+		return EnumParticleTypes.FLAME;
 	}
 
 	public void playBreathSound() {

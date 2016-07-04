@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntityTFKingSpider extends EntitySpider {
@@ -31,7 +32,7 @@ public class EntityTFKingSpider extends EntitySpider {
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
 
 	}
 
@@ -70,19 +71,17 @@ public class EntityTFKingSpider extends EntitySpider {
         return false;
     }
     
-    /**
-     * Init creature with mount
-     */
-    public IEntityLivingData onSpawnWithEgg(IEntityLivingData par1EntityLivingData)
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData par1EntityLivingData)
     {
-        Object par1EntityLivingData1 = super.onSpawnWithEgg(par1EntityLivingData);
+        Object par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
 
     	// always a spider jockey
         EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.worldObj);
         druid.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-        druid.onSpawnWithEgg((IEntityLivingData)null);
+        druid.onInitialSpawn(difficulty, null);
         this.worldObj.spawnEntityInWorld(druid);
-        druid.mountEntity(this);
+        druid.startRiding(this);
         
         return (IEntityLivingData)par1EntityLivingData1;
     }

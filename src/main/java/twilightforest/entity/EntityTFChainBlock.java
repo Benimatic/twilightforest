@@ -283,9 +283,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         // set chain positions, client only
         if (this.attachedTo != null) {
     		// interpolate chain position
-        	Vec3d handVec = this.attachedTo.getLookVec();
-        	
-        	handVec.rotateAroundY(-0.4F);
+        	Vec3d handVec = this.attachedTo.getLookVec().rotateYaw(-0.4F);
         	
     		double sx = this.attachedTo.posX + handVec.xCoord;
     		double sy = this.attachedTo.posY + handVec.yCoord - 0.6F;

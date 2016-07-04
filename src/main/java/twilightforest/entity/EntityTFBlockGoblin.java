@@ -20,7 +20,11 @@ import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -33,18 +37,18 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
  
 	private static final float CHAIN_SPEED = 16F;
-	private static final int DATA_CHAINLENGTH = 17;
-	private static final int DATA_CHAINPOS = 18;
+	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> DATA_CHAINPOS = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
 	
-	int recoilCounter;
-	float chainAngle;
+	private int recoilCounter;
+	private float chainAngle;
 	
 	public EntityTFSpikeBlock block;
 	public EntityTFGoblinChain chain1;
 	public EntityTFGoblinChain chain2;
 	public EntityTFGoblinChain chain3;
 	
-	public Entity[] partsArray;
+	private Entity[] partsArray;
 
 
 	public EntityTFBlockGoblin(World world)
@@ -61,7 +65,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
         
         this.recoilCounter = 0;
 
@@ -77,22 +81,22 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(DATA_CHAINLENGTH, Byte.valueOf((byte) 0));
-        this.dataWatcher.addObject(DATA_CHAINPOS, Byte.valueOf((byte) 0));
+        this.dataManager.register(DATA_CHAINLENGTH, (byte) 0);
+        this.dataManager.register(DATA_CHAINPOS, (byte) 0);
     }
     
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
     }
     
 
     @Override
-	protected String getLivingSound()
+	protected String getAmbientSound()
     {
         return TwilightForestMod.ID + ":mob.redcap.redcap";
     }
@@ -157,13 +161,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
-		
-        this.swingItem();
-
-		
+        swingArm(EnumHand.MAIN_HAND);
 		return false;
-
-		
 		//return super.attackEntityAsMob(par1Entity);
 	}
 	
@@ -187,8 +186,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(DATA_CHAINLENGTH, Byte.valueOf((byte) Math.floor(getChainLength() * 127F)));
-            this.dataWatcher.updateObject(DATA_CHAINPOS, Byte.valueOf((byte) Math.floor(getChainAngle() / 360F * 255F)));
+            this.dataManager.set(DATA_CHAINLENGTH, (byte) Math.floor(getChainLength() * 127F));
+            this.dataManager.set(DATA_CHAINPOS, (byte) Math.floor(getChainAngle() / 360F * 255F));
         }
         else
         {
@@ -287,7 +286,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         }
         else
         {
-        	return (this.dataWatcher.getWatchableObjectByte(DATA_CHAINPOS) & 0xFF) / 255F * 360F;
+        	return (this.dataManager.get(DATA_CHAINPOS) & 0xFF) / 255F * 360F;
         }
     }
     
@@ -309,7 +308,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         }
         else
         {
-        	return (this.dataWatcher.getWatchableObjectByte(DATA_CHAINLENGTH) & 0xFF) / 127F;
+        	return (this.dataManager.get(DATA_CHAINLENGTH) & 0xFF) / 127F;
         }
 	}
 

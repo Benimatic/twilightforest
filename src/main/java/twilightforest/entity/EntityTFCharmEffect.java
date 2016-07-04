@@ -4,6 +4,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -12,8 +15,8 @@ import twilightforest.item.TFItems;
 public class EntityTFCharmEffect extends Entity
 {
 
-	private static final int DATA_OWNER = 17;
-	private static final int DATA_ITEMID = 16;
+	private static final DataParameter<String> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.STRING);
+    private static final DataParameter<Integer> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final double DISTANCE = 1.75;
 	private EntityLivingBase orbiting;
 	private double newPosX;
@@ -51,10 +54,8 @@ public class EntityTFCharmEffect extends Entity
 		//this.posY += look.yCoord * DISTANCE;
 		this.posZ += look.zCoord * DISTANCE;
 		this.setPosition(this.posX, this.posY, this.posZ);
-		this.yOffset = 0.0F;
-
 	}
-	
+
     @Override
     public void onUpdate()
     {
@@ -88,8 +89,7 @@ public class EntityTFCharmEffect extends Entity
         {
         	this.setLocationAndAngles(orbiting.posX, orbiting.posY + orbiting.getEyeHeight(), orbiting.posZ, orbiting.rotationYaw, orbiting.rotationPitch);
 
-        	Vec3d look = new Vec3d(DISTANCE, 0, 0);
-        	look.rotateAroundY(rotation);
+        	Vec3d look = new Vec3d(DISTANCE, 0, 0).rotateYaw(rotation);
         	this.posX += look.xCoord;
 //        	this.posY += Math.sin(this.ticksExisted / 3.0F + offset);
         	this.posZ += look.zCoord;
@@ -115,37 +115,33 @@ public class EntityTFCharmEffect extends Entity
         }
     }
     
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    @Override
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
     {
-        this.yOffset = 0.0F;
-        this.newPosX = par1;
-        this.newPosY = par3;
-        this.newPosZ = par5;
-        this.newRotationYaw = par7;
-        this.newRotationPitch = par8;
-        this.newPosRotationIncrements = par9;
+        this.newPosX = x;
+        this.newPosY = y;
+        this.newPosZ = z;
+        this.newRotationYaw = yaw;
+        this.newRotationPitch = pitch;
+        this.newPosRotationIncrements = posRotationIncrements;
     }
 
 
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(DATA_ITEMID, Integer.valueOf(0));
-        this.dataWatcher.addObject(DATA_OWNER, "");
+        this.dataManager.register(DATA_ITEMID, 0);
+        this.dataManager.register(DATA_OWNER, "");
     }
 
     public String getOwnerName()
     {
-        return this.dataWatcher.getWatchableObjectString(DATA_OWNER);
+        return this.dataManager.get(DATA_OWNER);
     }
 
     public void setOwner(String par1Str)
     {
-        this.dataWatcher.updateObject(DATA_OWNER, par1Str);
+        this.dataManager.set(DATA_OWNER, par1Str);
     }
 
     public EntityLivingBase getOwner()
@@ -155,7 +151,7 @@ public class EntityTFCharmEffect extends Entity
 
 	public int getItemID()
     {
-        return this.dataWatcher.getWatchableObjectInt(DATA_ITEMID);
+        return this.dataManager.get(DATA_ITEMID);
     }
 
     public void setItemID(Item charmOfLife1)

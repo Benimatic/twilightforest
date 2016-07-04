@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFRiderSpearAttack;
 import twilightforest.item.TFItems;
@@ -41,7 +42,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, false, false, null));
 
 		this.setHasArmor(true);
     }
@@ -101,21 +102,22 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     	// we start with the upper guy riding us
     	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.worldObj);
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-        upper.onSpawnWithEgg((IEntityLivingData)null);
+        upper.onInitialSpawn(null, (IEntityLivingData)null);
         this.worldObj.spawnEntityInWorld(upper);
         upper.startRiding(this);
     }
-    
-    public IEntityLivingData onSpawnWithEgg(IEntityLivingData par1EntityLivingData)
+
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData par1EntityLivingData)
     {
-        Object par1EntityLivingData1 = super.onSpawnWithEgg(par1EntityLivingData);
+        Object par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
 
     	// we start with the upper guy riding us
     	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.worldObj);
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-        upper.onSpawnWithEgg((IEntityLivingData)null);
+        upper.onInitialSpawn(difficulty, null);
         this.worldObj.spawnEntityInWorld(upper);
-        upper.mountEntity(this);
+        upper.startRiding(this);
 
         return (IEntityLivingData)par1EntityLivingData1;
     }

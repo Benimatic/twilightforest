@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityTFGoblinChain extends Entity {
 	
-	Entity goblin;
+	private Entity goblin;
 
 	public EntityTFGoblinChain(World par1World) {
 		super(par1World);

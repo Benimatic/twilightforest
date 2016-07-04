@@ -37,7 +37,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
  
         this.targetTasks.taskEntries.clear();
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
 	}
 
 	@Override
@@ -125,9 +125,6 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 		worldObj.playSoundEffect(this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5, "mob.ghast.fireball", rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 	}
 
-	/**
-     * Gets the pitch of living sounds in living entities.
-     */
     @Override
 	protected float getSoundPitch()
     {

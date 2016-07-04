@@ -175,14 +175,9 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     			
     			
     			float dist = 16F;
-    			
-    			look.xCoord *= dist;
-    			look.yCoord *= dist;
-    			look.zCoord *= dist;
-    			
-    			destPoint.xCoord += look.xCoord;
-    			destPoint.yCoord += look.yCoord;
-    			destPoint.zCoord += look.zCoord;
+
+				look = look.scale(dist);
+				destPoint = destPoint.add(look);
     		}
     		
     		//System.out.println("Dest point = " + destPoint);

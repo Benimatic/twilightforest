@@ -1,5 +1,8 @@
 package twilightforest.entity;
 
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import twilightforest.TFAchievementPage;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -22,7 +25,7 @@ import net.minecraft.world.World;
 
 public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, ITFCharger {
 
-	private static final int CHARGE_FLAG = 17;
+	private static final DataParameter<Boolean> CHARGE_FLAG = EntityDataManager.createKey(EntityTFAdherent.class, DataSerializers.BOOLEAN);
 
 	public EntityTFAdherent(World world) {
 		super(world);
@@ -35,7 +38,7 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 		
 		this.setSize(0.8F, 2.2F);
 	}
@@ -44,7 +47,7 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(CHARGE_FLAG, Byte.valueOf((byte)0));
+        dataManager.register(CHARGE_FLAG, false);
     }
 	
 	@Override
@@ -81,25 +84,17 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 	
     /**
      * In this case we're not charging like a bull, but charging up a ranged attack
-     * @return
      */
     @Override
 	public boolean isCharging()
     {
-        return dataWatcher.getWatchableObjectByte(CHARGE_FLAG) != 0;
+        return dataManager.get(CHARGE_FLAG);
     }
 
     @Override
 	public void setCharging(boolean flag)
     {
-        if (flag)
-        {
-            dataWatcher.updateObject(CHARGE_FLAG, Byte.valueOf((byte)127));
-        }
-        else
-        {
-            dataWatcher.updateObject(CHARGE_FLAG, Byte.valueOf((byte)0));
-        }
+		dataManager.set(CHARGE_FLAG, flag);
     }
     
 

@@ -46,7 +46,7 @@ public class EntityTFHelmetCrab extends EntityMob {
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
 
     }
     
@@ -73,7 +73,7 @@ public class EntityTFHelmetCrab extends EntityMob {
     }
 
     @Override
-	protected String getLivingSound()
+	protected String getAmbientSound()
     {
         return null;
     }
