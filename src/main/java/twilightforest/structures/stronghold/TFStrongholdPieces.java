@@ -33,27 +33,27 @@ public class TFStrongholdPieces {
     
     public static void registerPieces()
     {
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdSmallHallway.class, "TFSSH");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdLeftTurn.class, "TFSLT");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdCrossing.class, "TFSCr");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdRightTurn.class, "TFSRT");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdDeadEnd.class, "TFSDE");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdBalconyRoom.class, "TFSBR");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdTrainingRoom.class, "TFSTR");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdSmallStairs.class, "TFSSS");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdTreasureCorridor.class, "TFSTC");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdAtrium.class, "TFSAt");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdFoundry.class, "TFSFo");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdTreasureRoom.class, "TFTreaR");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdBossRoom.class, "TFSBR");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdAccessChamber.class, "TFSAC");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdEntrance.class, "TFSEnter");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdUpperAscender.class, "TFSUA");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdUpperLeftTurn.class, "TFSULT");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdUpperRightTurn.class, "TFSURT");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdUpperCorridor.class, "TFSUCo");
-        MapGenStructureIO.func_143031_a(ComponentTFStrongholdUpperTIntersection.class, "TFSUTI");
-        MapGenStructureIO.func_143031_a(StructureTFStrongholdShield.class, "TFSShield");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdSmallHallway.class, "TFSSH");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdLeftTurn.class, "TFSLT");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdCrossing.class, "TFSCr");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdRightTurn.class, "TFSRT");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdDeadEnd.class, "TFSDE");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdBalconyRoom.class, "TFSBR");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdTrainingRoom.class, "TFSTR");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdSmallStairs.class, "TFSSS");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdTreasureCorridor.class, "TFSTC");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdAtrium.class, "TFSAt");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdFoundry.class, "TFSFo");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdTreasureRoom.class, "TFTreaR");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdBossRoom.class, "TFSBR");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdAccessChamber.class, "TFSAC");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdEntrance.class, "TFSEnter");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdUpperAscender.class, "TFSUA");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdUpperLeftTurn.class, "TFSULT");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdUpperRightTurn.class, "TFSURT");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdUpperCorridor.class, "TFSUCo");
+        MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdUpperTIntersection.class, "TFSUTI");
+        MapGenStructureIO.registerStructureComponent(StructureTFStrongholdShield.class, "TFSShield");
     }
 
     /**

@@ -7,25 +7,18 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.SpawnerVariant;
 
 public class ComponentTFHydraLair extends ComponentTFHollowHill {
-
-	public ComponentTFHydraLair() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public ComponentTFHydraLair(World world, Random rand, int i, int x, int y, int z) {
 		super(world, rand, i, 2, x, y + 2, z);
 	}
 
-	/**
-	 * Add on any other components we need.  Override with noop since we don't need a maze
-	 */
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random random) {
+	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
 		;
 	}
 	
@@ -58,7 +51,7 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		}
 
 		// boss spawner seems important
-		placeBlockAtCurrentPosition(world, TFBlocks.bossSpawner, 2, 27, 3, 27, sbb);
+		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, SpawnerVariant.HYDRA), 27, 3, 27, sbb);
 
 		return true;
 	}

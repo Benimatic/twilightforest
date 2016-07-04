@@ -1,6 +1,6 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.darktower.StructureDecoratorDarkTower;
@@ -16,30 +16,15 @@ import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;
  */
 public class StructureTFDecorator 
 {
-	public Block blockID = Blocks.STONE;
-	public int blockMeta;
-	
-	public Block accentID = Blocks.COBBLESTONE;
-	public int accentMeta;
-	
-	public Block stairID;
-	public int stairMeta; // probably not useful
-	
-	public Block fenceID;
-	public int fenceMeta;
-	
-	public Block pillarID;
-	public int pillarMeta;
-	
-	public Block platformID;
-	public int platformMeta;
-	
-	public Block floorID;
-	public int floorMeta;
-	
-	public Block roofID;
-	public int roofMeta;
-	
+	public IBlockState blockState = Blocks.STONE.getDefaultState();
+	public IBlockState accentState = Blocks.COBBLESTONE.getDefaultState();
+	public IBlockState stairState = null;
+	public IBlockState fenceState = null;
+	public IBlockState pillarState = null;
+	public IBlockState platformState = null;
+	public IBlockState floorState = null;
+	public IBlockState roofState = null;
+
 	public StructureComponent.BlockSelector randomBlocks = new StructureTFStrongholdStones();
 	
 	public static String getDecoString(StructureTFDecorator deco)

@@ -3,6 +3,7 @@ package twilightforest.structures;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
@@ -11,10 +12,6 @@ import twilightforest.world.TFWorld;
 public class ComponentTFYetiCave extends ComponentTFHollowHill {
 
 	private boolean yetiPlaced;
-
-	public ComponentTFYetiCave() {
-		super();
-	}
 
 	public ComponentTFYetiCave(World world, Random rand, int i, int x, int y, int z) {
 		super(world, rand, i, 2, x, y + 2, z);
@@ -83,13 +80,14 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 			int bx = this.getXWithOffset(this.radius, this.radius);
 			int by = this.getYWithOffset(0);
 			int bz = this.getZWithOffset(this.radius, this.radius);
-			
-			if (sbb.isVecInside(bx, by, bz)) {
+			BlockPos pos = new BlockPos(bx, by, bz);
+
+			if (sbb.isVecInside(pos)) {
 				yetiPlaced = true;
 				
 				EntityTFYetiAlpha yeti = new EntityTFYetiAlpha(world);
 				yeti.setPosition(bx, by, bz);
-				yeti.setHomeArea(bx, by, bz, 30);
+				yeti.setHomePosAndDistance(pos, 30);
 				
 				world.spawnEntityInWorld(yeti);
 			}

@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.CastleBrickVariant;
 
 public class StructureTFCastleBlocks extends StructureComponent.BlockSelector {
 
@@ -12,26 +14,27 @@ public class StructureTFCastleBlocks extends StructureComponent.BlockSelector {
 	public void selectBlocks(Random par1Random, int x, int y, int z, boolean isWall) {
         if (!isWall)
         {
-            this.field_151562_a = Blocks.AIR;
-            this.selectedBlockMetaData = 0;
+            blockstate = Blocks.AIR.getDefaultState();
         }
         else
         {
-            this.field_151562_a = TFBlocks.castleBlock;
             float randFloat = par1Random.nextFloat();
+            CastleBrickVariant variant = null;
 
             if (randFloat < 0.1F)
             {
-                this.selectedBlockMetaData = 1;
+                variant = CastleBrickVariant.WORN;
             }
             else if (randFloat < 0.2F)
             {
-                this.selectedBlockMetaData = 2;
+                variant = CastleBrickVariant.CRACKED;
             }
             else
             {
-                this.selectedBlockMetaData = 0;
+                variant = CastleBrickVariant.NORMAL;
             }
+
+            blockstate = TFBlocks.castleBlock.getDefaultState().withProperty(BlockTFCastleBlock.VARIANT, variant);
         }
 	}
 

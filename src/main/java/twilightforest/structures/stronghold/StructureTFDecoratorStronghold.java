@@ -1,7 +1,12 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.init.Blocks;
+import twilightforest.block.BlockTFUnderBrick;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.UnderBrickVariant;
 import twilightforest.structures.StructureTFDecorator;
 
 public class StructureTFDecoratorStronghold extends StructureTFDecorator {
@@ -9,22 +14,13 @@ public class StructureTFDecoratorStronghold extends StructureTFDecorator {
 	
 	public StructureTFDecoratorStronghold() 
 	{
-		this.blockID = TFBlocks.underBrick;
-		this.blockMeta = 0;
-		
-		this.accentID = TFBlocks.underBrick;
-		this.accentMeta = 3;
-		
-		this.fenceID = Blocks.COBBLESTONE_WALL;
-		
-		this.stairID = Blocks.STONE_BRICK_STAIRS;
-		
-		this.pillarID = Blocks.STONEBRICK;
-		this.pillarMeta = 1;
-		
-		this.platformID = Blocks.STONE_SLAB;
-		this.platformMeta = 5 + 8;
-
+		this.blockState = TFBlocks.underBrick.getDefaultState();
+		this.accentState = TFBlocks.underBrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
+		this.fenceState = Blocks.COBBLESTONE_WALL.getDefaultState();
+		this.stairState = Blocks.STONE_BRICK_STAIRS.getDefaultState();
+		this.pillarState = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+		this.platformState = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK)
+			.withProperty(BlockStoneSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
 		this.randomBlocks = new StructureTFKnightStones();
 	}
 }

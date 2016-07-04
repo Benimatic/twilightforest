@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -20,17 +21,10 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	int hillSize;
 	int radius;
 
-	public ComponentTFHollowHill() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
-
 	public ComponentTFHollowHill(World world, Random rand, int i, int size, int x, int y, int z) {
 		super(i);
 
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		// get the size of this hill?
 		this.hillSize = size;
@@ -40,23 +34,15 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -3, -radius, radius * 2, 10, radius * 2, 0);
 	}
 	
-	
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
-		
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("hillSize", this.hillSize);
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.hillSize = par1NBTTagCompound.getInteger("hillSize");
         this.radius = ((hillSize * 2 + 1) * 8) - 6;
 
@@ -65,9 +51,8 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	/**
 	 * Add on any other components we need.  In this case we add the maze below the hill
 	 */
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random random) {
+	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
 		
 //		// add a maze
 //		ComponentTFHillMaze maze = new ComponentTFHillMaze(1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), boundingBox.minY - 20, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2), hillSize);

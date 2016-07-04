@@ -6,13 +6,13 @@ public class TFIceTowerPieces {
 
     public static void registerPieces()
     {
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerMain.class, "TFITMai");
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerWing.class, "TFITWin");
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerRoof.class, "TFITRoof");
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerBeard.class, "TFITBea");
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerBossWing.class, "TFITBoss");
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerEntrance.class, "TFITEnt");
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerBridge.class, "TFITBri");
-        MapGenStructureIO.func_143031_a(ComponentTFIceTowerStairs.class, "TFITSt");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerMain.class, "TFITMai");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerWing.class, "TFITWin");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerRoof.class, "TFITRoof");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerBeard.class, "TFITBea");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerBossWing.class, "TFITBoss");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerEntrance.class, "TFITEnt");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerBridge.class, "TFITBri");
+        MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerStairs.class, "TFITSt");
     }
 }

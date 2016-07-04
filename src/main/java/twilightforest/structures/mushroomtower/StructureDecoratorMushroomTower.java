@@ -1,5 +1,6 @@
 package twilightforest.structures.mushroomtower;
 
+import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.init.Blocks;
 import twilightforest.structures.StructureTFDecorator;
 
@@ -9,21 +10,12 @@ public class StructureDecoratorMushroomTower extends StructureTFDecorator {
 	
 	public StructureDecoratorMushroomTower() 
 	{
-		this.blockID = Blocks.RED_MUSHROOM_BLOCK;
-		this.blockMeta = 10;
-		
-		this.accentID = Blocks.RED_MUSHROOM_BLOCK;
-		this.accentMeta = 14;
-		
-		this.fenceID = Blocks.FENCE;
-		
-		this.stairID = Blocks.SPRUCE_STAIRS;
-		
-		this.pillarID = Blocks.RED_MUSHROOM_BLOCK;
-		this.pillarMeta = 10;
-		
-		this.floorID = Blocks.PLANKS;
-		this.floorMeta = 0;
+		this.blockState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
+		this.accentState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
+		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
+		this.stairState = Blocks.SPRUCE_STAIRS.getDefaultState();
+		this.pillarState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
+		this.floorState = Blocks.PLANKS.getDefaultState();
 	}
 	
 }

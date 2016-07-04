@@ -3,6 +3,7 @@ package twilightforest.structures;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
@@ -12,11 +13,6 @@ import twilightforest.block.TFBlocks;
 
 public class ComponentTFHillMaze extends StructureTFComponent {
 
-	public ComponentTFHillMaze() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	private static final int FLOOR_LEVEL = 1;
 	private int hillSize;
 	
@@ -24,7 +20,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 		super(i);
 		this.hillSize = hsize;
 		
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, 0);
 
@@ -33,9 +29,9 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// clear the area
-		fillWithBlocks(world, sbb, 0, 1, 0, getDiameter(), 3, getDiameter(), Blocks.AIR, Blocks.AIR, false);
-		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, TFBlocks.mazestone, false);
-		fillWithBlocks(world, sbb, 0, 4, 0, getDiameter(), 4, getDiameter(), TFBlocks.mazestone, TFBlocks.mazestone, true);
+		fillWithBlocks(world, sbb, 0, 1, 0, getDiameter(), 3, getDiameter(), Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
+		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone.getDefaultState(), TFBlocks.mazestone.getDefaultState(), false);
+		fillWithBlocks(world, sbb, 0, 4, 0, getDiameter(), 4, getDiameter(), TFBlocks.mazestone.getDefaultState(), TFBlocks.mazestone.getDefaultState(), true);
 	
 		
 		// make maze object
@@ -137,12 +133,6 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 
 	/**
 	 * Decorates a room in the maze.  Makes assumptions that the room is 3x3 cells and thus 11x11 blocks large.
-	 * @param rand 
-	 * @param world 
-	 * @param sbb 
-	 * 
-	 * @param dx
-	 * @param dy
 	 */
 	void decorate3x3Room(World world, int x, int z, StructureBoundingBox sbb)
 	{
