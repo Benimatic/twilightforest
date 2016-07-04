@@ -2,6 +2,7 @@ package twilightforest;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.client.GuiTFCinderFurnace;
 import twilightforest.inventory.ContainerTFCinderFurnace;
@@ -99,7 +100,7 @@ public class TFCommonProxy implements IGuiHandler {
 		if (id == TwilightForestMod.GUI_ID_UNCRAFTING) {
 			return new twilightforest.client.GuiTFGoblinCrafting(player.inventory, world, x, y, z);
 		} else if (id == TwilightForestMod.GUI_ID_FURNACE) {
-			return new GuiTFCinderFurnace(player.inventory, world, x, y, z);
+			return new GuiTFCinderFurnace(player.inventory, world, new BlockPos(x, y, z));
 		} else {
 			return null;
 		}

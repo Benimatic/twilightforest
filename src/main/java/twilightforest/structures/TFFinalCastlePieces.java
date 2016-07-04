@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
@@ -14,7 +15,6 @@ import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -27,41 +27,38 @@ public class TFFinalCastlePieces {
 
 	public static void registerFinalCastlePieces()
     {
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Main.class, "TFFCMain");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.StairTower.class, "TFFCStTo");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.LargeTower.class, "TFFCLaTo");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Mural.class, "TFFCMur");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Foundation48.class, "TFFCToF48");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Roof48Crenellated.class, "TFFCRo48Cr");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.BossGazebo.class, "TFFCBoGaz");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.MazeTower13.class, "TFFCSiTo");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.DungeonSteps.class, "TFFCDunSt");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.DungeonEntrance.class, "TFFCDunEn");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.DungeonRoom31.class, "TFFCDunR31");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.DungeonExit.class, "TFFCDunEx");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.DungeonForgeRoom.class, "TFFCDunBoR");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Roof9Crenellated.class, "TFFCRo9Cr");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Roof13Crenellated.class, "TFFCRo13Cr");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Roof13Conical.class, "TFFCRo13Con");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Roof13Peaked.class, "TFFCRo13Pk");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.EntranceTower.class, "TFFCEnTo");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.EntranceSideTower.class, "TFFCEnSiTo");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.EntranceBottomTower.class, "TFFCEnBoTo");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.EntranceStairs.class, "TFFCEnSt");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.BellTower21.class, "TFFCBelTo");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Bridge.class, "TFFCBri");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Foundation13.class, "TFFCToF13");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.BellFoundation21.class, "TFFCBeF21");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.Foundation13Thorns.class, "TFFCFTh21");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.DamagedTower.class, "TFFCDamT");
-        MapGenStructureIO.func_143031_a(TFFinalCastlePieces.WreckedTower.class, "TFFCWrT");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Main.class, "TFFCMain");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.StairTower.class, "TFFCStTo");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.LargeTower.class, "TFFCLaTo");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Mural.class, "TFFCMur");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Foundation48.class, "TFFCToF48");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Roof48Crenellated.class, "TFFCRo48Cr");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.BossGazebo.class, "TFFCBoGaz");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.MazeTower13.class, "TFFCSiTo");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.DungeonSteps.class, "TFFCDunSt");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.DungeonEntrance.class, "TFFCDunEn");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.DungeonRoom31.class, "TFFCDunR31");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.DungeonExit.class, "TFFCDunEx");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.DungeonForgeRoom.class, "TFFCDunBoR");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Roof9Crenellated.class, "TFFCRo9Cr");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Roof13Crenellated.class, "TFFCRo13Cr");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Roof13Conical.class, "TFFCRo13Con");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Roof13Peaked.class, "TFFCRo13Pk");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.EntranceTower.class, "TFFCEnTo");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.EntranceSideTower.class, "TFFCEnSiTo");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.EntranceBottomTower.class, "TFFCEnBoTo");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.EntranceStairs.class, "TFFCEnSt");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.BellTower21.class, "TFFCBelTo");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Bridge.class, "TFFCBri");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Foundation13.class, "TFFCToF13");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.BellFoundation21.class, "TFFCBeF21");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.Foundation13Thorns.class, "TFFCFTh21");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.DamagedTower.class, "TFFCDamT");
+        MapGenStructureIO.registerStructureComponent(TFFinalCastlePieces.WreckedTower.class, "TFFCWrT");
     }
     
 	public static class Main extends StructureTFComponent {
 
-    	public Main() {
-    	}
-    	
     	public Main(World world, Random rand, int i, int x, int y, int z) {
     		this.setCoordBaseMode(0);
 			this.spawnListIndex = 1; // main monsters
@@ -1380,9 +1377,6 @@ public class TFFinalCastlePieces {
     	
     	public int type;
     	
-		public MazeTower13() {
-		}
-
 		public MazeTower13(Random rand, int i, int x, int y, int z, int type, int direction) {
 			super(i);
 			this.setCoordBaseMode(direction);
@@ -1424,10 +1418,8 @@ public class TFFinalCastlePieces {
     		addOpening(0, entranceFloor * 8 + 1, size / 2, 2);		
     	}
 
-		
-    	@SuppressWarnings({ "unchecked", "rawtypes" })
     	@Override
-    	public void buildComponent(StructureComponent parent, List list, Random rand) {
+    	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
     		if (parent != null && parent instanceof StructureTFComponent) {
     			this.deco = ((StructureTFComponent)parent).deco;
     		}
@@ -2285,15 +2277,12 @@ public class TFFinalCastlePieces {
 	
 	public static class DamagedTower extends MazeTower13 {
 
-		public DamagedTower() { }
-
 		public DamagedTower(Random rand, int i, int x, int y, int z, int direction) {
 			super(rand, i, x, y, z, 2, direction);  //TODO: change rune type
 		}
 		
-    	@SuppressWarnings({ "unchecked", "rawtypes" })
     	@Override
-    	public void buildComponent(StructureComponent parent, List list, Random rand) {
+    	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
     		if (parent != null && parent instanceof StructureTFComponent) {
     			this.deco = ((StructureTFComponent)parent).deco;
     		}
@@ -2450,15 +2439,12 @@ public class TFFinalCastlePieces {
 
 	public static class WreckedTower extends DamagedTower {
 
-		public WreckedTower() { }
-
 		public WreckedTower(Random rand, int i, int x, int y, int z, int direction) {
 			super(rand, i, x, y, z, direction);
 		}
 		
-    	@SuppressWarnings({ "unchecked", "rawtypes" })
     	@Override
-    	public void buildComponent(StructureComponent parent, List list, Random rand) {
+    	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
     		if (parent != null && parent instanceof StructureTFComponent) {
     			this.deco = ((StructureTFComponent)parent).deco;
     		}
@@ -2523,17 +2509,15 @@ public class TFFinalCastlePieces {
 
 
 	public static class Bridge extends StructureTFComponent {
-		public Bridge() {}
-	
+
 		public Bridge(int i, int x, int y, int z, int length, int direction) {
 			this.setCoordBaseMode(direction);
 			this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);
 
 		}
 		
-    	@SuppressWarnings({ "unchecked", "rawtypes" })
     	@Override
-    	public void buildComponent(StructureComponent parent, List list, Random rand) {
+    	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
     		if (parent != null && parent instanceof StructureTFComponent) {
     			this.deco = ((StructureTFComponent)parent).deco;
     		}
@@ -2577,8 +2561,6 @@ public class TFFinalCastlePieces {
 
 	public static class Roof9Crenellated extends StructureTFComponent  {
 		
-		public Roof9Crenellated() {}
-		
 		public Roof9Crenellated(Random rand, int i, StructureTFComponent sideTower) {
 			super(i);
 			
@@ -2589,9 +2571,8 @@ public class TFFinalCastlePieces {
 
 		}
 		
-    	@SuppressWarnings({ "unchecked", "rawtypes" })
     	@Override
-    	public void buildComponent(StructureComponent parent, List list, Random rand) {
+    	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
     		if (parent != null && parent instanceof StructureTFComponent) {
     			this.deco = ((StructureTFComponent)parent).deco;
     		}
@@ -2633,8 +2614,6 @@ public class TFFinalCastlePieces {
 		
 		public int slope;
 		
-		public Roof13Conical() {}
-		
 		public Roof13Conical(Random rand, int i, StructureTFComponent sideTower) {
 			super(i);
 			
@@ -2647,29 +2626,20 @@ public class TFFinalCastlePieces {
 
 		}
 		
-		/**
-		 * Save to NBT
-		 */
 		@Override
-		protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-			super.func_143012_a(par1NBTTagCompound);
-			
+		protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+			super.writeStructureToNBT(par1NBTTagCompound);
 	        par1NBTTagCompound.setInteger("slope", this.slope);
 		}
 
-		/**
-		 * Load from NBT
-		 */
 		@Override
-		protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-			super.func_143011_b(par1NBTTagCompound);
+		protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+			super.readStructureFromNBT(par1NBTTagCompound);
 	        this.slope = par1NBTTagCompound.getInteger("slope");
 		}
 
-
-    	@SuppressWarnings({ "unchecked", "rawtypes" })
     	@Override
-    	public void buildComponent(StructureComponent parent, List list, Random rand) {
+    	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
     		if (parent != null && parent instanceof StructureTFComponent) {
     			this.deco = ((StructureTFComponent)parent).deco;
     		}
@@ -2712,8 +2682,6 @@ public class TFFinalCastlePieces {
 	}
 	
 	public static class Roof13Crenellated extends StructureTFComponent  {
-		
-		public Roof13Crenellated() {}
 		
 		public Roof13Crenellated(Random rand, int i, StructureTFComponent sideTower) {
 			super(i);
@@ -2762,8 +2730,6 @@ public class TFFinalCastlePieces {
 
 	public static class Roof13Peaked extends StructureTFComponent {
 		
-		public Roof13Peaked() {}
-	
 		public Roof13Peaked(Random rand, int i, StructureTFComponent sideTower) {
 			super(i);
 			
@@ -2859,9 +2825,6 @@ public class TFFinalCastlePieces {
 	public static class Foundation13 extends StructureTFComponent {
 		protected int groundLevel = -1;
 	
-		public Foundation13() {
-		}
-		
 		public Foundation13(Random rand, int i, StructureTFComponent sideTower) {
 			super(i);
 			
@@ -2926,10 +2889,10 @@ public class TFFinalCastlePieces {
 		    
 		    for (int y = 150; y > 0; y--) // is 150 a good place to start? :)
 		    {
-		    	int cx = sbb.getCenterX();
-		    	int cz = sbb.getCenterZ();
+		    	int cx = sbb.getCenter().getX();
+		    	int cz = sbb.getCenter().getZ();
 		    	
-		    	Block block = world.getBlock(cx, y, cz);
+		    	Block block = world.getBlockState(new BlockPos(cx, y, cz)).getBlock();
 		    	if (block == TFBlocks.deadrock)
 		    	{
 		    		groundLevel = y;
@@ -2949,8 +2912,6 @@ public class TFFinalCastlePieces {
 	 */
 	public static class Foundation13Thorns extends Foundation13 {
 		
-		public Foundation13Thorns() {}
-
 		public Foundation13Thorns(Random rand, int i, StructureTFComponent sideTower) {
 			super(rand, i, sideTower);
 			
@@ -3086,8 +3047,6 @@ public class TFFinalCastlePieces {
 	 */
 	public static class BellFoundation21 extends Foundation13 {
 		
-		public BellFoundation21() {}
-
 		public BellFoundation21(Random rand, int i, StructureTFComponent sideTower) {
 			super(rand, i, sideTower);
 			

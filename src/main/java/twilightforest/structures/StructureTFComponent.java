@@ -31,21 +31,15 @@ public abstract class StructureTFComponent extends StructureComponent {
 		super(i);
 	}
 
-	/**
-	 * Save to NBT
-	 */
 	@Override
-    protected void func_143012_a(NBTTagCompound par1NBTTagCompound)
+    protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setInteger("si", this.spawnListIndex);
         par1NBTTagCompound.setString("deco", StructureTFDecorator.getDecoString(this.deco));
     }
-	
-	/**
-	 * Load from NBT
-	 */
+
 	@Override
-    protected void func_143011_b(NBTTagCompound par1NBTTagCompound)
+    protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.spawnListIndex = par1NBTTagCompound.getInteger("si");
         this.deco = StructureTFDecorator.getDecoFor(par1NBTTagCompound.getString("deco"));
