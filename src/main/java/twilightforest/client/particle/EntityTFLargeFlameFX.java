@@ -1,8 +1,6 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
@@ -63,27 +61,6 @@ public class EntityTFLargeFlameFX extends Particle
         }
 
         return var4 | var5 << 16;
-    }
-
-    /**
-     * Gets how bright this entity is.
-     */
-    public float getBrightness(float par1)
-    {
-        float var2 = ((float)this.particleAge + par1) / (float)this.particleMaxAge;
-
-        if (var2 < 0.0F)
-        {
-            var2 = 0.0F;
-        }
-
-        if (var2 > 1.0F)
-        {
-            var2 = 1.0F;
-        }
-
-        float var3 = super.getBrightness(par1);
-        return var3 * var2 + (1.0F - var2);
     }
 
     @Override

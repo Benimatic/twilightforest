@@ -1,6 +1,5 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.EntityAuraFX;
 import net.minecraft.client.particle.ParticleSuspendedTown;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,18 +13,9 @@ public class EntityTFProtectionFX extends ParticleSuspendedTown {
         this.setRBGColorF(1.0F, 1.0F, 1.0F);
 	}
     
-    /**
-     * Gets how bright this entity is.
-     */
-    public float getBrightness(float par1)
-    {
-        return 1.0F;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
-    public int getBrightnessForRender(float par1)
-    {
-        return 15728880;
+    public int getBrightnessForRender(float par1) {
+        return 0xF000F0;
     }
 }

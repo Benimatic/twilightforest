@@ -13,7 +13,6 @@ public class EntityTFSnowWarningFX extends EntityTFSnowFX {
     public void onUpdate()
     {
     	super.onUpdate();
-    	
         this.motionY -= 0.019999999552965164D;
     }
 

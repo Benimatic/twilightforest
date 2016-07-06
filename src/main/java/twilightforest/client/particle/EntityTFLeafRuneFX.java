@@ -1,6 +1,5 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.EntityEnchantmentTableParticleFX;
 import net.minecraft.client.particle.ParticleEnchantmentTable;
 import net.minecraft.world.World;
 

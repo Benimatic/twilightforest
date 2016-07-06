@@ -1,12 +1,17 @@
 package twilightforest.client;
 
 import java.util.Random;
+import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -18,23 +23,23 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TFClientEvents {
 
-	private Random random; 
-	
-	public TFClientEvents() {
-		this.random = new Random();
-	}
+	private final Random random = new Random();
 
+	// Slowness potion uses an attribute modifier with specific UUID
+	// We can detect whether an entity has slowness from the client by looking for this UUID
+	private static final AttributeModifier SLOWNESS_POTION_MODIFIER =
+			new AttributeModifier(UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890"), "doesntmatter", 0, 0);
 
     /**
      * Do ice effect on slowed monsters
 	 */
 	@SubscribeEvent
 	public void renderLivingPost(RenderLivingEvent.Post event) {
-		if (event.entity.getDataWatcher().getWatchableObjectInt(7) == MobEffects.POTIONTYPES[MobEffects.MOVESLOWDOWN.getId()].getLiquidColor() && event.entity.getDataWatcher().getWatchableObjectByte(8) > 0) {
-			
-			
+		boolean hasSlowness = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(SLOWNESS_POTION_MODIFIER);
+		boolean showParticles = event.getEntity().getDataManager().get(EntityLivingBase.HIDE_PARTICLES);
+		if (hasSlowness && showParticles) {
 			//System.out.println("Rendering slowed entity");
-			this.renderIcedEntity(event.entity, event.renderer, event.x, event.y, event.z);
+			this.renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
 
 	}
@@ -44,9 +49,9 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public void fovUpdate(FOVUpdateEvent event) {
-        if (event.entity.isUsingItem() && (event.entity.getItemInUse().getItem() instanceof ItemTFBowBase))
+        if (event.getEntity().isHandActive() && (event.getEntity().getHeldItem(event.getEntity().getActiveHand()).getItem() instanceof ItemTFBowBase))
         {
-            int i = event.entity.getItemInUseDuration();
+            int i = event.getEntity().getItemInUseCount();
             float f1 = (float)i / 20.0F;
 
             if (f1 > 1.0F)
@@ -58,7 +63,7 @@ public class TFClientEvents {
                 f1 *= f1;
             }
 
-            event.newfov *= 1.0F - f1 * 0.15F;
+            event.setNewfov(event.getNewfov() * (1.0F - f1 * 0.15F));
         }
 	}
 
@@ -67,10 +72,10 @@ public class TFClientEvents {
 	 * This just displays a bunch of ice cubes around on their model
 	 */
 	private void renderIcedEntity(EntityLivingBase entity, RenderLivingBase renderer, double x, double y, double z) {
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		RenderManager.instance.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 		this.random.setSeed(entity.getEntityId() * entity.getEntityId() * 3121 + entity.getEntityId() * 45238971);
 
@@ -79,18 +84,18 @@ public class TFClientEvents {
 		
 		// make cubes
 		for (int i = 0; i < numCubes; i++) {
-			GL11.glPushMatrix();
+			GlStateManager.pushMatrix();
 			float dx = (float)(x + random.nextGaussian() * 0.2F * entity.width);
 			float dy = (float)(y + random.nextGaussian() * 0.2F * entity.height) + entity.height / 2F;
 			float dz = (float)(z + random.nextGaussian() * 0.2F * entity.width);
-			GL11.glTranslatef(dx, dy, dz);
-			GL11.glScalef(0.5F, 0.5F, 0.5F);
-			GL11.glRotatef(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
-			GL11.glRotatef(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
+			GlStateManager.translate(dx, dy, dz);
+			GlStateManager.scale(0.5F, 0.5F, 0.5F);
+			GlStateManager.rotate(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
+			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
 
-			RenderBlocks.getInstance().renderBlockAsItem(Blocks.ICE, 0, 1.0F);
-			GL11.glPopMatrix();
+			Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
+			GlStateManager.popMatrix();
 		}
 
 		GL11.glDisable(GL11.GL_BLEND);

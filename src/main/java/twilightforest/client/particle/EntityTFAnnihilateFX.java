@@ -35,7 +35,7 @@ public class EntityTFAnnihilateFX extends Particle
         this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
         this.noClip = false;
         
-        this.setParticleIcon(((ItemTFCubeOfAnnihilation)TFItems.cubeOfAnnihilation).getAnnihilateIcon());
+        this.particleTexture = ((ItemTFCubeOfAnnihilation)TFItems.cubeOfAnnihilation).getAnnihilateIcon();
         
         this.onUpdate();
     }
