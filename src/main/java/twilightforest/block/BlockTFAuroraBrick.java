@@ -7,27 +7,21 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.state.StateProps;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFAuroraBrick extends Block {
 	
-	private static IIcon[] icons;
-
 	public static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 15);
 
 	public BlockTFAuroraBrick() {
@@ -41,7 +35,7 @@ public class BlockTFAuroraBrick extends Block {
 
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, StateProps.AURORA_VARIANT);
+		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
@@ -52,51 +46,6 @@ public class BlockTFAuroraBrick extends Block {
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, MathHelper.clamp_int(meta, 0, 15));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		BlockTFAuroraBrick.icons = new IIcon[8];
-		BlockTFAuroraBrick.icons[0] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick0");
-		BlockTFAuroraBrick.icons[1] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick1");
-		BlockTFAuroraBrick.icons[2] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick2");
-		BlockTFAuroraBrick.icons[3] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick3");
-		BlockTFAuroraBrick.icons[4] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick4");
-		BlockTFAuroraBrick.icons[5] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick5");
-		BlockTFAuroraBrick.icons[6] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick6");
-		BlockTFAuroraBrick.icons[7] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick7");
-		
-//		BlockTFAuroraBrick.icons[0] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick0");
-//		BlockTFAuroraBrick.icons[1] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick2");
-//		BlockTFAuroraBrick.icons[2] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick4");
-//		BlockTFAuroraBrick.icons[3] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurorabrick6");
-
-	}
-
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-	@Override
-	public IIcon getIcon(int side, int meta) {
-		if (meta < 8) {
-			return icons[meta]; 
-		} else {
-			return icons[15 - meta];
-		}
-		
-//		switch (meta % 8) {
-//		default:
-//			return icons[(meta % 8) * 2];
-//		case 4:
-//		case 5:
-//		case 6:
-//		case 7:
-//			return icons[(7 - (meta % 8)) * 2];
-//		}
-		
 	}
 
 	/**

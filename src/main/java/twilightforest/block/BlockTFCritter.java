@@ -1,10 +1,5 @@
 package twilightforest.block;
 
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
-
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -12,7 +7,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -27,8 +21,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-
 
 public abstract class BlockTFCritter extends Block {
 
@@ -62,7 +54,7 @@ public abstract class BlockTFCritter extends Block {
     public int getMetaFromState(IBlockState state) {
         switch (state.getValue(TFBlocks.FACING)) {
             case DOWN: return 6;
-            case UP: return 5;
+            default: case UP: return 5;
             case NORTH: return 4;
             case SOUTH: return 3;
             case WEST: return 2;
@@ -110,12 +102,6 @@ public abstract class BlockTFCritter extends Block {
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
-	}
-
-	@Override
-	public int getRenderType()
-	{
-		return TwilightForestMod.proxy.getCritterBlockRenderID();
 	}
 
 	@Override
@@ -171,11 +157,11 @@ public abstract class BlockTFCritter extends Block {
     {
         dropCritterIfCantStay(world, pos);
 
-        // for fireflies, schedule a lighting update 
+        /*// for fireflies, schedule a lighting update todo 1.9 needed?
         int meta = world.getBlockMetadata(x, y, z);
         if (meta == 0) {
         	world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
-        }
+        }*/
     }
 
     public boolean dropCritterIfCantStay(World world, BlockPos pos)
@@ -219,16 +205,6 @@ public abstract class BlockTFCritter extends Block {
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
-    }
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
     }
 }
 	

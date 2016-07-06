@@ -7,13 +7,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import twilightforest.block.enums.SpawnerVariant;
 import twilightforest.item.TFItems;
@@ -95,22 +92,5 @@ public class BlockTFBossSpawner extends Block {
         //par3List.add(new ItemStack(par1, 1, 2));
         //par3List.add(new ItemStack(par1, 1, 3));
         //par3List.add(new ItemStack(par1, 1, 4));
-    }
-
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int metadata)
-    {
-        return Blocks.MOB_SPAWNER.getIcon(side, metadata);
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        ; // don't load anything
     }
 }

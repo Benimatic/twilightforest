@@ -18,9 +18,7 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 		this.setResistance(0.0F);
 		this.setSoundType(SoundType.SAND);
 		this.setCreativeTab(TFItems.creativeTab);
-		
 		this.setNames(new String[] {"burnt"});
-
 	}
 
 	@Override
@@ -28,15 +26,13 @@ public class BlockTFBurntThorns extends BlockTFThorns {
     {
     	// dissolve
     	if (!world.isRemote && entity instanceof EntityLivingBase) {
-	    	int metadata = world.getBlockMetadata(x, y, z);
-	    	world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(this) + (metadata << 12));
-	    	world.setBlockToAir(x, y, z);
+			world.destroyBlock(pos, false);
     	}
     }
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean harvest) {
-		world.setBlockToAir(x, y, z);
+		world.setBlockToAir(pos);
 		return true;
 	}
 

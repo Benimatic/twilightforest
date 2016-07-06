@@ -4,7 +4,9 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
+import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -42,11 +44,10 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 
-	public EntityTFSlideBlock(World world, double x, double y, double z, Block block, int meta) {
+	public EntityTFSlideBlock(World world, double x, double y, double z, IBlockState state) {
 		super(world);
 
-        this.myBlock = block;
-        this.myMeta = meta;
+        this.myState = state;
         this.preventEntitySpawning = true;
         this.entityCollisionReduction = 1F;
         this.setSize(0.98F, 0.98F);
@@ -78,7 +79,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         BlockPos west = pos.west();
         BlockPos east = pos.east();
 		
-        if ((this.myMeta & 12) == 4) {
+        if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.X) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
         	if (!this.worldObj.isAirBlock(up) && this.worldObj.isAirBlock(down)) {
         		this.moveY = -1F;
@@ -97,7 +98,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         	} else if (this.worldObj.isAirBlock(south)) {
         		this.moveZ = 1F;
         	}
-        } else if ((this.myMeta & 12) == 8) {
+        } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Z) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
         	if (!this.worldObj.isAirBlock(up) && this.worldObj.isAirBlock(down)) {
         		this.moveY = -1F;
@@ -116,7 +117,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         	} else if (this.worldObj.isAirBlock(east)) {
         		this.moveX = 1F;
         	}
-        } else if ((this.myMeta & 12) == 0) {
+        } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Y) {
         	// vertical blocks priority is -x, +x, -z, +z
         	if (!this.worldObj.isAirBlock(east) && this.worldObj.isAirBlock(west)) {
         		this.moveX = -1F;
@@ -233,21 +234,21 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
                     }
                     else if (this.canDropItem )
                     {
-                        this.entityDropItem(new ItemStack(this.myBlock, 1, this.myBlock.damageDropped(this.myMeta)), 0.0F);
+                        this.entityDropItem(new ItemStack(myState.getBlock(), 1, myState.getBlock().damageDropped(myState)), 0.0F);
                     }
                 }
-                else if (this.slideTime > 100 && !this.worldObj.isRemote && (by < 1 || by > 256) || this.slideTime > 600)
+                else if (this.slideTime > 100 && !this.worldObj.isRemote && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600)
                 {
                     if (this.canDropItem)
                     {
-                        this.entityDropItem(new ItemStack(this.myBlock, 1, this.myBlock.damageDropped(this.myMeta)), 0.0F);
+                        this.entityDropItem(new ItemStack(this.myState.getBlock(), 1, this.myState.getBlock().damageDropped(this.myState)), 0.0F);
                     }
 
                     this.setDead();
                 }
                 
                 // push things out and damage them
-                this.damageKnockbackEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox), this);
+                this.damageKnockbackEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()), this);
             }
         }
     }
@@ -271,10 +272,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     	}
     }
 
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
-     */
     @Override
     public AxisAlignedBB getCollisionBox(Entity p_70114_1_)
     {
@@ -285,10 +282,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		return this.moveX == 0 && this.moveY == 0 && this.moveZ == 0;
 	}
 
-
-	/**
-     * Return whether this entity should be rendered as on fire.
-     */
     @Override
     @SideOnly(Side.CLIENT)
     public boolean canRenderOnFire()
@@ -296,11 +289,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         return false;
     }
 
-	
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
-		this.myBlock = Block.getBlockById(nbtTagCompound.getInteger("TileID"));
-		this.myMeta = nbtTagCompound.getByte("Meta");
+		Block b = Block.getBlockById(nbtTagCompound.getInteger("TileID"));
+		int meta = nbtTagCompound.getByte("Meta");
+        this.myState = b.getStateFromMeta(meta);
 		this.slideTime = nbtTagCompound.getShort("Time");
 		this.moveX = nbtTagCompound.getFloat("MoveX");
 		this.moveY = nbtTagCompound.getFloat("MoveY");
@@ -310,38 +303,23 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setInteger("TileID", Block.getIdFromBlock(this.myBlock));
-        nbtTagCompound.setByte("Meta", (byte)this.myMeta);
+        nbtTagCompound.setInteger("TileID", Block.getIdFromBlock(this.myState.getBlock()));
+        nbtTagCompound.setByte("Meta", (byte)this.myState.getBlock().getMetaFromState(myState));
         nbtTagCompound.setShort("Time", this.slideTime);
         nbtTagCompound.setFloat("MoveX", this.moveX);
         nbtTagCompound.setFloat("MoveY", this.moveY);
         nbtTagCompound.setFloat("MoveZ", this.moveZ);
     }
 	
-	public Block getBlock() {
-		return this.myBlock;
-	}
-	
-	public int getMeta() {
-		return this.myMeta;
-	}
-
 	@Override
 	public void writeSpawnData(ByteBuf buffer) {
-		int blockData = Block.getIdFromBlock(this.myBlock) + (this.myMeta << 16);
-		
-		buffer.writeInt(blockData);
-		
+		buffer.writeInt(Block.getStateId(myState));
 		//System.out.println("Wrote additional spawn data as " + blockData);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf additionalData) {
-		int blockData = additionalData.readInt();
-		
-		this.myBlock = Block.getBlockById(blockData & 65535);
-		this.myMeta = blockData >> 16;
-		
+        myState = Block.getStateById(additionalData.readInt());
 		//System.out.println("Read additional spawn data as " + blockData + " so my block is " + this.myBlock);
 
 	}

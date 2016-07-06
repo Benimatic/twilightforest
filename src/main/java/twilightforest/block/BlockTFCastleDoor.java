@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -76,17 +77,8 @@ public class BlockTFCastleDoor extends Block
     }
     
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos)
-	{
-		if (this.isVanished)
-		{
-			return null;
-		}
-		else
-		{
-			this.setBlockBoundsBasedOnState(par1World, x, y, z);
-			return super.getCollisionBoundingBoxFromPool(par1World, x, y, z);
-		}
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos) {
+		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, par1World, pos);
 	}
 	
     @Override
@@ -329,7 +321,7 @@ public class BlockTFCastleDoor extends Block
 
             if (rx < x || rx > x + 1 || ry < 0.0D || ry > y + 1 || rz < z || rz > z + 1)
             {
-                world.spawnParticle("reddust", rx, ry, rz, 0.0D, 0.0D, 0.0D);
+                world.spawnParticle(EnumParticleTypes.REDSTONE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
             }
         }
     }

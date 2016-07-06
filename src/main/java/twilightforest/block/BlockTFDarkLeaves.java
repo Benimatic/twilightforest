@@ -7,14 +7,11 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,8 +24,6 @@ public class BlockTFDarkLeaves extends Block {
 		this.setResistance(10F);
 		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
-		
-		this.textureName = TwilightForestMod.ID + ":darkwood_leaves2";
 	}
 	
 
@@ -109,8 +104,7 @@ public class BlockTFDarkLeaves extends Block {
     	{
     		if (par1World.rand.nextInt(40) == 0)
     		{
-    			Item var9 = this.getItemDropped(meta, par1World.rand, fortune);
-    			this.dropBlockAsItem(par1World, par2, par3, par4, new ItemStack(var9, 1, this.damageDropped(meta)));
+    			this.dropBlockAsItem(par1World, pos, state, fortune);
     		}
     	}
     }

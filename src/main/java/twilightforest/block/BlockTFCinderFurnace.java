@@ -33,7 +33,6 @@ public class BlockTFCinderFurnace extends Block {
 
 	private static boolean isUpdating;
 	private Boolean isLit;
-	private IIcon topIcon;
 	private Random furnaceRandom = new Random();
 
 	protected BlockTFCinderFurnace(Boolean isLit) {
@@ -56,24 +55,8 @@ public class BlockTFCinderFurnace extends Block {
         return new TileEntityTFCinderFurnace();
 	}
 
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        return side == 1 ? this.topIcon : (side == 0 ? this.topIcon : this.blockIcon);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_)
-    {
-        this.blockIcon = p_149651_1_.registerIcon(this.isLit ? "furnace_front_on" : "furnace_front_off");
-        this.topIcon = p_149651_1_.registerIcon("furnace_top");
-    }
-
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (world.isRemote)
         {
@@ -81,11 +64,11 @@ public class BlockTFCinderFurnace extends Block {
         }
         else
         {
-            TileEntityTFCinderFurnace tileentityfurnace = (TileEntityTFCinderFurnace)world.getTileEntity(x, y, z);
+            TileEntityTFCinderFurnace tileentityfurnace = (TileEntityTFCinderFurnace)world.getTileEntity(pos);
 
             if (tileentityfurnace != null)
             {
-            	player.openGui(TwilightForestMod.instance, TwilightForestMod.GUI_ID_FURNACE, world, x, y, z);
+            	player.openGui(TwilightForestMod.instance, TwilightForestMod.GUI_ID_FURNACE, world, pos.getX(), pos.getY(), pos.getZ());
             	return true;
             }
 
@@ -98,7 +81,6 @@ public class BlockTFCinderFurnace extends Block {
      */
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase p_149689_5_, ItemStack itemStack)
     {
-
         if (itemStack.hasDisplayName())
         {
             ((TileEntityFurnace)world.getTileEntity(x, y, z)).func_145951_a(itemStack.getDisplayName());
@@ -215,11 +197,11 @@ public class BlockTFCinderFurnace extends Block {
                     }
                 }
 
-                world.func_147453_f(x, y, z, block);
+                world.notifyNeighborsRespectDebug(pos, this);
             }
         }
 
-        super.breakBlock(world, x, y, z, block, p_149749_6_);
+        super.breakBlock(world, pos, state);
     }
 
     @Override
