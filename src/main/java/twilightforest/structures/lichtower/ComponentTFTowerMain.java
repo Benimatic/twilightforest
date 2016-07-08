@@ -265,7 +265,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			mobID = TFCreatures.getSpawnerNameFor("Swarm Spider");
 			break;
 		}
-		placeSpawnerAtCurrentPosition(world, rand, 7, floorLevel + 2, 7, mobID, sbb);
+		setSpawner(world, rand, 7, floorLevel + 2, 7, mobID, sbb);
 		
 		// make a fence arch support for the spawner
 		placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, 6, floorLevel + 1, 7, sbb);

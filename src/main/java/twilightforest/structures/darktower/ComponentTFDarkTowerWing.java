@@ -635,7 +635,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		
 		// pillar frame
 		this.makePillarFrame(world, sbb, this.deco, rotation, x, y, z, true);
-		this.placeSpawnerRotated(world, x + 1, y + 2, z + 1, rotation, mobID, sbb);
+		this.setSpawnerRotated(world, x + 1, y + 2, z + 1, rotation, mobID, sbb);
 	}
 
 	/**
@@ -1117,9 +1117,9 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 */
 	protected boolean checkPost(World world, int x, int y, int z, int rotation, StructureBoundingBox sbb) 
 	{
-		int worldX = this.getXWithOffsetAsIfRotated(x, z, rotation);
+		int worldX = this.getXWithOffsetRotated(x, z, rotation);
 		int worldY = this.getYWithOffset(y);
-		int worldZ = this.getZWithOffsetAsIfRotated(x, z, rotation);
+		int worldZ = this.getZWithOffsetRotated(x, z, rotation);
 		
 		Block blockID = sbb.isVecInside(worldX, worldY, worldZ) ? world.getBlock(worldX, worldY, worldZ) : Blocks.AIR;
 		

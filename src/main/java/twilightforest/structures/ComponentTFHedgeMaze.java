@@ -187,7 +187,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 			mobID = TFCreatures.getSpawnerNameFor("Hedge Spider");
 		}
 
-		placeSpawnerAtCurrentPosition(world, rand, rx, FLOOR_LEVEL, rz, mobID, sbb);
+		setSpawner(world, rand, rx, FLOOR_LEVEL, rz, mobID, sbb);
 	}
 
 	/**

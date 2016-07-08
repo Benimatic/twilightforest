@@ -603,7 +603,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateSkeletonRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		// skeleton spawner
-		placeSpawnerAtCurrentPosition(world, rand, size / 2, bottom + 2, size / 2, "Skeleton", sbb);
+		setSpawner(world, rand, size / 2, bottom + 2, size / 2, "Skeleton", sbb);
 
 		// floor-to-ceiling chains
 		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
@@ -641,7 +641,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateZombieRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		// zombie spawner
-		placeSpawnerAtCurrentPosition(world, rand, size / 2, bottom + 2, size / 2, "Zombie", sbb);
+		setSpawner(world, rand, size / 2, bottom + 2, size / 2, "Zombie", sbb);
 		
 		// random brown mushrooms
 		for (int dx = 1; dx <= size - 2; dx++) {
@@ -800,7 +800,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				break;
 			}
 			
-			placeSpawnerAtCurrentPosition(world, rand, size / 2, bottom + 2, size / 2, spiderName, sbb);
+			setSpawner(world, rand, size / 2, bottom + 2, size / 2, spiderName, sbb);
 			
 
 		}
@@ -2074,34 +2074,34 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
 		
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 3, 1 + height, 13, sbb);
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 4, 1 + height, 13, doubleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 4, 1 + height, 13, doubleSlabBlock, meta);
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 5, 2 + height, 13, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 6, 2 + height, 13, sbb);
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 7, 3 + height, 13, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 8, 3 + height, 13, sbb);
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 9, 4 + height, 13, sbb);
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 10, 4 + height, 13, doubleSlabBlock, meta);
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 11, 5 + height, 13, singleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 10, 4 + height, 13, doubleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 11, 5 + height, 13, singleSlabBlock, meta);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 12, 5 + height, 13, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 13, 5 + height, 13, sbb);
 
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 3, 1 + height, 12, singleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 3, 1 + height, 12, singleSlabBlock, meta);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 4, 1 + height, 12, sbb);
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 5, 2 + height, 12, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 6, 2 + height, 12, sbb);
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 7, 3 + height, 12, singleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 7, 3 + height, 12, singleSlabBlock, meta);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 8, 3 + height, 12, sbb);
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 9, 4 + height, 12, sbb);
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 10, 4 + height, 12, doubleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 10, 4 + height, 12, doubleSlabBlock, meta);
 		placeBlockAtCurrentPosition(world, singleSlabBlock, meta, 11, 5 + height, 12, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 12, 5 + height, 12, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 13, 5 + height, 12, sbb);
 
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 4, 1 + height, 11, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 5, 2 + height, 11, sbb);
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 6, 2 + height, 11, doubleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 6, 2 + height, 11, doubleSlabBlock, meta);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 7, 3 + height, 11, sbb);
-		randomlyPlaceBlock(world, sbb, rand, 0.9F, 8, 3 + height, 11, doubleSlabBlock, meta);
+		setBlockState(world, sbb, rand, 0.9F, 8, 3 + height, 11, doubleSlabBlock, meta);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 9, 4 + height, 11, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 10, 4 + height, 11, sbb);
 		placeBlockAtCurrentPosition(world, doubleSlabBlock, meta, 11, 5 + height, 11, sbb);
@@ -2284,8 +2284,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int startZ = 3 + rand.nextInt(this.size - 6);
 		
 		// make a line all the way down to the foundation
-		int dx = this.getXWithOffsetAsIfRotated(0, startZ, rotation);
-		int dz = this.getZWithOffsetAsIfRotated(0, startZ, rotation);
+		int dx = this.getXWithOffsetRotated(0, startZ, rotation);
+		int dz = this.getZWithOffsetRotated(0, startZ, rotation);
 		if (sbb.isVecInside(dx, this.boundingBox.minY + 1, dz)) {
 			for (int dy = this.getYWithOffset(startHeight); dy > 0; dy--) {
 				if (world.getBlock(dx, dy, dz) == TFBlocks.castleBlock) {

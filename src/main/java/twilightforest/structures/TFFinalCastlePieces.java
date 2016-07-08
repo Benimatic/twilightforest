@@ -489,7 +489,7 @@ public class TFFinalCastlePieces {
 			int mid = 16;
             for (int rotation = 0; rotation < 4; rotation++) {
 	            // do corner
-				this.fillToGroundRotated(world, deco.blockState, 3, -2, 3, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 3, -2, 3, rotation, sbb);
 
 				// directly under castle
 	    		this.fillBlocksRotated(world, sbb, 2, -2, 1, 46, -1, 1, deco.blockState, rotation);
@@ -507,19 +507,19 @@ public class TFFinalCastlePieces {
             }
             
             // add supports for entrance bridge
-			this.fillToGroundRotated(world, deco.blockState, 21, -2, 0, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockState, 21, -4, 1, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockState, 21, -6, 2, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockState, 27, -2, 0, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockState, 27, -4, 1, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockState, 27, -6, 2, 1, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -2, 0, 1, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -4, 1, 1, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -6, 2, 1, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -2, 0, 1, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -4, 1, 1, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -6, 2, 1, sbb);
 
 	        return true;
 		}
 
 		private void makePiling(World world, StructureBoundingBox sbb, int mid, int rotation, int i) {
-			this.fillToGroundRotated(world, deco.blockState, i, -7, 3, rotation, sbb);
-			this.fillToGroundRotated(world, deco.blockState, i, -mid, 2, rotation, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -7, 3, rotation, sbb);
+			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -mid, 2, rotation, sbb);
 			
 			this.placeBlockRotated(world, deco.blockState, i, -1, 0, rotation, sbb);
 			this.placeBlockRotated(world, deco.blockState, i, -3, 1, rotation, sbb);
@@ -2862,15 +2862,15 @@ public class TFFinalCastlePieces {
 	        
 	        for (int rotation = 0; rotation < 4; rotation++) {
 	            // do corner
-				this.fillToGroundRotated(world, deco.blockState, 1, -1, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 1, -1, 2, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 0, -mid, 2, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 1, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 2, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 0, -mid, 2, rotation, sbb);
 
 				for (int x = 6; x < (size - 3); x += 4) {
-					this.fillToGroundRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
-					this.fillToGroundRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
+					this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
+					this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 				}
 
 	        }
@@ -3069,19 +3069,19 @@ public class TFFinalCastlePieces {
 	        
 	        for (int rotation = 0; rotation < 4; rotation++) {
 	            // do corner
-				this.fillToGroundRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 1, -1, 2, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 0, -mid, 2, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 2, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 0, -mid, 2, rotation, sbb);
 
-				this.fillToGroundRotated(world, deco.blockState, 1, -low, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 0, -low, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 1, -low, 0, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockState, 0, -low, 0, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -low, 1, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 0, -low, 1, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -low, 0, rotation, sbb);
+				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 0, -low, 0, rotation, sbb);
 
 				for (int x = 6; x < (size - 3); x += 4) {
-					this.fillToGroundRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
-					this.fillToGroundRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
+					this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
+					this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 				}
 
 	        }

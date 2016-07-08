@@ -96,21 +96,21 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
     
     /**
-     * Place a monster spawner at the specified coordinates
-     * 
-     * @param monsterID
+     * //
      */
-    protected TileEntityMobSpawner placeSpawnerAtCurrentPosition(World world, Random rand, int x, int y, int z, String monsterID, StructureBoundingBox sbb)
+    // [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
+    protected TileEntityMobSpawner setSpawner(World world, int x, int y, int z, StructureBoundingBox sbb, String monsterID)
     {
     	TileEntityMobSpawner tileEntitySpawner = null;
     	
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
+        BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos) && world.getBlockState(pos) != Blocks.MOB_SPAWNER)
         {
-            world.setBlock(dx, dy, dz, Blocks.MOB_SPAWNER, 0, 2);
-            tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(dx, dy, dz);
+            world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), 2);
+            tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(pos);
             if(tileEntitySpawner != null)
             {
             	tileEntitySpawner.getSpawnerBaseLogic().setEntityName(monsterID);
@@ -120,29 +120,12 @@ public abstract class StructureTFComponent extends StructureComponent {
         return tileEntitySpawner;
     }
 
-    /**
-     * Place a monster spawner at the specified coordinates, as if rotated
-     * 
-     * @param monsterID
-     */
-    protected TileEntityMobSpawner placeSpawnerRotated(World world, int x, int y, int z, int rotation, String monsterID, StructureBoundingBox sbb)
+    protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, StructureBoundingBox sbb, String monsterID, int rotation)
     {
-    	TileEntityMobSpawner tileEntitySpawner = null;
-    	
-        int dx = getXWithOffsetAsIfRotated(x, z, rotation);
-        int dy = getYWithOffset(y);
-        int dz = getZWithOffsetAsIfRotated(x, z, rotation);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
-        {
-            world.setBlock(dx, dy, dz, Blocks.MOB_SPAWNER, 0, 2);
-            tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(dx, dy, dz);
-            if(tileEntitySpawner != null)
-            {
-            	tileEntitySpawner.getSpawnerBaseLogic().setEntityName(monsterID);
-            }
-        }
-        
-        return tileEntitySpawner;
+        EnumFacing oldBase = fakeBaseMode(rotation);
+        TileEntityMobSpawner ret = setSpawner(world, x, y, z, sbb, monsterID);
+        setCoordBaseMode(oldBase);
+        return ret;
     }
 
     /**
@@ -189,9 +172,9 @@ public abstract class StructureTFComponent extends StructureComponent {
      */
     protected void placeTreasureRotated(World world, int x, int y, int z, int rotation, TFTreasure treasureType, boolean trapped, StructureBoundingBox sbb)
     {
-        int dx = getXWithOffsetAsIfRotated(x, z, rotation);
+        int dx = getXWithOffsetRotated(x, z, rotation);
         int dy = getYWithOffset(y);
-        int dz = getZWithOffsetAsIfRotated(x, z, rotation);
+        int dz = getZWithOffsetRotated(x, z, rotation);
         BlockPos pos = new BlockPos(dx, dy, dz);
         if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST)
         {
@@ -208,7 +191,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         {
             world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().withProperty(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
             
-            TileEntitySign teSign = (TileEntitySign)world.getTileEntity(dx, dy, dz);
+            TileEntitySign teSign = (TileEntitySign)world.getTileEntity(pos);
             if (teSign != null)
             {
             	teSign.signText[1] = new TextComponentString(string0);
@@ -338,19 +321,6 @@ public abstract class StructureTFComponent extends StructureComponent {
                     return z;
             }
         }
-
-        switch(getCoordBaseMode())
-        {
-        case 0: // '\0'
-            return boundingBox.minZ + z;
-        case 1: // '\001'
-            return boundingBox.minZ + x;
-        case 2: // '\002'
-            return boundingBox.maxZ - z;
-        case 3: // '\003'
-            return boundingBox.maxZ - x;
-        }
-        return z;
     }
 
     private EnumFacing fakeBaseMode(int rotationsCW) {
@@ -368,163 +338,75 @@ public abstract class StructureTFComponent extends StructureComponent {
         return oldBaseMode;
     }
 
-	/**
-	 * Pretend as though the structure is rotated beyond what it already is
-	 */
-	protected int getXWithOffsetAsIfRotated(int x, int z, int rotationsCW)
-	{
+    // [VanillaCopy] Keep pinned to the signature of getXWithOffset
+	protected int getXWithOffsetRotated(int x, int z, int rotationsCW) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         int ret = getXWithOffset(x, z);
         setCoordBaseMode(oldMode);
         return ret;
 	}
 
-    protected int getZWithOffsetAsIfRotated(int x, int z, int rotationsCW)
-    {
+    // [VanillaCopy] Keep pinned to the signature of getZWithOffset
+    protected int getZWithOffsetRotated(int x, int z, int rotationsCW) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         int ret = getZWithOffset(x, z);
         setCoordBaseMode(oldMode);
         return ret;
     }
 
-    /**
-     * Place a block as though the entire structure were rotated the specified amount beyond what it already is
-     */
-    protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, int rotationsCW, StructureBoundingBox sbb)
-    {
+    // [VanillaCopy] Keep pinned to the signature of setBlockState
+    protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, StructureBoundingBox sbb, int rotationsCW) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         setBlockState(world, state, x, y, z, sbb);
         setCoordBaseMode(oldMode);
     }
-    
-    /**
-     * Get a block ID as though the entire structure were rotated the specified amount beyond what it already is
-     */
-    protected IBlockState getBlockStateFromPosRotated(World world, int x, int y, int z, int rotationsCW, StructureBoundingBox sbb)
-    {
+
+    // [VanillaCopy] Keep pinned to the signature of getBlockStateFromPos
+    public IBlockState getBlockStateFromPosRotated(World world, int x, int y, int z, StructureBoundingBox sbb, int rotationsCW) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         IBlockState ret = getBlockStateFromPos(world, x, y, z, sbb);
         setCoordBaseMode(oldMode);
         return ret;
     }
     
-    /**
-     * Fill with blocks as though rotated
-     */
-    protected void fillBlocksRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Block blockID, int meta, int rotation)
-    {
-        for (int dx = minY; dx <= maxY; ++dx)
-        {
-            for (int dy = minX; dy <= maxX; ++dy)
-            {
-                for (int dz = minZ; dz <= maxZ; ++dz)
-                {
-                    this.placeBlockRotated(world, blockID, meta, dy, dx, dz, rotation, sbb);
-                }
-            }
-        }
+    // [VanillaCopy] Keep pinned to the signature of fillWithBlocks with false existingOnly arg and repeated state argument
+    protected void fillBlocksRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState state, int rotation) {
+        EnumFacing oldBase = fakeBaseMode(rotation);
+        fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, state, state, false);
+        setCoordBaseMode(oldBase);
     }
 
-    /**
-     * Fill with blocks as though rotated
-     */
-    protected void randomlyFillBlocksRotated(World world, StructureBoundingBox sbb, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Block blockID, int meta, Block blockID2, int meta2, int rotation)
-    {
-        for (int dx = minY; dx <= maxY; ++dx)
-        {
-            for (int dy = minX; dy <= maxX; ++dy)
-            {
-                for (int dz = minZ; dz <= maxZ; ++dz)
-                {
-                	if (rand.nextFloat() < chance) {
-                        this.placeBlockRotated(world, blockID, meta, dy, dx, dz, rotation, sbb);
-                	} else {
-                        this.placeBlockRotated(world, blockID2, meta2, dy, dx, dz, rotation, sbb);
-                	}
-                }
-            }
-        }
+    // [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
+    protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {
+        EnumFacing oldBase = fakeBaseMode(rotation);
+        fillWithBlocksRandomly(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false);
+        setCoordBaseMode(oldBase);
     }
     
-
-	public void fillToGroundRotated(World world, Block stonebrick, int meta, int x, int y, int z, int rotation, StructureBoundingBox sbb) {
-        int dx = this.getXWithOffsetAsIfRotated(x, z, rotation);
-        int dy = this.getYWithOffset(y);
-        int dz = this.getZWithOffsetAsIfRotated(x, z, rotation);
-
-        if (sbb.isVecInside(dx, dy, dz)) {
-            while ((world.isAirBlock(dx, dy, dz) || world.getBlock(dx, dy, dz).getMaterial().isLiquid()) && dy > 1) {
-            	world.setBlock(dx, dy, dz, stonebrick, meta, 2);
-                --dy;
-            }
-        }
+    // [VanillaCopy] Keep pinned to signature of replaceAirAndLiquidDownwards
+	public void replaceAirAndLiquidDownwardsRotated(World world, IBlockState state, int x, int y, int z, StructureBoundingBox sbb, int rotation) {
+        EnumFacing oldBaseMode = fakeBaseMode(rotation);
+        replaceAirAndLiquidDownwards(world, state, x, y, z, sbb);
+        setCoordBaseMode(oldBaseMode);
 	}
 
-
-    /**
-     * Fill with blocks as though rotated
-     */
+    // [VanillaCopy] Keep pinned to the signature of fillWithAir
     protected void fillAirRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int rotation)
     {
-        this.fillBlocksRotated(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.AIR, 0, rotation);
+        EnumFacing oldBaseMode = fakeBaseMode(rotation);
+        fillWithAir(world, sbb, minX, minY, minZ, maxX, maxY, maxZ);
+        setCoordBaseMode(oldBaseMode);
     }
 
-    public static StructureComponent.BlockSelector getStrongholdStones() {
+    protected static StructureComponent.BlockSelector getStrongholdStones() {
     	return strongholdStones;
     }
-
-    
 	
-	/**
-	 * Gets the metadata necessary to make stairs facing the proper direction.
-	 * 
-	 * @param dir
-	 * @return
-	 */
-	protected int getStairMeta(int dir) {
-		switch ((this.getCoordBaseMode() + dir) % 4) {
-		case 0:
-			return 0;
-		case 1:
-			return 2;
-		case 2:
-			return 1;
-		case 3:
-			return 3;
-		default:
-			return -1; // this is impossible
-		}
+	protected EnumFacing getStructureRelativeRotation(int rotationsCW) {
+        EnumFacing base = getCoordBaseMode();
+        return EnumFacing.getHorizontal(base == null ? 0 : base.getHorizontalIndex() + rotationsCW);
 	}
 	
-	/**
-	 * Gets the metadata necessary to stick the ladder on the specified wall.
-	 * 
-	 * @param ladderDir
-	 * @return
-	 */
-	protected int getLadderMeta(int ladderDir) {
-		// ladder data values are... dumb.
-		switch ((this.getCoordBaseMode() + ladderDir) % 4) {
-		case 0:
-			return 4;
-		case 1:
-			return 2;
-		case 2:
-			return 5;
-		case 3:
-			return 3;
-		default:
-			return -1; // this is impossible
-		}
-	}
-
-	/**
-	 * Gets the metadata necessary to stick the ladder on the specified wall.
-	 */
-	protected int getLadderMeta(int ladderDir, int rotation) {
-		return getLadderMeta(ladderDir + rotation);
-	}
-
 	/**
 	 * Nullify all the sky light in this component bounding box
 	 */
@@ -535,7 +417,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/**
 	 * Nullify all the sky light at the specified positions, using local coordinates
 	 */
-	public void nullifySkyLightAtCurrentPosition(World world, int sx, int sy, int sz, int dx, int dy, int dz) 
+    protected void nullifySkyLightAtCurrentPosition(World world, int sx, int sy, int sz, int dx, int dy, int dz)
 	{
 		// resolve all variables to their actual in-world positions
 		nullifySkyLight(world, getXWithOffset(sx, sz), getYWithOffset(sy), getZWithOffset(sx, sz), getXWithOffset(dx, dz), getYWithOffset(dy), getZWithOffset(dx, dz));
@@ -544,7 +426,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/**
 	 * Nullify all the sky light at the specified positions, using world coordinates
 	 */
-	public void nullifySkyLight(World world, int sx, int sy, int sz, int dx, int dy, int dz) 
+    protected void nullifySkyLight(World world, int sx, int sy, int sz, int dx, int dy, int dz)
 	{
 		for (int x = sx; x <= dx; x++) 
 		{
@@ -572,9 +454,10 @@ public abstract class StructureTFComponent extends StructureComponent {
 	    {
 	        for (int by = this.boundingBox.minX; by <= this.boundingBox.maxX; ++by)
 	        {
-	            if (sbb.isVecInside(by, 64, bz))
+                BlockPos pos = new BlockPos(by, 64, bz);
+	            if (sbb.isVecInside(pos))
 	            {
-	                totalHeight += Math.max(world.getTopSolidOrLiquidBlock(by, bz), world.provider.getAverageGroundLevel());
+	                totalHeight += Math.max(world.getTopSolidOrLiquidBlock(pos).getY(), world.provider.getAverageGroundLevel());
 	                ++heightCount;
 	            }
 	        }
@@ -597,9 +480,12 @@ public abstract class StructureTFComponent extends StructureComponent {
 	    int dirtLevel = 256;
 
         Vec3i center = sbb.getCenter();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
+
         for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)
 	    {
-	    	Material material = world.getBlockState(new BlockPos(center.getX(), y, center.getZ())).getMaterial();
+            pos.setY(y);
+	    	Material material = world.getBlockState(pos).getMaterial();
 	    	if (material == Material.GROUND || material == Material.ROCK || material == Material.GRASS)
 	    	{
 	    		dirtLevel = y;
@@ -611,20 +497,12 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
 	/**
-	 * Temporary replacement
-	 */
-	protected void randomlyPlaceBlock(World world, StructureBoundingBox sbb, Random rand, float chance, int x, int y, int z, Block blockPlaced, int meta) {
-		this.func_151552_a(world, sbb, rand, chance, x, y, z, blockPlaced, meta);
-	}
-
-	/**
 	 * Does this component fall under block protection when progression is turned on, normally true
 	 */
 	public boolean isComponentProtected() {
 		return true;
 	}
-	
-	
+
     /**
      * Discover if bounding box can fit within the current bounding box object.
      */

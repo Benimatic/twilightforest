@@ -85,7 +85,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 			int[] dest = getCoordsInHill2D(rand);
 			String mobID = getMobID(rand);
 			
-			placeSpawnerAtCurrentPosition(world, rand, dest[0],rand.nextInt(4), dest[1], mobID, sbb);
+			setSpawner(world, rand, dest[0],rand.nextInt(4), dest[1], mobID, sbb);
 //			placeMobSpawner(dest[0], hy + rand.nextInt(4), dest[1]);
 		}
 		// treasure chests!!

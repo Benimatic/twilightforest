@@ -1002,9 +1002,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 	private void placeItemFrameRotated(World world, int x, int y, int z, int rotation, int direction, ItemStack itemStack, StructureBoundingBox sbb) {
 		
-		int dx = getXWithOffsetAsIfRotated(x, z, rotation);
+		int dx = getXWithOffsetRotated(x, z, rotation);
 		int dy = getYWithOffset(y);
-		int dz = getZWithOffsetAsIfRotated(x, z, rotation);
+		int dz = getZWithOffsetRotated(x, z, rotation);
 		if(sbb.isVecInside(dx, dy, dz))
 		{
 			EntityItemFrame frame = new EntityItemFrame(world, dx, dy, dz, (this.getCoordBaseMode() + direction + rotation) % 4);
@@ -1091,9 +1091,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		int amount = rand.nextBoolean() ? rand.nextInt(5) + 4 : 0;
 		if (amount > 0)
 		{
-			int dx = getXWithOffsetAsIfRotated(x, z, rotation);
+			int dx = getXWithOffsetRotated(x, z, rotation);
 			int dy = getYWithOffset(y + 3);
-			int dz = getZWithOffsetAsIfRotated(x, z, rotation);
+			int dz = getZWithOffsetRotated(x, z, rotation);
 			if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) == Blocks.FURNACE)
 			{
 				// put charcoal in the oven
@@ -1113,9 +1113,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			this.placeBlockRotated(world, forgeDeco.pillarID, forgeDeco.pillarMeta, x, y + py, z, rotation, sbb);
 		}
 		
-        int sx = getXWithOffsetAsIfRotated(x, z, rotation);
+        int sx = getXWithOffsetRotated(x, z, rotation);
         int sy = getYWithOffset(y + 1);
-        int sz = getZWithOffsetAsIfRotated(x, z, rotation);
+        int sz = getZWithOffsetRotated(x, z, rotation);
 		
 		switch (stairMeta)
 		{
@@ -1182,7 +1182,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		this.placeBlockRotated(world, netherDeco.blockID, netherDeco.blockMeta, 6, y + 1, 13, rotation, sbb);
 		this.placeBlockRotated(world, netherDeco.blockID, netherDeco.blockMeta, 6, y + (isTop ? 4 : 9), 13, rotation, sbb);
 		
-		this.placeSpawnerRotated(world, 6, y + 3, 13, rotation, "Blaze", sbb);
+		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, "Blaze", sbb);
 		
 		
 		// destruction blob
@@ -1252,9 +1252,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		placeBlockRotated(world, Blocks.DIRT, 0, x, y, z, rotation, sbb);
 		
 		
-        int dx = getXWithOffsetAsIfRotated(x, z, rotation);
+        int dx = getXWithOffsetRotated(x, z, rotation);
         int dy = getYWithOffset(y + 1);
-        int dz = getZWithOffsetAsIfRotated(x, z, rotation);
+        int dz = getZWithOffsetRotated(x, z, rotation);
         if (sbb.isVecInside(dx, dy, dz))
         {
     		WorldGenerator treeGen;
@@ -1450,7 +1450,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	 */
 	private void makeMiniGhastSpawner(World world, Random rand, int y, int sx, int sz, StructureBoundingBox sbb) 
 	{
-		TileEntityMobSpawner spawner = placeSpawnerAtCurrentPosition(world, rand, sx, y + 2, sz, TFCreatures.getSpawnerNameFor("Mini Ghast"), sbb);
+		TileEntityMobSpawner spawner = setSpawner(world, rand, sx, y + 2, sz, TFCreatures.getSpawnerNameFor("Mini Ghast"), sbb);
 		
 		if (spawner != null)
 		{

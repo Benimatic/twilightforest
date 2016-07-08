@@ -169,7 +169,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 			mobID = "Spider";
 		}
 
-		placeSpawnerAtCurrentPosition(world, rand, rx, FLOOR_LEVEL, rz, mobID, sbb);
+		setSpawner(world, rand, rx, FLOOR_LEVEL, rz, mobID, sbb);
 	}
 
 	/**

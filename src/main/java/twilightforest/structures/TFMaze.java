@@ -99,21 +99,21 @@ public class TFMaze {
 	/**
 	 * Gets the value from a cell in the maze
 	 */
-	public int getCell(int x, int z) {
+	private int getCell(int x, int z) {
 		return getRaw(x * 2  + 1, z * 2 + 1);
 	}
 
 	/**
 	 * Puts a value into a cell in the maze
 	 */
-	public void putCell(int x, int z, int value) {
+	private void putCell(int x, int z, int value) {
 		putRaw(x * 2 + 1, z * 2 + 1, value);
 	}
 	
 	/**
 	 * Returns true if the specified cell equals the specified value
 	 */
-	public boolean cellEquals(int x, int z, int value)
+	private boolean cellEquals(int x, int z, int value)
 	{
 		return getCell(x, z) == value;
 	}
@@ -121,7 +121,7 @@ public class TFMaze {
 	/**
 	 * Gets the wall value, or OUT_OF_BOUNDS if the area is out of bounds or the coordinates are not orthogonally adjacent.
 	 */
-	public int getWall(int sx, int sz, int dx, int dz)
+	private int getWall(int sx, int sz, int dx, int dz)
 	{
 		if (dx == sx + 1 && dz == sz)
 		{
@@ -187,7 +187,7 @@ public class TFMaze {
 	/**
 	 * Gets a value from raw storage
 	 */
-	protected int getRaw(int rawx, int rawz)
+	private int getRaw(int rawx, int rawz)
 	{
 		if (rawx < 0 || rawx >= rawWidth || rawz < 0 || rawz >= rawDepth)
 		{

@@ -96,7 +96,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 		this.placeTreasureAtCurrentPosition(world, rand, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
 			
 		// then spawner
-		placeSpawnerAtCurrentPosition(world, rand, radius, radius, radius, TFCreatures.getSpawnerNameFor("Swarm Spider"), sbb);
+		setSpawner(world, rand, radius, radius, radius, TFCreatures.getSpawnerNameFor("Swarm Spider"), sbb);
 		
 		return true;
 	}
