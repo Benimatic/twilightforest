@@ -3,8 +3,6 @@ package twilightforest.tileentity;
 
 
 public class TileEntityTFMoonworm extends TileEntityTFCritter {
-
-	
     public int yawDelay;
     public int currentYaw;
     public int desiredYaw;

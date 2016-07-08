@@ -5,25 +5,18 @@ import twilightforest.TwilightForestMod;
 
 
 public class TileEntityTFCicada extends TileEntityTFCritter {
-
-	
-    public int yawDelay;
+    private int yawDelay;
     public int currentYaw;
-    public int desiredYaw;
+    private int desiredYaw;
     
-    public int singDuration;
-    public boolean singing;
-    public int singDelay;
+    private int singDuration;
+    private boolean singing;
+    private int singDelay;
     
     @Override
 	public void update()
     {
     	super.update();
-    	
-//    	if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != 1) {
-//    		//System.out.println("Cicada tile entity block has invalid metadata, fixing");
-//    		worldObj.setBlockMetadata(xCoord, yCoord, zCoord, 1);
-//    	}
     	
         if(yawDelay > 0)
         {
@@ -74,22 +67,8 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
         	}
         }
     }
-    
-//    /**
-//     * There seems to be a bug in the chunk placing routines which sets the tileentity metadta to 0 even if the tile shifts metadatas when placed.
-//     * Thus, if the metadata is 0, re-check it
-//     */
-//    @Override
-//    public int getBlockMetadata() {
-//    	if (super.getBlockMetadata() == 0)
-//        {
-//    		this.blockMetadata = -1;
-//        }
-//    	return super.getBlockMetadata();
-//    }
 
-    
-    public void doSingAnimation()
+    private void doSingAnimation()
     {
     	if (worldObj.rand.nextInt(5) == 0)
     	{
@@ -100,7 +79,7 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
     	}
     }
     
-    public void playSong()
+    private void playSong()
     {
     	if (!TwilightForestMod.silentCicadas)
     	{

@@ -12,12 +12,8 @@ import twilightforest.block.enums.FireJetVariant;
 
 public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 
-	int counter = 0;
-	FireJetVariant nextVariant;
-	
-    public TileEntityTFPoppingJet() {
-		this(FireJetVariant.JET_FLAME);
-	}
+	private int counter = 0;
+	private FireJetVariant nextVariant;
 
     public TileEntityTFPoppingJet(FireJetVariant variant) {
 		this.nextVariant = variant;
@@ -47,9 +43,6 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 
     }
     
-    /**
-     * Reads a tile entity from NBT.
-     */
     @Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -57,9 +50,6 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
         this.nextVariant = FireJetVariant.values()[par1NBTTagCompound.getInteger("NextMeta")];
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     @Override
 	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {

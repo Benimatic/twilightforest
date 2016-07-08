@@ -3,10 +3,12 @@ package twilightforest.tileentity;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 
@@ -16,15 +18,14 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 	
 	public int radius = 4;
 	public int diameter = 2 * radius + 1;
-	public double requiredPlayerRange = 16;
-	public Random rand = new Random();
+	private double requiredPlayerRange = 16;
+	public final Random rand = new Random();
 	private int tickCount;
 	
 	private boolean slowScan;
 	private int ticksSinceChange;
 	
-	private Block[] blockData;
-	private byte[] metaData;
+	private IBlockState[] blockData;
 			
 	@Override
 	public void update()
@@ -35,11 +36,11 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			
 			if (this.worldObj.isRemote)
 			{
-				double var1 = (double)((float)this.xCoord + this.worldObj.rand.nextFloat());
-				double var3 = (double)((float)this.yCoord + this.worldObj.rand.nextFloat());
-				double var5 = (double)((float)this.zCoord + this.worldObj.rand.nextFloat());
+				double var1 = (double)((float)this.pos.getX() + this.worldObj.rand.nextFloat());
+				double var3 = (double)((float)this.pos.getY() + this.worldObj.rand.nextFloat());
+				double var5 = (double)((float)this.pos.getZ() + this.worldObj.rand.nextFloat());
 //				this.worldObj.spawnParticle("smoke", var1, var3, var5, 0.0D, 0.0D, 0.0D);
-				this.worldObj.spawnParticle("reddust", var1, var3, var5, 0.0D, 0.0D, 0.0D);
+				this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, var1, var3, var5, 0.0D, 0.0D, 0.0D);
 				
 				
 				// occasionally make a little red dust line to outline our radius
@@ -54,7 +55,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			{
 				
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (blockData == null || metaData == null)
+				if (blockData == null)
 				{
 					captureBlockData();
 					this.slowScan = true;
@@ -83,8 +84,6 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 		{
 			// remove data
 			this.blockData = null;
-			this.metaData = null;
-			
 			this.tickCount = 0;
 		}
 	}
@@ -104,13 +103,13 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 	private void makeOutline(int outline) 
 	{
 		// src
-		double sx = this.xCoord;
-		double sy = this.yCoord;
-		double sz = this.zCoord;
+		double sx = this.pos.getX();
+		double sy = this.pos.getY();
+		double sz = this.pos.getZ();
 		// dest
-		double dx = this.xCoord;
-		double dy = this.yCoord;
-		double dz = this.zCoord;
+		double dx = this.pos.getX();
+		double dy = this.pos.getY();
+		double dz = this.pos.getZ();
 		
 		switch (outline)
 		{
@@ -204,10 +203,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 		drawParticleLine(sx, sy, sz, dx, dy, dz);
 	}
 
-    /**
-     * Make a trail of particles from one point to another
-     */
-    protected void drawParticleLine(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	private void drawParticleLine(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
     	int particles = 16;
     	for (int i = 0; i < particles; i++)
@@ -231,19 +227,17 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			{
 				for (int z = - radius; z <= radius; z++)
 				{
-					Block blockID = worldObj.getBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z);
-					byte meta = (byte) worldObj.getBlockMetadata(this.xCoord + x, this.yCoord + y, this.zCoord + z);
+					IBlockState stateThere = worldObj.getBlockState(pos.add(x, y, z));
 					
-					if (blockData[index] != blockID)
+					if (blockData[index] != stateThere)
 					{
-						if (revertBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z, blockID, meta, blockData[index], metaData[index]))
+						if (revertBlock(pos.add(x, y, z), stateThere, blockData[index]))
 						{
 							reverted = true;
 						}
 						else
 						{
-							blockData[index] = blockID;
-							metaData[index] = meta;
+							blockData[index] = stateThere;
 						}
 					}
 					
@@ -255,76 +249,70 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 		return reverted;
 	}
 
-	private boolean revertBlock(int x, int y, int z, Block thereBlockID, byte thereMeta, Block replaceBlockID, byte replaceMeta) 
+	private boolean revertBlock(BlockPos pos, IBlockState stateThere, IBlockState replaceWith) 
 	{
-		if (thereBlockID == Blocks.AIR && !replaceBlockID.getMaterial().blocksMovement())
+		if (stateThere.getBlock() == Blocks.AIR && !stateThere.getMaterial().blocksMovement())
 		{
-			// do not revert
-			
-			System.out.println("Not replacing block " + replaceBlockID + " because it doesn't block movement");
-			
 			return false;
 		}
-		if (isUnrevertable(thereBlockID, thereMeta, replaceBlockID, replaceMeta))
+		if (isUnrevertable(stateThere, replaceWith))
 		{
-			// do not revert
 			return false;
 		}
 		else if (this.rand.nextInt(REVERT_CHANCE) == 0)
 		{
 			// don't revert everything instantly
-			if (replaceBlockID != Blocks.AIR)
+			if (replaceWith.getBlock() != Blocks.AIR)
 			{
 				replaceBlockID = TFBlocks.towerTranslucent;
 				replaceMeta = BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT;
 			}
 			
-			worldObj.setBlock(x, y, z, replaceBlockID, replaceMeta, 2);
+			worldObj.setBlockState(pos, replaceWith, 2);
 			
 			// play a little animation
-			if (thereBlockID == Blocks.AIR)
+			if (stateThere.getBlock() == Blocks.AIR)
 			{
-				worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(replaceBlockID) + (replaceMeta << 12));
+				worldObj.playEvent(2001, pos, Block.getStateId(replaceWith));
 			}
-			else if (replaceBlockID == Blocks.AIR)
+			else if (replaceWith.getBlock() == Blocks.AIR)
 			{
-				worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(thereBlockID) + (thereMeta << 12));
-				thereBlockID.dropBlockAsItem(worldObj, x, y, z, thereMeta, 0);
-
+				worldObj.playEvent(2001, pos, Block.getStateId(stateThere));
+				stateThere.getBlock().dropBlockAsItem(worldObj, pos, stateThere, 0);
 			}
 		}
 
 		return true;
 	}
 
-	private boolean isUnrevertable(Block thereBlockID, byte thereMeta, Block replaceBlockID, byte replaceMeta) 
+	private boolean isUnrevertable(IBlockState stateThere, IBlockState replaceWith) 
 	{
-		if (thereBlockID == TFBlocks.towerDevice || replaceBlockID == TFBlocks.towerDevice)
+		if (stateThere.getBlock() == TFBlocks.towerDevice || replaceWith.getBlock() == TFBlocks.towerDevice)
 		{
 			return true;
 		}
-		if ((thereBlockID == TFBlocks.towerTranslucent && thereMeta != BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT)
-				|| (replaceBlockID == TFBlocks.towerTranslucent && replaceMeta != BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT))
+		if ((stateThere.getBlock() == TFBlocks.towerTranslucent && thereMeta != BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT)
+				|| (replaceWith.getBlock() == TFBlocks.towerTranslucent && replaceMeta != BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT))
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.REDSTONE_LAMP && replaceBlockID == Blocks.LIT_REDSTONE_LAMP)
+		if (stateThere.getBlock() == Blocks.REDSTONE_LAMP && replaceWith.getBlock() == Blocks.LIT_REDSTONE_LAMP)
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.LIT_REDSTONE_LAMP && replaceBlockID == Blocks.REDSTONE_LAMP)
+		if (stateThere.getBlock() == Blocks.LIT_REDSTONE_LAMP && replaceWith.getBlock() == Blocks.REDSTONE_LAMP)
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.WATER || replaceBlockID == Blocks.FLOWING_WATER)
+		if (stateThere.getBlock() == Blocks.WATER || replaceWith.getBlock() == Blocks.FLOWING_WATER)
 		{
 			return true;
 		}
-		if (thereBlockID == Blocks.FLOWING_WATER || replaceBlockID == Blocks.WATER)
+		if (stateThere.getBlock() == Blocks.FLOWING_WATER || replaceWith.getBlock() == Blocks.WATER)
 		{
 			return true;
 		}
-		if (replaceBlockID == Blocks.TNT)
+		if (replaceWith.getBlock() == Blocks.TNT)
 		{
 			return true;
 		}
@@ -334,8 +322,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 
 	private void captureBlockData() 
     {
-		blockData = new Block[diameter * diameter * diameter];
-		metaData = new byte[diameter * diameter * diameter];
+		blockData = new IBlockState[diameter * diameter * diameter];
 		
 		int index = 0;
 		
@@ -345,25 +332,15 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			{
 				for (int z = - radius; z <= radius; z++)
 				{
-					Block blockID = worldObj.getBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z);
-					int meta = worldObj.getBlockMetadata(this.xCoord + x, this.yCoord + y, this.zCoord + z);
-					
-					blockData[index] = blockID;
-					metaData[index] = (byte) meta;
-					
+					blockData[index] = worldObj.getBlockState(pos.add(x, y, z));
 					index++;
 				}
 			}
 		}
-		
-		//System.out.println("Captured data for " + index + " blocks");
 	}
 
-	/**
-     * Returns true if there is a player in range (using World.getClosestPlayer)
-     */
-    public boolean anyPlayerInRange()
+    private boolean anyPlayerInRange()
     {
-        return this.worldObj.getClosestPlayer((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D, (double)this.requiredPlayerRange ) != null;
+        return this.worldObj.getClosestPlayer(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange, false) != null;
     }
 }

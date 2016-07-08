@@ -1,6 +1,7 @@
 package twilightforest.tileentity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -15,21 +16,21 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 {
 	private static final int RANGE = 16;
 
-	int ticksRunning = 0;
-	int blockedCounter = 0;
-	int ticksStopped = 0;
+	private int ticksRunning = 0;
+	private int blockedCounter = 0;
+	private int ticksStopped = 0;
 	
 	public boolean makingBlocks = false;
 	
-	int blocksMade = 0;
+	private int blocksMade = 0;
 	
-	protected BlockPos lastBlockCoords;
-	protected EnumFacing nextFacing;
+	private BlockPos lastBlockCoords;
+	private EnumFacing nextFacing;
 	
-	protected EntityPlayer trackedPlayer;
+	private EntityPlayer trackedPlayer;
 	
-	protected Block blockBuiltID = TFBlocks.towerTranslucent;
-	protected int blockBuiltMeta = BlockTFTowerTranslucent.META_BUILT_INACTIVE;
+	private Block blockBuiltID = TFBlocks.towerTranslucent;
+	private int blockBuiltMeta = BlockTFTowerTranslucent.META_BUILT_INACTIVE;
 
 	public TileEntityTFTowerBuilder()
 	{
