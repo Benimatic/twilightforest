@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -52,7 +53,7 @@ public class ItemTFFieryPick extends ItemPickaxe {
 							double ry = itemRand.nextGaussian() * 0.02D;
 							double rz = itemRand.nextGaussian() * 0.02D;
 							double magnitude = 20.0;
-							par2World.spawnParticle("flame", x + 0.5 + (rx * magnitude), y + 0.5 + (ry * magnitude), z + 0.5 + (rz * magnitude), -rx, -ry, -rz);
+							par2World.spawnParticle(EnumParticleTypes.FLAME, x + 0.5 + (rx * magnitude), y + 0.5 + (ry * magnitude), z + 0.5 + (rz * magnitude), -rx, -ry, -rz);
 						}
 
 					}
@@ -84,7 +85,7 @@ public class ItemTFFieryPick extends ItemPickaxe {
 		            double var4 = itemRand.nextGaussian() * 0.02D;
 		            double var6 = itemRand.nextGaussian() * 0.02D;
 		            double var8 = 10.0D;
-		            par2EntityLiving.worldObj.spawnParticle("flame", par2EntityLiving.posX + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var2 * var8, par2EntityLiving.posY + itemRand.nextFloat() * par2EntityLiving.height - var4 * var8, par2EntityLiving.posZ + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var6 * var8, var2, var4, var6);
+		            par2EntityLiving.worldObj.spawnParticle(EnumParticleTypes.FLAME, par2EntityLiving.posX + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var2 * var8, par2EntityLiving.posY + itemRand.nextFloat() * par2EntityLiving.height - var4 * var8, par2EntityLiving.posZ + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var6 * var8, var2, var4, var6);
 		        }
 			}
 			else

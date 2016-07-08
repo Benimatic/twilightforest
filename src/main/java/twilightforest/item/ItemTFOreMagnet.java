@@ -28,7 +28,6 @@ public class ItemTFOreMagnet extends ItemTF
 	private String[] iconNames = new String[] {"oreMagnet", "oreMagnet1", "oreMagnet2"};
 
 	protected ItemTFOreMagnet() {
-		super();
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
         this.setMaxDamage(12);

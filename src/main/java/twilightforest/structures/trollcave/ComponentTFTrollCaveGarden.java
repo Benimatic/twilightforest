@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -16,15 +17,14 @@ import twilightforest.world.TFGenMyceliumBlob;
 
 public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	
-	TFGenMyceliumBlob myceliumBlobGen = new TFGenMyceliumBlob(5);
-	TFGenMyceliumBlob dirtGen = new TFGenMyceliumBlob(Blocks.DIRT, 5);
-	WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
-	TFGenBigMushgloom bigMushgloomGen = new TFGenBigMushgloom();
-
+	private TFGenMyceliumBlob myceliumBlobGen = new TFGenMyceliumBlob(5);
+	private TFGenMyceliumBlob dirtGen = new TFGenMyceliumBlob(Blocks.DIRT, 5);
+	private WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
+	private TFGenBigMushgloom bigMushgloomGen = new TFGenBigMushgloom();
 	
-	public ComponentTFTrollCaveGarden() { }
+	public ComponentTFTrollCaveGarden() {}
 
-	public ComponentTFTrollCaveGarden(int index, int x, int y, int z, int caveSize, int caveHeight, int direction) {
+	public ComponentTFTrollCaveGarden(int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
 		super(index);
 		this.size = caveSize;
 		this.height = caveHeight;
@@ -57,44 +57,44 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
     		for (int i = 0; i < 24; i++)
     		{
     			BlockPos dest = getCoordsInCave(decoRNG);
-    			generate(world, dirtGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
+    			generate(world, dirtGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
     		}
     		
     		// mycelium!
     		for (int i = 0; i < 16; i++)
     		{
     			BlockPos dest = getCoordsInCave(decoRNG);
-    			generate(world, myceliumBlobGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
+    			generate(world, myceliumBlobGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
     		}
     		
     		// uberous!
     		for (int i = 0; i < 16; i++)
     		{
     			BlockPos dest = getCoordsInCave(decoRNG);
-    			generate(world, uberousGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
+    			generate(world, uberousGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
     			
-    			generateAtSurface(world, uberousGen, decoRNG, dest.posX, 60, dest.posZ, sbb);
+    			generateAtSurface(world, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
     		}
     		
     		// mushglooms first
     		for (int i = 0; i < 32; i++)
     		{
     			BlockPos dest = getCoordsInCave(decoRNG);
-    			generate(world, bigMushgloomGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
+    			generate(world, bigMushgloomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
     		}
     		
     		// mushrooms!
     		for (int i = 0; i < 64; i++)
     		{
     			BlockPos dest = getCoordsInCave(decoRNG);
-    			generate(world, bigMushroomGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
+    			generate(world, bigMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
     		}
     		
     		// stone stalactites!
     		for (int i = 0; i < 128; i++)
     		{
     			BlockPos dest = getCoordsInCave(decoRNG);
-    			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
+    			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
     		}
 
     		
@@ -102,16 +102,14 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
         }
 	}
 
-	/**
-	 * Use the generator at the specified coords
-	 */
 	protected void generate(World world, WorldGenerator generator, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		// are the coordinates in our bounding box?
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz)) {
-        	generator.generate(world, rand, dx, dy, dz);
+		BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos)) {
+        	generator.generate(world, rand, pos);
         }
 	}
 	

@@ -2,18 +2,15 @@ package twilightforest.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import twilightforest.TwilightForestMod;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFSteeleafArmor extends ItemArmor {
 
@@ -45,16 +42,16 @@ public class ItemTFSteeleafArmor extends ItemArmor {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	switch (this.armorType) {
     	case HEAD:
-    		istack.addEnchantment(Enchantments.PROJECTILEPROTECTION, 2);
+    		istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
             break;	
     	case CHEST:
-    		istack.addEnchantment(Enchantments.BLASTPROTECTION, 2);
+    		istack.addEnchantment(Enchantments.BLAST_PROTECTION, 2);
             break;	
     	case LEGS:
-    		istack.addEnchantment(Enchantments.FIREPROTECTION, 2);
+    		istack.addEnchantment(Enchantments.FIRE_PROTECTION, 2);
             break;	
     	case FEET:
-    		istack.addEnchantment(Enchantments.FEATHERFALLING, 2);
+    		istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
             break;	
     	}
     	par3List.add(istack);

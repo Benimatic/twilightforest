@@ -35,10 +35,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 {
 	private boolean placedKeys = false;
 
-	public ComponentTFDarkTowerMain() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFDarkTowerMain() {}
 
 
 	public ComponentTFDarkTowerMain(World world, Random rand, int index, int x, int y, int z) {
@@ -292,7 +289,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			{
 				for (int z = 0; z < this.size; z++)
 				{
-					this.func_151554_b(world, deco.accentID, deco.accentMeta, x, -1, z, sbb);
+					this.setBlockState(world, deco.accentState, x, -1, z, sbb);
 				}
 			}
 		}

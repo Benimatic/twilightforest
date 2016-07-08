@@ -47,7 +47,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
             mapData.zCenter = (int)(Math.round(par3EntityPlayer.posZ / step) * step) + 10; // mazes are offset slightly
             mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
         }
-        mapData.dimension = par2World.provider.dimensionId;
+        mapData.dimension = par2World.provider.getDimension();
         mapData.markDirty();
         --par1ItemStack.stackSize;
         
@@ -67,7 +67,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
         {
             if (!par3EntityPlayer.inventory.addItemStackToInventory(mapItem.copy()))
             {
-                par3EntityPlayer.dropPlayerItemWithRandomChoice(mapItem, false);
+                par3EntityPlayer.dropItem(mapItem, false);
             }
 
             return par1ItemStack;

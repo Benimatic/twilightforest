@@ -5,8 +5,12 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityTippedArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -16,7 +20,6 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 	
 	
     public ItemTFTripleBow() {
-    	this.setTextureName(TwilightForestMod.ID + ":triplebow");
 		this.setCreativeTab(TFItems.creativeTab);
     }
 
@@ -50,12 +53,15 @@ public class ItemTFTripleBow extends ItemTFBowBase {
                 f = 1.0F;
             }
 
-            EntityArrow entityarrow = new EntityArrow(par2World, living, f * 2.0F);
+            EntityArrow entityarrow = new EntityTippedArrow(par2World, living);
+            entityarrow.setAim(living, living.rotationPitch, living.rotationYaw, 0, f * 2, 1);
             // other arrows with slight deviation
-            EntityArrow entityarrow1 = new EntityArrow(par2World, living, f * 2.0F);
+            EntityArrow entityarrow1 = new EntityTippedArrow(par2World, living);
+            entityarrow1.setAim(living, living.rotationPitch, living.rotationYaw, 0, f * 2, 1);
             entityarrow1.motionY += 0.007499999832361937D * 20F;
             entityarrow1.posY += 0.025F;
-            EntityArrow entityarrow2 = new EntityArrow(par2World, living, f * 2.0F);
+            EntityArrow entityarrow2 = new EntityTippedArrow(par2World, living);
+            entityarrow2.setAim(living, living.rotationPitch, living.rotationYaw, 0, f * 2, 1);
             entityarrow2.motionY -= 0.007499999832361937D * 20F;
             entityarrow2.posY -= 0.025F;
 
@@ -66,7 +72,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
                 entityarrow2.setIsCritical(true);
             }
 
-            int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER.effectId, par1ItemStack);
+            int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, par1ItemStack);
 
             if (k > 0)
             {
@@ -75,7 +81,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
                 entityarrow2.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
             }
 
-            int l = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH.effectId, par1ItemStack);
+            int l = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, par1ItemStack);
 
             if (l > 0)
             {
@@ -84,7 +90,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
                 entityarrow2.setKnockbackStrength(l);
             }
 
-            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME.effectId, par1ItemStack) > 0)
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, par1ItemStack) > 0)
             {
                 entityarrow.setFire(100);
                 entityarrow1.setFire(100);
@@ -92,18 +98,18 @@ public class ItemTFTripleBow extends ItemTFBowBase {
             }
 
             par1ItemStack.damageItem(1, living);
-            par2World.playSoundAtEntity(living, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+            par2World.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
             if (flag)
             {
-                entityarrow.canBePickedUp = 2;
+                entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
             }
             else
             {
                 living.inventory.consumeInventoryItem(Items.ARROW);
             }
-            entityarrow1.canBePickedUp = 2;
-            entityarrow2.canBePickedUp = 2;
+            entityarrow1.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+            entityarrow2.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
 
 
             if (!par2World.isRemote)

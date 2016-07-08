@@ -23,11 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFOreMeter extends ItemTF {
 
 	protected ItemTFOreMeter() {
-		super();
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
-	
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
@@ -45,7 +42,7 @@ public class ItemTFOreMeter extends ItemTF {
 //		player.addChatMessage("player health =" + player.getHealth());
 
 		
-		return super.onItemRightClick(par1ItemStack, world, player);
+		return super.onItemRightClick(par1ItemStack, world, player, hand);
 	}
 
 	private void countOreInChunk(EntityPlayer player, World world, int useX, int useZ) {
@@ -206,12 +203,5 @@ public class ItemTFOreMeter extends ItemTF {
 		
 		return count;
 
-	}
-
-
-
-	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 	}
 }

@@ -13,10 +13,7 @@ import twilightforest.structures.lichtower.ComponentTFTowerWing;
 public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing
 {
 	
-	public ComponentTFDarkTowerBalcony() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFDarkTowerBalcony() {}
 
 	protected ComponentTFDarkTowerBalcony(int i, int x, int y, int z, int direction) {
 		super(i, x, y, z, 5, 5, direction);
@@ -36,13 +33,13 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
 		// make floor
-		fillWithMetadataBlocks(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
-		fillWithMetadataBlocks(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockID, deco.blockMeta, Blocks.AIR, 0, false);
+		fillWithBlocks(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentState, Blocks.AIR.getDefaultState(), false);
+		fillWithBlocks(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockState, Blocks.AIR.getDefaultState(), false);
 		
-		fillWithMetadataBlocks(world, sbb, 0, 1, 0, 2, 1, 4, deco.fenceID, deco.fenceMeta, Blocks.AIR, 0, false);
+		fillWithBlocks(world, sbb, 0, 1, 0, 2, 1, 4, deco.fenceState, Blocks.AIR.getDefaultState(), false);
 
-		this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, 2, 1, 0, sbb);
-		this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, 2, 1, 4, sbb);
+		this.setBlockState(world, deco.accentState, 2, 1, 0, sbb);
+		this.setBlockState(world, deco.accentState, 2, 1, 4, sbb);
 
 		// clear inside
 		fillWithAir(world, sbb, 0, 1, 1, 1, 1, 3);

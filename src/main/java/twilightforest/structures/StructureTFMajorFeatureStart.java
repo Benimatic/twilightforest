@@ -196,7 +196,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	/**
 	 * Move the whole structure up or down
 	 */
-    @SuppressWarnings("unchecked")
 	protected void moveToAvgGroundLevel(World world, int x, int z)
     {
     	if (world.getBiomeProvider() instanceof TFBiomeProvider)
@@ -218,7 +217,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     			
     			boundingBox.offset(0, offY, 0);
 
-    			for (StructureComponent com : (LinkedList<StructureComponent>) getComponents())
+    			for (StructureComponent com : getComponents())
     			{
     				com.getBoundingBox().offset(0, offY, 0);
     			}
@@ -259,7 +258,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     /**
      * Check if the component is within the chunk bounding box, but check as if it was one larger
      */
-	@SuppressWarnings("unused")
 	private boolean isIntersectingLarger(StructureBoundingBox chunkBB, StructureComponent component) {
 		StructureBoundingBox compBB = component.getBoundingBox();
 		
@@ -268,7 +266,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 	}
 
-	@SuppressWarnings("unused")
 	private boolean isShieldable(StructureComponent component) {
 		return component.getBoundingBox().maxY <= 32;
 	}
@@ -276,7 +273,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     /**
      * Make the stronghold shield around a component's bounding box
      */
-	@SuppressWarnings("unused")
 	private void addShieldFor(World world, StructureComponent component, List<StructureComponent> otherComponents, StructureBoundingBox chunkBox) {
 		StructureBoundingBox shieldBox = new StructureBoundingBox(component.getBoundingBox());
 		

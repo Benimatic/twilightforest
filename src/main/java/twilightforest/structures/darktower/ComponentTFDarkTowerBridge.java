@@ -12,12 +12,10 @@ import twilightforest.structures.lichtower.ComponentTFTowerWing;
 public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing
 {
 	
-	public ComponentTFDarkTowerBridge() {
-		super();
-	}
+	public ComponentTFDarkTowerBridge() {}
 
-	int dSize;
-	int dHeight;
+	private int dSize;
+	private int dHeight;
 	
 	protected ComponentTFDarkTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
 		super(i, x, y, z, 5, 5, direction);
@@ -75,15 +73,15 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
 		// make walls
-		fillWithBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockID, deco.blockID, false);
+		fillWithBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockState, deco.blockState, false);
 
 		// accents
 		for (int x = 0; x < size; x++)
 		{
-			this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, x, 0, 0, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, x, height - 1, 0, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, x, 0, size - 1, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, x, height - 1, size - 1, sbb);
+			this.setBlockState(world, deco.accentState, x, 0, 0, sbb);
+			this.setBlockState(world, deco.accentState, x, height - 1, 0, sbb);
+			this.setBlockState(world, deco.accentState, x, 0, size - 1, sbb);
+			this.setBlockState(world, deco.accentState, x, height - 1, size - 1, sbb);
 		}
 
      	// nullify sky light

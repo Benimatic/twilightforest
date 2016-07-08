@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -21,44 +23,34 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 	
 	public ComponentTFCloudCastle(int index, int x, int y, int z) {
 		super(index);
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 
-		
-		// adjust x, y, z
-    	x = (x >> 2) << 2;
-    	y = (y >> 2) << 2;
-    	z = (z >> 2) << 2;
-    	
+		// round to nearest mult of 4
+		x &= ~0b11;
+		y &= ~0b11;
+		z &= ~0b11;
+
 		// spawn list!
 		this.spawnListIndex = 1;
     	
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, 0);
 	}
 	
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setBoolean("minerPlaced", this.minerPlaced);
         par1NBTTagCompound.setBoolean("warriorPlaced", this.warriorPlaced);
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.minerPlaced = par1NBTTagCompound.getBoolean("minerPlaced");
         this.warriorPlaced = par1NBTTagCompound.getBoolean("warriorPlaced");
-
 	}
 
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		// up to two trees
@@ -81,9 +73,9 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// make haus
-		this.fillWithMetadataBlocks(world, sbb, 0, -4, 0, 15, -1, 15, TFBlocks.fluffyCloud, 0,TFBlocks.fluffyCloud, 0, false); 
-		this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, 15, 11, 15, TFBlocks.giantCobble, 0, TFBlocks.giantCobble, 0, false); 
-		this.fillWithMetadataBlocks(world, sbb, 0, 12, 0, 15, 15, 15, TFBlocks.giantLog, 0, TFBlocks.giantLog, 0, false); 
+		this.fillWithBlocks(world, sbb, 0, -4, 0, 15, -1, 15, TFBlocks.fluffyCloud.getDefaultState(), TFBlocks.fluffyCloud.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 11, 15, TFBlocks.giantCobble.getDefaultState(), TFBlocks.giantCobble.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 12, 0, 15, 15, 15, TFBlocks.giantLog.getDefaultState(), TFBlocks.giantLog.getDefaultState(), false);
 		
 		
 		// clear inside
@@ -98,8 +90,8 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 			int bx = this.getXWithOffset(6, 6);
 			int by = this.getYWithOffset(0);
 			int bz = this.getZWithOffset(6, 6);
-			
-			if (sbb.isVecInside(bx, by, bz)) {
+
+			if (sbb.isVecInside(new BlockPos(bx, by, bz))) {
 				this.minerPlaced = true;
 				
 				EntityTFGiantMiner miner = new EntityTFGiantMiner(world);
@@ -114,7 +106,7 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 			int by = this.getYWithOffset(0);
 			int bz = this.getZWithOffset(9, 9);
 			
-			if (sbb.isVecInside(bx, by, bz)) {
+			if (sbb.isVecInside(new BlockPos(bx, by, bz))) {
 				this.warriorPlaced = true;
 				
 				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(world);

@@ -7,11 +7,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 
 public class ComponentTFDarkTowerBossBridge extends ComponentTFDarkTowerBridge {
 
-	public ComponentTFDarkTowerBossBridge() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	public ComponentTFDarkTowerBossBridge() {}
 
 	protected ComponentTFDarkTowerBossBridge(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
 		super(i, x, y, z, pSize, pHeight, direction);

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.structures.StructureTFComponent;
@@ -17,7 +18,7 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 	
 	public ComponentTFTrollCloud(int index, int x, int y, int z) {
 		super(index);
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		this.size = 40;
 		this.height = 20;
@@ -26,23 +27,17 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, 0);
 	}
 	
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("size", this.size);
         par1NBTTagCompound.setInteger("height", this.height);
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.size = par1NBTTagCompound.getInteger("size");
         this.height = par1NBTTagCompound.getInteger("height");
 	}
@@ -55,8 +50,8 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 	}
 
     protected void placeCloud(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		this.fillWithMetadataBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.STAINED_GLASS, 0, Blocks.STAINED_GLASS, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.QUARTZ_BLOCK, 0, Blocks.QUARTZ_BLOCK, 0, false);
+		this.fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.STAINED_GLASS.getDefaultState(), Blocks.STAINED_GLASS.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.QUARTZ_BLOCK.getDefaultState(), Blocks.QUARTZ_BLOCK.getDefaultState(), false);
 		
 	}
 

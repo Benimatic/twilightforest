@@ -10,16 +10,12 @@ import net.minecraft.world.gen.structure.StructureComponent;
 public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing 
 {
 
-	public ComponentTFDarkTowerEntrance() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFDarkTowerEntrance() {}
 
 	protected ComponentTFDarkTowerEntrance(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) 
 	{
@@ -30,23 +26,11 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing
 		addOpening(size / 2, 1, size - 1, 3, EnumDarkTowerDoor.REAPPEARING);
 	}
 
-
-	/**
-	 * Add a beard to this structure.  There is only one type of beard.
-	 */
 	@Override
-	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		//nope;
-	}
+	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {}
 	
-	/**
-	 * Attach a roof to this tower.
-	 */
 	@Override
-	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) 
-	{
-		// nope
-	}
+	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {}
 	
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
@@ -58,7 +42,7 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing
 		{
 			for (int z = 0; z < this.size; z++)
 			{
-				this.func_151554_b(world, deco.accentID, deco.accentMeta, x, -1, z, sbb);
+				this.setBlockState(world, deco.accentState, x, -1, z, sbb);
 			}
 		}
 		

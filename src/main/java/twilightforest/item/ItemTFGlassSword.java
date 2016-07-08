@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.util.EnumParticleTypes;
 import twilightforest.TwilightForestMod;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -41,10 +42,10 @@ public class ItemTFGlassSword extends ItemSword {
 	    		double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
 				double py = entity.posY + itemRand.nextFloat() * entity.height;
 				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				entity.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.STAINED_GLASS) + "_" + 0, px, py, pz, 0, 0, 0);
+				entity.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, px, py, pz, 0, 0, 0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
 	        }
 	        
-	        player.playSound(Blocks.GLASS.stepSound.getBreakSound(), 1F, 0.5F);
+	        player.playSound(Blocks.GLASS.getSoundType().getBreakSound(), 1F, 0.5F); // todo 1.9 clientsided only
     	}
         return false;
     }

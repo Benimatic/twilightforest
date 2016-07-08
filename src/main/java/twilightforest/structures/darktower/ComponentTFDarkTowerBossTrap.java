@@ -14,10 +14,7 @@ import twilightforest.structures.StructureTFComponent;
 public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing 
 {
 
-	public ComponentTFDarkTowerBossTrap() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFDarkTowerBossTrap() {}
 
 	protected ComponentTFDarkTowerBossTrap(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
@@ -88,17 +85,17 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 		destroyTower(world, decoRNG, 5, 6, 5, 2, sbb);
 		
 		// redraw some of the floor in case we destroyed it
-		this.fillWithMetadataBlocks(world, sbb, 1, 0, 1, size / 2, 0, size - 2, deco.blockID, deco.blockMeta, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR, 0, Blocks.AIR, 0, false);
+		this.fillWithBlocks(world, sbb, 1, 0, 1, size / 2, 0, size - 2, deco.blockState, Blocks.AIR.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		
 		// add boss trap
-		this.placeBlockAtCurrentPosition(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_GHASTTRAP_INACTIVE, 5, 1, 5, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.REDSTONE_WIRE, 0, 5, 1, 6, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.REDSTONE_WIRE, 0, 5, 1, 7, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.REDSTONE_WIRE, 0, 5, 1, 8, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.REDSTONE_WIRE, 0, 4, 1, 8, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.REDSTONE_WIRE, 0, 3, 1, 8, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.WOODEN_PRESSURE_PLATE, 0, 2, 1, 8, sbb);
+		this.setBlockState(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_GHASTTRAP_INACTIVE, 5, 1, 5, sbb);
+		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 6, sbb);
+		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 7, sbb);
+		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 8, sbb);
+		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 4, 1, 8, sbb);
+		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 3, 1, 8, sbb);
+		this.setBlockState(world, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 2, 1, 8, sbb);
 		
 
 		return true;

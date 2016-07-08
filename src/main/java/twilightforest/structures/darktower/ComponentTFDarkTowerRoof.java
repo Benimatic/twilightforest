@@ -12,10 +12,7 @@ import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
 public class ComponentTFDarkTowerRoof extends ComponentTFTowerRoof 
 {
-	public ComponentTFDarkTowerRoof() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFDarkTowerRoof() {}
 
 	public ComponentTFDarkTowerRoof(int i, ComponentTFTowerWing wing) {
 		super(i, wing);
@@ -53,15 +50,15 @@ public class ComponentTFDarkTowerRoof extends ComponentTFTowerRoof
 		for (int x = 0; x <= size - 1; x++) {
 			for (int z = 0; z <= size - 1; z++) {
 				if (x == 0 || x == size - 1 || z == 0 || z == size - 1) {
-					placeBlockAtCurrentPosition(world, deco.fenceID, deco.fenceMeta, x, 1, z, sbb);
+					setBlockState(world, deco.fenceState, x, 1, z, sbb);
 				}
 			}
 		}
-		
-		placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, 0, 1, 0, sbb);
-		placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, size - 1, 1, 0, sbb);
-		placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, 0, 1, size - 1, sbb);
-		placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, size - 1, 1, size - 1, sbb);
+
+		setBlockState(world, deco.accentState, 0, 1, 0, sbb);
+		setBlockState(world, deco.accentState, size - 1, 1, 0, sbb);
+		setBlockState(world, deco.accentState, 0, 1, size - 1, sbb);
+		setBlockState(world, deco.accentState, size - 1, 1, size - 1, sbb);
 		
 		return true;
 	}		

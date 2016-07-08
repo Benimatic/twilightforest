@@ -17,8 +17,7 @@ public class ItemTFFood extends ItemFood {
 	
 	protected Item looksLike; 
 	protected boolean isSoup;
-
-
+	
 	/**
 	 * Soup constructor
 	 */

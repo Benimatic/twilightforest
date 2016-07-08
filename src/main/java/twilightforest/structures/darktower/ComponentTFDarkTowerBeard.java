@@ -3,10 +3,13 @@ package twilightforest.structures.darktower;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.TowerWoodVariant;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -32,23 +35,17 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponent {
 
 	}
 	
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("beardSize", this.size);
         par1NBTTagCompound.setInteger("beardHeight", this.height);
 	}
 	
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.size = par1NBTTagCompound.getInteger("beardSize");
         this.height = par1NBTTagCompound.getInteger("beardHeight");
 	}
@@ -68,9 +65,8 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponent {
 	
 	protected void makeDarkBeard(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) 
 	{
-		Block frameID = TFBlocks.towerWood;
-		int frameMeta = 1;
-		
+		IBlockState frameState = TFBlocks.towerWood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.ENCASED);
+
 		for (int x = minX; x <= maxX; x++)
 		{
 			for (int z = minZ; z <= maxZ; z++)
@@ -92,7 +88,7 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponent {
 					for (int y = maxY; y >= height - length; y--)
 					{
 						// wall
-						this.placeBlockAtCurrentPosition(world, frameID, frameMeta, x, y, z, sbb);
+						this.setBlockState(world, frameState, x, y, z, sbb);
 					}
 				}
 			}

@@ -260,17 +260,17 @@ public class TFFinalCastlePieces {
         		
         		y = 25 - i;
         		int x = 37 - i;
-    			this.fillWithMetadataBlocks(world, sbb, x, y, 14, x, y, 22, deco.stairID, getStairMeta(0), deco.stairID, getStairMeta(0), false);
-    			this.fillWithMetadataBlocks(world, sbb, x, y - 1, 14, x, y - 1, 22, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-    			this.fillWithMetadataBlocks(world, sbb, x, y, 26, x, y, 34, deco.stairID, getStairMeta(0), deco.stairID, getStairMeta(0), false);
-    			this.fillWithMetadataBlocks(world, sbb, x, y - 1, 26, x, y - 1, 34, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+    			this.fillWithBlocks(world, sbb, x, y, 14, x, y, 22, deco.stairID, getStairMeta(0), deco.stairID, getStairMeta(0), false);
+    			this.fillWithBlocks(world, sbb, x, y - 1, 14, x, y - 1, 22, deco.blockState, deco.blockState, false);
+    			this.fillWithBlocks(world, sbb, x, y, 26, x, y, 34, deco.stairID, getStairMeta(0), deco.stairID, getStairMeta(0), false);
+    			this.fillWithBlocks(world, sbb, x, y - 1, 26, x, y - 1, 34, deco.blockState, deco.blockState, false);
     		}
 
     		
     		// pillars
     		for (int x = 11; x < 47; x += 12) {
         		for (int z = 11; z < 47; z += 12) {
-            		this.fillWithMetadataBlocks(world, sbb, x, 1, z, x + 2, 40, z + 2, deco.pillarID, deco.pillarMeta, deco.blockID, deco.blockMeta, false);
+            		this.fillWithBlocks(world, sbb, x, 1, z, x + 2, 40, z + 2, deco.pillarState, deco.blockState, false);
 
             		makePillarBase(world, sbb, x, z, 1, 0);
             		makePillarBase(world, sbb, x, z, 19, 4);
@@ -290,7 +290,7 @@ public class TFFinalCastlePieces {
     					continue;
     				}
     				
-            		this.fillBlocksRotated(world, sbb, 1, 1, z, 1, 40, z + 2, deco.pillarID, deco.pillarMeta, rotation);
+            		this.fillBlocksRotated(world, sbb, 1, 1, z, 1, 40, z + 2, deco.pillarState, rotation);
 					makeHalfPillarBase(world, sbb, rotation, 1, z, 0);
 					makeHalfPillarBase(world, sbb, rotation, 19, z, 4);
 					makeHalfPillarBase(world, sbb, rotation, 21, z, 0);
@@ -304,16 +304,16 @@ public class TFFinalCastlePieces {
     		// force field around dungeon stairs
     		Block fieldBlock = TFBlocks.forceField;
 			int fieldMeta = 6;
-			this.fillWithMetadataBlocks(world, sbb, 12, 1, 12, 24, 10, 12, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
-    		this.fillWithMetadataBlocks(world, sbb, 12, 1, 12, 12, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
-    		this.fillWithMetadataBlocks(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
-    		this.fillWithMetadataBlocks(world, sbb, 12, 1, 24, 24, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
+			this.fillWithBlocks(world, sbb, 12, 1, 12, 24, 10, 12, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
+    		this.fillWithBlocks(world, sbb, 12, 1, 12, 12, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
+    		this.fillWithBlocks(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
+    		this.fillWithBlocks(world, sbb, 12, 1, 24, 24, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
 
-    		this.fillWithMetadataBlocks(world, sbb, 12, 10, 12, 24, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
+    		this.fillWithBlocks(world, sbb, 12, 10, 12, 24, 10, 24, fieldBlock, fieldMeta, fieldBlock, fieldMeta, false);
     		
     		// doors in dungeon force field
-    		this.fillWithMetadataBlocks(world, sbb, 17, 1, 12, 19, 4, 12, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
-    		this.fillWithMetadataBlocks(world, sbb, 17, 1, 24, 19, 4, 24, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
+    		this.fillWithBlocks(world, sbb, 17, 1, 12, 19, 4, 12, TFBlocks.castleDoor, 2, Blocks.AIR.getDefaultState(), false);
+    		this.fillWithBlocks(world, sbb, 17, 1, 24, 19, 4, 24, TFBlocks.castleDoor, 2, Blocks.AIR.getDefaultState(), false);
     		
     		// stairs to stair towers
     		makeSmallTowerStairs(world, sbb, 0);
@@ -322,10 +322,10 @@ public class TFFinalCastlePieces {
     		makeLargeTowerStairs(world, sbb, 2);
     		
     		// door, first floor
-    		this.fillWithMetadataBlocks(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.castleDoor, 0, Blocks.AIR, 0, false);
+    		this.fillWithBlocks(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.castleDoor, 0, Blocks.AIR.getDefaultState(), false);
     		
     		// door, second floor
-    		this.fillWithMetadataBlocks(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.castleDoor, 1, Blocks.AIR, 0, false);
+    		this.fillWithBlocks(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.castleDoor, 1, Blocks.AIR.getDefaultState(), false);
             
     		return true;
     	}
@@ -333,7 +333,7 @@ public class TFFinalCastlePieces {
 		private void makeSmallTowerStairs(World world, StructureBoundingBox sbb, int rotation) {
 			for (int y = 1; y < 4; y++) {
     			int z = 40 + y;
-				this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockID, deco.blockMeta, rotation);
+				this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockState, rotation);
     			this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, deco.stairID, getStairMeta(1 + rotation), rotation);
     		}
 		}
@@ -341,14 +341,14 @@ public class TFFinalCastlePieces {
 		private void makeLargeTowerStairs(World world, StructureBoundingBox sbb, int rotation) {
 			for (int y = 1; y < 4; y++) {
     			int z = 38 + y;
-				this.fillBlocksRotated(world, sbb, 2, 1, z, 6, y, z, deco.blockID, deco.blockMeta, rotation);
+				this.fillBlocksRotated(world, sbb, 2, 1, z, 6, y, z, deco.blockState, rotation);
     			this.fillBlocksRotated(world, sbb, 3, y, z, 5, y, z, deco.stairID, getStairMeta(1 + rotation), rotation);
     		}
 		}
 
 		private void makeMezzTopStairs(World world, StructureBoundingBox sbb, int y, int z, int stairMeta) {
-			this.fillWithMetadataBlocks(world, sbb, 38, y, z, 46, y, z, deco.stairID, getStairMeta(stairMeta), deco.stairID, getStairMeta(stairMeta), false);
-			this.fillWithMetadataBlocks(world, sbb, 38, y - 1, z, 46, y - 1, z, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+			this.fillWithBlocks(world, sbb, 38, y, z, 46, y, z, deco.stairID, getStairMeta(stairMeta), deco.stairID, getStairMeta(stairMeta), false);
+			this.fillWithBlocks(world, sbb, 38, y - 1, z, 46, y - 1, z, deco.blockState, deco.blockState, false);
 			this.fillWithAir(world, sbb, 38, y + 1, z, 46, y + 3, z);
 		}
 
@@ -359,11 +359,11 @@ public class TFFinalCastlePieces {
 		}
 
 		private void makePillarBase(World world, StructureBoundingBox sbb, int x, int z, int y, int metaBit) {
-			this.fillWithMetadataBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, deco.stairID, getStairMeta(3) | metaBit, Blocks.AIR, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, deco.stairID, getStairMeta(1) | metaBit, Blocks.AIR, 0, false);
+			this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, deco.stairID, getStairMeta(3) | metaBit, Blocks.AIR.getDefaultState(), false);
+			this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, deco.stairID, getStairMeta(1) | metaBit, Blocks.AIR.getDefaultState(), false);
 
-			this.fillWithMetadataBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, deco.stairID, getStairMeta(2) | metaBit, Blocks.AIR, 0, false);
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, deco.stairID, getStairMeta(0) | metaBit, Blocks.AIR, 0, false);
+			this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, deco.stairID, getStairMeta(2) | metaBit, Blocks.AIR.getDefaultState(), false);
+			this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, deco.stairID, getStairMeta(0) | metaBit, Blocks.AIR.getDefaultState(), false);
 		}
 
     }
@@ -392,15 +392,15 @@ public class TFFinalCastlePieces {
 		@Override
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 			// add second layer of floor
-			this.fillWithMetadataBlocks(world, sbb, 2, 2, 2, 50, 2, 50, TFBlocks.castleMagic, 3, TFBlocks.castleMagic, 3, false);
+			this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, TFBlocks.castleMagic, 3, TFBlocks.castleMagic, 3, false);
 			
     		// crenellations
             for (int rotation = 0; rotation < 4; rotation++) {
-	    		this.fillBlocksRotated(world, sbb, 3, 1, 1, 45, 3, 1, deco.blockID, deco.blockMeta, rotation);
+	    		this.fillBlocksRotated(world, sbb, 3, 1, 1, 45, 3, 1, deco.blockState, rotation);
 	    		
 	    		for (int i = 10; i < 41; i += 5) {
-		    		this.fillBlocksRotated(world, sbb, i, 1, 0, i + 2, 5, 2, deco.blockID, deco.blockMeta, rotation);
-		    		this.placeBlockRotated(world, deco.blockID, deco.blockMeta, i + 1, 0, 1, rotation, sbb);
+		    		this.fillBlocksRotated(world, sbb, i, 1, 0, i + 2, 5, 2, deco.blockState, rotation);
+		    		this.placeBlockRotated(world, deco.blockState, i + 1, 0, 1, rotation, sbb);
 	    		}
             }
 			
@@ -423,8 +423,6 @@ public class TFFinalCastlePieces {
 	
 		}
 		
-		
-    	@SuppressWarnings({ "unchecked", "rawtypes" })
     	@Override
     	public void buildComponent(StructureComponent parent, List list, Random rand) {
     		this.deco = new StructureTFDecoratorCastle();
@@ -435,16 +433,15 @@ public class TFFinalCastlePieces {
     		this.deco.fenceMeta = 10;
     	}
 
-	
 		@Override
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 			// walls
 			for (int rotation = 0; rotation < 4; rotation++) {
-				this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, deco.fenceID, deco.fenceMeta, rotation);
+				this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, deco.fenceState, rotation);
 			}
 			
 			// roof
-			this.fillWithMetadataBlocks(world, sbb, 0, 11, 0, 20, 11, 20, deco.fenceID, deco.fenceMeta, deco.fenceID, deco.fenceMeta, false);
+			this.fillWithBlocks(world, sbb, 0, 11, 0, 20, 11, 20, deco.fenceState, deco.fenceState, false);
 			
 	        this.placeSignAtCurrentPosition(world, 10, 0, 10, "Final Boss Here", "You win!", sbb);
 
@@ -484,7 +481,7 @@ public class TFFinalCastlePieces {
 			{
 				for (int z = 4; z < 45; z++)
 				{
-					this.func_151554_b(world, deco.blockID, deco.blockMeta, x, -1, z, sbb);
+					this.setBlockState(world, deco.blockState, x, -1, z, sbb);
 				}
 
 			}
@@ -492,12 +489,12 @@ public class TFFinalCastlePieces {
 			int mid = 16;
             for (int rotation = 0; rotation < 4; rotation++) {
 	            // do corner
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 3, -2, 3, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 3, -2, 3, rotation, sbb);
 
 				// directly under castle
-	    		this.fillBlocksRotated(world, sbb, 2, -2, 1, 46, -1, 1, deco.blockID, deco.blockMeta, rotation);
-	    		this.fillBlocksRotated(world, sbb, 2, -4, 2, 45, -1, 2, deco.blockID, deco.blockMeta, rotation);
-	    		this.fillBlocksRotated(world, sbb, 4, -6, 3, 44, -1, 3, deco.blockID, deco.blockMeta, rotation);
+	    		this.fillBlocksRotated(world, sbb, 2, -2, 1, 46, -1, 1, deco.blockState, rotation);
+	    		this.fillBlocksRotated(world, sbb, 2, -4, 2, 45, -1, 2, deco.blockState, rotation);
+	    		this.fillBlocksRotated(world, sbb, 4, -6, 3, 44, -1, 3, deco.blockState, rotation);
 	    		
 	    		// pilings
 	    		for (int i = 9; i < 45; i += 6) {
@@ -510,23 +507,23 @@ public class TFFinalCastlePieces {
             }
             
             // add supports for entrance bridge
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 21, -2, 0, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 21, -4, 1, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 21, -6, 2, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 27, -2, 0, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 27, -4, 1, 1, sbb);
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 27, -6, 2, 1, sbb);
+			this.fillToGroundRotated(world, deco.blockState, 21, -2, 0, 1, sbb);
+			this.fillToGroundRotated(world, deco.blockState, 21, -4, 1, 1, sbb);
+			this.fillToGroundRotated(world, deco.blockState, 21, -6, 2, 1, sbb);
+			this.fillToGroundRotated(world, deco.blockState, 27, -2, 0, 1, sbb);
+			this.fillToGroundRotated(world, deco.blockState, 27, -4, 1, 1, sbb);
+			this.fillToGroundRotated(world, deco.blockState, 27, -6, 2, 1, sbb);
 
 	        return true;
 		}
 
 		private void makePiling(World world, StructureBoundingBox sbb, int mid, int rotation, int i) {
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, i, -7, 3, rotation, sbb);
-			this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, i, -mid, 2, rotation, sbb);
+			this.fillToGroundRotated(world, deco.blockState, i, -7, 3, rotation, sbb);
+			this.fillToGroundRotated(world, deco.blockState, i, -mid, 2, rotation, sbb);
 			
-			this.placeBlockRotated(world, deco.blockID, deco.blockMeta, i, -1, 0, rotation, sbb);
-			this.placeBlockRotated(world, deco.blockID, deco.blockMeta, i, -3, 1, rotation, sbb);
-			this.placeBlockRotated(world, deco.blockID, deco.blockMeta, i, -5, 2, rotation, sbb);
+			this.placeBlockRotated(world, deco.blockState, i, -1, 0, rotation, sbb);
+			this.placeBlockRotated(world, deco.blockState, i, -3, 1, rotation, sbb);
+			this.placeBlockRotated(world, deco.blockState, i, -5, 2, rotation, sbb);
 		}	
 
 	}
@@ -631,7 +628,7 @@ public class TFFinalCastlePieces {
     	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
     		for (int z = 0; z < 15; z++) {
     			int y = 14 - z;
-    			this.fillWithMetadataBlocks(world, sbb, 0, y, z, 4, y, z, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
+    			this.fillWithBlocks(world, sbb, 0, y, z, 4, y, z, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
     			this.fillWithAir(world, sbb, 0, y + 1, z, 4, y + 6, z);
     		}
     		this.fillWithAir(world, sbb, 0, 0, 15, 4, 5, 19);
@@ -674,13 +671,13 @@ public class TFFinalCastlePieces {
 			for (int y = 0; y <= this.height; y++) {
 				int x = (this.size / 2) - 2;
 				int z = (this.size / 2) - y + 2;
-				this.fillWithMetadataBlocks(world, sbb, x, y, z, x + 4, y, z, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
-				this.fillWithMetadataBlocks(world, sbb, x, 0, z, x + 4, y - 1, z, TFBlocks.deadrock, 0, TFBlocks.deadrock, 0, false);
+				this.fillWithBlocks(world, sbb, x, y, z, x + 4, y, z, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
+				this.fillWithBlocks(world, sbb, x, 0, z, x + 4, y - 1, z, TFBlocks.deadrock.getDefaultState(), TFBlocks.deadrock.getDefaultState(), false);
 			}
 			
 			// door
-    		this.fillWithMetadataBlocks(world, sbb, 23, 0, 12, 23, 3, 14, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
-    		this.fillWithMetadataBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+    		this.fillWithBlocks(world, sbb, 23, 0, 12, 23, 3, 14, TFBlocks.castleDoor, 2, Blocks.AIR.getDefaultState(), false);
+    		this.fillWithBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
 
 			
 			return true;
@@ -736,8 +733,8 @@ public class TFFinalCastlePieces {
 			super.addComponentParts(world, rand, sbb);
 			
 			// door
-    		this.fillWithMetadataBlocks(world, sbb, 7, 0, 16, 7, 3, 18, TFBlocks.castleDoor, 2, Blocks.AIR, 0, false);
-    		this.fillWithMetadataBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+    		this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, TFBlocks.castleDoor, 2, Blocks.AIR.getDefaultState(), false);
+    		this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
 
 			
 			return true;
@@ -746,8 +743,8 @@ public class TFFinalCastlePieces {
 
 		public int findStairDirectionTowards(int x, int z) {
 			// center of component
-			int cx = this.boundingBox.getCenterX();
-			int cz = this.boundingBox.getCenterZ();
+			int cx = this.boundingBox.getCenter().getX();
+			int cz = this.boundingBox.getCenter().getZ();
 			
 			// difference
 			int dx = cx - x;
@@ -1016,11 +1013,11 @@ public class TFFinalCastlePieces {
     		for (int i = 1; i < 4; i++) {
         		fillWithRandomizedBlocks(world, sbb, i, 0 - (i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
     		}
-    		this.placeBlockAtCurrentPosition(world, deco.blockID, deco.blockMeta, 4, -7, 4, sbb);
+    		this.placeBlockAtCurrentPosition(world, deco.blockState, 4, -7, 4, sbb);
     		
     		
     		// door, first floor
-    		this.fillWithMetadataBlocks(world, sbb, 0, 1, 1, 0, 3, 2, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
+    		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 3, 2, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
     		
     		// stairs
     		for (int f = 0; f < 5; f++) {
@@ -1032,26 +1029,26 @@ public class TFFinalCastlePieces {
     				int sz = 1;
     				
     				this.placeBlockRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz, rotation, sbb);
-    				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx, sy - 1, sz, rotation, sbb);
+    				this.placeBlockRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
     				this.placeBlockRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz + 1, rotation, sbb);
-    				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx, sy - 1, sz + 1, rotation, sbb);
+    				this.placeBlockRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
     			}
     			// landing
-    			this.fillBlocksRotated(world, sbb, 6, y + 2, 1, 7, y + 2, 2, deco.blockID, deco.blockMeta, rotation);
+    			this.fillBlocksRotated(world, sbb, 6, y + 2, 1, 7, y + 2, 2, deco.blockState, rotation);
     		}
     		
     		// door, second floor
-    		this.fillWithMetadataBlocks(world, sbb, 1, 18, 0, 2, 20, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
+    		this.fillWithBlocks(world, sbb, 1, 18, 0, 2, 20, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
     		
     		// second floor landing
-    		this.fillWithMetadataBlocks(world, sbb, 1, 17, 1, 3, 17, 3, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-    		this.fillWithMetadataBlocks(world, sbb, 1, 17, 4, 2, 17, 4, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
-    		this.fillWithMetadataBlocks(world, sbb, 1, 16, 4, 2, 16, 4, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-    		this.fillWithMetadataBlocks(world, sbb, 1, 16, 5, 2, 16, 5, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
-    		this.fillWithMetadataBlocks(world, sbb, 1, 15, 5, 2, 15, 5, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+    		this.fillWithBlocks(world, sbb, 1, 17, 1, 3, 17, 3, deco.blockState, deco.blockState, false);
+    		this.fillWithBlocks(world, sbb, 1, 17, 4, 2, 17, 4, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
+    		this.fillWithBlocks(world, sbb, 1, 16, 4, 2, 16, 4, deco.blockState, deco.blockState, false);
+    		this.fillWithBlocks(world, sbb, 1, 16, 5, 2, 16, 5, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
+    		this.fillWithBlocks(world, sbb, 1, 15, 5, 2, 15, 5, deco.blockState, deco.blockState, false);
 
     		// door, roof
-    		this.fillWithMetadataBlocks(world, sbb, 1, 39, 0, 2, 41, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
+    		this.fillWithBlocks(world, sbb, 1, 39, 0, 2, 41, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
 
     		// stairs
     		for (int f = 0; f < 7; f++) {
@@ -1063,17 +1060,17 @@ public class TFFinalCastlePieces {
     				int sz = 1;
     				
     				this.placeBlockRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz, rotation, sbb);
-    				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx, sy - 1, sz, rotation, sbb);
+    				this.placeBlockRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
     				this.placeBlockRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz + 1, rotation, sbb);
-    				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx, sy - 1, sz + 1, rotation, sbb);
+    				this.placeBlockRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
     			}
     			// landing
-    			this.fillBlocksRotated(world, sbb, 6, y + 2, 1, 7, y + 2, 2, deco.blockID, deco.blockMeta, rotation);
+    			this.fillBlocksRotated(world, sbb, 6, y + 2, 1, 7, y + 2, 2, deco.blockState, rotation);
     		}
 
     		// roof access landing
-    		this.fillWithMetadataBlocks(world, sbb, 1, 38, 1, 3, 38, 5, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-    		this.fillWithMetadataBlocks(world, sbb, 3, 39, 1, 3, 39, 5, deco.fenceID, deco.fenceMeta, deco.fenceID, deco.fenceMeta, false);
+    		this.fillWithBlocks(world, sbb, 1, 38, 1, 3, 38, 5, deco.blockState, deco.blockState, false);
+    		this.fillWithBlocks(world, sbb, 3, 39, 1, 3, 39, 5, deco.fenceState, deco.fenceState, false);
 
     		
     		return true;
@@ -1128,10 +1125,10 @@ public class TFFinalCastlePieces {
     		for (int i = 1; i < 4; i++) {
         		fillWithRandomizedBlocks(world, sbb, i, 0 - (i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
     		}
-    		this.placeBlockAtCurrentPosition(world, deco.blockID, deco.blockMeta, 4, -7, 4, sbb);
+    		this.placeBlockAtCurrentPosition(world, deco.blockState, 4, -7, 4, sbb);
     		
     		// door, first floor
-    		this.fillWithMetadataBlocks(world, sbb, 0, 1, 1, 0, 4, 3, TFBlocks.castleDoor, 0, Blocks.AIR, this.getGlyphMeta(), false);
+    		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, TFBlocks.castleDoor, 0, Blocks.AIR, this.getGlyphMeta(), false);
 
 	        this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
     		
@@ -1823,7 +1820,7 @@ public class TFFinalCastlePieces {
 			{
 				for (int z = 0; z < this.size; z++)
 				{
-					this.func_151554_b(world, deco.blockID, deco.blockMeta, x, -1, z, sbb);
+					this.func_151554_b(world, deco.blockState, x, -1, z, sbb);
 				}
 
 			}
@@ -1853,7 +1850,7 @@ public class TFFinalCastlePieces {
 			int floors = (this.highestOpening / 8) + 1;
 			
 			for (int i = 1; i < floors; i++) {
-				this.fillWithMetadataBlocks(world, sbb, 1, i * 8, 1, 11, i * 8, 11, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+				this.fillWithBlocks(world, sbb, 1, i * 8, 1, 11, i * 8, 11, deco.blockState, deco.blockState, false);
 				
 				// stairs
 				addStairsDown(world, sbb, (i + 2) % 4, i * 8);
@@ -1878,13 +1875,13 @@ public class TFFinalCastlePieces {
 				int sz = 9;
 				
 				this.placeBlockRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz, rotation, sbb);
-				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx, sy - 1, sz, rotation, sbb);
+				this.placeBlockRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
 				this.placeBlockRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz - 1, rotation, sbb);
-				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx, sy - 1, sz - 1, rotation, sbb);
+				this.placeBlockRotated(world, deco.blockState, sx, sy - 1, sz - 1, rotation, sbb);
 				this.fillAirRotated(world, sbb, sx, sy + 1, sz - 1, sx, sy + 3, sz, rotation);
 			}
 			// landing
-			this.fillBlocksRotated(world, sbb, 3, y - 4, 8, 4, y - 4, 9, deco.blockID, deco.blockMeta, rotation);
+			this.fillBlocksRotated(world, sbb, 3, y - 4, 8, 4, y - 4, 9, deco.blockState, rotation);
 
 			
 			// bottom flight
@@ -1894,9 +1891,9 @@ public class TFFinalCastlePieces {
 				int sz = 7 - i;
 				
 				this.placeBlockRotated(world, deco.stairID, getStairMeta(1 + rotation), sx, sy, sz, rotation, sbb);
-				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx, sy - 1, sz, rotation, sbb);
+				this.placeBlockRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
 				this.placeBlockRotated(world, deco.stairID, getStairMeta(1 + rotation), sx - 1, sy, sz, rotation, sbb);
-				this.placeBlockRotated(world, deco.blockID, deco.blockMeta, sx - 1, sy - 1, sz, rotation, sbb);
+				this.placeBlockRotated(world, deco.blockState, sx - 1, sy - 1, sz, rotation, sbb);
 				this.fillAirRotated(world, sbb, sx, sy + 1, sz, sx - 1, sy + 3, sz, rotation);
 			}
 
@@ -1913,15 +1910,15 @@ public class TFFinalCastlePieces {
 	        // clear the door
 			if (dx == 0 || dx == size - 1) 
 			{
-				this.fillWithMetadataBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 4, dz + 2, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+				this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 4, dz + 2, deco.accentID, deco.accentMeta, Blocks.AIR.getDefaultState(), false);
 				//this.fillWithAir(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1);
-				this.fillWithMetadataBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
+				this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
 			}
 			if (dz == 0 || dz == size - 1) 
 			{
-				this.fillWithMetadataBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 4, dz, deco.accentID, deco.accentMeta, Blocks.AIR, 0, false);
+				this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 4, dz, deco.accentID, deco.accentMeta, Blocks.AIR.getDefaultState(), false);
 				//this.fillWithAir(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz);
-				this.fillWithMetadataBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR, 0, false);
+				this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
 			}
 		}
 	}
@@ -2185,7 +2182,7 @@ public class TFFinalCastlePieces {
 				}
 			}
 			
-			this.func_151554_b(world, deco.blockID, deco.blockMeta, 0, 0, 5, sbb);
+			this.func_151554_b(world, deco.blockState, 0, 0, 5, sbb);
 
 			
 			return true;
@@ -2193,9 +2190,9 @@ public class TFFinalCastlePieces {
 
 		private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, int stairMeta) {
 			if (this.getBlockAtCurrentPosition(world, x, y, z, sbb).isReplaceable(world, x, y, z)) {
-				//this.placeBlockAtCurrentPosition(world, deco.blockID, deco.blockMeta, x, y, z, sbb);
+				//this.placeBlockAtCurrentPosition(world, deco.blockState, x, y, z, sbb);
 				this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(stairMeta), x, y, z, sbb);
-				this.func_151554_b(world, deco.blockID, deco.blockMeta, x, y - 1, z, sbb);
+				this.func_151554_b(world, deco.blockState, x, y - 1, z, sbb);
 			}
 		}
 
@@ -2544,15 +2541,15 @@ public class TFFinalCastlePieces {
 			}
 			
 			// doorframes
-			this.fillWithMetadataBlocks(world, sbb, 0, 2, 1, 0, 7, 1, deco.pillarID, deco.pillarMeta, deco.pillarID, deco.pillarMeta, false);
-			this.fillWithMetadataBlocks(world, sbb, 0, 2, 5, 0, 7, 5, deco.pillarID, deco.pillarMeta, deco.pillarID, deco.pillarMeta, false);
-			this.fillWithMetadataBlocks(world, sbb, 0, 6, 2, 0, 6, 4, deco.accentID, deco.accentMeta, deco.accentID, deco.accentMeta, false);
-			this.placeBlockAtCurrentPosition(world, deco.pillarID, deco.pillarMeta, 0, 7, 3, sbb);
+			this.fillWithBlocks(world, sbb, 0, 2, 1, 0, 7, 1, deco.pillarState, deco.pillarState, false);
+			this.fillWithBlocks(world, sbb, 0, 2, 5, 0, 7, 5, deco.pillarState, deco.pillarState, false);
+			this.fillWithBlocks(world, sbb, 0, 6, 2, 0, 6, 4, deco.accentID, deco.accentMeta, deco.accentID, deco.accentMeta, false);
+			this.placeBlockAtCurrentPosition(world, deco.pillarState, 0, 7, 3, sbb);
 
-			this.fillWithMetadataBlocks(world, sbb, length, 2, 1, length, 7, 1, deco.pillarID, deco.pillarMeta, deco.pillarID, deco.pillarMeta, false);
-			this.fillWithMetadataBlocks(world, sbb, length, 2, 5, length, 7, 5, deco.pillarID, deco.pillarMeta, deco.pillarID, deco.pillarMeta, false);
-			this.fillWithMetadataBlocks(world, sbb, length, 6, 2, length, 6, 4, deco.accentID, deco.accentMeta, deco.accentID, deco.accentMeta, false);
-			this.placeBlockAtCurrentPosition(world, deco.pillarID, deco.pillarMeta, length, 7, 3, sbb);
+			this.fillWithBlocks(world, sbb, length, 2, 1, length, 7, 1, deco.pillarState, deco.pillarState, false);
+			this.fillWithBlocks(world, sbb, length, 2, 5, length, 7, 5, deco.pillarState, deco.pillarState, false);
+			this.fillWithBlocks(world, sbb, length, 6, 2, length, 6, 4, deco.accentID, deco.accentMeta, deco.accentID, deco.accentMeta, false);
+			this.placeBlockAtCurrentPosition(world, deco.pillarState, length, 7, 3, sbb);
 
 			return true;
 		}
@@ -2581,23 +2578,23 @@ public class TFFinalCastlePieces {
 		@Override
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
             for (int rotation = 0; rotation < 4; rotation++) {
-            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 2, 3, 2, deco.blockID, deco.blockMeta, rotation);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 2, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 1, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 2, -2, 1, rotation, sbb);
+            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 2, 3, 2, deco.blockState, rotation);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
 
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 3, 0, 1, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 3, 1, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 3, 0, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 3, 1, 1, rotation, sbb);
             	
-            	this.fillBlocksRotated(world, sbb, 4, 0, 0, 5, 3, 2, deco.blockID, deco.blockMeta, rotation);
+            	this.fillBlocksRotated(world, sbb, 4, 0, 0, 5, 3, 2, deco.blockState, rotation);
             	
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 6, 0, 1, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 6, 1, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 6, 0, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 6, 1, 1, rotation, sbb);
             	
-            	this.fillBlocksRotated(world, sbb, 7, 0, 0, 8, 3, 2, deco.blockID, deco.blockMeta, rotation);
+            	this.fillBlocksRotated(world, sbb, 7, 0, 0, 8, 3, 2, deco.blockState, rotation);
             	
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 9, 0, 1, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 9, 1, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 9, 0, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 9, 1, 1, rotation, sbb);
             }
 			
 			
@@ -2648,23 +2645,23 @@ public class TFFinalCastlePieces {
 		@Override
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
             for (int rotation = 0; rotation < 4; rotation++) {
-            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockID, deco.blockMeta, rotation);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 2, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 1, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 2, -2, 1, rotation, sbb);
+            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
             	
-            	this.fillBlocksRotated(world, sbb, 4, 0, 1, 12, 1, 1, deco.blockID, deco.blockMeta, rotation);
+            	this.fillBlocksRotated(world, sbb, 4, 0, 1, 12, 1, 1, deco.blockState, rotation);
             	
             	// more teeny crenellations
             	for (int i = 3; i < 13; i += 2) {
-                	this.fillBlocksRotated(world, sbb, i, -1, 1, i, 2, 1, deco.blockID, deco.blockMeta, rotation);
+                	this.fillBlocksRotated(world, sbb, i, -1, 1, i, 2, 1, deco.blockState, rotation);
             	}
 
             	// cone roof
             	for (int i = 2; i < 9; i++) {
             		int base = 2 - slope;
             		if (i < 7) {
-                    	this.fillBlocksRotated(world, sbb, i - 1, ((i - 1) * slope) + base, i - 1, i, (i * slope) + base - 1, i, deco.blockID, deco.blockMeta, rotation);
+                    	this.fillBlocksRotated(world, sbb, i - 1, ((i - 1) * slope) + base, i - 1, i, (i * slope) + base - 1, i, deco.blockState, rotation);
             		} else {
                     	this.fillBlocksRotated(world, sbb, 16 - i, ((i - 1) * slope) + base, i, 16 - i, (i * slope) + base - 1, i, deco.roofID, deco.roofMeta, rotation);
             		}
@@ -2708,19 +2705,19 @@ public class TFFinalCastlePieces {
 			
             for (int rotation = 0; rotation < 4; rotation++) {
             	// corner
-            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 3, 3, deco.blockID, deco.blockMeta, rotation);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 2, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 1, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 2, -2, 1, rotation, sbb);
+            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 3, 3, deco.blockState, rotation);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
             	
             	// walls
-            	this.fillBlocksRotated(world, sbb, 4, 0, 1, size - 4, 1, 1, deco.blockID, deco.blockMeta, rotation);
+            	this.fillBlocksRotated(world, sbb, 4, 0, 1, size - 4, 1, 1, deco.blockState, rotation);
             	
             	// smaller crenellations
             	for (int x = 5; x < size - 5; x += 4) {
-            		this.fillBlocksRotated(world, sbb, x, 0, 0, x + 2, 3, 2, deco.blockID, deco.blockMeta, rotation);
-            		this.placeBlockRotated(world, deco.blockID, deco.blockMeta, x + 1, -1, 1, rotation, sbb);
-            		this.placeBlockRotated(world, deco.blockID, deco.blockMeta, x + 1, -2, 1, rotation, sbb);
+            		this.fillBlocksRotated(world, sbb, x, 0, 0, x + 2, 3, 2, deco.blockState, rotation);
+            		this.placeBlockRotated(world, deco.blockState, x + 1, -1, 1, rotation, sbb);
+            		this.placeBlockRotated(world, deco.blockState, x + 1, -2, 1, rotation, sbb);
             	}
             }
 			
@@ -2754,65 +2751,65 @@ public class TFFinalCastlePieces {
 			
             // peaky roof, loop unrolled as it was getting dumb
 			for (int i = 0; i < 3; i++) {
-				this.fillWithMetadataBlocks(world, sbb, 1, i, i, 15, i, i, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, i, 16 - i, 15, i, 16 - i, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, i, i, 15, i, i, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, i, 16 - i, 15, i, 16 - i, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
 			}
 
 			for (int i = 0; i < 3; i++) {
 				int dz = 3 + i;
-				this.fillWithMetadataBlocks(world, sbb, 2, 5 + ((i - 1) * 2), dz, 14, 4 + (i * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 1, dz, 1, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 5 + ((i - 1) * 2), dz - 1, 1, 4 + (i * 2), dz, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 1, dz, 15, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 5 + ((i - 1) * 2), dz - 1, 15, 4 + (i * 2), dz, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+				this.fillWithBlocks(world, sbb, 2, 5 + ((i - 1) * 2), dz, 14, 4 + (i * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 1, dz, 1, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 5 + ((i - 1) * 2), dz - 1, 1, 4 + (i * 2), dz, deco.blockState, deco.blockState, false);
+				this.fillWithBlocks(world, sbb, 15, 1, dz, 15, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 15, 5 + ((i - 1) * 2), dz - 1, 15, 4 + (i * 2), dz, deco.blockState, deco.blockState, false);
  
 				dz = 13 - i;
-				this.fillWithMetadataBlocks(world, sbb, 2, 5 + ((i - 1) * 2), dz, 14, 4 + (i * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 1, dz, 1, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 5 + ((i - 1) * 2), dz, 1, 4 + (i * 2), dz + 1, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 1, dz, 15, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 5 + ((i - 1) * 2), dz, 15, 4 + (i * 2), dz + 1, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+				this.fillWithBlocks(world, sbb, 2, 5 + ((i - 1) * 2), dz, 14, 4 + (i * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 1, dz, 1, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 5 + ((i - 1) * 2), dz, 1, 4 + (i * 2), dz + 1, deco.blockState, deco.blockState, false);
+				this.fillWithBlocks(world, sbb, 15, 1, dz, 15, 5 + ((i - 1) * 2), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 15, 5 + ((i - 1) * 2), dz, 15, 4 + (i * 2), dz + 1, deco.blockState, deco.blockState, false);
 			}
 
 			for (int i = 0; i < 3; i++) {
 				int dz = 6 + i;
-				this.fillWithMetadataBlocks(world, sbb, 2, 12 + ((i - 1) * 3), dz, 14, 11 + (i * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 1, dz, 1, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 12 + ((i - 1) * 3), dz - 1, 1, 11 + (i * 3), dz, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 1, dz, 15, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 12 + ((i - 1) * 3), dz - 1, 15, 11 + (i * 3), dz, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+				this.fillWithBlocks(world, sbb, 2, 12 + ((i - 1) * 3), dz, 14, 11 + (i * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 1, dz, 1, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 12 + ((i - 1) * 3), dz - 1, 1, 11 + (i * 3), dz, deco.blockState, deco.blockState, false);
+				this.fillWithBlocks(world, sbb, 15, 1, dz, 15, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 15, 12 + ((i - 1) * 3), dz - 1, 15, 11 + (i * 3), dz, deco.blockState, deco.blockState, false);
 
 				dz = 10 - i;
-				this.fillWithMetadataBlocks(world, sbb, 2, 12 + ((i - 1) * 3), dz, 14, 11 + (i * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 1, dz, 1, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 1, 12 + ((i - 1) * 3), dz, 1, 11 + (i * 3), dz + 1, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 1, dz, 15, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-				this.fillWithMetadataBlocks(world, sbb, 15, 12 + ((i - 1) * 3), dz, 15, 11 + (i * 3), dz + 1, deco.blockID, deco.blockMeta, deco.blockID, deco.blockMeta, false);
+				this.fillWithBlocks(world, sbb, 2, 12 + ((i - 1) * 3), dz, 14, 11 + (i * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 1, dz, 1, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 1, 12 + ((i - 1) * 3), dz, 1, 11 + (i * 3), dz + 1, deco.blockState, deco.blockState, false);
+				this.fillWithBlocks(world, sbb, 15, 1, dz, 15, 12 + ((i - 1) * 3), dz, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+				this.fillWithBlocks(world, sbb, 15, 12 + ((i - 1) * 3), dz, 15, 11 + (i * 3), dz + 1, deco.blockState, deco.blockState, false);
 			}
 			
 			// top roof bobbles
-			this.fillWithMetadataBlocks(world, sbb, 1, 18, 8, 5, 18, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-			this.fillWithMetadataBlocks(world, sbb, 11, 18, 8, 14, 18, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-			this.fillWithMetadataBlocks(world, sbb, 0, 17, 8, 1, 19, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
-			this.fillWithMetadataBlocks(world, sbb, 15, 17, 8, 16, 19, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+			this.fillWithBlocks(world, sbb, 1, 18, 8, 5, 18, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+			this.fillWithBlocks(world, sbb, 11, 18, 8, 14, 18, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+			this.fillWithBlocks(world, sbb, 0, 17, 8, 1, 19, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
+			this.fillWithBlocks(world, sbb, 15, 17, 8, 16, 19, 8, deco.roofID, deco.roofMeta, deco.roofID, deco.roofMeta, false);
 
 			
 			
 			for (int rotation = 1; rotation < 4; rotation += 2) {
 				// this might be one of my more confusing instances of code recycling
-				this.fillBlocksRotated(world, sbb, 4, 0, 1, 12, 1, 1, deco.blockID, deco.blockMeta, rotation);
+				this.fillBlocksRotated(world, sbb, 4, 0, 1, 12, 1, 1, deco.blockState, rotation);
 				// more teeny crenellations
 				for (int i = 3; i < 13; i += 2) {
-					this.fillBlocksRotated(world, sbb, i, -1, 1, i, 2, 1, deco.blockID, deco.blockMeta, rotation);
+					this.fillBlocksRotated(world, sbb, i, -1, 1, i, 2, 1, deco.blockState, rotation);
 				}
 			}
 			
 			// corners
 			for (int rotation = 0; rotation < 4; rotation++) {
-            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockID, deco.blockMeta, rotation);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 2, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 1, -2, 1, rotation, sbb);
-            	this.placeBlockRotated(world, deco.blockID, deco.blockMeta, 2, -2, 1, rotation, sbb);
+            	this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
+            	this.placeBlockRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
             }
 
 			
@@ -2865,15 +2862,15 @@ public class TFFinalCastlePieces {
 	        
 	        for (int rotation = 0; rotation < 4; rotation++) {
 	            // do corner
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 1, -1, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 2, -1, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 2, -mid, 0, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 1, -1, 2, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 0, -mid, 2, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 1, -1, 1, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 1, -1, 2, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 0, -mid, 2, rotation, sbb);
 
 				for (int x = 6; x < (size - 3); x += 4) {
-					this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, x, -1, 1, rotation, sbb);
-					this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, x, -mid, 0, rotation, sbb);
+					this.fillToGroundRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
+					this.fillToGroundRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 				}
 
 	        }
@@ -3072,19 +3069,19 @@ public class TFFinalCastlePieces {
 	        
 	        for (int rotation = 0; rotation < 4; rotation++) {
 	            // do corner
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 2, -1, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 2, -mid, 0, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 1, -1, 2, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 0, -mid, 2, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 1, -1, 2, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 0, -mid, 2, rotation, sbb);
 
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 1, -low, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 0, -low, 1, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 1, -low, 0, rotation, sbb);
-				this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, 0, -low, 0, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 1, -low, 1, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 0, -low, 1, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 1, -low, 0, rotation, sbb);
+				this.fillToGroundRotated(world, deco.blockState, 0, -low, 0, rotation, sbb);
 
 				for (int x = 6; x < (size - 3); x += 4) {
-					this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, x, -1, 1, rotation, sbb);
-					this.fillToGroundRotated(world, deco.blockID, deco.blockMeta, x, -mid, 0, rotation, sbb);
+					this.fillToGroundRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
+					this.fillToGroundRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 				}
 
 	        }

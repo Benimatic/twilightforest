@@ -1,17 +1,14 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import twilightforest.TwilightForestMod;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFNagaArmor extends ItemArmor {
 
-	public ItemTFNagaArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int par3, int par4) {
+	public ItemTFNagaArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int par3, EntityEquipmentSlot par4) {
 		super(par2EnumArmorMaterial, par3, par4);
 		this.setCreativeTab(TFItems.creativeTab);
 	}

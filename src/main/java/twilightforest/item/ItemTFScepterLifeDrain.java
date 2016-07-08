@@ -9,13 +9,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
@@ -38,13 +41,13 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player, EnumHand hand) {
 		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) {
-			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+			player.setActiveHand(hand);
 		}
 		else {
-			player.stopUsingItem();
+			player.resetActiveHand();
 		}
 		
-		return par1ItemStack;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		    
 		    Item popItem = getTargetDropItemId(target) != null ? getTargetDropItemId(target) : Items.ROTTEN_FLESH;
 		    
-		    worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(popItem), target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ);
+		    worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
 		}
 	}
 	
@@ -72,14 +75,14 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	/**
 	 * What, if anything, is the player currently looking at?
 	 */
-	private Entity getPlayerLookTarget(World worldObj, EntityPlayer player) {
+	private Entity getPlayerLookTarget(World worldObj, EntityLivingBase living) {
 		Entity pointedEntity = null;
 		double range = 20.0D;
-        Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3d lookVec = player.getLook(1.0F);
+        Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
+        Vec3d lookVec = living.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 1.0F;
-        List<Entity> possibleList = worldObj.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+        List<Entity> possibleList = worldObj.getEntitiesWithinAABBExcludingEntity(living, living.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList)
@@ -89,7 +92,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
             if (possibleEntity.canBeCollidedWith())
             {
                 float borderSize = possibleEntity.getCollisionBorderSize();
-                AxisAlignedBB collisionBB = possibleEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
+                AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().expand((double)borderSize, (double)borderSize, (double)borderSize);
                 RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
                 if (collisionBB.isVecInside(srcVec))
@@ -122,7 +125,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		
 		if (stack.getItemDamage() >= this.getMaxDamage()) {
 			// do not use
-			living.stopUsingItem();
+			living.resetActiveHand();
 			return;
 		}
 
@@ -134,7 +137,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 			if (pointedEntity != null && pointedEntity instanceof EntityLivingBase) {
 				EntityLivingBase target =  (EntityLivingBase)pointedEntity;
 
-				if (target.getActivePotionEffect(MobEffects.MOVESLOWDOWN) != null || target.getHealth() < 1) {
+				if (target.getActivePotionEffect(MobEffects.SLOWNESS) != null || target.getHealth() < 1) {
 
 					if (target.getHealth() <= 3) {
 						// make it explode
@@ -150,7 +153,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 							target.setDead();
 							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));
 						}
-						living.stopUsingItem();
+						living.resetActiveHand();
 					}
 					else {
 						// we have hit this creature recently
@@ -164,7 +167,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 								target.motionZ = 0;
 							}
 
-							target.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20, 2));
+							target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20, 2));
 
 							if (count % 10 == 0) {
 								// heal the player
@@ -191,7 +194,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 							target.motionZ = 0;
 						}
 
-						target.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20, 2));
+						target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20, 2));
 					}
 				}
 
@@ -206,7 +209,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	
 	private float getMaxHealth(EntityLivingBase target)
 	{
-		return (float) target.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
+		return (float) target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
 	}
 
 	/**
@@ -224,7 +227,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
     		double tx = srcX + (destX - srcX) * trailFactor + worldObj.rand.nextGaussian() * 0.005;
     		double ty = srcY + (destY - srcY) * trailFactor + worldObj.rand.nextGaussian() * 0.005;
     		double tz = srcZ + (destZ - srcZ) * trailFactor + worldObj.rand.nextGaussian() * 0.005;
-    		worldObj.spawnParticle("mobSpell", tx, ty, tz, f, f1, f2);
+    		worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
     	}
 	}
 	
@@ -247,7 +250,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<ItemStack> par3List, boolean par4) {
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
 	}

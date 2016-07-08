@@ -9,11 +9,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -25,7 +27,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFPeacockFan extends ItemTF
 {
 	protected ItemTFPeacockFan() {
-		super();
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
         this.setMaxDamage(1024);
@@ -38,7 +39,7 @@ public class ItemTFPeacockFan extends ItemTF
 		{
 			if (!player.onGround)
 			{
-				player.addPotionEffect(new PotionEffect(MobEffects.JUMP.id, 45, 0));
+				player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 45, 0));
 			}
 			else
 			{
@@ -75,7 +76,7 @@ public class ItemTFPeacockFan extends ItemTF
 				// particle effect
 				for (int i = 0; i < 30; i++)
 				{
-					world.spawnParticle("cloud", fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX), 
+					world.spawnParticle(EnumParticleTypes.CLOUD, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
 							fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY), 
 							fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ), 
 							lookVec.xCoord, lookVec.yCoord, lookVec.zCoord);
@@ -87,7 +88,7 @@ public class ItemTFPeacockFan extends ItemTF
 
 		}
 		
-		player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+		player.setActiveHand(hand);
 		
 		return par1ItemStack;
 	}

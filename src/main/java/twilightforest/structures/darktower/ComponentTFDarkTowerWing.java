@@ -1,17 +1,17 @@
 package twilightforest.structures.darktower;
 
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -31,54 +31,44 @@ import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
 public class ComponentTFDarkTowerWing extends ComponentTFTowerWing 
 {
-	
 	protected boolean keyTower = false;
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<EnumDarkTowerDoor>();
 
-	public ComponentTFDarkTowerWing() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	public ComponentTFDarkTowerWing() {}
 
 	protected ComponentTFDarkTowerWing(int i, int x, int y, int z, int pSize, int pHeight, int direction) 
 	{
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
 	
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setBoolean("keyTower", this.keyTower);
         
         par1NBTTagCompound.setIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
 	}
 
-	
 	/**
 	 * Turn the openings array into an array of ints.
 	 */
 	private int[] getDoorsTypesAsIntArray() {
-		IntBuffer ibuffer = IntBuffer.allocate(this.openingTypes.size());
-		
+		int[] ret = new int[this.openingTypes.size()];
+
+		int idx = 0;
+
 		for (EnumDarkTowerDoor doorType : openingTypes)
 		{
-			ibuffer.put(doorType.ordinal());
+			ret[idx++] = doorType.ordinal();
 		}
 		
-		return ibuffer.array();
+		return ret;
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.keyTower = par1NBTTagCompound.getBoolean("keyTower");
         
         this.readDoorsTypesFromArray(par1NBTTagCompound.getIntArray("doorTypeInts"));
@@ -94,11 +84,9 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		}
 	}
 
-
 	/**
 	 * Read in openings from int array
 	 */
-	@SuppressWarnings("unused")
 	private void readOpeningsFromArray(int[] intArray) {
 		for (int i = 0; i < intArray.length; i += 3)
 		{
@@ -108,7 +96,6 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent)
@@ -433,13 +420,13 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 
 
 	private void testAndChangeToNetherrack(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
-		if (this.getBlockAtCurrentPosition(world, x, y, z, sbb) != Blocks.AIR)
+		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock() != Blocks.AIR)
 		{
-			this.placeBlockAtCurrentPosition(world, Blocks.NETHERRACK, 0, x, y, z, sbb);
+			this.setBlockState(world, Blocks.NETHERRACK.getDefaultState(), x, y, z, sbb);
 			
-			if (this.getBlockAtCurrentPosition(world, x, y + 1, z, sbb) == Blocks.AIR && rand.nextBoolean())
+			if (this.getBlockStateFromPos(world, x, y + 1, z, sbb).getBlock() == Blocks.AIR && rand.nextBoolean())
 			{
-				this.placeBlockAtCurrentPosition(world, Blocks.FIRE, 0, x, y + 1, z, sbb);
+				this.setBlockState(world, Blocks.FIRE.getDefaultState(), x, y + 1, z, sbb);
 			}
 		}
 	}
@@ -448,7 +435,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Draw a giant blob of whatevs (okay, it's going to be leaves).
 	 */
-	public void drawBlob(World world, int sx, int sy, int sz, int rad, Block blockValue, int metaValue, StructureBoundingBox sbb) {
+	private void drawBlob(World world, int sx, int sy, int sz, int rad, IBlockState state, StructureBoundingBox sbb) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
 		{
@@ -475,25 +462,24 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx + dx, sy + dy, sz + dz, sbb);
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx + dx, sy + dy, sz - dz, sbb);
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx - dx, sy + dy, sz + dz, sbb);
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx - dx, sy + dy, sz - dz, sbb);
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx + dx, sy - dy, sz + dz, sbb);
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx + dx, sy - dy, sz - dz, sbb);
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx - dx, sy - dy, sz + dz, sbb);
-						this.placeBlockAtCurrentPosition(world, blockValue, metaValue, sx - dx, sy - dy, sz - dz, sbb);
+						this.setBlockState(world, state, sx + dx, sy + dy, sz + dz, sbb);
+						this.setBlockState(world, state, sx + dx, sy + dy, sz - dz, sbb);
+						this.setBlockState(world, state, sx - dx, sy + dy, sz + dz, sbb);
+						this.setBlockState(world, state, sx - dx, sy + dy, sz - dz, sbb);
+						this.setBlockState(world, state, sx + dx, sy - dy, sz + dz, sbb);
+						this.setBlockState(world, state, sx + dx, sy - dy, sz - dz, sbb);
+						this.setBlockState(world, state, sx - dx, sy - dy, sz + dz, sbb);
+						this.setBlockState(world, state, sx - dx, sy - dy, sz - dz, sbb);
 					}
 				}
 			}
 		}
 	}
 
-
 	/**
 	 * Add a bunch of random half floors
 	 */
-	protected void addHalfFloors(World world, Random rand, StructureBoundingBox sbb, int bottom, int top) {
+	private void addHalfFloors(World world, Random rand, StructureBoundingBox sbb, int bottom, int top) {
 		
 		int spacing = 4;//this.size > 9 ? 4 : 3;
 		int rotation = (this.boundingBox.minY + bottom) % 3;
@@ -570,7 +556,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Dark tower half floors
 	 */
-	protected void makeHalfFloor(World world, StructureBoundingBox sbb, int rotation, int y, int spacing) 
+	protected void makeHalfFloor(World world, StructureBoundingBox sbb, int rotation, int y, int spacing)
 	{
 		this.fillBlocksRotated(world, sbb, size / 2, y, 1, size - 2, y, size - 2, deco.blockID, deco.blockMeta, rotation);
 		this.fillBlocksRotated(world, sbb, size / 2 - 1, y, 1, size / 2 - 1, y, size - 2, deco.accentID, deco.accentMeta, rotation);
@@ -582,8 +568,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	protected void makeFullFloor(World world, StructureBoundingBox sbb, int rotation, int y, int spacing) 
 	{
 		// half floor
-		this.fillWithMetadataBlocks(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockID, deco.blockMeta, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentID, deco.accentMeta, Blocks.AIR, 0, true);
+		this.fillWithBlocks(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockState, Blocks.AIR.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentState, Blocks.AIR.getDefaultState(), true);
 	}
 	
 	/**

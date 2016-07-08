@@ -6,7 +6,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -25,8 +26,6 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	
 	public static final TFGenMyceliumBlob uberousGen = new TFGenMyceliumBlob(TFBlocks.uberousSoil, 4);
 
-
-
 	public ComponentTFTrollCaveMain() { }
 
 	public ComponentTFTrollCaveMain(int index) {
@@ -35,7 +34,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 
 
 	public ComponentTFTrollCaveMain(World world, Random rand, int i, int x, int y, int z) {
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		// adjust y
 		y += 10;
@@ -52,8 +51,8 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("size", this.size);
         par1NBTTagCompound.setInteger("height", this.height);
@@ -63,8 +62,8 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.size = par1NBTTagCompound.getInteger("size");
         this.height = par1NBTTagCompound.getInteger("height");
 	}
@@ -76,7 +75,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		for (int i = 0; i < 4; i++) {
 			BlockPos dest = getValidOpening(rand, 5, i);
 			
-			makeSmallerCave(list, rand, this.getComponentType() + 1, dest.posX, dest.posY, dest.posZ, 18, 15, i);
+			makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, i);
 
 		}
 		
@@ -96,7 +95,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		int direction = (getCoordBaseMode() + rotation) % 4;
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
-		ComponentTFTrollCaveConnect cave = new ComponentTFTrollCaveConnect(index, dest.posX, dest.posY, dest.posZ, caveSize, caveHeight, direction);
+		ComponentTFTrollCaveConnect cave = new ComponentTFTrollCaveConnect(index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, cave.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -123,13 +122,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		for (int i = 0; i < 128; i++)
 		{
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++)
 		{
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.posX, 3, dest.posZ, sbb);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
 		}
 		
 		
@@ -138,7 +137,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		{
 			BlockPos dest = getCoordsInCave(decoRNG);
 			
-			generateAtSurface(world, uberousGen, decoRNG, dest.posX, 60, dest.posZ, sbb);
+			generateAtSurface(world, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
 		}
 		
 		return true;
@@ -171,9 +170,9 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
                 	double dist = Math.sqrt(ex * ey * ez);
                 	
 					if (dist > threshold) {
-                		this.placeBlockAtCurrentPosition(par1World, Blocks.AIR, 0, x, y, z, par2StructureBoundingBox);
-                	} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockAtCurrentPosition(par1World, x, y, z, par2StructureBoundingBox) == Blocks.STONE) {
-                		this.placeBlockAtCurrentPosition(par1World, TFBlocks.trollSteinn, 0, x, y, z, par2StructureBoundingBox);
+                		this.setBlockState(par1World, Blocks.AIR.getDefaultState(), x, y, z, par2StructureBoundingBox);
+                	} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockStateFromPos(par1World, x, y, z, par2StructureBoundingBox).getBlock() == Blocks.STONE) {
+                		this.setBlockState(par1World, TFBlocks.trollSteinn.getDefaultState(), x, y, z, par2StructureBoundingBox);
                 	}
                 }
             }
@@ -246,7 +245,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 
         for (int x = minX; x <= maxX; x++) {
         	for (int z = minZ; z <= maxZ; z++) {
-        		if (world.getBiomeGenForCoords(x, z) != TFBiomeBase.highlands) {
+        		if (world.getBiomeGenForCoords(new BlockPos(x, 0, z)) != TFBiomeBase.highlands) {
         			return true;
         		}
         	}        
@@ -264,8 +263,9 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz)) {
-        	(new TFGenCaveStalactite(blockToGenerate, length, up)).generate(world, rand, dx, dy, dz);
+		BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos)) {
+        	(new TFGenCaveStalactite(blockToGenerate, length, up)).generate(world, rand, pos);
         }
 	}
 
@@ -277,24 +277,25 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
         int dx = getXWithOffset(x, z);
         int dy = y;
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz)) {
+		BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos)) {
         	// find surface above the listed coords
         	for (dy = y; dy < y + 32; dy++) {
-        		if (world.isAirBlock( dx, dy, dz)) {
+        		if (world.isAirBlock(pos)) {
         			//System.out.println("Found surface for generator.  It's " + dy);
         			
         			break;
         		}
         	}
         	
-        	generator.generate(world, rand, dx, dy, dz);
+        	generator.generate(world, rand, pos);
         }
 	}
 
 	protected void makeTreasureCrate(World world, Random rand, StructureBoundingBox sbb) {
 		// treasure!
 		int mid = this.size / 2;
-		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN, Blocks.OBSIDIAN, false);
+		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
 		this.fillWithAir(world, sbb, mid - 1, 1, mid - 1, mid + 0, 2, mid + 0);
 		this.placeTreasureAtCurrentPosition(world, rand, mid, 1, mid, TFTreasure.troll_garden, false, sbb);
 	}

@@ -16,8 +16,8 @@ public class ItemTFHydraChops extends ItemTFFood {
     @Override
     public ItemStack onItemUseFinish(ItemStack itemStack, World world, EntityLivingBase living) {
     	// if the player is at zero food, achievements
-        if (living.getFoodStats().getFoodLevel() <= 0) {
-        	living.addStat(TFAchievementPage.twilightHydraChop);
+        if (living instanceof EntityPlayer && ((EntityPlayer) living).getFoodStats().getFoodLevel() <= 0) {
+        	((EntityPlayer) living).addStat(TFAchievementPage.twilightHydraChop);
         }
         // then normal effects
         return super.onItemUseFinish(itemStack, world, living);

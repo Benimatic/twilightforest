@@ -68,11 +68,11 @@ public class ItemTFGiantPick extends ItemPickaxe {
 
 	@Override
 	public float getStrVsBlock(ItemStack par1ItemStack, IBlockState par2Block) {
-		float strVsBlock = super.func_150893_a(par1ItemStack, par2Block);
+		float strVsBlock = super.getStrVsBlock(par1ItemStack, par2Block);
 		// extra 64X strength vs giant obsidian
 		strVsBlock *= (par2Block  == TFBlocks.giantObsidian) ? 64 : 1;
 		// 64x strength vs giant blocks
-		return isGiantBlock(par2Block) ? strVsBlock * 64 : strVsBlock;
+		return isGiantBlock(par2Block.getBlock()) ? strVsBlock * 64 : strVsBlock;
 	}
 
 	private boolean isGiantBlock(Block block) {

@@ -32,7 +32,7 @@ public class ItemTFEmptyMagicMap extends ItemMapBase
         int step = 128 * (1 << mapData.scale);
         mapData.xCenter = (int)(Math.round(par3EntityPlayer.posX / step) * step);
         mapData.zCenter = (int)(Math.round(par3EntityPlayer.posZ / step) * step);
-        mapData.dimension = (byte)par2World.provider.dimensionId;
+        mapData.dimension = (byte)par2World.provider.getDimension();
         mapData.markDirty();
         --par1ItemStack.stackSize;
         

@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.init.MobEffects;
 import twilightforest.TwilightForestMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +32,7 @@ public class ItemTFIceSword extends ItemSword {
 		
 		if (result) {
 			int chillLevel = 2;
-			par2EntityLiving.addPotionEffect(new PotionEffect(MobEffects.MOVESLOWDOWN.id, 20 * 10, chillLevel, true));
+			par2EntityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 10, chillLevel, true, true));
 		}
 		
 		return result;

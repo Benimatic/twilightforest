@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -50,7 +51,7 @@ public class ItemTFTransformPowder extends ItemTF
         this.maxStackSize = 64;
 		this.setCreativeTab(TFItems.creativeTab);
         
-        transformMap = new HashMap<Class<? extends EntityLivingBase>, Class<? extends EntityLivingBase>>();
+        transformMap = new HashMap<>();
         
         
         addTwoWayTransformation(EntityTFMinotaur.class, EntityPigZombie.class);
@@ -142,7 +143,7 @@ public class ItemTFTransformPowder extends ItemTF
 			// particle effect
 			for (int i = 0; i < 30; i++)
 			{
-				world.spawnParticle("magicCrit", fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX), 
+				world.spawnParticle(EnumParticleTypes.CRIT_MAGIC, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
 						fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY), 
 						fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ), 
 						0, 0, 0);

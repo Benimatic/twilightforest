@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStandingSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -49,23 +50,23 @@ public abstract class StructureTFComponent extends StructureComponent {
         this.deco = StructureTFDecorator.getDecoFor(par1NBTTagCompound.getString("deco"));
     }
     
-    public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int dir)
+    public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, EnumFacing dir)
     {
         switch(dir)
         {
         default:
             return new StructureBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
-        case 0: // '\0'
+        case SOUTH: // '\0'
             return new StructureBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
-        case 1: // '\001'
+        case WEST: // '\001'
             return new StructureBoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
 
-        case 2: // '\002'
+        case NORTH: // '\002'
             return new StructureBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
 
-        case 3: // '\003'
+        case EAST: // '\003'
             return new StructureBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
         }
     }    
@@ -73,23 +74,23 @@ public abstract class StructureTFComponent extends StructureComponent {
     /**
      * Fixed a bug with direction 1 and -z values, but I'm not sure if it'll break other things
      */
-    public static StructureBoundingBox getComponentToAddBoundingBox2(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int dir)
+    public static StructureBoundingBox getComponentToAddBoundingBox2(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, EnumFacing dir)
     {
         switch(dir)
         {
         default:
             return new StructureBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
-        case 0: // '\0'
+        case SOUTH: // '\0'
             return new StructureBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
-        case 1: // '\001'
+        case WEST: // '\001'
             return new StructureBoundingBox(x - maxZ - minZ, y + minY, z + minX, x - minZ, y + maxY + minY, z + maxX + minX);
 
-        case 2: // '\002'
+        case NORTH: // '\002'
             return new StructureBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
 
-        case 3: // '\003'
+        case EAST: // '\003'
             return new StructureBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z - minX);
         }
     }
@@ -144,7 +145,6 @@ public abstract class StructureTFComponent extends StructureComponent {
         return tileEntitySpawner;
     }
 
-
     /**
      * Place a treasure chest at the specified coordinates
      * 
@@ -165,7 +165,8 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.CHEST)
+        BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST)
         {
             treasureType.generate(world, rand, dx, dy, dz, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
         }
@@ -191,7 +192,8 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffsetAsIfRotated(x, z, rotation);
         int dy = getYWithOffset(y);
         int dz = getZWithOffsetAsIfRotated(x, z, rotation);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.CHEST)
+        BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST)
         {
             treasureType.generate(world, null, dx, dy, dz, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
         }
@@ -201,9 +203,10 @@ public abstract class StructureTFComponent extends StructureComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if (sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.STANDING_SIGN)
+        BlockPos pos = new BlockPos(dx, dy, dz);
+        if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.STANDING_SIGN)
         {
-            world.setBlock(dx, dy, dz, Blocks.STANDING_SIGN, (this.coordBaseMode * 2), 2);
+            world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().withProperty(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
             
             TileEntitySign teSign = (TileEntitySign)world.getTileEntity(dx, dy, dz);
             if (teSign != null)
@@ -234,22 +237,22 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/**
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
-	protected int[] offsetTowerCoords(int x, int y, int z, int towerSize, int direction) {
+	protected int[] offsetTowerCoords(int x, int y, int z, int towerSize, EnumFacing direction) {
 		
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		
-		if (direction == 0) {
+		if (direction == EnumFacing.SOUTH) {
 			return new int[] {dx + 1, dy - 1, dz - towerSize / 2};
 		}
-		else if (direction == 1) {
+		else if (direction == EnumFacing.WEST) {
 			return new int[] {dx + towerSize / 2, dy - 1, dz + 1};
 		}
-		else if (direction == 2) {
+		else if (direction == EnumFacing.NORTH) {
 			return new int[] {dx - 1, dy - 1, dz + towerSize / 2};
 		}
-		else if (direction == 3) {
+		else if (direction == EnumFacing.EAST) {
 			return new int[] {dx - towerSize / 2, dy - 1, dz - 1};
 		}
 		
@@ -549,7 +552,7 @@ public abstract class StructureTFComponent extends StructureComponent {
          	{
              	for (int y = sy; y <= dy; y++) 
              	{
-             		world.setLightFor(EnumSkyBlock.SKY, x, y, z, 0);
+             		world.setLightFor(EnumSkyBlock.SKY, new BlockPos(x, y, z), 0);
              	}
          	}
      	}

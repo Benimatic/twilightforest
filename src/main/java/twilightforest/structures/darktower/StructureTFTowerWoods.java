@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.TowerWoodVariant;
 
 public class StructureTFTowerWoods extends StructureComponent.BlockSelector {
 
@@ -12,29 +14,27 @@ public class StructureTFTowerWoods extends StructureComponent.BlockSelector {
 	public void selectBlocks(Random par1Random, int x, int y, int z, boolean isWall) {
         if (!isWall)
         {
-            this.field_151562_a = Blocks.AIR;
-            this.selectedBlockMetaData = 0;
+            this.blockstate = Blocks.AIR.getDefaultState();
         }
         else
         {
-            this.field_151562_a = TFBlocks.towerWood;
             float randFloat = par1Random.nextFloat();
 
             if (randFloat < 0.1F)
             {
-                this.selectedBlockMetaData = 2;
+                this.blockstate = TFBlocks.towerWood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.CRACKED);
             }
             else if (randFloat < 0.2F)
             {
-                this.selectedBlockMetaData = 3;
+                this.blockstate = TFBlocks.towerWood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.MOSSY);
             }
             else if (randFloat < 0.225F)
             {
-                this.selectedBlockMetaData = 4;
+                this.blockstate = TFBlocks.towerWood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED);
             }
             else
             {
-                this.selectedBlockMetaData = 0;
+                this.blockstate = TFBlocks.towerWood.getDefaultState();
             }
         }
 	}

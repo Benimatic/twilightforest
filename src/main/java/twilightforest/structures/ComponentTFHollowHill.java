@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -139,7 +140,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
     	placeTreasureAtCurrentPosition(world, chestRNG, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
     	
     	// make something for it to stand on, if necessary
-        func_151554_b(world, Blocks.COBBLESTONE, 0, x, y - 1, z, sbb);
+        setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y - 1, z, sbb);
 
 	}
 
@@ -151,7 +152,8 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
+		BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER)
         {
         	// generate an RNG for this stalactite
         	//TODO: MOAR RANDOM!
@@ -159,7 +161,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         	
         	// make the actual stalactite
 			TFGenCaveStalactite stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			stalag.generate(world, stalRNG, dx, dy, dz);
+			stalag.generate(world, stalRNG, pos);
         }
 	}
 
@@ -171,7 +173,8 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         int dx = getXWithOffset(x, z);
         int dy = getYWithOffset(y);
         int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.MOB_SPAWNER)
+		BlockPos pos = new BlockPos(dx, dy, dz);
+        if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER)
         {
         	// generate an RNG for this stalactite
         	//TODO: MOAR RANDOM!
@@ -182,7 +185,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         	}
         	
         	// make the actual stalactite
-        	(new TFGenCaveStalactite(blockToGenerate, length, up)).generate(world, stalRNG, dx, dy, dz);
+        	(new TFGenCaveStalactite(blockToGenerate, length, up)).generate(world, stalRNG, pos);
         }
 	}
 

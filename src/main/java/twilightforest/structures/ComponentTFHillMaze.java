@@ -115,8 +115,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 		return false;
 	}
 
-
-	void decorate3x3Rooms(World world, int[] rcoords, StructureBoundingBox sbb)
+	private void decorate3x3Rooms(World world, int[] rcoords, StructureBoundingBox sbb)
 	{
 		for (int i = 0; i < rcoords.length / 2; i++)
 		{
@@ -134,7 +133,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 	/**
 	 * Decorates a room in the maze.  Makes assumptions that the room is 3x3 cells and thus 11x11 blocks large.
 	 */
-	void decorate3x3Room(World world, int x, int z, StructureBoundingBox sbb)
+	private void decorate3x3Room(World world, int x, int z, StructureBoundingBox sbb)
 	{
 		// make a new RNG for this room!
 		Random roomRNG = new Random(world.getSeed() ^ x + z);

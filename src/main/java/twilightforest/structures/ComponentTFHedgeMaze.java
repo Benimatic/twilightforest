@@ -20,11 +20,6 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 	private static final int RADIUS = (MSIZE / 2 * 3) + 1;
 	private static final int DIAMETER = 2 * RADIUS;
 	private static final int FLOOR_LEVEL = 3;
-	
-	private static final IBlockState NORTH_JACKO = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.NORTH);
-	private static final IBlockState SOUTH_JACKO = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.SOUTH);
-	private static final IBlockState WEST_JACKO = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.WEST);
-	private static final IBlockState EAST_JACKO = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.EAST);
 
 	public ComponentTFHedgeMaze(World world, Random rand, int i, int x, int y, int z) {
 		super(i);
@@ -60,16 +55,21 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 			}
 		}
 
+		IBlockState northJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.NORTH);
+		IBlockState southJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.SOUTH);
+		IBlockState westJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.WEST);
+		IBlockState eastJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.EAST);
+
 		// plunk down some jack-o-lanterns outside for decoration
-		setBlockState(world, WEST_JACKO, 0, FLOOR_LEVEL, 24, sbb);
-		setBlockState(world, WEST_JACKO, 0, FLOOR_LEVEL, 29, sbb);
-		setBlockState(world, EAST_JACKO, 50, FLOOR_LEVEL, 24, sbb);
-		setBlockState(world, EAST_JACKO, 50, FLOOR_LEVEL, 29, sbb);
+		setBlockState(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);
+		setBlockState(world, westJacko, 0, FLOOR_LEVEL, 29, sbb);
+		setBlockState(world, eastJacko, 50, FLOOR_LEVEL, 24, sbb);
+		setBlockState(world, eastJacko, 50, FLOOR_LEVEL, 29, sbb);
 		
-		setBlockState(world, NORTH_JACKO, 24, FLOOR_LEVEL, 0, sbb);
-		setBlockState(world, NORTH_JACKO, 29, FLOOR_LEVEL, 0, sbb);
-		setBlockState(world, SOUTH_JACKO, 24, FLOOR_LEVEL, 50, sbb);
-		setBlockState(world, SOUTH_JACKO, 29, FLOOR_LEVEL, 50, sbb);
+		setBlockState(world, northJacko, 24, FLOOR_LEVEL, 0, sbb);
+		setBlockState(world, northJacko, 29, FLOOR_LEVEL, 0, sbb);
+		setBlockState(world, southJacko, 24, FLOOR_LEVEL, 50, sbb);
+		setBlockState(world, southJacko, 29, FLOOR_LEVEL, 50, sbb);
 		
 		
 		int nrooms = MSIZE / 3;

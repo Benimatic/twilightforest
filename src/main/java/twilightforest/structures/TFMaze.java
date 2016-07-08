@@ -3,6 +3,7 @@ package twilightforest.structures;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -36,29 +37,22 @@ public class TFMaze {
 	public int worldZ;
 	
 	public int type; // 1-3 = various sizes hollow hills
-	
-	public Block wallBlockID;
-	public int wallBlockMeta;
-	
-	public Block wallVar0ID;
-	public int wallVar0Meta;
+
+	public IBlockState wallBlockState;
+
+	public IBlockState wallVar0State;
 	public float wallVarRarity;
 
-	public Block headBlockID;
-	public int headBlockMeta;
-	
-	public Block rootBlockID;
-	public int rootBlockMeta;
-	
-	public Block pillarBlockID;
-	public int pillarBlockMeta;
-	
-	public Block doorBlockID;
-	public int doorBlockMeta;
+	public IBlockState headBlockState;
+
+	public IBlockState rootBlockState;
+
+	public IBlockState pillarBlockState;
+
+	public IBlockState doorBlockState;
 	public float doorRarity;
-	
-	public Block torchBlockID;
-	public int torchBlockMeta;
+
+	public IBlockState torchBlockState;
 	public float torchRarity;
 	
 	protected int rawWidth;

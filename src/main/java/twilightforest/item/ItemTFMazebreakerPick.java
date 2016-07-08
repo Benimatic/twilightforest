@@ -2,19 +2,13 @@ package twilightforest.item;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFMazebreakerPick extends ItemPickaxe {
 
@@ -35,8 +29,8 @@ public class ItemTFMazebreakerPick extends ItemPickaxe {
 
 	@Override
 	public float getStrVsBlock(ItemStack par1ItemStack, IBlockState state) {
-		float strVsBlock = super.func_150893_a(par1ItemStack, par2Block);
+		float strVsBlock = super.getStrVsBlock(par1ItemStack, state);
 		// 16x strength vs mazestone
-		return par2Block == TFBlocks.mazestone ? strVsBlock * 16F : strVsBlock;
+		return state.getBlock() == TFBlocks.mazestone ? strVsBlock * 16F : strVsBlock;
 	}
 }

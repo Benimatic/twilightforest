@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -20,7 +21,7 @@ public class ComponentTFTrollVault extends StructureTFComponent {
 	
 	public ComponentTFTrollVault(int index, int x, int y, int z) {
 		super(index);
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		
 		// adjust x, y, z
@@ -44,20 +45,20 @@ public class ComponentTFTrollVault extends StructureTFComponent {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// make walls
-		this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giantObsidian, 0, TFBlocks.giantObsidian, 0, false); 
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giantObsidian.getDefaultState(), TFBlocks.giantObsidian.getDefaultState(), false);
 		
 		// clear inside
 		this.fillWithAir(world, sbb, 4, 4, 4, 7, 7, 7);
 		
 		// cobblestone platform
-		this.fillWithMetadataBlocks(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE, 0, Blocks.COBBLESTONE, 0, false);
+		this.fillWithBlocks(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
 		
 		// chests
-		this.placeBlockAtCurrentPosition(world, Blocks.CHEST, 0, 5, 6, 5, sbb);
+		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 5, 6, 5, sbb);
 		this.placeTreasureAtCurrentPosition(world, rand, 5, 6, 6, TFTreasure.troll_vault, false, sbb);
 		
 		this.placeTreasureAtCurrentPosition(world, rand, 6, 6, 5, TFTreasure.troll_garden, true, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.TRAPPED_CHEST, 0, 6, 6, 6, sbb);
+		this.setBlockState(world, Blocks.TRAPPED_CHEST.getDefaultState(), 6, 6, 6, sbb);
 
 		return true;
 	}

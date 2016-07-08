@@ -65,7 +65,7 @@ public class ItemTFMazeMap extends ItemMap
             mapData.xCenter = par2World.getWorldInfo().getSpawnX();
             mapData.zCenter = par2World.getWorldInfo().getSpawnZ();
             mapData.scale = 0;
-            mapData.dimension = par2World.provider.dimensionId;
+            mapData.dimension = par2World.provider.getDimension();
             mapData.markDirty();
             par2World.setItemData(mapName, mapData);
         }
@@ -80,7 +80,7 @@ public class ItemTFMazeMap extends ItemMap
     {
     	int yDraw = MathHelper.floor_double(par2Entity.posY - (double)par3MapData.yCenter);
     	
-        if (par1World.provider.dimensionId == par3MapData.dimension && yDraw > -YSEARCH && yDraw < YSEARCH)
+        if (par1World.provider.getDimension() == par3MapData.dimension && yDraw > -YSEARCH && yDraw < YSEARCH)
         {
             short xSize = 128;
             short zSize = 128;
