@@ -82,7 +82,7 @@ public class TFBlocks {
 	public static void registerBlocks() {
 		
         log = (new BlockTFLog()).setUnlocalizedName("TFLog");
-        leaves = (new BlockTFLeaves()).setUnlocalizedName("TFLeaves").setBlockTextureName("leaves_oak");
+        leaves = (new BlockTFLeaves()).setUnlocalizedName("TFLeaves");
         firefly = (new BlockTFFirefly()).setUnlocalizedName("TFFirefly");
         cicada = (new BlockTFCicada()).setUnlocalizedName("TFCicada");
         portal = (new BlockTFPortal()).setUnlocalizedName("TFPortal");
@@ -110,8 +110,8 @@ public class TFBlocks {
         underBrick = (new BlockTFUnderBrick()).setUnlocalizedName("TFUnderBrick");
         thorns = (new BlockTFThorns()).setUnlocalizedName("TFThorns");
         burntThorns = (new BlockTFBurntThorns()).setUnlocalizedName("TFBurntThorns");
-        thornRose = (new BlockTFThornRose()).setUnlocalizedName("TFThornRose").setBlockTextureName(TwilightForestMod.ID + ":thornRose");
-        leaves3 = (new BlockTFLeaves3()).setUnlocalizedName("TFLeaves3").setBlockTextureName("leaves_oak");
+        thornRose = (new BlockTFThornRose()).setUnlocalizedName("TFThornRose");
+        leaves3 = (new BlockTFLeaves3()).setUnlocalizedName("TFLeaves3");
         deadrock = (new BlockTFDeadrock()).setUnlocalizedName("TFDeadrock"); 
         darkleaves = (new BlockTFDarkLeaves()).setUnlocalizedName("DarkLeaves"); 
         auroraPillar = (new BlockTFAuroraPillar()).setUnlocalizedName("AuroraPillar"); 
@@ -132,7 +132,7 @@ public class TFBlocks {
         trollBer = (new BlockTFRipeTorchCluster()).setUnlocalizedName("TrollBer");
         knightmetalStorage = (new BlockTFKnightmetalBlock()).setUnlocalizedName("KnightmetalBlock");
         hugeLilyPad = (new BlockTFHugeLilyPad()).setUnlocalizedName("HugeLilyPad");
-        hugeWaterLily = (new BlockTFHugeWaterLily()).setUnlocalizedName("HugeWaterLily").setBlockTextureName(TwilightForestMod.ID + ":huge_waterlily");
+        hugeWaterLily = (new BlockTFHugeWaterLily()).setUnlocalizedName("HugeWaterLily");
         slider = (new BlockTFSlider()).setUnlocalizedName("Slider");
         castleBlock = (new BlockTFCastleBlock()).setUnlocalizedName("CastleBrick");
         castleMagic = (new BlockTFCastleMagic()).setUnlocalizedName("CastleMagic");
