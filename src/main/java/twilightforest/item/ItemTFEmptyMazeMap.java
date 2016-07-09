@@ -1,21 +1,18 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFMazeMapData;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.WorldProviderTwilightForest;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFEmptyMazeMap extends ItemMapBase
 {
@@ -39,8 +36,8 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
         // need to fix center for feature offset
         if (par2World.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World) == TFFeature.labyrinth) {
         	BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World);
-            mapData.xCenter = mc.posX;
-            mapData.zCenter = mc.posZ;
+            mapData.xCenter = mc.getX();
+            mapData.zCenter = mc.getZ();
             mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
         } else {
             mapData.xCenter = (int)(Math.round(par3EntityPlayer.posX / step) * step) + 10; // mazes are offset slightly
@@ -61,7 +58,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
 
         if (par1ItemStack.stackSize <= 0)
         {
-            return mapItem;
+            return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
         }
         else
         {
@@ -70,7 +67,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
                 par3EntityPlayer.dropItem(mapItem, false);
             }
 
-            return par1ItemStack;
+            return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
         }
     }
 }

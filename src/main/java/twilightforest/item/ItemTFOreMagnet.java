@@ -46,8 +46,6 @@ public class ItemTFOreMagnet extends ItemTF
 
     	if (!world.isRemote && useTime > 10) 
     	{
-    		//player.addChatMessage("Ore Magnet!");
-
     		int moved = doMagnet(world, living, 0, 0);
 
     		if (moved == 0)
@@ -83,17 +81,9 @@ public class ItemTFOreMagnet extends ItemTF
     			moved = doMagnet(world, living, WIGGLE, -WIGGLE);
     		}
 
-    		//player.addChatMessage("Cost: " + moved);
-
     		if (moved > 0)
     		{
     			par1ItemStack.damageItem(moved, living);
-    			
-    			if (par1ItemStack.stackSize == 0)
-    			{
-    				living.destroyCurrentEquippedItem();
-    			}
-
     			world.playSoundAtEntity(living, "mob.endermen.portal", 1.0F, 1.0F);
     		}
     	}
@@ -156,12 +146,12 @@ public class ItemTFOreMagnet extends ItemTF
 	/**
 	 * Magnet from the player's position and facing to the specified offset
 	 */
-	protected int doMagnet(World world, EntityPlayer player, float yawOffset, float pitchOffset) {
+	private int doMagnet(World world, EntityLivingBase living, float yawOffset, float pitchOffset) {
 		
 		// find vector 32 blocks from look
 		double range = 32.0D;
-		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		Vec3d lookVec = getOffsetLook(player, yawOffset, pitchOffset);
+		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
+		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
 		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
 		
 		int useX = MathHelper.floor_double(srcVec.xCoord);
@@ -284,11 +274,11 @@ public class ItemTFOreMagnet extends ItemTF
 	 * Get the player look vector, but offset by the specified parameters.  We use to scan the area around where the player is looking
 	 * in the likely case there's no ore in the exact look direction.
 	 */
-	private Vec3d getOffsetLook(EntityPlayer player, float yawOffset, float pitchOffset) {
-        float var2 = MathHelper.cos(-(player.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
-        float var3 = MathHelper.sin(-(player.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
-        float var4 = -MathHelper.cos(-(player.rotationPitch + pitchOffset) * 0.017453292F);
-        float var5 = MathHelper.sin(-(player.rotationPitch + pitchOffset) * 0.017453292F);
+	private Vec3d getOffsetLook(EntityLivingBase living, float yawOffset, float pitchOffset) {
+        float var2 = MathHelper.cos(-(living.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
+        float var3 = MathHelper.sin(-(living.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
+        float var4 = -MathHelper.cos(-(living.rotationPitch + pitchOffset) * 0.017453292F);
+        float var5 = MathHelper.sin(-(living.rotationPitch + pitchOffset) * 0.017453292F);
         return new Vec3d(var3 * var4, var5, var2 * var4);
 	}
 
@@ -366,7 +356,7 @@ public class ItemTFOreMagnet extends ItemTF
 	}
 
 
-	public static boolean isOre(Block blockID, int meta) {
+	private static boolean isOre(Block blockID, int meta) {
 		
 		if (blockID == Blocks.COAL_ORE)
 		{

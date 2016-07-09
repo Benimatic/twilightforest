@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -23,11 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFMagicMap extends ItemMap
 {
     public static final String STR_ID = "magicmap";
-
-	protected ItemTFMagicMap()
-    {
-        super();
-    }
 
     @SideOnly(Side.CLIENT)
     public static TFMagicMapData getMPMapData(int par0, World par1World)
@@ -58,7 +52,7 @@ public class ItemTFMagicMap extends ItemMap
             mapData.xCenter = par2World.getWorldInfo().getSpawnX();
             mapData.zCenter = par2World.getWorldInfo().getSpawnZ();
             mapData.scale = 4;
-            mapData.dimension = par2World.provider.dimensionId;
+            mapData.dimension = par2World.provider.getDimension();
             mapData.markDirty();
             par2World.setItemData(mapName, mapData);
         }
@@ -68,7 +62,7 @@ public class ItemTFMagicMap extends ItemMap
 
     public void updateMapData(World par1World, Entity par2Entity, TFMagicMapData par3MapData)
     {
-        if (par1World.provider.dimensionId == par3MapData.dimension && par2Entity instanceof EntityPlayer)
+        if (par1World.provider.getDimension() == par3MapData.dimension && par2Entity instanceof EntityPlayer)
         {
             short xSize = 128;
             short zSize = 128;

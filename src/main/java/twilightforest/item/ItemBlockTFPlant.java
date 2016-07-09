@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.Facing;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFPlant;
@@ -25,12 +23,6 @@ public class ItemBlockTFPlant extends ItemBlock {
         setMaxDamage(0);
 	}
 
-    @Override
-    public IIcon getIconFromDamage(int par1)
-    {
-        return TFBlocks.plant.getIcon(2, par1);
-    }
-    
     @SideOnly(Side.CLIENT)
     @Override
     public int getColorFromItemStack(ItemStack par1ItemStack, int par2)

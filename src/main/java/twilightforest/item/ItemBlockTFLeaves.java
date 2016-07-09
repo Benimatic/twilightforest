@@ -3,8 +3,6 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import twilightforest.block.TFBlocks;
 
 public class ItemBlockTFLeaves extends ItemBlock {
 
@@ -14,12 +12,6 @@ public class ItemBlockTFLeaves extends ItemBlock {
         setMaxDamage(0);
 	}
 	
-    @Override
-    public IIcon getIconFromDamage(int par1)
-    {
-        return TFBlocks.leaves.getIcon(2, par1);
-    }
-
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {

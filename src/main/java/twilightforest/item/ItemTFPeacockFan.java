@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,15 +14,14 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFPeacockFan extends ItemTF
 {
@@ -61,7 +60,7 @@ public class ItemTFPeacockFan extends ItemTF
 			
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
-			if (!player.onGround && !player.isPotionActive(MobEffects.JUMP.id))
+			if (!player.onGround && !player.isPotionActive(MobEffects.JUMP_BOOST))
 			{
 				player.motionX *= 3F;
 				player.motionY = 1.5F;
@@ -90,7 +89,7 @@ public class ItemTFPeacockFan extends ItemTF
 		
 		player.setActiveHand(hand);
 		
-		return par1ItemStack;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 	
     @Override
@@ -154,9 +153,8 @@ public class ItemTFPeacockFan extends ItemTF
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = player.getLookVec();
 		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
-		
-		AxisAlignedBB crumbleBox =  new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
-		return crumbleBox;
+
+		return new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
 	}
 
 
@@ -182,7 +180,7 @@ public class ItemTFPeacockFan extends ItemTF
             {
                 for (int dz = minZ; dz <= maxZ; ++dz)
                 {
-                    fan += fanBlock(world, player, dx, dy, dz);
+                    fan += fanBlock(world, player, new BlockPos(dx, dy, dz));
                 }
             }
         }
@@ -192,25 +190,21 @@ public class ItemTFPeacockFan extends ItemTF
         return fan;
     }
 
-	private int fanBlock(World world, EntityPlayer player, int dx, int dy, int dz) {
+	private int fanBlock(World world, EntityPlayer player, BlockPos pos) {
 		int cost = 0;
 		
-		Block currentID = world.getBlock(dx, dy, dz);
+		IBlockState state = world.getBlockState(pos);
 		
-		if (currentID != Blocks.AIR)
+		if (state.getBlock() != Blocks.AIR)
 		{
-			int currentMeta = world.getBlockMetadata(dx, dy, dz);
-			
-			if (currentID instanceof BlockFlower)
+			if (state.getBlock() instanceof BlockFlower)
 			{
-				if(currentID.canHarvestBlock(player, currentMeta) && itemRand.nextInt(3) == 0)
+				if(state.getBlock().canHarvestBlock(world, pos, player) && itemRand.nextInt(3) == 0)
 				{
-					currentID.harvestBlock(world, player, dx, dy, dz, currentMeta);
-					world.setBlock(dx, dy, dz, Blocks.AIR, 0, 3);
-					world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
+					state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), null);
+					world.destroyBlock(pos, false);
 				}
 			}
-
 		}
 		
 		return cost;

@@ -10,6 +10,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -563,29 +564,29 @@ public class TFClientProxy extends TFCommonProxy {
 	
 
 	@Override
-	public ModelBiped getKnightlyArmorModel(int armorSlot) {
-		return knightlyArmorModel[armorSlot];
+	public ModelBiped getKnightlyArmorModel(EntityEquipmentSlot armorSlot) {
+		return knightlyArmorModel[armorSlot.getIndex()];
 	}
 	
 	@Override
-	public ModelBiped getPhantomArmorModel(int armorSlot) {
-		return phantomArmorModel[armorSlot];
+	public ModelBiped getPhantomArmorModel(EntityEquipmentSlot armorSlot) {
+		return phantomArmorModel[armorSlot.getIndex()];
 	}
 	
 	@Override
-	public ModelBiped getYetiArmorModel(int armorSlot) {
-		return yetiArmorModel[armorSlot];
+	public ModelBiped getYetiArmorModel(EntityEquipmentSlot armorSlot) {
+		return yetiArmorModel[armorSlot.getIndex()];
 	}
 
 	@Override
-	public ModelBiped getArcticArmorModel(int armorSlot) {
-		return arcticArmorModel[armorSlot];
+	public ModelBiped getArcticArmorModel(EntityEquipmentSlot armorSlot) {
+		return arcticArmorModel[armorSlot.getIndex()];
 	}
 	
 	
 	@Override
-	public ModelBiped getFieryArmorModel(int armorSlot) {
-		return this.fieryArmorModel[armorSlot];
+	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
+		return this.fieryArmorModel[armorSlot.getIndex()];
 	}
 
 	public boolean isDangerOverlayShown() {

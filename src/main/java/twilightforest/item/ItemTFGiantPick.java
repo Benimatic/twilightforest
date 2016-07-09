@@ -7,16 +7,13 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.text.translation.I18n;
 
 import com.google.common.collect.Multimap;
@@ -27,7 +24,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFGiantPick extends ItemPickaxe {
 
 	private float damageVsEntity;
-	private GiantItemIcon giantIcon;
 
 	protected ItemTFGiantPick(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);
@@ -62,7 +58,7 @@ public class ItemTFGiantPick extends ItemPickaxe {
         // remove old damage value
         multimap.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName());
         // add new one
-        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", (double)this.damageVsEntity, 0));
+        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double)this.damageVsEntity, 0));
         return multimap;
     }
 

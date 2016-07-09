@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -15,9 +14,9 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,20 +28,18 @@ public class ItemTFFieryPick extends ItemPickaxe {
 	}
 
 	@Override
-	public boolean onBlockDestroyed(ItemStack par1ItemStack, World par2World, Block blockID, int x, int y, int z, EntityLivingBase par7EntityLiving) {
-		if (super.onBlockDestroyed(par1ItemStack, par2World, blockID, x, y, z, par7EntityLiving) && this.func_150897_b(blockID))
+	public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase living) {
+		if (super.onBlockDestroyed(stack, world, state, pos, living) && this.canHarvestBlock(state))
 		{
 			// we are just displaying the fire animation here, so check if we're on the client
-			if (par2World.isRemote)
+			if (world.isRemote)
 			{
-				int meta = par2World.getBlockMetadata(x, y, z); // I guess the block is still there at this point
-
-				ArrayList<ItemStack> items = blockID.getDrops(par2World, x, y, z, meta, 0);
+				List<ItemStack> items = state.getBlock().getDrops(world, pos, state, 0);
 
 				for (ItemStack input : items)
 				{
 					// does it smelt?
-					ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(input);
+					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
 					if (result != null)
 					{
 
@@ -53,7 +50,7 @@ public class ItemTFFieryPick extends ItemPickaxe {
 							double ry = itemRand.nextGaussian() * 0.02D;
 							double rz = itemRand.nextGaussian() * 0.02D;
 							double magnitude = 20.0;
-							par2World.spawnParticle(EnumParticleTypes.FLAME, x + 0.5 + (rx * magnitude), y + 0.5 + (ry * magnitude), z + 0.5 + (rz * magnitude), -rx, -ry, -rz);
+							world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5 + (rx * magnitude), pos.getY() + 0.5 + (ry * magnitude), pos.getZ() + 0.5 + (rz * magnitude), -rx, -ry, -rz);
 						}
 
 					}

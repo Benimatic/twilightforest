@@ -3,11 +3,7 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.block.TFBlocks;
-
-
 
 public class ItemBlockTFLog extends ItemBlock {
 
@@ -22,12 +18,6 @@ public class ItemBlockTFLog extends ItemBlock {
         setMaxDamage(0);
     }
     
-    @Override
-    public IIcon getIconFromDamage(int par1)
-    {
-        return TFBlocks.log.getIcon(2, par1);
-    }
-
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {

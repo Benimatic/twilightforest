@@ -136,9 +136,6 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 //			player.stopUsingItem();
 //			return;
 //		}
-    	
-
-
 	}
 
     @Override
@@ -153,18 +150,6 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
         return EnumAction.BLOCK;
     }
 
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-        this.annihilateIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":annihilate_particle");
-    }
-    
     public IIcon getAnnihilateIcon() {
     	return this.annihilateIcon;
     }

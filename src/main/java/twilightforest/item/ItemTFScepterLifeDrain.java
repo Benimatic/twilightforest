@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,10 +23,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 
 public class ItemTFScepterLifeDrain extends ItemTF {
 
@@ -35,7 +32,6 @@ public class ItemTFScepterLifeDrain extends ItemTF {
         this.maxStackSize = 1;
         this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
-
 	}
 	
 	@Override
@@ -53,7 +49,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	/**
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
-	public static void animateTargetShatter(World worldObj, EntityLivingBase target) {
+	private static void animateTargetShatter(World worldObj, EntityLivingBase target) {
 		for (int var1 = 0; var1 < 50; ++var1)
 		{
 		    double gaussX = itemRand.nextGaussian() * 0.02D;
@@ -67,7 +63,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		}
 	}
 	
-	public static Item getTargetDropItemId(EntityLivingBase target) {
+	private static Item getTargetDropItemId(EntityLivingBase target) {
 		//TODO: make this actually work
 		return Items.ROTTEN_FLESH;
 	}
@@ -173,7 +169,8 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 								// heal the player
 								living.heal(1);
 								// and give foods
-								living.getFoodStats().addStats(1, 0.1F);
+								if (living instanceof EntityPlayer)
+									((EntityPlayer) living).getFoodStats().addStats(1, 0.1F);
 							}
 						}
 					}
@@ -212,10 +209,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		return (float) target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
 	}
 
-	/**
-     * Make a trail of particles from one point to another
-     */
-    protected void makeRedMagicTrail(World worldObj, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	private void makeRedMagicTrail(World worldObj, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
     	int particles = 32;
     	for (int i = 0; i < particles; i++)

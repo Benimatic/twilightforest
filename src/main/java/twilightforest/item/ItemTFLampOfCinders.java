@@ -1,7 +1,7 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -10,14 +10,12 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFLampOfCinders extends ItemTF {
 
@@ -45,30 +43,30 @@ public class ItemTFLampOfCinders extends ItemTF {
 	@Override
 	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-        if (burnBlock(player, world, x, y, z)) {
+        if (burnBlock(world, pos)) {
     		world.playSoundAtEntity(player, this.getSound(), 0.5F, 1.5F);
 
     		// spawn flame particles
     		for (int i = 0; i < 10; i++) {
-    			float dx =  x + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
-    			float dy =  y + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
-    			float dz =  z + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
+    			float dx =  pos.getX() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
+    			float dy =  pos.getY() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
+    			float dz =  pos.getZ() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
     			
-                world.spawnParticle("smoke", dx, dy, dz, 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", dx, dy, dz, 0.0D, 0.0D, 0.0D);
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+                world.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
     		}
     		
-        	return true;
+        	return EnumActionResult.SUCCESS;
         } else {
-        	return false;
+        	return EnumActionResult.PASS;
         }
         
 	}
 
-	private boolean burnBlock(EntityPlayer player, World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
-        if (block == TFBlocks.thorns) {
-        	world.setBlock(x, y, z, TFBlocks.burntThorns, world.getBlockMetadata(x, y, z) & 12, 2);
+	private boolean burnBlock(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == TFBlocks.thorns) {
+        	world.setBlockState(pos, TFBlocks.burntThorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)), 2);
         	return true;
         } else {
         	return false;
@@ -86,37 +84,44 @@ public class ItemTFLampOfCinders extends ItemTF {
     		doBurnEffect(world, living);
     		
     		// trigger achievement
-    		living.addStat(TFAchievementPage.twilightProgressTroll);
+			if (living instanceof EntityPlayer)
+    			((EntityPlayer) living).addStat(TFAchievementPage.twilightProgressTroll);
     	}
 
     }
 
-	private void doBurnEffect(World world, EntityPlayer player) {
-		int px = MathHelper.floor_double(player.lastTickPosX);
-		int py = MathHelper.floor_double(player.lastTickPosY + player.getEyeHeight());
-		int pz = MathHelper.floor_double(player.lastTickPosZ);
+	private void doBurnEffect(World world, EntityLivingBase living) {
+		BlockPos pos = new BlockPos(
+				MathHelper.floor_double(living.lastTickPosX),
+				MathHelper.floor_double(living.lastTickPosY + living.getEyeHeight()),
+				MathHelper.floor_double(living.lastTickPosZ)
+		);
 
 		int range = 4;
 		
 		if (!world.isRemote) {
-			world.playSoundAtEntity(player, this.getSound(), 1.5F, 0.8F);
+			world.playSoundAtEntity(living, this.getSound(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <=range; dx++) {
 				for (int dy = -range; dy <=range; dy++) {
 					for (int dz = -range; dz <=range; dz++) {
-						this.burnBlock(player, world, px + dx, py + dy, pz + dz);
+						this.burnBlock(world, pos.add(dx, dy, dz));
 					}
 				}
 			}
 		}
 
-		for (int i = 0; i < 6; i++) {
-			int rx = px + itemRand.nextInt(range) - itemRand.nextInt(range);
-			int ry = py + itemRand.nextInt(2);
-			int rz = pz + itemRand.nextInt(range) - itemRand.nextInt(range);
+		if (living instanceof EntityPlayer) {
+			for (int i = 0; i < 6; i++) {
+				BlockPos rPos = pos.add(
+						itemRand.nextInt(range) - itemRand.nextInt(range),
+						itemRand.nextInt(2),
+						itemRand.nextInt(range) - itemRand.nextInt(range)
+				);
 
-			world.playAuxSFXAtEntity(player, 2004, rx, ry, rz, 0);
+				world.playEvent((EntityPlayer) living, 2004, rPos, 0);
+			}
 		}
 	}
 

@@ -3,7 +3,6 @@ package twilightforest.item;
 import java.util.List;
 
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFPhantomArmor extends ItemArmor {
 
-	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, int armorType) {
+	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, renderIndex, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}

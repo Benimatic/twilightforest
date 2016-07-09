@@ -3,9 +3,6 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.math.MathHelper;
-import twilightforest.block.TFBlocks;
 
 public class ItemBlockNagastone extends ItemBlock {
 
@@ -15,14 +12,6 @@ public class ItemBlockNagastone extends ItemBlock {
         setMaxDamage(0);
 	}
 	
-    @Override
-    public IIcon getIconFromDamage(int i)
-    {
-        int j = MathHelper.clamp_int(i, 0, 15);
-        return TFBlocks.nagastone.getIcon(2, j);
-
-    }
-
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {

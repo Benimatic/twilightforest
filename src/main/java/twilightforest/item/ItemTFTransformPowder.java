@@ -44,7 +44,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTFTransformPowder extends ItemTF 
 {
 	
-	HashMap<Class<? extends EntityLivingBase>, Class<? extends EntityLivingBase>> transformMap;
+	private HashMap<Class<? extends EntityLivingBase>, Class<? extends EntityLivingBase>> transformMap;
 
 	protected ItemTFTransformPowder() 
 	{

@@ -6,14 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockTFMeta extends ItemBlock {
 
 	private final Block myBlock;
-
 
 	public ItemBlockTFMeta(Block block) {
 		super(block);
@@ -29,18 +27,11 @@ public class ItemBlockTFMeta extends ItemBlock {
         return i;
     }
     
-
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
     	int meta = itemstack.getItemDamage();
     	return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int par1)
-    {
-        return this.myBlock.getIcon(2, par1);
     }
 
 	@Override

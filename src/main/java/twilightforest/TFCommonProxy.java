@@ -2,6 +2,7 @@ package twilightforest;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.client.GuiTFCinderFurnace;
@@ -106,23 +107,23 @@ public class TFCommonProxy implements IGuiHandler {
 		}
 	}
 
-	public ModelBiped getKnightlyArmorModel(int armorSlot) {
+	public ModelBiped getKnightlyArmorModel(EntityEquipmentSlot armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getPhantomArmorModel(int armorSlot) {
+	public ModelBiped getPhantomArmorModel(EntityEquipmentSlot armorSlot) {
 		return null;
 	}
 	
-	public ModelBiped getYetiArmorModel(int armorSlot) {
+	public ModelBiped getYetiArmorModel(EntityEquipmentSlot armorSlot) {
 		return null;
 	}
 	
-	public ModelBiped getArcticArmorModel(int armorSlot) {
+	public ModelBiped getArcticArmorModel(EntityEquipmentSlot armorSlot) {
 		return null;
 	}
 	
-	public ModelBiped getFieryArmorModel(int armorSlot) {
+	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
 		return null;
 	}
 	
