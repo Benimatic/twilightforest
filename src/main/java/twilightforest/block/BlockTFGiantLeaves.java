@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockAccess;
 public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 
 	public BlockTFGiantLeaves() {
-		super(Blocks.LEAVES);
+		super(Blocks.LEAVES.getDefaultState());
         this.setHardness(0.2F * 64F);
         this.setLightOpacity(1);
 		this.setCreativeTab(TFItems.creativeTab);

@@ -6,7 +6,7 @@ import net.minecraft.init.Blocks;
 public class BlockTFGiantLog extends BlockTFGiantBlock  {
 
 	protected BlockTFGiantLog() {
-		super(Blocks.LOG);
+		super(Blocks.LOG.getDefaultState());
         this.setHardness(2.0F * 64F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}

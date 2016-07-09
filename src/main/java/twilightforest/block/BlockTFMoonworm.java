@@ -12,8 +12,6 @@ import twilightforest.tileentity.TileEntityTFMoonworm;
 
 public class BlockTFMoonworm extends BlockTFCritter {
 
-	public static int sprMoonworm = 52;
-
 	@Override
 	public float getWidth() {
 		return 0.25F;
