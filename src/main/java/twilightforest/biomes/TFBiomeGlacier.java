@@ -22,7 +22,6 @@ import twilightforest.world.TFWorld;
 
 /**
  * @author Ben
- *
  */
 public class TFBiomeGlacier extends TFBiomeBase {
 

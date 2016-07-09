@@ -26,9 +26,9 @@ import twilightforest.world.TFWorld;
 public class TFBiomeFireflyForest extends TFBiomeBase {
 	
 	private static final int LAMPPOST_CHANCE = 4;
-	TFGenHangingLamps tfGenHangingLamps;
-	TFGenLampposts tfGenLampposts;
-	TFGenTallGrass worldGenMushgloom;
+	private TFGenHangingLamps tfGenHangingLamps;
+	private TFGenLampposts tfGenLampposts;
+	private TFGenTallGrass worldGenMushgloom;
 	
 	public TFBiomeFireflyForest(BiomeProperties props) {
 		super(props);

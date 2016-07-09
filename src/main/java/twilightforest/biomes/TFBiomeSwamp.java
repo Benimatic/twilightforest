@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -36,17 +37,14 @@ import twilightforest.world.TFGenHugeLilyPad;
 import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFWorld;
 
-
-
 public class TFBiomeSwamp extends TFBiomeBase {
 	
 	private static final int MONSTER_SPAWN_RATE = 20;
-	Random monsterRNG = new Random(53439L);
-	ArrayList<SpawnListEntry> emptyList = new ArrayList<SpawnListEntry>();
-	
-    WorldGenVines worldgenvines = new WorldGenVines();
-    WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
-    WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
+	private Random monsterRNG = new Random(53439L);
+
+    private WorldGenVines worldgenvines = new WorldGenVines();
+    private WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
+    private WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
 
 	public TFBiomeSwamp(BiomeProperties props) {
 		super(props);
@@ -148,7 +146,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
     {
     	// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
     	if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : emptyList;
+			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : ImmutableList.of();
     	}
     	else {
     		return par1EnumCreatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));

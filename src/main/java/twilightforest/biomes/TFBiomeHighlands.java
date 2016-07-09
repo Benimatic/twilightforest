@@ -37,8 +37,6 @@ import twilightforest.world.TFGenTrollRoots;
 
 
 public class TFBiomeHighlands extends TFBiomeBase {
-	
-	
     private static final WorldGenTaiga1 taigaGen1 = new WorldGenTaiga1();
     private static final WorldGenTaiga2 taigaGen2 = new WorldGenTaiga2(false);
     private static final WorldGenMegaPineTree megaPineGen1 = new WorldGenMegaPineTree(false, false);

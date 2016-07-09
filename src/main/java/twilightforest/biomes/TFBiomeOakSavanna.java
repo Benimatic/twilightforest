@@ -25,7 +25,6 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 		super(props);
 		
 		getTFBiomeDecorator().canopyTreeGen = new TFGenCanopyOak();
-		
         getTFBiomeDecorator().alternateCanopyChance = 0.8F;
         getTFBiomeDecorator().alternateCanopyGen = new TFGenNoTree();
 		
