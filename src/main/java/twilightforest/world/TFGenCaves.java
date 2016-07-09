@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.ChunkPrimer;
 import twilightforest.biomes.TFBiomeHighlands;
@@ -19,7 +20,7 @@ public class TFGenCaves extends MapGenCaves
      * Generates a larger initial cave node than usual. Called 25% of the time.
      * @param isHighlands 
      */
-    protected void generateLargeCaveNode(long caveSeed, int centerX, int centerZ, Block[] blockStorage, double randX, double randY, double randZ, boolean isHighlands)
+    protected void generateLargeCaveNode(long caveSeed, int centerX, int centerZ, ChunkPrimer blockStorage, double randX, double randY, double randZ, boolean isHighlands)
     {
         this.generateCaveNode(caveSeed, centerX, centerZ, blockStorage, randX, randY, randZ, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D, isHighlands);
     }
@@ -28,7 +29,7 @@ public class TFGenCaves extends MapGenCaves
      * Generates a node in the current cave system recursion tree.
      * @param isHighlands 
      */
-    protected void generateCaveNode(long caveSeed, int centerX, int centerZ, Block[] blockStorage, double randX, double randY, double randZ, float caveSize, float randPI, float angleToGenerate, int loopOne, int loopEnd, double yScale, boolean isHighlands)
+    protected void generateCaveNode(long caveSeed, int centerX, int centerZ, ChunkPrimer blockStorage, double randX, double randY, double randZ, float caveSize, float randPI, float angleToGenerate, int loopOne, int loopEnd, double yScale, boolean isHighlands)
     {
         double offsetCenterX = (double)(centerX * 16 + 8);
         double offsetCenterZ = (double)(centerZ * 16 + 8);

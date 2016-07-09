@@ -45,7 +45,7 @@ public class TFGenMinersTree extends TFTreeGenerator
 		// 9 block high trunk
 		for (int dy = 0; dy < 10; dy++)
 		{
-			setBlockAndMetadata(world, x, y + dy, z, treeBlock, branchMeta);
+			setBlockAndNotifyAdequately(world, x, y + dy, z, treeBlock, branchMeta);
 		}
 		
 		// branches with leaf blocks
@@ -62,16 +62,16 @@ public class TFGenMinersTree extends TFTreeGenerator
 		putBranchWithLeaves(world, x, y + 6, z - 5, false);
 
 		// place minewood core
-		setBlockAndMetadata(world, x, y + 1, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_MINE);
+		setBlockAndNotifyAdequately(world, x, y + 1, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_MINE);
 		world.scheduleBlockUpdate(x, y + 1, z, TFBlocks.magicLogSpecial, TFBlocks.magicLogSpecial.tickRate(world));
 
 		
 		// root bulb
 		if (hasAirAround(world, x, y - 1, z)) {
-			this.setBlockAndMetadata(world, x, y - 1, z, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, treeBlock, treeMeta);
 		}
 		else {
-			this.setBlockAndMetadata(world, x, y - 1, z, rootBlock, rootMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, rootBlock, rootMeta);
 		}
 
 		// roots!
@@ -87,7 +87,7 @@ public class TFGenMinersTree extends TFTreeGenerator
 
 
 	protected void putBranchWithLeaves(World world, int bx, int by, int bz, boolean bushy) {
-		setBlockAndMetadata(world, bx, by, bz, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, bx, by, bz, treeBlock, branchMeta);
 		
 		for (int lx = -1; lx <= 1; lx++)
 		{

@@ -3,7 +3,9 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
@@ -11,7 +13,7 @@ import twilightforest.block.TFBlocks;
 public class TFGenFallenSmallLog extends TFGenerator {
 
 	@Override
-	public boolean generate(World world, Random rand, int x, int y, int z) {
+	public boolean generate(World world, Random rand, BlockPos pos) {
 
 		// determine direction
 		boolean goingX = rand.nextBoolean();
@@ -22,24 +24,23 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		// check area clear
 		if (goingX)
 		{
-			if (!isAreaSuitable(world, rand, x, y, z, length, 3, 2))
+			if (!isAreaSuitable(world, rand, pos, length, 3, 2))
 			{
 				return false;
 			}
 		}
 		else
 		{
-			if (!isAreaSuitable(world, rand, x, y, z, 3, length, 2))
+			if (!isAreaSuitable(world, rand, pos, 3, length, 2))
 			{
 				return false;
 			}
 		}
 		
 		// determine wood type
-		Block logID;
-		int logMeta;
-		int logMetaBranch;
-		
+		IBlockState logState;
+		IBlockState branchState;
+
 		switch (rand.nextInt(7))
 		{
 		case 0:
@@ -78,10 +79,10 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 			for (int lx = 0; lx < length; lx++)
 			{
-				this.setBlockAndMetadata(world, x + lx, y + 0, z + 1, logID, logMeta);
+				this.setBlockAndNotifyAdequately(world, pos.add(lx, 0, 1), logState);
 				if (rand.nextInt(3) > 0)
 				{
-					this.setBlockAndMetadata(world, x + lx, y + 1, z + 1, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
+					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
 				}
 			}
 		}

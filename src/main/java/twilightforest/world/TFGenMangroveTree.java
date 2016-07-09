@@ -110,10 +110,10 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		
 		// we only need these side blocks if the size is > 2
 		if (bSize > 2) {
-			setBlockAndMetadata(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-			setBlockAndMetadata(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-			setBlockAndMetadata(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
-			setBlockAndMetadata(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
+			setBlockAndNotifyAdequately(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
+			setBlockAndNotifyAdequately(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
+			setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
+			setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
 		}
 		// leaves!
 		makeLeafCircle(world, dest.posX, dest.posY - 1, dest.posZ, (byte)(bSize - 1), leafBlock, leafMeta);	
@@ -139,8 +139,8 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		for (BlockPos coord : lineArray)
 		{
 			if (stillAboveGround && hasAirAround(world, coord.posX, coord.posY, coord.posZ)) {
-				this.setBlockAndMetadata(world, coord.posX, coord.posY, coord.posZ, treeBlock, branchMeta);
-				this.setBlockAndMetadata(world, coord.posX, coord.posY - 1, coord.posZ, treeBlock, branchMeta);
+				this.setBlockAndNotifyAdequately(world, coord.posX, coord.posY, coord.posZ, treeBlock, branchMeta);
+				this.setBlockAndNotifyAdequately(world, coord.posX, coord.posY - 1, coord.posZ, treeBlock, branchMeta);
 			}
 			else {
 				this.placeRootBlock(world, coord.posX, coord.posY, coord.posZ, rootBlock, rootMeta);
@@ -162,19 +162,19 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		int iAngle = (int)(angle * 4.0);
 		if (iAngle == 0)
 		{
-			setBlockAndMetadata(world, x + 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x + 1, y + height, z, TFBlocks.firefly, 0);
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndMetadata(world, x - 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x - 1, y + height, z, TFBlocks.firefly, 0);
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndMetadata(world, x, y + height, z + 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x, y + height, z + 1, TFBlocks.firefly, 0);
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndMetadata(world, x, y + height, z - 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x, y + height, z - 1, TFBlocks.firefly, 0);
 		}
 	}
 }

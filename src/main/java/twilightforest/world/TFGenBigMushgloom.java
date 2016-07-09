@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -10,14 +11,14 @@ import net.minecraft.world.World;
 public class TFGenBigMushgloom extends TFGenerator {
 
 	@Override
-	public boolean generate(World world, Random rand, int x, int y, int z) {
+	public boolean generate(World world, Random rand, BlockPos pos) {
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 		
 		if (!this.isAreaSuitable(world, rand, x - 1, y, z - 1, 3, height, 3)) {
 			return false;
 		}
 		
-        Block blockUnder = world.getBlock(x, y - 1, z);
+        Block blockUnder = world.getBlockState(pos.down()).getBlock();
         if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS && blockUnder != Blocks.MYCELIUM) {
             return false;
         }

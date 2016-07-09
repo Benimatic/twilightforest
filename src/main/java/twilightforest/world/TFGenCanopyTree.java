@@ -78,10 +78,10 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		
 		// root bulb
 		if (hasAirAround(world, x, y - 1, z)) {
-			this.setBlockAndMetadata(world, x, y - 1, z, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, treeBlock, treeMeta);
 		}
 		else {
-			this.setBlockAndMetadata(world, x, y - 1, z, rootBlock, rootMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, rootBlock, rootMeta);
 		}
 
 		// roots!
@@ -140,10 +140,10 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		makeLeafCircle(world, dest.posX, dest.posY, dest.posZ, 4, leafBlock, leafMeta, true);	
 		makeLeafCircle(world, dest.posX, dest.posY + 1, dest.posZ, 2, leafBlock, leafMeta, true);	
 		
-		setBlockAndMetadata(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-		setBlockAndMetadata(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-		setBlockAndMetadata(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
-		setBlockAndMetadata(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
 		
 	}
 	
@@ -158,19 +158,19 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		int iAngle = (int)(angle * 4.0);
 		if (iAngle == 0)
 		{
-			setBlockAndMetadata(world, x + 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x + 1, y + height, z, TFBlocks.firefly, 0);
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndMetadata(world, x - 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x - 1, y + height, z, TFBlocks.firefly, 0);
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndMetadata(world, x, y + height, z + 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x, y + height, z + 1, TFBlocks.firefly, 0);
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndMetadata(world, x, y + height, z - 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, x, y + height, z - 1, TFBlocks.firefly, 0);
 		}
 	}
 	

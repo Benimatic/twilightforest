@@ -41,19 +41,19 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
-	protected void placeRootBlock(World world, int x, int y, int z, Block rootBlock2, int meta) {
-		if (canRootGrowIn(world, x, y, z))
+	protected void placeRootBlock(World world, BlockPos pos, IBlockState state) {
+		if (canRootGrowIn(world, pos))
 		{
-			this.setBlockAndMetadata(world, x, y, z, rootBlock2, meta);
+			this.setBlockAndNotifyAdequately(world, pos, state);
 		}
 	}
 
-	public static boolean canRootGrowIn(World world, int x, int y, int z) {
-		Block blockID = world.getBlock(x, y, z);
+	public static boolean canRootGrowIn(World world, BlockPos pos) {
+		Block blockID = world.getBlockState(pos).getBlock();
 		
 		if (blockID == Blocks.AIR) {
 			// roots can grow through air if they are near a solid block
-			return isNearSolid(world, x, y, z);
+			return isNearSolid(world, pos);
 		}
 		else
 		{
@@ -100,20 +100,6 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 	}
 	
 	/**
-	 * Temporary override
-	 */
-	protected void setBlock(World world, int x, int y, int z, Block block) {
-		this.func_150515_a(world, x, y, z, block);
-	}
-	/**
-	 * Temporary override
-	 */
-	protected void setBlockAndMetadata(World world, int x, int y, int z, Block block, int meta) {
-		this.setBlockAndNotifyAdequately(world, x, y, z, block, meta);
-	}
-	
-	
-	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
 	public void makeLeafCircle(World world, int sx, int sy, int sz, int rad, Block blockValue, int metaValue)
@@ -135,7 +121,7 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 		BlockPos[] lineArray = getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
 		for (BlockPos pixel : lineArray)
 		{
-			setBlockAndMetadata(world, pixel.posX, pixel.posY, pixel.posZ, blockValue, metaValue);
+			setBlockAndNotifyAdequately(world, pixel.posX, pixel.posY, pixel.posZ, blockValue, metaValue);
 		}
 	}
 	
@@ -246,7 +232,7 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 
         if (block == null || block.canBeReplacedByLeaves(world, x, y, z))
         {
-            this.setBlockAndMetadata(world, x, y, z, blockValue, metaValue);
+            this.setBlockAndNotifyAdequately(world, x, y, z, blockValue, metaValue);
         }
 	}
 }

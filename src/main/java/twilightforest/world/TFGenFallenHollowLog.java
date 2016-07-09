@@ -15,10 +15,10 @@ public class TFGenFallenHollowLog extends TFGenerator {
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
 		
-		return rand.nextBoolean() ? makeLog4Z(world, rand, x, y, z) : makeLog4X(world, rand, x, y, z);
+		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
 	}
 
-	private boolean makeLog4Z(World world, Random rand, int x, int y, int z) {
+	private boolean makeLog4Z(World world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
 		if (!isAreaSuitable(world, rand, x, y, z, 9, 3, 4))
 		{

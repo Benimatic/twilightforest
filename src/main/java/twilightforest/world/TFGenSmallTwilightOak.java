@@ -120,7 +120,7 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
                                 if ((Math.abs(var15) != treeWidth || Math.abs(var17) != treeWidth || par2Random.nextInt(2) != 0 && number != 0) &&
                                     (block == null || block.canBeReplacedByLeaves(par1World, tx, cz, tz)))
                                 {
-                                    this.setBlockAndMetadata(par1World, tx, cz, tz, this.leafBlock, this.leafMeta);
+                                    this.setBlockAndNotifyAdequately(par1World, tx, cz, tz, this.leafBlock, this.leafMeta);
                                 }
                             }
                         }
@@ -134,7 +134,7 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
 
                         if (blockID == Blocks.AIR || block == null || block.isLeaves(par1World, x, y + cz, z))
                         {
-                            this.setBlockAndMetadata(par1World, x, y + cz, z, this.treeBlock, this.treeMeta);
+                            this.setBlockAndNotifyAdequately(par1World, x, y + cz, z, this.treeBlock, this.treeMeta);
                         }
                     }
 

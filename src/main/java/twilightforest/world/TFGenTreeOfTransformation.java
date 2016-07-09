@@ -37,7 +37,7 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree
 		if(super.generate(world, random, x, y, z))
 		{
 			// heart of transformation
-			setBlockAndMetadata(world, x, y + 3, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_TRANS);
+			setBlockAndNotifyAdequately(world, x, y + 3, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_TRANS);
 			return true;
 		}
 		else

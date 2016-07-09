@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.entity.TFCreatures;
 
@@ -14,17 +15,18 @@ public class TFGenWitchHut extends TFGenerator {
 	/**
 	 * Make a cute witch's hut
 	 */
-	public boolean generate(World world, Random rand, int x, int y, int z)
+	@Override
+	public boolean generate(World world, Random rand, BlockPos pos)
 	{
-		return generateTinyHut(world, rand, x, y, z);
+		return generateTinyHut(world, rand, pos);
 	}
 	
 	/**
 	 * Make the smallest size hut
 	 */
-	public boolean generateTinyHut(World world, Random rand, int x, int y, int z)
+	public boolean generateTinyHut(World world, Random rand, BlockPos pos)
 	{
-		if (!isAreaSuitable(world, rand, x, y, z, 5, 7, 6))
+		if (!isAreaSuitable(world, rand, pos, 5, 7, 6))
 		{
 			return false;
 		}

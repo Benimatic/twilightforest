@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -17,7 +18,7 @@ public class TFGenNoTree extends TFTreeGenerator {
 	}
 
 	@Override
-	public boolean generate(World world, Random random, int i, int j, int k) {
+	public boolean generate(World world, Random random, BlockPos pos) {
 		return false;
 	}
 

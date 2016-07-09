@@ -181,7 +181,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                     }
                     else
                     {
-                        this.setBlockAndMetadata(this.worldObj, var11[0], var11[1], var11[2], leaves, meta);
+                        this.setBlockAndNotifyAdequately(this.worldObj, var11[0], var11[1], var11[2], leaves, meta);
                         ++var13;
                     }
                 }
@@ -302,7 +302,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                     }
                 }
 
-                this.setBlockAndMetadata(this.worldObj, var14[0], var14[1], var14[2], log, var17);
+                this.setBlockAndNotifyAdequately(this.worldObj, var14[0], var14[1], var14[2], log, var17);
             }
         }
     }

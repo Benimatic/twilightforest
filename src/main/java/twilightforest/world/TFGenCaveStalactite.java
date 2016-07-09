@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,7 +24,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	public static TFGenCaveStalactite glowstone = new TFGenCaveStalactite(Blocks.GLOWSTONE, 0.5F, 8, 1);
 	
 	
-	public Block blockID;
+	public IBlockState blockID;
 	public boolean hang;
 	public float sizeFactor;
 	public int maxLength;
@@ -34,7 +35,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	 */
 	public TFGenCaveStalactite(Block blockType, float size, boolean down)
 	{
-		this.blockID = blockType;
+		this.blockID = blockType.getDefaultState();
 		this.sizeFactor = size;
 		this.maxLength = -1;
 		this.minHeight = -1;
@@ -46,7 +47,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	 */
 	public TFGenCaveStalactite(Block blockType, float size, int maxLength, int minHeight)
 	{
-		this.blockID = blockType;
+		this.blockID = blockType.getDefaultState();
 		this.sizeFactor = size;
 		this.maxLength = maxLength;
 		this.minHeight = minHeight;
@@ -119,11 +120,13 @@ public class TFGenCaveStalactite extends TFGenerator {
 	{
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
-		
+
+		BlockPos.MutableBlockPos iterPos = new BlockPos.MutableBlockPos(pos);
 		// find a ceiling
-        for (int ty = y; ty < TFWorld.CHUNKHEIGHT; ty++)
+        for (int ty = pos.getY(); ty < TFWorld.CHUNKHEIGHT; ty++)
         {
-        	Material m = world.getBlock(x, ty, z).getMaterial();
+			iterPos.setY(ty);
+        	Material m = world.getBlockState(iterPos).getMaterial();
         	// if we're in air, continue
         	if (m == Material.AIR)
         	{
@@ -145,9 +148,10 @@ public class TFGenCaveStalactite extends TFGenerator {
         }
         
         // find a floor
-        for (int ty = y; ty > 4; ty--)
+        for (int ty = pos.getY(); ty > 4; ty--)
         {
-        	Material m = world.getBlock(x, ty, z).getMaterial();
+			iterPos.setY(ty);
+        	Material m = world.getBlockState(iterPos).getMaterial();
         	// if we're in air, continue
         	if (m == Material.AIR)
         	{
@@ -182,7 +186,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	}
 		
 
-	public boolean makeSpike(World world, Random random, int x, int y, int z, int maxLength)
+	public boolean makeSpike(World world, Random random, BlockPos pos, int maxLength)
 	{
 		
 		int diameter = (int)(maxLength / 4.5); // diameter of the base
@@ -211,14 +215,14 @@ public class TFGenCaveStalactite extends TFGenerator {
 				int dir = hang ? -1 : 1;
 				
 				// check if we're generating over anything
-				if (!world.getBlock(x + dx, y - dir, z + dz).getMaterial().isSolid())
+				if (!world.getBlockState(pos.add(dx, -dir, dz)).getMaterial().isSolid())
 				{
 					spikeLength = 0;
 				}
 				
 				for (int dy = 0; dy != (spikeLength * dir); dy += dir)
 				{
-					setBlock(world, x + dx, y + dy, z + dz, blockID);
+					setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), blockID);
 				}
 			}
 		}

@@ -79,10 +79,10 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	private void makeRoots(World world, Random random, int x, int y, int z) {
 		// root bulb
 		if (hasAirAround(world, x, y - 1, z)) {
-			this.setBlockAndMetadata(world, x, y - 1, z, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, treeBlock, treeMeta);
 		}
 		else {
-			this.setBlockAndMetadata(world, x, y - 1, z, rootBlock, rootMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, rootBlock, rootMeta);
 		}
 
 		// roots!
@@ -96,10 +96,10 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
     
 	private void buildTrunk(World world, int sx, int sy, int sz, int treeHeight) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			this.setBlockAndMetadata(world, sx + 0, sy + dy, sz + 0, this.treeBlock, this.treeMeta);
-			this.setBlockAndMetadata(world, sx + 1, sy + dy, sz + 0, this.treeBlock, this.treeMeta);
-			this.setBlockAndMetadata(world, sx + 0, sy + dy, sz + 1, this.treeBlock, this.treeMeta);
-			this.setBlockAndMetadata(world, sx + 1, sy + dy, sz + 1, this.treeBlock, this.treeMeta);
+			this.setBlockAndNotifyAdequately(world, sx + 0, sy + dy, sz + 0, this.treeBlock, this.treeMeta);
+			this.setBlockAndNotifyAdequately(world, sx + 1, sy + dy, sz + 0, this.treeBlock, this.treeMeta);
+			this.setBlockAndNotifyAdequately(world, sx + 0, sy + dy, sz + 1, this.treeBlock, this.treeMeta);
+			this.setBlockAndNotifyAdequately(world, sx + 1, sy + dy, sz + 1, this.treeBlock, this.treeMeta);
 		}
 		
 		drawLeafBlob(world, sx + 0, sy + treeHeight, sz + 0, 3, leafBlock, leafMeta);	
@@ -156,10 +156,10 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 //		makeLeafCircle(world, dest.posX, dest.posY, dest.posZ, 4, leafBlock, leafMeta, true);	
 //		makeLeafCircle(world, dest.posX, dest.posY + 1, dest.posZ, 2, leafBlock, leafMeta, true);	
 		
-		setBlockAndMetadata(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-		setBlockAndMetadata(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-		setBlockAndMetadata(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
-		setBlockAndMetadata(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
 		
 	}
 }

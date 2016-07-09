@@ -87,19 +87,19 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 			// branches
 			for (int i = 1; i <= branchLength; i++)
 			{
-				this.setBlockAndMetadata(world, x + 0 - i, y, z + 0, treeBlock, branchMeta & 3 | 4);
-				this.setBlockAndMetadata(world, x + 0, y, z + 1 + i, treeBlock, branchMeta & 3 | 8);
-				this.setBlockAndMetadata(world, x + 1 + i, y, z + 1, treeBlock, branchMeta & 3 | 4);
-				this.setBlockAndMetadata(world, x + 1, y, z - 0 - i, treeBlock, branchMeta & 3 | 8);
+				this.setBlockAndNotifyAdequately(world, x + 0 - i, y, z + 0, treeBlock, branchMeta & 3 | 4);
+				this.setBlockAndNotifyAdequately(world, x + 0, y, z + 1 + i, treeBlock, branchMeta & 3 | 8);
+				this.setBlockAndNotifyAdequately(world, x + 1 + i, y, z + 1, treeBlock, branchMeta & 3 | 4);
+				this.setBlockAndNotifyAdequately(world, x + 1, y, z - 0 - i, treeBlock, branchMeta & 3 | 8);
 			}
 			break;
 		case 1:
 			for (int i = 1; i <= branchLength; i++)
 			{
-				this.setBlockAndMetadata(world, x + 0 - i, y, z + 1, treeBlock, branchMeta & 3 | 4);
-				this.setBlockAndMetadata(world, x + 1, y, z + 1 + i, treeBlock, branchMeta & 3 | 8);
-				this.setBlockAndMetadata(world, x + 1 + i, y, z + 0, treeBlock, branchMeta & 3 | 4);
-				this.setBlockAndMetadata(world, x + 0, y, z - 0 - i, treeBlock, branchMeta & 3 | 8);
+				this.setBlockAndNotifyAdequately(world, x + 0 - i, y, z + 1, treeBlock, branchMeta & 3 | 4);
+				this.setBlockAndNotifyAdequately(world, x + 1, y, z + 1 + i, treeBlock, branchMeta & 3 | 8);
+				this.setBlockAndNotifyAdequately(world, x + 1 + i, y, z + 0, treeBlock, branchMeta & 3 | 4);
+				this.setBlockAndNotifyAdequately(world, x + 0, y, z - 0 - i, treeBlock, branchMeta & 3 | 8);
 			}
 			break;
 		}
@@ -119,10 +119,10 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 
 	private void buildTrunk(World world, int x, int y, int z, int treeHeight) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			this.setBlockAndMetadata(world, x + 0, y + dy, z + 0, treeBlock, treeMeta);
-			this.setBlockAndMetadata(world, x + 1, y + dy, z + 0, treeBlock, treeMeta);
-			this.setBlockAndMetadata(world, x + 0, y + dy, z + 1, treeBlock, treeMeta);
-			this.setBlockAndMetadata(world, x + 1, y + dy, z + 1, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x + 0, y + dy, z + 0, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x + 1, y + dy, z + 0, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x + 0, y + dy, z + 1, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x + 1, y + dy, z + 1, treeBlock, treeMeta);
 		}
 	}
 

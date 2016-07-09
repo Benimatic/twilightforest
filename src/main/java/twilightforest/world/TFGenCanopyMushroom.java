@@ -78,7 +78,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	 * @param angle
 	 * @param tilt
 	 */
-	void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
+	private void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
 	{
 		BlockPos src = pos.up(height);
 		BlockPos dest = translateCoords(src.getX(), src.getY(), src.getZ(), length, angle, tilt);
@@ -130,7 +130,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	 * @param metaValue
 	 * @param priority do we overwrite what's there?
 	 */
-	public void drawMushroomCircle(World world, int sx, int sy, int sz, int rad, Block blockValue)
+	private void drawMushroomCircle(World world, int sx, int sy, int sz, int rad, Block blockValue)
 	{
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
@@ -148,38 +148,38 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 				if (dx == 0) {
 					// two!
 					if (dz < rad) {
-						setBlockAndMetadata(world, sx + 0, sy, sz + dz, blockValue, 5);
-						setBlockAndMetadata(world, sx + 0, sy, sz - dz, blockValue, 5);
+						setBlockAndNotifyAdequately(world, sx + 0, sy, sz + dz, blockValue, 5);
+						setBlockAndNotifyAdequately(world, sx + 0, sy, sz - dz, blockValue, 5);
 					}
 					else {
-						setBlockAndMetadata(world, sx + 0, sy, sz + dz, blockValue, 8);
-						setBlockAndMetadata(world, sx + 0, sy, sz - dz, blockValue, 2);
+						setBlockAndNotifyAdequately(world, sx + 0, sy, sz + dz, blockValue, 8);
+						setBlockAndNotifyAdequately(world, sx + 0, sy, sz - dz, blockValue, 2);
 					}
 				}
 				else if (dz == 0) {
 					// two!
 					if (dx < rad) {
-						setBlockAndMetadata(world, sx + dx, sy, sz + 0, blockValue, 5);
-						setBlockAndMetadata(world, sx - dx, sy, sz + 0, blockValue, 5);
+						setBlockAndNotifyAdequately(world, sx + dx, sy, sz + 0, blockValue, 5);
+						setBlockAndNotifyAdequately(world, sx - dx, sy, sz + 0, blockValue, 5);
 					}
 					else {
-						setBlockAndMetadata(world, sx + dx, sy, sz + 0, blockValue, 6);
-						setBlockAndMetadata(world, sx - dx, sy, sz + 0, blockValue, 4);
+						setBlockAndNotifyAdequately(world, sx + dx, sy, sz + 0, blockValue, 6);
+						setBlockAndNotifyAdequately(world, sx - dx, sy, sz + 0, blockValue, 4);
 					}
 				}
 				else if (dist < rad) {
 					// do four at a time for easiness!
-					setBlockAndMetadata(world, sx + dx, sy, sz + dz, blockValue, 5);
-					setBlockAndMetadata(world, sx + dx, sy, sz - dz, blockValue, 5);
-					setBlockAndMetadata(world, sx - dx, sy, sz + dz, blockValue, 5);
-					setBlockAndMetadata(world, sx - dx, sy, sz - dz, blockValue, 5);
+					setBlockAndNotifyAdequately(world, sx + dx, sy, sz + dz, blockValue, 5);
+					setBlockAndNotifyAdequately(world, sx + dx, sy, sz - dz, blockValue, 5);
+					setBlockAndNotifyAdequately(world, sx - dx, sy, sz + dz, blockValue, 5);
+					setBlockAndNotifyAdequately(world, sx - dx, sy, sz - dz, blockValue, 5);
 				}
 				else if (dist == rad) {
 					// do four at a time for easiness!
-					setBlockAndMetadata(world, sx + dx, sy, sz + dz, blockValue, 9);
-					setBlockAndMetadata(world, sx + dx, sy, sz - dz, blockValue, 3);
-					setBlockAndMetadata(world, sx - dx, sy, sz + dz, blockValue, 7);
-					setBlockAndMetadata(world, sx - dx, sy, sz - dz, blockValue, 1);
+					setBlockAndNotifyAdequately(world, sx + dx, sy, sz + dz, blockValue, 9);
+					setBlockAndNotifyAdequately(world, sx + dx, sy, sz - dz, blockValue, 3);
+					setBlockAndNotifyAdequately(world, sx - dx, sy, sz + dz, blockValue, 7);
+					setBlockAndNotifyAdequately(world, sx - dx, sy, sz - dz, blockValue, 1);
 				}
 			}
 		}
@@ -197,19 +197,19 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		int iAngle = (int)(angle * 4.0);
 		if (iAngle == 0)
 		{
-			setBlockAndMetadata(world, pos.east().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.east().up(height), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndMetadata(world, pos.west().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.west().up(height), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndMetadata(world, pos.south().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.south().up(height), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndMetadata(world, pos.north().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.north().up(height), TFBlocks.firefly.getDefaultState());
 		}
 	}
 

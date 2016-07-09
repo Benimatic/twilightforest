@@ -9,6 +9,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
@@ -78,21 +79,21 @@ public class TFTreasure {
 	/**
 	 * Generates a treasure chest in the world at the specified coordinates.
 	 */
-	public boolean generate(World world, Random rand, int cx, int cy, int cz) {
+	public boolean generate(World world, Random rand, BlockPos pos) {
 
-		return this.generate(world, rand, cx, cy, cz, Blocks.CHEST);
+		return this.generate(world, rand, pos, Blocks.CHEST);
 	}
 
 	/**
 	 * Generates a treasure chest in the world at the specified coordinates.
 	 */
-	public boolean generate(World world, Random rand, int cx, int cy, int cz, Block chestBlock) {
+	public boolean generate(World world, Random rand, BlockPos pos, Block chestBlock) {
 		boolean flag = true;
 		
 		treasureRNG.setSeed(world.getSeed() * cx + cy ^ cz);
 
 		// make a chest
-		world.setBlock(cx, cy, cz, chestBlock, 0, 2);
+		world.setBlockState(pos, chestBlock, 0, 2);
 
 		// add 4 common items
 		for (int i = 0; i < 4; i++) {

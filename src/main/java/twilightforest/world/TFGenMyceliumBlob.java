@@ -3,7 +3,9 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -16,22 +18,22 @@ import net.minecraft.world.gen.feature.WorldGenerator;
  */
 public class TFGenMyceliumBlob extends WorldGenerator
 {
-    private Block myceliumBlockId;
+    private IBlockState myceliumState;
     private int numberOfBlocks;
 
     public TFGenMyceliumBlob(int i)
     {
-    	myceliumBlockId = Blocks.MYCELIUM;
-        numberOfBlocks = i;
+    	this(Blocks.MYCELIUM, i);
     }
 
     public TFGenMyceliumBlob(Block block, int i)
     {
-    	myceliumBlockId = block;
+    	myceliumState = block.getDefaultState();
         numberOfBlocks = i;
     }
 
-    public boolean generate(World world, Random random, int x, int y, int z)
+    @Override
+    public boolean generate(World world, Random random, BlockPos pos)
     {
 //        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
@@ -54,7 +56,7 @@ public class TFGenMyceliumBlob extends WorldGenerator
                     Block blockThere = world.getBlock(dx, dy, dz);
                     if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS || blockThere == Blocks.STONE)
                     {
-                        world.setBlock(dx, dy, dz, myceliumBlockId, 0, 2);
+                        world.setBlock(dx, dy, dz, myceliumState, 0, 2);
                     }
                 }
             }

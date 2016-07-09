@@ -2,26 +2,26 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-
-
 public class TFGenLampposts extends TFGenerator {
     private static final int MAX_HANG = 8;
 
-	public boolean generate(World world, Random rand, int x, int y, int z) {
+	@Override
+	public boolean generate(World world, Random rand, BlockPos pos) {
 		// we should start on a grass block
-		if (world.getBlock(x, y - 1, z) == Blocks.GRASS) {
+		if (world.getBlockState(pos.down()) == Blocks.GRASS) {
 				// generate a height
 				int height = 1 + rand.nextInt(4);
 				boolean clear = true;
 				
 				// is it air or replaceable above our grass block
 				for (int dy = 0; dy < height; dy++) {
-					if (!world.isAirBlock(x, y + dy, z) && !world.getBlock(x, y + dy, z).isReplaceable(world, x, y + dy, z)) {
+					if (!world.isAirBlock(pos.up(dy)) && !world.getBlockState(pos.up(dy)).getBlock().isReplaceable(world, pos.up(dy))) {
 						clear = false;
 					}
 				}
@@ -29,8 +29,8 @@ public class TFGenLampposts extends TFGenerator {
 				// generate lamp
 				if (clear) {
 					for (int dy = 0; dy < height; dy++) {
-						world.setBlock(x, y + dy, z, Blocks.FENCE);
-						world.setBlock(x, y + height, z, TFBlocks.fireflyJar);
+						world.setBlockState(pos.up(dy), Blocks.OAK_FENCE.getDefaultState());
+						world.setBlockState(pos.up(height), TFBlocks.fireflyJar.getDefaultState());
 					}
 				} 
 				return clear;

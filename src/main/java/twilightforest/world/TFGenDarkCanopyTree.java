@@ -86,10 +86,10 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		
 		// root bulb
 		if (hasAirAround(world, x, y - 1, z)) {
-			this.setBlockAndMetadata(world, x, y - 1, z, treeBlock, treeMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, treeBlock, treeMeta);
 		}
 		else {
-			this.setBlockAndMetadata(world, x, y - 1, z, rootBlock, rootMeta);
+			this.setBlockAndNotifyAdequately(world, x, y - 1, z, rootBlock, rootMeta);
 		}
 
 		// roots!
