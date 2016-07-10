@@ -22,9 +22,6 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		;
 	}
 	
-	/**
-	 * Add in all the blocks we're adding.
-	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		int stalacts = 64;

@@ -2,6 +2,9 @@ package twilightforest.structures;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.BlockVine;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -34,18 +37,18 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 		for (int fx = 0; fx <= DIAMETER; fx++) {
 			for (int fz = 0; fz <= DIAMETER; fz++) {
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, fx, 0, fz, sbb);
+					setBlockState(world, Blocks.DOUBLE_STONE_SLAB.getDefaultState(), fx, 0, fz, sbb);
 					
 					// put some half slabs around
 					if (rand.nextInt(20) == 0) {
-						setBlockState(world, Blocks.STONE_SLAB, 0, fx, 1, fz, sbb);
+						setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), fx, 1, fz, sbb);
 					}
 					else {
-						setBlockState(world, Blocks.AIR, 0, fx, 1, fz, sbb);  // clear out grass or flowers
+						setBlockState(world, Blocks.AIR.getDefaultState(), fx, 1, fz, sbb);  // clear out grass or flowers
 					}
 				}
 				else {
-					setBlockState(world, Blocks.GRASS, 0, fx, 0, fz, sbb);
+					setBlockState(world, Blocks.GRASS.getDefaultState(), fx, 0, fz, sbb);
 				}
 			}
 		}
@@ -60,8 +63,8 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 			randomBrick(world, rand, fx, 2, 0, sbb);
 			randomBrick(world, rand, fx, 3, DIAMETER, sbb);
 			randomBrick(world, rand, fx, 3, 0, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, fx, 4, DIAMETER, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, fx, 4, 0, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP), fx, 4, DIAMETER, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP), fx, 4, 0, sbb);
 
 
 			// make nagastone pattern!
@@ -167,8 +170,8 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 			randomBrick(world, rand, 0, 2, fz, sbb);
 			randomBrick(world, rand, DIAMETER, 3, fz, sbb);
 			randomBrick(world, rand, 0, 3, fz, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, DIAMETER, 4, fz, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, 0, 4, fz, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP), DIAMETER, 4, fz, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP), 0, 4, fz, sbb);
 
 			// make nagastone pattern!
 			switch (fz % 23)
@@ -307,16 +310,16 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 				switch (rand.nextInt(4))
 				{
 				case 0:
-					setBlockState(world, Blocks.VINE, 8, x - 1, y + i, z + 0, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true), x - 1, y + i, z + 0, sbb);
 					break;
 				case 1:
-					setBlockState(world, Blocks.VINE, 2, x + 1, y + i, z + 0, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true), x + 1, y + i, z + 0, sbb);
 					break;
 				case 2:
-					setBlockState(world, Blocks.VINE, 4, x + 0, y + i, z + 1, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true), x + 0, y + i, z + 1, sbb);
 					break;
 				case 3:
-					setBlockState(world, Blocks.VINE, 1, x + 0, y + i, z - 1, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, true), x + 0, y + i, z - 1, sbb);
 					break;
 				}
 			}
@@ -342,15 +345,15 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 		
 		// top?
 		if (height == 8) {
-			setBlockState(world, Blocks.STONE_SLAB, 0, x - 1, y + 8, z - 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 0, x + 0, y + 8, z - 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 0, x + 1, y + 8, z - 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 0, x - 1, y + 8, z + 0, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, x + 0, y + 8, z + 0, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 0, x + 1, y + 8, z + 0, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 0, x - 1, y + 8, z + 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 0, x + 0, y + 8, z + 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 0, x + 1, y + 8, z + 1, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x - 1, y + 8, z - 1, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 8, z - 1, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x + 1, y + 8, z - 1, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x - 1, y + 8, z + 0, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP), x + 0, y + 8, z + 0, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x + 1, y + 8, z + 0, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x - 1, y + 8, z + 1, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 8, z + 1, sbb);
+			setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), x + 1, y + 8, z + 1, sbb);
 			
 			
 		}
@@ -361,8 +364,9 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 	/**
 	 * Places a random stone brick at the specified location
 	 */
-	public void randomBrick(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
-		setBlockState(world, Blocks.STONEBRICK, rand.nextInt(3), x, y, z, sbb);
+	private void randomBrick(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
+		BlockStoneBrick.EnumType variant = BlockStoneBrick.EnumType.values()[rand.nextInt(3)];
+		setBlockState(world, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, variant), x, y, z, sbb);
 	}
 	
 

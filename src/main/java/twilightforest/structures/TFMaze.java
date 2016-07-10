@@ -5,9 +5,12 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.world.TFGenCanopyTree;
 
 
@@ -74,16 +77,12 @@ public class TFMaze {
 		tall = 3;
 		head = 0;
 		roots = 0;
-		wallBlockID = TFBlocks.mazestone;
-		wallBlockMeta = 2;
-		rootBlockID = TFBlocks.mazestone;
-		rootBlockMeta = 0;
-		torchBlockID = Blocks.TORCH;
-		pillarBlockID = null;
+		wallBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PILLAR);
+		rootBlockState = TFBlocks.mazestone.getDefaultState();
+		torchBlockState = Blocks.TORCH.getDefaultState();
+		pillarBlockState = null;
 
-		torchBlockMeta = 0;
 		torchRarity = 0.75F;
-		
 		doorRarity = 0F;
 		
 		this.width = cellsWidth;
@@ -514,9 +513,9 @@ public class TFMaze {
 					
 					if(isEven(x) && isEven(z))
 					{
-						if (shouldTorch(x, z) && component.getBlockAtCurrentPosition(world,  mdx, mdy, mdz, sbb) == wallBlockID)
+						if (shouldTorch(x, z) && component.getBlockStateFromPos(world,  mdx, mdy, mdz, sbb).getBlock() == wallBlockState.getBlock())
 						{
-							component.placeBlockAtCurrentPosition(world, torchBlockID, torchBlockMeta, mdx, mdy, mdz, sbb);
+							component.setBlockState(world, torchBlockState, mdx, mdy, mdz, sbb);
 						}
 					}
 				}
@@ -525,7 +524,7 @@ public class TFMaze {
 		
 	}
 
-	protected void makeWallThing(World world, int dy, StructureTFComponent component, StructureBoundingBox sbb, int mdx, int mdz, int even, int odd) {
+	private void makeWallThing(World world, int dy, StructureTFComponent component, StructureBoundingBox sbb, int mdx, int mdz, int even, int odd) {
 		for(int y = 0; y < head; y++)
 		{
 			putHeadBlock(world, mdx + even, dy + tall + y, mdz + odd, component, sbb);
@@ -543,82 +542,82 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, if pillar blocks are properly specified
 	 */
-	protected void putPillarBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
+	private void putPillarBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
 	{
-		component.placeBlockAtCurrentPosition(world, pillarBlockID, pillarBlockMeta, x, y, z, sbb);
+		component.setBlockState(world, pillarBlockState, x, y, z, sbb);
 	}
 
 	/**
 	 * Puts a wall block in the world, at the specified world coordinates.
 	 */
-	protected void putWallBlock(World world, int x, int y, int z)
+	private void putWallBlock(World world, int x, int y, int z)
 	{
-		world.setBlock(x, y, z, wallBlockID, wallBlockMeta, 2);
+		world.setBlockState(new BlockPos(x, y, z), wallBlockState, 2);
 	}
 	
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	protected void putWallBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
+	private void putWallBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
 	{
 		if (wallVarRarity > 0 && rand.nextFloat() < this.wallVarRarity)
 		{
-			component.placeBlockAtCurrentPosition(world, wallVar0ID, wallVar0Meta, x, y, z, sbb);
+			component.setBlockState(world, wallVar0State, x, y, z, sbb);
 		}
 		else
 		{
-			component.placeBlockAtCurrentPosition(world, wallBlockID, wallBlockMeta, x, y, z, sbb);
+			component.setBlockState(world, wallBlockState, x, y, z, sbb);
 		}
 	}
 	
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	protected void putDoorBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
+	private void putDoorBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
 	{
-		component.placeBlockAtCurrentPosition(world, doorBlockID, doorBlockMeta, x, y, z, sbb);
+		component.setBlockState(world, doorBlockState, x, y, z, sbb);
 	}
 	
 	/**
 	 * Carves a block into the world.
 	 * TODO: check what's there?  maybe only certain blocks?
 	 */
-	protected void carveBlock(World world, int x, int y, int z)
+	private void carveBlock(World world, int x, int y, int z)
 	{
-		world.setBlock(x, y, z, Blocks.AIR, 0, 2);
+		world.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 2);
 	}
 	
-	protected void putHeadBlock(World world, int x, int y, int z)
+	private void putHeadBlock(World world, int x, int y, int z)
 	{
-		world.setBlock(x, y, z, headBlockID, headBlockMeta, 2);
+		world.setBlockState(new BlockPos(x, y, z), headBlockState, 2);
 	}
 	
-	protected void putHeadBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
+	private void putHeadBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
 	{
-		component.placeBlockAtCurrentPosition(world, headBlockID, headBlockMeta, x, y, z, sbb);
+		component.setBlockState(world, headBlockState, x, y, z, sbb);
 	}
 
 
 	/**
 	 * Puts a root block in the world, at the specified world coordinates.
 	 */
-	protected void putRootBlock(World world, int x, int y, int z)
+	private void putRootBlock(World world, int x, int y, int z)
 	{
-		world.setBlock(x, y, z, rootBlockID, rootBlockMeta, 2);
+		world.setBlockState(new BlockPos(x, y, z), rootBlockState, 2);
 	}
 	
 	/**
 	 * Puts a root block in the structure, at the specified structure coordinates.
 	 */
-	protected void putRootBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
+	private void putRootBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
 	{
-		component.placeBlockAtCurrentPosition(world, rootBlockID, rootBlockMeta, x, y, z, sbb);
+		component.setBlockState(world, rootBlockState, x, y, z, sbb);
 	}
 	
 	/**
 	 * Puts a canopy tree in the world at the specified structure coordinates.
 	 */
-	protected void putCanopyTree(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
+	private void putCanopyTree(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
 	{
 		
         int wx = component.getXWithOffset(x, z);
@@ -632,22 +631,14 @@ public class TFMaze {
         }
 	}
 	
-	/**
-	 * I'm not sure why I made a function of this simple thing.  Maybe I need like... a macro?
-	 */
-	public final boolean isEven(int n) {
+	private final boolean isEven(int n) {
 		return n % 2 == 0; 
 	}
 	
 	/**
 	 * Called after copyToWorld.  Places torches in the maze as appropriate
-	 * 
-	 * @param world
-	 * @param dx
-	 * @param dy
-	 * @param dz
 	 */
-	public void placeTorches(World world) {
+	private void placeTorches(World world) {
 		
 		int torchHeight = 1;
 		
@@ -660,12 +651,14 @@ public class TFMaze {
 					int mdx = worldX + (x / 2 * (evenBias + oddBias));
 					int mdy = worldY + torchHeight;
 					int mdz = worldZ + (z / 2 * (evenBias + oddBias));
-					
+
+					BlockPos pos = new BlockPos(mdx, mdy, mdz);
+
 					if(isEven(x) && isEven(z))
 					{
-						if (shouldTorch(x, z) && world.getBlock(mdx, mdy, mdz) == wallBlockID)
+						if (shouldTorch(x, z) && world.getBlockState(pos).getBlock() == wallBlockState.getBlock())
 						{
-							world.setBlock(mdx, mdy, mdz, torchBlockID, torchBlockMeta, 2);
+							world.setBlockState(pos, torchBlockState, 2);
 						}
 					}
 				}
@@ -701,7 +694,7 @@ public class TFMaze {
 	public boolean shouldPillar(int rx, int rz) 
 	{
 		// if the pillar block is not defined, no
-		if (pillarBlockID == null)
+		if (pillarBlockState == null)
 		{
 			return false;
 		}
@@ -724,12 +717,7 @@ public class TFMaze {
 	
 	/**
 	 * Should we put a tree instead of a post?
-	 * 
 	 * Essentially the answer is yes for the corners and the exits.
-	 * 
-	 * @param rx
-	 * @param ry
-	 * @return
 	 */
 	public boolean shouldTree(int rx, int rz) {
 		if ((rx == 0 || rx == rawWidth - 1) && (getRaw(rx, rz + 1) != 0 || getRaw(rx, rz - 1) != 0)) {

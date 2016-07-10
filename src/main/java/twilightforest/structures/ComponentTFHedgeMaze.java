@@ -27,7 +27,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		// the maze is 50 x 50 for now
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
 
 	}
 
@@ -37,9 +37,8 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 		
 		maze.oddBias = 2;
-		maze.torchBlockID = TFBlocks.firefly;
-		maze.wallBlockID = TFBlocks.hedge;
-		maze.wallBlockMeta = 0;
+		maze.torchBlockState = TFBlocks.firefly.getDefaultState();
+		maze.wallBlockState = TFBlocks.hedge.getDefaultState();
 		maze.type = 4;
 		maze.tall = 3;
 		maze.roots = 3;
@@ -187,7 +186,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 			mobID = TFCreatures.getSpawnerNameFor("Hedge Spider");
 		}
 
-		setSpawner(world, rand, rx, FLOOR_LEVEL, rz, mobID, sbb);
+		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);
 	}
 
 	/**

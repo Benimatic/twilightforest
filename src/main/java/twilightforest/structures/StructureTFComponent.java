@@ -95,9 +95,6 @@ public abstract class StructureTFComponent extends StructureComponent {
         }
     }
     
-    /**
-     * //
-     */
     // [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
     protected TileEntityMobSpawner setSpawner(World world, int x, int y, int z, StructureBoundingBox sbb, String monsterID)
     {
@@ -359,6 +356,18 @@ public abstract class StructureTFComponent extends StructureComponent {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         setBlockState(world, state, x, y, z, sbb);
         setCoordBaseMode(oldMode);
+    }
+
+    @Override
+    public IBlockState getBlockStateFromPos(World world, int x, int y, int z, StructureBoundingBox sbb) {
+        // Making public
+        return super.getBlockStateFromPos(world, x, y, z, sbb);
+    }
+
+    @Override
+    public void setBlockState(World worldIn, IBlockState blockstateIn, int x, int y, int z, StructureBoundingBox sbb) {
+        // Making public
+        super.setBlockState(worldIn, blockstateIn, x, y, z, sbb);
     }
 
     // [VanillaCopy] Keep pinned to the signature of getBlockStateFromPos

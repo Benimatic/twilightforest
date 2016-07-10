@@ -73,7 +73,7 @@ public class TFFinalCastlePieces {
 			int cx = (x >> 8) << 8;
 			int cz = (z >> 8) << 8;
 			
-			System.out.println("Making castle at " + x + ", " + z + ". center is " + cc.posX + ", " + cc.posZ);
+			System.out.println("Making castle at " + x + ", " + z + ". center is " + cc.getX() + ", " + cc.getZ());
 			System.out.println("Natural center at " + cx + ", " + cz);
 
 			// decorator
@@ -144,13 +144,13 @@ public class TFFinalCastlePieces {
     		
     		// mural on front
 			BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, 0);
-    		Mural mural0 = new Mural(rand, 7, mc.posX, mc.posY, mc.posZ, 35, 30, 0);
+    		Mural mural0 = new Mural(rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, 0);
     		list.add(mural0);
     		mural0.buildComponent(this, list, rand);
     		
     		// mural inside
 			BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, 0);
-    		Mural mural1 = new Mural(rand, 7, mc1.posX, mc1.posY, mc.posZ, 19, 12, 2);
+    		Mural mural1 = new Mural(rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, 2);
     		list.add(mural1);
     		mural1.buildComponent(this, list, rand);
 
@@ -165,10 +165,10 @@ public class TFFinalCastlePieces {
     		
     		// build
 			BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-    		MazeTower13 sTower = new MazeTower13(rand, 3, tc.posX, tc.posY, tc.posZ, type, direction);
+    		MazeTower13 sTower = new MazeTower13(rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
     		// add bridge
 			BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
-			Bridge bridge = new Bridge(this.getComponentType() + 1, bc.posX, bc.posY, bc.posZ, howFar - 7, direction);
+			Bridge bridge = new Bridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);
 			
@@ -837,7 +837,7 @@ public class TFFinalCastlePieces {
 			
 			BlockPos rc = this.getNewRoomCoords(rand, rotation);
 			
-			DungeonRoom31 dRoom = new DungeonRoom31(rand, this.componentType + 1, rc.posX, rc.posY, rc.posZ, rotation, level);
+			DungeonRoom31 dRoom = new DungeonRoom31(rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation, level);
 			
 			StructureBoundingBox largerBB = new StructureBoundingBox(dRoom.getBoundingBox());
 			
@@ -863,7 +863,7 @@ public class TFFinalCastlePieces {
 
 			rotation = (this.coordBaseMode + rotation) % 4;
 			BlockPos rc = this.getNewRoomCoords(rand, rotation);
-			DungeonExit dRoom = new DungeonExit(rand, this.componentType + 1, rc.posX, rc.posY, rc.posZ, rotation, this.level);
+			DungeonExit dRoom = new DungeonExit(rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation, this.level);
 			StructureComponent intersect = StructureTFComponent.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
 			if (intersect == null) {
 				list.add(dRoom);
@@ -1442,7 +1442,7 @@ public class TFFinalCastlePieces {
     		if (this.getComponentType() < 15) {
 
     			// are we there?
-    			if (this.isWithinRange(dest.posX, dest.posZ, this.boundingBox.minX + 6, this.boundingBox.minZ + 6, 30)) {
+    			if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX + 6, this.boundingBox.minZ + 6, 30)) {
     				//System.out.println("We are within range of our destination, building final tower");
     				int howFar = 20;
     				if (!buildEndTowerTowards(list, rand, dest, this.findBestDirectionTowards(dest), howFar)) {
@@ -1503,8 +1503,8 @@ public class TFFinalCastlePieces {
 			int cz = this.boundingBox.minZ + 6;
 			
 			// difference
-			int dx = cx - dest.posX;
-			int dz = cz - dest.posZ;
+			int dx = cx - dest.getX();
+			int dz = cz - dest.getZ();
 			
 			int absoluteDir = 0;
 			if (Math.abs(dx) > Math.abs(dz)) {
@@ -1528,8 +1528,8 @@ public class TFFinalCastlePieces {
 			int cz = this.boundingBox.minZ + 6;
 			
 			// difference
-			int dx = cx - dest.posX;
-			int dz = cz - dest.posZ;
+			int dx = cx - dest.getX();
+			int dz = cz - dest.getZ();
 			
 			int absoluteDir = 0;
 			if (Math.abs(dx) < Math.abs(dz)) {  // reversed from findBestDirectionTowards
@@ -1562,10 +1562,10 @@ public class TFFinalCastlePieces {
 		private boolean buildContinueTowerTowards(List list, Random rand, BlockPos dest, int direction, int howFar) {
 			BlockPos opening = this.getValidOpeningCC(rand, direction);
 			
-			// adjust opening towards dest.posY if we are getting close to dest
+			// adjust opening towards dest.getY() if we are getting close to dest
 			int adjustmentRange = 60;
-			if (this.isWithinRange(dest.posX, dest.posZ, this.boundingBox.minX + 6, this.boundingBox.minZ + 6, adjustmentRange)) {
-				opening.posY = this.adjustOpening(opening.posY, dest);
+			if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX + 6, this.boundingBox.minZ + 6, adjustmentRange)) {
+				opening.getY() = this.adjustOpening(opening.getY(), dest);
 			}
 			
 			//System.out.println("original direction is " + direction);
@@ -1575,7 +1575,7 @@ public class TFFinalCastlePieces {
 			direction %= 4;
 			
 			// build towards
-			BlockPos tc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, howFar, direction);
+			BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, direction);
 
 			//System.out.println("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + direction + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
 			
@@ -1587,9 +1587,9 @@ public class TFFinalCastlePieces {
 			int centerX = ((start.getBoundingBox().minX + 128) >> 8) << 8;
 			int centerZ = ((start.getBoundingBox().minZ + 128) >> 8) << 8;
 			
-			if (isWithinRange(centerX, centerZ, tc.posX, tc.posZ, 128)) {
+			if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 			
-				MazeTower13 sTower = new MazeTower13(rand, this.getComponentType() + 1, tc.posX, tc.posY, tc.posZ, this.type, direction);
+				MazeTower13 sTower = new MazeTower13(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), this.type, direction);
 				
 				StructureBoundingBox largerBB = new StructureBoundingBox(sTower.getBoundingBox());
 				
@@ -1608,13 +1608,13 @@ public class TFFinalCastlePieces {
 					sTower.buildTowards(this, list, rand, dest);
 					
 					// add bridge
-					BlockPos bc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, 1, direction);
-					Bridge bridge = new Bridge(this.getComponentType() + 1, bc.posX, bc.posY, bc.posZ, howFar - 7, direction);
+					BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction);
+					Bridge bridge = new Bridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 					list.add(bridge);
 					bridge.buildComponent(this, list, rand);
 					
 					// opening
-		    		addOpening(opening.posX, opening.posY + 1, opening.posZ, direction);
+		    		addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), direction);
 					
 					return true;
 				} else {
@@ -1636,7 +1636,7 @@ public class TFFinalCastlePieces {
 			
 			int howFar = 14 + rand.nextInt(24);
 			// build towards
-			BlockPos tc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, howFar, direction);
+			BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, direction);
 
 			// what type of tower?
 			MazeTower13 eTower = makeNewDamagedTower(rand, direction, tc);
@@ -1651,17 +1651,17 @@ public class TFFinalCastlePieces {
 			StructureComponent intersect = StructureComponent.findIntersecting(list, largerBB);
 
 			if (intersect == null) {
-				//System.out.println("wreck tower success!  tower is at " + tc.posX + ", " + tc.posY + ", " + tc.posZ);
+				//System.out.println("wreck tower success!  tower is at " + tc.getX() + ", " + tc.getY() + ", " + tc.getZ());
 				list.add(eTower);
 				eTower.buildComponent(this, list, rand);
 				// add bridge
-				BlockPos bc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, 1, direction);
-				Bridge bridge = new Bridge(this.getComponentType() + 1, bc.posX, bc.posY, bc.posZ, howFar - 7, direction);
+				BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction);
+				Bridge bridge = new Bridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 				list.add(bridge);
 				bridge.buildComponent(this, list, rand);
 				
 				// opening
-	    		addOpening(opening.posX, opening.posY + 1, opening.posZ, direction);
+	    		addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), direction);
 				
 				return true;
 			} else {
@@ -1671,17 +1671,17 @@ public class TFFinalCastlePieces {
 		}
 
 		protected MazeTower13 makeNewDamagedTower(Random rand, int direction, BlockPos tc) {
-			return new DamagedTower(rand, this.getComponentType() + 1, tc.posX, tc.posY, tc.posZ, direction);
+			return new DamagedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
 		}
 
 		private int adjustOpening(int posY, BlockPos dest) {
 			int openY = posY;
 			
 			int realOpeningY = this.getYWithOffset(openY);
-			if (realOpeningY - dest.posY < 12) {
+			if (realOpeningY - dest.getY() < 12) {
 				// if it is too low, move it to the top floor
 				openY = this.height - 9;
-			} else if (dest.posY - realOpeningY < 12) {
+			} else if (dest.getY() - realOpeningY < 12) {
 				// if the opening is too high, move it to the bottom floor
 				openY = 0;
 			}
@@ -1692,23 +1692,23 @@ public class TFFinalCastlePieces {
 		private boolean buildEndTowerTowards(List list, Random rand, BlockPos dest, int direction, int howFar) {
 			BlockPos opening = this.getValidOpeningCC(rand, direction);
 			
-			// adjust opening towards dest.posY
-			opening.posY = this.adjustOpening(opening.posY, dest);
+			// adjust opening towards dest.getY()
+			opening.getY() = this.adjustOpening(opening.getY(), dest);
 			
 			direction += this.coordBaseMode;
 			direction %= 4;
 			
 			// build towards
-			BlockPos tc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, howFar, direction);
+			BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, direction);
 
 			//System.out.println("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + direction + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
 
 			// what type of tower?
 			MazeTower13 eTower;
 			if (this.type == 0) {
-				eTower = new EntranceTower(rand, this.getComponentType() + 1, tc.posX, tc.posY, tc.posZ, direction);
+				eTower = new EntranceTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
 			} else {
-				eTower = new BellTower21(rand, this.getComponentType() + 1, tc.posX, tc.posY, tc.posZ, direction);
+				eTower = new BellTower21(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
 			}
 
 			StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
@@ -1721,17 +1721,17 @@ public class TFFinalCastlePieces {
 			StructureComponent intersect = StructureComponent.findIntersecting(list, largerBB);
 
 			if (intersect == null) {
-				//System.out.println("entrance tower success!  tower is at " + tc.posX + ", " + tc.posY + ", " + tc.posZ + " and dest is " + dest.posX + ", " + dest.posY + ", " + dest.posZ);
+				//System.out.println("entrance tower success!  tower is at " + tc.getX() + ", " + tc.getY() + ", " + tc.getZ() + " and dest is " + dest.getX() + ", " + dest.getY() + ", " + dest.getZ());
 				list.add(eTower);
 				eTower.buildComponent(this, list, rand);
 				// add bridge
-				BlockPos bc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, 1, direction);
-				Bridge bridge = new Bridge(this.getComponentType() + 1, bc.posX, bc.posY, bc.posZ, howFar - 7, direction);
+				BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction);
+				Bridge bridge = new Bridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 				list.add(bridge);
 				bridge.buildComponent(this, list, rand);
 				
 				// opening
-	    		addOpening(opening.posX, opening.posY + 1, opening.posZ, direction);
+	    		addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), direction);
 				
 				return true;
 			} else {
@@ -1978,10 +1978,10 @@ public class TFFinalCastlePieces {
     		
     		// add bridge to bottom
 			BlockPos opening = this.getValidOpeningCC(rand, direction);
-			opening.posY -= middleFloors * 8;
+			opening.getY() -= middleFloors * 8;
 			
-			BlockPos bc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, 1, brDirection);
-			Bridge bridge = new Bridge(this.getComponentType() + 1, bc.posX, bc.posY, bc.posZ, howFar - 7, brDirection);
+			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, brDirection);
+			Bridge bridge = new Bridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, brDirection);
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);
 		}
@@ -1993,11 +1993,11 @@ public class TFFinalCastlePieces {
 			direction %= 4;
 			
 			// build towards
-			BlockPos tc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, howFar, direction);
+			BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, direction);
 
 			//System.out.println("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + direction + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
 
-			EntranceSideTower eTower = new EntranceSideTower(rand, this.getComponentType() + 1, tc.posX, tc.posY, tc.posZ, middleFloors, middleFloors - 1, direction);
+			EntranceSideTower eTower = new EntranceSideTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, direction);
 
 			StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
 
@@ -2012,13 +2012,13 @@ public class TFFinalCastlePieces {
 				list.add(eTower);
 				eTower.buildComponent(this, list, rand);
 				// add bridge
-				BlockPos bc = this.offsetTowerCCoords(opening.posX, opening.posY, opening.posZ, 1, direction);
-				Bridge bridge = new Bridge(this.getComponentType() + 1, bc.posX, bc.posY, bc.posZ, howFar - 7, direction);
+				BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction);
+				Bridge bridge = new Bridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 				list.add(bridge);
 				bridge.buildComponent(this, list, rand);
 				
 				// opening
-	    		addOpening(opening.posX, opening.posY + 1, opening.posZ, direction);
+	    		addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), direction);
 				
 				return true;
 			} else {
@@ -2125,7 +2125,7 @@ public class TFFinalCastlePieces {
     		int direction = (getCoordBaseMode() + rotation) % 4;
     		BlockPos dx = offsetTowerCCoords(x, y, z, 0, direction);
 
-    		EntranceStairs stairs = new EntranceStairs(index, dx.posX, dx.posY, dx.posZ, direction);
+    		EntranceStairs stairs = new EntranceStairs(index, dx.getX(), dx.getY(), dx.getZ(), direction);
 
     		list.add(stairs);
     		stairs.buildComponent(list.get(0), list, rand);
@@ -2307,7 +2307,7 @@ public class TFFinalCastlePieces {
 
 		@Override
 		protected MazeTower13 makeNewDamagedTower(Random rand, int direction, BlockPos tc) {
-			return new WreckedTower(rand, this.getComponentType() + 1, tc.posX, tc.posY, tc.posZ, direction);
+			return new WreckedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
 		}
 		
 		

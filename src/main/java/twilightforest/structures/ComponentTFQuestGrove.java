@@ -31,7 +31,7 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		// the maze is 25 x 25 for now
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
 	}
 
 	@Override

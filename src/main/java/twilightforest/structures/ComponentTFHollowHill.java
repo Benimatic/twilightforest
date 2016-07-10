@@ -32,7 +32,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		radius = ((hillSize * 2 + 1) * 8) - 6;
 
 		// can we determine the size here?
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -3, -radius, radius * 2, 10, radius * 2, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -3, -radius, radius * 2, 10, radius * 2, EnumFacing.SOUTH);
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 			int[] dest = getCoordsInHill2D(rand);
 			String mobID = getMobID(rand);
 			
-			setSpawner(world, rand, dest[0],rand.nextInt(4), dest[1], mobID, sbb);
+			setSpawner(world, dest[0], rand.nextInt(4), dest[1], sbb, mobID);
 //			placeMobSpawner(dest[0], hy + rand.nextInt(4), dest[1]);
 		}
 		// treasure chests!!

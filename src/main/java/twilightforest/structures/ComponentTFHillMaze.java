@@ -7,8 +7,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
+import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-
+import twilightforest.block.enums.MazestoneVariant;
 
 
 public class ComponentTFHillMaze extends StructureTFComponent {
@@ -22,7 +23,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 		
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, EnumFacing.SOUTH);
 
 	}
 
@@ -37,8 +38,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 		// make maze object
 		TFMaze maze = new TFMaze(getMazeSize(), getMazeSize());
 		
-		maze.wallBlockID = TFBlocks.mazestone;
-		maze.wallBlockMeta = 3;
+		maze.wallBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
 		maze.torchRarity = 0.05F;
 
 		// set the seed to a fixed value based on this maze's x and z
@@ -169,7 +169,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 			mobID = "Spider";
 		}
 
-		setSpawner(world, rand, rx, FLOOR_LEVEL, rz, mobID, sbb);
+		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);
 	}
 
 	/**
