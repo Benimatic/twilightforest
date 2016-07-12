@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,8 +22,8 @@ public class TFGenHugeLilyPad extends WorldGenerator
 
 	private Random rand = new Random();
 
-
-    public boolean generate(World world, Random random, int x, int y, int z)
+	@Override
+    public boolean generate(World world, Random random, BlockPos pos)
     {
     	for (int i = 0; i < 10; i++) {
     		int dx = x + random.nextInt(8) - random.nextInt(8);

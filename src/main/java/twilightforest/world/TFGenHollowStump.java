@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 
@@ -14,7 +15,7 @@ import net.minecraft.world.World;
 public class TFGenHollowStump extends TFGenHollowTree {
 
 	@Override
-	public boolean generate(World world, Random rand, int x, int y, int z) {
+	public boolean generate(World world, Random rand, BlockPos pos) {
 		
 		int radius = rand.nextInt(2) + 2;
 

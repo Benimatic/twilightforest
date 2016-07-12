@@ -182,9 +182,8 @@ public class TFGenCaveStalactite extends TFGenerator {
         	return false;
         }
 		
-		return makeSpike(world, random, x, hang ? ceiling : floor, z, length);
+		return makeSpike(world, random, new BlockPos(pos.getX(), hang ? ceiling : floor, pos.getZ()), length);
 	}
-		
 
 	public boolean makeSpike(World world, Random random, BlockPos pos, int maxLength)
 	{

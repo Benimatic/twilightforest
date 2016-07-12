@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFRoots;
@@ -44,13 +45,13 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		Material materialUnder;
-		for (int dy = y; dy >= TFWorld.SEALEVEL; dy--) {
-			materialUnder = world.getBlock(x, dy - 1, z).getMaterial();
+		for (int dy = pos.getY(); dy >= TFWorld.SEALEVEL; dy--) {
+			materialUnder = world.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
 			if (materialUnder == Material.GRASS || materialUnder == Material.GROUND)
 			{
 				// yes!
 				foundDirt = true;
-				y = dy;
+				pos = new BlockPos(pos.getX(), dy, pos.getZ());
 				break;
 			}
 			else if (materialUnder == Material.ROCK || materialUnder == Material.SAND) {
@@ -64,9 +65,9 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		}
 		
 		// do not grow next to another tree
-		if (world.getBlock(x + 1, y, z + 0).getMaterial() == Material.WOOD || world.getBlock(x - 1, y, z + 0).getMaterial() == Material.WOOD
-				|| world.getBlock(x + 0, y, z + 1).getMaterial() == Material.WOOD || world.getBlock(x + 0, y, z - 1).getMaterial() == Material.WOOD) {
-			return false;
+		for (EnumFacing e : EnumFacing.HORIZONTALS) {
+			if (world.getBlockState(pos.offset(e)).getMaterial() == Material.WOOD)
+				return false;
 		}
 
 		// determine a height

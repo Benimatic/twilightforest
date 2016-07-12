@@ -14,7 +14,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 	public boolean generate(World world, Random rand, BlockPos pos) {
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 		
-		if (!this.isAreaSuitable(world, rand, x - 1, y, z - 1, 3, height, 3)) {
+		if (!this.isAreaSuitable(world, rand, pos.add(-1, 0, -1), 3, height, 3)) {
 			return false;
 		}
 		
@@ -25,18 +25,18 @@ public class TFGenBigMushgloom extends TFGenerator {
         
         // generate!
         for (int dy = 0; dy < height - 2; dy++) {
-            this.setBlockAndNotifyAdequately(world, x, y + dy, z, TFBlocks.hugeGloomBlock, 10);
+            this.setBlockAndNotifyAdequately(world, pos.up(dy), TFBlocks.hugeGloomBlock, 10);
         }
          
-		makeMushroomCap(world, x, z, y + (height - 2));
+		makeMushroomCap(world, pos.up(height - 2));
 		if (rand.nextBoolean()) {
-			makeMushroomCap(world, x, z, y + (height - 1));
+			makeMushroomCap(world, pos.up(height - 1));
 		}
 		
 		return true;
 	}
 
-	private void makeMushroomCap(World world, int x, int z, int dy) {
+	private void makeMushroomCap(World world, BlockPos pos) {
 		this.setBlockAndNotifyAdequately(world, x - 1, dy, z - 1, TFBlocks.hugeGloomBlock, 1);
         this.setBlockAndNotifyAdequately(world, x + 0, dy, z - 1, TFBlocks.hugeGloomBlock, 2);
         this.setBlockAndNotifyAdequately(world, x + 1, dy, z - 1, TFBlocks.hugeGloomBlock, 3);

@@ -161,7 +161,7 @@ public class TFGenCaves extends MapGenCaves
 
                                 if (genY >= 0 && genY < 128)
                                 {
-                                    if (isOceanBlock(blockStorage, waterIndex, genX, genY, genZ, centerX, centerZ))
+                                    if (isOceanBlock(blockStorage, genX, genY, genZ))
                                     {
                                         hasHitWater = true;
                                     }
@@ -274,8 +274,9 @@ public class TFGenCaves extends MapGenCaves
         }
     }
     
-    protected boolean isOceanBlock(Block[] data, int index, int x, int y, int z, int chunkX, int chunkZ)
+    private boolean isOceanBlock(ChunkPrimer data, int x, int y, int z)
     {
-        return data[index] == Blocks.FLOWING_WATER || data[index] == Blocks.WATER;
+        IBlockState state = data.getBlockState(x, y, z);
+        return state.getBlock() == Blocks.FLOWING_WATER || state.getBlock() == Blocks.WATER;
     }
 }

@@ -3,6 +3,7 @@ package twilightforest.world;
 import java.util.Collection;
 import java.util.Iterator;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureData;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -46,8 +47,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     /**
      * Returns true if the structure generator has generated a structure located at the given position tuple.
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public int getSpawnListIndexAt(int par1, int par2, int par3)
+	public int getSpawnListIndexAt(BlockPos pos)
     {
     	int highestFoundIndex = -1;
 
@@ -57,7 +57,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         {
             StructureStart start = (StructureStart)startIterator.next();
 
-            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(par1, par3, par1, par3))
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
             {
                 Iterator<StructureComponent> componentIterator = start.getComponents().iterator();
 
@@ -65,7 +65,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
                 {
                     StructureComponent component = (StructureComponent)componentIterator.next();
 
-                    if (component != null && component.getBoundingBox() != null && component.getBoundingBox().isVecInside(par1, par2, par3))
+                    if (component != null && component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos))
                     {
                     	if (component instanceof StructureTFComponent)
                     	{
@@ -93,8 +93,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     /**
      * Get the structure bounding box, if any, at the specified position
      */
-	@SuppressWarnings("unchecked")
-	public StructureBoundingBox getSBBAt(int mapX, int mapY, int mapZ) {
+	public StructureBoundingBox getSBBAt(BlockPos pos) {
 		StructureBoundingBox boxFound = null;
 
         Iterator<StructureStart> startIterator = this.structureMap.values().iterator();
@@ -103,7 +102,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         {
             StructureStart start = (StructureStart)startIterator.next();
 
-            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ))
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
             {
                 Iterator<StructureComponent> componentIterator = start.getComponents().iterator();
 
@@ -111,7 +110,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
                 {
                     StructureComponent component = (StructureComponent)componentIterator.next();
 
-                    if (component.getBoundingBox().isVecInside(mapX, mapY, mapZ))
+                    if (component.getBoundingBox().isVecInside(pos))
                     {
                     	boxFound = component.getBoundingBox();
                     }
@@ -125,8 +124,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	/**
 	 * Is the block at the coordinates given a protected one?
 	 */
-	@SuppressWarnings("unchecked")
-	public boolean isBlockProtectedAt(int mapX, int mapY, int mapZ) {
+	public boolean isBlockProtectedAt(BlockPos pos) {
 		boolean blockProtected = false;
 
         Iterator<StructureStart> startIterator = this.structureMap.values().iterator();
@@ -181,7 +179,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 					
 					MapGenStructureData data = ObfuscationReflectionHelper.getPrivateValue(MapGenStructure.class, this, "field_143029_e");
 					
-			        data.func_143043_a(featureStart.func_143021_a(start.func_143019_e(), start.func_143018_f()), start.func_143019_e(), start.func_143018_f());
+			        data.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
 					//System.out.println("Writing data");
 					
 					data.setDirty(true);

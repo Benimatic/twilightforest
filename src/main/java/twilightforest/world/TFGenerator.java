@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -33,25 +34,6 @@ public abstract class TFGenerator extends WorldGenerator {
 		double rtilt = tilt * Math.PI;
 		
 		return pos.add(
-				Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance),
-				Math.round(Math.cos(rtilt) * distance),
-				Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance)
-		);
-	}
-
-	/**
-	 * Moves distance along the vector.
-	 * 
-	 * This goofy function takes a float between 0 and 1 for the angle, where 0 is 0 degrees, .5 is 180 degrees and 1 and 360 degrees.
-	 * For the tilt, it takes a float between 0 and 1 where 0 is straight up, 0.5 is straight out and 1 is straight down. 
-	 */
-	public static BlockPos translateCoords(int sx, int sy, int sz, double distance, double angle, double tilt) {
-		BlockPos dest = new BlockPos(sx, sy, sz);
-		
-		double rangle = angle * 2.0D * Math.PI;
-		double rtilt = tilt * Math.PI;
-		
-		return dest.add(
 				Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance),
 				Math.round(Math.cos(rtilt) * distance),
 				Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance)
@@ -106,16 +88,16 @@ public abstract class TFGenerator extends WorldGenerator {
 			for (i = 0; i < l; i++) {
 				lineArray[i] = new BlockPos (pixel);
 				if (err_1 > 0) {
-					pixel.posY += y_inc;
+					pixel = pixel.up(y_inc);
 					err_1 -= dx2;
 				}
 				if (err_2 > 0) {
-					pixel.posZ += z_inc;
+					pixel = pixel.south(z_inc);
 					err_2 -= dx2;
 				}
 				err_1 += dy2;
 				err_2 += dz2;
-				pixel.posX += x_inc;
+				pixel = pixel.east(x_inc);
 			}
 		} else if ((m >= l) && (m >= n)) {
 			err_1 = dx2 - m;
@@ -124,37 +106,37 @@ public abstract class TFGenerator extends WorldGenerator {
 			for (i = 0; i < m; i++) {
 				lineArray[i] = new BlockPos (pixel);
 				if (err_1 > 0) {
-					pixel.posX += x_inc;
+					pixel = pixel.east(x_inc);
 					err_1 -= dy2;
 				}
 				if (err_2 > 0) {
-					pixel.posZ += z_inc;
+					pixel = pixel.south(z_inc);
 					err_2 -= dy2;
 				}
 				err_1 += dx2;
 				err_2 += dz2;
-				pixel.posY += y_inc;
+				pixel = pixel.up(y_inc);
 			}
 		} else {
 			err_1 = dy2 - n;
 			err_2 = dx2 - n;
 			lineArray = new BlockPos[n + 1];
 			for (i = 0; i < n; i++) {
-				lineArray[i] = new BlockPos(pixel);
+				lineArray[i] = pixel;
 				if (err_1 > 0) {
-					pixel.posY += y_inc;
+					pixel = pixel.up(y_inc);
 					err_1 -= dz2;
 				}
 				if (err_2 > 0) {
-					pixel.posX += x_inc;
+					pixel = pixel.east(x_inc);
 					err_2 -= dz2;
 				}
 				err_1 += dy2;
 				err_2 += dx2;
-				pixel.posZ += z_inc;
+				pixel = pixel.south(z_inc);
 			}
 		}
-		lineArray[lineArray.length - 1] = new BlockPos(pixel);
+		lineArray[lineArray.length - 1] = pixel;
 
 		return lineArray;
 	}
@@ -162,15 +144,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
-	public void makeLeafCircle(World world, int sx, int sy, int sz, int rad, Block blockValue, int metaValue)
-	{
-		this.makeLeafCircle(world, sx, sy, sz, rad, blockValue, metaValue, false);
-	}
-	
-	/**
-	 * Draw a flat blob (circle) of leaves
-	 */
-	public void makeLeafCircle(World world, int sx, int sy, int sz, int rad, Block blockValue, int metaValue, boolean useHack)
+	public void makeLeafCircle(World world, BlockPos pos, int rad, IBlockState state, boolean useHack)
 	{
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
@@ -187,10 +161,10 @@ public abstract class TFGenerator extends WorldGenerator {
 				// if we're inside the blob, fill it
 				if (dist <= rad) {
 					// do four at a time for easiness!
-					putLeafBlock(world, sx + dx, sy, sz + dz, blockValue, metaValue);
-					putLeafBlock(world, sx + dx, sy, sz - dz, blockValue, metaValue);
-					putLeafBlock(world, sx - dx, sy, sz + dz, blockValue, metaValue);
-					putLeafBlock(world, sx - dx, sy, sz - dz, blockValue, metaValue);
+					putLeafBlock(world, pos.add(+dx, 0, +dz), state);
+					putLeafBlock(world, pos.add(+dx, 0, -dz), state);
+					putLeafBlock(world, pos.add(-dx, 0, +dz), state);
+					putLeafBlock(world, pos.add(-dx, 0, -dz), state);
 				}
 			}
 		}
@@ -199,7 +173,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
 	 */
-	public void makeLeafCircle2(World world, int sx, int sy, int sz, int rad, Block blockValue, int metaValue, boolean useHack)
+	public void makeLeafCircle2(World world, BlockPos pos, int rad, IBlockState state, boolean useHack)
 	{
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
@@ -216,10 +190,10 @@ public abstract class TFGenerator extends WorldGenerator {
 				// if we're inside the blob, fill it
 				if (dx * dx + dz * dz <= rad * rad) {
 					// do four at a time for easiness!
-					putLeafBlock(world, sx + 1 + dx, sy, sz + 1 + dz, blockValue, metaValue);
-					putLeafBlock(world, sx + 1 + dx, sy, sz - dz, blockValue, metaValue);
-					putLeafBlock(world, sx - dx, sy, sz + 1 + dz, blockValue, metaValue);
-					putLeafBlock(world, sx - dx, sy, sz - dz, blockValue, metaValue);
+					putLeafBlock(world, pos.add(1 + dx, 0, 1 + dz), state);
+					putLeafBlock(world, pos.add(1+ dx, 0, -dz), state);
+					putLeafBlock(world, pos.add(-dx, 0, 1 + dz), state);
+					putLeafBlock(world, pos.add(-dx, 0, -dz), state);
 				}
 			}
 		}
@@ -239,13 +213,10 @@ public abstract class TFGenerator extends WorldGenerator {
 
 	/**
 	 * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
-	 * 
-	 * @param rand
-	 * @return
 	 */
-	protected Block randStone(Random rand, int howMuch)
+	protected IBlockState randStone(Random rand, int howMuch)
 	{
-		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE : Blocks.MOSSY_COBBLESTONE;
+		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.getDefaultState() : Blocks.MOSSY_COBBLESTONE.getDefaultState();
 	}
 
 	/**
@@ -294,7 +265,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a giant blob of whatevs.
 	 */
-	public void drawBlob(World world, int sx, int sy, int sz, int rad, Block blockValue, int metaValue) {
+	public void drawBlob(World world, BlockPos pos, int rad, IBlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
 		{
@@ -317,14 +288,14 @@ public abstract class TFGenerator extends WorldGenerator {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						setBlockAndMetadata(world, sx + dx, sy + dy, sz + dz, blockValue, metaValue);
-						setBlockAndMetadata(world, sx + dx, sy + dy, sz - dz, blockValue, metaValue);
-						setBlockAndMetadata(world, sx - dx, sy + dy, sz + dz, blockValue, metaValue);
-						setBlockAndMetadata(world, sx - dx, sy + dy, sz - dz, blockValue, metaValue);
-						setBlockAndMetadata(world, sx + dx, sy - dy, sz + dz, blockValue, metaValue);
-						setBlockAndMetadata(world, sx + dx, sy - dy, sz - dz, blockValue, metaValue);
-						setBlockAndMetadata(world, sx - dx, sy - dy, sz + dz, blockValue, metaValue);
-						setBlockAndMetadata(world, sx - dx, sy - dy, sz - dz, blockValue, metaValue);
+						setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, +dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, -dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, +dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, -dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, +dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, -dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, +dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, -dz), state);
 					}
 				}
 			}
@@ -334,7 +305,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a giant blob of leaves.
 	 */
-	public void drawLeafBlob(World world, int sx, int sy, int sz, int rad, Block blockValue, int metaValue) {
+	public void drawLeafBlob(World world, BlockPos pos, int rad, IBlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
 		{
@@ -357,14 +328,14 @@ public abstract class TFGenerator extends WorldGenerator {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						putLeafBlock(world, sx + dx, sy + dy, sz + dz, blockValue, metaValue);
-						putLeafBlock(world, sx + dx, sy + dy, sz - dz, blockValue, metaValue);
-						putLeafBlock(world, sx - dx, sy + dy, sz + dz, blockValue, metaValue);
-						putLeafBlock(world, sx - dx, sy + dy, sz - dz, blockValue, metaValue);
-						putLeafBlock(world, sx + dx, sy - dy, sz + dz, blockValue, metaValue);
-						putLeafBlock(world, sx + dx, sy - dy, sz - dz, blockValue, metaValue);
-						putLeafBlock(world, sx - dx, sy - dy, sz + dz, blockValue, metaValue);
-						putLeafBlock(world, sx - dx, sy - dy, sz - dz, blockValue, metaValue);
+						putLeafBlock(world, pos.add(+dx, +dy, +dz), state);
+						putLeafBlock(world, pos.add(+dx, +dy, -dz), state);
+						putLeafBlock(world, pos.add(-dx, +dy, +dz), state);
+						putLeafBlock(world, pos.add(-dx, +dy, -dz), state);
+						putLeafBlock(world, pos.add(+dx, -dy, +dz), state);
+						putLeafBlock(world, pos.add(+dx, -dy, -dz), state);
+						putLeafBlock(world, pos.add(-dx, -dy, +dz), state);
+						putLeafBlock(world, pos.add(-dx, -dy, -dz), state);
 					}
 				}
 			}
@@ -374,69 +345,40 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Does the block have only air blocks adjacent
 	 */
-	protected static boolean surroundedByAir(IBlockAccess world, int bx, int by, int bz) {
-		boolean airAround = true;
-		if (!world.isAirBlock(bx + 1, by, bz)) {
-			airAround = false;
-		}
-		if (!world.isAirBlock(bx - 1, by, bz)) {
-			airAround = false;
-		}
-		if (!world.isAirBlock(bx, by, bz + 1)) {
-			airAround = false;
-		}
-		if (!world.isAirBlock(bx, by, bz - 1)) {
-			airAround = false;
-		}
-		if (!world.isAirBlock(bx, by + 1, bz)) {
-			airAround = false;
-		}
-		if (!world.isAirBlock(bx, by - 1, bz)) {
-			airAround = false;
+	protected static boolean surroundedByAir(IBlockAccess world, BlockPos pos) {
+		for (EnumFacing e : EnumFacing.VALUES) {
+			if (!world.isAirBlock(pos.offset(e))) {
+				return false;
+			}
 		}
 
-		return airAround;
-	}	
+		return true;
+	}
 	
 	/**
 	 * Does the block have at least 1 air block adjacent
 	 */
-	protected static boolean hasAirAround(World world, int bx, int by, int bz) {
-		boolean airAround = false;
-		if (world.blockExists(bx + 1, by, bz) && world.getBlock(bx + 1, by, bz) == Blocks.AIR) {
-			airAround = true;
-		}
-		if (world.blockExists(bx - 1, by, bz) && world.getBlock(bx - 1, by, bz) == Blocks.AIR) {
-			airAround = true;
-		}
-		if (world.blockExists(bx, by, bz + 1) && world.getBlock(bx, by, bz + 1) == Blocks.AIR) {
-			airAround = true;
-		}
-		if (world.blockExists(bx, by, bz - 1) && world.getBlock(bx, by, bz - 1) == Blocks.AIR) {
-			airAround = true;
-		}
-		if (world.getBlock(bx, by + 1, bz) == Blocks.AIR) {
-			airAround = true;
+	protected static boolean hasAirAround(World world, BlockPos pos) {
+		for (EnumFacing e : EnumFacing.VALUES) {
+			if (e == EnumFacing.DOWN)
+				continue; // todo 1.9 was in old logic
+			if (world.isBlockLoaded(pos.offset(e))
+					&& world.getBlockState(pos.offset(e)).getBlock() == Blocks.AIR) { // todo 1.9 isAir
+				return true;
+			}
 		}
 
-		return airAround;
+		return false;
 	}	
 	
-	protected static boolean isNearSolid(World world, int bx, int by, int bz) {
-		boolean nearSolid = false;
-		if (world.blockExists(bx + 1, by, bz) && world.getBlock(bx + 1, by, bz).getMaterial().isSolid()) {
-			nearSolid = true;
-		}
-		if (world.blockExists(bx - 1, by, bz) && world.getBlock(bx - 1, by, bz).getMaterial().isSolid()) {
-			nearSolid = true;
-		}
-		if (world.blockExists(bx, by, bz + 1) && world.getBlock(bx, by, bz + 1).getMaterial().isSolid()) {
-			nearSolid = true;
-		}
-		if (world.blockExists(bx, by, bz - 1) && world.getBlock(bx, by, bz - 1).getMaterial().isSolid()) {
-			nearSolid = true;
+	protected static boolean isNearSolid(World world, BlockPos pos) {
+		for (EnumFacing e : EnumFacing.HORIZONTALS) {
+			if (world.isBlockLoaded(pos.offset(e))
+					&& world.getBlockState(pos.offset(e)).getMaterial().isSolid()) {
+				return true;
+			}
 		}
 
-		return nearSolid;
+		return false;
 	}
 }

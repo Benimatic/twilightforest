@@ -1,6 +1,8 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -8,16 +10,24 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.RootVariant;
 import twilightforest.world.TFGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ItemTFOreMagnet extends ItemTF
 {
@@ -154,75 +164,50 @@ public class ItemTFOreMagnet extends ItemTF
 		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
 		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
 		
-		int useX = MathHelper.floor_double(srcVec.xCoord);
-		int useY = MathHelper.floor_double(srcVec.yCoord);
-		int useZ = MathHelper.floor_double(srcVec.zCoord);
-		
-		int destX = MathHelper.floor_double(destVec.xCoord);
-		int destY = MathHelper.floor_double(destVec.yCoord);
-		int destZ = MathHelper.floor_double(destVec.zCoord);
-		
-		int blocksMoved = doMagnet(world, useX, useY, useZ, destX, destY, destZ);
-		
-		return blocksMoved;
+		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
 
 	/**
 	 * This function makes the magnet work
 	 */
-	public static int doMagnet(World world, int useX, int useY, int useZ, int destX, int destY, int destZ) {
+	public static int doMagnet(World world, BlockPos usePos, BlockPos destPos) {
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
-		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(useX, useY, useZ, destX, destY, destZ);
+		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(usePos, destPos);
 		
 		//System.out.println("Searching from " + useX + ", " + useY + ", " + useZ + " to " + destX + ", " + destY + ", " + destZ);
 		
 		// find some ore?
-		Block foundID = Blocks.AIR;
-		int foundMeta = -1;
-		int foundX = -1;
-		int foundY = -1;
-		int foundZ = -1;
-		int baseX = -1;
-		int baseY = -1;
-		int baseZ = -1;
-		
+		IBlockState foundState = Blocks.AIR.getDefaultState();
+		BlockPos foundPos = null;
+		BlockPos basePos = null;
+
 		boolean isNetherrack = false;
 		
 		for (BlockPos coord : lineArray)
 		{
-			Block searchID = world.getBlock(coord.posX, coord.posY, coord.posZ);
-			int searchMeta = world.getBlockMetadata(coord.posX, coord.posY, coord.posZ);
-			
+			IBlockState searchState = world.getBlockState(coord);
+
 			// keep track of where the dirt/stone we first find is.s
-			if (baseY == -1)
+			if (basePos == null)
 			{
-				if (isReplaceable(world, searchID, searchMeta, coord.posX, coord.posY, coord.posZ))
+				if (isReplaceable(world, searchState, coord))
 				{
-					baseX = coord.posX;
-					baseY = coord.posY;
-					baseZ = coord.posZ;
+					basePos = coord;
 
 				}
-				else if (isNetherReplaceable(world, searchID, searchMeta, coord.posX, coord.posY, coord.posZ))
+				else if (isNetherReplaceable(world, searchState, coord))
 				{
 					isNetherrack = true;
-					baseX = coord.posX;
-					baseY = coord.posY;
-					baseZ = coord.posZ;
+					basePos = coord;
 				}
 			}
 			
-			if (searchID != Blocks.AIR && isOre(searchID, searchMeta))
+			if (searchState.getBlock() != Blocks.AIR && isOre(searchState))
 			{
 				//System.out.println("I found ore: " + searchID + " at " + coord.PosX + ", " + coord.PosY + ", " + coord.PosZ);
-				
-				foundID = searchID;
-				foundMeta = searchMeta;
-				foundX = coord.posX;
-				foundY = coord.posY;
-				foundZ = coord.posZ;
-				
+				foundState = searchState;
+				foundPos = coord;
 				break;
 			}
 		}
@@ -230,33 +215,29 @@ public class ItemTFOreMagnet extends ItemTF
 		//System.out.println("I found ground at " + baseX + ", " + baseY + ", " + baseZ);
 
 		
-		if (baseY != -1 && foundID != Blocks.AIR)
+		if (basePos != null && foundState.getBlock() != Blocks.AIR)
 		{
 			// find the whole vein
-			ArrayList<BlockPos> veinBlocks = new ArrayList<BlockPos>();
-			findVein(world, foundX, foundY, foundZ, foundID, foundMeta, veinBlocks);
+			Set<BlockPos> veinBlocks = new HashSet<BlockPos>();
+			findVein(world, foundPos, foundState, veinBlocks);
 
 			// move it up into minable blocks or dirt
-			int offX = baseX - foundX;
-			int offY = baseY - foundY;
-			int offZ = baseZ - foundZ;
+			int offX = basePos.getX() - foundPos.getX();
+			int offY = basePos.getY() - foundPos.getY();
+			int offZ = basePos.getZ() - foundPos.getZ();
 			
 			for (BlockPos coord : veinBlocks)
 			{
-				int replaceX = coord.posX + offX;
-				int replaceY = coord.posY + offY;
-				int replaceZ = coord.posZ + offZ;
-				
-				Block replaceID = world.getBlock(replaceX, replaceY, replaceZ);
-				int replaceMeta = world.getBlockMetadata(replaceX, replaceY, replaceZ);
-				
-				if ((isNetherrack ? isNetherReplaceable(world, replaceID, replaceMeta, replaceX, replaceY, replaceZ) : isReplaceable(world, replaceID, replaceMeta, replaceX, replaceY, replaceZ)) || replaceID == Blocks.AIR)
+				BlockPos replacePos = coord.add(offX, offY, offZ);
+				IBlockState replaceState = world.getBlockState(replacePos);
+
+				if ((isNetherrack ? isNetherReplaceable(world, replaceState, replacePos) : isReplaceable(world, replaceState, replacePos)) || replaceState.getBlock() == Blocks.AIR)
 				{
 					// set vein to stone / netherrack
-					world.setBlock(coord.posX, coord.posY, coord.posZ, isNetherrack ? Blocks.NETHERRACK : Blocks.STONE, 0, 2);
+					world.setBlockState(coord, isNetherrack ? Blocks.NETHERRACK.getDefaultState() : Blocks.STONE.getDefaultState(), 2);
 					
 					// set close to ore material
-					world.setBlock(replaceX, replaceY, replaceZ, foundID, foundMeta, 2);
+					world.setBlockState(replacePos, foundState, 2);
 					blocksMoved++;
 				}
 				else
@@ -282,21 +263,21 @@ public class ItemTFOreMagnet extends ItemTF
         return new Vec3d(var3 * var4, var5, var2 * var4);
 	}
 
-	private static boolean isReplaceable(World world, Block replaceID, int replaceMeta, int x, int y, int z)
+	private static boolean isReplaceable(World world, IBlockState state, BlockPos pos)
 	{
-		if (replaceID == Blocks.DIRT)
+		if (state.getBlock() == Blocks.DIRT)
 		{
 			return true;
 		}
-		if (replaceID == Blocks.GRASS)
+		if (state.getBlock() == Blocks.GRASS)
 		{
 			return true;
 		}
-		if (replaceID == Blocks.GRAVEL)
+		if (state.getBlock() == Blocks.GRAVEL)
 		{
 			return true;
 		}
-		if (replaceID != Blocks.AIR && replaceID.isReplaceableOreGen(world, x, y, z, Blocks.STONE))
+		if (state.getBlock() != Blocks.AIR && state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE)))
 		{
 			return true;
 		}
@@ -304,13 +285,13 @@ public class ItemTFOreMagnet extends ItemTF
 		return false;
 	}
 
-	private static boolean isNetherReplaceable(World world, Block replaceID, int replaceMeta, int x, int y, int z)
+	private static boolean isNetherReplaceable(World world, IBlockState state, BlockPos pos)
 	{
-		if (replaceID == Blocks.NETHERRACK)
+		if (state.getBlock() == Blocks.NETHERRACK)
 		{
 			return true;
 		}
-		if (replaceID != Blocks.AIR && replaceID.isReplaceableOreGen(world, x, y, z, Blocks.NETHERRACK))
+		if (state.getBlock() != Blocks.AIR && state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.NETHERRACK)))
 		{
 			return true;
 		}
@@ -318,11 +299,9 @@ public class ItemTFOreMagnet extends ItemTF
 		return false;
 	}
 
-	private static boolean findVein(World world, int x, int y, int z, Block oreID, int oreMeta, ArrayList<BlockPos> veinBlocks)
+	private static boolean findVein(World world, BlockPos here, IBlockState oreState, Set<BlockPos> veinBlocks)
 	{
-		BlockPos here = new BlockPos(x, y, z);
-		
-		// is this already on the list? 
+		// is this already on the list?
 		if (veinBlocks.contains(here))
 		{
 			return false;
@@ -335,18 +314,15 @@ public class ItemTFOreMagnet extends ItemTF
 		}
 
 		// otherwise, check if we're still in the vein
-		if (world.getBlock(x, y, z) == oreID && world.getBlockMetadata(x, y, z) == oreMeta)
+		if (world.getBlockState(here) == oreState)
 		{
 			veinBlocks.add(here);
 
 			// recurse in 6 directions
-			findVein(world, x + 1, y, z, oreID, oreMeta, veinBlocks);
-			findVein(world, x - 1, y, z, oreID, oreMeta, veinBlocks);
-			findVein(world, x, y + 1, z, oreID, oreMeta, veinBlocks);
-			findVein(world, x, y - 1, z, oreID, oreMeta, veinBlocks);
-			findVein(world, x, y, z + 1, oreID, oreMeta, veinBlocks);
-			findVein(world, x, y, z - 1, oreID, oreMeta, veinBlocks);
-			
+			for (EnumFacing e : EnumFacing.VALUES) {
+				findVein(world, here.offset(e), oreState, veinBlocks);
+			}
+
 			return true;
 		}
 		else
@@ -356,49 +332,49 @@ public class ItemTFOreMagnet extends ItemTF
 	}
 
 
-	private static boolean isOre(Block blockID, int meta) {
+	private static boolean isOre(IBlockState state) {
 		
-		if (blockID == Blocks.COAL_ORE)
+		if (state.getBlock() == Blocks.COAL_ORE)
 		{
 			return false;
 		}
-		if (blockID == Blocks.IRON_ORE)
+		if (state.getBlock() == Blocks.IRON_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.DIAMOND_ORE)
+		if (state.getBlock() == Blocks.DIAMOND_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.EMERALD_ORE)
+		if (state.getBlock() == Blocks.EMERALD_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.GOLD_ORE)
+		if (state.getBlock() == Blocks.GOLD_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.LAPIS_ORE)
+		if (state.getBlock() == Blocks.LAPIS_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.REDSTONE_ORE)
+		if (state.getBlock() == Blocks.REDSTONE_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.LIT_REDSTONE_ORE)
+		if (state.getBlock() == Blocks.LIT_REDSTONE_ORE)
 		{
 			return true;
 		}
-		if (blockID == Blocks.QUARTZ_ORE)
+		if (state.getBlock() == Blocks.QUARTZ_ORE)
 		{
 			return true;
 		}
-		if (blockID == TFBlocks.root && meta == BlockTFRoots.OREROOT_META)
+		if (state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT))
 		{
 			return true;
 		}
-		if (blockID.getUnlocalizedName().toLowerCase().contains("ore"))
+		if (state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // todo 1.9 oh god
 		{
 			return true;
 		}

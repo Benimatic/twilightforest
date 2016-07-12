@@ -256,15 +256,15 @@ public class BlockTFPlant extends BlockBush implements IShearable {
      * Root-specific method.
      * @return true if the root can be placed in the block immediately below this one
      */
-    public static boolean canPlaceRootBelow(World world, int x, int y, int z) {
-    	Block blockID = world.getBlock(x, y, z);
-    	if (blockID != null && (blockID.getMaterial() == Material.GROUND || blockID.getMaterial() == Material.GRASS)) {
+    public static boolean canPlaceRootBelow(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+    	if (state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS) {
     		// can always hang below dirt blocks
     		return true;
     	}
     	else {
-    		int blockMeta = world.getBlockMetadata(x, y, z);
-    		return (blockID == TFBlocks.plant && blockMeta == META_ROOT_STRAND) || (blockID == TFBlocks.root && blockMeta == BlockTFRoots.ROOT_META);
+    		return (state.getBlock() == TFBlocks.plant && state.getValue(BlockTFPlant.VARIANT) == PlantVariant.ROOT_STRAND)
+                    || state == TFBlocks.root.getDefaultState();
     	}
     	
     }

@@ -177,7 +177,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 * Where should we start this branch?
 	 */
 	private BlockPos getBranchSrc(int branchHeight, double branchRotation) {
-		return TFGenerator.translateCoords(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1, radius, branchRotation, 0.5);
+		return TFGenerator.translate(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1, radius, branchRotation, 0.5);
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 */
 	protected void addInsect(World world, int fHeight, double fAngle, Random random, StructureBoundingBox sbb)
 	{
-		BlockPos bugSpot = TFGenerator.translateCoords(this.radius + 1, fHeight, this.radius + 1, this.radius + 1, fAngle, 0.5);
+		BlockPos bugSpot = TFGenerator.translate(this.radius + 1, fHeight, this.radius + 1, this.radius + 1, fAngle, 0.5);
 		
 		fAngle = fAngle % 1.0;
 		int insectMeta = 0;

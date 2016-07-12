@@ -5,15 +5,12 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
-
-
 
 public class TFGenHollowTree extends TFGenerator 
 {
@@ -37,8 +34,9 @@ public class TFGenHollowTree extends TFGenerator
     {
         super(par1);
     }
-    
-	public boolean generate(World world, Random random, int x, int y, int z) {
+
+	@Override
+	public boolean generate(World world, Random random, BlockPos pos) {
 		
 		int height = random.nextInt(64) + 32;
 		int diameter =  random.nextInt(4) + 1;
@@ -377,8 +375,8 @@ public class TFGenHollowTree extends TFGenerator
 	 * Make a root
 	 */
 	protected void makeRoot(World world, Random random, int x, int y, int z, int diameter, int branchHeight, double length, double angle, double tilt) {
-		BlockPos src = translateCoords(x, y + branchHeight, z, diameter, angle, 0.5);
-		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = translate(x, y + branchHeight, z, diameter, angle, 0.5);
+		BlockPos dest = translate(src.posX, src.posY, src.posZ, length, angle, tilt);
 		
 		BlockPos[] lineArray = getBresehnamArrayCoords(src, dest);
 		boolean stillAboveGround = true; 

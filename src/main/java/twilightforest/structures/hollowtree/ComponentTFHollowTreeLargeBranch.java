@@ -3,7 +3,7 @@ package twilightforest.structures.hollowtree;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -40,7 +40,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 			
 			double outVar = (rand.nextDouble() * 0.3) + 0.3;
 			double angleVar = rand.nextDouble() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
-			BlockPos bsrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, length * outVar, angle, tilt);
+			BlockPos bsrc = TFGenerator.translate(src, length * outVar, angle, tilt);
 			
 			makeMedBranch(list, rand, index + 2 + i, bsrc.posX, bsrc.posY, bsrc.posZ, length * 0.6, angle + angleVar, tilt, leafy);
 		}
@@ -113,7 +113,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 			
 			double outVar = (decoRNG.nextFloat() * 0.25F) + 0.25F;
 			double angleVar = decoRNG.nextFloat() * 0.25F * ((i & 1) == 0 ? 1.0F : -1.0F);
-			BlockPos bsrc = TFGenerator.translateCoords(rsrc.posX, rsrc.posY, rsrc.posZ, length * outVar, angle, tilt);
+			BlockPos bsrc = TFGenerator.translate(rsrc, length * outVar, angle, tilt);
 			
 			drawSmallBranch(world, sbb, bsrc.posX, bsrc.posY, bsrc.posZ, Math.max(length * 0.3F, 2F), angle + angleVar, tilt, leafy);
 		}

@@ -3,6 +3,7 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLogSpecial;
 import twilightforest.block.BlockTFRoots;
@@ -30,9 +31,8 @@ public class TFGenMinersTree extends TFTreeGenerator
 		this.rootMeta = BlockTFRoots.ROOT_META;
 	}
 
-
 	@Override
-	public boolean generate(World world, Random rand, int x, int y, int z) 
+	public boolean generate(World world, Random rand, BlockPos pos)
 	{
 		
 		// check soil

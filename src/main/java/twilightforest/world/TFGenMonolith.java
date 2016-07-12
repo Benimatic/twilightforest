@@ -2,7 +2,9 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.entity.passive.EntityTFRaven;
 
@@ -15,14 +17,13 @@ import twilightforest.entity.passive.EntityTFRaven;
  */
 public class TFGenMonolith extends TFGenerator {
 
-
 	@Override
-	public boolean generate(World world, Random rand, int x, int y, int z) {
+	public boolean generate(World world, Random rand, BlockPos pos) {
 		int ht = rand.nextInt(10) + 10;
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;
 
-		if (!isAreaSuitable(world, rand, x, y, z, 2, ht, 2))
+		if (!isAreaSuitable(world, rand, pos, 2, ht, 2))
 		{
 			return false;
 		}
@@ -57,33 +58,35 @@ public class TFGenMonolith extends TFGenerator {
 			break;
 		}
 		
-		
 		for (int cy = 0; cy <= h0; cy++)
 		{
-			setBlock(world, x + 0, y + cy - 1, z + 0, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
+			setBlockAndNotifyAdequately(world, pos.add(0, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
 		}
 		for (int cy = 0; cy <= h1; cy++)
 		{
-			setBlock(world, x + 1, y + cy - 1, z + 0, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
+			setBlockAndNotifyAdequately(world, pos.add(1, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
 		}
 		for (int cy = 0; cy <= h2; cy++)
 		{
-			setBlock(world, x + 0, y + cy - 1, z + 1, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
+			setBlockAndNotifyAdequately(world, pos.add(0, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
 		}
 		for (int cy = 0; cy <= h3; cy++)
 		{
-			setBlock(world, x + 1, y + cy - 1, z + 1, cy == ht ? Blocks.LAPIS_BLOCK : Blocks.OBSIDIAN);
+			setBlockAndNotifyAdequately(world, pos.add(1, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
 		}
 
 		// spawn a few ravens nearby
         for (int i = 0; i < 2; i++)
         {
-            int dx = (x + rand.nextInt(8)) - rand.nextInt(8);
-            int dz = (z + rand.nextInt(8)) - rand.nextInt(8);
-            int dy = world.getTopSolidOrLiquidBlock(dx, dz);
+			BlockPos dPos = pos.add(
+					rand.nextInt(8) - rand.nextInt(8),
+					0,
+					rand.nextInt(8) - rand.nextInt(8)
+			);
+            dPos = world.getTopSolidOrLiquidBlock(dPos);
             
             EntityTFRaven raven = new EntityTFRaven(world);
-            raven.setLocationAndAngles(dx, dy, dz, rand.nextFloat() * 360.0F, 0.0F);
+            raven.setLocationAndAngles(dPos.getX(), dPos.getY(), dPos.getZ(), rand.nextFloat() * 360.0F, 0.0F);
             
             world.spawnEntityInWorld(raven);
             

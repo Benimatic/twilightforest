@@ -73,7 +73,7 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree {
 	}
 
 	protected static BlockPos translateCoords(int sx, int sy, int sz, double length, double angle, double tilt) {
-		return TFGenerator.translateCoords(sx, sy, sz, length, angle, tilt);
+		return TFGenerator.translate(sx, sy, sz, length, angle, tilt);
 	}
 
 	/**

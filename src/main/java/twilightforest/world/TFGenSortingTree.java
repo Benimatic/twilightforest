@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.BlockTFMagicLogSpecial;
@@ -34,10 +35,10 @@ public class TFGenSortingTree extends TFGenerator
 
 
 	@Override
-	public boolean generate(World world, Random rand, int x, int y, int z) {
+	public boolean generate(World world, Random rand, BlockPos pos) {
 		// check soil
-		Material materialUnder = world.getBlock(x, y - 1, z).getMaterial();
-		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || y >= TFWorld.MAXHEIGHT - 12)
+		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
+		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || pos.getY() >= TFWorld.MAXHEIGHT - 12)
 		{
 			return false;
 		}
@@ -45,21 +46,20 @@ public class TFGenSortingTree extends TFGenerator
 		// 3 block high trunk
 		for (int dy = 0; dy < 4; dy++)
 		{
-			setBlockAndMetadata(world, x, y + dy, z, treeBlock, treeMeta);
+			setBlockAndNotifyAdequately(world, pos.up(dy), treeBlock, treeMeta);
 		}
 		
 		// leaves
-		putLeaves(world, x, y + 2, z, false);
-		putLeaves(world, x, y + 3, z, false);
+		putLeaves(world, pos.up(2), false);
+		putLeaves(world, pos.up(3), false);
 		
 		// sorting engine
-		setBlockAndMetadata(world, x, y + 1, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_SORT);
+		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_SORT);
 
 		return true;
 	}
 
-	
-	protected void putLeaves(World world, int bx, int by, int bz, boolean bushy) {
+	private void putLeaves(World world, BlockPos pos, boolean bushy) {
 		for (int lx = -1; lx <= 1; lx++)
 		{
 			for (int ly = -1; ly <= 1; ly++)
@@ -70,7 +70,7 @@ public class TFGenSortingTree extends TFGenerator
 					{
 						continue;
 					}
-					putLeafBlock(world, bx + lx, by + ly, bz + lz, leafBlock, leafMeta);
+					putLeafBlock(world, pos.add(lx, ly, lz), leafBlock, leafMeta);
 				}
 			}
 		}
