@@ -15,9 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
@@ -25,13 +23,11 @@ import net.minecraft.world.chunk.Chunk;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
+import twilightforest.block.enums.MagicWoodVariant;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFMagicLogSpecial extends BlockTFMagicLog 
 {
@@ -48,7 +44,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     @Override
 	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
     {
-        par1World.scheduleBlockUpdate(par2, par3, par4, this, this.tickRate(par1World));
+        par1World.scheduleUpdate(pos, this, this.tickRate(par1World));
     }
     
     @Override
@@ -56,117 +52,65 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     {
         return Item.getItemFromBlock(TFBlocks.magicLog); // change into normal magic log
     }
-	
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-        int orient = meta & 12;
-        int woodType = meta & 3;
-        
-        if (orient == 12)
-        {
-        	//off blocks
-           	switch (woodType)
-        	{
-        	default:
-        	case META_TIME :
-        		return (side == 1 || side == 0) ? SPR_TIMETOP : SPR_TIMECLOCKOFF; 
-        	case META_TRANS :
-        		return (side == 1 || side == 0) ? SPR_TRANSTOP : SPR_TRANSHEARTOFF; 
-        	case META_MINE :
-        		return (side == 1 || side == 0) ? SPR_MINETOP : SPR_MINEGEMOFF; 
-        	case META_SORT :
-        		return (side == 1 || side == 0) ? SPR_SORTTOP : SPR_SORTEYEOFF; 
-        	}
-        }
-        else
-        {
-        	switch (woodType)
-        	{
-        	default:
-        	case META_TIME :
-        		return orient == 0 && (side == 1 || side == 0) ? SPR_TIMETOP : (orient == 4 && (side == 5 || side == 4) ? SPR_TIMETOP : (orient == 8 && (side == 2 || side == 3) ? SPR_TIMETOP : SPR_TIMECLOCK)); 
-        	case META_TRANS :
-        		return orient == 0 && (side == 1 || side == 0) ? SPR_TRANSTOP : (orient == 4 && (side == 5 || side == 4) ? SPR_TRANSTOP : (orient == 8 && (side == 2 || side == 3) ? SPR_TRANSTOP : SPR_TRANSHEART)); 
-        	case META_MINE :
-        		return orient == 0 && (side == 1 || side == 0) ? SPR_MINETOP : (orient == 4 && (side == 5 || side == 4) ? SPR_MINETOP : (orient == 8 && (side == 2 || side == 3) ? SPR_MINETOP : SPR_MINEGEM)); 
-        	case META_SORT :
-        		return orient == 0 && (side == 1 || side == 0) ? SPR_SORTTOP : (orient == 4 && (side == 5 || side == 4) ? SPR_SORTTOP : (orient == 8 && (side == 2 || side == 3) ? SPR_SORTTOP : SPR_SORTEYE)); 
-        	}
-        }
-    }
-    
+
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	if ((meta & 12) == 12)
+    	if (state.getValue(LOG_AXIS) == EnumAxis.NONE)
     	{
     		// block is off, do not tick
     		return;
     	}
 
-    	if ((meta & 3) == 0 && !world.isRemote)
+    	if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TIME)
     	{
     		// tree of time effect
     		world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.5F);
     		
-    		doTreeOfTimeEffect(world, x, y, z, rand);
+    		doTreeOfTimeEffect(world, pos, rand);
     	}
-    	else if ((meta & 3) == 1 && !world.isRemote)
+    	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TRANS)
     	{
     		// tree of transformation effect
-    		doTreeOfTransformationEffect(world, x, y, z, rand);
+    		doTreeOfTransformationEffect(world, pos, rand);
     	}
-    	else if ((meta & 3) == 2 && !world.isRemote)
+    	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.MINE)
     	{
     		// miner's tree effect
-    		doMinersTreeEffect(world, x, y, z, rand);
+    		doMinersTreeEffect(world, pos, rand);
     	}
-    	else if ((meta & 3) == 3 && !world.isRemote)
+    	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.SORT)
     	{
     		// sorting tree effect
-    		doSortingTreeEffect(world, x, y, z, rand);
+    		doSortingTreeEffect(world, pos, rand);
     	}
 
 
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleUpdate(pos, this, this.tickRate(world));
 
     }
     
     @Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, ItemStack stack, EnumFacing side, float par7, float par8, float par9)
     {
-        int meta = world.getBlockMetadata(x, y, z);
+		if (state.getValue(LOG_AXIS) == EnumAxis.Y) {
+			// turn off
+			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
+			return true;
+		} else if (state.getValue(LOG_AXIS) == EnumAxis.NONE) {
+			// turn on
+			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.Y));
+			world.scheduleUpdate(pos, this, this.tickRate(world));
+			return true;
+		}
 
-        int orient = meta & 12;
-        int woodType = meta & 3;
-        
-        if (orient == 0)
-        {
-        	// turn off
-        	world.setBlockMetadataWithNotify(x, y, z, woodType | 12, 3);
-        	return true;
-        }
-        if (orient == 12)
-        {
-        	// turn on
-        	world.setBlockMetadataWithNotify(x, y, z, woodType | 0, 3);
-        	world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
-        	return true;
-        }
-        
         return false;
     }
 
     /**
      * The tree of time adds extra ticks to blocks, so that they have twice the normal chance to get a random tick
      */
-	private void doTreeOfTimeEffect(World world, int x, int y, int z, Random rand) {
+	private void doTreeOfTimeEffect(World world, BlockPos pos, Random rand) {
 		int numticks = 8 * 3 * this.tickRate(world);
 	
 		int successes = 0;
@@ -174,15 +118,18 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		for (int i = 0; i < numticks; i++)
 		{
 			// find a nearby block
-			int dx = rand.nextInt(32) - 16; 
-			int dy = rand.nextInt(32) - 16; 
-			int dz = rand.nextInt(32) - 16;
-	
-			Block thereID = world.getBlock(x + dx, y + dy, z + dz);
+			BlockPos dPos = pos.add(
+					rand.nextInt(32) - 16,
+					rand.nextInt(32) - 16,
+					rand.nextInt(32) - 16
+			);
+
+			IBlockState thereState = world.getBlockState(dPos);
+			Block thereID = thereState.getBlock();
 	
 			if (thereID != Blocks.AIR && thereID.getTickRandomly())
 			{
-				thereID.updateTick(world, x + dx, y + dy, z + dz, rand);
+				thereID.updateTick(world, dPos, thereState, rand);
 	
 				//System.out.println("tree of time ticked a block at " + (x + dx) + ", " + (y + dy) + ", " + (z + dz) + " and the block was " + Blocks.BLOCKSLIST[thereID] );
 	
@@ -198,28 +145,27 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	 * 
 	 * TODO: also change entities
 	 */
-	private void doTreeOfTransformationEffect(World world, int x, int y, int z, Random rand) {
+	private void doTreeOfTransformationEffect(World world, BlockPos pos, Random rand) {
 		for (int i = 0; i < 1; i++)
 		{
-			int dx = rand.nextInt(32) - 16; 
-			int dz = rand.nextInt(32) - 16; 
-			
+			BlockPos dPos = pos.add(rand.nextInt(32) - 16, 0, rand.nextInt(32) - 16);
+
 			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.1F, rand.nextFloat() * 2F);
 
 
-			if (Math.sqrt(dx * dx + dz * dz) < 16)
+			if (dPos.distanceSq(pos) < 256)
 			{
-				Biome biomeAt = world.getBiomeGenForCoords(x + dx, z + dz);
+				Biome biomeAt = world.getBiomeGenForCoords(dPos);
 
 				if (biomeAt != TFBiomeBase.enchantedForest)
 				{
 					// I wonder how possible it is to change this
 
-					Chunk chunkAt = world.getChunkFromBlockCoords(x + dx, z + dz);
+					Chunk chunkAt = world.getChunkFromBlockCoords(dPos);
 
-					chunkAt.getBiomeArray()[((z + dz) & 15) << 4 | ((x + dx) & 15)] = (byte)TFBiomeBase.enchantedForest.biomeID;
+					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte)Biome.getIdForBiome(TFBiomeBase.enchantedForest);
 
-					world.markBlockForUpdate((x + dx), y, (z + dz));
+					// todo 1.9 world.notifyBlockUpdate((x + dx), y, (z + dz));
 
 					//System.out.println("Set biome at " + (x + dx) + ", " + (z + dz) + " to enchanted forest.");
 					
@@ -227,7 +173,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 					
 					if (world instanceof WorldServer)
 					{
-						sendChangedBiome(world, x + dx, z + dz, chunkAt);
+						sendChangedBiome(world, dPos.getX(), dPos.getZ(), chunkAt);
 					}
 					
 				}
@@ -252,15 +198,16 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	/**
 	 * The miner's tree generates the ore magnet effect randomly every second
 	 */
-	private void doMinersTreeEffect(World world, int x, int y, int z, Random rand) {
-		int dx = rand.nextInt(64) - 32; 
-		int dy = rand.nextInt(64) - 32; 
-		int dz = rand.nextInt(64) - 32;
-	
+	private void doMinersTreeEffect(World world, BlockPos pos, Random rand) {
+		BlockPos dPos = pos.add(
+				rand.nextInt(64) - 32,
+				rand.nextInt(64) - 32,
+				rand.nextInt(64) - 32
+		);
+
 		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.5F);
-	
-	
-		int moved = ItemTFOreMagnet.doMagnet(world, x, y, z, x + dx, y + dy, z + dz);
+
+		int moved = ItemTFOreMagnet.doMagnet(world, pos, dPos);
 	
 		if (moved > 0)
 		{
@@ -275,7 +222,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	/**
 	 * The sorting tree finds two chests nearby and then attempts to sort a random item.
 	 */
-	private void doSortingTreeEffect(World world, int x, int y, int z, Random rand) {
+	private void doSortingTreeEffect(World world, BlockPos pos, Random rand) {
 		// find all the chests nearby
 		int XSEARCH = 16;
 		int YSEARCH = 16;
@@ -292,7 +239,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				{
 					if (world.getBlock(sx, sy, sz) == Blocks.CHEST)
 					{
-						IInventory thisChest = Blocks.CHEST.func_149951_m(world, sx, sy, sz);
+						IInventory thisChest = Blocks.CHEST.getLockableContainer(world, sx, sy, sz);
 						
 						// make sure we haven't counted this chest
 						if (thisChest != null && !checkIfChestsContains(chests, (IInventory)world.getTileEntity(sx, sy, sz)))
@@ -428,23 +375,11 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		}
 	}
 
-	private boolean isSortingMatch(ItemStack beingSorted, ItemStack currentItem) 
+	private boolean isSortingMatch(ItemStack beingSorted, ItemStack currentItem)
 	{
-		return getCreativeTab(currentItem.getItem()) == getCreativeTab(beingSorted.getItem());
+		return beingSorted.getItem().getCreativeTab() == currentItem.getItem().getCreativeTab();
 	}
 	
-	private Object getCreativeTab(Item item)
-	{
-    	try {
-			return ObfuscationReflectionHelper.getPrivateValue(Item.class, item, 0);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		}
-    	return null;
-	}
-
 	/**
 	 * Is the chest we're testing part of our chest list already?
 	 */
@@ -492,8 +427,6 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     	par3List.add(new ItemStack(par1, 1, 1));
     	par3List.add(new ItemStack(par1, 1, 2));
     	par3List.add(new ItemStack(par1, 1, 3));
-
     }
-    
 
   }

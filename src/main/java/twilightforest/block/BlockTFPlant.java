@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
@@ -39,12 +40,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     public static final PropertyEnum<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
 
     boolean[] isGrassColor = {false, false, false, false, true, true, false, false, true, false, true, false, false, false, false, false};
-    int[] lightValue = {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 8, 0, 0};
-    
-	private IIcon[] icons;
-	private String[] iconNames = new String[] {null, null, null, "mosspatch", "mayapple", "cloverpatch", null, null, "fiddlehead", "mushgloom", null, null, null, "torchberry", "rootstrand", null};
-	public static IIcon mayappleSide;
-    
+
 	protected BlockTFPlant() {
 		super(Material.PLANTS);
         this.setTickRandomly(true);
@@ -54,15 +50,6 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int metadata)
-    {
-        return this.icons[metadata];
-    }
-    
     @Override
 	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
@@ -92,59 +79,44 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		world.scheduleBlockUpdate(i, j, k, this, world.rand.nextInt(50) + 20);
+		world.scheduleUpdate(pos, this, world.rand.nextInt(50) + 20);
 	}
 	
     @Override
 	public boolean canReplace(World par1World, BlockPos pos, EnumFacing side, ItemStack par6ItemStack)
     {
-    	// we need to get the metadata
-    	Block blockAt = par1World.getBlock(x, y, z);
-    	
-        return (blockAt == Blocks.AIR || blockAt.getMaterial().isReplaceable()) && canBlockStay(par1World, x, y, z, par6ItemStack.getItemDamage());
+    	IBlockState state = par1World.getBlockState(pos);
+        return (state.getBlock().isAir(state, par1World, pos) || state.getMaterial().isReplaceable()) && canBlockStay(par1World, pos, state);
     }
 
-	/**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
     @Override
-	public boolean canBlockStay(World world, int x, int y, int z) {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	return canBlockStay(world, x, y, z, meta);
-    }
-    
-	/**
-     * Can this block stay at this position?  with metadata
-     */
-	public boolean canBlockStay(World world, int x, int y, int z, int meta) {
+	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
     	
     	//System.out.println("Can block stay? meta is " + meta);
-        Block soil = world.getBlock(x, y - 1, z);
+        IBlockState soil = world.getBlockState(pos.down());
     	
-       	switch (meta) {
-    	case META_TORCHBERRY :
-    	case META_ROOT_STRAND :
-    		return BlockTFPlant.canPlaceRootBelow(world, x, y + 1, z);
-    	case 0: // let's make this happen
-    	case META_FORESTGRASS:
-    	case META_DEADBUSH:
-    		return (soil != null && soil.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this));
-    	case META_MUSHGLOOM:
-    	case META_MOSSPATCH:
-    		return soil != null && soil.isSideSolid(world, x, y, z, ForgeDirection.UP);
+       	switch (state.getValue(VARIANT)) {
+    	case TORCHBERRY :
+    	case ROOT_STRAND :
+    		return BlockTFPlant.canPlaceRootBelow(world, pos.up());
+    	case FORESTGRASS:
+    	case DEADBUSH:
+    		return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+    	case MUSHGLOOM:
+    	case MOSSPATCH:
+    		return soil.isSideSolid(world, pos, EnumFacing.UP);
      	default :
-            return (world.getFullBlockLightValue(x, y, z) >= 3 || world.canBlockSeeTheSky(x, y, z)) && 
-                    (soil != null && soil.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this));
+            return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) &&
+                    soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
     	}
     }
     
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
+        PlantVariant variant = state.getValue(VARIANT);
 
-        if (meta == META_MOSSPATCH)
+        if (variant == PlantVariant.MOSSPATCH)
         {
             long seed = x * 3129871 ^ y * 116129781L ^ z;
             seed = seed * seed * 42317861L + seed * 11L;
@@ -163,7 +135,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
             		xConnect0 ? 1F : (15F - xOff0) / 16F, 1F / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F);
 
         }
-        else if (meta == META_CLOVERPATCH)
+        else if (variant == PlantVariant.CLOVERPATCH)
         {
             long seed = x * 3129871 ^ y * 116129781L ^ z;
             seed = seed * seed * 42317861L + seed * 11L;
@@ -187,30 +159,22 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         	
             //this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2F / 16F, 1.0F);
         }
-        else if (meta == META_MAYAPPLE)
+        else if (variant == PlantVariant.MAYAPPLE)
         {
-            this.setBlockBounds(4F / 16F, 0, 4F / 16F, 13F / 16F, 6F / 16F, 13F / 16F);
+            return new AxisAlignedBB(4F / 16F, 0, 4F / 16F, 13F / 16F, 6F / 16F, 13F / 16F);
         }
         else
         {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            return FULL_BLOCK_AABB;
         }
     }
     
-
-	/**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
     @Override
 	public int getRenderColor(int par1)
     {
         return isGrassColor[par1] ? ColorizerFoliage.getFoliageColorBasic() : 0xFFFFFF;
     }
 
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
     @Override
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
     {
@@ -231,25 +195,16 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     }
 
 	@Override
-	public int getRenderType() {
-		return TwilightForestMod.proxy.getPlantBlockRenderID();
-	}
-	
-    @Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
-    {
-    	int meta = par1World.getBlockMetadata(x, y, z);
-		if (par1World.getBlockLightValue(x, y, z) < lightValue[meta]) {
-			//par1World.updateLightByType(EnumSkyBlock.Block, x, y, z);
-			//par1World.markBlockForUpdate(x, y, z); // do we need this now?
-		}
-
-    }
-
-	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	return lightValue[meta]; 
+        if (world.getBlockState(pos).getBlock() != this) {
+            return world.getBlockState(pos).getLightValue(world, pos);
+        } else {
+            switch (state.getValue(VARIANT)) {
+                case MUSHGLOOM: return 3;
+                case TORCHBERRY: return 8;
+                default: return 0;
+            }
+        }
 	}
     
     /**
@@ -302,20 +257,19 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         //TODO: this needs to not drop if the player is shearing!  Grrr!
         
         // blah
-        switch (meta) {
-        case META_TORCHBERRY :
+        switch (state.getValue(VARIANT)) {
+        case TORCHBERRY:
         	ret.add(new ItemStack(TFItems.torchberries));
         	break;
-        case META_MOSSPATCH :
-        case META_MAYAPPLE :
-        case META_CLOVERPATCH :
-        case META_ROOT_STRAND :
-        case META_FORESTGRASS :
-        case META_DEADBUSH :
-        	// Just don't drop anythin
+        case MOSSPATCH :
+        case MAYAPPLE :
+        case CLOVERPATCH :
+        case ROOT_STRAND :
+        case FORESTGRASS :
+        case DEADBUSH :
         	break;
         default :
-        	ret.add(new ItemStack(this, 1, meta));
+        	ret.add(new ItemStack(this, 1, damageDropped(state)));
         	break;
         }
 
@@ -325,7 +279,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     @Override
 	public int damageDropped(IBlockState state)
     {
-        return par1;
+        return getMetaFromState(state);
     }
 
 	@Override
@@ -336,8 +290,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	@Override
 	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        ret.add(new ItemStack(this, 1, world.getBlockMetadata(x, y, z)));
-        //world.setBlockToAir(x, y, z);
+        ret.add(new ItemStack(this, 1, damageDropped(world.getBlockState(pos))));
         return ret;
 	}
 
@@ -345,22 +298,22 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
     {
     	// do not call normal harvest if the player is shearing
-        if (world.isRemote || player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != Items.SHEARS)
+        if (world.isRemote || stack == null || stack.getItem() != Items.SHEARS)
         {
-            super.harvestBlock(world, player, x, y, z, meta);
+            super.harvestBlock(world, player, pos, state, te, stack);
         }
     }
 
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
-        par3List.add(new ItemStack(this, 1, META_MOSSPATCH));
-        par3List.add(new ItemStack(this, 1, META_MAYAPPLE));
+        par3List.add(new ItemStack(this, 1, PlantVariant.MOSSPATCH.meta));
+        par3List.add(new ItemStack(this, 1, PlantVariant.MAYAPPLE.meta));
         //par3List.add(new ItemStack(this, 1, META_CLOVERPATCH));
         par3List.add(new ItemStack(this, 1, 8));
         par3List.add(new ItemStack(this, 1, 9));
-        par3List.add(new ItemStack(this, 1, META_FORESTGRASS));
-        par3List.add(new ItemStack(this, 1, META_DEADBUSH));
+        par3List.add(new ItemStack(this, 1, PlantVariant.FORESTGRASS.meta));
+        par3List.add(new ItemStack(this, 1, PlantVariant.DEADBUSH.meta));
         par3List.add(new ItemStack(this, 1, 13));
         par3List.add(new ItemStack(this, 1, 14));
 
@@ -369,35 +322,31 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     @Override
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
-    	int meta = world.getBlockMetadata(x, y, z);
-
-    	switch (meta)
+    	switch (world.getBlockState(pos).getValue(VARIANT))
     	{
-    	case META_MOSSPATCH :
-    	case META_MUSHGLOOM :
+    	case MOSSPATCH :
+    	case MUSHGLOOM :
     		return EnumPlantType.Cave;
     	default :
     		return EnumPlantType.Plains;
     	}
     }
 
-    @Override
+   /* @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos)
     {
-        return this;
-    }
+        return this; todo 1.9
+    }*/
 
     @Override
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
     {
-        super.randomDisplayTick(par1World, x, y, z, par5Random);
+        super.randomDisplayTick(state, par1World, pos, par5Random);
 
-    	int meta = par1World.getBlockMetadata(x, y, z);
-
-        if (meta == META_MOSSPATCH && par5Random.nextInt(10) == 0)
+        if (state.getValue(VARIANT) == PlantVariant.MOSSPATCH && par5Random.nextInt(10) == 0)
         {
-            par1World.spawnParticle("townaura", x + par5Random.nextFloat(), y + 0.1F, z + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
+            par1World.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + par5Random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
         }
     
     }

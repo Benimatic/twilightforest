@@ -1,85 +1,77 @@
 package twilightforest.block;
 
 import java.util.List;
-import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.WoodVariant;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFLog extends BlockLog {
 
-    
-    public static IIcon sprOakSide;
-    public static IIcon sprOakTop;
-    public static IIcon sprCanopySide;
-    public static IIcon sprCanopyTop;
-    public static IIcon sprMangroveSide;
-    public static IIcon sprMangroveTop;
-    public static IIcon sprDarkwoodSide;
-    public static IIcon sprDarkwoodTop;
+    public static final PropertyEnum<WoodVariant> VARIANT = PropertyEnum.create("variant", WoodVariant.class);
 
-    //public static int sprRottenSide = 15;
-	
 	protected BlockTFLog() {
 		this.setHardness(2.0F);
-		this.setStepSound(Block.soundTypeWood);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     @Override
-	public IIcon getIcon(int side, int meta)
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, VARIANT, LOG_AXIS);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
     {
-        int orient = meta & 12;
-        int woodType = meta & 3;
-        
-        switch (woodType)
+        IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, WoodVariant.values()[meta & 3]);
+
+        switch (meta & 0b1100)
         {
-        default:
-        case 0 :
-        	return orient == 0 && (side == 1 || side == 0) ? sprOakTop : (orient == 4 && (side == 5 || side == 4) ? sprOakTop : (orient == 8 && (side == 2 || side == 3) ? sprOakTop : sprOakSide)); 
-        case 1 :
-        	return orient == 0 && (side == 1 || side == 0) ? sprCanopyTop : (orient == 4 && (side == 5 || side == 4) ? sprCanopyTop : (orient == 8 && (side == 2 || side == 3) ? sprCanopyTop : sprCanopySide)); 
-        case 2 :
-        	return orient == 0 && (side == 1 || side == 0) ? sprMangroveTop : (orient == 4 && (side == 5 || side == 4) ? sprMangroveTop : (orient == 8 && (side == 2 || side == 3) ? sprMangroveTop : sprMangroveSide)); 
-        case 3 :
-        	return orient == 0 && (side == 1 || side == 0) ? sprDarkwoodTop : (orient == 4 && (side == 5 || side == 4) ? sprDarkwoodTop : (orient == 8 && (side == 2 || side == 3) ? sprDarkwoodTop : sprDarkwoodSide)); 
+            case 0:
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
+                break;
+            case 4:
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
+                break;
+            case 8:
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+                break;
+            default:
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
         }
-     }
-    
 
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        BlockTFLog.sprOakSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":oak_side");
-        BlockTFLog.sprOakTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":oak_top");
-        BlockTFLog.sprCanopySide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":canopy_side");
-        BlockTFLog.sprCanopyTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":canopy_top");
-        BlockTFLog.sprMangroveSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mangrove_side");
-        BlockTFLog.sprMangroveTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mangrove_top");
-        BlockTFLog.sprDarkwoodSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":darkwood_side");
-        BlockTFLog.sprDarkwoodTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":darkwood_top");
+        return iblockstate;
     }
 
     @Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
+    public int getMetaFromState(IBlockState state)
     {
-        return Item.getItemFromBlock(TFBlocks.log); // hey that's my block ID!
+        int i = state.getValue(VARIANT).ordinal();
+
+        switch (state.getValue(LOG_AXIS))
+        {
+            case X:
+                i |= 4;
+                break;
+            case Y:
+                i |= 0;
+                break;
+            case Z:
+                i |= 8;
+                break;
+            case NONE:
+                i |= 12;
+        }
+
+        return i;
     }
-    
+
 	@Override
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {

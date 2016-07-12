@@ -17,7 +17,7 @@ public enum PlantVariant implements IStringSerializable {
     TORCHBERRY(13),
     ROOT_STRAND(14);
 
-    private final int meta;
+    public final int meta;
     PlantVariant(int meta) {
         this.meta = meta;
     }

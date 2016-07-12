@@ -5,51 +5,55 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.MagicWoodVariant;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-
-
 
 public class BlockTFMagicLeaves extends BlockLeaves {
-	
-	int oakColor = 0x48B518;
-	int canopyColor = 0x609860;
-	int mangroveColor = 0x80A755;
-	
-	public static final int META_TIME = 0;
-	public static final int META_TRANS = 1;
-	public static final int META_MINE = 2;
-	public static final int META_SORT = 3;
-	
-	public static IIcon SPR_TIMELEAVES;
-	public static IIcon SPR_TIMEFX;
-	public static IIcon SPR_TRANSLEAVES;
-	public static IIcon SPR_TRANSFX;
-	public static IIcon SPR_SORTLEAVES;
-	public static IIcon SPR_SORTFX;
-
 
 	protected BlockTFMagicLeaves() {
 		this.setHardness(0.2F);
 		this.setLightOpacity(2);
-		this.setStepSound(Block.soundTypeGrass);
 		this.setCreativeTab(TFItems.creativeTab);
+		this.setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true)
+				.withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TIME));
 	}
-	
+
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, BlockTFMagicLog.VARIANT, CHECK_DECAY, DECAYABLE);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int meta = state.getValue(BlockTFMagicLog.VARIANT).ordinal();
+		if (state.getValue(CHECK_DECAY))
+			meta |= 0b1000;
+		if (state.getValue(DECAYABLE))
+			meta |= 0b100;
+		return meta;
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		int variant = meta & 0b11;
+		boolean checkDecay = (meta & 0b1000) > 0;
+		boolean decayable = (meta & 0b100) > 0;
+		return getDefaultState().withProperty(CHECK_DECAY, checkDecay)
+				.withProperty(DECAYABLE, decayable)
+				.withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.values()[variant]);
+	}
 
     /**
      * Returns the color this block should be rendered. Used by leaves.
@@ -154,47 +158,6 @@ public class BlockTFMagicLeaves extends BlockLeaves {
 
     }
     
-    /**
-     * The type of render function that is called for this block
-     */
-    @Override
-	public int getRenderType() {
-    	return TwilightForestMod.proxy.getMagicLeavesBlockRenderID();
-    }
-
-	@Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-    public IIcon getIcon(int side, int meta)
-    {
-    	switch (meta & 0x03)
-    	{
-    	default:
-            return SPR_TIMELEAVES;
-    	case 1:
-            return SPR_TRANSLEAVES;
-    	case 3:
-            return SPR_SORTLEAVES;
-    		
-    	}
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        BlockTFMagicLeaves.SPR_TIMELEAVES = par1IconRegister.registerIcon(TwilightForestMod.ID + ":time_leaves");
-        BlockTFMagicLeaves.SPR_TRANSLEAVES = par1IconRegister.registerIcon(TwilightForestMod.ID + ":trans_leaves");
-        BlockTFMagicLeaves.SPR_SORTLEAVES = par1IconRegister.registerIcon(TwilightForestMod.ID + ":sort_leaves");
-    }
-    
     @Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess iblockaccess, BlockPos pos, EnumFacing side)
     {
@@ -213,20 +176,20 @@ public class BlockTFMagicLeaves extends BlockLeaves {
     @Override
 	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
     {
-    	int meta = par1World.getBlockMetadata(x, y, z);
-
-    	if ((meta & 3) == META_TRANS)
+    	if (state.getValue(BlockTFMagicLog.VARIANT) == MagicWoodVariant.TRANS)
     	{
     		for (int i = 0; i < 1; ++i) {
-    			this.sparkleRunes(par1World, x, y, z, par5Random);
+    			this.sparkleRunes(par1World, pos, par5Random);
     		}
     	}
     }
 
-    /**
-     * The leaf sparkles.
-     */
-    private void sparkleRunes(World world, int x, int y, int z, Random rand)
+	@Override
+	public BlockPlanks.EnumType getWoodType(int meta) {
+		return BlockPlanks.EnumType.OAK;
+	}
+
+	private void sparkleRunes(World world, BlockPos pos, Random rand)
     {
     	double offset = 0.0625D;
 
@@ -271,4 +234,8 @@ public class BlockTFMagicLeaves extends BlockLeaves {
     	}
     }
 
+	@Override
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+		return null; // todo 1.9
+	}
 }
