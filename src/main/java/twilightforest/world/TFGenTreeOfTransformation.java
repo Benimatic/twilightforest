@@ -2,9 +2,12 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.BlockTFMagicLogSpecial;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MagicWoodVariant;
 
 
 public class TFGenTreeOfTransformation extends TFGenCanopyTree 
@@ -20,12 +23,10 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree
 	{
 		super(notify);
 		
-		this.treeBlock = TFBlocks.magicLog;
-		this.treeMeta = 1;
+		this.treeState = TFBlocks.magicLog.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
 		this.branchMeta = treeMeta | 12;
-		this.leafBlock = TFBlocks.magicLeaves;
-		this.leafMeta = 1;	
-		
+		this.leafState = TFBlocks.magicLeaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
+
 		this.minHeight = 11;
 		this.chanceAddFirstFive = Integer.MAX_VALUE;
 		this.chanceAddSecondFive = Integer.MAX_VALUE;
@@ -33,11 +34,11 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree
 
 
 	@Override
-	public boolean generate(World world, Random random, int x, int y, int z) {
-		if(super.generate(world, random, x, y, z))
+	public boolean generate(World world, Random random, BlockPos pos) {
+		if(super.generate(world, random, pos))
 		{
 			// heart of transformation
-			setBlockAndNotifyAdequately(world, x, y + 3, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_TRANS);
+			setBlockAndNotifyAdequately(world, pos.up(3), TFBlocks.magicLogSpecial.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS));
 			return true;
 		}
 		else

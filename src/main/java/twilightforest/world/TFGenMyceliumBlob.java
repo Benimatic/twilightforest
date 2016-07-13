@@ -41,22 +41,23 @@ public class TFGenMyceliumBlob extends WorldGenerator
 //        }
         int range = random.nextInt(numberOfBlocks - 2) + 2;
         int yRange = 1;
-        for (int dx = x - range; dx <= x + range; dx++)
+        for (int dx = pos.getX() - range; dx <= pos.getX() + range; dx++)
         {
-            for (int dz = z - range; dz <= z + range; dz++)
+            for (int dz = pos.getZ() - range; dz <= pos.getZ() + range; dz++)
             {
-                int l1 = dx - x;
-                int i2 = dz - z;
+                int l1 = dx - pos.getX();
+                int i2 = dz - pos.getZ();
                 if (l1 * l1 + i2 * i2 > range * range)
                 {
                     continue;
                 }
-                for (int dy = y - yRange; dy <= y + yRange; dy++)
+                for (int dy = pos.getY() - yRange; dy <= pos.getY() + yRange; dy++)
                 {
-                    Block blockThere = world.getBlock(dx, dy, dz);
+                    BlockPos dPos = new BlockPos(dx, dy, dz);
+                    Block blockThere = world.getBlockState(dPos).getBlock();
                     if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS || blockThere == Blocks.STONE)
                     {
-                        world.setBlock(dx, dy, dz, myceliumState, 0, 2);
+                        world.setBlockState(dPos, myceliumState, 2);
                     }
                 }
             }

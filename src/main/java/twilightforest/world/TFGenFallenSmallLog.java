@@ -3,12 +3,18 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
+import twilightforest.block.enums.WoodVariant;
 
 public class TFGenFallenSmallLog extends TFGenerator {
 
@@ -45,28 +51,21 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		{
 		case 0:
 		default:
-			logID = TFBlocks.log;
-			logMeta = 0;
+			logState = TFBlocks.log.getDefaultState(); break;
 		case 1:
-			logID = TFBlocks.log;
-			logMeta = 1;
+			logState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY); break;
 		case 2:
-			logID = TFBlocks.log;
-			logMeta = 2;		
+			logState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE); break;
 		case 3:
-			logID = Blocks.LOG;
-			logMeta = 0;
+			logState = Blocks.LOG.getDefaultState(); break;
 		case 4:
-			logID = Blocks.LOG;
-			logMeta = 1;
+			logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE); break;
 		case 5:
-			logID = Blocks.LOG;
-			logMeta = 2;
+			logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH); break;
 		case 6:
-			logID = Blocks.LOG;
-			logMeta = 3;
+			logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE); break;
 		}
-		logMetaBranch = logMeta;
+		branchState = logState;
 		
 		// check biome
 		
@@ -74,29 +73,29 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		// make log
 		if (goingX)
 		{
-			logMeta |= 4;
-			logMetaBranch |= 8;
+			logState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+			branchState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 
 			for (int lx = 0; lx < length; lx++)
 			{
 				this.setBlockAndNotifyAdequately(world, pos.add(lx, 0, 1), logState);
 				if (rand.nextInt(3) > 0)
 				{
-					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
+					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}
 		else
 		{
-			logMeta |= 8;
-			logMetaBranch |= 4;
-			
+			logState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+			branchState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+
 			for (int lz = 0; lz < length; lz++)
 			{
-				this.setBlockAndMetadata(world, x + 1, y + 0, z + lz, logID, logMeta);
+				this.setBlockAndNotifyAdequately(world, pos.add(1, 0, lz), logState);
 				if (rand.nextInt(3) > 0)
 				{
-					this.setBlockAndMetadata(world, x + 1, y + 1, z + lz, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
+					this.setBlockAndNotifyAdequately(world, pos.add(1, 1, lz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}
@@ -109,10 +108,10 @@ public class TFGenFallenSmallLog extends TFGenerator {
 				int bx = rand.nextInt(length);
 				int bz = rand.nextBoolean() ? 2 : 0;
 				
-				this.setBlockAndMetadata(world, x + bx, y + 0, z + bz, logID, logMetaBranch);
+				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
 				if (rand.nextBoolean())
 				{
-					this.setBlockAndMetadata(world, x + bx, y + 1, z + bz, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
+					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 			else
@@ -120,10 +119,10 @@ public class TFGenFallenSmallLog extends TFGenerator {
 				int bx = rand.nextBoolean() ? 2 : 0;
 				int bz = rand.nextInt(length);
 				
-				this.setBlockAndMetadata(world, x + bx, y + 0, z + bz, logID, logMetaBranch);
+				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
 				if (rand.nextBoolean())
 				{
-					this.setBlockAndMetadata(world, x + bx, y + 1, z + bz, TFBlocks.plant, BlockTFPlant.META_MOSSPATCH);
+					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}
