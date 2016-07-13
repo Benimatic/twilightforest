@@ -203,29 +203,4 @@ public class BlockTFHugeLilyPad extends BlockBush {
     {
         return EnumPushReaction.BLOCK;
     }
-    
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-        return 2129968;
-    }
-
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int p_149741_1_)
-    {
-        return 2129968;
-    }
-
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
-    {
-        return 2129968;
-    }
 }

@@ -32,11 +32,6 @@ public class BlockTFAuroraSlab extends BlockSlab {
 
 	}
 
-	@Override
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z) {
-		return TFBlocks.auroraPillar.colorMultiplier(par1IBlockAccess, -x, y, -z);
-	}
-
     @Override
     public String getUnlocalizedName(int meta) {
         return super.getUnlocalizedName();

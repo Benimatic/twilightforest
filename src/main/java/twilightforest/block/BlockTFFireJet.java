@@ -54,42 +54,6 @@ public class BlockTFFireJet extends Block {
 		return getMetaFromState(state);
 	}
 
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
-    @Override
-	@SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
-    {
-    	int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-    	
-    	if (meta == META_ENCASED_SMOKER_OFF || meta == META_ENCASED_SMOKER_ON 
-    			|| meta == META_ENCASED_JET_IDLE || meta == META_ENCASED_JET_POPPING || meta == META_ENCASED_JET_FLAME)
-    	{
-    		return super.colorMultiplier(par1IBlockAccess, x, y, z);
-    	}
-    	else
-    	{
-    		int red = 0;
-    		int grn = 0;
-    		int blu = 0;
-
-    		for (int var8 = -1; var8 <= 1; ++var8)
-    		{
-    			for (int var9 = -1; var9 <= 1; ++var9)
-    			{
-    				int biomeColor = par1IBlockAccess.getBiomeGenForCoords(x + var9, z + var8).getBiomeGrassColor(x + var9, y, z + var8);
-    				red += (biomeColor & 16711680) >> 16;
-    				grn += (biomeColor & 65280) >> 8;
-    				blu += biomeColor & 255;
-    			}
-    		}
-
-    		return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
-    	}
-    }
-
     @Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {

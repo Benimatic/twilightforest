@@ -48,43 +48,6 @@ public class BlockTFAuroraBrick extends Block {
 		return getDefaultState().withProperty(VARIANT, MathHelper.clamp_int(meta, 0, 15));
 	}
 
-	/**
-	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-	 * when first determining what to render.
-	 */
-	@Override
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
-	{
-		int red = 0;
-		int green = 0;
-		int blue = 0;
-
-
-		// aurora fade
-		red = 16;
-
-		blue = x * 12 + z * 6;
-		if ((blue & 256) != 0){
-			blue = 255 - (blue & 255);
-		}
-		blue ^= 255;
-		blue &= 255;
-
-
-		green = x * 4 + z * 8;
-		if ((green & 256) != 0){
-			green = 255 - (green & 255);
-		}
-		green &= 255;
-
-		// don't let things get black
-		if (green + blue < 128){
-			green = 128 - blue;
-		}
-
-		return red << 16 | blue << 8 | green;
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)

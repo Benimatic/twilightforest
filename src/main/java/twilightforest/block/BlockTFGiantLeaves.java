@@ -25,42 +25,6 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
         return false;
     }
 
-
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-        double d0 = 0.5D;
-        double d1 = 1.0D;
-        return ColorizerFoliage.getFoliageColor(d0, d1);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int p_149741_1_)
-    {
-        return ColorizerFoliage.getFoliageColorBasic();
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, int x, int y, int z)
-    {
-        int red = 0;
-        int grn = 0;
-        int blu = 0;
-
-        for (int dz = -1; dz <= 1; ++dz)
-        {
-            for (int dx = -1; dx <= 1; ++dx)
-            {
-                int nearbyColor = world.getBiomeGenForCoords(x + dx, z + dz).getBiomeFoliageColor(x + dx, y, z + dz);
-                red += (nearbyColor & 16711680) >> 16;
-                grn += (nearbyColor & 65280) >> 8;
-                blu += nearbyColor & 255;
-            }
-        }
-
-        return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {

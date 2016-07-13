@@ -55,35 +55,6 @@ public class BlockTFTowerWood extends Block {
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, TowerWoodVariant.values()[meta]);
 	}
-    
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
-    @Override
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
-    {
-    	int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-
-    	if (meta == 0 || meta == 2 || meta == 3 || meta == META_INFESTED) 
-    	{
-       		// stripes!
-        	int value = x * 31 + y * 15 + z * 33;
-        	if ((value & 256) != 0)
-        	{
-        		value = 255 - (value & 255);
-        	}
-        	value &= 255;
-        	value = value >> 1;
-        	value |= 128;
-        	
-        	return value << 16 | value << 8 | value;
-    	}
-    	else
-    	{ 
-    		return 16777215;
-    	}
-    }
 
     @Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)

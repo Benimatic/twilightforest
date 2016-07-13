@@ -26,50 +26,6 @@ public class BlockTFDarkLeaves extends Block {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 	
-
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-        double d0 = 0.5D;
-        double d1 = 1.0D;
-        return ColorizerFoliage.getFoliageColor(d0, d1);
-    }
-
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int p_149741_1_)
-    {
-        return ColorizerFoliage.getFoliageColorBasic();
-    }
-
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, int x, int y, int z)
-    {
-        int red = 0;
-        int grn = 0;
-        int blu = 0;
-
-        for (int dz = -1; dz <= 1; ++dz)
-        {
-            for (int dx = -1; dx <= 1; ++dx)
-            {
-                int i2 = world.getBiomeGenForCoords(x + dx, z + dz).getBiomeFoliageColor(x + dx, y, z + dz);
-                red += (i2 & 16711680) >> 16;
-                grn += (i2 & 65280) >> 8;
-                blu += i2 & 255;
-            }
-        }
-
-        return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
-    }
-
-
     @Override
 	public int damageDropped(IBlockState state) {
     	return 3;
