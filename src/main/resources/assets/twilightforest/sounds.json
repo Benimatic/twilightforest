@@ -1,229 +1,32 @@
 {
-  "mob.kobold.die": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/kobold/die0",
-      "twilightforest:mob/kobold/die1",
-      "twilightforest:mob/kobold/die2"
-    ]
-  },
-  "mob.kobold.kobold": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/kobold/kobold0",
-      "twilightforest:mob/kobold/kobold1",
-      "twilightforest:mob/kobold/kobold2",
-      "twilightforest:mob/kobold/kobold3",
-      "twilightforest:mob/kobold/kobold4",
-      "twilightforest:mob/kobold/kobold5"
-    ]
-  },
-  "mob.kobold.hurt": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/kobold/hurt0",
-      "twilightforest:mob/kobold/hurt1",
-      "twilightforest:mob/kobold/hurt2"
-    ]
-  },
-  "mob.cicada": {
-    "category": "ambient",
-    "sounds": [
-      "twilightforest:mob/cicada0",
-      "twilightforest:mob/cicada1"
-    ]
-  },
-  "mob.naga.hiss": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/naga/hiss0",
-      "twilightforest:mob/naga/hiss1",
-      "twilightforest:mob/naga/hiss2"
-    ]
-  },
-  "mob.naga.hurt": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/naga/hurt0",
-      "twilightforest:mob/naga/hurt1",
-      "twilightforest:mob/naga/hurt2"
-    ]
-  },
-  "mob.naga.rattle": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/naga/rattle0",
-      "twilightforest:mob/naga/rattle1"
-    ]
-  },
-  "mob.raven.caw": {
-    "category": "neutral",
-    "sounds": [
-      "twilightforest:mob/raven/caw0",
-      "twilightforest:mob/raven/caw1"
-    ]
-  },
-  "mob.raven.squawk": {
-    "category": "neutral",
-    "sounds": [
-      "twilightforest:mob/raven/squawk0",
-      "twilightforest:mob/raven/squawk1"
-    ]
-  },
-    "mob.redcap.die": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/redcap/die0",
-      "twilightforest:mob/redcap/die1",
-      "twilightforest:mob/redcap/die2"
-    ]
-  },
-  "mob.redcap.redcap": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/redcap/redcap0",
-      "twilightforest:mob/redcap/redcap1",
-      "twilightforest:mob/redcap/redcap2",
-      "twilightforest:mob/redcap/redcap3",
-      "twilightforest:mob/redcap/redcap4",
-      "twilightforest:mob/redcap/redcap5"
-    ]
-  },
-  "mob.redcap.hurt": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/redcap/hurt0",
-      "twilightforest:mob/redcap/hurt1",
-      "twilightforest:mob/redcap/hurt2",
-      "twilightforest:mob/redcap/hurt3"
-    ]
-  },
-  "mob.tinybird.chirp": {
-    "category": "neutral",
-    "sounds": [
-      "twilightforest:mob/tinybird/chirp0",
-      "twilightforest:mob/tinybird/chirp1",
-      "twilightforest:mob/tinybird/chirp2"
-    ]
-  },
-  "mob.tinybird.hurt": {
-    "category": "neutral",
-    "sounds": [
-      "twilightforest:mob/tinybird/hurt0",
-      "twilightforest:mob/tinybird/hurt1"
-    ]
-  },
-  "mob.tinybird.song": {
-    "category": "neutral",
-    "sounds": [
-      "twilightforest:mob/tinybird/song0",
-      "twilightforest:mob/tinybird/song1"
-    ]
-  },
-  "mob.urghast.trapactive": {
-    "category": "block",
-    "sounds": [
-      "twilightforest:mob/urghast/trapactive"
-    ]
-  },
-  "mob.urghast.trapon": {
-    "category": "block",
-    "sounds": [
-      "twilightforest:mob/urghast/trapon0",
-      "twilightforest:mob/urghast/trapon1",
-      "twilightforest:mob/urghast/trapon2",
-      "twilightforest:mob/urghast/trapon3",
-      "twilightforest:mob/urghast/trapon4"
-    ]
-  },
-  "mob.urghast.trapspindown": {
-    "category": "block",
-    "sounds": [
-      "twilightforest:mob/urghast/trapspindown"
-    ]
-  },
-  "mob.urghast.trapwarmup": {
-    "category": "block",
-    "sounds": [
-      "twilightforest:mob/urghast/trapwarmup"
-    ]
-  },
-  "mob.wraith.wraith": {
-    "category": "block",
-    "sounds": [
-      "twilightforest:mob/wraith/wraith0",
-      "twilightforest:mob/wraith/wraith1",
-      "twilightforest:mob/wraith/wraith2",
-      "twilightforest:mob/wraith/wraith3"
-    ]
-  },
-    "mob.hydra.hurt": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/hydra/hurt0",
-      "twilightforest:mob/hydra/hurt1",
-      "twilightforest:mob/hydra/hurt2",
-      "twilightforest:mob/hydra/hurt3"
-    ]
-  },
-    "mob.hydra.death": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/hydra/death0"
-    ]
-  },
-    "mob.hydra.growl": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/hydra/growl0",
-      "twilightforest:mob/hydra/growl1",
-      "twilightforest:mob/hydra/growl2"
-    ]
-  },
-    "mob.hydra.roar": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/hydra/roar0",
-      "twilightforest:mob/hydra/roar1"
-    ]
-  },
-    "mob.hydra.warn": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/hydra/warn0"
-    ]
-  },
-    "mob.mosquito.mosquito": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/mosquito/animals132"
-    ]
-  },
-    "mob.ice.noise": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/ice/noise0",
-      "twilightforest:mob/ice/noise1"
-    ]
-  },
-    "mob.ice.hurt": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/ice/hurt0",
-      "twilightforest:mob/ice/hurt1"
-    ]
-  },
-    "mob.ice.death": {
-    "category": "hostile",
-    "sounds": [
-      "twilightforest:mob/ice/death0",
-      "twilightforest:mob/ice/death1"
-    ]
-  },
-    "random.slider": {
-    "category": "block",
-    "sounds": [
-      "twilightforest:random/creakgo2"
-    ]
-  }
+  "mob.kobold.die": { "category": "hostile", "sounds": [ "twilightforest:mob/kobold/die0", "twilightforest:mob/kobold/die1", "twilightforest:mob/kobold/die2" ] },
+  "mob.kobold.kobold": { "category": "hostile", "sounds": [ "twilightforest:mob/kobold/kobold0", "twilightforest:mob/kobold/kobold1", "twilightforest:mob/kobold/kobold2", "twilightforest:mob/kobold/kobold3", "twilightforest:mob/kobold/kobold4", "twilightforest:mob/kobold/kobold5" ] },
+  "mob.kobold.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/kobold/hurt0", "twilightforest:mob/kobold/hurt1", "twilightforest:mob/kobold/hurt2" ] },
+  "mob.cicada": { "category": "ambient", "sounds": [ "twilightforest:mob/cicada0", "twilightforest:mob/cicada1" ] },
+  "mob.naga.hiss": { "category": "hostile", "sounds": [ "twilightforest:mob/naga/hiss0", "twilightforest:mob/naga/hiss1", "twilightforest:mob/naga/hiss2" ] },
+  "mob.naga.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/naga/hurt0", "twilightforest:mob/naga/hurt1", "twilightforest:mob/naga/hurt2" ] },
+  "mob.naga.rattle": { "category": "hostile", "sounds": [ "twilightforest:mob/naga/rattle0", "twilightforest:mob/naga/rattle1" ] },
+  "mob.raven.caw": { "category": "neutral", "sounds": [ "twilightforest:mob/raven/caw0", "twilightforest:mob/raven/caw1" ] },
+  "mob.raven.squawk": { "category": "neutral", "sounds": [ "twilightforest:mob/raven/squawk0", "twilightforest:mob/raven/squawk1" ] },
+  "mob.redcap.die": { "category": "hostile", "sounds": [ "twilightforest:mob/redcap/die0", "twilightforest:mob/redcap/die1", "twilightforest:mob/redcap/die2" ] },
+  "mob.redcap.redcap": { "category": "hostile", "sounds": [ "twilightforest:mob/redcap/redcap0", "twilightforest:mob/redcap/redcap1", "twilightforest:mob/redcap/redcap2", "twilightforest:mob/redcap/redcap3", "twilightforest:mob/redcap/redcap4", "twilightforest:mob/redcap/redcap5" ] },
+  "mob.redcap.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/redcap/hurt0", "twilightforest:mob/redcap/hurt1", "twilightforest:mob/redcap/hurt2", "twilightforest:mob/redcap/hurt3" ] },
+  "mob.tinybird.chirp": { "category": "neutral", "sounds": [ "twilightforest:mob/tinybird/chirp0", "twilightforest:mob/tinybird/chirp1", "twilightforest:mob/tinybird/chirp2" ] },
+  "mob.tinybird.hurt": { "category": "neutral", "sounds": [ "twilightforest:mob/tinybird/hurt0", "twilightforest:mob/tinybird/hurt1" ] },
+  "mob.tinybird.song": { "category": "neutral", "sounds": [ "twilightforest:mob/tinybird/song0", "twilightforest:mob/tinybird/song1" ] },
+  "mob.urghast.trapactive": { "category": "block", "sounds": [ "twilightforest:mob/urghast/trapactive" ] },
+  "mob.urghast.trapon": { "category": "block", "sounds": [ "twilightforest:mob/urghast/trapon0", "twilightforest:mob/urghast/trapon1", "twilightforest:mob/urghast/trapon2", "twilightforest:mob/urghast/trapon3", "twilightforest:mob/urghast/trapon4" ] },
+  "mob.urghast.trapspindown": { "category": "block", "sounds": [ "twilightforest:mob/urghast/trapspindown" ] },
+  "mob.urghast.trapwarmup": { "category": "block", "sounds": [ "twilightforest:mob/urghast/trapwarmup" ] },
+  "mob.wraith.wraith": { "category": "block", "sounds": [ "twilightforest:mob/wraith/wraith0", "twilightforest:mob/wraith/wraith1", "twilightforest:mob/wraith/wraith2", "twilightforest:mob/wraith/wraith3" ] },
+  "mob.hydra.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/hydra/hurt0", "twilightforest:mob/hydra/hurt1", "twilightforest:mob/hydra/hurt2", "twilightforest:mob/hydra/hurt3" ] },
+  "mob.hydra.death": { "category": "hostile", "sounds": [ "twilightforest:mob/hydra/death0" ] },
+  "mob.hydra.growl": { "category": "hostile", "sounds": [ "twilightforest:mob/hydra/growl0", "twilightforest:mob/hydra/growl1", "twilightforest:mob/hydra/growl2" ] },
+  "mob.hydra.roar": { "category": "hostile", "sounds": [ "twilightforest:mob/hydra/roar0", "twilightforest:mob/hydra/roar1" ] },
+  "mob.hydra.warn": { "category": "hostile", "sounds": [ "twilightforest:mob/hydra/warn0" ] },
+  "mob.mosquito.mosquito": { "category": "hostile", "sounds": [ "twilightforest:mob/mosquito/animals132" ] },
+  "mob.ice.noise": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/noise0", "twilightforest:mob/ice/noise1" ] },
+  "mob.ice.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/hurt0", "twilightforest:mob/ice/hurt1" ] },
+  "mob.ice.death": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/death0", "twilightforest:mob/ice/death1" ] },
+  "random.slider": { "category": "block", "sounds": [ "twilightforest:random/creakgo2" ] }
 }
