@@ -2,9 +2,11 @@ package twilightforest.entity;
 
 import java.util.List;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -19,6 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import twilightforest.network.PacketAnnihilateBlock;
 
 
 public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
@@ -130,9 +133,9 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
     
 
-	private void sendAnnihilateBlockPacket(World world, int x, int y, int z) {
+	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
 		// send packet
-		FMLProxyPacket message = TFGenericPacketHandler.makeAnnihilateBlockPacket(x, y, z);
+		IMessage message = new PacketAnnihilateBlock(pos);
 
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 64);
 		

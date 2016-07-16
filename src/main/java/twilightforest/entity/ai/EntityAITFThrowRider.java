@@ -5,9 +5,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import twilightforest.network.PacketThrowPlayer;
 
 public class EntityAITFThrowRider extends EntityAIBase {
 
@@ -56,10 +58,9 @@ public class EntityAITFThrowRider extends EntityAIBase {
         // if we're throwing a player (probably!), send a packet with the velocity
         if (rider instanceof EntityPlayerMP) {
         	EntityPlayerMP player = (EntityPlayerMP)rider;
-        	
-    		FMLProxyPacket message = TFGenericPacketHandler.makeThrowPlayerPacket((float)throwVec.xCoord, (float)throwVec.yCoord, (float)throwVec.zCoord);	
-    		TwilightForestMod.genericChannel.sendTo(message, player);
 
+            IMessage message = new PacketThrowPlayer((float)throwVec.xCoord, (float)throwVec.yCoord, (float)throwVec.zCoord);
+    		TwilightForestMod.genericChannel.sendTo(message, player);
         }
         
         System.out.println("throw!");

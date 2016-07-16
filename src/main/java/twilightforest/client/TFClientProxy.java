@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -208,10 +209,6 @@ public class TFClientProxy extends TFCommonProxy {
 		// client events
 		clientEvents = new TFClientEvents();
 		MinecraftForge.EVENT_BUS.register(clientEvents);
-		
-		// packet listener
-		TFGenericPacketHandler genericPacketHandler = new TFGenericPacketHandler();
-		TwilightForestMod.genericChannel.register(genericPacketHandler);
 		
 		// entity renderers
 		RenderingRegistry.registerEntityRenderingHandler(twilightforest.entity.passive.EntityTFBoar.class, new RenderTFBoar(new ModelTFBoar(), new ModelPig(0.5F), 0.7F));
@@ -599,7 +596,7 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 	
 	@Override
-	public void doBlockAnnihilateEffect(World worldObj, int blockX, int blockY, int blockZ) {
+	public void doBlockAnnihilateEffect(World worldObj, BlockPos pos) {
 		// particles from the block?
 //		for (int i = 0; i < 10; i++) {
 //	        

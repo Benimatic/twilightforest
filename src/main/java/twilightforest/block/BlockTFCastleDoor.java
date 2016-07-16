@@ -10,6 +10,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -18,6 +19,7 @@ import java.util.Random;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
+import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraft.block.Block;
@@ -220,9 +222,9 @@ public class BlockTFCastleDoor extends Block
     	}
     }
     
-	private void sendAnnihilateBlockPacket(World world, int x, int y, int z) {
+	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
 		// send packet
-		FMLProxyPacket message = TFGenericPacketHandler.makeAnnihilateBlockPacket(x, y, z);
+		IMessage message = new PacketAnnihilateBlock(pos);
 
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 64);
 		

@@ -17,9 +17,12 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
+import twilightforest.network.PacketStructureProtection;
+import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.FMLLog;
@@ -92,7 +95,7 @@ public class TFTickHandler
 	
 	private void sendStructureProtectionPacket(World world, EntityPlayer player, StructureBoundingBox sbb) {
 		// send packet
-		FMLProxyPacket message = TFGenericPacketHandler.makeStructureProtectionPacket(sbb);
+		IMessage message = new PacketStructureProtection(sbb);
 		if (player instanceof EntityPlayerMP) {
 			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
 			//System.out.println("Sent structure protection");
@@ -102,7 +105,7 @@ public class TFTickHandler
 	}
 	
 	private void sendAllClearPacket(World world, EntityPlayer player) {
-		FMLProxyPacket message = TFGenericPacketHandler.makeStructureProtectionClearPacket();
+		IMessage message = new PacketStructureProtectionClear();
 		if (player instanceof EntityPlayerMP) {
 			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
 			//System.out.println("Sent structure all clear");

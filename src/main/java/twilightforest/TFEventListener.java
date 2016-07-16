@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -38,12 +39,15 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.block.TFBlocks;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.item.TFItems;
+import twilightforest.network.PacketAreaProtection;
+import twilightforest.network.PacketEnforceProgressionStatus;
 import twilightforest.world.ChunkProviderTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
@@ -891,11 +895,11 @@ public class TFEventListener {
 		return false;
 	}
 
-	private void sendAreaProtectionPacket(World world, int x, int y, int z, StructureBoundingBox sbb) {
+	private void sendAreaProtectionPacket(World world, BlockPos pos, StructureBoundingBox sbb) {
 		// send packet
-		FMLProxyPacket message = TFGenericPacketHandler.makeAreaProtectionPacket(sbb, x, y, z);
+		IMessage message = new PacketAreaProtection(sbb, pos);
 
-		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 64);
+		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
 		
 		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
 	}
@@ -958,7 +962,7 @@ public class TFEventListener {
 	}
 	
     private void sendEnforcedProgressionStatus(EntityPlayerMP player, boolean isEnforced) {
-		TwilightForestMod.genericChannel.sendTo(TFGenericPacketHandler.makeEnforcedProgressionStatusPacket(isEnforced), player);
+		TwilightForestMod.genericChannel.sendTo(new PacketEnforceProgressionStatus(isEnforced), player);
 	}
 
 	/**
@@ -981,7 +985,7 @@ public class TFEventListener {
 	public void commandSent(CommandEvent event) {
 		if (event.getCommand() instanceof CommandGameRule && event.getParameters().length > 1 && TwilightForestMod.ENFORCED_PROGRESSION_RULE.equals(event.getParameters()[0])) {
 			boolean isEnforced = Boolean.valueOf(event.getParameters()[1]);
-			TwilightForestMod.genericChannel.sendToAll(TFGenericPacketHandler.makeEnforcedProgressionStatusPacket(isEnforced));
+			TwilightForestMod.genericChannel.sendToAll(new PacketEnforceProgressionStatus(isEnforced));
 		}
 	}
 

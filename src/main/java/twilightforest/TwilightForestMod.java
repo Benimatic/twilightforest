@@ -12,6 +12,7 @@ import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
@@ -178,7 +179,7 @@ public class TwilightForestMod {
 	
 	public static final TFEventListener eventListener = new TFEventListener();
 	public static final TFTickHandler tickHandler = new TFTickHandler();
-	public static FMLEventChannel genericChannel;
+	public static SimpleNetworkWrapper genericChannel;
 
 	
 	@Instance(ID)
@@ -255,8 +256,8 @@ public class TwilightForestMod {
 		NetworkRegistry.INSTANCE.newEventDrivenChannel(ItemTFMagicMap.STR_ID).register(mapPacketHandler);
 		NetworkRegistry.INSTANCE.newEventDrivenChannel(ItemTFMazeMap.STR_ID).register(mapPacketHandler);
 
-		// generic channel that handles biome change packets, but could handle some other stuff in the future
-		TwilightForestMod.genericChannel = NetworkRegistry.INSTANCE.newEventDrivenChannel(TwilightForestMod.ID);
+		// packets
+		TFGenericPacketHandler.init();
 		
 		// render and other client stuff
 		proxy.doOnLoadRegistration();
