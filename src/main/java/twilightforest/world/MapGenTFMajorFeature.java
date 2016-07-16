@@ -132,13 +132,13 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         while (startIterator.hasNext()) {
             StructureStart start = (StructureStart)startIterator.next();
 
-            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
                 Iterator<StructureComponent> componentIterator = start.getComponents().iterator();
 
                 while (componentIterator.hasNext()) {
                     StructureComponent component = (StructureComponent)componentIterator.next();
 
-                    if (component.getBoundingBox().isVecInside(mapX, mapY, mapZ)) {
+                    if (component.getBoundingBox().isVecInside(pos)) {
                     	
                     	if (component instanceof StructureTFComponent) {
                     		StructureTFComponent tfComp = (StructureTFComponent)component;

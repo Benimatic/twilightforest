@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 
-public abstract class TFGenerator extends WorldGenerator {
+public abstract class TFGenerator extends WorldGenerator implements IBlockSettable {
 
     public TFGenerator() {
     	this(false);
@@ -22,6 +22,11 @@ public abstract class TFGenerator extends WorldGenerator {
     public TFGenerator(boolean par1) {
     	super(par1);
     }
+
+	@Override
+	public final void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+		super.setBlockAndNotifyAdequately(worldIn, pos, state);
+	}
 
 	/**
 	 * Moves distance along the vector.
@@ -43,12 +48,12 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 */
-	protected void drawBresehnam(World world, int x1, int y1, int z1, int x2, int y2, int z2, IBlockState state)
+	protected static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, IBlockState state)
 	{
-		BlockPos[] lineArray = getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
+		BlockPos[] lineArray = getBresehnamArrayCoords(from, to);
 		for (BlockPos pixel : lineArray)
 		{
-			setBlockAndNotifyAdequately(world, pixel, state);
+			generator.setBlockAndNotifyAdequately(world, pixel, state);
 		}
 	}
 
@@ -61,9 +66,10 @@ public abstract class TFGenerator extends WorldGenerator {
 	
 	/**
 	 * Get an array of values that represent a line from point A to point B
+	 * todo 1.9 lazify this into an iterable?
 	 */
 	public static BlockPos[] getBresehnamArrayCoords(int x1, int y1, int z1, int x2, int y2, int z2) {
-		int  i, dx, dy, dz, l, m, n, x_inc, y_inc, z_inc, err_1, err_2, dx2, dy2, dz2;
+		int  i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 
 		BlockPos pixel = new BlockPos(x1, y1, z1);
 		BlockPos lineArray[];
@@ -72,67 +78,67 @@ public abstract class TFGenerator extends WorldGenerator {
 		dy = y2 - y1;
 		dz = z2 - z1;
 		x_inc = (dx < 0) ? -1 : 1;
-		l = Math.abs(dx);
+		absDx = Math.abs(dx);
 		y_inc = (dy < 0) ? -1 : 1;
-		m = Math.abs(dy);
+		absDy = Math.abs(dy);
 		z_inc = (dz < 0) ? -1 : 1;
-		n = Math.abs(dz);
-		dx2 = l << 1;
-		dy2 = m << 1;
-		dz2 = n << 1;
+		absDz = Math.abs(dz);
+		doubleAbsDx = absDx << 1;
+		doubleAbsDy = absDy << 1;
+		doubleAbsDz = absDz << 1;
 
-		if ((l >= m) && (l >= n)) {
-			err_1 = dy2 - l;
-			err_2 = dz2 - l;
-			lineArray = new BlockPos[l + 1];
-			for (i = 0; i < l; i++) {
+		if ((absDx >= absDy) && (absDx >= absDz)) {
+			err_1 = doubleAbsDy - absDx;
+			err_2 = doubleAbsDz - absDx;
+			lineArray = new BlockPos[absDx + 1];
+			for (i = 0; i < absDx; i++) {
 				lineArray[i] = new BlockPos (pixel);
 				if (err_1 > 0) {
 					pixel = pixel.up(y_inc);
-					err_1 -= dx2;
+					err_1 -= doubleAbsDx;
 				}
 				if (err_2 > 0) {
 					pixel = pixel.south(z_inc);
-					err_2 -= dx2;
+					err_2 -= doubleAbsDx;
 				}
-				err_1 += dy2;
-				err_2 += dz2;
+				err_1 += doubleAbsDy;
+				err_2 += doubleAbsDz;
 				pixel = pixel.east(x_inc);
 			}
-		} else if ((m >= l) && (m >= n)) {
-			err_1 = dx2 - m;
-			err_2 = dz2 - m;
-			lineArray = new BlockPos[m + 1];
-			for (i = 0; i < m; i++) {
+		} else if ((absDy >= absDx) && (absDy >= absDz)) {
+			err_1 = doubleAbsDx - absDy;
+			err_2 = doubleAbsDz - absDy;
+			lineArray = new BlockPos[absDy + 1];
+			for (i = 0; i < absDy; i++) {
 				lineArray[i] = new BlockPos (pixel);
 				if (err_1 > 0) {
 					pixel = pixel.east(x_inc);
-					err_1 -= dy2;
+					err_1 -= doubleAbsDy;
 				}
 				if (err_2 > 0) {
 					pixel = pixel.south(z_inc);
-					err_2 -= dy2;
+					err_2 -= doubleAbsDy;
 				}
-				err_1 += dx2;
-				err_2 += dz2;
+				err_1 += doubleAbsDx;
+				err_2 += doubleAbsDz;
 				pixel = pixel.up(y_inc);
 			}
 		} else {
-			err_1 = dy2 - n;
-			err_2 = dx2 - n;
-			lineArray = new BlockPos[n + 1];
-			for (i = 0; i < n; i++) {
+			err_1 = doubleAbsDy - absDz;
+			err_2 = doubleAbsDx - absDz;
+			lineArray = new BlockPos[absDz + 1];
+			for (i = 0; i < absDz; i++) {
 				lineArray[i] = pixel;
 				if (err_1 > 0) {
 					pixel = pixel.up(y_inc);
-					err_1 -= dz2;
+					err_1 -= doubleAbsDz;
 				}
 				if (err_2 > 0) {
 					pixel = pixel.east(x_inc);
-					err_2 -= dz2;
+					err_2 -= doubleAbsDz;
 				}
-				err_1 += dy2;
-				err_2 += dx2;
+				err_1 += doubleAbsDy;
+				err_2 += doubleAbsDx;
 				pixel = pixel.south(z_inc);
 			}
 		}
@@ -144,7 +150,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
-	public void makeLeafCircle(World world, BlockPos pos, int rad, IBlockState state, boolean useHack)
+	public static void makeLeafCircle(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state, boolean useHack)
 	{
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
@@ -161,10 +167,10 @@ public abstract class TFGenerator extends WorldGenerator {
 				// if we're inside the blob, fill it
 				if (dist <= rad) {
 					// do four at a time for easiness!
-					putLeafBlock(world, pos.add(+dx, 0, +dz), state);
-					putLeafBlock(world, pos.add(+dx, 0, -dz), state);
-					putLeafBlock(world, pos.add(-dx, 0, +dz), state);
-					putLeafBlock(world, pos.add(-dx, 0, -dz), state);
+					putLeafBlock(generator, world, pos.add(+dx, 0, +dz), state);
+					putLeafBlock(generator, world, pos.add(+dx, 0, -dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, +dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, -dz), state);
 				}
 			}
 		}
@@ -173,7 +179,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
 	 */
-	public void makeLeafCircle2(World world, BlockPos pos, int rad, IBlockState state, boolean useHack)
+	public static void makeLeafCircle2(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state, boolean useHack)
 	{
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
@@ -190,10 +196,10 @@ public abstract class TFGenerator extends WorldGenerator {
 				// if we're inside the blob, fill it
 				if (dx * dx + dz * dz <= rad * rad) {
 					// do four at a time for easiness!
-					putLeafBlock(world, pos.add(1 + dx, 0, 1 + dz), state);
-					putLeafBlock(world, pos.add(1+ dx, 0, -dz), state);
-					putLeafBlock(world, pos.add(-dx, 0, 1 + dz), state);
-					putLeafBlock(world, pos.add(-dx, 0, -dz), state);
+					putLeafBlock(generator, world, pos.add(1 + dx, 0, 1 + dz), state);
+					putLeafBlock(generator, world, pos.add(1+ dx, 0, -dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, 1 + dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, -dz), state);
 				}
 			}
 		}
@@ -202,28 +208,27 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Put a leaf only in spots where leaves can go!
 	 */
-	public void putLeafBlock(World world, BlockPos pos, IBlockState state) {
+	public static void putLeafBlock(IBlockSettable generator, World world, BlockPos pos, IBlockState state) {
         IBlockState whatsThere = world.getBlockState(pos);
 
 		if (whatsThere.getBlock().canBeReplacedByLeaves(state, world, pos))
         {
-            this.setBlockAndNotifyAdequately(world, pos, state);
+            generator.setBlockAndNotifyAdequately(world, pos, state);
         }
 	}
 
 	/**
 	 * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
 	 */
-	protected IBlockState randStone(Random rand, int howMuch)
+	protected static IBlockState randStone(Random rand, int howMuch)
 	{
 		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.getDefaultState() : Blocks.MOSSY_COBBLESTONE.getDefaultState();
 	}
 
 	/**
 	 * Checks an area to see if it consists of flat natural ground below and air above
-	 * 
 	 */
-	protected boolean isAreaSuitable(World world, Random rand, BlockPos pos, int width, int height, int depth)
+	protected static boolean isAreaSuitable(World world, Random rand, BlockPos pos, int width, int height, int depth)
 	{
 		boolean flag = true;
 		
@@ -265,7 +270,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a giant blob of whatevs.
 	 */
-	public void drawBlob(World world, BlockPos pos, int rad, IBlockState state) {
+	public static void drawBlob(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
 		{
@@ -288,14 +293,14 @@ public abstract class TFGenerator extends WorldGenerator {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, +dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, -dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, +dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, -dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, +dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, -dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, +dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, -dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, +dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, -dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, +dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, -dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, +dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, -dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, +dz), state);
+						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, -dz), state);
 					}
 				}
 			}
@@ -305,7 +310,7 @@ public abstract class TFGenerator extends WorldGenerator {
 	/**
 	 * Draw a giant blob of leaves.
 	 */
-	public void drawLeafBlob(World world, BlockPos pos, int rad, IBlockState state) {
+	public static void drawLeafBlob(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
 		{
@@ -328,14 +333,14 @@ public abstract class TFGenerator extends WorldGenerator {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						putLeafBlock(world, pos.add(+dx, +dy, +dz), state);
-						putLeafBlock(world, pos.add(+dx, +dy, -dz), state);
-						putLeafBlock(world, pos.add(-dx, +dy, +dz), state);
-						putLeafBlock(world, pos.add(-dx, +dy, -dz), state);
-						putLeafBlock(world, pos.add(+dx, -dy, +dz), state);
-						putLeafBlock(world, pos.add(+dx, -dy, -dz), state);
-						putLeafBlock(world, pos.add(-dx, -dy, +dz), state);
-						putLeafBlock(world, pos.add(-dx, -dy, -dz), state);
+						putLeafBlock(generator, world, pos.add(+dx, +dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(+dx, +dy, -dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, +dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, +dy, -dz), state);
+						putLeafBlock(generator, world, pos.add(+dx, -dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(+dx, -dy, -dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, -dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, -dy, -dz), state);
 					}
 				}
 			}

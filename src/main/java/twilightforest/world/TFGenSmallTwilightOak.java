@@ -3,8 +3,12 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 
@@ -23,56 +27,55 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
         super(par1);
         this.minTreeHeight = par2;
         
-    	treeBlock = TFBlocks.log;
-    	treeMeta = 0;
-    	branchMeta = treeMeta | 12;
-    	leafBlock = TFBlocks.leaves;
-    	leafMeta = 0;
-    	rootBlock = TFBlocks.root;
-    	rootMeta = BlockTFRoots.ROOT_META;
+    	treeState = TFBlocks.log.getDefaultState();
+    	branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+        leafState = TFBlocks.leaves.getDefaultState();
+    	rootState = TFBlocks.root.getDefaultState();
     }
 
-    public boolean generate(World par1World, Random par2Random, int x, int y, int z)
+    @Override
+    public boolean generate(World par1World, Random par2Random, BlockPos pos)
     {
         int height = par2Random.nextInt(3) + this.minTreeHeight;
         boolean allClear = true;
 
-        if (y >= 1 && y + height + 1 <= 256)
+        if (pos.getY() >= 1 && pos.getY() + height + 1 <= 256)
         {
             int cy;
             byte width;
             int cz;
             Block blockID;
 
-            for (cy = y; cy <= y + 1 + height; ++cy)
+            for (cy = pos.getY(); cy <= pos.getY() + 1 + height; ++cy)
             {
                 width = 1;
 
-                if (cy == y)
+                if (cy == pos.getY())
                 {
                     width = 0;
                 }
 
-                if (cy >= y + 1 + height - 2)
+                if (cy >= pos.getY() + 1 + height - 2)
                 {
                     width = 2;
                 }
 
-                for (int cx = x - width; cx <= x + width && allClear; ++cx)
+                for (int cx = pos.getX() - width; cx <= pos.getX() + width && allClear; ++cx)
                 {
-                    for (cz = z - width; cz <= z + width && allClear; ++cz)
+                    for (cz = pos.getZ() - width; cz <= pos.getZ() + width && allClear; ++cz)
                     {
                         if (cy >= 0 && cy < 256)
                         {
-                            blockID = par1World.getBlock(cx, cy, cz);
+                            BlockPos cPos = new BlockPos(cx, cy, cz);
 
-                            Block block = blockID;
+                            IBlockState block = par1World.getBlockState(cPos);
+                            blockID = block.getBlock();
 
                             if (blockID != Blocks.AIR &&
-                               !block.isLeaves(par1World, cx, cy, cz) &&
+                               !blockID.isLeaves(block, par1World, cPos) &&
                                 blockID != Blocks.GRASS &&
                                 blockID != Blocks.DIRT &&
-                               !block.isWood(par1World, cx, cy, cz))
+                               !blockID.isWood(par1World, cPos))
                             {
                                 allClear = false;
                             }
@@ -91,36 +94,38 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
             }
             else
             {
-                Block blockUsing = par1World.getBlock(x, y - 1, z);
+                Block blockUsing = par1World.getBlockState(pos.down()).getBlock();
 
-                if ((blockUsing == Blocks.GRASS || blockUsing == Blocks.DIRT) && y < 256 - height - 1)
+                if ((blockUsing == Blocks.GRASS || blockUsing == Blocks.DIRT) && pos.getY() < 256 - height - 1)
                 {
-                    this.setBlock(par1World, x, y - 1, z, Blocks.DIRT);
+                    setBlockAndNotifyAdequately(par1World, pos.down(), Blocks.DIRT.getDefaultState());
                     width = 3;
                     byte var18 = 0;
                     int treeWidth;
                     int tx;
                     int var15;
 
-                    for (cz = y - width + height; cz <= y + height; ++cz)
+                    for (cz = pos.getY() - width + height; cz <= pos.getY() + height; ++cz)
                     {
-                        int number = cz - (y + height);
+                        int number = cz - (pos.getY() + height);
                         treeWidth = var18 + 1 - number / 2;
 
-                        for (tx = x - treeWidth; tx <= x + treeWidth; ++tx)
+                        for (tx = pos.getX() - treeWidth; tx <= pos.getX() + treeWidth; ++tx)
                         {
-                            var15 = tx - x;
+                            var15 = tx - pos.getX();
 
-                            for (int tz = z - treeWidth; tz <= z + treeWidth; ++tz)
+                            for (int tz = pos.getZ() - treeWidth; tz <= pos.getZ() + treeWidth; ++tz)
                             {
-                                int var17 = tz - z;
+                                int var17 = tz - pos.getZ();
 
-                                Block block = par1World.getBlock(tx, cz, tz);
+                                BlockPos tPos = new BlockPos(tx, cz, tz);
+
+                                IBlockState state = par1World.getBlockState(tPos);
 
                                 if ((Math.abs(var15) != treeWidth || Math.abs(var17) != treeWidth || par2Random.nextInt(2) != 0 && number != 0) &&
-                                    (block == null || block.canBeReplacedByLeaves(par1World, tx, cz, tz)))
+                                    state.getBlock().canBeReplacedByLeaves(state, par1World, tPos))
                                 {
-                                    this.setBlockAndNotifyAdequately(par1World, tx, cz, tz, this.leafBlock, this.leafMeta);
+                                    this.setBlockAndNotifyAdequately(par1World, tPos, leafState);
                                 }
                             }
                         }
@@ -128,13 +133,13 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
 
                     for (cz = 0; cz < height; ++cz)
                     {
-                        blockID = par1World.getBlock(x, y + cz, z);
+                        BlockPos cPos = pos.up(cz);
+                        IBlockState block = par1World.getBlockState(cPos);
+                        blockID = block.getBlock();
 
-                        Block block = blockID;
-
-                        if (blockID == Blocks.AIR || block == null || block.isLeaves(par1World, x, y + cz, z))
+                        if (blockID == Blocks.AIR || blockID.isLeaves(block, par1World, cPos))
                         {
-                            this.setBlockAndNotifyAdequately(par1World, x, y + cz, z, this.treeBlock, this.treeMeta);
+                            this.setBlockAndNotifyAdequately(par1World, cPos, treeState);
                         }
                     }
 

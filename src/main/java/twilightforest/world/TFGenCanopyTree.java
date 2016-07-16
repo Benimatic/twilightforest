@@ -2,25 +2,25 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.WoodVariant;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest 
- * 
  * @author Ben
- *
  */
 public class TFGenCanopyTree extends TFTreeGenerator {
 	
 	protected int minHeight = 20;
 	protected int chanceAddFirstFive = 3;
 	protected int chanceAddSecondFive = 8;
-	
-	
+
     public TFGenCanopyTree()
     {
         this(false);
@@ -29,14 +29,10 @@ public class TFGenCanopyTree extends TFTreeGenerator {
     public TFGenCanopyTree(boolean par1)
     {
     	super(par1);
-    	treeBlock = TFBlocks.log;
-    	treeMeta = 1;
-    	branchMeta = 13;
-    	leafBlock = TFBlocks.leaves;
-    	leafMeta = 1;
-    	rootBlock = TFBlocks.root;
-    	rootMeta = BlockTFRoots.ROOT_META;
-    	
+		treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE); // todo 1.9 recheck meta 13
+    	leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+		rootState = TFBlocks.root.getDefaultState();
     }
     
 	@Override
@@ -45,8 +41,8 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		int treeHeight;
 		
 		// check if we're on dirt or grass
-		Material materialUnder = world.getBlock(x, y - 1, z).getMaterial();
-		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || y >= TFWorld.MAXHEIGHT - 12)
+		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
+		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || pos.getY() >= TFWorld.MAXHEIGHT - 12)
 		{
 			return false;
 		}
@@ -63,22 +59,22 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		}
 		
 		//okay build a tree!  Go up to the height
-		buildBranch(world, x, y, z, 0, treeHeight, 0, 0, true, random);
+		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);
 		
 		// make 3-4 branches
 		int numBranches = 3 + random.nextInt(2);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++)
 		{
-			buildBranch(world, x, y, z, treeHeight - 10 + b, 9, 0.3 * b + offset, 0.2, false, random);
+			buildBranch(world, pos, treeHeight - 10 + b, 9, 0.3 * b + offset, 0.2, false, random);
 		}
 		
 		// root bulb
-		if (hasAirAround(world, x, y - 1, z)) {
-			this.setBlockAndNotifyAdequately(world, x, y - 1, z, treeBlock, treeMeta);
+		if (TFGenerator.hasAirAround(world, pos.down())) {
+			this.setBlockAndNotifyAdequately(world, pos.down(), treeState);
 		}
 		else {
-			this.setBlockAndNotifyAdequately(world, x, y - 1, z, rootBlock, rootMeta);
+			this.setBlockAndNotifyAdequately(world, pos.down(), rootState);
 		}
 
 		// roots!
@@ -86,7 +82,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++)
 		{
-			buildRoot(world, x, y, z, offset, b);
+			buildRoot(world, pos, offset, b);
 		}
 		
 		
@@ -95,52 +91,47 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
-	 * 
-	 * @param height
-	 * @param length
-	 * @param angle
-	 * @param tilt
 	 */
-	void buildBranch(World world, int x, int y, int z, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
+	void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
 	{
-		BlockPos src = new BlockPos(x, y + height, z);
-		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = pos.up(height);
+		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
 		
 		// constrain branch spread
-		if ((dest.posX - x) < -4)
+		if ((dest.getX() - pos.getX()) < -4)
 		{
-			dest.posX = x - 4;
+			dest = new BlockPos(pos.getX() - 4, dest.getY(), dest.getZ());
 		}
-		if ((dest.posX - x) > 4)
+		if ((dest.getX() - pos.getX()) > 4)
 		{
-			dest.posX = x + 4;
+			dest = new BlockPos(pos.getX() + 4, dest.getY(), dest.getZ());
 		}
-		if ((dest.posZ - z) < -4)
+		if ((dest.getZ() - pos.getZ()) < -4)
 		{
-			dest.posZ = z - 4;
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - 4);
 		}
-		if ((dest.posZ - z) > 4)
+		if ((dest.getX() - pos.getZ()) > 4)
 		{
-			dest.posZ = z + 4;
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + 4);
 		}
 		
-		drawBresehnam(world, src.posX, src.posY, src.posZ, dest.posX, dest.posY, dest.posZ, treeBlock, trunk ? treeMeta : branchMeta);
+		TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
 	
 		// do this here until that bug with the lighting is fixed
 		if (trunk) 
 		{
 			// add a firefly (torch) to the trunk
-			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+			addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 		}
 
-		makeLeafCircle(world, dest.posX, dest.posY - 1, dest.posZ, 3, leafBlock, leafMeta, true);	
-		makeLeafCircle(world, dest.posX, dest.posY, dest.posZ, 4, leafBlock, leafMeta, true);	
-		makeLeafCircle(world, dest.posX, dest.posY + 1, dest.posZ, 2, leafBlock, leafMeta, true);	
+		TFGenerator.makeLeafCircle(this, world, dest.down(), 3, leafState, true);
+		TFGenerator.makeLeafCircle(this, world, dest, 4, leafState, true);
+		TFGenerator.makeLeafCircle(this, world, dest.up(), 2, leafState, true);
 		
-		setBlockAndNotifyAdequately(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-		setBlockAndNotifyAdequately(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-		setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
-		setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
+		setBlockAndNotifyAdequately(world, dest.east(), branchState);
+		setBlockAndNotifyAdequately(world, dest.west(), branchState);
+		setBlockAndNotifyAdequately(world, dest.south(), branchState);
+		setBlockAndNotifyAdequately(world, dest.north(), branchState);
 		
 	}
 	
@@ -150,24 +141,24 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 	 * @param height how far up the tree
 	 * @param angle from 0 - 1 rotation around the tree
 	 */
-	protected void addFirefly(World world, int x, int y, int z, int height, double angle)
+	protected void addFirefly(World world, BlockPos pos, int height, double angle)
 	{
 		int iAngle = (int)(angle * 4.0);
 		if (iAngle == 0)
 		{
-			setBlockAndNotifyAdequately(world, x + 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndNotifyAdequately(world, x - 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndNotifyAdequately(world, x, y + height, z + 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndNotifyAdequately(world, x, y + height, z - 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState());
 		}
 	}
 	

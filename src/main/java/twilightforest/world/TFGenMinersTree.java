@@ -2,12 +2,15 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.BlockTFMagicLogSpecial;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MagicWoodVariant;
 
 
 public class TFGenMinersTree extends TFTreeGenerator 
@@ -22,22 +25,18 @@ public class TFGenMinersTree extends TFTreeGenerator
 	public TFGenMinersTree(boolean notify) 
 	{
 		super(notify);
-		this.treeBlock = TFBlocks.magicLog;
-		this.treeMeta = 2;
-		this.branchMeta = treeMeta | 12;
-		this.leafBlock = TFBlocks.magicLeaves;
-		this.leafMeta = 2;
-		this.rootBlock = TFBlocks.root;
-		this.rootMeta = BlockTFRoots.ROOT_META;
+		this.treeState = TFBlocks.magicLog.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
+		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		this.leafState = TFBlocks.magicLeaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
+		this.rootState = TFBlocks.root.getDefaultState();
 	}
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos)
 	{
-		
 		// check soil
-		Material materialUnder = world.getBlock(x, y - 1, z).getMaterial();
-		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || y >= TFWorld.MAXHEIGHT - 12)
+		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
+		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || pos.getY() >= TFWorld.MAXHEIGHT - 12)
 		{
 			return false;
 		}
@@ -45,33 +44,33 @@ public class TFGenMinersTree extends TFTreeGenerator
 		// 9 block high trunk
 		for (int dy = 0; dy < 10; dy++)
 		{
-			setBlockAndNotifyAdequately(world, x, y + dy, z, treeBlock, branchMeta);
+			setBlockAndNotifyAdequately(world, pos.up(dy), branchState);
 		}
 		
 		// branches with leaf blocks
-		putBranchWithLeaves(world, x, y + 9, z + 1, true);
-		putBranchWithLeaves(world, x, y + 9, z + 2, false);
-		putBranchWithLeaves(world, x, y + 8, z + 3, false);
-		putBranchWithLeaves(world, x, y + 7, z + 4, false);
-		putBranchWithLeaves(world, x, y + 6, z + 5, false);
+		putBranchWithLeaves(world, pos.add(0, 9, 1), true);
+		putBranchWithLeaves(world, pos.add(0, 9, 2), false);
+		putBranchWithLeaves(world, pos.add(0, 8, 3), false);
+		putBranchWithLeaves(world, pos.add(0, 7, 4), false);
+		putBranchWithLeaves(world, pos.add(0, 6, 5), false);
 
-		putBranchWithLeaves(world, x, y + 9, z - 1, true);
-		putBranchWithLeaves(world, x, y + 9, z - 2, false);
-		putBranchWithLeaves(world, x, y + 8, z - 3, false);
-		putBranchWithLeaves(world, x, y + 7, z - 4, false);
-		putBranchWithLeaves(world, x, y + 6, z - 5, false);
+		putBranchWithLeaves(world, pos.add(0, 9, -1), true);
+		putBranchWithLeaves(world, pos.add(0, 9, -2), false);
+		putBranchWithLeaves(world, pos.add(0, 8, -3), false);
+		putBranchWithLeaves(world, pos.add(0, 7, -4), false);
+		putBranchWithLeaves(world, pos.add(0, 6, -5), false);
 
 		// place minewood core
-		setBlockAndNotifyAdequately(world, x, y + 1, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_MINE);
-		world.scheduleBlockUpdate(x, y + 1, z, TFBlocks.magicLogSpecial, TFBlocks.magicLogSpecial.tickRate(world));
+		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magicLogSpecial.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE));
+		world.scheduleUpdate(pos.up(), TFBlocks.magicLogSpecial, TFBlocks.magicLogSpecial.tickRate(world));
 
 		
 		// root bulb
-		if (hasAirAround(world, x, y - 1, z)) {
-			this.setBlockAndNotifyAdequately(world, x, y - 1, z, treeBlock, treeMeta);
+		if (TFGenerator.hasAirAround(world, pos.down())) {
+			this.setBlockAndNotifyAdequately(world, pos.down(), treeState);
 		}
 		else {
-			this.setBlockAndNotifyAdequately(world, x, y - 1, z, rootBlock, rootMeta);
+			this.setBlockAndNotifyAdequately(world, pos.down(), rootState);
 		}
 
 		// roots!
@@ -79,15 +78,15 @@ public class TFGenMinersTree extends TFTreeGenerator
 		double offset = rand.nextDouble();
 		for (int b = 0; b < numRoots; b++)
 		{
-			buildRoot(world, x, y, z, offset, b);
+			buildRoot(world, pos, offset, b);
 		}
 		
 		return true;
 	}
 
 
-	protected void putBranchWithLeaves(World world, int bx, int by, int bz, boolean bushy) {
-		setBlockAndNotifyAdequately(world, bx, by, bz, treeBlock, branchMeta);
+	protected void putBranchWithLeaves(World world, BlockPos pos, boolean bushy) {
+		setBlockAndNotifyAdequately(world, pos, branchState);
 		
 		for (int lx = -1; lx <= 1; lx++)
 		{
@@ -99,7 +98,7 @@ public class TFGenMinersTree extends TFTreeGenerator
 					{
 						continue;
 					}
-					putLeafBlock(world, bx + lx, by + ly, bz + lz, leafBlock, leafMeta);
+					TFGenerator.putLeafBlock(this, world, pos.add(lx, ly, lz), leafState);
 				}
 			}
 		}

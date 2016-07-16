@@ -19,29 +19,26 @@ public class TFGenHollowStump extends TFGenHollowTree {
 		
 		int radius = rand.nextInt(2) + 2;
 
-		if (!isAreaSuitable(world, rand, x - radius, y, z - radius, 2 * radius, 6, 2 * radius))
+		if (!isAreaSuitable(world, rand, pos.add(-radius, 0, -radius), 2 * radius, 6, 2 * radius))
 		{
 			return false;
 		}
 		
-		buildTrunk(world, rand, x, y, z, radius, 6);
+		buildTrunk(world, rand, pos, radius, 6);
 
 		// 3-5 roots at the bottom
-		buildBranchRing(world, rand, x, y, z, radius, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false);
+		buildBranchRing(world, rand, pos, radius, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false);
 
 
 		// several more taproots
-		buildBranchRing(world, rand, x, y, z, radius, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false);
+		buildBranchRing(world, rand, pos, radius, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false);
 
 		
 		return true;
 	}
 	
-	/**
-	 *  This function builds the hollow trunk of the tree
-	 */
 	@Override
-	protected void buildTrunk(World world, Random random, int x, int y, int z, int diameter, int maxHeight) {
+	protected void buildTrunk(World world, Random random, BlockPos pos, int diameter, int maxHeight) {
 
 		int hollow = diameter / 2;
 
@@ -59,11 +56,12 @@ public class TFGenHollowStump extends TFGenHollowTree {
 					int dist = (int)(Math.max(ax, az) + (Math.min(ax, az) * 0.5));
 
 					if (dist <= diameter) {
-						if (hasAirAround(world, dx + x, dy + y, dz + z)) {
-							this.setBlockAndMetadata(world, dx + x, dy + y, dz + z, treeBlock, dist > hollow ? treeMeta : branchMeta);
+						BlockPos dPos = pos.add(dx, dy, dz);
+						if (hasAirAround(world, dPos)) {
+							this.setBlockAndNotifyAdequately(world, dPos, dist > hollow ? treeState : branchState);
 						}
 						else {
-							this.setBlockAndMetadata(world, dx + x, dy + y, dz + z, rootBlock, rootMeta);
+							this.setBlockAndNotifyAdequately(world, dPos, rootState);
 						}
 					}
 				}
@@ -86,7 +84,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 
 					// make a trunk!
 					if (dist <= diameter && dist > hollow) {
-						setBlockAndMetadata(world, dx + x, dy + y, dz + z, treeBlock, treeMeta);
+						setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), treeState);
 					}
 				}
 			}

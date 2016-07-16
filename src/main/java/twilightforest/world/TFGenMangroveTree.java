@@ -2,18 +2,18 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockLog;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFRoots;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
-
+import twilightforest.block.enums.WoodVariant;
 
 public class TFGenMangroveTree extends TFTreeGenerator {
 	
-	boolean checkForWater;
-	
-	
+	private boolean checkForWater;
+
     public TFGenMangroveTree()
     {
         this(false);
@@ -25,33 +25,31 @@ public class TFGenMangroveTree extends TFTreeGenerator {
         
         this.checkForWater = !par1; 
         
-    	treeBlock = TFBlocks.log;
-    	treeMeta = 2;
-    	branchMeta = 14;
+    	treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
+		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
     	leafBlock = TFBlocks.leaves;
     	leafMeta = 2;
-    	rootBlock = TFBlocks.root;
-    	rootMeta = BlockTFRoots.ROOT_META;
+		rootState = TFBlocks.root.getDefaultState();
     }
 	
 	@Override
-	public boolean generate(World world, Random random, int x, int y, int z)
+	public boolean generate(World world, Random random, BlockPos pos)
 	{
 		// we only start over water
-		if ((this.checkForWater && world.getBlock(x, y - 1, z) != Blocks.WATER) || y >= 128 - 18 - 1)
+		if ((this.checkForWater && world.getBlockState(pos.down()).getBlock() != Blocks.WATER) || pos.getY() >= 128 - 18 - 1)
 		{
 			return false;
 		}
 		
 		//okay build a trunk!  Start 5 squares off the ground and go up maybe 6-9 squares
-		buildBranch(world, random, x, y, z, 5, 6 + random.nextInt(3), 0, 0, true);
+		buildBranch(world, random, pos, 5, 6 + random.nextInt(3), 0, 0, true);
 		
 		// make 0-3 branches
 		int numBranches = random.nextInt(3);
 		double offset = random.nextDouble();
 		for (int b = 0; b < numBranches; b++)
 		{
-			buildBranch(world, random, x, y, z, 7 + b, 6 + random.nextInt(2), 0.3 * b + offset, 0.25, false);
+			buildBranch(world, random, pos, 7 + b, 6 + random.nextInt(2), 0.3 * b + offset, 0.25, false);
 		}
 		
 		// make 3-5 roots
@@ -60,11 +58,11 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		for (int i = 0; i < numRoots; i++)
 		{
 			double rTilt = 0.75 + (random.nextDouble() * 0.1);
-			buildRoot(world, x, y, z, 5, 12, 0.4 * i + offset, rTilt);
+			buildRoot(world, pos, 5, 12, 0.4 * i + offset, rTilt);
 		}
 
 		// add a firefly (torch) to the trunk
-		addFirefly(world, x, y, z, 5 + random.nextInt(5), random.nextDouble());
+		addFirefly(world, pos, 5 + random.nextInt(5), random.nextDouble());
 		
 		
 		return true;
@@ -72,37 +70,31 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
-	 * 
-	 * @param height
-	 * @param length
-	 * @param angle
-	 * @param tilt
 	 */
-	void buildBranch(World world, Random random, int x, int y, int z, int height, double length, double angle, double tilt, boolean trunk)
+	private void buildBranch(World world, Random random, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk)
 	{
-		BlockPos src = new BlockPos(x, y + height, z);
-		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
-		
+		BlockPos src = pos.up(height);
+		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
 		
 		// constrain branch spread
-		if ((dest.posX - x) < -4)
+		if ((dest.getX() - pos.getX()) < -4)
 		{
-			dest.posX = x - 4;
+			dest = new BlockPos(pos.getX() - 4, dest.getY(), dest.getZ());
 		}
-		if ((dest.posX - x) > 4)
+		if ((dest.getX() - pos.getX()) > 4)
 		{
-			dest.posX = x + 4;
+			dest = new BlockPos(pos.getX() + 4, dest.getY(), dest.getZ());
 		}
-		if ((dest.posZ - z) < -4)
+		if ((dest.getZ() - pos.getZ()) < -4)
 		{
-			dest.posZ = z - 4;
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - 4);
 		}
-		if ((dest.posZ - z) > 4)
+		if ((dest.getZ() - pos.getZ()) > 4)
 		{
-			dest.posZ = z + 4;
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + 4);
 		}
 		
-		drawBresehnam(world, src.posX, src.posY, src.posZ, dest.posX, dest.posY, dest.posZ, treeBlock, trunk ? treeMeta : branchMeta);
+		TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
 		
 		
 		// variable size leaves
@@ -110,41 +102,36 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		
 		// we only need these side blocks if the size is > 2
 		if (bSize > 2) {
-			setBlockAndNotifyAdequately(world, dest.posX + 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-			setBlockAndNotifyAdequately(world, dest.posX - 1, dest.posY, dest.posZ, treeBlock, branchMeta);
-			setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ + 1, treeBlock, branchMeta);
-			setBlockAndNotifyAdequately(world, dest.posX, dest.posY, dest.posZ - 1, treeBlock, branchMeta);
+			setBlockAndNotifyAdequately(world, dest.east(), branchState);
+			setBlockAndNotifyAdequately(world, dest.west(), branchState);
+			setBlockAndNotifyAdequately(world, dest.south(), branchState);
+			setBlockAndNotifyAdequately(world, dest.north(), branchState);
 		}
 		// leaves!
-		makeLeafCircle(world, dest.posX, dest.posY - 1, dest.posZ, (byte)(bSize - 1), leafBlock, leafMeta);	
-		makeLeafCircle(world, dest.posX, dest.posY, dest.posZ, (byte)(bSize), leafBlock, leafMeta);	
-		makeLeafCircle(world, dest.posX, dest.posY + 1, dest.posZ, (byte)(bSize - 2), leafBlock, leafMeta);	
+		TFGenerator.makeLeafCircle(this, world, dest.down(), bSize - 1, leafState, false);
+		TFGenerator.makeLeafCircle(this, world, dest, bSize, leafState, false);
+		TFGenerator.makeLeafCircle(this, world, dest.up(), bSize - 2, leafState, false);
 	}
 	
 	/**
 	 * Build a root.  (Which is really like a branch without the leaves)
-	 * 
-	 * @param height
-	 * @param length
-	 * @param angle
-	 * @param tilt
 	 */
-	void buildRoot(World world, int x, int y, int z, int height, double length, double angle, double tilt)
+	private void buildRoot(World world, BlockPos pos, int height, double length, double angle, double tilt)
 	{
-		BlockPos src = new BlockPos(x, y + height, z);
-		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = pos.up(height);
+		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
 		
-		BlockPos[] lineArray = getBresehnamArrayCoords(src, dest);
+		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(src, dest);
 		boolean stillAboveGround = true; 
 		for (BlockPos coord : lineArray)
 		{
-			if (stillAboveGround && hasAirAround(world, coord.posX, coord.posY, coord.posZ)) {
-				this.setBlockAndNotifyAdequately(world, coord.posX, coord.posY, coord.posZ, treeBlock, branchMeta);
-				this.setBlockAndNotifyAdequately(world, coord.posX, coord.posY - 1, coord.posZ, treeBlock, branchMeta);
+			if (stillAboveGround && TFGenerator.hasAirAround(world, coord)) {
+				this.setBlockAndNotifyAdequately(world, coord, branchState);
+				this.setBlockAndNotifyAdequately(world, coord.down(), branchState);
 			}
 			else {
-				this.placeRootBlock(world, coord.posX, coord.posY, coord.posZ, rootBlock, rootMeta);
-				this.placeRootBlock(world, coord.posX, coord.posY - 1, coord.posZ, rootBlock, rootMeta);
+				this.placeRootBlock(world, coord, rootState);
+				this.placeRootBlock(world, coord.down(), rootState);
 				stillAboveGround = false;
 			}
 		}
@@ -157,24 +144,24 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	 * @param height how far up the tree
 	 * @param angle from 0 - 1 rotation around the tree
 	 */
-	private void addFirefly(World world, int x, int y, int z, int height, double angle)
+	private void addFirefly(World world, BlockPos pos, int height, double angle)
 	{
 		int iAngle = (int)(angle * 4.0);
 		if (iAngle == 0)
 		{
-			setBlockAndNotifyAdequately(world, x + 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndNotifyAdequately(world, x - 1, y + height, z, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndNotifyAdequately(world, x, y + height, z + 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState());
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndNotifyAdequately(world, x, y + height, z - 1, TFBlocks.firefly, 0);
+			setBlockAndNotifyAdequately(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState());
 		}
 	}
 }

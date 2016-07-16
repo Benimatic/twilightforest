@@ -1,7 +1,10 @@
 package twilightforest.world;
 
 
-public class TFGenSmallRainboak extends TFGenSmallTwilightOak 
+import twilightforest.block.BlockTFLeaves;
+import twilightforest.block.TFBlocks;
+
+public class TFGenSmallRainboak extends TFGenSmallTwilightOak
 {
 
 	public TFGenSmallRainboak() 
@@ -13,7 +16,7 @@ public class TFGenSmallRainboak extends TFGenSmallTwilightOak
 	public TFGenSmallRainboak(boolean notify) 
 	{
 		super(notify);
-		this.leafMeta = 3;
+		this.leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.);
 	}
 
 }

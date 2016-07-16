@@ -3,6 +3,7 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,11 +26,9 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
     public TFGenCanopyMushroom(boolean par1)
     {
     	super(par1);
-    	treeBlock = Blocks.RED_MUSHROOM_BLOCK;
-    	treeMeta = 10;
-    	branchMeta = 15;
-    	leafBlock = Blocks.RED_MUSHROOM_BLOCK;
-    	leafMeta = 5;
+    	treeState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
+		branchState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
+		leafState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
     }
 	
 	@Override
@@ -54,7 +53,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 
 		
 		this.treeBlock = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK :  Blocks.BROWN_MUSHROOM_BLOCK;
-		this.leafBlock = treeBlock;
+		this.leafState = treeState;
 
 		//okay build a tree!  Go up to the height
 		buildBranch(world, x, y, z, 0, treeHeight, 0, 0, true, random);
@@ -117,18 +116,11 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 		}
 		
-		drawMushroomCircle(world, dest.getX(), dest.getY(), dest.getZ(), 4, leafBlock);	
+		drawMushroomCircle(world, dest.getX(), dest.getY(), dest.getZ(), 4, leafBlock);
 	}
 	
 	/**
 	 * Draw a flat blob (a circle?) of whatevs (I'm guessing... leaves).
-	 * @param sx
-	 * @param sy
-	 * @param sz
-	 * @param rad radius
-	 * @param blockValue
-	 * @param metaValue
-	 * @param priority do we overwrite what's there?
 	 */
 	private void drawMushroomCircle(World world, int sx, int sy, int sz, int rad, Block blockValue)
 	{

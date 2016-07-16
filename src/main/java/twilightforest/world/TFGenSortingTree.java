@@ -3,25 +3,25 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.BlockTFMagicLogSpecial;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MagicWoodVariant;
 
 
 public class TFGenSortingTree extends TFGenerator 
 {
-	protected Block treeBlock = TFBlocks.magicLog;
-	protected int treeMeta = BlockTFMagicLog.META_SORT;
-	protected int branchMeta = treeMeta | 12;
-	protected Block leafBlock = TFBlocks.magicLeaves;
-	protected int leafMeta = 3;
-	protected Block rootBlock = TFBlocks.root;
-	protected int rootMeta = BlockTFRoots.ROOT_META;
-	
+	protected IBlockState treeState = TFBlocks.magicLog.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
+	protected IBlockState branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+	protected IBlockState leafState = TFBlocks.magicLeaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);;
+	protected IBlockState rootState = TFBlocks.root.getDefaultState();
+
 	public TFGenSortingTree() 
 	{
 		this(false);
@@ -46,7 +46,7 @@ public class TFGenSortingTree extends TFGenerator
 		// 3 block high trunk
 		for (int dy = 0; dy < 4; dy++)
 		{
-			setBlockAndNotifyAdequately(world, pos.up(dy), treeBlock, treeMeta);
+			setBlockAndNotifyAdequately(world, pos.up(dy), treeState);
 		}
 		
 		// leaves
@@ -54,7 +54,7 @@ public class TFGenSortingTree extends TFGenerator
 		putLeaves(world, pos.up(3), false);
 		
 		// sorting engine
-		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_SORT);
+		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magicLogSpecial.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT));
 
 		return true;
 	}
@@ -70,7 +70,7 @@ public class TFGenSortingTree extends TFGenerator
 					{
 						continue;
 					}
-					putLeafBlock(world, pos.add(lx, ly, lz), leafBlock, leafMeta);
+					putLeafBlock(this, world, pos.add(lx, ly, lz), leafState);
 				}
 			}
 		}

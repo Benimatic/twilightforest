@@ -33,17 +33,11 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		saveFolder = "DIM" + TwilightForestMod.dimensionID;
 	}
 	
-	/**
-	 * Always return these colors
-	 */
 	@Override
 	public float[] calcSunriseSunsetColors(float celestialAngle, float f1) {
 		return null;//super.calcSunriseSunsetColors(celestialAngle, f1);
 	}
 	
-	/**
-	 * Fog color
-	 */
 	@Override
     public Vec3d getFogColor(float f, float f1)
     {
@@ -65,9 +59,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
         return new Vec3d(red, green, blue);
     }
 	
-    /**
-     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
-     */
     @Override
 	public float calculateCelestialAngle(long par1, float par3)
     {
@@ -112,14 +103,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return false;
 	}
 
-
-//
-//	@Override
-//    public float getCloudHeight()
-//    {
-//        return 64F;
-//    }
-	
     @Override
 	public int getAverageGroundLevel()
     {
@@ -171,9 +154,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return "Twilight Forest";
 	}
 
-	/**
-	 * Sleep anytime!
-	 */
 	@Override
 	public boolean isDaytime() {
 		return false;
