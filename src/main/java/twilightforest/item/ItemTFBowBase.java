@@ -7,9 +7,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -125,7 +127,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 			}
 
 			itemstack.damageItem(1, living);
-			world.playSoundAtEntity(living, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+			world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ARROW_SHOOT, living instanceof EntityPlayer ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL,1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
 			if (isNoPickup)
 			{

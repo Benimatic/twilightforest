@@ -14,10 +14,12 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -304,12 +306,6 @@ public class EntityTFQuestRam extends EntityAnimal {
     }
     
     @Override
-	public void playLivingSound()
-    {
-        this.worldObj.playSoundAtEntity(this, "mob.sheep.say", this.getSoundVolume(), this.getSoundPitch());
-    }
-
-    @Override
 	protected float getSoundVolume()
     {
         return 5.0F;
@@ -322,26 +318,26 @@ public class EntityTFQuestRam extends EntityAnimal {
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return "mob.sheep.say";
+        return SoundEvents.ENTITY_SHEEP_AMBIENT;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return "mob.sheep.say";
+        return SoundEvents.ENTITY_SHEEP_HURT;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return "mob.sheep.say";
+        return SoundEvents.ENTITY_SHEEP_DEATH;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block p_145780_4_)
     {
-        this.playSound("mob.sheep.step", 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
     }
 }

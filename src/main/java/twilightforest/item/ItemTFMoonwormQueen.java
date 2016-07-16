@@ -12,6 +12,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -132,7 +134,7 @@ public class ItemTFMoonwormQueen extends ItemTF
 		}
 	}
 	
-	public String getSound()
+	public SoundEvent getSound()
 	{
 		return "mob.slime.big";
 	}
@@ -151,7 +153,7 @@ public class ItemTFMoonwormQueen extends ItemTF
     		{
     			par1ItemStack.damageItem(2, living);
 
-    			world.playSoundAtEntity(living, this.getSound(), 1.0F, 1.0F);
+				world.playSound(null, living.posX, living.posY, living.posZ, getSound(), living instanceof EntityPlayer ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
     		}
     	}
 

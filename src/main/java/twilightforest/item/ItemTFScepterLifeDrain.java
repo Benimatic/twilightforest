@@ -9,6 +9,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -143,7 +144,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 						{
 							((EntityLiving) target).spawnExplosionParticle();
 						}
-						worldObj.playSoundAtEntity(target, "game.player.hurt.fall.big", 1.0F, ((itemRand.nextFloat() - itemRand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+						target.playSound(SoundEvents.ENTITY_GENERIC_BIG_FALL, 1.0F, ((itemRand.nextFloat() - itemRand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						animateTargetShatter(worldObj, (EntityLivingBase) target);
 						if (!worldObj.isRemote) {
 							target.setDead();

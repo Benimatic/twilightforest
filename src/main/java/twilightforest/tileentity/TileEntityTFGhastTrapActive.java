@@ -6,8 +6,10 @@ import java.util.Random;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
@@ -50,15 +52,15 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 			// appropriate sound
 			if (counter < 30)
 			{
-				worldObj.playSound(this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, TwilightForestMod.ID + ":mob.urghast.trapwarmup", 1.0F, 4.0F, false);
+				worldObj.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_WARMUP, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
 			}
 			else if (counter < 80)
 			{
-				worldObj.playSound(this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, TwilightForestMod.ID + ":mob.urghast.trapon", 1.0F, 4.0F, false);
+				worldObj.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_ON, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
 			}
 			else
 			{
-				worldObj.playSound(this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, TwilightForestMod.ID + ":mob.urghast.trapspindown", 1.0F, 4.0F, false);
+				worldObj.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_SPINDOWN, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
 			}
 		}
 

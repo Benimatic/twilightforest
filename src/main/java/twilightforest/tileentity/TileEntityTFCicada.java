@@ -1,6 +1,8 @@
 package twilightforest.tileentity;
 
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
 
@@ -83,7 +85,7 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
     {
     	if (!TwilightForestMod.silentCicadas)
     	{
-    		worldObj.playSoundEffect(xCoord, yCoord, zCoord, TwilightForestMod.ID + ":mob.cicada", 1.0f, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
+    		worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F, false);
     	}
     }
 }
