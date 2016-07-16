@@ -160,7 +160,7 @@ public abstract class BlockTFGiantBlock extends Block {
         return EnumPushReaction.BLOCK;
     }
 
-	protected BlockPos roundCoords(BlockPos pos)
+	public static BlockPos roundCoords(BlockPos pos)
 	{
 		return new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
 	}

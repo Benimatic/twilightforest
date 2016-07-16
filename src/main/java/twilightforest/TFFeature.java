@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -90,8 +91,6 @@ public class TFFeature {
 	public static final TFFeature trollCave = new TFFeature(18, 3, "Troll Lairs").enableDecorations().enableTerrainAlterations().setRequiredAchievement(TFAchievementPage.twilightProgressGlacier).disableProtectionAura();
 	public static final TFFeature finalCastle = new TFFeature(19, 3, "Final Castle");
 	public static final TFFeature mushroomTower = new TFFeature(20, 2, "Mushroom Tower");
-	
-	ArrayList<SpawnListEntry> emptyList = new ArrayList<SpawnListEntry>();
 	
 	static {
 		// spawn lists!
@@ -202,15 +201,13 @@ public class TFFeature {
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
 	public boolean isTerrainAltered;
-	protected List<List<SpawnListEntry>> spawnableMonsterLists;
-	protected List<SpawnListEntry> ambientCreatureList;
-	protected List<SpawnListEntry> waterCreatureList;
-	protected Achievement requiredAchievement = null;
+	private List<List<SpawnListEntry>> spawnableMonsterLists;
+	private List<SpawnListEntry> ambientCreatureList;
+	private List<SpawnListEntry> waterCreatureList;
+	private Achievement requiredAchievement = null;
 	public boolean hasProtectionAura;
 
 	private long lastSpawnedHintMonsterTime;
-
-
 
 	public TFFeature(int parID, int parSize, String parName) {
 		this.featureID = parID;
@@ -260,7 +257,7 @@ public class TFFeature {
 	/**
 	 * Add a monster to spawn list 0
 	 */
-	public TFFeature addMonster(Class<? extends EntityLivingBase> monsterClass, int weight, int minGroup, int maxGroup) {
+	public TFFeature addMonster(Class<? extends EntityLiving> monsterClass, int weight, int minGroup, int maxGroup) {
 		this.addMonster(0, monsterClass, weight, minGroup, maxGroup);
 		return this;
 	}
@@ -330,7 +327,7 @@ public class TFFeature {
 //		}
 
 		// what biome is at the center of the chunk?
-    	Biome biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
+    	Biome biomeAt = world.getBiomeGenForCoords(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
     	
     	// get random value 
     	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
@@ -431,7 +428,7 @@ public class TFFeature {
     	chunkZ = Math.round(chunkZ / 16F) * 16;
 		
     	// what biome is at the center of the chunk?
-    	Biome biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
+    	Biome biomeAt = world.getBiomeGenForCoords(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
     	
     	// get random value 
     	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
@@ -768,7 +765,7 @@ public class TFFeature {
     	}
     	else
     	{
-    		return emptyList;
+    		return ImmutableList.of();
     	}
     }
 
@@ -785,7 +782,7 @@ public class TFFeature {
     		}
     		else
     		{
-    			return emptyList;
+    			return ImmutableList.of();
     		}
     	}
     	else

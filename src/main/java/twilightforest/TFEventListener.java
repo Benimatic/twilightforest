@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandGameRule;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,6 +42,7 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
@@ -271,7 +274,7 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void harvestDrops(HarvestDropsEvent event) {
-		if (event.getHarvester() != null && event.getHarvester().inventory.getCurrentItem() != null && event.getHarvester().inventory.getCurrentItem().getItem().func_150897_b(event.block)) {
+		if (event.getHarvester() != null && event.getHarvester().inventory.getCurrentItem() != null && event.getHarvester().inventory.getCurrentItem().getItem().canHarvestBlock(event.getState())) {
 			if (event.getHarvester().inventory.getCurrentItem().getItem() == TFItems.fieryPick) {
 				ArrayList<ItemStack> removeThese = new ArrayList<ItemStack>(1);
 				ArrayList<ItemStack> addThese = new ArrayList<ItemStack>(1);
@@ -286,7 +289,7 @@ public class TFEventListener {
 						removeThese.add(input);
 
 						// spawn XP
-						spawnSpeltXP(result, event.getWorld(), event.x, event.y, event.z);
+						spawnSpeltXP(result, event.getWorld(), event.getPos());
 					}
 				}
 
@@ -319,7 +322,7 @@ public class TFEventListener {
 	/**
 	 * Spawn XP for smelting the specified item at the specified location
 	 */
-	private void spawnSpeltXP(ItemStack smelted, World world, int x, int y, int z) {
+	private void spawnSpeltXP(ItemStack smelted, World world, BlockPos pos) {
 		float floatXP = FurnaceRecipes.instance().getSmeltingExperience(smelted);
 		int smeltXP = (int)floatXP;
 		// random chance of +1 XP to handle fractions
@@ -332,7 +335,7 @@ public class TFEventListener {
 		{
 			int splitXP = EntityXPOrb.getXPSplit(smeltXP);
 			smeltXP -= splitXP;
-			world.spawnEntityInWorld(new EntityXPOrb(world, x + 0.5D, y + 0.5D, z + 0.5D, splitXP));
+			world.spawnEntityInWorld(new EntityXPOrb(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, splitXP));
 		}
 	}
 
@@ -367,7 +370,7 @@ public class TFEventListener {
 			
 			if (chillLevel > 0) {
 				//System.out.println("Executing chill reaction.");
-				((EntityLivingBase)event.getSource().getEntity()).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS.id, chillLevel * 5 + 5, chillLevel));
+				((EntityLivingBase)event.getSource().getEntity()).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, chillLevel * 5 + 5, chillLevel));
 
 			}
 		}
@@ -526,7 +529,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void livingDies(LivingDeathEvent event)
 	{
-		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().worldObj.getGameRules().getBoolean("keepInventory"))
 		{
 			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
 			
@@ -734,27 +737,30 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void breakBlock(BreakEvent event) {
-		if (!event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.x, event.y, event.z) && isBlockProtectedFromBreaking(event.getWorld(), event.x, event.y, event.z)) {
+		if (!event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.getPos()) && isBlockProtectedFromBreaking(event.getWorld(), event.getPos())) {
 			event.setCanceled(true);
-		} else if (!this.isBreakingWithGiantPick && event.getPlayer().getCurrentEquippedItem() != null && event.getPlayer().getCurrentEquippedItem().getItem() == TFItems.giantPick && event.getPlayer().getCurrentEquippedItem().getItem().func_150897_b(event.block)) {
+		} else if (!this.isBreakingWithGiantPick
+				&& event.getPlayer().getHeldItemMainhand() != null
+				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giantPick
+				&& event.getPlayer().getHeldItemMainhand().getItem().canHarvestBlock(event.getState(), event.getPlayer().getHeldItemMainhand())) {
 			//System.out.println("Breaking with giant pick!");
 			
 			this.isBreakingWithGiantPick = true;
 			
 			
 			// check nearby blocks for same block or same drop
-	    	int bx = (event.x >> 2) << 2;
-	    	int by = (event.y >> 2) << 2;
-	    	int bz = (event.z >> 2) << 2;
-	    	
-	    	// pre-check for cobble!
+			BlockPos bPos = BlockTFGiantBlock.roundCoords(event.getPos());
+
+			// pre-check for cobble!
 			boolean allCobble = event.getState().getBlock().getItemDropped(event.getState(), event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
 	    	for (int dx = 0; dx < 4; dx++) {
 	    		for (int dy = 0; dy < 4; dy++) {
 	    			for (int dz = 0; dz < 4; dz++) {
-	    				Block blockThere = event.getWorld().getBlock(bx + dx, by + dy, bz + dz);
-	    				int metaThere = event.getWorld().getBlockMetadata(bx + dx, by + dy, bz + dz);
-						allCobble &= blockThere.getItemDropped(metaThere, event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
+						BlockPos dPos = bPos.add(dx, dy, dz);
+						IBlockState stateThere = event.getWorld().getBlockState(dPos);
+						Block blockThere = stateThere.getBlock();
+
+						allCobble &= blockThere.getItemDropped(stateThere, event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
 	    			}
 	    		}
 	    	}
@@ -772,15 +778,14 @@ public class TFEventListener {
 	    	for (int dx = 0; dx < 4; dx++) {
 	    		for (int dy = 0; dy < 4; dy++) {
 	    			for (int dz = 0; dz < 4; dz++) {
-	    				Block blockThere = event.getWorld().getBlock(bx + dx, by + dy, bz + dz);
-	    				int metaThere = event.getWorld().getBlockMetadata(bx + dx, by + dy, bz + dz);
-	    						
-	    				if (!(event.x == bx + dx && event.y == by + dy && event.z == bz + dz) && blockThere == event.block && metaThere == event.blockMetadata) {
+						BlockPos dPos = bPos.add(dx, dy, dz);
+
+	    				if (!dPos.equals(event.getPos()) && event.getState() == event.getWorld().getBlockState(dPos)) {
 	    					// try to break that block too!
 	    					if (event.getPlayer() instanceof EntityPlayerMP) {
 	    						EntityPlayerMP playerMP = (EntityPlayerMP)event.getPlayer();
 	    						
-	    						playerMP.interactionManager.tryHarvestBlock(bx + dx, by + dy, bz + dz);
+	    						playerMP.interactionManager.tryHarvestBlock(dPos);
 	    					}
 	    				}
 	    			}
@@ -823,8 +828,8 @@ public class TFEventListener {
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
-	private boolean isBlockProtectedFromInteraction(World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
+	private boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
+		Block block = world.getBlockState(pos).getBlock();
 		
 		if (block == TFBlocks.towerDevice || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
 				|| block == Blocks.STONE_BUTTON || block == Blocks.WOODEN_BUTTON || block == Blocks.LEVER) {
@@ -837,10 +842,10 @@ public class TFEventListener {
 	/**
 	 * Stop the player from breaking blocks.  We protect all blocks except openblocks graves
 	 */
-	private boolean isBlockProtectedFromBreaking(World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
+	private boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
+		Block block = world.getBlockState(pos).getBlock();
 		
-		// graves are okay!
+		// graves are okay! todo 1.9 ohgod registry names pls
 		if (block.getUnlocalizedName().equals("tile.openblocks.grave")) {
 			return false;
 		}
@@ -851,42 +856,39 @@ public class TFEventListener {
 	/**
 	 * Return true if the player is wearing at least one piece of fiery armor
 	 */
-	private boolean checkPlayerForFieryArmor(EntityPlayer entityPlayer) {
-		ItemStack[] armor = entityPlayer.inventory.armorInventory;
-		if (armor[0] != null && armor[0].getItem() == TFItems.fieryBoots) {
-			return true;
-		} else if (armor[1] != null && armor[1].getItem() == TFItems.fieryLegs) {
-			return true;
-		} else if (armor[2] != null && armor[2].getItem() == TFItems.fieryPlate) {
-			return true;
-		} else if (armor[3] != null && armor[3].getItem() == TFItems.fieryHelm) {
-			return true;
-		} else  {
-			return false;
-		}
+	private boolean checkPlayerForFieryArmor(EntityPlayer player) {
+		ItemStack feet = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+		ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
+		ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+		ItemStack head = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+
+		return feet != null && feet.getItem() == TFItems.fieryBoots
+				|| legs != null && legs.getItem() == TFItems.fieryLegs
+				|| chest != null && chest.getItem() == TFItems.fieryPlate
+				|| head != null && head.getItem() == TFItems.fieryHelm;
 	}
 
 	/**
 	 * Return if the area at the coordinates is considered protected for that player.
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
-	private boolean isAreaProtected(World world, EntityPlayer player, int x, int y, int z) {
+	private boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
 		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
 
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
 			
-			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(x, y, z)) {
+			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.worldChunkMgr).getFeatureAt(x, z, world);
+				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(pos, world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAchievement(player) && chunkProvider.isBlockProtected(x, y, z)) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAchievement(player) && chunkProvider.isBlockProtected(pos)) {
 					
 					// send protection packet
-					StructureBoundingBox sbb = chunkProvider.getSBBAt(x, y, z);
-					sendAreaProtectionPacket(world, x, y, z, sbb);
+					StructureBoundingBox sbb = chunkProvider.getSBBAt(pos);
+					sendAreaProtectionPacket(world, pos, sbb);
 					
 					// send a hint monster?
-					nearbyFeature.trySpawnHintMonster(world, player, x, y, z);
+					nearbyFeature.trySpawnHintMonster(world, player, pos);
 
 					return true;
 				}
@@ -921,7 +923,7 @@ public class TFEventListener {
 
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(mx, my, mz) && chunkProvider.isBlockProtected(mx, my, mz)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFBiomeProvider)event.getEntityLiving().worldObj.provider.worldChunkMgr).getFeatureAt(mx, mz, event.getEntityLiving().worldObj);
+				TFFeature nearbyFeature = ((TFBiomeProvider)event.getEntityLiving().worldObj.provider.getBiomeProvider()).getFeatureAt(mx, mz, event.getEntityLiving().worldObj);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getEntity())) {
 					event.setResult(Result.DENY);
@@ -946,7 +948,7 @@ public class TFEventListener {
 	public void playerLogsIn(PlayerLoggedInEvent event) {
 		// check enforced progression
 		if (!event.player.worldObj.isRemote && event.player instanceof EntityPlayerMP) {
-			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.worldObj.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 		}
 	}
 	
@@ -957,7 +959,7 @@ public class TFEventListener {
 	public void playerPortals(PlayerChangedDimensionEvent event) {
 		// check enforced progression
 		if (!event.player.worldObj.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TwilightForestMod.dimensionID) {
-			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.worldObj.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 		}
 	}
 	

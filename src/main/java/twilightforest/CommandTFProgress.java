@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class CommandTFProgress extends CommandBase {
 	
-	String[] bosses = new String[] {"none", "naga", "lich", "mooshroom", "hydra", "knights", "urghast", "yeti", "snowqueen", "giants", "final"};
+	private String[] bosses = {"none", "naga", "lich", "mooshroom", "hydra", "knights", "urghast", "yeti", "snowqueen", "giants", "final"};
 
 	@Override
 	public String getCommandName() {
@@ -24,9 +24,6 @@ public class CommandTFProgress extends CommandBase {
 		return "tfprogress <player> <boss>";
 	}
 
-    /**
-     * Return the required permission level for this command.
-     */
     @Override
 	public int getRequiredPermissionLevel()
     {
@@ -47,8 +44,6 @@ public class CommandTFProgress extends CommandBase {
             setProgress (player, bossIndex);
     	}
     }
-
-    
 
     private void setProgress(EntityPlayerMP player, int bossIndex) {
     	
@@ -113,8 +108,7 @@ public class CommandTFProgress extends CommandBase {
 				return i;
 			}
 		}
-    	
-    	
+
 		return 0;
 	}
 
@@ -126,14 +120,11 @@ public class CommandTFProgress extends CommandBase {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getListOfPlayers()) : (args.length == 2 ? getListOfStringsMatchingLastWord(args, bosses) : null);
     }
 
-    protected String[] getListOfPlayers()
+    private String[] getListOfPlayers()
     {
         return FMLCommonHandler.instance().getMinecraftServerInstance().getAllUsernames();
     }
 
-    /**
-     * Return whether the specified command parameter index is a username parameter.
-     */
     @Override
 	public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_)
     {
