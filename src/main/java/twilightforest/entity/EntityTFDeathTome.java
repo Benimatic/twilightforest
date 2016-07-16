@@ -1,7 +1,10 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -10,16 +13,17 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
-import twilightforest.entity.ai.EntityAITFMagicAttack;
 import twilightforest.item.TFItems;
 
-public class EntityTFDeathTome extends EntityMob {
+public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
 	public EntityTFDeathTome(World par1World) {
 		super(par1World);
@@ -29,7 +33,7 @@ public class EntityTFDeathTome extends EntityMob {
         //this.moveSpeed = 0.25F;
         
         this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(4, new EntityAITFMagicAttack(this, 1.0F, 2, 60));
+		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1, 60, 10));
 		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -125,4 +129,14 @@ public class EntityTFDeathTome extends EntityMob {
 		}
 	}
 
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
+        EntityThrowable projectile = new EntityTFTomeBolt(this.worldObj, this);
+        double tx = target.posX - this.posX;
+        double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
+        double tz = target.posZ - this.posZ;
+        float heightOffset = MathHelper.sqrt_double(tx * tx + tz * tz) * 0.2F;
+        projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
+        this.worldObj.spawnEntityInWorld(projectile);
+    }
 }

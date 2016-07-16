@@ -10,21 +10,21 @@ import twilightforest.entity.ITFCharger;
 
 public class EntityAITFChargeAttack extends EntityAIBase {
 
-	protected static final double MIN_RANGE_SQ = 16.0D;
-	protected static final double MAX_RANGE_SQ =  64.0D;
-	protected static final int FREQ = 1;
+	private static final double MIN_RANGE_SQ = 16.0D;
+	private static final double MAX_RANGE_SQ =  64.0D;
+	private static final int FREQ = 1;
 	
-	protected EntityCreature charger;
-	protected EntityLivingBase chargeTarget;
-	protected double chargeX;
-	protected double chargeY;
-	protected double chargeZ;
+	private EntityCreature charger;
+	private EntityLivingBase chargeTarget;
+	private double chargeX;
+	private double chargeY;
+	private double chargeZ;
 
 	protected float speed;
 	
-	protected int windup;
+	private int windup;
 	
-	protected boolean hasAttacked;
+	private boolean hasAttacked;
 
 	public EntityAITFChargeAttack(EntityCreature entityLiving, float f) {
 		this.charger = entityLiving;

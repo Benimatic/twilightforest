@@ -1,8 +1,5 @@
 package twilightforest.entity.ai;
 
-import java.util.List;
-
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityTNTPrimed;

@@ -10,16 +10,16 @@ import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 
-	EntityLivingBase entityTarget;
-	EntityLiving me;
+	private EntityLivingBase entityTarget;
+	private EntityLiving me;
     float speed;
-    boolean lefty;
-    double xPosition;
-    double yPosition;
-    double zPosition;
+    private boolean lefty;
+    private double xPosition;
+    private double yPosition;
+    private double zPosition;
     
-    double minDistance = 3.0;
-    double maxDistance = 6.0;
+    private double minDistance = 3.0;
+    private double maxDistance = 6.0;
 
 	public EntityAITFAvoidFrontalAttack(EntityTFRedcap entityTFRedcap, float moveSpeed) {
 		this.me = entityTFRedcap;

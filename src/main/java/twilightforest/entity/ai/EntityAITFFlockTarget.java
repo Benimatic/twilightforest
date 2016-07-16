@@ -9,8 +9,8 @@ import net.minecraft.entity.ai.EntityAITarget;
 
 public class EntityAITFFlockTarget extends EntityAITarget
 {
-	EntityLivingBase flockCreature;
-	EntityLivingBase flockTarget;
+	private EntityLivingBase flockCreature;
+	private EntityLivingBase flockTarget;
 
     public EntityAITFFlockTarget(EntityCreature par1EntityLiving, boolean b)
     {

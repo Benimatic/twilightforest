@@ -2,8 +2,11 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -13,17 +16,18 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
-import twilightforest.entity.ai.EntityAITFMagicAttack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFSlimeBeetle extends EntityMob
+public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
 {
 
 	public EntityTFSlimeBeetle(World world) {
@@ -35,7 +39,7 @@ public class EntityTFSlimeBeetle extends EntityMob
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		//this.tasks.addTask(2, new EntityAITFFireBreath(this, this.moveSpeed, 5F, 30, 0.1F));
         this.tasks.addTask(2, new EntityAIAvoidEntity(this, EntityPlayer.class, 3.0F, 1.25F, 2.0F));
-		this.tasks.addTask(3, new EntityAITFMagicAttack(this, 1.0F, EntityAITFMagicAttack.SLIME, 30));
+		this.tasks.addTask(3, new EntityAIAttackRanged(this, 1, 30, 10));   //EntityAITFMagicAttack(this, 1.0F, EntityAITFMagicAttack.SLIME, 30));
 		//this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -133,5 +137,16 @@ public class EntityTFSlimeBeetle extends EntityMob
     {
         return Items.SLIME_BALL;
     }
-	
+
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
+        EntityThrowable projectile = new EntityTFSlimeProjectile(this.worldObj, this);
+        this.worldObj.playSoundAtEntity(this.entityHost, "mob.slime.small", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
+        double tx = target.posX - this.posX;
+        double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
+        double tz = target.posZ - this.posZ;
+        float heightOffset = MathHelper.sqrt_double(tx * tx + tz * tz) * 0.2F;
+        projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
+        this.worldObj.spawnEntityInWorld(projectile);
+    }
 }

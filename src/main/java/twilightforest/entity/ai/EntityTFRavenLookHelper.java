@@ -5,7 +5,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.util.math.MathHelper;
 
-
+// todo 1.9 so confused why this exists (copy of superclass)
+// reverting raven to normal look helper, hopefully you see this if it breaks
 public class EntityTFRavenLookHelper extends EntityLookHelper
 {
     private EntityLiving entity;

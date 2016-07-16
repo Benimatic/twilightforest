@@ -11,8 +11,8 @@ public class EntityAITFFlockToSameKind extends EntityAIBase
     private static final double MAX_DIST = 256.0D;
 	private static final double MIN_DIST = 25.0D;
 	/** The child that is following its parent. */
-    EntityLiving flockCreature;
-    Vec3d flockPosition;
+    private EntityLiving flockCreature;
+    private Vec3d flockPosition;
     double speed;
     private int moveTimer;
 

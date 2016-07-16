@@ -8,7 +8,6 @@ import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
-	
 	private float pursueSpeed;
 	private int delayTemptCounter;
 	private BlockPos tntPos = BlockPos.ORIGIN;

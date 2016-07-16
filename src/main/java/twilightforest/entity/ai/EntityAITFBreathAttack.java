@@ -17,9 +17,9 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	private EntityLiving entityHost;
     private EntityLivingBase attackTarget;
     
-	protected double breathX;
-	protected double breathY;
-	protected double breathZ;
+	private double breathX;
+	private double breathY;
+	private double breathZ;
     
 	private int maxDuration;
 	private float attackChance;

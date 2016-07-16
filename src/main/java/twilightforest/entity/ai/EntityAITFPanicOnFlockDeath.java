@@ -17,7 +17,7 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase
     private double fleeY;
     private double fleeZ;
     
-    int fleeTimer;
+    private int fleeTimer;
 
     public EntityAITFPanicOnFlockDeath(EntityCreature par1EntityCreature, float par2)
     {

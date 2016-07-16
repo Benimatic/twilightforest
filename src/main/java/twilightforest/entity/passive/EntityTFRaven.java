@@ -7,20 +7,16 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityTFRavenLookHelper;
 import twilightforest.item.TFItems;
 
 
 public class EntityTFRaven extends EntityTFTinyBird {
 	
-	EntityTFRavenLookHelper ravenLook = new EntityTFRavenLookHelper(this);
-
     public EntityTFRaven(World par1World) {
 		super(par1World);
 		//texture = TwilightForestMod.MODEL_DIR + "raven.png";
@@ -50,18 +46,6 @@ public class EntityTFRaven extends EntityTFTinyBird {
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
     }
     
-    @Override
-	protected void updateAITasks() {
-		super.updateAITasks();
-		this.ravenLook.onUpdateLook();
-	}
-
-	@Override
-	public EntityLookHelper getLookHelper()
-    {
-        return this.ravenLook;
-    }
-	
 	@Override
     protected String getLivingSound()
     {
