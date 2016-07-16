@@ -10,6 +10,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.FireJetVariant;
+import twilightforest.block.enums.Leaves3Variant;
+import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.MagicWoodVariant;
 import twilightforest.block.enums.TowerWoodVariant;
 
@@ -242,7 +244,90 @@ public final class BlockColorHandler {
                     return value << 16 | value << 8 | value;
                 }
             }
-        });
+        }, TFBlocks.towerWood);
+        colors.registerBlockColorHandler(new IBlockColor() {
+            @Override
+            public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
+                if (world == null || pos == null) {
+                    switch (state.getValue(BlockTFLeaves.VARIANT)) {
+                        case CANOPY: return 0x609860;
+                        case MANGROVE: return 0x80A755;
+                        default: case OAK: return 0x48B518;
+                    }
+                } else {
+                    int red = 0;
+                    int green = 0;
+                    int blue = 0;
+
+                    for (int var9 = -1; var9 <= 1; ++var9)
+                    {
+                        for (int var10 = -1; var10 <= 1; ++var10)
+                        {
+                            int var11 = world.getBiomeGenForCoords(pos.add(var10, 0, var9)).getFoliageColorAtPos(pos);
+                            red += (var11 & 16711680) >> 16;
+                            green += (var11 & 65280) >> 8;
+                            blue += var11 & 255;
+                        }
+                    }
+
+                    int normalColor = (red / 9 & 0xFF) << 16 | (green / 9 & 0xFF) << 8 | blue / 9 & 0xFF;
+
+                    if (state.getValue(BlockTFLeaves.VARIANT) == LeavesVariant.CANOPY)
+                    {
+                        // canopy colorizer
+                        return ((normalColor & 0xFEFEFE) + 0x469A66) / 2;
+                        //return ((normalColor & 0xFEFEFE) + 0x009822) / 2;
+                    }
+                    else if (state.getValue(BlockTFLeaves.VARIANT) == LeavesVariant.MANGROVE)
+                    {
+                        // mangrove colors
+                        return ((normalColor & 0xFEFEFE) + 0xC0E694) / 2;
+                    }
+                    else if (state.getValue(BlockTFLeaves.VARIANT) == LeavesVariant.RAINBOAK)
+                    {
+                        // RAINBOW!
+                        red = pos.getX() * 32 + pos.getY() * 16;
+                        if ((red & 256) != 0)
+                        {
+                            red = 255 - (red & 255);
+                        }
+                        red &= 255;
+
+                        blue = pos.getY() * 32 + pos.getZ() * 16;
+                        if ((blue & 256) != 0)
+                        {
+                            blue = 255 - (blue & 255);
+                        }
+                        blue ^= 255;
+
+                        green = pos.getX() * 16 + pos.getZ() * 32;
+                        if ((green & 256) != 0)
+                        {
+                            green = 255 - (green & 255);
+                        }
+                        green &= 255;
+
+
+                        return red << 16 | blue << 8 | green;
+                    }
+                    else
+                    {
+                        return normalColor;
+                    }
+                }
+            }
+        }, TFBlocks.leaves);
+        colors.registerBlockColorHandler(new IBlockColor() {
+            @Override
+            public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+                // todo 1.9 wrong meta values?
+                // return (meta & 3) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((meta & 3) == 2 ? ColorizerFoliage.getFoliageColorBirch() : super.getRenderColor(meta));;
+                Leaves3Variant variant = state.getValue(BlockTFLeaves3.VARIANT);
+                return variant == Leaves3Variant.THORN ? ColorizerFoliage.getFoliageColorPine()
+                        : variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
+                        : -1;
+            }
+        }, TFBlocks.leaves3);
     }
 
     private BlockColorHandler() {}

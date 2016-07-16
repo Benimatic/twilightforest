@@ -2,7 +2,11 @@ package twilightforest.block;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockFurnace;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -13,32 +17,26 @@ import twilightforest.tileentity.TileEntityTFCinderFurnace;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class BlockTFCinderFurnace extends Block {
 
-	private static boolean isUpdating;
-	private Boolean isLit;
-	private Random furnaceRandom = new Random();
+	private static boolean keepInventory;
+	private final boolean isBurning;
 
 	protected BlockTFCinderFurnace(Boolean isLit) {
 		super(Material.WOOD);
 		
-		this.isLit = isLit;
+		this.isBurning = isLit;
 		
 		this.setHardness(7.0F);
 		
@@ -47,8 +45,24 @@ public class BlockTFCinderFurnace extends Block {
 		if (!isLit) {
 			this.setCreativeTab(TFItems.creativeTab);
 		}
-		
+
+        this.setDefaultState(blockState.getBaseState().withProperty(BlockFurnace.FACING, EnumFacing.NORTH));
 	}
+
+    @Override
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, BlockFurnace.FACING);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(BlockFurnace.FACING).getHorizontalIndex();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(BlockFurnace.FACING, EnumFacing.getHorizontal(meta));
+    }
 
 	@Override
 	public TileEntity createTileEntity(World p_149915_1_, IBlockState state) {
@@ -75,42 +89,37 @@ public class BlockTFCinderFurnace extends Block {
             return true;
         }
     }
-    
-    /**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase p_149689_5_, ItemStack itemStack)
+
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack itemStack)
     {
         if (itemStack.hasDisplayName())
         {
-            ((TileEntityFurnace)world.getTileEntity(x, y, z)).func_145951_a(itemStack.getDisplayName());
+            ((TileEntityFurnace)world.getTileEntity(pos)).setCustomInventoryName(itemStack.getDisplayName());
         }
     }
 
-
-    /**
-     * Update which block the furnace is using depending on whether or not it is burning
-     */
-    public static void updateFurnaceBlockState(boolean isBurning, World world, int x, int y, int z)
+    public static void setState(boolean active, World worldIn, BlockPos pos)
     {
-        TileEntity tileentity = world.getTileEntity(x, y, z);
-        isUpdating = true;
+        IBlockState iblockstate = worldIn.getBlockState(pos);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        keepInventory = true;
 
-        if (isBurning)
+        if (active)
         {
-            world.setBlock(x, y, z, TFBlocks.cinderFurnaceLit);
+            worldIn.setBlockState(pos, TFBlocks.cinderFurnaceLit.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
         }
         else
         {
-            world.setBlock(x, y, z, TFBlocks.cinderFurnace);
+            worldIn.setBlockState(pos, TFBlocks.cinderFurnace.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
         }
 
-        isUpdating = false;
+        keepInventory = false;
 
         if (tileentity != null)
         {
             tileentity.validate();
-            world.setTileEntity(x, y, z, tileentity);
+            worldIn.setTileEntity(pos, tileentity);
         }
     }
     
@@ -118,86 +127,23 @@ public class BlockTFCinderFurnace extends Block {
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random)
     {
-   	
-        if (this.isLit)
+        if (this.isBurning)
         {
-            float f = (float)x + 0.5F;
-            float f1 = (float)y + 0.0F + random.nextFloat() * 6.0F / 16.0F;
-            float f2 = (float)z + 0.5F;
-            float f3 = 0.52F;
-            float f4 = random.nextFloat() * 0.6F - 0.3F;
-            
-            int l = random.nextInt(4) + 2;
-
-            if (l == 4)
-            {
-                world.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-            }
-            else if (l == 5)
-            {
-                world.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-            }
-            else if (l == 2)
-            {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
-            }
-            else if (l == 3)
-            {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
-            }
+            Blocks.LIT_FURNACE.randomDisplayTick(state, world, pos, random);
         }
     }
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
-        if (!isUpdating)
+        if (!keepInventory)
         {
-        	TileEntityTFCinderFurnace tileEntity = (TileEntityTFCinderFurnace)world.getTileEntity(x, y, z);
+            TileEntity tileentity = world.getTileEntity(pos);
 
-            if (tileEntity != null)
+            if (tileentity instanceof TileEntityFurnace)
             {
-                for (int i = 0; i < tileEntity.getSizeInventory(); ++i)
-                {
-                    ItemStack itemstack = tileEntity.getStackInSlot(i);
-
-                    if (itemstack != null)
-                    {
-                        float dx = this.furnaceRandom.nextFloat() * 0.8F + 0.1F;
-                        float dy = this.furnaceRandom.nextFloat() * 0.8F + 0.1F;
-                        float dz = this.furnaceRandom.nextFloat() * 0.8F + 0.1F;
-
-                        while (itemstack.stackSize > 0)
-                        {
-                            int j1 = this.furnaceRandom.nextInt(21) + 10;
-
-                            if (j1 > itemstack.stackSize)
-                            {
-                                j1 = itemstack.stackSize;
-                            }
-
-                            itemstack.stackSize -= j1;
-                            EntityItem entityitem = new EntityItem(world, (double)((float)x + dx), (double)((float)y + dy), (double)((float)z + dz), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
-
-                            if (itemstack.hasTagCompound())
-                            {
-                                entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
-                            }
-
-                            float pointFive = 0.05F;
-                            entityitem.motionX = (double)((float)this.furnaceRandom.nextGaussian() * pointFive);
-                            entityitem.motionY = (double)((float)this.furnaceRandom.nextGaussian() * pointFive + 0.2F);
-                            entityitem.motionZ = (double)((float)this.furnaceRandom.nextGaussian() * pointFive);
-                            world.spawnEntityInWorld(entityitem);
-                        }
-                    }
-                }
-
-                world.notifyNeighborsRespectDebug(pos, this);
+                InventoryHelper.dropInventoryItems(world, pos, (TileEntityFurnace)tileentity);
+                world.updateComparatorOutputLevel(pos, this);
             }
         }
 

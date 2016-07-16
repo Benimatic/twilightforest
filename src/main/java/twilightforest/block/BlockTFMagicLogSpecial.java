@@ -175,7 +175,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 					
 					if (world instanceof WorldServer)
 					{
-						sendChangedBiome(world, dPos.getX(), dPos.getZ(), chunkAt);
+						sendChangedBiome(world, dPos);
 					}
 					
 				}

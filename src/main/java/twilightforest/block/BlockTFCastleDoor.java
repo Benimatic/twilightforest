@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -32,9 +34,8 @@ import javax.annotation.Nullable;
 
 public class BlockTFCastleDoor extends Block
 {
-
-    private IIcon activeIcon;
-	private boolean isVanished;
+	public static final PropertyBool ACTIVE = PropertyBool.create("active");
+	private final boolean isVanished;
 
 	public BlockTFCastleDoor(boolean isVanished)
     {
@@ -44,33 +45,23 @@ public class BlockTFCastleDoor extends Block
         this.lightOpacity = isVanished ? 0 : 255;
 
         this.setCreativeTab(TFItems.creativeTab);
+		this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
     }
-    
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register)
-    {
-    	//TODO: this is the opposite of object oriented.
-    	
-    	if (this.isVanished) {
-    		this.blockIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door_vanished");
-    		this.activeIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door_vanished_active");
-    	} else {
-    		this.blockIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door");
-    		this.activeIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door_active");
-    	}
-    }
-    
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        int meta = world.getBlockMetadata(x, y, z);
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, ACTIVE);
+	}
 
-        if (isMetaActive(meta)) {
-        	return this.activeIcon;
-        } else {
-        	return this.blockIcon;
-        }
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(ACTIVE) ? 8 : 0;
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(ACTIVE, meta == 8);
+	}
     
     @Override
     public boolean isOpaqueCube(IBlockState state)
@@ -90,19 +81,17 @@ public class BlockTFCastleDoor extends Block
     }
 
     @Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int meta = par1World.getBlockMetadata(x, y, z);
-
-        if (!isMetaActive(meta))
+        if (!state.getValue(ACTIVE))
         {
-        	if (isBlockLocked(par1World, x, y, z))
+        	if (isBlockLocked(world, pos))
         	{
-        		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 1.0F, 0.3F);
+        		world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 1.0F, 0.3F);
         	}
         	else
         	{
-        		changeToActiveBlock(par1World, x, y, z, meta);
+        		changeToActiveBlock(world, pos);
         	}
             return true;
         }
@@ -112,52 +101,36 @@ public class BlockTFCastleDoor extends Block
         }
     }
 
-
-	/**
-	 * Change this block to be active
-	 */
-    public static void changeToActiveBlock(World par1World, int x, int y, int z, int meta) 
+    private static void changeToActiveBlock(World par1World, BlockPos pos)
 	{
-		changeToBlockMeta(par1World, x, y, z, meta | 8);
-		playVanishSound(par1World, x, y, z);
+		changeToBlockMeta(par1World, pos, true);
+		playVanishSound(par1World, pos);
 
-		Block blockAt = par1World.getBlock(x, y, z);
-		par1World.scheduleBlockUpdate(x, y, z, blockAt, 2 + par1World.rand.nextInt(5));
+		Block blockAt = par1World.getBlockState(pos).getBlock();
+		par1World.scheduleUpdate(pos, blockAt, 2 + par1World.rand.nextInt(5));
 	}
 
-
-	/**
-     * Change this block into an different device block
-     */
-	private static void changeToBlockMeta(World par1World, int x, int y, int z, int meta) 
+	private static void changeToBlockMeta(World par1World, BlockPos pos, boolean active)
 	{
-		Block blockAt = par1World.getBlock(x, y, z);
-		
-		if (blockAt == TFBlocks.castleDoor || blockAt == TFBlocks.castleDoorVanished)
+		IBlockState stateAt = par1World.getBlockState(pos);
+
+		if (stateAt.getBlock() == TFBlocks.castleDoor || stateAt.getBlock() == TFBlocks.castleDoorVanished)
 		{
-			par1World.setBlock(x, y, z, blockAt, meta, 3);
-			par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-			par1World.notifyBlocksOfNeighborChange(x, y, z, blockAt);
+			par1World.setBlockState(pos, stateAt.withProperty(ACTIVE, active), 3);
+			par1World.markBlockRangeForRenderUpdate(pos, pos);
+			par1World.notifyNeighborsRespectDebug(pos, stateAt.getBlock());
 		}
 	}
-    
-    
-	public static boolean isBlockLocked(World par1World, int x, int y, int z) {
+
+	private static boolean isBlockLocked(World par1World, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
-		
-		int meta = par1World.getBlockMetadata(x, y, z);
-		
 		if (!par1World.isRemote && par1World.provider instanceof WorldProviderTwilightForest) {
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)par1World.provider).getChunkProvider();
 
-			return chunkProvider.isStructureLocked(x, y, z, meta);
+			return chunkProvider.isStructureLocked(pos, meta);
 		} else {
 			return false;
 		}
-	}
-
-	public static boolean isMetaActive(int meta) {
-		return (meta & 8) != 0;
 	}
 
     @Override
@@ -167,53 +140,41 @@ public class BlockTFCastleDoor extends Block
     }
 
     @Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-    	return TwilightForestMod.proxy.getCastleMagicBlockRenderID();
-    }
-    
-    @Override
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
     	if (!par1World.isRemote)
     	{
     		//System.out.println("Update castle door");
     		
-    		int meta = par1World.getBlockMetadata(x, y, z);
-    		
     		if (this.isVanished) {
-    			if (isMetaActive(meta)) {
+    			if (state.getValue(ACTIVE)) {
                 	par1World.setBlock(x, y, z, TFBlocks.castleDoor, meta & 7, 3);
-                    par1World.notifyBlocksOfNeighborChange(x, y, z, this);
-                    playVanishSound(par1World, x, y, z);
+                    par1World.notifyNeighborsRespectDebug(pos, this);
+                    playVanishSound(par1World, pos);
 
                     //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
     			} else {
-                	changeToActiveBlock(par1World, x, y, z, meta);
+                	changeToActiveBlock(par1World, pos);
     			}
     		} else {
 
     			// if we have an active castle door, turn it into a vanished door block
-    			if (isMetaActive(meta))
+    			if (state.getValue(ACTIVE))
     			{
     				par1World.setBlock(x, y, z, getOtherBlock(this), meta & 7, 3);
-    				par1World.scheduleBlockUpdate(x, y, z, getOtherBlock(this), 80);
+    				par1World.scheduleUpdate(pos, getOtherBlock(this), 80);
 
-    				par1World.notifyBlocksOfNeighborChange(x, y, z, this);
-    				playReappearSound(par1World, x, y, z);
-    				par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+    				par1World.notifyNeighborsRespectDebug(pos, this);
+    				playReappearSound(par1World, pos);
+    				par1World.markBlockRangeForRenderUpdate(pos, pos);
     				
-            		this.sendAnnihilateBlockPacket(par1World, x, y, z);
+            		this.sendAnnihilateBlockPacket(par1World, pos);
 
 
     				// activate all adjacent inactive doors
-    				checkAndActivateCastleDoor(par1World, x - 1, y, z);
-    				checkAndActivateCastleDoor(par1World, x + 1, y, z);
-    				checkAndActivateCastleDoor(par1World, x, y + 1, z);
-    				checkAndActivateCastleDoor(par1World, x, y - 1, z);
-    				checkAndActivateCastleDoor(par1World, x, y, z + 1);
-    				checkAndActivateCastleDoor(par1World, x, y, z - 1);
-
+					for (EnumFacing e : EnumFacing.VALUES) {
+						checkAndActivateCastleDoor(par1World, pos.offset(e));
+					}
     			}
     			
     			// inactive solid door blocks we don't care about updates
@@ -231,12 +192,12 @@ public class BlockTFCastleDoor extends Block
 		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
 	}
 
-	private static void playVanishSound(World par1World, int x, int y, int z) {
+	private static void playVanishSound(World par1World, BlockPos pos) {
 		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.fizz", 0.125f, par1World.rand.nextFloat() * 0.25F + 1.75F);
 //		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.2F, par1World.rand.nextFloat() * 2F);
 	}
 
-	private static void playReappearSound(World par1World, int x, int y, int z) {
+	private static void playReappearSound(World par1World, BlockPos pos) {
 		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.fizz", 0.125f, par1World.rand.nextFloat() * 0.25F + 1.25F);
 //		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.2F, par1World.rand.nextFloat() * 2F);
 	}
@@ -248,13 +209,12 @@ public class BlockTFCastleDoor extends Block
     /**
      * If the targeted block is a vanishing block, activate it
      */
-    public static void checkAndActivateCastleDoor(World world, int x, int y, int z) {
-    	Block block = world.getBlock(x, y, z);
-    	int meta = world.getBlockMetadata(x, y, z);
+    public static void checkAndActivateCastleDoor(World world, BlockPos pos) {
+    	IBlockState state = world.getBlockState(pos);
     	
-    	if (block == TFBlocks.castleDoor && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
+    	if (state.getBlock() == TFBlocks.castleDoor && !state.getValue(ACTIVE) && !isBlockLocked(world, pos))
     	{
-    		changeToActiveBlock(world, x, y, z, meta);
+    		changeToActiveBlock(world, pos);
     	}
 //    	if (block == TFBlocks.castleDoorVanished && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
 //    	{
@@ -267,9 +227,7 @@ public class BlockTFCastleDoor extends Block
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
     {
-    	int meta = par1World.getBlockMetadata(x, y, z);
-
-    	if (isMetaActive(meta));
+    	if (state.getValue(ACTIVE));
     	{
     		for (int i = 0; i < 1; ++i) {
     			//this.sparkle(par1World, x, y, z, par5Random);
@@ -281,7 +239,7 @@ public class BlockTFCastleDoor extends Block
     /**
      * Shine bright like a DIAMOND! (or actually, sparkle like redstone ore)
      */
-    public void sparkle(World world, int x, int y, int z, Random rand)
+    public void sparkle(World world, BlockPos pos, Random rand)
     {
         double offset = 0.0625D;
 

@@ -2,13 +2,17 @@ package twilightforest.block;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -33,7 +37,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockTFCastleMagic extends Block {
 	
 	public static IIcon[] magicIcons = new IIcon[8];
-	public static int[] magicColors = new int[] { 0x00FFFF, 0xFFFF00, 0xFF00FF, 0x4B0082 };
+	public static final int[] magicColors = new int[] { 0x00FFFF, 0xFFFF00, 0xFF00FF, 0x4B0082 };
+
+	private static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PINK, EnumDyeColor.BLUE, EnumDyeColor.YELLOW, EnumDyeColor.PURPLE);
+	public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
 
     public BlockTFCastleMagic()
     {
@@ -42,15 +49,27 @@ public class BlockTFCastleMagic extends Block {
         this.setResistance(15F);
         this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-
+		this.setDefaultState(blockState.getBaseState().withProperty(COLOR, EnumDyeColor.PINK));
     }
 
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, COLOR);
+	}
 
 	@Override
+	public int getMetaFromState(IBlockState state) {
+		return VALID_COLORS.indexOf(state.getValue(COLOR));
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta));
+	}
+
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_brick");
 		for (int i = 0; i < 8; i++) {
 			this.magicIcons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_magic_" + i);
 		}
@@ -76,12 +95,6 @@ public class BlockTFCastleMagic extends Block {
 		return color;
 	}
 
-    @Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-    	return TwilightForestMod.proxy.getCastleMagicBlockRenderID();
-    }
-    
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
@@ -93,7 +106,7 @@ public class BlockTFCastleMagic extends Block {
     
     @Override
 	public int damageDropped(IBlockState state) {
-    	return meta;
+    	return getMetaFromState(state);
 	}
 
 }
