@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -20,6 +21,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -457,21 +459,21 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     }
     
 	@Override
-    protected String getAmbientSound()
+    protected SoundEvent getAmbientSound()
     {
-        return rand.nextInt(3) != 0 ? TwilightForestMod.ID + ":mob.naga.hiss" : TwilightForestMod.ID + ":mob.naga.rattle";
+        return rand.nextInt(3) != 0 ? TFSounds.NAGA_HISS : TFSounds.NAGA_RATTLE;
     }
  
 	@Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.naga.hurt";
+		return TFSounds.NAGA_HURT
     }
 
 	@Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return TwilightForestMod.ID + ":mob.naga.hurt";
+		return TFSounds.NAGA_HURT;
     }
 
 	/**

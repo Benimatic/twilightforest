@@ -72,14 +72,14 @@ public class TFTickHandler
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 0 && world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			if (world.provider instanceof WorldProviderTwilightForest && !player.capabilities.isCreativeMode) {
 				checkBiomeForProgression(player, world);
 			}
 		}
 		
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 100 == 0 && world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			if (world.provider instanceof WorldProviderTwilightForest) {
 				if (!player.capabilities.isCreativeMode) {
 					checkForLockedStructuresSendPacket(player, world);
@@ -122,7 +122,7 @@ public class TFTickHandler
 			
 			StructureBoundingBox fullSBB = chunkProvider.getFullSBBNear(px, pz, 100);
 			
-			TFFeature nearFeature = TFFeature.getFeatureForRegion(fullSBB.getCenterX() >> 4, fullSBB.getCenterZ() >> 4, world);
+			TFFeature nearFeature = TFFeature.getFeatureForRegion(fullSBB.getCenter().getX() >> 4, fullSBB.getCenter().getZ() >> 4, world);
 			
 			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAchievement(player)) {
 				sendAllClearPacket(world, player);
@@ -180,11 +180,7 @@ public class TFTickHandler
 					}
 	
 					// try to make a portal
-					int dx = MathHelper.floor_double(entityItem.posX);
-					int dy = MathHelper.floor_double(entityItem.posY);
-					int dz = MathHelper.floor_double(entityItem.posZ);
-	
-					if (((BlockTFPortal)TFBlocks.portal).tryToCreatePortal(world, dx, dy, dz)) {
+					if (((BlockTFPortal)TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem))) {
 						player.addStat(TFAchievementPage.twilightPortal);
 					}
 				}

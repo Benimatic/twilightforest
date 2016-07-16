@@ -13,10 +13,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 
@@ -45,9 +47,9 @@ public class EntityTFMosquitoSwarm extends EntityMob {
     }
 
     @Override
-	protected String getLivingSound()
+	protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.mosquito.mosquito";
+        return TFSounds.MOSQUITO;
     }
 
     @Override

@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -19,8 +18,10 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFlockToSameKind;
 import twilightforest.entity.ai.EntityAITFPanicOnFlockDeath;
@@ -74,25 +75,23 @@ public class EntityTFKobold extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
-    
-
 
     @Override
-	protected String getAmbientSound()
+	protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.kobold.kobold";
+        return TFSounds.KOBOLD_AMBIENT;
     }
 
     @Override
-	protected String getHurtSound()
+	protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.kobold.hurt";
+        return TFSounds.KOBOLD_HURT;
     }
 
     @Override
-	protected String getDeathSound()
+	protected SoundEvent getDeathSound()
     {
-        return TwilightForestMod.ID + ":mob.kobold.die";
+        return TFSounds.KOBOLD_DEATH;
     }
 
     @Override

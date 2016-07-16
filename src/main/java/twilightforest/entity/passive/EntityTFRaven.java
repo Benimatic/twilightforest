@@ -10,7 +10,9 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
@@ -47,21 +49,21 @@ public class EntityTFRaven extends EntityTFTinyBird {
     }
     
 	@Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.raven.caw";
+        return TFSounds.RAVEN_CAW;
     }
  
 	@Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.raven.squawk";
+        return TFSounds.RAVEN_SQUAWK;
     }
 
 	@Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return TwilightForestMod.ID + ":mob.raven.squawk";
+        return TFSounds.RAVEN_SQUAWK;
     }
 	
     @Override

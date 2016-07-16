@@ -15,9 +15,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
@@ -71,21 +73,21 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
     }
     
     @Override
-	protected String getAmbientSound()
+	protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.ice.noise";
+        return TFSounds.ICE_AMBIENT;
     }
     
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.ice.hurt";
+        return TFSounds.ICE_HURT;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return TwilightForestMod.ID + ":mob.ice.death";
+        return TFSounds.ICE_DEATH;
     }
 
 	@Override

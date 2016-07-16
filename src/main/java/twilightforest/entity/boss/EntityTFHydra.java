@@ -17,6 +17,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -24,6 +25,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkProviderTwilightForest;
@@ -1025,47 +1027,31 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     {
         // do nothing?
     }
-    
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     @Override
-	protected String getLivingSound()
+	protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.hydra.growl";
-    }    
-
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    @Override
-	protected String getHurtSound()
-    {
-        return TwilightForestMod.ID + ":mob.hydra.hurt";
+		return TFSounds.HYDRA_GROWL;
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     @Override
-	protected String getDeathSound()
+	protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.hydra.death";
+		return TFSounds.HYDRA_HURT;
     }
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
+    @Override
+	protected SoundEvent getDeathSound()
+    {
+		return TFSounds.HYDRA_DEATH;
+    }
+
     @Override
 	protected float getSoundVolume()
     {
         return 2F;
     }
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

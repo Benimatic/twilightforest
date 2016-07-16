@@ -14,10 +14,12 @@ import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import twilightforest.TFAchievementPage;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBirdFly;
 
@@ -131,31 +133,22 @@ public class EntityTFTinyBird extends EntityTFBird {
         this.dataWatcher.updateObject(DATA_BIRDTYPE, Byte.valueOf((byte)par1));
     }
 	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
 	@Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.tinybird.chirp";
+        return TFSounds.TINYBIRD_CHIRP;
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
 	@Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.tinybird.hurt";
+        return TFSounds.TINYBIRD_HURT;
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
 	@Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return TwilightForestMod.ID + ":mob.tinybird.hurt";
+        return TFSounds.TINYBIRD_HURT;
     }
 
 	/**
