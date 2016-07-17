@@ -15,11 +15,16 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -35,17 +40,21 @@ import javax.annotation.Nullable;
 
 
 public class EntityTFQuestRam extends EntityAnimal {
-	
-    private int randomTickDivider;
 
+    private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
+
+    private int randomTickDivider;
 
 	public EntityTFQuestRam(World par1World) {
 		super(par1World);
 		//this.texture = TwilightForestMod.MODEL_DIR + "questram.png";
 		this.setSize(1.25F, 2.9F);
 		this.randomTickDivider = 0;
+	}
 
-
+    @Override
+    protected void initEntityAI() {
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
@@ -55,7 +64,7 @@ public class EntityTFQuestRam extends EntityAnimal {
         this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
 //        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-	}
+    }
 
 	@Override
 	public EntityAnimal createChild(EntityAgeable entityanimal)
@@ -75,8 +84,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Integer.valueOf(0));
-        this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
+        this.dataManager.register(DATA_COLOR, 0);
+        this.dataManager.register(DATA_REWARDED, false);
     }
 
     @Override
@@ -85,10 +94,6 @@ public class EntityTFQuestRam extends EntityAnimal {
         return false;
     }
     
-    
-    /**
-     * main AI tick function, replaces updateEntityActionState
-     */
     @Override
 	protected void updateAITasks()
     {
@@ -158,11 +163,11 @@ public class EntityTFQuestRam extends EntityAnimal {
     {
         ItemStack currentItem = player.inventory.getCurrentItem();
 
-        if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(currentItem.getItemDamage()))
+        if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage())))
         {
 //            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Items.BUCKETMILK));
-        	this.setColorPresent(currentItem.getItemDamage());
-        	this.animateAddColor(currentItem.getItemDamage(), 50);
+        	this.setColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage()));
+        	this.animateAddColor(EnumDyeColor.byMetadata(currentItem.getItemDamage()), 50);
         	
             if (!player.capabilities.isCreativeMode)
             {
@@ -180,7 +185,7 @@ public class EntityTFQuestRam extends EntityAnimal {
         }
         else
         {
-            return super.processInteract(player);
+            return super.processInteract(player, hand, stack);
         }
     }
     
@@ -201,7 +206,7 @@ public class EntityTFQuestRam extends EntityAnimal {
      */
     public void checkAndAnimateColors() {
 		if (countColorsSet() > 15 && !getRewarded()) {
-			animateAddColor(this.rand.nextInt(16), 5);
+			animateAddColor(EnumDyeColor.byMetadata(this.rand.nextInt(16)), 5);
 		}
 	}
 
@@ -221,84 +226,69 @@ public class EntityTFQuestRam extends EntityAnimal {
         this.setRewarded(par1NBTTagCompound.getBoolean("Rewarded"));
     }
     
-    /**
-     * Returns an int representing which of the 16 colors this ram currently has
-     */
     public int getColorFlags()
     {
-        return this.dataWatcher.getWatchableObjectInt(16);
+        return this.dataManager.get(DATA_COLOR);
     }
 
-    /**
-     * Sets the color flags int
-     */
     public void setColorFlags(int par1)
     {
-    	this.dataWatcher.updateObject(16, Integer.valueOf(par1));
+    	this.dataManager.set(DATA_COLOR, par1);
     }
 
     /**
      * @param color
      * @return true if the specified color is marked present
      */
-    public boolean isColorPresent(int color) {
+    public boolean isColorPresent(EnumDyeColor color) {
     	int flags = this.getColorFlags();
     	
-    	return (flags & (int)Math.pow(2, color)) > 0;
+    	return (flags & (int)Math.pow(2, color.getMetadata())) > 0;
     }
     
-    public void setColorPresent(int color) {
+    public void setColorPresent(EnumDyeColor color) {
     	int flags = this.getColorFlags();
     	
 //    	System.out.println("Setting color flag for color " + color);
 //    	System.out.println("Color int is " + flags);
 //    	System.out.println("ORing that with " + Math.pow(2, color) + " which is " + Integer.toBinaryString((int) Math.pow(2, color)));
     	
-    	setColorFlags(flags | (int)Math.pow(2, color));
+    	setColorFlags(flags | (int)Math.pow(2, color.getMetadata()));
     }
     
-    /**
-     * Have we paid out the reward yet?
-     */
     public boolean getRewarded()
     {
-        return this.dataWatcher.getWatchableObjectByte(17) != (byte)0;
+        return this.dataManager.get(DATA_REWARDED);
     }
 
-    /**
-     * Sets whether we have paid the quest reward yet
-     */
     public void setRewarded(boolean par1)
     {
-    	this.dataWatcher.updateObject(17, par1 ? Byte.valueOf((byte)1) : Byte.valueOf((byte)0));
+    	this.dataManager.set(DATA_REWARDED, par1);
     }
 
-
-    
     /**
      * Do a little animation for when we successfully add a new color
      * @param color
      */
-    public void animateAddColor(int color, int iterations) {
-    	//EntitySheep.fleeceColorTable[i][0]
-    	
+    public void animateAddColor(EnumDyeColor color, int iterations) {
+    	int colorVal = color.getMapColor().colorValue;
+        int red = colorVal >>> 16 & 0xFF;
+        int green = colorVal >>> 8 & 0xFF;
+        int blue = colorVal & 0xFF;
+
     	for (int i = 0; i < iterations; i++) {
-          this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, EntitySheep.fleeceColorTable[color][0], EntitySheep.fleeceColorTable[color][1], EntitySheep.fleeceColorTable[color][2]);
+          this.worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
     	}
     	
     	//TODO: it would be nice to play a custom sound
     	playLivingSound();
     }
     
-    /**
-     * 
-     * @return how many colors are present currently
-     */
     public int countColorsSet() {
     	int count = 0;
     	
-    	for (int i = 0; i < 16; i++) {
-    		if (isColorPresent(i)) {
+    	for (EnumDyeColor color : EnumDyeColor.values()) {
+    		if (isColorPresent(color)) {
     			count++;
     		}
     	}

@@ -14,13 +14,19 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 
 
 public class EntityTFBunny extends EntityCreature implements IAnimals {
+
+    private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
 
 	public EntityTFBunny(World par1World) {
 		super(par1World);
@@ -31,21 +37,22 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
 		
-		// squirrel AI
+        // random color
+        setBunnyType(rand.nextInt(4));
+	}
+
+    @Override
+    protected void initEntityAI() {
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 2.0F));
         this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
-        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityPlayer.class, 2.0F, 0.8F, 1.33F));
+        this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.33F));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8F));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-
-        // random color
-        setBunnyType(rand.nextInt(4));
-
-	}
+    }
 
 	@Override
     protected void applyEntityAttributes()
@@ -59,7 +66,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
+        this.dataManager.register(DATA_TYPE, (byte) 0);
     }
 
 //    /**
@@ -103,12 +110,12 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
     public int getBunnyType()
     {
-        return this.dataWatcher.getWatchableObjectByte(16);
+        return this.dataManager.get(DATA_TYPE);
     }
 
     public void setBunnyType(int par1)
     {
-        this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
+        this.dataManager.set(DATA_TYPE, (byte) par1);
     }
 	
 	@Override
@@ -122,15 +129,11 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
         return false;
     }
 	
-    /**
-     * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
-     * Args: x, y, z
-     */
 	@Override
-    public float getBlockPathWeight(int par1, int par2, int par3)
+    public float getBlockPathWeight(BlockPos pos)
     {
     	// avoid leaves & wood
-		Material underMaterial = this.worldObj.getBlock(par1, par2 - 1, par3).getMaterial();
+		Material underMaterial = this.worldObj.getBlockState(pos.down()).getMaterial();
 		if (underMaterial == Material.LEAVES) {
 			return -1.0F;
 		}
@@ -141,7 +144,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
+		return this.worldObj.getLightBrightness(pos) - 0.5F;
     }
 	
 	@Override

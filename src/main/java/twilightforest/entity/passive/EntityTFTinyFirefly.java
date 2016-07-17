@@ -7,8 +7,8 @@ import net.minecraft.world.World;
 
 public class EntityTFTinyFirefly extends EntityWeatherEffect {
 
-	int lifeTime;
-	int halfLife;
+	private int lifeTime;
+	private int halfLife;
 	
 	public float glowSize;
 	

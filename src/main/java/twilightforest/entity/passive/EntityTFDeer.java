@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -53,16 +54,13 @@ public class EntityTFDeer extends EntityCow
 
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
     	return null;
     }
 
     @Override
-	protected void playStepSound(BlockPos pos, Block par4)
-    {
-        //this.worldObj.playSoundAtEntity(this, "mob.cow.step", 0.15F, 1.0F);
-    }
+	protected void playStepSound(BlockPos pos, Block par4) {}
     
     /**
      * Not milkable
@@ -84,6 +82,7 @@ public class EntityTFDeer extends EntityCow
     @Override
     protected void dropFewItems(boolean par1, int par2)
     {
+        // todo 1.9 this is hidden by loot tables
         int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
         int var4;
 

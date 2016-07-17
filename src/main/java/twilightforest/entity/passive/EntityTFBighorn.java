@@ -31,12 +31,9 @@ public class EntityTFBighorn extends EntitySheep
         this.setPosition(x, y, z);
     }
 
-    /**
-     * 50% brown, 50% any other color
-     */
     private static EnumDyeColor getRandomFleeceColor(Random random)
     {
-    	if (random.nextInt(2) == 0)
+    	if (random.nextBoolean())
     	{
     		return EnumDyeColor.BROWN;
     	}
@@ -46,10 +43,6 @@ public class EntityTFBighorn extends EntitySheep
     	}
     }
     
-
-    /**
-     * Entity init, set our fleece color
-     */
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {

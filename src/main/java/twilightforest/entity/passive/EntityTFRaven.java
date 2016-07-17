@@ -28,8 +28,10 @@ public class EntityTFRaven extends EntityTFTinyBird {
 		
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
-		
-		// bird AI
+ 	}
+
+    @Override
+    protected void initEntityAI() {
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
@@ -39,8 +41,8 @@ public class EntityTFRaven extends EntityTFTinyBird {
         this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
- 	}
-	
+    }
+
 	@Override
     protected void applyEntityAttributes()
     {

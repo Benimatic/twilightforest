@@ -45,19 +45,21 @@ public class EntityTFTinyBird extends EntityTFBird {
 		// maybe this will help them move cuter?
 		//this.stepHeight = 2;
 		
-		// bird AI
+        // random color
+        setBirdType(rand.nextInt(4));
+        
+        setIsBirdLanded(true);
+	}
+
+    @Override
+    protected void initEntityAI() {
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(0, new EntityAITFBirdFly(this));
         this.tasks.addTask(1, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
         this.tasks.addTask(4, new EntityAILookIdle(this));
-        
-        // random color
-        setBirdType(rand.nextInt(4));
-        
-        setIsBirdLanded(true);
-	}
+    }
 	
 	@Override
     protected void entityInit()
