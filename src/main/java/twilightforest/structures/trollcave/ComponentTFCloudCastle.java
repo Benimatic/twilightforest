@@ -96,7 +96,7 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 				
 				EntityTFGiantMiner miner = new EntityTFGiantMiner(world);
 				miner.setPosition(bx, by, bz);
-				miner.makeNonDespawning();
+				miner.enablePersistence();
 				
 				world.spawnEntityInWorld(miner);
 			}
@@ -111,7 +111,7 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 				
 				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(world);
 				warrior.setPosition(bx, by, bz);
-				warrior.makeNonDespawning();
+				warrior.enablePersistence();
 				
 				world.spawnEntityInWorld(warrior);
 			}

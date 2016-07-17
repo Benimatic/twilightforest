@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -29,61 +30,36 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.item.TFItems;
 
-
-
-public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
+//todo 1.9 made this extend skeleton instead of mob, verify
+public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAttackMob
 {
 
 	public EntityTFSkeletonDruid(World world)
 	{
 		super(world);
 		//texture = TwilightForestMod.MODEL_DIR + "skeletondruid.png";
-
-		//this.moveSpeed = 0.25F;
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIRestrictSun(this));
-		this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 60, 10.0F));
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
-		
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
 
 	}
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIRestrictSun(this));
+        this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
+        this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 60, 10.0F));
+        this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+    }
 
 	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-    }
-
-    @Override
-    protected String getLivingSound()
-    {
-        return "mob.skeleton.say";
-    }
-
-    @Override
-    protected String getHurtSound()
-    {
-        return "mob.skeleton.hurt";
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return "mob.skeleton.death";
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, Block par4)
-    {
-        this.playSound("mob.skeleton.step", 0.15F, 1.0F);
     }
 
     @Override
@@ -95,6 +71,7 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
     @Override
     protected void dropFewItems(boolean par1, int lootingModifier)
     {
+        // todo 1.9 this won't get called due to superclass's loot table, remove when loot table for druid is done
     	int numberOfItemsToDrop;
     	int i;
 
@@ -142,27 +119,31 @@ public class EntityTFSkeletonDruid extends EntityMob implements IRangedAttackMob
 		this.worldObj.spawnEntityInWorld(natureBolt);
 
 	}
-	
+
+    // [VanillaCopy] of super. Edits noted.
     @Override
     protected boolean isValidLightLevel()
     {
-    	boolean valid = false;
-        int dx = MathHelper.floor_double(this.posX);
-        int dy = MathHelper.floor_double(this.getEntityBoundingBox().minY);
-        int dz = MathHelper.floor_double(this.posZ);
-		BlockPos pos = new BlockPos(dx, dy, dz);
+        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, pos) > this.rand.nextInt(32))
+        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
         {
-        	valid = false;
+            return false;
         }
         else
         {
-            int light = this.worldObj.getLight(pos);
+            int i = this.worldObj.getLightFromNeighbors(blockpos);
 
-             valid = light <= this.rand.nextInt(12);
+            // TF - no thunder check
+            /*if (this.worldObj.isThundering())
+            {
+                int j = this.worldObj.getSkylightSubtracted();
+                this.worldObj.setSkylightSubtracted(10);
+                i = this.worldObj.getLightFromNeighbors(blockpos);
+                this.worldObj.setSkylightSubtracted(j);
+            }*/
 
+            return i <= this.rand.nextInt(12); // TF - rand(8) -> rand(12)
         }
-    	return valid;
     }
 }

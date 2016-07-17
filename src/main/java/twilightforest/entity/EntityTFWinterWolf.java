@@ -28,16 +28,17 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 	public EntityTFWinterWolf(World world) {
 		super(world);
         this.setSize(1.4F, 1.9F);
-        
-        this.tasks.taskEntries.clear();
-        this.tasks.addTask(0, new EntityAISwimming(this));
+	}
+
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAITFBreathAttack(this, 1.0F, 5F, 30, 0.1F));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
- 
-        this.targetTasks.taskEntries.clear();
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
+		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
+
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 	}
 
 	@Override
@@ -45,6 +46,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
     }
 
 	@Override
@@ -54,32 +56,6 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
         this.dataManager.register(BREATH_FLAG, false);
     }
 
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 6;
-    }
-    
-    @Override
-	public boolean attackEntityAsMob(Entity par1Entity)
-    {
-    	int damage = this.getAttackStrength(par1Entity);
-        if (par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     @Override
 	public void onLivingUpdate()
     {
@@ -152,11 +128,8 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	protected boolean isValidLightLevel() {
-		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSnow) {
-			return true;
-		} else {
-			return super.isValidLightLevel();
-		}
+		return worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSnow
+				|| super.isValidLightLevel();
 	}
 	
 	@Override

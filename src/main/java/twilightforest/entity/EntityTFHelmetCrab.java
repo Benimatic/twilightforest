@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -29,8 +30,7 @@ import java.util.UUID;
 public class EntityTFHelmetCrab extends EntityMob {
 
     private static final AttributeModifier ARMOR_BOOST =
-            new AttributeModifier(UUID.fromString("97ec11e4-af6a-4e09-801f-dfbfa01346a8"), "HelmetCrab permanent armor boost", 6, 0)
-                    .setSaved(true);
+            new AttributeModifier(UUID.fromString("97ec11e4-af6a-4e09-801f-dfbfa01346a8"), "HelmetCrab permanent armor boost", 6, 0);
 
     public EntityTFHelmetCrab(World world)
     {
@@ -73,19 +73,13 @@ public class EntityTFHelmetCrab extends EntityMob {
     }
 
     @Override
-	protected String getAmbientSound()
-    {
-        return null;
-    }
-
-    @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return "mob.spider.say";
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return "mob.spider.death";
     }

@@ -2,6 +2,8 @@ package twilightforest.entity;
 
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -183,23 +185,21 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         for (int dx = minX; dx <= maxX; ++dx) {
             for (int dy = minY; dy <= maxY; ++dy) {
                 for (int dz = minZ; dz <= maxZ; ++dz) {
-                    Block block = this.worldObj.getBlock(dx, dy, dz);
-                    int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
-                    
-                    if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && block.getBlockHardness(worldObj, dx, dy, dz) >= 0) {
+					BlockPos pos = new BlockPos(dx, dy, dz);
+					IBlockState state = worldObj.getBlockState(pos);
+                    Block block = state.getBlock()
+
+                    if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(worldObj, pos) >= 0) {
 
                     	if (entity != null && entity instanceof EntityPlayer) {
                     		EntityPlayer player = (EntityPlayer)entity;
 
-                    		if (block.canHarvestBlock(player, currentMeta)){
-                    			block.harvestBlock(this.worldObj, player, dx, dy, dz, currentMeta);
+                    		if (block.canHarvestBlock(worldObj, pos, player)){
+                    			block.harvestBlock(this.worldObj, player, pos, state, worldObj.getTileEntity(pos), player.getHeldItemMainhand());
                     		}
                     	}
 
-                    	this.worldObj.setBlockToAir(dx, dy, dz);
-
-                    	// here, this effect will have to do
-            			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(block) + (currentMeta << 12));
+                    	worldObj.destroyBlock(pos, false);
             			
             			this.blocksSmashed++;
             			

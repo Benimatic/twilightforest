@@ -29,13 +29,16 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 
         setSize(.7F, 1.9F);
         this.stepHeight = 2.1f;
-        
+	}
+
+    @Override
+    protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
-	}
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+    }
 
 	@Override
     protected void applyEntityAttributes()

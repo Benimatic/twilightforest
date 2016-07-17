@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -14,30 +13,37 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.item.TFItems;
 
 
 public class EntityTFBoggard extends EntityMob {
-	
-
 	private boolean shy;
 
     public EntityTFBoggard(World world)
     {
         super(world);
         //texture = "/mob/pigzombie.png";
-        //moveSpeed = 0.28F;
         setSize(0.8F, 1.1F);
-        //attackStrength = 3;
 
         shy = true;
-        
+    }
+    
+    public EntityTFBoggard(World world, double x, double y, double z)
+    {
+        this(world);
+        this.setPosition(x, y, z);
+    }
+
+    @Override
+    protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
 //        this.tasks.addTask(1, new EntityAITFRedcapShy(this, this.moveSpeed));
         this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
@@ -47,13 +53,6 @@ public class EntityTFBoggard extends EntityMob {
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, false, false, null));
-
-    }
-    
-    public EntityTFBoggard(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
     }
 
 	@Override
@@ -66,21 +65,21 @@ public class EntityTFBoggard extends EntityMob {
     }
 
     @Override
-	protected String getAmbientSound()
+	protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.redcap.redcap";
+        return TFSounds.REDCAP_AMBIENT;
     }
 
     @Override
-	protected String getHurtSound()
+	protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.redcap.redcaphurt";
+        return TFSounds.REDCAP_HURT;
     }
 
     @Override
-	protected String getDeathSound()
+	protected SoundEvent getDeathSound()
     {
-        return TwilightForestMod.ID + ":mob.redcap.redcapdie";
+        return TFSounds.REDCAP_AMBIENT;
     }
 
     @Override

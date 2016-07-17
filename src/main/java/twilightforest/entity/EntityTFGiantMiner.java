@@ -23,20 +23,6 @@ public class EntityTFGiantMiner extends EntityMob {
 	public EntityTFGiantMiner(World par1World) {
 		super(par1World);
 		this.setSize(this.width * 4.0F, this.height * 4.0F);
-
-
-		this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false) {
-            @Override
-            protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-                return this.attacker.width * this.attacker.height;
-            }
-        });
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
 		
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
 
@@ -45,6 +31,22 @@ public class EntityTFGiantMiner extends EntityMob {
             setDropChance(slot, 0);
         }
 	}
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false) {
+            @Override
+            protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+                return this.attacker.width * this.attacker.height;
+            }
+        });
+        this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+    }
 
     @Override
 	protected void applyEntityAttributes() {
@@ -70,9 +72,4 @@ public class EntityTFGiantMiner extends EntityMob {
             this.dropItem(item, 1);
         }
     }
-    
-    public void makeNonDespawning() {
-    	this.enablePersistence();
-    }
-
 }

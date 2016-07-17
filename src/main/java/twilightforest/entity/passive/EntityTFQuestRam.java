@@ -18,6 +18,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -43,9 +44,9 @@ public class EntityTFQuestRam extends EntityAnimal {
 		//this.texture = TwilightForestMod.MODEL_DIR + "questram.png";
 		this.setSize(1.25F, 2.9F);
 		this.randomTickDivider = 0;
-		
 
-        this.getNavigator().setAvoidsWater(true);
+
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
         this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL), false));

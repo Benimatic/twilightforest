@@ -16,17 +16,17 @@ public class EntityTFHarbingerCube extends EntityMob {
 
 	public EntityTFHarbingerCube(World world) {
 		super(world);
-		
         this.setSize(1.9F, 2.4F);
-        
-		this.tasks.addTask(1, new EntityAISwimming(this));
+	}
 
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(2, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
-
 	}
 
 	@Override

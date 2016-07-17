@@ -28,30 +28,21 @@ public class EntityTFHedgeSpider extends EntitySpider {
         this(world);
         this.setPosition(x, y, z);
     }
-    
-    @Override
-	protected Entity findPlayerToAttack()
-    {
-    	// kill at all times!
-    	double var2 = 16.0D;
-    	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
-    }
 
 	@Override
-    protected boolean isValidLightLevel()
-    {
+	protected void initEntityAI() {
+		super.initEntityAI();
+		// todo 1.9 need to replace player target task with the normal one that doesnt turn docile in light
+	}
+
+	@Override
+    protected boolean isValidLightLevel() {
 		int chunkX = MathHelper.floor_double(posX) >> 4;
 		int chunkZ = MathHelper.floor_double(posZ) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) 
-		{
-			return true;
-		}
-		else
-		{
-			return super.isValidLightLevel();
-		}
-    }
+		return TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze
+				|| super.isValidLightLevel();
+	}
 	
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {

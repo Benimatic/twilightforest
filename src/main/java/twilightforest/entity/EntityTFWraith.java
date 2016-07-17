@@ -195,7 +195,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         if(super.attackEntityFrom(damagesource, i))
         {
             Entity entity = damagesource.getEntity();
-            if(riddenByEntity == entity || ridingEntity == entity)
+            if(getRidingEntity() == entity || getPassengers().contains(entity))
             {
                 return true;
             }
@@ -292,32 +292,28 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 		}
 	}
 	
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
+    // [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
     protected boolean isValidLightLevel()
     {
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
+        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32))
+        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
         {
             return false;
         }
         else
         {
-            int l = this.worldObj.getBlockLightValue(i, j, k);
+            int i = this.worldObj.getLightFromNeighbors(blockpos);
 
             if (this.worldObj.isThundering())
             {
-                int i1 = this.worldObj.skylightSubtracted;
-                this.worldObj.skylightSubtracted = 10;
-                l = this.worldObj.getBlockLightValue(i, j, k);
-                this.worldObj.skylightSubtracted = i1;
+                int j = this.worldObj.getSkylightSubtracted();
+                this.worldObj.setSkylightSubtracted(10);
+                i = this.worldObj.getLightFromNeighbors(blockpos);
+                this.worldObj.setSkylightSubtracted(j);
             }
 
-            return l <= this.rand.nextInt(8);
+            return i <= this.rand.nextInt(8);
         }
     }
 

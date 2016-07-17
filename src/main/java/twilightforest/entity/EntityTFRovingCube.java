@@ -25,10 +25,12 @@ public class EntityTFRovingCube  extends EntityMob {
 	public EntityTFRovingCube(World world) {
 		super(world);
         setSize(1.2F, 2.1F);
-        
-        this.tasks.addTask(0, new EntityAICubeMoveToRedstoneSymbols(this, 1.0D));
-        this.tasks.addTask(1, new EntityAICubeCenterOnSymbol(this, 1.0D));
+	}
 
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAICubeMoveToRedstoneSymbols(this, 1.0D));
+		this.tasks.addTask(1, new EntityAICubeCenterOnSymbol(this, 1.0D));
 	}
 
 	@Override

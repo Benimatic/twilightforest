@@ -25,9 +25,6 @@ public class EntityTFMazeSlime extends EntitySlime
         this.setSlimeSize(1 << (1 + this.rand.nextInt(2)));
 	}
 
-	/**
-	 * Make more of meeee
-	 */
     @Override
 	protected EntitySlime createInstance()
     {
@@ -49,9 +46,6 @@ public class EntityTFMazeSlime extends EntitySlime
         		&& !this.worldObj.containsAnyLiquid(getEntityBoundingBox()) && this.isValidLightLevel();
     }
     
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {

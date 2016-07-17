@@ -18,7 +18,9 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -37,16 +39,17 @@ public class EntityTFTowerGolem extends EntityMob
         //this.texture = TwilightForestMod.MODEL_DIR + "carminitegolem.png";
 
         this.setSize(1.4F, 2.9F);
-        //this.moveSpeed = 0.25F;
+    }
 
-        
-        this.getNavigator().setAvoidsWater(true);
+    @Override
+    protected void initEntityAI() {
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
     }
 
 	@Override
@@ -91,19 +94,13 @@ public class EntityTFTowerGolem extends EntityMob
     }
 
     @Override
-    protected String getLivingSound()
-    {
-        return "none";
-    }
-
-    @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return "mob.irongolem.hit";
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return "mob.irongolem.death";
     }
@@ -135,19 +132,20 @@ public class EntityTFTowerGolem extends EntityMob
             --this.attackTimer;
         }
 
+        // [VanillaCopy] last half of EntityIronGolem.onLivingUpdate
         if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D && this.rand.nextInt(5) == 0)
         {
-            int var1 = MathHelper.floor_double(this.posX);
-            int var2 = MathHelper.floor_double(this.posY - 0.20000000298023224D - this.getYOffset());
-            int var3 = MathHelper.floor_double(this.posZ);
-            BlockPos pos = new BlockPos(var1, var2, var3);
-            IBlockState state = worldObj.getBlockState(pos);
+            int i = MathHelper.floor_double(this.posX);
+            int j = MathHelper.floor_double(this.posY - 0.20000000298023224D);
+            int k = MathHelper.floor_double(this.posZ);
+            IBlockState iblockstate = this.worldObj.getBlockState(new BlockPos(i, j, k));
 
-            if (state.getMaterial() != Material.AIR)
+            if (iblockstate.getMaterial() != Material.AIR)
             {
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.boundingBox.minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D, Block.getStateId(state));
+                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D, new int[] {Block.getStateId(iblockstate)});
             }
         }
+        // End copy
         
         // redstone sparkles?
         if (this.rand.nextBoolean())

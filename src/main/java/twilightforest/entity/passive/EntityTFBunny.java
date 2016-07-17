@@ -14,6 +14,7 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -31,7 +32,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		this.stepHeight = 1;
 		
 		// squirrel AI
-        this.getNavigator().setAvoidsWater(true);
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 2.0F));
         this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));

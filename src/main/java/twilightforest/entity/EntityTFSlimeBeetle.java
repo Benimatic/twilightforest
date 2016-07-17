@@ -20,6 +20,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -35,19 +36,21 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
 		//texture = TwilightForestMod.MODEL_DIR + "slimebeetle.png";
 		//moveSpeed = 0.23F;
 		setSize(0.9F, 1.75F);
-
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		//this.tasks.addTask(2, new EntityAITFFireBreath(this, this.moveSpeed, 5F, 30, 0.1F));
-        this.tasks.addTask(2, new EntityAIAvoidEntity(this, EntityPlayer.class, 3.0F, 1.25F, 2.0F));
-		this.tasks.addTask(3, new EntityAIAttackRanged(this, 1, 30, 10));   //EntityAITFMagicAttack(this, 1.0F, EntityAITFMagicAttack.SLIME, 30));
-		//this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
-		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(8, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
-
 	}
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        //this.tasks.addTask(2, new EntityAITFFireBreath(this, this.moveSpeed, 5F, 30, 0.1F));
+        this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 3.0F, 1.25F, 2.0F));
+        this.tasks.addTask(3, new EntityAIAttackRanged(this, 1, 30, 10));
+        //this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
+        this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+    }
 
 	@Override
     protected void applyEntityAttributes()
@@ -55,29 +58,27 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
     }
 
     @Override
-	protected String getLivingSound()
+	protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-	protected String getHurtSound()
+	protected SoundEvent getHurtSound()
     {
         return "mob.spider.say";
     }
 
     @Override
-	protected String getDeathSound()
+	protected SoundEvent getDeathSound()
     {
         return "mob.spider.death";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     @Override
 	protected void playStepSound(BlockPos pos, Block var4)
     {
@@ -109,11 +110,6 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
     	}
     }
 
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 4;
-    }
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public float getShadowSize() 
@@ -141,7 +137,7 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
         EntityThrowable projectile = new EntityTFSlimeProjectile(this.worldObj, this);
-        this.worldObj.playSoundAtEntity(this.entityHost, "mob.slime.small", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.worldObj.playSoundAtEntity(this, "mob.slime.small", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         double tx = target.posX - this.posX;
         double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
         double tz = target.posZ - this.posZ;

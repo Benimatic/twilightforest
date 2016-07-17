@@ -28,22 +28,17 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	public EntityTFDeathTome(World par1World) {
 		super(par1World);
         //texture = "/item/book.png";
-
-        //this.attackStrength = 4;
-        //this.moveSpeed = 0.25F;
-        
-        this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1, 60, 10));
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 	}
 
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 4;
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(4, new EntityAIAttackRanged(this, 1, 60, 10));
+        this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
     }
 
 	@Override
@@ -52,6 +47,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
     }
 
 	@Override

@@ -157,6 +157,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public float getShadowSize()
     {
         return 0.0F;

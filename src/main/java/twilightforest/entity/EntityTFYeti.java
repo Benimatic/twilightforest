@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -38,10 +39,12 @@ public class EntityTFYeti extends EntityMob
     {
         super(par1World);
         this.setSize(1.4F, 2.4F);
+    }
 
-        
-        // todo 1.9 this.getNavigator().setAvoidsWater(true);
-		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0F));
+    @Override
+    protected void initEntityAI() {
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
+        this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0F));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(3, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

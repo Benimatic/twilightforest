@@ -11,7 +11,6 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 
 	public EntityTFSlimeProjectile(World par1World) {
 		super(par1World);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EntityTFSlimeProjectile(World par1World, EntityLivingBase par2EntityLiving) {
@@ -21,7 +20,6 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
         makeTrail();
 	}
 
@@ -43,11 +41,8 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
-		
         setBeenAttacked();
-        
 		pop();
-
         return true;
      }
 
@@ -67,7 +62,7 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 
 	}
 
-	protected void pop() {
+	private void pop() {
 		for (int i = 0; i < 8; ++i)
 		{
 			this.worldObj.spawnParticle(EnumParticleTypes.SLIME, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);

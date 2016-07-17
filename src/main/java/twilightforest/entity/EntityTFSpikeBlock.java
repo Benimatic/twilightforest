@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 public class EntityTFSpikeBlock extends Entity {
 	
-	EntityTFBlockGoblin goblin;
+	private EntityTFBlockGoblin goblin;
 	
 	public EntityTFSpikeBlock(World par1World) {
 		super(par1World);
@@ -15,22 +15,15 @@ public class EntityTFSpikeBlock extends Entity {
 	}
 
 	public EntityTFSpikeBlock(EntityTFBlockGoblin goblin) {
-		this(goblin.func_82194_d());
+		this(goblin.getWorld());
 		this.goblin = goblin;
 	}
 
-	/**
-	 * Don't take damage from attacks
-	 */
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		return false;
 	}
 
-	
-	/**
-	 * Skip most of the living update things
-	 */
     @Override
     public void onUpdate() {
     	super.onUpdate();
@@ -51,18 +44,12 @@ public class EntityTFSpikeBlock extends Entity {
 
     }
     
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
 	public boolean canBeCollidedWith()
     {
         return false;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
     @Override
 	public boolean canBePushed()
     {

@@ -24,21 +24,13 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-    }
-
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 6;
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
     }
 
     @Override
     public boolean attackEntityAsMob(Entity par1Entity)
     {
-    	int damage = this.getAttackStrength(par1Entity);
-        if (par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage))
+        if (super.attackEntityAsMob(par1Entity))
         {
             float myBrightness = this.getBrightness(1.0F);
             
@@ -74,9 +66,6 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
         }
     }
     
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
     @Override
     protected float getSoundPitch()
     {

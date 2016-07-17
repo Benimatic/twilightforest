@@ -29,7 +29,11 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 
 	public EntityTFAdherent(World world) {
 		super(world);
+		this.setSize(0.8F, 2.2F);
+	}
 
+	@Override
+	protected void initEntityAI() {
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIRestrictSun(this));
 		this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
@@ -39,8 +43,6 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
-		
-		this.setSize(0.8F, 2.2F);
 	}
 	
 	@Override

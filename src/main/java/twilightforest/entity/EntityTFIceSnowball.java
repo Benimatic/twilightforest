@@ -22,7 +22,6 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
         makeTrail();
 	}
 
@@ -44,11 +43,8 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
-		
         setBeenAttacked();
-        
 		pop();
-
         return true;
      }
 

@@ -22,6 +22,7 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +36,7 @@ public class EntityTFLoyalZombie extends EntityTameable {
         //this.texture = "/mob/zombie.png";
         //this.moveSpeed = 0.3F;
         this.setSize(0.6F, 1.8F);
-        this.getNavigator().setAvoidsWater(true);
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));

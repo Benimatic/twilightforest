@@ -2,6 +2,8 @@ package twilightforest.entity;
 
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -9,6 +11,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFCubeOfAnnihilation;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -26,14 +29,12 @@ import twilightforest.network.PacketAnnihilateBlock;
 
 public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 	
-	boolean hasHitObstacle = false;
+	private boolean hasHitObstacle = false;
 
 	public EntityTFCubeOfAnnihilation(World par1World) {
 		super(par1World);
-		
 		this.setSize(1.1F, 1F);
 		this.isImmuneToFire = true;
-
 	}
 
 	
@@ -43,10 +44,8 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 		this.isImmuneToFire = true;
 	}
 
-
 	public EntityTFCubeOfAnnihilation(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-		
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
 	}
@@ -79,7 +78,6 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
 	}
 	
-	
 	/**
      * Do our ball and chain effect on blocks we hit.  Harvest/destroy/whatevs
 	 * @param entity 
@@ -97,16 +95,16 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
         for (int dx = minX; dx <= maxX; ++dx) {
             for (int dy = minY; dy <= maxY; ++dy) {
                 for (int dz = minZ; dz <= maxZ; ++dz) {
-                	Block block = this.worldObj.getBlock(dx, dy, dz);
-                	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
+					BlockPos pos = new BlockPos(dx, dy, dz);
+					IBlockState state = worldObj.getBlockState(pos);
 
-                	if (block != Blocks.AIR) {
-                		if (canAnnihilate(dx, dy, dz, block, currentMeta)) {
-                			this.worldObj.setBlockToAir(dx, dy, dz);
+                	if (state.getBlock() != Blocks.AIR) {
+                		if (canAnnihilate(pos, state)) {
+                			this.worldObj.setBlockToAir(pos);
 
                     		this.worldObj.playSoundAtEntity(this, "random.fizz", 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
                     		
-                    		this.sendAnnihilateBlockPacket(worldObj, dx, dy, dz);
+                    		this.sendAnnihilateBlockPacket(worldObj, pos);
 
                 		} else {
                 			// return if we hit an obstacle
@@ -122,13 +120,14 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     }
 
 
-	private boolean canAnnihilate(int dx, int dy, int dz, Block block, int meta) {
+	private boolean canAnnihilate(BlockPos pos, IBlockState state) {
 		// whitelist many castle blocks
-		if (block == TFBlocks.deadrock || block == TFBlocks.castleBlock || (block == TFBlocks.castleMagic && meta != 3) || block == TFBlocks.forceField || block == TFBlocks.thorns) {
+		Block block = state.getBlock();
+		if (block == TFBlocks.deadrock || block == TFBlocks.castleBlock || (block == TFBlocks.castleMagic && state.getValue(BlockTFCastleMagic.COLOR) != EnumDyeColor.PURPLE) || block == TFBlocks.forceField || block == TFBlocks.thorns) {
 			return true;
 		}
 		
-		return block.getExplosionResistance(this) < 8F && block.getBlockHardness(worldObj, dx, dy, dz) >= 0;
+		return block.getExplosionResistance(this) < 8F && state.getBlockHardness(worldObj, pos) >= 0;
 	}
 
     
@@ -137,7 +136,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 		// send packet
 		IMessage message = new PacketAnnihilateBlock(pos);
 
-		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 64);
+		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
 		
 		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
 	}
@@ -156,7 +155,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
     		if (this.isReturning()) {
     			// if we are returning, and are near enough to the player, then we are done
-    			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+    			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 
     			if (list.contains(this.getThrower()) && !this.worldObj.isRemote) {
     				//System.out.println("we have returned");

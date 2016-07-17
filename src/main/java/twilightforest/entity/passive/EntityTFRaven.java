@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
@@ -29,7 +30,7 @@ public class EntityTFRaven extends EntityTFTinyBird {
 		this.stepHeight = 1;
 		
 		// bird AI
-        this.getNavigator().setAvoidsWater(true);
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
         this.tasks.addTask(2, new EntityAITempt(this, 0.85F, Items.WHEAT_SEEDS, true));

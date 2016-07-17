@@ -57,22 +57,13 @@ public class EntityTFProtectionBox extends Entity {
     }
     
 	@Override
-	protected void entityInit() {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void entityInit() {}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void readEntityFromNBT(NBTTagCompound var1) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void writeEntityToNBT(NBTTagCompound var1) {}
 
     @SideOnly(Side.CLIENT)
 	@Override

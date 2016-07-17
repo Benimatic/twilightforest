@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -12,13 +13,15 @@ import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFRedcapPlantTNT;
 import twilightforest.item.TFItems;
 
+import java.util.UUID;
+
 public class EntityTFRedcapSapper extends EntityTFRedcap {
-	
+
+	private static final AttributeModifier ARMOR_BOOST =
+			new AttributeModifier(UUID.fromString("8a0e8db7-20d3-49f5-bdd7-e10dc509d9fc"), "RedCap sapper permanent armor boost", 2, 0);
 
 	public EntityTFRedcapSapper(World world) {
 		super(world);
-
-		this.tasks.addTask(4, new EntityAITFRedcapPlantTNT(this)); // plant TNT
 		
         //texture = TwilightForestMod.MODEL_DIR + "redcapsapper.png";
         
@@ -29,26 +32,19 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 	}
 
 	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		this.tasks.addTask(4, new EntityAITFRedcapPlantTNT(this)); // plant TNT
+	}
+
+	@Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_BOOST);
     }
 
-    @Override
-	public int getTotalArmorValue()
-    {
-        int var1 = super.getTotalArmorValue() + 2;
-
-        if (var1 > 20)
-        {
-            var1 = 20;
-        }
-
-        return var1;
-    }
-    
-	
 	@Override
 	public ItemStack getPick()
 	{

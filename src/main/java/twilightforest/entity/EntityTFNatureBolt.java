@@ -1,7 +1,10 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -11,7 +14,10 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumDifficulty;
@@ -19,8 +25,6 @@ import net.minecraft.world.World;
 
 
 public class EntityTFNatureBolt extends EntityThrowable {
-
-
 
 	private EntityPlayer playerTarget;
 
@@ -36,11 +40,9 @@ public class EntityTFNatureBolt extends EntityThrowable {
 		super(par1World);
 	}
 
-	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
         makeTrail();
 	}
 
@@ -60,17 +62,17 @@ public class EntityTFNatureBolt extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
+	protected void onImpact(RayTraceResult ray) {
 		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+		if (ray.entityHit != null && ray.entityHit instanceof EntityLivingBase)
 		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
+			if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
 			{
 				// similar to EntityCaveSpider
 				byte poisonStrength = (byte) (worldObj.getDifficulty() == EnumDifficulty.PEACEFUL ? 0 : worldObj.getDifficulty() == EnumDifficulty.NORMAL ? 3 : 7);
 				if(poisonStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, poisonStrength * 20, 0));
+					((EntityLivingBase)ray.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, poisonStrength * 20, 0));
 					
 //					System.out.println("Poisoning entityHit " + par1MovingObjectPosition.entityHit);
 				}
@@ -86,38 +88,26 @@ public class EntityTFNatureBolt extends EntityThrowable {
 		if (!this.worldObj.isRemote)
 		{
 			this.setDead();
-			
-			if (par1MovingObjectPosition != null) {
-				// if we hit a solid block, maybe do our nature burst effect.
-				int dx = MathHelper.floor_double(par1MovingObjectPosition.blockX);
-				int dy = MathHelper.floor_double(par1MovingObjectPosition.blockY);
-				int dz = MathHelper.floor_double(par1MovingObjectPosition.blockZ);
 
-				Material materialHit = worldObj.getBlock(dx, dy, dz).getMaterial();
-			
+			if (ray.getBlockPos() != null) {
+				// if we hit a solid block, maybe do our nature burst effect.
+				Material materialHit = worldObj.getBlockState(ray.getBlockPos()).getMaterial();
+
 				if (materialHit == Material.GRASS && this.playerTarget != null)
 				{
-					Items.DYE.onItemUse(new ItemStack(Items.DYE, 1, 15), playerTarget, worldObj, dx, dy, dz, 0, 0, 0, 0);
-				}			
-				else if (materialHit.isSolid() && canReplaceBlock(worldObj, dx, dy, dz)) 
+					Items.DYE.onItemUse(new ItemStack(Items.DYE, 1, 15), playerTarget, worldObj, ray.getBlockPos(), EnumHand.MAIN_HAND, ray.sideHit, 0, 0, 0);
+				}
+				else if (materialHit.isSolid() && canReplaceBlock(worldObj, ray.getBlockPos()))
 				{
-					worldObj.setBlock(dx, dy, dz, Blocks.LEAVES, 2, 3);
-				}			
+					worldObj.setBlockState(ray.getBlockPos(), Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH));
+				}
 			}
 		}
-
 	}
 
-	/**
-	 * This is surprisingly difficult to determine
-	 */
-	private boolean canReplaceBlock(World worldObj, int dx, int dy, int dz) 
+	private boolean canReplaceBlock(World worldObj, BlockPos pos)
 	{
-		Block blockID = worldObj.getBlock(dx, dy, dz);
-		//int meta = worldObj.getBlockMetadata(dx, dy, dz);
-		Block blockObj = blockID;
-		float hardness = blockObj == null ? -1 : blockObj.getBlockHardness(worldObj, dx, dy, dz);
-		
+		float hardness = worldObj.getBlockState(pos).getBlockHardness(worldObj, pos);
 		return hardness >= 0 && hardness < 50F;
 	}
 

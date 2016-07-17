@@ -42,16 +42,12 @@ public class EntityTFSwarmSpider extends EntitySpider {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
-	
 
-    /**
-     * How large the spider should be scaled.
-     */
-	//@Override
-    public float spiderScaleAmount()
-    {
-        return 0.5F;
-    }
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		// todo 1.9 need to replace player target task with the normal one that doesnt turn docile in light
+	}
 
 	@Override
 	public float getRenderSizeModifier() {
@@ -75,29 +71,11 @@ public class EntityTFSwarmSpider extends EntitySpider {
 
 		super.onUpdate();
 	}
-    
-	/**
-	 * Only have the spider do damage a fraction of the time
-	 */
-    protected void attackEntity(Entity entity, float f)
-    {
-    	if (this.attackTime <= 0 && (!this.isAirBorne || rand.nextInt(4) != 0))
-        {
-            this.attackTime = 20;
-        }
-    	else
-    	{
-    		super.attackEntity(entity, f);
-    	}
 
-    }
-
-    @Override
-	protected Entity findPlayerToAttack()
+	@Override
+    public boolean attackEntityAsMob(Entity entity)
     {
-    	// kill at all times!
-    	double var2 = 16.0D;
-    	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
+		return rand.nextInt(4) == 0 && super.attackEntityAsMob(entity);
     }
 
 	protected boolean spawnAnother() {
@@ -158,9 +136,6 @@ public class EntityTFSwarmSpider extends EntitySpider {
         setSpawnMore(nbttagcompound.getBoolean("SpawnMore"));
     }
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

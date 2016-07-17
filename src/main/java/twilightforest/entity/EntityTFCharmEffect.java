@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -105,7 +106,7 @@ public class EntityTFCharmEffect extends Entity
         		double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
         		double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 
-        		worldObj.spawnParticle("iconcrack_" + this.getItemID(), dx, dy, dz, 0, 0.2, 0);
+        		worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
         	}
         }
        

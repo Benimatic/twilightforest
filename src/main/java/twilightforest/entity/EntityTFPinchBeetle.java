@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -13,7 +12,9 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -23,24 +24,28 @@ import twilightforest.entity.ai.EntityAITFKidnapRider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public class EntityTFPinchBeetle extends EntityMob
 {
 	public EntityTFPinchBeetle(World world) {
 		super(world);
 		//texture = TwilightForestMod.MODEL_DIR + "pinchbeetle.png";
-		//moveSpeed = 0.23F;
 		setSize(1.2F, 1.1F);
-
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAITFKidnapRider(this, 2.0F));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		//this.tasks.addTask(8, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
 	}
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAITFKidnapRider(this, 2.0F));
+        this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        //this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+    }
 
 	@Override
     protected void applyEntityAttributes()
@@ -65,12 +70,6 @@ public class EntityTFPinchBeetle extends EntityMob
     }
 
     @Override
-	protected String getLivingSound()
-    {
-        return null;
-    }
-
-    @Override
 	protected String getHurtSound()
     {
         return "mob.spider.say";
@@ -91,16 +90,16 @@ public class EntityTFPinchBeetle extends EntityMob
     @Override
 	public void onLivingUpdate()
     {
-    	if (this.riddenByEntity != null)
+    	if (!this.getPassengers().isEmpty())
     	{
     		this.setSize(1.9F, 2.0F);
     		
             // stop player sneaking so that they can't dismount!
-            if (this.riddenByEntity.isSneaking())
+            if (this.getPassengers().get(0).isSneaking())
             {
             	//System.out.println("Pinch beetle sneaking detected!");
             	
-            	this.riddenByEntity.setSneaking(false);
+            	this.getPassengers().get(0).setSneaking(false);
             }
     	}
     	else
@@ -112,15 +111,15 @@ public class EntityTFPinchBeetle extends EntityMob
     	super.onLivingUpdate();
 
     	// look at things in our jaws
-    	if (this.riddenByEntity != null)
+    	if (!this.getPassengers().isEmpty())
     	{
-            this.getLookHelper().setLookPositionWithEntity(riddenByEntity, 100F, 100F);
+            this.getLookHelper().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
     		//this.faceEntity(riddenByEntity, 100F, 100F);
 
             
             // push out of user in wall
             Vec3d riderPos = this.getRiderPosition();
-            this.func_145771_j(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord); // push out of block
+            this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord); // push out of block
             
 
     	}
@@ -134,11 +133,6 @@ public class EntityTFPinchBeetle extends EntityMob
     	}
     }
 
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 8;
-    }
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public float getShadowSize() 
@@ -149,18 +143,18 @@ public class EntityTFPinchBeetle extends EntityMob
     @Override
 	public boolean attackEntityAsMob(Entity par1Entity) 
     {
-    	if (this.riddenByEntity == null && par1Entity.ridingEntity == null)
+    	if (this.getPassengers().isEmpty() && !par1Entity.isRiding())
     	{
-    		par1Entity.mountEntity(this);
+    		par1Entity.startRiding(this);
     	}
     	
 		return super.attackEntityAsMob(par1Entity);
 	}
 
     @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
+	public boolean processInteract(EntityPlayer par1EntityPlayer, EnumHand hand, @Nullable ItemStack stack)
     {
-        if (super.interact(par1EntityPlayer))
+        if (super.processInteract(par1EntityPlayer, hand, stack))
         {
             return true;
         }
@@ -189,11 +183,11 @@ public class EntityTFPinchBeetle extends EntityMob
     @Override
 	public void updatePassenger(Entity passenger)
     {
-        if (this.riddenByEntity != null)
+        if (!this.getPassengers().isEmpty())
         {
         	Vec3d riderPos = this.getRiderPosition();
         	
-            this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
+            this.getPassengers().get(0).setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
         }
     }
 
@@ -205,14 +199,14 @@ public class EntityTFPinchBeetle extends EntityMob
 
     public Vec3d getRiderPosition()
     {
-    	if (this.riddenByEntity != null)
+    	if (!this.getPassengers().isEmpty())
     	{
     		float distance = 0.9F;
 
     		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
     		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-    		return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
+    		return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + var3);
     	}
     	else
     	{

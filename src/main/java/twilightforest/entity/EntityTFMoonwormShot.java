@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -19,19 +20,15 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 
 	public EntityTFMoonwormShot(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EntityTFMoonwormShot(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EntityTFMoonwormShot(World par1World) {
 		super(par1World);
-		// TODO Auto-generated constructor stub
 	}
-
 
 	/**
 	 * projectile speed
@@ -41,11 +38,9 @@ public class EntityTFMoonwormShot extends EntityThrowable {
         return 0.5F;
     }
 	
-	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
         makeTrail();
 	}
 
@@ -105,7 +100,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 		{
 			if (!worldObj.isRemote)
 			{
-				TFItems.moonwormQueen.onItemUse(null, (EntityPlayer)this.getThrower(), this.worldObj, mop.blockX, mop.blockY, mop.blockZ, mop.sideHit, 0, 0, 0);
+				TFItems.moonwormQueen.onItemUse(null, (EntityPlayer)this.getThrower(), this.worldObj, mop.getBlockPos(), EnumHand.MAIN_HAND, mop.sideHit, 0, 0, 0);
 			}
 			else
 			{

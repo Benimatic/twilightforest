@@ -1,9 +1,12 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
+import net.minecraft.block.BlockHardenedClay;
+import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -15,12 +18,15 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
@@ -31,15 +37,18 @@ public class EntityTFIceExploder extends EntityMob {
 
 	public EntityTFIceExploder(World par1World) {
 		super(par1World);
-		
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
         this.setSize(0.8F, 1.8F);
+	}
+
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
+		this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(3, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 	}
 
 	@Override
@@ -72,21 +81,21 @@ public class EntityTFIceExploder extends EntityMob {
     }
 
     @Override
-    protected String getAmbientSound()
+    protected SoundEvent getAmbientSound()
     {
-    	return TwilightForestMod.ID + ":mob.ice.noise";
+    	return TFSounds.ICE_AMBIENT;
     }
 
 	@Override
-	protected String getHurtSound()
+	protected SoundEvent getHurtSound()
     {
-    	return TwilightForestMod.ID + ":mob.ice.hurt";
+    	return TFSounds.ICE_HURT;
     }
 
 	@Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-    	return TwilightForestMod.ID + ":mob.ice.death";
+    	return TFSounds.ICE_DEATH;
     }
 
 	@Override
@@ -147,9 +156,7 @@ public class EntityTFIceExploder extends EntityMob {
 	private void detonate() {
 		int range = 4;
 		
-		int sx = MathHelper.floor_double(this.posX);
-		int sy = MathHelper.floor_double(this.posY);
-		int sz = MathHelper.floor_double(this.posZ);
+		BlockPos pos = new BlockPos(this);
 		
 		for (int dx = -range; dx <= range; dx++) {
 			for (int dy = -range; dy <= range; dy++) {
@@ -159,7 +166,7 @@ public class EntityTFIceExploder extends EntityMob {
 					float randRange = range + (rand.nextFloat() - rand.nextFloat()) * 2F;
 					
 					if (distance < randRange) {
-						this.transformBlock(sx + dx, sy + dy, sz + dz);
+						this.transformBlock(pos.add(dx, dy, dz));
 					}
 				}
 			}
@@ -167,15 +174,16 @@ public class EntityTFIceExploder extends EntityMob {
 	}
 
 
-	private void transformBlock(int x, int y, int z) {
-		Block block = this.worldObj.getBlock(x, y, z);
-		int meta = this.worldObj.getBlockMetadata(x, y, z);
-		
+	private void transformBlock(BlockPos pos) {
+		IBlockState state = worldObj.getBlockState(pos);
+		Block block = state.getBlock();
+
 		// check if we should even explode this
-		if (block.getExplosionResistance(this) < 8F && block.getBlockHardness(worldObj, x, y, z) >= 0) {
+		if (block.getExplosionResistance(this) < 8F && state.getBlockHardness(worldObj, pos) >= 0) {
 			
 			int blockColor = 16777215;
-			
+
+			// todo 1.9 wtf
 			//TODO: use a better check than exception handling to determine if we have access to client-side methods or not
 			try {
 				// figure out color
@@ -185,45 +193,46 @@ public class EntityTFIceExploder extends EntityMob {
 			}
 
 			if (blockColor == 16777215) {
-				blockColor = block.getMapColor(meta).colorValue;
+				blockColor = state.getMapColor().colorValue;
 			}
 
 			// do appropriate transformation
-			if (this.shouldTransformGlass(block, x, y, z)) {
-				this.worldObj.setBlock(x, y, z, Blocks.STAINED_GLASS, this.getMetaForColor(blockColor), 3);
-			} else if (this.shouldTransformClay(block, x, y, z)) {
-				this.worldObj.setBlock(x, y, z, Blocks.STAINED_HARDENED_CLAY, this.getMetaForColor(blockColor), 3);
+			if (this.shouldTransformGlass(state, pos)) {
+				this.worldObj.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, getClosestDyeColor(blockColor)));
+			} else if (this.shouldTransformClay(state, pos)) {
+				this.worldObj.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, getClosestDyeColor(blockColor)));
 			}
 		}
 	}
 
 
-	private boolean shouldTransformClay(Block block, int x, int y, int z) {
-		return block.isNormalCube(this.worldObj, x, y, z);
+	private boolean shouldTransformClay(IBlockState state, BlockPos pos) {
+		return state.getBlock().isNormalCube(state, this.worldObj, pos);
 	}
 
 
-	private boolean shouldTransformGlass(Block block, int x, int y, int z) {
-		return block != Blocks.AIR && this.isBlockNormalBounds(block, x, y, z) && (!block.getMaterial().isOpaque() || block.isLeaves(this.worldObj, x, y, z) || block == Blocks.ICE || block == TFBlocks.auroraBlock);
+	private boolean shouldTransformGlass(IBlockState state, BlockPos pos) {
+		return state.getBlock() != Blocks.AIR && this.isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getBlock().isLeaves(state, this.worldObj, pos) || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.auroraBlock);
 	}
 
 
-	private boolean isBlockNormalBounds(Block block, int x, int y, int z) {
-		return block.getBlockBoundsMaxX() == 1.0F &&  block.getBlockBoundsMaxY() == 1.0F &&  block.getBlockBoundsMaxZ() == 1.0F && block.getBlockBoundsMinX() == 0.0F && block.getBlockBoundsMinY() == 0.0F && block.getBlockBoundsMinZ() == 0.0F;
+	private boolean isBlockNormalBounds(IBlockState state, BlockPos pos) {
+		return Block.FULL_BLOCK_AABB.equals(state.getBoundingBox(worldObj, pos));
 	}
 
 
-	private int getMetaForColor(int blockColor) {
+	private EnumDyeColor getClosestDyeColor(int blockColor) {
 		int red = (blockColor >> 16) & 255; 
 		int green = (blockColor >> 8) & 255; 
 		int blue = blockColor & 255; 
 		
 		
-		int bestColor = 0;
+		EnumDyeColor bestColor = EnumDyeColor.WHITE;
 		int bestDifference = 1024;
 		
-		for (int i = 0; i < 15; i++) {
-			int iColor = Blocks.WOOL.getMapColor(i).colorValue;
+		for (EnumDyeColor color : EnumDyeColor.values()) {
+			int iColor = Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, color)
+					.getMapColor().colorValue;
 			
 			int iRed = (iColor >> 16) & 255; 
 			int iGreen = (iColor >> 8) & 255; 
@@ -232,7 +241,7 @@ public class EntityTFIceExploder extends EntityMob {
 			int difference = Math.abs(red - iRed) + Math.abs(green - iGreen) + Math.abs(blue - iBlue);
 			
 			if (difference < bestDifference) {
-				bestColor = i;
+				bestColor = color;
 				bestDifference = difference;
 			}
 		}

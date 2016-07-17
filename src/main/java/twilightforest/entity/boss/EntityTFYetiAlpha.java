@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -54,8 +55,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         super(par1World);
         this.setSize(3.8F, 5.0F);
 
-        
-        this.getNavigator().setAvoidsWater(true);
+
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(1, new EntityAITFYetiTired(this, 100));
 		this.tasks.addTask(2, new EntityAITFThrowRider(this, 1.0F));
 		this.tasks.addTask(3, new EntityAIStayNearHome(this, 2.0F));

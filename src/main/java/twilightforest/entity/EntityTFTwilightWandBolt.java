@@ -16,22 +16,17 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 		super(par1World);
 	}
 
-	
 	public EntityTFTwilightWandBolt(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
-		// TODO Auto-generated constructor stub
 	}
-
 
 	public EntityTFTwilightWandBolt(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
         makeTrail();
 	}
 	
@@ -49,26 +44,18 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 		}
 	}
 
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
     protected float getGravityVelocity()
     {
         return 0.003F;
     }
 
-
-
 	@Override
 	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
 		// only hit living things
         if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
         {
-            if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6))
-            {
-                ;
-            }
+			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
         }
 
         for (int i = 0; i < 8; ++i)
@@ -80,7 +67,6 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
         {
             this.setDead();
         }
-
 	}
 
 }

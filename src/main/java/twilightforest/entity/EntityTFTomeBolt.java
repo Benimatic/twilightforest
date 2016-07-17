@@ -18,24 +18,19 @@ public class EntityTFTomeBolt extends EntityThrowable {
 	public EntityTFTomeBolt(World par1World, double par2, double par4,
 			double par6) {
 		super(par1World, par2, par4, par6);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EntityTFTomeBolt(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EntityTFTomeBolt(World par1World) {
 		super(par1World);
-		// TODO Auto-generated constructor stub
 	}
 
-	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
         makeTrail();
 	}
 

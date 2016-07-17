@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -23,8 +24,8 @@ public class EntityTFKingSpider extends EntitySpider {
 		//texture = TwilightForestMod.MODEL_DIR + "kingspider.png";
         this.setSize(1.6F, 1.6F);
         //this.moveSpeed = 0.35F;
-        
-        this.getNavigator().setAvoidsWater(true);
+
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
 		//this.tasks.addTask(1, new EntityAITFChargeAttack(this, 0.4F));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.3F));

@@ -16,9 +16,6 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider
 		//texture = TwilightForestMod.MODEL_DIR + "towerbroodling.png";
 	}
 	
-	/**
-	 * Set monster attributes
-	 */
 	@Override
     protected void applyEntityAttributes()
     {

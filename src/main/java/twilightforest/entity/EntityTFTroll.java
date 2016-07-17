@@ -24,15 +24,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.server.SPacketAnimation;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import twilightforest.TFAchievementPage;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.ai.EntityAITFCollideAttackFixed;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.item.TFItems;
 
@@ -47,7 +46,10 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     {
         super(par1World);
         this.setSize(1.4F, 2.4F);
+    }
 
+    @Override
+    public void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
@@ -56,8 +58,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
-    
-        if (par1World != null && !par1World.isRemote)
+
+        if (worldObj != null && !worldObj.isRemote)
         {
             this.setCombatTask();
         }
@@ -79,16 +81,10 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         this.dataManager.register(ROCK_FLAG, false);
     }
     
-    /**
-     * Determines whether this troll has a rock or not.
-     */
     public boolean hasRock() {
         return this.dataManager.get(ROCK_FLAG);
     }
 
-    /**
-     * Sets whether this troll has a rock or not.
-     */
     public void setHasRock(boolean rock) {
         if (rock) {
             this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
@@ -100,14 +96,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         this.setCombatTask();
     }
     
-    /**
-     * Swing!
-     */
 	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
-		
-        this.swingItem();
-		
+        swingArm(EnumHand.MAIN_HAND);
 		return super.attackEntityAsMob(par1Entity);
 	}
 
@@ -141,9 +132,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         }
     }
 
-    /**
-	 * handles entity death timer, experience orb and particle creation
-	 */
     @Override
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
@@ -159,32 +147,23 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 
 
 	private void ripenTrollBerNearby(int offset) {
-		int sx = MathHelper.floor_double(this.posX);
-		int sy = MathHelper.floor_double(this.posY);
-		int sz = MathHelper.floor_double(this.posZ);
+		BlockPos pos = new BlockPos(this);
 		
 		int range = 12;
 		for (int dx = -range; dx < range; dx++) {
 			for (int dy = -range; dy < range; dy++) {
 				for (int dz = -range; dz < range; dz++) {
-					if (true) {
-						int cx = sx + dx;
-						int cy = sy + dy;
-						int cz = sz + dz;
-
-						ripenBer(offset, cx, cy, cz);
-					}
+                    ripenBer(offset, pos.add(dx, dy, dz));
 				}
 			}
 		}
 	}
 
 
-	private void ripenBer(int offset, int cx, int cy, int cz) {
-		if (this.worldObj.getBlock(cx, cy, cz) == TFBlocks.unripeTrollBer && this.rand.nextBoolean() && (Math.abs(cx + cy + cz) % 5 == offset)) {
-			this.worldObj.setBlock(cx, cy, cz, TFBlocks.trollBer);
-			worldObj.playAuxSFX(2004, cx, cy, cz, 0);
-
+	private void ripenBer(int offset, BlockPos pos) {
+		if (this.worldObj.getBlockState(pos).getBlock() == TFBlocks.unripeTrollBer && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.worldObj.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
+			worldObj.playEvent(2004, pos, 0);
 		}
 	}
 
@@ -197,9 +176,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 		}
 	}
 		
-	/**
-     * Turns blocks to trollstone inside the given bounding box.
-     */
     private void makeTrollStoneInAABB(AxisAlignedBB par1AxisAlignedBB)
     {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
@@ -211,21 +187,10 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
         int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
 
-        for (int dx = minX; dx <= maxX; ++dx)
-        {
-            for (int dy = minY; dy <= maxY; ++dy)
-            {
-                for (int dz = minZ; dz <= maxZ; ++dz)
-                {
-                    Block currentID = this.worldObj.getBlock(dx, dy, dz);
-                    
-                    if (currentID == Blocks.AIR)
-                    {
-                    	this.worldObj.setBlock(dx, dy, dz, TFBlocks.trollSteinn);
-                        // here, this effect will have to do
-            			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(TFBlocks.trollSteinn) + (0 << 12));
-                     }
-                }
+        for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
+            if (worldObj.isAirBlock(pos)) {
+                worldObj.setBlockState(pos, TFBlocks.trollSteinn.getDefaultState());
+                worldObj.playEvent(2001, pos, Block.getStateId(TFBlocks.trollSteinn.getDefaultState()));
             }
         }
     }
@@ -259,25 +224,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     	}
     }
 
-    
-    /**
-     * Swings the item the player is holding.
-     */
-    public void swingItem() {
-        if (!this.isSwingInProgress || this.swingProgressInt >= this.getArmSwingAnimationEnd() / 2 || this.swingProgressInt < 0) {
-            this.swingProgressInt = -1;
-            this.isSwingInProgress = true;
-
-            if (this.worldObj instanceof WorldServer)
-            {
-                ((WorldServer)this.worldObj).getEntityTracker().func_151247_a(this, new SPacketAnimation(this, 0));
-            }
-        }
-    }
-	
-    /**
-     * Updates the arm swing progress counters and animation progress
-     */
     @Override
     protected void updateArmSwingProgress()
     {
@@ -307,6 +253,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
      */
     private int getArmSwingAnimationEnd()
     {
-        return 6;
+        return 6; // todo 1.9 reconcile with EntityLivingBase's version
     }
 }

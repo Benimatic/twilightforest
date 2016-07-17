@@ -40,7 +40,16 @@ public class EntityTFKobold extends EntityMob {
         setSize(0.8F, 1.1F);
 
         shy = true;
-        
+    }
+    
+    public EntityTFKobold(World world, double x, double y, double z)
+    {
+        this(world);
+        this.setPosition(x, y, z);
+    }
+
+    @Override
+    protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAITFPanicOnFlockDeath(this, 2.0F));
         this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.3F));
@@ -51,13 +60,6 @@ public class EntityTFKobold extends EntityMob {
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
-
-    }
-    
-    public EntityTFKobold(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
     }
 	
 	@Override
