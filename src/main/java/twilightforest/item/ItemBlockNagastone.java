@@ -15,8 +15,7 @@ public class ItemBlockNagastone extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-    	int meta = itemstack.getItemDamage();
-    	return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
+        return super.getUnlocalizedName(itemstack) + "." + itemstack.getItemDamage();
     }
 
     @Override

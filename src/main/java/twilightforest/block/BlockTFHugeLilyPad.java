@@ -2,161 +2,91 @@ package twilightforest.block;
 
 import java.util.List;
 
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import twilightforest.TwilightForestMod;
+import net.minecraft.world.IBlockAccess;
+import twilightforest.block.enums.HugeLilypadPiece;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTFHugeLilyPad extends BlockBush {
-	
-	private IIcon pad1;
-	private IIcon pad2;
-	private IIcon pad3;
-	private IIcon blank;
-	private boolean isSelfDestructing = false;
 
+	public static final PropertyDirection FACING = BlockHorizontal.FACING;
+	public static final PropertyEnum<HugeLilypadPiece> PIECE = PropertyEnum.create("piece", HugeLilypadPiece.class);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1);
+
+	private boolean isSelfDestructing = false;
 
 	protected BlockTFHugeLilyPad() {
 		super(Material.PLANTS);
-		
-        float f = 0.5F;
-        float f1 = 0.015625F;
-        this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
-		this.setStepSound(soundTypeGrass);
-
+		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-	
-    public int getRenderType()
-    {
-    	return TwilightForestMod.proxy.getHugeLilyPadBlockRenderID();
-    }
-    
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
-    
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-	@Override
-	public IIcon getIcon(int side, int meta) {
-		// sides blank
-		if (side > 1) {
-			return this.blank;
-		}
-		
-		int orient = meta >> 2;
-		int piece = meta & 3;
-		
-        // why can't this just be simple?
-		if (orient == 1) {
-			orient = 3;
-		} else if (orient == 3) {
-			orient = 1;
-		}
-		
-		
-		int display = (piece + orient) % 4;
-		
-
-		switch (display) {
-		case 0:
-		default:
-			return this.blockIcon;
-		case 1:
-			return this.pad1;
-		case 2:
-			return this.pad2;
-		case 3:
-			return this.pad3;
-		}
+		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(PIECE, HugeLilypadPiece.NW));
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.blockIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":huge_lilypad_0");
-		this.pad1 = par1IconRegister.registerIcon(TwilightForestMod.ID + ":huge_lilypad_1");
-		this.pad2 = par1IconRegister.registerIcon(TwilightForestMod.ID + ":huge_lilypad_2");
-		this.pad3 = par1IconRegister.registerIcon(TwilightForestMod.ID + ":huge_lilypad_3");
-		this.blank = par1IconRegister.registerIcon(TwilightForestMod.ID + ":blank");
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING, PIECE);
 	}
-	
-    /**
-     * is the block grass, dirt or farmland
-     */
-    protected boolean canPlaceBlockOn(Block block)
-    {
-        return block == Blocks.WATER;
-    }
+
+	// todo 1.9
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
 
 	@Override
-    public void onBlockHarvested(World world, BlockPos ois, IBlockState state, EntityPlayer player) {
-		this.setGiantBlockToAir(world, x, y, z);
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState();
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return AABB;
+	}
+
+	@Override
+	public boolean canPlaceBlockAt(World world, BlockPos pos)
+    {
+        return world.getBlockState(pos.down()).getBlock() == Blocks.WATER;
     }
 
     @Override
-	public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
-    {
-        world.setBlockToAir(x, y, z);
-		this.setGiantBlockToAir(world, x, y, z);
-    }
-
-    
-    /**
-     * Called on server worlds only when the block is about to be replaced by a different block or the same block with a
-     * different metadata value. Args: world, x, y, z, old metadata
-     */
-    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
-    	
-		int orient = meta >> 2;
-		int piece = meta & 3;
-		
-		int display = (piece + orient) % 4;
-    	
-    	if (!this.isSelfDestructing  && !canBlockStay(world, x, y, z)) {
-    		this.setGiantBlockToAir(world, x, y, z);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+    	if (!this.isSelfDestructing  && !canBlockStay(world, pos, state)) {
+    		this.setGiantBlockToAir(world, pos);
     	}
     }
     
-    /**
-     * Set the whole giant block area to air
-     */
-    private void setGiantBlockToAir(World world, int x, int y, int z) {
+    private void setGiantBlockToAir(World world, BlockPos pos) {
     	// this flag is maybe not totally perfect
     	this.isSelfDestructing = true;
     	
-    	int bx = (x >> 1) << 1;
-    	int bz = (z >> 1) << 1;
+    	int bx = pos.getX() & ~0b1;
+    	int bz = pos.getZ() & ~0b1;
 
     	// this is the best loop over 3 items that I've ever programmed!
     	for (int dx = 0; dx < 2; dx++) {
     		for (int dz = 0; dz < 2; dz++) {
-    			if (!(x == bx + dx && z == bz + dz)) {
-    				if (world.getBlock(bx + dx, y, bz + dz) == this) {
-    					world.setBlock(bx + dx, y, bz + dz, Blocks.AIR, 0, 2);
+    			if (!(pos.getX() == bx + dx && pos.getZ() == bz + dz)) {
+					BlockPos dPos = new BlockPos(bx + dx, pos.getY(), bz + dz);
+					IBlockState state = world.getBlockState(dPos);
+    				if (state.getBlock() == this) {
+    					world.setBlockState(dPos, Blocks.AIR.getDefaultState(), 2);
+						world.playEvent(2001, dPos, Block.getStateId(state));
     				}
     			}
     		}
@@ -165,38 +95,38 @@ public class BlockTFHugeLilyPad extends BlockBush {
     	this.isSelfDestructing = false;
 	}
 
-
-	/**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
-    public boolean canBlockStay(World world, int x, int y, int z)  {
-        boolean allThisBlock = true;
-        boolean allWater = true;
-        
-    	int bx = (x >> 1) << 1;
-    	int bz = (z >> 1) << 1;
+	@Override
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state)  {
+    	int bx = pos.getX() & ~0b1;
+    	int bz = pos.getZ() & ~0b1;
 
     	for (int dx = 0; dx < 2; dx++) {
     		for (int dz = 0; dz < 2; dz++) {
-    			allThisBlock &= world.getBlock(bx + dx, y, bz + dz) == this;
-    			allWater &= (world.getBlock(bx + dx, y - 1, bz + dz).getMaterial() == Material.WATER && world.getBlockMetadata(bx + dx, y - 1, bz + dz) == 0);
+				BlockPos dPos = new BlockPos(bx + dx, pos.getY(), bz + dz);
+				IBlockState dState = world.getBlockState(dPos);
+				IBlockState dStateBelow = world.getBlockState(dPos.down());
+
+				if (dState.getBlock() != this
+						|| !(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
+						|| dStateBelow.getValue(BlockLiquid.LEVEL) != 0) {
+					return false;
+				}
     		}
     	}
 
-    	return allThisBlock && allWater;
+    	return true;
     }
-    
-    /**
-     * checks if the block can stay, if not drop as item
-     */
-    protected void checkAndDropBlock(World p_149855_1_, int p_149855_2_, int p_149855_3_, int p_149855_4_)
-    {
-        if (!this.canBlockStay(p_149855_1_, p_149855_2_, p_149855_3_, p_149855_4_))
-        {
-            //this.dropBlockAsItem(p_149855_1_, p_149855_2_, p_149855_3_, p_149855_4_, p_149855_1_.getBlockMetadata(p_149855_2_, p_149855_3_, p_149855_4_), 0);
-            p_149855_1_.setBlock(p_149855_2_, p_149855_3_, p_149855_4_, getBlockById(0), 0, 2);
-        }
-    }
+
+	// [VanillaCopy] of super without dropping
+    @Override
+	protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
+	{
+		if (!this.canBlockStay(worldIn, pos, state))
+		{
+			// this.dropBlockAsItem(worldIn, pos, state, 0); TF - nodrop
+			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+		}
+	}
 
 	@Override
     public EnumPushReaction getMobilityFlag(IBlockState state)

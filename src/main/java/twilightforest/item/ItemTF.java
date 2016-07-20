@@ -15,7 +15,6 @@ public class ItemTF extends Item {
 	}
 	
     @Override
-    @SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
     	return isRare ? EnumRarity.RARE : EnumRarity.UNCOMMON;
 	}
