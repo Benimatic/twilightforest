@@ -187,7 +187,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
                 for (int dz = minZ; dz <= maxZ; ++dz) {
 					BlockPos pos = new BlockPos(dx, dy, dz);
 					IBlockState state = worldObj.getBlockState(pos);
-                    Block block = state.getBlock()
+                    Block block = state.getBlock();
 
                     if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(worldObj, pos) >= 0) {
 

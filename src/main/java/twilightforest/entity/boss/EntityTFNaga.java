@@ -467,7 +467,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	@Override
     protected SoundEvent getHurtSound()
     {
-		return TFSounds.NAGA_HURT
+		return TFSounds.NAGA_HURT;
     }
 
 	@Override
