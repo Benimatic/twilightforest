@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import twilightforest.structures.StructureTFComponent;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -97,8 +98,7 @@ public class TFStrongholdPieces {
         return flag;
     }
     
-    @SuppressWarnings("rawtypes")
-	public StructureTFStrongholdComponent getNextComponent(StructureComponent parent, List list, Random random, int index, int facing, int x, int y, int z)
+	public StructureTFStrongholdComponent getNextComponent(StructureComponent parent, List list, Random random, int index, EnumFacing facing, int x, int y, int z)
     {
         if (!hasMoreLimitedPieces())
         {
@@ -157,30 +157,15 @@ public class TFStrongholdPieces {
         }
     }
 
-	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponent> pieceClass, int index, int facing, int x, int y, int z) {
+	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponent> pieceClass, int index, EnumFacing facing, int x, int y, int z) {
+        // todo 1.9
 		try {
 			return (StructureTFStrongholdComponent) pieceClass.getConstructor(int.class, int.class, int.class, int.class, int.class).newInstance(index, facing, x, y, z);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-		
-		////			attempted = new ComponentTFStrongholdRoom(index, nFacing, nx, ny, nz);
+
+        ////			attempted = new ComponentTFStrongholdRoom(index, nFacing, nx, ny, nz);
 
 		return null;
 	}

@@ -3,8 +3,10 @@ package twilightforest.structures.stronghold;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -13,40 +15,27 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	
 	boolean exitTop;
 
-	public ComponentTFStrongholdUpperAscender() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFStrongholdUpperAscender() {}
 
-	public ComponentTFStrongholdUpperAscender(int i, int facing, int x, int y, int z) {
+	public ComponentTFStrongholdUpperAscender(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 	}
 	
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setBoolean("exitTop", this.exitTop);
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.exitTop = par1NBTTagCompound.getBoolean("exitTop");
 	}
 
-
-	/**
-	 * Make a bounding box for this room
-	 */
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z)
 	{
 		if (y < 36)
 		{
@@ -60,9 +49,6 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 		}
 	}
 	
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random random) {
 		super.buildComponent(parent, list, random);
@@ -71,9 +57,6 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 		addNewUpperComponent(parent, list, random, 0, 2, exitTop ? 6 : 1, 10);
 	}
 
-	/**
-	 * Generate the blocks that go here
-	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
         if (this.isLiquidInStructureBoundingBox(world, sbb))
@@ -118,11 +101,11 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	 */
 	private void makeStairsAt(World world, int y, int z, int facing, StructureBoundingBox sbb) {
 		// check walls
-		if (this.getBlockAtCurrentPosition(world, 0, y, z, sbb) != Blocks.AIR || this.getBlockAtCurrentPosition(world, 4, y, z, sbb) != Blocks.AIR)
+		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR)
 		{
 			for (int x = 1; x < 4; x++)
 			{
-				this.placeBlockAtCurrentPosition(world, Blocks.STONE_BRICK_STAIRS, this.getStairMeta(facing), x, y, z, sbb);
+				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(facing)), x, y, z, sbb);
 			}
 		}
 	}
@@ -132,18 +115,15 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	 */
 	private void makePlatformAt(World world, int y, int z, StructureBoundingBox sbb) {
 		// check walls
-		if (this.getBlockAtCurrentPosition(world, 0, y, z, sbb) != Blocks.AIR || this.getBlockAtCurrentPosition(world, 4, y, z, sbb) != Blocks.AIR)
+		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR)
 		{
 			for (int x = 1; x < 4; x++)
 			{
-				this.placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, x, y, z, sbb);
+				this.setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, y, z, sbb);
 			}
 		}
 	}
 
-	/**
-	 * Does this component fall under block protection when progression is turned on, normally true
-	 */
 	@Override
 	public boolean isComponentProtected() {
 		return false;

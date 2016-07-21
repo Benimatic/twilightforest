@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -11,17 +12,14 @@ import twilightforest.block.TFBlocks;
 
 public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdAccessChamber() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFStrongholdAccessChamber() {}
 
-	public ComponentTFStrongholdAccessChamber(int i, int facing, int x, int y, int z) {
+	public ComponentTFStrongholdAccessChamber(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
 		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, 1, 0, 9, 5, 9, facing);
 	}
 	
@@ -40,10 +38,6 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		
 	}
 
-
-	/**
-	 * Generate the blocks that go here
-	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 8, 4, 8, true, rand, deco.randomBlocks);

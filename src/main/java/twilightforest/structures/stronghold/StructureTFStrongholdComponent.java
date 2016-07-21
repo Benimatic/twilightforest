@@ -7,9 +7,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -19,23 +21,17 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	public List<BlockPos> doors = new ArrayList<BlockPos>();
 
-	public StructureTFStrongholdComponent() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public StructureTFStrongholdComponent() {}
 
-	public StructureTFStrongholdComponent(int i, int facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent(int i, EnumFacing facing, int x, int y, int z) {
 		super(i);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setCoordBaseMode(facing);
 	}
 
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 
         par1NBTTagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
 	}
@@ -48,20 +44,17 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		
 		for (BlockPos door : doors)
 		{
-			ibuffer.put(door.posX);
-			ibuffer.put(door.posY);
-			ibuffer.put(door.posZ);
+			ibuffer.put(door.getX());
+			ibuffer.put(door.getY());
+			ibuffer.put(door.getZ());
 		}
 		
 		return ibuffer.array();
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
 		
 		// init doors
         this.readOpeningsFromArray(par1NBTTagCompound.getIntArray("doorInts"));
@@ -79,31 +72,30 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 	}
 	
-	public abstract StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z);
+	public abstract StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z);
 	
     /**
      * used to project a possible new component Bounding Box - to check if it would cut anything already spawned
      */
-    public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, int facing)
+    public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, EnumFacing facing)
     {
         switch (facing)
         {
-            case 0:
+            case SOUTH:
                 return new StructureBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
-            case 1:
+            case WEST:
                 return new StructureBoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
-            case 2:
+            case NORTH:
                 return new StructureBoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
-            case 3:
+            case EAST:
                 return new StructureBoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
             default:
                 return new StructureBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
         }
     }
     
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) 
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand)
 	{
 		if (parent != null && parent instanceof StructureTFComponent)
 		{
@@ -111,16 +103,13 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 	}
 
-
-
 	/**
 	 * Add a new component in the specified direction
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void addNewComponent(StructureComponent entrance, List list, Random random, int facing, int x, int y, int z) 
 	{
 		int index = this.componentType + 1;
-		int nFacing = (this.coordBaseMode + facing) % 4;
+		EnumFacing nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getXWithOffset(x, z);
 		int ny = this.getYWithOffset(y);
 		int nz = this.getZWithOffset(x, z);
@@ -159,9 +148,10 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	 */
 	protected StructureTFStrongholdComponent findBreakInComponent(List<StructureTFStrongholdComponent> list, int x, int y, int z)
 	{
+		BlockPos pos = new BlockPos(x, y, z);
 		for (StructureTFStrongholdComponent component : list)
 		{
-			if (component.boundingBox != null && component.boundingBox.isVecInside(x, y, z))
+			if (component.boundingBox != null && component.boundingBox.isVecInside(pos))
 			{
 				return component;
 			}
@@ -171,13 +161,12 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 	
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void addNewUpperComponent(StructureComponent parent, List list, Random random, int facing, int x, int y, int z) 
+	protected void addNewUpperComponent(StructureComponent parent, List list, Random random, int facing, int x, int y, int z)
 	{
 		StructureTFStrongholdComponent attempted = null;
 		
 		int index = this.componentType + 1;
-		int nFacing = (this.coordBaseMode + facing) % 4;
+		EnumFacing nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getXWithOffset(x, z);
 		int ny = this.getYWithOffset(y);
 		int nz = this.getZWithOffset(x, z);
@@ -237,27 +226,27 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		if (x == 0 || x == this.getXSize())
 		{
-			this.fillWithMetadataBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceID, deco.fenceMeta, Blocks.AIR, 0, false);
+			this.fillWithBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceState, Blocks.AIR.getDefaultState(), false);
 			this.fillWithAir(world, sbb, x, y, z - 1, x, y + 3, z + 1);
 		}
 		else
 		{
-			this.fillWithMetadataBlocks(world, sbb, x - 2, y, z, x + 2, y + 3, z, deco.fenceID, deco.fenceMeta, Blocks.AIR, 0, false);
+			this.fillWithBlocks(world, sbb, x - 2, y, z, x + 2, y + 3, z, deco.fenceState, Blocks.AIR.getDefaultState(), false);
 			this.fillWithAir(world, sbb, x - 1, y, z, x + 1, y + 3, z);
 		}
 		
-		//this.placeBlockAtCurrentPosition(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
+		//this.setBlockState(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
 	}
 
 	protected int getXSize() {
 		switch (this.getCoordBaseMode())
 		{
 		default:
-		case 0:
-		case 2:
+		case SOUTH:
+		case NORTH:
 			return this.boundingBox.getXSize() - 1;
-		case 1:
-		case 3:
+		case WEST:
+		case EAST:
 			return this.boundingBox.getZSize() - 1;
 		}
 	}
@@ -268,16 +257,16 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	protected void placeSmallDoorwayAt(World world, Random rand, int facing, int x, int y, int z, StructureBoundingBox sbb) {
 		if (facing == 0 || facing == 2)
 		{
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL, 0, Blocks.AIR, 0, true);
+			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 		}
 		else
 		{
-			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.COBBLESTONE_WALL, 0, Blocks.AIR, 0, true);
+			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 		}
 		
-		//this.placeBlockAtCurrentPosition(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
+		//this.setBlockState(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
 	}
 
 	/**
@@ -316,27 +305,27 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		// the center is always the same
 		for (int sy = 0; sy < 5; sy++)
 		{
-			this.placeBlockAtCurrentPosition(world, deco.pillarID, deco.pillarMeta, x, y + sy, z, sbb);
+			this.setBlockState(world, deco.pillarState, x, y + sy, z, sbb);
 		}
 
 		// antlers
-		this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x + 0, y + 4, z + oz, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x + ox, y + 4, z + 0, sbb);
+		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + 0, y + 4, z + oz, sbb);
+		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z + 0, sbb);
 
 		// arms
-		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 3, z + oz, sbb);
-		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smx), x + ox, y + 3, z + 0, sbb);
-		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smz) + 4, x + 0, y + 2, z + oz, sbb);
-		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smx) + 4, x + ox, y + 2, z + 0, sbb);
-		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smx) + 4, x + ox, y + 2, z + oz, sbb);
+		this.setBlockState(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 3, z + oz, sbb);
+		this.setBlockState(world, deco.stairID, this.getStairMeta(smx), x + ox, y + 3, z + 0, sbb);
+		this.setBlockState(world, deco.stairID, this.getStairMeta(smz) + 4, x + 0, y + 2, z + oz, sbb);
+		this.setBlockState(world, deco.stairID, this.getStairMeta(smx) + 4, x + ox, y + 2, z + 0, sbb);
+		this.setBlockState(world, deco.stairID, this.getStairMeta(smx) + 4, x + ox, y + 2, z + oz, sbb);
 
 		// sword
-		this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 0, z + oz, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 1, z + oz, sbb);
+		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z + oz, sbb);
+		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z + oz, sbb);
 
 		// feet
-		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 0, z + oz, sbb);
-		this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(smx), x + ox, y + 0, z + 0, sbb);
+		this.setBlockState(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 0, z + oz, sbb);
+		this.setBlockState(world, deco.stairID, this.getStairMeta(smx), x + ox, y + 0, z + 0, sbb);
 
 	}
 	
@@ -350,7 +339,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		// the center is always the same
 		for (int sy = 0; sy < 5; sy++)
 		{
-			this.placeBlockAtCurrentPosition(world, deco.pillarID, deco.pillarMeta, x, y + sy, z, sbb);
+			this.setBlockState(world, deco.pillarState, x, y + sy, z, sbb);
 		}
 		
 		if (facing == 0 || facing == 2)
@@ -362,28 +351,28 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			}
 			
 			// antlers
-			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x - ox, y + 4, z, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x + ox, y + 4, z, sbb);
+			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x - ox, y + 4, z, sbb);
+			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z, sbb);
 	
 			// arms
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 3, z, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(2 + facing), x + ox, y + 3, z, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing), x - ox, y + 3, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 3, z, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x + ox, y + 3, z, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x - ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z - oz, sbb);
 
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing) + 4, x - ox, y + 2, z, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(2 + facing) + 4, x + ox, y + 2, z, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + 0, y + 2, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x - ox, y + 2, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing) + 4, x - ox, y + 2, z, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing) + 4, x + ox, y + 2, z, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + 0, y + 2, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x - ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z - oz, sbb);
 			
 			// sword
-			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x, y + 0, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x, y + 1, z - oz, sbb);
+			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 0, z - oz, sbb);
+			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 1, z - oz, sbb);
 			
 			// feet
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 0, z + 0, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(2 + facing), x + ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x + ox, y + 0, z + 0, sbb);
 		}
 		else
 		{
@@ -394,28 +383,28 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			}
 			
 			// antlers
-			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x, y + 4, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x, y + 4, z + oz, sbb);
+			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z - oz, sbb);
+			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
 	
 			// arms
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 3, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(2 + facing), x, y + 3, z + oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z + oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 3, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x, y + 3, z + oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z + oz, sbb);
 
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing) + 4, x, y + 2, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(2 + facing) + 4, x, y + 2, z + oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + oz, y + 2, z + 0, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z - oz, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z + oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing) + 4, x, y + 2, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing) + 4, x, y + 2, z + oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + oz, y + 2, z + 0, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z + oz, sbb);
 			
 			// sword
-			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 0, z, sbb);
-			this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE_WALL, 0, x + ox, y + 1, z, sbb);
+			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z, sbb);
+			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z, sbb);
 			
 			// feet
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 0, z - ox, sbb);
-			this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(2 + facing), x, y + 0, z + ox, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 0, z - ox, sbb);
+			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x, y + 0, z + ox, sbb);
 		}
 
 	}
@@ -504,13 +493,13 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
         switch(getCoordBaseMode())
         {
-        case 0:
+        case SOUTH:
             return x - boundingBox.minX;
-        case 2:
+        case NORTH:
             return boundingBox.maxX - x;
-        case 1:
+        case WEST:
             return z - boundingBox.minZ;
-        case 3:
+        case EAST:
             return boundingBox.maxZ - z;
         }
         return x;
@@ -525,13 +514,13 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     {
         switch(getCoordBaseMode())
         {
-        case 0:
+        case SOUTH:
             return z - boundingBox.minZ;
-        case 2:
+        case NORTH:
             return boundingBox.maxZ - z;
-        case 1:
+        case WEST:
             return boundingBox.maxX - x;
-        case 3:
+        case EAST:
             return x - boundingBox.minX;
         }
         return z;
@@ -546,9 +535,9 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		{
 			for (BlockPos doorCoords : doors)
 			{
-				this.placeDoorwayAt(world, rand, doorCoords.posX, doorCoords.posY, doorCoords.posZ, sbb);
+				this.placeDoorwayAt(world, rand, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
 				
-				//this.placeBlockAtCurrentPosition(world, Blocks.WOOL, doorCoords.posX, doorCoords.posX, doorCoords.posY + 2, doorCoords.posZ, sbb);
+				//this.setBlockState(world, Blocks.WOOL, doorCoords.posX, doorCoords.posX, doorCoords.posY + 2, doorCoords.posZ, sbb);
 			}
 		}
     }
@@ -564,14 +553,14 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     			for (int z = sz; z <= dz; ++z)
     			{
     				boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
-    				Block blockID = this.getBlockAtCurrentPosition(world, x, y, z, sbb);
+    				Block blockID = this.getBlockStateFromPos(world, x, y, z, sbb).getBlock();
 
     				if (blockID == Blocks.AIR)
     				{
     					// cobblestone to "fill in holes"
     					if (wall)
     					{
-    						this.placeBlockAtCurrentPosition(world, Blocks.COBBLESTONE, 0, x, y, z, sbb);
+    						this.setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y, z, sbb);
     					}
     				}
     				else if (y == sy || y == dy)
@@ -579,14 +568,14 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 						// do stronghold bricks for floor/ceiling
     					StructureComponent.BlockSelector strongBlocks = StructureTFComponent.getStrongholdStones();
     					strongBlocks.selectBlocks(rand, x, y, z, wall);
-    					this.placeBlockAtCurrentPosition(world, strongBlocks.func_151561_a(), strongBlocks.getSelectedBlockMetaData(), x, y, z, sbb);
+    					this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
     					
     				}
     				else if (!wall || blockID != Blocks.DIRT)  // leave dirt there
     				{
 						// and use decorator (with presumably underbricks) for walls
     					randomBlocks.selectBlocks(rand, x, y, z, wall);
-    					this.placeBlockAtCurrentPosition(world, randomBlocks.func_151561_a(), randomBlocks.getSelectedBlockMetaData(), x, y, z, sbb);
+    					this.setBlockState(world, randomBlocks.getBlockState(), x, y, z, sbb);
     				}
     			}
     		}
@@ -605,24 +594,25 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
     			for (int z = sz; z <= dz; ++z)
     			{
     				boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
-    				Block blockID = this.getBlockAtCurrentPosition(world, x, y, z, sbb);
+    				IBlockState state = this.getBlockStateFromPos(world, x, y, z, sbb);
+					Block blockID = state.getBlock();
 
-    				if ((blockID != Blocks.AIR && (blockID.getMaterial() == Material.ROCK || blockID.getMaterial() == Material.GRASS || blockID.getMaterial() == Material.GROUND))
-    						|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockAtCurrentPosition(world, x, y - 1, z, sbb) == Blocks.STONEBRICK)
+    				if ((blockID != Blocks.AIR && (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.GRASS || state.getMaterial() == Material.GROUND))
+    						|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockStateFromPos(world, x, y - 1, z, sbb).getBlock() == Blocks.STONEBRICK)
     				{
     					if (y == sy || y == dy)
         				{
     						// do stronghold bricks for floor/ceiling
         					StructureComponent.BlockSelector strongBlocks = StructureTFComponent.getStrongholdStones();
         					strongBlocks.selectBlocks(rand, x, y, z, wall);
-        					this.placeBlockAtCurrentPosition(world, strongBlocks.func_151561_a(), strongBlocks.getSelectedBlockMetaData(), x, y, z, sbb);
+        					this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
         					
         				}
     					else
     					{
     						// and use decorator (with presumably underbricks) for walls
     						randomBlocks.selectBlocks(rand, x, y, z, wall);
-    						this.placeBlockAtCurrentPosition(world, randomBlocks.func_151561_a(), randomBlocks.getSelectedBlockMetaData(), x, y, z, sbb);
+    						this.setBlockState(world, randomBlocks.getBlockState(), x, y, z, sbb);
     					}
     				}
     			}

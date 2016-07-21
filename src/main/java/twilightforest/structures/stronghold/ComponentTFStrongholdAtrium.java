@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -17,10 +18,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 	private boolean enterBottom;
 
-	public ComponentTFStrongholdAtrium() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFStrongholdAtrium() {}
 
 	public ComponentTFStrongholdAtrium(int i, int facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
@@ -45,11 +43,8 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
         this.enterBottom = par1NBTTagCompound.getBoolean("enterBottom");
 	}
 
-	/**
-	 * Make a bounding box for this room
-	 */
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z)
 	{
 		
 		if (y > 17)

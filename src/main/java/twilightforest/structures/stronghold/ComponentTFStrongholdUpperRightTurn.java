@@ -3,6 +3,7 @@ package twilightforest.structures.stronghold;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -10,27 +11,18 @@ import net.minecraft.world.gen.structure.StructureComponent;
 public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdComponent {
 
 
-	public ComponentTFStrongholdUpperRightTurn() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFStrongholdUpperRightTurn() {}
 
-	public ComponentTFStrongholdUpperRightTurn(int i, int facing, int x, int y, int z) {
+	public ComponentTFStrongholdUpperRightTurn(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 	}
 
-	/**
-	 * Make a bounding box for this room
-	 */
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z)
 	{
 		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 5, 5, facing);
 	}
 	
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random random) {
 		super.buildComponent(parent, list, random);
@@ -40,9 +32,6 @@ public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdCo
 		
 	}
 
-	/**
-	 * Generate the blocks that go here
-	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
         if (this.isLiquidInStructureBoundingBox(world, sbb))
@@ -63,9 +52,6 @@ public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdCo
         }
 	}
 
-	/**
-	 * Does this component fall under block protection when progression is turned on, normally true
-	 */
 	@Override
 	public boolean isComponentProtected() {
 		return false;

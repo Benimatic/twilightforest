@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -14,36 +16,27 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	
 	int entranceLevel;
 
-	public ComponentTFStrongholdFoundry() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFStrongholdFoundry() {}
 
-	public ComponentTFStrongholdFoundry(int i, int facing, int x, int y, int z) {
+	public ComponentTFStrongholdFoundry(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 	}
 	
-	/**
-	 * Save to NBT
-	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("entranceLevel", this.entranceLevel);
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.entranceLevel = par1NBTTagCompound.getInteger("entranceLevel");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
 		if (y > 17)
 		{
 			this.entranceLevel = 3;
@@ -61,9 +54,6 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		}
 	}
 	
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random random) {
 		super.buildComponent(parent, list, random);
@@ -92,15 +82,12 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 
 	}
 
-	/**
-	 * Generate the blocks that go here
-	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 25, 17, rand, deco.randomBlocks);
 		
 		// lava bottom
-		this.fillWithBlocks(world, sbb, 1, 0, 1, 16, 4, 16, Blocks.LAVA, Blocks.LAVA, false);
+		this.fillWithBlocks(world, sbb, 1, 0, 1, 16, 4, 16, Blocks.LAVA.getDefaultState(), Blocks.LAVA.getDefaultState(), false);
 		
 		// top ledge
 		this.fillWithRandomizedBlocks(world, sbb, 1, 19, 1, 16, 19, 16, false, rand, deco.randomBlocks);
@@ -141,7 +128,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 					
 					if (c < r)
 					{
-						this.placeBlockAtCurrentPosition(world, Blocks.STONE, 0, x, y, z, sbb);
+						this.setBlockState(world, Blocks.STONE.getDefaultState(), x, y, z, sbb);
 					}
 				}
 			}
@@ -154,11 +141,11 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 			int dz = massRandom.nextInt(9) + 5;
 			int dy = massRandom.nextInt(13) + 10;
 
-			if (this.getBlockAtCurrentPosition(world, dx, dy, dz, sbb) != Blocks.AIR)
+			if (this.getBlockStateFromPos(world, dx, dy, dz, sbb).getBlock() != Blocks.AIR)
 			{
 				for (int y = 0; y < 3; y++)
 				{
-					this.placeBlockAtCurrentPosition(world, Blocks.STONE, 0, dx, dy - y, dz, sbb);
+					this.setBlockState(world, Blocks.STONE.getDefaultState(), dx, dy - y, dz, sbb);
 				}
 			}
 		}
@@ -166,56 +153,38 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		// add some redstone ore
 		for (int i = 0; i < 8; i++)
 		{
-			Block blockID = Blocks.REDSTONE_ORE;
-			int blockMeta = 0;
-			
-			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
+			addOreToMass(world, sbb, massRandom, Blocks.REDSTONE_ORE.getDefaultState());
 		}
 		
 		// add some iron ore
 		for (int i = 0; i < 8; i++)
 		{
-			Block blockID = Blocks.IRON_ORE;
-			int blockMeta = 0;
-			
-			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
+			addOreToMass(world, sbb, massRandom, Blocks.IRON_ORE.getDefaultState());
 		}
 		
 		// add some gold ore
 		for (int i = 0; i < 6; i++)
 		{
-			Block blockID = Blocks.GOLD_ORE;
-			int blockMeta = 0;
-			
-			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
+			addOreToMass(world, sbb, massRandom, Blocks.GOLD_ORE.getDefaultState());
 		}
 		
 		// add some glowstone
 		for (int i = 0; i < 2; i++)
 		{
-			Block blockID = Blocks.GLOWSTONE;
-			int blockMeta = 0;
-			
-			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
+			addOreToMass(world, sbb, massRandom, Blocks.GLOWSTONE.getDefaultState());
 		}
 		
 		
 		// add some emerald ore
 		for (int i = 0; i < 2; i++)
 		{
-			Block blockID = Blocks.EMERALD_ORE;
-			int blockMeta = 0;
-			
-			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
+			addOreToMass(world, sbb, massRandom, Blocks.EMERALD_ORE.getDefaultState());
 		}
 		
 		// add some diamond ore
 		for (int i = 0; i < 4; i++)
 		{
-			Block blockID = Blocks.DIAMOND_ORE;
-			int blockMeta = 0;
-			
-			addOreToMass(world, sbb, massRandom, blockID, blockMeta);
+			addOreToMass(world, sbb, massRandom, Blocks.DIAMOND_ORE.getDefaultState());
 		}
 		
 		// doors
@@ -227,16 +196,16 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	/**
 	 * Add a block of ore to the mass
 	 */
-	private void addOreToMass(World world, StructureBoundingBox sbb, Random massRandom, Block blockID, int blockMeta) {
+	private void addOreToMass(World world, StructureBoundingBox sbb, Random massRandom, IBlockState state) {
 		for (int i = 0; i < 10; i++)
 		{
 			int dx = massRandom.nextInt(9) + 5;
 			int dz = massRandom.nextInt(9) + 5;
 			int dy = massRandom.nextInt(13) + 10;
 	
-			if (this.getBlockAtCurrentPosition(world, dx, dy, dz, sbb) != Blocks.AIR)
+			if (this.getBlockStateFromPos(world, dx, dy, dz, sbb).getBlock() != Blocks.AIR)
 			{
-				this.placeBlockAtCurrentPosition(world, blockID, blockMeta, dx, dy, dz, sbb);
+				this.setBlockState(world, state, dx, dy, dz, sbb);
 				// we have succeeded, stop looping
 				break;
 			}

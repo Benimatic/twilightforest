@@ -3,6 +3,7 @@ package twilightforest.structures.stronghold;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -11,21 +12,16 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 	
 	public TFStrongholdPieces lowerPieces;
 
-	public ComponentTFStrongholdEntrance() {
-		super();
-	}
+	public ComponentTFStrongholdEntrance() {}
 
 	public ComponentTFStrongholdEntrance(World world, Random rand, int i, int x, int y, int z) {
-		super(i, 0, x, y - 10, z);
+		super(i, EnumFacing.SOUTH, x, y - 10, z);
 		
 		this.deco = new StructureTFDecoratorStronghold();
 		
 		lowerPieces = new TFStrongholdPieces();
 	}
 	
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random random) {
 		super.buildComponent(parent, list, random);
@@ -132,18 +128,12 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		return false;
 	}
 
-	/**
-	 * Make a bounding box for this room
-	 */
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z)
 	{
 		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -1, -1, 0, 18, 7, 18, facing);
 	}
 
-	/**
-	 * Generate the blocks that go here
-	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);

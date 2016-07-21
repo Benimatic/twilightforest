@@ -3,18 +3,16 @@ package twilightforest.structures.stronghold;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.block.BlockTFShield;
 import twilightforest.block.TFBlocks;
 
 public class StructureTFStrongholdShield extends StructureTFStrongholdComponent {
 
-
-
-	public StructureTFStrongholdShield() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public StructureTFStrongholdShield() {}
 
 	public StructureTFStrongholdShield(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		super(0, 0, minX, minY, minZ);
@@ -29,22 +27,25 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		Block shieldBlock = TFBlocks.shield;
-		
-		//Facing.facings
+		IBlockState down = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.DOWN);
+		IBlockState up = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.UP);
+		IBlockState north = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.NORTH);
+		IBlockState south = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.SOUTH);
+		IBlockState west = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.WEST);
+		IBlockState east = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.EAST);
 		
         // +x
-        this.fillWithMetadataBlocks(world, sbb, this.boundingBox.getXSize(), 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 4, shieldBlock, 4, false);
+        this.fillWithBlocks(world, sbb, this.boundingBox.getXSize(), 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), west, west, false);
         // -x
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, 0, this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 5, shieldBlock, 5, false);
+        this.fillWithBlocks(world, sbb, 0, 0, 0, 0, this.boundingBox.getYSize(), this.boundingBox.getZSize(), east, east, false);
         // +z
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, this.boundingBox.getZSize(), this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 2, shieldBlock, 2, false);
+        this.fillWithBlocks(world, sbb, 0, 0, this.boundingBox.getZSize(), this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), north, north, false);
         // -z
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), 0, shieldBlock, 3, shieldBlock, 3, false);
+        this.fillWithBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), 0, south, south, false);
 		// top
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), 0, this.boundingBox.getZSize(), shieldBlock, 1, shieldBlock, 1, false);
+        this.fillWithBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), 0, this.boundingBox.getZSize(), up, up, false);
         // bottom
-        this.fillWithMetadataBlocks(world, sbb, 0, this.boundingBox.getYSize(), 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 0, shieldBlock, 0, false);
+        this.fillWithBlocks(world, sbb, 0, this.boundingBox.getYSize(), 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), down, down, false);
         
         return true;
 	}

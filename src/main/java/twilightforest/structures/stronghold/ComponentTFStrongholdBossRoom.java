@@ -5,35 +5,29 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.SpawnerVariant;
 
 public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponent {
 	
-	public ComponentTFStrongholdBossRoom() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	public ComponentTFStrongholdBossRoom() {}
 
-	public ComponentTFStrongholdBossRoom(int i, int facing, int x, int y, int z) {
+	public ComponentTFStrongholdBossRoom(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
-	/**
-	 * Make a bounding box for this room
-	 */
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z)
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z)
 	{
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 27, 7, 27, facing);
 	}
 	
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random random) {
 		super.buildComponent(parent, list, random);
@@ -41,9 +35,6 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.addDoor(13, 1, 0);
 	}
 
-	/**
-	 * Generate the blocks that go here
-	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 26, 6, 26, rand, deco.randomBlocks);
@@ -55,10 +46,10 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.fillWithRandomizedBlocks(world, sbb, 4, 1, 23, 22, 5, 25, false, rand, deco.randomBlocks);
 		
 		// obsidian filler
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 1, 2, 5, 25, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 24, 1, 1, 25, 5, 25, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 4, 1, 1, 22, 5, 2, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 4, 1, 24, 22, 5, 25, Blocks.OBSIDIAN, 0, Blocks.OBSIDIAN, 0, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 1, 2, 5, 25, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 24, 1, 1, 25, 5, 25, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 4, 1, 1, 22, 5, 2, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 4, 1, 24, 22, 5, 25, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
 		
 		// corner pillars
 		this.fillWithRandomizedBlocks(world, sbb, 4, 1, 4, 4, 5, 7, false, rand, deco.randomBlocks);
@@ -95,7 +86,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		
 		// doorway
 		this.fillWithAir(world, sbb, 12, 1, 1, 14, 4, 2);
-		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS, Blocks.IRON_BARS, false);
+		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
 		
 		int var8 = this.getXWithOffset(0, 0);
 		int var9 = this.getYWithOffset(0);
@@ -105,7 +96,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 
 		
 		//spawner
-		placeBlockAtCurrentPosition(world, TFBlocks.bossSpawner, 4, 13, 2, 13, sbb);
+		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, SpawnerVariant.KNIGHT_PHANTOM), 13, 2, 13, sbb);
 
 		
 		// out of order
@@ -188,24 +179,18 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.placeBlockRotated(world, deco.stairID, this.getStairMeta(2 + rotation) + 4, 6, 5, 5, rotation, sbb);
 	}
 	
-	/**
-	 * Make a doorway - this is the iron fence door
-	 */
 	@Override
 	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
 		if (x == 0 || x == getXSize())
 		{
-			this.fillWithMetadataBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
+			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		}
 		else
 		{
-			this.fillWithMetadataBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
+			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		}
 	}
 	
-	/**
-	 * Is the specified point a valid spot to break in?
-	 */
 	@Override
 	protected boolean isValidBreakInPoint(int wx, int wy, int wz) {
 		return false;
