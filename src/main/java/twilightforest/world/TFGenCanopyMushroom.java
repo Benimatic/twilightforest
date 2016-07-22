@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -52,18 +53,18 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		}
 
 		
-		this.treeBlock = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK :  Blocks.BROWN_MUSHROOM_BLOCK;
+		this.treeState = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK.getDefaultState() :  Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState();
 		this.leafState = treeState;
 
 		//okay build a tree!  Go up to the height
-		buildBranch(world, x, y, z, 0, treeHeight, 0, 0, true, random);
+		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);
 		
 		// make 3-4 branches
 		int numBranches = 3 + random.nextInt(2);
 		double offset = random.nextDouble();
 		for (int b = 0; b < numBranches; b++)
 		{
-			buildBranch(world, x, y, z, treeHeight - 5 + b, 9, 0.3 * b + offset, 0.2, false, random);
+			buildBranch(world, pos, treeHeight - 5 + b, 9, 0.3 * b + offset, 0.2, false, random);
 		}
 		
 		return true;
@@ -80,7 +81,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	private void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG)
 	{
 		BlockPos src = pos.up(height);
-		BlockPos dest = translateCoords(src.getX(), src.getY(), src.getZ(), length, angle, tilt);
+		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
 		
 		// constrain branch spread
 		if ((dest.getX() - pos.getX()) < -4)
@@ -102,27 +103,27 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		
 		if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
 			// branch
-			drawBresehnam(world, src.getX(), src.getY(), src.getZ(), dest.getX(), src.getY(), dest.getZ(), treeBlock, branchMeta);
-			drawBresehnam(world, dest.getX(), src.getY() + 1, dest.getZ(), dest.getX(), dest.getY() - 1, dest.getZ(), treeBlock, treeMeta);
+			TFGenerator.drawBresehnam(this, world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
+			TFGenerator.drawBresehnam(this, world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
 		}
 		else {
 			// trunk
-			drawBresehnam(world, src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY() - 1, dest.getZ(), treeBlock, treeMeta);
+			TFGenerator.drawBresehnam(this, world, src, dest.down(), treeState);
 		}
 		
 		// do this here until that bug with the lighting is fixed
 		if (trunk) {
 			// add a firefly (torch) to the trunk
-			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+			addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 		}
 		
-		drawMushroomCircle(world, dest.getX(), dest.getY(), dest.getZ(), 4, leafBlock);
+		drawMushroomCircle(world, dest, 4, leafState);
 	}
 	
 	/**
 	 * Draw a flat blob (a circle?) of whatevs (I'm guessing... leaves).
 	 */
-	private void drawMushroomCircle(World world, int sx, int sy, int sz, int rad, Block blockValue)
+	private void drawMushroomCircle(World world, BlockPos pos, int rad, IBlockState state)
 	{
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)

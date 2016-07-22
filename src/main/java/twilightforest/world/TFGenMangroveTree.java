@@ -6,8 +6,10 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
 
 public class TFGenMangroveTree extends TFTreeGenerator {
@@ -27,8 +29,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
         
     	treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-    	leafBlock = TFBlocks.leaves;
-    	leafMeta = 2;
+    	leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.MANGROVE);
 		rootState = TFBlocks.root.getDefaultState();
     }
 	

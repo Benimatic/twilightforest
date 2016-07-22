@@ -2,16 +2,14 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFRoots;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
-
-
-
+import twilightforest.block.enums.WoodVariant;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest 
@@ -30,13 +28,10 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
     public TFGenDarkCanopyTree(boolean par1)
     {
         super(par1);
-    	treeBlock = TFBlocks.log;
-    	treeMeta = 3;
-    	branchMeta = 15;
-    	leafBlock = TFBlocks.darkleaves;
-    	leafMeta = 0;
-    	rootBlock = TFBlocks.root;
-    	rootMeta = BlockTFRoots.ROOT_META;
+    	treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+    	leafState = TFBlocks.darkleaves.getDefaultState();
+    	rootState = TFBlocks.root.getDefaultState();
     }
 	
 	@Override
@@ -74,23 +69,23 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		int treeHeight = 6 + random.nextInt(5);
 		
 		//okay build a tree!  trunk here
-		drawBresehnam(world, x, y, z, x, y + treeHeight, z, treeBlock, treeMeta);
-		leafAround(world, x, y + treeHeight, z);
+		TFGenerator.drawBresehnam(this, world, pos, pos.up(treeHeight), treeState);
+		leafAround(world, pos.up(treeHeight));
 		
 		// make 4 branches
 		int numBranches = 4;
 		double offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++)
 		{
-			buildBranch(world, x, y, z, treeHeight - 3 - numBranches + (b / 2), 10 + random.nextInt(4), 0.23 * b + offset, 0.23, random);
+			buildBranch(world, pos, treeHeight - 3 - numBranches + (b / 2), 10 + random.nextInt(4), 0.23 * b + offset, 0.23, random);
 		}
 		
 		// root bulb
-		if (hasAirAround(world, x, y - 1, z)) {
-			this.setBlockAndNotifyAdequately(world, x, y - 1, z, treeBlock, treeMeta);
+		if (TFGenerator.hasAirAround(world, pos.down())) {
+			this.setBlockAndNotifyAdequately(world, pos.down(), treeState);
 		}
 		else {
-			this.setBlockAndNotifyAdequately(world, x, y - 1, z, rootBlock, rootMeta);
+			this.setBlockAndNotifyAdequately(world, pos.down(), rootState);
 		}
 
 		// roots!
@@ -98,69 +93,63 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		offset = random.nextDouble();
 		for (int b = 0; b < numRoots; b++)
 		{
-			buildRoot(world, x, y, z, offset, b);
+			buildRoot(world, pos, offset, b);
 		}
 
 		
 		return true;
 	}
 
-	
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
-	 * 
-	 * @param height
-	 * @param length
-	 * @param angle
-	 * @param tilt
 	 */
-	private void buildBranch(World world, int x, int y, int z, int height, double length, double angle, double tilt, Random random)
+	private void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, Random random)
 	{
-		BlockPos src = new BlockPos(x, y + height, z);
-		BlockPos dest = translateCoords(src.posX, src.posY, src.posZ, length, angle, tilt);
+		BlockPos src = pos.up(height);
+		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
 		
 		// constrain branch spread
-		if ((dest.posX - x) < -4)
+		if ((dest.getX() - pos.getX()) < -4)
 		{
-			dest.posX = x - 4;
+			dest = new BlockPos(pos.getX() - 4, dest.getY(), dest.getZ());
 		}
-		if ((dest.posX - x) > 4)
+		if ((dest.getX() - pos.getX()) > 4)
 		{
-			dest.posX = x + 4;
+			dest = new BlockPos(pos.getX() + 4, dest.getY(), dest.getZ());
 		}
-		if ((dest.posZ - z) < -4)
+		if ((dest.getZ() - pos.getZ()) < -4)
 		{
-			dest.posZ = z - 4;
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - 4);
 		}
-		if ((dest.posZ - z) > 4)
+		if ((dest.getZ() - pos.getZ()) > 4)
 		{
-			dest.posZ = z + 4;
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + 4);
 		}
 		
-		drawBresehnam(world, src.posX, src.posY, src.posZ, dest.posX, dest.posY, dest.posZ, treeBlock, branchMeta);
+		TFGenerator.drawBresehnam(this, world, src, dest, branchState);
 
-		if (Math.abs(x - dest.posX) + 2 > 7 || Math.abs(z - dest.posZ) + 2 > 7 )
+		if (Math.abs(pos.getX() - dest.getX()) + 2 > 7 || Math.abs(pos.getZ() - dest.getZ()) + 2 > 7 )
 		{
-			System.out.println("getting branch too far.  x = " + (x - dest.posX + 2) + ", z = " + (z - dest.posZ + 2));
+			// System.out.println("getting branch too far.  x = " + (x - dest.posX + 2) + ", z = " + (z - dest.posZ + 2));
 		}
 		
-		leafAround(world, dest.posX, dest.posY, dest.posZ);
+		leafAround(world, dest);
 
 	}
 
 	/**
 	 * Make our leaf pattern
 	 */
-	private void leafAround(World world, int dx, int dy, int dz) {
+	private void leafAround(World world, BlockPos pos) {
 		int leafSize = 4;
 		
 		// only leaf if there are no leaves by where we are thinking of leafing
-		if (hasAirAround(world, dx, dy, dz)) 
+		if (TFGenerator.hasAirAround(world, pos))
 		{
-			makeLeafCircle(world, dx, dy - 1, dz, leafSize, leafBlock, leafMeta);	
-			makeLeafCircle(world, dx, dy, dz, leafSize + 1, leafBlock, leafMeta); 
-			makeLeafCircle(world, dx, dy + 1, dz, leafSize, leafBlock, leafMeta);
-			makeLeafCircle(world, dx, dy + 2, dz, leafSize - 2, leafBlock, leafMeta);
+			TFGenerator.makeLeafCircle(this, world, pos.down(), leafSize, leafState, false);
+			TFGenerator.makeLeafCircle(this, world, pos, leafSize + 1, leafState, false);
+			TFGenerator.makeLeafCircle(this, world, pos.up(), leafSize, leafState, false);
+			TFGenerator.makeLeafCircle(this, world, pos.up(2), leafSize - 2, leafState, false);
 		}
 	}
 
