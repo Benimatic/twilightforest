@@ -10,6 +10,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.TowerTranslucentVariant;
 import twilightforest.entity.EntityTFMiniGhast;
 
 public class TileEntityTFCReactorActive extends TileEntity implements ITickable {
@@ -55,38 +56,41 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
     		{
     			if (counter == 5)
     			{
+					IBlockState fakeGold = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_GOLD);
+					IBlockState fakeDiamond = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_DIAMOND);
+					
     				// transformation!
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() + 1, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() + 1, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() + 1, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() + 1, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
+    				worldObj.setBlockState(pos.add(1, 1, 1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(1, 1, -1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(-1, 1, 1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(-1, 1, -1), fakeDiamond, 2);
     				
-    				worldObj.setBlock(this.pos.getX() + 0, this.pos.getY() + 1, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() + 0, this.pos.getY() + 1, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() + 1, this.pos.getZ() + 0, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() + 1, this.pos.getZ() + 0, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
+    				worldObj.setBlockState(pos.add(0, 1, 1), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(0, 1, -1), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(1, 1, 0), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(-1, 1, 0), fakeGold, 2);
     				
 
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() + 0, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() + 0, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() + 0, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() + 0, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
+    				worldObj.setBlockState(pos.add(1, 0, 1), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(1, 0, -1), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(-1, 0, 1), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(-1, 0, -1), fakeGold, 2);
     				
-    				worldObj.setBlock(this.pos.getX() + 0, this.pos.getY() + 0, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() + 0, this.pos.getY() + 0, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() + 0, this.pos.getZ() + 0, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() + 0, this.pos.getZ() + 0, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
+    				worldObj.setBlockState(pos.add(0, 0, 1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(0, 0, -1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(1, 0, 0), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(-1, 0, 0), fakeDiamond, 2);
     				
     				
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() - 1, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() - 1, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() - 1, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() - 1, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_DIAMOND, 2);
+    				worldObj.setBlockState(pos.add(1, -1, 1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(1, -1, -1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(-1, -1, 1), fakeDiamond, 2);
+    				worldObj.setBlockState(pos.add(-1, -1, -1), fakeDiamond, 2);
     				
-    				worldObj.setBlock(this.pos.getX() + 0, this.pos.getY() - 1, this.pos.getZ() + 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() + 0, this.pos.getY() - 1, this.pos.getZ() - 1, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() + 1, this.pos.getY() - 1, this.pos.getZ() + 0, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
-    				worldObj.setBlock(this.pos.getX() - 1, this.pos.getY() - 1, this.pos.getZ() + 0, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_FAKE_GOLD, 2);
+    				worldObj.setBlockState(pos.add(0, -1, 1), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(0, -1, -1), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(1, -1, 0), fakeGold, 2);
+    				worldObj.setBlockState(pos.add(-1, -1 ,0), fakeGold, 2);
     				
     			}
     			
@@ -96,11 +100,11 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 
     			if (primary >= offset && primary <= 249)
     			{
-    				drawBlob(this.pos.getX(), this.pos.getY(), this.pos.getZ(), (primary - offset) / 40, Blocks.AIR, 0, primary - offset, false);
+    				drawBlob(this.pos, (primary - offset) / 40, Blocks.AIR.getDefaultState(), primary - offset, false);
     			}
     			if (primary <= 200)
     			{
-    				drawBlob(this.pos.getX(), this.pos.getY(), this.pos.getZ(), primary / 40, TFBlocks.towerTranslucent, BlockTFTowerTranslucent.META_REACTOR_DEBRIS, counter, false);
+    				drawBlob(this.pos, primary / 40, TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT,TowerTranslucentVariant.REACTOR_DEBRIS), counter, false);
     			}
     			
     			// secondary burst
@@ -108,11 +112,11 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
     			
     			if (secondary >= offset && secondary <= 129)
     			{
-    				drawBlob(this.pos.getX() + secX, this.pos.getY() + secY, this.pos.getZ() + secZ, (secondary - offset) / 40, Blocks.AIR, 0, secondary - offset, false);
+    				drawBlob(this.pos.add(secX, secY, secZ), (secondary - offset) / 40, Blocks.AIR.getDefaultState(), secondary - offset, false);
     			}
     			if (secondary >= 0 && secondary <= 160)
     			{
-    				drawBlob(this.pos.getX() + secX, this.pos.getY() + secY, this.pos.getZ() + secZ, secondary / 40, Blocks.AIR, 0, secondary, true);
+    				drawBlob(this.pos.add(secX, secY, secZ), secondary / 40, Blocks.AIR.getDefaultState(), secondary, true);
     			}
     			
     			// tertiary burst
@@ -120,11 +124,11 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
     			
     			if (tertiary >= offset && tertiary <= 129)
     			{
-    				drawBlob(this.pos.getX() + terX, this.pos.getY() + terY, this.pos.getZ() + terZ, (tertiary - offset) / 40, Blocks.AIR, 0, tertiary - offset, false);
+    				drawBlob(this.pos.add(terX, terY, terZ), (tertiary - offset) / 40, Blocks.AIR.getDefaultState(), tertiary - offset, false);
     			}
     			if (tertiary >= 0 && tertiary <= 160)
     			{
-    				drawBlob(this.pos.getX() + terX, this.pos.getY() + terY, this.pos.getZ() + terZ, tertiary / 40, Blocks.AIR, 0, tertiary, true);
+    				drawBlob(this.pos.add(terX, terY, terZ), tertiary / 40, Blocks.AIR.getDefaultState(), tertiary, true);
     			}
 
     		}
@@ -165,11 +169,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 		worldObj.spawnEntityInWorld(ghast);
 	}
 
-
-	/**
-	 * Draw a giant blob of whatevs (okay, it's going to be leaves).
-	 */
-	public void drawBlob(int sx, int sy, int sz, int rad, Block blockValue, int metaValue, int fuzz, boolean netherTransform) {
+	private void drawBlob(BlockPos pos, int rad, IBlockState state, int fuzz, boolean netherTransform) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
 		{
@@ -203,28 +203,28 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 						switch (fuzzX)
 						{
 						case 0:
-							transformBlock(sx + dx, sy + dy, sz + dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(dx, dy, dz), state, fuzzY, netherTransform);
 							break;
 						case 1:
-							transformBlock(sx + dx, sy + dy, sz - dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(dx, dy, -dz), state, fuzzY, netherTransform);
 							break;
 						case 2:
-							transformBlock(sx - dx, sy + dy, sz + dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(-dx, dy, dz), state, fuzzY, netherTransform);
 							break;
 						case 3:
-							transformBlock(sx - dx, sy + dy, sz - dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(-dx, dy, -dz), state, fuzzY, netherTransform);
 							break;
 						case 4:
-							transformBlock(sx + dx, sy - dy, sz + dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(dx, -dy, dz), state, fuzzY, netherTransform);
 							break;
 						case 5:
-							transformBlock(sx + dx, sy - dy, sz - dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(dx, -dy, -dz), state, fuzzY, netherTransform);
 							break;
 						case 6:
-							transformBlock(sx - dx, sy - dy, sz + dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(-dx, -dy, dz), state, fuzzY, netherTransform);
 							break;
 						case 7:
-							transformBlock(sx - dx, sy - dy, sz - dz, blockValue, metaValue, fuzzY, netherTransform);
+							transformBlock(pos.add(-dx, -dy, -dz), state, fuzzY, netherTransform);
 							break;
 						}
 					}
@@ -233,10 +233,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 		}
 	}
 	
-	/**
-	 * 
-	 */
-	protected void transformBlock(BlockPos pos, IBlockState state, int fuzz, boolean netherTransform)
+	private void transformBlock(BlockPos pos, IBlockState state, int fuzz, boolean netherTransform)
 	{
 		IBlockState stateThere = worldObj.getBlockState(pos);
 

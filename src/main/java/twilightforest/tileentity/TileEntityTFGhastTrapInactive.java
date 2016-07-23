@@ -59,13 +59,13 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 
 			if (chargeLevel >= 1 && counter % 10 == 0)
 			{
-				((BlockTFTowerDevice)TFBlocks.towerDevice).sparkle(worldObj, this.xCoord, this.yCoord, this.zCoord, worldObj.rand);
+				((BlockTFTowerDevice)TFBlocks.towerDevice).sparkle(worldObj, getPos());
 
 				worldObj.playSound(this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, "note.harp", 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2)
 			{
-				worldObj.spawnParticle("smoke", this.xCoord + 0.1 + rand.nextFloat() * 0.8, this.yCoord + 1.05, this.zCoord + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.00, (rand.nextFloat() - rand.nextFloat()) * 0.05);
+				worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.1 + rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.00, (rand.nextFloat() - rand.nextFloat()) * 0.05);
 				if (counter % 10 == 0)
 				{
 					worldObj.playSound(this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, "note.harp", 1.2F, 0.8F, false);

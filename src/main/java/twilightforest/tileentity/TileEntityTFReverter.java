@@ -11,6 +11,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.TowerTranslucentVariant;
 
 public class TileEntityTFReverter extends TileEntity implements ITickable
 {
@@ -194,11 +195,11 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 		
 		if(rand.nextBoolean())
 		{
-			drawParticleLine(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, dx, dy, dz);
+			drawParticleLine(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dx, dy, dz);
 		}
 		else
 		{
-			drawParticleLine(sx, sy, sz, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
+			drawParticleLine(sx, sy, sz, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 		}
 		drawParticleLine(sx, sy, sz, dx, dy, dz);
 	}
@@ -264,8 +265,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			// don't revert everything instantly
 			if (replaceWith.getBlock() != Blocks.AIR)
 			{
-				replaceBlockID = TFBlocks.towerTranslucent;
-				replaceMeta = BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT;
+				replaceWith = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REVERTER_REPLACEMENT);
 			}
 			
 			worldObj.setBlockState(pos, replaceWith, 2);
@@ -291,8 +291,8 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 		{
 			return true;
 		}
-		if ((stateThere.getBlock() == TFBlocks.towerTranslucent && thereMeta != BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT)
-				|| (replaceWith.getBlock() == TFBlocks.towerTranslucent && replaceMeta != BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT))
+		if ((stateThere.getBlock() == TFBlocks.towerTranslucent && stateThere.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)
+				|| (replaceWith.getBlock() == TFBlocks.towerTranslucent && replaceWith.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT))
 		{
 			return true;
 		}

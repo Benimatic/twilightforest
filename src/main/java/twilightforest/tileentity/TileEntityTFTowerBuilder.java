@@ -2,6 +2,7 @@ package twilightforest.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -11,6 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.TowerDeviceVariant;
+import twilightforest.block.enums.TowerTranslucentVariant;
 
 public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 {
@@ -29,13 +32,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 	
 	private EntityPlayer trackedPlayer;
 	
-	private Block blockBuiltID = TFBlocks.towerTranslucent;
-	private int blockBuiltMeta = BlockTFTowerTranslucent.META_BUILT_INACTIVE;
-
-	public TileEntityTFTowerBuilder()
-	{
-		//System.out.println("I made a builder!");
-	}
+	private IBlockState blockBuiltState = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.BUILT_INACTIVE);
 
 	/**
 	 * Start building stuffs
@@ -70,7 +67,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 				// make a block
 				if (blocksMade <= RANGE && worldObj.isAirBlock(nextPos))
 				{
-					worldObj.setBlock(nextX, nextY, nextZ,blockBuiltID, blockBuiltMeta, 3);
+					worldObj.setBlockState(nextPos, blockBuiltState, 3);
 					
 					worldObj.playEvent(1001, nextPos, 0);
 
@@ -99,8 +96,8 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 			if (++ticksStopped == 60)
 			{
 				// force the builder back into an inactive state
-				worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, TFBlocks.towerDevice, BlockTFTowerDevice.META_BUILDER_TIMEOUT, 3);
-				worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, TFBlocks.towerDevice, 4);
+				worldObj.setBlockState(getPos(), TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
+				worldObj.scheduleUpdate(getPos(), TFBlocks.towerDevice, 4);
 			}
 		}
 	}
