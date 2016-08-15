@@ -331,7 +331,7 @@ public class TFFeature {
     	BiomeGenBase biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
     	
     	// get random value 
-    	Random hillRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
+    	Random hillRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + chunkX * 25117L + chunkZ * 151121L);
     	int randnum = hillRNG.nextInt(16);
     	
     	// glaciers have ice towers
@@ -432,7 +432,7 @@ public class TFFeature {
     	BiomeGenBase biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
     	
     	// get random value 
-    	Random hillRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
+    	Random hillRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + chunkX * 25117L + chunkZ * 151121L);
     	int randnum = hillRNG.nextInt(16);
     	
     	// glaciers have ice towers
@@ -706,7 +706,7 @@ public class TFFeature {
     	int regionX = (chunkX + 8) >> 4;
     	int regionZ = (chunkZ + 8) >> 4;
 
-	    long seed = (long)(regionX * 3129871) ^ (long)regionZ * 116129781L;
+	    long seed = (regionX * 3129871L) ^ (long)regionZ * 116129781L;
 	    seed = seed * seed * 42317861L + seed * 7L;
 	    
 	    int num0 = (int) (seed >> 12 & 3L);

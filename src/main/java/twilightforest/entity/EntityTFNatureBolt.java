@@ -70,7 +70,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 	@Override
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+		if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
 		{
 			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
 			{

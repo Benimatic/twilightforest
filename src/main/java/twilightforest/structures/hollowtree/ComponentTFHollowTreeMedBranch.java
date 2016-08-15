@@ -162,7 +162,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 		drawBresehnam(world, sbb, rSrc.posX, rSrc.posY, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.log, 12);
 		drawBresehnam(world, sbb, rSrc.posX, rSrc.posY + 1, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.log, 12);
 
-		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
 
 		// and several small branches
 		int numShoots = Math.min(decoRNG.nextInt(3) + 1, (int)(length / 5));

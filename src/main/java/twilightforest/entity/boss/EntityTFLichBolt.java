@@ -135,12 +135,12 @@ public class EntityTFLichBolt extends EntityThrowable {
 		boolean passThrough = false;
 		
 		// pass through other lich bolts
-		if (par1MovingObjectPosition.entityHit != null && (par1MovingObjectPosition.entityHit instanceof EntityTFLichBolt || par1MovingObjectPosition.entityHit instanceof EntityTFLichBomb)) {
+		if ((par1MovingObjectPosition.entityHit instanceof EntityTFLichBolt || par1MovingObjectPosition.entityHit instanceof EntityTFLichBomb)) {
 			passThrough = true;
 		}
 		
 		// only damage living things
-        if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+        if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
         {
         	if (par1MovingObjectPosition.entityHit instanceof EntityTFLich) {
         		EntityTFLich lich = (EntityTFLich)par1MovingObjectPosition.entityHit;
@@ -149,9 +149,9 @@ public class EntityTFLichBolt extends EntityThrowable {
         		}
         	}
         	// if we're not set to pass, damage what we hit
-            if (!passThrough && par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6))
+            if (!passThrough)
             {
-                ;
+                par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
             }
         }
         // if we don't pass through, then stop and die

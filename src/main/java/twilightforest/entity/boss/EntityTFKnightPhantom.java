@@ -361,10 +361,10 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
                 par1Entity.setFire(j * 4);
             }
 
-            if (par1Entity instanceof EntityLivingBase)
+            /*if (par1Entity instanceof EntityLivingBase)
             {
                 //EnchantmentThorns.func_151367_b(this, (EntityLivingBase)par1Entity, this.rand);
-            }
+            }*/
         }
 
         return flag;
@@ -559,13 +559,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     protected void pickRandomFormation() {
     	switch (rand.nextInt(8))
     	{
-    	case 0:
-    		currentFormation = Formation.SMALL_CLOCKWISE;
-    		break;
+    	//case 0:
+    		//currentFormation = Formation.SMALL_CLOCKWISE;
+    		//break;
     	case 1:
-    		currentFormation = Formation.SMALL_ANTICLOCKWISE;
+    		//currentFormation = Formation.SMALL_ANTICLOCKWISE;
     		//currentFormation = Formation.LARGE_ANTICLOCKWISE;
-    		break;
+    		//break;
     	case 2:
     		currentFormation = Formation.SMALL_ANTICLOCKWISE;
     		break;
@@ -581,6 +581,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     	case 6:
     		currentFormation = Formation.CHARGE_MINUSZ;
     		break;
+    	case 0:
     	case 7:
     		currentFormation = Formation.SMALL_CLOCKWISE;
     		//currentFormation = Formation.LARGE_CLOCKWISE;
@@ -763,10 +764,10 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 	private Vec3 getDestination() {
 		
-		if (!this.hasHome())
+		/*if (!this.hasHome())
 		{
 			// hmmm
-		}
+		}*/
 
 		switch (currentFormation)
 		{

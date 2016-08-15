@@ -49,14 +49,14 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     @Override
 	public void onLivingUpdate()
     {
-        if(worldObj.isDaytime())
+        /*if(worldObj.isDaytime())
         {
             float f = getBrightness(1.0F);
             if(f > 0.5F && worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
             {
 //                fire = 300;
             }
-        }
+        }*/
         super.onLivingUpdate();
     }
     
@@ -141,10 +141,10 @@ public class EntityTFWraith extends EntityFlying implements IMob {
             renderYawOffset = rotationYaw = (-(float)Math.atan2(d5, d7) * 180F) / (float)Math.PI;
             if(canEntityBeSeen(targetedEntity))
             {
-                if(attackCounter == 10)
+                /*if(attackCounter == 10)
                 {
                     //worldObj.playSoundAtEntity(this, "mob.ghast.charge", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-                }
+                }*/
                 attackCounter++;
                 if(attackCounter == 20)
                 {

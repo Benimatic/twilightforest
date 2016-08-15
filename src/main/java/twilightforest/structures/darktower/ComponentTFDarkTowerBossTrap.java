@@ -64,7 +64,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 	
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);

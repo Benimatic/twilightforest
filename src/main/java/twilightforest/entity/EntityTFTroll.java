@@ -179,9 +179,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 			this.ripenTrollBerNearby(this.deathTime / 5);
 		}
 		
-		if (this.deathTime == 1) {
+		/*if (this.deathTime == 1) {
 			//this.makeTrollStoneInAABB(this.boundingBox);
-		}
+		}*/
 	}
 
 

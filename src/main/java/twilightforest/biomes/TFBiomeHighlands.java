@@ -93,8 +93,8 @@ public class TFBiomeHighlands extends TFBiomeBase {
 
     public void genTerrainBlocks(World world, Random rand, Block[] blockStorage, byte[] metaStorage, int x, int z, double noiseVal)
     {
-        if (true)
-        {
+        //if (true)
+        //{
             this.topBlock = Blocks.grass;
             this.field_150604_aj = 0;
             this.fillerBlock = Blocks.dirt;
@@ -109,7 +109,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
                 this.topBlock = Blocks.dirt;
                 this.field_150604_aj = 2;
             }
-        }
+        //}
 
         this.genTwilightBiomeTerrain(world, rand, blockStorage, metaStorage, x, z, noiseVal);
     }

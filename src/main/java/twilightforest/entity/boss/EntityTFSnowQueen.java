@@ -676,9 +676,10 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE)) {
+		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
+		/*if (target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE)) {
 			// slow target?
-    	}
+    	}*/
 	}
 	
 

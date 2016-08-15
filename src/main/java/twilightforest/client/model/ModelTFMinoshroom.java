@@ -33,7 +33,7 @@ public class ModelTFMinoshroom extends ModelBiped {
 		body = new ModelRenderer(this, 18, 4);
 		body.addBox(-6F, -10F, -7F, 12, 18, 10);
 		body.setRotationPoint(0F, 5F, 2F);
-		setRotation(body, 1.570796F, 0F, 0F);
+		setRotation(body, (float)Math.PI/2f, 0F, 0F);
 		
 		leg1 = new ModelRenderer(this, 0, 16);
 		leg1.addBox(-3F, 0F, -2F, 4, 12, 4);
@@ -54,7 +54,7 @@ public class ModelTFMinoshroom extends ModelBiped {
 		udders = new ModelRenderer(this, 52, 0);
 		udders.addBox(-2F, -3F, 0F, 4, 6, 2);
 		udders.setRotationPoint(0F, 14F, 6F);
-		setRotation(udders, 1.570796F, 0F, 0F);
+		setRotation(udders, (float)Math.PI/2f, 0F, 0F);
 		
 		bipedBody = new ModelRenderer(this, 64, 0);
 		bipedBody.addBox(-4F, 0F, -2.5F, 8, 12, 5);

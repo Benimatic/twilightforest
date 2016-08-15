@@ -156,11 +156,11 @@ public class TFTickHandler
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(rangeToCheck, rangeToCheck, rangeToCheck));
 			
 			// do we have the item set?  if not, can we set it?
-			if (this.portalItem == null) {
+			/*if (this.portalItem == null) {
 
 				
 				
-			}
+			}*/
 			
 			// check to see if someone's thrown the portal item into the water
 			for (EntityItem entityItem : itemList) 

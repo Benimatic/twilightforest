@@ -188,7 +188,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer {
 		GL11.glRotatef(rotation, 0F, 1F, 0F);
 		GL11.glRotatef(180F, 0F, 1F, 0F);
 
-		GL11.glTranslatef(0, onGround ? 1F : 1F, onGround ? 0F : 0F);
+		GL11.glTranslatef(0, 1F, 0F);//GL11.glTranslatef(0, onGround ? 1F : 1F, onGround ? 0F : 0F);
 
 		// render the naga head
 		urGhastModel.render((Entity)null, 0.0F, 0, trophy.ticksExisted + partialTime, 0, 0.0F, 0.0625F);

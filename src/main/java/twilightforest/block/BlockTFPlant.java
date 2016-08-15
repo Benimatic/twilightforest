@@ -158,7 +158,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 
         if (meta == META_MOSSPATCH)
         {
-            long seed = x * 3129871 ^ y * 116129781L ^ z;
+            long seed = x * 3129871L ^ y * 116129781L ^ z;
             seed = seed * seed * 42317861L + seed * 11L;
             
             int xOff0 = (int) (seed >> 12 & 3L);
@@ -177,7 +177,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         }
         else if (meta == META_CLOVERPATCH)
         {
-            long seed = x * 3129871 ^ y * 116129781L ^ z;
+            long seed = x * 3129871L ^ y * 116129781L ^ z;
             seed = seed * seed * 42317861L + seed * 11L;
             
             int xOff0 = (int) (seed >> 12 & 3L);
@@ -277,11 +277,11 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     @Override
 	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
     {
-    	int meta = par1World.getBlockMetadata(x, y, z);
+    	/*int meta = par1World.getBlockMetadata(x, y, z);
 		if (par1World.getBlockLightValue(x, y, z) < lightValue[meta]) {
 			//par1World.updateLightByType(EnumSkyBlock.Block, x, y, z);
 			//par1World.markBlockForUpdate(x, y, z); // do we need this now?
-		}
+		}*/
 
     }
 	

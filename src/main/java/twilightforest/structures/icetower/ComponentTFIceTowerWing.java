@@ -197,7 +197,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
 	
 		// make walls
 		//fillWithMetadataBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockID, deco.blockMeta, Blocks.air, 0, false);
@@ -529,13 +529,13 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// one flight
 		for (int z = 6; z < 10; z++) {
 			int y = bottom - 2 + (z / 2);
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((z % 2 == 1) ? 8 : 0), 1, y, z, ladderDownDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((z & 1) == 1) ? 8 : 0), 1, y, z, ladderDownDir, sbb);
 		}
 		// two flight
 		for (int x = 2; x < 6; x++)
 		{
 			int y = bottom + 2 + (x / 2);
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((x % 2 == 1) ? 8 : 0), x, y, 9, ladderDownDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((x & 1) == 1) ? 8 : 0), x, y, 9, ladderDownDir, sbb);
 		}
 		// connector
 		this.placeBlockRotated(world, deco.platformID, deco.platformMeta, 5, bottom + 5, 8, ladderDownDir, sbb);
@@ -546,7 +546,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		for (int x = 5; x < 10; x++)
 		{
 			int y = bottom + 4 + (x / 2);
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((x % 2 == 1) ? 8 : 0), x, y, 1, ladderUpDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((x & 1) == 1) ? 8 : 0), x, y, 1, ladderUpDir, sbb);
 			if (x > 6) {
 				this.placeBlockRotated(world, Blocks.air, 0, x, top, 1, ladderUpDir, sbb);
 			}
@@ -555,7 +555,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		for (int z = 2; z < 5; z++) {
 			int y = bottom + 8 + (z / 2);
 			this.placeBlockRotated(world, Blocks.air, 0, 9, top, z, ladderUpDir, sbb);
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((z % 2 == 1) ? 8 : 0), 9, y, z, ladderUpDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((z & 1) == 1) ? 8 : 0), 9, y, z, ladderUpDir, sbb);
 		}
 		
 		// treasure!
@@ -570,13 +570,13 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// one flight
 		for (int z = 6; z < 9; z++) {
 			int y = bottom - 2 + (z / 2);
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((z % 2 == 1) ? 8 : 0), 2, y, z, ladderDownDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((z & 1) == 1) ? 8 : 0), 2, y, z, ladderDownDir, sbb);
 		}
 		// two flight
 		for (int x = 3; x < 9; x++)
 		{
 			int y = bottom + 1 + (x / 2);
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((x % 2 == 1) ? 8 : 0), x, y, 8, ladderDownDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((x & 1) == 1) ? 8 : 0), x, y, 8, ladderDownDir, sbb);
 		}
 		// three flight
 		for (int z = 7; z > 1; z--) {
@@ -584,13 +584,13 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 			if (z < 4) {
 				this.placeBlockRotated(world, Blocks.air, 0, 8, top, z, ladderDownDir, sbb);
 			}
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((z % 2 == 1) ? 8 : 0), 8, y, z, ladderDownDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((z & 1) == 1) ? 8 : 0), 8, y, z, ladderDownDir, sbb);
 		}
 		// last flight
 		for (int x = 7; x > 3; x--) {
 			int y = top + 1 - ((x - 1) / 2);
 			this.placeBlockRotated(world, Blocks.air, 0, x, top, 2, ladderDownDir, sbb);
-			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + ((x % 2 == 1) ? 8 : 0), x, y, 2, ladderDownDir, sbb);
+			this.placeBlockRotated(world, deco.platformID, deco.platformMeta + (((x & 1) == 1) ? 8 : 0), x, y, 2, ladderDownDir, sbb);
 		}
 		
 		// treasure!

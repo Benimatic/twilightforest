@@ -22,7 +22,7 @@ import cpw.mods.fml.common.FMLLog;
 public class TFTeleporter extends Teleporter 
 {
 	protected WorldServer myWorld;
-	protected Random rand;
+	protected Random rand = null;
 
 	public TFTeleporter(WorldServer par1WorldServer) {
 		super(par1WorldServer);

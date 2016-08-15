@@ -74,9 +74,9 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 			// check visibility
 			boolean isVisible = this.canEntitySee(this.attacker, hoverPosX, hoverPosY, hoverPosZ);
 			
-			if (!isVisible) {
+			/*if (!isVisible) {
 				//System.out.println("Hover spot is no longer visible");
-			}
+			}*/
 			
 			return isVisible;
 		}

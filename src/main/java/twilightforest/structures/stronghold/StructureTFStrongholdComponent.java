@@ -211,7 +211,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		
 		
 		// is it clear?
-		if (attempted != null && StructureComponent.findIntersecting(list, attempted.getBoundingBox()) == null)
+		if (/*attempted != null && */StructureComponent.findIntersecting(list, attempted.getBoundingBox()) == null)
 		{
 			// if so, add it
 			list.add(attempted);

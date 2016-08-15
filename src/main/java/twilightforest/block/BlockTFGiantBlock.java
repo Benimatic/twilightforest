@@ -50,10 +50,11 @@ public abstract class BlockTFGiantBlock extends Block {
         // return an icon from the icon matrix!
     	switch (side) {
     	case 0:
+    	case 1:
     	default:
         	return this.giantIcon[x & 3][z & 3][side];
-    	case 1:
-        	return this.giantIcon[x & 3][z & 3][side];
+    	//case 1:
+        	//return this.giantIcon[x & 3][z & 3][side];
     	case 2:
         	return this.giantIcon[3 - (x & 3)][3 - (y & 3)][side];
     	case 3:

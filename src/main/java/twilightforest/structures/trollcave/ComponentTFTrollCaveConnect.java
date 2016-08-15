@@ -82,7 +82,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
     		// clear inside
     		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
     		
-    		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+    		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
     		
             // wall decorations
     		for (int i = 0; i < 4; i++) {
@@ -91,7 +91,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
     			}
     		}
     		
-    		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+    		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
     		// stone stalactites!
     		for (int i = 0; i < 32; i++)
     		{
@@ -106,7 +106,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
     		}
     		
     		// possible treasure
-    		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+    		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
     		if (this.countExits() == 1 && decoRNG.nextInt(3) == 0) {
 	    		// treasure!
 	    		makeTreasureCrate(world, decoRNG, sbb);

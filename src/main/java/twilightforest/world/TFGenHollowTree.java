@@ -268,10 +268,10 @@ public class TFGenHollowTree extends TFGenerator
 
 
 					// fill it with lava!
-					if (dist <= hollow) {
+					/*if (dist <= hollow) {
 						// just kidding!
 						//world.setBlock(dx + x, dy + y, dz + z, Blocks.lava);
-					}
+					}*/
 					
 					// how about a ladder?  is that okay?
 					if (dist == hollow && dx == hollow) {

@@ -62,12 +62,13 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 	@Override
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		// only hit living things
-        if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+        if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
         {
-            if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6))
+            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+            /*if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6))
             {
                 ;
-            }
+            }*/
         }
 
         for (int i = 0; i < 8; ++i)

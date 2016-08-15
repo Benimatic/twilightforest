@@ -47,12 +47,12 @@ public class ItemTFSpawnEgg extends ItemMonsterPlacer {
 	@SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack par1ItemStack)
     {
-        String prefix = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
+        String prefix = (String.valueOf(StatCollector.translateToLocal(this.getUnlocalizedName() + ".name"))).trim();
         String entityname = TFCreatures.getStringFromID(par1ItemStack.getItemDamage());
 
         if (entityname != null)
         {
-            prefix = prefix + " " + StatCollector.translateToLocal(String.format("entity.%s.%s.name", TwilightForestMod.ID, entityname));
+            prefix = String.valueOf(new StringBuilder().append(prefix).append(' ').append(StatCollector.translateToLocal(String.format("entity.%s.%s.name", TwilightForestMod.ID, entityname))));
         }
         
         return prefix;
@@ -84,18 +84,18 @@ public class ItemTFSpawnEgg extends ItemMonsterPlacer {
 
             Entity entity = spawnCreature(par3World, par1ItemStack.getItemDamage(), (double)par4 + 0.5D, (double)par5 + var12, (double)par6 + 0.5D);
 
-            if (entity != null)
-            {
+            //if (entity != null)
+            //{
                 if (entity instanceof EntityLiving && par1ItemStack.hasDisplayName())
                 {
                     ((EntityLiving)entity).setCustomNameTag(par1ItemStack.getDisplayName());
                 }
 
-                if (!par2EntityPlayer.capabilities.isCreativeMode)
+                if (entity != null && !par2EntityPlayer.capabilities.isCreativeMode)
                 {
                     --par1ItemStack.stackSize;
                 }
-            }
+            //}
 
             return true;
         }

@@ -155,10 +155,11 @@ public class TFBiomeDecorator extends BiomeDecorator {
             int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
             int ry =  currentWorld.getHeightValue(rx, rz);
             TFGenerator rf = randomFeature(randomGenerator);
-            if (rf.generate(currentWorld, randomGenerator, rx, ry, rz))
+            rf.generate(currentWorld, randomGenerator, rx, ry, rz);
+            /*if (rf.generate(currentWorld, randomGenerator, rx, ry, rz))
             {
 //            	System.out.println(rf + " success at " + rx + ", " + ry + ", " + rz);
-            }
+            }*/
         }
 
 		// add canopy trees

@@ -134,9 +134,9 @@ public class RenderBlockTFCastleMagic implements ISimpleBlockRenderingHandler {
         
         
 		// if the block is a door or other clickable block(?), pulse the glyph a little
-        if (block == TFBlocks.castleDoor) {
+        /*if (block == TFBlocks.castleDoor) {
         	
-        }
+        }*/
         
 		
 		Tessellator tessellator =  Tessellator.instance;

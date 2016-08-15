@@ -21,7 +21,7 @@ public class ModelTFDeer extends ModelQuadruped
 		body.addBox(-4F, -10F, -7F, 6, 18, 8, 0F);
 		body.setRotationPoint(1F, 5F, 2F);
 
-		body.rotateAngleX = 1.570796F;
+		body.rotateAngleX = (float)Math.PI/2f;
 		leg1 = new ModelRenderer(this, 0, 17);
 		leg1.addBox(-3F, 0F, -2F, 2, 12, 3, 0F);
 		leg1.setRotationPoint(0F, 12F, 9F);

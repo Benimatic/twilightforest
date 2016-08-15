@@ -127,7 +127,7 @@ public class TFGenRavine extends MapGenBase
                         {
                             continue;
                         }
-                        if (blockStorage[k3] == Blocks.water || blockStorage[k3] == Blocks.water)
+                        if (blockStorage[k3] == Blocks.water || blockStorage[k3] == Blocks.flowing_water)//what was meant?//fix?
                         {
                             flag1 = true;
                         }

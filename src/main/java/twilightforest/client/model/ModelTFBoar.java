@@ -21,7 +21,7 @@ public class ModelTFBoar extends ModelQuadruped
 		body.addBox(-5F, -8F, -7F, 10, 14, 8, 0F);
 		body.setRotationPoint(0F, 11F, 2F);
 		
-		body.rotateAngleX = 1.570796F;
+		body.rotateAngleX = (float)Math.PI/2f;
 		
 		leg1 = new ModelRenderer(this, 0, 16);
 		leg1.addBox(-2F, 0F, -2F, 4, 6, 4, 0F);
