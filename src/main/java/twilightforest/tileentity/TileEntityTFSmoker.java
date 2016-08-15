@@ -16,7 +16,7 @@ public class TileEntityTFSmoker extends TileEntity {
     {
     	if (++counter % 4 == 0) {
     		TwilightForestMod.proxy.spawnParticle(this.worldObj, "hugesmoke", this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, 
-    				Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
+    				org.bogdang.modifications.math.MathHelperLite.cos(counter / 10.0) * 0.05, 0.25D, org.bogdang.modifications.math.MathHelperLite.sin(counter / 10.0) * 0.05);
     	}
     }
 }

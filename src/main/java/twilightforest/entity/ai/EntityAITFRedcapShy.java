@@ -23,7 +23,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 	public EntityAITFRedcapShy(EntityTFRedcap entityTFRedcap, float moveSpeed) {
 		this.entityObj = entityTFRedcap;
 		this.speed = moveSpeed;
-		this.lefty = (new Random()).nextBoolean(); 
+		this.lefty = (new org.bogdang.modifications.random.XSTR()).nextBoolean(); 
         this.setMutexBits(1);
 	}
 

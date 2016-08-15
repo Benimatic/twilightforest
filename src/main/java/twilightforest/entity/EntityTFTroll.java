@@ -87,7 +87,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(ROCK_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(ROCK_FLAG, (byte)0);
     }
 
     /**
@@ -116,9 +116,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 
         if (rock) {
             this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-            this.dataWatcher.updateObject(ROCK_FLAG, Byte.valueOf((byte)(b0 | 2)));
+            this.dataWatcher.updateObject(ROCK_FLAG, ((byte)(b0 | 2)));
         } else {
-            this.dataWatcher.updateObject(ROCK_FLAG, Byte.valueOf((byte)(b0 & -3)));
+            this.dataWatcher.updateObject(ROCK_FLAG, ((byte)(b0 & -3)));
         }
         
         this.setCombatTask();

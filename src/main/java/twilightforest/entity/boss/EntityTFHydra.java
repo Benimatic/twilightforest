@@ -154,7 +154,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		// update health
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
+            this.dataWatcher.updateObject(DATA_BOSSHEALTH, (int)this.getHealth());
         }
         else
         {
@@ -269,7 +269,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     	double dx, dy, dz;
 
     	// body goes behind the actual position of the hydra
-    	angle = (((renderYawOffset + 180) * 3.141593F) / 180F);
+    	angle = (((renderYawOffset + 180) * (float)Math.PI) / 180F);
 
     	dx = posX - MathHelper.sin(angle) * 3.0;
     	dy = posY + 0.1;
@@ -326,8 +326,8 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_SPAWNHEADS, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BOSSHEALTH, new Integer(MAX_HEALTH));
+        dataWatcher.addObject(DATA_SPAWNHEADS, (byte)0);
+        this.dataWatcher.addObject(DATA_BOSSHEALTH, (MAX_HEALTH));
     }
     
 	
@@ -340,11 +340,11 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     {
         if (flag)
         {
-            dataWatcher.updateObject(DATA_SPAWNHEADS, Byte.valueOf((byte)127));
+            dataWatcher.updateObject(DATA_SPAWNHEADS, ((byte)127));
         }
         else
         {
-            dataWatcher.updateObject(DATA_SPAWNHEADS, Byte.valueOf((byte)0));
+            dataWatcher.updateObject(DATA_SPAWNHEADS, (byte)0);
         }
     }
     

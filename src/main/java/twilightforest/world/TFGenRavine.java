@@ -25,7 +25,7 @@ public class TFGenRavine extends MapGenBase
             double d1, double d2, float f, float f1, float f2,
             int k, int i1, double d3)
     {
-        Random random = new Random(l);
+        Random random = new org.bogdang.modifications.random.XSTR(l);
         double d4 = i * 16 + 8;
         double d5 = j * 16 + 8;
         float f3 = 0.0F;
@@ -53,7 +53,7 @@ public class TFGenRavine extends MapGenBase
 
         for (; k < i1; k++)
         {
-            double d6 = 1.5D + (double)(MathHelper.sin(((float)k * 3.141593F) / (float)i1) * f * 1.0F);
+            double d6 = 1.5D + (double)(MathHelper.sin(((float)k * (float)Math.PI) / (float)i1) * f * 1.0F);
             double d7 = d6 * d3;
             d6 *= (double)random.nextFloat() * 0.25D + 0.75D;
             d7 *= (double)random.nextFloat() * 0.25D + 0.75D;
@@ -209,7 +209,7 @@ public class TFGenRavine extends MapGenBase
         int i1 = 1;
         for (int j1 = 0; j1 < i1; j1++)
         {
-            float f = rand.nextFloat() * 3.141593F * 2.0F;
+            float f = rand.nextFloat() * (float)Math.PI * 2.0F;
             float f1 = ((rand.nextFloat() - 0.5F) * 2.0F) / 8F;
             float f2 = (rand.nextFloat() * 2.0F + rand.nextFloat()) * 2.0F;
             generateRavine(rand.nextLong(), currentChunkX, currentChunkZ, shortStorage, d, d1, d2, f2, f, f1, 0, 0, 3D);

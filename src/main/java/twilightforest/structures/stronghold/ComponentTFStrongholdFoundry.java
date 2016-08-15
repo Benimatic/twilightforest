@@ -128,7 +128,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		this.fillWithRandomizedBlocks(world, sbb, 15, 1, 16, 15, 24, 16, false, rand, deco.randomBlocks);
 		
 		// suspended mass
-		Random massRandom = new Random(rand.nextLong());
+		Random massRandom = new org.bogdang.modifications.random.XSTR(rand.nextLong());
 		
 		for (int x = 4; x < 14; x++)
 		{

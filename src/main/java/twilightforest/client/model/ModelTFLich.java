@@ -136,7 +136,7 @@ public class ModelTFLich extends ModelBiped {
         		Vec3 vec;
         		for (int i = 0; i < shields; i++) {
         			vec = Vec3.createVectorHelper(11, 0, 0);
-        			float rotateY = ((i * (360F / shields)) * 3.141593F) / 180F;
+        			float rotateY = ((i * (360F / shields)) * (float)Math.PI) / 180F;
         			vec.rotateAroundY(rotateY);
         			ModelRenderer shield = new ModelRenderer(this, 26, 40);
         			shield.addBox(0.5F, -6F, -6F, 1, 12, 12);
@@ -159,14 +159,14 @@ public class ModelTFLich extends ModelBiped {
     {
     	aimedBow = false;
         super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        float ogSin = MathHelper.sin(onGround * 3.141593F);
-        float otherSin = MathHelper.sin((1.0F - (1.0F - onGround) * (1.0F - onGround)) * 3.141593F);
+        float ogSin = MathHelper.sin(onGround * (float)Math.PI);
+        float otherSin = MathHelper.sin((1.0F - (1.0F - onGround) * (1.0F - onGround)) * (float)Math.PI);
         bipedRightArm.rotateAngleZ = 0.0F;
         bipedLeftArm.rotateAngleZ = 0.5F;
         bipedRightArm.rotateAngleY = -(0.1F - ogSin * 0.6F);
         bipedLeftArm.rotateAngleY = 0.1F - ogSin * 0.6F;
         bipedRightArm.rotateAngleX = -1.570796F;
-        bipedLeftArm.rotateAngleX = -3.141593F;
+        bipedLeftArm.rotateAngleX = -(float)Math.PI;
         bipedRightArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
         bipedLeftArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
         bipedRightArm.rotateAngleZ += MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;

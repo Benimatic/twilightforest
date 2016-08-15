@@ -170,7 +170,7 @@ public class TFTickHandler
 					//System.out.println("There is a diamond in the water");
 	
 					// make sparkles in the area
-					Random rand = new Random();
+					Random rand = new org.bogdang.modifications.random.XSTR();
 					for (int k = 0; k < 2; k++)
 					{
 						double d = rand.nextGaussian() * 0.02D;

@@ -284,7 +284,7 @@ public class EntityTFTowerGhast extends EntityGhast
 
         if (currentAggroStatus != newAggroStatus)
         {
-        	this.dataWatcher.updateObject(AGGRO_STATUS, Byte.valueOf(newAggroStatus));
+        	this.dataWatcher.updateObject(AGGRO_STATUS, newAggroStatus);
         }
     }
     

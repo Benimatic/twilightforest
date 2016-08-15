@@ -37,7 +37,7 @@ public class BlockTFTowerTranslucent extends Block
 	public static IIcon TEX_BUILT_ACTIVE;
 	public static IIcon TEX_REVERTER_REPLACEMENT;
 	
-	private static Random sideRNG = new Random(); 
+	private static Random sideRNG = new org.bogdang.modifications.random.XSTR(); 
 	
     public BlockTFTowerTranslucent()
     {

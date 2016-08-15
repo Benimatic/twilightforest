@@ -41,7 +41,7 @@ public class EntityTFFireflyFX extends EntityFX
         particleScale *= 1.0F;
         particleScale *= f;
         fireflyParticleScale = particleScale;
-        particleMaxAge = (int)(32D / (Math.random() * 0.80000000000000004D + 0.20000000000000001D));
+        particleMaxAge = (int)(32D / ((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.80000000000000004D + 0.20000000000000001D));
         particleMaxAge *= f;
         fireflyHalfLife = particleMaxAge / 2;
         noClip = false;

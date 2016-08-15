@@ -36,9 +36,9 @@ public abstract class TFGenerator extends WorldGenerator {
 		double rtilt = tilt * Math.PI;
 		
 		
-		dest[0] += Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance);
-		dest[1] += Math.round(Math.cos(rtilt) * distance);
-		dest[2] += Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance);
+		dest[0] += Math.round(org.bogdang.modifications.math.MathHelperLite.sin(rangle) * org.bogdang.modifications.math.MathHelperLite.sin(rtilt) * distance);
+		dest[1] += Math.round(org.bogdang.modifications.math.MathHelperLite.cos(rtilt) * distance);
+		dest[2] += Math.round(org.bogdang.modifications.math.MathHelperLite.cos(rangle) * org.bogdang.modifications.math.MathHelperLite.sin(rtilt) * distance);
 		
 		return dest;
 	}
@@ -56,9 +56,9 @@ public abstract class TFGenerator extends WorldGenerator {
 		double rtilt = tilt * Math.PI;
 		
 		
-		dest.posX += Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance);
-		dest.posY += Math.round(Math.cos(rtilt) * distance);
-		dest.posZ += Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance);
+		dest.posX += Math.round(org.bogdang.modifications.math.MathHelperLite.sin(rangle) * org.bogdang.modifications.math.MathHelperLite.sin(rtilt) * distance);
+		dest.posY += Math.round(org.bogdang.modifications.math.MathHelperLite.cos(rtilt) * distance);
+		dest.posZ += Math.round(org.bogdang.modifications.math.MathHelperLite.cos(rangle) * org.bogdang.modifications.math.MathHelperLite.sin(rtilt) * distance);
 		
 		return dest;
 	}

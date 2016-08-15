@@ -445,7 +445,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param sbb
 	 */
 	protected void decorateThisTower(World world, Random rand, StructureBoundingBox sbb) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) * (this.boundingBox.minZ * 756839));
+		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) * (this.boundingBox.minZ * 756839));
 		
 		if (size > 3) {
 			// only decorate towers with more than one available square inside.

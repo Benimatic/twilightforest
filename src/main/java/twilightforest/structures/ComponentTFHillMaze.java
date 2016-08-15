@@ -147,7 +147,7 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 	void decorate3x3Room(World world, int x, int z, StructureBoundingBox sbb)
 	{
 		// make a new RNG for this room!
-		Random roomRNG = new Random(world.getSeed() ^ x + z);
+		Random roomRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() ^ x + z);
 		
 		// all rooms should have 1 spawner
 		roomSpawner(world, roomRNG, x, z, 8, sbb);

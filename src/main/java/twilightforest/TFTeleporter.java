@@ -29,7 +29,7 @@ public class TFTeleporter extends Teleporter
 		myWorld = par1WorldServer;
 		if (this.rand == null)
 		{
-			this.rand = new Random();
+			this.rand = new org.bogdang.modifications.random.XSTR();
 		}
 
 	}

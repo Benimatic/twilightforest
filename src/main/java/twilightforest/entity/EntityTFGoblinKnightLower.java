@@ -71,7 +71,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_EQUIP, Byte.valueOf((byte)0));
+        dataWatcher.addObject(DATA_EQUIP, (byte)0);
     }
 	
     public boolean hasArmor()
@@ -86,11 +86,11 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 1)));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte) (otherFlags | 1)));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte)otherFlags));
         }
     }
     

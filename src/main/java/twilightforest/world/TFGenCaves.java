@@ -34,8 +34,8 @@ public class TFGenCaves extends MapGenCaves
         double offsetCenterZ = (double)(centerZ * 16 + 8);
         float var23 = 0.0F;
         float var24 = 0.0F;
-        Random caveRNG = new Random(caveSeed);
-        Random mossRNG = new Random(caveSeed);
+        Random caveRNG = new org.bogdang.modifications.random.XSTR(caveSeed);
+        Random mossRNG = new org.bogdang.modifications.random.XSTR(caveSeed);
         
 //        if (isHighlands) {
 //        	//System.out.println("Saying highlands and it's not");

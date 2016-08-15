@@ -33,9 +33,9 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			float angle = 60F * i;
 			float distance = 4F;
 
-			double rx = xCoord + 0.5D + Math.cos((angle) * Math.PI / 180.0D) * distance;
+			double rx = xCoord + 0.5D + org.bogdang.modifications.math.MathHelperLite.cos((angle) * Math.PI / 180.0D) * distance;
 			double ry = yCoord + 0.5D;
-			double rz = zCoord + 0.5D + Math.sin((angle) * Math.PI / 180.0D) * distance;
+			double rz = zCoord + 0.5D + org.bogdang.modifications.math.MathHelperLite.sin((angle) * Math.PI / 180.0D) * distance;
 						
 			myCreature.setLocationAndAngles(rx, ry, rz, worldObj.rand.nextFloat() * 360F, 0.0F);
 

@@ -15,7 +15,7 @@ public class TileEntityTFReverter extends TileEntity
 	public int radius = 4;
 	public int diameter = 2 * radius + 1;
 	public double requiredPlayerRange = 16;
-	public Random rand = new Random();
+	public Random rand = new org.bogdang.modifications.random.XSTR();
 	private int tickCount;
 	
 	private boolean slowScan;

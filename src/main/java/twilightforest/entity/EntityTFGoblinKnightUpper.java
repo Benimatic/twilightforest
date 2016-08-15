@@ -90,7 +90,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_EQUIP, Byte.valueOf((byte)0));
+        dataWatcher.addObject(DATA_EQUIP, (byte)0);
     }
 	
     public boolean hasArmor()
@@ -105,11 +105,11 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 1)));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte) (otherFlags | 1)));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte)otherFlags));
         }
     }
     
@@ -125,11 +125,11 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 2)));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte) (otherFlags | 2)));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte)otherFlags));
         }
     }
     
@@ -429,9 +429,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
             double d0 = par1DamageSource.getEntity().posX - this.posX;
             double d1;
 
-            for (d1 = par1DamageSource.getEntity().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
+            for (d1 = par1DamageSource.getEntity().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = ((new org.bogdang.modifications.random.XSTR()).nextFloat() - (new org.bogdang.modifications.random.XSTR()).nextFloat()) * 0.01D)
             {
-                d0 = (Math.random() - Math.random()) * 0.01D;
+                d0 = ((new org.bogdang.modifications.random.XSTR()).nextFloat() - (new org.bogdang.modifications.random.XSTR()).nextFloat()) * 0.01D;
             }
         	
             toKnockback.knockBack(par1DamageSource.getEntity(), 0, d0 / 4D, d1 / 4D);

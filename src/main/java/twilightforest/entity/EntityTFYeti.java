@@ -69,7 +69,7 @@ public class EntityTFYeti extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(ANGER_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(ANGER_FLAG, (byte)0);
     }
 
     /**
@@ -180,9 +180,9 @@ public class EntityTFYeti extends EntityMob
 
         if (anger) {
             this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-            this.dataWatcher.updateObject(ANGER_FLAG, Byte.valueOf((byte)(b0 | 2)));
+            this.dataWatcher.updateObject(ANGER_FLAG, ((byte)(b0 | 2)));
         } else {
-            this.dataWatcher.updateObject(ANGER_FLAG, Byte.valueOf((byte)(b0 & -3)));
+            this.dataWatcher.updateObject(ANGER_FLAG, ((byte)(b0 & -3)));
         }
     }
     
@@ -236,8 +236,8 @@ public class EntityTFYeti extends EntityMob
     	{
     		float distance = 0.4F;
 
-    		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-    		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var1 = org.bogdang.modifications.math.MathHelperLite.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var3 = org.bogdang.modifications.math.MathHelperLite.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
     		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
     	}

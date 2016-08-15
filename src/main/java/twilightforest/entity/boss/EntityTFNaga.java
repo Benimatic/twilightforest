@@ -265,7 +265,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 //		
 //        if (!this.worldObj.isRemote)
 //        {
-//            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
+//            this.dataWatcher.updateObject(DATA_BOSSHEALTH, (int)this.getHealth());
 //        }
 //        else
 //        {
@@ -404,7 +404,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             
             int i = MathHelper.floor_double(boundingBox.minY + 0.5D);
             double d3 = vec3d.yCoord - i;
-            float f2 = (float)((Math.atan2(d2, d1) * 180D) / 3.1415927410125732D) - 90F;
+            float f2 = (float)((Math.atan2(d2, d1) * 180D) / Math.PI) - 90F;
             float f3 = f2 - rotationYaw;
             moveForward = getMoveSpeed();
     		this.setAIMoveSpeed(0.5f);
@@ -849,7 +849,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             
             if (getMoveSpeed() > 0.8) {
             	// charging, apply extra pushback
-                toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 1.0F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 1.0F);
+                toAttack.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * 1.0F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * 1.0F);
             }
         }
     }
@@ -1056,7 +1056,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 
 			
 			// also weight the position so that the segments straighten out a little bit, and the front ones straighten more
-	    	float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
+	    	float angle = (((leader.rotationYaw + 180) * (float)Math.PI) / 180F);
 
 			
 			double straightenForce = 0.05D + (1.0 / (float)(i + 1)) * 0.5D;

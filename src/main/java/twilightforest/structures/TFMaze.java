@@ -99,7 +99,7 @@ public class TFMaze {
 		this.rawDepth = depth * 2 + 1;
 		storage = new int [rawWidth * rawDepth];
 		
-		rand = new Random();
+		rand = new org.bogdang.modifications.random.XSTR();
 	}
 	
 	/**

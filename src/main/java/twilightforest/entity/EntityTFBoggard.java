@@ -163,7 +163,7 @@ public class EntityTFBoggard extends EntityMob {
     	// find angle of approach
     	double dx = posX - entityToAttack.posX;
     	double dz = posZ - entityToAttack.posZ;
-    	float angle = (float)((Math.atan2(dz, dx) * 180D) / 3.1415927410125732D) - 90F;
+    	float angle = (float)((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
     	float difference = MathHelper.abs((entityToAttack.rotationYaw - angle) % 360);
     	

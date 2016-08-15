@@ -196,8 +196,8 @@ public class ModelTFBlockGoblin extends ModelBiped
 		float angle = f2 / 4F;
 		float length = 0;//16F;
 		
-		block.rotationPointX = (float) Math.sin(angle) * length;
-		block.rotationPointZ = (float) -Math.cos(angle) * length;
+		block.rotationPointX = (float) org.bogdang.modifications.math.MathHelperLite.sin(angle) * length;
+		block.rotationPointZ = (float) -org.bogdang.modifications.math.MathHelperLite.cos(angle) * length;
 		
 
 		block.rotateAngleY = -angle;

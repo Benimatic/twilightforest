@@ -54,7 +54,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	
 	
 	public TFWeatherRenderer() {
-		this.random = new Random();
+		this.random = new org.bogdang.modifications.random.XSTR();
 	}
 
 

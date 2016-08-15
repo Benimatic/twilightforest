@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ItemBlockTFHugeLilyPad extends ItemLilyPad {
 	
-	Random rand = new Random();
+	Random rand = new org.bogdang.modifications.random.XSTR();
 
 	public ItemBlockTFHugeLilyPad(Block block) {
 		super(block);

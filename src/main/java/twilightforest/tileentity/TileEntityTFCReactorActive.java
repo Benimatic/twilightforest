@@ -18,7 +18,7 @@ public class TileEntityTFCReactorActive extends TileEntity {
 	
 	
     public TileEntityTFCReactorActive() {
-    	Random rand = new Random();
+    	Random rand = new org.bogdang.modifications.random.XSTR();
     	
     	// determine the two smaller bursts
     	this.secX = 3 * (rand.nextBoolean() ? 1 : -1);

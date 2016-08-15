@@ -728,7 +728,7 @@ public class HydraHeadContainer {
 		}
 		
 		
-		vector.rotateAroundY((-(hydraObj.renderYawOffset + neckRotation) * 3.141593F) / 180F);
+		vector.rotateAroundY((-(hydraObj.renderYawOffset + neckRotation) * (float)Math.PI) / 180F);
 		setNeckPositon(hydraObj.posX + vector.xCoord, hydraObj.posY + vector.yCoord, hydraObj.posZ + vector.zCoord, hydraObj.renderYawOffset, 0);
 	}
 
@@ -764,8 +764,8 @@ public class HydraHeadContainer {
 		}
 		
 		vector = Vec3.createVectorHelper(0, 0, neckLength); // -53 = 3.3125
-		vector.rotateAroundX((xRotation * 3.141593F + xSwing) / 180F);
-		vector.rotateAroundY((-(hydraObj.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
+		vector.rotateAroundX((xRotation * (float)Math.PI + xSwing) / 180F);
+		vector.rotateAroundY((-(hydraObj.renderYawOffset + yRotation + ySwing) * (float)Math.PI) / 180F);
 
 		dx = hydraObj.posX + vector.xCoord;
 		dy = hydraObj.posY + vector.yCoord + 3;
@@ -1030,7 +1030,7 @@ public class HydraHeadContainer {
 		{
 			// if we are looking down, don't raise the first neck position, it looks weird
 			Vec3 vector = Vec3.createVectorHelper(0, 0, -1.0);
-			vector.rotateAroundY((-endYaw * 3.141593F) / 180F);
+			vector.rotateAroundY((-endYaw * (float)Math.PI) / 180F);
 			endX += vector.xCoord;
 			endY += vector.yCoord;
 			endZ += vector.zCoord;
@@ -1085,7 +1085,7 @@ public class HydraHeadContainer {
 		//headEntity.rotationPitch = hydraObj.rotationPitch;
 		//headEntity.rotationYaw = hydraObj.rotationYaw;
 		
-		float angle = (((hydraObj.rotationYaw) * 3.141593F) / 180F);
+		float angle = (((hydraObj.rotationYaw) * (float)Math.PI) / 180F);
 		float distance = 30.0F;
 
     	double dx = hydraObj.posX - MathHelper.sin(angle) * distance;

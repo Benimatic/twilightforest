@@ -192,6 +192,6 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature
     
     public float getGlowBrightness() 
     {
-    	return (float)Math.sin(this.ticksExisted / 7.0) + 1F;
+    	return (float)org.bogdang.modifications.math.MathHelperLite.sin(this.ticksExisted / 7.0) + 1F;
     }
 }

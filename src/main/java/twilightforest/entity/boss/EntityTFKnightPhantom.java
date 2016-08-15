@@ -73,7 +73,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(FLAG_CHARGING, Byte.valueOf((byte)0));
+        dataWatcher.addObject(FLAG_CHARGING, (byte)0);
     }
 
 	/**
@@ -391,7 +391,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
      * @param targetedEntity
      */
 	protected void launchAxeAt(Entity targetedEntity) {
-		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
+		float bodyFacingAngle = ((renderYawOffset * (float)Math.PI) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 1);
 		double sy = posY + (height * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 1);
@@ -418,7 +418,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 		for (int i = 0; i < 8; i++)
 		{
-			float throwAngle = i * 3.14159165F / 4F; 
+			float throwAngle = i * (float)Math.PI / 4F; 
 
 			
 			double sx = posX + (MathHelper.cos(throwAngle) * 1);
@@ -670,11 +670,11 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     {
     	if (flag)
     	{
-    		dataWatcher.updateObject(FLAG_CHARGING, Byte.valueOf((byte)127));
+    		dataWatcher.updateObject(FLAG_CHARGING, ((byte)127));
     	}
     	else
     	{
-    		dataWatcher.updateObject(FLAG_CHARGING, Byte.valueOf((byte)0));
+    		dataWatcher.updateObject(FLAG_CHARGING, (byte)0);
     	}
     }
     
@@ -820,7 +820,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		
 		
 		double dx = this.getHomePosition().posX + (alongX ? offset0 : offset1);
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.getHomePosition().posZ + (alongX ? offset1 : offset0);
 		return Vec3.createVectorHelper(dx, dy, dz);	
 	}
@@ -835,9 +835,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		
 		angle += (60F * this.getNumber());
 		
-		double dx = this.getHomePosition().posX + Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
-		double dz = this.getHomePosition().posZ + Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double dx = this.getHomePosition().posX + org.bogdang.modifications.math.MathHelperLite.cos((angle) * Math.PI / 180.0D) * distance;
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
+		double dz = this.getHomePosition().posZ + org.bogdang.modifications.math.MathHelperLite.sin((angle) * Math.PI / 180.0D) * distance;
 		return Vec3.createVectorHelper(dx, dy, dz);
 	}
 
@@ -845,7 +845,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		// bound this by distance so we don't hover in walls if we get knocked into them
 		
 		double dx = this.lastTickPosX;
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.lastTickPosZ;
 		
 		// let's just bound this by 2D distance
@@ -868,7 +868,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 	private Vec3 getLoiterPosition() {
 		double dx = this.getHomePosition().posX;
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.getHomePosition().posZ;
 		return Vec3.createVectorHelper(dx, dy, dz);
 	}

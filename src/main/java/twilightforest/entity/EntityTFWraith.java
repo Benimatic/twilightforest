@@ -138,7 +138,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
             double d5 = targetedEntity.posX - posX;
             //double d6 = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
             double d7 = targetedEntity.posZ - posZ;
-            renderYawOffset = rotationYaw = (-(float)Math.atan2(d5, d7) * 180F) / 3.141593F;
+            renderYawOffset = rotationYaw = (-(float)Math.atan2(d5, d7) * 180F) / (float)Math.PI;
             if(canEntityBeSeen(targetedEntity))
             {
                 if(attackCounter == 10)
@@ -162,7 +162,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
             }
         } else
         {
-            renderYawOffset = rotationYaw = (-(float)Math.atan2(motionX, motionZ) * 180F) / 3.141593F;
+            renderYawOffset = rotationYaw = (-(float)Math.atan2(motionX, motionZ) * 180F) / (float)Math.PI;
             if(attackCounter > 0)
             {
                 attackCounter--;

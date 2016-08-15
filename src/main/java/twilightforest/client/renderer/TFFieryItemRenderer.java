@@ -112,7 +112,7 @@ public class TFFieryItemRenderer implements IItemRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
 
         	// pulse yellow
-            float f9 = (float) Math.sin((float)(Minecraft.getSystemTime() % 6000L) / 6000.0F * 2 * 3.14159F) * 0.2F + 0.2F;
+            float f9 = (float) org.bogdang.modifications.math.MathHelperLite.sin((float)(Minecraft.getSystemTime() % 6000L) / 6000.0F * 2 * (float)Math.PI) * 0.2F + 0.2F;
             
             float yellooo = 0.4F;
         	GL11.glColor4f(yellooo, yellooo, 0.0F, f9);

@@ -75,7 +75,7 @@ public class ComponentTFMazeMound extends StructureTFComponent {
             	int cz = z - DIAMETER / 2;
             	
         		int dist = (int) Math.sqrt(cx * cx + cz * cz);
-        		int hheight = (int) (Math.cos((double)dist / DIAMETER * Math.PI) * (DIAMETER / 3));
+        		int hheight = (int) (org.bogdang.modifications.math.MathHelperLite.cos((double)dist / DIAMETER * Math.PI) * (DIAMETER / 3));
         		
         		// leave a hole in the middle
         		if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) 

@@ -76,8 +76,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(DATA_CHAINLENGTH, Byte.valueOf((byte) 0));
-        this.dataWatcher.addObject(DATA_CHAINPOS, Byte.valueOf((byte) 0));
+        this.dataWatcher.addObject(DATA_CHAINLENGTH, ((byte) 0));
+        this.dataWatcher.addObject(DATA_CHAINPOS, ((byte) 0));
     }
     
     /**
@@ -161,8 +161,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
      */
     public Vec3 getChainPosition(float angle, float distance)
     {
-		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double var1 = org.bogdang.modifications.math.MathHelperLite.cos((angle) * Math.PI / 180.0D) * distance;
+		double var3 = org.bogdang.modifications.math.MathHelperLite.sin((angle) * Math.PI / 180.0D) * distance;
 
 		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getChainYOffset(), this.posZ + var3);
     }
@@ -210,8 +210,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(DATA_CHAINLENGTH, Byte.valueOf((byte) Math.floor(getChainLength() * 127F)));
-            this.dataWatcher.updateObject(DATA_CHAINPOS, Byte.valueOf((byte) Math.floor(getChainAngle() / 360F * 255F)));
+            this.dataWatcher.updateObject(DATA_CHAINLENGTH, ((byte) Math.floor(getChainLength() * 127F)));
+            this.dataWatcher.updateObject(DATA_CHAINPOS, ((byte) Math.floor(getChainAngle() / 360F * 255F)));
         }
         else
         {

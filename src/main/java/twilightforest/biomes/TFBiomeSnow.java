@@ -31,7 +31,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	
 	private static final int MONSTER_SPAWN_RATE = 10;
-	Random monsterRNG = new Random(53439L);
+	Random monsterRNG = new org.bogdang.modifications.random.XSTR(53439L);
 	ArrayList<SpawnListEntry> emptyList = new ArrayList<SpawnListEntry>();
 	
 	/**

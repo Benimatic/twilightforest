@@ -29,7 +29,7 @@ public class BlockTFCinderFurnace  extends BlockContainer{
 	private static boolean isUpdating;
 	private Boolean isLit;
 	private IIcon topIcon;
-	private Random furnaceRandom = new Random();
+	private Random furnaceRandom = new org.bogdang.modifications.random.XSTR();
 
 	protected BlockTFCinderFurnace(Boolean isLit) {
 		super(Material.wood);

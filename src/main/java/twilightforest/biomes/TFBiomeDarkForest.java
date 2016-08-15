@@ -54,7 +54,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
         this.rootHeight = 0.05F;
         this.heightVariation = 0.05F;
         
-        this.monsterRNG = new Random();
+        this.monsterRNG = new org.bogdang.modifications.random.XSTR();
         
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityZombie.class, 5, 1, 4));

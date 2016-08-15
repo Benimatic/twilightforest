@@ -107,7 +107,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		}
 		
 		// make 1-2 small branches near the base
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 		int numSmallBranches = decoRNG.nextInt(2) + 1;
 		for(int i = 0; i <= numSmallBranches; i++) {
 			

@@ -62,7 +62,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(16, (byte)0);
     }
 
 	/**
@@ -125,7 +125,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
     public void setBunnyType(int par1)
     {
-        this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
+        this.dataWatcher.updateObject(16, ((byte)par1));
     }
 	
 

@@ -914,7 +914,7 @@ public class TFFinalCastlePieces {
 	            return false;
 	        }
 			
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+			Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 			this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
 			int forceFieldMeta = this.getForceFieldMeta(decoRNG);
@@ -1013,7 +1013,7 @@ public class TFFinalCastlePieces {
 
     	@Override
     	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+			Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
     		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 8, 49, 8, false, rand, deco.randomBlocks);
 	        
@@ -1125,7 +1125,7 @@ public class TFFinalCastlePieces {
 
     	@Override
     	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+			Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 			fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 12, 59, 12, false, rand, deco.randomBlocks);
 	        
@@ -1178,7 +1178,7 @@ public class TFFinalCastlePieces {
 			this.height = this.boundingBox.getYSize();
 			this.width = (this.coordBaseMode == 0 || this.coordBaseMode == 2) ? this.boundingBox.getZSize() :  this.boundingBox.getXSize();
 			
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+			Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 			
 			if (mural == null) {
 				// only make it once
@@ -1828,7 +1828,7 @@ public class TFFinalCastlePieces {
 
 		@Override
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+			Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 			
 			// walls
 			fillWithRandomizedBlocks(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, false, rand, deco.randomBlocks);
@@ -2333,7 +2333,7 @@ public class TFFinalCastlePieces {
 		@Override
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 			super.addComponentParts(world, rand, sbb);
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+			Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 			
 			this.destroyTower(world, decoRNG, sbb);
 			
@@ -2962,7 +2962,7 @@ public class TFFinalCastlePieces {
 		@Override
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 			// thorns
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+			Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 			for (int i = 0; i < 4; i++) {
 				this.makeThornVine(world, decoRNG, i, sbb);
@@ -3023,7 +3023,7 @@ public class TFFinalCastlePieces {
 		}
 
 		private void makeThornBranch(World world, int x, int y, int z, int rotation, StructureBoundingBox sbb) {
-			Random rand = new Random(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
+			Random rand = new org.bogdang.modifications.random.XSTR(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
 			
 			// pick a direction
 			int dir = rand.nextInt(4);

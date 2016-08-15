@@ -93,7 +93,7 @@ public class EntityTFCharmEffect extends Entity
         	Vec3 look = Vec3.createVectorHelper(DISTANCE, 0, 0);
         	look.rotateAroundY(rotation);
         	this.posX += look.xCoord;
-//        	this.posY += Math.sin(this.ticksExisted / 3.0F + offset);
+//        	this.posY += org.bogdang.modifications.math.MathHelperLite.sin(this.ticksExisted / 3.0F + offset);
         	this.posZ += look.zCoord;
 
     		this.setPosition(this.posX, this.posY, this.posZ);
@@ -135,7 +135,7 @@ public class EntityTFCharmEffect extends Entity
 
     protected void entityInit()
     {
-        this.dataWatcher.addObject(DATA_ITEMID, Integer.valueOf(0));
+        this.dataWatcher.addObject(DATA_ITEMID, (int)0);
         this.dataWatcher.addObject(DATA_OWNER, "");
     }
 

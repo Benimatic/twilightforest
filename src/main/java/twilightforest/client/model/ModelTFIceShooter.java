@@ -15,7 +15,7 @@ public class ModelTFIceShooter extends ModelTFIceExploder {
     {
         for (int i = 0; i < spikes.length; i++) {
          	// rotate the spikes
-        	this.spikes[i].rotateAngleY = (3.14159F / 2F) + (MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) * 0.5F);
+        	this.spikes[i].rotateAngleY = ((float)Math.PI / 2F) + (MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) * 0.5F);
         	this.spikes[i].rotateAngleX = (par1EntityLiving.ticksExisted + time) / 5.0F;
         	this.spikes[i].rotateAngleZ = MathHelper.cos(i / 5.0F) / 4.0F;
         	

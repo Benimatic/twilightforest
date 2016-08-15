@@ -25,7 +25,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 
 	public TFBiomeEnchantedForest(int i) {
 		super(i);
-		colorRNG = new Random();
+		colorRNG = new org.bogdang.modifications.random.XSTR();
 		
 
 		getTFBiomeDecorator().setGrassPerChunk(12);

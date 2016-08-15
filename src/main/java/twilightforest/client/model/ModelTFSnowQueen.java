@@ -54,23 +54,23 @@ public class ModelTFSnowQueen extends ModelBiped {
 		ModelRenderer crownSide = new ModelRenderer(this, 28, 28);
         crownSide.addBox(-3.5F, -0.5F, -0.5F, 7, 1, 1);
         crownSide.setRotationPoint(crownX, -6.0F, 0.0F);
-        crownSide.rotateAngleY = 3.14159F / 2.0F;
+        crownSide.rotateAngleY = (float)Math.PI / 2.0F;
 
         ModelRenderer spike4 = new ModelRenderer(this, 48, 27);
 		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
-		spike4.rotateAngleX = angle * 1.5F / 180F * 3.14159F;
+		spike4.rotateAngleX = angle * 1.5F / 180F * (float)Math.PI;
         
         ModelRenderer spike3l = new ModelRenderer(this, 52, 28);
         spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
         spike3l.setRotationPoint(-2.5F, 0.0F, 0.0F);
-        spike3l.rotateAngleX = angle / 180F * 3.14159F;
-        spike3l.rotateAngleZ = -10F / 180F * 3.14159F;
+        spike3l.rotateAngleX = angle / 180F * (float)Math.PI;
+        spike3l.rotateAngleZ = -10F / 180F * (float)Math.PI;
 
         ModelRenderer spike3r = new ModelRenderer(this, 52, 28);
         spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
         spike3r.setRotationPoint(2.5F, 0.0F, 0.0F);
-        spike3r.rotateAngleX = angle / 180F * 3.14159F;
-        spike3r.rotateAngleZ = 10F / 180F * 3.14159F;
+        spike3r.rotateAngleX = angle / 180F * (float)Math.PI;
+        spike3r.rotateAngleZ = 10F / 180F * (float)Math.PI;
 
 
         crownSide.addChild(spike4);
@@ -86,19 +86,19 @@ public class ModelTFSnowQueen extends ModelBiped {
 
         ModelRenderer spike4 = new ModelRenderer(this, 48, 27);
 		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
-		spike4.rotateAngleX = angle * 1.5F / 180F * 3.14159F;
+		spike4.rotateAngleX = angle * 1.5F / 180F * (float)Math.PI;
         
         ModelRenderer spike3l = new ModelRenderer(this, 52, 28);
         spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
         spike3l.setRotationPoint(-2.5F, 0.0F, 0.0F);
-        spike3l.rotateAngleX = angle / 180F * 3.14159F;
-        spike3l.rotateAngleZ = -10F / 180F * 3.14159F;
+        spike3l.rotateAngleX = angle / 180F * (float)Math.PI;
+        spike3l.rotateAngleZ = -10F / 180F * (float)Math.PI;
 
         ModelRenderer spike3r = new ModelRenderer(this, 52, 28);
         spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
         spike3r.setRotationPoint(2.5F, 0.0F, 0.0F);
-        spike3r.rotateAngleX = angle / 180F * 3.14159F;
-        spike3r.rotateAngleZ = 10F / 180F * 3.14159F;
+        spike3r.rotateAngleX = angle / 180F * (float)Math.PI;
+        spike3r.rotateAngleZ = 10F / 180F * (float)Math.PI;
 
         crownFront.addChild(spike4);
         crownFront.addChild(spike3l);

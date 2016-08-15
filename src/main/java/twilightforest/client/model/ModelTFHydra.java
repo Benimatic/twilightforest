@@ -264,7 +264,7 @@ public class ModelTFHydra extends ModelBase
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
 		leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-		leg2.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+		leg2.rotateAngleX = MathHelper.cos(f * 0.6662F + (float)Math.PI) * 1.4F * f1;
         
         leg1.rotateAngleY = 0.0F;
         leg2.rotateAngleY = 0.0F;
@@ -281,18 +281,18 @@ public class ModelTFHydra extends ModelBase
 //		Vec3 vec;
 //		
 //        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 7*-16);
-//        vec.rotateAroundX((60 * 3.141593F) / 180F);
-//        vec.rotateAroundY((0 * 3.141593F) / 180F);
+//        vec.rotateAroundX((60 * (float)Math.PI) / 180F);
+//        vec.rotateAroundY((0 * (float)Math.PI) / 180F);
 //        head1.setRotationPoint((float)vec.xCoord, (float)vec.yCoord - 48, (float)vec.zCoord);
 //		
 //        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 9*-16);
-//        vec.rotateAroundX((45 * 3.141593F) / 180F);
-//        vec.rotateAroundY((-60 * 3.141593F) / 180F);
+//        vec.rotateAroundX((45 * (float)Math.PI) / 180F);
+//        vec.rotateAroundY((-60 * (float)Math.PI) / 180F);
 //        head2.setRotationPoint((float)vec.xCoord, (float)vec.yCoord - 48, (float)vec.zCoord);
 //		
 //        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 9*-16);
-//        vec.rotateAroundX((-10 * 3.141593F) / 180F);
-//        vec.rotateAroundY((60 * 3.141593F) / 180F);
+//        vec.rotateAroundX((-10 * (float)Math.PI) / 180F);
+//        vec.rotateAroundY((60 * (float)Math.PI) / 180F);
 //        head3.setRotationPoint((float)vec.xCoord, (float)vec.yCoord - 48, (float)vec.zCoord);
 //		
 //        // rotate the heads

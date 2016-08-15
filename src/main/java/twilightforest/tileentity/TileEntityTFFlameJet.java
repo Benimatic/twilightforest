@@ -46,13 +46,13 @@ public class TileEntityTFFlameJet extends TileEntity {
 			worldObj.spawnParticle("largesmoke", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.0D, 0.0D, 0.0D);
 			TwilightForestMod.proxy.spawnParticle(this.worldObj, "largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.0D, 0.5D, 0.0D);
 //			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 
-//    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
+//    				org.bogdang.modifications.math.MathHelperLite.cos(counter / 4.0) * 0.2, 0.35D, org.bogdang.modifications.math.MathHelperLite.sin(counter / 4.0) * 0.2);			
 //			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 
-//    				Math.cos(counter / 4.0 + Math.PI) * 0.2, 0.35D, Math.sin(counter / 4.0 + Math.PI) * 0.2);			
-//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5 + Math.cos(counter / 4.0), this.yCoord + 1.0, this.zCoord + 0.5 + Math.sin(counter / 4.0), 
-//    				Math.sin(counter / 4.0) * 0.05, 0.35D, Math.cos(counter / 4.0) * 0.05);			
-//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord +  0.5 + Math.cos(counter / 4.0 + Math.PI), this.yCoord + 1.0, this.zCoord + 0.5 + Math.sin(counter / 4.0 + Math.PI), 
-//    				Math.sin(counter / 4.0 + Math.PI) * 0.05, 0.35D, Math.cos(counter / 4.0 + Math.PI) * 0.05);			
+//    				org.bogdang.modifications.math.MathHelperLite.cos(counter / 4.0 + Math.PI) * 0.2, 0.35D, org.bogdang.modifications.math.MathHelperLite.sin(counter / 4.0 + Math.PI) * 0.2);			
+//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5 + org.bogdang.modifications.math.MathHelperLite.cos(counter / 4.0), this.yCoord + 1.0, this.zCoord + 0.5 + org.bogdang.modifications.math.MathHelperLite.sin(counter / 4.0), 
+//    				org.bogdang.modifications.math.MathHelperLite.sin(counter / 4.0) * 0.05, 0.35D, org.bogdang.modifications.math.MathHelperLite.cos(counter / 4.0) * 0.05);			
+//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord +  0.5 + org.bogdang.modifications.math.MathHelperLite.cos(counter / 4.0 + Math.PI), this.yCoord + 1.0, this.zCoord + 0.5 + org.bogdang.modifications.math.MathHelperLite.sin(counter / 4.0 + Math.PI), 
+//    				org.bogdang.modifications.math.MathHelperLite.sin(counter / 4.0 + Math.PI) * 0.05, 0.35D, org.bogdang.modifications.math.MathHelperLite.cos(counter / 4.0 + Math.PI) * 0.05);			
 
 			TwilightForestMod.proxy.spawnParticle(this.worldObj, "largeflame", this.xCoord - 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.05D, 0.5D, 0.0D);
 			TwilightForestMod.proxy.spawnParticle(this.worldObj, "largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord - 0.5, 0.0D, 0.5D, 0.05D);

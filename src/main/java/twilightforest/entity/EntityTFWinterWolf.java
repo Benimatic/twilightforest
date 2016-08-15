@@ -52,7 +52,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(BREATH_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(BREATH_FLAG, (byte)0);
     }
 
     /**
@@ -141,7 +141,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	public void setBreathing(boolean flag) {
-        this.getDataWatcher().updateObject(BREATH_FLAG, Byte.valueOf((byte)(flag ? 1 : 0)));
+        this.getDataWatcher().updateObject(BREATH_FLAG, ((byte)(flag ? 1 : 0)));
 	}
 
 	@Override

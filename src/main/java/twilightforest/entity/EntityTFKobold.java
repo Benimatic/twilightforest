@@ -58,7 +58,7 @@ public class EntityTFKobold extends EntityMob {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(17, Byte.valueOf((byte)0));
+        dataWatcher.addObject(17, (byte)0);
     }
 	
     /**
@@ -132,11 +132,11 @@ public class EntityTFKobold extends EntityMob {
     {
         if (flag)
         {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)127));
+            dataWatcher.updateObject(17, ((byte)127));
         }
         else
         {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)0));
+            dataWatcher.updateObject(17, (byte)0);
         }
     }
 

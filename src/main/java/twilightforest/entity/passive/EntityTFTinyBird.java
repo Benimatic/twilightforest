@@ -61,8 +61,8 @@ public class EntityTFTinyBird extends EntityTFBird {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(DATA_BIRDTYPE, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BIRDFLAGS, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(DATA_BIRDTYPE, (byte)0);
+        this.dataWatcher.addObject(DATA_BIRDFLAGS, (byte)0);
     }
 	
 	/**
@@ -128,7 +128,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 
     public void setBirdType(int par1)
     {
-        this.dataWatcher.updateObject(DATA_BIRDTYPE, Byte.valueOf((byte)par1));
+        this.dataWatcher.updateObject(DATA_BIRDTYPE, ((byte)par1));
     }
 	
     /**
@@ -331,11 +331,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 
         if (par1)
         {
-            this.dataWatcher.updateObject(DATA_BIRDFLAGS, Byte.valueOf((byte)(b0 | 1)));
+            this.dataWatcher.updateObject(DATA_BIRDFLAGS, ((byte)(b0 | 1)));
         }
         else
         {
-            this.dataWatcher.updateObject(DATA_BIRDFLAGS, Byte.valueOf((byte)(b0 & -2)));
+            this.dataWatcher.updateObject(DATA_BIRDFLAGS, ((byte)(b0 & -2)));
         }
     }
     

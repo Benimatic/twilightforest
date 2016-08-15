@@ -47,7 +47,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
     public Vec3 getFogColor(float f, float f1)
     {
-        float bright = MathHelper.cos(0.25f * 3.141593F * 2.0F) * 2.0F + 0.5F;
+        float bright = MathHelper.cos(0.25f * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
         if(bright < 0.0F)
         {
             bright = 0.0F;

@@ -46,7 +46,7 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(CHARGE_FLAG, Byte.valueOf((byte)0));
+        dataWatcher.addObject(CHARGE_FLAG, (byte)0);
     }
 	
 	/**
@@ -113,11 +113,11 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
     {
         if (flag)
         {
-            dataWatcher.updateObject(CHARGE_FLAG, Byte.valueOf((byte)127));
+            dataWatcher.updateObject(CHARGE_FLAG, ((byte)127));
         }
         else
         {
-            dataWatcher.updateObject(CHARGE_FLAG, Byte.valueOf((byte)0));
+            dataWatcher.updateObject(CHARGE_FLAG, (byte)0);
         }
     }
     

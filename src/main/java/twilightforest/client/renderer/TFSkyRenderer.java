@@ -278,7 +278,7 @@ public class TFSkyRenderer extends IRenderHandler {
         }
 
         float var6 = var5;
-        var5 = 1.0F - (float)((Math.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
+        var5 = 1.0F - (float)((org.bogdang.modifications.math.MathHelperLite.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
 	}
@@ -295,7 +295,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	
 	 private void renderStars()
 	    {
-	        Random var1 = new Random(10842L);
+	        Random var1 = new org.bogdang.modifications.random.XSTR(10842L);
 	        Tessellator var2 = Tessellator.instance;
 	        var2.startDrawingQuads();
 
@@ -317,14 +317,14 @@ public class TFSkyRenderer extends IRenderHandler {
 	                double var16 = var6 * 100.0D;
 	                double var18 = var8 * 100.0D;
 	                double var20 = Math.atan2(var4, var8);
-	                double var22 = Math.sin(var20);
-	                double var24 = Math.cos(var20);
+	                double var22 = org.bogdang.modifications.math.MathHelperLite.sin(var20);
+	                double var24 = org.bogdang.modifications.math.MathHelperLite.cos(var20);
 	                double var26 = Math.atan2(Math.sqrt(var4 * var4 + var8 * var8), var6);
-	                double var28 = Math.sin(var26);
-	                double var30 = Math.cos(var26);
+	                double var28 = org.bogdang.modifications.math.MathHelperLite.sin(var26);
+	                double var30 = org.bogdang.modifications.math.MathHelperLite.cos(var26);
 	                double var32 = var1.nextDouble() * Math.PI * 2.0D;
-	                double var34 = Math.sin(var32);
-	                double var36 = Math.cos(var32);
+	                double var34 = org.bogdang.modifications.math.MathHelperLite.sin(var32);
+	                double var36 = org.bogdang.modifications.math.MathHelperLite.cos(var32);
 
 	                for (int var38 = 0; var38 < 4; ++var38)
 	                {

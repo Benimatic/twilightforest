@@ -15,7 +15,7 @@ import twilightforest.entity.EntityTFMiniGhast;
 public class TileEntityTFGhastTrapInactive extends TileEntity {
 	
 	int counter;
-	Random rand = new Random();
+	Random rand = new org.bogdang.modifications.random.XSTR();
 
 	ArrayList<EntityTFMiniGhast> dyingGhasts = new ArrayList<EntityTFMiniGhast>();
 	

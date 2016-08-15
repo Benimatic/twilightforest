@@ -142,7 +142,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
     	// find angle of approach
     	double dx = me.posX - attackTarget.posX;
     	double dz = me.posZ - attackTarget.posZ;
-    	float angle = (float)((Math.atan2(dz, dx) * 180D) / 3.1415927410125732D) - 90F;
+    	float angle = (float)((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
     	float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
     	
