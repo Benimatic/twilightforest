@@ -53,7 +53,7 @@ public class ModelTFFireBeetle extends ModelBase
 		RearEnd = new ModelRenderer(this, 22, 9);
 		RearEnd.addBox(-6F, -9F, -4F, 12, 14, 9);
 		RearEnd.setRotationPoint(0F, 18F, 7F);
-		setRotation(RearEnd, (float)Math.PI/2f, 0F, 0F);
+		setRotation(RearEnd, (((float)Math.PI)/2f), 0F, 0F);
 
 		Leg6 = new ModelRenderer(this, 40, 0);
 		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
@@ -101,7 +101,7 @@ public class ModelTFFireBeetle extends ModelBase
 		jaw1b = new ModelRenderer(this, 0, 0);
 		jaw1b.addBox(0F, 0F, 0F, 1, 1, 2);
 		jaw1b.setRotationPoint(0F, 0F, -2F);
-		setRotation(jaw1b, 0F, (float)Math.PI/2f, 0F);
+		setRotation(jaw1b, 0F, (((float)Math.PI)/2f), 0F);
 		
 		jaw2a = new ModelRenderer(this, 0, 0);
 		jaw2a.addBox(-1F, 0F, -2F, 1, 1, 2);
@@ -111,12 +111,12 @@ public class ModelTFFireBeetle extends ModelBase
 		jaw2b = new ModelRenderer(this, 0, 0);
 		jaw2b.addBox(0F, 0F, -2F, 1, 1, 2);
 		jaw2b.setRotationPoint(0F, 0F, -2F);
-		setRotation(jaw2b, 0F, (float)Math.PI/2f, 0F);
+		setRotation(jaw2b, 0F, (((float)Math.PI)/2f), 0F);
 		
 		antenna1 = new ModelRenderer(this, 42, 4);
 		antenna1.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
 		antenna1.setRotationPoint(1F, -3F, -5F);
-		setRotation(antenna1, 0F, (float)Math.PI/3f, -0.296706F);
+		setRotation(antenna1, 0F, (((float)Math.PI)/3f), -0.296706F);
 		
 		antenna2 = new ModelRenderer(this, 42, 4);
 		antenna2.addBox(0F, -0.5F, -0.5F, 10, 1, 1);

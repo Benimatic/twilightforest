@@ -41,6 +41,7 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		int logMetaBranch;
 		
 		//need back; parametr?, FB - dead store fall through, overwritten, normal logic?//fix?
+		//test bug gen, back, back
 		switch (rand.nextInt(7))
 		{
 		//case 0://include in default
