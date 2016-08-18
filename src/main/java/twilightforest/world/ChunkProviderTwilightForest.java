@@ -435,7 +435,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 					// hollow hills
 					int hdiam = ((nearFeature.size * 2 + 1) * 16);
 					int dist = (int) Math.sqrt(dx * dx + dz * dz);
-					int hheight = (int) (org.bogdang.modifications.math.MathHelperLite.cos((float)dist / (float)hdiam * Math.PI) * ((float)hdiam / 3F));
+					int hheight = (int) (Math.cos((float)dist / (float)hdiam * Math.PI) * ((float)hdiam / 3F));
 					
 					raiseHills(blockStorage, nearFeature, hdiam, x, z, dx, dz, hheight);
 				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
@@ -480,7 +480,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			int mx = dx + 16;
 			int mz = dz + 16;
 			int mdist = (int) Math.sqrt(mx * mx + mz * mz);
-			int mheight = (int) (org.bogdang.modifications.math.MathHelperLite.cos(mdist / (hdiam / 1.5) * Math.PI) * (hdiam / 1.5));
+			int mheight = (int) (Math.cos(mdist / (hdiam / 1.5) * Math.PI) * (hdiam / 1.5));
 
 			hollow = Math.max(mheight - 4, hollow);
 		}

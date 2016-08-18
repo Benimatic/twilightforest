@@ -107,8 +107,8 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 {
                     double var11 = this.scaleWidth * (double)var8 * ((double)this.rand.nextFloat() + 0.328D);
                     double var13 = (double)this.rand.nextFloat() * 2.0D * Math.PI;
-                    int var15 = MathHelper.floor_double(var11 * org.bogdang.modifications.math.MathHelperLite.sin(var13) + (double)this.basePos[0] + var9);
-                    int var16 = MathHelper.floor_double(var11 * org.bogdang.modifications.math.MathHelperLite.cos(var13) + (double)this.basePos[2] + var9);
+                    int var15 = MathHelper.floor_double(var11 * Math.sin(var13) + (double)this.basePos[0] + var9);
+                    int var16 = MathHelper.floor_double(var11 * Math.cos(var13) + (double)this.basePos[2] + var9);
                     int[] var17 = new int[] {var15, var3, var16};
                     int[] var18 = new int[] {var15, var3 + this.leafDistanceLimit, var16};
 

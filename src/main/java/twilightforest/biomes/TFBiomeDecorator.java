@@ -148,6 +148,8 @@ public class TFBiomeDecorator extends BiomeDecorator {
     protected void genDecorations(BiomeGenBase biome)
     {
         
+    	try {
+    	//at this point the error did not occur, but seeing what could be randomGenerator this null, then add a cap and here
     	// random features!
         if(randomGenerator.nextInt(6) == 0)
         {
@@ -159,14 +161,16 @@ public class TFBiomeDecorator extends BiomeDecorator {
             if (rf.generate(currentWorld, randomGenerator, rx, ry, rz))
             {
 //            	System.out.println(rf + " success at " + rx + ", " + ry + ", " + rz);
-            	cpw.mods.fml.common.FMLLog.info(rf + " success at " + rx + ", " + ry + ", " + rz);
+            	//cpw.mods.fml.common.FMLLog.info(rf + " success at " + rx + ", " + ry + ", " + rz);
             }
         }
+        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip random feature, ");}
 
 		// add canopy trees
+    	try {
     	int nc = (int)canopyPerChunk + ((randomGenerator.nextFloat() < (canopyPerChunk - (int)canopyPerChunk)) ? 1 : 0);
     	for (int i = 0; i < nc; i++) {
-    		try {
+    		try {//this in order not to miss the party generating the trees and miss only a few trees
     		int rx = chunk_X + randomGenerator.nextInt(16) + 8;
     		int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
     		int ry = currentWorld.getHeightValue(rx,  rz);
@@ -175,12 +179,13 @@ public class TFBiomeDecorator extends BiomeDecorator {
     		} else {
     			canopyTreeGen.generate(currentWorld, randomGenerator, rx, ry, rz);
 	        }
-	        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip canopy tree(s), ");}
+	        } catch (Throwable thrwe) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrwe, "TwilightForest: skip canopy tree(s), ");}
     	}
+    	} catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip canopy trees gen, ");}
 
     	// mangrove trees
     	for (int i = 0; i < mangrovesPerChunk; i++) {
-	        try {//yes, not good variant, fix NPE
+	        try {//yes, not good variant, fix NPE, if randomGenerator this null, yeah
 	        int rx = chunk_X + randomGenerator.nextInt(16) + 8;
 	        int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
 	        int ry = currentWorld.getHeightValue(rx, rz);

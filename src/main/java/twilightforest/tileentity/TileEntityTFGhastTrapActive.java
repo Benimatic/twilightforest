@@ -39,13 +39,13 @@ public class TileEntityTFGhastTrapActive extends TileEntity {
 		{
 			// smoke when done
 			if (counter > 100 && counter % 4 == 0) {
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "hugesmoke", this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, org.bogdang.modifications.math.MathHelperLite.cos(counter / 10.0) * 0.05, 0.25D, org.bogdang.modifications.math.MathHelperLite.sin(counter / 10.0) * 0.05);
+				TwilightForestMod.proxy.spawnParticle(this.worldObj, "hugesmoke", this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
 			}
 			else if (counter < 100) 
 			{
-				double dx = org.bogdang.modifications.math.MathHelperLite.cos(counter / 10.0) * 2.5;
+				double dx = Math.cos(counter / 10.0) * 2.5;
 				double dy = 20D;
-				double dz = org.bogdang.modifications.math.MathHelperLite.sin(counter / 10.0) * 2.5;
+				double dz = Math.sin(counter / 10.0) * 2.5;
 
 
 				TwilightForestMod.proxy.spawnParticle(this.worldObj, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy, dz);
