@@ -93,7 +93,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 
 		// roots!
 		int numRoots = 3 + random.nextInt(2);
-		offset = random.nextDouble();
+		offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++)
 		{
 			buildRoot(world, x, y, z, offset, b);

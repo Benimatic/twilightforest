@@ -322,7 +322,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	                double var26 = Math.atan2(Math.sqrt(var4 * var4 + var8 * var8), var6);
 	                double var28 = org.bogdang.modifications.math.MathHelperLite.sin(var26);
 	                double var30 = org.bogdang.modifications.math.MathHelperLite.cos(var26);
-	                double var32 = var1.nextDouble() * Math.PI * 2.0D;
+	                double var32 = var1.nextFloat() * Math.PI * 2.0D;
 	                double var34 = org.bogdang.modifications.math.MathHelperLite.sin(var32);
 	                double var36 = org.bogdang.modifications.math.MathHelperLite.cos(var32);
 

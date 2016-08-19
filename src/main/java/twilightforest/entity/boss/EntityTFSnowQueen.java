@@ -206,8 +206,8 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     			double dy = 0;//look.yCoord;
     			double dz = look.zCoord;
 
-    			double spread = 2 + this.getRNG().nextDouble() * 2.5;
-    			double velocity = 2.0 + this.getRNG().nextDouble() * 0.15;
+    			double spread = 2 + this.getRNG().nextFloat() * 2.5;
+    			double velocity = 2.0 + this.getRNG().nextFloat() * 0.15;
 
     			// beeeam
     			dx += this.getRNG().nextGaussian() * 0.0075D * spread;

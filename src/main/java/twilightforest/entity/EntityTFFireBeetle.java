@@ -177,8 +177,8 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     			double dy = look.yCoord;
     			double dz = look.zCoord;
 
-    			double spread = 5 + this.getRNG().nextDouble() * 2.5;
-    			double velocity = 0.15 + this.getRNG().nextDouble() * 0.15;
+    			double spread = 5 + this.getRNG().nextFloat() * 2.5;
+    			double velocity = 0.15 + this.getRNG().nextFloat() * 0.15;
 
     			// spread flame
     			dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;

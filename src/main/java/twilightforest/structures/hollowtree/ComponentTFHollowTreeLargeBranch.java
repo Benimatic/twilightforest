@@ -38,8 +38,8 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		
 		for(int i = 0; i <= numMedBranches; i++) {
 			
-			double outVar = (rand.nextDouble() * 0.3) + 0.3;
-			double angleVar = rand.nextDouble() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
+			double outVar = (rand.nextFloat() * 0.3) + 0.3;
+			double angleVar = rand.nextFloat() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
 			ChunkCoordinates bsrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, length * outVar, angle, tilt);
 			
 			makeMedBranch(list, rand, index + 2 + i, bsrc.posX, bsrc.posY, bsrc.posZ, length * 0.6, angle + angleVar, tilt, leafy);
@@ -49,8 +49,8 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 //		int numSmallBranches = rand.nextInt(2) + 1;
 //		for(int i = 0; i <= numSmallBranches; i++) {
 //			
-//			double outVar = (rand.nextDouble() * 0.25) + 0.25;
-//			double angleVar = rand.nextDouble() * 0.25 * ((i & 1) == 0 ? 1.0 : -1.0);
+//			double outVar = (rand.nextFloat() * 0.25) + 0.25;
+//			double angleVar = rand.nextFloat() * 0.25 * ((i & 1) == 0 ? 1.0 : -1.0);
 //			ChunkCoordinates bsrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, length * outVar, angle, tilt);
 //			
 //			makeSmallBranch(list, rand, index + numMedBranches + 1 + i, bsrc.posX, bsrc.posY, bsrc.posZ, Math.max(length * 0.3, 2), angle + angleVar, tilt, leafy);

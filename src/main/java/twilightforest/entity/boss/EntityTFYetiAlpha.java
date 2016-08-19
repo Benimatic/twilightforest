@@ -163,7 +163,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	{
     		for (int i = 0; i < 20; i++)
     		{
-    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextFloat() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextFloat() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
     		}
     	}
 

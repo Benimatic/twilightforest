@@ -68,7 +68,7 @@ public class EntityTFDeathTome extends EntityMob {
 		
         for (int i = 0; i < 1; ++i)
         {
-            this.worldObj.spawnParticle("enchantmenttable", this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, 
+            this.worldObj.spawnParticle("enchantmenttable", this.posX + (this.rand.nextFloat() - 0.5D) * this.width, this.posY + this.rand.nextFloat() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextFloat() - 0.5D) * this.width, 
             		0, 0.5, 0);
         }
 	}

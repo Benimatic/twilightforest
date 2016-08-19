@@ -52,9 +52,9 @@ public class EntityTFTomeBolt extends EntityThrowable {
 	 */
 	public void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+			double dx = posX + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dy = posY + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dz = posZ + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
 			worldObj.spawnParticle("crit", dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -82,7 +82,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.fire_charge), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.fire_charge), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextFloat() * 0.2D, rand.nextGaussian() * 0.05D);
 		}
 
 		if (!this.worldObj.isRemote)

@@ -389,7 +389,7 @@ public abstract class TFBiomeBase extends BiomeGenBase  {
         Block fillerBlock = this.fillerBlock;
         byte fillerMeta = (byte)(this.field_76754_C & 255);
         int currentFillerDepth = -1;
-        int maxFillerDepth = (int)(stoneNoise / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
+        int maxFillerDepth = (int)(stoneNoise / 3.0D + 3.0D + rand.nextFloat() * 0.25D);
         int maskX = x & 15;
         int maskZ = z & 15;
         int worldHeight = blockStorage.length / 256;

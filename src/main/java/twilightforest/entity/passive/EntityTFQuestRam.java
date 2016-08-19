@@ -209,7 +209,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 //        for (int var1 = 0; var1 < 2; ++var1)
 //        {
-//            this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextDouble());
+//            this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextFloat() - 0.5D) * (double)this.width, this.posY + this.rand.nextFloat() * (double)this.height, this.posZ + (this.rand.nextFloat() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextFloat());
 //        }
     	checkAndAnimateColors();
     }
@@ -308,7 +308,7 @@ public class EntityTFQuestRam extends EntityAnimal {
     	//EntitySheep.fleeceColorTable[i][0]
     	
     	for (int i = 0; i < iterations; i++) {
-          this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, EntitySheep.fleeceColorTable[color][0], EntitySheep.fleeceColorTable[color][1], EntitySheep.fleeceColorTable[color][2]);
+          this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextFloat() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextFloat() * this.height * 1.5, this.posZ + (this.rand.nextFloat() - 0.5D) * this.width * 1.5, EntitySheep.fleeceColorTable[color][0], EntitySheep.fleeceColorTable[color][1], EntitySheep.fleeceColorTable[color][2]);
     	}
     	
     	//TODO: it would be nice to play a custom sound

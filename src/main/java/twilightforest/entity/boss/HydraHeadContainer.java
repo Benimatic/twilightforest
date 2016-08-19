@@ -619,8 +619,8 @@ public class HydraHeadContainer {
 
 		if (headEntity.getState() == STATE_FLAME_BEGINNING)
 		{
-			headEntity.worldObj.spawnParticle("flame", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
-			headEntity.worldObj.spawnParticle("smoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("flame", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("smoke", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
 		}
 		
 		if (headEntity.getState() == STATE_FLAME_BREATHING)
@@ -632,8 +632,8 @@ public class HydraHeadContainer {
 				double dy = look.yCoord;
 				double dz = look.zCoord;
 				
-				double spread = 5 + headEntity.getRNG().nextDouble() * 2.5;
-				double velocity = 1.0 + headEntity.getRNG().nextDouble();
+				double spread = 5 + headEntity.getRNG().nextFloat() * 2.5;
+				double velocity = 1.0 + headEntity.getRNG().nextFloat();
 				
 				// spread flame
 		        dx += headEntity.getRNG().nextGaussian() * 0.007499999832361937D * spread;
@@ -649,12 +649,12 @@ public class HydraHeadContainer {
 		
 		if (headEntity.getState() == STATE_BITE_BEGINNING || headEntity.getState() == STATE_BITE_READY)
 		{
-			headEntity.worldObj.spawnParticle("splash", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("splash", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
 		}
 		
 		if (headEntity.getState() == STATE_MORTAR_BEGINNING)
 		{
-			headEntity.worldObj.spawnParticle("largesmoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("largesmoke", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
 		}
 	}
 

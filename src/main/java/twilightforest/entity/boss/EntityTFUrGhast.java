@@ -276,9 +276,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     	{
     		EntityTFMiniGhast minion = new EntityTFMiniGhast(worldObj);
     		
-    		double sx = x + ((rand.nextDouble() - rand.nextDouble()) * rangeXZ);
-    		double sy = y + (rand.nextDouble() * rangeY);
-    		double sz = z + ((rand.nextDouble() - rand.nextDouble()) * rangeXZ);
+    		double sx = x + ((rand.nextFloat() - rand.nextFloat()) * rangeXZ);
+    		double sy = y + (rand.nextFloat() * rangeY);
+    		double sz = z + ((rand.nextFloat() - rand.nextFloat()) * rangeXZ);
     		
     		minion.setLocationAndAngles(sx, sy, sz, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
     		minion.makeBossMinion();
@@ -508,7 +508,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
      */
     private void shedTear() 
     {
-		TwilightForestMod.proxy.spawnParticle(this.worldObj, "bosstear", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(this.worldObj, "bosstear", this.posX + (this.rand.nextFloat() - 0.5D) * (double)this.width, this.posY + this.rand.nextFloat() * (double)this.height - 0.25D, this.posZ + (this.rand.nextFloat() - 0.5D) * (double)this.width, 0, 0, 0);
 	}
 
 	/**

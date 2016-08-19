@@ -898,9 +898,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     		float f = (rand.nextFloat() - 0.5F) * 0.2F;
     		float f1 = (rand.nextFloat() - 0.5F) * 0.2F;
     		float f2 = (rand.nextFloat() - 0.5F) * 0.2F;
-    		double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
-    		double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * height;
-    		double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
+    		double tx = srcX + (destX - srcX) * trailFactor + (rand.nextFloat() - 0.5D) * width * 2D;
+    		double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * height;
+    		double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextFloat() - 0.5D) * width * 2D;
     		worldObj.spawnParticle("spell", tx, ty, tz, f, f1, f2);
     	}
 	}

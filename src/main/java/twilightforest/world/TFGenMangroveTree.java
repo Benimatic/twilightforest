@@ -48,7 +48,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		
 		// make 0-3 branches
 		int numBranches = random.nextInt(3);
-		double offset = random.nextDouble();
+		double offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++)
 		{
 			buildBranch(world, random, x, y, z, 7 + b, 6 + random.nextInt(2), 0.3 * b + offset, 0.25, false);
@@ -56,15 +56,15 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		
 		// make 3-5 roots
 		int numRoots = 3 + random.nextInt(2);
-		offset = random.nextDouble();
+		offset = random.nextFloat();
 		for (int i = 0; i < numRoots; i++)
 		{
-			double rTilt = 0.75 + (random.nextDouble() * 0.1);
+			double rTilt = 0.75 + (random.nextFloat() * 0.1);
 			buildRoot(world, x, y, z, 5, 12, 0.4 * i + offset, rTilt);
 		}
 
 		// add a firefly (torch) to the trunk
-		addFirefly(world, x, y, z, 5 + random.nextInt(5), random.nextDouble());
+		addFirefly(world, x, y, z, 5 + random.nextInt(5), random.nextFloat());
 		
 		
 		return true;

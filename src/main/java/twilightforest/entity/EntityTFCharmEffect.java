@@ -103,9 +103,9 @@ public class EntityTFCharmEffect extends Entity
         if (this.getItemID() > 0)
         {
         	for (int i = 0; i < 3; i++) {
-        		double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-        		double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-        		double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+        		double dx = posX + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+        		double dy = posY + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+        		double dz = posZ + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
 
         		worldObj.spawnParticle("iconcrack_" + this.getItemID(), dx, dy, dz, 0, 0.2, 0);
         	}

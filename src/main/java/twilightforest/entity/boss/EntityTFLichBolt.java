@@ -46,9 +46,9 @@ public class EntityTFLichBolt extends EntityThrowable {
 
 	public void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+			double dx = posX + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dy = posY + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dz = posZ + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
 			
 			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
@@ -158,7 +158,7 @@ public class EntityTFLichBolt extends EntityThrowable {
         if (!passThrough) {
 	        for (int i = 0; i < 8; ++i)
 	        {
-	            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ender_pearl), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+	            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ender_pearl), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextFloat() * 0.2D, rand.nextGaussian() * 0.05D);
 	        }
 	
 	        if (!this.worldObj.isRemote)

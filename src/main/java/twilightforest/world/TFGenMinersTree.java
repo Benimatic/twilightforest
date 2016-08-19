@@ -76,7 +76,7 @@ public class TFGenMinersTree extends TFTreeGenerator
 
 		// roots!
 		int numRoots = 3 + rand.nextInt(2);
-		double offset = rand.nextDouble();
+		double offset = rand.nextFloat();
 		for (int b = 0; b < numRoots; b++)
 		{
 			buildRoot(world, x, y, z, offset, b);

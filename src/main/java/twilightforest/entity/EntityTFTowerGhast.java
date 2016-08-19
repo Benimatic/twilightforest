@@ -129,7 +129,7 @@ public class EntityTFTowerGhast extends EntityGhast
         
         if (this.rand.nextBoolean())
         {
-            this.worldObj.spawnParticle("reddust", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+            this.worldObj.spawnParticle("reddust", this.posX + (this.rand.nextFloat() - 0.5D) * (double)this.width, this.posY + this.rand.nextFloat() * (double)this.height - 0.25D, this.posZ + (this.rand.nextFloat() - 0.5D) * (double)this.width, 0, 0, 0);
         }
 
         super.onLivingUpdate();

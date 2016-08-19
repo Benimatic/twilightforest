@@ -41,9 +41,9 @@ public class EntityTFLichBomb extends EntityThrowable {
 
 	public void makeTrail() {
 		for (int i = 0; i < 1; i++) {
-			double sx =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionX;
-			double sy =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionY;
-			double sz =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionZ;
+			double sx =  0.5 * (rand.nextFloat() - rand.nextFloat()) + this.motionX;
+			double sy =  0.5 * (rand.nextFloat() - rand.nextFloat()) + this.motionY;
+			double sz =  0.5 * (rand.nextFloat() - rand.nextFloat()) + this.motionZ;
 			
 			
 			double dx = posX + sx; 

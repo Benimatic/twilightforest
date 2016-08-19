@@ -155,7 +155,7 @@ public class EntityTFKobold extends EntityMob {
     	{
     		for (int i = 0; i < 2; i++)
     		{
-    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, 0, 0, 0);
+    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextFloat() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextFloat() - 0.5D) * this.width * 0.5, 0, 0, 0);
     		}
     	}
 

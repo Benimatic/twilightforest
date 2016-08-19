@@ -106,7 +106,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 //			int numLeafBalls = Math.min(rand.nextInt(3) + 1, (int)(length / 5));
 //			for(int i = 0; i < numLeafBalls; i++) {
 //
-//				double slength = (rand.nextDouble() * 0.6 + 0.2) * length;
+//				double slength = (rand.nextFloat() * 0.6 + 0.2) * length;
 //				int[] bdst = TFGenerator.translate(src.posX, src.posY, src.posZ, slength, angle, tilt);
 //
 //				//drawBlob(bdst[0], bdst[1], bdst[2], 2, leafBlock, false);		
@@ -130,8 +130,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 //		for(int i = 0; i < numShoots; i++) {
 //
 //			angleVar = (angleInc * i) - 0.4;
-//			outVar = (rand.nextDouble() * 0.8) + 0.2;
-//			tiltVar = (rand.nextDouble() * 0.75) + 0.15;
+//			outVar = (rand.nextFloat() * 0.8) + 0.2;
+//			tiltVar = (rand.nextFloat() * 0.75) + 0.15;
 //
 //			ChunkCoordinates bSrc = TFGenerator.translateCoords(src.posX, src.posY, src.posZ, length * outVar, angle, tilt);
 //			double slength = length * 0.4;
@@ -173,8 +173,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 		for(int i = 0; i < numShoots; i++) {
 
 			angleVar = (angleInc * i) - 0.4;
-			outVar = (decoRNG.nextDouble() * 0.8) + 0.2;
-			tiltVar = (decoRNG.nextDouble() * 0.75) + 0.15;
+			outVar = (decoRNG.nextFloat() * 0.8) + 0.2;
+			tiltVar = (decoRNG.nextFloat() * 0.75) + 0.15;
 
 			ChunkCoordinates bSrc = TFGenerator.translateCoords(rSrc.posX, rSrc.posY, rSrc.posZ, length * outVar, angle, tilt);
 			double slength = length * 0.4;

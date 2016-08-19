@@ -61,7 +61,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		
 		// make 3-4 branches
 		int numBranches = 3 + random.nextInt(2);
-		double offset = random.nextDouble();
+		double offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++)
 		{
 			buildBranch(world, x, y, z, treeHeight - 5 + b, 9, 0.3 * b + offset, 0.2, false, random);
@@ -114,7 +114,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		// do this here until that bug with the lighting is fixed
 		if (trunk) {
 			// add a firefly (torch) to the trunk
-			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextFloat());
 		}
 		
 		drawMushroomCircle(world, dest.posX, dest.posY, dest.posZ, 4, leafBlock);	

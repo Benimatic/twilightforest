@@ -72,8 +72,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 		// 3-5 couple branches on the way up...
 		int numBranches = rand.nextInt(3) + 3;
 		for (int i = 0; i <= numBranches; i++) {
-			int branchHeight = (int)(height * rand.nextDouble() * 0.9) + (height / 10);
-			double branchRotation = rand.nextDouble();
+			int branchHeight = (int)(height * rand.nextFloat() * 0.9) + (height / 10);
+			double branchRotation = rand.nextFloat();
 
 			makeSmallBranch(list, rand, index + i + 1, branchHeight, 4, branchRotation, 0.35D, true);
 		}
@@ -119,7 +119,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 		//let's do this!
 		int numBranches = rand.nextInt(maxBranches - minBranches + 1) + minBranches;
 		double branchRotation = 1.0 / numBranches;
-		double branchOffset = rand.nextDouble();
+		double branchOffset = rand.nextFloat();
 		
 		for (int i = 0; i <= numBranches; i++) {
 			int dHeight;
@@ -234,8 +234,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 		// fireflies & cicadas
 		int numInsects = random.nextInt(3 * radius) + random.nextInt(3 * radius) + 10;
 		for (int i = 0; i <= numInsects; i++) {
-			int fHeight = (int)(height * random.nextDouble() * 0.9) + (height / 10);
-			double fAngle = random.nextDouble();
+			int fHeight = (int)(height * random.nextFloat() * 0.9) + (height / 10);
+			double fAngle = random.nextFloat();
 			addInsect(world, fHeight, fAngle, random, sbb);
 		}
 

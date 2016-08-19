@@ -144,7 +144,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		if (trunk) 
 		{
 			// add a firefly (torch) to the trunk
-			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextFloat());
 		}
 		
 		int blobSize = 2;// + treeRNG.nextInt(2);
