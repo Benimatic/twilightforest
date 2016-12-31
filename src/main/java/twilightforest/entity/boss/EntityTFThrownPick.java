@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityTFThrownPick extends EntityThrowable  {
 
-	private static final float PROJECTILE_DAMAGE = 3;
+	private static final float PROJECTILE_DAMAGE = 3*1.5F;
 
 	public EntityTFThrownPick(World par1World, EntityLivingBase par2EntityLivingBase) {
 		super(par1World, par2EntityLivingBase);

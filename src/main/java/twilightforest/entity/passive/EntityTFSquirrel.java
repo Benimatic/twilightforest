@@ -48,7 +48,7 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0D+twilightforest.TwilightForestMod.Scatter.nextInt(5)); // max health
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 	

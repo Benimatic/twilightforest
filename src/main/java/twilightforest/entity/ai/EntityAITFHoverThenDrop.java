@@ -189,7 +189,7 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 		}
 		
         if (tries == 99) {
-            System.out.println("Found no spots, giving up");
+            cpw.mods.fml.common.FMLLog.info("Found no spots, giving up");
         }
 		
 		this.hoverPosX = hx;

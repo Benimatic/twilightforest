@@ -46,7 +46,7 @@ public class TFTeleporter extends Teleporter
 				int px = MathHelper.floor_double(par1Entity.posX);
 				int pz = MathHelper.floor_double(par1Entity.posZ);
 				if (!isSafeBiomeAt(px, pz, par1Entity)) {
-					System.out.println("[TwilightForest] Portal destination looks unsafe, rerouting!");
+					cpw.mods.fml.common.FMLLog.info("[TwilightForest] Portal destination looks unsafe, rerouting!");
 					
 					ChunkCoordinates safeCoords = findSafeCoords(200, px, pz, par1Entity);
 					
@@ -55,18 +55,18 @@ public class TFTeleporter extends Teleporter
 			            x = safeCoords.posX;
 			            z = safeCoords.posZ;
 			            
-			            System.out.println("[TwilightForest] Safely rerouted!");
+			            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Safely rerouted!");
 					} else {
-			            System.out.println("[TwilightForest] Did not find a safe spot at first try, trying again with longer range.");
+			            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Did not find a safe spot at first try, trying again with longer range.");
 						safeCoords = findSafeCoords(400, px, pz, par1Entity);
 						if (safeCoords != null) {
 				            par1Entity.setLocationAndAngles(safeCoords.posX, par1Entity.posY, safeCoords.posZ, 90.0F, 0.0F);
 				            x = safeCoords.posX;
 				            z = safeCoords.posZ;
 				            
-				            System.out.println("[TwilightForest] Safely rerouted to long range portal.  Return trip not guaranteed.");
+				            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Safely rerouted to long range portal.  Return trip not guaranteed.");
 						} else {
-				            System.out.println("[TwilightForest] Did not find a safe spot.");
+				            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Did not find a safe spot.");
 						}
 					}
 				}

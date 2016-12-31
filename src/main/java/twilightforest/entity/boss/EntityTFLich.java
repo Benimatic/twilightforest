@@ -27,6 +27,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.TFFeature;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.item.TFItems;
@@ -49,11 +50,11 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	EntityTFLich masterLich;
 
 	private static final ItemStack heldItems[] = {new ItemStack(TFItems.scepterTwilight, 1), new ItemStack(TFItems.scepterZombie, 1), new ItemStack(Items.golden_sword, 1)};
-	public static final int MAX_SHADOW_CLONES = 2;
-	public static final int INITIAL_SHIELD_STRENGTH = 5;
-	public static final int MAX_ACTIVE_MINIONS = 3;
-	public static final int INITIAL_MINIONS_TO_SUMMON = 9;
-	public static final int MAX_HEALTH = 100;
+	public static final int MAX_SHADOW_CLONES = (int)(2*1.5);
+	public static final int INITIAL_SHIELD_STRENGTH = (int)(5*1.5);
+	public static final int MAX_ACTIVE_MINIONS = (int)(3*1.5);
+	public static final int INITIAL_MINIONS_TO_SUMMON = (int)(9*1.5);
+	public static final int MAX_HEALTH = (int)(100*1.5);
 
 	
 	/**
@@ -111,9 +112,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.800000011920929D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH+twilightforest.TwilightForestMod.Scatter.nextInt(MAX_HEALTH/3)-twilightforest.TwilightForestMod.Scatter.nextInt(MAX_HEALTH/3)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D*1.5D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.800000011920929D*1.5D); // movement speed
     }
 	
 	

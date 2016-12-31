@@ -96,8 +96,10 @@ public class ModelTFKobold extends ModelBiped
         this.bipedHead.rotateAngleY = par4 / (180F / (float)Math.PI);
         this.bipedHead.rotateAngleX = par5 / (180F / (float)Math.PI);
 
-        this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2 * 0.5F;
-        this.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+        float mcos = MathHelper.cos(par1 * 0.6662F + (float)Math.PI);
+        this.bipedRightArm.rotateAngleX = mcos * 2.0F * par2 * 0.5F;
+        float mcos0 = MathHelper.cos(par1 * 0.6662F);
+        this.bipedLeftArm.rotateAngleX = mcos0 * 2.0F * par2 * 0.5F;
         this.bipedRightArm.rotateAngleZ = 0.0F;
         this.bipedLeftArm.rotateAngleZ = 0.0F;
         
@@ -105,15 +107,17 @@ public class ModelTFKobold extends ModelBiped
         this.bipedLeftArm.rotateAngleX = -((float)Math.PI * .15F);
 
         
-        this.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+        this.bipedRightLeg.rotateAngleX = mcos0 * 1.4F * par2;
+        this.bipedLeftLeg.rotateAngleX = mcos * 1.4F * par2;
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
         
-        this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.19F) * 0.15F + 0.05F;
-        this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.19F) * 0.15F + 0.05F;
-        this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.267F) * 0.25F;
-        this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.267F) * 0.25F;
+        float mcos1 = MathHelper.cos(par3 * 0.19F) * 0.15F + 0.05F;
+        this.bipedRightArm.rotateAngleZ += mcos1;
+        this.bipedLeftArm.rotateAngleZ -= mcos1;
+        float msin = MathHelper.sin(par3 * 0.267F) * 0.25F;
+        this.bipedRightArm.rotateAngleX += msin;
+        this.bipedLeftArm.rotateAngleX -= msin;
         
         if (this.isJumping) {
         	// open jaw

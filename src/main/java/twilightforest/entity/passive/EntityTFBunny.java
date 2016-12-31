@@ -54,7 +54,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D+twilightforest.TwilightForestMod.Scatter.nextInt(3)-twilightforest.TwilightForestMod.Scatter.nextInt(3)); // max health
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 	

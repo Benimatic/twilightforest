@@ -168,9 +168,9 @@ public class EntityTFIceBomb extends EntityThrowable {
 					worldObj.setBlock(ix, iy + 1, iz, Blocks.ice);
 					
 				} else {
-					entity.attackEntityFrom(DamageSource.magic, 1);
-					int chillLevel = 2;
-					((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 20 * 5, chillLevel, true));
+					entity.attackEntityFrom(DamageSource.magic, 1*1.5f);
+					int chillLevel = (int)(2*1.5);
+					((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, (int)(20 * 5 *1.5), chillLevel, true));
 				}
 				
 			}

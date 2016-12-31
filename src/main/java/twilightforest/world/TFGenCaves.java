@@ -179,20 +179,23 @@ public class TFGenCaves extends MapGenCaves
                         for (genX = minX; genX < maxX; ++genX)
                         {
                             double var59 = ((double)(genX + centerX * 16) + 0.5D - randX) / sizeVar;
+                            double var59d = var59*var59;
 
                             for (genZ = minZ; genZ < maxZ; ++genZ)
                             {
                                 double var46 = ((double)(genZ + centerZ * 16) + 0.5D - randZ) / sizeVar;
+                                double var46d = var46*var46;
                                 int caveIndex = (genX * 16 + genZ) * TFWorld.CHUNKHEIGHT + minY;
                                 boolean hitGrass = false;
 
-                                if (var59 * var59 + var46 * var46 < 1.0D)
+                                if (var59d + var46d < 1.0D)
                                 {
                                     for (int caveY = minY - 1; caveY >= maxY; --caveY)
                                     {
                                         double var51 = ((double)caveY + 0.5D - randY) / scaledSize;
+                                        double var51d = var51*var51;
 
-                                        if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 20.0D)
+                                        if (var51 > -0.7D && var59d + var51d + var46d < 20.0D)
                                         {
                                             Block blockAt = blockStorage[caveIndex];
 
@@ -203,7 +206,7 @@ public class TFGenCaves extends MapGenCaves
 
                                             if (blockAt != null && (blockAt == Blocks.stone || blockAt == TFBlocks.trollSteinn || blockAt.getMaterial() == Material.ground || blockAt.getMaterial() == Material.grass))
                                             {
-                                            	if (var59 * var59 + var51 * var51 + var46 * var46 < 0.85D) {
+                                            	if (var59d + var51d + var46d < 0.85D) {
                                             		blockStorage[caveIndex] = caveY < 10 ?  Blocks.water : Blocks.air;
                                             	}
                                             	else {

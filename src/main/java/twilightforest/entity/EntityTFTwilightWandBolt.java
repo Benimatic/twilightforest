@@ -64,7 +64,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 		// only hit living things
         if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
         {
-            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6*1.5f);
             /*if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6))
             {
                 ;

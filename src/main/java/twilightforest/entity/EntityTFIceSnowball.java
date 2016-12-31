@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityTFIceSnowball extends EntityThrowable {
 
-	private static final int DAMAGE = 8;
+	private static final int DAMAGE = (int)(8*1.5);
 
 	public EntityTFIceSnowball(World par1World) {
 		super(par1World);

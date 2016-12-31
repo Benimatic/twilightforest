@@ -64,7 +64,7 @@ public class EntityTFQuestRam extends EntityAnimal {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(70.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(70.0D+twilightforest.TwilightForestMod.Scatter.nextInt(25)-twilightforest.TwilightForestMod.Scatter.nextInt(25)); // max health
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
     }
 	

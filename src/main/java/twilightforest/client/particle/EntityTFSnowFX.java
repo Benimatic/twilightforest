@@ -31,7 +31,7 @@ public class EntityTFSnowFX extends EntityFX
         this.particleScale *= 0.75F;
         this.particleScale *= par14;
         this.initialParticleScale = this.particleScale;
-        this.particleMaxAge = (int)(6.0D / ((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.8D + 0.6D));
+        this.particleMaxAge = (int)(6.0F / ((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.8F + 0.6F));
         this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
         this.noClip = false;
         

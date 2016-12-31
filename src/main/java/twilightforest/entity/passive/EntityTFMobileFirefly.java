@@ -76,7 +76,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(6.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(6.0D+twilightforest.TwilightForestMod.Scatter.nextInt(6)-twilightforest.TwilightForestMod.Scatter.nextInt(6)); // max health
     }
     
     /**
@@ -122,7 +122,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature
 		this.motionX += (Math.signum(var1) * 0.5D - this.motionX) * speed;
     	this.motionY += (Math.signum(var3) * 0.699999988079071D - this.motionY) * speed * 2;
     	this.motionZ += (Math.signum(var5) * 0.5D - this.motionZ) * speed;
-    	float var7 = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) - 90.0F;
+    	float var7 = (org.bogdang.modifications.math.TrigMath2.atan2((float)this.motionZ, (float)this.motionX) * 180.0F / (float)Math.PI) - 90.0F;
     	float var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
     	this.moveForward = 0.5F;
     	this.rotationYaw += var8;

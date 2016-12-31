@@ -96,7 +96,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(250); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(250*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(375/3)-twilightforest.TwilightForestMod.Scatter.nextInt(375/3)); // max health
     }
 	
 	@Override
@@ -452,11 +452,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         	// ignore player, move normally
             this.isAggressive = false;
         	this.targetedEntity = null;
-        	this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
+        	this.rotationYaw = -(org.bogdang.modifications.math.TrigMath2.atan2((float)this.motionX, (float)this.motionZ)) * 180.0F / (float)Math.PI;
         	
         	// changing the pitch with movement looks goofy and un-ghast-like
         	//double dist = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ *  this.motionZ);
-        	this.rotationPitch = 0;//(float) (-((Math.atan2(this.motionY, dist) * 180D) / Math.PI));;
+        	this.rotationPitch = 0;//(float) (-((org.bogdang.modifications.math.TrigMath2.atan2(this.motionY, dist) * 180D) / Math.PI));;
 
         }
 
@@ -490,7 +490,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 
 			if (worldObj.canBlockSeeTheSky(dx, dy, dz))
 			{
-				player.attackEntityFrom(DamageSource.anvil, 3);
+				player.attackEntityFrom(DamageSource.anvil, 3*1.5f);
 			}
 		}
 

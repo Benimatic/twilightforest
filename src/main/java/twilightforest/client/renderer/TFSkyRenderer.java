@@ -78,6 +78,7 @@ public class TFSkyRenderer extends IRenderHandler {
 
         var5.draw();
         GL11.glEndList();
+        GL11.glPopMatrix();
     }
     
 	
@@ -278,7 +279,7 @@ public class TFSkyRenderer extends IRenderHandler {
         }
 
         float var6 = var5;
-        var5 = 1.0F - (float)((org.bogdang.modifications.math.MathHelperLite.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
+        var5 = 1.0F - (((float)Math.cos(var5 * (float)Math.PI) + 1.0F) / 2.0F);
         var5 = var6 + (var5 - var6) / 3.0F;
         return var5;
 	}
@@ -300,45 +301,119 @@ public class TFSkyRenderer extends IRenderHandler {
 	        var2.startDrawingQuads();
 
 	        for (int var3 = 0; var3 < 3000; ++var3)
-	        {
-	            double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-	            double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-	            double var8 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-	            double size = (double)(0.10F + var1.nextFloat() * 0.25F);
-	            double var12 = var4 * var4 + var6 * var6 + var8 * var8;
+	        {//Bogdan-G: dont rewrite temp values
+	            final float var4 = (var1.nextFloat() * 2.0F - 1.0F);
+	            final float var6 = (var1.nextFloat() * 2.0F - 1.0F);
+	            final float var8 = (var1.nextFloat() * 2.0F - 1.0F);
+	            final float size = (0.10F + var1.nextFloat() * 0.25F);
+	            final float var12 = var4 * var4 + var6 * var6 + var8 * var8;
 
-	            if (var12 < 1.0D && var12 > 0.01D)
+	            if (var12 < 1.0F && var12 > 0.01F)
 	            {
-	                var12 = 1.0D / Math.sqrt(var12);
-	                var4 *= var12;
-	                var6 *= var12;
-	                var8 *= var12;
-	                double var14 = var4 * 100.0D;
-	                double var16 = var6 * 100.0D;
-	                double var18 = var8 * 100.0D;
-	                double var20 = Math.atan2(var4, var8);
-	                double var22 = org.bogdang.modifications.math.MathHelperLite.sin(var20);
-	                double var24 = org.bogdang.modifications.math.MathHelperLite.cos(var20);
-	                double var26 = Math.atan2(Math.sqrt(var4 * var4 + var8 * var8), var6);
-	                double var28 = org.bogdang.modifications.math.MathHelperLite.sin(var26);
-	                double var30 = org.bogdang.modifications.math.MathHelperLite.cos(var26);
-	                double var32 = var1.nextFloat() * Math.PI * 2.0D;
-	                double var34 = org.bogdang.modifications.math.MathHelperLite.sin(var32);
-	                double var36 = org.bogdang.modifications.math.MathHelperLite.cos(var32);
+	                final float var12d = 1.0F / (float)Math.sqrt(var12);
+	                final float var4d = var4 * var12d;
+	                final float var6d = var6 * var12d;
+	                final float var8d = var8 * var12d;
+	                final float var14 = var4d * 100.0F;
+	                final float var16 = var6d * 100.0F;
+	                final float var18 = var8d * 100.0F;
+	                final float var20 = org.bogdang.modifications.math.TrigMath2.atan2(var4d, var8d);
+	                final float var22 = (float)Math.sin(var20);
+	                final float var24 = (float)Math.cos(var20);
+	                final float var26 = org.bogdang.modifications.math.TrigMath2.atan2((float)Math.sqrt(var4d * var4d + var8d * var8d), var6d);
+	                final float var28 = (float)Math.sin(var26);
+	                final float var30 = (float)Math.cos(var26);
+	                final float var32 = var1.nextFloat() * (float)Math.PI * 2.0F;
+	                final float var34 = (float)Math.sin(var32);
+	                final float var36 = (float)Math.cos(var32);
 
-	                for (int var38 = 0; var38 < 4; ++var38)
+	                //for (int var38 = 0; var38 < 4; ++var38)
+	                //{//Bogdan-G: drop cycle for, calculate the known values
+	                    /*final float var41_1a = size * var36;
+	                    final float var41_2a = size * var34;
+	                    
+	                    final float var53 = (var41_2a - var41_1a) * var28;
+	                    final float var55 = -((var41_2a - var41_1a) * var30);
+	                    final float var57 = var55 * var22 - ((-var41_1a) - var41_2a) * var24;
+	                    final float var61 = ((-var41_1a) - var41_2a) * var22 + var55 * var24;
+	                    var2.addVertex((double)(var14 + var57), (double)(var16 + var53), (double)(var18 + var61));
+	                    
+	                    final float var53a = (-var41_1a) * var28;
+	                    final float var55a = var41_1a * var30;
+	                    final float var57a = var55a * var22 + var41_2a * var24;
+	                    final float var61a = (-var41_2a) * var22 + var55a * var24;
+	                    var2.addVertex((double)(var14 + var57a), (double)(var16 + var53a), (double)(var18 + var61a));
+	                    
+	                    final float var47 = var41_1a - var41_2a;
+	                    final float var49 = var41_1a + var41_2a;
+	                    final float var53b = var47 * var28;
+	                    final float var55b = -(var47 * var30);
+	                    final float var57b = var55b * var22 - var49 * var24;
+	                    final float var61b = var49 * var22 + var55b * var24;
+	                    var2.addVertex((double)(var14 + var57b), (double)(var16 + var53b), (double)(var18 + var61b));
+	                    
+	                    final float var47a = var41_1a - (2f) * var41_2a;
+	                    final float var49a = (2f) * var41_1a + var41_2a;
+	                    final float var53c = var47a * var28;
+	                    final float var55c = -(var47a * var30);
+	                    final float var57c = var55c * var22 - var49a * var24;
+	                    final float var61c = var49a * var22 + var55c * var24;
+	                    var2.addVertex((double)(var14 + var57c), (double)(var16 + var53c), (double)(var18 + var61c));*/
+	                /*for (int var38 = 0; var38 < 4; ++var38)
 	                {
-	                    double var39 = 0.0D;
-	                    double var41 = (double)((var38 & 2) - 1) * size;
-	                    double var43 = (double)((var38 + 1 & 2) - 1) * size;
-	                    double var47 = var41 * var36 - var43 * var34;
-	                    double var49 = var43 * var36 + var41 * var34;
-	                    double var53 = var47 * var28 + var39 * var30;
-	                    double var55 = var39 * var28 - var47 * var30;
-	                    double var57 = var55 * var22 - var49 * var24;
-	                    double var61 = var49 * var22 + var55 * var24;
-	                    var2.addVertex(var14 + var57, var16 + var53, var18 + var61);
-	                }
+	                    float var39 = 0.0f;
+	                    float var41 = ((var38 & 2) - 1) * size;
+	                    float var43 = ((var38 + 1 & 2) - 1) * size;
+	                    float var47 = var41 * var36 - var43 * var34;
+	                    float var49 = var43 * var36 + var41 * var34;
+	                    float var53 = var47 * var28 + var39 * var30;
+	                    float var55 = var39 * var28 - var47 * var30;
+	                    float var57 = var55 * var22 - var49 * var24;
+	                    float var61 = var49 * var22 + var55 * var24;
+	                    var2.addVertex((double)(var14 + var57), (double)(var16 + var53), (double)(var18 + var61));
+	                }*/
+	                    final float var39 = 0.0f;
+	                    final float var41 = ((0 & 2) - 1) * size;
+	                    final float var43 = ((0 + 1 & 2) - 1) * size;
+	                    final float var47 = var41 * var36 - var43 * var34;
+	                    final float var49 = var43 * var36 + var41 * var34;
+	                    final float var53 = var47 * var28 + var39 * var30;
+	                    final float var55 = var39 * var28 - var47 * var30;
+	                    final float var57 = var55 * var22 - var49 * var24;
+	                    final float var61 = var49 * var22 + var55 * var24;
+	                    var2.addVertex((double)(var14 + var57), (double)(var16 + var53), (double)(var18 + var61));
+	                    final float var39a = 0.0f;
+	                    final float var41a = ((1 & 2) - 1) * size;
+	                    final float var43a = ((1 + 1 & 2) - 1) * size;
+	                    final float var47a = var41a * var36 - var43a * var34;
+	                    final float var49a = var43a * var36 + var41a * var34;
+	                    final float var53a = var47a * var28 + var39a * var30;
+	                    final float var55a = var39a * var28 - var47a * var30;
+	                    final float var57a = var55a * var22 - var49a * var24;
+	                    final float var61a = var49a * var22 + var55a * var24;
+	                    var2.addVertex((double)(var14 + var57a), (double)(var16 + var53a), (double)(var18 + var61a));
+	                    final float var39b = 0.0f;
+	                    final float var41b = ((2 & 2) - 1) * size;
+	                    final float var43b = ((2 + 1 & 2) - 1) * size;
+	                    final float var47b = var41b * var36 - var43b * var34;
+	                    final float var49b = var43b * var36 + var41b * var34;
+	                    final float var53b = var47b * var28 + var39b * var30;
+	                    final float var55b = var39b * var28 - var47b * var30;
+	                    final float var57b = var55b * var22 - var49b * var24;
+	                    final float var61b = var49b * var22 + var55b * var24;
+	                    var2.addVertex((double)(var14 + var57b), (double)(var16 + var53b), (double)(var18 + var61b));
+	                    final float var39c = 0.0f;
+	                    final float var41c = ((3 & 2) - 1) * size;
+	                    final float var43c = ((3 + 1 & 2) - 1) * size;
+	                    final float var47c = var41c * var36 - var43c * var34;
+	                    final float var49c = var43c * var36 + var41c * var34;
+	                    final float var53c = var47c * var28 + var39c * var30;
+	                    final float var55c = var39c * var28 - var47c * var30;
+	                    final float var57c = var55c * var22 - var49c * var24;
+	                    final float var61c = var49c * var22 + var55c * var24;
+	                    var2.addVertex((double)(var14 + var57c), (double)(var16 + var53c), (double)(var18 + var61c));
+	                //}
+	                
 	            }
 	        }
 

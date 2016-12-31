@@ -24,7 +24,7 @@ public class EntityTFUrGhastFireball extends EntityLargeFireball {
         {
             if (par1MovingObjectPosition.entityHit != null)
             {
-                par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16);
+                par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16*1.5f);
             }
 
             this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, (float)this.field_92057_e, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));

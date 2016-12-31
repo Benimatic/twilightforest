@@ -72,9 +72,9 @@ public class EntityTFBoggard extends EntityMob {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(14.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(14.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(7)-twilightforest.TwilightForestMod.Scatter.nextInt(7)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D*1.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D*1.5D); // attack damage
     }
 
     @Override
@@ -161,9 +161,9 @@ public class EntityTFBoggard extends EntityMob {
      */
     public boolean isTargetLookingAtMe() {
     	// find angle of approach
-    	double dx = posX - entityToAttack.posX;
-    	double dz = posZ - entityToAttack.posZ;
-    	float angle = (float)((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
+    	float dx = (float)(posX - entityToAttack.posX);
+    	float dz = (float)(posZ - entityToAttack.posZ);
+    	float angle = ((org.bogdang.modifications.math.TrigMath2.atan2(dz, dx) * 180F) / (float)Math.PI) - 90F;
 
     	float difference = MathHelper.abs((entityToAttack.rotationYaw - angle) % 360);
     	
@@ -191,7 +191,7 @@ public class EntityTFBoggard extends EntityMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+		if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
 			// are we in a level 1 hill?
 			int chunkX = MathHelper.floor_double(posX) >> 4;

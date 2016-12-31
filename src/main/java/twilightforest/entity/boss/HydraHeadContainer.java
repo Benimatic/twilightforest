@@ -24,9 +24,9 @@ import twilightforest.TwilightForestMod;
 public class HydraHeadContainer {
 	
 	// balancing factors
-	private static int FLAME_BURN_FACTOR = 3;
-	private static int FLAME_DAMAGE = 19;
-	private static int BITE_DAMAGE = 48;
+	private static int FLAME_BURN_FACTOR = (int)(3*1.5);
+	private static int FLAME_DAMAGE = (int)(19*1.5);
+	private static int BITE_DAMAGE = (int)(48*1.5);
 	private static double FLAME_BREATH_TRACKING_SPEED = 0.04D;
 	
 	public static final int NEXT_AUTOMATIC = -1;
@@ -1122,13 +1122,13 @@ public class HydraHeadContainer {
 	 * Face this head towards a specific Vector
 	 */
 	public void faceVec(double xCoord, double yCoord, double zCoord, float yawConstraint, float pitchConstraint) {
-		double xOffset = xCoord - headEntity.posX;
-		double zOffset = zCoord - headEntity.posZ;
-		double yOffset = (headEntity.posY + 1.0) - yCoord;
+		float xOffset = (float)(xCoord - headEntity.posX);
+		float zOffset = (float)(zCoord - headEntity.posZ);
+		float yOffset = (float)((headEntity.posY + 1.0) - yCoord);
 
-		double distance = MathHelper.sqrt_double(xOffset * xOffset + zOffset * zOffset);
-		float xyAngle = (float)((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
-		float zdAngle = (float)(-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
+		float distance = MathHelper.sqrt_float(xOffset * xOffset + zOffset * zOffset);
+		float xyAngle = ((org.bogdang.modifications.math.TrigMath2.atan2(zOffset, xOffset) * 180F) / (float)Math.PI) - 90F;
+		float zdAngle = (-((org.bogdang.modifications.math.TrigMath2.atan2(yOffset, distance) * 180F) / (float)Math.PI));
 		headEntity.rotationPitch = -updateRotation(headEntity.rotationPitch, zdAngle, pitchConstraint);
 		headEntity.rotationYaw = updateRotation(headEntity.rotationYaw, xyAngle, yawConstraint);
         

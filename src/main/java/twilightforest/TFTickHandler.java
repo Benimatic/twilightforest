@@ -27,6 +27,8 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
+import twilightforest.TwilightForestMod;
+
 /**
  * This class listens for ticks in the world.  If the player is near a diamond in the water, this class attempts to open a portal.
  * 
@@ -45,12 +47,12 @@ public class TFTickHandler
 	@SubscribeEvent
 	public void playerTick(PlayerTickEvent event) {
 
-
 		EntityPlayer player = event.player;
 		World world = player.worldObj;
 
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 0) {
 		// check for portal creation, at least if it's not disabled
-		if (!TwilightForestMod.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
+		if (!TwilightForestMod.disablePortalCreation) {
 			// skip non admin players when the option is on
 			if (TwilightForestMod.adminOnlyPortals) {
 				try {
@@ -72,22 +74,21 @@ public class TFTickHandler
 			}
 		}
 
+		if (world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 0 && world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-			if (world.provider instanceof WorldProviderTwilightForest && !player.capabilities.isCreativeMode) {
+			if (!player.capabilities.isCreativeMode) {
 				checkBiomeForProgression(player, world);
 			}
-		}
 		
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 100 == 0 && world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-			if (world.provider instanceof WorldProviderTwilightForest) {
+		if (world.getWorldTime() % 100 == 0) {
 				if (!player.capabilities.isCreativeMode) {
 					checkForLockedStructuresSendPacket(player, world);
 				} else {
 					sendAllClearPacket(world, player);
 				}
-			}
+		}
+		}
 		}
 	}
 	
@@ -97,9 +98,9 @@ public class TFTickHandler
 		if (player instanceof EntityPlayerMP) {
 			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
 			//System.out.println("Sent structure protection");
-		} else {
+		}// else {
 			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");
-		}
+		//}
 	}
 	
 	private void sendAllClearPacket(World world, EntityPlayer player) {
@@ -107,9 +108,9 @@ public class TFTickHandler
 		if (player instanceof EntityPlayerMP) {
 			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
 			//System.out.println("Sent structure all clear");
-		} else {
+		}// else {
 			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");
-		}
+		//}
 	}
 
 	private boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
@@ -141,7 +142,7 @@ public class TFTickHandler
 
 	@SubscribeEvent
 	public void tickStart(ItemTossEvent event) {
-		System.out.println("ItemTossEvent Tick");
+		cpw.mods.fml.common.FMLLog.info("ItemTossEvent Tick");
 	}
 
 

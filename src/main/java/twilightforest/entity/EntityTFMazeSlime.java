@@ -35,6 +35,8 @@ public class EntityTFMazeSlime extends EntitySlime
     {
         super.setSlimeSize(par1);
         this.experienceValue = par1 + 3;
+        int size = this.getSlimeSize();
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue((2.0D * 4.0D+twilightforest.TwilightForestMod.Scatter.nextInt(2)-twilightforest.TwilightForestMod.Scatter.nextInt(2)) * size * size);//Bogdan-G: fix hp set?
     }
     
     /**
@@ -56,7 +58,10 @@ public class EntityTFMazeSlime extends EntitySlime
     {
         super.applyEntityAttributes();
         int size = this.getSlimeSize();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(2.0D * size * size); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue((2.0D * 4.0D+twilightforest.TwilightForestMod.Scatter.nextInt(2)-twilightforest.TwilightForestMod.Scatter.nextInt(2)) * size * size); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.699999988079071D*1.5D); // movement speed
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D*1.5);
     }
     
     /**
@@ -74,7 +79,7 @@ public class EntityTFMazeSlime extends EntitySlime
     @Override
 	protected int getAttackStrength()
     {
-        return super.getAttackStrength() + 3;
+        return super.getAttackStrength() + (int)(3*1.5);
     }
 
 

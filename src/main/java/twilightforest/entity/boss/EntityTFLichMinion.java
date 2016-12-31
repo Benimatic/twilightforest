@@ -14,6 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 
 
 
@@ -47,14 +48,14 @@ public class EntityTFLichMinion extends EntityZombie {
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		EntityLivingBase prevTarget = getAttackTarget();
 		
-		if (super.attackEntityFrom(par1DamageSource, par2)) {
+		if (super.attackEntityFrom(par1DamageSource, par2*1.5f)) {
 			if (par1DamageSource.getEntity() instanceof EntityTFLich) {
 				// return to previous target
 				setAttackTarget(prevTarget);
 				setRevengeTarget(prevTarget);
 				// but speed up
-				addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 200, 4));
-				addPotionEffect(new PotionEffect(Potion.damageBoost.id, 200, 1));
+				addPotionEffect(new PotionEffect(Potion.moveSpeed.id, (int)(200*1.5), 4));
+				addPotionEffect(new PotionEffect(Potion.damageBoost.id, (int)(200*1.5), 1));
 			}
 			return true;
 		}
@@ -104,7 +105,7 @@ public class EntityTFLichMinion extends EntityZombie {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+		if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
 		}
 	}

@@ -61,7 +61,10 @@ public class EntityTFTowerGhast extends EntityGhast
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(10)-twilightforest.TwilightForestMod.Scatter.nextInt(10)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.699999988079071D*1.5D);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D*1.5);
     }
 
     /**
@@ -265,11 +268,11 @@ public class EntityTFTowerGhast extends EntityGhast
         	// ignore player, move normally
             this.isAggressive = false;
         	this.targetedEntity = null;
-        	this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
+        	this.renderYawOffset = this.rotationYaw = -(org.bogdang.modifications.math.TrigMath2.atan2((float)this.motionX, (float)this.motionZ)) * 180.0F / (float)Math.PI;
         	
         	// changing the pitch with movement looks goofy and un-ghast-like
         	//double dist = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ *  this.motionZ);
-        	this.rotationPitch = 0;//(float) (-((Math.atan2(this.motionY, dist) * 180D) / Math.PI));;
+        	this.rotationPitch = 0;//(float) (-((org.bogdang.modifications.math.TrigMath2.atan2(this.motionY, dist) * 180D) / Math.PI));;
 
         }
 

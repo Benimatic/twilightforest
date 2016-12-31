@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityTFGoblinKnightUpper extends EntityMob {
 	
-	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
+	private static final int SHIELD_DAMAGE_THRESHOLD = (int)(10*1.5);
 
 	private static final int DATA_EQUIP = 17;
 	
@@ -81,9 +81,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(10)-twilightforest.TwilightForestMod.Scatter.nextInt(10)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D*1.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D*1.5D); // attack damage
     }
 	
 	@Override
@@ -340,9 +340,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         {
         	// determine angle
         	
-	    	double dx = this.posX - attacker.posX;
-	    	double dz = this.posZ - attacker.posZ;
-	    	float angle = (float)((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
+	    	float dx = (float)(this.posX - attacker.posX);
+	    	float dz = (float)(this.posZ - attacker.posZ);
+	    	float angle = ((org.bogdang.modifications.math.TrigMath2.atan2(dz, dx) * 180F) / (float)Math.PI) - 90F;
 	
 	    	float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
 	    	

@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 
 public class EntityTFHydraMortar extends EntityThrowable {
 
-    private static final int BURN_FACTOR = 5;
-	private static final int DIRECT_DAMAGE = 18;
+    private static final int BURN_FACTOR = (int)(5*1.5);
+	private static final int DIRECT_DAMAGE = (int)(18*1.5);
 	
 	public EntityLivingBase playerReflects = null;
 	

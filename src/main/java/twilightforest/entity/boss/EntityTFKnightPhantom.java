@@ -32,8 +32,8 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class EntityTFKnightPhantom extends EntityFlying implements IMob 
 {
 	
-	private static final float CIRCLE_SMALL_RADIUS = 2.5F;
-	private static final float CIRCLE_LARGE_RADIUS = 8.5F;
+	private static final float CIRCLE_SMALL_RADIUS = 2.5F*1.5F;
+	private static final float CIRCLE_LARGE_RADIUS = 8.5F*1.5F;
 	private static final int FLAG_CHARGING = 17;
 	int number;
 	int ticksProgress;
@@ -83,9 +83,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(35.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(35.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(18)-twilightforest.TwilightForestMod.Scatter.nextInt(18)); // max health
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage); // initialize this value
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D*1.5D); // attack damage
     }
 	
     /**
@@ -343,7 +343,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
             i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
         }
 
-        boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+        boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), f*1.1F);
 
         if (flag)
         {

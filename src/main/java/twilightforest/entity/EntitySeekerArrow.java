@@ -69,7 +69,7 @@ public class EntitySeekerArrow extends EntityArrow {
         			if (thing instanceof EntityLivingBase && !(thing instanceof EntityPlayer)) {
         				EntityLivingBase living = (EntityLivingBase)thing;
 
-        				System.out.println("Possible target : " + living);
+        				cpw.mods.fml.common.FMLLog.info("Possible target : " + living);
         				//System.out.println("Selection box =  " + targetBB);
 
         				courseVec = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ);

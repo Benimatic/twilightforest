@@ -27,10 +27,18 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	public final String saveFolder;
 	public ChunkProviderTwilightForest chunkProvider;
+	private boolean firstsetrnd = false;
 	
 	public WorldProviderTwilightForest() {
 		setDimension(TwilightForestMod.dimensionID);
 		saveFolder = "DIM" + TwilightForestMod.dimensionID;
+		if (!firstsetrnd) { 
+		try{
+		long seed = this.getSeed();
+		TwilightForestMod.Scatter.setSeed(seed);
+		firstsetrnd=true;
+		} catch(Exception e){firstsetrnd=false;}
+		}
 	}
 	
 	/**

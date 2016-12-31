@@ -85,6 +85,7 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void pickupItem(EntityItemPickupEvent event) {
+		if (event.entityPlayer.worldObj.provider.dimensionId == TwilightForestMod.dimensionID) {
 		Item item = event.item.getEntityItem().getItem();
 		if (item == TFItems.scepterTwilight || item == TFItems.scepterLifeDrain
 				|| item == TFItems.scepterZombie) {
@@ -143,6 +144,7 @@ public class TFEventListener {
 		if (item == TFItems.lampOfCinders) {
 			event.entityPlayer.triggerAchievement(TFAchievementPage.twilightProgressTroll);
 		}
+		}
 	}
 
 	/**
@@ -191,6 +193,7 @@ public class TFEventListener {
 		
 		ItemStack itemStack = event.crafting;
 		EntityPlayer player = event.player;
+		boolean isTFdim = player.worldObj.provider.dimensionId == TwilightForestMod.dimensionID;
 		
 		// if the item is naga armor
     	if ((itemStack.getItem() == TFItems.plateNaga || itemStack.getItem() == TFItems.legsNaga)) {
@@ -199,6 +202,7 @@ public class TFEventListener {
     	}
     	
     	// trigger achievements
+    	if (isTFdim) {
     	if (itemStack.getItem() == TFItems.magicMapFocus) {
     		player.triggerAchievement(TFAchievementPage.twilightMagicMapFocus);
     	}
@@ -210,6 +214,7 @@ public class TFEventListener {
     	}
     	if (itemStack.getItem() == TFItems.emptyOreMap) {
     		player.triggerAchievement(TFAchievementPage.twilightOreMap);
+    	}
     	}
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
@@ -347,8 +352,13 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void entityHurts(LivingHurtEvent event) 
 	{
+		//1 call event = 1 entity? if true, no need checks
+		boolean CacheInstOfValue = event.entityLiving instanceof EntityPlayer;
+		boolean CacheDTeqValue = event.source.damageType.equals("mob");
+		boolean CacheIsNullValue = event.source.getEntity() != null;
+		
 		// fire aura
-		if (event.entityLiving instanceof EntityPlayer && event.source.damageType.equals("mob") && event.source.getEntity() != null)
+		if (CacheInstOfValue && CacheDTeqValue && CacheIsNullValue)
 		{
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.source);
@@ -363,8 +373,8 @@ public class TFEventListener {
 		}
 		
 		// chill aura
-		if (event.entityLiving instanceof EntityPlayer && event.source.damageType.equals("mob") 
-				&& event.source.getEntity() != null && event.source.getEntity() instanceof EntityLivingBase) {
+		if (CacheInstOfValue && CacheDTeqValue 
+				&& CacheIsNullValue && event.source.getEntity() instanceof EntityLivingBase) {
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.source);
 			
@@ -377,8 +387,10 @@ public class TFEventListener {
 			}
 		}
 		
+		boolean CacheDTeqValue2 = event.source.damageType.equals("arrow");
+		boolean CacheInstOfValue2 = event.source.getEntity() instanceof EntityPlayer;
 		// triple bow strips hurtResistantTime
-		if (event.source.damageType.equals("arrow") && event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
+		if (CacheDTeqValue2 && CacheIsNullValue && CacheInstOfValue2) {
 			EntityPlayer player = (EntityPlayer)event.source.getEntity();
 			
 			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.tripleBow) {
@@ -388,7 +400,7 @@ public class TFEventListener {
 		}
 		
 		// ice bow freezes
-		if (event.source.damageType.equals("arrow") && event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
+		if (CacheDTeqValue2 && CacheIsNullValue && CacheInstOfValue2) {
 			EntityPlayer player = (EntityPlayer)event.source.getEntity();
 			
 			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.iceBow) {
@@ -399,7 +411,7 @@ public class TFEventListener {
 		}
 		
 		// enderbow teleports
-		if (event.source.damageType.equals("arrow") && event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
+		if (CacheDTeqValue2 && CacheIsNullValue && CacheInstOfValue2) {
 			EntityPlayer player = (EntityPlayer)event.source.getEntity();
 			
 			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.enderBow) {
@@ -427,7 +439,7 @@ public class TFEventListener {
 		}
 		
 		// charm of life?
-		if (event.entityLiving instanceof EntityPlayer && willEntityDie(event))
+		if (CacheInstOfValue && willEntityDie(event))
 		{
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
 			

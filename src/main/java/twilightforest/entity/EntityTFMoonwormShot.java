@@ -127,7 +127,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 		
         if (mop.entityHit != null)
         {
-            mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+            mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 2f);//old: 0
         }
 
         for (int var3 = 0; var3 < 8; ++var3)

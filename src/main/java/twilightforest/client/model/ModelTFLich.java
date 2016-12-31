@@ -169,10 +169,12 @@ public class ModelTFLich extends ModelBiped {
         bipedLeftArm.rotateAngleX = -(float)Math.PI;
         bipedRightArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
         bipedLeftArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
-        bipedRightArm.rotateAngleZ += MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;
-        bipedLeftArm.rotateAngleZ -= MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;
-        bipedRightArm.rotateAngleX += MathHelper.sin(f2 * 0.167F) * 0.15F;
-        bipedLeftArm.rotateAngleX -= MathHelper.sin(f2 * 0.167F) * 0.15F;
+        float c = MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;
+        bipedRightArm.rotateAngleZ += c;
+        bipedLeftArm.rotateAngleZ -= c;
+        float s = MathHelper.sin(f2 * 0.167F) * 0.15F;
+        bipedRightArm.rotateAngleX += s;
+        bipedLeftArm.rotateAngleX -= s;
         
         bipedHead.rotationPointY = -4.0F;
         bipedHeadwear.rotationPointY = -4.0F;

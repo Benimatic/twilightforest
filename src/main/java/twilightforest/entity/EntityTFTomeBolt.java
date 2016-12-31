@@ -67,13 +67,13 @@ public class EntityTFTomeBolt extends EntityThrowable {
 		// only damage living things
 		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
 		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6))
+			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6*1.5f))
 			{
 				// inflict move slowdown
 				byte potionStrength = (byte) (worldObj.difficultySetting == EnumDifficulty.PEACEFUL ? 3 : worldObj.difficultySetting == EnumDifficulty.NORMAL ? 7 : 9);
 				if(potionStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, potionStrength * 20, 1));
+					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, (int)(potionStrength * 20 * 1.5), 1));
 				}
 
 			}

@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityTFThrownAxe extends EntityThrowable  {
 
-	private static final float PROJECTILE_DAMAGE = 6;
+	private static final float PROJECTILE_DAMAGE = 6*1.5f;
 
 	public EntityTFThrownAxe(World par1World, EntityLivingBase par2EntityLivingBase) {
 		super(par1World, par2EntityLivingBase);

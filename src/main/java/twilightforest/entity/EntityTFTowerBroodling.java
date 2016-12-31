@@ -23,8 +23,9 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(7.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(7.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(3)-twilightforest.TwilightForestMod.Scatter.nextInt(3)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.699999988079071D*1.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D*1.5); // attack damage
     }
 
 	/**

@@ -426,8 +426,11 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 					{
 						ItemStack currentItem = chest.getStackInSlot(slotNum);
 						
-						if (currentItem!= null && currentItem != beingSorted && beingSorted.isItemEqual(currentItem))
+						if (currentItem!=null && currentItem!=beingSorted && beingSorted.isItemEqual(currentItem))
 						{
+							if (beingSorted.stackTagCompound!=null && currentItem.stackTagCompound!=null && beingSorted.stackTagCompound.equals(currentItem.stackTagCompound)) ;
+							else if (beingSorted.stackTagCompound==null && currentItem.stackTagCompound==null) ;
+							else continue;
 							if (currentItem.stackSize <= (beingSorted.getMaxStackSize() - beingSorted.stackSize))
 							{
 								chest.setInventorySlotContents(slotNum, null);
@@ -444,7 +447,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 
 	private boolean isSortingMatch(ItemStack beingSorted, ItemStack currentItem) 
 	{
-		return getCreativeTab(currentItem.getItem()) == getCreativeTab(beingSorted.getItem());
+		return getCreativeTab(currentItem.getItem()).equals(getCreativeTab(beingSorted.getItem()));//no use reference
 	}
 	
 	private Object getCreativeTab(Item item)
@@ -465,7 +468,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	private boolean checkIfChestsContains(ArrayList<IInventory> chests, IInventory testChest) {
 		for (IInventory chest : chests)
 		{
-			if (chest == testChest)
+			if (chest.equals(testChest))
 			{
 				return true;
 			}

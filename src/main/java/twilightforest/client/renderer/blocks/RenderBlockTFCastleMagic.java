@@ -27,6 +27,7 @@ public class RenderBlockTFCastleMagic implements ISimpleBlockRenderingHandler {
 	}
 	
 	public static void renderInvBlock(RenderBlocks renderblocks, Block par1Block, int meta) {
+		GL11.glPushMatrix();
 		Tessellator tessellator =  Tessellator.instance;
 		
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -37,6 +38,7 @@ public class RenderBlockTFCastleMagic implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
         par1Block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
 	}
 
 	protected static void renderInvBlock(RenderBlocks renderblocks, Block par1Block, int meta, Tessellator tessellator) {
@@ -120,6 +122,7 @@ public class RenderBlockTFCastleMagic implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		GL11.glPushMatrix();
 		renderer.clearOverrideBlockTexture();
 		renderer.setRenderBounds(0, 0, 0, 1, 1, 1);
 		renderer.renderStandardBlock(block, x, y, z);
@@ -166,6 +169,7 @@ public class RenderBlockTFCastleMagic implements ISimpleBlockRenderingHandler {
         }
         
         renderer.clearOverrideBlockTexture();
+        GL11.glPopMatrix();
         return true;
 
 	}

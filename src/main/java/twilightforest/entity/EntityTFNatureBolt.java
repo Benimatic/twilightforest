@@ -72,13 +72,13 @@ public class EntityTFNatureBolt extends EntityThrowable {
 		// only damage living things
 		if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
 		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
+			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2*1.5f))
 			{
 				// similar to EntityCaveSpider
 				byte poisonStrength = (byte) (worldObj.difficultySetting == EnumDifficulty.PEACEFUL ? 0 : worldObj.difficultySetting == EnumDifficulty.NORMAL ? 3 : 7);
 				if(poisonStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.poison.id, poisonStrength * 20, 0));
+					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.poison.id, (int)(poisonStrength * 20 * 1.5), 0));
 					
 //					System.out.println("Poisoning entityHit " + par1MovingObjectPosition.entityHit);
 				}

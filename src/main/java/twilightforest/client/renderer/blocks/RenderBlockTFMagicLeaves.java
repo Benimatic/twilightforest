@@ -19,19 +19,23 @@ public class RenderBlockTFMagicLeaves implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+        GL11.glPushMatrix();
         setRenderRotate(renderer, metadata);
 		renderInvNormalBlock(renderer, block, metadata);
         restoreRendererRotate(renderer);
+        GL11.glPopMatrix();
 	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		GL11.glPushMatrix();
 		// rotate the sides
         int meta = world.getBlockMetadata(x, y, z);
         
         setRenderRotate(renderer, meta, x, y, z);
         boolean didRender = renderer.renderStandardBlock(block, x, y, z);
         restoreRendererRotate(renderer);
+        GL11.glPopMatrix();
         
         return didRender;
 

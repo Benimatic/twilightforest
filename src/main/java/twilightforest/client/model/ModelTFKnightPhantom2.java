@@ -63,8 +63,9 @@ public class ModelTFKnightPhantom2 extends ModelBiped {
         this.bipedRightLeg.rotateAngleY = 0;
         this.bipedRightLeg.rotateAngleZ = 0;
         
-        this.bipedRightLeg.rotateAngleX = 0.2F * MathHelper.sin(par3 * 0.3F) + 0.4F;
-        this.bipedLeftLeg.rotateAngleX = 0.2F * MathHelper.sin(par3 * 0.3F) + 0.4F;
+        float msin = 0.2F * MathHelper.sin(par3 * 0.3F) + 0.4F;
+        this.bipedRightLeg.rotateAngleX = msin;
+        this.bipedLeftLeg.rotateAngleX = msin;
 
        
     }

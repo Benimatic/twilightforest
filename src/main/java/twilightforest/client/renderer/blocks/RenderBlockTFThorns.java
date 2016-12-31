@@ -27,6 +27,7 @@ public class RenderBlockTFThorns implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+        GL11.glPushMatrix();
         int l = block.colorMultiplier(world, x, y, z);
         float f = (float)(l >> 16 & 255) / 255.0F;
         float f1 = (float)(l >> 8 & 255) / 255.0F;
@@ -38,10 +39,13 @@ public class RenderBlockTFThorns implements ISimpleBlockRenderingHandler {
         switch (type) {
         case 0:
     	default:
+            GL11.glPopMatrix();
             return this.renderCactusLikeY(block, x, y, z, f, f1, f2, metadata, world, renderer);
         case 4:
+            GL11.glPopMatrix();
             return this.renderCactusLikeX(block, x, y, z, f, f1, f2, metadata, world, renderer);
         case 8:
+            GL11.glPopMatrix();
             return this.renderCactusLikeZ(block, x, y, z, f, f1, f2, metadata, world, renderer);
         }
 		
@@ -378,6 +382,7 @@ public class RenderBlockTFThorns implements ISimpleBlockRenderingHandler {
 	}
 	
 	public static void renderInvBlock(RenderBlocks renderblocks, Block par1Block, int meta) {
+		GL11.glPushMatrix();
 		Tessellator tessellator =  Tessellator.instance;
 		
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -398,6 +403,7 @@ public class RenderBlockTFThorns implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
         par1Block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
 	}
 
 	protected static void renderInvBlock(RenderBlocks renderblocks, Block par1Block, int meta, Tessellator tessellator) {

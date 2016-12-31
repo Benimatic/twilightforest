@@ -179,7 +179,7 @@ public class TFClientProxy extends TFCommonProxy {
 	ModelBiped[] arcticArmorModel;
 	ModelBiped[] fieryArmorModel;
 	
-	TFClientTicker clientTicker;
+	//TFClientTicker clientTicker;
 	TFClientEvents clientEvents;
 	
 	boolean isDangerOverlayShown;
@@ -201,8 +201,8 @@ public class TFClientProxy extends TFCommonProxy {
 		Minecraft mc = FMLClientHandler.instance().getClient();
 		
 		// client tick listener
-		clientTicker = new TFClientTicker();
-		FMLCommonHandler.instance().bus().register(clientTicker);
+		/*clientTicker = new TFClientTicker();
+		FMLCommonHandler.instance().bus().register(clientTicker);*/
 		
 		// client events
 		clientEvents = new TFClientEvents();

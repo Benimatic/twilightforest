@@ -290,7 +290,6 @@ public class TileEntityTFReverter extends TileEntity
 				replaceMeta = BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT;
 			}
 			
-			worldObj.setBlock(x, y, z, replaceBlockID, replaceMeta, 2);
 			
 			// play a little animation
 			if (thereBlockID == Blocks.air)
@@ -303,6 +302,8 @@ public class TileEntityTFReverter extends TileEntity
 				thereBlockID.dropBlockAsItem(worldObj, x, y, z, thereMeta, 0);
 
 			}
+			
+			worldObj.setBlock(x, y, z, replaceBlockID, replaceMeta, 2);
 		}
 
 		return true;

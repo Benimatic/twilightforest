@@ -194,10 +194,10 @@ public class TFFinalCastlePieces {
     		
     		// check if we've successfully built the end tower
     		if (this.isMazeComplete(list, type)) {
-    			System.out.println("Tower maze type " + type + " complete!");
+    			cpw.mods.fml.common.FMLLog.info("Tower maze type " + type + " complete!");
     		} else {
     			// TODO: add limit on retrying, in case of infinite loop?
-    			System.out.println("Tower maze type " + type + " INCOMPLETE, retrying!");
+    			cpw.mods.fml.common.FMLLog.info("Tower maze type " + type + " INCOMPLETE, retrying!");
     			list.clear();
     			list.addAll(before);
     			this.buildTowerMaze(list, rand, x, y, z, howFar, direction, type, dest);

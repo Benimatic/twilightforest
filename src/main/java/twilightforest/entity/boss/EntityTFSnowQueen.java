@@ -42,11 +42,11 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IEntityMultiPart, IBreathAttacker {
 	
-	private static final int MAX_SUMMONS = 6;
+	private static final int MAX_SUMMONS = (int)(6*1.5);
 	private static final int BEAM_FLAG = 21;
 	private static final int PHASE_FLAG = 22;
-	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
-	private static final float BREATH_DAMAGE = 4.0F;
+	private static final int MAX_DAMAGE_WHILE_BEAMING = (int)(25*1.5);
+	private static final float BREATH_DAMAGE = 4.0F*1.5F;
 
 
 	public enum Phase { SUMMON, DROP, BEAM };
@@ -96,10 +96,10 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(100)-twilightforest.TwilightForestMod.Scatter.nextInt(100));
     }
     
     protected void entityInit()
