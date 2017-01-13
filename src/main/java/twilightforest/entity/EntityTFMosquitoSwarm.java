@@ -94,7 +94,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	public boolean getCanSpawnHere()
     {
 		// are we in the swamp
-		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSwamp) {
+		if (worldObj.getBiome(new BlockPos(this)) == TFBiomeBase.tfSwamp) {
 			// don't check light level
 	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		}

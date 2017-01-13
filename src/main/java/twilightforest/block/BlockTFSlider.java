@@ -86,7 +86,7 @@ public class BlockTFSlider extends BlockRotatedPillar {
     		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
     		
     		EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
-            world.spawnEntityInWorld(slideBlock);
+            world.spawnEntity(slideBlock);
     	}
     	
 		scheduleBlockUpdate(world, pos);

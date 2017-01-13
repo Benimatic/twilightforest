@@ -2150,7 +2150,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			if (checkPainting(world, painting, sbb)) {
 				// place the painting
 				//System.out.println("Painting success " + painting.art.title + " at " + painting.xPosition + " , " + painting.yPosition + ", " + painting.zPosition + " : " + painting.field_82332_a);
-				world.spawnEntityInWorld(painting);
+				world.spawnEntity(painting);
 			}
 			else {
 				//System.out.println("Painting fail!! " + painting.art.title + " at " + painting.xPosition + " , " + painting.yPosition + ", " + painting.zPosition + " : " + painting.field_82332_a);

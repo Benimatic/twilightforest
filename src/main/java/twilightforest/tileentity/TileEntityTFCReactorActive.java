@@ -166,7 +166,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 	private void spawnGhastNear(int x, int y, int z) {
 		EntityTFMiniGhast ghast = new EntityTFMiniGhast(worldObj);
 		ghast.setLocationAndAngles(x - 1.5 + worldObj.rand.nextFloat() * 3.0, y - 1.5 + worldObj.rand.nextFloat() * 3.0, z - 1.5 + worldObj.rand.nextFloat() * 3.0, worldObj.rand.nextFloat() * 360F, 0.0F);
-		worldObj.spawnEntityInWorld(ghast);
+		worldObj.spawnEntity(ghast);
 	}
 
 	private void drawBlob(BlockPos pos, int rad, IBlockState state, int fuzz, boolean netherTransform) {

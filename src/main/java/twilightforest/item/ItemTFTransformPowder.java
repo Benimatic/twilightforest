@@ -116,7 +116,7 @@ public class ItemTFTransformPowder extends ItemTF
 					newMonster.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
 					//newMonster.initCreature();
 					
-					target.worldObj.spawnEntityInWorld(newMonster);
+					target.worldObj.spawnEntity(newMonster);
 					
 					// remove original monster
 					target.setDead();

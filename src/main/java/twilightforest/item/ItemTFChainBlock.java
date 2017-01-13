@@ -49,7 +49,7 @@ public class ItemTFChainBlock extends ItemTool {
 
 
 			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(worldObj, player);
-			worldObj.spawnEntityInWorld(launchedBlock);
+			worldObj.spawnEntity(launchedBlock);
 			this.setLaunchedBlock(stack, launchedBlock);
 
 			setChainAsThrown(stack);

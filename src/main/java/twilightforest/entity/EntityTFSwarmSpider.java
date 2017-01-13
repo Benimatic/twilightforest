@@ -91,7 +91,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 			another.setDead();
 			return false;
 		}
-		worldObj.spawnEntityInWorld(another);
+		worldObj.spawnEntity(another);
 		
 		return true;
 	}

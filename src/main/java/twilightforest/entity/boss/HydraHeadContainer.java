@@ -813,7 +813,7 @@ public class HydraHeadContainer {
 
 				headEntity.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)headEntity.posX, (int)headEntity.posY, (int)headEntity.posZ, 0);
 
-				headEntity.worldObj.spawnEntityInWorld(mortar);
+				headEntity.worldObj.spawnEntity(mortar);
 			}
 		}
 		if (headEntity.getState() == STATE_BITE_BITING)

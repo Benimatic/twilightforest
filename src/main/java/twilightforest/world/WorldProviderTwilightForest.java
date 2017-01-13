@@ -179,7 +179,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public Biome getBiomeGenForCoords(int x, int z) {
-		Biome biome = super.getBiomeGenForCoords(x, z);
+		Biome biome = super.getBiome(x, z);
 		if (biome == null)
 		{
 			biome = TFBiomeBase.twilightForest;

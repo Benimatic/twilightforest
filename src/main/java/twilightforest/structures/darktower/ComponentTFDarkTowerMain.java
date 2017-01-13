@@ -1014,7 +1014,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			}
 			
 			// check if the frame is on a valid surface or not?  The wall may not have been generated yet, on a chunk boundry
-			world.spawnEntityInWorld(frame);
+			world.spawnEntity(frame);
 		}
 	}
 

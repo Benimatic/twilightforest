@@ -103,7 +103,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.worldObj);
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         upper.onInitialSpawn(null, (IEntityLivingData)null);
-        this.worldObj.spawnEntityInWorld(upper);
+        this.worldObj.spawnEntity(upper);
         upper.startRiding(this);
     }
 
@@ -116,7 +116,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.worldObj);
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         upper.onInitialSpawn(difficulty, null);
-        this.worldObj.spawnEntityInWorld(upper);
+        this.worldObj.spawnEntity(upper);
         upper.startRiding(this);
 
         return (IEntityLivingData)par1EntityLivingData1;

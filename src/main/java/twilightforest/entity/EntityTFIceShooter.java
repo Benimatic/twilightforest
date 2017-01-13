@@ -117,6 +117,6 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
         float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         entitysnowball.setThrowableHeading(d0, d1 + (double)f1, d2, 0.6F, 12.0F);
         this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entitysnowball);
+        this.worldObj.spawnEntity(entitysnowball);
     }
 }

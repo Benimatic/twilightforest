@@ -42,7 +42,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		if (!worldObj.isRemote && !this.hasLaunchedCube(stack)) {
 			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(worldObj, player);
 
-			worldObj.spawnEntityInWorld(launchedCube);
+			worldObj.spawnEntity(launchedCube);
 			
 			this.setLaunchedCube(stack, launchedCube);
 			setCubeAsThrown(stack);

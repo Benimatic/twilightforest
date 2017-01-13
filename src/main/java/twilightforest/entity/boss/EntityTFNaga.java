@@ -84,7 +84,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		for (int i = 0; i < body.length; i++)
 		{
 			this.body[i] = new EntityTFNagaSegment(this, i);
-			world.spawnEntityInWorld(body[i]);
+			world.spawnEntity(body[i]);
 		}
 		
 		this.goNormal();
@@ -278,7 +278,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		{
 			if (!body[i].addedToChunk && !worldObj.isRemote)
 			{
-				worldObj.spawnEntityInWorld(body[i]);
+				worldObj.spawnEntity(body[i]);
 			}
 		}
     }
@@ -955,7 +955,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 				{
 					body[i] = new EntityTFNagaSegment(this, i);
 					body[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
-					worldObj.spawnEntityInWorld(body[i]);
+					worldObj.spawnEntity(body[i]);
 				}
 			}
 		}

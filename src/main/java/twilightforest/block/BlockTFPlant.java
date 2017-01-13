@@ -179,7 +179,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
     {
     	int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-    	return isGrassColor[meta] ? par1IBlockAccess.getBiomeGenForCoords(x, z).getBiomeGrassColor(x, y, z) : 0xFFFFFF; 
+    	return isGrassColor[meta] ? par1IBlockAccess.getBiome(x, z).getBiomeGrassColor(x, y, z) : 0xFFFFFF;
     }
     
     @Override

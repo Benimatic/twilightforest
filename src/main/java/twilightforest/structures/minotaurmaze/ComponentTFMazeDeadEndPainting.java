@@ -31,7 +31,7 @@ public class ComponentTFMazeDeadEndPainting extends ComponentTFMazeDeadEnd {
 //		painting.art = getPaintingOfSize(rand, minSize);
 //		painting.setDirection(direction);
 //		
-//		world.spawnEntityInWorld(painting);
+//		world.spawnEntity(painting);
 		
 		return true;
 	}

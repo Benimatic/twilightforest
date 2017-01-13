@@ -48,7 +48,7 @@ public class ItemTFZombieWand extends ItemTF {
 						FMLLog.warning("[TwilightForest] Could not determine player name for loyal zombie, ignoring error.");
 					}
 					zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
-					worldObj.spawnEntityInWorld(zombie);
+					worldObj.spawnEntity(zombie);
 
 					par1ItemStack.damageItem(1, player);
 				}

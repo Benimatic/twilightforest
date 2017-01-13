@@ -51,7 +51,7 @@ public class ItemTFTwilightWand extends ItemTF {
 			worldObj.playSoundAtEntity(living, "mob.ghast.fireball", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
 			
 			if (!worldObj.isRemote) {
-				worldObj.spawnEntityInWorld(new EntityTFTwilightWandBolt(worldObj, living));
+				worldObj.spawnEntity(new EntityTFTwilightWandBolt(worldObj, living));
 				
 				stack.damageItem(1, living);
 			}

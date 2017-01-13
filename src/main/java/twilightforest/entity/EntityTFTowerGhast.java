@@ -304,7 +304,7 @@ public class EntityTFTowerGhast extends EntityGhast
 		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
 		entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
 		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-		this.worldObj.spawnEntityInWorld(entityFireball);
+		this.worldObj.spawnEntity(entityFireball);
 		
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
 		if (rand.nextInt(6) == 0)

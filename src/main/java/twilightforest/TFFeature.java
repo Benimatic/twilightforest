@@ -327,7 +327,7 @@ public class TFFeature {
 //		}
 
 		// what biome is at the center of the chunk?
-    	Biome biomeAt = world.getBiomeGenForCoords(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
+    	Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
     	
     	// get random value 
     	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
@@ -428,7 +428,7 @@ public class TFFeature {
     	chunkZ = Math.round(chunkZ / 16F) * 16;
 		
     	// what biome is at the center of the chunk?
-    	Biome biomeAt = world.getBiomeGenForCoords(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
+    	Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
     	
     	// get random value 
     	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
@@ -872,7 +872,7 @@ public class TFFeature {
 			hinty.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, book);
 			hinty.setDropChance(EntityEquipmentSlot.MAINHAND, 1.0F);
 			
-			world.spawnEntityInWorld(hinty);
+			world.spawnEntity(hinty);
 			return true;
 		} else {
 			//System.out.println("Spawn point no go");

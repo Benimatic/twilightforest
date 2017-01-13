@@ -201,7 +201,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	if (world.getBiomeProvider() instanceof TFBiomeProvider)
     	{
     		// determine the biome at the origin
-    		Biome biomeAt = world.getBiomeGenForCoords(new BlockPos(x, 0, z));
+    		Biome biomeAt = world.getBiome(new BlockPos(x, 0, z));
 
     		int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
     		

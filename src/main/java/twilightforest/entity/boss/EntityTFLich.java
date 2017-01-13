@@ -501,7 +501,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 
-		worldObj.spawnEntityInWorld(projectile);
+		worldObj.spawnEntity(projectile);
 	}
 
 	/**
@@ -524,7 +524,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		
-		worldObj.spawnEntityInWorld(projectile);
+		worldObj.spawnEntity(projectile);
 	}
 
     /**
@@ -614,7 +614,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		// put a clone there
 		EntityTFLich newClone = new EntityTFLich(worldObj, this);
 		newClone.setPosition(cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
-		worldObj.spawnEntityInWorld(newClone);
+		worldObj.spawnEntity(newClone);
 		
 		newClone.entityToAttack = targetedEntity;
 		newClone.attackTime = 60 + rand.nextInt(3) - rand.nextInt(3);
@@ -676,7 +676,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		EntityTFLichMinion minion = new EntityTFLichMinion(worldObj, this);
 		minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
 		//minion.initCreature();
-		worldObj.spawnEntityInWorld(minion);
+		worldObj.spawnEntity(minion);
 		
 		minion.setAttackTarget(targetedEntity);
 		

@@ -245,7 +245,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 
         for (int x = minX; x <= maxX; x++) {
         	for (int z = minZ; z <= maxZ; z++) {
-        		if (world.getBiomeGenForCoords(new BlockPos(x, 0, z)) != TFBiomeBase.highlands) {
+        		if (world.getBiome(new BlockPos(x, 0, z)) != TFBiomeBase.highlands) {
         			return true;
         		}
         	}        

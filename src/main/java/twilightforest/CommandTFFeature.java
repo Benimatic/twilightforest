@@ -16,12 +16,12 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class CommandTFFeature extends CommandBase {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "tffeature";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getUsage(ICommandSender sender) {
 		return "tffeature accepts the following arguments: info";
 	}
 
@@ -37,21 +37,21 @@ public class CommandTFFeature extends CommandBase {
 				int dy = MathHelper.floor(player.posY);
 				int dz = MathHelper.floor(player.posZ);
 				
-				if (!(player.worldObj.provider instanceof WorldProviderTwilightForest)) {
-					throw new WrongUsageException("commands.tffeature.not_in_twilight_forest", new Object[0]);
+				if (!(player.world.provider instanceof WorldProviderTwilightForest)) {
+					throw new WrongUsageException("commands.tffeature.not_in_twilight_forest");
 				} else {
 					// nearest feature
-					TFFeature nearbyFeature = ((TFBiomeProvider)player.worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, player.worldObj);
+					TFFeature nearbyFeature = ((TFBiomeProvider)player.world.provider.getBiomeProvider()).getFeatureAt(dx, dz, player.world);
 					
-					sender.sendMessage(new TextComponentTranslation("The nearest feature is %s", new Object[] {nearbyFeature.name}));
+					sender.sendMessage(new TextComponentTranslation("The nearest feature is %s", nearbyFeature.name));
 					
 					// are you in a structure?
-					ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.worldObj.provider).getChunkProvider();
+					ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
 					
 					if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
 						sender.sendMessage(new TextComponentTranslation("You are in the structure for that feature."));
 
-						sender.sendMessage(new TextComponentTranslation("Structure conquer flag = %s.", new Object[] {chunkProvider.isStructureConquered(dx, dy, dz)}));
+						sender.sendMessage(new TextComponentTranslation("Structure conquer flag = %s.", chunkProvider.isStructureConquered(dx, dy, dz)));
 
 						// are you in a room?
 						
@@ -78,19 +78,19 @@ public class CommandTFFeature extends CommandBase {
 				//int dy = MathHelper.floor(player.posY);
 				int dz = MathHelper.floor(player.posZ);
 				
-				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.worldObj);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.world);
 				
-				TFBiomeProvider wcm = (TFBiomeProvider)player.worldObj.provider.getBiomeProvider();
+				TFBiomeProvider wcm = (TFBiomeProvider)player.world.provider.getBiomeProvider();
 				
-				boolean fc = wcm.isInFeatureChunk(player.worldObj, dx, dz);
-				sender.sendMessage(new TextComponentTranslation("Center of feature = %s.", new Object[] {cc}));
-				sender.sendMessage(new TextComponentTranslation("Are in feature chunk = %s.", new Object[] {fc}));
+				boolean fc = wcm.isInFeatureChunk(player.world, dx, dz);
+				sender.sendMessage(new TextComponentTranslation("Center of feature = %s.", cc));
+				sender.sendMessage(new TextComponentTranslation("Are in feature chunk = %s.", fc));
 			} else {
-				throw new WrongUsageException("commands.tffeature.usage", new Object[0]);
+				throw new WrongUsageException("commands.tffeature.usage");
 			}
 
 		} else {
-			throw new WrongUsageException("commands.tffeature.usage", new Object[0]);
+			throw new WrongUsageException("commands.tffeature.usage");
 		}
 	}
 
@@ -102,14 +102,14 @@ public class CommandTFFeature extends CommandBase {
 		int dy = MathHelper.floor(player.posY);
 		int dz = MathHelper.floor(player.posZ);
 		
-		if (!(player.worldObj.provider instanceof WorldProviderTwilightForest)) {
-			throw new WrongUsageException("commands.tffeature.not_in_twilight_forest", new Object[0]);
+		if (!(player.world.provider instanceof WorldProviderTwilightForest)) {
+			throw new WrongUsageException("commands.tffeature.not_in_twilight_forest");
 		} else {
 			// are you in a structure?
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.worldObj.provider).getChunkProvider();
+			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
 			
 			if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
-				sender.sendMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", new Object[] {chunkProvider.isStructureConquered(dx, dy, dz), flag}));
+				sender.sendMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", chunkProvider.isStructureConquered(dx, dy, dz), flag));
 				
 				chunkProvider.setStructureConquered(dx, dy, dz, flag);
 			} else {

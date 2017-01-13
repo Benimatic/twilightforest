@@ -115,7 +115,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 				taur.setPosition(bx, by, bz);
 				taur.setHomeArea(bx, by, bz, 7);
 				
-				world.spawnEntityInWorld(taur);
+				world.spawnEntity(taur);
 			}
 		}
 		

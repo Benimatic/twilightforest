@@ -98,7 +98,7 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 				miner.setPosition(bx, by, bz);
 				miner.enablePersistence();
 				
-				world.spawnEntityInWorld(miner);
+				world.spawnEntity(miner);
 			}
 		}
 		if (!this.warriorPlaced) {
@@ -113,7 +113,7 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 				warrior.setPosition(bx, by, bz);
 				warrior.enablePersistence();
 				
-				world.spawnEntityInWorld(warrior);
+				world.spawnEntity(warrior);
 			}
 		}
 		

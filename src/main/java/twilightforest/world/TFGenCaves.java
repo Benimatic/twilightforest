@@ -215,7 +215,7 @@ public class TFGenCaves extends MapGenCaves
 
                                             	if (hitGrass && blockStorage[caveIndex - 1] == Blocks.DIRT)
                                             	{
-                                            		blockStorage[caveIndex - 1] = this.worldObj.getBiomeGenForCoords(genX + centerX * 16, genZ + centerZ * 16).topBlock;
+                                            		blockStorage[caveIndex - 1] = this.worldObj.getBiome(genX + centerX * 16, genZ + centerZ * 16).topBlock;
                                             	}
                                             }
                                         }
@@ -239,7 +239,7 @@ public class TFGenCaves extends MapGenCaves
     @Override
     protected void recursiveGenerate(World par1World, int genX, int genZ, int centerX, int centerZ, ChunkPrimer blockStorage) {
         int numberOfCaves = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
-        boolean isHighlands = par1World.getBiomeGenForCoords(genX * 16, genZ * 16) instanceof TFBiomeHighlands;
+        boolean isHighlands = par1World.getBiome(genX * 16, genZ * 16) instanceof TFBiomeHighlands;
 
         if (this.rand.nextInt(15) != 0)
         {

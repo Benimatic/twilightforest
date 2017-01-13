@@ -147,7 +147,7 @@ public class ItemTFMoonwormQueen extends ItemTF
 
     	if (!world.isRemote && useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage()) 
     	{
-    		boolean fired = world.spawnEntityInWorld(new EntityTFMoonwormShot(world, living));
+    		boolean fired = world.spawnEntity(new EntityTFMoonwormShot(world, living));
 
     		if (fired)
     		{

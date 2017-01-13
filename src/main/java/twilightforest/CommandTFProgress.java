@@ -15,12 +15,12 @@ public class CommandTFProgress extends CommandBase {
 	private String[] bosses = {"none", "naga", "lich", "mooshroom", "hydra", "knights", "urghast", "yeti", "snowqueen", "giants", "final"};
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "tfprogress";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getUsage(ICommandSender sender) {
 		return "tfprogress <player> <boss>";
 	}
 
@@ -122,7 +122,7 @@ public class CommandTFProgress extends CommandBase {
 
     private String[] getListOfPlayers()
     {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().getAllUsernames();
+        return FMLCommonHandler.instance().getMinecraftServerInstance().getOnlinePlayerNames();
     }
 
     @Override

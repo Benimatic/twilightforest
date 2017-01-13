@@ -526,7 +526,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		// put a minion there
 		EntityTFIceCrystal minion = new EntityTFIceCrystal(worldObj);
 		minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
-		worldObj.spawnEntityInWorld(minion);
+		worldObj.spawnEntity(minion);
 		
 		minion.setAttackTarget(targetedEntity);
 		minion.setToDieIn30Seconds(); // don't stick around

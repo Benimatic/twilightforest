@@ -381,7 +381,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 
-		worldObj.spawnEntityInWorld(projectile);
+		worldObj.spawnEntity(projectile);
 	}
 	
 	protected void launchPicks()
@@ -411,7 +411,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 			projectile.setThrowableHeading(vx, vy, vz, speed, 1.0F);
 
-			worldObj.spawnEntityInWorld(projectile);
+			worldObj.spawnEntity(projectile);
 		}
 	}
 

@@ -114,9 +114,9 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 
             if (!par2World.isRemote)
             {
-                par2World.spawnEntityInWorld(entityarrow);
-                par2World.spawnEntityInWorld(entityarrow1);
-                par2World.spawnEntityInWorld(entityarrow2);
+                par2World.spawnEntity(entityarrow);
+                par2World.spawnEntity(entityarrow1);
+                par2World.spawnEntity(entityarrow2);
             }
         }
     }

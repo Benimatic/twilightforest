@@ -369,7 +369,7 @@ public class BlockTFPortal extends BlockBreakable
 
 				boolean flag = entity.forceSpawn;
 				entity.forceSpawn = true;
-				worldserver1.spawnEntityInWorld(entity);
+				worldserver1.spawnEntity(entity);
 				entity.forceSpawn = flag;
 				worldserver1.updateEntityWithOptionalForce(entity, false);
 			}

@@ -32,7 +32,7 @@ public class TileEntityTFTowerBossSpawner extends TileEntityTFBossSpawner {
 		initializeCreature(myCreature);
 
 		// spawn it
-		worldObj.spawnEntityInWorld(myCreature);
+		worldObj.spawnEntity(myCreature);
 	}
 	
 }

@@ -937,7 +937,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		int mapX = chunkX * 16;
 		int mapY = chunkZ * 16;
 
-		Biome biomeGen = worldObj.getBiomeGenForCoords(mapX + 16, mapY + 16);
+		Biome biomeGen = worldObj.getBiome(mapX + 16, mapY + 16);
 
 		rand.setSeed(worldObj.getSeed());
 		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
@@ -1047,7 +1047,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 			}
 		}
 
-		Biome biome = worldObj.getBiomeGenForCoords(mapX, mapZ);
+		Biome biome = worldObj.getBiome(mapX, mapZ);
 
 		if (biome == null) {
 			return null;

@@ -335,7 +335,7 @@ public class TFEventListener {
 		{
 			int splitXP = EntityXPOrb.getXPSplit(smeltXP);
 			smeltXP -= splitXP;
-			world.spawnEntityInWorld(new EntityXPOrb(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, splitXP));
+			world.spawnEntity(new EntityXPOrb(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, splitXP));
 		}
 	}
 
@@ -464,15 +464,15 @@ public class TFEventListener {
 				}
 				
 				// spawn effect thingers
-				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.worldObj, player, charm1 ? TFItems.charmOfLife1 :  TFItems.charmOfLife2);
-				player.worldObj.spawnEntityInWorld(effect);
+				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.world, player, charm1 ? TFItems.charmOfLife1 :  TFItems.charmOfLife2);
+				player.world.spawnEntity(effect);
 				
-				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(player.worldObj, player, charm1 ? TFItems.charmOfLife1 :  TFItems.charmOfLife2);
+				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(player.world, player, charm1 ? TFItems.charmOfLife1 :  TFItems.charmOfLife2);
 				effect2.offset = (float) Math.PI;
-				player.worldObj.spawnEntityInWorld(effect2);
+				player.world.spawnEntity(effect2);
 				
 				// sound
-				player.worldObj.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
+				player.world.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
 
 			}
 		}
@@ -659,11 +659,11 @@ public class TFEventListener {
 			if (keepInventory.getItemStack() != null)
 			{
 				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.worldObj, player, keepInventory.getItemStack().getItem());
-				player.worldObj.spawnEntityInWorld(effect);
+				player.worldObj.spawnEntity(effect);
 				
 				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(player.worldObj, player, keepInventory.getItemStack().getItem());
 				effect2.offset = (float) Math.PI;
-				player.worldObj.spawnEntityInWorld(effect2);
+				player.worldObj.spawnEntity(effect2);
 	
 				player.worldObj.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
 			}

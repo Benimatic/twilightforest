@@ -220,7 +220,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
 
     		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-    		this.worldObj.spawnEntityInWorld(ice);
+    		this.worldObj.spawnEntity(ice);
     	}
     }
 

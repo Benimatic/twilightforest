@@ -104,7 +104,7 @@ public class BlockTFTowerWood extends Block {
         {
             EntityTFTowerTermite termite = new EntityTFTowerTermite(par1World);
             termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
-            par1World.spawnEntityInWorld(termite);
+            par1World.spawnEntity(termite);
             termite.spawnExplosionParticle();
         }
 

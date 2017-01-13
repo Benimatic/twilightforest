@@ -270,7 +270,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     		{
     			//System.out.println("Spawned minion!");
     			
-    			this.worldObj.spawnEntityInWorld(minion);
+    			this.worldObj.spawnEntity(minion);
     			minion.spawnExplosionParticle();
     		}
     		else
@@ -671,7 +671,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
 		entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
 		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-		this.worldObj.spawnEntityInWorld(entityFireball);
+		this.worldObj.spawnEntity(entityFireball);
 		
 		for (int i = 0; i < 2; i++)
 		{
@@ -680,7 +680,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 			entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
 			entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
 			entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-			this.worldObj.spawnEntityInWorld(entityFireball);
+			this.worldObj.spawnEntity(entityFireball);
 		}
 
 	}

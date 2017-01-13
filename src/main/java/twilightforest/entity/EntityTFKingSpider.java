@@ -81,7 +81,7 @@ public class EntityTFKingSpider extends EntitySpider {
         EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.worldObj);
         druid.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         druid.onInitialSpawn(difficulty, null);
-        this.worldObj.spawnEntityInWorld(druid);
+        this.worldObj.spawnEntity(druid);
         druid.startRiding(this);
         
         return (IEntityLivingData)par1EntityLivingData1;

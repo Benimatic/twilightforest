@@ -244,7 +244,7 @@ public class EntityTFYeti extends EntityMob
 	public boolean getCanSpawnHere()
     {
 		// are we in the snow
-		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSnow) {
+		if (worldObj.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow) {
 			// don't check light level
 	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		}
@@ -259,7 +259,7 @@ public class EntityTFYeti extends EntityMob
      */
 	@Override
 	protected boolean isValidLightLevel() {
-		if (worldObj.getBiomeGenForCoords(new BlockPos(this)) == TFBiomeBase.tfSnow) {
+		if (worldObj.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow) {
 			return true;
 		} else {
 			return super.isValidLightLevel();

@@ -929,7 +929,7 @@ public class TFFinalCastlePieces {
 
 	        for (int x = minX; x <= maxX; x++) {
 	        	for (int z = minZ; z <= maxZ; z++) {
-	        		if (world.getBiomeGenForCoords(x, z) != TFBiomeBase.highlandsCenter && world.getBiomeGenForCoords(x, z) != TFBiomeBase.thornlands) {
+	        		if (world.getBiome(x, z) != TFBiomeBase.highlandsCenter && world.getBiome(x, z) != TFBiomeBase.thornlands) {
 	        			return true;
 	        		}
 	        	}        

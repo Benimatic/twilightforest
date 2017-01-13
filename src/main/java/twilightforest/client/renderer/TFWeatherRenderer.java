@@ -125,7 +125,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                     int j1 = (l - i3 + 16) * 32 + i1 - k2 + 16;
                     float f6 = this.rainXCoords[j1] * 0.5F;
                     float f7 = this.rainYCoords[j1] * 0.5F;
-                    Biome biomegenbase = worldclient.getBiomeGenForCoords(i1, l);
+                    Biome biomegenbase = worldclient.getBiome(i1, l);
 
                     if (biomegenbase.canSpawnLightningBolt() || biomegenbase.getEnableSnow())
                     {
@@ -278,7 +278,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                     int rainIndex = (dz - pz + 16) * 32 + dx - px + 16;
                     float rainX = this.rainXCoords[rainIndex] * 0.5F;
                     float rainZ = this.rainYCoords[rainIndex] * 0.5F;
-                    Biome biomegenbase = worldclient.getBiomeGenForCoords(dx, dz);
+                    Biome biomegenbase = worldclient.getBiome(dx, dz);
 
 
                     if (biomegenbase instanceof TFBiomeBase && entitylivingbase instanceof EntityPlayer && !((TFBiomeBase)biomegenbase).doesPlayerHaveRequiredAchievement((EntityPlayer)entitylivingbase)) {
@@ -647,7 +647,7 @@ public class TFWeatherRenderer extends IRenderHandler {
         
 		for (int z = pz - range ; z <= pz + range; ++z) {
             for (int x = px - range; x <= px + range; ++x) {
-                Biome biomegenbase = world.getBiomeGenForCoords(x, z);
+                Biome biomegenbase = world.getBiome(x, z);
                 if (biomegenbase instanceof TFBiomeBase && viewEntity instanceof EntityPlayer) {
                 	TFBiomeBase tfBiome = (TFBiomeBase)biomegenbase;
                 	EntityPlayer player = (EntityPlayer)viewEntity;

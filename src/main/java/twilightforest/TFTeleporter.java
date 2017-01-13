@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -18,7 +19,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
 import net.minecraftforge.fml.common.FMLLog;
 
-
+// todo 1.10 modernize this whole thing
 public class TFTeleporter extends Teleporter 
 {
 	protected WorldServer myWorld;
@@ -34,36 +35,31 @@ public class TFTeleporter extends Teleporter
 
 	}
 
-	/**
-	 * Place an entity in a nearby portal, creating one if necessary.
-	 */
-	public void placeInPortal(Entity par1Entity, double x, double y, double z, float facing)
+	@Override
+	public void placeInPortal(Entity par1Entity, float facing)
 	{
-		if (!this.placeInExistingPortal(par1Entity, x, y, z, facing))
+		if (!this.placeInExistingPortal(par1Entity, facing))
 		{
 			// if we're in enforced progression mode, check the biomes for safety
-			if (par1Entity.worldObj.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+			if (par1Entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 				int px = MathHelper.floor(par1Entity.posX);
 				int pz = MathHelper.floor(par1Entity.posZ);
-				if (!isSafeBiomeAt(px, pz, par1Entity)) {
+				BlockPos pos = new BlockPos(par1Entity);
+				if (!isSafeBiomeAt(pos, par1Entity)) {
 					System.out.println("[TwilightForest] Portal destination looks unsafe, rerouting!");
 					
-					BlockPos safeCoords = findSafeCoords(200, px, pz, par1Entity);
+					BlockPos safeCoords = findSafeCoords(200, pos, par1Entity);
 					
 					if (safeCoords != null) {
-			            par1Entity.setLocationAndAngles(safeCoords.posX, par1Entity.posY, safeCoords.posZ, 90.0F, 0.0F);
-			            x = safeCoords.posX;
-			            z = safeCoords.posZ;
-			            
+			            par1Entity.setLocationAndAngles(safeCoords.getX(), par1Entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+
 			            System.out.println("[TwilightForest] Safely rerouted!");
 					} else {
 			            System.out.println("[TwilightForest] Did not find a safe spot at first try, trying again with longer range.");
-						safeCoords = findSafeCoords(400, px, pz, par1Entity);
+						safeCoords = findSafeCoords(400, pos, par1Entity);
 						if (safeCoords != null) {
-				            par1Entity.setLocationAndAngles(safeCoords.posX, par1Entity.posY, safeCoords.posZ, 90.0F, 0.0F);
-				            x = safeCoords.posX;
-				            z = safeCoords.posZ;
-				            
+				            par1Entity.setLocationAndAngles(safeCoords.getX(), par1Entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+
 				            System.out.println("[TwilightForest] Safely rerouted to long range portal.  Return trip not guaranteed.");
 						} else {
 				            System.out.println("[TwilightForest] Did not find a safe spot.");
@@ -75,48 +71,40 @@ public class TFTeleporter extends Teleporter
 			
 			
 			this.makePortal(par1Entity);
-			this.placeInExistingPortal(par1Entity, x, y, z, facing);
+			this.placeInExistingPortal(par1Entity, facing);
 		}
 	}
 	
-	/**
-	 * Find some safe coords within range of the destination coords, or return null.
-	 * 
-	 * This could sure be a more methodic algorithm
-	 */
-	private BlockPos findSafeCoords(int range, int x, int z, Entity par1Entity) {
+	private BlockPos findSafeCoords(int range, BlockPos pos, Entity par1Entity) {
 		for (int i = 0; i < 25; i++) {
-			int dx = x + (rand.nextInt(range) - rand.nextInt(range));
-			int dz = z + (rand.nextInt(range) - rand.nextInt(range));
-			if (isSafeBiomeAt(dx, dz, par1Entity)) {
-				return new BlockPos(dx, 100, dz);
+			BlockPos dPos = new BlockPos(
+					pos.getX() + rand.nextInt(range) - rand.nextInt(range),
+					100,
+					pos.getZ() + rand.nextInt(range) - rand.nextInt(range)
+			);
+
+			if (isSafeBiomeAt(dPos, par1Entity)) {
+				return dPos;
 			}
 		}
 		return null;
 	}
 
-	/**
-	 * Check if the destination is safe
-	 */
-	boolean isSafeBiomeAt(int x, int z, Entity par1Entity) {
-		Biome biomeAt = myWorld.getBiomeGenForCoords(x, z);
+	private boolean isSafeBiomeAt(BlockPos pos, Entity par1Entity) {
+		Biome biomeAt = myWorld.getBiome(pos);
 
 		if (biomeAt instanceof TFBiomeBase && par1Entity instanceof EntityPlayerMP) {
 			TFBiomeBase tfBiome = (TFBiomeBase)biomeAt;
 			EntityPlayerMP player = (EntityPlayerMP)par1Entity;
 			
 			return tfBiome.doesPlayerHaveRequiredAchievement(player);
-			
 		} else {
-			// I guess it's safe, or maybe I just have no way to be sure!
 			return true;
 		}
 	}
 
-
 	@Override
-	public boolean placeInExistingPortal(Entity entity, double par3, double par5, double par7, float par9) {
-		
+	public boolean placeInExistingPortal(Entity entity, float rotationYaw) {
         int c = 200;
         double d = -1D;
         int i = 0;
@@ -132,11 +120,11 @@ public class TFTeleporter extends Teleporter
                 double d3 = (j2 + 0.5D) - entity.posZ;
                 for (int k2 = TFWorld.MAXHEIGHT - 1; k2 >= 0; k2--)
                 {
-                    if(!isBlockPortal(myWorld, j1, k2, j2))
+                    if(!isBlockPortal(myWorld, new BlockPos(j1, k2, j2)))
                     {
                         continue;
                     }
-                    for(; isBlockPortal(myWorld, j1, k2 - 1, j2); k2--) { }
+                    for(; isBlockPortal(myWorld, new BlockPos(j1, k2 - 1, j2)); k2--) { }
                     double d5 = (k2 + 0.5D) - entity.posY;
                     double d7 = d1 * d1 + d5 * d5 + d3 * d3;
                     if(d < 0.0D || d7 < d)
@@ -154,25 +142,23 @@ public class TFTeleporter extends Teleporter
 
         if(d >= 0.0D)
         {
-            int k1 = i;
-            int l1 = j;
-            int i2 = k;
-            double portalX = k1 + 0.5D;
-            double portalY = l1 + 0.5D;
-            double portalZ = i2 + 0.5D;
-            if(isBlockPortal(myWorld, k1 - 1, l1, i2))
+        	BlockPos pos = new BlockPos(i, j, k);
+			double portalX = i + 0.5D;
+            double portalY = j + 0.5D;
+            double portalZ = k + 0.5D;
+            if(isBlockPortal(myWorld, pos.west()))
             {
                 portalX -= 0.5D;
             }
-            if(isBlockPortal(myWorld, k1 + 1, l1, i2))
+            if(isBlockPortal(myWorld, pos.east()))
             {
                 portalX += 0.5D;
             }
-            if(isBlockPortal(myWorld, k1, l1, i2 - 1))
+            if(isBlockPortal(myWorld, pos.north()))
             {
                 portalZ -= 0.5D;
             }
-            if(isBlockPortal(myWorld, k1, l1, i2 + 1))
+            if(isBlockPortal(myWorld, pos.south()))
             {
                 portalZ += 0.5D;
             }
@@ -192,12 +178,9 @@ public class TFTeleporter extends Teleporter
         }
     }
 	
-	/**
-	 * Is this block either our portal or an existing nether portal?
-	 */
-	public boolean isBlockPortal(World world, int x, int y, int z)
+	private boolean isBlockPortal(World world, BlockPos pos)
 	{
-		return world.getBlock(x, y, z) == TFBlocks.portal;
+		return world.getBlockState(pos).getBlock() == TFBlocks.portal;
 	}
 
 	@Override
@@ -207,7 +190,7 @@ public class TFTeleporter extends Teleporter
         if (spot != null)
         {
         	FMLLog.info("[TwilightForest] Found ideal portal spot");
-        	makePortalAt(myWorld, spot.posX, spot.posY, spot.posZ);
+        	makePortalAt(myWorld, spot);
         	return true;
         }
         else
@@ -217,7 +200,7 @@ public class TFTeleporter extends Teleporter
             if (spot != null)
             {
             	FMLLog.info("[TwilightForest] Found okay portal spot");
-            	makePortalAt(myWorld, spot.posX, spot.posY, spot.posZ);
+            	makePortalAt(myWorld, spot);
             	return true;
             }
         }
@@ -226,20 +209,16 @@ public class TFTeleporter extends Teleporter
     	FMLLog.info("[TwilightForest] Did not even find an okay portal spot, just making a random one");
     	
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = myWorld.provider.dimensionId == 0 ? 2 : 0.5;
+		double yFactor = myWorld.provider.getDimension() == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
-        int entityX = MathHelper.floor(entity.posX);
-        int entityY = MathHelper.floor(entity.posY * yFactor);
-        int entityZ = MathHelper.floor(entity.posZ);
-        
-        makePortalAt(myWorld, entityX, entityY, entityZ);
+        makePortalAt(myWorld, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ));
 
         return false;
 	}
 
-	public BlockPos findPortalCoords(Entity entity, boolean ideal) {
+	private BlockPos findPortalCoords(Entity entity, boolean ideal) {
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = myWorld.provider.dimensionId == 0 ? 2 : 0.5;
+		double yFactor = myWorld.provider.getDimension() == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
         int entityX = MathHelper.floor(entity.posX);
         int entityZ = MathHelper.floor(entity.posZ);
@@ -258,22 +237,25 @@ public class TFTeleporter extends Teleporter
 
         		for(int ry = 128 - 1; ry >= 0; ry--)
         		{
-        			if(!myWorld.isAirBlock(rx, ry, rz))
+        			BlockPos pos = new BlockPos(rx, ry, rz);
+
+        			if(!myWorld.isAirBlock(pos))
         			{
         				continue;
         			}
-        			for(; ry > 0 && myWorld.isAirBlock(rx, ry - 1, rz); ry--) { }
 
-        			if (ideal ? isIdealPortal(rx, rz, ry) : isOkayPortal(rx, rz, ry))
+        			while (pos.getY() > 0 && myWorld.isAirBlock(pos.down())) pos = pos.down();
+
+        			if (ideal ? isIdealPortal(pos) : isOkayPortal(pos))
         			{
-        				double yWeight = (ry + 0.5D) - entity.posY * yFactor;
+        				double yWeight = (pos.getY() + 0.5D) - entity.posY * yFactor;
         				double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
         				
         				
         				if(spotWeight < 0.0D || rPosWeight < spotWeight)
         				{
         					spotWeight = rPosWeight;
-        					spot = new BlockPos(rx, ry, rz);
+        					spot = pos;
         				}
         			}
         		}
@@ -283,17 +265,15 @@ public class TFTeleporter extends Teleporter
 		return spot;
 	}
 
-	public boolean isIdealPortal(int rx, int rz, int ry) {
+	private boolean isIdealPortal(BlockPos pos) {
 		for(int potentialZ = 0; potentialZ < 4; potentialZ++)
 		{
 			for(int potentialX = 0; potentialX < 4; potentialX++)
 			{
 				for(int potentialY = -1; potentialY < 3; potentialY++)
 				{
-					int tx = rx + (potentialX - 1);
-					int ty = ry + potentialY;
-					int tz = rz + (potentialZ - 1);
-					if (potentialY == -1 && myWorld.getBlock(tx, ty, tz).getMaterial() != Material.GRASS || potentialY >= 0 && !myWorld.getBlock(tx, ty, tz).getMaterial().isReplaceable())
+					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
+					if (potentialY == -1 && myWorld.getBlockState(tPos).getMaterial() != Material.GRASS || potentialY >= 0 && !myWorld.getBlockState(tPos).getMaterial().isReplaceable())
 					{
 						return false;
 					}
@@ -305,17 +285,15 @@ public class TFTeleporter extends Teleporter
 		return true;
 	}
 
-	public boolean isOkayPortal(int rx, int rz, int ry) {
+	private boolean isOkayPortal(BlockPos pos) {
 		for(int potentialZ = 0; potentialZ < 4; potentialZ++)
 		{
 			for(int potentialX = 0; potentialX < 4; potentialX++)
 			{
 				for(int potentialY = -1; potentialY < 3; potentialY++)
 				{
-					int tx = rx + (potentialX - 1);
-					int ty = ry + potentialY;
-					int tz = rz + (potentialZ - 1);
-					if (potentialY == -1 && !myWorld.getBlock(tx, ty, tz).getMaterial().isSolid() || potentialY >= 0 && !myWorld.getBlock(tx, ty, tz).getMaterial().isReplaceable())
+					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
+					if (potentialY == -1 && !myWorld.getBlockState(tPos).getMaterial().isSolid() || potentialY >= 0 && !myWorld.getBlockState(tPos).getMaterial().isReplaceable())
 					{
 						return false;
 					}
@@ -327,83 +305,82 @@ public class TFTeleporter extends Teleporter
 		return true;
 	}
 
-	private void makePortalAt(World world, int px, int py, int pz) {
+	private void makePortalAt(World world, BlockPos pos) {
 
-		if(py < 30)
+		if(pos.getY() < 30)
 		{
-			py = 30;
+			pos = new BlockPos(pos.getX(), 30, pos.getZ());
 		}
-		world.getClass();
-		if(py > 128 - 10)
+
+		if(pos.getY() > 128 - 10)
 		{
-			world.getClass();
-			py = 128 - 10;
+			pos = new BlockPos(pos.getX(), 128 - 10, pos.getZ());
 		}
 		
 		// sink the portal 1 into the ground
-		py--;
+		pos = pos.down();
 
 		
 		// grass all around it
-		world.setBlock(px - 1, py + 0, pz - 1, Blocks.GRASS);
-		world.setBlock(px + 0, py + 0, pz - 1, Blocks.GRASS);
-		world.setBlock(px + 1, py + 0, pz - 1, Blocks.GRASS);
-		world.setBlock(px + 2, py + 0, pz - 1, Blocks.GRASS);
+		world.setBlockState(pos.west().north(), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.north(), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.east().north(), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.east(2).north(), Blocks.GRASS.getDefaultState());
 
-		world.setBlock(px - 1, py + 0, pz + 0, Blocks.GRASS);
-		world.setBlock(px + 2, py + 0, pz + 0, Blocks.GRASS);
+		world.setBlockState(pos.west(), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.east(2), Blocks.GRASS.getDefaultState());
 
-		world.setBlock(px - 1, py + 0, pz + 1, Blocks.GRASS);
-		world.setBlock(px + 2, py + 0, pz + 1, Blocks.GRASS);
+		world.setBlockState(pos.west().south(), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.east(2).south(), Blocks.GRASS.getDefaultState());
 
-		world.setBlock(px - 1, py + 0, pz + 2, Blocks.GRASS);
-		world.setBlock(px + 0, py + 0, pz + 2, Blocks.GRASS);
-		world.setBlock(px + 1, py + 0, pz + 2, Blocks.GRASS);
-		world.setBlock(px + 2, py + 0, pz + 2, Blocks.GRASS);
+		world.setBlockState(pos.west().south(2), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.south(2), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.east().south(2), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.east(2).south(2), Blocks.GRASS.getDefaultState());
 
 		// dirt under it
-		world.setBlock(px + 0, py - 1, pz + 0, Blocks.DIRT);
-		world.setBlock(px + 1, py - 1, pz + 0, Blocks.DIRT);
-		world.setBlock(px + 0, py - 1, pz + 1, Blocks.DIRT);
-		world.setBlock(px + 1, py - 1, pz + 1, Blocks.DIRT);
+		world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState());
+		world.setBlockState(pos.east().down(), Blocks.DIRT.getDefaultState());
+		world.setBlockState(pos.south().down(), Blocks.DIRT.getDefaultState());
+		world.setBlockState(pos.east().south().down(), Blocks.DIRT.getDefaultState());
 		
 		// portal in it
-		world.setBlock(px + 0, py + 0, pz + 0, TFBlocks.portal, 0, 2);
-		world.setBlock(px + 1, py + 0, pz + 0, TFBlocks.portal, 0, 2);
-		world.setBlock(px + 0, py + 0, pz + 1, TFBlocks.portal, 0, 2);
-		world.setBlock(px + 1, py + 0, pz + 1, TFBlocks.portal, 0, 2);
+		world.setBlockState(pos, TFBlocks.portal.getDefaultState(), 2);
+		world.setBlockState(pos.east(), TFBlocks.portal.getDefaultState(), 2);
+		world.setBlockState(pos.south(), TFBlocks.portal.getDefaultState(), 2);
+		world.setBlockState(pos.east().south(), TFBlocks.portal.getDefaultState(), 2);
 		
 		// meh, let's just make a bunch of air over it for 4 squares
 		for (int dx = -1; dx <= 2; dx++) {
 			for (int dz = -1; dz <= 2; dz++) {
 				for (int dy = 1; dy <=5; dy++) {
-					world.setBlock(px + dx, py + dy, pz + dz, Blocks.AIR);
+					world.setBlockToAir(pos.add(dx, dy, dz));
 				}
 			}
 		}
 
 		// finally, "nature decorations"!
-		world.setBlock(px - 1, py + 1, pz - 1, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 0, py + 1, pz - 1, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 1, py + 1, pz - 1, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 2, py + 1, pz - 1, randNatureBlock(world.rand), 0, 2);
+		world.setBlockState(pos.west().north().up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.north().up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.east().north().up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.east(2).north().up(), randNatureBlock(world.rand), 2);
 
-		world.setBlock(px - 1, py + 1, pz + 0, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 2, py + 1, pz + 0, randNatureBlock(world.rand), 0, 2);
+		world.setBlockState(pos.west().up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.east(2).up(), randNatureBlock(world.rand), 2);
 
-		world.setBlock(px - 1, py + 1, pz + 1, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 2, py + 1, pz + 1, randNatureBlock(world.rand), 0, 2);
+		world.setBlockState(pos.west().south().up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.east(2).south().up(), randNatureBlock(world.rand), 2);
 
-		world.setBlock(px - 1, py + 1, pz + 2, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 0, py + 1, pz + 2, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 1, py + 1, pz + 2, randNatureBlock(world.rand), 0, 2);
-		world.setBlock(px + 2, py + 1, pz + 2, randNatureBlock(world.rand), 0, 2);
+		world.setBlockState(pos.west().south(2).up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.south(2).up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.east().south(2).up(), randNatureBlock(world.rand), 2);
+		world.setBlockState(pos.east(2).south(2).up(), randNatureBlock(world.rand), 2);
 	}
 	
-	public Block randNatureBlock(Random random) {
+	private IBlockState randNatureBlock(Random random) {
 		Block[] block = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER};
 		
-		return block[random.nextInt(block.length)];
+		return block[random.nextInt(block.length)].getDefaultState();
 	}
 
 }

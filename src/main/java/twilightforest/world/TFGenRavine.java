@@ -176,7 +176,7 @@ public class TFGenRavine extends MapGenBase
                             	blockStorage[i4] = Blocks.AIR;
                             	if (flag2 && blockStorage[i4 - 1] == Blocks.DIRT)
                             	{
-                            		blockStorage[i4 - 1] = this.worldObj.getBiomeGenForCoords(l2 + i * 16, l3 + j * 16).topBlock;
+                            		blockStorage[i4 - 1] = this.worldObj.getBiome(l2 + i * 16, l3 + j * 16).topBlock;
                             	}
                             }
                         }

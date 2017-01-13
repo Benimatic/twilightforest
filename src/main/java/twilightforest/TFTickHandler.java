@@ -51,7 +51,7 @@ public class TFTickHandler
 
 
 		EntityPlayer player = event.player;
-		World world = player.worldObj;
+		World world = player.world;
 
 		// check for portal creation, at least if it's not disabled
 		if (!TwilightForestMod.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
@@ -195,7 +195,7 @@ public class TFTickHandler
 	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
 	 */
 	private void checkBiomeForProgression(EntityPlayer player, World world) {
-		Biome currentBiome = world.getBiomeGenForCoords(new BlockPos(player));
+		Biome currentBiome = world.getBiome(new BlockPos(player));
 		
 		if (currentBiome instanceof TFBiomeBase) {
 			TFBiomeBase tfBiome = (TFBiomeBase)currentBiome;

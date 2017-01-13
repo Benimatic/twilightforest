@@ -140,7 +140,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 
 			if (!world.isRemote)
 			{
-				world.spawnEntityInWorld(entityarrow);
+				world.spawnEntity(entityarrow);
 			}
 		}
 	}

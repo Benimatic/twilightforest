@@ -126,7 +126,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 				{
 					hc[i].headEntity = new EntityTFHydraHead(this, "head" + i, 3F, 3F);
 					hc[i].headEntity.setPosition(this.posX, this.posY, this.posZ);
-					worldObj.spawnEntityInWorld(hc[i].headEntity);
+					worldObj.spawnEntity(hc[i].headEntity);
 				}
 
 				setSpawnHeads(false);
@@ -1163,7 +1163,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
                 {
                     int var2 = EntityXPOrb.getXPSplit(var1);
                     var1 -= var2;
-                    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, var2));
+                    this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, var2));
                 }
             }
 

@@ -105,7 +105,7 @@ public class ItemTFMagicMap extends ItemMap
                             {
                             	for (zStep2 = 0; zStep2 < scaleFactor; ++zStep2)
                             	{
-                            		biomeID = par1World.getBiomeGenForCoords(xDraw2 + xStep2, zDraw2 + zStep2).biomeID;
+                            		biomeID = par1World.getBiome(xDraw2 + xStep2, zDraw2 + zStep2).biomeID;
 
                                     biomeFrequencies[biomeID]++;
                                     
