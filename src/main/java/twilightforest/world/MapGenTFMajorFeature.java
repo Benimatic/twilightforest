@@ -21,21 +21,21 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
 	@Override
 	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
-		return TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, worldObj).isStructureEnabled;
+		return TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world).isStructureEnabled;
 	}
 
 	@Override
 	protected StructureStart getStructureStart(int chunkX, int chunkZ) {
 		// fix rand
-        this.rand.setSeed(worldObj.getSeed());
+        this.rand.setSeed(world.getSeed());
         long rand1 = this.rand.nextLong();
         long rand2 = this.rand.nextLong();
         long chunkXr1 = (long)(chunkX) * rand1;
         long chunkZr2 = (long)(chunkZ) * rand2;
-        this.rand.setSeed(chunkXr1 ^ chunkZr2 ^ worldObj.getSeed());
+        this.rand.setSeed(chunkXr1 ^ chunkZr2 ^ world.getSeed());
         this.rand.nextInt();
 		
-		return new StructureTFMajorFeatureStart(worldObj, rand, chunkX, chunkZ);
+		return new StructureTFMajorFeatureStart(world, rand, chunkX, chunkZ);
 	}
 
 	@Override

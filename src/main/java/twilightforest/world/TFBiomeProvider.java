@@ -105,13 +105,7 @@ public class TFBiomeProvider extends BiomeProvider
     }
 
     @Override
-    public Biome[] loadBlockGeneratorData(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5)
-    {
-        return getBiomeGenAt(par1ArrayOfBiome, par2, par3, par4, par5, true);
-    }
-
-    @Override
-    public Biome[] getBiomeGenAt(Biome par1ArrayOfBiome[], int x, int y, int width, int length, boolean cacheFlag)
+    public Biome[] getBiomes(Biome par1ArrayOfBiome[], int x, int y, int width, int length, boolean cacheFlag)
     {
         IntCache.resetIntCache();
 

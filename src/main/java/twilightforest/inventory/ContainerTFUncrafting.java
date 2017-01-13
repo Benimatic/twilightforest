@@ -1,6 +1,7 @@
 package twilightforest.inventory;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -82,10 +85,6 @@ public class ContainerTFUncrafting extends Container {
         this.onCraftMatrixChanged(this.assemblyMatrix);
 	}
 	
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
-    @SuppressWarnings("rawtypes")
 	@Override
 	public void onCraftMatrixChanged(IInventory par1IInventory)
     {
@@ -116,7 +115,7 @@ public class ContainerTFUncrafting extends Container {
 	    				{
 	    					ingredient.stackSize = 1;
 	    				}
-	    				if (ingredient != null && (ingredient.getItemDamageForDisplay() == -1 || ingredient.getItemDamageForDisplay() == Short.MAX_VALUE))
+	    				if (ingredient != null && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
 	    				{
 	    					ingredient.setItemDamage(0);
 	    				}
@@ -213,35 +212,24 @@ public class ContainerTFUncrafting extends Container {
     			}
     			
     			// if the result has innate enchantments, add them on to our enchantment map
-    			Map resultInnateEnchantments = null;
+    			Map<Enchantment, Integer> resultInnateEnchantments = null;
     			if (result.isItemEnchanted())
     			{
     				resultInnateEnchantments = EnchantmentHelper.getEnchantments(result);
     			}
     			
     			// check if the input enchantments can even go onto the result item
-    			Map inputEnchantments = null;
+    			Map<Enchantment, Integer> inputEnchantments = null;
     			if (input.isItemEnchanted())
     			{
     				inputEnchantments = EnchantmentHelper.getEnchantments(input);
- 	    			for (Object key : inputEnchantments.keySet())
-	    			{
-	    				int enchID = ((Integer)key).intValue();
-	    				//int level = ((Integer)inputEnchantments.get(key)).intValue();
-	    				Enchantment ench = Enchantments.ENCHANTMENTSLIST[enchID];
-	    				
-	    				// remove enchantments that won't work
-	    				if (!ench.canApply(result))
-	    				{
-	    					inputEnchantments.remove(key);
-	    				}
-	    			}
+					inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(result));
 	    		}
     			
     			if (inputTags != null) {
     				// remove enchantments, copy tags, re-add filtered enchantments
     				inputTags.removeTag("ench");
-    				result.setTagCompound((NBTTagCompound) inputTags.copy());
+    				result.setTagCompound(inputTags.copy());
     				if (inputEnchantments != null)
     				{
     					EnchantmentHelper.setEnchantments(inputEnchantments, result);
@@ -262,18 +250,16 @@ public class ContainerTFUncrafting extends Container {
 	    		// finally, add any innate enchantments back onto the result
 	    		if (resultInnateEnchantments != null && resultInnateEnchantments.size() > 0)
 	    		{
-	    			for (Object key : resultInnateEnchantments.keySet())
+	    			for (Enchantment ench : resultInnateEnchantments.keySet())
 	    			{
-	    				int enchID = ((Integer)key).intValue();
-	    				int level = ((Integer)resultInnateEnchantments.get(key)).intValue();
-	    				Enchantment ench = Enchantments.ENCHANTMENTSLIST[enchID];
-	    				
-	    				if (EnchantmentHelper.getEnchantmentLevel(enchID, result) > level)
+	    				int level = resultInnateEnchantments.get(ench);
+
+	    				if (EnchantmentHelper.getEnchantmentLevel(ench, result) > level)
 	    				{
-	    					level = EnchantmentHelper.getEnchantmentLevel(enchID, result);
+	    					level = EnchantmentHelper.getEnchantmentLevel(ench, result);
 	    				}
 	    				
-	    				if (EnchantmentHelper.getEnchantmentLevel(enchID, result) < level)
+	    				if (EnchantmentHelper.getEnchantmentLevel(ench, result) < level)
 	    				{
 	    					result.addEnchantment(ench, level);
 	    				}
@@ -413,46 +399,28 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param itemStack
-	 * @return
-	 */
 	public int countHighestEnchantmentCost(ItemStack itemStack) {
 		int count = 0;
 		
-		// go through all 256 enchantment IDs, and see if the item has that enchantment, and at what level
-		for (Enchantment ench : Enchantments.ENCHANTMENTSLIST) {
-			if (ench != null) {
-				int level = EnchantmentHelper.getEnchantmentLevel(ench.effectId, itemStack);
-				if (level > count) {
-					//count = ench.getMinEnchantability(level); OLD
-					count += getWeightModifier(ench) * level;
-				}
+		for (Enchantment ench : ForgeRegistries.ENCHANTMENTS) {
+			int level = EnchantmentHelper.getEnchantmentLevel(ench, itemStack);
+			if (level > count) {
+				//count = ench.getMinEnchantability(level); OLD
+				count += getWeightModifier(ench) * level;
 			}
 		}
 		
 		return count;
 	}
-	/**
-	 * 
-	 * 
-	 * @param itemStack
-	 * @return
-	 */
+
 	public int countTotalEnchantmentCost(ItemStack itemStack) {
 		int count = 0;
 		
-		// go through all 256 enchantment IDs, and see if the item has that enchantment, and at what level
-		for (Enchantment ench : Enchantments.ENCHANTMENTSLIST) {
-			if (ench != null) {
-				int level = EnchantmentHelper.getEnchantmentLevel(ench.effectId, itemStack);
-				if (level > 0) {
-					//count = ench.getMinEnchantability(level); OLD
-					count += getWeightModifier(ench) * level;
-					count += 1;
-				}
+		for (Enchantment ench : ForgeRegistries.ENCHANTMENTS) {
+			int level = EnchantmentHelper.getEnchantmentLevel(ench, itemStack);
+			if (level > 0) {
+				count += getWeightModifier(ench) * level;
+				count += 1;
 			}
 		}
 		
@@ -461,7 +429,7 @@ public class ContainerTFUncrafting extends Container {
 	
 	public int getWeightModifier(Enchantment ench)
 	{
-        switch (ench.getWeight())
+        switch (ench.getRarity().getWeight())
         {
             case 1:
                 return 8;
@@ -680,19 +648,19 @@ public class ContainerTFUncrafting extends Container {
         	// drop items in assembly grid
             for (int i = 0; i < 9; ++i)
             {
-                ItemStack assemblyStack = this.assemblyMatrix.getStackInSlotOnClosing(i);
+                ItemStack assemblyStack = this.assemblyMatrix.removeStackFromSlot(i);
 
                 if (assemblyStack != null)
                 {
-                    par1EntityPlayer.dropPlayerItemWithRandomChoice(assemblyStack, false);
+                    par1EntityPlayer.dropItem(assemblyStack, false);
                 }
             }
             
             // drop input
-            ItemStack inputStack = this.tinkerInput.getStackInSlotOnClosing(0);
+            ItemStack inputStack = this.tinkerInput.removeStackFromSlot(0);
             if (inputStack != null)
             {
-                par1EntityPlayer.dropPlayerItemWithRandomChoice(inputStack, false);
+                par1EntityPlayer.dropItem(inputStack, false);
             }
         }
     }

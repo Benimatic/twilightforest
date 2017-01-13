@@ -1,9 +1,12 @@
 package twilightforest.inventory;
 
+import net.minecraft.util.text.ITextComponent;
 import twilightforest.TwilightForestMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
+import java.util.Arrays;
 
 
 public class InventoryTFGoblinUncrafting implements IInventory {
@@ -17,8 +20,6 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	public InventoryTFGoblinUncrafting(ContainerTFUncrafting containerTFGoblinCrafting) {
 		// TODO Auto-generated constructor stub
 	}
-
-
 
 	@Override
 	public int getSizeInventory() {
@@ -67,7 +68,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
+	public ItemStack removeStackFromSlot(int par1) {
 		if (this.contents[par1] != null)
 		{
 			ItemStack var2 = this.contents[par1];
@@ -93,8 +94,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public String getInventoryName() {
-		// TODO Auto-generated method stub
+	public String getName() {
 		return "twilightforest.goblincrafting";
 	}
 
@@ -107,19 +107,16 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	public void markDirty() { }
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1) {
+	public boolean isUsableByPlayer(EntityPlayer var1) {
 		return !TwilightForestMod.disableUncrafting;
 	}
 
 	@Override
-	public void openInventory() { }
+	public void openInventory(EntityPlayer player) { }
 
 	@Override
-	public void closeInventory() { }
+	public void closeInventory(EntityPlayer player) { }
 
-    /**
-     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
-     */
 	@Override
 	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
@@ -127,8 +124,33 @@ public class InventoryTFGoblinUncrafting implements IInventory {
     }
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		Arrays.fill(contents, null);
+	}
+
+	@Override
+	public boolean hasCustomName() {
 		return false;
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return null;
 	}
 
 }

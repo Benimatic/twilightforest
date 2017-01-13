@@ -34,7 +34,7 @@ public class PacketAnnihilateBlock implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    World world = Minecraft.getMinecraft().theWorld;
+                    World world = Minecraft.getMinecraft().world;
                     TwilightForestMod.proxy.doBlockAnnihilateEffect(world, message.pos);
                 }
             });

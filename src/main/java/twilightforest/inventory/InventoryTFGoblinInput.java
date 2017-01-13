@@ -3,6 +3,8 @@ package twilightforest.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 
 public class InventoryTFGoblinInput implements IInventory {
@@ -32,19 +34,12 @@ public class InventoryTFGoblinInput implements IInventory {
         return this.stackInput[par1];
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     @Override
-	public String getInventoryName()
+	public String getName()
     {
         return "Input";
     }
 
-    /**
-     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-     * stack.
-     */
     @Override
 	public ItemStack decrStackSize(int slotNum, int amount)
     {
@@ -79,12 +74,8 @@ public class InventoryTFGoblinInput implements IInventory {
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     @Override
-	public ItemStack getStackInSlotOnClosing(int par1)
+	public ItemStack removeStackFromSlot(int par1)
     {
         if (this.stackInput[par1] != null)
         {
@@ -98,9 +89,6 @@ public class InventoryTFGoblinInput implements IInventory {
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     @Override
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
@@ -108,52 +96,64 @@ public class InventoryTFGoblinInput implements IInventory {
         this.craftingContainer.onCraftMatrixChanged(this);
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     @Override
 	public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    /**
-     * Called when an the contents of an Inventory change, usually
-     */
     @Override
 	public void markDirty() {
     	this.craftingContainer.onCraftMatrixChanged(this);
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     @Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return true;
     }
 
     @Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer player) {}
 
     @Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer player) {}
 
-    /**
-     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
-     */
     @Override
     public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
 
-	@Override
-	public boolean hasCustomInventoryName() {
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        stackInput[0] = null;
+    }
+
+    @Override
+	public boolean hasCustomName() {
 		return false;
 	}
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TextComponentString(getName());
+    }
 
 
 }

@@ -47,7 +47,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		
 		// check if we're on dirt or grass
 		Block blockUnder = world.getBlockState(pos.down()).getBlock();
-		if(blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM || y >= 256 - treeHeight - 1)
+		if(blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM || pos.getY() >= 256 - treeHeight - 1)
 		{
 			return false;
 		}
@@ -86,19 +86,19 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		// constrain branch spread
 		if ((dest.getX() - pos.getX()) < -4)
 		{
-			dest.getX() = x - 4;
+			dest.getX() = pos.getX() - 4;
 		}
-		if ((dest.getX() - x) > 4)
+		if ((dest.getX() - pos.getX()) > 4)
 		{
-			dest.getX() = x + 4;
+			dest.getX() = pos.getX() + 4;
 		}
-		if ((dest.getZ() - z) < -4)
+		if ((dest.getZ() - pos.getZ()) < -4)
 		{
-			dest.getZ() = z - 4;
+			dest.getZ() = pos.getZ() - 4;
 		}
-		if ((dest.getZ() - z) > 4)
+		if ((dest.getZ() - pos.getZ()) > 4)
 		{
-			dest.getZ() = z + 4;
+			dest.getZ() = pos.getZ() + 4;
 		}
 		
 		if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {

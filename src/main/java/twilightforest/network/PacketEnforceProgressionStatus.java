@@ -34,7 +34,7 @@ public class PacketEnforceProgressionStatus implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    World worldObj = Minecraft.getMinecraft().theWorld;
+                    World worldObj = Minecraft.getMinecraft().world;
 
                     worldObj.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
                 }

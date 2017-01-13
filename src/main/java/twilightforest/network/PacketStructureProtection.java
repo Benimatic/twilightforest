@@ -44,7 +44,7 @@ public class PacketStructureProtection implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    World worldObj = Minecraft.getMinecraft().theWorld;
+                    World worldObj = Minecraft.getMinecraft().world;
 
                     // add weather box if needed
                     if (worldObj.provider instanceof WorldProviderTwilightForest) {

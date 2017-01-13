@@ -8,6 +8,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
@@ -68,18 +69,14 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 
 	@Override
-    public void registerWorldChunkManager()
+    public void createBiomeProvider()
     {
 		this.worldChunkMgr = new TFBiomeProvider(worldObj);
         this.dimensionId = TwilightForestMod.dimensionID;
     }
    
-	
-    /**
-     * Returns a new chunk provider which generates chunks for this world
-     */
     @Override
-	public IChunkProvider createChunkGenerator()
+	public IChunkGenerator createChunkGenerator()
     {
     	// save chunk generator?
     	if (this.chunkProvider == null) {

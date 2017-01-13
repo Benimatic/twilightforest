@@ -1,5 +1,7 @@
 package twilightforest.inventory;
 
+import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -8,7 +10,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -21,8 +22,8 @@ public class ContainerTFCinderFurnace extends Container
     private int lastBurnTime;
     private int lastItemBurnTime;
     
-    public ContainerTFCinderFurnace(InventoryPlayer inventory, World world, int x, int y, int z) {
-    	this(inventory, (TileEntityTFCinderFurnace)world.getTileEntity(x, y, z));
+    public ContainerTFCinderFurnace(InventoryPlayer inventory, World world, BlockPos pos) {
+    	this(inventory, (TileEntityTFCinderFurnace)world.getTileEntity(pos));
     }
 
     public ContainerTFCinderFurnace(InventoryPlayer p_i1812_1_, TileEntityTFCinderFurnace p_i1812_2_)
@@ -30,7 +31,7 @@ public class ContainerTFCinderFurnace extends Container
         this.tileFurnace = p_i1812_2_;
         this.addSlotToContainer(new Slot(p_i1812_2_, 0, 56, 17));
         this.addSlotToContainer(new Slot(p_i1812_2_, 1, 56, 53));
-        this.addSlotToContainer(new SlotFurnace(p_i1812_1_.player, p_i1812_2_, 2, 116, 35));
+        this.addSlotToContainer(new SlotFurnaceOutput(p_i1812_1_.player, p_i1812_2_, 2, 116, 35));
         int i;
 
         for (i = 0; i < 3; ++i)
@@ -47,25 +48,23 @@ public class ContainerTFCinderFurnace extends Container
         }
     }
 
-	public void addCraftingToCrafters(IContainerListener p_75132_1_)
+    @Override
+	public void addListener(IContainerListener p_75132_1_)
     {
-        super.addCraftingToCrafters(p_75132_1_);
+        super.addListener(p_75132_1_);
         p_75132_1_.sendProgressBarUpdate(this, 0, this.tileFurnace.furnaceCookTime);
         p_75132_1_.sendProgressBarUpdate(this, 1, this.tileFurnace.furnaceBurnTime);
         p_75132_1_.sendProgressBarUpdate(this, 2, this.tileFurnace.currentItemBurnTime);
     }
 
-    /**
-     * Looks for changes made in the container, sends them to every listener.
-     */
     @Override
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.crafters.size(); ++i)
+        for (int i = 0; i < this.listeners.size(); ++i)
         {
-            IContainerListener icrafting = (IContainerListener)this.crafters.get(i);
+            IContainerListener icrafting = (IContainerListener)this.listeners.get(i);
 
             if (this.lastCookTime != this.tileFurnace.furnaceCookTime)
             {
@@ -139,7 +138,7 @@ public class ContainerTFCinderFurnace extends Container
             }
             else if (p_82846_2_ != 1 && p_82846_2_ != 0)
             {
-                if (FurnaceRecipes.smelting().getSmeltingResult(itemstack1) != null)
+                if (FurnaceRecipes.instance().getSmeltingResult(itemstack1) != null)
                 {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false))
                     {

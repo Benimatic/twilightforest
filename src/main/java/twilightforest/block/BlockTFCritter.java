@@ -76,9 +76,6 @@ public abstract class BlockTFCritter extends Block {
         return getDefaultState().withProperty(TFBlocks.FACING, facing);
     }
     
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     @Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {

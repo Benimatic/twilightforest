@@ -180,10 +180,7 @@ public class TFGenWitchHut extends TFGenerator {
 		// skeleton spawner!
         world.setBlockState(pos.add(3, 1, 3), Blocks.MOB_SPAWNER.getDefaultState(), 2);
         TileEntityMobSpawner ms = (TileEntityMobSpawner)world.getTileEntity(pos.add(3, 1, 3));
-        MobSpawnerBaseLogic spawnerLogic = ms.getSpawnerBaseLogic();
-        if (spawnerLogic != null) {
-        	spawnerLogic.setEntityName(TFCreatures.getSpawnerNameFor("Skeleton Druid"));
-        }
+		ms.getSpawnerBaseLogic().setEntityName(TFCreatures.getSpawnerNameFor("Skeleton Druid"));
 
 		return true;
 	}

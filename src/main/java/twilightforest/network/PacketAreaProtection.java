@@ -50,7 +50,7 @@ public class PacketAreaProtection implements IMessage {
                 @Override
                 public void run() {
                     // make a box entity
-                    World worldObj = Minecraft.getMinecraft().theWorld;
+                    World worldObj = Minecraft.getMinecraft().world;
                     StructureBoundingBox sbb = message.sbb;
                     EntityTFProtectionBox box = new EntityTFProtectionBox(worldObj, sbb.minX, sbb.minY, sbb.minZ, sbb.maxX, sbb.maxY, sbb.maxZ);
 

@@ -17,7 +17,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 	public boolean generate(World world, Random rand, BlockPos pos) {
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 		
-		if (!this.isAreaSuitable(world, rand, pos.add(-1, 0, -1), 3, height, 3)) {
+		if (!isAreaSuitable(world, rand, pos.add(-1, 0, -1), 3, height, 3)) {
 			return false;
 		}
 		

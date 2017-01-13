@@ -36,13 +36,13 @@ public class MapGenTFHollowTree extends MapGenBase {
 
     @Override
     protected void recursiveGenerate(World worldIn, final int chunkX, final int chunkZ, int centerX, int centerZ, ChunkPrimer chunkPrimerIn) {
-        if (!this.structureMap.containsKey(ChunkPos.chunkXZ2Int(chunkX, chunkZ))){
+        if (!this.structureMap.containsKey(ChunkPos.asLong(chunkX, chunkZ))){
             this.rand.nextInt();
 
             try {
                 if (this.canSpawnStructureAtCoords(chunkX, chunkZ)){
                     StructureStart structurestart = this.getStructureStart(chunkX, chunkZ);
-                    this.structureMap.put(ChunkPos.chunkXZ2Int(chunkX, chunkZ), structurestart);
+                    this.structureMap.put(ChunkPos.asLong(chunkX, chunkZ), structurestart);
                 }
             } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception preparing hollow tree");
@@ -59,7 +59,7 @@ public class MapGenTFHollowTree extends MapGenBase {
                     private static final String __OBFID = "CL_00000507";
                     @Override
                     public String call() {
-                        return String.valueOf(ChunkPos.chunkXZ2Int(chunkX, chunkZ));
+                        return String.valueOf(ChunkPos.asLong(chunkX, chunkZ));
                     }
                 });
                 crashreportcategory.addCrashSection("Structure type", new Callable() {
@@ -102,12 +102,12 @@ public class MapGenTFHollowTree extends MapGenBase {
             TFBiomeBase.fireflyForest, TFBiomeBase.deepMushrooms, TFBiomeBase.enchantedForest, TFBiomeBase.fireSwamp);
 
 	private boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
-		return rand.nextInt(TwilightForestMod.twilightOakChance) == 0 && TFFeature.getNearestFeature(chunkX, chunkZ, worldObj).areChunkDecorationsEnabled 
-				&&  this.worldObj.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, oakSpawnBiomes);
+		return rand.nextInt(TwilightForestMod.twilightOakChance) == 0 && TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled
+				&&  this.world.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, oakSpawnBiomes);
 	}
 
 	private StructureStart getStructureStart(int chunkX, int chunkZ) {
-		return new StructureTFHollowTreeStart(worldObj, rand, chunkX, chunkZ);
+		return new StructureTFHollowTreeStart(world, rand, chunkX, chunkZ);
 	}
 	
 }

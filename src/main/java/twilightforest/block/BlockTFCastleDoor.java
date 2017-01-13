@@ -236,54 +236,53 @@ public class BlockTFCastleDoor extends Block
     }
 	
 
-    /**
-     * Shine bright like a DIAMOND! (or actually, sparkle like redstone ore)
-     */
-    public void sparkle(World world, BlockPos pos, Random rand)
+    // [VanillaCopy] BlockRedStoneOre.spawnParticles with own rand
+    private void sparkle(World worldIn, BlockPos pos, Random rand)
     {
-        double offset = 0.0625D;
+		Random random = rand;
+		double d0 = 0.0625D;
 
-        for (int side = 0; side < 6; ++side)
-        {
-            double rx = x + rand.nextFloat();
-            double ry = y + rand.nextFloat();
-            double rz = z + rand.nextFloat();
+		for (int i = 0; i < 6; ++i)
+		{
+			double d1 = (double)((float)pos.getX() + random.nextFloat());
+			double d2 = (double)((float)pos.getY() + random.nextFloat());
+			double d3 = (double)((float)pos.getZ() + random.nextFloat());
 
-            if (side == 0 && !world.getBlock(x, y + 1, z).isOpaqueCube())
-            {
-                ry = y + 1 + offset;
-            }
+			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube())
+			{
+				d2 = (double)pos.getY() + 0.0625D + 1.0D;
+			}
 
-            if (side == 1 && !world.getBlock(x, y - 1, z).isOpaqueCube())
-            {
-                ry = y + 0 - offset;
-            }
+			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube())
+			{
+				d2 = (double)pos.getY() - 0.0625D;
+			}
 
-            if (side == 2 && !world.getBlock(x, y, z + 1).isOpaqueCube())
-            {
-                rz = z + 1 + offset;
-            }
+			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube())
+			{
+				d3 = (double)pos.getZ() + 0.0625D + 1.0D;
+			}
 
-            if (side == 3 && !world.getBlock(x, y, z - 1).isOpaqueCube())
-            {
-                rz = z + 0 - offset;
-            }
+			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube())
+			{
+				d3 = (double)pos.getZ() - 0.0625D;
+			}
 
-            if (side == 4 && !world.getBlock(x + 1, y, z).isOpaqueCube())
-            {
-                rx = x + 1 + offset;
-            }
+			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube())
+			{
+				d1 = (double)pos.getX() + 0.0625D + 1.0D;
+			}
 
-            if (side == 5 && !world.getBlock(x - 1, y, z).isOpaqueCube())
-            {
-                rx = x + 0 - offset;
-            }
+			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube())
+			{
+				d1 = (double)pos.getX() - 0.0625D;
+			}
 
-            if (rx < x || rx > x + 1 || ry < 0.0D || ry > y + 1 || rz < z || rz > z + 1)
-            {
-                world.spawnParticle(EnumParticleTypes.REDSTONE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
-            }
-        }
-    }
+			if (d1 < (double)pos.getX() || d1 > (double)(pos.getX() + 1) || d2 < 0.0D || d2 > (double)(pos.getY() + 1) || d3 < (double)pos.getZ() || d3 > (double)(pos.getZ() + 1))
+			{
+				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D, new int[0]);
+			}
+		}
+	}
 
 }
