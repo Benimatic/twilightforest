@@ -63,8 +63,8 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	public boolean getCanSpawnHere()
     {
 		// are we near a hedge maze?
-		int chunkX = MathHelper.floor_double(posX) >> 4;
-		int chunkZ = MathHelper.floor_double(posZ) >> 4;
+		int chunkX = MathHelper.floor(posX) >> 4;
+		int chunkZ = MathHelper.floor(posZ) >> 4;
 		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
 			// don't check light level
 	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !worldObj.containsAnyLiquid(getEntityBoundingBox());

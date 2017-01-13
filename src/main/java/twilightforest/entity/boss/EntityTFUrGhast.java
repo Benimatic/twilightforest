@@ -396,7 +396,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         if (this.courseChangeCooldown-- <= 0)
         	{
                 this.courseChangeCooldown += this.rand.nextInt(5) + 0;
-        		distanceToWaypoint = (double)MathHelper.sqrt_double(distanceToWaypoint);
+        		distanceToWaypoint = (double)MathHelper.sqrt(distanceToWaypoint);
 
         		double speed = 0.05D;
         		this.motionX += offsetX / distanceToWaypoint * speed;
@@ -438,7 +438,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         	this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
         	
         	// changing the pitch with movement looks goofy and un-ghast-like
-        	//double dist = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ *  this.motionZ);
+        	//double dist = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ *  this.motionZ);
         	this.rotationPitch = 0;//(float) (-((Math.atan2(this.motionY, dist) * 180D) / Math.PI));;
 
         }
@@ -467,9 +467,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 
 		for (EntityPlayer player : playersBelow)
 		{
-			int dx = MathHelper.floor_double(player.posX);
-			int dy = MathHelper.floor_double(player.posY);
-			int dz = MathHelper.floor_double(player.posZ);
+			int dx = MathHelper.floor(player.posX);
+			int dy = MathHelper.floor(player.posY);
+			int dz = MathHelper.floor(player.posZ);
 
 			if (worldObj.canBlockSeeTheSky(dx, dy, dz))
 			{
@@ -616,9 +616,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 	{
 		ArrayList<BlockPos> potentialPoints;
 
-		int px = MathHelper.floor_double(this.posX);
-		int py = MathHelper.floor_double(this.posY);
-		int pz = MathHelper.floor_double(this.posZ);
+		int px = MathHelper.floor(this.posX);
+		int py = MathHelper.floor(this.posY);
+		int pz = MathHelper.floor(this.posZ);
 		
 		if (!this.noTrapMode)
 		{
@@ -693,9 +693,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		int scanRangeXZ = 48;
 		int scanRangeY = 32;
 
-		int px = MathHelper.floor_double(this.posX);
-		int py = MathHelper.floor_double(this.posY);
-		int pz = MathHelper.floor_double(this.posZ);
+		int px = MathHelper.floor(this.posX);
+		int py = MathHelper.floor(this.posY);
+		int pz = MathHelper.floor(this.posZ);
 
 		scanForTraps(scanRangeXZ, scanRangeY, px, py, pz);
 		
@@ -873,7 +873,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     	}
     	else
     	{
-    		return new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+    		return new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
     	}
 	}
 }

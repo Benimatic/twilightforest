@@ -246,7 +246,7 @@ public class ItemTFOreMagnet extends ItemTF
 				}
 			}
 			
-//			player.addChatMessage("Moved blocks!  " + blocksMoved);
+//			player.sendMessage("Moved blocks!  " + blocksMoved);
 		}
 		return blocksMoved;
 	}

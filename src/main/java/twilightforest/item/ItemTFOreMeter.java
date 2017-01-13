@@ -25,8 +25,8 @@ public class ItemTFOreMeter extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
 		
-		int useX = MathHelper.floor_double(player.posX);
-		int useZ = MathHelper.floor_double(player.posZ);
+		int useX = MathHelper.floor(player.posX);
+		int useZ = MathHelper.floor(player.posZ);
 		
 		if (!world.isRemote) {
 			countOreInArea(player, world, useX, useZ, 3);
@@ -82,16 +82,16 @@ public class ItemTFOreMeter extends ItemTF {
 		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
 
 
-		player.addChatMessage(new TextComponentString("Ore Meter!"));
-		player.addChatMessage(new TextComponentString("Metering chunks in radius " + radius + " around chunk [" + chunkX + ", " + chunkZ + "]"));
-		player.addChatMessage(new TextComponentString("Coal - " + countCoal + " " + percent(countCoal, total)));
-		player.addChatMessage(new TextComponentString("Iron - " + countIron + " " + percent(countIron, total)));
-		player.addChatMessage(new TextComponentString("Gold - " + countGold + " " + percent(countGold, total)));
-		player.addChatMessage(new TextComponentString("Diamond - " + countDiamond + " " + percent(countDiamond, total) + ", exposed - " + countExposedDiamond));
-		player.addChatMessage(new TextComponentString("Lapis - " + countLapis + " " + percent(countLapis, total)));
-		player.addChatMessage(new TextComponentString("Redstone - " + countRedstone + " " + percent(countRedstone, total)));
-		player.addChatMessage(new TextComponentString("Roots - " + countRoots + " " + percent(countRoots, total)));
-		player.addChatMessage(new TextComponentString("Ore Roots - " + countOreRoots + " " + percent(countOreRoots, total)));
+		player.sendMessage(new TextComponentString("Ore Meter!"));
+		player.sendMessage(new TextComponentString("Metering chunks in radius " + radius + " around chunk [" + chunkX + ", " + chunkZ + "]"));
+		player.sendMessage(new TextComponentString("Coal - " + countCoal + " " + percent(countCoal, total)));
+		player.sendMessage(new TextComponentString("Iron - " + countIron + " " + percent(countIron, total)));
+		player.sendMessage(new TextComponentString("Gold - " + countGold + " " + percent(countGold, total)));
+		player.sendMessage(new TextComponentString("Diamond - " + countDiamond + " " + percent(countDiamond, total) + ", exposed - " + countExposedDiamond));
+		player.sendMessage(new TextComponentString("Lapis - " + countLapis + " " + percent(countLapis, total)));
+		player.sendMessage(new TextComponentString("Redstone - " + countRedstone + " " + percent(countRedstone, total)));
+		player.sendMessage(new TextComponentString("Roots - " + countRoots + " " + percent(countRoots, total)));
+		player.sendMessage(new TextComponentString("Ore Roots - " + countOreRoots + " " + percent(countOreRoots, total)));
 	}
 	
 	private float percent(int count, int total) {

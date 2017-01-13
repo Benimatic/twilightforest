@@ -59,7 +59,7 @@ public class BlockTFAuroraSlab extends BlockSlab {
     }
 
     @Override
-    protected ItemStack createStackedBlock(IBlockState state)
+    protected ItemStack getSilkTouchDrop(IBlockState state)
     {
         return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
     }

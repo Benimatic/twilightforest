@@ -67,7 +67,7 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 			int rz = pos.getZ() + rand.nextInt(16) + 8;
 			int ry = TFWorld.SEALEVEL + rand.nextInt(TFWorld.CHUNKHEIGHT - TFWorld.SEALEVEL);
 
-			this.tfGenHangingLamps.generate(world, rand, rx, ry, rz);
+			this.tfGenHangingLamps.generate(world, rand, new BlockPos(rx, ry, rz));
         } 
         
         if (rand.nextInt(LAMPPOST_CHANCE) == 0) {
@@ -75,7 +75,7 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 			int rz = pos.getZ() + rand.nextInt(16) + 8;
 			int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
 
-			this.tfGenLampposts.generate(world, rand, rx, ry, rz);
+			this.tfGenLampposts.generate(world, rand, new BlockPos(rx, ry, rz));
         } 
         
 		// extra pumpkins (should they be lit?)

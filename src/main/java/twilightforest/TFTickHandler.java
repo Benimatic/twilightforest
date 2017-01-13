@@ -117,9 +117,9 @@ public class TFTickHandler
 	private boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
 		ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
 		
-		int px = MathHelper.floor_double(player.posX);
-		int py = MathHelper.floor_double(player.posY);
-		int pz = MathHelper.floor_double(player.posZ);
+		int px = MathHelper.floor(player.posX);
+		int py = MathHelper.floor(player.posY);
+		int pz = MathHelper.floor(player.posZ);
 		
 		if (chunkProvider != null && chunkProvider.isBlockNearFullStructure(px, pz, 100)) {
 			

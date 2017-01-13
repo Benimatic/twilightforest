@@ -179,7 +179,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		    int rx = pos.getX() + rand.nextInt(16) + 8;
 		    byte ry = 64;
 		    int rz = pos.getZ() + rand.nextInt(16) + 8;
-		    plantRootGen.generate(world, rand, rx, ry, rz);
+		    plantRootGen.generate(world, rand, new BlockPos(rx, ry, rz));
 		}
 
 		// generate roots
@@ -188,7 +188,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		    int rx = pos.getX() + rand.nextInt(16) + 8;
 		    int ry = rand.nextInt(64);
 		    int rz = pos.getZ() + rand.nextInt(16) + 8;
-		    woodRootGen.generate(world, rand, rx, ry, rz);
+		    woodRootGen.generate(world, rand, new BlockPos(rx, ry, rz));
 		}
 		
 		// extra underground water sources
@@ -208,7 +208,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
             int rx = pos.getX() + rand.nextInt(16) + 8;
             int ry = 64;
             int rz = pos.getZ() + rand.nextInt(16) + 8;
-            torchBerryGen.generate(world, rand, rx, ry, rz);
+            torchBerryGen.generate(world, rand, new BlockPos(rx, ry, rz));
         }
 	}
 	

@@ -183,9 +183,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         int minX = MathHelper.ceiling_double_int(par1AxisAlignedBB.minX);
         int minY = MathHelper.ceiling_double_int(par1AxisAlignedBB.minY);
         int minZ = MathHelper.ceiling_double_int(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
+        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
+        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
 
         for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
             if (worldObj.isAirBlock(pos)) {
@@ -216,7 +216,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     		double d0 = target.posX - this.posX;
     		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - target.posY;
     		double d2 = target.posZ - this.posZ;
-    		float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+    		float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
     		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
 
     		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

@@ -817,7 +817,7 @@ public class TFFeature {
 	 * Try to spawn a hint monster near the specified player
 	 */
 	public void trySpawnHintMonster(World world, EntityPlayer player) {
-		this.trySpawnHintMonster(world, player, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));	
+		this.trySpawnHintMonster(world, player, MathHelper.floor(player.posX), MathHelper.floor(player.posY), MathHelper.floor(player.posZ));
 	}
 
 	/**

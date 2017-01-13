@@ -33,9 +33,9 @@ public class RenderTFSnowQueenIceShield extends Render {
     {
         World world = entity.worldObj;
         Block block = Blocks.PACKED_ICE;
-        int i = MathHelper.floor_double(entity.posX);
-        int j = MathHelper.floor_double(entity.posY);
-        int k = MathHelper.floor_double(entity.posZ);
+        int i = MathHelper.floor(entity.posX);
+        int j = MathHelper.floor(entity.posY);
+        int k = MathHelper.floor(entity.posZ);
 
         if (block != null && block != world.getBlock(i, j, k))
         {

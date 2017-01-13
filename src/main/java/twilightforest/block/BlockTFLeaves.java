@@ -72,12 +72,6 @@ public class BlockTFLeaves extends BlockLeaves {
 	}
 
 	@Override
-    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess iblockaccess, BlockPos pos, EnumFacing side)
-    {
-    	return Blocks.LEAVES.shouldSideBeRendered(state, iblockaccess, pos, side);
-    }
-    
-	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
     	par3List.add(new ItemStack(par1, 1, 0));

@@ -202,9 +202,9 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     	}
 
 //    	// am I in a block?!?
-//    	int fx = MathHelper.floor_double(this.posX);
-//    	int fy = MathHelper.floor_double(this.posY);
-//    	int fz = MathHelper.floor_double(this.posZ);
+//    	int fx = MathHelper.floor(this.posX);
+//    	int fy = MathHelper.floor(this.posY);
+//    	int fz = MathHelper.floor(this.posZ);
 //    	
 //    	if (this.worldObj.getBlock(fx, fy, fz) != Blocks.AIR) {
 //    		System.out.println("I am in a block!  World =" + this.worldObj);
@@ -301,9 +301,9 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 		// mark the tower as defeated
 		if (!worldObj.isRemote) {
-			int dx = MathHelper.floor_double(this.posX);
-			int dy = MathHelper.floor_double(this.posY);
-			int dz = MathHelper.floor_double(this.posZ);
+			int dx = MathHelper.floor(this.posX);
+			int dy = MathHelper.floor(this.posY);
+			int dz = MathHelper.floor(this.posZ);
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
 				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
@@ -444,12 +444,12 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     public boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
     	
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
+        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
+        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
+        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
+        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
+        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
         boolean wasBlocked = false;
         for (int dx = minX; dx <= maxX; ++dx) {
             for (int dy = minY; dy <= maxY; ++dy) {
@@ -559,9 +559,9 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         	// put the y on something solid
         	boolean groundFlag = false;
         	// we need to get the integer coordinates for this calculation
-        	int bx = MathHelper.floor_double(tx);
-        	int by = MathHelper.floor_double(ty);
-        	int bz = MathHelper.floor_double(tz);
+        	int bx = MathHelper.floor(tx);
+        	int by = MathHelper.floor(ty);
+        	int bz = MathHelper.floor(tz);
         	while (!groundFlag && ty > 0) 
         	{
                 Block whatsThere = worldObj.getBlock(bx, by - 1, bz);

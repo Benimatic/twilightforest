@@ -102,7 +102,7 @@ public class ItemTFTrophy extends ItemTF
 
                 if (direction == 1)
                 {
-                    skullRotate = MathHelper.floor_double((double)(player.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
+                    skullRotate = MathHelper.floor((double)(player.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
                 }
 
                 TileEntity tileEntity = world.getTileEntity(x, y, z);

@@ -73,9 +73,9 @@ public class TFBiomeGlacier extends TFBiomeBase {
         if (par2Random.nextInt(4) == 0)
         {
             int j = pos.getX() + par2Random.nextInt(16) + 8;
-            byte byte0 = (byte) TFWorld.SEALEVEL;
+            int y = TFWorld.SEALEVEL;
             int k = pos.getZ() + par2Random.nextInt(16) + 8;
-            penguins.generate(par1World, par2Random, j, byte0, k);
+            penguins.generate(par1World, par2Random, new BlockPos(j, y, k));
         }
     }
 

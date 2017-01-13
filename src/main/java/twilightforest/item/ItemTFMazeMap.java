@@ -78,7 +78,7 @@ public class ItemTFMazeMap extends ItemMap
      */
     public void updateMapData(World par1World, Entity par2Entity, TFMazeMapData par3MapData)
     {
-    	int yDraw = MathHelper.floor_double(par2Entity.posY - (double)par3MapData.yCenter);
+    	int yDraw = MathHelper.floor(par2Entity.posY - (double)par3MapData.yCenter);
     	
         if (par1World.provider.getDimension() == par3MapData.dimension && yDraw > -YSEARCH && yDraw < YSEARCH)
         {
@@ -86,8 +86,8 @@ public class ItemTFMazeMap extends ItemMap
             short zSize = 128;
             int xCenter = par3MapData.xCenter;
             int zCenter = par3MapData.zCenter;
-            int xDraw = MathHelper.floor_double(par2Entity.posX - (double)xCenter)  + xSize / 2;
-            int zDraw = MathHelper.floor_double(par2Entity.posZ - (double)zCenter)  + zSize / 2;
+            int xDraw = MathHelper.floor(par2Entity.posX - (double)xCenter)  + xSize / 2;
+            int zDraw = MathHelper.floor(par2Entity.posZ - (double)zCenter)  + zSize / 2;
             int drawSize = 16;
 
             MapInfo mapInfo = par3MapData.func_82568_a((EntityPlayer)par2Entity);
@@ -225,7 +225,7 @@ public class ItemTFMazeMap extends ItemMap
                 EntityPlayer player = (EntityPlayer)par3Entity;
             	mapData.updateVisiblePlayers(player, par1ItemStack);
 
-            	int yProximity = MathHelper.floor_double(player.posY - mapData.yCenter);
+            	int yProximity = MathHelper.floor(player.posY - mapData.yCenter);
             	if (yProximity < -YSEARCH || yProximity > YSEARCH) {
             		// fix player icon so that it's a dot
             		
@@ -251,9 +251,9 @@ public class ItemTFMazeMap extends ItemMap
         String mapName = STR_ID + "_" + par1ItemStack.getItemDamage();
         TFMazeMapData mapData = new TFMazeMapData(mapName);
         par2World.setItemData(mapName, mapData);
-        mapData.xCenter = MathHelper.floor_double(par3EntityPlayer.posX);
-        mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
-        mapData.zCenter = MathHelper.floor_double(par3EntityPlayer.posZ);
+        mapData.xCenter = MathHelper.floor(par3EntityPlayer.posX);
+        mapData.yCenter = MathHelper.floor(par3EntityPlayer.posY);
+        mapData.zCenter = MathHelper.floor(par3EntityPlayer.posZ);
         mapData.scale = 0;
         mapData.dimension = par2World.provider.getDimension();
         mapData.markDirty();

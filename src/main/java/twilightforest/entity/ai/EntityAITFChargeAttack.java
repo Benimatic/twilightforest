@@ -152,7 +152,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
         double vecz = target.posZ - attacker.posZ;
         float rangle = (float)(Math.atan2(vecz, vecx));
         
-        double distance = MathHelper.sqrt_double(vecx * vecx + vecz * vecz);
+        double distance = MathHelper.sqrt(vecx * vecx + vecz * vecz);
         
         // figure out where we're headed from the target angle
         double dx = MathHelper.cos(rangle) * (distance + overshoot);

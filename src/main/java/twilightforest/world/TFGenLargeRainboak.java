@@ -107,8 +107,8 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 {
                     double var11 = this.scaleWidth * (double)var8 * ((double)this.rand.nextFloat() + 0.328D);
                     double var13 = (double)this.rand.nextFloat() * 2.0D * Math.PI;
-                    int var15 = MathHelper.floor_double(var11 * Math.sin(var13) + (double)this.basePos[0] + var9);
-                    int var16 = MathHelper.floor_double(var11 * Math.cos(var13) + (double)this.basePos[2] + var9);
+                    int var15 = MathHelper.floor(var11 * Math.sin(var13) + (double)this.basePos[0] + var9);
+                    int var16 = MathHelper.floor(var11 * Math.cos(var13) + (double)this.basePos[2] + var9);
                     int[] var17 = new int[] {var15, var3, var16};
                     int[] var18 = new int[] {var15, var3 + this.leafDistanceLimit, var16};
 
@@ -282,9 +282,9 @@ public class TFGenLargeRainboak extends TFTreeGenerator
 
             for (int var16 = var4[var6] + var9; var15 != var16; var15 += var9)
             {
-                var14[var6] = MathHelper.floor_double((double)(par1ArrayOfInteger[var6] + var15) + 0.5D);
-                var14[var7] = MathHelper.floor_double((double)par1ArrayOfInteger[var7] + (double)var15 * var10 + 0.5D);
-                var14[var8] = MathHelper.floor_double((double)par1ArrayOfInteger[var8] + (double)var15 * var12 + 0.5D);
+                var14[var6] = MathHelper.floor((double)(par1ArrayOfInteger[var6] + var15) + 0.5D);
+                var14[var7] = MathHelper.floor((double)par1ArrayOfInteger[var7] + (double)var15 * var10 + 0.5D);
+                var14[var8] = MathHelper.floor((double)par1ArrayOfInteger[var8] + (double)var15 * var12 + 0.5D);
                 byte var17 = 0;
                 int var18 = Math.abs(var14[0] - par1ArrayOfInteger[0]);
                 int var19 = Math.abs(var14[2] - par1ArrayOfInteger[2]);
@@ -429,8 +429,8 @@ public class TFGenLargeRainboak extends TFTreeGenerator
             for (var15 = var3[var5] + var8; var14 != var15; var14 += var8)
             {
                 var13[var5] = par1ArrayOfInteger[var5] + var14;
-                var13[var6] = MathHelper.floor_double((double)par1ArrayOfInteger[var6] + (double)var14 * var9);
-                var13[var7] = MathHelper.floor_double((double)par1ArrayOfInteger[var7] + (double)var14 * var11);
+                var13[var6] = MathHelper.floor((double)par1ArrayOfInteger[var6] + (double)var14 * var9);
+                var13[var7] = MathHelper.floor((double)par1ArrayOfInteger[var7] + (double)var14 * var11);
                 Block var16 = this.worldObj.getBlock(var13[0], var13[1], var13[2]);
 
                 if (var16 != Blocks.AIR && var16 != Blocks.LEAVES)

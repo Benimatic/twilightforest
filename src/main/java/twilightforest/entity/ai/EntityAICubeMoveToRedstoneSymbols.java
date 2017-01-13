@@ -93,12 +93,12 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 		
     	//System.out.println("Cube checking area at " + x + ", " + y + ", " + z);
 		
-		if (!this.myCube.worldObj.isBlockLoaded(pos) || !this.myCube.worldObj.isAirBlock(pos)) {
+		if (!this.myCube.world.isBlockLoaded(pos) || !this.myCube.world.isAirBlock(pos)) {
 			return false;
 		} else {
 			// we found an air block, is it surrounded by redstone?
 			for (EnumFacing e : EnumFacing.VALUES) {
-				if (this.myCube.worldObj.getBlockState(pos.offset(e)).getBlock() != Blocks.REDSTONE_WIRE) {
+				if (this.myCube.world.getBlockState(pos.offset(e)).getBlock() != Blocks.REDSTONE_WIRE) {
 					return false;
 				}
 			}

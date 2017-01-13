@@ -1126,7 +1126,7 @@ public class HydraHeadContainer {
 		double zOffset = zCoord - headEntity.posZ;
 		double yOffset = (headEntity.posY + 1.0) - yCoord;
 
-		double distance = MathHelper.sqrt_double(xOffset * xOffset + zOffset * zOffset);
+		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float)((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float)(-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
 		headEntity.rotationPitch = -updateRotation(headEntity.rotationPitch, zdAngle, pitchConstraint);

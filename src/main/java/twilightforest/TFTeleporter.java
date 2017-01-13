@@ -43,8 +43,8 @@ public class TFTeleporter extends Teleporter
 		{
 			// if we're in enforced progression mode, check the biomes for safety
 			if (par1Entity.worldObj.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-				int px = MathHelper.floor_double(par1Entity.posX);
-				int pz = MathHelper.floor_double(par1Entity.posZ);
+				int px = MathHelper.floor(par1Entity.posX);
+				int pz = MathHelper.floor(par1Entity.posZ);
 				if (!isSafeBiomeAt(px, pz, par1Entity)) {
 					System.out.println("[TwilightForest] Portal destination looks unsafe, rerouting!");
 					
@@ -122,8 +122,8 @@ public class TFTeleporter extends Teleporter
         int i = 0;
         int j = 0;
         int k = 0;
-        int l = MathHelper.floor_double(entity.posX);
-        int i1 = MathHelper.floor_double(entity.posZ);
+        int l = MathHelper.floor(entity.posX);
+        int i1 = MathHelper.floor(entity.posZ);
         for(int j1 = l - c; j1 <= l + c; j1++)
         {
             double d1 = (j1 + 0.5D) - entity.posX;
@@ -228,9 +228,9 @@ public class TFTeleporter extends Teleporter
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = myWorld.provider.dimensionId == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
-        int entityX = MathHelper.floor_double(entity.posX);
-        int entityY = MathHelper.floor_double(entity.posY * yFactor);
-        int entityZ = MathHelper.floor_double(entity.posZ);
+        int entityX = MathHelper.floor(entity.posX);
+        int entityY = MathHelper.floor(entity.posY * yFactor);
+        int entityZ = MathHelper.floor(entity.posZ);
         
         makePortalAt(myWorld, entityX, entityY, entityZ);
 
@@ -241,8 +241,8 @@ public class TFTeleporter extends Teleporter
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = myWorld.provider.dimensionId == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
-        int entityX = MathHelper.floor_double(entity.posX);
-        int entityZ = MathHelper.floor_double(entity.posZ);
+        int entityX = MathHelper.floor(entity.posX);
+        int entityZ = MathHelper.floor(entity.posZ);
 
         double spotWeight = -1D;
         

@@ -110,12 +110,12 @@ public class TFGenCaves extends MapGenCaves
 
                 if (randX >= offsetCenterX - 16.0D - sizeVar * 2.0D && randZ >= offsetCenterZ - 16.0D - sizeVar * 2.0D && randX <= offsetCenterX + 16.0D + sizeVar * 2.0D && randZ <= offsetCenterZ + 16.0D + sizeVar * 2.0D)
                 {
-                    int minX = MathHelper.floor_double(randX - sizeVar) - centerX * 16 - 1;
-                    int maxX = MathHelper.floor_double(randX + sizeVar) - centerX * 16 + 1;
-                    int maxY = MathHelper.floor_double(randY - scaledSize) - 1;
-                    int minY = MathHelper.floor_double(randY + scaledSize) + 1;
-                    int minZ = MathHelper.floor_double(randZ - sizeVar) - centerZ * 16 - 1;
-                    int maxZ = MathHelper.floor_double(randZ + sizeVar) - centerZ * 16 + 1;
+                    int minX = MathHelper.floor(randX - sizeVar) - centerX * 16 - 1;
+                    int maxX = MathHelper.floor(randX + sizeVar) - centerX * 16 + 1;
+                    int maxY = MathHelper.floor(randY - scaledSize) - 1;
+                    int minY = MathHelper.floor(randY + scaledSize) + 1;
+                    int minZ = MathHelper.floor(randZ - sizeVar) - centerZ * 16 - 1;
+                    int maxZ = MathHelper.floor(randZ + sizeVar) - centerZ * 16 + 1;
 
                     if (minX < 0)
                     {

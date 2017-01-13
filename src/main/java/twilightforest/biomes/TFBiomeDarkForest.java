@@ -91,16 +91,16 @@ public class TFBiomeDarkForest extends TFBiomeBase {
     @Override
     public int getGrassColorAtPos(BlockPos pos)
     {
-        double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(pos), 0.0F, 1.0F);
-        double var3 = (double)MathHelper.clamp_float(this.getRainfall(), 0.0F, 1.0F);
+        double var1 = (double)MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
+        double var3 = (double)MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
         return ((ColorizerGrass.getGrassColor(var1, var3) & 0xFEFEFE) + 0x1E0E4E) / 2;
     }
 
     @Override
     public int getFoliageColorAtPos(BlockPos pos)
     {
-        double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(pos), 0.0F, 1.0F);
-        double var3 = (double)MathHelper.clamp_float(this.getRainfall(), 0.0F, 1.0F);
+        double var1 = (double)MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
+        double var3 = (double)MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
         return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x1E0E4E) / 2;
     }
 

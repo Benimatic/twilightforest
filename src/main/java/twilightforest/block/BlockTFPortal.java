@@ -281,9 +281,9 @@ public class BlockTFPortal extends BlockBreakable
     					playerMP.addStat(TFAchievementPage.twilightArrival);
     					
     					// set respawn point for TF dimension to near the arrival portal
-    					int spawnX = MathHelper.floor_double(playerMP.posX); 
-    					int spawnY = MathHelper.floor_double(playerMP.posY);
-    					int spawnZ = MathHelper.floor_double(playerMP.posZ); 
+    					int spawnX = MathHelper.floor(playerMP.posX);
+    					int spawnY = MathHelper.floor(playerMP.posY);
+    					int spawnZ = MathHelper.floor(playerMP.posZ);
     					
     					playerMP.setSpawnChunk(new BlockPos(spawnX, spawnY, spawnZ), true, TwilightForestMod.dimensionID);
     				}

@@ -285,12 +285,12 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
     	
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
+        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
+        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
+        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
+        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
+        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
         boolean wasBlocked = false;
         for (int dx = minX; dx <= maxX; ++dx)
         {
@@ -333,9 +333,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 
 	private void makeRandomBlockFall(int range) {
 		// find a block nearby
-    	int bx = MathHelper.floor_double(this.posX) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-    	int bz = MathHelper.floor_double(this.posZ) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-    	int by = MathHelper.floor_double(this.posY + this.getEyeHeight());
+    	int bx = MathHelper.floor(this.posX) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+    	int bz = MathHelper.floor(this.posZ) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+    	int by = MathHelper.floor(this.posY + this.getEyeHeight());
 
     	makeBlockFallAbove(bx, bz, by);
 	}
@@ -361,9 +361,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 	public void makeBlockAboveTargetFall() {
 		if (this.getAttackTarget() != null) {
 		
-			int bx = MathHelper.floor_double(this.getAttackTarget().posX);
-			int bz = MathHelper.floor_double(this.getAttackTarget().posZ);
-			int by = MathHelper.floor_double(this.getAttackTarget().posY + this.getAttackTarget().getEyeHeight());
+			int bx = MathHelper.floor(this.getAttackTarget().posX);
+			int bz = MathHelper.floor(this.getAttackTarget().posZ);
+			int by = MathHelper.floor(this.getAttackTarget().posY + this.getAttackTarget().getEyeHeight());
 
 			makeBlockFallAbove(bx, bz, by);
 		}
@@ -401,7 +401,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     		double d0 = target.posX - this.posX;
     		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - target.posY;
     		double d2 = target.posZ - this.posZ;
-    		float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+    		float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
     		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
 
     		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -460,9 +460,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         	// make jump effects
 			this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			
-            int i = MathHelper.floor_double(this.posX);
-            int j = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.getYOffset());
-            int k = MathHelper.floor_double(this.posZ);			
+            int i = MathHelper.floor(this.posX);
+            int j = MathHelper.floor(this.posY - 0.20000000298023224D - (double)this.getYOffset());
+            int k = MathHelper.floor(this.posZ);
 
             this.worldObj.playAuxSFX(2006, i, j, k, 20);
             this.worldObj.playAuxSFX(2006, i, j, k, 30);
@@ -502,9 +502,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 		
 		// mark the lair as defeated
 		if (!worldObj.isRemote) {
-			int dx = MathHelper.floor_double(this.posX);
-			int dy = MathHelper.floor_double(this.posY);
-			int dz = MathHelper.floor_double(this.posZ);
+			int dx = MathHelper.floor(this.posX);
+			int dy = MathHelper.floor(this.posY);
+			int dz = MathHelper.floor(this.posZ);
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
 				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();

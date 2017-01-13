@@ -36,9 +36,9 @@ public class RenderTFSlideBlock extends Render {
         Block block = sliderEntity.getBlock();
         int meta = sliderEntity.getMeta();
         
-        int bx = MathHelper.floor_double(entity.posX);
-        int by = MathHelper.floor_double(entity.posY);
-        int bz = MathHelper.floor_double(entity.posZ);
+        int bx = MathHelper.floor(entity.posX);
+        int by = MathHelper.floor(entity.posY);
+        int bz = MathHelper.floor(entity.posZ);
 
         if (block != null && block != world.getBlock(bx, by, bz))
         {

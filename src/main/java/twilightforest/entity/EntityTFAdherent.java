@@ -78,7 +78,7 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 		double tx = attackTarget.posX - this.posX;
 		double ty = attackTarget.posY + attackTarget.getEyeHeight() - 2.699999988079071D - this.posY;
 		double tz = attackTarget.posZ - this.posZ;
-		float heightOffset = MathHelper.sqrt_double(tx * tx + tz * tz) * 0.2F;
+		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
 		this.worldObj.spawnEntityInWorld(natureBolt);
 

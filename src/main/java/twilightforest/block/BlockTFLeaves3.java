@@ -62,12 +62,6 @@ public class BlockTFLeaves3 extends BlockLeaves {
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess iblockaccess, BlockPos pos, EnumFacing side)
-    {
-    	return Blocks.LEAVES.shouldSideBeRendered(state, iblockaccess, pos, side);
-    }
-    
-    @Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
     	return TFItems.magicBeans;

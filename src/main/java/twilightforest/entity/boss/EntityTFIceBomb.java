@@ -56,9 +56,9 @@ public class EntityTFIceBomb extends EntityThrowable {
      */
     private void doTerrainEffects() {
     	int range = 3;
-		int ix = MathHelper.floor_double(this.lastTickPosX);
-		int iy = MathHelper.floor_double(this.lastTickPosY);
-		int iz = MathHelper.floor_double(this.lastTickPosZ);
+		int ix = MathHelper.floor(this.lastTickPosX);
+		int iy = MathHelper.floor(this.lastTickPosY);
+		int iz = MathHelper.floor(this.lastTickPosZ);
 		
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {

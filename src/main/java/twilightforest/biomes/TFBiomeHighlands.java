@@ -165,7 +165,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 5 == 0) {
 			player.attackEntityFrom(DamageSource.magic, 0.5F);
-			world.playSoundAtEntity(player, "random.fizz", 1.0F, 1.0F);
+			world.playSound(null, player.posX, player.posY, player.posZ, "random.fizz", 1.0F, 1.0F);
 			//player.playSound("random.fizz", 1.0F, 1.0F);
 			
 			// hint monster?

@@ -179,7 +179,7 @@ public class BlockTFTrophyPedestal extends Block {
     @Override
 	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
-        int facing = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int facing = MathHelper.floor(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         
         int latent = par6ItemStack.getItemDamage() & 8;
 
@@ -247,7 +247,7 @@ public class BlockTFTrophyPedestal extends Block {
 		
 		for (EntityPlayer player : nearbyPlayers) {
 			if (!isPlayerEligible(player)) {
-				player.addChatMessage(new TextComponentString("You are unworthy."));
+				player.sendMessage(new TextComponentString("You are unworthy."));
 			}
 		}
 	}

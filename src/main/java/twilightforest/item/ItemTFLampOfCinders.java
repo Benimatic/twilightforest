@@ -92,9 +92,9 @@ public class ItemTFLampOfCinders extends ItemTF {
 
 	private void doBurnEffect(World world, EntityLivingBase living) {
 		BlockPos pos = new BlockPos(
-				MathHelper.floor_double(living.lastTickPosX),
-				MathHelper.floor_double(living.lastTickPosY + living.getEyeHeight()),
-				MathHelper.floor_double(living.lastTickPosZ)
+				MathHelper.floor(living.lastTickPosX),
+				MathHelper.floor(living.lastTickPosY + living.getEyeHeight()),
+				MathHelper.floor(living.lastTickPosZ)
 		);
 
 		int range = 4;

@@ -441,7 +441,7 @@ public class TFEventListener {
 			// do they have a charm of life?  OM NOM NOM!
 			if (charm2 || charm1)
 			{
-				//player.addChatMessage("Charm of Life saves you!!!");
+				//player.sendMessage("Charm of Life saves you!!!");
 
 				// cancel damage
 				event.setResult(Result.DENY);
@@ -917,9 +917,9 @@ public class TFEventListener {
 
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().worldObj.provider).getChunkProvider();
 
-			int mx = MathHelper.floor_double(event.getEntityLiving().posX);
-			int my = MathHelper.floor_double(event.getEntityLiving().posY);
-			int mz = MathHelper.floor_double(event.getEntityLiving().posZ);
+			int mx = MathHelper.floor(event.getEntityLiving().posX);
+			int my = MathHelper.floor(event.getEntityLiving().posY);
+			int mz = MathHelper.floor(event.getEntityLiving().posZ);
 
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(mx, my, mz) && chunkProvider.isBlockProtected(mx, my, mz)) {
 				// what feature is nearby?  is it one the player has not unlocked?

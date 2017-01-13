@@ -113,9 +113,9 @@ public class EntityTFNagaSegment extends Entity {
 //        {
 //        	System.out.println("Updating segment 6");
 //        	
-////        	int dx = MathHelper.floor_double(this.posX);
-////        	int dy = MathHelper.floor_double(this.posY);
-////        	int dz = MathHelper.floor_double(this.posZ);
+////        	int dx = MathHelper.floor(this.posX);
+////        	int dy = MathHelper.floor(this.posY);
+////        	int dz = MathHelper.floor(this.posZ);
 ////        	
 ////        	if (worldObj.isAirBlock(dx, dy, dz))
 ////        	{

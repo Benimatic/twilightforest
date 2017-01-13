@@ -65,14 +65,6 @@ public class BlockTFHedge extends BlockLeaves {
 		return BlockPlanks.EnumType.DARK_OAK;
 	}
 
-	@SideOnly(Side.CLIENT)
-    @Override
-    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side)
-    {
-        Block i1 = state.getBlock();
-        return !this.leavesFancy && i1 == this ? false : super.shouldSideBeRendered(state, par1IBlockAccess, pos, side);
-    }
-
     @Override
 	public int damageDropped(IBlockState state) {
 		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
@@ -154,27 +146,6 @@ public class BlockTFHedge extends BlockLeaves {
         Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
         return worldObj.rayTraceBlocks(position, dest);
 	}
-	
-//	/**
-//	 * Is the player swinging, server version.  Ugggh.  Okay, this sucks and we don't really need it
-//	 */
-//	private boolean isPlayerSwinging(EntityPlayer player) {
-//		if (player instanceof EntityPlayerMP) {
-//			ItemInWorldManager iiwm = ((EntityPlayerMP)player).itemInWorldManager;
-//			// curblockDamage > initialDamage
-//			return ((Integer)ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, 9)).intValue() > ((Integer)ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, 5)).intValue();
-//			
-////			for (int i = 0; i < ItemInWorldManager.class.getDeclaredFields().length; i++) {
-////				// if we find a boolean in here, just assume that's it for the time being
-////				if (ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, i) instanceof Boolean) {
-////					return ((Boolean)ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, i)).booleanValue();
-////				}
-////			}
-//		}
-//		// we didn't find it
-//		return false;
-//	}
-
     
     private boolean shouldDamage(Entity entity) {
     	return !(entity instanceof EntitySpider) && !(entity instanceof EntityItem) && !entity.doesEntityNotTriggerPressurePlate();

@@ -794,11 +794,11 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
      */
     private boolean isUnsteadySurfaceBeneath() {
     	
-        int minX = MathHelper.floor_double(this.boundingBox.minX);
-        int minZ = MathHelper.floor_double(this.boundingBox.minZ);
-        int maxX = MathHelper.floor_double(this.boundingBox.maxX);
-        int maxZ = MathHelper.floor_double(this.boundingBox.maxZ);
-        int minY = MathHelper.floor_double(this.boundingBox.minY);
+        int minX = MathHelper.floor(this.boundingBox.minX);
+        int minZ = MathHelper.floor(this.boundingBox.minZ);
+        int maxX = MathHelper.floor(this.boundingBox.maxX);
+        int maxZ = MathHelper.floor(this.boundingBox.maxZ);
+        int minY = MathHelper.floor(this.boundingBox.minY);
         
         int solid = 0;
         int total = 0;
@@ -829,12 +829,12 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
     	
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
+        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
+        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
+        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
+        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
+        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
         boolean wasBlocked = false;
         for (int dx = minX; dx <= maxX; ++dx)
         {
@@ -1062,9 +1062,9 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		
 		// mark the lair as defeated
 		if (!worldObj.isRemote && worldObj.provider instanceof WorldProviderTwilightForest) {
-			int dx = MathHelper.floor_double(this.posX);
-			int dy = MathHelper.floor_double(this.posY);
-			int dz = MathHelper.floor_double(this.posZ);
+			int dx = MathHelper.floor(this.posX);
+			int dy = MathHelper.floor(this.posY);
+			int dz = MathHelper.floor(this.posZ);
 			
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
 			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);

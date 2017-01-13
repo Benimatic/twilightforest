@@ -33,9 +33,9 @@ public class CommandTFFeature extends CommandBase {
 
 				EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 				
-				int dx = MathHelper.floor_double(player.posX); 
-				int dy = MathHelper.floor_double(player.posY); 
-				int dz = MathHelper.floor_double(player.posZ);
+				int dx = MathHelper.floor(player.posX);
+				int dy = MathHelper.floor(player.posY);
+				int dz = MathHelper.floor(player.posZ);
 				
 				if (!(player.worldObj.provider instanceof WorldProviderTwilightForest)) {
 					throw new WrongUsageException("commands.tffeature.not_in_twilight_forest", new Object[0]);
@@ -43,28 +43,28 @@ public class CommandTFFeature extends CommandBase {
 					// nearest feature
 					TFFeature nearbyFeature = ((TFBiomeProvider)player.worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, player.worldObj);
 					
-					sender.addChatMessage(new TextComponentTranslation("The nearest feature is %s", new Object[] {nearbyFeature.name}));
+					sender.sendMessage(new TextComponentTranslation("The nearest feature is %s", new Object[] {nearbyFeature.name}));
 					
 					// are you in a structure?
 					ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.worldObj.provider).getChunkProvider();
 					
 					if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
-						sender.addChatMessage(new TextComponentTranslation("You are in the structure for that feature."));
+						sender.sendMessage(new TextComponentTranslation("You are in the structure for that feature."));
 
-						sender.addChatMessage(new TextComponentTranslation("Structure conquer flag = %s.", new Object[] {chunkProvider.isStructureConquered(dx, dy, dz)}));
+						sender.sendMessage(new TextComponentTranslation("Structure conquer flag = %s.", new Object[] {chunkProvider.isStructureConquered(dx, dy, dz)}));
 
 						// are you in a room?
 						
 						// what is the spawn list
 //						List<SpawnListEntry> spawnList = chunkProvider.getPossibleCreatures(EnumCreatureType.monster, dx, dy, dz);
-//						sender.addChatMessage(new TextComponentTranslation("Spawn list for the area is:"));
+//						sender.sendMessage(new TextComponentTranslation("Spawn list for the area is:"));
 //						for (SpawnListEntry entry : spawnList) {
-//							sender.addChatMessage(new TextComponentTranslation(entry.toString()));
+//							sender.sendMessage(new TextComponentTranslation(entry.toString()));
 //						}
 
 						
 					} else {
-						sender.addChatMessage(new TextComponentTranslation("You are not in the structure for that feature."));
+						sender.sendMessage(new TextComponentTranslation("You are not in the structure for that feature."));
 					}
 				}
 			} else if (args[0].equalsIgnoreCase("reactivate")) {
@@ -74,17 +74,17 @@ public class CommandTFFeature extends CommandBase {
 			} else if (args[0].equalsIgnoreCase("center")) {
 				EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 				
-				int dx = MathHelper.floor_double(player.posX); 
-				//int dy = MathHelper.floor_double(player.posY); 
-				int dz = MathHelper.floor_double(player.posZ);
+				int dx = MathHelper.floor(player.posX);
+				//int dy = MathHelper.floor(player.posY);
+				int dz = MathHelper.floor(player.posZ);
 				
 				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.worldObj);
 				
 				TFBiomeProvider wcm = (TFBiomeProvider)player.worldObj.provider.getBiomeProvider();
 				
 				boolean fc = wcm.isInFeatureChunk(player.worldObj, dx, dz);
-				sender.addChatMessage(new TextComponentTranslation("Center of feature = %s.", new Object[] {cc}));
-				sender.addChatMessage(new TextComponentTranslation("Are in feature chunk = %s.", new Object[] {fc}));
+				sender.sendMessage(new TextComponentTranslation("Center of feature = %s.", new Object[] {cc}));
+				sender.sendMessage(new TextComponentTranslation("Are in feature chunk = %s.", new Object[] {fc}));
 			} else {
 				throw new WrongUsageException("commands.tffeature.usage", new Object[0]);
 			}
@@ -98,9 +98,9 @@ public class CommandTFFeature extends CommandBase {
 		// activate current feature
 		EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 		
-		int dx = MathHelper.floor_double(player.posX); 
-		int dy = MathHelper.floor_double(player.posY); 
-		int dz = MathHelper.floor_double(player.posZ);
+		int dx = MathHelper.floor(player.posX);
+		int dy = MathHelper.floor(player.posY);
+		int dz = MathHelper.floor(player.posZ);
 		
 		if (!(player.worldObj.provider instanceof WorldProviderTwilightForest)) {
 			throw new WrongUsageException("commands.tffeature.not_in_twilight_forest", new Object[0]);
@@ -109,11 +109,11 @@ public class CommandTFFeature extends CommandBase {
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.worldObj.provider).getChunkProvider();
 			
 			if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
-				sender.addChatMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", new Object[] {chunkProvider.isStructureConquered(dx, dy, dz), flag}));
+				sender.sendMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", new Object[] {chunkProvider.isStructureConquered(dx, dy, dz), flag}));
 				
 				chunkProvider.setStructureConquered(dx, dy, dz, flag);
 			} else {
-				sender.addChatMessage(new TextComponentTranslation("You are not in a structure."));
+				sender.sendMessage(new TextComponentTranslation("You are not in a structure."));
 			}
 		}
 	}

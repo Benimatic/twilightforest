@@ -24,7 +24,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 	public EntityAITFAvoidFrontalAttack(EntityTFRedcap entityTFRedcap, float moveSpeed) {
 		this.me = entityTFRedcap;
 		this.speed = moveSpeed;
-		this.lefty = me.worldObj.rand.nextBoolean(); 
+		this.lefty = me.world.rand.nextBoolean();
         this.setMutexBits(1);
 	}
 

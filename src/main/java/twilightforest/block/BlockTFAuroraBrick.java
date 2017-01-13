@@ -45,7 +45,7 @@ public class BlockTFAuroraBrick extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, MathHelper.clamp_int(meta, 0, 15));
+		return getDefaultState().withProperty(VARIANT, MathHelper.clamp(meta, 0, 15));
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class BlockTFAuroraBrick extends Block {
 	}
 
     @Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
 		return getDefaultState().withProperty(VARIANT, Math.abs(pos.getX() + pos.getZ()) % 16);
     }

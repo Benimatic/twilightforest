@@ -779,9 +779,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         	// put the y on something solid
         	boolean groundFlag = false;
         	// we need to get the integer coordinates for this calculation
-        	int bx = MathHelper.floor_double(tx);
-        	int by = MathHelper.floor_double(ty);
-        	int bz = MathHelper.floor_double(tz);
+        	int bx = MathHelper.floor(tx);
+        	int by = MathHelper.floor(ty);
+        	int bz = MathHelper.floor(tz);
         	while (!groundFlag && ty > 0) 
         	{
                 Block whatsThere = worldObj.getBlock(bx, by - 1, bz);
@@ -1021,9 +1021,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 
 		// mark the tower as defeated
 		if (!worldObj.isRemote && !this.isShadowClone()) {
-			int dx = MathHelper.floor_double(this.posX);
-			int dy = MathHelper.floor_double(this.posY);
-			int dz = MathHelper.floor_double(this.posZ);
+			int dx = MathHelper.floor(this.posX);
+			int dy = MathHelper.floor(this.posY);
+			int dz = MathHelper.floor(this.posZ);
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
 				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();

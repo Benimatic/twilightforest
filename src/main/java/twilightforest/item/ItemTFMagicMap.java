@@ -69,8 +69,8 @@ public class ItemTFMagicMap extends ItemMap
             int scaleFactor = 1 << par3MapData.scale;
             int xCenter = par3MapData.xCenter;
             int zCenter = par3MapData.zCenter;
-            int xDraw = MathHelper.floor_double(par2Entity.posX - (double)xCenter) / scaleFactor + xSize / 2;
-            int zDraw = MathHelper.floor_double(par2Entity.posZ - (double)zCenter) / scaleFactor + zSize / 2;
+            int xDraw = MathHelper.floor(par2Entity.posX - (double)xCenter) / scaleFactor + xSize / 2;
+            int zDraw = MathHelper.floor(par2Entity.posZ - (double)zCenter) / scaleFactor + zSize / 2;
             int drawSize = 512 / scaleFactor;
 //            int drawSize = 1024 / scaleFactor;
 

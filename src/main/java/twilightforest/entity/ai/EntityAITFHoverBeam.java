@@ -142,7 +142,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-		distanceDesired = (double) MathHelper.sqrt_double(distanceDesired);
+		distanceDesired = (double) MathHelper.sqrt(distanceDesired);
 
 		if (distanceDesired > 0.5) {
 

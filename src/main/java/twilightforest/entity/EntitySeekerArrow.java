@@ -102,7 +102,7 @@ public class EntitySeekerArrow extends EntityArrow {
 				if (dotProduct < 0) {
 	
 	        		// match current speed
-	        		float currentSpeed = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+	        		float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 	        		
 	        		currentSpeed *= 1.0;
 
@@ -145,7 +145,7 @@ public class EntitySeekerArrow extends EntityArrow {
 	}
 
 	private boolean isThisArrowFlying() {
-		return MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) > 1.0;
+		return MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) > 1.0;
 	}
 
 }

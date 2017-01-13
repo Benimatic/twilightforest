@@ -183,12 +183,12 @@ public class EntityTFTowerGhast extends EntityGhast
         	if (this.courseChangeCooldown-- <= 0)
         	{
         		this.courseChangeCooldown += this.rand.nextInt(20) + 20;
-        		distanceDesired = (double)MathHelper.sqrt_double(distanceDesired);
+        		distanceDesired = (double)MathHelper.sqrt(distanceDesired);
         		
-        	    if (!this.isWithinHomeDistance(MathHelper.floor_double(waypointX), MathHelper.floor_double(waypointY), MathHelper.floor_double(waypointZ)))
+        	    if (!this.isWithinHomeDistance(MathHelper.floor(waypointX), MathHelper.floor(waypointY), MathHelper.floor(waypointZ)))
         	    {
         	    	// change waypoint to be more towards home
-        	        BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
+        	        BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), worldObj);
         	    	
         	        Vec3d homeVector = new Vec3d(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
         	        homeVector = homeVector.normalize();
@@ -255,7 +255,7 @@ public class EntityTFTowerGhast extends EntityGhast
         	this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
         	
         	// changing the pitch with movement looks goofy and un-ghast-like
-        	//double dist = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ *  this.motionZ);
+        	//double dist = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ *  this.motionZ);
         	this.rotationPitch = 0;//(float) (-((Math.atan2(this.motionY, dist) * 180D) / Math.PI));;
 
         }
@@ -440,8 +440,8 @@ public class EntityTFTowerGhast extends EntityGhast
     	if (!this.hasHome())
     	{
     		// check if we're near a dark forest tower and if so, set that as home
-    		int chunkX = MathHelper.floor_double(this.posX) >> 4;
-    		int chunkZ = MathHelper.floor_double(this.posZ) >> 4;
+    		int chunkX = MathHelper.floor(this.posX) >> 4;
+    		int chunkZ = MathHelper.floor(this.posZ) >> 4;
 
     		TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.worldObj);
 
@@ -457,7 +457,7 @@ public class EntityTFTowerGhast extends EntityGhast
     		else
     		{
     			// set our home position to the center of the tower
-    			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
+    			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), worldObj);
     			this.setHomeArea(cc.up(128), 64);
 
 //                System.out.println("Ghast is at  " + this.posX + ", " + this.posY + ", " + this.posZ);

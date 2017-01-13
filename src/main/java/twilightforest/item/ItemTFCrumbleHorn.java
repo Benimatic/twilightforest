@@ -93,12 +93,12 @@ public class ItemTFCrumbleHorn extends ItemTF
     {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
     	
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
+        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
+        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
+        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
+        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
+        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
 
         int crumbled = 0;
 

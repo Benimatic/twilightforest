@@ -89,9 +89,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 
             EntityLivingBase entitylivingbase = mc.renderViewEntity;
             WorldClient worldclient = mc.theWorld;
-            int k2 = MathHelper.floor_double(entitylivingbase.posX);
-            int l2 = MathHelper.floor_double(entitylivingbase.posY);
-            int i3 = MathHelper.floor_double(entitylivingbase.posZ);
+            int k2 = MathHelper.floor(entitylivingbase.posX);
+            int l2 = MathHelper.floor(entitylivingbase.posY);
+            int i3 = MathHelper.floor(entitylivingbase.posZ);
             Tessellator tessellator = Tessellator.instance;
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -101,7 +101,7 @@ public class TFWeatherRenderer extends IRenderHandler {
             double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)partialTicks;
             double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTicks;
             double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTicks;
-            int k = MathHelper.floor_double(d1);
+            int k = MathHelper.floor(d1);
             byte range = 5;
 
             if (mc.gameSettings.fancyGraphics)
@@ -175,7 +175,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                                 downwardsMotion = ((float)(this.rendererUpdateCount + i1 * i1 * 3121 + i1 * 45238971 + l * l * 418711 + l * 13761 & 31) + partialTicks) / 32.0F * (3.0F + this.random.nextFloat());
                                 double d3 = (double)((float)i1 + 0.5F) - entitylivingbase.posX;
                                 xDist = (double)((float)l + 0.5F) - entitylivingbase.posZ;
-                                float f12 = MathHelper.sqrt_double(d3 * d3 + xDist * xDist) / (float)range;
+                                float f12 = MathHelper.sqrt(d3 * d3 + xDist * xDist) / (float)range;
                                 float f13 = 1.0F;
                                 tessellator.setBrightness(worldclient.getLightBrightnessForSkyBlocks(i1, j2, l, 0));
                                 tessellator.setColorRGBA_F(f13, f13, f13, ((1.0F - f12 * f12) * 0.5F + 0.5F) * rainStrength);
@@ -205,7 +205,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                                 float f11 = this.random.nextFloat() + f5 * (float)this.random.nextGaussian() * 0.001F;
                                 xDist = (double)((float)i1 + 0.5F) - entitylivingbase.posX;
                                 double zDist = (double)((float)l + 0.5F) - entitylivingbase.posZ;
-                                float f14 = MathHelper.sqrt_double(xDist * xDist + zDist * zDist) / (float)range;
+                                float f14 = MathHelper.sqrt(xDist * xDist + zDist * zDist) / (float)range;
                                 float f15 = 1.0F;
                                 tessellator.setBrightness((worldclient.getLightBrightnessForSkyBlocks(i1, j2, l, 0) * 3 + 15728880) / 4);
                                 tessellator.setColorRGBA_F(f15, f15, f15, ((1.0F - f14 * f14) * 0.3F + 0.5F) * rainStrength);
@@ -242,9 +242,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 
             EntityLivingBase entitylivingbase = mc.renderViewEntity;
             WorldClient worldclient = mc.theWorld;
-            int px = MathHelper.floor_double(entitylivingbase.posX);
-            int py = MathHelper.floor_double(entitylivingbase.posY);
-            int pz = MathHelper.floor_double(entitylivingbase.posZ);
+            int px = MathHelper.floor(entitylivingbase.posX);
+            int py = MathHelper.floor(entitylivingbase.posY);
+            int pz = MathHelper.floor(entitylivingbase.posZ);
             Tessellator tessellator = Tessellator.instance;
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -254,7 +254,7 @@ public class TFWeatherRenderer extends IRenderHandler {
             double offX = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)partialTicks;
             double offY = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTicks;
             double offZ = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTicks;
-            int floorY = MathHelper.floor_double(offY);
+            int floorY = MathHelper.floor(offY);
             byte range = 5;
 
             if (mc.gameSettings.fancyGraphics)
@@ -329,7 +329,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             	float vFactor = this.random.nextFloat() + preciseCount * 0.001F * (float)this.random.nextGaussian();
                             	double xRange = (double)((float)dx + 0.5F) - entitylivingbase.posX;
                             	double zRange = (double)((float)dz + 0.5F) - entitylivingbase.posZ;
-                            	float f14 = MathHelper.sqrt_double(xRange * xRange + zRange * zRange) / (float)range;
+                            	float f14 = MathHelper.sqrt(xRange * xRange + zRange * zRange) / (float)range;
                             	float onee = 1.0F;
                             	tessellator.setBrightness((worldclient.getLightBrightnessForSkyBlocks(dx, rainFloor, dz, 0) * 3 + 15728880) / 4);
                             	tessellator.setColorRGBA_F(onee, onee, onee, ((1.0F - f14 * f14) * 0.3F + 0.5F) * 1.0F);
@@ -360,7 +360,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             	float vFactor = this.random.nextFloat() + preciseCount * 0.003F * (float)this.random.nextGaussian();
                             	//double xRange = (double)((float)dx + 0.5F) - entitylivingbase.posX;
                             	//double zRange = (double)((float)dz + 0.5F) - entitylivingbase.posZ;
-                            	//float distanceFromPlayer = MathHelper.sqrt_double(xRange * xRange + zRange * zRange) / (float)range;
+                            	//float distanceFromPlayer = MathHelper.sqrt(xRange * xRange + zRange * zRange) / (float)range;
                                 tessellator.setBrightness(983055);
                             	float r = random.nextFloat() * 0.3F;
                             	float g = random.nextFloat() * 0.3F;
@@ -392,7 +392,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             	float vFactor = this.random.nextFloat() + preciseCount * 0.001F * (float)this.random.nextGaussian();
                             	double xRange = (double)((float)dx + 0.5F) - entitylivingbase.posX;
                             	double zRange = (double)((float)dz + 0.5F) - entitylivingbase.posZ;
-                            	float distanceFromPlayer = MathHelper.sqrt_double(xRange * xRange + zRange * zRange) / (float)range;
+                            	float distanceFromPlayer = MathHelper.sqrt(xRange * xRange + zRange * zRange) / (float)range;
                                 tessellator.setBrightness(983055);
                             	float bright = random.nextFloat() * 0.2F + 0.8F;
                             	tessellator.setColorRGBA_F(bright, bright, bright, ((1.0F - distanceFromPlayer * distanceFromPlayer) * 0.3F + 0.5F) * 1.0F);
@@ -425,7 +425,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             	float vFactor = this.random.nextFloat() + preciseCount * 0.01F * (float)this.random.nextGaussian();
                             	double xRange = (double)((float)dx + 0.5F) - entitylivingbase.posX;
                             	double zRange = (double)((float)dz + 0.5F) - entitylivingbase.posZ;
-                            	float distanceFromPlayer = MathHelper.sqrt_double(xRange * xRange + zRange * zRange) / (float)range;
+                            	float distanceFromPlayer = MathHelper.sqrt(xRange * xRange + zRange * zRange) / (float)range;
                                 tessellator.setBrightness(983055);
                             	float bright = 1.0F;
                             	float alpha = random.nextFloat();
@@ -456,7 +456,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             	float vFactor = this.random.nextFloat();
                             	double xRange = (double)((float)dx + 0.5F) - entitylivingbase.posX;
                             	double zRange = (double)((float)dz + 0.5F) - entitylivingbase.posZ;
-                            	float distanceFromPlayer = MathHelper.sqrt_double(xRange * xRange + zRange * zRange) / (float)range;
+                            	float distanceFromPlayer = MathHelper.sqrt(xRange * xRange + zRange * zRange) / (float)range;
                                 tessellator.setBrightness(worldclient.getLightBrightnessForSkyBlocks(dx, rainFloor, dz, 0));
                             	float bright = 1.0F;
                             	float alpha = 1.0F;//random.nextFloat();
@@ -495,9 +495,9 @@ public class TFWeatherRenderer extends IRenderHandler {
             this.initializeRainCoords();
 
             EntityLivingBase entitylivingbase = mc.renderViewEntity;
-            int px = MathHelper.floor_double(entitylivingbase.posX);
-            int py = MathHelper.floor_double(entitylivingbase.posY);
-            int pz = MathHelper.floor_double(entitylivingbase.posZ);
+            int px = MathHelper.floor(entitylivingbase.posX);
+            int py = MathHelper.floor(entitylivingbase.posY);
+            int pz = MathHelper.floor(entitylivingbase.posZ);
             Tessellator tessellator = Tessellator.instance;
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -584,7 +584,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             	float vFactor = this.random.nextFloat() + preciseCount * 0.01F * (float)this.random.nextGaussian();
                             	double xRange = (double)((float)dx + 0.5F) - entitylivingbase.posX;
                             	double zRange = (double)((float)dz + 0.5F) - entitylivingbase.posZ;
-                            	float distanceFromPlayer = MathHelper.sqrt_double(xRange * xRange + zRange * zRange) / (float)range;
+                            	float distanceFromPlayer = MathHelper.sqrt(xRange * xRange + zRange * zRange) / (float)range;
                                 tessellator.setBrightness(983055);
                             	float bright = 1.0F;
                             	float alpha = random.nextFloat();
@@ -642,8 +642,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 
 	private boolean isNearLockedBiome(World world, EntityLivingBase viewEntity) {
         int range = 15;
-        int px = MathHelper.floor_double(viewEntity.posX);
-        int pz = MathHelper.floor_double(viewEntity.posZ);
+        int px = MathHelper.floor(viewEntity.posX);
+        int pz = MathHelper.floor(viewEntity.posZ);
         
 		for (int z = pz - range ; z <= pz + range; ++z) {
             for (int x = px - range; x <= px + range; ++x) {
@@ -663,8 +663,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 
 	private boolean isNearLockedStructure(World world, EntityLivingBase viewEntity) {
         int range = 15;
-        int px = MathHelper.floor_double(viewEntity.posX);
-        int pz = MathHelper.floor_double(viewEntity.posZ);
+        int px = MathHelper.floor(viewEntity.posX);
+        int pz = MathHelper.floor(viewEntity.posZ);
         
         if (this.protectedBox != null && this.protectedBox.intersectsWith(px - range, pz - range, px + range, pz + range)) {
         	return true;
@@ -695,7 +695,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 //{
 //    this.rainSoundCounter = 0;
 //
-//    if (d1 > entitylivingbase.posY + 1.0D && worldclient.getPrecipitationHeight(MathHelper.floor_double(entitylivingbase.posX), MathHelper.floor_double(entitylivingbase.posZ)) > MathHelper.floor_double(entitylivingbase.posY))
+//    if (d1 > entitylivingbase.posY + 1.0D && worldclient.getPrecipitationHeight(MathHelper.floor(entitylivingbase.posX), MathHelper.floor(entitylivingbase.posZ)) > MathHelper.floor(entitylivingbase.posY))
 //    {
 //        this.mc.theWorld.playSound(d0, d1, d2, "ambient.weather.rain", 0.1F, 0.5F, false);
 //    }

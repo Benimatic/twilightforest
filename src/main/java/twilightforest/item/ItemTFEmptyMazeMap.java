@@ -34,15 +34,15 @@ public class ItemTFEmptyMazeMap extends ItemMapBase
         mapData.scale = 0;
         int step = 128 * (1 << mapData.scale);
         // need to fix center for feature offset
-        if (par2World.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World) == TFFeature.labyrinth) {
-        	BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World);
+        if (par2World.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor(par3EntityPlayer.posX) >> 4, MathHelper.floor(par3EntityPlayer.posZ) >> 4, par2World) == TFFeature.labyrinth) {
+        	BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor(par3EntityPlayer.posX) >> 4, MathHelper.floor(par3EntityPlayer.posZ) >> 4, par2World);
             mapData.xCenter = mc.getX();
             mapData.zCenter = mc.getZ();
-            mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
+            mapData.yCenter = MathHelper.floor(par3EntityPlayer.posY);
         } else {
             mapData.xCenter = (int)(Math.round(par3EntityPlayer.posX / step) * step) + 10; // mazes are offset slightly
             mapData.zCenter = (int)(Math.round(par3EntityPlayer.posZ / step) * step) + 10; // mazes are offset slightly
-            mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
+            mapData.yCenter = MathHelper.floor(par3EntityPlayer.posY);
         }
         mapData.dimension = par2World.provider.getDimension();
         mapData.markDirty();

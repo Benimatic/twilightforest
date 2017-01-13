@@ -167,7 +167,7 @@ public class BlockTFNagastone extends Block {
      * 15     weird middle piece
      */
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int metadata, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int metadata, EntityLivingBase placer)
     {
         int type = metadata & 12;
         int orient = 0;
@@ -420,7 +420,7 @@ public class BlockTFNagastone extends Block {
      */
     public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityPlayer par4EntityPlayer)
     {
-        int rot = MathHelper.floor_double(par4EntityPlayer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int rot = MathHelper.floor(par4EntityPlayer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         return rot == 0 ? 0 : (rot == 1 ? 3 : (rot == 2 ? 1 : (rot == 3 ? 2 : 0)));
     }
 

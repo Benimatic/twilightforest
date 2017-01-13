@@ -96,9 +96,9 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
     		return true;
     	}
     	
-        int myX = MathHelper.floor_double(this.posX);
-        int myY = MathHelper.floor_double(this.getEntityBoundingBox().minY);
-        int myZ = MathHelper.floor_double(this.posZ);
+        int myX = MathHelper.floor(this.posX);
+        int myY = MathHelper.floor(this.getEntityBoundingBox().minY);
+        int myZ = MathHelper.floor(this.posZ);
 
         if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, myX, myY, myZ) > this.rand.nextInt(32))
         {

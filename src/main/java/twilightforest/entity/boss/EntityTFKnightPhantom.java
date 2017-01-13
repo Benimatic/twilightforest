@@ -188,9 +188,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 			TFTreasure.stronghold_boss.generate(worldObj, null, getHomePosition().posX, getHomePosition().posY - 1, getHomePosition().posZ);
 		} else {
 			// if not, spawn it right where we are
-			int px = MathHelper.floor_double(this.lastTickPosX);
-			int py = MathHelper.floor_double(this.lastTickPosY);
-			int pz = MathHelper.floor_double(this.lastTickPosZ);
+			int px = MathHelper.floor(this.lastTickPosX);
+			int py = MathHelper.floor(this.lastTickPosY);
+			int pz = MathHelper.floor(this.lastTickPosZ);
 			
 			TFTreasure.stronghold_boss.generate(worldObj, null, px, py, pz);
 		}
@@ -248,7 +248,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
         
         double factor = moveX * moveX + moveY * moveY + moveZ * moveZ;
         
-        factor = (double)MathHelper.sqrt_double(factor);
+        factor = (double)MathHelper.sqrt(factor);
 
         double speed = 0.1D;//this.isChargingAtPlayer() ? 0.1D : 0.05D;
         
@@ -425,7 +425,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     public void knockBack(Entity par1Entity, float damage, double par3, double par5)
     {
         this.isAirBorne = true;
-        float f = MathHelper.sqrt_double(par3 * par3 + par5 * par5);
+        float f = MathHelper.sqrt(par3 * par3 + par5 * par5);
         float distance = 0.2F;
         this.motionX /= 2.0D;
         this.motionY /= 2.0D;
@@ -916,7 +916,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 //    public boolean func_110173_bK()
 //    {
-//        return this.func_110176_b(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+//        return this.func_110176_b(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
 //    }
 
     public boolean isWithinHomeArea(BlockPos pos)

@@ -74,7 +74,7 @@ public class EntityTFRavenLookHelper extends EntityLookHelper
             double var1 = this.posX - this.entity.posX;
             double var3 = this.posY - (this.entity.posY + this.entity.getEyeHeight());
             double var5 = this.posZ - this.entity.posZ;
-            double var7 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
+            double var7 = MathHelper.sqrt(var1 * var1 + var5 * var5);
             float var9 = (float)(Math.atan2(var5, var1) * 180.0D / Math.PI) - 30.0F;
             float var10 = (float)(-(Math.atan2(var3, var7) * 180.0D / Math.PI));
             this.entity.rotationPitch = this.updateRotation(this.entity.rotationPitch, var10, this.field_46150_c);

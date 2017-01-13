@@ -83,7 +83,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         double d = waypointX - posX;
         double d1 = waypointY - posY;
         double d2 = waypointZ - posZ;
-        double d3 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
+        double d3 = MathHelper.sqrt(d * d + d1 * d1 + d2 * d2);
         if(d3 < 1.0D || d3 > 60D)
         {
             waypointX = posX + (rand.nextFloat() * 2.0F - 1.0F) * 16F;
@@ -283,8 +283,8 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 			// are we in a level 3 hill?
-			int chunkX = MathHelper.floor_double(posX) >> 4;
-			int chunkZ = MathHelper.floor_double(posZ) >> 4;
+			int chunkX = MathHelper.floor(posX) >> 4;
+			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hill3) {
 				// award level 3 hill cheevo
 				((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHill3);

@@ -117,7 +117,7 @@ public abstract class BlockTFCritter extends Block {
 
 	
 	@Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing placementFacing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing placementFacing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         if (placementFacing == EnumFacing.UP && this.canPlaceAt(world, pos.down()))
         {

@@ -102,8 +102,8 @@ public class EntityTFQuestRam extends EntityAnimal {
             this.randomTickDivider = 70 + this.rand.nextInt(50);
             
             // check if we're near a quest grove and if so, set that as home
-            int chunkX = MathHelper.floor_double(this.posX) / 16;
-            int chunkZ = MathHelper.floor_double(this.posZ) / 16;
+            int chunkX = MathHelper.floor(this.posX) / 16;
+            int chunkZ = MathHelper.floor(this.posZ) / 16;
             
             TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.worldObj);
 
@@ -114,7 +114,7 @@ public class EntityTFQuestRam extends EntityAnimal {
             else
             {
             	// set our home position to the center of the quest grove
-                BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
+                BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), worldObj);
                 this.setHomePosAndDistance(cc, 13);
                 
                 //System.out.println("Set home area to " + cc.posX + ", " + cc.posY + ", " + cc.posZ);
@@ -179,8 +179,8 @@ public class EntityTFQuestRam extends EntityAnimal {
                 }
             }
         	
-        	//par1EntityPlayer.addChatMessage("Successfully used color " + currentItem.getItemDamage());
-        	//par1EntityPlayer.addChatMessage("Color flags are now " + Integer.toBinaryString(this.getColorFlags()));
+        	//par1EntityPlayer.sendMessage("Successfully used color " + currentItem.getItemDamage());
+        	//par1EntityPlayer.sendMessage("Color flags are now " + Integer.toBinaryString(this.getColorFlags()));
             return true;
         }
         else

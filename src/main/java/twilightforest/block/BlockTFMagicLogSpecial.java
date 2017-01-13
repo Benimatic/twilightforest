@@ -157,7 +157,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 
 			if (dPos.distanceSq(pos) < 256)
 			{
-				Biome biomeAt = world.getBiomeGenForCoords(dPos);
+				Biome biomeAt = world.getBiome(dPos);
 
 				if (biomeAt != TFBiomeBase.enchantedForest)
 				{

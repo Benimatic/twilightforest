@@ -409,7 +409,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 	private void damageShield() {
 		// door break noise
-		//this.worldObj.playAuxSFX(1010, MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 0);
+		//this.worldObj.playAuxSFX(1010, MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ), 0);
 		this.worldObj.playSoundAtEntity(this, "mob.zombie.metal", 0.25F, 0.25F);
 		
 		this.shieldHits++;

@@ -135,9 +135,9 @@ public class EntityTFTowerGolem extends EntityMob
         // [VanillaCopy] last half of EntityIronGolem.onLivingUpdate
         if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D && this.rand.nextInt(5) == 0)
         {
-            int i = MathHelper.floor_double(this.posX);
-            int j = MathHelper.floor_double(this.posY - 0.20000000298023224D);
-            int k = MathHelper.floor_double(this.posZ);
+            int i = MathHelper.floor(this.posX);
+            int j = MathHelper.floor(this.posY - 0.20000000298023224D);
+            int k = MathHelper.floor(this.posZ);
             IBlockState iblockstate = this.worldObj.getBlockState(new BlockPos(i, j, k));
 
             if (iblockstate.getMaterial() != Material.AIR)

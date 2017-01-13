@@ -372,9 +372,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             double d1 = vec3d.xCoord - posX;
             double d2 = vec3d.zCoord - posZ;
             
-            double dist = MathHelper.sqrt_double(d1 * d1 + d2 * d2);
+            double dist = MathHelper.sqrt(d1 * d1 + d2 * d2);
             
-            int i = MathHelper.floor_double(boundingBox.minY + 0.5D);
+            int i = MathHelper.floor(boundingBox.minY + 0.5D);
             double d3 = vec3d.yCoord - i;
             float f2 = (float)((Math.atan2(d2, d1) * 180D) / 3.1415927410125732D) - 90F;
             float f3 = f2 - rotationYaw;
@@ -436,12 +436,12 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
      * Breaks blocks near the naga
      */
     protected void breakNearbyBlocks() {
-        int minx = MathHelper.floor_double(getEntityBoundingBox().minX - 0.5D);
-        int miny = MathHelper.floor_double(getEntityBoundingBox().minY + 1.01D);
-        int minz = MathHelper.floor_double(getEntityBoundingBox().minZ - 0.5D);
-        int maxx = MathHelper.floor_double(getEntityBoundingBox().maxX + 0.5D);
-        int maxy = MathHelper.floor_double(getEntityBoundingBox().maxY + 0.001D);
-        int maxz = MathHelper.floor_double(getEntityBoundingBox().maxZ + 0.5D);
+        int minx = MathHelper.floor(getEntityBoundingBox().minX - 0.5D);
+        int miny = MathHelper.floor(getEntityBoundingBox().minY + 1.01D);
+        int minz = MathHelper.floor(getEntityBoundingBox().minZ - 0.5D);
+        int maxx = MathHelper.floor(getEntityBoundingBox().maxX + 0.5D);
+        int maxy = MathHelper.floor(getEntityBoundingBox().maxY + 0.001D);
+        int maxz = MathHelper.floor(getEntityBoundingBox().maxZ + 0.5D);
         if(worldObj.isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz)))
         {
             for(int dx = minx; dx <= maxx; dx++)
@@ -534,7 +534,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     		chargeCount--;
 
     		Vec3d tpoint = findCirclePoint(targetEntity, 14, Math.PI);
-    		pathToEntity = worldObj.getEntityPathToXYZ(this, MathHelper.floor_double(tpoint.xCoord), MathHelper.floor_double(tpoint.yCoord), MathHelper.floor_double(tpoint.zCoord), 40F, true, true, true, true);
+    		pathToEntity = worldObj.getEntityPathToXYZ(this, MathHelper.floor(tpoint.xCoord), MathHelper.floor(tpoint.yCoord), MathHelper.floor(tpoint.zCoord), 40F, true, true, true, true);
 
     		if (chargeCount == 0) 
     		{
@@ -802,9 +802,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         float worstweight = -99999F;
         for(int l = 0; l < 10; l++)
         {
-            int dx = MathHelper.floor_double((posX + rand.nextInt(21)) - 6D);
-            int dy = MathHelper.floor_double((posY + rand.nextInt(7)) - 3D);
-            int dz = MathHelper.floor_double((posZ + rand.nextInt(21)) - 6D);
+            int dx = MathHelper.floor((posX + rand.nextInt(21)) - 6D);
+            int dy = MathHelper.floor((posY + rand.nextInt(7)) - 3D);
+            int dz = MathHelper.floor((posZ + rand.nextInt(21)) - 6D);
             
             // if we are thinking about out of bounds, head back home instead
             if (!this.isWithinHomeDistance(dx, dy, dz))
@@ -934,7 +934,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	 */
 	public boolean isEntityWithinHomeArea(Entity entity)
 	{
-		return isWithinHomeDistance(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ));	
+		return isWithinHomeDistance(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ));
 	}
 
 
@@ -1026,7 +1026,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             body[i].motionY = f * diff.yCoord;
             body[i].motionZ = f * diff.zCoord;
             
-            double distance = (double)MathHelper.sqrt_double(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
+            double distance = (double)MathHelper.sqrt(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
             
             if (i == 0)
             {
@@ -1097,9 +1097,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		
 		// mark the courtyard as defeated
 		if (!worldObj.isRemote && worldObj.provider instanceof WorldProviderTwilightForest) {
-			int dx = MathHelper.floor_double(this.posX);
-			int dy = MathHelper.floor_double(this.posY);
-			int dz = MathHelper.floor_double(this.posZ);
+			int dx = MathHelper.floor(this.posX);
+			int dy = MathHelper.floor(this.posY);
+			int dz = MathHelper.floor(this.posZ);
 			
 			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
 			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);

@@ -85,12 +85,12 @@ public class TFGenRavine extends MapGenBase
             {
                 continue;
             }
-            int d8 = MathHelper.floor_double(d - d6) - i * 16 - 1;
-            int l1 = (MathHelper.floor_double(d + d6) - i * 16) + 1;
-            int d9 = MathHelper.floor_double(d1 - d7) - 1;
-            int i2 = MathHelper.floor_double(d1 + d7) + 1;
-            int d10 = MathHelper.floor_double(d2 - d6) - j * 16 - 1;
-            int j2 = (MathHelper.floor_double(d2 + d6) - j * 16) + 1;
+            int d8 = MathHelper.floor(d - d6) - i * 16 - 1;
+            int l1 = (MathHelper.floor(d + d6) - i * 16) + 1;
+            int d9 = MathHelper.floor(d1 - d7) - 1;
+            int i2 = MathHelper.floor(d1 + d7) + 1;
+            int d10 = MathHelper.floor(d2 - d6) - j * 16 - 1;
+            int j2 = (MathHelper.floor(d2 + d6) - j * 16) + 1;
             if (d8 < 0)
             {
                 d8 = 0;

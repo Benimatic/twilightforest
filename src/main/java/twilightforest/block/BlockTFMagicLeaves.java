@@ -55,12 +55,6 @@ public class BlockTFMagicLeaves extends BlockLeaves {
 				.withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.values()[variant]);
 	}
     
-    @Override
-    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess iblockaccess, BlockPos pos, EnumFacing side)
-    {
-    	return Blocks.LEAVES.shouldSideBeRendered(state, iblockaccess, pos, side);
-    }
-    
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
@@ -90,42 +84,42 @@ public class BlockTFMagicLeaves extends BlockLeaves {
     {
     	double offset = 0.0625D;
 
-    	int side = rand.nextInt(5) + 1;
-    	double rx = x + rand.nextFloat();
-    	double ry = y + rand.nextFloat();
-    	double rz = z + rand.nextFloat();
+    	EnumFacing side = EnumFacing.random(rand);
+    	double rx = pos.getX() + rand.nextFloat();
+    	double ry = pos.getY() + rand.nextFloat();
+    	double rz = pos.getZ() + rand.nextFloat();
 
-    	if (side == 0 && world.isAirBlock(x, y + 1, z))
+    	if (side == EnumFacing.DOWN && world.isAirBlock(pos.up()))
     	{
-    		ry = y + 1 + offset;
+    		ry = pos.getY() + 1 + offset;
     	}
 
-    	if (side == 1 && world.isAirBlock(x, y - 1, z))
+    	if (side == EnumFacing.UP && world.isAirBlock(pos.down()))
     	{
-    		ry = y + 0 - offset;
+    		ry = pos.getY() + 0 - offset;
     	}
 
-    	if (side == 2 && world.isAirBlock(x, y, z + 1))
+    	if (side == EnumFacing.NORTH && world.isAirBlock(pos.south()))
     	{
-    		rz = z + 1 + offset;
+    		rz = pos.getZ() + 1 + offset;
     	}
 
-    	if (side == 3 && world.isAirBlock(x, y, z - 1))
+    	if (side == EnumFacing.SOUTH && world.isAirBlock(pos.north()))
     	{
-    		rz = z + 0 - offset;
+    		rz = pos.getZ() + 0 - offset;
     	}
 
-    	if (side == 4 && world.isAirBlock(x + 1, y, z))
+    	if (side == EnumFacing.WEST && world.isAirBlock(pos.east()))
     	{
-    		rx = x + 1 + offset;
+    		rx = pos.getX() + 1 + offset;
     	}
 
-    	if (side == 5 && world.isAirBlock(x - 1, y, z))
+    	if (side == EnumFacing.EAST && world.isAirBlock(pos.west()))
     	{
-    		rx = x + 0 - offset;
+    		rx = pos.getX() + 0 - offset;
     	}
 
-    	if (rx < x || rx > x + 1 || ry < y|| ry > y + 1 || rz < z || rz > z + 1)
+    	if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1)
     	{
     		TwilightForestMod.proxy.spawnParticle(world, "leafrune", rx, ry, rz, 0.0D, 0.0D, 0.0D);
     	}

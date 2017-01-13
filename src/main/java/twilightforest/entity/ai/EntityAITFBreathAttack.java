@@ -133,7 +133,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
         Vec3d lookVec = this.entityHost.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
-        List<Entity> possibleList = this.entityHost.worldObj.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+        List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList)
@@ -175,7 +175,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 		double zOffset = zCoord - entityHost.posZ;
 		double yOffset = (entityHost.posY + 0.25) - yCoord;
 
-		double distance = MathHelper.sqrt_double(xOffset * xOffset + zOffset * zOffset);
+		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float)((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float)(-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
 		entityHost.rotationPitch = -updateRotation(entityHost.rotationPitch, zdAngle, pitchConstraint);

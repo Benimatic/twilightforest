@@ -89,7 +89,7 @@ public final class BlockColorHandler {
                 {
                     for (int dx = -1; dx <= 1; ++dx)
                     {
-                        int i2 = worldIn.getBiomeGenForCoords(pos.add(dx, 0, dz)).getFoliageColorAtPos(pos.add(dx, 0, dz));
+                        int i2 = worldIn.getBiome(pos.add(dx, 0, dz)).getFoliageColorAtPos(pos.add(dx, 0, dz));
                         red += (i2 & 16711680) >> 16;
                         grn += (i2 & 65280) >> 8;
                         blu += i2 & 255;
@@ -120,7 +120,7 @@ public final class BlockColorHandler {
                     {
                         for (int var9 = -1; var9 <= 1; ++var9)
                         {
-                            int biomeColor = worldIn.getBiomeGenForCoords(pos.add(var9, 0, var8)).getGrassColorAtPos(pos.add(var9, 0, var8));
+                            int biomeColor = worldIn.getBiome(pos.add(var9, 0, var8)).getGrassColorAtPos(pos.add(var9, 0, var8));
                             red += (biomeColor & 16711680) >> 16;
                             grn += (biomeColor & 65280) >> 8;
                             blu += biomeColor & 255;
@@ -263,7 +263,7 @@ public final class BlockColorHandler {
                     {
                         for (int var10 = -1; var10 <= 1; ++var10)
                         {
-                            int var11 = world.getBiomeGenForCoords(pos.add(var10, 0, var9)).getFoliageColorAtPos(pos);
+                            int var11 = world.getBiome(pos.add(var10, 0, var9)).getFoliageColorAtPos(pos);
                             red += (var11 & 16711680) >> 16;
                             green += (var11 & 65280) >> 8;
                             blue += var11 & 255;

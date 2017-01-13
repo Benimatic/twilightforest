@@ -50,7 +50,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 			int rz = pos.getZ() + rand.nextInt(16) + 8;
 			int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
 
-			this.tfGenThorns.generate(world, rand, rx, ry, rz);
+			this.tfGenThorns.generate(world, rand, new BlockPos(rx, ry, rz));
         } 
     }
 

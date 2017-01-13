@@ -120,7 +120,7 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 			
 	        double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 	        
-			distanceDesired = (double) MathHelper.sqrt_double(distanceDesired);
+			distanceDesired = (double) MathHelper.sqrt(distanceDesired);
 	
 	
 			// add velocity

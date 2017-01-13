@@ -107,7 +107,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 		if (this.trackedPlayer != null)
 		{
 			// check up and down
-			int pitch = MathHelper.floor_double((double)(trackedPlayer.rotationPitch * 4.0F / 360.0F) + 1.5D) & 3;
+			int pitch = MathHelper.floor((double)(trackedPlayer.rotationPitch * 4.0F / 360.0F) + 1.5D) & 3;
 			
 			if (pitch == 0)
 			{

@@ -62,9 +62,9 @@ public class EntityAITFYetiRampage extends EntityAIBase {
     {
     	this.currentDuration--;
     	
-//    	int rx = MathHelper.floor_double(this.yeti.posX);
-//    	int ry = MathHelper.floor_double(this.yeti.posY - 1);
-//    	int rz = MathHelper.floor_double(this.yeti.posZ);
+//    	int rx = MathHelper.floor(this.yeti.posX);
+//    	int ry = MathHelper.floor(this.yeti.posY - 1);
+//    	int rz = MathHelper.floor(this.yeti.posZ);
 //    	
 //		this.yeti.worldObj.playAuxSFX(2004, rx, ry, rz, 0);
 		

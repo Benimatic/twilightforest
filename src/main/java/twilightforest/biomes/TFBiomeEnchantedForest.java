@@ -57,7 +57,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
     	int cx = 256 * Math.round((x - 8) / 256F) + 8; 
     	int cz = 256 * Math.round((z - 8) / 256F) + 8;
     	
-    	int dist = (int) MathHelper.sqrt_float((cx - x) * (cx - x) + (cz - z) * (cz - z));
+    	int dist = (int) MathHelper.sqrt((cx - x) * (cx - x) + (cz - z) * (cz - z));
     	int color = dist * 64;
     	color %= 512;
     	
