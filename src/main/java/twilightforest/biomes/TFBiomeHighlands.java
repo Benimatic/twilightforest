@@ -12,10 +12,12 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -140,20 +142,19 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		for (int i = 0; i < 24; ++i)
 		{
 		    int rx = pos.getX() + rand.nextInt(16) + 8;
-		    byte ry = 64;
+		    int ry = 64;
 		    int rz = pos.getZ() + rand.nextInt(16) + 8;
-		    genTrollRoots.generate(world, rand, rx, ry, rz);
+		    genTrollRoots.generate(world, rand, new BlockPos(rx, ry, rz));
 		}
 
     	super.decorate(world, rand, pos);
     }
-    
-    /**
-     * Flowers
-     */
-    public String func_150572_a(Random rand, int x, int y, int z)
+
+    @Override
+	public void addDefaultFlowers()
     {
-        return rand.nextBoolean() ? BlockFlower.field_149858_b[0] : BlockFlower.field_149859_a[8];
+    	addFlower(Blocks.YELLOW_FLOWER.getDefaultState(), 10);
+    	addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.OXEYE_DAISY), 10);
     }
     
     @Override
@@ -165,9 +166,8 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 5 == 0) {
 			player.attackEntityFrom(DamageSource.magic, 0.5F);
-			world.playSound(null, player.posX, player.posY, player.posZ, "random.fizz", 1.0F, 1.0F);
-			//player.playSound("random.fizz", 1.0F, 1.0F);
-			
+			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {
 				TFFeature.trollCave.trySpawnHintMonster(world, player);

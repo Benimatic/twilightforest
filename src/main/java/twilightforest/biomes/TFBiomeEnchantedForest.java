@@ -146,14 +146,11 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
         super.decorate(world, rand, pos);
     }
 
-    /**
-     * Every color flower!
-     */
-    public String func_150572_a(Random p_150572_1_, int p_150572_2_, int p_150572_3_, int p_150572_4_)
-    {
-    	double flowerVar = MathHelper.clamp_double((1.0D + plantNoise.func_151601_a((double)p_150572_2_ / 48.0D, (double)p_150572_4_ / 48.0D)) / 2.0D, 0.0D, 0.9999D);
-        int flowerIndex = (int)(flowerVar * (double)BlockFlower.field_149859_a.length);
-        if (flowerIndex == 1)  { flowerIndex = 0; }
-        return BlockFlower.field_149859_a[flowerIndex];
-    }
+    @Override
+    public void addDefaultFlowers() {
+		addFlower(Blocks.YELLOW_FLOWER.getDefaultState(), 10);
+		for (BlockFlower.EnumFlowerType t : BlockFlower.EnumFlowerType.getTypes(BlockFlower.EnumFlowerColor.RED)) {
+			addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), t), 10);
+		}
+	}
 }

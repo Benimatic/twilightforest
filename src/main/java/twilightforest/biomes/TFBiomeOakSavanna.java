@@ -61,28 +61,14 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
             return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
         }
     }
-    
-    /**
-     * Multi-color flowers!
-     */
-    public String func_150572_a(Random p_150572_1_, int p_150572_2_, int p_150572_3_, int p_150572_4_)
-    {
-        double d0 = plantNoise.func_151601_a((double)p_150572_2_ / 200.0D, (double)p_150572_4_ / 200.0D);
-        int l;
 
-        if (d0 < -0.8D)
-        {
-            l = p_150572_1_.nextInt(4);
-            return BlockFlower.field_149859_a[4 + l];
-        }
-        else if (p_150572_1_.nextInt(3) > 0)
-        {
-            l = p_150572_1_.nextInt(3);
-            return l == 0 ? BlockFlower.field_149859_a[0] : (l == 1 ? BlockFlower.field_149859_a[3] : BlockFlower.field_149859_a[8]);
-        }
-        else
-        {
-            return BlockFlower.field_149858_b[0];
+    // todo 1.10 verify
+    @Override
+    public void addDefaultFlowers() {
+	    addFlower(Blocks.YELLOW_FLOWER.getDefaultState(), 10);
+	    for (int i = 3; i <= 8; i++) {
+            BlockFlower.EnumFlowerType type = BlockFlower.EnumFlowerType.getType(BlockFlower.EnumFlowerColor.RED, i);
+            addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), type), 10);
         }
     }
 
