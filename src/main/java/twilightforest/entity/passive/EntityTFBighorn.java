@@ -47,7 +47,7 @@ public class EntityTFBighorn extends EntitySheep
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
-        this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
+        this.setFleeceColor(getRandomFleeceColor(this.world.rand));
         return livingdata;
     }
     
@@ -55,7 +55,7 @@ public class EntityTFBighorn extends EntitySheep
 	public EntitySheep createChild(EntityAgeable entityanimal)
     {
     	EntityTFBighorn otherParent = (EntityTFBighorn)entityanimal;
-    	EntityTFBighorn babySheep = new EntityTFBighorn(worldObj);
+    	EntityTFBighorn babySheep = new EntityTFBighorn(world);
         if(rand.nextBoolean())
         {
             babySheep.setFleeceColor(getFleeceColor());

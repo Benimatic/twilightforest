@@ -100,20 +100,20 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
         int myY = MathHelper.floor(this.getEntityBoundingBox().minY);
         int myZ = MathHelper.floor(this.posZ);
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, myX, myY, myZ) > this.rand.nextInt(32))
+        if (this.world.getSavedLightValue(EnumSkyBlock.Sky, myX, myY, myZ) > this.rand.nextInt(32))
         {
             return false;
         }
         else
         {
-            int lightLevel = this.worldObj.getBlockLightValue(myX, myY, myZ);
+            int lightLevel = this.world.getBlockLightValue(myX, myY, myZ);
 
-            if (this.worldObj.isThundering())
+            if (this.world.isThundering())
             {
-                int var5 = this.worldObj.skylightSubtracted;
-                this.worldObj.skylightSubtracted = 10;
-                lightLevel = this.worldObj.getBlockLightValue(myX, myY, myZ);
-                this.worldObj.skylightSubtracted = var5;
+                int var5 = this.world.skylightSubtracted;
+                this.world.skylightSubtracted = 10;
+                lightLevel = this.world.getBlockLightValue(myX, myY, myZ);
+                this.world.skylightSubtracted = var5;
             }
 
             return lightLevel <= this.rand.nextInt(8);

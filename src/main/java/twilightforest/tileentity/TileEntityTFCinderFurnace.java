@@ -242,7 +242,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
             --this.furnaceBurnTime;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.furnaceBurnTime != 0 || this.furnaceItemStacks[1] != null && this.furnaceItemStacks[0] != null)
             {
@@ -291,7 +291,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
             if (flag != this.furnaceBurnTime > 0)
             {
                 flag1 = true;
-                BlockTFCinderFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                BlockTFCinderFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.world, this.xCoord, this.yCoord, this.zCoord);
             }
             
             // occasionally cinderize nearby logs
@@ -316,7 +316,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 		int dy = rand.nextInt(2) - rand.nextInt(2);
 		int dz = rand.nextInt(2) - rand.nextInt(2);
 
-		if (this.worldObj.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz)) {
+		if (this.world.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz)) {
 			Block nearbyBlock = this.getWorld().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz);
 
 			if (nearbyBlock != TFBlocks.cinderLog && this.isLog(nearbyBlock)) {
@@ -375,7 +375,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 		if (logs < factor) {
 			return 1;
 		} else {
-			return (logs / factor) + (this.worldObj.rand.nextInt(factor) >= (logs % factor) ? 0 : 1);
+			return (logs / factor) + (this.world.rand.nextInt(factor) >= (logs % factor) ? 0 : 1);
 		}
 	}
 
@@ -388,7 +388,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
-					if (this.worldObj.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) && this.getWorld().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) == TFBlocks.cinderLog) {
+					if (this.world.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) && this.getWorld().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) == TFBlocks.cinderLog) {
 						count++;
 					}
 				}
@@ -568,7 +568,7 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 
 	}
 

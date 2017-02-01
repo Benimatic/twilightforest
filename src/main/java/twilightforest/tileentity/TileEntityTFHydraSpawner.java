@@ -16,7 +16,7 @@ public class TileEntityTFHydraSpawner extends TileEntityTFBossSpawner {
 	{
 		if (this.displayCreature == null)
 		{
-			this.displayCreature = EntityList.createEntityByName("HydraHead", worldObj);
+			this.displayCreature = EntityList.createEntityByName("HydraHead", world);
 		}
 		
 		return this.displayCreature;

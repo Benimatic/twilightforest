@@ -155,7 +155,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         		
         		if (this.heavySpearTimer == 25)
         		{
-        			//System.out.println("Landing spear attack in world " + this.worldObj);
+        			//System.out.println("Landing spear attack in world " + this.world);
         			
         			this.landHeavySpearAttack();
         		}
@@ -186,8 +186,8 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		
 		for (int i = 0; i < 50; i++)
 		{
-			//worldObj.spawnParticle("crit", px + (rand.nextFloat() - rand.nextFloat()) * 0.5F, py + rand.nextFloat(), pz + (rand.nextFloat() - rand.nextFloat()) * 0.5F, 0, 0.5, 0);
-			worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, px, py, pz, (rand.nextFloat() - rand.nextFloat()) * 0.25F, 0, (rand.nextFloat() - rand.nextFloat()) * 0.25F);
+			//world.spawnParticle("crit", px + (rand.nextFloat() - rand.nextFloat()) * 0.5F, py + rand.nextFloat(), pz + (rand.nextFloat() - rand.nextFloat()) * 0.5F, 0, 0.5, 0);
+			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, px, py, pz, (rand.nextFloat() - rand.nextFloat()) * 0.25F, 0, (rand.nextFloat() - rand.nextFloat()) * 0.25F);
 		}
 		
 		// damage things in front that aren't us or our "mount"
@@ -195,7 +195,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 		AxisAlignedBB spearBB =  new AxisAlignedBB(px - radius, py - radius, pz - radius, px + radius, py + radius, pz + radius);
 
-		List<Entity> inBox = worldObj.getEntitiesWithinAABB(Entity.class, spearBB);
+		List<Entity> inBox = world.getEntitiesWithinAABB(Entity.class, spearBB);
 		
 		for (Entity entity : inBox)
 		{
@@ -279,7 +279,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
     	
         this.heavySpearTimer = 60;
-        this.worldObj.setEntityState(this, (byte)4);
+        this.world.setEntityState(this, (byte)4);
 	}
 
 	@Override
@@ -370,13 +370,13 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	public boolean takeHitOnShield(DamageSource par1DamageSource, float damageAmount) {
 		//System.out.println("Hit blocked by shield");
 		
-		if (damageAmount > SHIELD_DAMAGE_THRESHOLD && !this.worldObj.isRemote)
+		if (damageAmount > SHIELD_DAMAGE_THRESHOLD && !this.world.isRemote)
 		{
 			damageShield();
 		}
 		else
 		{
-			this.worldObj.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			this.world.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		}
 		
 
@@ -409,12 +409,12 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 	private void damageShield() {
 		// door break noise
-		//this.worldObj.playAuxSFX(1010, MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ), 0);
-		this.worldObj.playSoundAtEntity(this, "mob.zombie.metal", 0.25F, 0.25F);
+		//this.world.playAuxSFX(1010, MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ), 0);
+		this.world.playSoundAtEntity(this, "mob.zombie.metal", 0.25F, 0.25F);
 		
 		this.shieldHits++;
 		
-		if (!worldObj.isRemote && this.shieldHits >= 3)
+		if (!world.isRemote && this.shieldHits >= 3)
 		{
 			this.breakShield();
 		}

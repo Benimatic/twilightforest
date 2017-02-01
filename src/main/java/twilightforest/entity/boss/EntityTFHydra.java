@@ -120,12 +120,12 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		if (hc[0].headEntity == null || hc[1].headEntity == null || hc[2].headEntity == null)
 		{
 			// don't spawn if we're connected in multiplayer 
-			if (shouldSpawnHeads() && !worldObj.isRemote) {
+			if (shouldSpawnHeads() && !world.isRemote) {
 				for (int i = 0; i < numHeads; i++)
 				{
 					hc[i].headEntity = new EntityTFHydraHead(this, "head" + i, 3F, 3F);
 					hc[i].headEntity.setPosition(this.posX, this.posY, this.posZ);
-					worldObj.spawnEntity(hc[i].headEntity);
+					world.spawnEntity(hc[i].headEntity);
 				}
 
 				setSpawnHeads(false);
@@ -147,7 +147,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		}		
 		
 		// update health
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
         }
@@ -174,7 +174,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         
         this.ticksSinceDamaged++;
         
-        if (!this.worldObj.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0)
+        if (!this.world.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0)
         {
         	this.heal(1);
         }
@@ -210,7 +210,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
             this.motionZ = 0.0D;
         }
 
-        this.worldObj.theProfiler.startSection("ai");
+        this.world.theProfiler.startSection("ai");
 
         if (this.isMovementBlocked())
         {
@@ -221,14 +221,14 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         }
         else if (this.isServerWorld())
         {
-        	this.worldObj.theProfiler.startSection("oldAi");
+        	this.world.theProfiler.startSection("oldAi");
         	this.updateEntityActionState();
-        	this.worldObj.theProfiler.endSection();
+        	this.world.theProfiler.endSection();
         	this.rotationYawHead = this.rotationYaw;
         }
 
-        this.worldObj.theProfiler.endSection();
-        this.worldObj.theProfiler.startSection("jump");
+        this.world.theProfiler.endSection();
+        this.world.theProfiler.startSection("jump");
 
         if (this.isJumping)
         {
@@ -245,8 +245,8 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
             }
         }
 
-        this.worldObj.theProfiler.endSection();
-        this.worldObj.theProfiler.startSection("travel");
+        this.world.theProfiler.endSection();
+        this.world.theProfiler.startSection("travel");
         this.moveStrafing *= 0.98F;
         this.moveForward *= 0.98F;
         this.randomYawVelocity *= 0.9F;
@@ -254,7 +254,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 //        this.landMovementFactor *= this.getSpeedModifier();
         this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
 //        this.landMovementFactor = var9;
-        this.worldObj.theProfiler.endSection();
+        this.world.theProfiler.endSection();
 
         body.width = body.height = 6.0F;
         tail.width = 6.0F; tail.height = 2.0F;
@@ -276,20 +276,20 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     	dz = posZ + MathHelper.cos(angle) * 10.5;
     	tail.setPosition(dx, dy, dz);
 
-    	//worldObj.spawnParticle("mobSpell", body.posX, body.posY, body.posZ, 0.2, 0.2, 0.2);
+    	//world.spawnParticle("mobSpell", body.posX, body.posY, body.posZ, 0.2, 0.2, 0.2);
 
-        this.worldObj.theProfiler.startSection("push");
+        this.world.theProfiler.startSection("push");
 
-        if (!this.worldObj.isRemote && this.hurtTime == 0)
+        if (!this.world.isRemote && this.hurtTime == 0)
         {
-            this.collideWithEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.body.boundingBox), this.body);
-            this.collideWithEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.tail.boundingBox), this.tail);
+            this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.body.boundingBox), this.body);
+            this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.tail.boundingBox), this.tail);
         }
         
-        this.worldObj.theProfiler.endSection(); 
+        this.world.theProfiler.endSection();
 
         // destroy blocks
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.destroyBlocksInAABB(this.body.getEntityBoundingBox());
             this.destroyBlocksInAABB(this.tail.getEntityBoundingBox());
@@ -391,8 +391,8 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 
 		if (rand.nextFloat() < 0.7F)
 		{
-			EntityPlayer entityplayer1 = worldObj.getNearestAttackablePlayer(this, f, f);
-			//EntityPlayer entityplayer1 = worldObj.getClosestPlayerToEntity(this, f);
+			EntityPlayer entityplayer1 = world.getNearestAttackablePlayer(this, f, f);
+			//EntityPlayer entityplayer1 = world.getClosestPlayerToEntity(this, f);
 
 			if (entityplayer1 != null)
 			{
@@ -472,7 +472,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 	 * Make some of the mechanics harder on hard mode
 	 */
 	private void setDifficultyVariables() {
-		if (worldObj.getDifficulty() != EnumDifficulty.HARD)
+		if (world.getDifficulty() != EnumDifficulty.HARD)
 		{
 			EntityTFHydra.HEADS_ACTIVITY_FACTOR = 0.3F;
 		}
@@ -716,7 +716,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         double closestRange = -1.0D;
         EntityLivingBase closestEntity = null;
 
-		List<EntityLivingBase> nearbyEntities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range));
+		List<EntityLivingBase> nearbyEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range));
 
 		for (EntityLivingBase nearbyLiving : nearbyEntities)
 		{
@@ -809,7 +809,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         	for (int dz = minZ; dz <= maxZ; ++dz)
         	{
         		total++;
-        		if (this.worldObj.getBlock(dx, dy, dz).getMaterial().isSolid())
+        		if (this.world.getBlock(dx, dy, dz).getMaterial().isSolid())
         		{
         			solid++;
         		}
@@ -841,18 +841,18 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
             {
                 for (int dz = minZ; dz <= maxZ; ++dz)
                 {
-                    Block currentID = this.worldObj.getBlock(dx, dy, dz);
+                    Block currentID = this.world.getBlock(dx, dy, dz);
                     
                     if (currentID != Blocks.AIR)
                     {
-                    	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
+                    	int currentMeta = this.world.getBlockMetadata(dx, dy, dz);
                     	
                     	if (currentID != Blocks.OBSIDIAN && currentID != Blocks.END_STONE && currentID != Blocks.BEDROCK)
                         {
-                            this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
+                            this.world.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
                             
                             // here, this effect will have to do
-                			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
+                			world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
                         }
                         else
                         {
@@ -907,7 +907,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         //System.out.println("Taking an attack on part " + part.getPartName() + " of type " + damagesource.damageType);
         
         // if we're in a wall, kill that wall
-        if (!worldObj.isRemote && damagesource == DamageSource.inWall && part.getBoundingBox() != null)
+        if (!world.isRemote && damagesource == DamageSource.inWall && part.getBoundingBox() != null)
         {
         	destroyBlocksInAABB(part.getBoundingBox());
         }
@@ -1060,13 +1060,13 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		}
 		
 		// mark the lair as defeated
-		if (!worldObj.isRemote && worldObj.provider instanceof WorldProviderTwilightForest) {
+		if (!world.isRemote && world.provider instanceof WorldProviderTwilightForest) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.worldChunkMgr).getFeatureAt(dx, dz, world);
 			
 			if (nearbyFeature == TFFeature.hydraLair) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);
@@ -1154,7 +1154,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 
         if (this.deathTime == 200)
         {
-            if (!this.worldObj.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && !this.isChild())
+            if (!this.world.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && !this.isChild())
             {
             	int var1 = this.getExperiencePoints(this.attackingPlayer);
 
@@ -1162,7 +1162,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
                 {
                     int var2 = EntityXPOrb.getXPSplit(var1);
                     var1 -= var2;
-                    this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, var2));
+                    this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, var2));
                 }
             }
 
@@ -1176,13 +1176,13 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
             double var4 = this.rand.nextGaussian() * 0.02D;
             double var6 = this.rand.nextGaussian() * 0.02D;
             String particle = rand.nextInt(2) == 0 ? "largeexplode" : "explode";
-            this.worldObj.spawnParticle(particle, this.posX + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width, this.posY + this.rand.nextFloat() * this.body.height, this.posZ + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width, var8, var4, var6);
+            this.world.spawnParticle(particle, this.posX + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width, this.posY + this.rand.nextFloat() * this.body.height, this.posZ + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width, var8, var4, var6);
         }
     }
 
 	@Override
 	public World func_82194_d() {
-		return this.worldObj;
+		return this.world;
 	}
 
 //	@Override

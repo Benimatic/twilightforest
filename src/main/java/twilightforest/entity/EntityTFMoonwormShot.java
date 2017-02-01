@@ -69,7 +69,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 //			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
 //			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 //
-//			worldObj.spawnParticle("mobSpell", dx, dy, dz, s1, s2, s3);
+//			world.spawnParticle("mobSpell", dx, dy, dz, s1, s2, s3);
 //		}
 	}
 
@@ -98,9 +98,9 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 		
 		if (mop.typeOfHit == Type.BLOCK)
 		{
-			if (!worldObj.isRemote)
+			if (!world.isRemote)
 			{
-				TFItems.moonwormQueen.onItemUse(null, (EntityPlayer)this.getThrower(), this.worldObj, mop.getBlockPos(), EnumHand.MAIN_HAND, mop.sideHit, 0, 0, 0);
+				TFItems.moonwormQueen.onItemUse(null, (EntityPlayer)this.getThrower(), this.world, mop.getBlockPos(), EnumHand.MAIN_HAND, mop.sideHit, 0, 0, 0);
 			}
 			else
 			{
@@ -116,10 +116,10 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 
         for (int var3 = 0; var3 < 8; ++var3)
         {
-            this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
+            this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.setDead();
         }

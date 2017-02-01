@@ -40,7 +40,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
         {
         	this.temptingItem = null;
         	
-            List<EntityItem> nearbyItems = this.temptedEntity.worldObj.getEntitiesWithinAABB(EntityItem.class, this.temptedEntity.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
+            List<EntityItem> nearbyItems = this.temptedEntity.world.getEntitiesWithinAABB(EntityItem.class, this.temptedEntity.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
             
             for (EntityItem itemNearby : nearbyItems) {
             	if (itemNearby.getEntityItem().getItem() == temptID && itemNearby.isEntityAlive()) {

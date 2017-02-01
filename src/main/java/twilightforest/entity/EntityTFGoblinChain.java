@@ -16,7 +16,7 @@ public class EntityTFGoblinChain extends Entity {
 	}
 
 	public EntityTFGoblinChain(Entity goblin) {
-		this(goblin.worldObj);
+		this(goblin.world);
 		this.goblin = goblin;
 	}
 

@@ -106,7 +106,7 @@ public class EntityTFIceCrystal extends EntityMob {
         //System.out.println("I am a skeleton and my age is " + this.skeletonAge);
         
         // die after 30 seconds
-        if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge && !this.worldObj.isRemote) {
+        if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge && !this.world.isRemote) {
         	this.setDead();
         }
     }

@@ -153,7 +153,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	    	float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 	    	
-			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
     	
     	// during drop phase, all the ice blocks should make particles
@@ -163,7 +163,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     			float py = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
     			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 
-    			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowwarning", this.iceArray[i].lastTickPosX + px, this.iceArray[i].lastTickPosY + py, this.iceArray[i].lastTickPosZ + pz, 0, 0, 0);
+    			TwilightForestMod.proxy.spawnParticle(this.world, "snowwarning", this.iceArray[i].lastTickPosX + px, this.iceArray[i].lastTickPosY + py, this.iceArray[i].lastTickPosZ + pz, 0, 0, 0);
     		}
     	}
     	
@@ -194,8 +194,8 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     			dy *= velocity;
     			dz *= velocity;
 
-    			TwilightForestMod.proxy.spawnParticle(this.worldObj, "icebeam", px, py, pz, dx, dy, dz);
-    			//worldObj.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
+    			TwilightForestMod.proxy.spawnParticle(this.world, "icebeam", px, py, pz, dx, dy, dz);
+    			//world.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
     		}
     		
 			//playBreathSound();
@@ -206,8 +206,8 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 //    	int fy = MathHelper.floor(this.posY);
 //    	int fz = MathHelper.floor(this.posZ);
 //    	
-//    	if (this.worldObj.getBlock(fx, fy, fz) != Blocks.AIR) {
-//    		System.out.println("I am in a block!  World =" + this.worldObj);
+//    	if (this.world.getBlock(fx, fy, fz) != Blocks.AIR) {
+//    		System.out.println("I am in a block!  World =" + this.world);
 //    		this.posY += 1D;
 //    	}
 
@@ -240,7 +240,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 			}
 			
 			// collide things with the block
-	        if (!worldObj.isRemote) {
+	        if (!world.isRemote) {
 	        	this.applyShieldCollisions(this.iceArray[i]);
 	        }
 		}
@@ -254,7 +254,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
                 double d2 = rand.nextGaussian() * 0.02D;
                 String explosionType = rand.nextBoolean() ?  "hugeexplosion" : "explode";
                 
-                worldObj.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+                world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
             }
 		}
     }
@@ -300,14 +300,14 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		}
 
 		// mark the tower as defeated
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			if (worldObj.provider instanceof WorldProviderTwilightForest){
-				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+			if (world.provider instanceof WorldProviderTwilightForest){
+				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.lichTower) {
 					chunkProvider.setStructureConquered(dx, dy, dz, true);
@@ -317,7 +317,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	}
     
 	private void applyShieldCollisions(Entity collider) {
-        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(collider, collider.boundingBox.expand(-0.2F, -0.2F, -0.2F));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.boundingBox.expand(-0.2F, -0.2F, -0.2F));
         
         for (Entity collided : list) {
         	
@@ -422,7 +422,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 	@Override
 	public World getWorld() {
-		return this.worldObj;
+		return this.world;
 	}
 
 	@Override
@@ -454,16 +454,16 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         for (int dx = minX; dx <= maxX; ++dx) {
             for (int dy = minY; dy <= maxY; ++dy) {
                 for (int dz = minZ; dz <= maxZ; ++dz) {
-                    Block block = this.worldObj.getBlock(dx, dy, dz);
+                    Block block = this.world.getBlock(dx, dy, dz);
                     
                     if (block != Blocks.AIR) {
-                    	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
+                    	int currentMeta = this.world.getBlockMetadata(dx, dy, dz);
                     	
                     	if (block == Blocks.ICE || block == Blocks.PACKED_ICE) {
-                            this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
+                            this.world.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
                             
                             // here, this effect will have to do
-                			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(block) + (currentMeta << 12));
+                			world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(block) + (currentMeta << 12));
                         } else {
                             wasBlocked = true;
                         }
@@ -524,9 +524,9 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		Vec3d minionSpot = findVecInLOSOf(targetedEntity);
 		
 		// put a minion there
-		EntityTFIceCrystal minion = new EntityTFIceCrystal(worldObj);
+		EntityTFIceCrystal minion = new EntityTFIceCrystal(world);
 		minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
-		worldObj.spawnEntity(minion);
+		world.spawnEntity(minion);
 		
 		minion.setAttackTarget(targetedEntity);
 		minion.setToDieIn30Seconds(); // don't stick around
@@ -564,7 +564,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         	int bz = MathHelper.floor(tz);
         	while (!groundFlag && ty > 0) 
         	{
-                Block whatsThere = worldObj.getBlock(bx, by - 1, bz);
+                Block whatsThere = world.getBlock(bx, by - 1, bz);
                 if (whatsThere == Blocks.AIR || !whatsThere.getMaterial().isSolid())
                 {
                     ty--;
@@ -592,13 +592,13 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         	// check that we're not colliding and not in liquid
         	float halfWidth = this.width / 2.0F;
         	AxisAlignedBB destBox = new AxisAlignedBB(tx - halfWidth, ty - yOffset + ySize, tz - halfWidth, tx + halfWidth, ty - yOffset + ySize + height, tz + halfWidth);
-        	if (worldObj.getCollidingBoundingBoxes(this, destBox).size() > 0)
+        	if (world.getCollidingBoundingBoxes(this, destBox).size() > 0)
             {
 //        		System.out.println("teleport find failed because of collision");
         		continue;
             }
         	
-        	if (worldObj.isAnyLiquid(destBox)) {
+        	if (world.isAnyLiquid(destBox)) {
 //        		System.out.println("teleport find failed because of liquid at destination");
         		continue;
         	}
@@ -621,14 +621,14 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
+        return world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
     
 	@SuppressWarnings("unchecked")
 	public int countMyMinions() {
     	// check if there are enough minions.  we check a 32x16x32 area
-		List<EntityTFIceCrystal> nearbyMinons = worldObj.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFIceCrystal> nearbyMinons = world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 
 		return nearbyMinons.size();
 	}

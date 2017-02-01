@@ -40,12 +40,12 @@ public class PacketChangeBiome implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    World worldObj = Minecraft.getMinecraft().world;
-                    Chunk chunkAt = worldObj.getChunkFromBlockCoords(message.pos);
+                    World world = Minecraft.getMinecraft().world;
+                    Chunk chunkAt = world.getChunkFromBlockCoords(message.pos);
 
                     chunkAt.getBiomeArray()[(message.pos.getZ() & 15) << 4 | (message.pos.getX() & 15)] = message.biomeId;
 
-                    worldObj.markBlockRangeForRenderUpdate(message.pos, message.pos.up(255)); // todo 1.9 is marking the WHOLE column necessary?..
+                    world.markBlockRangeForRenderUpdate(message.pos, message.pos.up(255)); // todo 1.9 is marking the WHOLE column necessary?..
                 }
             });
 

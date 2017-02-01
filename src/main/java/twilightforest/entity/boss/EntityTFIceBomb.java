@@ -46,7 +46,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 		this.motionY = 0;
 		this.hasHit = true;
 		
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			this.doTerrainEffects();
 		}
 	}
@@ -73,15 +73,15 @@ public class EntityTFIceBomb extends EntityThrowable {
      * Freeze water, put snow on snowable surfaces
      */
 	private void doTerrainEffect(BlockPos pos) {
-		IBlockState state = worldObj.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 		if (state.getMaterial() == Material.WATER) {
-			this.worldObj.setBlockState(pos, Blocks.ICE.getDefaultState());
+			this.world.setBlockState(pos, Blocks.ICE.getDefaultState());
 		}
 		if (state.getMaterial() == Material.LAVA) {
-			this.worldObj.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
+			this.world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
 		}
-		if (this.worldObj.isAirBlock(pos) && Blocks.SNOW_LAYER.canPlaceBlockAt(this.worldObj, pos)) {
-			this.worldObj.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState());
+		if (this.world.isAirBlock(pos) && Blocks.SNOW_LAYER.canPlaceBlockAt(this.world, pos)) {
+			this.world.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState());
 		}
 	}
 
@@ -94,7 +94,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 
     	if (this.hasHit)
     	{
-    		if (!worldObj.isRemote)
+    		if (!world.isRemote)
     		{
 	    		// slow down
 	    		this.motionX *= 0.1D;
@@ -123,13 +123,13 @@ public class EntityTFIceBomb extends EntityThrowable {
 			double dy = posY + 0.75F * (rand.nextFloat() - 0.5F); 
 			double dz = posZ + 0.75F * (rand.nextFloat() - 0.5F); 
 			
-			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowstuff", dx, dy, dz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", dx, dy, dz, 0, 0, 0);
 		}
 	}
 
 	private void makeIceZone() {
 		// nearby sparkles
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			// sparkles
 			for (int i = 0; i < 20; i++) {
 				double dx = this.posX + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
@@ -137,7 +137,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 				double dz = this.posZ + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				
 				
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowstuff", dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			// damage
@@ -149,7 +149,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 	}
 
 	private void hitNearbyEntities() {
-		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(3, 2, 3));
+		List<Entity> nearby = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(3, 2, 3));
 		
 		for (Entity entity : nearby) {
 			if (entity instanceof EntityLivingBase && entity != this.getThrower()) {
@@ -159,8 +159,8 @@ public class EntityTFIceBomb extends EntityThrowable {
 					entity.setDead();
 					BlockPos pos = new BlockPos(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
 
-					worldObj.setBlockState(pos, Blocks.ICE.getDefaultState());
-					worldObj.setBlockState(pos.up(), Blocks.ICE.getDefaultState());
+					world.setBlockState(pos, Blocks.ICE.getDefaultState());
+					world.setBlockState(pos.up(), Blocks.ICE.getDefaultState());
 					
 				} else {
 					entity.attackEntityFrom(DamageSource.magic, 1);

@@ -100,15 +100,15 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
             }
         }
         
-        if (mop.getBlockPos() != null && !this.worldObj.isAirBlock(mop.getBlockPos())) {
+        if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
 
         	// clang!
         	if (!this.isReturning) {
-        		this.worldObj.playSoundAtEntity(this, "random.anvil_land", 0.125f, this.rand.nextFloat());
+        		this.world.playSoundAtEntity(this, "random.anvil_land", 0.125f, this.rand.nextFloat());
         	}
 
-        	if (!this.worldObj.isRemote && this.blocksSmashed < MAX_SMASH) {
-        		if (this.worldObj.getBlockState(mop.getBlockPos()).getBlockHardness(worldObj, mop.getBlockPos()) > 0.3F) {
+        	if (!this.world.isRemote && this.blocksSmashed < MAX_SMASH) {
+        		if (this.world.getBlockState(mop.getBlockPos()).getBlockHardness(world, mop.getBlockPos()) > 0.3F) {
         			// riccochet
         			double bounce = 0.6;
         			this.velX *= bounce;
@@ -155,7 +155,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         	}
 
         	// head back to owner
-        	if (!this.worldObj.isRemote) {
+        	if (!this.world.isRemote) {
         		this.isReturning = true;
         	}
         	
@@ -186,20 +186,20 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
             for (int dy = minY; dy <= maxY; ++dy) {
                 for (int dz = minZ; dz <= maxZ; ++dz) {
 					BlockPos pos = new BlockPos(dx, dy, dz);
-					IBlockState state = worldObj.getBlockState(pos);
+					IBlockState state = world.getBlockState(pos);
                     Block block = state.getBlock();
 
-                    if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(worldObj, pos) >= 0) {
+                    if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(world, pos) >= 0) {
 
                     	if (entity != null && entity instanceof EntityPlayer) {
                     		EntityPlayer player = (EntityPlayer)entity;
 
-                    		if (block.canHarvestBlock(worldObj, pos, player)){
-                    			block.harvestBlock(this.worldObj, player, pos, state, worldObj.getTileEntity(pos), player.getHeldItemMainhand());
+                    		if (block.canHarvestBlock(world, pos, player)){
+                    			block.harvestBlock(this.world, player, pos, state, world.getTileEntity(pos), player.getHeldItemMainhand());
                     		}
                     	}
 
-                    	worldObj.destroyBlock(pos, false);
+                    	world.destroyBlock(pos, false);
             			
             			this.blocksSmashed++;
             			
@@ -225,7 +225,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 			chain5.onUpdate();
     	}
     	
-    	if (this.getThrower() == null && !this.worldObj.isRemote) {
+    	if (this.getThrower() == null && !this.world.isRemote) {
     		this.setDead();
     	}
     	
@@ -247,7 +247,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
     	}
     	
     	// if we are returning, set course for the player
-        if (this.isReturning && !this.worldObj.isRemote && this.getThrower() != null) {
+        if (this.isReturning && !this.world.isRemote && this.getThrower() != null) {
         	
         	EntityLivingBase returnTo = this.getThrower();
         
@@ -264,8 +264,8 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         
         
         // on the client, if we are not attached, assume we have just spawned, and attach to the player
-        if (this.worldObj.isRemote && !this.isAttached) {
-            List nearbyEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(-this.motionX, -this.motionY, -this.motionZ).expand(2.0D, 2.0D, 2.0D));
+        if (this.world.isRemote && !this.isAttached) {
+            List nearbyEntities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(-this.motionX, -this.motionY, -this.motionZ).expand(2.0D, 2.0D, 2.0D));
             for (int i = 0; i < nearbyEntities.size(); ++i) {
                 Entity nearby = (Entity)nearbyEntities.get(i);
                 
@@ -314,7 +314,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 	@Override
 	public World getWorld() {
-		return this.worldObj;
+		return this.world;
 	}
 
 

@@ -166,7 +166,7 @@ public class EntityTFTinyBird extends EntityTFBird {
     public float getBlockPathWeight(BlockPos pos)
     {
     	// prefer standing on leaves
-		Material underMaterial = this.worldObj.getBlockState(pos.down()).getMaterial();
+		Material underMaterial = this.world.getBlockState(pos.down()).getMaterial();
 		if (underMaterial == Material.LEAVES) {
 			return 200.0F;
 		}
@@ -177,7 +177,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 			return 9.0F;
 		}
 		// default to just prefering lighter areas
-		return this.worldObj.getLightBrightness(pos) - 0.5F;
+		return this.world.getLightBrightness(pos) - 0.5F;
     }
 
 	@Override
@@ -213,7 +213,7 @@ public class EntityTFTinyBird extends EntityTFBird {
             if (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(posX, posY - 1, posZ)))
             {
                 this.setIsBirdLanded(false);
-                this.worldObj.playEvent(1015, new BlockPos(this), 0); // todo 1.9 ghast warn sound..?
+                this.world.playEvent(1015, new BlockPos(this), 0); // todo 1.9 ghast warn sound..?
                 this.motionY = 0.4;
                 //FMLLog.info("bird taking off because it is no longer on land");
             }
@@ -223,7 +223,7 @@ public class EntityTFTinyBird extends EntityTFBird {
                 {
                     this.setIsBirdLanded(false);
                     this.motionY = 0.4;
-                    this.worldObj.playEvent(1015, new BlockPos(this), 0); // todo 1.9 ghast warn sound..?
+                    this.world.playEvent(1015, new BlockPos(this), 0); // todo 1.9 ghast warn sound..?
                     //FMLLog.info("bird taking off because it was spooked");
                 }
             }
@@ -233,7 +233,7 @@ public class EntityTFTinyBird extends EntityTFBird {
         	this.currentFlightTime++;
 
             // [VanillaCopy] Modified version of last half of EntityBat.updateAITasks. Edits noted
-            if (this.spawnPosition != null && (!this.worldObj.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1))
+            if (this.spawnPosition != null && (!this.world.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1))
             {
                 this.spawnPosition = null;
             }
@@ -257,7 +257,7 @@ public class EntityTFTinyBird extends EntityTFBird {
             this.rotationYaw += f1;
 
             // TF - change chance 100 -> 10; change check to isLandable
-            if (this.rand.nextInt(100) == 0 && isLandableBlock(new BlockPos(posX, posY - 1, posZ))) //this.worldObj.getBlockState(blockpos1).isNormalCube())
+            if (this.rand.nextInt(100) == 0 && isLandableBlock(new BlockPos(posX, posY - 1, posZ))) //this.world.getBlockState(blockpos1).isNormalCube())
             {
                 // this.setIsBatHanging(true); TF - land the bird
                 setIsBirdLanded(true);
@@ -268,14 +268,14 @@ public class EntityTFTinyBird extends EntityTFBird {
     }
 
 	public boolean isSpooked() {
-		EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 4.0D);
+		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
 		
 		return this.hurtTime > 0 || (closestPlayer != null && (closestPlayer.inventory.getCurrentItem() == null || closestPlayer.inventory.getCurrentItem().getItem() != Items.WHEAT_SEEDS));
 	}
     
     public boolean isLandableBlock(BlockPos pos)
     {
-        IBlockState state = worldObj.getBlockState(pos);
+        IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
         
         if (block == Blocks.AIR)
@@ -284,7 +284,7 @@ public class EntityTFTinyBird extends EntityTFBird {
         }
         else
         {
-        	return block.isLeaves(state, worldObj, pos) || state.isSideSolid(worldObj, pos, EnumFacing.UP);
+        	return block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, EnumFacing.UP);
         }
     }
 

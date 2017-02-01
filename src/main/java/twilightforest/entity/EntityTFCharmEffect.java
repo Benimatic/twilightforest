@@ -86,7 +86,7 @@ public class EntityTFCharmEffect extends Entity
         	this.orbiting = getOwner();
         }
         
-        if (this.orbiting != null && !worldObj.isRemote)
+        if (this.orbiting != null && !world.isRemote)
         {
         	this.setLocationAndAngles(orbiting.posX, orbiting.posY + orbiting.getEyeHeight(), orbiting.posZ, orbiting.rotationYaw, orbiting.rotationPitch);
 
@@ -106,7 +106,7 @@ public class EntityTFCharmEffect extends Entity
         		double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
         		double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 
-        		worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
+        		world.spawnParticle(EnumParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
         	}
         }
        
@@ -147,7 +147,7 @@ public class EntityTFCharmEffect extends Entity
 
     public EntityLivingBase getOwner()
 	{
-	    return this.worldObj.getPlayerEntityByName(this.getOwnerName());
+	    return this.world.getPlayerEntityByName(this.getOwnerName());
 	}
 
 	public int getItemID()

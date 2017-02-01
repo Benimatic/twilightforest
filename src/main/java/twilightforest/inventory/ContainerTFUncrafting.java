@@ -45,10 +45,10 @@ public class ContainerTFUncrafting extends Container {
     public InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
     public IInventory tinkerInput = new InventoryTFGoblinInput(this);
     public IInventory tinkerResult = new InventoryCraftResult();
-    private World worldObj;
+    private World world;
     
     public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
-		this.worldObj = world;
+		this.world = world;
 		this.addSlotToContainer(new Slot(this.tinkerInput, 0, 13, 35));
         this.addSlotToContainer(new SlotTFGoblinCraftResult(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, this.tinkerResult, 0, 147, 35));
 
@@ -166,7 +166,7 @@ public class ContainerTFUncrafting extends Container {
     	if (par1IInventory == this.assemblyMatrix || par1IInventory == this.tinkerInput) {
     		if (isMatrixEmpty(this.tinkerInput)) {
 		    	// display the output
-		    	this.tinkerResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.assemblyMatrix, this.worldObj));
+		    	this.tinkerResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.assemblyMatrix, this.world));
     			this.uncraftingMatrix.recraftingCost = 0;
     		}
     		else {
@@ -200,7 +200,7 @@ public class ContainerTFUncrafting extends Container {
     			}
     		}
     		// is there a result from this combined thing?
-    		ItemStack result = CraftingManager.getInstance().findMatchingRecipe(this.combineMatrix, this.worldObj);
+    		ItemStack result = CraftingManager.getInstance().findMatchingRecipe(this.combineMatrix, this.world);
     		ItemStack input = this.tinkerInput.getStackInSlot(0);
     		
     		if (result != null && isValidMatchForInput(input, result)) {
@@ -644,7 +644,7 @@ public class ContainerTFUncrafting extends Container {
     {
         super.onContainerClosed(par1EntityPlayer);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
         	// drop items in assembly grid
             for (int i = 0; i < 9; ++i)

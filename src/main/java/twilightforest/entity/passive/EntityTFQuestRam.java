@@ -105,7 +105,7 @@ public class EntityTFQuestRam extends EntityAnimal {
             int chunkX = MathHelper.floor(this.posX) / 16;
             int chunkZ = MathHelper.floor(this.posZ) / 16;
             
-            TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.worldObj);
+            TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.world);
 
             if (nearFeature != TFFeature.questGrove)
             {
@@ -114,7 +114,7 @@ public class EntityTFQuestRam extends EntityAnimal {
             else
             {
             	// set our home position to the center of the quest grove
-                BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), worldObj);
+                BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
                 this.setHomePosAndDistance(cc, 13);
                 
                 //System.out.println("Set home area to " + cc.posX + ", " + cc.posY + ", " + cc.posZ);
@@ -142,7 +142,7 @@ public class EntityTFQuestRam extends EntityAnimal {
         dropItemWithOffset(Item.getItemFromBlock(Blocks.LAPIS_BLOCK), 1, 1.0F);
         dropItemWithOffset(TFItems.crumbleHorn, 1, 1.0F);
     	
-    	rewardNearbyPlayers(this.worldObj, this.posX, this.posY, this.posZ);
+    	rewardNearbyPlayers(this.world, this.posX, this.posY, this.posZ);
 	}
 
     /**
@@ -196,7 +196,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 //        for (int var1 = 0; var1 < 2; ++var1)
 //        {
-//            this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextDouble());
+//            this.world.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextDouble());
 //        }
     	checkAndAnimateColors();
     }
@@ -277,7 +277,7 @@ public class EntityTFQuestRam extends EntityAnimal {
         int blue = colorVal & 0xFF;
 
     	for (int i = 0; i < iterations; i++) {
-          this.worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
+          this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
     	}
     	
     	//TODO: it would be nice to play a custom sound

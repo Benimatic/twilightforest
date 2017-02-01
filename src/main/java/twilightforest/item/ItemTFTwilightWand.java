@@ -24,7 +24,7 @@ public class ItemTFTwilightWand extends ItemTF {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
 		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
 		{
 			player.setActiveHand(hand);
@@ -46,12 +46,12 @@ public class ItemTFTwilightWand extends ItemTF {
 		}
     	
     	if (count % 6 == 0) {
-    		World worldObj = living.worldObj;
+    		World world = living.world;
 	    	
-			worldObj.playSoundAtEntity(living, "mob.ghast.fireball", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
+			world.playSoundAtEntity(living, "mob.ghast.fireball", 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 			
-			if (!worldObj.isRemote) {
-				worldObj.spawnEntity(new EntityTFTwilightWandBolt(worldObj, living));
+			if (!world.isRemote) {
+				world.spawnEntity(new EntityTFTwilightWandBolt(world, living));
 				
 				stack.damageItem(1, living);
 			}

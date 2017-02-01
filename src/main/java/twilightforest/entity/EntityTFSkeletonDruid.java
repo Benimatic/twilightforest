@@ -106,8 +106,8 @@ public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAtta
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
-		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.worldObj, this);
-		this.worldObj.playSoundAtEntity(this, "mob.ghast.fireball", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
+		this.world.playSoundAtEntity(this, "mob.ghast.fireball", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 		
 		natureBolt.setTarget(attackTarget);
 
@@ -116,7 +116,7 @@ public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAtta
 		double tz = attackTarget.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
-		this.worldObj.spawnEntity(natureBolt);
+		this.world.spawnEntity(natureBolt);
 
 	}
 
@@ -126,21 +126,21 @@ public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAtta
     {
         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
+        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
         {
             return false;
         }
         else
         {
-            int i = this.worldObj.getLightFromNeighbors(blockpos);
+            int i = this.world.getLightFromNeighbors(blockpos);
 
             // TF - no thunder check
-            /*if (this.worldObj.isThundering())
+            /*if (this.world.isThundering())
             {
-                int j = this.worldObj.getSkylightSubtracted();
-                this.worldObj.setSkylightSubtracted(10);
-                i = this.worldObj.getLightFromNeighbors(blockpos);
-                this.worldObj.setSkylightSubtracted(j);
+                int j = this.world.getSkylightSubtracted();
+                this.world.setSkylightSubtracted(10);
+                i = this.world.getLightFromNeighbors(blockpos);
+                this.world.setSkylightSubtracted(j);
             }*/
 
             return i <= this.rand.nextInt(12); // TF - rand(8) -> rand(12)

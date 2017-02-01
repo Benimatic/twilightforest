@@ -180,7 +180,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     	chainAngle += CHAIN_SPEED;
     	chainAngle %= 360;
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.dataManager.set(DATA_CHAINLENGTH, (byte) Math.floor(getChainLength() * 127F));
             this.dataManager.set(DATA_CHAINPOS, (byte) Math.floor(getChainAngle() / 360F * 255F));
@@ -214,7 +214,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		this.chain3.setPosition(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
 		
 		// collide things with the block
-        if (!worldObj.isRemote && this.isSwingingChain())
+        if (!world.isRemote && this.isSwingingChain())
         {
         	this.applyBlockCollisions(this.block);
         }
@@ -226,7 +226,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
      */
 	protected void applyBlockCollisions(Entity collider)
     {
-        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && !list.isEmpty())
         {
@@ -276,7 +276,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
      */
     public float getChainAngle()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
     		return this.chainAngle;
         }
@@ -291,7 +291,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	 */
 	public float getChainLength()
 	{
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
 			if (isSwingingChain())
 			{
@@ -310,7 +310,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public World getWorld() {
-		return this.worldObj;
+		return this.world;
 	}
 
 	@Override

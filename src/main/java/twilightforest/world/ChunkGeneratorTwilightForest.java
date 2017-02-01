@@ -53,7 +53,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	public NoiseGeneratorOctaves noiseGen5;
 	public NoiseGeneratorOctaves noiseGen6;
 	public NoiseGeneratorOctaves mobSpawnerNoise;
-	private World worldObj;
+	private World world;
 	private double stoneNoise[];
 	private TFGenCaves caveGenerator;
 	private TFGenRavine ravineGenerator;
@@ -95,7 +95,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	
 		ravineGenerator = new TFGenRavine();
 		unusedIntArray32x32 = new int[32][32];
-		worldObj = world;
+		world = world;
 		rand = new Random(l);
 		//noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
 		//noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
@@ -134,19 +134,19 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		squishTerrain(primer);
 		
 		addDarkForestCanopy2(cx, cz, primer);
-		biomesForGeneration = worldObj.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, cx * 16, cz * 16, 16, 16);
+		biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, cx * 16, cz * 16, 16, 16);
 		addGlaciers(cx, cz, primer, biomesForGeneration);
 		deformTerrainForFeature(cx, cz, primer);
 		replaceBlocksForBiome(cx, cz, primer, biomesForGeneration);
-		caveGenerator.generate(worldObj, cx, cz, primer);
-		ravineGenerator.generate(worldObj, cx, cz, primer);
+		caveGenerator.generate(world, cx, cz, primer);
+		ravineGenerator.generate(world, cx, cz, primer);
 
 		ChunkPrimer fake = new ChunkPrimer();
 		// todo 1.9 why is it faking here?
-		majorFeatureGenerator.generate(worldObj, cx, cz, fake);
-		hollowTreeGenerator.generate(worldObj, cx, cz, fake);
+		majorFeatureGenerator.generate(world, cx, cz, fake);
+		hollowTreeGenerator.generate(world, cx, cz, fake);
 	
-		Chunk chunk = new Chunk(worldObj, primer, cx, cz);
+		Chunk chunk = new Chunk(world, primer, cx, cz);
 	
 		// load in biomes, to prevent striping?!
 		byte[] chunkBiomes = chunk.getBiomeArray();
@@ -162,7 +162,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	public void generateTerrain2(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         byte seaLevel = 63;
-        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
+        this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
         this.makeLandPerBiome2(chunkX * 4, 0, chunkZ * 4);
 
         for (int k = 0; k < 4; ++k)
@@ -388,7 +388,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
             for (int x = 0; x < 16; ++x)
             {
                 Biome biomegenbase = biomes[x + z * 16];
-                biomegenbase.genTerrainBlocks(this.worldObj, this.rand, primer, chunkX * 16 + z, chunkZ * 16 + x, this.stoneNoise[x + z * 16]);
+                biomegenbase.genTerrainBlocks(this.world, this.rand, primer, chunkX * 16 + z, chunkZ * 16 + x, this.stoneNoise[x + z * 16]);
             }
         }
     }
@@ -397,12 +397,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	 * Raises up and hollows out the hollow hills.
 	 */
 	private void deformTerrainForFeature(int cx, int cz, ChunkPrimer primer) {
-		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, worldObj);
+		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world);
 		if (!nearFeature.isTerrainAltered) {
 			return;
 		}
 
-		int[] nearCenter = TFFeature.getNearestCenter(cx, cz, worldObj);
+		int[] nearCenter = TFFeature.getNearestCenter(cx, cz, world);
 
 		int hx = nearCenter[0];
 		int hz = nearCenter[1];
@@ -694,7 +694,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				
 				double dist = Math.min(dist0, Math.min(dist2, dist3));
 				
-				float pr = worldObj.rand.nextFloat();
+				float pr = world.rand.nextFloat();
 				double cv = (dist - 7F) - (pr * 3.0F);
 
 				// randomize depth and height
@@ -732,7 +732,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	}
 
 	private float pseudoRand(int bx, int bz) {
-		Random rand = new Random(this.worldObj.getSeed() + (bx * 321534781) ^ (bz * 756839));
+		Random rand = new Random(this.world.getSeed() + (bx * 321534781) ^ (bz * 756839));
 		rand.setSeed(rand.nextLong());
 		return rand.nextFloat();
 	}
@@ -808,10 +808,10 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				//int thickness = thicks[qz + (qz) * 5];
 				
 				// make sure we're not too close to the tower
-				TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, worldObj);
+				TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world);
 				if (nearFeature == TFFeature.darkTower) {
 					// check for closeness
-					int[] nearCenter = TFFeature.getNearestCenter(chunkX, chunkZ, worldObj);
+					int[] nearCenter = TFFeature.getNearestCenter(chunkX, chunkZ, world);
 					int hx = nearCenter[0];
 					int hz = nearCenter[1];
 
@@ -871,25 +871,25 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		BlockFalling.fallInstantly = true;
 		BlockPos worldPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
 
-		Biome biomeGen = worldObj.getBiome(worldPos);
+		Biome biomeGen = world.getBiome(worldPos);
 
-		rand.setSeed(worldObj.getSeed());
+		rand.setSeed(world.getSeed());
 		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
 		long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-		rand.setSeed(chunkX * l1 + chunkZ * l2 ^ worldObj.getSeed());
+		rand.setSeed(chunkX * l1 + chunkZ * l2 ^ world.getSeed());
 
 		boolean disableFeatures = false;
 
-		disableFeatures |= this.majorFeatureGenerator.generateStructure(worldObj, rand, new ChunkPos(chunkX, chunkZ);
-		disableFeatures |= !TFFeature.getNearestFeature(chunkX, chunkZ, worldObj).areChunkDecorationsEnabled;
+		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ);
+		disableFeatures |= !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
 		
-		hollowTreeGenerator.generateStructuresInChunk(worldObj, rand, chunkX, chunkZ);
+		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
 
 		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.theBiomeDecorator.generateLakes) {
 			int i1 = worldPos.getX() + rand.nextInt(16) + 8;
 			int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
 			int i3 = worldPos.getZ() + rand.nextInt(16) + 8;
-			(new WorldGenLakes(Blocks.WATER)).generate(worldObj, rand, new BlockPos(i1, i2, i3));
+			(new WorldGenLakes(Blocks.WATER)).generate(world, rand, new BlockPos(i1, i2, i3));
 		}
 		
 		if (!disableFeatures && rand.nextInt(32) == 0) // reduced from 8
@@ -898,27 +898,27 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 			int j2 = rand.nextInt(rand.nextInt(TFWorld.CHUNKHEIGHT - 8) + 8);
 			int j3 = worldPos.getZ() + rand.nextInt(16) + 8;
 			if (j2 < TFWorld.SEALEVEL || rand.nextInt(10) == 0) {
-				(new WorldGenLakes(Blocks.LAVA)).generate(worldObj, rand, new BlockPos(j1, j2, j3));
+				(new WorldGenLakes(Blocks.LAVA)).generate(world, rand, new BlockPos(j1, j2, j3));
 			}
 		}
 		for (int k1 = 0; k1 < 8; k1++) {
 			int k2 = worldPos.getX() + rand.nextInt(16) + 8;
 			int k3 = rand.nextInt(TFWorld.CHUNKHEIGHT);
 			int l3 = worldPos.getZ() + rand.nextInt(16) + 8;
-			(new WorldGenDungeons()).generate(worldObj, rand, new BlockPos(k2, k3, l3));
+			(new WorldGenDungeons()).generate(world, rand, new BlockPos(k2, k3, l3));
 		}
 
-		biomeGen.decorate(worldObj, rand, worldPos);
-		WorldEntitySpawner.performWorldGenSpawning(worldObj, biomeGen, worldPos.getX() + 8, worldPos.getZ() + 8, 16, 16, rand);
+		biomeGen.decorate(world, rand, worldPos);
+		WorldEntitySpawner.performWorldGenSpawning(world, biomeGen, worldPos.getX() + 8, worldPos.getZ() + 8, 16, 16, rand);
 		worldPos = worldPos.add(8, 0, 8);
 		for (int i2 = 0; i2 < 16; i2++) {
 			for (int j3 = 0; j3 < 16; j3++) {
-				BlockPos j4 = worldObj.getPrecipitationHeight(worldPos.add(i2, 0, j3));
-				if (worldObj.canBlockFreezeWater(j4.down())) {
-					worldObj.setBlockState(j4.down(), Blocks.ICE.getDefaultState(), 2);
+				BlockPos j4 = world.getPrecipitationHeight(worldPos.add(i2, 0, j3));
+				if (world.canBlockFreezeWater(j4.down())) {
+					world.setBlockState(j4.down(), Blocks.ICE.getDefaultState(), 2);
 				}
-				if (worldObj.canSnowAt(j4, true)) {
-					worldObj.setBlockState(j4, Blocks.SNOW_LAYER.getDefaultState(), 2);
+				if (world.canSnowAt(j4, true)) {
+					world.setBlockState(j4, Blocks.SNOW_LAYER.getDefaultState(), 2);
 				}
 			}
 		}
@@ -942,7 +942,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precicely in a feature?
-		TFFeature nearestFeature = TFFeature.getFeatureForRegion(mapX >> 4, mapZ >> 4, worldObj);
+		TFFeature nearestFeature = TFFeature.getFeatureForRegion(mapX >> 4, mapZ >> 4, world);
 
 		if (nearestFeature != TFFeature.nothing) {
 			// if the feature is already conquered, no spawns
@@ -957,7 +957,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 			}
 		}
 
-		Biome biome = worldObj.getBiome(pos);
+		Biome biome = world.getBiome(pos);
 
 		if (biome == null) {
 			return ImmutableList.of();
@@ -1027,7 +1027,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	@Override
 	public void recreateStructures(Chunk chunk, int var1, int var2) {
-		majorFeatureGenerator.generate(worldObj, var1, var2, null);
-		hollowTreeGenerator.generate(worldObj, var1, var2, null);
+		majorFeatureGenerator.generate(world, var1, var2, null);
+		hollowTreeGenerator.generate(world, var1, var2, null);
 	}
 }

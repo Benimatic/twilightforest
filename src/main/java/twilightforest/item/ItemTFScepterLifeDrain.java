@@ -36,7 +36,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
 		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) {
 			player.setActiveHand(hand);
 		}
@@ -50,7 +50,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	/**
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
-	private static void animateTargetShatter(World worldObj, EntityLivingBase target) {
+	private static void animateTargetShatter(World world, EntityLivingBase target) {
 		for (int var1 = 0; var1 < 50; ++var1)
 		{
 		    double gaussX = itemRand.nextGaussian() * 0.02D;
@@ -60,7 +60,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		    
 		    Item popItem = getTargetDropItemId(target) != null ? getTargetDropItemId(target) : Items.ROTTEN_FLESH;
 		    
-		    worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
+		    world.spawnParticle(EnumParticleTypes.ITEM_CRACK, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
 		}
 	}
 	
@@ -72,14 +72,14 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	/**
 	 * What, if anything, is the player currently looking at?
 	 */
-	private Entity getPlayerLookTarget(World worldObj, EntityLivingBase living) {
+	private Entity getPlayerLookTarget(World world, EntityLivingBase living) {
 		Entity pointedEntity = null;
 		double range = 20.0D;
         Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
         Vec3d lookVec = living.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 1.0F;
-        List<Entity> possibleList = worldObj.getEntitiesWithinAABBExcludingEntity(living, living.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+        List<Entity> possibleList = world.getEntitiesWithinAABBExcludingEntity(living, living.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList)
@@ -118,7 +118,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
-		World worldObj = living.worldObj;
+		World world = living.world;
 		
 		if (stack.getItemDamage() >= this.getMaxDamage()) {
 			// do not use
@@ -129,7 +129,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		if (count % 5 == 0) {
 
 			// is the player looking at an entity
-			Entity pointedEntity = getPlayerLookTarget(worldObj, living);
+			Entity pointedEntity = getPlayerLookTarget(world, living);
 
 			if (pointedEntity != null && pointedEntity instanceof EntityLivingBase) {
 				EntityLivingBase target =  (EntityLivingBase)pointedEntity;
@@ -139,14 +139,14 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 					if (target.getHealth() <= 3) {
 						// make it explode
 
-						makeRedMagicTrail(worldObj,  living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
+						makeRedMagicTrail(world,  living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
 						if (target instanceof EntityLiving)
 						{
 							((EntityLiving) target).spawnExplosionParticle();
 						}
 						target.playSound(SoundEvents.ENTITY_GENERIC_BIG_FALL, 1.0F, ((itemRand.nextFloat() - itemRand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-						animateTargetShatter(worldObj, (EntityLivingBase) target);
-						if (!worldObj.isRemote) {
+						animateTargetShatter(world, (EntityLivingBase) target);
+						if (!world.isRemote) {
 							target.setDead();
 							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));
 						}
@@ -154,7 +154,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 					}
 					else {
 						// we have hit this creature recently
-						if (!worldObj.isRemote) {
+						if (!world.isRemote) {
 							target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 3);
 
 							// only do lifting effect on creatures weaker than the player
@@ -178,11 +178,11 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 				}
 				else {
 					// this is a new creature to start draining
-					makeRedMagicTrail(worldObj,  living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
+					makeRedMagicTrail(world,  living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
 
-					worldObj.playSoundAtEntity(living, "fire.ignite", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
+					world.playSoundAtEntity(living, "fire.ignite", 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
-					if (!worldObj.isRemote) {
+					if (!world.isRemote) {
 						target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 1);
 						
 						// only do lifting effect on creatures weaker than the player
@@ -196,7 +196,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 					}
 				}
 
-				if (!worldObj.isRemote) {
+				if (!world.isRemote) {
 					stack.damageItem(1, living);
 				}
 
@@ -210,7 +210,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		return (float) target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
 	}
 
-	private void makeRedMagicTrail(World worldObj, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	private void makeRedMagicTrail(World world, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
     	int particles = 32;
     	for (int i = 0; i < particles; i++)
@@ -219,10 +219,10 @@ public class ItemTFScepterLifeDrain extends ItemTF {
     		float f = 1.0F;
     		float f1 = 0.5F;
     		float f2 = 0.5F;
-    		double tx = srcX + (destX - srcX) * trailFactor + worldObj.rand.nextGaussian() * 0.005;
-    		double ty = srcY + (destY - srcY) * trailFactor + worldObj.rand.nextGaussian() * 0.005;
-    		double tz = srcZ + (destZ - srcZ) * trailFactor + worldObj.rand.nextGaussian() * 0.005;
-    		worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+    		double tx = srcX + (destX - srcX) * trailFactor + world.rand.nextGaussian() * 0.005;
+    		double ty = srcY + (destY - srcY) * trailFactor + world.rand.nextGaussian() * 0.005;
+    		double tz = srcZ + (destZ - srcZ) * trailFactor + world.rand.nextGaussian() * 0.005;
+    		world.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
     	}
 	}
 	

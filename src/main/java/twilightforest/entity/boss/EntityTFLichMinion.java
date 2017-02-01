@@ -71,7 +71,7 @@ public class EntityTFLichMinion extends EntityZombie {
     }
 
 	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion(this)) {
@@ -102,10 +102,10 @@ public class EntityTFLichMinion extends EntityZombie {
     {
         float[] equipChances = new float[] {0.0F, 0.25F, 0.75F, 1F};
     	
-        if (this.rand.nextFloat() < equipChances[2]) //this.worldObj.difficultySetting])
+        if (this.rand.nextFloat() < equipChances[2]) //this.world.difficultySetting])
         {
             int var1 = this.rand.nextInt(2);
-            float var2 = this.worldObj.getDifficulty() == EnumDifficulty.HARD ? 0.1F : 0.25F;
+            float var2 = this.world.getDifficulty() == EnumDifficulty.HARD ? 0.1F : 0.25F;
 
             if (this.rand.nextFloat() < 0.07F)
             {

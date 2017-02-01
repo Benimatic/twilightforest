@@ -44,7 +44,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
     @Override
 	public boolean continueExecuting()
     {
-        return entityObj.worldObj.getBlockState(tntPos).getBlock() == Blocks.TNT;
+        return entityObj.world.getBlockState(tntPos).getBlock() == Blocks.TNT;
     }
     
     @Override
@@ -71,8 +71,8 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
         	// light it!
         	entityObj.playLivingSound();
         	
-        	Blocks.TNT.onBlockDestroyedByPlayer(entityObj.worldObj, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
-        	entityObj.worldObj.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
+        	Blocks.TNT.onBlockDestroyedByPlayer(entityObj.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
+        	entityObj.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
             this.entityObj.getNavigator().clearPathEntity();
         }
         else

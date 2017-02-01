@@ -151,7 +151,7 @@ public class EntityTFTowerTermite extends EntityMob
          */
         public boolean shouldExecute()
         {
-            if (!this.silverfish.worldObj.getGameRules().getBoolean("mobGriefing"))
+            if (!this.silverfish.world.getGameRules().getBoolean("mobGriefing"))
             {
                 return false;
             }
@@ -171,7 +171,7 @@ public class EntityTFTowerTermite extends EntityMob
                 {
                     this.facing = EnumFacing.random(random);
                     BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
-                    IBlockState iblockstate = this.silverfish.worldObj.getBlockState(blockpos);
+                    IBlockState iblockstate = this.silverfish.world.getBlockState(blockpos);
 
                     if (iblockstate == TFBlocks.towerWood.getDefaultState()) // TF - Change block check
                     {
@@ -204,7 +204,7 @@ public class EntityTFTowerTermite extends EntityMob
             }
             else
             {
-                World world = this.silverfish.worldObj;
+                World world = this.silverfish.world;
                 BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
                 IBlockState iblockstate = world.getBlockState(blockpos);
 
@@ -255,7 +255,7 @@ public class EntityTFTowerTermite extends EntityMob
 
             if (this.lookForFriends <= 0)
             {
-                World world = this.silverfish.worldObj;
+                World world = this.silverfish.world;
                 Random random = this.silverfish.getRNG();
                 BlockPos blockpos = new BlockPos(this.silverfish);
 

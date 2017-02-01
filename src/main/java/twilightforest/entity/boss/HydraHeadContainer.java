@@ -358,7 +358,7 @@ public class HydraHeadContainer {
 			headEntity.width = headEntity.height = this.isActive() ? 4.0F : 1.0F;
 	    	
 	    	// only actually do these things on the server
-	    	if (!hydraObj.worldObj.isRemote)
+	    	if (!hydraObj.world.isRemote)
 	    	{
 	    		advanceRespawnCounter();
 	    		
@@ -461,7 +461,7 @@ public class HydraHeadContainer {
             double var4 = part.getRNG().nextGaussian() * 0.02D;
             double var6 = part.getRNG().nextGaussian() * 0.02D;
             String particle = large && part.getRNG().nextInt(5) == 0 ? "largeexplode" : "explode";
-            part.worldObj.spawnParticle(particle, part.posX + part.getRNG().nextFloat() * part.width * 2.0F - part.width, part.posY + part.getRNG().nextFloat() * part.height, part.posZ + part.getRNG().nextFloat() * part.width * 2.0F - part.width, var8, var4, var6);
+            part.world.spawnParticle(particle, part.posX + part.getRNG().nextFloat() * part.width * 2.0F - part.width, part.posY + part.getRNG().nextFloat() * part.height, part.posZ + part.getRNG().nextFloat() * part.width * 2.0F - part.width, var8, var4, var6);
         }
 		
 	}
@@ -615,12 +615,12 @@ public class HydraHeadContainer {
 		double py = headEntity.posY + 1 + vector.yCoord * dist;
 		double pz = headEntity.posZ + vector.zCoord * dist;
 		
-		//hydraObj.worldObj.spawnParticle("mobSpell", px, py, pz, 0.3, 0.9, 0.1);
+		//hydraObj.world.spawnParticle("mobSpell", px, py, pz, 0.3, 0.9, 0.1);
 
 		if (headEntity.getState() == STATE_FLAME_BEGINNING)
 		{
-			headEntity.worldObj.spawnParticle("flame", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
-			headEntity.worldObj.spawnParticle("smoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle("flame", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle("smoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 		
 		if (headEntity.getState() == STATE_FLAME_BREATHING)
@@ -643,18 +643,18 @@ public class HydraHeadContainer {
 		        dy *= velocity;
 		        dz *= velocity;
 				
-				TwilightForestMod.proxy.spawnParticle(headEntity.worldObj, "largeflame", px, py, pz, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(headEntity.world, "largeflame", px, py, pz, dx, dy, dz);
 			}
 		}
 		
 		if (headEntity.getState() == STATE_BITE_BEGINNING || headEntity.getState() == STATE_BITE_READY)
 		{
-			headEntity.worldObj.spawnParticle("splash", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle("splash", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 		
 		if (headEntity.getState() == STATE_MORTAR_BEGINNING)
 		{
-			headEntity.worldObj.spawnParticle("largesmoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle("largesmoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
@@ -665,15 +665,15 @@ public class HydraHeadContainer {
 		if (headEntity.getState() == STATE_FLAME_BREATHING && headEntity.ticksExisted % 5 == 0)
 		{
 			// fire breathing!
-			headEntity.worldObj.playSoundEffect(headEntity.posX + 0.5, headEntity.posY + 0.5, headEntity.posZ + 0.5, "mob.ghast.fireball", 0.5F + headEntity.getRNG().nextFloat(), headEntity.getRNG().nextFloat() * 0.7F + 0.3F);
+			headEntity.world.playSoundEffect(headEntity.posX + 0.5, headEntity.posY + 0.5, headEntity.posZ + 0.5, "mob.ghast.fireball", 0.5F + headEntity.getRNG().nextFloat(), headEntity.getRNG().nextFloat() * 0.7F + 0.3F);
 		}
 		if (headEntity.getState() == STATE_ROAR_RAWR)
 		{
-			headEntity.worldObj.playSoundEffect(headEntity.posX + 0.5, headEntity.posY + 0.5, headEntity.posZ + 0.5, TwilightForestMod.ID + ":mob.hydra.roar", 1.25F, headEntity.getRNG().nextFloat() * 0.3F + 0.7F);
+			headEntity.world.playSoundEffect(headEntity.posX + 0.5, headEntity.posY + 0.5, headEntity.posZ + 0.5, TwilightForestMod.ID + ":mob.hydra.roar", 1.25F, headEntity.getRNG().nextFloat() * 0.3F + 0.7F);
 		}
 		if (headEntity.getState() == STATE_BITE_READY && this.ticksProgress == 60)
 		{
-			headEntity.worldObj.playSoundEffect(headEntity.posX + 0.5, headEntity.posY + 0.5, headEntity.posZ + 0.5, TwilightForestMod.ID + ":mob.hydra.warn", 2.0F, headEntity.getRNG().nextFloat() * 0.3F + 0.7F);
+			headEntity.world.playSoundEffect(headEntity.posX + 0.5, headEntity.posY + 0.5, headEntity.posZ + 0.5, TwilightForestMod.ID + ":mob.hydra.warn", 2.0F, headEntity.getRNG().nextFloat() * 0.3F + 0.7F);
 		}
 		if (headEntity.getState() == STATE_IDLE)
 		{
@@ -793,7 +793,7 @@ public class HydraHeadContainer {
 			}
 			else
 			{
-				EntityTFHydraMortar mortar = new EntityTFHydraMortar(headEntity.worldObj, this.headEntity);
+				EntityTFHydraMortar mortar = new EntityTFHydraMortar(headEntity.world, this.headEntity);
 
 				Vec3d vector = headEntity.getLookVec();
 
@@ -811,15 +811,15 @@ public class HydraHeadContainer {
 					mortar.setToBlasting();
 				}
 
-				headEntity.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)headEntity.posX, (int)headEntity.posY, (int)headEntity.posZ, 0);
+				headEntity.world.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)headEntity.posX, (int)headEntity.posY, (int)headEntity.posZ, 0);
 
-				headEntity.worldObj.spawnEntity(mortar);
+				headEntity.world.spawnEntity(mortar);
 			}
 		}
 		if (headEntity.getState() == STATE_BITE_BITING)
 		{
 	        // damage nearby things
-	        List<Entity> nearbyList = headEntity.worldObj.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.boundingBox.expand(0.0, 1.0, 0.0));
+	        List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.boundingBox.expand(0.0, 1.0, 0.0));
 
 	        for (Entity nearby : nearbyList)
 	        {
@@ -855,7 +855,7 @@ public class HydraHeadContainer {
 
 	
 	protected void setDifficultyVariables() {
-		if (this.hydraObj.worldObj.difficultySetting != EnumDifficulty.HARD)
+		if (this.hydraObj.world.difficultySetting != EnumDifficulty.HARD)
 		{
 			HydraHeadContainer.FLAME_BREATH_TRACKING_SPEED = 0.04D;
 
@@ -879,7 +879,7 @@ public class HydraHeadContainer {
         Vec3d lookVec = headEntity.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
-        List<Entity> possibleList = headEntity.worldObj.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+        List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.boundingBox.addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList)
@@ -936,7 +936,7 @@ public class HydraHeadContainer {
 	private EntityTFHydraHead findNearbyHead(String string)
 	{
 		
-		List<EntityTFHydraHead> nearbyHeads = hydraObj.worldObj.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).expand(16.0D, 16.0D, 16.0D));
+		List<EntityTFHydraHead> nearbyHeads = hydraObj.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).expand(16.0D, 16.0D, 16.0D));
 		
 		for (EntityTFHydraHead nearbyHead : nearbyHeads)
 		{
@@ -944,7 +944,7 @@ public class HydraHeadContainer {
 			if (nearbyHead.getPartName().equals(string)) {
 				nearbyHead.hydraObj = hydraObj;
 				
-				//System.out.println("Reconnected hydra with head named " + string + " in world " + hydraObj.worldObj);
+				//System.out.println("Reconnected hydra with head named " + string + " in world " + hydraObj.world);
 				
 				return nearbyHead;
 			}

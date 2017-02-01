@@ -100,10 +100,10 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     public void initCreature()
     {
     	// we start with the upper guy riding us
-    	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.worldObj);
+    	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.world);
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         upper.onInitialSpawn(null, (IEntityLivingData)null);
-        this.worldObj.spawnEntity(upper);
+        this.world.spawnEntity(upper);
         upper.startRiding(this);
     }
 
@@ -113,10 +113,10 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         Object par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
 
     	// we start with the upper guy riding us
-    	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.worldObj);
+    	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.world);
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         upper.onInitialSpawn(difficulty, null);
-        this.worldObj.spawnEntity(upper);
+        this.world.spawnEntity(upper);
         upper.startRiding(this);
 
         return (IEntityLivingData)par1EntityLivingData1;

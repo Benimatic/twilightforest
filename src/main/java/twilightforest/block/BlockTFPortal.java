@@ -316,10 +316,10 @@ public class BlockTFPortal extends BlockBreakable
 	 * return value Entity -> void
      */
 	private void changeDimension(Entity toTeleport, int dimensionIn) {
-		if (!toTeleport.worldObj.isRemote && !toTeleport.isDead)
+		if (!toTeleport.world.isRemote && !toTeleport.isDead)
 		{
 			if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(toTeleport, dimensionIn)) return;
-			toTeleport.worldObj.theProfiler.startSection("changeDimension");
+			toTeleport.world.theProfiler.startSection("changeDimension");
 			MinecraftServer minecraftserver = toTeleport.getServer();
 			int i = toTeleport.dimension;
 			WorldServer worldserver = minecraftserver.worldServerForDimension(i);
@@ -332,14 +332,14 @@ public class BlockTFPortal extends BlockBreakable
 				toTeleport.dimension = 0;
 			}
 
-			toTeleport.worldObj.removeEntity(toTeleport);
+			toTeleport.world.removeEntity(toTeleport);
 			toTeleport.isDead = false;
-			toTeleport.worldObj.theProfiler.startSection("reposition");
+			toTeleport.world.theProfiler.startSection("reposition");
 			// TF - "reposition" section completely replaced with call to following method.
 			// TF - use custom Teleporter
 			minecraftserver.getPlayerList().transferEntityToWorld(toTeleport, dimensionIn, worldserver, worldserver1, new TFTeleporter(worldserver1));
 			BlockPos blockpos = new BlockPos(toTeleport); // TF - retain this line from old reposition section
-			toTeleport.worldObj.theProfiler.endStartSection("reloading");
+			toTeleport.world.theProfiler.endStartSection("reloading");
 			Entity entity = EntityList.createEntityByName(EntityList.getEntityString(toTeleport), worldserver1);
 
 			if (entity != null)
@@ -375,10 +375,10 @@ public class BlockTFPortal extends BlockBreakable
 			}
 
 			toTeleport.isDead = true;
-			toTeleport.worldObj.theProfiler.endSection();
+			toTeleport.world.theProfiler.endSection();
 			worldserver.resetUpdateEntityTick();
 			worldserver1.resetUpdateEntityTick();
-			toTeleport.worldObj.theProfiler.endSection();
+			toTeleport.world.theProfiler.endSection();
 		}
 	}
 

@@ -26,17 +26,17 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 		{
 			counter = 0;
 	    	// turn to flame
-			if (!worldObj.isRemote && worldObj.getBlockState(pos).getBlock() == TFBlocks.fireJet)
+			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fireJet)
 			{
-				worldObj.setBlockState(pos, TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, nextVariant), 3);
+				world.setBlockState(pos, TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, nextVariant), 3);
 			}
 			this.invalidate();
 		}
 		else
 		{
 			if (counter % 20 == 0) {
-				worldObj.spawnParticle(EnumParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
-				worldObj.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + worldObj.rand.nextFloat() * 0.2F, 0.9F + worldObj.rand.nextFloat() * 0.15F);
+				world.spawnParticle(EnumParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
+				world.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
 			}
 
 		}

@@ -79,7 +79,7 @@ public class EntityTFFallingIce extends Entity {
     	this.motionY *= 0.9800000190734863D;
     	this.motionZ *= 0.9800000190734863D;
 
-    	if (!this.worldObj.isRemote)
+    	if (!this.world.isRemote)
     	{
     		//int y = MathHelper.floor(this.posY);
 
@@ -91,7 +91,7 @@ public class EntityTFFallingIce extends Entity {
 
     			this.setDead();
     		}
-//    		else if (this.fallTime > 100 && !this.worldObj.isRemote && (y < 1 || y > 256) || this.fallTime > 600)
+//    		else if (this.fallTime > 100 && !this.world.isRemote && (y < 1 || y > 256) || this.fallTime > 600)
 //    		{
 //    			// something's wrong
 //    			this.setDead();
@@ -99,8 +99,8 @@ public class EntityTFFallingIce extends Entity {
     	}
     	
     	// kill other nearby blocks if they are not as old as this one
-    	if (!this.worldObj.isRemote) {
-    		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+    	if (!this.world.isRemote) {
+    		List<Entity> nearby = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
 
     		for (Entity entity : nearby) {
     			if (entity instanceof EntityTFFallingIce) {
@@ -124,9 +124,9 @@ public class EntityTFFallingIce extends Entity {
 			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat()); 
 			double dz = this.posZ + 2F * (rand.nextFloat() - rand.nextFloat()); 
 
-			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowwarning", dx, dy, dz, 0, -1, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, "snowwarning", dx, dy, dz, 0, -1, 0);
 			
-			//System.out.println("Trail! " + this.worldObj);
+			//System.out.println("Trail! " + this.world);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class EntityTFFallingIce extends Entity {
 
     	if (distance > 0)
     	{
-    		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(2, 0, 2));
+    		List<Entity> nearby = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(2, 0, 2));
     		DamageSource damagesource = DamageSource.fallingBlock;
     		for (Entity entity : nearby) {
     			if (!(entity instanceof EntityTFYetiAlpha)) {
@@ -152,7 +152,7 @@ public class EntityTFFallingIce extends Entity {
 			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat()); 
 			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
 			
-			this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
+			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 		}
 		
 		this.playSound(Blocks.ANVIL.getSoundType().getBreakSound(), 3F, 0.5F); // todo 1.9 this gon crash
@@ -177,10 +177,10 @@ public class EntityTFFallingIce extends Entity {
     		for (int dy = minY; dy <= maxY; ++dy) {
     			for (int dz = minZ; dz <= maxZ; ++dz) {
 					BlockPos pos = new BlockPos(dx, dy, dz);
-    				Block block = this.worldObj.getBlockState(pos).getBlock();
+    				Block block = this.world.getBlockState(pos).getBlock();
 
     				if (block == Blocks.ICE || block == Blocks.PACKED_ICE || block == Blocks.STONE) {
-						this.worldObj.destroyBlock(pos, false);
+						this.world.destroyBlock(pos, false);
     				}
     			}
     		}

@@ -31,7 +31,7 @@ public class RenderTFSnowQueenIceShield extends Render {
      */
     public void doRender(EntityTFSnowQueenIceShield entity, double x, double y, double z, float p_147918_8_, float p_147918_9_)
     {
-        World world = entity.worldObj;
+        World world = entity.world;
         Block block = Blocks.PACKED_ICE;
         int i = MathHelper.floor(entity.posX);
         int j = MathHelper.floor(entity.posY);

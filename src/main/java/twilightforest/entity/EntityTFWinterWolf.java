@@ -88,8 +88,8 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     			dy *= velocity;
     			dz *= velocity;
 
-    			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowstuff", px, py, pz, dx, dy, dz);
-    			//worldObj.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
+    			TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", px, py, pz, dx, dy, dz);
+    			//world.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
     		}
     		
 			playBreathSound();
@@ -98,7 +98,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     }
     
 	private void playBreathSound() {
-		worldObj.playSoundEffect(this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5, "mob.ghast.fireball", rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
+		world.playSoundEffect(this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5, "mob.ghast.fireball", rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 	}
 
     @Override
@@ -128,7 +128,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	protected boolean isValidLightLevel() {
-		return worldObj.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow
+		return world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow
 				|| super.isValidLightLevel();
 	}
 	

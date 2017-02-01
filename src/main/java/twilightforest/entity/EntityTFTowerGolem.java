@@ -81,7 +81,7 @@ public class EntityTFTowerGolem extends EntityMob
     public boolean attackEntityAsMob(Entity par1Entity)
     {
         this.attackTimer = 10;
-        this.worldObj.setEntityState(this, (byte)4);
+        this.world.setEntityState(this, (byte)4);
         boolean attackSuccess = super.attackEntityAsMob(par1Entity);
 
         if (attackSuccess)
@@ -138,11 +138,11 @@ public class EntityTFTowerGolem extends EntityMob
             int i = MathHelper.floor(this.posX);
             int j = MathHelper.floor(this.posY - 0.20000000298023224D);
             int k = MathHelper.floor(this.posZ);
-            IBlockState iblockstate = this.worldObj.getBlockState(new BlockPos(i, j, k));
+            IBlockState iblockstate = this.world.getBlockState(new BlockPos(i, j, k));
 
             if (iblockstate.getMaterial() != Material.AIR)
             {
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D, new int[] {Block.getStateId(iblockstate)});
+                this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D, new int[] {Block.getStateId(iblockstate)});
             }
         }
         // End copy
@@ -150,7 +150,7 @@ public class EntityTFTowerGolem extends EntityMob
         // redstone sparkles?
         if (this.rand.nextBoolean())
         {
-            this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+            this.world.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
         }
 
     }

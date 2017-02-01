@@ -43,7 +43,7 @@ public class EntityAITFEatLoose extends EntityAIBase {
         {
         	this.temptingItem = null;
         	
-            List<EntityItem> nearbyItems = this.temptedQuestRam.worldObj.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().expand(2.0D, 2.0D, 2.0D));
+            List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().expand(2.0D, 2.0D, 2.0D));
             
             for (EntityItem itemNearby : nearbyItems) {
             	if (itemNearby.getEntityItem().getItem() == temptID && !temptedQuestRam.isColorPresent(itemNearby.getEntityItem().getItemDamage()) && itemNearby.isEntityAlive()) { // is a wool block really "alive"?

@@ -99,7 +99,7 @@ public class TFMagicMapRenderer implements net.minecraftforge.client.IItemRender
 		{
 			EntityItem entity = (EntityItem)data[1];
 
-			TFMagicMapData mapData = ((ItemTFMagicMap) TFItems.magicMap).getMapData(item, entity.worldObj);
+			TFMagicMapData mapData = ((ItemTFMagicMap) TFItems.magicMap).getMapData(item, entity.world);
 
 
 			// if we have data, render it

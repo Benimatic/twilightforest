@@ -36,7 +36,7 @@ public class EntityTFIceSnowball extends EntityThrowable {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -67,14 +67,14 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	protected void pop() {
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 		}
 		
 		// noise
-		//this.worldObj.playSoundAtEntity(this, "mob.slime.big", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+		//this.world.playSoundAtEntity(this, "mob.slime.big", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
 
-		if (!this.worldObj.isRemote)
+		if (!this.world.isRemote)
 		{
 			this.setDead();
 		}

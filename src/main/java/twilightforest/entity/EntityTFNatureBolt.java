@@ -57,7 +57,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			worldObj.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 			if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
 			{
 				// similar to EntityCaveSpider
-				byte poisonStrength = (byte) (worldObj.getDifficulty() == EnumDifficulty.PEACEFUL ? 0 : worldObj.getDifficulty() == EnumDifficulty.NORMAL ? 3 : 7);
+				byte poisonStrength = (byte) (world.getDifficulty() == EnumDifficulty.PEACEFUL ? 0 : world.getDifficulty() == EnumDifficulty.NORMAL ? 3 : 7);
 				if(poisonStrength > 0)
 				{
 					((EntityLivingBase)ray.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, poisonStrength * 20, 0));
@@ -82,32 +82,32 @@ public class EntityTFNatureBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Block.getStateId(Blocks.LEAVES.getDefaultState()));
+			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Block.getStateId(Blocks.LEAVES.getDefaultState()));
 		}
 
-		if (!this.worldObj.isRemote)
+		if (!this.world.isRemote)
 		{
 			this.setDead();
 
 			if (ray.getBlockPos() != null) {
 				// if we hit a solid block, maybe do our nature burst effect.
-				Material materialHit = worldObj.getBlockState(ray.getBlockPos()).getMaterial();
+				Material materialHit = world.getBlockState(ray.getBlockPos()).getMaterial();
 
 				if (materialHit == Material.GRASS && this.playerTarget != null)
 				{
-					Items.DYE.onItemUse(new ItemStack(Items.DYE, 1, 15), playerTarget, worldObj, ray.getBlockPos(), EnumHand.MAIN_HAND, ray.sideHit, 0, 0, 0);
+					Items.DYE.onItemUse(new ItemStack(Items.DYE, 1, 15), playerTarget, world, ray.getBlockPos(), EnumHand.MAIN_HAND, ray.sideHit, 0, 0, 0);
 				}
-				else if (materialHit.isSolid() && canReplaceBlock(worldObj, ray.getBlockPos()))
+				else if (materialHit.isSolid() && canReplaceBlock(world, ray.getBlockPos()))
 				{
-					worldObj.setBlockState(ray.getBlockPos(), Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH));
+					world.setBlockState(ray.getBlockPos(), Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH));
 				}
 			}
 		}
 	}
 
-	private boolean canReplaceBlock(World worldObj, BlockPos pos)
+	private boolean canReplaceBlock(World world, BlockPos pos)
 	{
-		float hardness = worldObj.getBlockState(pos).getBlockHardness(worldObj, pos);
+		float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
 		return hardness >= 0 && hardness < 50F;
 	}
 

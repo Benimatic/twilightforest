@@ -75,7 +75,7 @@ public class EntityTFIceExploder extends EntityMob {
 	    	float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 	    	
-			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
 
     }
@@ -121,14 +121,14 @@ public class EntityTFIceExploder extends EntityMob {
             int i;
             
             
-            boolean flag = this.worldObj.getGameRules().getBoolean("mobGriefing");
-            this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)EntityTFIceExploder.EXPLOSION_RADIUS, flag);
+            boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)EntityTFIceExploder.EXPLOSION_RADIUS, flag);
 
             if (flag) {
             	this.detonate();
             }
 
-            if (!this.worldObj.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && this.canDropLoot() && this.worldObj.getGameRules().getBoolean("doMobLoot"))
+            if (!this.world.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot"))
             {
                 i = this.getExperiencePoints(this.attackingPlayer);
 
@@ -136,7 +136,7 @@ public class EntityTFIceExploder extends EntityMob {
                 {
                     int j = EntityXPOrb.getXPSplit(i);
                     i -= j;
-                    this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
+                    this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
                 }
             }
 
@@ -147,7 +147,7 @@ public class EntityTFIceExploder extends EntityMob {
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
-                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1);
+                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1);
             }
         }
 	}
@@ -175,11 +175,11 @@ public class EntityTFIceExploder extends EntityMob {
 
 
 	private void transformBlock(BlockPos pos) {
-		IBlockState state = worldObj.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
 		// check if we should even explode this
-		if (block.getExplosionResistance(this) < 8F && state.getBlockHardness(worldObj, pos) >= 0) {
+		if (block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0) {
 			
 			int blockColor = 16777215;
 
@@ -187,7 +187,7 @@ public class EntityTFIceExploder extends EntityMob {
 			//TODO: use a better check than exception handling to determine if we have access to client-side methods or not
 			try {
 				// figure out color
-				blockColor = block.colorMultiplier(worldObj, x, y, z);
+				blockColor = block.colorMultiplier(world, x, y, z);
 			} catch (NoSuchMethodError e) {
 				// fine, we're on a server
 			}
@@ -198,26 +198,26 @@ public class EntityTFIceExploder extends EntityMob {
 
 			// do appropriate transformation
 			if (this.shouldTransformGlass(state, pos)) {
-				this.worldObj.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, getClosestDyeColor(blockColor)));
+				this.world.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, getClosestDyeColor(blockColor)));
 			} else if (this.shouldTransformClay(state, pos)) {
-				this.worldObj.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, getClosestDyeColor(blockColor)));
+				this.world.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, getClosestDyeColor(blockColor)));
 			}
 		}
 	}
 
 
 	private boolean shouldTransformClay(IBlockState state, BlockPos pos) {
-		return state.getBlock().isNormalCube(state, this.worldObj, pos);
+		return state.getBlock().isNormalCube(state, this.world, pos);
 	}
 
 
 	private boolean shouldTransformGlass(IBlockState state, BlockPos pos) {
-		return state.getBlock() != Blocks.AIR && this.isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getBlock().isLeaves(state, this.worldObj, pos) || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.auroraBlock);
+		return state.getBlock() != Blocks.AIR && this.isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.auroraBlock);
 	}
 
 
 	private boolean isBlockNormalBounds(IBlockState state, BlockPos pos) {
-		return Block.FULL_BLOCK_AABB.equals(state.getBoundingBox(worldObj, pos));
+		return Block.FULL_BLOCK_AABB.equals(state.getBoundingBox(world, pos));
 	}
 
 

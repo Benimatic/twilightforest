@@ -12,7 +12,7 @@ public class TileEntityTFLichSpawner extends TileEntityTFBossSpawner {
     @Override
 	public boolean anyPlayerInRange()
     {
-    	EntityPlayer closestPlayer = worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 9D, false);
+    	EntityPlayer closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 9D, false);
     	
         return closestPlayer != null && closestPlayer.posY > pos.getY() - 4;
     }

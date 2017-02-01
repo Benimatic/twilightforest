@@ -13,7 +13,7 @@ public class TileEntityTFSnowQueenSpawner extends TileEntityTFBossSpawner {
     @Override
 	public boolean anyPlayerInRange()
     {
-    	EntityPlayer closestPlayer = worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 9D, false);
+    	EntityPlayer closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 9D, false);
     	
         return closestPlayer != null && closestPlayer.posY > pos.getY() - 4;
     }
@@ -26,13 +26,13 @@ public class TileEntityTFSnowQueenSpawner extends TileEntityTFBossSpawner {
 		double rx = pos.getX() + 0.5D;
 		double ry = pos.getY() + 0.5D;
 		double rz = pos.getZ() + 0.5D;
-		myCreature.setLocationAndAngles(rx, ry, rz, worldObj.rand.nextFloat() * 360F, 0.0F);
+		myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
 
 		// set creature's home to this
 		initializeCreature(myCreature);
 
 		// spawn it
-		worldObj.spawnEntity(myCreature);
+		world.spawnEntity(myCreature);
 	}
 	
 }

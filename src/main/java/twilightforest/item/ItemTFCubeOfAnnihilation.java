@@ -36,13 +36,13 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldObj, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		player.setActiveHand(hand);
 
-		if (!worldObj.isRemote && !this.hasLaunchedCube(stack)) {
-			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(worldObj, player);
+		if (!world.isRemote && !this.hasLaunchedCube(stack)) {
+			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(world, player);
 
-			worldObj.spawnEntity(launchedCube);
+			world.spawnEntity(launchedCube);
 			
 			this.setLaunchedCube(stack, launchedCube);
 			setCubeAsThrown(stack);

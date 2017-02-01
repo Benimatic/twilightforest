@@ -20,7 +20,7 @@ public class TileEntityTFMoonworm extends TileEntityTFCritter {
     	
     	if (currentYaw == -1)
     	{
-    		currentYaw = worldObj.rand.nextInt(4) * 90;
+    		currentYaw = world.rand.nextInt(4) * 90;
     	}
     	
         if(yawDelay > 0)
@@ -32,8 +32,8 @@ public class TileEntityTFMoonworm extends TileEntityTFCritter {
         	if (desiredYaw == 0)
         	{
         		// make it rotate!
-        		yawDelay = 200 + worldObj.rand.nextInt(200);
-        		desiredYaw = worldObj.rand.nextInt(4) * 90;
+        		yawDelay = 200 + world.rand.nextInt(200);
+        		desiredYaw = world.rand.nextInt(4) * 90;
         	}
         	
         	currentYaw++;

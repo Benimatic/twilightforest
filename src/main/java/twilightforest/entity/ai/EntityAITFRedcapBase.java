@@ -43,7 +43,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	        {
 	            for (int z = -range; z <= range; z++)
 	            {
-	            	if (entityObj.worldObj.getBlockState(entityPos.add(x, y, z)).getBlock() == Blocks.TNT)
+	            	if (entityObj.world.getBlockState(entityPos.add(x, y, z)).getBlock() == Blocks.TNT)
 	            	{
 	            		return entityPos.add(x, y, z);
 	            	}
@@ -65,7 +65,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	{
 		AxisAlignedBB expandedBox = entityObj.getEntityBoundingBox().expand(range, range, range);
 		
-	    return !entityObj.worldObj.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
+	    return !entityObj.world.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
 	}
 
 }

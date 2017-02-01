@@ -120,8 +120,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 	        {
 	        	Item particleID = this.rand.nextBoolean() ? TFItems.phantomHelm : TFItems.knightlySword;
 	        	
-			    worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, this.posY + this.rand.nextFloat() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, 0, -0.1, 0, Item.getIdFromItem(particleID));
-			    worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, this.posY + this.rand.nextFloat() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, 0, 0.1, 0);
+			    world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, this.posY + this.rand.nextFloat() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, 0, -0.1, 0, Item.getIdFromItem(particleID));
+			    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, this.posY + this.rand.nextFloat() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, 0, 0.1, 0);
 	        }
     	}
     }
@@ -136,7 +136,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
         }
 
 
@@ -151,13 +151,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		}
 		
 		// mark the stronghold as defeated
-		if (!worldObj.isRemote && worldObj.provider instanceof WorldProviderTwilightForest) {
+		if (!world.isRemote && world.provider instanceof WorldProviderTwilightForest) {
 			int dx = getHomePosition().getX();
 			int dy = getHomePosition().getY();
 			int dz = getHomePosition().getZ();
 			
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 			
 			if (nearbyFeature == TFFeature.tfStronghold) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);
@@ -166,7 +166,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		
         
         // make treasure for killing the last knight
-        if (!this.worldObj.isRemote) {
+        if (!this.world.isRemote) {
         	// am I the last one?!?!
     		List<EntityTFKnightPhantom> nearbyKnights = getNearbyKnights();
         	if (nearbyKnights.size() <= 1)
@@ -185,21 +185,21 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 	private void makeATreasure() {
 		if (this.getHomePosition().getY() != -1) {
 			// if we have a proper home position, generate the treasure there
-			TFTreasure.stronghold_boss.generate(worldObj, null, getHomePosition().posX, getHomePosition().posY - 1, getHomePosition().posZ);
+			TFTreasure.stronghold_boss.generate(world, null, getHomePosition().posX, getHomePosition().posY - 1, getHomePosition().posZ);
 		} else {
 			// if not, spawn it right where we are
 			int px = MathHelper.floor(this.lastTickPosX);
 			int py = MathHelper.floor(this.lastTickPosY);
 			int pz = MathHelper.floor(this.lastTickPosZ);
 			
-			TFTreasure.stronghold_boss.generate(worldObj, null, px, py, pz);
+			TFTreasure.stronghold_boss.generate(world, null, px, py, pz);
 		}
 	}
 
 	@Override
     protected void updateAITasks()
     {
-        if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
+        if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
             this.setDead();
         }
@@ -217,8 +217,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
         float seekRange = this.isChargingAtPlayer() ? 24 : 9;
 
-        EntityPlayer target = this.worldObj.getNearestAttackablePlayer(this, seekRange, seekRange);
-        //EntityPlayer target = this.worldObj.getClosestPlayerToEntity(this, seekRange);
+        EntityPlayer target = this.world.getNearestAttackablePlayer(this, seekRange, seekRange);
+        //EntityPlayer target = this.world.getClosestPlayerToEntity(this, seekRange);
 
         if (target != null && this.currentFormation == Formation.ATTACK_PLAYER_START)
         {
@@ -372,8 +372,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		double ty = (targetedEntity.getEntityBoundingBox().minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
 		double tz = targetedEntity.posZ - sz;
 		
-		worldObj.playSoundAtEntity(this, "random.bow", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
-		EntityTFThrownAxe projectile = new EntityTFThrownAxe(worldObj, this);
+		world.playSoundAtEntity(this, "random.bow", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
+		EntityTFThrownAxe projectile = new EntityTFThrownAxe(world, this);
 		
 		float speed = 0.75F;
 
@@ -381,12 +381,12 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 
-		worldObj.spawnEntity(projectile);
+		world.spawnEntity(projectile);
 	}
 	
 	protected void launchPicks()
 	{
-		worldObj.playSoundAtEntity(this, "random.bow", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
+		world.playSoundAtEntity(this, "random.bow", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -402,7 +402,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 			double vz = MathHelper.sin(throwAngle);
 
 			
-			EntityTFThrownPick projectile = new EntityTFThrownPick(worldObj, this);
+			EntityTFThrownPick projectile = new EntityTFThrownPick(world, this);
 			
 
 			projectile.setLocationAndAngles(sx, sy, sz, i * 45F, rotationPitch);
@@ -411,7 +411,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 			projectile.setThrowableHeading(vx, vy, vz, speed, 1.0F);
 
-			worldObj.spawnEntity(projectile);
+			world.spawnEntity(projectile);
 		}
 	}
 
@@ -515,7 +515,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 
 	private List<EntityTFKnightPhantom> getNearbyKnights() {
-		return worldObj.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(32.0D, 8.0D, 32.0D));
+		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(32.0D, 8.0D, 32.0D));
 	}
 
     /**

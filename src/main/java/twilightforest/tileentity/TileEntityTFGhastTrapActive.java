@@ -29,11 +29,11 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 
 		++counter;
 
-		if (worldObj.isRemote)
+		if (world.isRemote)
 		{
 			// smoke when done
 			if (counter > 100 && counter % 4 == 0) {
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "hugesmoke", this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
+				TwilightForestMod.proxy.spawnParticle(this.world, "hugesmoke", this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
 			}
 			else if (counter < 100) 
 			{
@@ -42,35 +42,35 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 				double dz = Math.sin(counter / 10.0) * 2.5;
 
 
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy, dz);
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy, -dz);
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy / 2, dz);
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy / 2, -dz);
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx / 2, dy / 4, dz / 2);
-				TwilightForestMod.proxy.spawnParticle(this.worldObj, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx / 2, dy / 4, -dz / 2);
+				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy, -dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy / 2, dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy / 2, -dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx / 2, dy / 4, dz / 2);
+				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx / 2, dy / 4, -dz / 2);
 			}
 
 			// appropriate sound
 			if (counter < 30)
 			{
-				worldObj.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_WARMUP, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
+				world.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_WARMUP, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
 			}
 			else if (counter < 80)
 			{
-				worldObj.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_ON, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
+				world.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_ON, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
 			}
 			else
 			{
-				worldObj.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_SPINDOWN, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
+				world.playSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_SPINDOWN, SoundCategory.BLOCKS, 1.0F, 4.0F, false);
 			}
 		}
 
-		if (!worldObj.isRemote)
+		if (!world.isRemote)
 		{
 			// trap nearby ghasts
 			AxisAlignedBB aabb = new AxisAlignedBB(pos.up(16), pos.up(16).add(1, 1, 1)).expand(6D, 16D, 6D);
 
-			List<EntityGhast> nearbyGhasts = worldObj.getEntitiesWithinAABB(EntityGhast.class, aabb);
+			List<EntityGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityGhast.class, aabb);
 
 			for (EntityGhast ghast : nearbyGhasts)
 			{
@@ -116,8 +116,8 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 			if (counter >= 120)
 			{
 				// deactivate
-				worldObj.setBlockState(pos, TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE), 3);
-				//worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, TFBlocks.towerDevice, 4);
+				world.setBlockState(pos, TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE), 3);
+				//world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, TFBlocks.towerDevice, 4);
 			}
 		}
 	}

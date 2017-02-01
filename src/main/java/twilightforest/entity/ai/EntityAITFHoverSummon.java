@@ -167,7 +167,7 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 		float radius = this.attacker.width / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
 		
-		boolean isOccupied = this.attacker.worldObj.getCollisionBoxes(attacker, aabb).isEmpty();
+		boolean isOccupied = this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
 		
 		return isOccupied;
 	}
@@ -176,7 +176,7 @@ public class EntityAITFHoverSummon extends EntityAIBase {
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return entity.worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
+        return entity.world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
 

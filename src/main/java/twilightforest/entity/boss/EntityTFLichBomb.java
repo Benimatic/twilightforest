@@ -48,7 +48,7 @@ public class EntityTFLichBomb extends EntityThrowable {
 			double dy = posY + sy; 
 			double dz = posZ + sz; 
 
-			worldObj.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
+			world.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
 	}
 	
@@ -91,7 +91,7 @@ public class EntityTFLichBomb extends EntityThrowable {
 
 	protected void explode() {
 		float explosionPower = 2F;
-        this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, false, false);
+        this.world.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, false, false);
 
         this.setDead();
 	}

@@ -16,7 +16,7 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
     {
     	super.update();
     	
-    	if (anyPlayerInRange() && worldObj.rand.nextInt(20) == 0)
+    	if (anyPlayerInRange() && world.rand.nextInt(20) == 0)
     	{
     		doFireflyFX();
     	}
@@ -28,8 +28,8 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
         	if (currentYaw == 0 && desiredYaw == 0)
         	{
         		// make it rotate!
-        		yawDelay = 200 + worldObj.rand.nextInt(200);
-        		desiredYaw = worldObj.rand.nextInt(15) - worldObj.rand.nextInt(15);
+        		yawDelay = 200 + world.rand.nextInt(200);
+        		desiredYaw = world.rand.nextInt(15) - world.rand.nextInt(15);
         	}
 
         	if (currentYaw < desiredYaw)
@@ -65,25 +65,25 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
         	if (!glowing && glowIntensity <= 0)
         	{
         		glowing = true;
-        		glowDelay = worldObj.rand.nextInt(50);
+        		glowDelay = world.rand.nextInt(50);
         	}
         }
     }
     
     private boolean anyPlayerInRange()
     {
-        return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 16D, false) != null;
+        return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 16D, false) != null;
     }
 
     private void doFireflyFX()
     {
-    	double rx = pos.getX() + worldObj.rand.nextFloat();
-    	double ry = pos.getY() + worldObj.rand.nextFloat();
-    	double rz = pos.getZ() + worldObj.rand.nextFloat();
+    	double rx = pos.getX() + world.rand.nextFloat();
+    	double ry = pos.getY() + world.rand.nextFloat();
+    	double rz = pos.getZ() + world.rand.nextFloat();
 //    	ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
 		// ^ keeping here only for pure lolz
-    	EntityTFTinyFirefly tinyfly = new EntityTFTinyFirefly(worldObj, rx, ry, rz);
-    	worldObj.addWeatherEffect(tinyfly);
+    	EntityTFTinyFirefly tinyfly = new EntityTFTinyFirefly(world, rx, ry, rz);
+    	world.addWeatherEffect(tinyfly);
     }
 
 

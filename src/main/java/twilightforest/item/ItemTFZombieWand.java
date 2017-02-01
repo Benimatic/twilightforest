@@ -27,18 +27,18 @@ public class ItemTFZombieWand extends ItemTF {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
 		
 		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) {
 			player.setActiveHand(hand);
 			
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				// what block is the player pointing at?
-				RayTraceResult mop = getPlayerPointVec(worldObj, player, 20.0F);
+				RayTraceResult mop = getPlayerPointVec(world, player, 20.0F);
 				
 				if (mop != null) {
 					// make a zombie there
-					EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(worldObj);
+					EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
 					zombie.setPositionAndRotation(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord, 1.0F, 1.0F);  /// NPE here needs to be fixed
 					zombie.setTamed(true);
 					try {
@@ -48,7 +48,7 @@ public class ItemTFZombieWand extends ItemTF {
 						FMLLog.warning("[TwilightForest] Could not determine player name for loyal zombie, ignoring error.");
 					}
 					zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
-					worldObj.spawnEntity(zombie);
+					world.spawnEntity(zombie);
 
 					par1ItemStack.damageItem(1, player);
 				}
@@ -68,11 +68,11 @@ public class ItemTFZombieWand extends ItemTF {
 	 * 
 	 * @return
 	 */
-	private RayTraceResult getPlayerPointVec(World worldObj, EntityPlayer player, float range) {
+	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, float range) {
         Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3d look = player.getLook(1.0F);
         Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
-        return worldObj.rayTraceBlocks(position, dest);
+        return world.rayTraceBlocks(position, dest);
 	}
 
 

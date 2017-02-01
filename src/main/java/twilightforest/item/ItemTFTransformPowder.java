@@ -83,7 +83,7 @@ public class ItemTFTransformPowder extends ItemTF
 		
 		if (transformClass != null)
 		{
-			if (target.worldObj.isRemote)
+			if (target.world.isRemote)
 			{
 				// particles, sound
 				if (target instanceof EntityLiving)
@@ -92,7 +92,7 @@ public class ItemTFTransformPowder extends ItemTF
 					((EntityLiving) target).spawnExplosionParticle();
 				}
 				
-				target.worldObj.playSound(target.posX + 0.5D, target.posY + 0.5D, target.posZ + 0.5D, "mob.zombie.remedy", 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F, false);
+				target.world.playSound(target.posX + 0.5D, target.posY + 0.5D, target.posZ + 0.5D, "mob.zombie.remedy", 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F, false);
 			}
 			else
 			{
@@ -100,7 +100,7 @@ public class ItemTFTransformPowder extends ItemTF
 				EntityLivingBase newMonster = null;
 				try 
 				{
-					newMonster = (EntityLivingBase)transformClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {target.worldObj});
+					newMonster = (EntityLivingBase)transformClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {target.world});
 				}
 				catch (Exception e)
 				{
@@ -116,7 +116,7 @@ public class ItemTFTransformPowder extends ItemTF
 					newMonster.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
 					//newMonster.initCreature();
 					
-					target.worldObj.spawnEntity(newMonster);
+					target.world.spawnEntity(newMonster);
 					
 					// remove original monster
 					target.setDead();

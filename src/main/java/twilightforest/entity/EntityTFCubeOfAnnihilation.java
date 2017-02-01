@@ -67,10 +67,10 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
             }
         }
         
-        if (mop.getBlockPos() != null && !this.worldObj.isAirBlock(mop.getBlockPos())) {
+        if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
 
         	// demolish some blocks
-        	if (!this.worldObj.isRemote) {
+        	if (!this.world.isRemote) {
         		this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F), this.getThrower());
         	}
 
@@ -96,15 +96,15 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
             for (int dy = minY; dy <= maxY; ++dy) {
                 for (int dz = minZ; dz <= maxZ; ++dz) {
 					BlockPos pos = new BlockPos(dx, dy, dz);
-					IBlockState state = worldObj.getBlockState(pos);
+					IBlockState state = world.getBlockState(pos);
 
                 	if (state.getBlock() != Blocks.AIR) {
                 		if (canAnnihilate(pos, state)) {
-                			this.worldObj.setBlockToAir(pos);
+                			this.world.setBlockToAir(pos);
 
-                    		this.worldObj.playSoundAtEntity(this, "random.fizz", 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
+                    		this.world.playSoundAtEntity(this, "random.fizz", 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
                     		
-                    		this.sendAnnihilateBlockPacket(worldObj, pos);
+                    		this.sendAnnihilateBlockPacket(world, pos);
 
                 		} else {
                 			// return if we hit an obstacle
@@ -127,7 +127,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 			return true;
 		}
 		
-		return block.getExplosionResistance(this) < 8F && state.getBlockHardness(worldObj, pos) >= 0;
+		return block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
 
     
@@ -146,7 +146,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     	super.onUpdate();
 
     	// all server side
-    	if (!this.worldObj.isRemote) {
+    	if (!this.world.isRemote) {
 
     		if (this.getThrower() == null) {
     			this.setDead();
@@ -155,9 +155,9 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
     		if (this.isReturning()) {
     			// if we are returning, and are near enough to the player, then we are done
-    			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+    			List list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 
-    			if (list.contains(this.getThrower()) && !this.worldObj.isRemote) {
+    			if (list.contains(this.getThrower()) && !this.world.isRemote) {
     				//System.out.println("we have returned");
             		if (this.getThrower() instanceof EntityPlayer) {
             			ItemTFCubeOfAnnihilation.setCubeAsReturned((EntityPlayer)this.getThrower());

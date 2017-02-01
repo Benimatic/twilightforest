@@ -528,7 +528,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void livingDies(LivingDeathEvent event)
 	{
-		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().worldObj.getGameRules().getBoolean("keepInventory"))
+		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().world.getGameRules().getBoolean("keepInventory"))
 		{
 			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
 			
@@ -657,14 +657,14 @@ public class TFEventListener {
 			// spawn effect thingers
 			if (keepInventory.getItemStack() != null)
 			{
-				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.worldObj, player, keepInventory.getItemStack().getItem());
-				player.worldObj.spawnEntity(effect);
+				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.world, player, keepInventory.getItemStack().getItem());
+				player.world.spawnEntity(effect);
 				
-				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(player.worldObj, player, keepInventory.getItemStack().getItem());
+				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(player.world, player, keepInventory.getItemStack().getItem());
 				effect2.offset = (float) Math.PI;
-				player.worldObj.spawnEntity(effect2);
+				player.world.spawnEntity(effect2);
 	
-				player.worldObj.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
+				player.world.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
 			}
 
 			playerKeepsMap.remove(player.getName());
@@ -802,9 +802,9 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void rightClickBlock(PlayerInteractEvent event) {
-		if (event.action == Action.RIGHT_CLICK_BLOCK && event.getEntityPlayer().worldObj.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.getEntityPlayer().world.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
 
-			World world = event.getEntityPlayer().worldObj;
+			World world = event.getEntityPlayer().world;
 			EntityPlayer player = event.getEntityPlayer();
 			int x = event.x;
 			int y = event.y;
@@ -912,9 +912,9 @@ public class TFEventListener {
 	public void livingAttack(LivingAttackEvent event) {
 
 		// area protection check
-		if (event.getEntityLiving() instanceof IMob && event.getSource().getEntity() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getEntity()).capabilities.isCreativeMode && event.getEntityLiving().worldObj.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (event.getEntityLiving() instanceof IMob && event.getSource().getEntity() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getEntity()).capabilities.isCreativeMode && event.getEntityLiving().world.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().worldObj.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().world.provider).getChunkProvider();
 
 			int mx = MathHelper.floor(event.getEntityLiving().posX);
 			int my = MathHelper.floor(event.getEntityLiving().posY);
@@ -922,7 +922,7 @@ public class TFEventListener {
 
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(mx, my, mz) && chunkProvider.isBlockProtected(mx, my, mz)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFBiomeProvider)event.getEntityLiving().worldObj.provider.getBiomeProvider()).getFeatureAt(mx, mz, event.getEntityLiving().worldObj);
+				TFFeature nearbyFeature = ((TFBiomeProvider)event.getEntityLiving().world.provider.getBiomeProvider()).getFeatureAt(mx, mz, event.getEntityLiving().world);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getEntity())) {
 					event.setResult(Result.DENY);
@@ -931,8 +931,8 @@ public class TFEventListener {
 					
 					// particle effect
 					for (int i = 0; i < 20; i++) {
-			            //worldObj.spawnParticle("mobSpell", blockX + 0.5F, blockY + 0.5F, blockZ + 0.5F, red, grn, blu);
-						TwilightForestMod.proxy.spawnParticle(event.getEntityLiving().worldObj, "protection", event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, 0, 0, 0);
+			            //world.spawnParticle("mobSpell", blockX + 0.5F, blockY + 0.5F, blockZ + 0.5F, red, grn, blu);
+						TwilightForestMod.proxy.spawnParticle(event.getEntityLiving().world, "protection", event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, 0, 0, 0);
 
 					}
 				}
@@ -946,8 +946,8 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void playerLogsIn(PlayerLoggedInEvent event) {
 		// check enforced progression
-		if (!event.player.worldObj.isRemote && event.player instanceof EntityPlayerMP) {
-			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.worldObj.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
+			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 		}
 	}
 	
@@ -957,8 +957,8 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void playerPortals(PlayerChangedDimensionEvent event) {
 		// check enforced progression
-		if (!event.player.worldObj.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TwilightForestMod.dimensionID) {
-			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.worldObj.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TwilightForestMod.dimensionID) {
+			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 		}
 	}
 	

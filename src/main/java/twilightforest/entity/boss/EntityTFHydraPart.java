@@ -25,7 +25,7 @@ public class EntityTFHydraPart extends EntityLiving {
     
     public EntityTFHydraPart(EntityTFHydra hydra, String s, float f, float f1)
     {
-        super(hydra.worldObj);
+        super(hydra.world);
         setSize(f, f1);
         hydraObj = hydra;
         setPartName(s);

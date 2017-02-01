@@ -42,11 +42,11 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
         
     	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, EntityTFRedcap.heldTNT);
 
-    	if (this.entityObj.worldObj.isAirBlock(entityPos))
+    	if (this.entityObj.world.isAirBlock(entityPos))
     	{
     		entityObj.setTntLeft(entityObj.getTntLeft() - 1);
     		entityObj.playLivingSound();
-    		entityObj.worldObj.setBlockState(entityPos, Blocks.TNT.getDefaultState(), 3);
+    		entityObj.world.setBlockState(entityPos, Blocks.TNT.getDefaultState(), 3);
     	}
     }
     

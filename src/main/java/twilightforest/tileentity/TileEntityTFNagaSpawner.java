@@ -13,7 +13,7 @@ public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
 	@Override
 	public boolean anyPlayerInRange()
     {
-        return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 50D, false) != null;
+        return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 50D, false) != null;
     }
     
 	@Override

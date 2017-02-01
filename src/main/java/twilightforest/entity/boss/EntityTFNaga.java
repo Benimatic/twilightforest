@@ -96,16 +96,16 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     }
 	
 	public float getMaxHealthPerDifficulty() {
-		if (worldObj != null) {
-			if (worldObj.getDifficulty() == EnumDifficulty.EASY)
+		if (world != null) {
+			if (world.getDifficulty() == EnumDifficulty.EASY)
 			{
 				return 120;
 			}
-			else if (worldObj.getDifficulty() == EnumDifficulty.NORMAL)
+			else if (world.getDifficulty() == EnumDifficulty.NORMAL)
 			{
 				return 200;
 			}
-			else if (worldObj.getDifficulty() == EnumDifficulty.HARD)
+			else if (world.getDifficulty() == EnumDifficulty.HARD)
 			{
 				return 250;
 			}
@@ -226,20 +226,20 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
                 double d2 = rand.nextGaussian() * 0.02D;
                 EnumParticleTypes explosionType = rand.nextBoolean() ?  EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
                 
-                worldObj.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+                world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
             }
 		}
 		
 		// update health
         this.ticksSinceDamaged++;
         
-        if (!this.worldObj.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0)
+        if (!this.world.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0)
         {
         	this.heal(1);
         }
 //
 //		
-//        if (!this.worldObj.isRemote)
+//        if (!this.world.isRemote)
 //        {
 //            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
 //        }
@@ -261,7 +261,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		
 		super.onUpdate();
 		
-//        if (!this.worldObj.isRemote)
+//        if (!this.world.isRemote)
 //        {
 //        	for (int i = 0; i < this.body.length; i++)
 //        	{
@@ -275,9 +275,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		
 		for (int i = 0; i < body.length; i++)
 		{
-			if (!body[i].addedToChunk && !worldObj.isRemote)
+			if (!body[i].addedToChunk && !world.isRemote)
 			{
-				worldObj.spawnEntity(body[i]);
+				world.spawnEntity(body[i]);
 			}
 		}
     }
@@ -441,7 +441,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         int maxx = MathHelper.floor(getEntityBoundingBox().maxX + 0.5D);
         int maxy = MathHelper.floor(getEntityBoundingBox().maxY + 0.001D);
         int maxz = MathHelper.floor(getEntityBoundingBox().maxZ + 0.5D);
-        if(worldObj.isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz)))
+        if(world.isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz)))
         {
             for(int dx = minx; dx <= maxx; dx++)
             {
@@ -450,7 +450,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
                     for(int dz = minz; dz <= maxz; dz++)
                     {
 						// todo limit what can be broken
-						worldObj.destroyBlock(new BlockPos(dx, dy, dz), true);
+						world.destroyBlock(new BlockPos(dx, dy, dz), true);
                     }
                 }
             }
@@ -533,7 +533,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     		chargeCount--;
 
     		Vec3d tpoint = findCirclePoint(targetEntity, 14, Math.PI);
-    		pathToEntity = worldObj.getEntityPathToXYZ(this, MathHelper.floor(tpoint.xCoord), MathHelper.floor(tpoint.yCoord), MathHelper.floor(tpoint.zCoord), 40F, true, true, true, true);
+    		pathToEntity = world.getEntityPathToXYZ(this, MathHelper.floor(tpoint.xCoord), MathHelper.floor(tpoint.yCoord), MathHelper.floor(tpoint.zCoord), 40F, true, true, true, true);
 
     		if (chargeCount == 0) 
     		{
@@ -562,7 +562,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     		
     		Vec3d tpoint = findCirclePoint(targetEntity, radius, rotation);
     		
-    		pathToEntity = worldObj.getEntityPathToXYZ(this, (int)tpoint.xCoord, (int)tpoint.yCoord, (int)tpoint.zCoord, 40F, true, true, true, true);
+    		pathToEntity = world.getEntityPathToXYZ(this, (int)tpoint.xCoord, (int)tpoint.yCoord, (int)tpoint.zCoord, 40F, true, true, true, true);
     		
     		if (circleCount == 0) {
     			doIntimidate();
@@ -593,10 +593,10 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 //			System.out.println("Crumbling block at " + dx + ", " + dy + ", " + dz);
 			BlockPos pos = new BlockPos(dx, dy, dz);
 
-			if (!worldObj.isAirBlock(pos))
+			if (!world.isAirBlock(pos))
 			{
 				// todo limit what can be broken
-				worldObj.destroyBlock(pos, true);
+				world.destroyBlock(pos, true);
 				
 				// sparkle!!
 	            for(int k = 0; k < 20; k++)
@@ -605,7 +605,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	                double d1 = rand.nextGaussian() * 0.02D;
 	                double d2 = rand.nextGaussian() * 0.02D;
 	                
-	                worldObj.spawnParticle(EnumParticleTypes.CRIT, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+	                world.spawnParticle(EnumParticleTypes.CRIT, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
 	            }
 			}
 		}
@@ -712,8 +712,8 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
      */
     protected Entity findTarget()
     {
-        EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 32D);
-        //EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, 32D);
+        EntityPlayer entityplayer = world.getClosestVulnerablePlayerToEntity(this, 32D);
+        //EntityPlayer entityplayer = world.getClosestPlayerToEntity(this, 32D);
         if (entityplayer != null && canEntityBeSeen(entityplayer) && isEntityWithinHomeArea(entityplayer))
         {
         	// check range
@@ -828,7 +828,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 
         if(flag)
         {
-            pathToEntity = worldObj.getEntityPathToXYZ(this, tx, ty, tz, 80F, true, true, true, true);
+            pathToEntity = world.getEntityPathToXYZ(this, tx, ty, tz, 80F, true, true, true, true);
         }
     }
 
@@ -886,7 +886,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
      */
 	protected void despawnIfInvalid() {
 		// check to see if we're valid
-        if(!worldObj.isRemote && worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
+        if(!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
         	despawnMe();
         }
@@ -899,7 +899,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		if (isLeashed()) 
 		{
 			BlockPos home = this.getHomePosition();
-			worldObj.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, SpawnerVariant.NAGA), 2);
+			world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, SpawnerVariant.NAGA), 2);
 		}
 		setDead();
 	}
@@ -942,7 +942,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 	 */
 	protected void spawnBodySegments() 
 	{
-		if (!worldObj.isRemote) 
+		if (!world.isRemote)
 		{
 			if (body == null)
 			{
@@ -954,7 +954,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 				{
 					body[i] = new EntityTFNagaSegment(this, i);
 					body[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
-					worldObj.spawnEntity(body[i]);
+					world.spawnEntity(body[i]);
 				}
 			}
 		}
@@ -1000,7 +1000,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 			diff = diff.addVector(idealX, 0, idealZ);
 			diff = diff.normalize();
 			
-//			if (worldObj.isRemote)
+//			if (world.isRemote)
 //			{
 //				System.out.println("Difference for segment " + i + " is " + diff.xCoord + ", " + diff.yCoord + ", " + diff.zCoord);
 //			}
@@ -1036,7 +1036,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 
 	
 			
-//			if (worldObj.isRemote)
+//			if (world.isRemote)
 //			{
 //				System.out.println("Client body segment " + i + " to " + body[i].posX + ", " + body[i].posY + ", " + body[i].posZ);
 //			}
@@ -1095,13 +1095,13 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		}
 		
 		// mark the courtyard as defeated
-		if (!worldObj.isRemote && worldObj.provider instanceof WorldProviderTwilightForest) {
+		if (!world.isRemote && world.provider instanceof WorldProviderTwilightForest) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 			
 			if (nearbyFeature == TFFeature.nagaCourtyard) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);
@@ -1124,7 +1124,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 
 	@Override
 	public World getWorld() {
-		return this.worldObj;
+		return this.world;
 	}
 
 	@Override

@@ -50,25 +50,25 @@ public class PacketAreaProtection implements IMessage {
                 @Override
                 public void run() {
                     // make a box entity
-                    World worldObj = Minecraft.getMinecraft().world;
+                    World world = Minecraft.getMinecraft().world;
                     StructureBoundingBox sbb = message.sbb;
-                    EntityTFProtectionBox box = new EntityTFProtectionBox(worldObj, sbb.minX, sbb.minY, sbb.minZ, sbb.maxX, sbb.maxY, sbb.maxZ);
+                    EntityTFProtectionBox box = new EntityTFProtectionBox(world, sbb.minX, sbb.minY, sbb.minZ, sbb.maxX, sbb.maxY, sbb.maxZ);
 
-                    worldObj.addWeatherEffect(box);
+                    world.addWeatherEffect(box);
 
                     // particles from the block?
                     for (int i = 0; i < 20; i++) {
 
-                        double d0 = worldObj.rand.nextGaussian() * 0.02D;
-                        double d1 = worldObj.rand.nextGaussian() * 0.02D;
-                        double d2 = worldObj.rand.nextGaussian() * 0.02D;
+                        double d0 = world.rand.nextGaussian() * 0.02D;
+                        double d1 = world.rand.nextGaussian() * 0.02D;
+                        double d2 = world.rand.nextGaussian() * 0.02D;
 
-                        float dx = message.pos.getX() + 0.5F + worldObj.rand.nextFloat() - worldObj.rand.nextFloat();
-                        float dy = message.pos.getY() + 0.5F + worldObj.rand.nextFloat() - worldObj.rand.nextFloat();
-                        float dz = message.pos.getZ() + 0.5F + worldObj.rand.nextFloat() - worldObj.rand.nextFloat();
+                        float dx = message.pos.getX() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
+                        float dy = message.pos.getY() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
+                        float dz = message.pos.getZ() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
 
-                        //worldObj.spawnParticle("mobSpell", blockX + 0.5F, blockY + 0.5F, blockZ + 0.5F, red, grn, blu);
-                        TwilightForestMod.proxy.spawnParticle(worldObj, "protection", dx, dy, dz, d0, d1, d2);
+                        //world.spawnParticle("mobSpell", blockX + 0.5F, blockY + 0.5F, blockZ + 0.5F, red, grn, blu);
+                        TwilightForestMod.proxy.spawnParticle(world, "protection", dx, dy, dz, d0, d1, d2);
 
                     }
                 }

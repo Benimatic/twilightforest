@@ -109,7 +109,7 @@ public class EntityTFDeer extends EntityCow
     @Override
 	public EntityCow createChild(EntityAgeable entityanimal)
     {
-        return new EntityTFDeer(worldObj);
+        return new EntityTFDeer(world);
     }
 
     @Override

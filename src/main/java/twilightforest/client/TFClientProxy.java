@@ -596,19 +596,19 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 	
 	@Override
-	public void doBlockAnnihilateEffect(World worldObj, BlockPos pos) {
+	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
 		// particles from the block?
 //		for (int i = 0; i < 10; i++) {
 //	        
-//	        double d0 = worldObj.rand.nextGaussian() * 0.02D;
-//	        double d1 = worldObj.rand.nextGaussian() * 0.02D;
-//	        double d2 = worldObj.rand.nextGaussian() * 0.02D;
+//	        double d0 = world.rand.nextGaussian() * 0.02D;
+//	        double d1 = world.rand.nextGaussian() * 0.02D;
+//	        double d2 = world.rand.nextGaussian() * 0.02D;
 //
-//	        float dx = blockX + 0.5F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.4F;
-//	        float dy = blockY + 0.5F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.4F;
-//	        float dz = blockZ + 0.5F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.4F;
+//	        float dx = blockX + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
+//	        float dy = blockY + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
+//	        float dz = blockZ + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
 //
-//			TwilightForestMod.proxy.spawnParticle(worldObj, "annihilate", dx, dy, dz, d0, d1, d2);
+//			TwilightForestMod.proxy.spawnParticle(world, "annihilate", dx, dy, dz, d0, d1, d2);
 //
 //		}
 		
@@ -625,14 +625,14 @@ public class TFClientProxy extends TFCommonProxy {
                     double d1 = (double)blockY + ((double)dy + 0.5D) / (double)four;
                     double d2 = (double)blockZ + ((double)dz + 0.5D) / (double)four;
                     
-        	        double gx = worldObj.rand.nextGaussian() * 0.2D;
-        	        double gy = worldObj.rand.nextGaussian() * 0.2D;
-        	        double gz = worldObj.rand.nextGaussian() * 0.2D;
+        	        double gx = world.rand.nextGaussian() * 0.2D;
+        	        double gy = world.rand.nextGaussian() * 0.2D;
+        	        double gz = world.rand.nextGaussian() * 0.2D;
                     
-        			TwilightForestMod.proxy.spawnParticle(worldObj, "annihilate", d0, d1, d2, gx, gy, gz);
+        			TwilightForestMod.proxy.spawnParticle(world, "annihilate", d0, d1, d2, gx, gy, gz);
 
                     
-                    //this.addEffect((new EntityDiggingFX(this.worldObj, d0, d1, d2, d0 - (double)p_147215_1_ - 0.5D, d1 - (double)p_147215_2_ - 0.5D, d2 - (double)p_147215_3_ - 0.5D, p_147215_4_, p_147215_5_)).applyColourMultiplier(p_147215_1_, p_147215_2_, p_147215_3_));
+                    //this.addEffect((new EntityDiggingFX(this.world, d0, d1, d2, d0 - (double)p_147215_1_ - 0.5D, d1 - (double)p_147215_2_ - 0.5D, d2 - (double)p_147215_3_ - 0.5D, p_147215_4_, p_147215_5_)).applyColourMultiplier(p_147215_1_, p_147215_2_, p_147215_3_));
                 }
             }
         }

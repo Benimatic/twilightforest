@@ -25,7 +25,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	
 	public boolean anyPlayerInRange()
     {
-        return worldObj.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false) != null;
+        return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false) != null;
     }
 
 	@Override
@@ -35,26 +35,26 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 
 		if(anyPlayerInRange())
 		{
-			if (worldObj.isRemote)
+			if (world.isRemote)
 			{
 				// particles
-				double rx = pos.getX() + worldObj.rand.nextFloat();
-				double ry = pos.getY() + worldObj.rand.nextFloat();
-				double rz = pos.getZ() + worldObj.rand.nextFloat();
-				worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
-				worldObj.spawnParticle(EnumParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+				double rx = pos.getX() + world.rand.nextFloat();
+				double ry = pos.getY() + world.rand.nextFloat();
+				double rz = pos.getZ() + world.rand.nextFloat();
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 			}
 			else
 			{
 				//System.out.println("Thinking about boss!");
 
 				
-				if (worldObj.getDifficulty() != EnumDifficulty.PEACEFUL)
+				if (world.getDifficulty() != EnumDifficulty.PEACEFUL)
 				{
 					spawnMyBoss();
 
 					// destroy block
-					worldObj.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+					world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
 					
 					//System.out.println("Spawning boss!");
 				}
@@ -73,13 +73,13 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		double rx = pos.getX() + 0.5D;
 		double ry = pos.getY() + 0.5D;
 		double rz = pos.getZ() + 0.5D;
-		myCreature.setLocationAndAngles(rx, ry, rz, worldObj.rand.nextFloat() * 360F, 0.0F);
+		myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
 
 		// set creature's home to this
 		initializeCreature(myCreature);
 
 		// spawn it
-		worldObj.spawnEntity(myCreature);
+		world.spawnEntity(myCreature);
 	}
 	
 	/**
@@ -110,6 +110,6 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	}
 
 	protected EntityLiving makeMyCreature() {
-		return (EntityLiving)EntityList.createEntityByName(mobID, worldObj);
+		return (EntityLiving)EntityList.createEntityByName(mobID, world);
 	}
 }

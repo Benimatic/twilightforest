@@ -51,7 +51,7 @@ public class EntityTFPenguin extends EntityTFBird {
 	@Override
 	public EntityAnimal createChild(EntityAgeable entityanimal)
     {
-        return new EntityTFPenguin(worldObj);
+        return new EntityTFPenguin(world);
     }
 	
 	@Override

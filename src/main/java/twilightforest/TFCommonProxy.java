@@ -127,6 +127,6 @@ public class TFCommonProxy implements IGuiHandler {
 		return null;
 	}
 	
-	public void doBlockAnnihilateEffect(World worldObj, BlockPos pos) { }
+	public void doBlockAnnihilateEffect(World world, BlockPos pos) { }
 
 }

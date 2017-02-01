@@ -149,7 +149,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	}
 
 	/**
-     * arguments: (World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
+     * arguments: (World world, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
      * maxZ)
 	 * @param rand 
      */

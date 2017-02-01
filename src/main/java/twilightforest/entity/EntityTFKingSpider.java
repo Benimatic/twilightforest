@@ -51,7 +51,7 @@ public class EntityTFKingSpider extends EntitySpider {
     {
     	// kill at all times!
     	double var2 = 16.0D;
-    	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
+    	return this.world.getClosestVulnerablePlayerToEntity(this, var2);
     }
 
 	//@Override
@@ -78,10 +78,10 @@ public class EntityTFKingSpider extends EntitySpider {
         Object par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
 
     	// always a spider jockey
-        EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.worldObj);
+        EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.world);
         druid.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         druid.onInitialSpawn(difficulty, null);
-        this.worldObj.spawnEntity(druid);
+        this.world.spawnEntity(druid);
         druid.startRiding(this);
         
         return (IEntityLivingData)par1EntityLivingData1;

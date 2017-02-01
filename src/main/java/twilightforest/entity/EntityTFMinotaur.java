@@ -86,7 +86,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
         if (success && this.isCharging())
         {
             par1Entity.motionY += 0.4000000059604645D;
-            this.worldObj.playSoundAtEntity(this, "mob.irongolem.throw", 1.0F, 1.0F);
+            this.world.playSoundAtEntity(this, "mob.irongolem.throw", 1.0F, 1.0F);
         }
 
         return success;
@@ -126,7 +126,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     @Override
 	protected void playStepSound(BlockPos pos, Block par4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.cow.step", 0.15F, 0.8F);
+        this.world.playSoundAtEntity(this, "mob.cow.step", 0.15F, 0.8F);
     }
 
     @Override

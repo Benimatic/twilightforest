@@ -33,7 +33,7 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase
     	boolean yikes = fleeTimer > 0;
     	
     	// check if any of us is dead within 4 squares
-    	List<EntityCreature> flockList = this.flockCreature.worldObj.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(4.0D, 2.0D, 4.0D));
+    	List<EntityCreature> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(4.0D, 2.0D, 4.0D));
     	for (EntityLiving flocker : flockList)
     	{
     		if (flocker.deathTime > 0) {

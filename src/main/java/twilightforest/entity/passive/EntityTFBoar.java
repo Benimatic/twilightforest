@@ -26,7 +26,7 @@ public class EntityTFBoar extends EntityPig {
     @Override
 	public EntityPig createChild(EntityAgeable entityanimal)
     {
-        return new EntityTFBoar(worldObj);
+        return new EntityTFBoar(world);
     }
 
 	@Override

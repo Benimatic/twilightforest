@@ -66,7 +66,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 //    	int ry = MathHelper.floor(this.yeti.posY - 1);
 //    	int rz = MathHelper.floor(this.yeti.posZ);
 //    	
-//		this.yeti.worldObj.playAuxSFX(2004, rx, ry, rz, 0);
+//		this.yeti.world.playAuxSFX(2004, rx, ry, rz, 0);
 		
 		if (this.yeti.getAttackTarget() != null) {
 			this.yeti.getLookHelper().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, (float)this.yeti.getVerticalFaceSpeed());

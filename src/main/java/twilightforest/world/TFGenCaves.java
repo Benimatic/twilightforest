@@ -215,7 +215,7 @@ public class TFGenCaves extends MapGenCaves
 
                                             	if (hitGrass && blockStorage[caveIndex - 1] == Blocks.DIRT)
                                             	{
-                                            		blockStorage[caveIndex - 1] = this.worldObj.getBiome(genX + centerX * 16, genZ + centerZ * 16).topBlock;
+                                            		blockStorage[caveIndex - 1] = this.world.getBiome(genX + centerX * 16, genZ + centerZ * 16).topBlock;
                                             	}
                                             }
                                         }

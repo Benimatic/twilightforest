@@ -46,7 +46,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
     {
     	counter++;
     	
-    	if (!worldObj.isRemote)
+    	if (!world.isRemote)
     	{
     		
     		// every 2 seconds for 10 seconds, destroy a new radius
@@ -60,37 +60,37 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 					IBlockState fakeDiamond = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_DIAMOND);
 					
     				// transformation!
-    				worldObj.setBlockState(pos.add(1, 1, 1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(1, 1, -1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(-1, 1, 1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(-1, 1, -1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(1, 1, 1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(1, 1, -1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(-1, 1, 1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(-1, 1, -1), fakeDiamond, 2);
     				
-    				worldObj.setBlockState(pos.add(0, 1, 1), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(0, 1, -1), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(1, 1, 0), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(-1, 1, 0), fakeGold, 2);
+    				world.setBlockState(pos.add(0, 1, 1), fakeGold, 2);
+    				world.setBlockState(pos.add(0, 1, -1), fakeGold, 2);
+    				world.setBlockState(pos.add(1, 1, 0), fakeGold, 2);
+    				world.setBlockState(pos.add(-1, 1, 0), fakeGold, 2);
     				
 
-    				worldObj.setBlockState(pos.add(1, 0, 1), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(1, 0, -1), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(-1, 0, 1), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(-1, 0, -1), fakeGold, 2);
+    				world.setBlockState(pos.add(1, 0, 1), fakeGold, 2);
+    				world.setBlockState(pos.add(1, 0, -1), fakeGold, 2);
+    				world.setBlockState(pos.add(-1, 0, 1), fakeGold, 2);
+    				world.setBlockState(pos.add(-1, 0, -1), fakeGold, 2);
     				
-    				worldObj.setBlockState(pos.add(0, 0, 1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(0, 0, -1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(1, 0, 0), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(-1, 0, 0), fakeDiamond, 2);
+    				world.setBlockState(pos.add(0, 0, 1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(0, 0, -1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(1, 0, 0), fakeDiamond, 2);
+    				world.setBlockState(pos.add(-1, 0, 0), fakeDiamond, 2);
     				
     				
-    				worldObj.setBlockState(pos.add(1, -1, 1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(1, -1, -1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(-1, -1, 1), fakeDiamond, 2);
-    				worldObj.setBlockState(pos.add(-1, -1, -1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(1, -1, 1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(1, -1, -1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(-1, -1, 1), fakeDiamond, 2);
+    				world.setBlockState(pos.add(-1, -1, -1), fakeDiamond, 2);
     				
-    				worldObj.setBlockState(pos.add(0, -1, 1), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(0, -1, -1), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(1, -1, 0), fakeGold, 2);
-    				worldObj.setBlockState(pos.add(-1, -1 ,0), fakeGold, 2);
+    				world.setBlockState(pos.add(0, -1, 1), fakeGold, 2);
+    				world.setBlockState(pos.add(0, -1, -1), fakeGold, 2);
+    				world.setBlockState(pos.add(1, -1, 0), fakeGold, 2);
+    				world.setBlockState(pos.add(-1, -1 ,0), fakeGold, 2);
     				
     			}
     			
@@ -146,8 +146,8 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 				}
 				
 				// deactivate & explode
-		        worldObj.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 2.0F, true);
-				worldObj.setBlockToAir(pos);
+		        world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 2.0F, true);
+				world.setBlockToAir(pos);
 			}
     		
     	}
@@ -156,7 +156,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 			if (counter % 5 == 0 && counter <= 250)
 			{
 				// sound
-				worldObj.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, "portal.portal", counter / 100F, counter / 100F, false);
+				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, "portal.portal", counter / 100F, counter / 100F, false);
 			}
 		}
 
@@ -164,9 +164,9 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 
     
 	private void spawnGhastNear(int x, int y, int z) {
-		EntityTFMiniGhast ghast = new EntityTFMiniGhast(worldObj);
-		ghast.setLocationAndAngles(x - 1.5 + worldObj.rand.nextFloat() * 3.0, y - 1.5 + worldObj.rand.nextFloat() * 3.0, z - 1.5 + worldObj.rand.nextFloat() * 3.0, worldObj.rand.nextFloat() * 360F, 0.0F);
-		worldObj.spawnEntity(ghast);
+		EntityTFMiniGhast ghast = new EntityTFMiniGhast(world);
+		ghast.setLocationAndAngles(x - 1.5 + world.rand.nextFloat() * 3.0, y - 1.5 + world.rand.nextFloat() * 3.0, z - 1.5 + world.rand.nextFloat() * 3.0, world.rand.nextFloat() * 360F, 0.0F);
+		world.spawnEntity(ghast);
 	}
 
 	private void drawBlob(BlockPos pos, int rad, IBlockState state, int fuzz, boolean netherTransform) {
@@ -235,9 +235,9 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 	
 	private void transformBlock(BlockPos pos, IBlockState state, int fuzz, boolean netherTransform)
 	{
-		IBlockState stateThere = worldObj.getBlockState(pos);
+		IBlockState stateThere = world.getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && stateThere.getBlockHardness(worldObj, pos) == -1)
+		if (stateThere.getBlock() != Blocks.AIR && stateThere.getBlockHardness(world, pos) == -1)
 		{
 			// don't destroy unbreakable stuff
 			return;
@@ -246,21 +246,21 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 		if (fuzz == 0 && stateThere.getBlock() != Blocks.AIR)
 		{
 			// make pop thing for original block
-			worldObj.playEvent(2001, pos, Block.getStateId(stateThere));
+			world.playEvent(2001, pos, Block.getStateId(stateThere));
 		}
 		
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR)
 		{
-			worldObj.setBlockState(pos, Blocks.NETHERRACK.getDefaultState(), 3);
+			world.setBlockState(pos, Blocks.NETHERRACK.getDefaultState(), 3);
 			// fire on top?
-			if (worldObj.isAirBlock(pos.up()) && fuzz % 3 == 0)
+			if (world.isAirBlock(pos.up()) && fuzz % 3 == 0)
 			{
-				worldObj.setBlockState(pos.up(), Blocks.FIRE.getDefaultState(), 3);
+				world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState(), 3);
 			}
 		}
 		else
 		{
-			worldObj.setBlockState(pos, state, 3);
+			world.setBlockState(pos, state, 3);
 		}
 	}
 

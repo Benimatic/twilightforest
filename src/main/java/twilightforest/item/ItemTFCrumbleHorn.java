@@ -45,9 +45,9 @@ public class ItemTFCrumbleHorn extends ItemTF
     @Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count)
     {
-		if (count > 10 && count % 5 == 0 && !living.worldObj.isRemote)
+		if (count > 10 && count % 5 == 0 && !living.world.isRemote)
 		{
-			int crumbled = doCrumble(living.worldObj, living);
+			int crumbled = doCrumble(living.world, living);
 
 			if (crumbled > 0)
 			{
@@ -55,7 +55,7 @@ public class ItemTFCrumbleHorn extends ItemTF
 
 			}
 			
-			living.worldObj.playSoundAtEntity(living, "mob.sheep.say", 1.0F, 0.8F);
+			living.world.playSoundAtEntity(living, "mob.sheep.say", 1.0F, 0.8F);
 
 		}
 		

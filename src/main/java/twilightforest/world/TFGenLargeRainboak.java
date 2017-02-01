@@ -24,7 +24,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
     Random rand = new Random();
 
     /** Reference to the World object. */
-    World worldObj;
+    World world;
     int[] basePos = new int[] {0, 0, 0};
     int heightLimit = 0;
     int height;
@@ -173,15 +173,15 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 else
                 {
                     var11[var9] = var10[var9] + var13;
-                    Block var14 = this.worldObj.getBlock(var11[0], var11[1], var11[2]);
+                    Block var14 = this.world.getBlock(var11[0], var11[1], var11[2]);
 
-                    if (var14 != Blocks.AIR && !var14.canBeReplacedByLeaves(this.worldObj, var11[0], var11[1], var11[2]))
+                    if (var14 != Blocks.AIR && !var14.canBeReplacedByLeaves(this.world, var11[0], var11[1], var11[2]))
                     {
                         ++var13;
                     }
                     else
                     {
-                        this.setBlockAndNotifyAdequately(this.worldObj, var11[0], var11[1], var11[2], leaves, meta);
+                        this.setBlockAndNotifyAdequately(this.world, var11[0], var11[1], var11[2], leaves, meta);
                         ++var13;
                     }
                 }
@@ -302,7 +302,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                     }
                 }
 
-                this.setBlockAndNotifyAdequately(this.worldObj, var14[0], var14[1], var14[2], log, var17);
+                this.setBlockAndNotifyAdequately(this.world, var14[0], var14[1], var14[2], log, var17);
             }
         }
     }
@@ -431,7 +431,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 var13[var5] = par1ArrayOfInteger[var5] + var14;
                 var13[var6] = MathHelper.floor((double)par1ArrayOfInteger[var6] + (double)var14 * var9);
                 var13[var7] = MathHelper.floor((double)par1ArrayOfInteger[var7] + (double)var14 * var11);
-                Block var16 = this.worldObj.getBlock(var13[0], var13[1], var13[2]);
+                Block var16 = this.world.getBlock(var13[0], var13[1], var13[2]);
 
                 if (var16 != Blocks.AIR && var16 != Blocks.LEAVES)
                 {
@@ -451,7 +451,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
     {
         int[] var1 = new int[] {this.basePos[0], this.basePos[1], this.basePos[2]};
         int[] var2 = new int[] {this.basePos[0], this.basePos[1] + this.heightLimit - 1, this.basePos[2]};
-        Block var3 = this.worldObj.getBlock(this.basePos[0], this.basePos[1] - 1, this.basePos[2]);
+        Block var3 = this.world.getBlock(this.basePos[0], this.basePos[1] - 1, this.basePos[2]);
 
         if (var3 != Blocks.DIRT && var3 != Blocks.GRASS)
         {
@@ -495,7 +495,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
-        this.worldObj = par1World;
+        this.world = par1World;
         long var6 = par2Random.nextLong();
         this.rand.setSeed(var6);
         this.basePos[0] = par3;

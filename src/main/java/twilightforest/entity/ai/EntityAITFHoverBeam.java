@@ -184,7 +184,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
         Vec3d lookVec = this.attacker.getLook(1.0F);
         Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
         float var9 = 3.0F;
-        List<Entity> possibleList = this.attacker.worldObj.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+        List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList)
@@ -255,7 +255,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		float radius = this.attacker.width / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
 		
-		boolean isOccupied = this.attacker.worldObj.getCollisionBoxes(attacker, aabb).isEmpty();
+		boolean isOccupied = this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
 		
 		return isOccupied;
 	}
@@ -264,7 +264,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return entity.worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
+        return entity.world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
 }

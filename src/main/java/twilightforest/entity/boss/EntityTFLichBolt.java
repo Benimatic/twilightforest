@@ -51,7 +51,7 @@ public class EntityTFLichBolt extends EntityThrowable {
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-			worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
+			world.spawnParticle(EnumParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
@@ -139,10 +139,10 @@ public class EntityTFLichBolt extends EntityThrowable {
         if (!passThrough) {
 	        for (int i = 0; i < 8; ++i)
 	        {
-	            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
+	            this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
 	        }
 	
-	        if (!this.worldObj.isRemote)
+	        if (!this.world.isRemote)
 	        {
 	            this.setDead();
 	        }

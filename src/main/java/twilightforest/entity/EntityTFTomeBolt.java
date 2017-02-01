@@ -45,7 +45,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			worldObj.spawnParticle(EnumParticleTypes.CRIT, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.CRIT, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6))
 			{
 				// inflict move slowdown
-				byte potionStrength = (byte) (worldObj.getDifficulty() == EnumDifficulty.PEACEFUL ? 3 : worldObj.getDifficulty() == EnumDifficulty.NORMAL ? 7 : 9);
+				byte potionStrength = (byte) (world.getDifficulty() == EnumDifficulty.PEACEFUL ? 3 : world.getDifficulty() == EnumDifficulty.NORMAL ? 7 : 9);
 				if(potionStrength > 0)
 				{
 					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, potionStrength * 20, 1));
@@ -69,10 +69,10 @@ public class EntityTFTomeBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
+			this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
 		}
 
-		if (!this.worldObj.isRemote)
+		if (!this.world.isRemote)
 		{
 			this.setDead();
 		}

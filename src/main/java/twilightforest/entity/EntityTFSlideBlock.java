@@ -81,59 +81,59 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		
         if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.X) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
-        	if (!this.worldObj.isAirBlock(up) && this.worldObj.isAirBlock(down)) {
+        	if (!this.world.isAirBlock(up) && this.world.isAirBlock(down)) {
         		this.moveY = -1F;
-        	} else if (!this.worldObj.isAirBlock(down) && this.worldObj.isAirBlock(up)) {
+        	} else if (!this.world.isAirBlock(down) && this.world.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (!this.worldObj.isAirBlock(south) && this.worldObj.isAirBlock(north)) { // then try Z
+        	} else if (!this.world.isAirBlock(south) && this.world.isAirBlock(north)) { // then try Z
         		this.moveZ = -1F;
-        	} else if (!this.worldObj.isAirBlock(north) && this.worldObj.isAirBlock(south)) {
+        	} else if (!this.world.isAirBlock(north) && this.world.isAirBlock(south)) {
         		this.moveZ = 1F;
-        	} else if (this.worldObj.isAirBlock(down)) { // if no wall, travel towards open air
+        	} else if (this.world.isAirBlock(down)) { // if no wall, travel towards open air
         		this.moveY = -1F;
-        	} else if (this.worldObj.isAirBlock(up)) {
+        	} else if (this.world.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (this.worldObj.isAirBlock(north)) {
+        	} else if (this.world.isAirBlock(north)) {
         		this.moveZ = -1F;
-        	} else if (this.worldObj.isAirBlock(south)) {
+        	} else if (this.world.isAirBlock(south)) {
         		this.moveZ = 1F;
         	}
         } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Z) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
-        	if (!this.worldObj.isAirBlock(up) && this.worldObj.isAirBlock(down)) {
+        	if (!this.world.isAirBlock(up) && this.world.isAirBlock(down)) {
         		this.moveY = -1F;
-        	} else if (!this.worldObj.isAirBlock(down) && this.worldObj.isAirBlock(up)) {
+        	} else if (!this.world.isAirBlock(down) && this.world.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (!this.worldObj.isAirBlock(east) && this.worldObj.isAirBlock(west)) { // then try X
+        	} else if (!this.world.isAirBlock(east) && this.world.isAirBlock(west)) { // then try X
         		this.moveX = -1F;
-        	} else if (!this.worldObj.isAirBlock(west) && this.worldObj.isAirBlock(east)) {
+        	} else if (!this.world.isAirBlock(west) && this.world.isAirBlock(east)) {
         		this.moveX = 1F;
-        	} else if (this.worldObj.isAirBlock(down)) { // if no wall, travel towards open air
+        	} else if (this.world.isAirBlock(down)) { // if no wall, travel towards open air
         		this.moveY = -1F;
-        	} else if (this.worldObj.isAirBlock(up)) {
+        	} else if (this.world.isAirBlock(up)) {
         		this.moveY = 1F;
-        	} else if (this.worldObj.isAirBlock(west)) {
+        	} else if (this.world.isAirBlock(west)) {
         		this.moveX = -1F;
-        	} else if (this.worldObj.isAirBlock(east)) {
+        	} else if (this.world.isAirBlock(east)) {
         		this.moveX = 1F;
         	}
         } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Y) {
         	// vertical blocks priority is -x, +x, -z, +z
-        	if (!this.worldObj.isAirBlock(east) && this.worldObj.isAirBlock(west)) {
+        	if (!this.world.isAirBlock(east) && this.world.isAirBlock(west)) {
         		this.moveX = -1F;
-        	} else if (!this.worldObj.isAirBlock(west) && this.worldObj.isAirBlock(east)) {
+        	} else if (!this.world.isAirBlock(west) && this.world.isAirBlock(east)) {
         		this.moveX = 1F;
-        	} else if (!this.worldObj.isAirBlock(south) && this.worldObj.isAirBlock(north)) {
+        	} else if (!this.world.isAirBlock(south) && this.world.isAirBlock(north)) {
         		this.moveZ = -1F;
-        	} else if (!this.worldObj.isAirBlock(north) && this.worldObj.isAirBlock(south)) {
+        	} else if (!this.world.isAirBlock(north) && this.world.isAirBlock(south)) {
         		this.moveZ = 1F;
-        	} else if (this.worldObj.isAirBlock(west)) { // if no wall, travel towards open air
+        	} else if (this.world.isAirBlock(west)) { // if no wall, travel towards open air
         		this.moveX = -1F;
-        	} else if (this.worldObj.isAirBlock(east)) {
+        	} else if (this.world.isAirBlock(east)) {
         		this.moveX = 1F;
-        	} else if (this.worldObj.isAirBlock(north)) {
+        	} else if (this.world.isAirBlock(north)) {
         		this.moveZ = -1F;
-        	} else if (this.worldObj.isAirBlock(south)) {
+        	} else if (this.world.isAirBlock(south)) {
         		this.moveZ = 1F;
         	}
         	
@@ -189,23 +189,23 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
             
             // sound
             if (this.slideTime % 5 == 0) {
-            	this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, TwilightForestMod.ID + ":random.slider", 1.0F, 0.9F + (this.rand.nextFloat() * 0.4F));
+            	this.world.playSoundEffect(this.posX, this.posY, this.posZ, TwilightForestMod.ID + ":random.slider", 1.0F, 0.9F + (this.rand.nextFloat() * 0.4F));
             }
 
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 BlockPos pos = new BlockPos(this);
 
                 if (this.slideTime == 1)
                 {
-                    if (this.worldObj.getBlockState(pos) != this.myState)
+                    if (this.world.getBlockState(pos) != this.myState)
                     {
                         this.setDead();
                         return;
                     }
 
-                    this.worldObj.setBlockToAir(pos);
+                    this.world.setBlockToAir(pos);
                 }
                 
                 // if we have not hit anything after 2 seconds of movement, reverse direction
@@ -229,7 +229,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
                     this.setDead();
 
-                    if (this.worldObj.canPlaceEntityOnSide(this.myBlock, bx, by, bz, true, 1, (Entity)null, (ItemStack)null) && this.worldObj.setBlock(bx, by, bz, this.myBlock, this.myMeta, 3))
+                    if (this.world.canPlaceEntityOnSide(this.myBlock, bx, by, bz, true, 1, (Entity)null, (ItemStack)null) && this.world.setBlock(bx, by, bz, this.myBlock, this.myMeta, 3))
                     {
                     	// successfully set block
                     }
@@ -238,7 +238,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
                         this.entityDropItem(new ItemStack(myState.getBlock(), 1, myState.getBlock().damageDropped(myState)), 0.0F);
                     }
                 }
-                else if (this.slideTime > 100 && !this.worldObj.isRemote && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600)
+                else if (this.slideTime > 100 && !this.world.isRemote && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600)
                 {
                     if (this.canDropItem)
                     {
@@ -249,7 +249,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
                 }
                 
                 // push things out and damage them
-                this.damageKnockbackEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()), this);
+                this.damageKnockbackEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()), this);
             }
         }
     }

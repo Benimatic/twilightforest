@@ -119,7 +119,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	}
     	
     	if (this.collisionCounter >= 15) {
-    		if (!this.worldObj.isRemote) {
+    		if (!this.world.isRemote) {
     			this.destroyBlocksInAABB(this.getEntityBoundingBox());
     		}
     		this.collisionCounter = 0;
@@ -144,7 +144,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	{
     		for (int i = 0; i < 20; i++)
     		{
-    			this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+    			this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
     		}
     	}
 
@@ -156,7 +156,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
 		
-		TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowstuff", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 	}
     
 
@@ -170,7 +170,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         {
             return true;
         }
-        else if (!this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
+        else if (!this.world.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
         {
             par1EntityPlayer.mountEntity(this);
             return true;
@@ -298,18 +298,18 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
             {
                 for (int dz = minZ; dz <= maxZ; ++dz)
                 {
-                    Block currentID = this.worldObj.getBlock(dx, dy, dz);
+                    Block currentID = this.world.getBlock(dx, dy, dz);
                     
                     if (currentID != Blocks.AIR)
                     {
-                    	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
+                    	int currentMeta = this.world.getBlockMetadata(dx, dy, dz);
                     	
                     	if (currentID != Blocks.OBSIDIAN && currentID != Blocks.END_STONE && currentID != Blocks.BEDROCK)
                         {
-                            this.worldObj.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
+                            this.world.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
                             
                             // here, this effect will have to do
-                			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
+                			world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
                         }
                         else
                         {
@@ -342,9 +342,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 
 
 	private void makeBlockFallAbove(int bx, int bz, int by) {
-		if (worldObj.isAirBlock(bx, by, bz)) {
+		if (world.isAirBlock(bx, by, bz)) {
     		for (int i = 1; i < 30; i++) {
-    	    	if (!worldObj.isAirBlock(bx, by + i, bz)) {
+    	    	if (!world.isAirBlock(bx, by + i, bz)) {
     	    		makeBlockFall(bx, by + i, bz);
     	    		break;
     	    	}
@@ -372,21 +372,21 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 
 
 	private void makeBlockFall(int bx, int by, int bz) {
-		//worldObj.setBlock(bx, by, bz, Blocks.GRAVEL);
+		//world.setBlock(bx, by, bz, Blocks.GRAVEL);
 		
 		//EntityFallingBlock sand;
 		
-        Block currentID = this.worldObj.getBlock(bx, by, bz);
-    	int currentMeta = this.worldObj.getBlockMetadata(bx, by, bz);
+        Block currentID = this.world.getBlock(bx, by, bz);
+    	int currentMeta = this.world.getBlockMetadata(bx, by, bz);
     	
     	// just set it to ice for now
-		worldObj.setBlock(bx, by, bz, Blocks.PACKED_ICE);
+		world.setBlock(bx, by, bz, Blocks.PACKED_ICE);
 
-		worldObj.playAuxSFX(2001, bx, by, bz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
+		world.playAuxSFX(2001, bx, by, bz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
 
 		
-		EntityTFFallingIce ice = new EntityTFFallingIce(worldObj, bx, by - 3, bz);
-		worldObj.spawnEntity(ice);
+		EntityTFFallingIce ice = new EntityTFFallingIce(world, bx, by - 3, bz);
+		world.spawnEntity(ice);
 
 
 	}
@@ -396,7 +396,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     {
     	if (!this.canRampage) {
 
-    		EntityTFIceBomb ice = new EntityTFIceBomb(this.worldObj, this);
+    		EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
     		double d0 = target.posX - this.posX;
     		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - target.posY;
@@ -405,7 +405,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
 
     		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-    		this.worldObj.spawnEntity(ice);
+    		this.world.spawnEntity(ice);
     	}
     }
 
@@ -464,11 +464,11 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
             int j = MathHelper.floor(this.posY - 0.20000000298023224D - (double)this.getYOffset());
             int k = MathHelper.floor(this.posZ);
 
-            this.worldObj.playAuxSFX(2006, i, j, k, 20);
-            this.worldObj.playAuxSFX(2006, i, j, k, 30);
+            this.world.playAuxSFX(2006, i, j, k, 20);
+            this.world.playAuxSFX(2006, i, j, k, 30);
             
             // hit everything around
-            if (!this.worldObj.isRemote) {
+            if (!this.world.isRemote) {
             	hitNearbyEntities();
             }
             
@@ -477,7 +477,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 
 
 	private void hitNearbyEntities() {
-		List<Entity> nearby = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(5, 0, 5));
+		List<Entity> nearby = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(5, 0, 5));
 		
 		for (Entity entity : nearby) {
 			if (entity instanceof EntityLivingBase) {
@@ -501,14 +501,14 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 		}
 		
 		// mark the lair as defeated
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			if (worldObj.provider instanceof WorldProviderTwilightForest){
-				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+			if (world.provider instanceof WorldProviderTwilightForest){
+				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.worldChunkMgr).getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.yetiCave) {
 					chunkProvider.setStructureConquered(dx, dy, dz, true);

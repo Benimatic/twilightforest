@@ -41,13 +41,13 @@ public class ItemTFIceSword extends ItemSword {
 	@Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-    	if (player.worldObj.isRemote) {
+    	if (player.world.isRemote) {
 			// snow animation!
 	        for (int var1 = 0; var1 < 20; ++var1) {
 	    		double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
 				double py = entity.posY + itemRand.nextFloat() * entity.height;
 				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				TwilightForestMod.proxy.spawnParticle(entity.worldObj, "snowstuff", px, py, pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(entity.world, "snowstuff", px, py, pz, 0, 0, 0);
 	        }
     	}
         return false;

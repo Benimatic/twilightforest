@@ -28,7 +28,7 @@ public class EntityTFMazeSlime extends EntitySlime
     @Override
 	protected EntitySlime createInstance()
     {
-        return new EntityTFMazeSlime(this.worldObj);
+        return new EntityTFMazeSlime(this.world);
     }
     
     @Override
@@ -41,9 +41,9 @@ public class EntityTFMazeSlime extends EntitySlime
     @Override
 	public boolean getCanSpawnHere()
     {
-    	return this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && this.worldObj.checkNoEntityCollision(getEntityBoundingBox())
-        		&& this.worldObj.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-        		&& !this.worldObj.containsAnyLiquid(getEntityBoundingBox()) && this.isValidLightLevel();
+    	return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.world.checkNoEntityCollision(getEntityBoundingBox())
+        		&& this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+        		&& !this.world.containsAnyLiquid(getEntityBoundingBox()) && this.isValidLightLevel();
     }
     
 	@Override
@@ -76,7 +76,7 @@ public class EntityTFMazeSlime extends EntitySlime
             float f1 = this.rand.nextFloat() * 0.5F + 0.5F;
             float f2 = MathHelper.sin(f) * (float)i * 0.5F * f1;
             float f3 = MathHelper.cos(f) * (float)i * 0.5F * f1;
-            World world = this.worldObj;
+            World world = this.world;
             // EnumParticleTypes enumparticletypes = this.getParticleType();
             double d0 = this.posX + (double)f2;
             double d1 = this.posZ + (double)f3;
@@ -95,20 +95,20 @@ public class EntityTFMazeSlime extends EntitySlime
         int var2 = MathHelper.floor(this.boundingBox.minY);
         int var3 = MathHelper.floor(this.posZ);
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, var1, var2, var3) > this.rand.nextInt(32))
+        if (this.world.getSavedLightValue(EnumSkyBlock.Sky, var1, var2, var3) > this.rand.nextInt(32))
         {
             return false;
         }
         else
         {
-            int var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
+            int var4 = this.world.getBlockLightValue(var1, var2, var3);
 
-            if (this.worldObj.isThundering())
+            if (this.world.isThundering())
             {
-                int var5 = this.worldObj.skylightSubtracted;
-                this.worldObj.skylightSubtracted = 10;
-                var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
-                this.worldObj.skylightSubtracted = var5;
+                int var5 = this.world.skylightSubtracted;
+                this.world.skylightSubtracted = 10;
+                var4 = this.world.getBlockLightValue(var1, var2, var3);
+                this.world.skylightSubtracted = var5;
             }
 
             return var4 <= this.rand.nextInt(8);

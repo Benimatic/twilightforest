@@ -44,11 +44,11 @@ public class PacketStructureProtection implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    World worldObj = Minecraft.getMinecraft().world;
+                    World world = Minecraft.getMinecraft().world;
 
                     // add weather box if needed
-                    if (worldObj.provider instanceof WorldProviderTwilightForest) {
-                        TFWeatherRenderer weatherRenderer = (TFWeatherRenderer) worldObj.provider.getWeatherRenderer();
+                    if (world.provider instanceof WorldProviderTwilightForest) {
+                        TFWeatherRenderer weatherRenderer = (TFWeatherRenderer) world.provider.getWeatherRenderer();
 
                         weatherRenderer.setProtectedBox(message.sbb);
                     }

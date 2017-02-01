@@ -53,7 +53,7 @@ public class EntityTFNagaSegment extends Entity {
     	// do not transfer damage from segments that are disconnected and about to explode
     	if (naga != null) {
 	        //hurtTime = maxHurtTime = 10;
-    		// System.out.println("transferring damage, world is " + this.worldObj);
+    		// System.out.println("transferring damage, world is " + this.world);
     		
 			return naga.attackEntityFrom(damagesource, Math.round(damage * 2.0F / 3.0F));
     	}
@@ -117,9 +117,9 @@ public class EntityTFNagaSegment extends Entity {
 ////        	int dy = MathHelper.floor(this.posY);
 ////        	int dz = MathHelper.floor(this.posZ);
 ////        	
-////        	if (worldObj.isAirBlock(dx, dy, dz))
+////        	if (world.isAirBlock(dx, dy, dz))
 ////        	{
-////        		worldObj.setBlock(dx, dy, dz, Blocks.TORCH);
+////        		world.setBlock(dx, dy, dz, Blocks.TORCH);
 ////        	}
 //        	
 //        }
@@ -136,14 +136,14 @@ public class EntityTFNagaSegment extends Entity {
                     double d2 = rand.nextGaussian() * 0.02D;
                     String explosionType = rand.nextBoolean() ?  "largeexplode" : "explode";
                     
-                    worldObj.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+                    world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
                 }
                 
                 // really explode?
-//                worldObj.newExplosion(null, posX, posY, posZ, 3.0F, true);
+//                world.newExplosion(null, posX, posY, posZ, 3.0F, true);
 
                 setDead();
-                worldObj.removeEntity(this);
+                world.removeEntity(this);
 			}
 		}
 
@@ -151,7 +151,7 @@ public class EntityTFNagaSegment extends Entity {
     
 	protected void collideWithOthers()
     {
-        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         for (Entity entity : list)
         {

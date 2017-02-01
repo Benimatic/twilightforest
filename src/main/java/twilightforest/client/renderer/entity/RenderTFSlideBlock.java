@@ -32,7 +32,7 @@ public class RenderTFSlideBlock extends Render {
 		
 		EntityTFSlideBlock sliderEntity = (EntityTFSlideBlock)entity;
 		
-        World world = entity.worldObj;
+        World world = entity.world;
         Block block = sliderEntity.getBlock();
         int meta = sliderEntity.getMeta();
         

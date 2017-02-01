@@ -35,13 +35,13 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 		{
 			this.tickCount++;
 			
-			if (this.worldObj.isRemote)
+			if (this.world.isRemote)
 			{
-				double var1 = (double)((float)this.pos.getX() + this.worldObj.rand.nextFloat());
-				double var3 = (double)((float)this.pos.getY() + this.worldObj.rand.nextFloat());
-				double var5 = (double)((float)this.pos.getZ() + this.worldObj.rand.nextFloat());
-//				this.worldObj.spawnParticle("smoke", var1, var3, var5, 0.0D, 0.0D, 0.0D);
-				this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, var1, var3, var5, 0.0D, 0.0D, 0.0D);
+				double var1 = (double)((float)this.pos.getX() + this.world.rand.nextFloat());
+				double var3 = (double)((float)this.pos.getY() + this.world.rand.nextFloat());
+				double var5 = (double)((float)this.pos.getZ() + this.world.rand.nextFloat());
+//				this.world.spawnParticle("smoke", var1, var3, var5, 0.0D, 0.0D, 0.0D);
+				this.world.spawnParticle(EnumParticleTypes.REDSTONE, var1, var3, var5, 0.0D, 0.0D, 0.0D);
 				
 				
 				// occasionally make a little red dust line to outline our radius
@@ -214,7 +214,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
     		double tx = srcX + (destX - srcX) * trailFactor + rand.nextFloat() * 0.005;
     		double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * 0.005;
     		double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextFloat() * 0.005;
-    		worldObj.spawnParticle(EnumParticleTypes.REDSTONE, tx, ty, tz, 0, 0, 0);
+    		world.spawnParticle(EnumParticleTypes.REDSTONE, tx, ty, tz, 0, 0, 0);
     	}
 	}
 
@@ -228,7 +228,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			{
 				for (int z = - radius; z <= radius; z++)
 				{
-					IBlockState stateThere = worldObj.getBlockState(pos.add(x, y, z));
+					IBlockState stateThere = world.getBlockState(pos.add(x, y, z));
 					
 					if (blockData[index] != stateThere)
 					{
@@ -268,17 +268,17 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 				replaceWith = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REVERTER_REPLACEMENT);
 			}
 			
-			worldObj.setBlockState(pos, replaceWith, 2);
+			world.setBlockState(pos, replaceWith, 2);
 			
 			// play a little animation
 			if (stateThere.getBlock() == Blocks.AIR)
 			{
-				worldObj.playEvent(2001, pos, Block.getStateId(replaceWith));
+				world.playEvent(2001, pos, Block.getStateId(replaceWith));
 			}
 			else if (replaceWith.getBlock() == Blocks.AIR)
 			{
-				worldObj.playEvent(2001, pos, Block.getStateId(stateThere));
-				stateThere.getBlock().dropBlockAsItem(worldObj, pos, stateThere, 0);
+				world.playEvent(2001, pos, Block.getStateId(stateThere));
+				stateThere.getBlock().dropBlockAsItem(world, pos, stateThere, 0);
 			}
 		}
 
@@ -332,7 +332,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			{
 				for (int z = - radius; z <= radius; z++)
 				{
-					blockData[index] = worldObj.getBlockState(pos.add(x, y, z));
+					blockData[index] = world.getBlockState(pos.add(x, y, z));
 					index++;
 				}
 			}
@@ -341,6 +341,6 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 
     private boolean anyPlayerInRange()
     {
-        return this.worldObj.getClosestPlayer(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange, false) != null;
+        return this.world.getClosestPlayer(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange, false) != null;
     }
 }

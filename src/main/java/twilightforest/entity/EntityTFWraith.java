@@ -49,10 +49,10 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     @Override
 	public void onLivingUpdate()
     {
-        if(worldObj.isDaytime())
+        if(world.isDaytime())
         {
             float f = getBrightness(1.0F);
-            if(f > 0.5F && worldObj.canSeeSky(new BlockPos(this)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
+            if(f > 0.5F && world.canSeeSky(new BlockPos(this)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
             {
 //                fire = 300;
             }
@@ -74,7 +74,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     @Override
 	protected void updateAITasks()
     {
-        if(!worldObj.isRemote && worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
+        if(!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
         	setDead();
         }
@@ -140,7 +140,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
             {
                 if(attackCounter == 10)
                 {
-                    //worldObj.playSoundAtEntity(this, "mob.ghast.charge", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                    //world.playSoundAtEntity(this, "mob.ghast.charge", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
                 }
                 attackCounter++;
                 if(attackCounter == 20)
@@ -216,7 +216,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
      */
     protected Entity findPlayerToAttack()
     {
-        EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
+        EntityPlayer entityplayer = world.getClosestVulnerablePlayerToEntity(this, 16D);
         if(entityplayer != null && canEntityBeSeen(entityplayer))
         {
             return entityplayer;
@@ -235,7 +235,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         for(int i = 1; i < d3; i++)
         {
             axisalignedbb.offset(d4, d5, d6);
-            if(worldObj.getCollidingBoundingBoxes(this, axisalignedbb).size() > 0)
+            if(world.getCollidingBoundingBoxes(this, axisalignedbb).size() > 0)
             {
                 return false;
             }
@@ -285,7 +285,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			// are we in a level 3 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hill3) {
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill3) {
 				// award level 3 hill cheevo
 				((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHill3);
 			}
@@ -297,20 +297,20 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     {
         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
+        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
         {
             return false;
         }
         else
         {
-            int i = this.worldObj.getLightFromNeighbors(blockpos);
+            int i = this.world.getLightFromNeighbors(blockpos);
 
-            if (this.worldObj.isThundering())
+            if (this.world.isThundering())
             {
-                int j = this.worldObj.getSkylightSubtracted();
-                this.worldObj.setSkylightSubtracted(10);
-                i = this.worldObj.getLightFromNeighbors(blockpos);
-                this.worldObj.setSkylightSubtracted(j);
+                int j = this.world.getSkylightSubtracted();
+                this.world.setSkylightSubtracted(10);
+                i = this.world.getLightFromNeighbors(blockpos);
+                this.world.setSkylightSubtracted(j);
             }
 
             return i <= this.rand.nextInt(8);
@@ -320,6 +320,6 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     @Override
     public boolean getCanSpawnHere()
     {
-        return this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
+        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
     }
 }

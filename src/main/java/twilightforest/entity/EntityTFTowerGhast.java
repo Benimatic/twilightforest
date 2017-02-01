@@ -118,7 +118,7 @@ public class EntityTFTowerGhast extends EntityGhast
         
         if (this.rand.nextBoolean())
         {
-            this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+            this.world.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
         }
 
         super.onLivingUpdate();
@@ -127,7 +127,7 @@ public class EntityTFTowerGhast extends EntityGhast
     @Override
     protected void updateAITasks()
     {
-        if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
+        if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
             this.setDead();
         }
@@ -188,7 +188,7 @@ public class EntityTFTowerGhast extends EntityGhast
         	    if (!this.isWithinHomeDistance(MathHelper.floor(waypointX), MathHelper.floor(waypointY), MathHelper.floor(waypointZ)))
         	    {
         	    	// change waypoint to be more towards home
-        	        BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), worldObj);
+        	        BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
         	    	
         	        Vec3d homeVector = new Vec3d(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
         	        homeVector = homeVector.normalize();
@@ -235,7 +235,7 @@ public class EntityTFTowerGhast extends EntityGhast
             {
                 if (this.attackCounter == 10)
                 {
-                    this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+                    this.world.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
                 }
 
                 ++this.attackCounter;
@@ -294,17 +294,17 @@ public class EntityTFTowerGhast extends EntityGhast
 		double offsetZ = this.targetedEntity.posZ - this.posZ;
 		
 		// fireball sound effect
-		this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+		this.world.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 		
 		
-		EntityLargeFireball entityFireball = new EntityLargeFireball(this.worldObj, this, offsetX, offsetY, offsetZ);
+		EntityLargeFireball entityFireball = new EntityLargeFireball(this.world, this, offsetX, offsetY, offsetZ);
 		//var17.field_92012_e = this.explosionPower;
 		double shotSpawnDistance = 0.5D;
 		Vec3d lookVec = this.getLook(1.0F);
 		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
 		entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
 		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-		this.worldObj.spawnEntity(entityFireball);
+		this.world.spawnEntity(entityFireball);
 		
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
 		if (rand.nextInt(6) == 0)
@@ -320,7 +320,7 @@ public class EntityTFTowerGhast extends EntityGhast
      * @return
      */
     protected EntityLivingBase findPlayerInRange() {
-    	EntityPlayer closest = this.worldObj.getNearestAttackablePlayer(this, aggroRange, aggroRange);
+    	EntityPlayer closest = this.world.getNearestAttackablePlayer(this, aggroRange, aggroRange);
     	
     	if (closest != null)
     	{
@@ -344,7 +344,7 @@ public class EntityTFTowerGhast extends EntityGhast
     	{
     		if (this.aggroCounter == 0)
     		{
-    			this.worldObj.playSoundAtEntity(this, "mob.ghast.moan", 1.0F, 1.0F);
+    			this.world.playSoundAtEntity(this, "mob.ghast.moan", 1.0F, 1.0F);
     		}
 
     		if (this.aggroCounter++ >= 20)
@@ -367,7 +367,7 @@ public class EntityTFTowerGhast extends EntityGhast
      */
     protected boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer)
     {
-        return worldObj.canSeeSky(new BlockPos(par1EntityPlayer)) && par1EntityPlayer.canEntityBeSeen(this);
+        return world.canSeeSky(new BlockPos(par1EntityPlayer)) && par1EntityPlayer.canEntityBeSeen(this);
     }
 
 
@@ -386,7 +386,7 @@ public class EntityTFTowerGhast extends EntityGhast
         {
             var15.offset(var9, var11, var13);
 
-            if (!this.worldObj.getCollidingBoundingBoxes(this, var15).isEmpty())
+            if (!this.world.getCollidingBoundingBoxes(this, var15).isEmpty())
             {
                 return false;
             }
@@ -417,10 +417,10 @@ public class EntityTFTowerGhast extends EntityGhast
     @Override
     public boolean getCanSpawnHere()
     {
-        return this.worldObj.checkNoEntityCollision(getEntityBoundingBox())
-        		&& this.worldObj.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-        		&& !this.worldObj.containsAnyLiquid(getEntityBoundingBox())
-        		&& this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL
+        return this.world.checkNoEntityCollision(getEntityBoundingBox())
+        		&& this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+        		&& !this.world.containsAnyLiquid(getEntityBoundingBox())
+        		&& this.world.getDifficulty() != EnumDifficulty.PEACEFUL
         		&& this.isValidLightLevel();
     }
     
@@ -443,7 +443,7 @@ public class EntityTFTowerGhast extends EntityGhast
     		int chunkX = MathHelper.floor(this.posX) >> 4;
     		int chunkZ = MathHelper.floor(this.posZ) >> 4;
 
-    		TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.worldObj);
+    		TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.world);
 
     		if (nearFeature != TFFeature.darkTower)
     		{
@@ -457,7 +457,7 @@ public class EntityTFTowerGhast extends EntityGhast
     		else
     		{
     			// set our home position to the center of the tower
-    			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), worldObj);
+    			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
     			this.setHomeArea(cc.up(128), 64);
 
 //                System.out.println("Ghast is at  " + this.posX + ", " + this.posY + ", " + this.posZ);

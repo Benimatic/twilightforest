@@ -70,7 +70,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	    	float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 	    	
-			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
 
     }
@@ -110,13 +110,13 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	@Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
     {
-		EntityTFIceSnowball entitysnowball = new EntityTFIceSnowball(this.worldObj, this);
+		EntityTFIceSnowball entitysnowball = new EntityTFIceSnowball(this.world, this);
         double d0 = par1EntityLivingBase.posX - this.posX;
         double d1 = par1EntityLivingBase.posY + (double)par1EntityLivingBase.getEyeHeight() - 1.100000023841858D - entitysnowball.posY;
         double d2 = par1EntityLivingBase.posZ - this.posZ;
         float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         entitysnowball.setThrowableHeading(d0, d1 + (double)f1, d2, 0.6F, 12.0F);
         this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntity(entitysnowball);
+        this.world.spawnEntity(entitysnowball);
     }
 }

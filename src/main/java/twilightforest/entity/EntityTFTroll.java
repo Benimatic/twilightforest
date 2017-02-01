@@ -59,7 +59,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 
-        if (worldObj != null && !worldObj.isRemote)
+        if (world != null && !world.isRemote)
         {
             this.setCombatTask();
         }
@@ -161,9 +161,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.worldObj.getBlockState(pos).getBlock() == TFBlocks.unripeTrollBer && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.worldObj.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
-			worldObj.playEvent(2004, pos, 0);
+		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripeTrollBer && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.world.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
+			world.playEvent(2004, pos, 0);
 		}
 	}
 
@@ -188,9 +188,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
 
         for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
-            if (worldObj.isAirBlock(pos)) {
-                worldObj.setBlockState(pos, TFBlocks.trollSteinn.getDefaultState());
-                worldObj.playEvent(2001, pos, Block.getStateId(TFBlocks.trollSteinn.getDefaultState()));
+            if (world.isAirBlock(pos)) {
+                world.setBlockState(pos, TFBlocks.trollSteinn.getDefaultState());
+                world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollSteinn.getDefaultState()));
             }
         }
     }
@@ -211,7 +211,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     {
     	if (this.hasRock()) {
 
-    		EntityTFIceBomb ice = new EntityTFIceBomb(this.worldObj, this);
+    		EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
     		double d0 = target.posX - this.posX;
     		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - target.posY;
@@ -220,7 +220,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
 
     		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-    		this.worldObj.spawnEntity(ice);
+    		this.world.spawnEntity(ice);
     	}
     }
 

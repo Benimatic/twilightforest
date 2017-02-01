@@ -67,7 +67,7 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
     public float getBlockPathWeight(BlockPos pos)
     {
     	// prefer standing on leaves
-		Material underMaterial = this.worldObj.getBlockState(pos.down()).getMaterial();
+		Material underMaterial = this.world.getBlockState(pos.down()).getMaterial();
 		if (underMaterial == Material.LEAVES) {
 			return 12.0F;
 		}
@@ -78,7 +78,7 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.worldObj.getLightBrightness(pos) - 0.5F;
+		return this.world.getLightBrightness(pos) - 0.5F;
     }
 	
     @Override

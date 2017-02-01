@@ -70,8 +70,8 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
-		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.worldObj, this);
-		this.worldObj.playSoundAtEntity(this, "mob.ghast.fireball", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
+		this.world.playSoundAtEntity(this, "mob.ghast.fireball", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 		
 		natureBolt.setTarget(attackTarget);
 
@@ -80,7 +80,7 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 		double tz = attackTarget.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
-		this.worldObj.spawnEntity(natureBolt);
+		this.world.spawnEntity(natureBolt);
 
 	}
 	

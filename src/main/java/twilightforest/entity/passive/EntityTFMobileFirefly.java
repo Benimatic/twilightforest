@@ -75,7 +75,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature
     	super.updateAITasks();
 
         // [VanillaCopy] direct from last half of EntityBat.updateAITasks
-        if (this.spawnPosition != null && (!this.worldObj.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1))
+        if (this.spawnPosition != null && (!this.world.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1))
         {
             this.spawnPosition = null;
         }
@@ -122,17 +122,17 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature
     {
         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (blockpos.getY() >= this.worldObj.getSeaLevel())
+        if (blockpos.getY() >= this.world.getSeaLevel())
         {
             return false;
         }
         else
         {
-            int i = this.worldObj.getLightFromNeighbors(blockpos);
+            int i = this.world.getLightFromNeighbors(blockpos);
             int j = 4;
 
             // TF - no halloween spawn buff
-            /*if (this.isDateAroundHalloween(this.worldObj.getCurrentDate()))
+            /*if (this.isDateAroundHalloween(this.world.getCurrentDate()))
             {
                 j = 7;
             }

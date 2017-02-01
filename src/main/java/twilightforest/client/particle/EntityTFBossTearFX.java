@@ -50,12 +50,12 @@ public class EntityTFBossTearFX extends Particle
     	
         if (this.isCollided && rand.nextBoolean())
         {
-        	//worldObj.playSoundEffect(this.posX, this.posY + 1D, this.posZ, "random.fizz", 2.0F, 2.0F);
-            //worldObj.spawnParticle("lava", this.posX, this.posY, this.posZ, 0, 0, 0);
-			//worldObj.playAuxSFXAtEntity(null, 2001, (int)this.posX, (int)this.posY + 1, (int)this.posZ, 0);
-    		//this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 2002, (int)this.posX, (int)this.posY, (int)this.posZ, 4037);
+        	//world.playSoundEffect(this.posX, this.posY + 1D, this.posZ, "random.fizz", 2.0F, 2.0F);
+            //world.spawnParticle("lava", this.posX, this.posY, this.posZ, 0, 0, 0);
+			//world.playAuxSFXAtEntity(null, 2001, (int)this.posX, (int)this.posY + 1, (int)this.posZ, 0);
+    		//this.world.playAuxSFXAtEntity((EntityPlayer)null, 2002, (int)this.posX, (int)this.posY, (int)this.posZ, 4037);
         	
-        	worldObj.playSound(this.posX, this.posY + 1D, this.posZ, "random.glass", 0.5F, 1.0F, false);
+        	world.playSound(this.posX, this.posY + 1D, this.posZ, "random.glass", 0.5F, 1.0F, false);
 
     		for (int var1 = 0; var1 < 50; ++var1)
     		{
@@ -65,7 +65,7 @@ public class EntityTFBossTearFX extends Particle
     		    Item popItem = Items.GHAST_TEAR;
     		    
     		    
-    		    worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
+    		    world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
     		}
             this.setExpired();
         }

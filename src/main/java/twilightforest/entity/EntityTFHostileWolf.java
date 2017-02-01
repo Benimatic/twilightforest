@@ -45,7 +45,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	public void onUpdate()
     {
         super.onUpdate();
-        if(!worldObj.isRemote && worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
+        if(!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
         	setDead();
         }
@@ -65,12 +65,12 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		// are we near a hedge maze?
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
+		if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze) {
 			// don't check light level
-	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !worldObj.containsAnyLiquid(getEntityBoundingBox());
+	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !world.containsAnyLiquid(getEntityBoundingBox());
 		}
 		else {
-			return isValidLightLevel() && worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !worldObj.containsAnyLiquid(getEntityBoundingBox());
+			return isValidLightLevel() && world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !world.containsAnyLiquid(getEntityBoundingBox());
 		}
     }
     
@@ -79,20 +79,20 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
     {
         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
+        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
         {
             return false;
         }
         else
         {
-            int i = this.worldObj.getLightFromNeighbors(blockpos);
+            int i = this.world.getLightFromNeighbors(blockpos);
 
-            if (this.worldObj.isThundering())
+            if (this.world.isThundering())
             {
-                int j = this.worldObj.getSkylightSubtracted();
-                this.worldObj.setSkylightSubtracted(10);
-                i = this.worldObj.getLightFromNeighbors(blockpos);
-                this.worldObj.setSkylightSubtracted(j);
+                int j = this.world.getSkylightSubtracted();
+                this.world.setSkylightSubtracted(10);
+                i = this.world.getLightFromNeighbors(blockpos);
+                this.world.setSkylightSubtracted(j);
             }
 
             return i <= this.rand.nextInt(8);

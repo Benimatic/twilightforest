@@ -109,7 +109,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 //	@Override
 //    public boolean canCoordinateBeSpawn(int i, int j)
 //    {
-//        int k = worldObj.getFirstUncoveredBlock(i, j);
+//        int k = world.getFirstUncoveredBlock(i, j);
 //        if(k == 0)
 //        {
 //            return false;
@@ -205,9 +205,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     {
         super.updateWeather();
         
-//        for (ChunkCoordIntPair coord : (HashSet<ChunkCoordIntPair>)this.worldObj.activeChunkSet)
+//        for (ChunkCoordIntPair coord : (HashSet<ChunkCoordIntPair>)this.world.activeChunkSet)
 //        {
-//        	Chunk chunk = this.worldObj.getChunkFromChunkCoords(coord.chunkXPos, coord.chunkZPos);
+//        	Chunk chunk = this.world.getChunkFromChunkCoords(coord.chunkXPos, coord.chunkZPos);
 //        	
 //        	if (chunk.queuedLightChecks < 4096)
 //        	{

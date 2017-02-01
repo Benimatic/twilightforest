@@ -64,13 +64,13 @@ public class EntityTFMosquitoSwarm extends EntityMob {
             {
                 byte duration = 7;
 
-                if (this.worldObj.getDifficulty() != EnumDifficulty.EASY)
+                if (this.world.getDifficulty() != EnumDifficulty.EASY)
                 {
-                    if (this.worldObj.getDifficulty() == EnumDifficulty.NORMAL)
+                    if (this.world.getDifficulty() == EnumDifficulty.NORMAL)
                     {
                         duration = 15;
                     }
-                    else if (this.worldObj.getDifficulty() == EnumDifficulty.HARD)
+                    else if (this.world.getDifficulty() == EnumDifficulty.HARD)
                     {
                         duration = 30;
                     }
@@ -94,9 +94,9 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	public boolean getCanSpawnHere()
     {
 		// are we in the swamp
-		if (worldObj.getBiome(new BlockPos(this)) == TFBiomeBase.tfSwamp) {
+		if (world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSwamp) {
 			// don't check light level
-	        return worldObj.checkNoEntityCollision(getEntityBoundingBox()) && worldObj.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
+	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		}
 		else {
 			// normal EntityMob spawn check, checks light level

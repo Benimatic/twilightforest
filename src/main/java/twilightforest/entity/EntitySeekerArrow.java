@@ -57,7 +57,7 @@ public class EntitySeekerArrow extends EntityArrow {
 				targetBB = targetBB.expand(0, 3, 0);
 
         		// find targets in box
-        		List targets = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, targetBB);
+        		List targets = this.world.getEntitiesWithinAABBExcludingEntity(this, targetBB);
 
         		double closestDot = 1;
 

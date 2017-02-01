@@ -27,8 +27,8 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
         	if (currentYaw == 0 && desiredYaw == 0)
         	{
         		// make it rotate!
-        		yawDelay = 200 + worldObj.rand.nextInt(200);
-        		desiredYaw = worldObj.rand.nextInt(15) - worldObj.rand.nextInt(15);
+        		yawDelay = 200 + world.rand.nextInt(200);
+        		desiredYaw = world.rand.nextInt(15) - world.rand.nextInt(15);
         	}
 
         	if (currentYaw < desiredYaw)
@@ -65,19 +65,19 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
         	if (!singing && singDuration <= 0)
         	{
         		singing = true;
-        		singDelay = 100 + worldObj.rand.nextInt(100);
+        		singDelay = 100 + world.rand.nextInt(100);
         	}
         }
     }
 
     private void doSingAnimation()
     {
-    	if (worldObj.rand.nextInt(5) == 0)
+    	if (world.rand.nextInt(5) == 0)
     	{
-    		double rx = pos.getX() + worldObj.rand.nextFloat();
-    		double ry = pos.getY() + worldObj.rand.nextFloat();
-    		double rz = pos.getZ() + worldObj.rand.nextFloat();
-    		worldObj.spawnParticle(EnumParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+    		double rx = pos.getX() + world.rand.nextFloat();
+    		double ry = pos.getY() + world.rand.nextFloat();
+    		double rz = pos.getZ() + world.rand.nextFloat();
+    		world.spawnParticle(EnumParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
     	}
     }
     
@@ -85,7 +85,7 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
     {
     	if (!TwilightForestMod.silentCicadas)
     	{
-    		worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F, false);
+    		world.playSound(pos.getX(), pos.getY(), pos.getZ(), TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F, false);
     	}
     }
 }

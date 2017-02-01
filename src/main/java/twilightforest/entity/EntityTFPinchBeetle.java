@@ -84,7 +84,7 @@ public class EntityTFPinchBeetle extends EntityMob
     @Override
 	protected void playStepSound(BlockPos pos, Block var4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
+        this.world.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
     }
 
     @Override
@@ -158,7 +158,7 @@ public class EntityTFPinchBeetle extends EntityMob
         {
             return true;
         }
-//        else if (!this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
+//        else if (!this.world.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
 //        {
 //            par1EntityPlayer.mountEntity(this);
 //            return true;

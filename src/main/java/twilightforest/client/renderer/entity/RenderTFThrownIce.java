@@ -30,7 +30,7 @@ public class RenderTFThrownIce extends Render {
      */
     public void doRender(EntityTFIceBomb entity, double x, double y, double z, float p_147918_8_, float p_147918_9_)
     {
-        World world = entity.worldObj;
+        World world = entity.world;
         Block block = entity.getBlock();
         int i = MathHelper.floor(entity.posX);
         int j = MathHelper.floor(entity.posY);

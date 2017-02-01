@@ -56,7 +56,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 		
         for (int i = 0; i < 1; ++i)
         {
-            this.worldObj.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
+            this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
             		0, 0.5, 0);
         }
 	}
@@ -127,12 +127,12 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
-        EntityThrowable projectile = new EntityTFTomeBolt(this.worldObj, this);
+        EntityThrowable projectile = new EntityTFTomeBolt(this.world, this);
         double tx = target.posX - this.posX;
         double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
         double tz = target.posZ - this.posZ;
         float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
         projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
-        this.worldObj.spawnEntity(projectile);
+        this.world.spawnEntity(projectile);
     }
 }

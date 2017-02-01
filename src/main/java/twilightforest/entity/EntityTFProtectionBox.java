@@ -13,8 +13,8 @@ public class EntityTFProtectionBox extends Entity {
 	public int sizeY;
 	public int sizeZ;
 
-	public EntityTFProtectionBox(World worldObj, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		super(worldObj);
+	public EntityTFProtectionBox(World world, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+		super(world);
 		
 		this.setLocationAndAngles(minX, minY, minZ, 0.0F, 0.0F);
 		

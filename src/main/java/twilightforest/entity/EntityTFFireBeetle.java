@@ -96,7 +96,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     @Override
 	protected void playStepSound(BlockPos pos, Block var4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
+        this.world.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     			dy *= velocity;
     			dz *= velocity;
 
-    			worldObj.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
+    			world.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
     		}
     		
 			playBreathSound();
@@ -162,7 +162,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
 	}
 
 	public void playBreathSound() {
-		worldObj.playSoundEffect(this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5, "mob.ghast.fireball", rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
+		world.playSoundEffect(this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5, "mob.ghast.fireball", rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 	}
     
 	@Override

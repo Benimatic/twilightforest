@@ -40,16 +40,16 @@ public class ItemTFChainBlock extends ItemTool {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldObj, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		player.setActiveHand(hand);
 
-		if (!worldObj.isRemote && !this.hasLaunchedBlock(stack)) {
+		if (!world.isRemote && !this.hasLaunchedBlock(stack)) {
 
-			worldObj.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
+			world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
 
 
-			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(worldObj, player);
-			worldObj.spawnEntity(launchedBlock);
+			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player);
+			world.spawnEntity(launchedBlock);
 			this.setLaunchedBlock(stack, launchedBlock);
 
 			setChainAsThrown(stack);

@@ -40,13 +40,13 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
             {
                 byte effectDuration = 0;
 
-                if (this.worldObj.getDifficulty() != EnumDifficulty.EASY)
+                if (this.world.getDifficulty() != EnumDifficulty.EASY)
                 {
-                    if (this.worldObj.getDifficulty() == EnumDifficulty.NORMAL)
+                    if (this.world.getDifficulty() == EnumDifficulty.NORMAL)
                     {
                         effectDuration = 7;
                     }
-                    else if (this.worldObj.getDifficulty() == EnumDifficulty.HARD)
+                    else if (this.world.getDifficulty() == EnumDifficulty.HARD)
                     {
                         effectDuration = 15;
                     }

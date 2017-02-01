@@ -261,7 +261,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
                 blu = 0.00F * sparkle;
         	}
             
-            worldObj.spawnParticle(EnumParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
+            world.spawnParticle(EnumParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
         }
         
 		if (isShadowClone()) {
@@ -270,7 +270,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		}
 		
 		// update health
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
         }
@@ -294,7 +294,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     	}
     	
     	if (isShadowClone()) {
-    		this.worldObj.playSoundAtEntity(this, "random.fizz", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+    		this.world.playSoundAtEntity(this, "random.fizz", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
     		return false;
     	}
     	
@@ -317,12 +317,12 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 				// reduce shield for magic damage greater than 1 heart
 				if (getShieldStrength() > 0) {
 					setShieldStrength(getShieldStrength() - 1);
-					this.worldObj.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+					this.world.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				}
 			}
 			else
 			{
-				this.worldObj.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				this.world.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				// HACK for creative mode: but get annoyed at what's causing it.
 				if (par1DamageSource.getEntity() instanceof EntityPlayer) 
 				{
@@ -381,7 +381,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     	}
     	
     	if (getPhase() == 1) {
-	    	if (attackTime == 60 && !worldObj.isRemote) {
+	    	if (attackTime == 60 && !world.isRemote) {
 	
 	    		teleportToSightOfEntity(targetedEntity);
 	    		
@@ -495,13 +495,13 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		double ty = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
 		double tz = targetedEntity.posZ - sz;
 		
-		worldObj.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		EntityTFLichBolt projectile = new EntityTFLichBolt(worldObj, this);
+		world.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		EntityTFLichBolt projectile = new EntityTFLichBolt(world, this);
 		projectile.setThrowableHeading(tx, ty, tz, projectile.func_70182_d(), 1.0F);
 		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 
-		worldObj.spawnEntity(projectile);
+		world.spawnEntity(projectile);
 	}
 
 	/**
@@ -518,13 +518,13 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		double ty = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
 		double tz = targetedEntity.posZ - sz;
 		
-		worldObj.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		EntityTFLichBomb projectile = new EntityTFLichBomb(worldObj, this);
+		world.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		EntityTFLichBomb projectile = new EntityTFLichBomb(world, this);
 		projectile.setThrowableHeading(tx, ty, tz, projectile.func_40077_c(), 1.0F);
 		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		
-		worldObj.spawnEntity(projectile);
+		world.spawnEntity(projectile);
 	}
 
     /**
@@ -532,19 +532,19 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      */
     @SuppressWarnings("unchecked")
 	protected void popNearbyMob() {
-		List<Entity> nearbyMobs = worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<Entity> nearbyMobs = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 
 		for (Entity entity : nearbyMobs) {
 			if (entity instanceof EntityLiving && canPop(entity) && canEntityBeSeen(entity)) {
 				EntityLiving mob = (EntityLiving)entity;
 
-				if (!worldObj.isRemote) {
+				if (!world.isRemote) {
 					mob.setDead();
 
 					mob.spawnExplosionParticle();
 
 					// play death sound
-//					worldObj.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+//					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 				}
 
 				// make trail so it's clear that we did it
@@ -587,7 +587,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	@SuppressWarnings("unchecked")
 	protected int countMyClones() {
     	// check if there are enough clones.  we check a 32x16x32 area
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		int count = 0;
 
 		for (EntityTFLich nearbyLich : nearbyLiches) {
@@ -612,9 +612,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		Vec3d cloneSpot = findVecInLOSOf(targetedEntity);
 		
 		// put a clone there
-		EntityTFLich newClone = new EntityTFLich(worldObj, this);
+		EntityTFLich newClone = new EntityTFLich(world, this);
 		newClone.setPosition(cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
-		worldObj.spawnEntity(newClone);
+		world.spawnEntity(newClone);
 		
 		newClone.entityToAttack = targetedEntity;
 		newClone.attackTime = 60 + rand.nextInt(3) - rand.nextInt(3);
@@ -628,7 +628,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void despawnClones() {
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(this.getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(this.getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (nearbyLich.isShadowClone()) {
@@ -640,7 +640,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 
 
 	protected void checkAndSpawnMinions(Entity targetedEntity) {
-		if (!worldObj.isRemote && this.getMinionsToSummon() > 0) {
+		if (!world.isRemote && this.getMinionsToSummon() > 0) {
 			int minions = countMyMinions();
 			
 	    	// if not, spawn one!
@@ -655,7 +655,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	@SuppressWarnings("unchecked")
 	protected int countMyMinions() {
     	// check if there are enough clones.  we check a 32x16x32 area
-		List<EntityTFLichMinion> nearbyMinons = worldObj.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLichMinion> nearbyMinons = world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		int count = 0;
 		
 		for (EntityTFLichMinion nearbyMinon : nearbyMinons) {
@@ -673,15 +673,15 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		Vec3d minionSpot = findVecInLOSOf(targetedEntity);
 		
 		// put a clone there
-		EntityTFLichMinion minion = new EntityTFLichMinion(worldObj, this);
+		EntityTFLichMinion minion = new EntityTFLichMinion(world, this);
 		minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
 		//minion.initCreature();
-		worldObj.spawnEntity(minion);
+		world.spawnEntity(minion);
 		
 		minion.setAttackTarget(targetedEntity);
 		
 		minion.spawnExplosionParticle();
-		this.worldObj.playSoundAtEntity(minion, "random.pop", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+		this.world.playSoundAtEntity(minion, "random.pop", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		
 		// make sparkles leading to it
 		makeBlackMagicTrail(posX, posY + this.getEyeHeight(), posZ, minionSpot.xCoord, minionSpot.yCoord + minion.height / 2.0, minionSpot.zCoord);
@@ -698,7 +698,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		if (masterLich == null) {
 			findNewMaster();
 		}
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			if (masterLich == null || masterLich.isDead) {
 				this.isDead = true;
 			}
@@ -714,7 +714,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	 */
 	@SuppressWarnings("unchecked")
 	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(this)) {
@@ -784,7 +784,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         	int bz = MathHelper.floor(tz);
         	while (!groundFlag && ty > 0) 
         	{
-                Block whatsThere = worldObj.getBlock(bx, by - 1, bz);
+                Block whatsThere = world.getBlock(bx, by - 1, bz);
                 if (whatsThere == Blocks.AIR || !whatsThere.getMaterial().isSolid())
                 {
                     ty--;
@@ -812,13 +812,13 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
         	// check that we're not colliding and not in liquid
         	float halfWidth = this.width / 2.0F;
         	AxisAlignedBB destBox = new AxisAlignedBB(tx - halfWidth, ty - yOffset + ySize, tz - halfWidth, tx + halfWidth, ty - yOffset + ySize + height, tz + halfWidth);
-        	if (worldObj.getCollidingBoundingBoxes(this, destBox).size() > 0)
+        	if (world.getCollidingBoundingBoxes(this, destBox).size() > 0)
             {
 //        		System.out.println("teleport find failed because of collision");
         		continue;
             }
         	
-        	if (worldObj.isAnyLiquid(destBox)) {
+        	if (world.isAnyLiquid(destBox)) {
 //        		System.out.println("teleport find failed because of liquid at destination");
         		continue;
         	}
@@ -840,7 +840,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      * Can the specified entity see the specified location?
      */
     protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return worldObj.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
+        return world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
 
     }
 
@@ -859,8 +859,8 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	
     	makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
 
-    	worldObj.playSoundEffect(srcX, srcY, srcZ, "mob.endermen.portal", 1.0F, 1.0F);
-    	worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
+    	world.playSoundEffect(srcX, srcY, srcZ, "mob.endermen.portal", 1.0F, 1.0F);
+    	world.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
     	
     	// sometimes we need to do this
     	this.isJumping = false;
@@ -883,7 +883,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     		double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
     		double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * height;
     		double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
-    		worldObj.spawnParticle("spell", tx, ty, tz, f, f1, f2);
+    		world.spawnParticle("spell", tx, ty, tz, f, f1, f2);
     	}
 	}
 
@@ -902,7 +902,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     		double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
     		double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
     		double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-    		worldObj.spawnParticle("mobSpell", tx, ty, tz, f, f1, f2);
+    		world.spawnParticle("mobSpell", tx, ty, tz, f, f1, f2);
     	}
 	}
 
@@ -921,7 +921,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     		double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
     		double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
     		double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-    		worldObj.spawnParticle("mobSpell", tx, ty, tz, f, f1, f2);
+    		world.spawnParticle("mobSpell", tx, ty, tz, f, f1, f2);
     	}
 	}
 
@@ -1020,14 +1020,14 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		}
 
 		// mark the tower as defeated
-		if (!worldObj.isRemote && !this.isShadowClone()) {
+		if (!world.isRemote && !this.isShadowClone()) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			if (worldObj.provider instanceof WorldProviderTwilightForest){
-				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+			if (world.provider instanceof WorldProviderTwilightForest){
+				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.lichTower) {
 					chunkProvider.setStructureConquered(dx, dy, dz, true);

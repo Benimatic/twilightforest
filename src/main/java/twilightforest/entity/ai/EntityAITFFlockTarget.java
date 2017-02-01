@@ -22,7 +22,7 @@ public class EntityAITFFlockTarget extends EntityAITarget
 	@Override
 	public boolean shouldExecute()
     {
-    	List<EntityLivingBase> flockList = this.flockCreature.worldObj.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
+    	List<EntityLivingBase> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
     	List<EntityLivingBase> targetList = new ArrayList<EntityLivingBase>();
     	
     	for (EntityLivingBase flocker : flockList)
@@ -38,7 +38,7 @@ public class EntityAITFFlockTarget extends EntityAITarget
     	else
     	{
     		// hmm, just pick a random target?
-    		EntityLivingBase randomTarget = targetList.get(this.flockCreature.worldObj.rand.nextInt(targetList.size()));
+    		EntityLivingBase randomTarget = targetList.get(this.flockCreature.world.rand.nextInt(targetList.size()));
     		
     		System.out.println("randomTarget = " + randomTarget);
     		

@@ -118,7 +118,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
                 double d2 = rand.nextGaussian() * 0.02D;
                 String explosionType = rand.nextBoolean() ?  "hugeexplosion" : "explode";
                 
-                worldObj.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+                world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
             }
 		}
     }
@@ -150,7 +150,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         	attackSuccessful = super.attackEntityFrom(source, damage);
         }
  
-        if (!worldObj.isRemote)
+        if (!world.isRemote)
         {
         	if (this.hurtTime == this.maxHurtTime)
         	{
@@ -200,9 +200,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		// start raining
 		int rainTime = 300 * 20;
 		
-        WorldInfo worldInfo = worldObj.getWorldInfo();
+        WorldInfo worldInfo = world.getWorldInfo();
 		
-		//System.out.println("Starting rain and thunder.  world = " + worldObj);
+		//System.out.println("Starting rain and thunder.  world = " + world);
 		
 		worldInfo.setRaining(true);
 		worldInfo.setThundering(true);
@@ -252,25 +252,25 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		//System.out.printf("Spawning minions near %d, %d, %d.\n", x, y, z);
 		
 		// lightning strike
-		this.worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, x, y + 4, z));
+		this.world.addWeatherEffect(new EntityLightningBolt(world, x, y + 4, z));
 
     	
     	for (int i = 0; i < tries; i++)
     	{
-    		EntityTFMiniGhast minion = new EntityTFMiniGhast(worldObj);
+    		EntityTFMiniGhast minion = new EntityTFMiniGhast(world);
     		
     		double sx = x + ((rand.nextDouble() - rand.nextDouble()) * rangeXZ);
     		double sy = y + (rand.nextDouble() * rangeY);
     		double sz = z + ((rand.nextDouble() - rand.nextDouble()) * rangeXZ);
     		
-    		minion.setLocationAndAngles(sx, sy, sz, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
+    		minion.setLocationAndAngles(sx, sy, sz, this.world.rand.nextFloat() * 360.0F, 0.0F);
     		minion.makeBossMinion();
 
     		if (minion.getCanSpawnHere())
     		{
     			//System.out.println("Spawned minion!");
     			
-    			this.worldObj.spawnEntity(minion);
+    			this.world.spawnEntity(minion);
     			minion.spawnExplosionParticle();
     		}
     		else
@@ -294,7 +294,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     @Override
 	protected void updateAITasks()
     {
-        if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
+        if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
             this.setDead();
         }
@@ -302,7 +302,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         this.despawnEntity();
         
         // despawn mini ghasts that are in our AABB
-		List<EntityTFMiniGhast> nearbyGhasts = worldObj.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.boundingBox.expand(1, 1, 1));
+		List<EntityTFMiniGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.boundingBox.expand(1, 1, 1));
 		for (EntityTFMiniGhast ghast : nearbyGhasts)
 		{
 			ghast.setDead();
@@ -417,7 +417,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
             {
                 if (this.attackCounter == 10)
                 {
-                    //this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+                    //this.world.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
             		this.playSound("mob.ghast.charge", this.getSoundVolume(), this.getSoundPitch());
                 }
 
@@ -463,7 +463,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		// harm player below
 		AxisAlignedBB below = this.boundingBox.getOffsetBoundingBox(0, -16, 0).expand(0, 16, 0);
 
-		List<EntityPlayer> playersBelow = worldObj.getEntitiesWithinAABB(EntityPlayer.class, below);
+		List<EntityPlayer> playersBelow = world.getEntitiesWithinAABB(EntityPlayer.class, below);
 
 		for (EntityPlayer player : playersBelow)
 		{
@@ -471,14 +471,14 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 			int dy = MathHelper.floor(player.posY);
 			int dz = MathHelper.floor(player.posZ);
 
-			if (worldObj.canBlockSeeTheSky(dx, dy, dz))
+			if (world.canBlockSeeTheSky(dx, dy, dz))
 			{
 				player.attackEntityFrom(DamageSource.anvil, 3);
 			}
 		}
 
 		// also suck up mini ghasts
-		List<EntityTFMiniGhast> ghastsBelow = worldObj.getEntitiesWithinAABB(EntityTFMiniGhast.class, below);
+		List<EntityTFMiniGhast> ghastsBelow = world.getEntitiesWithinAABB(EntityTFMiniGhast.class, below);
 
 		for (EntityTFMiniGhast ghast : ghastsBelow)
 		{
@@ -491,7 +491,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
      */
     private void shedTear() 
     {
-		TwilightForestMod.proxy.spawnParticle(this.worldObj, "bosstear", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(this.world, "bosstear", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
 	}
 
 	/**
@@ -595,7 +595,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		{
 			AxisAlignedBB aabb = new AxisAlignedBB(trap.posX, trap.posY, trap.posZ, trap.posX + 1, trap.posY + 1, trap.posZ + 1).expand(8D, 16D, 8D);
 			
-			List<EntityTFMiniGhast> nearbyGhasts = worldObj.getEntitiesWithinAABB(EntityTFMiniGhast.class, aabb);
+			List<EntityTFMiniGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityTFMiniGhast.class, aabb);
 			
 			//System.out.println("Checking for ghasts.  There are " + nearbyGhasts.size() + " ghasts near this trap.");
 
@@ -662,25 +662,25 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		double offsetZ = this.targetedEntity.posZ - this.posZ;
 		
 		// fireball sound effect
-		this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+		this.world.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 		
-		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.worldObj, this, offsetX, offsetY, offsetZ);
+		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX, offsetY, offsetZ);
 		entityFireball.field_92057_e = 1;
 		double shotSpawnDistance = 8.5D;
 		Vec3d lookVec = this.getLook(1.0F);
 		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
 		entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
 		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-		this.worldObj.spawnEntity(entityFireball);
+		this.world.spawnEntity(entityFireball);
 		
 		for (int i = 0; i < 2; i++)
 		{
-			entityFireball = new EntityTFUrGhastFireball(this.worldObj, this, offsetX + (rand.nextFloat() - rand.nextFloat()) * 8, offsetY, offsetZ + (rand.nextFloat() - rand.nextFloat()) * 8);
+			entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX + (rand.nextFloat() - rand.nextFloat()) * 8, offsetY, offsetZ + (rand.nextFloat() - rand.nextFloat()) * 8);
 			entityFireball.field_92057_e = 1;
 			entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
 			entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
 			entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-			this.worldObj.spawnEntity(entityFireball);
+			this.world.spawnEntity(entityFireball);
 		}
 
 	}
@@ -741,9 +741,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 	
 	private boolean isTrapAt(int x, int y, int z)
 	{
-		return worldObj.blockExists(x, y, z) 
-				&& worldObj.getBlock(x, y, z) == TFBlocks.towerDevice 
-				&& (worldObj.getBlockMetadata(x, y, z) == BlockTFTowerDevice.META_GHASTTRAP_INACTIVE || worldObj.getBlockMetadata(x, y, z) == BlockTFTowerDevice.META_GHASTTRAP_ACTIVE);
+		return world.blockExists(x, y, z)
+				&& world.getBlock(x, y, z) == TFBlocks.towerDevice
+				&& (world.getBlockMetadata(x, y, z) == BlockTFTowerDevice.META_GHASTTRAP_INACTIVE || world.getBlockMetadata(x, y, z) == BlockTFTowerDevice.META_GHASTTRAP_ACTIVE);
 	}
 
     @Override
@@ -815,11 +815,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     {
     	super.onDeathUpdate();
     	
-        if (this.deathTime == 20 && !worldObj.isRemote)
+        if (this.deathTime == 20 && !world.isRemote)
         {
         	// make chest
         	BlockPos chestCoords = this.findChestCoords();
-        	TFTreasure.darktower_boss.generate(worldObj, null, chestCoords.posX, chestCoords.posY, chestCoords.posZ);
+        	TFTreasure.darktower_boss.generate(world, null, chestCoords.posX, chestCoords.posY, chestCoords.posZ);
         }
     }
     
@@ -836,14 +836,14 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		}
 
 		// mark the tower as defeated
-		if (!worldObj.isRemote && worldObj.provider instanceof WorldProviderTwilightForest) {
+		if (!world.isRemote && world.provider instanceof WorldProviderTwilightForest) {
         	BlockPos chestCoords = this.findChestCoords();
 			int dx = chestCoords.posX;
 			int dy = chestCoords.posY;
 			int dz = chestCoords.posZ;
 
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 
 			if (nearbyFeature == TFFeature.darkTower) {
 				chunkProvider.setStructureConquered(dx, dy, dz, true);

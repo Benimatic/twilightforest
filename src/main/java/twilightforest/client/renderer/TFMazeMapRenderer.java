@@ -68,7 +68,7 @@ public class TFMazeMapRenderer implements IItemRenderer {
 			//RenderBlocks renderBlocks = (RenderBlocks)data[0];
 			EntityItem entity = (EntityItem)data[1];
 
-			TFMazeMapData mapData = ((ItemTFMazeMap) TFItems.mazeMap).getMapData(item, entity.worldObj);
+			TFMazeMapData mapData = ((ItemTFMazeMap) TFItems.mazeMap).getMapData(item, entity.world);
 
 
 			// if we have data, render it

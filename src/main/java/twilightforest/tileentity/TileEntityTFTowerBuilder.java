@@ -46,7 +46,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 	@Override
 	public void update()
 	{
-		if (!worldObj.isRemote && this.makingBlocks)
+		if (!world.isRemote && this.makingBlocks)
 		{
 			// if we are not tracking the nearest player, start tracking them
 			if (trackedPlayer == null)
@@ -65,11 +65,11 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 				BlockPos nextPos = pos.offset(nextFacing);
 				
 				// make a block
-				if (blocksMade <= RANGE && worldObj.isAirBlock(nextPos))
+				if (blocksMade <= RANGE && world.isAirBlock(nextPos))
 				{
-					worldObj.setBlockState(nextPos, blockBuiltState, 3);
+					world.setBlockState(nextPos, blockBuiltState, 3);
 					
-					worldObj.playEvent(1001, nextPos, 0);
+					world.playEvent(1001, nextPos, 0);
 
 					this.lastBlockCoords = nextPos;
 
@@ -90,14 +90,14 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 				ticksStopped = 0;
 			}
 		}
-		else if (!worldObj.isRemote && !this.makingBlocks)
+		else if (!world.isRemote && !this.makingBlocks)
 		{
 			this.trackedPlayer = null;
 			if (++ticksStopped == 60)
 			{
 				// force the builder back into an inactive state
-				worldObj.setBlockState(getPos(), TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
-				worldObj.scheduleUpdate(getPos(), TFBlocks.towerDevice, 4);
+				world.setBlockState(getPos(), TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
+				world.scheduleUpdate(getPos(), TFBlocks.towerDevice, 4);
 			}
 		}
 	}
@@ -131,7 +131,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 	 */
 	private EntityPlayer findClosestValidPlayer() 
 	{
-		return worldObj.getClosestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, false);
+		return world.getClosestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, false);
 	}
 	
 	

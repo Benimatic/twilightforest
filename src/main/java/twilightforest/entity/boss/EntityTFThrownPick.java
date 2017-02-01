@@ -41,10 +41,10 @@ public class EntityTFThrownPick extends EntityThrowable  {
 
         for (int i = 0; i < 8; ++i)
         {
-            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
         }
 
-        if (!passThru && !this.worldObj.isRemote)
+        if (!passThru && !this.world.isRemote)
         {
             this.setDead();
         }	

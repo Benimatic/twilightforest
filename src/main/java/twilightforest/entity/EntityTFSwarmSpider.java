@@ -57,7 +57,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	@Override
 	public void onUpdate() {
 		if (shouldSpawnMore()) {
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				int more = 1 + rand.nextInt(2);
 				for (int i = 0; i < more; i++) {
 					// try twice to spawn
@@ -79,7 +79,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
     }
 
 	protected boolean spawnAnother() {
-		EntityTFSwarmSpider another = new EntityTFSwarmSpider(worldObj, false);
+		EntityTFSwarmSpider another = new EntityTFSwarmSpider(world, false);
 
 
 		double sx = posX + (rand.nextBoolean() ? 0.9 : -0.9);
@@ -91,7 +91,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 			another.setDead();
 			return false;
 		}
-		worldObj.spawnEntity(another);
+		world.spawnEntity(another);
 		
 		return true;
 	}
@@ -102,7 +102,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) 
+		if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze)
 		{
 			return true;
 		}
@@ -144,7 +144,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 			// are we in a hedge maze?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze) {
 				// award hedge maze cheevo
 				((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHedge);
 			}

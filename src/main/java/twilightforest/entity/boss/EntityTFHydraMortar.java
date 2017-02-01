@@ -48,7 +48,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 
     	if (this.onGround)
     	{
-    		if (!worldObj.isRemote)
+    		if (!world.isRemote)
     		{
 	    		// slow down
 	    		this.motionX *= 0.9D;
@@ -103,18 +103,18 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	
 	private void detonate()
 	{
-		//this.worldObj.playAuxSFX(2004, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), 32764);
+		//this.world.playAuxSFX(2004, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), 32764);
 		
-        //this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, explosionPower, true);
+        //this.world.createExplosion((Entity)null, this.posX, this.posY, this.posZ, explosionPower, true);
         
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-        this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, true, true);
+        this.world.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, true, true);
 
 
-		if (!worldObj.isRemote)
+		if (!world.isRemote)
 		{
 			// damage nearby things
-			List<Entity> nearbyList = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D));
+			List<Entity> nearbyList = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D));
 
 			for (Entity nearby : nearbyList)
 			{
@@ -134,7 +134,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 //		System.out.println("Hydra mortar being attacked!");
 		
         setBeenAttacked();
-        if (damagesource.getEntity() != null && !this.worldObj.isRemote)
+        if (damagesource.getEntity() != null && !this.world.isRemote)
         {
             Vec3d vec3d = damagesource.getEntity().getLookVec();
             if (vec3d != null)
