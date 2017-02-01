@@ -9,23 +9,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-
 
 /**
  * 
@@ -35,8 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class BlockTFCastleMagic extends Block {
-	
-	public static IIcon[] magicIcons = new IIcon[8];
 	public static final int[] magicColors = new int[] { 0x00FFFF, 0xFFFF00, 0xFF00FF, 0x4B0082 };
 
 	private static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PINK, EnumDyeColor.BLUE, EnumDyeColor.YELLOW, EnumDyeColor.PURPLE);
@@ -65,24 +51,6 @@ public class BlockTFCastleMagic extends Block {
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta));
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		for (int i = 0; i < 8; i++) {
-			this.magicIcons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_magic_" + i);
-		}
-	}
-	
-	public static IIcon getMagicIconFor(int x, int y, int z) {
-		
-        long seed = x * 3129871 ^ y * 116129781L ^ z;
-        seed = seed * seed * 42317861L + seed * 11L;
-        
-        int index = (int) (seed >> 12 & 7L);
-		
-		return magicIcons[index];
 	}
 
 	public static int getMagicColorFor(int meta) {

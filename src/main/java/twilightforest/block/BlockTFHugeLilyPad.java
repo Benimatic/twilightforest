@@ -85,8 +85,7 @@ public class BlockTFHugeLilyPad extends BlockBush {
 					BlockPos dPos = new BlockPos(bx + dx, pos.getY(), bz + dz);
 					IBlockState state = world.getBlockState(dPos);
     				if (state.getBlock() == this) {
-    					world.setBlockState(dPos, Blocks.AIR.getDefaultState(), 2);
-						world.playEvent(2001, dPos, Block.getStateId(state));
+    					world.destroyBlock(dPos, false);
     				}
     			}
     		}

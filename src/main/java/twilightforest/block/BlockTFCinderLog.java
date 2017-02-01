@@ -1,11 +1,8 @@
 package twilightforest.block;
 
-import java.util.Random;
-
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.BlockLog;
-import net.minecraft.item.Item;
 import twilightforest.item.TFItems;
 
 public class BlockTFCinderLog extends BlockLog {
@@ -42,12 +39,5 @@ public class BlockTFCinderLog extends BlockLog {
 			default: return getDefaultState().withProperty(LOG_AXIS, EnumAxis.NONE);
 		}
 	}
-
-    @Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
-    {
-        return Item.getItemFromBlock(TFBlocks.cinderLog); // hey that's my block ID!
-    }
-
 
 }

@@ -3,6 +3,7 @@ package twilightforest.block;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -83,6 +84,6 @@ public class BlockTFLeaves3 extends BlockLeaves {
 
     @Override
     public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
-        return null; // todo 1.9
+        return ImmutableList.of(); // todo 1.9
     }
 }

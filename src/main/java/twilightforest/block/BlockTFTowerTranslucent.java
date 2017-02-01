@@ -147,35 +147,8 @@ public class BlockTFTowerTranslucent extends Block
     	}    
     }
 
+    // todo 1.10 smart model for REACTOR_DEBRIS that randomly chooses sides from portal/netherrack/bedrock/obsidian
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-	@Override
-	public IIcon getIcon(int side, int meta) {
-		switch (meta)
-		{
-		case META_REAPPEARING_INACTIVE:
-		default:
-			return TEX_REAPPEARING_INACTIVE;
-		case META_REAPPEARING_ACTIVE:
-			return TEX_REAPPEARING_ACTIVE;
-		case META_BUILT_INACTIVE:
-			return TEX_BUILT_INACTIVE;
-		case META_BUILT_ACTIVE:
-			return TEX_BUILT_ACTIVE;
-		case META_REVERTER_REPLACEMENT:
-			return TEX_REVERTER_REPLACEMENT;
-		case META_REACTOR_DEBRIS:
-			Block toMimic = sideRNG.nextBoolean() ? (sideRNG.nextBoolean() ? Blocks.PORTAL : Blocks.NETHERRACK) : (sideRNG.nextBoolean() ? Blocks.BEDROCK : Blocks.OBSIDIAN);
-			return toMimic.getIcon(side, meta);
-		case META_FAKE_GOLD:
-			return Blocks.GOLD_BLOCK.getIcon(side, meta);
-		case META_FAKE_DIAMOND:
-			return Blocks.DIAMOND_BLOCK.getIcon(side, meta);
-		}
-	}
-	
     @Override
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {

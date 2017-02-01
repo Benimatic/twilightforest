@@ -34,11 +34,9 @@ public class BlockTFHugeWaterLily extends BlockBush {
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
         IBlockState down = world.getBlockState(pos.down());
         Block b = down.getBlock();
-        IProperty<Integer> levelProp = b instanceof BlockLiquid
-                ? BlockLiquid.LEVEL
-                : b instanceof BlockFluidBase
-                    ? BlockFluidBase.LEVEL
-                    : null;
+        IProperty<Integer> levelProp = b instanceof BlockLiquid || b instanceof BlockFluidBase
+				? BlockLiquid.LEVEL
+                : null;
 
         return down.getMaterial() == Material.WATER
                 && (levelProp == null || down.getValue(levelProp) == 0);

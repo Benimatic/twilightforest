@@ -136,7 +136,7 @@ public class BlockTFCastleDoor extends Block
         return 5;
     }
 
-    @Override
+    @Override // todo 1.10 recheck all of this
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
     	if (!par1World.isRemote)
@@ -145,11 +145,8 @@ public class BlockTFCastleDoor extends Block
     		
     		if (this.isVanished) {
     			if (state.getValue(ACTIVE)) {
-                	par1World.setBlock(x, y, z, TFBlocks.castleDoor, meta & 7, 3);
-                    par1World.notifyNeighborsRespectDebug(pos, this);
+                	par1World.setBlockState(pos, TFBlocks.castleDoor.getDefaultState());
                     playVanishSound(par1World, pos);
-
-                    //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
     			} else {
                 	changeToActiveBlock(par1World, pos);
     			}
@@ -158,12 +155,10 @@ public class BlockTFCastleDoor extends Block
     			// if we have an active castle door, turn it into a vanished door block
     			if (state.getValue(ACTIVE))
     			{
-    				par1World.setBlock(x, y, z, getOtherBlock(this), meta & 7, 3);
+    				par1World.setBlockState(pos, getOtherBlock(this).getDefaultState());
     				par1World.scheduleUpdate(pos, getOtherBlock(this), 80);
 
-    				par1World.notifyNeighborsRespectDebug(pos, this);
     				playReappearSound(par1World, pos);
-    				par1World.markBlockRangeForRenderUpdate(pos, pos);
     				
             		this.sendAnnihilateBlockPacket(par1World, pos);
 
@@ -184,7 +179,7 @@ public class BlockTFCastleDoor extends Block
 		// send packet
 		IMessage message = new PacketAnnihilateBlock(pos);
 
-		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 64);
+		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
 		
 		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
 	}

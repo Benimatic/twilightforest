@@ -114,39 +114,15 @@ public abstract class BlockTFCritter extends Block {
 
 	
 	@Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing placementFacing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        if (placementFacing == EnumFacing.UP && this.canPlaceAt(world, pos.down()))
-        {
-            meta = 5;
-        }
+        IBlockState state = getDefaultState();
 
-        if (placementFacing == EnumFacing.DOWN && this.canPlaceAt(world, pos.up()))
-        {
-            meta = 6;
-        }
-
-        if (placementFacing == EnumFacing.NORTH && world.isSideSolid(pos.south(), EnumFacing.NORTH, true))
-        {
-            meta = 4;
-        }
-
-        if (placementFacing == EnumFacing.SOUTH && world.isSideSolid(pos.north(), EnumFacing.SOUTH, true))
-        {
-            meta = 3;
-        }
-
-        if (placementFacing == EnumFacing.WEST && world.isSideSolid(pos.east(), EnumFacing.WEST, true))
-        {
-            meta = 2;
-        }
-
-        if (placementFacing == EnumFacing.EAST && world.isSideSolid(pos.west(), EnumFacing.EAST, true))
-        {
-            meta = 1;
+        if (canPlaceAt(world, pos.offset(sideHit.getOpposite()))) {
+            state = state.withProperty(TFBlocks.FACING, sideHit);
         }
         
-        return getStateFromMeta(meta);
+        return state;
     }
 
     @Override

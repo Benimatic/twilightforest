@@ -2,6 +2,8 @@ package twilightforest.block.enums;
 
 import net.minecraft.util.IStringSerializable;
 
+import java.util.Locale;
+
 public enum UnderBrickVariant implements IStringSerializable {
     NORMAL,
     MOSSY,
@@ -9,6 +11,6 @@ public enum UnderBrickVariant implements IStringSerializable {
 
     @Override
     public String getName() {
-        return null;
+        return name().toLowerCase(Locale.ROOT);
     }
 }

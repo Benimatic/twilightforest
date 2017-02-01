@@ -42,15 +42,6 @@ public abstract class BlockTFGiantBlock extends Block {
         return super.canPlaceBlockAt(world, pos);
     }
     
-	@Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-    	int bx = (x >> 2) << 2;
-    	int by = (y >> 2) << 2;
-    	int bz = (z >> 2) << 2;
-
-        return new AxisAlignedBB((double)bx + this.minX, (double)by + this.minY, (double)bz + this.minZ, (double)bx + this.maxX * 4F, (double)by + this.maxY * 4F, (double)bz + this.maxZ * 4F);
-    }
-    
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
     	if (!world.isRemote) {
@@ -64,49 +55,6 @@ public abstract class BlockTFGiantBlock extends Block {
     			}
     		}
     	}
-    }
-
-	@Override
-    @SideOnly(Side.CLIENT)
-	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
-		// todo can't we just play effect 2001 for every subblock?
-    	int bx = (x >> 2) << 2;
-    	int by = (y >> 2) << 2;
-    	int bz = (z >> 2) << 2;
-		
-		Block blockThere = world.getBlock(x, y, z);
-		int metaThere = world.getBlockMetadata(x, y, z);
-		
-        byte b0 = 16;
-
-        for (int i1 = 0; i1 < b0; ++i1)
-        {
-            for (int j1 = 0; j1 < b0; ++j1)
-            {
-                for (int k1 = 0; k1 < b0; ++k1)
-                {
-                    double d0 = (double)bx + ((double)i1 + 0.5D) / 4F;
-                    double d1 = (double)by + ((double)j1 + 0.5D) / 4F;
-                    double d2 = (double)bz + ((double)k1 + 0.5D) / 4F;
-                    effectRenderer.addEffect((new EntityDiggingFX(world, d0, d1, d2, d0 - (double)x - 0.5D, d1 - (double)y - 0.5D, d2 - (double)z - 0.5D, blockThere, metaThere)).applyColourMultiplier(x, y, z));
-                }
-            }
-        }
-
-
-		return true;
-	}
-
-	@Override
-    public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-		this.setGiantBlockToAir(world, pos);
-    }
-
-	@Override
-    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
-    {
-        world.setBlockToAir(pos);
-		this.setGiantBlockToAir(world, pos);
     }
 
 	@Override
@@ -129,7 +77,7 @@ public abstract class BlockTFGiantBlock extends Block {
 					BlockPos iterPos = bPos.add(dx, dy, dz);
     				if (!pos.equals(iterPos)) {
     					if (world.getBlockState(iterPos).getBlock() == this) {
-    						world.setBlockToAir(iterPos);
+    						world.destroyBlock(iterPos, false);
     					}
     				}
     			}
@@ -139,7 +87,7 @@ public abstract class BlockTFGiantBlock extends Block {
     	this.isSelfDestructing = false;
 	}
 
-    public boolean canBlockStay(World world, BlockPos pos)  {
+    private boolean canBlockStay(World world, BlockPos pos)  {
     	pos = roundCoords(pos);
 
     	for (int dx = 0; dx < 4; dx++) {
