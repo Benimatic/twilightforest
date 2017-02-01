@@ -37,7 +37,7 @@ import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -306,7 +306,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 			int dz = MathHelper.floor(this.posZ);
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
-				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
+				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
 				TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 
 				if (nearbyFeature == TFFeature.lichTower) {

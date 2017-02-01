@@ -24,7 +24,7 @@ import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.FMLLog;
@@ -842,7 +842,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 			int dy = chestCoords.posY;
 			int dz = chestCoords.posZ;
 
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
 			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 
 			if (nearbyFeature == TFFeature.darkTower) {

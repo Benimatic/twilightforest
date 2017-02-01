@@ -18,7 +18,7 @@ public class SlotTFGoblinCraftResult extends SlotCrafting {
 	protected IInventory resultSlot;
 
 	public SlotTFGoblinCraftResult(EntityPlayer player, IInventory input,  IInventory uncraftingMatrix, IInventory assemblyMatrix, IInventory result, int slotIndex, int x, int y) {
-		super(player, assemblyMatrix, result, slotIndex, x, y);
+		super(player, (InventoryCrafting) assemblyMatrix, result, slotIndex, x, y);
 		this.thePlayer = player;
 		this.inputSlot = input;
 		this.uncraftingMatrix = (InventoryTFGoblinUncrafting) uncraftingMatrix;
@@ -33,7 +33,7 @@ public class SlotTFGoblinCraftResult extends SlotCrafting {
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 		
-		if (ItemStack.areItemStacksEqual(CraftingManager.getInstance().findMatchingRecipe(this.assemblyMatrix, this.thePlayer.worldObj), par1ItemStack)) {
+		if (ItemStack.areItemStacksEqual(CraftingManager.getInstance().findMatchingRecipe(this.assemblyMatrix, this.thePlayer.world), par1ItemStack)) {
 			combined = false;
 		}
 		

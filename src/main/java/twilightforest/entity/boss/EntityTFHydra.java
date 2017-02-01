@@ -26,9 +26,8 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -1066,7 +1065,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
 			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
 			
 			if (nearbyFeature == TFFeature.hydraLair) {

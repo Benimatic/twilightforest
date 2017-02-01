@@ -51,7 +51,7 @@ import twilightforest.entity.EntityTFYeti;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.FMLLog;
@@ -63,7 +63,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -875,7 +874,7 @@ public class TFEventListener {
 	private boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
 		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
 
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
 			
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
@@ -915,7 +914,7 @@ public class TFEventListener {
 		// area protection check
 		if (event.getEntityLiving() instanceof IMob && event.getSource().getEntity() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getEntity()).capabilities.isCreativeMode && event.getEntityLiving().worldObj.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().worldObj.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().worldObj.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().worldObj.provider).getChunkProvider();
 
 			int mx = MathHelper.floor(event.getEntityLiving().posX);
 			int my = MathHelper.floor(event.getEntityLiving().posY);

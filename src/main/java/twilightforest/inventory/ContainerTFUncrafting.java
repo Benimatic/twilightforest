@@ -10,6 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
@@ -454,7 +455,7 @@ public class ContainerTFUncrafting extends Container {
      * Override the SlotClick method to get what we want
      */
     @Override
-	public ItemStack slotClick(int slotNum, int mouseButton, int shiftHeld, EntityPlayer par4EntityPlayer) {
+	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer par4EntityPlayer) {
 		
     	// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
     	if (slotNum > 0 && par4EntityPlayer.inventory.getItemStack() == null && ((Slot)this.inventorySlots.get(slotNum)).inventory == this.assemblyMatrix && !((Slot)this.inventorySlots.get(slotNum)).getHasStack()) {
@@ -510,7 +511,7 @@ public class ContainerTFUncrafting extends Container {
     		slotNum += 9;
     	}
     	
-        this.slotClick(slotNum, mouseButton, 1, par4EntityPlayer);
+        this.slotClick(slotNum, mouseButton, ClickType.QUICK_MOVE, par4EntityPlayer);
     }
 
     /**

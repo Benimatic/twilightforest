@@ -4,25 +4,22 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAnnihilateBlock;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -125,7 +122,7 @@ public class BlockTFCastleDoor extends Block
 	private static boolean isBlockLocked(World par1World, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!par1World.isRemote && par1World.provider instanceof WorldProviderTwilightForest) {
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)par1World.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)par1World.provider).getChunkProvider();
 
 			return chunkProvider.isStructureLocked(pos, meta);
 		} else {

@@ -30,7 +30,7 @@ import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -156,7 +156,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 			int dy = getHomePosition().getY();
 			int dz = getHomePosition().getZ();
 			
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
 			TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.getBiomeProvider()).getFeatureAt(dx, dz, worldObj);
 			
 			if (nearbyFeature == TFFeature.tfStronghold) {

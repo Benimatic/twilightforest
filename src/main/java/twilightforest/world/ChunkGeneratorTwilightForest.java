@@ -44,7 +44,7 @@ import javax.annotation.Nullable;
 //            MapGenBase, MathHelper, BlockSand, WorldGenLakes, 
 //            WorldGenDungeons, SpawnerAnimals, IProgressUpdate
 // todo 1.10 doc out all the vanilla copying
-public class ChunkProviderTwilightForest implements IChunkGenerator {
+public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	private Random rand;
 	//private NoiseGeneratorOctaves noiseGen1;
 	//private NoiseGeneratorOctaves noiseGen2;
@@ -86,7 +86,7 @@ public class ChunkProviderTwilightForest implements IChunkGenerator {
 	private MapGenTFMajorFeature majorFeatureGenerator;
 	private MapGenTFHollowTree hollowTreeGenerator;
 
-	public ChunkProviderTwilightForest(World world, long l, boolean flag) {
+	public ChunkGeneratorTwilightForest(World world, long l, boolean flag) {
 		stoneNoise = new double[256];
 		caveGenerator = new TFGenCaves();
 	

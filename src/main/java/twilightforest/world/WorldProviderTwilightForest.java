@@ -4,12 +4,13 @@
 package twilightforest.world;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
@@ -27,7 +28,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 
 	public final String saveFolder;
-	public ChunkProviderTwilightForest chunkProvider;
+	public ChunkGeneratorTwilightForest chunkProvider;
 	
 	public WorldProviderTwilightForest() {
 		setDimension(TwilightForestMod.dimensionID);
@@ -71,8 +72,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
     public void createBiomeProvider()
     {
-		this.worldChunkMgr = new TFBiomeProvider(worldObj);
-        this.dimensionId = TwilightForestMod.dimensionID;
+    	this.biomeProvider = new TFBiomeProvider(world);
     }
    
     @Override
@@ -80,14 +80,14 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     {
     	// save chunk generator?
     	if (this.chunkProvider == null) {
-	    	this.chunkProvider = new ChunkProviderTwilightForest(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
+	    	this.chunkProvider = new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
 	        return this.chunkProvider;
     	} else {
-    		return new ChunkProviderTwilightForest(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
+    		return new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
     	}
     }
     
-    public ChunkProviderTwilightForest getChunkProvider() {
+    public ChunkGeneratorTwilightForest getChunkProvider() {
     	return this.chunkProvider;
     }
     
@@ -120,15 +120,12 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 //    }
 	
 	
-    /**
-     * True if the player can respawn in this dimension (true = overworld, false = nether).
-     */
 	@Override
     public boolean canRespawnHere()
     {
 		// lie about this until the world is initialized
 		// otherwise the server will try to generate enough terrain for a spawn point and that's annoying
-        return worldObj.getWorldInfo().isInitialized();
+        return world.getWorldInfo().isInitialized();
     }
 
 	@Override
@@ -147,7 +144,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	public String getDimensionName() {
+	public DimensionType getDimensionType() {
 		return "Twilight Forest";
 	}
 
@@ -175,8 +172,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	public Biome getBiomeGenForCoords(int x, int z) {
-		Biome biome = super.getBiome(x, z);
+	public Biome getBiomeForCoords(BlockPos pos) {
+		Biome biome = super.getBiomeForCoords(pos);
 		if (biome == null)
 		{
 			biome = TFBiomeBase.twilightForest;

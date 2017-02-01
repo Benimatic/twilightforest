@@ -35,7 +35,7 @@ import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
 import twilightforest.entity.ai.EntityAITFYetiTired;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -507,7 +507,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 			int dz = MathHelper.floor(this.posZ);
 			
 			if (worldObj.provider instanceof WorldProviderTwilightForest){
-				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
+				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
 				TFFeature nearbyFeature = ((TFBiomeProvider)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
 
 				if (nearbyFeature == TFFeature.yetiCave) {

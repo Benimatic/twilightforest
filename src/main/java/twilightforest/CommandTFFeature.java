@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -46,7 +46,7 @@ public class CommandTFFeature extends CommandBase {
 					sender.sendMessage(new TextComponentTranslation("The nearest feature is %s", nearbyFeature.name));
 					
 					// are you in a structure?
-					ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
+					ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
 					
 					if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
 						sender.sendMessage(new TextComponentTranslation("You are in the structure for that feature."));
@@ -106,7 +106,7 @@ public class CommandTFFeature extends CommandBase {
 			throw new WrongUsageException("commands.tffeature.not_in_twilight_forest");
 		} else {
 			// are you in a structure?
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
 			
 			if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
 				sender.sendMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", chunkProvider.isStructureConquered(dx, dy, dz), flag));

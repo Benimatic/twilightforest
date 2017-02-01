@@ -8,7 +8,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -23,13 +22,12 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
-import twilightforest.world.ChunkProviderTwilightForest;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 /**
  * This class listens for ticks in the world.  If the player is near a diamond in the water, this class attempts to open a portal.
@@ -115,7 +113,7 @@ public class TFTickHandler
 	}
 
 	private boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
-		ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+		ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
 		
 		int px = MathHelper.floor(player.posX);
 		int py = MathHelper.floor(player.posY);

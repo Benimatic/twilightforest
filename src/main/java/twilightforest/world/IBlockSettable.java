@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 // Shim interface to expose the WorldGenerator's setBlock method
-// Mainly so TFGenerator's util methods don't have to be duplicated between the TFGenerator subcalsses and the
+// Mainly so TFGenerator's util methods don't have to be duplicated between the TFGenerator subclasses and the
 // tree generators
 // todo 1.9 improve this?
 public interface IBlockSettable {
