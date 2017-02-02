@@ -1,5 +1,6 @@
 package twilightforest.client.renderer;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -11,28 +12,14 @@ import twilightforest.client.model.ModelTFCicada;
 import twilightforest.tileentity.TileEntityTFCicada;
 
 
-public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer {
+public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEntityTFCicada> {
 
-    private ModelTFCicada cicadaModel;
+    private final ModelTFCicada cicadaModel = new ModelTFCicada();
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cicada-model.png");
 
-	public TileEntityTFCicadaRenderer()
-    {
-		cicadaModel = new ModelTFCicada();
-    }
-
-	
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-		renderTileEntityCicadaAt((TileEntityTFCicada)tileentity, d, d1, d2, f);
-
-	}
-
-	/**
-	 * Render a cute cicada!
-	 */
-	private void renderTileEntityCicadaAt(TileEntityTFCicada tileentity, double d, double d1, double d2, float f) {
-        GL11.glPushMatrix();
+	public void renderTileEntityAt(TileEntityTFCicada tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
+		GlStateManager.pushMatrix();
         int facing = tileentity.getBlockMetadata();
         float rotX = 90.0F;
         float rotZ = 0.0F;
@@ -60,18 +47,18 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer {
         {
         	rotX = 180F;
         }
-        GL11.glTranslatef((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);
-        GL11.glRotatef(rotX, 1F, 0F, 0F);
-        GL11.glRotatef(rotZ, 0F, 0F, 1F);
-        GL11.glRotatef((float) tileentity.currentYaw, 0F, 1F, 0F);
+        GlStateManager.translate((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);
+        GlStateManager.rotate(rotX, 1F, 0F, 0F);
+        GlStateManager.rotate(rotZ, 0F, 0F, 1F);
+		GlStateManager.rotate((float) tileentity.currentYaw, 0F, 1F, 0F);
         
         this.bindTexture(textureLoc);
-        GL11.glPushMatrix();
-        GL11.glScalef(1f, -1f, -1f);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1f, -1f, -1f);
         cicadaModel.render(0.0625f);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+        GlStateManager.color(1, 1, 1, 1);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glPopMatrix();		
 	}
 
 }

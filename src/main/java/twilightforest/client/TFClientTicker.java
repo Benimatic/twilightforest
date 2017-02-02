@@ -15,7 +15,7 @@ public class TFClientTicker {
 	@SubscribeEvent
 	public void clientTick(ClientTickEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
-		World world = mc.theWorld;
+		World world = mc.world;
 		
 		
 		// only fire if we're in the twilight forest

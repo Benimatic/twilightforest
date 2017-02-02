@@ -1,5 +1,6 @@
 package twilightforest.client.renderer;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +12,7 @@ import twilightforest.client.model.ModelTFMoonworm;
 import twilightforest.tileentity.TileEntityTFMoonworm;
 
 
-public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer {
+public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<TileEntityTFMoonworm> {
 
     private ModelTFMoonworm moonwormModel;
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "moonworm.png");
@@ -23,16 +24,8 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer {
 
 	
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-		renderTileEntityFireflyAt((TileEntityTFMoonworm)tileentity, d, d1, d2, f);
-
-	}
-
-	/**
-	 * Render a cute firefly!
-	 */
-	private void renderTileEntityFireflyAt(TileEntityTFMoonworm tileentity, double d, double d1, double d2, float partialTime) {
-        GL11.glPushMatrix();
+	public void renderTileEntityAt(TileEntityTFMoonworm tileentity, double d, double d1, double d2, float partialTime, int destroyStage) {
+		GlStateManager.pushMatrix();
         int facing = tileentity.getBlockMetadata();
 
         float rotX = 90.0F;
@@ -62,20 +55,20 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer {
         	rotX = 180F;
         }
         GL11.glTranslatef((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);
-        GL11.glRotatef(rotX, 1F, 0F, 0F);
-        GL11.glRotatef(rotZ, 0F, 0F, 1F);
-        GL11.glRotatef((float) tileentity.currentYaw, 0F, 1F, 0F);
+        GlStateManager.rotate(rotX, 1F, 0F, 0F);
+		GlStateManager.rotate(rotZ, 0F, 0F, 1F);
+		GlStateManager.rotate((float) tileentity.currentYaw, 0F, 1F, 0F);
  
         this.bindTexture(textureLoc);
 
-        GL11.glScalef(1f, -1f, -1f);
+        GlStateManager.scale(1f, -1f, -1f);
         
         moonwormModel.setLivingAnimations(tileentity, partialTime);
 
         // render the firefly body
         moonwormModel.render(0.0625f);
 
-        GL11.glPopMatrix();		
+        GlStateManager.popMatrix();
 	}
 
 }

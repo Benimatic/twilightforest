@@ -98,7 +98,7 @@ public class TFClientEvents {
 			GlStateManager.popMatrix();
 		}
 
-		GL11.glDisable(GL11.GL_BLEND);
+		GlStateManager.disableBlend();
 	}
 	
 }
