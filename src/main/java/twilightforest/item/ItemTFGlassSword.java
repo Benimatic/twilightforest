@@ -45,7 +45,7 @@ public class ItemTFGlassSword extends ItemSword {
 				entity.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, px, py, pz, 0, 0, 0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
 	        }
 	        
-	        player.playSound(Blocks.GLASS.getSoundType().getBreakSound(), 1F, 0.5F); // todo 1.9 clientsided only
+	        player.playSound(Blocks.GLASS.getSoundType().getBreakSound(), 1F, 0.5F);
     	}
         return false;
     }

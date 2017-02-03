@@ -1,7 +1,14 @@
 package twilightforest.item;
 
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
@@ -17,52 +24,56 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 		super(block);
 	}
 
+	// [VanillaCopy] ItemLilyPad.onItemRightClick, edits noted
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
 	{
-		RayTraceResult movingobjectposition = this.rayTrace(world, player, true);
+        RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
 
-        if (movingobjectposition == null)
+        if (raytraceresult == null)
         {
-            return stack;
+            return new ActionResult(EnumActionResult.PASS, itemStackIn);
         }
         else
         {
-            if (movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK)
+            if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK)
             {
-                int i = movingobjectposition.blockX;
-                int j = movingobjectposition.blockY;
-                int k = movingobjectposition.blockZ;
+                BlockPos blockpos = raytraceresult.getBlockPos();
 
-                if (!world.canMineBlock(player, i, j, k))
+                if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
                 {
-                    return stack;
+                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
                 }
 
-                if (!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack))
-                {
-                    return stack;
-                }
+                BlockPos blockpos1 = blockpos.up();
+                IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (world.getBlock(i, j, k).getMaterial() == Material.WATER && world.getBlockMetadata(i, j, k) == 0 && world.isAirBlock(i, j + 1, k))
+                if (iblockstate.getMaterial() == Material.WATER && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(blockpos1))
                 {
                     // special case for handling block placement with water lilies
-                    net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(world, i, j + 1, k);
-                    world.setBlock(i, j + 1, k, TFBlocks.hugeWaterLily);
-                    if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(player, blocksnapshot, net.minecraftforge.common.util.ForgeDirection.UP).isCanceled())
+                    net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
+                    worldIn.setBlockState(blockpos1, TFBlocks.hugeWaterLily.getDefaultState()); // TF - our block
+                    if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, hand).isCanceled())
                     {
                         blocksnapshot.restore(true, false);
-                        return stack;
+                        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                     }
 
-                    if (!player.capabilities.isCreativeMode)
+                    // TF - our block
+                    worldIn.setBlockState(blockpos1, TFBlocks.hugeWaterLily.getDefaultState(), 11);
+
+                    if (!playerIn.capabilities.isCreativeMode)
                     {
-                        --stack.stackSize;
+                        --itemStackIn.stackSize;
                     }
+
+                    playerIn.addStat(StatList.getObjectUseStats(this));
+                    worldIn.playSound(playerIn, blockpos, SoundEvents.BLOCK_WATERLILY_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
                 }
             }
 
-            return stack;
+            return new ActionResult(EnumActionResult.FAIL, itemStackIn);
         }
     }
 

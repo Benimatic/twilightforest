@@ -52,7 +52,7 @@ public class EntityTFAnnihilateFX extends Particle
             this.setExpired();
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(this.motionX, this.motionY, this.motionZ);
 
         this.motionX *= 0.9599999785423279D;
         this.motionY *= 0.9599999785423279D;

@@ -96,7 +96,7 @@ public class EntityTFFireflyFX extends Particle
         	// get smaller
         	setParticleTextureIndex(7 - ((particleAge - fireflyHalfLife) * 8) / particleMaxAge);
         }
-        moveEntity(motionX, motionY, motionZ);
+        move(motionX, motionY, motionZ);
         if(posY == prevPosY)
         {
             motionX *= 1.1000000000000001D;

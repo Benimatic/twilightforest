@@ -12,8 +12,8 @@ public class EntityIceArrow extends EntityArrow {
 		super(par1World);
 	}
 
-	public EntityIceArrow(World world, EntityPlayer player, float velocity) {
-		super(world, player, velocity);
+	public EntityIceArrow(World world, EntityPlayer player) {
+		super(world, player);
 	}
 
 	@Override

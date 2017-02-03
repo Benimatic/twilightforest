@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -11,24 +10,17 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMoonwormShot;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFMoonwormQueen extends ItemTF
 {
 
 	private static final int FIRING_TIME = 12;
-	
-	private IIcon[] icons;
-	private String[] iconNames = new String[] {"moonwormQueen", "moonwormQueenAlt"};
 
 	protected ItemTFMoonwormQueen() {
 		this.setCreativeTab(TFItems.creativeTab);
@@ -157,43 +149,6 @@ public class ItemTFMoonwormQueen extends ItemTF
     		}
     	}
 
-    }
-	
-    /**
-     * Player, Render pass, and item usage sensitive version of getIconIndex.
-     *   
-     * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
-     * @param renderPass The pass to get the icon for, 0 is default.
-     * @param player The player holding the item
-     * @param usingItem The item the player is actively using. Can be null if not using anything.
-     * @param useRemaining The ticks remaining for the active item.
-     * @return The icon index
-     */
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-    	if (usingItem != null && usingItem.getItem() == this)
-    	{
-    		int useTime = usingItem.getMaxItemUseDuration() - useRemaining;
-    		if (useTime >= FIRING_TIME) 
-    		{
-    			return (useTime >> 1) % 2 == 0 ? this.icons[0] : this.icons[1];
-    		}
-    	}
-    	return this.icons[0];
-
-    }
-    
-    
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        super.registerIcons(par1IconRegister);
-        this.icons = new IIcon[iconNames.length];
-
-        for (int i = 0; i < this.iconNames.length; ++i)
-        {
-            this.icons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + iconNames[i]);
-        }
     }
 
     @Override

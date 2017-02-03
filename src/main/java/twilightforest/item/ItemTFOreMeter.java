@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -32,7 +33,7 @@ public class ItemTFOreMeter extends ItemTF {
 			countOreInArea(player, world, useX, useZ, 3);
 		}
 		
-		return super.onItemRightClick(par1ItemStack, world, player, hand);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 	
 	private void countOreInArea(EntityPlayer player, World world, int useX, int useZ, int radius) {

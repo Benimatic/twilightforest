@@ -17,8 +17,8 @@ public class ItemTFIceBow extends ItemTFBowBase {
     }
 
     @Override
-	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer, float velocity) {
-		return new EntityIceArrow(world, entityPlayer, velocity);
+	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer) {
+		return new EntityIceArrow(world, entityPlayer);
 	}
 
     @Override

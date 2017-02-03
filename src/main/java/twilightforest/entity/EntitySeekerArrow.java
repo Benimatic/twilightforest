@@ -21,8 +21,8 @@ public class EntitySeekerArrow extends EntityArrow {
 		super(par1World);
 	}
 
-	public EntitySeekerArrow(World world, EntityPlayer player, float velocity) {
-		super(world, player, velocity);
+	public EntitySeekerArrow(World world, EntityPlayer player) {
+		super(world, player);
 	}
 
     @Override
@@ -109,9 +109,9 @@ public class EntitySeekerArrow extends EntityArrow {
 					targetVec = targetVec.scale(currentSpeed);
 
 	        		// adjust current heading
-	        		double dx = MathHelper.clamp_double(targetVec.xCoord, -2.0, 2.0);
-	        		double dy = MathHelper.clamp_double(targetVec.yCoord, -1.0, 1.0);
-	        		double dz = MathHelper.clamp_double(targetVec.zCoord, -2.0, 2.0);
+	        		double dx = MathHelper.clamp(targetVec.xCoord, -2.0, 2.0);
+	        		double dy = MathHelper.clamp(targetVec.yCoord, -1.0, 1.0);
+	        		double dz = MathHelper.clamp(targetVec.zCoord, -2.0, 2.0);
 	
 	//        		System.out.println("Current heading is " + this.motionX + ", " + this.motionY + ", " + this.motionZ);
 	//        		System.out.println("Ideal heading is " + targetVec.xCoord + ", " + targetVec.yCoord + ", " + targetVec.zCoord);

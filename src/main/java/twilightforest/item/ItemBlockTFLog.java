@@ -24,13 +24,13 @@ public class ItemBlockTFLog extends ItemBlock {
     	int meta = itemstack.getItemDamage();
     	if ((meta & 8) == 0) {
     		// wood
-        	int i = MathHelper.clamp_int(meta, 0, 7);
+        	int i = MathHelper.clamp(meta, 0, 7);
             return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(woodNames[i]).toString();
     	}
     	else {
     		// log
     		meta &= 7;
-        	int i = MathHelper.clamp_int(meta, 0, 7);
+        	int i = MathHelper.clamp(meta, 0, 7);
             return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(woodNames[i]).append(".log").toString();
     	}
     }

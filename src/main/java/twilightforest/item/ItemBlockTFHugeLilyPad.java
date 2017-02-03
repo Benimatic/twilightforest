@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import java.util.Random;
 
+import net.minecraft.item.ItemColored;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import twilightforest.block.TFBlocks;
@@ -14,12 +15,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 
-public class ItemBlockTFHugeLilyPad extends ItemLilyPad {
+public class ItemBlockTFHugeLilyPad extends ItemColored {
 	
 	private final Random rand = new Random();
 
 	public ItemBlockTFHugeLilyPad(Block block) {
-		super(block);
+		super(block, false);
 	}
 
     @Override

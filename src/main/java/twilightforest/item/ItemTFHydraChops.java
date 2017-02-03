@@ -1,13 +1,14 @@
 package twilightforest.item;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemFood;
 import twilightforest.TFAchievementPage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class ItemTFHydraChops extends ItemTFFood {
+public class ItemTFHydraChops extends ItemFood {
 
 	public ItemTFHydraChops(int par2, float par3, boolean par4) {
 		super(par2, par3, par4);

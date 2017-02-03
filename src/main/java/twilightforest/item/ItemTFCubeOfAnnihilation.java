@@ -5,28 +5,16 @@ import java.util.HashMap;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFChainBlock;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
-import twilightforest.entity.EntityTFTwilightWandBolt;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ItemTFCubeOfAnnihilation extends ItemTF {
-	
-	private IIcon annihilateIcon;
-
-
 	private HashMap<ItemStack, Entity> launchedCubesMap = new HashMap<ItemStack, Entity>();
 	
 	protected ItemTFCubeOfAnnihilation() {
@@ -95,27 +83,8 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	 * @param player
 	 */
 	public static void setCubeAsReturned(EntityPlayer player) {
-		if (player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.cubeOfAnnihilation) {
-			setCubeAsReturned(player.getCurrentEquippedItem());
-		}
-	}
-	
-	/**
-	 * Player, Render pass, and item usage sensitive version of getIconIndex.
-	 *
-	 * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
-	 * @param renderPass The pass to get the icon for, 0 is default.
-	 * @param player The player holding the item
-	 * @param usingItem The item the player is actively using. Can be null if not using anything.
-	 * @param useRemaining The ticks remaining for the active item.
-	 * @return The icon index
-	 */
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-		
-		if (this.doesTalismanHaveCube(stack)) {
-			return this.itemIcon;
-		} else {
-			return TFItems.cubeTalisman.getIconIndex(stack);
+		if (player != null && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == TFItems.cubeOfAnnihilation) {
+			setCubeAsReturned(player.getActiveItemStack());
 		}
 	}
 
@@ -149,9 +118,4 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
     {
         return EnumAction.BLOCK;
     }
-
-    public IIcon getAnnihilateIcon() {
-    	return this.annihilateIcon;
-    }
-    
 }

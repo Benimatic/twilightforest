@@ -200,8 +200,7 @@ public class BlockTFTowerDevice extends Block
 	{
 		IBlockState thereState = par1World.getBlockState(pos);
 
-		if (thereState.getBlock() == TFBlocks.towerDevice 
-				|| thereState.getBlock().getMetaFromState(thereState) == TowerDeviceVariant.VANISH_LOCKED.ordinal()) // todo 1.9 update this
+		if (thereState.getBlock() == TFBlocks.towerDevice || thereState.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED)
 		{
 			changeToBlockMeta(par1World, pos, thereState.withProperty(VARIANT, TowerDeviceVariant.VANISH_UNLOCKED));
 			par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);

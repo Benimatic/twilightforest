@@ -103,8 +103,8 @@ public class ItemTFChainBlock extends ItemTool {
 	 * @param player
 	 */
 	public static void setChainAsReturned(EntityPlayer player) {
-		if (player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.chainBlock) {
-			setChainAsReturned(player.getCurrentEquippedItem());
+		if (player != null && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == TFItems.chainBlock) {
+			setChainAsReturned(player.getActiveItemStack());
 		}
 	}
 
@@ -121,25 +121,6 @@ public class ItemTFChainBlock extends ItemTool {
 		this.launchedBlocksMap.put(stack, launchedCube);
 	}
 	
-	/**
-	 * Player, Render pass, and item usage sensitive version of getIconIndex.
-	 *
-	 * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
-	 * @param renderPass The pass to get the icon for, 0 is default.
-	 * @param player The player holding the item
-	 * @param usingItem The item the player is actively using. Can be null if not using anything.
-	 * @param useRemaining The ticks remaining for the active item.
-	 * @return The icon index
-	 */
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-		
-		if (this.doesChainHaveBlock(stack)) {
-			return this.itemIcon;
-		} else {
-			return TFItems.knightmetalRing.getIconIndex(stack);
-		}
-	}
-	
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
@@ -152,16 +133,10 @@ public class ItemTFChainBlock extends ItemTool {
         return EnumAction.BLOCK;
     }
     
-	@Override
-	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
-		return false;
-	}
-	
-	
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass)
     {
-        if (toolClass != null && toolClass.equals("pickaxe")) {
+        if ("pickaxe".equals(toolClass)) {
             return 2;
         } else {
             return -1;

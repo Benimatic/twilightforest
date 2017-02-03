@@ -14,8 +14,8 @@ public class ItemTFSeekerBow extends ItemTFBowBase {
     }
 
     @Override
-	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer, float velocity) {
-		return new EntitySeekerArrow(world, entityPlayer, velocity * 0.5F);
+	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer) {
+		return new EntitySeekerArrow(world, entityPlayer);
 	}
 
 }
