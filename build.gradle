@@ -1,53 +1,61 @@
+import org.gradle.plugins.ide.idea.model.*
+
+
+// define the properties file
+ext.configFile = file "gradle.properties"
+configFile.withReader {
+    // read config.  it shall from now on be referenced as simply config or as project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+// For those who want the bleeding edge
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
-
+apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "3.0.0dev"
-group= "twilightforest" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "twilightforest-1.10.2"
 
-minecraft {
-    version = "1.10.2-12.18.3.2209"
-    mappings = "stable_29"
-    runDir = "run"
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+///////////////////////////////////////////////////
+// IDE Settings
+///////////////////////////////////////////////////
+idea {
+    project {
+        languageLevel = '1.8'
+    }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+///////////////////////////////////////////////////
+// ForgeGradle
+///////////////////////////////////////////////////
+version = (hasProperty("CIRevision") ? CIRevision : config.mod_version)
+group = config.group_name
+archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
-dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+minecraft {
+    version = config.minecraft_version + "-" + config.forge_version // grab latest forge
+    runDir = "run"
 
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    
-    // compile files('libs/Thaumcraft-deobf-1.7.10-4.2.3.5.jar')
-    
+    mappings = config.mcp_mappings
+    makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    replace '@mod_version@', version
+    replace '@mod_id@', config.mod_id
+    replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
 }
 
 processResources
@@ -58,14 +66,30 @@ processResources
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
+        include '**/*.info'
+        include '**/*.properties'
+
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand ([
+                'version':project.version,
+                'mcversion':project.minecraft.version,
+                'forge_version': config.forge_version,
+                'mod_version': config.mod_version,
+                'minecraft_version': config.minecraft_version
+        ])
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+jar {
+    classifier = 'universal'
+}
+
+dependencies {   
+    //Disabled until I can speak with azanor
+    //deobfCompile files('libs/Thaumcraft-1.7.10-4.2.3.5.jar')
 }
