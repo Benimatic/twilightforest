@@ -1,32 +1,22 @@
-/download
-/eclipseBin
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-## gradle
-/.gradle
-/build
-/gradle
-/gradlew
-/gradlew.bat
-/libs
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
 
-## ForgeGradle
-/run
+# gradle
+build
+.gradle
 
-## eclipse
-/eclipse
-/.settings
-/.metadata
-/.classpath
-/.project
-/bin
-
-## intellij
-/out
-/.idea
-/*.iml
-/*.ipr
-/*.iws
-/atlassian-ide-plugin.xml
-
-# Mac OS X
-.DS_Store
+# other
+eclipse
+run
