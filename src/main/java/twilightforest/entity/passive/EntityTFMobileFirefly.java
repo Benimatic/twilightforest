@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAmbientCreature;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -36,13 +37,13 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature
     @Override
 	protected SoundEvent getHurtSound()
     {
-        return "mob.bat.hurt";
+        return SoundEvents.ENTITY_BAT_HURT;
     }
 
     @Override
 	protected SoundEvent getDeathSound()
     {
-        return "mob.bat.death";
+        return SoundEvents.ENTITY_BAT_DEATH;
     }
 
     @Override

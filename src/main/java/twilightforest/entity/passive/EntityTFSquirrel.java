@@ -24,7 +24,6 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 
 	public EntityTFSquirrel(World par1World) {
 		super(par1World);
-		
         this.setSize(0.3F, 0.7F);
 		
 		// maybe this will help them move cuter?

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
@@ -14,16 +15,11 @@ import twilightforest.entity.passive.EntityTFQuestRam;
  *
  */
 public class EntityAITFEatLoose extends EntityAIBase {
-	
-    /** The entity using this AI that is tempted by the player. */
-    private EntityTFQuestRam temptedQuestRam;
-    
-    private Item temptID;
+    private final EntityTFQuestRam temptedQuestRam;
+    private final Item temptID;
 
 	private int delayTemptCounter;
-
 	private EntityItem temptingItem;
-	
 
 	public EntityAITFEatLoose(EntityTFQuestRam entityTFQuestRam, Item blockID) {
 		this.temptedQuestRam = entityTFQuestRam;
@@ -46,18 +42,14 @@ public class EntityAITFEatLoose extends EntityAIBase {
             List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().expand(2.0D, 2.0D, 2.0D));
             
             for (EntityItem itemNearby : nearbyItems) {
-            	if (itemNearby.getEntityItem().getItem() == temptID && !temptedQuestRam.isColorPresent(itemNearby.getEntityItem().getItemDamage()) && itemNearby.isEntityAlive()) { // is a wool block really "alive"?
+                EnumDyeColor color = EnumDyeColor.byMetadata(itemNearby.getEntityItem().getItemDamage());
+            	if (itemNearby.getEntityItem().getItem() == temptID && !temptedQuestRam.isColorPresent(color) && itemNearby.isEntityAlive()) {
             		this.temptingItem = itemNearby;
             		break;
             	}
             }
             
-            if (this.temptingItem == null) {
-            	return false;
-            }
-            else {
-            	return true;
-            }
+            return temptingItem != null;
         }
     }
 
@@ -86,13 +78,12 @@ public class EntityAITFEatLoose extends EntityAIBase {
 
         if (this.temptedQuestRam.getDistanceSqToEntity(this.temptingItem) < 6.25D)
         {
-        	if (!temptedQuestRam.isColorPresent(temptingItem.getEntityItem().getItemDamage())) { // we did technically already check this, but why not check again
-                // EAT IT!
+            EnumDyeColor color = EnumDyeColor.byMetadata(temptingItem.getEntityItem().getItemDamage());
+            if (!temptedQuestRam.isColorPresent(color)) { // we did technically already check this, but why not check again
             	this.temptingItem.setDead();
             	this.temptedQuestRam.playLivingSound();
-            	this.temptedQuestRam.setColorPresent(temptingItem.getEntityItem().getItemDamage());
-            	this.temptedQuestRam.animateAddColor(temptingItem.getEntityItem().getItemDamage(), 50); // TODO: find a better place for this?  refactor?
-            	//System.out.println("yum");
+            	this.temptedQuestRam.setColorPresent(color);
+            	this.temptedQuestRam.animateAddColor(color, 50); // TODO: find a better place for this?  refactor?
         	}
         }
     }

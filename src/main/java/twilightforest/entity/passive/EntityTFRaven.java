@@ -22,8 +22,6 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	
     public EntityTFRaven(World par1World) {
 		super(par1World);
-		//texture = TwilightForestMod.MODEL_DIR + "raven.png";
-		
         this.setSize(0.3F, 0.7F);
 		
 		// maybe this will help them move cuter?
@@ -36,8 +34,6 @@ public class EntityTFRaven extends EntityTFTinyBird {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
         this.tasks.addTask(2, new EntityAITempt(this, 0.85F, Items.WHEAT_SEEDS, true));
-//        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityPlayer.class, 2.0F, 0.23F, 0.4F));
-//        this.tasks.addTask(4, new EntityAITFBirdFly(this, 0.25F));
         this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
         this.tasks.addTask(7, new EntityAILookIdle(this));

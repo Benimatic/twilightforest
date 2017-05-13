@@ -31,19 +31,7 @@ public class EntityTFDeer extends EntityCow
     public EntityTFDeer(World world)
     {
         super(world);
-        //texture = TwilightForestMod.MODEL_DIR + "wilddeer.png";
         setSize(0.7F, 2.3F);
-        
-//        this.tasks.taskEntries.clear();
-//        
-//        this.tasks.addTask(0, new EntityAISwimming(this));
-//        this.tasks.addTask(1, new EntityAITFPanicOnFlockDeath(this, 0.38F));
-//        this.tasks.addTask(2, new EntityAIMate(this, 0.2F));
-//        this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Items.WHEAT, false));
-//        this.tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
-//        this.tasks.addTask(5, new EntityAIWander(this, 0.2F));
-//        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-//        this.tasks.addTask(7, new EntityAILookIdle(this));
     }
     
     public EntityTFDeer(World world, double x, double y, double z)
@@ -62,9 +50,6 @@ public class EntityTFDeer extends EntityCow
     @Override
 	protected void playStepSound(BlockPos pos, Block par4) {}
     
-    /**
-     * Not milkable
-     */
     @Override
     public boolean processInteract(EntityPlayer entityplayer, EnumHand hand, @Nullable ItemStack stack)
     {

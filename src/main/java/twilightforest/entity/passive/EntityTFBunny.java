@@ -30,14 +30,10 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
 	public EntityTFBunny(World par1World) {
 		super(par1World);
-		//texture = TwilightForestMod.MODEL_DIR + "bunnydutch.png";
-		
         this.setSize(0.3F, 0.7F);
 		
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
-		
-        // random color
         setBunnyType(rand.nextInt(4));
 	}
 
@@ -68,31 +64,6 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
         super.entityInit();
         this.dataManager.register(DATA_TYPE, (byte) 0);
     }
-
-//    /**
-//     * Returns the texture's file path as a String.
-//     */
-//	@Override
-//    public String getTexture()
-//    {
-//        switch (this.getBunnyType())
-//        {
-//            case 0:
-//                return TwilightForestMod.MODEL_DIR + "bunnydutch.png";
-//
-//            case 1:
-//                return TwilightForestMod.MODEL_DIR + "bunnydutch.png";
-//
-//            case 2:
-//                return TwilightForestMod.MODEL_DIR + "bunnywhite.png";
-//
-//            case 3:
-//                return TwilightForestMod.MODEL_DIR + "bunnybrown.png";
-//
-//            default:
-//                return super.getTexture();
-//        }
-//    }
 
 	@Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)

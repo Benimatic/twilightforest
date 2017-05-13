@@ -38,16 +38,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 
     public EntityTFTinyBird(World par1World) {
 		super(par1World);
-		//texture = TwilightForestMod.MODEL_DIR + "tinybirdbrown.png";
-		
         this.setSize(0.5F, 0.9F);
-		
-		// maybe this will help them move cuter?
-		//this.stepHeight = 2;
-		
-        // random color
         setBirdType(rand.nextInt(4));
-        
         setIsBirdLanded(true);
 	}
 
@@ -76,31 +68,6 @@ public class EntityTFTinyBird extends EntityTFBird {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
     }
-    
-//    /**
-//     * Returns the texture's file path as a String.
-//     */
-//	@Override
-//    public String getTexture()
-//    {
-//        switch (this.getBirdType())
-//        {
-//            case 0:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdbrown.png";
-//
-//            case 1:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdblue.png";
-//
-//            case 2:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdred.png";
-//
-//            case 3:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdgold.png";
-//
-//            default:
-//                return super.getTexture();
-//        }
-//    }
 
 	@Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
@@ -144,9 +111,6 @@ public class EntityTFTinyBird extends EntityTFBird {
         return TFSounds.TINYBIRD_HURT;
     }
 
-	/**
-	 * Actually only used for the shadow
-	 */
 	@Override
 	public float getRenderSizeModifier() {
 		 return 0.3F;
@@ -158,10 +122,6 @@ public class EntityTFTinyBird extends EntityTFBird {
         return false;
     }
 
-    /**
-     * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
-     * Args: x, y, z
-     */
 	@Override
     public float getBlockPathWeight(BlockPos pos)
     {

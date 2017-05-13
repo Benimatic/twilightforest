@@ -25,7 +25,6 @@ public class EntityTFPenguin extends EntityTFBird {
 
 	public EntityTFPenguin(World world) {
 		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "penguin.png";
         this.setSize(0.5F, 0.9F);
 	}
 
@@ -42,12 +41,6 @@ public class EntityTFPenguin extends EntityTFBird {
         tasks.addTask(8, new EntityAILookIdle(this));
     }
 
-	@Override
-    protected SoundEvent getAmbientSound()
-    {
-        return null;//"mob.chicken";
-    }
-    
 	@Override
 	public EntityAnimal createChild(EntityAgeable entityanimal)
     {

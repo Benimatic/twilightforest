@@ -48,7 +48,6 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 	public EntityTFQuestRam(World par1World) {
 		super(par1World);
-		//this.texture = TwilightForestMod.MODEL_DIR + "questram.png";
 		this.setSize(1.25F, 2.9F);
 		this.randomTickDivider = 0;
 	}
@@ -62,7 +61,6 @@ public class EntityTFQuestRam extends EntityAnimal {
         this.tasks.addTask(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.WOOL)));
         this.tasks.addTask(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL)));
         this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
-//        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
     }
 
@@ -120,7 +118,6 @@ public class EntityTFQuestRam extends EntityAnimal {
                 //System.out.println("Set home area to " + cc.posX + ", " + cc.posY + ", " + cc.posZ);
             }
             
-            // do we need to reward the player?
             if (countColorsSet() > 15 && !getRewarded()) {
             	rewardQuest();
             	setRewarded(true);
@@ -145,10 +142,6 @@ public class EntityTFQuestRam extends EntityAnimal {
     	rewardNearbyPlayers(this.world, this.posX, this.posY, this.posZ);
 	}
 
-    /**
-     * Give achievement to nearby players
-     */
-    @SuppressWarnings("unchecked")
 	private void rewardNearbyPlayers(World world, double posX, double posY, double posZ) {
 		// scan for players nearby to give the achievement
 		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D));
@@ -165,7 +158,6 @@ public class EntityTFQuestRam extends EntityAnimal {
 
         if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage())))
         {
-//            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Items.BUCKETMILK));
         	this.setColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage()));
         	this.animateAddColor(EnumDyeColor.byMetadata(currentItem.getItemDamage()), 50);
         	
@@ -179,8 +171,6 @@ public class EntityTFQuestRam extends EntityAnimal {
                 }
             }
         	
-        	//par1EntityPlayer.sendMessage("Successfully used color " + currentItem.getItemDamage());
-        	//par1EntityPlayer.sendMessage("Color flags are now " + Integer.toBinaryString(this.getColorFlags()));
             return true;
         }
         else
@@ -193,18 +183,10 @@ public class EntityTFQuestRam extends EntityAnimal {
 	public void onLivingUpdate()
     {
     	super.onLivingUpdate();
-
-//        for (int var1 = 0; var1 < 2; ++var1)
-//        {
-//            this.world.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextDouble());
-//        }
     	checkAndAnimateColors();
     }
 
-    /**
-     * Called every tick.  If we have got all the colors and have not paid out the reward yet, do a colorful animation.
-     */
-    public void checkAndAnimateColors() {
+    private void checkAndAnimateColors() {
 		if (countColorsSet() > 15 && !getRewarded()) {
 			animateAddColor(EnumDyeColor.byMetadata(this.rand.nextInt(16)), 5);
 		}
@@ -236,24 +218,12 @@ public class EntityTFQuestRam extends EntityAnimal {
     	this.dataManager.set(DATA_COLOR, par1);
     }
 
-    /**
-     * @param color
-     * @return true if the specified color is marked present
-     */
     public boolean isColorPresent(EnumDyeColor color) {
-    	int flags = this.getColorFlags();
-    	
-    	return (flags & (int)Math.pow(2, color.getMetadata())) > 0;
+    	return (getColorFlags() & (1 << color.getMetadata())) > 0;
     }
     
     public void setColorPresent(EnumDyeColor color) {
-    	int flags = this.getColorFlags();
-    	
-//    	System.out.println("Setting color flag for color " + color);
-//    	System.out.println("Color int is " + flags);
-//    	System.out.println("ORing that with " + Math.pow(2, color) + " which is " + Integer.toBinaryString((int) Math.pow(2, color)));
-    	
-    	setColorFlags(flags | (int)Math.pow(2, color.getMetadata()));
+    	setColorFlags(getColorFlags() | (1 << color.getMetadata()));
     }
     
     public boolean getRewarded()
@@ -266,10 +236,6 @@ public class EntityTFQuestRam extends EntityAnimal {
     	this.dataManager.set(DATA_REWARDED, par1);
     }
 
-    /**
-     * Do a little animation for when we successfully add a new color
-     * @param color
-     */
     public void animateAddColor(EnumDyeColor color, int iterations) {
     	int colorVal = color.getMapColor().colorValue;
         int red = colorVal >>> 16 & 0xFF;
@@ -277,7 +243,7 @@ public class EntityTFQuestRam extends EntityAnimal {
         int blue = colorVal & 0xFF;
 
     	for (int i = 0; i < iterations; i++) {
-          this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
+    	    this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
     	}
     	
     	//TODO: it would be nice to play a custom sound

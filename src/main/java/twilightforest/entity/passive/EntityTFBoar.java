@@ -13,7 +13,6 @@ public class EntityTFBoar extends EntityPig {
     public EntityTFBoar(World world)
     {
         super(world);
-        //texture = TwilightForestMod.MODEL_DIR + "wildboar.png";
         setSize(0.9F, 0.9F);
     }
     

@@ -10,10 +10,11 @@ import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 
-	private EntityLivingBase entityTarget;
-	private EntityLiving me;
-    float speed;
-    private boolean lefty;
+    private final EntityLiving me;
+    final float speed;
+    private final boolean lefty;
+
+    private EntityLivingBase entityTarget;
     private double xPosition;
     private double yPosition;
     private double zPosition;
@@ -25,7 +26,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 		this.me = entityTFRedcap;
 		this.speed = moveSpeed;
 		this.lefty = me.world.rand.nextBoolean();
-        this.setMutexBits(1);
+        this.setMutexBits(3);
 	}
 
 	@Override

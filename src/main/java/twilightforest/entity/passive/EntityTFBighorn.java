@@ -21,7 +21,6 @@ public class EntityTFBighorn extends EntitySheep
     public EntityTFBighorn(World world)
     {
         super(world);
-        //texture = TwilightForestMod.MODEL_DIR + "bighorn.png";
         setSize(0.9F, 1.3F);
     }
     

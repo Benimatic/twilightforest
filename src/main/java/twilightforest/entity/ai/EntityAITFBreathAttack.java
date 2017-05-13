@@ -36,9 +36,6 @@ public class EntityAITFBreathAttack extends EntityAIBase {
         this.setMutexBits(7);
     }
 	
-	/**
-	 * Breathe when we are within range and line of sight of the target
-	 */
 	@Override
 	public boolean shouldExecute() 
 	{

@@ -10,15 +10,14 @@ import net.minecraft.init.Blocks;
 
 public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 
-	private EntityTFRovingCube myCube;
-    private double xPosition;
-    private double yPosition;
-    private double zPosition;
-    private double speed;
-    
+	private final EntityTFRovingCube myCube;
+    private final double speed;
+	private BlockPos targetPos;
+
 	public EntityAICubeMoveToRedstoneSymbols(EntityTFRovingCube entityTFRovingCube, double d) {
 		this.myCube = entityTFRovingCube;
 		this.speed = d;
+		this.setMutexBits(1);
 	}
 
 	@Override
@@ -29,19 +28,15 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
         }
         else
         {
-        	//System.out.println("Cube scanning for symbol");
-        	
-            Vec3d vec3 = this.searchForRedstoneSymbol(this.myCube, 16, 5);
+            BlockPos pos = this.searchForRedstoneSymbol(this.myCube, 16, 5);
 
-            if (vec3 == null)
+            if (pos == null)
             {
                 return false;
             }
             else
             {
-                this.xPosition = vec3.xCoord;
-                this.yPosition = vec3.yCoord;
-                this.zPosition = vec3.zCoord;
+                this.targetPos = pos;
                 return true;
             }
         }
@@ -56,18 +51,15 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 	@Override
     public void startExecuting()
     {
-        this.myCube.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+        this.myCube.getNavigator().tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), this.speed);
     }
 
     /**
      * Search the area for a redstone circle (8 redstone dust around a blank square)
      */
-	private Vec3d searchForRedstoneSymbol(EntityTFRovingCube myCube2, int xzRange, int yRange) {
-
+	private BlockPos searchForRedstoneSymbol(EntityTFRovingCube myCube2, int xzRange, int yRange) {
 		BlockPos curPos = new BlockPos(myCube2);
 
-        boolean foundSymbol = false;
-		
 		for (int x = -xzRange; x < xzRange; x++) {
 			for (int z = -xzRange; z < xzRange; z++) {
 				for (int y = -yRange; y < yRange; y++) {
@@ -80,7 +72,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 						this.myCube.symbolY = curPos.getY() + y;
 						this.myCube.symbolZ = curPos.getZ() + z;
 						
-						return new Vec3d(curPos).addVector(x, y, z);
+						return curPos.add(x, y, z);
 					}
 				}
 			}
@@ -90,9 +82,6 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 	}
 
 	private boolean isRedstoneSymbol(BlockPos pos) {
-		
-    	//System.out.println("Cube checking area at " + x + ", " + y + ", " + z);
-		
 		if (!this.myCube.world.isBlockLoaded(pos) || !this.myCube.world.isAirBlock(pos)) {
 			return false;
 		} else {
