@@ -18,6 +18,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFYeti;
 
 public class EntityTFIceBomb extends EntityThrowable {
@@ -123,7 +124,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 			double dy = posY + 0.75F * (rand.nextFloat() - 0.5F); 
 			double dz = posZ + 0.75F * (rand.nextFloat() - 0.5F); 
 			
-			TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", dx, dy, dz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, dx, dy, dz, 0, 0, 0);
 		}
 	}
 
@@ -137,7 +138,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 				double dz = this.posZ + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				
 				
-				TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			// damage

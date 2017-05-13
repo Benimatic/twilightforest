@@ -29,6 +29,7 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFIceExploder extends EntityMob {
 
@@ -75,7 +76,7 @@ public class EntityTFIceExploder extends EntityMob {
 	    	float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 	    	
-			TwilightForestMod.proxy.spawnParticle(this.world, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
 
     }

@@ -14,6 +14,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 
 public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickable {
@@ -95,7 +96,7 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 		
 		for (int i = 0; i < 5; i++)
 		{
-			TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", sx, sy, sz, -dx, -dy, -dz);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, sx, sy, sz, -dx, -dy, -dz);
 		}
 
 	}

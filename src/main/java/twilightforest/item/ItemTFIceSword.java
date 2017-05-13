@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import twilightforest.client.particle.TFParticleType;
 
 public class ItemTFIceSword extends ItemSword {
 
@@ -47,7 +48,7 @@ public class ItemTFIceSword extends ItemSword {
 	    		double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
 				double py = entity.posY + itemRand.nextFloat() * entity.height;
 				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				TwilightForestMod.proxy.spawnParticle(entity.world, "snowstuff", px, py, pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(entity.world, TFParticleType.SNOW, px, py, pz, 0, 0, 0);
 	        }
     	}
         return false;

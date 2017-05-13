@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFProtectionBox;
 
 public class PacketAreaProtection implements IMessage {
@@ -56,7 +57,6 @@ public class PacketAreaProtection implements IMessage {
 
                     world.addWeatherEffect(box);
 
-                    // particles from the block?
                     for (int i = 0; i < 20; i++) {
 
                         double d0 = world.rand.nextGaussian() * 0.02D;
@@ -67,8 +67,7 @@ public class PacketAreaProtection implements IMessage {
                         float dy = message.pos.getY() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
                         float dz = message.pos.getZ() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
 
-                        //world.spawnParticle("mobSpell", blockX + 0.5F, blockY + 0.5F, blockZ + 0.5F, red, grn, blu);
-                        TwilightForestMod.proxy.spawnParticle(world, "protection", dx, dy, dz, d0, d1, d2);
+                        TwilightForestMod.proxy.spawnParticle(world, TFParticleType.PROTECTION, dx, dy, dz, d0, d1, d2);
 
                     }
                 }

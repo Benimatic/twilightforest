@@ -8,7 +8,10 @@ import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleSmokeNormal;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -66,16 +69,7 @@ import twilightforest.client.model.ModelTFWraith;
 import twilightforest.client.model.ModelTFYeti;
 import twilightforest.client.model.ModelTFYetiAlpha;
 import twilightforest.client.model.ModelTFYetiArmor;
-import twilightforest.client.particle.EntityTFAnnihilateFX;
-import twilightforest.client.particle.EntityTFBossTearFX;
-import twilightforest.client.particle.EntityTFGhastTrapFX;
-import twilightforest.client.particle.EntityTFIceBeamFX;
-import twilightforest.client.particle.EntityTFLargeFlameFX;
-import twilightforest.client.particle.EntityTFLeafRuneFX;
-import twilightforest.client.particle.EntityTFProtectionFX;
-import twilightforest.client.particle.EntityTFSnowFX;
-import twilightforest.client.particle.EntityTFSnowGuardianFX;
-import twilightforest.client.particle.EntityTFSnowWarningFX;
+import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFFieryItemRenderer;
 import twilightforest.client.renderer.TFGiantBlockRenderer;
 import twilightforest.client.renderer.TFGiantItemRenderer;
@@ -473,92 +467,53 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public World getClientWorld() {
-		return FMLClientHandler.instance().getClient().theWorld;
+		return FMLClientHandler.instance().getClient().world;
 	}
 	
 
-	/**
-	 * Spawns a particle.  This is my copy of RenderGlobal.spawnParticle where I implement custom particles.
-	 */
+	// [VanillaCopy] adapted from RenderGlobal.spawnEntityFX
 	@Override
-	public void spawnParticle(World world, String particleType, double x, double y, double z, double velX, double velY, double velZ)
+	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ)
 	{
-		Minecraft mc = FMLClientHandler.instance().getClient();
-		if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null && mc.theWorld == world)
+		Minecraft mc = Minecraft.getMinecraft();
+		Entity entity = mc.getRenderViewEntity();
+
+		if (entity != null && mc.effectRenderer != null)
 		{
-			// TODO: check render settings?
-			double distX = mc.renderViewEntity.posX - x;
-			double distY = mc.renderViewEntity.posY - y;
-			double distZ = mc.renderViewEntity.posZ - z;
+			int i = mc.gameSettings.particleSetting;
 
-			EntityFX particle = null;
-
-			double maxDist = 64.0D; // normally 16.0D
-
-			// check for particle max distance
-			if (distX * distX + distY * distY + distZ * distZ < maxDist * maxDist)
+			if (i == 1 && world.rand.nextInt(3) == 0)
 			{
+				i = 2;
+			}
 
-				if (particleType.equals("largeflame"))
-				{
-					particle = new EntityTFLargeFlameFX(world, x, y, z, velX, velY, velZ);
-				}
-				else if (particleType.equals("hugesmoke"))
-				{
-					particle = new EntitySmokeFX(world, x, y, z, velX, velY, velZ, 8.0f);
-				}
-				else if (particleType.equals("leafrune"))
-				{
-					particle = new EntityTFLeafRuneFX(world, x, y, z, velX, velY, velZ);
-				}
-				else if (particleType.equals("bosstear"))
-				{
-					particle = new EntityTFBossTearFX(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR);
-				}
-				else if (particleType.equals("ghasttrap"))
-				{
-					particle = new EntityTFGhastTrapFX(world, x, y, z, velX, velY, velZ);
-				}
-				else if (particleType.equals("protection"))
-				{
-					particle = new EntityTFProtectionFX(world, x, y, z, velX, velY, velZ);
-				}
-				else if (particleType.equals("snowstuff"))
-				{
-					particle = new EntityTFSnowFX(world, x, y, z, velX, velY, velZ);
-				}
-				else if (particleType.equals("snowwarning"))
-				{
-					particle = new EntityTFSnowWarningFX(world, x, y, z, velX, velY, velZ, 1F);
-				}
-				else if (particleType.equals("snowguardian"))
-				{
-					particle = new EntityTFSnowGuardianFX(world, x, y, z, velX, velY, velZ, 0.75F);
-				}
-				else if (particleType.equals("icebeam"))
-				{
-					particle = new EntityTFIceBeamFX(world, x, y, z, velX, velY, velZ, 0.75F);
-				}
-				else if (particleType.equals("annihilate"))
-				{
-					particle = new EntityTFAnnihilateFX(world, x, y, z, velX, velY, velZ, 0.75F);
+			double d0 = entity.posX - x;
+			double d1 = entity.posY - y;
+			double d2 = entity.posZ - z;
+
+			if (d0 * d0 + d1 * d1 + d2 * d2 <= 1024D && i <= 1) {
+				Particle particle = null;
+
+				switch (particleType) {
+					case LARGE_FLAME: particle = new EntityTFLargeFlameFX(world, x, y, z, velX, velY, velZ); break;
+					case LEAF_RUNE: particle = new EntityTFLeafRuneFX(world, x, y, z, velX, velY, velZ); break;
+					case BOSS_TEAR: particle = new EntityTFBossTearFX(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR); break;
+					case GHAST_TRAP: particle = new EntityTFGhastTrapFX(world, x, y, z, velX, velY, velZ); break;
+					case PROTECTION: particle = new EntityTFProtectionFX(world, x, y, z, velX, velY, velZ); break;
+					case SNOW: particle = new EntityTFSnowFX(world, x, y, z, velX, velY, velZ); break;
+					case SNOW_GUARDIAN: particle = new EntityTFSnowGuardianFX(world, x, y, z, velX, velY, velZ, 0.75F); break;
+					case SNOW_WARNING: particle = new EntityTFSnowWarningFX(world, x, y, z, velX, velY, velZ, 1F); break;
+					case ICE_BEAM: particle = new EntityTFIceBeamFX(world, x, y, z, velX, velY, velZ, 0.75F); break;
+					case ANNIHILATE: particle = new EntityTFAnnihilateFX(world, x, y, z, velX, velY, velZ, 0.75F); break;
+					case HUGE_SMOKE: particle = new ParticleSmokeNormal(world, x, y, z, velX, velY, velZ, 8);
 				}
 
-				// if we made a partcle, go ahead and add it
-				if (particle != null)
-				{
-					particle.prevPosX = particle.posX;
-					particle.prevPosY = particle.posY;
-					particle.prevPosZ = particle.posZ;
-					
-					// we keep having a non-threadsafe crash adding particles directly here, so let's pass them to a buffer
-					//clientTicker.addParticle(particle); 
-					mc.effectRenderer.addEffect(particle); // maybe it's fixed?
+				if (particle != null) {
+					mc.effectRenderer.addEffect(particle);
 				}
 			}
 		}
 	}
-	
 
 	@Override
 	public ModelBiped getKnightlyArmorModel(EntityEquipmentSlot armorSlot) {
@@ -597,42 +552,21 @@ public class TFClientProxy extends TFCommonProxy {
 	
 	@Override
 	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
-		// particles from the block?
-//		for (int i = 0; i < 10; i++) {
-//	        
-//	        double d0 = world.rand.nextGaussian() * 0.02D;
-//	        double d1 = world.rand.nextGaussian() * 0.02D;
-//	        double d2 = world.rand.nextGaussian() * 0.02D;
-//
-//	        float dx = blockX + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
-//	        float dy = blockY + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
-//	        float dz = blockZ + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
-//
-//			TwilightForestMod.proxy.spawnParticle(world, "annihilate", dx, dy, dz, d0, d1, d2);
-//
-//		}
-		
-		
-        byte four = 4;
-
-        for (int dx = 0; dx < four; ++dx)
+        for (int dx = 0; dx < 4; ++dx)
         {
-            for (int dy = 0; dy < four; ++dy)
+            for (int dy = 0; dy < 4; ++dy)
             {
-                for (int dz = 0; dz < four; ++dz)
+                for (int dz = 0; dz < 4; ++dz)
                 {
-                    double d0 = (double)blockX + ((double)dx + 0.5D) / (double)four;
-                    double d1 = (double)blockY + ((double)dy + 0.5D) / (double)four;
-                    double d2 = (double)blockZ + ((double)dz + 0.5D) / (double)four;
+                    double d0 = (double)pos.getX() + ((double)dx + 0.5D) / (double)4;
+                    double d1 = (double)pos.getY() + ((double)dy + 0.5D) / (double)4;
+                    double d2 = (double)pos.getZ() + ((double)dz + 0.5D) / (double)4;
                     
         	        double gx = world.rand.nextGaussian() * 0.2D;
         	        double gy = world.rand.nextGaussian() * 0.2D;
         	        double gz = world.rand.nextGaussian() * 0.2D;
                     
-        			TwilightForestMod.proxy.spawnParticle(world, "annihilate", d0, d1, d2, gx, gy, gz);
-
-                    
-                    //this.addEffect((new EntityDiggingFX(this.world, d0, d1, d2, d0 - (double)p_147215_1_ - 0.5D, d1 - (double)p_147215_2_ - 0.5D, d2 - (double)p_147215_3_ - 0.5D, p_147215_4_, p_147215_5_)).applyColourMultiplier(p_147215_1_, p_147215_2_, p_147215_3_));
+        			TwilightForestMod.proxy.spawnParticle(world, TFParticleType.ANNIHILATE, d0, d1, d2, gx, gy, gz);
                 }
             }
         }

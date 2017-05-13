@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
@@ -156,7 +157,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
 		
-		TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 	}
     
 

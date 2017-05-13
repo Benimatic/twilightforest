@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 import twilightforest.item.TFItems;
 
@@ -61,7 +62,6 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     {
     	super.onLivingUpdate();
     	
-    	// when breathing fire, spew particles
     	if (isBreathing())
     	{
     		Vec3d look = this.getLookVec();
@@ -88,8 +88,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     			dy *= velocity;
     			dz *= velocity;
 
-    			TwilightForestMod.proxy.spawnParticle(this.world, "snowstuff", px, py, pz, dx, dy, dz);
-    			//world.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
+    			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, px, py, pz, dx, dy, dz);
     		}
     		
 			playBreathSound();

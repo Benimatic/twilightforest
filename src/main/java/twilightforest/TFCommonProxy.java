@@ -6,6 +6,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.client.GuiTFCinderFurnace;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.inventory.ContainerTFCinderFurnace;
 import twilightforest.inventory.ContainerTFUncrafting;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -76,14 +77,7 @@ public class TFCommonProxy implements IGuiHandler {
 		return null;
 	}
 	
-	/**
-	 * Spawns a particle.  This is my copy of RenderGlobal.spawnParticle where I implement custom particles.
-	 * Null op except on the client.
-	 */
-	public void spawnParticle(World world, String particleType, double x, double y, double z, double velX, double velY, double velZ)
-	{
-		;
-	}
+	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {}
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {

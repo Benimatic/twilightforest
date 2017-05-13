@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
@@ -153,7 +154,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	    	float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 	    	
-			TwilightForestMod.proxy.spawnParticle(this.world, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
     	
     	// during drop phase, all the ice blocks should make particles
@@ -163,7 +164,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     			float py = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
     			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 
-    			TwilightForestMod.proxy.spawnParticle(this.world, "snowwarning", this.iceArray[i].lastTickPosX + px, this.iceArray[i].lastTickPosY + py, this.iceArray[i].lastTickPosZ + pz, 0, 0, 0);
+    			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_WARNING, this.iceArray[i].lastTickPosX + px, this.iceArray[i].lastTickPosY + py, this.iceArray[i].lastTickPosZ + pz, 0, 0, 0);
     		}
     	}
     	
@@ -194,7 +195,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     			dy *= velocity;
     			dz *= velocity;
 
-    			TwilightForestMod.proxy.spawnParticle(this.world, "icebeam", px, py, pz, dx, dy, dz);
+    			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
     			//world.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
     		}
     		

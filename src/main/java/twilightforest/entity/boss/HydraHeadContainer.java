@@ -14,6 +14,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 
 /**
  * This class holds the state data for a single hydra head
@@ -643,7 +644,7 @@ public class HydraHeadContainer {
 		        dy *= velocity;
 		        dz *= velocity;
 				
-				TwilightForestMod.proxy.spawnParticle(headEntity.world, "largeflame", px, py, pz, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(headEntity.world, TFParticleType.LARGE_FLAME, px, py, pz, dx, dy, dz);
 			}
 		}
 		

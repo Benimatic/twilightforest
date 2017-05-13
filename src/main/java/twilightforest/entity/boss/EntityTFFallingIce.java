@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFFallingIce extends Entity {
 
@@ -124,9 +125,7 @@ public class EntityTFFallingIce extends Entity {
 			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat()); 
 			double dz = this.posZ + 2F * (rand.nextFloat() - rand.nextFloat()); 
 
-			TwilightForestMod.proxy.spawnParticle(this.world, "snowwarning", dx, dy, dz, 0, -1, 0);
-			
-			//System.out.println("Trail! " + this.world);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_WARNING, dx, dy, dz, 0, -1, 0);
 		}
 	}
 
@@ -134,7 +133,7 @@ public class EntityTFFallingIce extends Entity {
 	@Override
     public void fall(float dist, float multiplier)
     {
-    	int distance = MathHelper.ceiling_float_int(dist - 1.0F);
+    	int distance = MathHelper.ceil(dist - 1.0F);
 
     	if (distance > 0)
     	{
@@ -142,7 +141,7 @@ public class EntityTFFallingIce extends Entity {
     		DamageSource damagesource = DamageSource.fallingBlock;
     		for (Entity entity : nearby) {
     			if (!(entity instanceof EntityTFYetiAlpha)) {
-    				entity.attackEntityFrom(damagesource, (float)Math.min(MathHelper.floor_float((float)distance * this.hurtAmount), this.hurtMax));
+    				entity.attackEntityFrom(damagesource, (float)Math.min(MathHelper.floor((float)distance * this.hurtAmount), this.hurtMax));
     			}
     		}
     	}
@@ -155,7 +154,7 @@ public class EntityTFFallingIce extends Entity {
 			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 		}
 		
-		this.playSound(Blocks.ANVIL.getSoundType().getBreakSound(), 3F, 0.5F); // todo 1.9 this gon crash
+		this.playSound(Blocks.ANVIL.getSoundType().getBreakSound(), 3F, 0.5F);
 		this.playSound(Blocks.PACKED_ICE.getSoundType().getBreakSound(), 3F, 0.5F);
     }
     

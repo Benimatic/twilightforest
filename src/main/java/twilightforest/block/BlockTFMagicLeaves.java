@@ -19,6 +19,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.MagicWoodVariant;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
 public class BlockTFMagicLeaves extends BlockLeaves {
@@ -122,7 +123,7 @@ public class BlockTFMagicLeaves extends BlockLeaves {
 
     	if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1)
     	{
-    		TwilightForestMod.proxy.spawnParticle(world, "leafrune", rx, ry, rz, 0.0D, 0.0D, 0.0D);
+    		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
     	}
     }
 

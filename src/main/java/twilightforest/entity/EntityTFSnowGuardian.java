@@ -20,6 +20,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
 public class EntityTFSnowGuardian extends EntityMob {
@@ -174,13 +175,13 @@ public class EntityTFSnowGuardian extends EntityMob {
     public void onLivingUpdate()
     {
     	super.onLivingUpdate();
-    	// make snow particles
+
     	for (int i = 0; i < 3; i++) {
 	    	float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 	    	float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 	    	
-			TwilightForestMod.proxy.spawnParticle(this.world, "snowguardian", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
 
     }

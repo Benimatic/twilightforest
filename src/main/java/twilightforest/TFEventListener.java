@@ -44,6 +44,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.EntityTFPinchBeetle;
@@ -929,11 +930,8 @@ public class TFEventListener {
 					event.setCanceled(true);
 					
 					
-					// particle effect
 					for (int i = 0; i < 20; i++) {
-			            //world.spawnParticle("mobSpell", blockX + 0.5F, blockY + 0.5F, blockZ + 0.5F, red, grn, blu);
-						TwilightForestMod.proxy.spawnParticle(event.getEntityLiving().world, "protection", event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, 0, 0, 0);
-
+						TwilightForestMod.proxy.spawnParticle(event.getEntityLiving().world, TFParticleType.PROTECTION, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, 0, 0, 0);
 					}
 				}
 			}

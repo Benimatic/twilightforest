@@ -14,6 +14,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerDeviceVariant;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
@@ -33,7 +34,7 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 		{
 			// smoke when done
 			if (counter > 100 && counter % 4 == 0) {
-				TwilightForestMod.proxy.spawnParticle(this.world, "hugesmoke", this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.HUGE_SMOKE, this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
 			}
 			else if (counter < 100) 
 			{
@@ -42,12 +43,12 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 				double dz = Math.sin(counter / 10.0) * 2.5;
 
 
-				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy, dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy, -dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy / 2, dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy / 2, -dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx / 2, dy / 4, dz / 2);
-				TwilightForestMod.proxy.spawnParticle(this.world, "ghasttrap", this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx / 2, dy / 4, -dz / 2);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy, -dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx, dy / 2, dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx, dy / 2, -dz);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, dx / 2, dy / 4, dz / 2);
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D, -dx / 2, dy / 4, -dz / 2);
 			}
 
 			// appropriate sound

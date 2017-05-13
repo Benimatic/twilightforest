@@ -15,6 +15,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.FireJetVariant;
+import twilightforest.client.particle.TFParticleType;
 
 public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	
@@ -40,20 +41,20 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 		else if (counter % 2 == 0)
 		{
 			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
-			TwilightForestMod.proxy.spawnParticle(this.world, "largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.0D, 0.5D, 0.0D);
-//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.0D, 0.5D, 0.0D);
+//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 
 //    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
-//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 
+//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 
 //    				Math.cos(counter / 4.0 + Math.PI) * 0.2, 0.35D, Math.sin(counter / 4.0 + Math.PI) * 0.2);			
-//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord + 0.5 + Math.cos(counter / 4.0), this.yCoord + 1.0, this.zCoord + 0.5 + Math.sin(counter / 4.0), 
+//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.xCoord + 0.5 + Math.cos(counter / 4.0), this.yCoord + 1.0, this.zCoord + 0.5 + Math.sin(counter / 4.0), 
 //    				Math.sin(counter / 4.0) * 0.05, 0.35D, Math.cos(counter / 4.0) * 0.05);			
-//			TwilightForestMod.proxy.spawnParticle("largeflame", this.xCoord +  0.5 + Math.cos(counter / 4.0 + Math.PI), this.yCoord + 1.0, this.zCoord + 0.5 + Math.sin(counter / 4.0 + Math.PI), 
+//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.xCoord +  0.5 + Math.cos(counter / 4.0 + Math.PI), this.yCoord + 1.0, this.zCoord + 0.5 + Math.sin(counter / 4.0 + Math.PI), 
 //    				Math.sin(counter / 4.0 + Math.PI) * 0.05, 0.35D, Math.cos(counter / 4.0 + Math.PI) * 0.05);			
 
-			TwilightForestMod.proxy.spawnParticle(this.world, "largeflame", this.xCoord - 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.05D, 0.5D, 0.0D);
-			TwilightForestMod.proxy.spawnParticle(this.world, "largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord - 0.5, 0.0D, 0.5D, 0.05D);
-			TwilightForestMod.proxy.spawnParticle(this.world, "largeflame", this.xCoord + 1.5, this.yCoord + 1.0, this.zCoord + 0.5, -0.05D, 0.5D, 0.0D);
-			TwilightForestMod.proxy.spawnParticle(this.world, "largeflame", this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 1.5, 0.0D, 0.5D, -0.05D);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.xCoord - 0.5, this.yCoord + 1.0, this.zCoord + 0.5, 0.05D, 0.5D, 0.0D);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord - 0.5, 0.0D, 0.5D, 0.05D);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.xCoord + 1.5, this.yCoord + 1.0, this.zCoord + 0.5, -0.05D, 0.5D, 0.0D);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 1.5, 0.0D, 0.5D, -0.05D);
 
 		}
 		

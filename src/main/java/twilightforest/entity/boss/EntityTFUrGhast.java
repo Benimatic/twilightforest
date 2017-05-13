@@ -22,6 +22,7 @@ import twilightforest.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.world.ChunkGeneratorTwilightForest;
@@ -491,7 +492,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
      */
     private void shedTear() 
     {
-		TwilightForestMod.proxy.spawnParticle(this.world, "bosstear", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.BOSS_TEAR, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
 	}
 
 	/**

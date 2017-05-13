@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAICubeCenterOnSymbol;
 import twilightforest.entity.ai.EntityAICubeMoveToRedstoneSymbols;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -46,13 +47,13 @@ public class EntityTFRovingCube  extends EntityMob {
     public void onLivingUpdate()
     {
     	super.onLivingUpdate();
-    	// make annihilation particles
+
     	for (int i = 0; i < 3; i++) {
 	    	float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
 	    	float py = this.getEyeHeight() - 0.25F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
 	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
 	    	
-			TwilightForestMod.proxy.spawnParticle(this.world, "annihilate", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.ANNIHILATE, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
 
     }
