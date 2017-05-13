@@ -54,7 +54,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(BREATH_FLAG, false);
+        dataManager.register(BREATH_FLAG, false);
     }
 
     @Override
@@ -108,13 +108,13 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	public boolean isBreathing() {
-        return this.dataManager.get(BREATH_FLAG);
+        return dataManager.get(BREATH_FLAG);
 
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-        this.dataManager.set(BREATH_FLAG, flag);
+        dataManager.set(BREATH_FLAG, flag);
 	}
 
 	@Override

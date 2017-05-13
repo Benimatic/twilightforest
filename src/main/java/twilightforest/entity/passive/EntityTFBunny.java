@@ -62,7 +62,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_TYPE, (byte) 0);
+        dataManager.register(DATA_TYPE, (byte) 0);
     }
 
 	@Override
@@ -81,12 +81,12 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
     public int getBunnyType()
     {
-        return this.dataManager.get(DATA_TYPE);
+        return dataManager.get(DATA_TYPE);
     }
 
     public void setBunnyType(int par1)
     {
-        this.dataManager.set(DATA_TYPE, (byte) par1);
+        dataManager.set(DATA_TYPE, (byte) par1);
     }
 	
 	@Override

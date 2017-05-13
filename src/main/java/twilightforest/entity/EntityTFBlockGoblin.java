@@ -78,8 +78,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_CHAINLENGTH, (byte) 0);
-        this.dataManager.register(DATA_CHAINPOS, (byte) 0);
+        dataManager.register(DATA_CHAINLENGTH, (byte) 0);
+        dataManager.register(DATA_CHAINPOS, (byte) 0);
     }
     
 	@Override
@@ -182,8 +182,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
         if (!this.world.isRemote)
         {
-            this.dataManager.set(DATA_CHAINLENGTH, (byte) Math.floor(getChainLength() * 127F));
-            this.dataManager.set(DATA_CHAINPOS, (byte) Math.floor(getChainAngle() / 360F * 255F));
+            dataManager.set(DATA_CHAINLENGTH, (byte) Math.floor(getChainLength() * 127.0F));
+            dataManager.set(DATA_CHAINPOS, (byte) Math.floor(getChainAngle() / 360.0F * 255.0F));
         }
         else
         {
@@ -282,7 +282,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         }
         else
         {
-        	return (this.dataManager.get(DATA_CHAINPOS) & 0xFF) / 255F * 360F;
+        	return (dataManager.get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
         }
     }
     
@@ -304,7 +304,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         }
         else
         {
-        	return (this.dataManager.get(DATA_CHAINLENGTH) & 0xFF) / 127F;
+        	return (dataManager.get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
         }
 	}
 

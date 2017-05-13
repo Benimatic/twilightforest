@@ -17,6 +17,9 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -46,8 +49,8 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 	private static int SECONDARY_FLAME_CHANCE = 10;
 	private static int SECONDARY_MORTAR_CHANCE = 16;
 	
-	private static final int DATA_SPAWNHEADS = 17;
-	private static final int DATA_BOSSHEALTH = 18;
+	private static final DataParameter<Byte> DATA_SPAWNHEADS = EntityDataManager.createKey(EntityTFHydra.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer> DATA_BOSSHEALTH = EntityDataManager.createKey(EntityTFHydra.class, DataSerializers.VARINT);
 	
 	public Entity partArray[];
 	public EntityDragonPart body;
@@ -149,7 +152,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		// update health
         if (!this.world.isRemote)
         {
-            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
+			dataManager.set(DATA_BOSSHEALTH, (int) this.getHealth());
         }
         else
         {
@@ -321,25 +324,25 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_SPAWNHEADS, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BOSSHEALTH, new Integer(MAX_HEALTH));
+        dataManager.register(DATA_SPAWNHEADS, (byte) 0);
+		dataManager.register(DATA_BOSSHEALTH, MAX_HEALTH);
     }
     
 	
     public boolean shouldSpawnHeads()
     {
-        return dataWatcher.getWatchableObjectByte(DATA_SPAWNHEADS) != 0;
+        return dataManager.get(DATA_SPAWNHEADS) != 0;
     }
 
     public void setSpawnHeads(boolean flag)
     {
         if (flag)
         {
-            dataWatcher.updateObject(DATA_SPAWNHEADS, Byte.valueOf((byte)127));
+			dataManager.set(DATA_SPAWNHEADS, (byte) 127);
         }
         else
         {
-            dataWatcher.updateObject(DATA_SPAWNHEADS, Byte.valueOf((byte)0));
+			dataManager.set(DATA_SPAWNHEADS, (byte) 0);
         }
     }
     

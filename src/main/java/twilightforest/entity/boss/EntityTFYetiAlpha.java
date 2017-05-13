@@ -19,6 +19,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -31,6 +34,7 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.entity.EntityTFYeti;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
@@ -44,8 +48,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 {
 
 	
-    private static final int RAMPAGE_FLAG = 16;
-	private static final int TIRED_FLAG = 17;
+    private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private int collisionCounter;
 	private boolean canRampage;
 
@@ -78,8 +82,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(RAMPAGE_FLAG, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(TIRED_FLAG, Byte.valueOf((byte)0));
+        dataManager.register(RAMPAGE_FLAG, (byte) 0);
+        dataManager.register(TIRED_FLAG, (byte) 0);
     }
     
 	@Override
@@ -424,7 +428,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
      */
     public void setRampaging(boolean par1)
     {
-        this.getDataWatcher().updateObject(RAMPAGE_FLAG, Byte.valueOf((byte)(par1 ? 1 : 0)));
+        dataManager.set(RAMPAGE_FLAG, (byte) (par1 ? 1 : 0));
     }
 
     /**
@@ -432,7 +436,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
      */
     public boolean isRampaging()
     {
-        return this.getDataWatcher().getWatchableObjectByte(RAMPAGE_FLAG) == 1;
+        return dataManager.get(RAMPAGE_FLAG) == 1;
     }
 
     /**
@@ -440,7 +444,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
      */
     public void setTired(boolean par1)
     {
-        this.getDataWatcher().updateObject(TIRED_FLAG, Byte.valueOf((byte)(par1 ? 1 : 0)));
+        dataManager.set(TIRED_FLAG, (byte) (par1 ? 1 : 0));
         this.canRampage = false;
     }
 
@@ -449,7 +453,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
      */
     public boolean isTired()
     {
-        return this.getDataWatcher().getWatchableObjectByte(TIRED_FLAG) == 1;
+        return dataManager.get(TIRED_FLAG) == 1;
     }
     
     @Override

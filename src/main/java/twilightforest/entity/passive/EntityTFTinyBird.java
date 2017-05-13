@@ -57,8 +57,8 @@ public class EntityTFTinyBird extends EntityTFBird {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_BIRDTYPE, (byte) 0);
-        this.dataManager.register(DATA_BIRDFLAGS, (byte) 0);
+        dataManager.register(DATA_BIRDTYPE, (byte) 0);
+        dataManager.register(DATA_BIRDFLAGS, (byte) 0);
     }
 	
 	@Override
@@ -85,12 +85,12 @@ public class EntityTFTinyBird extends EntityTFBird {
 
     public int getBirdType()
     {
-        return this.dataManager.get(DATA_BIRDTYPE);
+        return dataManager.get(DATA_BIRDTYPE);
     }
 
     public void setBirdType(int par1)
     {
-        this.dataManager.set(DATA_BIRDTYPE, (byte) par1);
+        dataManager.set(DATA_BIRDTYPE, (byte) par1);
     }
 	
 	@Override
@@ -251,20 +251,20 @@ public class EntityTFTinyBird extends EntityTFBird {
     @Override
     public boolean isBirdLanded()
     {
-        return (this.dataManager.get(DATA_BIRDFLAGS) & 1) != 0;
+        return (dataManager.get(DATA_BIRDFLAGS) & 1) != 0;
     }
 
     public void setIsBirdLanded(boolean par1)
     {
-        byte b0 = this.dataManager.get(DATA_BIRDFLAGS);
+        byte b0 = dataManager.get(DATA_BIRDFLAGS);
 
         if (par1)
         {
-            this.dataManager.set(DATA_BIRDFLAGS, (byte) (b0 | 1));
+            dataManager.set(DATA_BIRDFLAGS, (byte) (b0 | 1));
         }
         else
         {
-            this.dataManager.set(DATA_BIRDFLAGS, (byte) (b0 & -2));
+            dataManager.set(DATA_BIRDFLAGS, (byte) (b0 & -2));
         }
     }
 

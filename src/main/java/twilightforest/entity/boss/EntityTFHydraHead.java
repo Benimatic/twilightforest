@@ -1,9 +1,15 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
 public class EntityTFHydraHead extends EntityTFHydraPart {
-	
+
+    private static final DataParameter<Byte> DATA_MOUTH_POSITION = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> DATA_STATE = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
+
     public EntityTFHydraHead(World world)
     {
     	super(world);
@@ -39,19 +45,19 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(18, Byte.valueOf((byte)0));
-        dataWatcher.addObject(19, Byte.valueOf((byte)0));
+        dataManager.register(DATA_MOUTH_POSITION, (byte) 0);
+        dataManager.register(DATA_STATE, (byte) 0);
     }
 	
 	
     public float getMouthOpen()
     {
-        return (dataWatcher.getWatchableObjectByte(18) & 0xFF) / 255.0F;
+        return (dataManager.get(DATA_MOUTH_POSITION) & 0xFF) / 255.0F;
     }
 
     public int getState()
     {
-        return (dataWatcher.getWatchableObjectByte(19) & 0xFF);
+        return dataManager.get(DATA_STATE) & 0xFF;
     }
 
     public void setMouthOpen(float openness)
@@ -69,13 +75,13 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
     	int openByte = Math.round(openness * 255);
     	
     	openByte &= 0xFF;
-        dataWatcher.updateObject(18, Byte.valueOf((byte)openByte));
+        dataManager.set(DATA_MOUTH_POSITION, (byte) openByte);
     }
 
     public void setState(int state)
     {
     	state &= 0xFF;
-        dataWatcher.updateObject(19, Byte.valueOf((byte)state));
+        dataManager.set(DATA_STATE, (byte) state);
     }
 
 }

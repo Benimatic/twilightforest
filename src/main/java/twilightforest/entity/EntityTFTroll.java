@@ -78,19 +78,19 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(ROCK_FLAG, false);
+        dataManager.register(ROCK_FLAG, false);
     }
     
     public boolean hasRock() {
-        return this.dataManager.get(ROCK_FLAG);
+        return dataManager.get(ROCK_FLAG);
     }
 
     public void setHasRock(boolean rock) {
         if (rock) {
             this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
-            this.dataManager.set(ROCK_FLAG, true);
+            dataManager.set(ROCK_FLAG, true);
         } else {
-            this.dataManager.set(ROCK_FLAG, false);
+            dataManager.set(ROCK_FLAG, false);
         }
         
         this.setCombatTask();

@@ -8,6 +8,9 @@ import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +36,7 @@ import net.minecraftforge.fml.common.FMLLog;
 public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayData {
 
 //	private static final int DATA_BOSSHEALTH = 17;
-	private static final int DATA_TANTRUM = 18;
+	private static final DataParameter<Byte> DATA_TANTRUM = EntityDataManager.createKey(EntityTFUrGhast.class, DataSerializers.BYTE);
 
 
 	//private static final int CRUISING_ALTITUDE = 235; // absolute cruising altitude
@@ -95,8 +98,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     protected void entityInit()
     {
         super.entityInit();
-//        this.dataWatcher.addObject(DATA_BOSSHEALTH, new Integer(this.getMaxHealth()));
-        this.dataWatcher.addObject(DATA_TANTRUM, Byte.valueOf((byte) 0));
+		dataManager.register(DATA_TANTRUM, (byte) 0);
     }
 
     @Override
@@ -450,12 +452,12 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         }
 
         // set aggro status
-        byte currentAggroStatus = this.dataWatcher.getWatchableObjectByte(16);
+        byte currentAggroStatus = dataManager.get(DATA_AGGRO_STATUS);
         byte newAggroStatus = (byte)(this.attackCounter > 10 ? 2 : (this.aggroCounter > 0 || this.isAggressive) ? 1 : 0);
 
         if (currentAggroStatus != newAggroStatus)
         {
-        	this.dataWatcher.updateObject(16, Byte.valueOf(newAggroStatus));
+        	dataManager.set(DATA_AGGRO_STATUS, newAggroStatus);
         }
     }
 
@@ -763,7 +765,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
      */
     public boolean isInTantrum()
     {
-        return this.dataWatcher.getWatchableObjectByte(DATA_TANTRUM) != (byte)0;
+        return dataManager.get(DATA_TANTRUM) != (byte)0;
     }
 
     /**
@@ -771,7 +773,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
      */
     public void setInTantrum(boolean par1)
     {
-    	this.dataWatcher.updateObject(DATA_TANTRUM, par1 ? Byte.valueOf((byte)-1) : Byte.valueOf((byte)0));
+    	dataManager.set(DATA_TANTRUM, (byte) (par1 ? -1 : 0));
     	
     	// can we just reset this each time it is called?
     	this.damageUntilNextPhase = 48;

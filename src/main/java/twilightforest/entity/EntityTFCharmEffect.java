@@ -131,18 +131,18 @@ public class EntityTFCharmEffect extends Entity
     @Override
     protected void entityInit()
     {
-        this.dataManager.register(DATA_ITEMID, 0);
-        this.dataManager.register(DATA_OWNER, "");
+        dataManager.register(DATA_ITEMID, 0);
+        dataManager.register(DATA_OWNER, "");
     }
 
     public String getOwnerName()
     {
-        return this.dataManager.get(DATA_OWNER);
+        return dataManager.get(DATA_OWNER);
     }
 
     public void setOwner(String par1Str)
     {
-        this.dataManager.set(DATA_OWNER, par1Str);
+        dataManager.set(DATA_OWNER, par1Str);
     }
 
     public EntityLivingBase getOwner()
@@ -152,7 +152,7 @@ public class EntityTFCharmEffect extends Entity
 
 	public int getItemID()
     {
-        return this.dataManager.get(DATA_ITEMID);
+        return dataManager.get(DATA_ITEMID);
     }
 
     public void setItemID(Item charmOfLife1)

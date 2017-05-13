@@ -82,8 +82,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_COLOR, 0);
-        this.dataManager.register(DATA_REWARDED, false);
+        dataManager.register(DATA_COLOR, 0);
+        dataManager.register(DATA_REWARDED, false);
     }
 
     @Override
@@ -210,12 +210,12 @@ public class EntityTFQuestRam extends EntityAnimal {
     
     public int getColorFlags()
     {
-        return this.dataManager.get(DATA_COLOR);
+        return dataManager.get(DATA_COLOR);
     }
 
     public void setColorFlags(int par1)
     {
-    	this.dataManager.set(DATA_COLOR, par1);
+    	dataManager.set(DATA_COLOR, par1);
     }
 
     public boolean isColorPresent(EnumDyeColor color) {
@@ -228,12 +228,12 @@ public class EntityTFQuestRam extends EntityAnimal {
     
     public boolean getRewarded()
     {
-        return this.dataManager.get(DATA_REWARDED);
+        return dataManager.get(DATA_REWARDED);
     }
 
     public void setRewarded(boolean par1)
     {
-    	this.dataManager.set(DATA_REWARDED, par1);
+    	dataManager.set(DATA_REWARDED, par1);
     }
 
     public void animateAddColor(EnumDyeColor color, int iterations) {

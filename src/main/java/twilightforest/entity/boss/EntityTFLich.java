@@ -21,6 +21,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -41,11 +45,11 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	
 
-	private static final int DATA_ISCLONE = 21;
-	private static final int DATA_SHIELDSTRENGTH = 17;
-	private static final int DATA_MINIONSLEFT = 18;
-	private static final int DATA_BOSSHEALTH = 19;
-	private static final int DATA_ATTACKTYPE = 20;
+	private static final DataParameter<Byte> DATA_ISCLONE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> DATA_SHIELDSTRENGTH = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> DATA_MINIONSLEFT = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer> DATA_BOSSHEALTH = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.VARINT);
+	private static final DataParameter<Byte> DATA_ATTACKTYPE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
 
 	EntityTFLich masterLich;
 
@@ -96,11 +100,11 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.dataWatcher.addObject(DATA_ISCLONE, Byte.valueOf((byte)0));
-		this.dataWatcher.addObject(DATA_SHIELDSTRENGTH, Byte.valueOf((byte)0));
-		this.dataWatcher.addObject(DATA_MINIONSLEFT, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BOSSHEALTH, new Integer(EntityTFLich.MAX_HEALTH));
-		this.dataWatcher.addObject(DATA_ATTACKTYPE, Byte.valueOf((byte)0));
+		dataManager.register(DATA_ISCLONE, (byte) 0);
+		dataManager.register(DATA_SHIELDSTRENGTH, (byte) 0);
+		dataManager.register(DATA_MINIONSLEFT, (byte) 0);
+        dataManager.register(DATA_BOSSHEALTH, EntityTFLich.MAX_HEALTH);
+		dataManager.register(DATA_ATTACKTYPE, (byte) 0);
 	}
 
 
@@ -112,9 +116,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.800000011920929D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.800000011920929D); // movement speed
     }
 	
 	
@@ -272,7 +276,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		// update health
         if (!this.world.isRemote)
         {
-            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
+            dataManager.set(DATA_BOSSHEALTH, (int) getHealth());
         }
 		
         super.onLivingUpdate();
@@ -930,7 +934,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      */
     public boolean isShadowClone()
     {
-        return (this.dataWatcher.getWatchableObjectByte(DATA_ISCLONE) & 2) != 0;
+        return (dataManager.get(DATA_ISCLONE) & 2) != 0;
     }
 
     /**
@@ -938,40 +942,40 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      */
     public void setShadowClone(boolean par1)
     {
-        byte var2 = this.dataWatcher.getWatchableObjectByte(DATA_ISCLONE);
+        byte var2 = dataManager.get(DATA_ISCLONE);
 
         if (par1)
         {
-            this.dataWatcher.updateObject(DATA_ISCLONE, Byte.valueOf((byte)(var2 | 2)));
+            dataManager.set(DATA_ISCLONE, (byte) (var2 | 2));
         }
         else
         {
-            this.dataWatcher.updateObject(DATA_ISCLONE, Byte.valueOf((byte)(var2 & -3)));
+            dataManager.set(DATA_ISCLONE, (byte) (var2 & -3));
         }
     }
     
     public byte getShieldStrength() {
-		return this.dataWatcher.getWatchableObjectByte(DATA_SHIELDSTRENGTH);
+		return dataManager.get(DATA_SHIELDSTRENGTH);
 	}
 
 	public void setShieldStrength(int shieldStrength) {
-		this.dataWatcher.updateObject(DATA_SHIELDSTRENGTH, Byte.valueOf((byte) shieldStrength));
+		dataManager.set(DATA_SHIELDSTRENGTH, (byte) shieldStrength);
 	}
 
 	public byte getMinionsToSummon() {
-		return this.dataWatcher.getWatchableObjectByte(DATA_MINIONSLEFT);
+		return dataManager.get(DATA_MINIONSLEFT);
 	}
 
 	public void setMinionsToSummon(int minionsToSummon) {
-		this.dataWatcher.updateObject(DATA_MINIONSLEFT, Byte.valueOf((byte) minionsToSummon));
+		dataManager.set(DATA_MINIONSLEFT, (byte) minionsToSummon);
 	}
 
 	public byte getNextAttackType() {
-		return this.dataWatcher.getWatchableObjectByte(DATA_ATTACKTYPE);
+		return dataManager.get(DATA_ATTACKTYPE);
 	}
 
 	public void setNextAttackType(int attackType) {
-		this.dataWatcher.updateObject(DATA_ATTACKTYPE, Byte.valueOf((byte) attackType));
+		dataManager.set(DATA_ATTACKTYPE, (byte) attackType);
 	}
 
     @Override

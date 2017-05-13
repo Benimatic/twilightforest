@@ -18,6 +18,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,7 +37,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 
-	private static final int DATA_EQUIP = 17;
+	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightUpper.class, DataSerializers.BYTE);
 	
 	public int shieldHits;
 
@@ -78,46 +81,46 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_EQUIP, Byte.valueOf((byte)0));
+        dataManager.register(DATA_EQUIP, (byte) 0);
     }
 	
     public boolean hasArmor()
     {
-        return (dataWatcher.getWatchableObjectByte(DATA_EQUIP) & 1) > 0;
+        return (dataManager.get(DATA_EQUIP) & 1) > 0;
     }
 
     public void setHasArmor(boolean flag)
     {
-    	byte otherFlags = dataWatcher.getWatchableObjectByte(DATA_EQUIP);
+    	byte otherFlags = dataManager.get(DATA_EQUIP);
     	otherFlags &= 126;
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 1)));
+			dataManager.set(DATA_EQUIP, (byte) (otherFlags | 1));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+			dataManager.set(DATA_EQUIP, otherFlags);
         }
     }
     
     public boolean hasShield()
     {
-        return (dataWatcher.getWatchableObjectByte(DATA_EQUIP) & 2) > 0;
+        return (dataManager.get(DATA_EQUIP) & 2) > 0;
     }
 
     public void setHasShield(boolean flag)
     {
-    	byte otherFlags = dataWatcher.getWatchableObjectByte(DATA_EQUIP);
+    	byte otherFlags = dataManager.get(DATA_EQUIP);
     	otherFlags &= 125;
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 2)));
+            dataManager.set(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 2)));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+			dataManager.set(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
         }
     }
     

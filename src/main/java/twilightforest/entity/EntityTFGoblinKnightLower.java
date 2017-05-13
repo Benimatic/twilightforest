@@ -18,6 +18,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -27,7 +30,7 @@ import twilightforest.item.TFItems;
 
 public class EntityTFGoblinKnightLower extends EntityMob {
 	
-	private static final int DATA_EQUIP = 17;
+	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightLower.class, DataSerializers.BYTE);
 
 	public EntityTFGoblinKnightLower(World par1World) {
 		super(par1World);
@@ -60,26 +63,26 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_EQUIP, Byte.valueOf((byte)0));
+        dataManager.register(DATA_EQUIP, (byte) 0);
     }
 	
     public boolean hasArmor()
     {
-        return (dataWatcher.getWatchableObjectByte(DATA_EQUIP) & 1) > 0;
+        return (dataManager.get(DATA_EQUIP) & 1) > 0;
     }
 
     public void setHasArmor(boolean flag)
     {
-    	byte otherFlags = dataWatcher.getWatchableObjectByte(DATA_EQUIP);
+    	byte otherFlags = dataManager.get(DATA_EQUIP);
     	otherFlags &= 126;
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 1)));
+            dataManager.set(DATA_EQUIP, (byte) (otherFlags | 1));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+            dataManager.set(DATA_EQUIP, otherFlags);
         }
     }
     

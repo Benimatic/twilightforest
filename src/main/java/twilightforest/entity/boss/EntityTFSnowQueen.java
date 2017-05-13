@@ -24,6 +24,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -45,8 +48,8 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IEntityMultiPart, IBreathAttacker {
 	
 	private static final int MAX_SUMMONS = 6;
-	private static final int BEAM_FLAG = 21;
-	private static final int PHASE_FLAG = 22;
+	private static final DataParameter<Byte> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> PHASE_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BYTE);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
 
@@ -107,8 +110,8 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(BEAM_FLAG, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(PHASE_FLAG, Byte.valueOf((byte)0));
+		dataManager.register(BEAM_FLAG, (byte) 0);
+		dataManager.register(PHASE_FLAG, (byte) 0);
     }
 
 
@@ -478,23 +481,23 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 	@Override
 	public boolean isBreathing() {
-        return this.getDataWatcher().getWatchableObjectByte(BEAM_FLAG) == 1;
+        return dataManager.get(BEAM_FLAG) == 1;
 
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-        this.getDataWatcher().updateObject(BEAM_FLAG, Byte.valueOf((byte)(flag ? 1 : 0)));
+        dataManager.set(BEAM_FLAG, (byte) (flag ? 1 : 0));
 	}
 
 
 	public Phase getCurrentPhase() {
-		return Phase.values()[this.getDataWatcher().getWatchableObjectByte(PHASE_FLAG)];
+		return Phase.values()[dataManager.get(PHASE_FLAG)];
 	}
 
 
 	public void setCurrentPhase(Phase currentPhase) {
-		this.getDataWatcher().updateObject(PHASE_FLAG, Byte.valueOf((byte) currentPhase.ordinal()));
+		dataManager.set(PHASE_FLAG, (byte) currentPhase.ordinal());
 		
 		// set variables for current phase
 		if (currentPhase == Phase.SUMMON) {

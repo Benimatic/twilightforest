@@ -67,7 +67,7 @@ public class EntityTFYeti extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(ANGER_FLAG, (byte) 0);
+        dataManager.register(ANGER_FLAG, (byte) 0);
     }
 
     /**
@@ -156,20 +156,20 @@ public class EntityTFYeti extends EntityMob
      * Determines whether this yeti is angry or not.
      */
     public boolean isAngry() {
-        return (this.dataManager.get(ANGER_FLAG) & 2) != 0;
+        return (dataManager.get(ANGER_FLAG) & 2) != 0;
     }
 
     /**
      * Sets whether this yeti is angry or not.
      */
     public void setAngry(boolean anger) {
-        byte b0 = this.dataManager.get(ANGER_FLAG);
+        byte b0 = dataManager.get(ANGER_FLAG);
 
         if (anger) {
             this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
-            this.dataManager.set(ANGER_FLAG, (byte) (b0 | 2));
+            dataManager.set(ANGER_FLAG, (byte) (b0 | 2));
         } else {
-            this.dataManager.set(ANGER_FLAG, (byte) (b0 & -3));
+            dataManager.set(ANGER_FLAG, (byte) (b0 & -3));
         }
     }
 
