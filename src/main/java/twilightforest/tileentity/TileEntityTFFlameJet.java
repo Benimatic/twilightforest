@@ -3,10 +3,12 @@ package twilightforest.tileentity;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
@@ -32,9 +34,8 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	    	// idle again
 			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fireJet)
 			{
-				world.setBlockState(pos, TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, this.nextVariant), 3);
+				world.setBlockState(pos, TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, this.nextVariant));
 			}
-			this.invalidate();
 		}
 		else if (counter % 2 == 0)
 		{
@@ -59,12 +60,12 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 		// sounds
 		if (counter % 4 == 0)
 		{
-			world.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "mob.ghast.fireball", 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F);
+			world.playSound(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
 
 		}
 		else if (counter == 1)
 		{
-			world.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "fire.ignite", 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F);
+			world.playSound(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
 		}
 		
 		// actual fire effects

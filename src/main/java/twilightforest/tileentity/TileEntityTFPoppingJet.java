@@ -30,7 +30,6 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 			{
 				world.setBlockState(pos, TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, nextVariant), 3);
 			}
-			this.invalidate();
 		}
 		else
 		{

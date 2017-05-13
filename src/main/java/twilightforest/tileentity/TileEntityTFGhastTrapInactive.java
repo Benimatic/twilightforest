@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
@@ -16,10 +18,9 @@ import twilightforest.entity.EntityTFMiniGhast;
 
 public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickable {
 	
-	int counter;
-	Random rand = new Random();
-
-	ArrayList<EntityTFMiniGhast> dyingGhasts = new ArrayList<EntityTFMiniGhast>();
+	private int counter;
+	private final Random rand = new Random();
+	private final List<EntityTFMiniGhast> dyingGhasts = new ArrayList<EntityTFMiniGhast>();
 	
 	@Override
 	public void update()
@@ -61,23 +62,23 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 			{
 				((BlockTFTowerDevice)TFBlocks.towerDevice).sparkle(world, getPos());
 
-				world.playSound(this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, "note.harp", 1.0F, 1.0F, false);
+				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2)
 			{
 				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.1 + rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.00, (rand.nextFloat() - rand.nextFloat()) * 0.05);
 				if (counter % 10 == 0)
 				{
-					world.playSound(this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, "note.harp", 1.2F, 0.8F, false);
+					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.2F, 0.8F, false);
 				}
 			}
 			if (chargeLevel >= 3)
 			{
 				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.pos.getX() + 0.1 + rand.nextFloat() * 0.8, this.pos.getY() + 1.05, this.pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.05, (rand.nextFloat() - rand.nextFloat()) * 0.05);
-				((BlockTFTowerDevice)TFBlocks.towerDevice).sparkle(world, this.xCoord, this.yCoord, this.zCoord, world.rand);
+				((BlockTFTowerDevice)TFBlocks.towerDevice).sparkle(world, this.pos);
 				if (counter % 5 == 0)
 				{
-					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, "note.harp", 1.5F, 2F, false);
+					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.5F, 2F, false);
 				}
 			}
 		}

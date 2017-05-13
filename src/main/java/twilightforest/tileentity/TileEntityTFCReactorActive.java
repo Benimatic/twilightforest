@@ -5,8 +5,10 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
@@ -155,8 +157,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 		{
 			if (counter % 5 == 0 && counter <= 250)
 			{
-				// sound
-				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, "portal.portal", counter / 100F, counter / 100F, false);
+				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, counter / 100F, counter / 100F, false);
 			}
 		}
 

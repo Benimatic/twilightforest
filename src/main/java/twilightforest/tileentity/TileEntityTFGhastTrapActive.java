@@ -109,15 +109,10 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 				}
 
 			}
-			
-
-
 
 			if (counter >= 120)
 			{
-				// deactivate
 				world.setBlockState(pos, TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE), 3);
-				//world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, TFBlocks.towerDevice, 4);
 			}
 		}
 	}
