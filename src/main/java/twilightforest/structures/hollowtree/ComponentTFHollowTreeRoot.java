@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
@@ -21,7 +23,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 
 	public ComponentTFHollowTreeRoot(int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
 		super(i, sx, sy, sz, length, angle, tilt, leafy);
-		this.boundingBox = new StructureBoundingBox(Math.min(src.posX, dest.posX), Math.min(src.posY, dest.posY), Math.min(src.posZ, dest.posZ), Math.max(src.posX, dest.posX), Math.max(src.posY, dest.posY), Math.max(src.posZ, dest.posZ));
+		this.boundingBox = new StructureBoundingBox(Math.min(src.getX(), dest.getX()), Math.min(src.getY(), dest.getY()), Math.min(src.getZ(), dest.getZ()), Math.max(src.getX(), dest.getX()), Math.max(src.getY(), dest.getY()), Math.max(src.getZ(), dest.getZ()));
 	}
 
 	
@@ -40,16 +42,16 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
                 return true;
             }
 
-            src.posY = this.groundLevel + 5;
+            src = new BlockPos(src.getX(), groundLevel + 5, src.getZ());
             
             //System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
         }
-		
-		BlockPos rSrc = new BlockPos(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		BlockPos rDest = new BlockPos(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
 
-		drawRootLine(world, sbb, rSrc.posX, rSrc.posY, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.root, 0);
-		drawRootLine(world, sbb, rSrc.posX, rSrc.posY - 1, rSrc.posZ, rDest.posX, rDest.posY - 1, rDest.posZ, TFBlocks.root, 0);
+		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+
+		drawRootLine(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.root.getDefaultState());
+		drawRootLine(world, sbb, rSrc.getX(), rSrc.getY() - 1, rSrc.getZ(), rDest.getX(), rDest.getY() - 1, rDest.getZ(), TFBlocks.root.getDefaultState());
 
 		return true;
 	}
@@ -59,28 +61,29 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 	/**
 	 * Draws a line
 	 */
-	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, Block blockValue, int metaValue) {
+	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, IBlockState blockValue) {
 		BlockPos lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
 		
 		for (BlockPos coords : lineCoords)
 		{
-			Block block = this.getBlockAtCurrentPosition(world, coords.posX, coords.posY, coords.posZ, sbb);
+			IBlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			
 			// three choices here
-			if (!block.isNormalCube(world, coords.posX, coords.posY, coords.posZ) || (block != null && block.getMaterial() == Material.GRASS))
+			if (!block.isNormalCube() || block != Blocks.AIR && block.getMaterial() == Material.GRASS)
 			{
+
 				// air, other non-solid, or grass, make wood block
-				this.placeBlockAtCurrentPosition(world, TFBlocks.log, 12, coords.posX, coords.posY, coords.posZ, sbb);
+				//FIXME: Don't use getStateFromMeta, use proper variant.
+				this.setBlockState(world, TFBlocks.log.getStateFromMeta(12), coords.getX(), coords.getY(), coords.getZ(), sbb);
 			}
-			else if (block != null && block.getMaterial() == Material.WOOD)
+			else if (block != Blocks.AIR && block.getMaterial() == Material.WOOD)
 			{
 				// wood, do nothing
-
 			}
 			else
 			{
 				// solid, make root block
-				this.placeBlockAtCurrentPosition(world, blockValue, metaValue, coords.posX, coords.posY, coords.posZ, sbb);
+				this.setBlockState(world, blockValue, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			}
 		}
 	}
