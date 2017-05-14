@@ -145,7 +145,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public DimensionType getDimensionType() {
-		return "Twilight Forest";
+		return TwilightForestMod.dimType;
 	}
 
 	@Override
