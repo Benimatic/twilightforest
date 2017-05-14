@@ -2,12 +2,14 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
+import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -15,51 +17,163 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 
-public class EntityTFTowerGhast extends EntityGhast
-{
+import java.util.Random;
 
-	private static final int AGGRO_STATUS = 16;
-	protected EntityLivingBase targetedEntity;
+public class EntityTFTowerGhast extends EntityGhast {
 	protected boolean isAggressive;
-	protected int aggroCooldown;
-	protected int explosionPower;
-	protected int aggroCounter;
-	
-	protected float aggroRange;
+
 	protected float stareRange;
-	
 	protected float wanderFactor;
-	
 	protected int inTrapCounter;
 
-    private BlockPos homePosition = BlockPos.ORIGIN;
-    /** If -1 there is no maximum distance */
-    private float maximumHomeDistance = -1.0F;
 
 	public EntityTFTowerGhast(World par1World) {
 		super(par1World);
-        //this.texture = TwilightForestMod.MODEL_DIR + "towerghast.png";
-        
+
         this.setSize(4.0F, 6.0F);
 
-        this.aggroRange = 64.0F;
     	this.stareRange = 32.0F;
-
     	this.wanderFactor = 16.0F;
-    	
     	this.inTrapCounter = 0;
 	}
-//	
-//    public int getMaxHealth()
-//    {
-//        return 30;
-//    }
 
 	@Override
-    protected void applyEntityAttributes()
-    {
+    protected void initEntityAI() {
+        this.tasks.addTask(5, new AIHomedFly(this));
+        this.tasks.addTask(7, new EntityGhast.AILookAround(this));
+        this.tasks.addTask(7, new AIAttack(this));
+        this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
+    }
+
+    // [VanillaCopy]-ish mixture of EntityGhast.AIFly and EntityAIStayNearHome
+    static class AIHomedFly extends EntityAIBase {
+        private final EntityTFTowerGhast parentEntity;
+
+	    AIHomedFly(EntityTFTowerGhast ghast) {
+	        this.parentEntity = ghast;
+	        setMutexBits(1);
+        }
+
+        // From AIFly, but with extra condition from AIStayNearHome
+        @Override
+        public boolean shouldExecute() {
+            EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
+
+            if (!entitymovehelper.isUpdating())
+            {
+                return !this.parentEntity.isWithinHomeDistanceCurrentPosition();
+            }
+            else
+            {
+                double d0 = entitymovehelper.getX() - this.parentEntity.posX;
+                double d1 = entitymovehelper.getY() - this.parentEntity.posY;
+                double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                return (d3 < 1.0D || d3 > 3600.0D)
+                        && !this.parentEntity.isWithinHomeDistanceCurrentPosition();
+            }
+        }
+
+        // From AIFly
+        @Override
+        public boolean continueExecuting()
+        {
+            return false;
+        }
+
+        // From AIStayNearHome but use move helper instead of PathNavigate
+        @Override
+        public void startExecuting()
+        {
+            Random random = this.parentEntity.getRNG();
+            double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+
+            if (this.parentEntity.getDistanceSq(this.parentEntity.getHomePosition()) > 256.0D)
+            {
+                Vec3d vecToHome = new Vec3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVector()).normalize();
+
+                double targetX = this.parentEntity.posX + vecToHome.xCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
+                double targetY = this.parentEntity.posY + vecToHome.yCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
+                double targetZ = this.parentEntity.posZ + vecToHome.zCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
+
+                this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
+            }
+            else
+            {
+                this.parentEntity.getMoveHelper().setMoveTo(this.parentEntity.getHomePosition().getX() + 0.5D, this.parentEntity.getHomePosition().getY(), this.parentEntity.getHomePosition().getZ() + 0.5D, 1.0D);
+            }
+        }
+    }
+
+    // [VanillaCopy] EntityGhast.AIFireballAttack, edits noted
+    static class AIAttack extends EntityAIBase {
+        private final EntityTFTowerGhast parentEntity;
+        public int attackTimer;
+
+        public AIAttack(EntityTFTowerGhast ghast)
+        {
+            this.parentEntity = ghast;
+        }
+
+        @Override
+        public boolean shouldExecute()
+        {
+            return this.parentEntity.getAttackTarget() != null;
+        }
+
+        @Override
+        public void startExecuting()
+        {
+            this.attackTimer = 0;
+        }
+
+        @Override
+        public void resetTask()
+        {
+            this.parentEntity.setAttacking(false);
+        }
+
+        @Override
+        public void updateTask()
+        {
+            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+            double d0 = 64.0D;
+
+            if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(entitylivingbase))
+            {
+                World world = this.parentEntity.world;
+                ++this.attackTimer;
+
+                if (this.attackTimer == 10)
+                {
+                    world.playEvent((EntityPlayer)null, 1015, new BlockPos(this.parentEntity), 0);
+                }
+
+                if (this.attackTimer == 20)
+                {
+                    // TF - face target and call custom method
+                    this.parentEntity.faceEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
+                    this.parentEntity.spitFireball();
+                    this.attackTimer = -40;
+                }
+            }
+            else if (this.attackTimer > 0)
+            {
+                --this.attackTimer;
+            }
+
+            this.parentEntity.setAttacking(this.attackTimer > 10);
+        }
+    }
+
+	@Override
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
     }
 
     @Override
@@ -80,38 +194,11 @@ public class EntityTFTowerGhast extends EntityGhast
         return 8;
     }
     
-    @Override
-	public void onUpdate() 
-    {
-		super.onUpdate();
-        //byte aggroStatus = this.dataWatcher.getWatchableObjectByte(AGGRO_STATUS);
-
-//        switch (aggroStatus)
-//        {
-//        case 0:
-//        default:
-//        	this.texture = TwilightForestMod.MODEL_DIR + "towerghast.png";
-//        	break;
-//        case 1:
-//        	this.texture = TwilightForestMod.MODEL_DIR + "towerghast_openeyes.png";
-//        	break;
-//        case 2:
-//        	this.texture = TwilightForestMod.MODEL_DIR + "towerghast_fire.png";
-//        	break;
-//        }
-	}
-    
-    public int getAttackStatus() {
-    	return this.dataWatcher.getWatchableObjectByte(AGGRO_STATUS);
-    }
-
 	@Override
     public void onLivingUpdate()
     {
     	// age when in light, like mobs
-        float var1 = this.getBrightness(1.0F);
-
-        if (var1 > 0.5F)
+        if (getBrightness(1F) > 0.5F)
         {
             this.entityAge += 2;
         }
@@ -127,155 +214,16 @@ public class EntityTFTowerGhast extends EntityGhast
     @Override
     protected void updateAITasks()
     {
-        if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
-        {
-            this.setDead();
-        }
-
-        this.despawnEntity();
+        findHome();
         
-        // tower home
-        checkForTowerHome();
-        
-        // check if in trap
         if (this.inTrapCounter > 0)
         {
         	this.inTrapCounter--;
-        	this.targetedEntity = null;
+        	setAttackTarget(null);
         	return; // do nothing if in trap;
-        }
-        
-        this.prevAttackCounter = this.attackCounter;
-        
-        // target
-        if (this.targetedEntity != null && this.targetedEntity.isDead)
-        {
-            this.targetedEntity = null;
-        }
-
-        if (this.targetedEntity == null)
-        {
-            this.targetedEntity = findPlayerInRange();
-        }
-        else if (!this.isAggressive && this.targetedEntity instanceof EntityPlayer)
-        {
-        	checkToIncreaseAggro((EntityPlayer) this.targetedEntity);
-        }
-        
-        // check if we are at our waypoint target
-        double offsetX = this.waypointX - this.posX;
-        double offsetY = this.waypointY - this.posY;
-        double offsetZ = this.waypointZ - this.posZ;
-        double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
-
-        if ((distanceDesired < 1.0D || distanceDesired > 3600.0D) && this.wanderFactor > 0)
-        {
-            this.waypointX = this.posX + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-            this.waypointY = this.posY + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-            this.waypointZ = this.posZ + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-        }
-        
-        
-        
-        // move?
-        if (this.targetedEntity == null && this.wanderFactor > 0)
-        {
-        	if (this.courseChangeCooldown-- <= 0)
-        	{
-        		this.courseChangeCooldown += this.rand.nextInt(20) + 20;
-        		distanceDesired = (double)MathHelper.sqrt(distanceDesired);
-        		
-        	    if (!this.isWithinHomeDistance(MathHelper.floor(waypointX), MathHelper.floor(waypointY), MathHelper.floor(waypointZ)))
-        	    {
-        	    	// change waypoint to be more towards home
-        	        BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
-        	    	
-        	        Vec3d homeVector = new Vec3d(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
-        	        homeVector = homeVector.normalize();
-        	        
-        	    	this.waypointX = this.posX + homeVector.xCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        	    	this.waypointY = this.posY + homeVector.yCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        	    	this.waypointZ = this.posZ + homeVector.zCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        	    	
-        	    	//System.out.println("Setting tower ghast on a course towards home: " + this.waypointX + ", " + this.waypointY + ", " + this.waypointZ);
-        	    } 
-        		
-        		
-        		if (this.isCourseTraversable(this.waypointX, this.waypointY, this.waypointZ, distanceDesired))
-        		{
-        			this.motionX += offsetX / distanceDesired * 0.1D;
-        			this.motionY += offsetY / distanceDesired * 0.1D;
-        			this.motionZ += offsetZ / distanceDesired * 0.1D;
-        		}
-        		else
-        		{
-        			this.waypointX = this.posX;
-        			this.waypointY = this.posY;
-        			this.waypointZ = this.posZ;
-        		}
-        	}
-        }
-        else
-        {
-        	this.motionX *= 0.75;
-        	this.motionY *= 0.75;
-        	this.motionZ *= 0.75;
-        }
-
-        // check if our target is still within range
-		double targetRange = (this.aggroCounter > 0 || this.isAggressive) ? aggroRange : stareRange;
-
-        if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < targetRange * targetRange && this.canEntityBeSeen(this.targetedEntity))
-        {
-            // turn towards target
-        	this.faceEntity(this.targetedEntity, 10F, this.getVerticalFaceSpeed());
-        	
-        	// attack if aggressive
-            if (this.isAggressive)
-            {
-                if (this.attackCounter == 10)
-                {
-                    this.world.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-                }
-
-                ++this.attackCounter;
-
-                if (this.attackCounter == 20)
-                {
-                	spitFireball();
-            		this.attackCounter = -40;
-                }
-            }
-         }
-        else
-        {
-        	// ignore player, move normally
-            this.isAggressive = false;
-        	this.targetedEntity = null;
-        	this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
-        	
-        	// changing the pitch with movement looks goofy and un-ghast-like
-        	//double dist = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ *  this.motionZ);
-        	this.rotationPitch = 0;//(float) (-((Math.atan2(this.motionY, dist) * 180D) / Math.PI));;
-
-        }
-
-        if (this.attackCounter > 0 && !this.isAggressive)
-        {
-            --this.attackCounter;
-        }
-
-        // set aggro status
-        byte currentAggroStatus = this.dataWatcher.getWatchableObjectByte(AGGRO_STATUS);
-        byte newAggroStatus = (byte)(this.attackCounter > 10 ? 2 : (this.aggroCounter > 0 || this.isAggressive) ? 1 : 0);
-
-        if (currentAggroStatus != newAggroStatus)
-        {
-        	this.dataWatcher.updateObject(AGGRO_STATUS, Byte.valueOf(newAggroStatus));
         }
     }
     
-	
 	/**
 	 * Something is deeply wrong with the calculations based off of this value, so let's set it high enough that it's ignored.
 	 */
@@ -285,26 +233,18 @@ public class EntityTFTowerGhast extends EntityGhast
         return 500;
     }
 
-    /**
-     * Spit a fireball
-     */
 	protected void spitFireball() {
-		double offsetX = this.targetedEntity.posX - this.posX;
-		double offsetY = this.targetedEntity.getEntityBoundingBox().minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
-		double offsetZ = this.targetedEntity.posZ - this.posZ;
-		
-		// fireball sound effect
-		this.world.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-		
-		
-		EntityLargeFireball entityFireball = new EntityLargeFireball(this.world, this, offsetX, offsetY, offsetZ);
-		//var17.field_92012_e = this.explosionPower;
-		double shotSpawnDistance = 0.5D;
-		Vec3d lookVec = this.getLook(1.0F);
-		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
-		entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
-		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-		this.world.spawnEntity(entityFireball);
+        Vec3d vec3d = this.getLook(1.0F);
+        double d2 = getAttackTarget().posX - (this.posX + vec3d.xCoord * 4.0D);
+        double d3 = getAttackTarget().getEntityBoundingBox().minY + (double)(getAttackTarget().height / 2.0F) - (0.5D + this.posY + (double)(this.height / 2.0F));
+        double d4 = getAttackTarget().posZ - (this.posZ + vec3d.zCoord * 4.0D);
+        world.playEvent((EntityPlayer)null, 1016, new BlockPos(this), 0);
+        EntityLargeFireball entitylargefireball = new EntityLargeFireball(world, this, d2, d3, d4);
+        entitylargefireball.explosionPower = this.getFireballStrength();
+        entitylargefireball.posX = this.posX + vec3d.xCoord * 4.0D;
+        entitylargefireball.posY = this.posY + (double)(this.height / 2.0F) + 0.5D;
+        entitylargefireball.posZ = this.posZ + vec3d.zCoord * 4.0D;
+        world.spawnEntity(entitylargefireball);
 		
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
 		if (rand.nextInt(6) == 0)
@@ -312,108 +252,7 @@ public class EntityTFTowerGhast extends EntityGhast
 			this.isAggressive = false;
 		}
 	}
-    
-    /**
-     * Find a player in our aggro range.  If we feel the need to become aggressive towards that 
-     * player, or it is within our stare range, return
-     * 
-     * @return
-     */
-    protected EntityLivingBase findPlayerInRange() {
-    	EntityPlayer closest = this.world.getNearestAttackablePlayer(this, aggroRange, aggroRange);
-    	
-    	if (closest != null)
-    	{
-    		float range = this.getDistanceToEntity(closest);
-    		if (range < this.stareRange || this.shouldAttackPlayer(closest))
-    		{
-    			return closest;
-    		}
-    	}
-    	return null;
-	}
 
-    /**
-     * Check if we should become aggressive towards the player.
-     * 
-     * @param par1EntityPlayer
-     */
-    protected void checkToIncreaseAggro(EntityPlayer par1EntityPlayer)
-    {
-    	if (this.shouldAttackPlayer(par1EntityPlayer))
-    	{
-    		if (this.aggroCounter == 0)
-    		{
-    			this.world.playSoundAtEntity(this, "mob.ghast.moan", 1.0F, 1.0F);
-    		}
-
-    		if (this.aggroCounter++ >= 20)
-    		{
-    			this.aggroCounter = 0;
-    			this.isAggressive = true;
-    		}
-    	}
-    	else
-    	{
-     		this.aggroCounter = 0;
-    	}    
-    }
-
-
-    
-    /**
-     * Checks to see if this tower ghast should be attacking this player.  
-     * Tower ghasts attack if the block above the player is not Tower wood
-     */
-    protected boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return world.canSeeSky(new BlockPos(par1EntityPlayer)) && par1EntityPlayer.canEntityBeSeen(this);
-    }
-
-
-
-    /**
-     * True if the ghast has an unobstructed line of travel to the waypoint.
-     */
-    protected boolean isCourseTraversable(double par1, double par3, double par5, double par7)
-    {
-        double var9 = (this.waypointX - this.posX) / par7;
-        double var11 = (this.waypointY - this.posY) / par7;
-        double var13 = (this.waypointZ - this.posZ) / par7;
-        AxisAlignedBB var15 = this.boundingBox.copy();
-
-        for (int var16 = 1; (double)var16 < par7; ++var16)
-        {
-            var15.offset(var9, var11, var13);
-
-            if (!this.world.getCollidingBoundingBoxes(this, var15).isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    
-    @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
-    {
-    	boolean wasAttacked = super.attackEntityFrom(par1DamageSource, par2);
-    	
-        if (wasAttacked && par1DamageSource.getSourceOfDamage() instanceof EntityLivingBase)
-        {
-        	this.targetedEntity = (EntityLivingBase)par1DamageSource.getSourceOfDamage();
-        	
-        	this.isAggressive = true;
-        			
-            return true;
-        }
-        else
-        {
-        	return wasAttacked;
-        }
-    }
-    
     @Override
     public boolean getCanSpawnHere()
     {
@@ -432,14 +271,10 @@ public class EntityTFTowerGhast extends EntityGhast
         return true;
     }
 
-    /**
-     * Check for our tower home and if we find it, set it
-     */
-    protected void checkForTowerHome() 
+    private void findHome()
     {
     	if (!this.hasHome())
     	{
-    		// check if we're near a dark forest tower and if so, set that as home
     		int chunkX = MathHelper.floor(this.posX) >> 4;
     		int chunkZ = MathHelper.floor(this.posZ) >> 4;
 
@@ -448,41 +283,13 @@ public class EntityTFTowerGhast extends EntityGhast
     		if (nearFeature != TFFeature.darkTower)
     		{
     			this.detachHome();
-
     			this.entityAge += 5;
-
-    			//System.out.println("Tower ghast is lost");
-
     		}
     		else
     		{
-    			// set our home position to the center of the tower
     			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
-    			this.setHomeArea(cc.up(128), 64);
-
-//                System.out.println("Ghast is at  " + this.posX + ", " + this.posY + ", " + this.posZ);
-//    			System.out.println("Set home area to " + cc.posX + ", " + (cc.posY + 128) + ", " + cc.posZ);
-    		}	
-    	}
-    }
-    
-    /**
-     * Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
-     */
-    public boolean isWithinHomeDistance(int x, int y, int z)
-    {
-    	if (this.getMaximumHomeDistance() == -1.0F)
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		BlockPos home = this.getHomePosition();
-    		
-//    		System.out.println("Checking home for " + x + ", " + y + ", " + z + " and home is " + home.posX + ", " + home.posY + ", " + home.posZ);
-//    		System.out.println("home.getDistanceSquared(x, home.posY, z) =  "  + home.getDistanceSquared(x, home.posY, z) + " compared to " + (this.getMaximumHomeDistance() * this.getMaximumHomeDistance()));
-    		
-    		return y > 64 && y < 210 && home.distanceSq(x, home.getY(), z) < this.getMaximumHomeDistance() * this.getMaximumHomeDistance();
+    			this.setHomePosAndDistance(cc.up(128), 64);
+    		}
     	}
     }
     
@@ -490,11 +297,29 @@ public class EntityTFTowerGhast extends EntityGhast
     {
     	this.inTrapCounter = 10;
     }
-    
-    public void setHomeArea(BlockPos pos, int par4)
+
+    // [VanillaCopy] Home fields and methods from EntityCreature, changes noted
+    private BlockPos homePosition = BlockPos.ORIGIN;
+    private float maximumHomeDistance = -1.0F;
+
+    public boolean isWithinHomeDistanceCurrentPosition()
+    {
+        return this.isWithinHomeDistanceFromPosition(new BlockPos(this));
+    }
+
+    public boolean isWithinHomeDistanceFromPosition(BlockPos pos)
+    {
+        // TF - restrict valid y levels
+        // Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
+        return this.maximumHomeDistance == -1.0F
+                ? true
+                : pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distanceSq(pos) < (double)(this.maximumHomeDistance * this.maximumHomeDistance);
+    }
+
+    public void setHomePosAndDistance(BlockPos pos, int distance)
     {
         this.homePosition = pos;
-        this.maximumHomeDistance = (float)par4;
+        this.maximumHomeDistance = (float)distance;
     }
 
     public BlockPos getHomePosition()
@@ -516,5 +341,6 @@ public class EntityTFTowerGhast extends EntityGhast
     {
         return this.maximumHomeDistance != -1.0F;
     }
+    // End copy
 }
 

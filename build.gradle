@@ -87,6 +87,9 @@ processResources
 
 jar {
     classifier = 'universal'
+    manifest {
+        attributes 'FMLAT': 'tf_at.cfg'
+    }
 }
 
 dependencies {   

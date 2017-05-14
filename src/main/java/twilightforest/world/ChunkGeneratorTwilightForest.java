@@ -880,7 +880,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		boolean disableFeatures = false;
 
-		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ);
+		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
 		disableFeatures |= !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
 		
 		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
