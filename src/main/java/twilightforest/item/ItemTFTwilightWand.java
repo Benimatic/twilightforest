@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -40,16 +41,15 @@ public class ItemTFTwilightWand extends ItemTF {
     @Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
 		if (stack.getItemDamage() >= this.getMaxDamage()) {
-			// do not use
 			living.resetActiveHand();
 			return;
 		}
     	
     	if (count % 6 == 0) {
     		World world = living.world;
-	    	
-			world.playSoundAtEntity(living, "mob.ghast.fireball", 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
-			
+
+    		living.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+
 			if (!world.isRemote) {
 				world.spawnEntity(new EntityTFTwilightWandBolt(world, living));
 				

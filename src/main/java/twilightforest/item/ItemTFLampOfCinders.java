@@ -4,13 +4,10 @@ import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -44,7 +41,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
         if (burnBlock(world, pos)) {
-    		world.playSoundAtEntity(player, this.getSound(), 0.5F, 1.5F);
+        	player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F, 1.5F);
 
     		// spawn flame particles
     		for (int i = 0; i < 10; i++) {
@@ -100,7 +97,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 		int range = 4;
 		
 		if (!world.isRemote) {
-			world.playSoundAtEntity(living, this.getSound(), 1.5F, 0.8F);
+			world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_GHAST_SHOOT, living.getSoundCategory(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <=range; dx++) {
@@ -125,12 +122,6 @@ public class ItemTFLampOfCinders extends ItemTF {
 		}
 	}
 
-	
-	public String getSound()
-	{
-		return "mob.ghast.fireball";
-	}
-	
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {

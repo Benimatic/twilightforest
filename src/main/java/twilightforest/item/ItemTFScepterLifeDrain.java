@@ -180,7 +180,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 					// this is a new creature to start draining
 					makeRedMagicTrail(world,  living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
 
-					world.playSoundAtEntity(living, "fire.ignite", 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+					living.playSound(SoundEvents.ITEM_FLINTANDSTEEL_USE, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
 					if (!world.isRemote) {
 						target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 1);

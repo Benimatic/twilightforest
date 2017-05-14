@@ -10,6 +10,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -83,8 +84,7 @@ public class ItemTFPeacockFan extends ItemTF
 				
 			}
 
-			world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "random.breath", 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F, false);
-
+			player.playSound(SoundEvents.ENTITY_PLAYER_BREATH, 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F);
 		}
 		
 		player.setActiveHand(hand);

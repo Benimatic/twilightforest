@@ -1,9 +1,12 @@
 package twilightforest.item;
 
 import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 import com.google.common.collect.Sets;
 
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -29,7 +32,7 @@ import net.minecraft.world.World;
 public class ItemTFChainBlock extends ItemTool {
 	
 	// which items have launched which blocks?
-	private HashMap<ItemStack, Entity> launchedBlocksMap = new HashMap<ItemStack, Entity>();
+	private Map<ItemStack, Entity> launchedBlocksMap = new IdentityHashMap<ItemStack, Entity>();
 
 	protected ItemTFChainBlock() {
 		super(6, 1.6F, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE)); // todo 1.9 attack speed
@@ -44,9 +47,7 @@ public class ItemTFChainBlock extends ItemTool {
 		player.setActiveHand(hand);
 
 		if (!world.isRemote && !this.hasLaunchedBlock(stack)) {
-
-			world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
-
+			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, player.getSoundCategory(), 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
 
 			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player);
 			world.spawnEntity(launchedBlock);
@@ -62,7 +63,6 @@ public class ItemTFChainBlock extends ItemTool {
 
 	/**
 	 * Set this item as having been thrown
-	 * @param stack
 	 */
 	public static void setChainAsThrown(ItemStack stack) {
 		// set NBT tag for stack
@@ -74,7 +74,6 @@ public class ItemTFChainBlock extends ItemTool {
 
 	/**
 	 * Set the spike block for this item as returned to the player
-	 * @param stack
 	 */
 	public static void setChainAsReturned(ItemStack stack) {
 		// set NBT tag for stack
@@ -87,20 +86,14 @@ public class ItemTFChainBlock extends ItemTool {
 
 	/**
 	 * Method for the client to determine if the block has been thrown or not.  Not as accurate as server method due to lag, etc.
-	 * @param stack
 	 */
 	public static boolean doesChainHaveBlock(ItemStack stack) {
-		if (stack.getTagCompound() == null) {
-			return true;
-		} else {
-			return !stack.getTagCompound().getBoolean("thrown");
-		}
+		return stack.getTagCompound() == null || !stack.getTagCompound().getBoolean("thrown");
 	}
 
 	
 	/**
 	 * Set the spike block belonging to the player as returned
-	 * @param player
 	 */
 	public static void setChainAsReturned(EntityPlayer player) {
 		if (player != null && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == TFItems.chainBlock) {

@@ -18,8 +18,10 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -92,7 +94,7 @@ public class ItemTFTransformPowder extends ItemTF
 					((EntityLiving) target).spawnExplosionParticle();
 				}
 				
-				target.world.playSound(target.posX + 0.5D, target.posY + 0.5D, target.posZ + 0.5D, "mob.zombie.remedy", 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F, false);
+				target.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F);
 			}
 			else
 			{
@@ -100,7 +102,7 @@ public class ItemTFTransformPowder extends ItemTF
 				EntityLivingBase newMonster = null;
 				try 
 				{
-					newMonster = (EntityLivingBase)transformClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {target.world});
+					newMonster = (EntityLivingBase)transformClass.getConstructor(new Class[] {World.class}).newInstance(target.world);
 				}
 				catch (Exception e)
 				{
@@ -114,11 +116,7 @@ public class ItemTFTransformPowder extends ItemTF
 				else
 				{
 					newMonster.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
-					//newMonster.initCreature();
-					
 					target.world.spawnEntity(newMonster);
-					
-					// remove original monster
 					target.setDead();
 				}
 			}
@@ -138,7 +136,7 @@ public class ItemTFTransformPowder extends ItemTF
 	{
 		if (world.isRemote)
 		{
-			AxisAlignedBB fanBox = getEffectAABB(world, player);
+			AxisAlignedBB fanBox = getEffectAABB(player);
 			
 			// particle effect
 			for (int i = 0; i < 30; i++)
@@ -151,11 +149,10 @@ public class ItemTFTransformPowder extends ItemTF
 
 		}
 
-		
-		return par1ItemStack;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 	
-	private AxisAlignedBB getEffectAABB(World world, EntityPlayer player) {
+	private AxisAlignedBB getEffectAABB(EntityPlayer player) {
 		double range = 2.0D;
 		double radius = 1.0D;
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);

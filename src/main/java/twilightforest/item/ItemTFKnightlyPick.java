@@ -88,10 +88,8 @@ public class ItemTFKnightlyPick extends ItemPickaxe {
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
     {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        // remove old damage value
-        multimap.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName());
-        // add new one
-        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double)this.damageVsEntity, 0));
+        multimap.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
+        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double)this.damageVsEntity, 0));
         return multimap;
     }
 }

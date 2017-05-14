@@ -15,6 +15,9 @@ import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.FireJetVariant;
+import twilightforest.block.enums.PlantVariant;
+import twilightforest.block.enums.TowerDeviceVariant;
 import twilightforest.enchantment.TFEnchantment;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -76,7 +79,7 @@ public class TFRecipes {
 
 		GameRegistry.addRecipe(new ItemStack(Items.ARROW, 4), "X", "#", "Y", 'Y', TFItems.feather, 'X', Items.FLINT, '#', Items.STICK);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.STICK), new ItemStack(TFBlocks.plant, 1, BlockTFPlant.META_ROOT_STRAND));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.STICK), new ItemStack(TFBlocks.plant, 1, PlantVariant.ROOT_STRAND.ordinal()));
 		GameRegistry.addRecipe(new ItemStack(Blocks.TORCH, 5), "B", "S", 'B', TFItems.torchberries, 'S', Items.STICK);
 
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.ironwoodRaw), TFItems.liveRoot, Items.IRON_INGOT, Items.GOLD_NUGGET);
@@ -135,12 +138,12 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerWood, 3, 1), "#", "#", "#", '#', new ItemStack(TFBlocks.towerWood, 1, 0));
 		GameRegistry.addRecipe(new ItemStack(TFItems.carminite), "brb", "rgr", "brb", 'b', new ItemStack(TFItems.borerEssence), 'r', new ItemStack(Items.REDSTONE), 'g', new ItemStack(Items.GHAST_TEAR));
 		GameRegistry.addRecipe(new ItemStack(TFItems.carminite), "rbr", "bgb", "rbr", 'b', new ItemStack(TFItems.borerEssence), 'r', new ItemStack(Items.REDSTONE), 'g', new ItemStack(Items.GHAST_TEAR));
-		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 8, BlockTFTowerDevice.META_VANISH_INACTIVE), "ewe", "wcw", "ewe", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'w', new ItemStack(TFBlocks.towerWood, 1, 0), 'c', new ItemStack(TFItems.carminite));
-		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 2, BlockTFTowerDevice.META_REAPPEARING_INACTIVE), "ere", "rcr", "ere", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 'c', new ItemStack(TFItems.carminite));
-		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 1, BlockTFTowerDevice.META_BUILDER_INACTIVE), "ece", "cdc", "ece", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'd', new ItemStack(Blocks.DISPENSER), 'c', new ItemStack(TFItems.carminite));
-		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 1, BlockTFTowerDevice.META_REACTOR_INACTIVE), "ece", "coc", "ece", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'o', new ItemStack(Blocks.REDSTONE_ORE), 'c', new ItemStack(TFItems.carminite));
-		GameRegistry.addRecipe(new ItemStack(TFBlocks.fireJet, 1, BlockTFFireJet.META_ENCASED_SMOKER_OFF), "ere", "rsr", "ere", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 's', new ItemStack(TFBlocks.fireJet, 1, BlockTFFireJet.META_SMOKER));
-		GameRegistry.addRecipe(new ItemStack(TFBlocks.fireJet, 1, BlockTFFireJet.META_ENCASED_JET_IDLE), "ere", "rjr", "lll", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 'l', new ItemStack(Items.LAVA_BUCKET), 'j', new ItemStack(TFBlocks.fireJet, 1, BlockTFFireJet.META_JET_IDLE));
+		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 8, TowerDeviceVariant.VANISH_INACTIVE.ordinal()), "ewe", "wcw", "ewe", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'w', new ItemStack(TFBlocks.towerWood, 1, 0), 'c', new ItemStack(TFItems.carminite));
+		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 2, TowerDeviceVariant.REAPPEARING_INACTIVE.ordinal()), "ere", "rcr", "ere", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 'c', new ItemStack(TFItems.carminite));
+		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 1, TowerDeviceVariant.BUILDER_INACTIVE.ordinal()), "ece", "cdc", "ece", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'd', new ItemStack(Blocks.DISPENSER), 'c', new ItemStack(TFItems.carminite));
+		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerDevice, 1, TowerDeviceVariant.REACTOR_INACTIVE.ordinal()), "ece", "coc", "ece", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'o', new ItemStack(Blocks.REDSTONE_ORE), 'c', new ItemStack(TFItems.carminite));
+		GameRegistry.addRecipe(new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()), "ere", "rsr", "ere", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 's', new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.SMOKER.ordinal()));
+		GameRegistry.addRecipe(new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()), "ere", "rjr", "lll", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 'l', new ItemStack(Items.LAVA_BUCKET), 'j', new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.JET_IDLE.ordinal()));
 
 		
 		GameRegistry.addRecipe(new ItemStack(TFItems.shardCluster), "###", "###", "###", '#', TFItems.armorShard);
@@ -187,11 +190,6 @@ public class TFRecipes {
 	 
 	/**
 	 * Add a recipe for an enchanted item.  Always shaped.
-	 * 
-	 * @param item
-	 * @param enchantment
-	 * @param enchantmentLevel
-	 * @param ingredientArray
 	 */
 	public static void addEnchantedRecipe(Item item, Enchantment enchantment, int enchantmentLevel, Object ... ingredientArray) {
 		ItemStack result = new ItemStack(item);
@@ -203,11 +201,6 @@ public class TFRecipes {
 	}
 	/**
 	 * Add a recipe for an enchanted item.  Always shaped.
-	 * 
-	 * @param item
-	 * @param enchantment
-	 * @param enchantmentLevel
-	 * @param ingredientArray
 	 */
 	public static void addEnchantedRecipe(Item item, Enchantment enchantment, int enchantmentLevel, Enchantment enchantment2, int enchantmentLevel2, Object ... ingredientArray) {
 		ItemStack result = new ItemStack(item);

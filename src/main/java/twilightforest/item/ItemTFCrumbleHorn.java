@@ -3,10 +3,10 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -38,7 +38,7 @@ public class ItemTFCrumbleHorn extends ItemTF
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
 		player.setActiveHand(hand);
-		world.playSoundAtEntity(player, "mob.sheep.say", 1.0F, 0.8F);
+		player.playSound(SoundEvents.ENTITY_SHEEP_AMBIENT, 1.0F, 0.8F);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
 	}
 
@@ -55,10 +55,8 @@ public class ItemTFCrumbleHorn extends ItemTF
 
 			}
 			
-			living.world.playSoundAtEntity(living, "mob.sheep.say", 1.0F, 0.8F);
-
+			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_SHEEP_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
 		}
-		
     }
 	
     @Override

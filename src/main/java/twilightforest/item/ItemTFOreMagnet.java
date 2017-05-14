@@ -6,6 +6,7 @@ import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -31,11 +32,7 @@ import java.util.Set;
 
 public class ItemTFOreMagnet extends ItemTF
 {
-
 	private static final float WIGGLE = 10F;
-	
-	private IIcon[] icons;
-	private String[] iconNames = new String[] {"oreMagnet", "oreMagnet1", "oreMagnet2"};
 
 	protected ItemTFOreMagnet() {
 		this.setCreativeTab(TFItems.creativeTab);
@@ -94,7 +91,7 @@ public class ItemTFOreMagnet extends ItemTF
     		if (moved > 0)
     		{
     			par1ItemStack.damageItem(moved, living);
-    			world.playSoundAtEntity(living, "mob.endermen.portal", 1.0F, 1.0F);
+    			world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
     		}
     	}
 
