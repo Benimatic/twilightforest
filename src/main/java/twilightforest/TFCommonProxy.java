@@ -1,7 +1,9 @@
 package twilightforest;
 
+import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -10,6 +12,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.inventory.ContainerTFCinderFurnace;
 import twilightforest.inventory.ContainerTFUncrafting;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import twilightforest.tileentity.TileEntityTFCinderFurnace;
 
 public class TFCommonProxy implements IGuiHandler {
 	
@@ -84,7 +87,7 @@ public class TFCommonProxy implements IGuiHandler {
 		if (id == TwilightForestMod.GUI_ID_UNCRAFTING) {
 			return new ContainerTFUncrafting(player.inventory, world, x, y, z);
 		} else if (id == TwilightForestMod.GUI_ID_FURNACE) {
-			return new ContainerTFCinderFurnace(player.inventory, world, x, y, z);
+			return new ContainerFurnace(player.inventory, (TileEntityTFCinderFurnace) world.getTileEntity(new BlockPos(x, y, z)));
 		} else {
 			return null;
 		}
@@ -95,7 +98,7 @@ public class TFCommonProxy implements IGuiHandler {
 		if (id == TwilightForestMod.GUI_ID_UNCRAFTING) {
 			return new twilightforest.client.GuiTFGoblinCrafting(player.inventory, world, x, y, z);
 		} else if (id == TwilightForestMod.GUI_ID_FURNACE) {
-			return new GuiTFCinderFurnace(player.inventory, world, new BlockPos(x, y, z));
+			return new GuiFurnace(player.inventory, (TileEntityTFCinderFurnace) world.getTileEntity(new BlockPos(x, y, z)));
 		} else {
 			return null;
 		}
