@@ -14,12 +14,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -102,7 +104,7 @@ public class BlockTFTowerDevice extends Block
         {
         	if (areNearbyLockBlocks(par1World, pos))
         	{
-        		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 1.0F, 0.3F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 1.0F, 0.3F);
         	}
         	else
         	{
@@ -114,7 +116,7 @@ public class BlockTFTowerDevice extends Block
         {
         	if (areNearbyLockBlocks(par1World, pos))
         	{
-        		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 1.0F, 0.3F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 1.0F, 0.3F);
         	}
         	else
         	{
@@ -203,7 +205,7 @@ public class BlockTFTowerDevice extends Block
 		if (thereState.getBlock() == TFBlocks.towerDevice || thereState.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED)
 		{
 			changeToBlockMeta(par1World, pos, thereState.withProperty(VARIANT, TowerDeviceVariant.VANISH_UNLOCKED));
-			par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+			par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
     
@@ -231,7 +233,7 @@ public class BlockTFTowerDevice extends Block
         	if (state.getValue(VARIANT) == TowerDeviceVariant.BUILDER_INACTIVE && par1World.isBlockIndirectlyGettingPowered(pos) > 0)
         	{
         		changeToBlockMeta(par1World, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
         	}
 
         }
@@ -258,7 +260,7 @@ public class BlockTFTowerDevice extends Block
         	if (variant == TowerDeviceVariant.BUILDER_INACTIVE && par1World.isBlockIndirectlyGettingPowered(pos) > 0)
         	{
         		changeToBlockMeta(par1World, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
                 
         		par1World.scheduleUpdate(pos, this, 4);
         	}
@@ -266,7 +268,7 @@ public class BlockTFTowerDevice extends Block
         	if (variant == TowerDeviceVariant.BUILDER_ACTIVE && par1World.isBlockIndirectlyGettingPowered(pos) == 0)
         	{
         		changeToBlockMeta(par1World, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE));
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
         		par1World.scheduleUpdate(pos, this, 4);
         	}
         	
@@ -278,7 +280,7 @@ public class BlockTFTowerDevice extends Block
         	if (variant == TowerDeviceVariant.GHASTTRAP_INACTIVE && isInactiveTrapCharged(par1World, pos) && par1World.isBlockIndirectlyGettingPowered(pos) > 0)
         	{
         		changeToBlockMeta(par1World, pos, state.withProperty(VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE));
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
         		par1World.scheduleUpdate(pos, this, 4);
         	}
 
@@ -309,7 +311,7 @@ public class BlockTFTowerDevice extends Block
             		par1World.scheduleUpdate(pos, TFBlocks.towerTranslucent, 80);
             	}
                 par1World.notifyNeighborsRespectDebug(pos, this);
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.3F, 0.5F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
                 //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
                 
                 // activate all adjacent inactive vanish blocks
@@ -372,7 +374,7 @@ public class BlockTFTowerDevice extends Block
     {
     	TowerDeviceVariant variant = state.getValue(VARIANT);
 
-    	if (variant == TowerDeviceVariant.VANISH_ACTIVE || variant == TowerDeviceVariant.REAPPEARING_ACTIVE || variant == BlockTFTowerDevice.TowerDeviceVariant.BUILDER_ACTIVE)
+    	if (variant == TowerDeviceVariant.VANISH_ACTIVE || variant == TowerDeviceVariant.REAPPEARING_ACTIVE || variant == TowerDeviceVariant.BUILDER_ACTIVE)
     	{
 			this.sparkle(par1World, pos);
     	}
@@ -464,7 +466,7 @@ public class BlockTFTowerDevice extends Block
     private static void changeToActiveVanishBlock(World par1World, BlockPos pos, IBlockState state)
 	{
 		changeToBlockMeta(par1World, pos, state);
-		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.3F, 0.6F);
+		par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		par1World.scheduleUpdate(pos, state.getBlock(), getTickRateFor(state, par1World.rand));
 	}
 

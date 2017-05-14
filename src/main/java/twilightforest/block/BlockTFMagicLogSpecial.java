@@ -9,12 +9,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -67,8 +69,8 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     	if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TIME)
     	{
     		// tree of time effect
-    		world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.5F);
-    		
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
+
     		doTreeOfTimeEffect(world, pos, rand);
     	}
     	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TRANS)
@@ -152,8 +154,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		{
 			BlockPos dPos = pos.add(rand.nextInt(32) - 16, 0, rand.nextInt(32) - 16);
 
-			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.1F, rand.nextFloat() * 2F);
-
+			world.playSound(null, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 
 			if (dPos.distanceSq(pos) < 256)
 			{
@@ -213,7 +214,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	
 		if (moved > 0)
 		{
-			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "mob.endermen.portal", 0.1F, 1.0F);
+			world.playSound(null, pos, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 0.1F, 1.0F);
 		}
 		else
 		{
@@ -233,18 +234,19 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		ArrayList<IInventory> chests = new ArrayList<IInventory>();
 		int itemCount = 0;
 		
-		for (int sx = x - XSEARCH; sx < x + XSEARCH; sx++)
+		for (int sx = pos.getX() - XSEARCH; sx < pos.getX() + XSEARCH; sx++)
 		{
-			for (int sy = y - YSEARCH; sy < y + YSEARCH; sy++)
+			for (int sy = pos.getY() - YSEARCH; sy < pos.getY() + YSEARCH; sy++)
 			{
-				for (int sz = z - ZSEARCH; sz < z + ZSEARCH; sz++)
+				for (int sz = pos.getZ() - ZSEARCH; sz < pos.getZ() + ZSEARCH; sz++)
 				{
-					if (world.getBlock(sx, sy, sz) == Blocks.CHEST)
+					BlockPos iterPos = new BlockPos(sx, sy, sz);
+					if (world.getBlockState(iterPos).getBlock() == Blocks.CHEST)
 					{
-						IInventory thisChest = Blocks.CHEST.getLockableContainer(world, sx, sy, sz);
+						IInventory thisChest = Blocks.CHEST.getLockableContainer(world, iterPos);
 						
 						// make sure we haven't counted this chest
-						if (thisChest != null && !checkIfChestsContains(chests, (IInventory)world.getTileEntity(sx, sy, sz)))
+						if (thisChest != null && !checkIfChestsContains(chests, (IInventory)world.getTileEntity(iterPos)))
 						{
 							int itemsInChest = 0;
 							

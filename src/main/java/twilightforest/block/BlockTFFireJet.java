@@ -12,9 +12,11 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -104,19 +106,19 @@ public class BlockTFFireJet extends Block {
         	if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered)
         	{
     			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
-                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+                world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
         	}
         	
         	if (variant == FireJetVariant.ENCASED_SMOKER_ON && !powered)
         	{
 				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
-                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
         	}
         	
         	if (variant == FireJetVariant.ENCASED_JET_IDLE && powered)
         	{
 				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
-                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
         	}
 
         }

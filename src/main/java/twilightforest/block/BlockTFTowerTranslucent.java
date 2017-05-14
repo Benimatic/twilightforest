@@ -12,9 +12,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -160,7 +162,7 @@ public class BlockTFTowerTranslucent extends Block
             {
 				par1World.setBlockToAir(pos);
 				par1World.notifyNeighborsRespectDebug(pos, this);
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.3F, 0.5F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
                 //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
                 
                 // activate all adjacent inactive vanish blocks
@@ -173,7 +175,7 @@ public class BlockTFTowerTranslucent extends Block
             {
             	par1World.setBlockState(pos, TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
                 par1World.notifyNeighborsRespectDebug(pos, this);
-                par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.5F);
+				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
                 //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
              }
             else if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE)
