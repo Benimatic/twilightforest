@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -21,7 +22,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 		this(world, rand, index, x + SIZE, y + 40, z + SIZE, 2);
 	}
 	
-	public ComponentTFIceTowerMain(World world, Random rand, int index, int x, int y, int z, int rotation) {
+	public ComponentTFIceTowerMain(World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
 		super(index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
@@ -95,7 +96,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 	}
 
 	private void makeEntranceBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int length, int rotation) {
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
 		ComponentTFIceTowerBridge bridge = new ComponentTFIceTowerBridge(index, dest.posX, dest.posY, dest.posZ, length, direction);
@@ -105,7 +106,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 	}
 
 	public boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		ComponentTFIceTowerWing entrance = new ComponentTFIceTowerEntrance(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

@@ -3,6 +3,7 @@ package twilightforest.structures.minotaurmaze;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.structures.StructureTFComponent;
@@ -14,7 +15,7 @@ public class ComponentTFMazeCorridor extends StructureTFComponent {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeCorridor(int i, int x, int y, int z, int rotation) {
+	public ComponentTFMazeCorridor(int i, int x, int y, int z, EnumFacing rotation) {
 		super(i);
         this.coordBaseMode = rotation;
         this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);

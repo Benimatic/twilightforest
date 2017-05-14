@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -19,7 +20,7 @@ public class ComponentTFIceTowerBridge extends StructureTFComponent {
 	}
 
 	
-	public ComponentTFIceTowerBridge(int index, int x, int y, int z, int length, int direction) {
+	public ComponentTFIceTowerBridge(int index, int x, int y, int z, int length, EnumFacing direction) {
 		super(index);
 		this.length = length;
 		this.setCoordBaseMode(direction);

@@ -2,6 +2,7 @@ package twilightforest.structures.icetower;
 
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 		this.spawnListIndex = -1;
 	}
 	
-	public ComponentTFIceTowerBossWing(int index, int x, int y, int z, int wingSize, int wingHeight, int direction) {
+	public ComponentTFIceTowerBossWing(int index, int x, int y, int z, int wingSize, int wingHeight, EnumFacing direction) {
 		super(index, x, y, z, wingSize, wingHeight, direction);
 		// no spawns
 		this.spawnListIndex = -1;

@@ -131,7 +131,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
 	
 	public boolean makeTowerOutbuilding(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		ComponentTFTowerOutbuilding outbuilding = new ComponentTFTowerOutbuilding(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there

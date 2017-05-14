@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -26,7 +27,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		super();
 	}
 
-	protected ComponentTFMushroomTowerWing(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFMushroomTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
 	
@@ -132,7 +133,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	@Override
 	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		// stop if out of range
@@ -275,7 +276,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	
 	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation, boolean ascender) {
 		// bridges are size  always
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 		
 		// adjust height for those stupid little things
@@ -307,7 +308,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	
 	private boolean makeMainBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 
 		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

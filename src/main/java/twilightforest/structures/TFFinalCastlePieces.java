@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.TFFeature;
@@ -1783,23 +1784,23 @@ public class TFFinalCastlePieces {
 		 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 		 */
 		@Override
-		protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, int direction) {
+		protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, EnumFacing direction) {
 			
 			int dx = getXWithOffset(x, z);
 			int dy = getYWithOffset(y);
 			int dz = getZWithOffset(x, z);
 			
 			switch (direction) {
-			case 0:
+				case SOUTH:
 				dx += howFar;
 				break;
-			case 1:
+				case WEST:
 				dz += howFar;
 				break;
-			case 2:
+				case NORTH:
 				dx -= howFar;
 				break;
-			case 3:
+				case EAST:
 				dz -= howFar;
 				break;
 			}
@@ -1971,7 +1972,7 @@ public class TFFinalCastlePieces {
         	}
     		
     		// add bottom tower
-			int brDirection = (direction + this.coordBaseMode) % 4;
+		    EnumFacing brDirection = (direction + this.coordBaseMode) % 4;
 			EntranceBottomTower eTower = new EntranceBottomTower(rand, this.getComponentType() + 1, this.boundingBox.minX + 6, this.boundingBox.minY - (middleFloors) * 8, this.boundingBox.minZ + 6, bottomFloors + 1, bottomFloors, (brDirection + 2) % 4);
 			list.add(eTower);
 			eTower.buildComponent(this, list, rand);
@@ -2122,7 +2123,7 @@ public class TFFinalCastlePieces {
     		// add door
     		this.addOpening(x, y, z, rotation);
 
-    		int direction = (getCoordBaseMode() + rotation) % 4;
+    		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
     		BlockPos dx = offsetTowerCCoords(x, y, z, 0, direction);
 
     		EntranceStairs stairs = new EntranceStairs(index, dx.getX(), dx.getY(), dx.getZ(), direction);
@@ -2146,7 +2147,7 @@ public class TFFinalCastlePieces {
 		
 		public EntranceStairs() {}
 	
-		public EntranceStairs(int index, int x, int y, int z, int direction) {
+		public EntranceStairs(int index, int x, int y, int z, EnumFacing direction) {
 			this.setCoordBaseMode(direction);
 			this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 		}
@@ -2507,7 +2508,7 @@ public class TFFinalCastlePieces {
 
 	public static class Bridge extends StructureTFComponent {
 
-		public Bridge(int i, int x, int y, int z, int length, int direction) {
+		public Bridge(int i, int x, int y, int z, int length, EnumFacing direction) {
 			this.setCoordBaseMode(direction);
 			this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);
 

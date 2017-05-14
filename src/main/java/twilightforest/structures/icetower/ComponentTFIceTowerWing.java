@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -26,7 +27,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		super();
 	}
 
-	protected ComponentTFIceTowerWing(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFIceTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
 	
@@ -133,7 +134,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 */
 	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		//System.out.println("Making tower, index = " + index + ", list.size() = " + list.size());
@@ -165,7 +166,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 */
 	public boolean makeBossTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		ComponentTFIceTowerWing wing = new ComponentTFIceTowerBossWing(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

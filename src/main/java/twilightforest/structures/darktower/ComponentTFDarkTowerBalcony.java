@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -15,7 +16,7 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing
 	
 	public ComponentTFDarkTowerBalcony() {}
 
-	protected ComponentTFDarkTowerBalcony(int i, int x, int y, int z, int direction) {
+	protected ComponentTFDarkTowerBalcony(int i, int x, int y, int z, EnumFacing direction) {
 		super(i, x, y, z, 5, 5, direction);
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -19,7 +20,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		// TODO Auto-generated constructor stub
 	}
 
-	protected ComponentTFMushroomTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFMushroomTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 		
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
@@ -62,7 +63,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		
 		if (!madeWing)
 		{
-			int[] dx = offsetTowerCoords(dest[0], dest[1], dest[2], dSize, 0);
+			int[] dx = offsetTowerCoords(dest[0], dest[1], dest[2], dSize, EnumFacing.SOUTH);
 
 			System.out.println("Making tower wing failed when bridge was already made.  Size = " + dSize + ", x = " + dx[0] + " z = " + dx[2]);
 		}

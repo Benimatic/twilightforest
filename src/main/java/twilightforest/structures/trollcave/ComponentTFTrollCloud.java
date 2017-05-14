@@ -24,7 +24,7 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 		this.height = 20;
 		
 		int radius = this.size / 2;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
 	}
 	
 	@Override

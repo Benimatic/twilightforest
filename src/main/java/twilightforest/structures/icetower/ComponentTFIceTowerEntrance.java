@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -13,7 +14,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 
 	public ComponentTFIceTowerEntrance() {}
 
-	public ComponentTFIceTowerEntrance(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	public ComponentTFIceTowerEntrance(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
 	
@@ -54,7 +55,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		BlockPos dx = offsetTowerCCoords(x, y, z, this.size, direction);
 
 		ComponentTFIceTowerStairs entrance = new ComponentTFIceTowerStairs(index, dx.posX, dx.posY, dx.posZ, this.size, this.height, direction);

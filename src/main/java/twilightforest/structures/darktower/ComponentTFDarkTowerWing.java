@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -36,7 +37,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 
 	public ComponentTFDarkTowerWing() {}
 
-	protected ComponentTFDarkTowerWing(int i, int x, int y, int z, int pSize, int pHeight, int direction) 
+	protected ComponentTFDarkTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction)
 	{
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
@@ -239,7 +240,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			return false;
 		}
 		
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 		
 		if (dx[1] + wingHeight > 250)
@@ -272,7 +273,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	
 	protected boolean makeTowerBalcony(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int rotation) 
 	{
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 		
 		

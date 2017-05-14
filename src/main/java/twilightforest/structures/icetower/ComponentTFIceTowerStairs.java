@@ -3,6 +3,7 @@ package twilightforest.structures.icetower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -14,7 +15,7 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 	public ComponentTFIceTowerStairs() { }
 
 
-	public ComponentTFIceTowerStairs(int index, int x, int y, int z, int size, int height, int direction) {
+	public ComponentTFIceTowerStairs(int index, int x, int y, int z, int size, int height, EnumFacing direction) {
 		super(index, x, y, z, size, height, direction);
 	}
 

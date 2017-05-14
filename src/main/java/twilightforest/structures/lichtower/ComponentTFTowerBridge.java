@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -22,7 +23,7 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 	}
 
 
-	protected ComponentTFTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, 3, 3, direction);
 		
 		this.dSize = pSize;

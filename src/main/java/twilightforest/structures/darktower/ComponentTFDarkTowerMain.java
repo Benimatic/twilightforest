@@ -12,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBirchTree;
@@ -43,7 +44,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	}
 
 
-	public ComponentTFDarkTowerMain(World world, Random rand, int index, int x, int y, int z, int rotation) {
+	public ComponentTFDarkTowerMain(World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
 		super(index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
 		
 		// check to make sure we can build the whole tower
@@ -209,7 +210,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	 */
 	private boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int childSize, int childHeight, int rotation) 
 	{
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 		ComponentTFDarkTowerBridge bridge = new ComponentTFDarkTowerEntranceBridge(index, dx[0], dx[1], dx[2], childSize, childHeight, direction);
@@ -228,7 +229,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		int wingSize = 15;
 		int wingHeight = 56;
 
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 		ComponentTFDarkTowerMainBridge bridge = new ComponentTFDarkTowerMainBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
@@ -248,7 +249,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		int wingSize = 11;
 		int wingHeight = 9;
 
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 		ComponentTFDarkTowerBossBridge bridge = new ComponentTFDarkTowerBossBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

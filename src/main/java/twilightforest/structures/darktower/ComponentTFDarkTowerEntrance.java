@@ -3,6 +3,7 @@ package twilightforest.structures.darktower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -12,7 +13,7 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing
 
 	public ComponentTFDarkTowerEntrance() {}
 
-	protected ComponentTFDarkTowerEntrance(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFDarkTowerEntrance(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
 	

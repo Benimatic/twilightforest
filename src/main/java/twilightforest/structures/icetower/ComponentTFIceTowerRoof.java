@@ -38,7 +38,7 @@ public class ComponentTFIceTowerRoof extends ComponentTFTowerRoof {
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
 				//int rHeight = this.size - (int) MathHelper.sqrt_float(x * z); // interesting office building pattern
-				int rHeight = Math.round(MathHelper.sqrt_float(x * x + z * z));
+				int rHeight = Math.round(MathHelper.sqrt(x * x + z * z));
 				//int rHeight = MathHelper.ceiling_float_int(Math.min(x * x / 9F, z * z / 9F));
 				
 				for (int y = 0; y < rHeight; y++) {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -16,7 +17,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 
 	public ComponentTFDarkTowerBossTrap() {}
 
-	protected ComponentTFDarkTowerBossTrap(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFDarkTowerBossTrap(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 		
 		// no spawns

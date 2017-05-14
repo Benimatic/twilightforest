@@ -3,6 +3,7 @@ package twilightforest.structures.minotaurmaze;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
@@ -15,7 +16,7 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeDeadEndChest(int i, int x, int y, int z, int rotation) {
+	public ComponentTFMazeDeadEndChest(int i, int x, int y, int z, EnumFacing rotation) {
 		super(i, x, y, z, rotation);
 		
 		// specify a non-existant high spawn list value to stop actual monster spawns

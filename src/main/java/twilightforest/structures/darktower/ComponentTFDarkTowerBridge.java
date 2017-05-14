@@ -3,6 +3,7 @@ package twilightforest.structures.darktower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -17,7 +18,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing
 	private int dSize;
 	private int dHeight;
 	
-	protected ComponentTFDarkTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFDarkTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, 5, 5, direction);
 		
 		this.dSize = pSize;
@@ -43,7 +44,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing
 			return false;
 		}
 
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		if (dx[1] + wingHeight > 255)

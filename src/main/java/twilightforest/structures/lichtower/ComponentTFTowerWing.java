@@ -15,6 +15,7 @@ import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.item.EntityPainting.EnumArt;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -47,7 +48,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		this.highestOpening = 0;
 	}
 
-	protected ComponentTFTowerWing(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i);
 		
 		this.size = pSize;
@@ -157,7 +158,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			return false;
 		}
 		
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		if (rand.nextInt(6) == 0) {
@@ -190,7 +191,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 	protected boolean makeBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 		// bridges are size 3 always
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 		// adjust height for those stupid little things
 		if (wingSize == 3 && wingHeight > 10) {

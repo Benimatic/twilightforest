@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -16,7 +17,7 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 		// TODO Auto-generated constructor stub
 	}
 
-	protected ComponentTFTowerOutbuilding(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFTowerOutbuilding(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 		// TODO Auto-generated constructor stub
 	}

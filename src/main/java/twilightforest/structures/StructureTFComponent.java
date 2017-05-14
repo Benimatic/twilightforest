@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockStandingSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -148,7 +149,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         BlockPos pos = new BlockPos(dx, dy, dz);
         if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST)
         {
-            treasureType.generate(world, rand, dx, dy, dz, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
+            treasureType.generate(world, rand, pos, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
         }
     }
 
@@ -175,7 +176,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         BlockPos pos = new BlockPos(dx, dy, dz);
         if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST)
         {
-            treasureType.generate(world, null, dx, dy, dz, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
+            treasureType.generate(world, null, pos, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
         }
     }
     
@@ -388,7 +389,8 @@ public abstract class StructureTFComponent extends StructureComponent {
     // [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
     protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {
         EnumFacing oldBase = fakeBaseMode(rotation);
-        fillWithBlocksRandomly(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false);
+        this.fillWithRandomizedBlocks();
+	    func_189914_a(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false);
         setCoordBaseMode(oldBase);
     }
     
@@ -534,7 +536,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         return structurecomponent;
 	}
 
-	
+
 	public BlockPos getBlockPosWithOffset(int x, int y, int z) {
     	return new BlockPos(
     			getXWithOffset(x, z),

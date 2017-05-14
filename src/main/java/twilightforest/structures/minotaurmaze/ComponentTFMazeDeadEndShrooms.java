@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -14,7 +15,7 @@ public class ComponentTFMazeDeadEndShrooms extends ComponentTFMazeDeadEndRoots {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeDeadEndShrooms(int i, int x, int y, int z, int rotation) {
+	public ComponentTFMazeDeadEndShrooms(int i, int x, int y, int z, EnumFacing rotation) {
 		super(i, x, y, z, rotation);
 	}
 

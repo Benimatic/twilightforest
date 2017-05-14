@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -20,7 +21,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	public ComponentTFTrollCaveConnect() { }
 
-	public ComponentTFTrollCaveConnect(int index, int x, int y, int z, int caveSize, int caveHeight, int direction) {
+	public ComponentTFTrollCaveConnect(int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
 		super(index);
 		this.size = caveSize;
 		this.height = caveHeight;
@@ -291,7 +292,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
 		ComponentTFTrollCaveMain cave = new ComponentTFTrollCaveGarden(index, dest.posX, dest.posY, dest.posZ, caveSize, caveHeight, direction);

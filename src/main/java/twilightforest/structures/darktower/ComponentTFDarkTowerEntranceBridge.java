@@ -3,6 +3,7 @@ package twilightforest.structures.darktower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureComponent;
 
 public class ComponentTFDarkTowerEntranceBridge extends ComponentTFDarkTowerBridge 
@@ -10,14 +11,14 @@ public class ComponentTFDarkTowerEntranceBridge extends ComponentTFDarkTowerBrid
 
 	public ComponentTFDarkTowerEntranceBridge() {}
 
-	protected ComponentTFDarkTowerEntranceBridge(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFDarkTowerEntranceBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 		// make an entrance tower
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		ComponentTFDarkTowerWing wing = new ComponentTFDarkTowerEntrance(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

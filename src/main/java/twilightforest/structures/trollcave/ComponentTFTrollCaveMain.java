@@ -43,7 +43,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		this.height = 20;
 		
 		int radius = this.size / 2;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
 
 	}
 	
@@ -92,7 +92,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 
 
 	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
-		int direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
 		ComponentTFTrollCaveConnect cave = new ComponentTFTrollCaveConnect(index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
