@@ -58,9 +58,6 @@ import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import thaumcraft.api.*;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 
 @Mod(modid = TwilightForestMod.ID, name = "The Twilight Forest", version = TwilightForestMod.VERSION)
 public class TwilightForestMod {
@@ -211,7 +208,8 @@ public class TwilightForestMod {
 		// thaumcraft integration
 		if (Loader.isModLoaded("Thaumcraft"))
 		{
-			registerThaumcraftIntegration();
+			//FIXME: Reenable this once Thaumcraft is available.
+			//registerThaumcraftIntegration();
 		}
 		else
 		{
@@ -340,7 +338,9 @@ public class TwilightForestMod {
 	/**
 	 * Use the thaumcraft API to register our things with aspects and biomes with values
 	 */
-	private void registerThaumcraftIntegration() 
+	//FIXME: Reenable once Thaumcraft API is available
+	/*
+	private void registerThaumcraftIntegration()
 	{
 		try {
 	
@@ -473,26 +473,31 @@ public class TwilightForestMod {
 		}
 
 	}
+	*/
 	
 	/**
 	 * Register a block with Thaumcraft aspects
 	 */
+	/*
 	private void registerTCObjectTag(Block block, int meta, AspectList list) {
 		if (meta == -1) {
 			meta = OreDictionary.WILDCARD_VALUE;
 		}		
 		ThaumcraftApi.registerObjectTag(new ItemStack(block, 1, meta), list);
 	}
+	*/
 	
 	/**
 	 * Register an item with Thaumcraft aspects
 	 */
+	/*
 	private void registerTCObjectTag(Item item, int meta, AspectList list) {
 		if (meta == -1) {
 			meta = OreDictionary.WILDCARD_VALUE;
 		}	
 		ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), list);
 	}
+	*/
 
 
 	/**
