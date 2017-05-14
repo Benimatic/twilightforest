@@ -2,13 +2,21 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import twilightforest.block.BlockTFHugeLilyPad;
 import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import twilightforest.block.enums.HugeLilypadPiece;
+
+import static twilightforest.block.BlockTFHugeLilyPad.*;
+import static twilightforest.block.enums.HugeLilypadPiece.*;
 
 
 /**
@@ -32,19 +40,27 @@ public class TFGenHugeLilyPad extends WorldGenerator
 					random.nextInt(8) - random.nextInt(8)
 			);
 
-    		dx = (dx >> 1) << 1;
-    		dz = (dz >> 1) << 1;
+			//TODO: AtomicBlom: Ensure lilypads are generating correctly
+			//make x/z even?
+			dPos = new BlockPos(
+					dPos.getX() >> 1 << 1,
+					dPos.getY(),
+					dPos.getZ() >> 1 << 1
+					);
 
     		if (shouldPlacePadAt(world, dPos)) {
     			// this seems like a difficult way to generate 2 pseudorandom bits
-    			rand .setSeed(8890919293L);
+    			rand.setSeed(8890919293L);
     			rand.setSeed((dPos.getX() * rand.nextLong()) ^ (dPos.getZ() * rand.nextLong()) ^ 8890919293L);
-    			int orient = rand.nextInt(4) << 2;
+    			int orient = rand.nextInt(4);
 
-    			world.setBlockState(pos, TFBlocks.hugeLilyPad, 0 | orient, 2);
-    			world.setBlockState(pos.east(), TFBlocks.hugeLilyPad, 1 | orient, 2);
-    			world.setBlockState(pos.east().south(), TFBlocks.hugeLilyPad, 2 | orient, 2);
-    			world.setBlockState(pos.south(), TFBlocks.hugeLilyPad, 3 | orient, 2);
+			    final EnumFacing horizontal = EnumFacing.getHorizontal(orient);
+			    final IBlockState lilypad = TFBlocks.hugeLilyPad.getDefaultState().withProperty(FACING, horizontal);
+
+			    world.setBlockState(pos, lilypad.withProperty(PIECE, NW), 2);
+    			world.setBlockState(pos.east(), lilypad.withProperty(PIECE, NE), 2);
+    			world.setBlockState(pos.east().south(), lilypad.withProperty(PIECE, SE), 2);
+    			world.setBlockState(pos.south(), lilypad.withProperty(PIECE, SW), 2);
     		}
     	}
 
