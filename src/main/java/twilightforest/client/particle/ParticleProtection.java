@@ -5,9 +5,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFProtectionFX extends ParticleSuspendedTown {
+public class ParticleProtection extends ParticleSuspendedTown {
 
-	public EntityTFProtectionFX(World world, double x, double y, double z, double velX, double velY, double velZ) {
+	public ParticleProtection(World world, double x, double y, double z, double velX, double velY, double velZ) {
 		super(world, x, y, z, velX, velY, velZ);
         this.setParticleTextureIndex(82);
         this.setRBGColorF(1.0F, 1.0F, 1.0F);

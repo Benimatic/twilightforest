@@ -12,20 +12,17 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-// Referenced classes of package net.minecraft.src:
-//            EntityFX, World, Tessellator
-
-public class EntityTFFireflyFX extends Particle
+public class ParticleFirefly extends Particle
 {
 
-    public EntityTFFireflyFX(World world, double d, double d1, double d2, 
-            float f, float f1, float f2)
+    public ParticleFirefly(World world, double d, double d1, double d2,
+                           float f, float f1, float f2)
     {
         this(world, d, d1, d2, 1.0F, f, f1, f2);
     }
 
-    public EntityTFFireflyFX(World world, double d, double d1, double d2, 
-            float f, float f1, float f2, float f3)
+    public ParticleFirefly(World world, double d, double d1, double d2,
+                           float f, float f1, float f2, float f3)
     {
         super(world, d, d1, d2, 0.0D, 0.0D, 0.0D);
         motionX *= 2.10000000149011612D;
@@ -44,7 +41,7 @@ public class EntityTFFireflyFX extends Particle
         particleMaxAge = (int)(32D / (Math.random() * 0.80000000000000004D + 0.20000000000000001D));
         particleMaxAge *= f;
         fireflyHalfLife = particleMaxAge / 2;
-        noClip = false;
+        canCollide = true;
     }
 
     @Override

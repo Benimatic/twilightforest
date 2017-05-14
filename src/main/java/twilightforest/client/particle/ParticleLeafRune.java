@@ -3,9 +3,9 @@ package twilightforest.client.particle;
 import net.minecraft.client.particle.ParticleEnchantmentTable;
 import net.minecraft.world.World;
 
-public class EntityTFLeafRuneFX extends ParticleEnchantmentTable {
+public class ParticleLeafRune extends ParticleEnchantmentTable {
 
-	public EntityTFLeafRuneFX(World world, double x, double y, double z, double velX, double velY, double velZ)
+	public ParticleLeafRune(World world, double x, double y, double z, double velX, double velY, double velZ)
 	{
 		super(world, x, y, z, velX, velY, velZ);
 		
@@ -14,7 +14,7 @@ public class EntityTFLeafRuneFX extends ParticleEnchantmentTable {
         this.particleGravity = 0.003F + rand.nextFloat() * 0.006F;
 
 		
-		this.noClip = false;
+		this.canCollide = true;
 	}
 
     @Override
@@ -24,7 +24,7 @@ public class EntityTFLeafRuneFX extends ParticleEnchantmentTable {
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(this.motionX, this.motionY, this.motionZ);
         this.motionY -= (double)this.particleGravity;
 
 

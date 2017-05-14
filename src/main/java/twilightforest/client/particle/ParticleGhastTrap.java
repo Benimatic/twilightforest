@@ -1,8 +1,6 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
@@ -10,19 +8,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityTFGhastTrapFX extends Particle
+public class ParticleGhastTrap extends Particle
 {
     float reddustParticleScale;
 	private double originX;
 	private double originY;
 	private double originZ;
 
-    public EntityTFGhastTrapFX(World par1World, double par2, double par4, double par6, double par8, double par9, double par10)
+    public ParticleGhastTrap(World par1World, double par2, double par4, double par6, double par8, double par9, double par10)
     {
         this(par1World, par2, par4, par6, 3.0F, par8, par9, par10);
     }
 
-    public EntityTFGhastTrapFX(World par1World, double x, double y, double z, float scale, double mx, double my, double mz)
+    public ParticleGhastTrap(World par1World, double x, double y, double z, float scale, double mx, double my, double mz)
     {
         super(par1World, x + mx, y + my, z + mz, mx, my, mz);
         this.motionX = mx;
@@ -46,7 +44,7 @@ public class EntityTFGhastTrapFX extends Particle
         this.particleMaxAge = (int)(10.0D / (Math.random() * 0.8D + 0.2D));
         //this.particleMaxAge = (int)((float)this.particleMaxAge * scale);
         
-        this.noClip = false;
+        this.canCollide = true;
     }
 
     @Override

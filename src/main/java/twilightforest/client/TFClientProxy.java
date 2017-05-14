@@ -6,8 +6,6 @@ import net.minecraft.client.model.ModelPig;
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.model.ModelWolf;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleSmokeNormal;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -20,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import twilightforest.TFCommonProxy;
-import twilightforest.TFGenericPacketHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.ModelTFAdherent;
@@ -145,7 +142,6 @@ import twilightforest.client.renderer.entity.RenderTFUrGhast;
 import twilightforest.client.renderer.entity.RenderTFWinterWolf;
 import twilightforest.client.renderer.entity.RenderTFWraith;
 import twilightforest.client.renderer.entity.RenderTFYeti;
-import twilightforest.entity.EntityTFCubeOfAnnihilation;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCicada;
 import twilightforest.tileentity.TileEntityTFFirefly;
@@ -495,16 +491,16 @@ public class TFClientProxy extends TFCommonProxy {
 				Particle particle = null;
 
 				switch (particleType) {
-					case LARGE_FLAME: particle = new EntityTFLargeFlameFX(world, x, y, z, velX, velY, velZ); break;
-					case LEAF_RUNE: particle = new EntityTFLeafRuneFX(world, x, y, z, velX, velY, velZ); break;
-					case BOSS_TEAR: particle = new EntityTFBossTearFX(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR); break;
-					case GHAST_TRAP: particle = new EntityTFGhastTrapFX(world, x, y, z, velX, velY, velZ); break;
-					case PROTECTION: particle = new EntityTFProtectionFX(world, x, y, z, velX, velY, velZ); break;
-					case SNOW: particle = new EntityTFSnowFX(world, x, y, z, velX, velY, velZ); break;
-					case SNOW_GUARDIAN: particle = new EntityTFSnowGuardianFX(world, x, y, z, velX, velY, velZ, 0.75F); break;
-					case SNOW_WARNING: particle = new EntityTFSnowWarningFX(world, x, y, z, velX, velY, velZ, 1F); break;
-					case ICE_BEAM: particle = new EntityTFIceBeamFX(world, x, y, z, velX, velY, velZ, 0.75F); break;
-					case ANNIHILATE: particle = new EntityTFAnnihilateFX(world, x, y, z, velX, velY, velZ, 0.75F); break;
+					case LARGE_FLAME: particle = new ParticleLargeFlame(world, x, y, z, velX, velY, velZ); break;
+					case LEAF_RUNE: particle = new ParticleLeafRune(world, x, y, z, velX, velY, velZ); break;
+					case BOSS_TEAR: particle = new ParticleGhastTear(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR); break;
+					case GHAST_TRAP: particle = new ParticleGhastTrap(world, x, y, z, velX, velY, velZ); break;
+					case PROTECTION: particle = new ParticleProtection(world, x, y, z, velX, velY, velZ); break;
+					case SNOW: particle = new ParticleSnow(world, x, y, z, velX, velY, velZ); break;
+					case SNOW_GUARDIAN: particle = new ParticleSnowGuardian(world, x, y, z, velX, velY, velZ, 0.75F); break;
+					case SNOW_WARNING: particle = new ParticleSnowWarning(world, x, y, z, velX, velY, velZ, 1F); break;
+					case ICE_BEAM: particle = new ParticleIceBeam(world, x, y, z, velX, velY, velZ, 0.75F); break;
+					case ANNIHILATE: particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F); break;
 					case HUGE_SMOKE: particle = new ParticleSmokeNormal(world, x, y, z, velX, velY, velZ, 8);
 				}
 

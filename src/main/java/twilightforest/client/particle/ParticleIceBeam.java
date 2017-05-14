@@ -1,8 +1,6 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 import twilightforest.item.ItemTFIceBomb;
 import twilightforest.item.TFItems;
@@ -10,16 +8,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityTFIceBeamFX extends Particle
+public class ParticleIceBeam extends Particle
 {
     float initialParticleScale;
 
-    public EntityTFIceBeamFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    public ParticleIceBeam(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
     {
         this(par1World, par2, par4, par6, par8, par10, par12, 1.0F);
     }
 
-    public EntityTFIceBeamFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14)
+    public ParticleIceBeam(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -35,7 +33,7 @@ public class EntityTFIceBeamFX extends Particle
 //        this.particleMaxAge = (int)(6.0D / (Math.random() * 0.8D + 0.6D));
 //        this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
         this.particleMaxAge = 50;
-        this.noClip = false;
+        this.canCollide = true;
         
         this.setParticleIcon(((ItemTFIceBomb)TFItems.iceBomb).getSnowIcon(rand.nextInt(4)));
         
@@ -54,7 +52,7 @@ public class EntityTFIceBeamFX extends Particle
             this.setExpired();
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(this.motionX, this.motionY, this.motionZ);
 
         this.motionX *= 0.9599999785423279D;
         this.motionY *= 0.9599999785423279D;
