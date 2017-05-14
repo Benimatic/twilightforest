@@ -225,7 +225,7 @@ public class TFMaze {
 					{
 						if (type == 4 && shouldTree(x, z)) {
 							// occasionally make a tree 
-							(new TFGenCanopyTree()).generate(world, rand, mdx, dy, mdz);
+							(new TFGenCanopyTree()).generate(world, rand, new BlockPos(mdx, dy, mdz));
 						} else {
 							// make a block!
 							for(int y = 0; y < head; y++)
@@ -619,15 +619,12 @@ public class TFMaze {
 	 */
 	private void putCanopyTree(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb)
 	{
-		
-        int wx = component.getXWithOffset(x, z);
-        int wy = component.getYWithOffset(y);
-        int wz = component.getZWithOffset(x, z);
+		BlockPos pos = component.getBlockPosWithOffset(x, y, z);
         
         // only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
-        if(sbb.isVecInside(wx, wy, wz))
+        if(sbb.isVecInside(pos))
         {
-        	(new TFGenCanopyTree()).generate(world, rand, wx, wy, wz);
+        	(new TFGenCanopyTree()).generate(world, rand, pos);
         }
 	}
 	

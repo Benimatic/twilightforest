@@ -532,8 +532,14 @@ public abstract class StructureTFComponent extends StructureComponent {
         while (structurecomponent == exclude || structurecomponent.getBoundingBox() == null || !structurecomponent.getBoundingBox().intersectsWith(toCheck));
 
         return structurecomponent;
-    }
+	}
 
-    
-
+	
+	public BlockPos getBlockPosWithOffset(int x, int y, int z) {
+    	return new BlockPos(
+    			getXWithOffset(x, z),
+			    getYWithOffset(y),
+			    getZWithOffset(x, z)
+	    );
+	}
 }
