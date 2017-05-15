@@ -42,7 +42,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 			double angleVar = rand.nextDouble() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
 			BlockPos bsrc = TFGenerator.translate(src, length * outVar, angle, tilt);
 			
-			makeMedBranch(list, rand, index + 2 + i, bsrc.posX, bsrc.posY, bsrc.posZ, length * 0.6, angle + angleVar, tilt, leafy);
+			makeMedBranch(list, rand, index + 2 + i, bsrc.getX(), bsrc.getY(), bsrc.getZ(), length * 0.6, angle + angleVar, tilt, leafy);
 		}
 		
 //		// make 1-2 small ones near the base
@@ -60,7 +60,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		
 		if (this.hasLeafDungeon)
 		{
-			makeLeafDungeon(list, rand, index + 1, dest.posX,  dest.posY,  dest.posZ);
+			makeLeafDungeon(list, rand, index + 1, dest.getX(),  dest.getY(),  dest.getZ());
 		}
 
 	}
@@ -91,11 +91,11 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
-		BlockPos rsrc = new BlockPos(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		BlockPos rdest = new BlockPos(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
+		BlockPos rsrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+		BlockPos rdest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
 		// main branch
-		drawBresehnam(world, sbb, rsrc.posX, rsrc.posY, rsrc.posZ, rdest.posX, rdest.posY, rdest.posZ, TFBlocks.log, 12);
+		drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), TFBlocks.log, 12);
 		
 		// reinforce it
 		int reinforcements = 4;
@@ -103,7 +103,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
-			drawBresehnam(world, sbb, rsrc.posX + vx, rsrc.posY + vy, rsrc.posZ + vz, rdest.posX, rdest.posY, rdest.posZ, TFBlocks.log, 12);
+			drawBresehnam(world, sbb, rsrc.getX() + vx, rsrc.getY() + vy, rsrc.getZ() + vz, rdest.getX(), rdest.getY(), rdest.getZ(), TFBlocks.log, 12);
 		}
 		
 		// make 1-2 small branches near the base
@@ -115,12 +115,12 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 			double angleVar = decoRNG.nextFloat() * 0.25F * ((i & 1) == 0 ? 1.0F : -1.0F);
 			BlockPos bsrc = TFGenerator.translate(rsrc, length * outVar, angle, tilt);
 			
-			drawSmallBranch(world, sbb, bsrc.posX, bsrc.posY, bsrc.posZ, Math.max(length * 0.3F, 2F), angle + angleVar, tilt, leafy);
+			drawSmallBranch(world, sbb, bsrc.getX(), bsrc.getY(), bsrc.getZ(), Math.max(length * 0.3F, 2F), angle + angleVar, tilt, leafy);
 		}
 
 		if (leafy && !this.hasLeafDungeon) {
 			// leaf blob at the end
-			makeLeafBlob(world, sbb, rdest.posX, rdest.posY, rdest.posZ, 3);
+			makeLeafBlob(world, sbb, rdest.getX(), rdest.getY(), rdest.getZ(), 3);
 		}
 
 		return true;

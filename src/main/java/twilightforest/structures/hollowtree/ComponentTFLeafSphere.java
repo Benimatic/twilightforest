@@ -3,8 +3,10 @@ package twilightforest.structures.hollowtree;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
@@ -38,7 +40,7 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 	protected ComponentTFLeafSphere(int index, int x, int y, int z, int radius) {
 		super(index);
 		
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		boundingBox = new StructureBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
 		this.radius = radius;
@@ -48,8 +50,8 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("leafRadius", this.radius);
 
@@ -59,8 +61,8 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
 
         this.radius = par1NBTTagCompound.getInteger("leafRadius");
 	}
@@ -100,14 +102,15 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx + dx, sy + dy, sz + dz, sbb);
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx + dx, sy + dy, sz - dz, sbb);
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx - dx, sy + dy, sz + dz, sbb);
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx - dx, sy + dy, sz - dz, sbb);
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx + dx, sy - dy, sz + dz, sbb);
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx + dx, sy - dy, sz - dz, sbb);
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx - dx, sy - dy, sz + dz, sbb);
-						placeBlockIfEmpty(world, TFBlocks.leaves, 0, sx - dx, sy - dy, sz - dz, sbb);
+						final IBlockState leaves = TFBlocks.leaves.getDefaultState();
+						placeBlockIfEmpty(world, leaves, sx + dx, sy + dy, sz + dz, sbb);
+						placeBlockIfEmpty(world, leaves, sx + dx, sy + dy, sz - dz, sbb);
+						placeBlockIfEmpty(world, leaves, sx - dx, sy + dy, sz + dz, sbb);
+						placeBlockIfEmpty(world, leaves, sx - dx, sy + dy, sz - dz, sbb);
+						placeBlockIfEmpty(world, leaves, sx + dx, sy - dy, sz + dz, sbb);
+						placeBlockIfEmpty(world, leaves, sx + dx, sy - dy, sz - dz, sbb);
+						placeBlockIfEmpty(world, leaves, sx - dx, sy - dy, sz + dz, sbb);
+						placeBlockIfEmpty(world, leaves, sx - dx, sy - dy, sz - dz, sbb);
 
 					}
 				}
@@ -122,9 +125,9 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 	 * 
 	 * TODO: This could be more efficient by combining the duplicate logic of the getBlockStateFromPos and setBlockState functions.
 	 */
-	protected void placeBlockIfEmpty(World world, Block blockID, int meta, int x, int y, int z, StructureBoundingBox sbb) {
-		if (getBlockStateFromPos(world, x, y, z, sbb) == Blocks.AIR) {
-			setBlockState(world, blockID, meta, x, y, z, sbb);
+	protected void placeBlockIfEmpty(World world, IBlockState blockState, int x, int y, int z, StructureBoundingBox sbb) {
+		if (getBlockStateFromPos(world, x, y, z, sbb).getBlock() == Blocks.AIR) {
+			setBlockState(world, blockState, x, y, z, sbb);
 		}
 	}
 

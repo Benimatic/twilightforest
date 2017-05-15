@@ -35,8 +35,8 @@ public class ComponentTFIceTowerBeard extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("beardSize", this.size);
         par1NBTTagCompound.setInteger("beardHeight", this.height);
@@ -46,8 +46,8 @@ public class ComponentTFIceTowerBeard extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.size = par1NBTTagCompound.getInteger("beardSize");
         this.height = par1NBTTagCompound.getInteger("beardHeight");
 	}
@@ -62,11 +62,11 @@ public class ComponentTFIceTowerBeard extends StructureTFComponent {
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
 				//int rHeight = this.size - (int) MathHelper.sqrt_float(x * z); // interesting office building pattern
-				int rHeight = Math.round(MathHelper.sqrt_float(x * x + z * z));
+				int rHeight = Math.round(MathHelper.sqrt(x * x + z * z));
 				//int rHeight = MathHelper.ceiling_float_int(Math.min(x * x / 9F, z * z / 9F));
 				
 				for (int y = 0; y < rHeight; y++) {
-					this.setBlockState(world, deco.blockID, deco.blockMeta, x, this.height - y, z, sbb);
+					this.setBlockState(world, deco.blockState, x, this.height - y, z, sbb);
 
 				}
 			}

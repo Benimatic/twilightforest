@@ -247,22 +247,23 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/**
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
-	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, int direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, EnumFacing direction) {
 		
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
-		
-		if (direction == 0) {
-			return new BlockPos(dx + 1, dy - 1, dz - towerSize / 2);
-		} else if (direction == 1) {
-			return new BlockPos(dx + towerSize / 2, dy - 1, dz + 1);
-		} else if (direction == 2) {
-			return new BlockPos(dx - 1, dy - 1, dz + towerSize / 2);
-		} else if (direction == 3) {
-			return new BlockPos(dx - towerSize / 2, dy - 1, dz - 1);
+
+		switch (direction)
+		{
+			case SOUTH:
+				return new BlockPos(dx + 1, dy - 1, dz - towerSize / 2);
+			case WEST:
+				return new BlockPos(dx + towerSize / 2, dy - 1, dz + 1);
+			case NORTH:
+				return new BlockPos(dx - 1, dy - 1, dz + towerSize / 2);
+			case EAST:
+				return new BlockPos(dx - towerSize / 2, dy - 1, dz - 1);
 		}
-		
 		
 		// ugh?
 		return new BlockPos(x, y, z);
@@ -391,7 +392,6 @@ public abstract class StructureTFComponent extends StructureComponent {
     // [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
     protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {
         EnumFacing oldBase = fakeBaseMode(rotation);
-        this.fillWithRandomizedBlocks();
 	    func_189914_a(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false);
         setCoordBaseMode(oldBase);
     }

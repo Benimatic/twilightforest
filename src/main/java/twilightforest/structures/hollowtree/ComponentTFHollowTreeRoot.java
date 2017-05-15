@@ -3,6 +3,7 @@ package twilightforest.structures.hollowtree;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -11,6 +12,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerator;
+
+import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 
@@ -73,8 +76,8 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 			{
 
 				// air, other non-solid, or grass, make wood block
-				//FIXME: Don't use getStateFromMeta, use proper variant.
-				this.setBlockState(world, TFBlocks.log.getStateFromMeta(12), coords.getX(), coords.getY(), coords.getZ(), sbb);
+				IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			}
 			else if (block != Blocks.AIR && block.getMaterial() == Material.WOOD)
 			{

@@ -4,12 +4,17 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFTreasure;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
 import twilightforest.structures.StructureTFComponent;
@@ -42,7 +47,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 	protected ComponentTFHollowTreeLeafDungeon(int index, int x, int y, int z, int radius) {
 		super(index);
 		
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		boundingBox = new StructureBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
 		this.radius = radius;
@@ -52,8 +57,8 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("leafRadius", this.radius);
 
@@ -63,8 +68,8 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
 
         this.radius = par1NBTTagCompound.getInteger("leafRadius");
 	}
@@ -75,7 +80,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 	@Override
 	public void buildComponent(StructureComponent structurecomponent, List list, Random rand) {
 		// the bounding box should be cubical, so we can rotate freely
-		this.setCoordBaseMode(rand.nextInt(4));
+		this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length)]);
 	}
 
 	/**
@@ -85,9 +90,9 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		
 		// leaves on the outside
-		drawBlockBlob(world, sbb, radius, radius, radius, 4, TFBlocks.leaves, 0, true);
+		drawBlockBlob(world, sbb, radius, radius, radius, 4, TFBlocks.leaves.getDefaultState(), true);
 		// then wood
-		drawBlockBlob(world, sbb, radius, radius, radius, 3, TFBlocks.log, 12, false);
+		drawBlockBlob(world, sbb, radius, radius, radius, 3, TFBlocks.log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
 		// then air
 		drawBlockBlob(world, sbb, radius, radius, radius, 2, AIR, false);
 		
@@ -96,12 +101,12 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 		this.placeTreasureAtCurrentPosition(world, rand, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
 			
 		// then spawner
-		setSpawner(world, rand, radius, radius, radius, TFCreatures.getSpawnerNameFor("Swarm Spider"), sbb);
+		setSpawner(world, radius, radius, radius, sbb, TFCreatures.getSpawnerNameFor("Swarm Spider"));
 		
 		return true;
 	}
 
-	private void drawBlockBlob(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int blobRadius, Block blockID, int metadata, boolean isLeaves) {
+	private void drawBlockBlob(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int blobRadius, IBlockState blockState, boolean isLeaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= blobRadius; dx++)
 		{
@@ -127,25 +132,25 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 						// do eight at a time for easiness!
 						if (isLeaves)
 						{
-							placeLeafBlock(world, blockID, metadata, sx + dx, sy + dy, sz + dz, sbb);
-							placeLeafBlock(world, blockID, metadata, sx + dx, sy + dy, sz - dz, sbb);
-							placeLeafBlock(world, blockID, metadata, sx - dx, sy + dy, sz + dz, sbb);
-							placeLeafBlock(world, blockID, metadata, sx - dx, sy + dy, sz - dz, sbb);
-							placeLeafBlock(world, blockID, metadata, sx + dx, sy - dy, sz + dz, sbb);
-							placeLeafBlock(world, blockID, metadata, sx + dx, sy - dy, sz - dz, sbb);
-							placeLeafBlock(world, blockID, metadata, sx - dx, sy - dy, sz + dz, sbb);
-							placeLeafBlock(world, blockID, metadata, sx - dx, sy - dy, sz - dz, sbb);
+							placeLeafBlock(world, blockState, sx + dx, sy + dy, sz + dz, sbb);
+							placeLeafBlock(world, blockState, sx + dx, sy + dy, sz - dz, sbb);
+							placeLeafBlock(world, blockState, sx - dx, sy + dy, sz + dz, sbb);
+							placeLeafBlock(world, blockState, sx - dx, sy + dy, sz - dz, sbb);
+							placeLeafBlock(world, blockState, sx + dx, sy - dy, sz + dz, sbb);
+							placeLeafBlock(world, blockState, sx + dx, sy - dy, sz - dz, sbb);
+							placeLeafBlock(world, blockState, sx - dx, sy - dy, sz + dz, sbb);
+							placeLeafBlock(world, blockState, sx - dx, sy - dy, sz - dz, sbb);
 						}
 						else
 						{
-							this.setBlockState(world, blockID, metadata, sx + dx, sy + dy, sz + dz, sbb);
-							this.setBlockState(world, blockID, metadata, sx + dx, sy + dy, sz - dz, sbb);
-							this.setBlockState(world, blockID, metadata, sx - dx, sy + dy, sz + dz, sbb);
-							this.setBlockState(world, blockID, metadata, sx - dx, sy + dy, sz - dz, sbb);
-							this.setBlockState(world, blockID, metadata, sx + dx, sy - dy, sz + dz, sbb);
-							this.setBlockState(world, blockID, metadata, sx + dx, sy - dy, sz - dz, sbb);
-							this.setBlockState(world, blockID, metadata, sx - dx, sy - dy, sz + dz, sbb);
-							this.setBlockState(world, blockID, metadata, sx - dx, sy - dy, sz - dz, sbb);
+							this.setBlockState(world, blockState, sx + dx, sy + dy, sz + dz, sbb);
+							this.setBlockState(world, blockState, sx + dx, sy + dy, sz - dz, sbb);
+							this.setBlockState(world, blockState, sx - dx, sy + dy, sz + dz, sbb);
+							this.setBlockState(world, blockState, sx - dx, sy + dy, sz - dz, sbb);
+							this.setBlockState(world, blockState, sx + dx, sy - dy, sz + dz, sbb);
+							this.setBlockState(world, blockState, sx + dx, sy - dy, sz - dz, sbb);
+							this.setBlockState(world, blockState, sx - dx, sy - dy, sz + dz, sbb);
+							this.setBlockState(world, blockState, sx - dx, sy - dy, sz - dz, sbb);
 
 						}
 
@@ -158,19 +163,17 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 	/**
 	 * Puts a block only if leaves can go there.
 	 */
-	protected void placeLeafBlock(World world, Block blockID, int meta, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void placeLeafBlock(World world, IBlockState blockState, int x, int y, int z, StructureBoundingBox sbb) {
 
-		int offX = this.getXWithOffset(x, z);
-		int offY = this.getYWithOffset(y);
-		int offZ = this.getZWithOffset(x, z);
+		final BlockPos blockPosWithOffset = this.getBlockPosWithOffset(x, y, z);
 
-		if (sbb.isVecInside(offX, offY, offZ))
+		if (sbb.isVecInside(blockPosWithOffset))
 		{
-			Block whatsThere = world.getBlock(offX, offY, offZ);
+			IBlockState whatsThere = world.getBlockState(blockPosWithOffset);
 
-			if (whatsThere == null || whatsThere.canBeReplacedByLeaves(world, offX, offY, offZ))
+			if (whatsThere.getBlock().canBeReplacedByLeaves(blockState, world, blockPosWithOffset))
 			{
-				world.setBlock(offX, offY, offZ, blockID, meta, 2);
+				world.setBlockState(blockPosWithOffset, blockState, 2);
 			}
 		}
 	}

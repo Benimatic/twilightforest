@@ -33,8 +33,8 @@ public class ComponentTFIceTowerBridge extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("bridgeLength", this.length);
 	}
@@ -43,8 +43,8 @@ public class ComponentTFIceTowerBridge extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.length = par1NBTTagCompound.getInteger("bridgeLength");
 	}
 
@@ -65,13 +65,13 @@ public class ComponentTFIceTowerBridge extends StructureTFComponent {
 		fillWithAir(world, sbb, 0, 1, 0, length, 5, 4);
 		
 		// make floor/ceiling
-		fillWithBlocks(world, sbb, 0, 0, 0, length, 0, 4, deco.blockID, deco.blockID, false);
-		fillWithBlocks(world, sbb, 0, 6, 0, length, 6, 4, deco.blockID, deco.blockID, false);
+		fillWithBlocks(world, sbb, 0, 0, 0, length, 0, 4, deco.blockState, deco.blockState, false);
+		fillWithBlocks(world, sbb, 0, 6, 0, length, 6, 4, deco.blockState, deco.blockState, false);
 		
 		// pillars
 		for (int x = 2; x < length; x += 3) {
-			fillWithMetadataBlocks(world, sbb, x, 1, 0, x, 5, 0, deco.pillarID, deco.pillarMeta, deco.pillarID, deco.pillarMeta, false);
-			fillWithMetadataBlocks(world, sbb, x, 1, 4, x, 5, 4, deco.pillarID, deco.pillarMeta, deco.pillarID, deco.pillarMeta, false);
+			fillWithBlocks(world, sbb, x, 1, 0, x, 5, 0, deco.pillarState, deco.pillarState, false);
+			fillWithBlocks(world, sbb, x, 1, 4, x, 5, 4, deco.pillarState, deco.pillarState, false);
 		}
 		
 		return true;

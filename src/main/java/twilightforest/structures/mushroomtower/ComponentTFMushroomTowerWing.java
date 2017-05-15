@@ -35,8 +35,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setBoolean("hasBase", this.hasBase);
         par1NBTTagCompound.setBoolean("isAscender", this.isAscender);
@@ -46,8 +46,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.hasBase = par1NBTTagCompound.getBoolean("hasBase");
         this.isAscender = par1NBTTagCompound.getBoolean("isAscender");
 	}

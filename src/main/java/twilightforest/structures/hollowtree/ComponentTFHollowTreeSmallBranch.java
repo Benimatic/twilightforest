@@ -3,11 +3,15 @@ package twilightforest.structures.hollowtree;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.TFBlocks;
+
+import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 
 public class ComponentTFHollowTreeSmallBranch extends
@@ -40,16 +44,18 @@ public class ComponentTFHollowTreeSmallBranch extends
 	
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		
-		BlockPos rSrc = new BlockPos(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		BlockPos rDest = new BlockPos(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
 
-		drawBresehnam(world, sbb, rSrc.posX, rSrc.posY, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.log, 12);
+		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+
+		IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+
+		drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		
 		// with leaves!
 		if (leafy) {
 			int leafRad = random.nextInt(2) + 1;
-			makeLeafBlob(world, sbb, rDest.posX, rDest.posY, rDest.posZ, leafRad);		
+			makeLeafBlob(world, sbb, rDest.getX(), rDest.getY(), rDest.getZ(), leafRad);
 
 		}
 

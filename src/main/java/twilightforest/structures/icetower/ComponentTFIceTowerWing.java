@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -35,8 +35,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setBoolean("hasBase", this.hasBase);
         par1NBTTagCompound.setInteger("treasureFloor", this.treasureFloor);
@@ -46,8 +46,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.hasBase = par1NBTTagCompound.getBoolean("hasBase");
         this.treasureFloor = par1NBTTagCompound.getInteger("treasureFloor");
 	}

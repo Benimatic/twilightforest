@@ -33,8 +33,8 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("destSize", this.dSize);
         par1NBTTagCompound.setInteger("destHeight", this.dHeight);
@@ -44,8 +44,8 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.dSize = par1NBTTagCompound.getInteger("destSize");
         this.dHeight = par1NBTTagCompound.getInteger("destHeight");
 	}

@@ -6,7 +6,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -31,7 +32,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 		height = rand.nextInt(64) + 32;
 		radius =  rand.nextInt(4) + 1;
 
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		
 		boundingBox = new StructureBoundingBox(x, y, z, (x + radius * 2) + 2, y + height, (z + radius * 2) + 2);
@@ -41,8 +42,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("trunkRadius", this.radius);
         par1NBTTagCompound.setInteger("trunkHeight", this.height);
@@ -54,8 +55,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
 
         this.radius = par1NBTTagCompound.getInteger("trunkRadius");
         this.height = par1NBTTagCompound.getInteger("trunkHeight");
@@ -146,21 +147,21 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	
 	public void makeSmallBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-        ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, leafy);
+        ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
         list.add(branch);
         branch.buildComponent(this, list, rand);
 	}
 
 	public void makeMedBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-        ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, leafy);
+        ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
         list.add(branch);
         branch.buildComponent(this, list, rand);
 	}
 
 	public void makeLargeBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-        ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeLargeBranch(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, leafy);
+        ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeLargeBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
         list.add(branch);
         branch.buildComponent(this, list, rand);
 	}
@@ -168,7 +169,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 
 	public void makeRoot(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-	    ComponentTFHollowTreeRoot branch = new ComponentTFHollowTreeRoot(index, bSrc.posX, bSrc.posY, bSrc.posZ, branchLength, branchRotation, branchAngle, false);
+	    ComponentTFHollowTreeRoot branch = new ComponentTFHollowTreeRoot(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, false);
 	    list.add(branch);
 	    branch.buildComponent(this, list, rand);
 	}
@@ -221,12 +222,12 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 				
 				// fill to ground
 				if (dist <= radius) {
-					this.func_151554_b(world, TFBlocks.log, 0, dx + 1, -1, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, TFBlocks.log, 0, dx + 1, -1, dz + 1, sbb);
 				}
 				
 				// add vines
 				if (dist == hollow && dx == hollow + radius) {
-					this.func_151554_b(world, Blocks.VINE, 8, dx + 1, height, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, Blocks.VINE, 8, dx + 1, height, dz + 1, sbb);
 				}
 			}
 		}
@@ -269,20 +270,18 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 			insectMeta = 2;
 		}
 		
-		addInsect(world, random.nextBoolean() ? TFBlocks.firefly :  TFBlocks.cicada, insectMeta, bugSpot.posX, bugSpot.posY, bugSpot.posZ, sbb);
+		addInsect(world, random.nextBoolean() ? TFBlocks.firefly :  TFBlocks.cicada, insectMeta, bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
 	}
 
 	/**
 	 * Add an insect if we can at the position specified
 	 */
 	private void addInsect(World world, Block blockID, int insectMeta, int posX, int posY, int posZ, StructureBoundingBox sbb) {
-        int ox = this.getXWithOffset(posX, posZ);
-        int oy = this.getYWithOffset(posY);
-        int oz = this.getZWithOffset(posX, posZ);
+		final BlockPos posWithOffset = getBlockPosWithOffset(posX, posY, posZ);
 
-        if (sbb.isVecInside(ox, oy, oz) && blockID != null && blockID.canPlaceBlockAt(world, ox, oy, oz))
+		if (sbb.isVecInside(posWithOffset) && blockID != null && blockID.canPlaceBlockAt(world, posWithOffset))
         {
-        	world.setBlock(ox, oy, oz, blockID, insectMeta, 2);
+        	world.setBlockState(posWithOffset, blockID, insectMeta, 2);
         }
 	}
 

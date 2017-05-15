@@ -32,8 +32,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeStructureToNBT(par1NBTTagCompound);
 		
         par1NBTTagCompound.setInteger("roofSize", this.size);
         par1NBTTagCompound.setInteger("roofHeight", this.height);
@@ -43,8 +43,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readStructureFromNBT(par1NBTTagCompound);
         this.size = par1NBTTagCompound.getInteger("roofSize");
         this.height = par1NBTTagCompound.getInteger("roofHeight");
 	}
