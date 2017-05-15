@@ -30,11 +30,11 @@ public class ComponentTFMazeDeadEndShrooms extends ComponentTFMazeDeadEndRoots {
 			{
 				if (rand.nextInt(z + 2) > 0)
 				{
-					this.placeBlockAtCurrentPosition(world, Blocks.MYCELIUM, 0, x, 0, z, sbb);
+					this.setBlockState(world, Blocks.MYCELIUM, 0, x, 0, z, sbb);
 				}
 				if (rand.nextInt(z + 2) > 0)
 				{
-					this.placeBlockAtCurrentPosition(world, rand.nextBoolean() ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM, 0, x, 1, z, sbb);
+					this.setBlockState(world, rand.nextBoolean() ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM, 0, x, 1, z, sbb);
 				}
 			}
 		}
@@ -43,21 +43,21 @@ public class ComponentTFMazeDeadEndShrooms extends ComponentTFMazeDeadEndRoots {
 		Block mushType = rand.nextBoolean() ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK;
 		int mushY = rand.nextInt(4) + 1;
 		int mushZ = rand.nextInt(3) + 1;
-		this.placeBlockAtCurrentPosition(world, mushType, 15, 1, mushY - 1, mushZ, sbb);
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, mushZ, 1, mushY, mushZ, mushType, 10, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 1, mushY, mushZ - 1, 2, mushY, mushZ + 1, mushType, 14, Blocks.AIR, 0, false);
+		this.setBlockState(world, mushType, 15, 1, mushY - 1, mushZ, sbb);
+		this.fillWithMetadataBlocks(world, sbb, 1, 1, mushZ, 1, mushY, mushZ, mushType, 10, AIR, false);
+		this.fillWithMetadataBlocks(world, sbb, 1, mushY, mushZ - 1, 2, mushY, mushZ + 1, mushType, 14, AIR, false);
 
 		mushType = mushType == Blocks.BROWN_MUSHROOM_BLOCK ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK;
 		mushY = rand.nextInt(4) + 1;
 		mushZ = rand.nextInt(3) + 1;
-		this.fillWithMetadataBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType, 10, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 3, mushY, mushZ - 1, 4, mushY, mushZ + 1, mushType, 14, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType, 10, AIR, false);
+		this.fillWithMetadataBlocks(world, sbb, 3, mushY, mushZ - 1, 4, mushY, mushZ + 1, mushType, 14, AIR, false);
 		
 		mushType = rand.nextBoolean() ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK;
 		mushY = rand.nextInt(4) + 1;
 		int mushX = rand.nextInt(3) + 2;
-		this.fillWithMetadataBlocks(world, sbb, mushX, 1, 4, mushX, mushY, 4, mushType, 10, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, mushX - 1, mushY, 3, mushX + 1, mushY, 4, mushType, 14, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, mushX, 1, 4, mushX, mushY, 4, mushType, 10, AIR, false);
+		this.fillWithMetadataBlocks(world, sbb, mushX - 1, mushY, 3, mushX + 1, mushY, 4, mushType, 14, AIR, false);
 		
 		return true;
 	}

@@ -24,7 +24,7 @@ public class ComponentTFMazeDeadEnd extends StructureTFComponent {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 0, 4, 4, 0, Blocks.FENCE, 0, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 1, 1, 0, 4, 4, 0, Blocks.FENCE, 0, AIR, false);
 		this.fillWithAir(world, sbb, 2, 1, 0, 3, 3, 0);
 		return true;
 	}

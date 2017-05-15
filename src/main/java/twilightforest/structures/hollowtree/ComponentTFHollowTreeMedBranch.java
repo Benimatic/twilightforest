@@ -211,7 +211,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 		
 		for (BlockPos coords : lineCoords)
 		{
-			this.placeBlockAtCurrentPosition(world, blockValue, metaValue, coords.posX, coords.posY, coords.posZ, sbb);
+			this.setBlockState(world, blockValue, metaValue, coords.posX, coords.posY, coords.posZ, sbb);
 		}
 	}
 

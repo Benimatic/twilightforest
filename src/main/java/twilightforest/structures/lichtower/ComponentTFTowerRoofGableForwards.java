@@ -48,10 +48,10 @@ public class ComponentTFTowerRoofGableForwards extends ComponentTFTowerRoof {
 			for (int x = 0; x <= size - 2; x++) {
 				for (int z = min; z <= max; z++) {
 					if (z == min || z == max) {
-						placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, x, y, z, sbb);
+						setBlockState(world, Blocks.PLANKS, slabMeta, x, y, z, sbb);
 					}
 					else if (x < size - 2) {
-						placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, x, y, z, sbb);
+						setBlockState(world, Blocks.PLANKS, slabMeta, x, y, z, sbb);
 					}
 				}
 			}
@@ -63,12 +63,12 @@ public class ComponentTFTowerRoofGableForwards extends ComponentTFTowerRoof {
 		int top = (size + 1) - slopeChange;
 		int zMid = size / 2;
 		
-		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, slabMeta | 0xA, size - 1, top - 1, zMid, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, slabMeta, 0, top, zMid, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, slabMeta, size - 3, top, zMid, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, size - 2, top, zMid, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, size - 1, top, zMid, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.PLANKS, slabMeta, size - 1, top + 1, zMid, sbb);
+		setBlockState(world, Blocks.WOODEN_SLAB, slabMeta | 0xA, size - 1, top - 1, zMid, sbb);
+		setBlockState(world, Blocks.WOODEN_SLAB, slabMeta, 0, top, zMid, sbb);
+		setBlockState(world, Blocks.WOODEN_SLAB, slabMeta, size - 3, top, zMid, sbb);
+		setBlockState(world, Blocks.PLANKS, slabMeta, size - 2, top, zMid, sbb);
+		setBlockState(world, Blocks.PLANKS, slabMeta, size - 1, top, zMid, sbb);
+		setBlockState(world, Blocks.PLANKS, slabMeta, size - 1, top + 1, zMid, sbb);
 		
 		return true;
 	}

@@ -40,30 +40,30 @@ public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 				for (int z = min; z <= max; z++) {
 					if (x == min) {
 						if (z == min || z == max) {
-							placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
+							setBlockState(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
 						}
 						else
 						{
-							placeBlockAtCurrentPosition(world, Blocks.BIRCH_STAIRS, 0, x, y, z, sbb);
+							setBlockState(world, Blocks.BIRCH_STAIRS, 0, x, y, z, sbb);
 						}
 					}
 					else if (x == max) {
 						if (z == min || z == max) {
-							placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
+							setBlockState(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
 						}
 						else
 						{
-							placeBlockAtCurrentPosition(world, Blocks.BIRCH_STAIRS, 1, x, y, z, sbb);
+							setBlockState(world, Blocks.BIRCH_STAIRS, 1, x, y, z, sbb);
 						}
 					}
 					else if (z == max) {
-						placeBlockAtCurrentPosition(world, Blocks.BIRCH_STAIRS, 3, x, y, z, sbb);
+						setBlockState(world, Blocks.BIRCH_STAIRS, 3, x, y, z, sbb);
 					}
 					else if (z == min) {
-						placeBlockAtCurrentPosition(world, Blocks.BIRCH_STAIRS, 2, x, y, z, sbb);
+						setBlockState(world, Blocks.BIRCH_STAIRS, 2, x, y, z, sbb);
 					}
 					else {
-						placeBlockAtCurrentPosition(world, Blocks.PLANKS, 2, x, y, z, sbb);
+						setBlockState(world, Blocks.PLANKS, 2, x, y, z, sbb);
 					}
 				}
 			}

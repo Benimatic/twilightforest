@@ -56,27 +56,27 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 
 		// make walls
 		for (int x = 0; x < 3; x++) {
-			placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x, 2, 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.FENCE, 0, x, 2, 2, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, x, 1, 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, x, 1, 2, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, x, 0, 0, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, x, 0, 1, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, x, 0, 2, sbb);
-			placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, x, -1, 1, sbb);
+			setBlockState(world, Blocks.FENCE, 0, x, 2, 0, sbb);
+			setBlockState(world, Blocks.FENCE, 0, x, 2, 2, sbb);
+			setBlockState(world, Blocks.STONEBRICK, 0, x, 1, 0, sbb);
+			setBlockState(world, Blocks.STONEBRICK, 0, x, 1, 2, sbb);
+			setBlockState(world, Blocks.STONEBRICK, 0, x, 0, 0, sbb);
+			setBlockState(world, Blocks.STONEBRICK, 0, x, 0, 1, sbb);
+			setBlockState(world, Blocks.STONEBRICK, 0, x, 0, 2, sbb);
+			setBlockState(world, Blocks.STONEBRICK, 0, x, -1, 1, sbb);
 		}
 		
 		// try two blocks outside the boundries
-		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, -1, -1, 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.STONEBRICK, 0, 3, -1, 1, sbb);
+		setBlockState(world, Blocks.STONEBRICK, 0, -1, -1, 1, sbb);
+		setBlockState(world, Blocks.STONEBRICK, 0, 3, -1, 1, sbb);
 		
 		// clear bridge walkway
 		this.fillWithAir(world, sbb, 0, 1, 1, 2, 2, 1);
 
 
         // marker blocks
-//        placeBlockAtCurrentPosition(world, Blocks.WOOL, this.coordBaseMode, size / 2, 2, size / 2, sbb);
-//        placeBlockAtCurrentPosition(world, Blocks.GOLD_BLOCK, 0, 0, 0, 0, sbb);
+//        setBlockState(world, Blocks.WOOL, this.coordBaseMode, size / 2, 2, size / 2, sbb);
+//        setBlockState(world, Blocks.GOLD_BLOCK, 0, 0, 0, 0, sbb);
         
         // door opening?
 //        makeDoorOpening(world, sbb);

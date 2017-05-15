@@ -83,12 +83,12 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 				{
 					if (dist > hollow)
 					{
-						placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, dx + cx, y, dz + cz, sbb);
+						setBlockState(world, deco.accentID, deco.accentMeta, dx + cx, y, dz + cz, sbb);
 					}
 					else
 					{
 						// spore
-						placeBlockAtCurrentPosition(world, deco.accentID, 0, dx + cx, y, dz + cz, sbb);
+						setBlockState(world, deco.accentID, 0, dx + cx, y, dz + cz, sbb);
 
 					}
 				}

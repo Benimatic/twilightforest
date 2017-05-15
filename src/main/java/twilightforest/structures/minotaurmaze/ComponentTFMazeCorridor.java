@@ -25,7 +25,7 @@ public class ComponentTFMazeCorridor extends StructureTFComponent {
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		
 		//arch
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 2, 4, 4, 3, Blocks.FENCE, 0, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 1, 1, 2, 4, 4, 3, Blocks.FENCE, 0, AIR, false);
 		this.fillWithAir(world, sbb, 2, 1, 2, 3, 3, 3);
 		
 		return true;

@@ -57,9 +57,9 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 	}
 
 	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, int stairMeta) {
-		if (this.getBlockAtCurrentPosition(world, x, y, z, sbb).isReplaceable(world, x, y, z)) {
-			this.placeBlockAtCurrentPosition(world, deco.blockID, deco.blockMeta, x, y, z, sbb);
-			//this.placeBlockAtCurrentPosition(world, deco.stairID, this.getStairMeta(stairMeta), x, y, z, sbb);
+		if (this.getBlockStateFromPos(world, x, y, z, sbb).isReplaceable(world, x, y, z)) {
+			this.setBlockState(world, deco.blockID, deco.blockMeta, x, y, z, sbb);
+			//this.setBlockState(world, deco.stairID, this.getStairMeta(stairMeta), x, y, z, sbb);
 			this.func_151554_b(world, deco.blockID, deco.blockMeta, x, y - 1, z, sbb);
 		}
 	}

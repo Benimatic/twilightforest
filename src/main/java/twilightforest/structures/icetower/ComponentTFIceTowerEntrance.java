@@ -55,7 +55,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		BlockPos dx = offsetTowerCCoords(x, y, z, this.size, direction);
 
 		ComponentTFIceTowerStairs entrance = new ComponentTFIceTowerStairs(index, dx.posX, dx.posY, dx.posZ, this.size, this.height, direction);

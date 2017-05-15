@@ -230,14 +230,14 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), mushBlock, getMushroomMetaFor(4, rotation), rotation);
 		
 		for (int d = 0; d < (depth - 1); d++) {
-			this.placeBlockRotated(world, mushBlock, getMushroomMetaFor(2, rotation), size - (2 + d), y, z - width, rotation, sbb);
+			this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(2, rotation), size - (2 + d), y, z - width, rotation, sbb);
 		}
-		this.placeBlockRotated(world, mushBlock, getMushroomMetaFor(1, rotation), size - (depth + 1), y, z - width, rotation, sbb);
+		this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(1, rotation), size - (depth + 1), y, z - width, rotation, sbb);
 
 		for (int d = 0; d < (depth - 1); d++) {
-			this.placeBlockRotated(world, mushBlock, getMushroomMetaFor(8, rotation), size - (2 + d), y, z + width, rotation, sbb);
+			this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(8, rotation), size - (2 + d), y, z + width, rotation, sbb);
 		}
-		this.placeBlockRotated(world, mushBlock, getMushroomMetaFor(7, rotation), size - (depth + 1), y, z + width, rotation, sbb);
+		this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(7, rotation), size - (depth + 1), y, z + width, rotation, sbb);
 
 		
 	}
@@ -292,7 +292,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
 		ComponentTFTrollCaveMain cave = new ComponentTFTrollCaveGarden(index, dest.posX, dest.posY, dest.posZ, caveSize, caveHeight, direction);

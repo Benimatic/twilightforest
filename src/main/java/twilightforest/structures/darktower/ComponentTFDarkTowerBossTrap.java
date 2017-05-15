@@ -12,6 +12,8 @@ import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 
+import static twilightforest.block.enums.TowerDeviceVariant.GHASTTRAP_INACTIVE;
+
 public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing 
 {
 
@@ -90,7 +92,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 		this.fillWithBlocks(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		
 		// add boss trap
-		this.setBlockState(world, TFBlocks.towerDevice, BlockTFTowerDevice.META_GHASTTRAP_INACTIVE, 5, 1, 5, sbb);
+		this.setBlockState(world, TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, GHASTTRAP_INACTIVE), 5, 1, 5, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 6, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 7, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 8, sbb);

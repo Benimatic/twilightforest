@@ -96,7 +96,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 	}
 
 	private void makeEntranceBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int length, int rotation) {
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
 		ComponentTFIceTowerBridge bridge = new ComponentTFIceTowerBridge(index, dest.posX, dest.posY, dest.posZ, length, direction);
@@ -106,7 +106,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 	}
 
 	public boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		ComponentTFIceTowerWing entrance = new ComponentTFIceTowerEntrance(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

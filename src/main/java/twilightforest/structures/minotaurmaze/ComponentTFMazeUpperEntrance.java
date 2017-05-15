@@ -42,10 +42,10 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 		// ceiling
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.mazestone, Blocks.AIR, true);
 
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.mazestone, 6, Blocks.AIR, 0, false);
-        this.fillWithMetadataBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.mazestone, 3, Blocks.AIR, 0, true);
-        this.fillWithMetadataBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.mazestone, 1, Blocks.AIR, 0, true);
-        this.fillWithMetadataBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.mazestone, 3, Blocks.AIR, 0, true);
+        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.mazestone, 6, AIR, false);
+        this.fillWithMetadataBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.mazestone, 3, AIR, true);
+        this.fillWithMetadataBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.mazestone, 1, AIR, true);
+        this.fillWithMetadataBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.mazestone, 3, AIR, true);
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.2F, 0, 0, 0, 15, 5, 15, Blocks.GRAVEL, Blocks.AIR, true);
 		
 
@@ -66,10 +66,10 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
         this.fillWithAir(world, sbb, 1, 1, 1, 14, 4, 14);
 
         // entrance pit
-		this.fillWithMetadataBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone, 3, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, AIR, false);
+		this.fillWithMetadataBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone, 3, AIR, false);
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, Blocks.AIR, false);
-//		this.fillWithMetadataBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, Blocks.AIR, 0, false);
+//		this.fillWithMetadataBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
 
 
 

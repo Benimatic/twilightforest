@@ -40,11 +40,11 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		this.placeTreasureAtCurrentPosition(world, rand, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
 		
 		// trap
-		placeBlockAtCurrentPosition(world, Blocks.WOODEN_PRESSURE_PLATE, 0, 11, 1, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 10, 0, 11, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 11, 0, 10, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 11, 0, 12, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 12, 0, 11, sbb);
+		setBlockState(world, Blocks.WOODEN_PRESSURE_PLATE, 0, 11, 1, 11, sbb);
+		setBlockState(world, Blocks.TNT, 0, 10, 0, 11, sbb);
+		setBlockState(world, Blocks.TNT, 0, 11, 0, 10, sbb);
+		setBlockState(world, Blocks.TNT, 0, 11, 0, 12, sbb);
+		setBlockState(world, Blocks.TNT, 0, 12, 0, 11, sbb);
 
 		return true;
 	}
@@ -53,32 +53,32 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 			int dx, int dz) {
 		for (int y = 1; y < 5; y++)
 		{
-			placeBlockAtCurrentPosition(world, TFBlocks.mazestone, 2, dx + 0, y, dz + 0, sbb);
-			placeBlockAtCurrentPosition(world, TFBlocks.mazestone, 2, dx + 2, y, dz + 0, sbb);
-			placeBlockAtCurrentPosition(world, TFBlocks.mazestone, 2, dx + 0, y, dz + 2, sbb);
-			placeBlockAtCurrentPosition(world, TFBlocks.mazestone, 2, dx + 2, y, dz + 2, sbb);
+			setBlockState(world, TFBlocks.mazestone, 2, dx + 0, y, dz + 0, sbb);
+			setBlockState(world, TFBlocks.mazestone, 2, dx + 2, y, dz + 0, sbb);
+			setBlockState(world, TFBlocks.mazestone, 2, dx + 0, y, dz + 2, sbb);
+			setBlockState(world, TFBlocks.mazestone, 2, dx + 2, y, dz + 2, sbb);
 		}
-		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, dx + 1, 1, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, dx + 1, 4, dz + 1, sbb);
+		setBlockState(world, Blocks.PLANKS, 0, dx + 1, 1, dz + 1, sbb);
+		setBlockState(world, Blocks.PLANKS, 0, dx + 1, 4, dz + 1, sbb);
 		
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(1), dx + 1, 1, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(0), dx + 0, 1, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(2), dx + 2, 1, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(3), dx + 1, 1, dz + 2, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(1), dx + 1, 1, dz + 0, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(0), dx + 0, 1, dz + 1, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(2), dx + 2, 1, dz + 1, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(3), dx + 1, 1, dz + 2, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(1) + 4, dx + 1, 4, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(0) + 4, dx + 0, 4, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(2) + 4, dx + 2, 4, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.OAK_STAIRS, getStairMeta(3) + 4, dx + 1, 4, dz + 2, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(1) + 4, dx + 1, 4, dz + 0, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(0) + 4, dx + 0, 4, dz + 1, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(2) + 4, dx + 2, 4, dz + 1, sbb);
+		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(3) + 4, dx + 1, 4, dz + 2, sbb);
 
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 2, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 0, 2, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 2, 2, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 2, dz + 2, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 3, dz + 0, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 0, 3, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 2, 3, dz + 1, sbb);
-		placeBlockAtCurrentPosition(world, Blocks.IRON_BARS, 0, dx + 1, 3, dz + 2, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 1, 2, dz + 0, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 0, 2, dz + 1, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 2, 2, dz + 1, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 1, 2, dz + 2, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 1, 3, dz + 0, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 0, 3, dz + 1, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 2, 3, dz + 1, sbb);
+		setBlockState(world, Blocks.IRON_BARS, 0, dx + 1, 3, dz + 2, sbb);
 
 		
 	}

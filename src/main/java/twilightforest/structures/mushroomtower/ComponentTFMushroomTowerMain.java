@@ -151,20 +151,20 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 		
         // try to remove blocks inside this door
 		if (dx == 0) {
-			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx + 1, dy + 0, dz, sbb);
-	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx + 1, dy + 1, dz, sbb);
+			setBlockState(world, AIR, dx + 1, dy + 0, dz, sbb);
+	        setBlockState(world, AIR, dx + 1, dy + 1, dz, sbb);
 		}
 		if (dx == size - 1) {
-			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx - 1, dy + 0, dz, sbb);
-	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx - 1, dy + 1, dz, sbb);
+			setBlockState(world, AIR, dx - 1, dy + 0, dz, sbb);
+	        setBlockState(world, AIR, dx - 1, dy + 1, dz, sbb);
 		}
 		if (dz == 0) {
-			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 0, dz + 1, sbb);
-	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 1, dz + 1, sbb);
+			setBlockState(world, AIR, dx, dy + 0, dz + 1, sbb);
+	        setBlockState(world, AIR, dx, dy + 1, dz + 1, sbb);
 		}
 		if (dz == size - 1) {
-			placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 0, dz - 1, sbb);
-	        placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx, dy + 1, dz - 1, sbb);
+			setBlockState(world, AIR, dx, dy + 0, dz - 1, sbb);
+	        setBlockState(world, AIR, dx, dy + 1, dz - 1, sbb);
 		}
 		
 	}

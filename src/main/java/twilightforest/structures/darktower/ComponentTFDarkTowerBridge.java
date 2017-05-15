@@ -44,7 +44,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing
 			return false;
 		}
 
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		if (dx[1] + wingHeight > 255)

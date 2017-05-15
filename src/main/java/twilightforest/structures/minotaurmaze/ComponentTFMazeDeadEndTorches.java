@@ -24,9 +24,9 @@ public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 		
 		// torches!
-		this.fillWithMetadataBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH, 0, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH, 0, Blocks.AIR, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH, 0, Blocks.AIR, 0, false);
+		this.fillWithMetadataBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH, 0, AIR, false);
+		this.fillWithMetadataBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH, 0, AIR, false);
+		this.fillWithMetadataBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH, 0, AIR, false);
 
 		
 		return true;

@@ -51,7 +51,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
         }
 		
 		
-        this.fillWithMetadataBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone, 1, Blocks.AIR, 0, true);
+        this.fillWithMetadataBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone, 1, AIR, true);
         this.fillWithAir(world, sbb, 1, 0 - 10, 1, 4, 0 + 30, 4);
         
         //System.out.println("Drawing entrance");

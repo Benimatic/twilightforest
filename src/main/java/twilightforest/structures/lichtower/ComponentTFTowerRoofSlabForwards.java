@@ -45,11 +45,11 @@ public class ComponentTFTowerRoofSlabForwards extends ComponentTFTowerRoofSlab {
 			for (int x = 0; x <= max - 1; x++) {
 				for (int z = min; z <= max; z++) {
 					if (x == max - 1 || z == min || z == max) {
-						placeBlockAtCurrentPosition(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
+						setBlockState(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
 					}
 					else
 					{
-						placeBlockAtCurrentPosition(world, Blocks.DOUBLE_WOODEN_SLAB, 2, x, y, z, sbb);
+						setBlockState(world, Blocks.DOUBLE_WOODEN_SLAB, 2, x, y, z, sbb);
 					}
 				}
 			}

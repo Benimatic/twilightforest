@@ -66,7 +66,7 @@ public class ComponentTFIceTowerBeard extends StructureTFComponent {
 				//int rHeight = MathHelper.ceiling_float_int(Math.min(x * x / 9F, z * z / 9F));
 				
 				for (int y = 0; y < rHeight; y++) {
-					this.placeBlockAtCurrentPosition(world, deco.blockID, deco.blockMeta, x, this.height - y, z, sbb);
+					this.setBlockState(world, deco.blockID, deco.blockMeta, x, this.height - y, z, sbb);
 
 				}
 			}

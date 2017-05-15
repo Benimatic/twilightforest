@@ -26,6 +26,7 @@ import twilightforest.TFTreasure;
 
 public abstract class StructureTFComponent extends StructureComponent {
 
+    protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
     private static final StructureTFStrongholdStones strongholdStones = new StructureTFStrongholdStones();
     
     public StructureTFDecorator deco = null;
@@ -353,7 +354,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
 
     // [VanillaCopy] Keep pinned to the signature of setBlockState
-    protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, StructureBoundingBox sbb, int rotationsCW) {
+    protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, int rotationsCW, StructureBoundingBox sbb) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         setBlockState(world, state, x, y, z, sbb);
         setCoordBaseMode(oldMode);
@@ -395,7 +396,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
     
     // [VanillaCopy] Keep pinned to signature of replaceAirAndLiquidDownwards
-	public void replaceAirAndLiquidDownwardsRotated(World world, IBlockState state, int x, int y, int z, StructureBoundingBox sbb, int rotation) {
+	public void replaceAirAndLiquidDownwardsRotated(World world, IBlockState state, int x, int y, int z, int rotation, StructureBoundingBox sbb) {
         EnumFacing oldBaseMode = fakeBaseMode(rotation);
         replaceAirAndLiquidDownwards(world, state, x, y, z, sbb);
         setCoordBaseMode(oldBaseMode);
@@ -544,4 +545,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 			    getZWithOffset(x, z)
 	    );
 	}
+
+    protected EnumFacing rotateRelative(int rotations) {
+        return EnumFacing.HORIZONTALS[(((getCoordBaseMode().ordinal() - 2) + rotations % 4))];
+    }
 }

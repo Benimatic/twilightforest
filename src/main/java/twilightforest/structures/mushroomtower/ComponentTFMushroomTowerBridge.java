@@ -80,10 +80,10 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 
 		// make walls
 		for (int x = 0; x < dSize; x++) {
-			placeBlockAtCurrentPosition(world, deco.fenceID, deco.fenceMeta, x, 1, 0, sbb);
-			placeBlockAtCurrentPosition(world, deco.fenceID, deco.fenceMeta, x, 1, 2, sbb);
+			setBlockState(world, deco.fenceID, deco.fenceMeta, x, 1, 0, sbb);
+			setBlockState(world, deco.fenceID, deco.fenceMeta, x, 1, 2, sbb);
 
-			placeBlockAtCurrentPosition(world, deco.floorID, this.isAscender ? 3 : deco.floorMeta, x, 0, 1, sbb);		
+			setBlockState(world, deco.floorID, this.isAscender ? 3 : deco.floorMeta, x, 0, 1, sbb);
 		}
 
 		// clear bridge walkway

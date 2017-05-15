@@ -120,11 +120,11 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 	/**
 	 * Puts a block only if the block that's there is air.
 	 * 
-	 * TODO: This could be more efficient by combining the duplicate logic of the getBlockAtCurrentPosition and placeBlockAtCurrentPosition functions.
+	 * TODO: This could be more efficient by combining the duplicate logic of the getBlockStateFromPos and setBlockState functions.
 	 */
 	protected void placeBlockIfEmpty(World world, Block blockID, int meta, int x, int y, int z, StructureBoundingBox sbb) {
-		if (getBlockAtCurrentPosition(world, x, y, z, sbb) == Blocks.AIR) {
-			placeBlockAtCurrentPosition(world, blockID, meta, x, y, z, sbb);
+		if (getBlockStateFromPos(world, x, y, z, sbb) == Blocks.AIR) {
+			setBlockState(world, blockID, meta, x, y, z, sbb);
 		}
 	}
 

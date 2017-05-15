@@ -133,7 +133,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	@Override
 	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		// stop if out of range
@@ -276,7 +276,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	
 	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation, boolean ascender) {
 		// bridges are size  always
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 		
 		// adjust height for those stupid little things
@@ -308,7 +308,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	
 	private boolean makeMainBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		EnumFacing direction = (getCoordBaseMode() + rotation) % 4;
+		EnumFacing direction = rotateRelative(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 
 		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
@@ -411,22 +411,22 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 				if (dist <= diameter) 
 				{
 					// make floor/ceiling
-					placeBlockAtCurrentPosition(world, deco.floorID, deco.floorMeta, dx + cx, 0, dz + cz, sbb);
-					placeBlockAtCurrentPosition(world, deco.floorID, deco.floorMeta, dx + cx, height, dz + cz, sbb);
+					setBlockState(world, deco.floorID, deco.floorMeta, dx + cx, 0, dz + cz, sbb);
+					setBlockState(world, deco.floorID, deco.floorMeta, dx + cx, height, dz + cz, sbb);
 
 					// make walls
 					if (dist > hollow)
 					{
 						for (int dy = 0; dy <= height; dy++)
 						{
-							placeBlockAtCurrentPosition(world, deco.blockID, deco.blockMeta, dx + cx, dy, dz + cz, sbb);
+							setBlockState(world, deco.blockID, deco.blockMeta, dx + cx, dy, dz + cz, sbb);
 						}
 					}
 					else
 					{
 						for (int dy = 1; dy <= height - 1; dy++)
 						{
-							placeBlockAtCurrentPosition(world, Blocks.AIR, 0, dx + cx, dy, dz + cz, sbb);
+							setBlockState(world, AIR, dx + cx, dy, dz + cz, sbb);
 						}
 					}
 
@@ -486,7 +486,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 				if (dist <= hollow) 
 				{
 					{
-						placeBlockAtCurrentPosition(world, deco.floorID, this.isAscender ? 3 : deco.floorMeta, dx + cx, dy, dz + cz, sbb);
+						setBlockState(world, deco.floorID, this.isAscender ? 3 : deco.floorMeta, dx + cx, dy, dz + cz, sbb);
 					}
 				}
 			}
@@ -500,8 +500,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
         
-        if (getBlockAtCurrentPosition(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
-        	placeBlockAtCurrentPosition(world, deco.accentID, deco.accentMeta, dx, dy + 2, dz, sbb);
+        if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
+        	setBlockState(world, deco.accentID, deco.accentMeta, dx, dy + 2, dz, sbb);
         }
 	}
 	

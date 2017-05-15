@@ -24,21 +24,21 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEndCh
 		super.addComponentParts(world, rand, sbb);
 		
 		// add tripwire hooks
-		this.placeBlockAtCurrentPosition(world, Blocks.TRIPWIRE_HOOK, getHookMeta(3), 1, 1, 2, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.TRIPWIRE_HOOK, getHookMeta(1), 4, 1, 2, sbb);
+		this.setBlockState(world, Blocks.TRIPWIRE_HOOK, getHookMeta(3), 1, 1, 2, sbb);
+		this.setBlockState(world, Blocks.TRIPWIRE_HOOK, getHookMeta(1), 4, 1, 2, sbb);
 		
 		// add string
-		this.placeBlockAtCurrentPosition(world, Blocks.TRIPWIRE, 0, 2, 1, 2, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.TRIPWIRE, 0, 3, 1, 2, sbb);
+		this.setBlockState(world, Blocks.TRIPWIRE, 0, 2, 1, 2, sbb);
+		this.setBlockState(world, Blocks.TRIPWIRE, 0, 3, 1, 2, sbb);
 		
 		// TNT!
-		this.placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 0, 0, 2, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 0, -1, 2, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 1, -1, 2, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 2, 0, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 3, 0, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 2, 0, 3, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.TNT, 0, 3, 0, 3, sbb);
+		this.setBlockState(world, Blocks.TNT, 0, 0, 0, 2, sbb);
+		this.setBlockState(world, AIR, 0, -1, 2, sbb);
+		this.setBlockState(world, AIR, 1, -1, 2, sbb);
+		this.setBlockState(world, Blocks.TNT, 0, 2, 0, 4, sbb);
+		this.setBlockState(world, Blocks.TNT, 0, 3, 0, 4, sbb);
+		this.setBlockState(world, Blocks.TNT, 0, 2, 0, 3, sbb);
+		this.setBlockState(world, Blocks.TNT, 0, 3, 0, 3, sbb);
 
 		return true;
 	}

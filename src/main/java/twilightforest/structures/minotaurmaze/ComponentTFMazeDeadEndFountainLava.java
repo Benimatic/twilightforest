@@ -24,12 +24,12 @@ public class ComponentTFMazeDeadEndFountainLava extends ComponentTFMazeDeadEndFo
 		super.addComponentParts(world, rand, sbb);
 		
 		// remove water
-		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 2, 3, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 3, 3, 4, sbb);
+		this.setBlockState(world, AIR, 2, 3, 4, sbb);
+		this.setBlockState(world, AIR, 3, 3, 4, sbb);
 		
 		// lava instead of water
-		this.placeBlockAtCurrentPosition(world, Blocks.FLOWING_LAVA, 0, 2, 3, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.FLOWING_LAVA, 0, 3, 3, 4, sbb);
+		this.setBlockState(world, Blocks.FLOWING_LAVA, 0, 2, 3, 4, sbb);
+		this.setBlockState(world, Blocks.FLOWING_LAVA, 0, 3, 3, 4, sbb);
 		
 		return true;
 	}

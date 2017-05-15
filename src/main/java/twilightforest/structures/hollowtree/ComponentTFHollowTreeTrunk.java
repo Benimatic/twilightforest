@@ -215,7 +215,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 				{
 					// fill the body of the trunk
 					if (dist <= radius && dist > hollow) {
-						this.placeBlockAtCurrentPosition(world, TFBlocks.log, 0, dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
+						this.setBlockState(world, TFBlocks.log, 0, dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 				
