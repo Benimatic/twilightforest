@@ -134,7 +134,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 */
 	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		//System.out.println("Making tower, index = " + index + ", list.size() = " + list.size());
@@ -166,7 +166,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	 */
 	public boolean makeBossTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		ComponentTFIceTowerWing wing = new ComponentTFIceTowerBossWing(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

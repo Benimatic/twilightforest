@@ -133,7 +133,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	@Override
 	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		// stop if out of range
@@ -276,7 +276,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	
 	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation, boolean ascender) {
 		// bridges are size  always
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 		
 		// adjust height for those stupid little things
@@ -308,7 +308,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	
 	private boolean makeMainBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 
 		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

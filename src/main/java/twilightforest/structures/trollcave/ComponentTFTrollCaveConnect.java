@@ -292,7 +292,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
 		ComponentTFTrollCaveMain cave = new ComponentTFTrollCaveGarden(index, dest.posX, dest.posY, dest.posZ, caveSize, caveHeight, direction);

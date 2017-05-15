@@ -158,7 +158,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			return false;
 		}
 		
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		
 		if (rand.nextInt(6) == 0) {
@@ -191,7 +191,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 	protected boolean makeBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 		// bridges are size 3 always
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 		// adjust height for those stupid little things
 		if (wingSize == 3 && wingHeight > 10) {

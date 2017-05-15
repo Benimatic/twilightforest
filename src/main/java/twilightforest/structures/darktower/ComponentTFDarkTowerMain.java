@@ -210,7 +210,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	 */
 	private boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int childSize, int childHeight, int rotation) 
 	{
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 		ComponentTFDarkTowerBridge bridge = new ComponentTFDarkTowerEntranceBridge(index, dx[0], dx[1], dx[2], childSize, childHeight, direction);
@@ -229,7 +229,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		int wingSize = 15;
 		int wingHeight = 56;
 
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 		ComponentTFDarkTowerMainBridge bridge = new ComponentTFDarkTowerMainBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
@@ -249,7 +249,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		int wingSize = 11;
 		int wingHeight = 9;
 
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 		ComponentTFDarkTowerBossBridge bridge = new ComponentTFDarkTowerBossBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

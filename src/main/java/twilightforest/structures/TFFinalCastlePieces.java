@@ -552,7 +552,7 @@ public class TFFinalCastlePieces {
     	 */
     	public DungeonSteps buildMoreStepsTowards(StructureComponent parent, List list, Random rand, int rotation) {
     		
-    		EnumFacing direction = rotateRelative(rotation);
+    		EnumFacing direction = getStructureRelativeRotation(rotation);
     		
     		int sx = 2;
     		int sy = 0;
@@ -2123,7 +2123,7 @@ public class TFFinalCastlePieces {
     		// add door
     		this.addOpening(x, y, z, rotation);
 
-    		EnumFacing direction = rotateRelative(rotation);
+    		EnumFacing direction = getStructureRelativeRotation(rotation);
     		BlockPos dx = offsetTowerCCoords(x, y, z, 0, direction);
 
     		EntranceStairs stairs = new EntranceStairs(index, dx.getX(), dx.getY(), dx.getZ(), direction);

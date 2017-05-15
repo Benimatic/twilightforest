@@ -21,7 +21,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
 
 		// make a new size 15 main tower
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 15, direction);
 		
 		// adjust coordinates to fit an existing tower

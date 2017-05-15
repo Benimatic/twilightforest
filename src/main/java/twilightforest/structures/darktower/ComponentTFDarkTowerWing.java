@@ -240,7 +240,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			return false;
 		}
 		
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 		
 		if (dx[1] + wingHeight > 250)
@@ -273,7 +273,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	
 	protected boolean makeTowerBalcony(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int rotation) 
 	{
-		EnumFacing direction = rotateRelative(rotation);
+		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 		
 		
