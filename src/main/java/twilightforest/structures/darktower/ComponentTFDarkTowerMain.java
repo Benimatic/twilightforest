@@ -25,9 +25,11 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFTreasure;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerDeviceVariant;
+import twilightforest.block.enums.WoodVariant;
 import twilightforest.entity.TFCreatures;
 import twilightforest.item.TFItems;
 import twilightforest.structures.StructureTFComponent;
@@ -1004,9 +1006,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	}
 
 	private void makeWoodPillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, int stairMeta, int rotation, StructureBoundingBox sbb) {
-		this.setBlockStateRotated(world, TFBlocks.log, 3, x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, TFBlocks.log, 3, x, y + 3, z, rotation, sbb);
-		this.setBlockStateRotated(world, TFBlocks.log, 3, x, y + 4, z, rotation, sbb);
+		final IBlockState log = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+		this.setBlockStateRotated(world, log, x, y + 2, z, rotation, sbb);
+		this.setBlockStateRotated(world, log, x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, log, x, y + 4, z, rotation, sbb);
 	}
 
 	private void placeItemFrameRotated(World world, int x, int y, int z, int rotation, int direction, ItemStack itemStack, StructureBoundingBox sbb) {
@@ -1103,10 +1106,13 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			int dx = getXWithOffsetRotated(x, z, rotation);
 			int dy = getYWithOffset(y + 3);
 			int dz = getZWithOffsetRotated(x, z, rotation);
-			if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) == Blocks.FURNACE)
+
+			BlockPos pos = new BlockPos(dx, dy, dz);
+
+			if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() == Blocks.FURNACE)
 			{
 				// put charcoal in the oven
-				IInventory inv = (IInventory) world.getTileEntity(dx, dy, dz);
+				IInventory inv = (IInventory) world.getTileEntity(pos);
 
 				inv.setInventorySlotContents(1, new ItemStack(Items.COAL, amount, 1));
 			}
@@ -1142,10 +1148,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			break;
 		}
 		
-        if (sbb.isVecInside(sx, sy, sz))
+        if (sbb.isVecInside(new BlockPos(sx, sy, sz)))
         {
-        	world.setBlock(sx, sy + 0, sz, forgeDeco.stairID, stairMeta, 0);
-        	world.setBlock(sx, sy + 3, sz, forgeDeco.stairID, stairMeta + 4, 0);
+        	world.setBlockState(new BlockPos(sx, sy + 0, sz), forgeDeco.stairID, stairMeta, 0);
+        	world.setBlockState(new BlockPos(sx, sy + 3, sz), forgeDeco.stairID, stairMeta + 4, 0);
         }
 	}
 
@@ -1202,8 +1208,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	private void decorateBotanical(World world, Random decoRNG, StructureBoundingBox sbb, int rotation, int y) {
 		// main part
 		makePillarFrame(world, sbb, this.deco, rotation, 12, y, 12, 4, 4, 4, true);
-		this.fillBlocksRotated(world, sbb, 13, y + 1, 13, 14, y + 1, 14, deco.blockID, deco.blockMeta, rotation);
-		this.fillBlocksRotated(world, sbb, 13, y + 4, 13, 14, y + 4, 14, deco.blockID, deco.blockMeta, rotation);
+		this.fillBlocksRotated(world, sbb, 13, y + 1, 13, 14, y + 1, 14, deco.blockState, rotation);
+		this.fillBlocksRotated(world, sbb, 13, y + 4, 13, 14, y + 4, 14, deco.blockState, rotation);
 		
 		placeRandomPlant(world, decoRNG, 13, y + 2, 13, rotation, sbb);
 		placeRandomPlant(world, decoRNG, 13, y + 2, 14, rotation, sbb);
@@ -1463,7 +1469,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	 */
 	private void makeMiniGhastSpawner(World world, Random rand, int y, int sx, int sz, StructureBoundingBox sbb) 
 	{
-		TileEntityMobSpawner spawner = setSpawner(world, rand, sx, y + 2, sz, TFCreatures.getSpawnerNameFor("Mini Ghast"), sbb);
+		TileEntityMobSpawner spawner = setSpawner(world, sx, y + 2, sz, sbb, TFCreatures.getSpawnerNameFor("Mini Ghast"));
 		
 		if (spawner != null)
 		{
@@ -1563,9 +1569,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		int rotation = (this.boundingBox.minY + top + 1) % 4;
 		
 		// platform
-		this.fillBlocksRotated(world, sbb, 5, top - spacing, 9, 7, top - spacing, 11, deco.accentID, deco.accentMeta, rotation);
+		this.fillBlocksRotated(world, sbb, 5, top - spacing, 9, 7, top - spacing, 11, deco.accentState, rotation);
 		// ladder ascender
-		this.fillBlocksRotated(world, sbb, 6, top - spacing, 9, 6, top, 9, deco.accentID, deco.accentMeta, rotation);
+		this.fillBlocksRotated(world, sbb, 6, top - spacing, 9, 6, top, 9, deco.accentState, rotation);
 		this.fillBlocksRotated(world, sbb, 6, top - spacing + 1, 10, 6, top - 1, 10, Blocks.LADDER, getLadderMeta(3, rotation), rotation);
 		setBlockStateRotated(world, AIR, 6, top + 1, 9, rotation, sbb);
 		setBlockStateRotated(world, deco.fenceState, 5, top + 0, 10, rotation, sbb);
