@@ -7,7 +7,6 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -19,6 +18,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -180,9 +180,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
     	
-        int minX = MathHelper.ceiling_double_int(par1AxisAlignedBB.minX);
-        int minY = MathHelper.ceiling_double_int(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.ceiling_double_int(par1AxisAlignedBB.minZ);
+        int minX = MathHelper.ceil(par1AxisAlignedBB.minX);
+        int minY = MathHelper.ceil(par1AxisAlignedBB.minY);
+        int minZ = MathHelper.ceil(par1AxisAlignedBB.minZ);
         int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
         int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
         int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
@@ -219,7 +219,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     		float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
     		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
 
-    		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    		this.playSound(SoundEvents. ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     		this.world.spawnEntity(ice);
     	}
     }

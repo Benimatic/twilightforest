@@ -1,10 +1,8 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -44,20 +42,6 @@ public class EntityTFKingSpider extends EntitySpider {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-    }
-
-    @Override
-	protected Entity findPlayerToAttack()
-    {
-    	// kill at all times!
-    	double var2 = 16.0D;
-    	return this.world.getClosestVulnerablePlayerToEntity(this, var2);
-    }
-
-	//@Override
-    public float spiderScaleAmount()
-    {
-        return 1.9F;
     }
 
 	@Override
