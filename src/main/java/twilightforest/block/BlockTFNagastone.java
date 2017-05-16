@@ -1,11 +1,15 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -33,6 +37,7 @@ public class BlockTFNagastone extends Block {
 		return state.getValue(VARIANT).ordinal();
 	}
 
+	@Nonnull
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(VARIANT, NagastoneVariant.values()[(meta & 15)]);
@@ -48,19 +53,37 @@ public class BlockTFNagastone extends Block {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
+	//      Blockstate to meta 0-3  will be heads
+	//      Blockstate to meta 4-15 will be body components
+	// BUT:
+	//      Item meta 0 will be head
+	//      Item meta 1 will be body
+	@Override
+	public int damageDropped(IBlockState state) {
+		return NagastoneVariant.isHead(state.getValue(VARIANT)) ? 0 : 1 ;
+	}
+
+	// Heads are manually placed, bodys are automatically connected
+	// If player places head on horz side of block, use that block face. Else, defer to player rotation.
+	@Nonnull
+	@Override
+	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, ItemStack stack) {
+		return stack.getItemDamage() == 0
+				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing()))
+				: this.getDefaultState();
+	}
+
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState stateIn, Random rand) {
 		if (NagastoneVariant.isHead(stateIn.getValue(VARIANT)))
 			return;
 
 		// If state is not a head then you may go ahead and update
-
 		int connectionCount = 0;
 		IBlockState stateOut = stateIn;
 		EnumFacing[] facings = new EnumFacing[2];
 
 		// get sides
-
 		for(EnumFacing side : EnumFacing.VALUES)
 			if (world.getBlockState(pos.offset(side)).getBlock() == TFBlocks.nagastone)
 				if (++connectionCount > 2) break;
@@ -70,15 +93,11 @@ public class BlockTFNagastone extends Block {
 		// if there are 2 sides that don't line on same axis, use an elbow part, else use axis part
 		// if there is 1 side, then use an axis part
 		// if there are 0 or greater than 2 sides, use solid
-
+		// use default if there are more than 3 connections or 0
 		switch (connectionCount) {
+			case 1: facings[1] = facings[0]; // No null, for next statement
 			case 2:
-				if (facings[0].getAxis() != facings[1].getAxis()) {
-					stateIn = stateOut.withProperty(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0] , facings[1]));
-					break;
-				}
-			case 1:
-				stateIn = stateOut.withProperty(VARIANT, NagastoneVariant.getVariantFromAxis(facings[0].getAxis()));
+				stateIn = stateOut.withProperty(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
 				break;
 			default:
 				stateOut = this.getDefaultState();
@@ -86,8 +105,7 @@ public class BlockTFNagastone extends Block {
 		}
 
 		// if result matches state in world, no need to add more effort
-		if (stateIn != stateOut)
-			world.setBlockState(pos, stateOut);
+		if (stateIn != stateOut) world.setBlockState(pos, stateOut);
 	}
 
 	@Nonnull

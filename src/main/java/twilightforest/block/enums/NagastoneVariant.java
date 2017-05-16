@@ -1,51 +1,57 @@
 package twilightforest.block.enums;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public enum NagastoneVariant implements IStringSerializable {
-    HEAD_NORTH,
-    HEAD_EAST,
-    HEAD_SOUTH,
-    HEAD_WEST,
+    NORTH_HEAD,
+    SOUTH_HEAD,
+    WEST_HEAD,
+    EAST_HEAD,
     NORTH_DOWN,
-    EAST_DOWN,
     SOUTH_DOWN,
     WEST_DOWN,
+    EAST_DOWN,
     NORTH_UP,
-    EAST_UP,
     SOUTH_UP,
+    EAST_UP,
     WEST_UP,
     AXIS_X,
     AXIS_Y,
     AXIS_Z,
-    SOLID;
-
-    NagastoneVariant() {
-    }
+    SOLID; // This can act as null
 
     @Override
     public String getName() {
         return name().toLowerCase(Locale.ROOT);
     }
 
-    public static boolean isHead(@Nonnull NagastoneVariant variant) {
-        switch (variant) {
-            case HEAD_NORTH:
-            case HEAD_EAST:
-            case HEAD_SOUTH:
-            case HEAD_WEST:
-                return true;
+    public static boolean isHead(NagastoneVariant variant) {
+        return variant.ordinal() < 4;
+    }
+
+    public static NagastoneVariant getHeadFromFacing(EnumFacing facing) {
+        switch (facing) {
+            case NORTH:
+                return NORTH_HEAD;
+            case SOUTH:
+                return SOUTH_HEAD;
+            case WEST:
+                return WEST_HEAD;
+            case EAST:
+                return EAST_HEAD;
             default:
-                return false;
+                return SOLID;
         }
     }
 
-    @Nonnull
-    public static NagastoneVariant getVariantFromAxis(@Nonnull EnumFacing.Axis axis) {
+    public static NagastoneVariant getVariantFromAxis(EnumFacing.Axis axis) {
         switch (axis){
             case X:
                 return AXIS_X;
@@ -53,13 +59,12 @@ public enum NagastoneVariant implements IStringSerializable {
                 return AXIS_Y;
             case Z:
                 return AXIS_Z;
+            default:
+                return SOLID;
         }
-        // If you passed in null to this method... prepare yourselves
-        return null;
     }
 
-    @Nonnull
-    public static NagastoneVariant getVariantFromDoubleFacing(@Nonnull EnumFacing facing1, @Nonnull EnumFacing facing2) {
+    public static NagastoneVariant getVariantFromDoubleFacing(EnumFacing facing1, EnumFacing facing2) {
         if (facing1.getAxis() == facing2.getAxis()) // Pairs of 6 dirs and axes
             return getVariantFromAxis(facing1.getAxis()); // Both faces are on same axis
         else if (facing1.getAxis() != EnumFacing.Axis.Y && facing2.getAxis() != EnumFacing.Axis.Y)
@@ -78,6 +83,8 @@ public enum NagastoneVariant implements IStringSerializable {
                     return WEST_UP;
                 case EAST:
                     return EAST_UP;
+                default:
+                    return SOLID;
             }
         } else {
             switch (otherFace) {
@@ -89,11 +96,9 @@ public enum NagastoneVariant implements IStringSerializable {
                     return WEST_DOWN;
                 case EAST:
                     return EAST_DOWN;
+                default:
+                    return SOLID;
             }
         }
-
-        // If you passed in null to this method... prepare yourselves. Should be unreachable
-        //noinspection ConstantConditions
-        return null;
     }
 }
