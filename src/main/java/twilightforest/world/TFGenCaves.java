@@ -3,6 +3,7 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.ChunkPrimer;
 import twilightforest.biomes.TFBiomeHighlands;
@@ -239,7 +240,7 @@ public class TFGenCaves extends MapGenCaves
     @Override
     protected void recursiveGenerate(World par1World, int genX, int genZ, int centerX, int centerZ, ChunkPrimer blockStorage) {
         int numberOfCaves = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
-        boolean isHighlands = par1World.getBiome(genX * 16, genZ * 16) instanceof TFBiomeHighlands;
+        boolean isHighlands = par1World.getBiome(new BlockPos(genX * 16, 0, genZ * 16)) instanceof TFBiomeHighlands;
 
         if (this.rand.nextInt(15) != 0)
         {

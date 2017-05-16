@@ -86,19 +86,19 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		// constrain branch spread
 		if ((dest.getX() - pos.getX()) < -4)
 		{
-			dest.getX() = pos.getX() - 4;
+			dest = dest.add(-4, 0, 0);
 		}
 		if ((dest.getX() - pos.getX()) > 4)
 		{
-			dest.getX() = pos.getX() + 4;
+			dest = dest.add(4, 0, 0);
 		}
 		if ((dest.getZ() - pos.getZ()) < -4)
 		{
-			dest.getZ() = pos.getZ() - 4;
+			dest = dest.add(0, 0, -4);
 		}
 		if ((dest.getZ() - pos.getZ()) > 4)
 		{
-			dest.getZ() = pos.getZ() + 4;
+			dest = dest.add(0, 0, 4);
 		}
 		
 		if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
@@ -136,43 +136,44 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 				if (dx == 3 && dz == 3) {
 					dist = 6;
 				}
-				
+
+				//FIXME: AtomicBlom: Mushrooms don't seem to use metadata? Not sure what's with all the Metadata that's in use here..?
 				// if we're inside the blob, fill it
 				if (dx == 0) {
 					// two!
 					if (dz < rad) {
-						setBlockAndNotifyAdequately(world, sx + 0, sy, sz + dz, blockValue, 5);
-						setBlockAndNotifyAdequately(world, sx + 0, sy, sz - dz, blockValue, 5);
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), state);
 					}
 					else {
-						setBlockAndNotifyAdequately(world, sx + 0, sy, sz + dz, blockValue, 8);
-						setBlockAndNotifyAdequately(world, sx + 0, sy, sz - dz, blockValue, 2);
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), state);
 					}
 				}
 				else if (dz == 0) {
 					// two!
 					if (dx < rad) {
-						setBlockAndNotifyAdequately(world, sx + dx, sy, sz + 0, blockValue, 5);
-						setBlockAndNotifyAdequately(world, sx - dx, sy, sz + 0, blockValue, 5);
+						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
+						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
 					}
 					else {
-						setBlockAndNotifyAdequately(world, sx + dx, sy, sz + 0, blockValue, 6);
-						setBlockAndNotifyAdequately(world, sx - dx, sy, sz + 0, blockValue, 4);
+						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
+						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
 					}
 				}
 				else if (dist < rad) {
 					// do four at a time for easiness!
-					setBlockAndNotifyAdequately(world, sx + dx, sy, sz + dz, blockValue, 5);
-					setBlockAndNotifyAdequately(world, sx + dx, sy, sz - dz, blockValue, 5);
-					setBlockAndNotifyAdequately(world, sx - dx, sy, sz + dz, blockValue, 5);
-					setBlockAndNotifyAdequately(world, sx - dx, sy, sz - dz, blockValue, 5);
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), state);
 				}
 				else if (dist == rad) {
 					// do four at a time for easiness!
-					setBlockAndNotifyAdequately(world, sx + dx, sy, sz + dz, blockValue, 9);
-					setBlockAndNotifyAdequately(world, sx + dx, sy, sz - dz, blockValue, 3);
-					setBlockAndNotifyAdequately(world, sx - dx, sy, sz + dz, blockValue, 7);
-					setBlockAndNotifyAdequately(world, sx - dx, sy, sz - dz, blockValue, 1);
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), state);
 				}
 			}
 		}
@@ -188,21 +189,22 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	private void addFirefly(World world, BlockPos pos, int height, double angle)
 	{
 		int iAngle = (int)(angle * 4.0);
+		final IBlockState firefly = TFBlocks.firefly.getDefaultState();
 		if (iAngle == 0)
 		{
-			setBlockAndNotifyAdequately(world, pos.east().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.east().up(height), firefly);
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndNotifyAdequately(world, pos.west().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.west().up(height), firefly);
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndNotifyAdequately(world, pos.south().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.south().up(height), firefly);
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndNotifyAdequately(world, pos.north().up(height), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.north().up(height), firefly);
 		}
 	}
 

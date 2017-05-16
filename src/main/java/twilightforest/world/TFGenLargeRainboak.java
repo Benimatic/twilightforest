@@ -3,10 +3,16 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFLeaves;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.LeavesVariant;
 
 /**
  * This is a lame copy of WorldGenLargeTree, since I'm too lazy to make my own tree and all the methods in WorldGenLargeTree are package-only
@@ -147,7 +153,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
         System.arraycopy(var2, 0, this.leafNodes, 0, var4);
     }
 
-    void genTreeLayer(int par1, int par2, int par3, float par4, byte par5, Block leaves, int meta)
+    void genTreeLayer(int par1, int par2, int par3, float par4, byte par5, IBlockState leaves)
     {
         int var7 = (int)((double)par4 + 0.618D);
         byte var8 = otherCoordPairs[par5];
@@ -173,15 +179,17 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 else
                 {
                     var11[var9] = var10[var9] + var13;
-                    Block var14 = this.world.getBlock(var11[0], var11[1], var11[2]);
+                    final BlockPos pos = new BlockPos(var11[0], var11[1], var11[2]);
+                    IBlockState var14 = this.world.getBlockState(pos);
 
-                    if (var14 != Blocks.AIR && !var14.canBeReplacedByLeaves(this.world, var11[0], var11[1], var11[2]))
+                    final Block block = var14.getBlock();
+                    if (block != Blocks.AIR && !block.canBeReplacedByLeaves(var14, this.world, pos))
                     {
                         ++var13;
                     }
                     else
                     {
-                        this.setBlockAndNotifyAdequately(this.world, var11[0], var11[1], var11[2], leaves, meta);
+                        this.setBlockAndNotifyAdequately(this.world, pos, leaves);
                         ++var13;
                     }
                 }
@@ -237,7 +245,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator
         for (int var5 = par2 + this.leafDistanceLimit; var4 < var5; ++var4)
         {
             float var6 = this.leafSize(var4 - par2);
-            this.genTreeLayer(par1, var4, par3, var6, (byte)1, TFBlocks.leaves, 3);
+            this.genTreeLayer(par1, var4, par3, var6, (byte)1, TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK));
         }
     }
 
@@ -285,7 +293,8 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 var14[var6] = MathHelper.floor((double)(par1ArrayOfInteger[var6] + var15) + 0.5D);
                 var14[var7] = MathHelper.floor((double)par1ArrayOfInteger[var7] + (double)var15 * var10 + 0.5D);
                 var14[var8] = MathHelper.floor((double)par1ArrayOfInteger[var8] + (double)var15 * var12 + 0.5D);
-                byte var17 = 0;
+
+                IBlockState var17 = log.getDefaultState();
                 int var18 = Math.abs(var14[0] - par1ArrayOfInteger[0]);
                 int var19 = Math.abs(var14[2] - par1ArrayOfInteger[2]);
                 int var20 = Math.max(var18, var19);
@@ -294,15 +303,15 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 {
                     if (var18 == var20)
                     {
-                        var17 = 4;
+                        var17 = var17.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
                     }
                     else if (var19 == var20)
                     {
-                        var17 = 8;
+                        var17 = var17.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
                     }
                 }
 
-                this.setBlockAndNotifyAdequately(this.world, var14[0], var14[1], var14[2], log, var17);
+                this.setBlockAndNotifyAdequately(this.world, new BlockPos(var14[0], var14[1], var14[2]), var17);
             }
         }
     }
@@ -431,9 +440,10 @@ public class TFGenLargeRainboak extends TFTreeGenerator
                 var13[var5] = par1ArrayOfInteger[var5] + var14;
                 var13[var6] = MathHelper.floor((double)par1ArrayOfInteger[var6] + (double)var14 * var9);
                 var13[var7] = MathHelper.floor((double)par1ArrayOfInteger[var7] + (double)var14 * var11);
-                Block var16 = this.world.getBlock(var13[0], var13[1], var13[2]);
+                IBlockState var16 = this.world.getBlockState(new BlockPos(var13[0], var13[1], var13[2]));
+                final Block block = var16.getBlock();
 
-                if (var16 != Blocks.AIR && var16 != Blocks.LEAVES)
+                if (block != Blocks.AIR && block != Blocks.LEAVES)
                 {
                     break;
                 }
@@ -451,9 +461,10 @@ public class TFGenLargeRainboak extends TFTreeGenerator
     {
         int[] var1 = new int[] {this.basePos[0], this.basePos[1], this.basePos[2]};
         int[] var2 = new int[] {this.basePos[0], this.basePos[1] + this.heightLimit - 1, this.basePos[2]};
-        Block var3 = this.world.getBlock(this.basePos[0], this.basePos[1] - 1, this.basePos[2]);
+        IBlockState var3 = this.world.getBlockState(new BlockPos(this.basePos[0], this.basePos[1] - 1, this.basePos[2]));
 
-        if (var3 != Blocks.DIRT && var3 != Blocks.GRASS)
+        final Block block = var3.getBlock();
+        if (block != Blocks.DIRT && block != Blocks.GRASS)
         {
             return false;
         }
@@ -493,14 +504,15 @@ public class TFGenLargeRainboak extends TFTreeGenerator
         this.leafDensity = par5;
     }
 
-    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
+    @Override
+    public boolean generate(World par1World, Random par2Random, BlockPos position)
     {
         this.world = par1World;
         long var6 = par2Random.nextLong();
         this.rand.setSeed(var6);
-        this.basePos[0] = par3;
-        this.basePos[1] = par4;
-        this.basePos[2] = par5;
+        this.basePos[0] = position.getX();
+        this.basePos[1] = position.getY();
+        this.basePos[2] = position.getZ();
 
         if (this.heightLimit == 0)
         {
