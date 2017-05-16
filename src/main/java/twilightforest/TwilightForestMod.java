@@ -1,10 +1,8 @@
 package twilightforest;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
@@ -12,38 +10,6 @@ import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.oredict.OreDictionary;
-import twilightforest.biomes.TFBiomeBase;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFCreatures;
-import twilightforest.item.BehaviorTFMobEggDispense;
-import twilightforest.item.ItemTFMagicMap;
-import twilightforest.item.ItemTFMazeMap;
-import twilightforest.item.TFItems;
-import twilightforest.item.TFRecipes;
-import twilightforest.structures.StructureTFMajorFeatureStart;
-import twilightforest.tileentity.TileEntityTFCReactorActive;
-import twilightforest.tileentity.TileEntityTFCicada;
-import twilightforest.tileentity.TileEntityTFCinderFurnace;
-import twilightforest.tileentity.TileEntityTFFirefly;
-import twilightforest.tileentity.TileEntityTFFlameJet;
-import twilightforest.tileentity.TileEntityTFGhastTrapActive;
-import twilightforest.tileentity.TileEntityTFGhastTrapInactive;
-import twilightforest.tileentity.TileEntityTFHydraSpawner;
-import twilightforest.tileentity.TileEntityTFKnightPhantomsSpawner;
-import twilightforest.tileentity.TileEntityTFLichSpawner;
-import twilightforest.tileentity.TileEntityTFMoonworm;
-import twilightforest.tileentity.TileEntityTFNagaSpawner;
-import twilightforest.tileentity.TileEntityTFPoppingJet;
-import twilightforest.tileentity.TileEntityTFReverter;
-import twilightforest.tileentity.TileEntityTFSmoker;
-import twilightforest.tileentity.TileEntityTFSnowQueenSpawner;
-import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
-import twilightforest.tileentity.TileEntityTFTowerBuilder;
-import twilightforest.tileentity.TileEntityTFTrophy;
-import twilightforest.world.WorldProviderTwilightForest;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -54,10 +20,19 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import twilightforest.biomes.TFBiomeBase;
+import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFCreatures;
+import twilightforest.item.ItemTFMagicMap;
+import twilightforest.item.ItemTFMazeMap;
+import twilightforest.item.TFItems;
+import twilightforest.item.TFRecipes;
+import twilightforest.tileentity.*;
+import twilightforest.world.WorldProviderTwilightForest;
 
 @Mod(modid = TwilightForestMod.ID, name = "The Twilight Forest", version = TwilightForestMod.VERSION)
 public class TwilightForestMod {
@@ -128,7 +103,10 @@ public class TwilightForestMod {
 		AchievementPage.registerAchievementPage(new TFAchievementPage());
 		
 		// just call this so that we register structure IDs correctly
+//FIXME: AtomicBlom: Disabled for Structures
+/*
 		new StructureTFMajorFeatureStart();
+*/
 	}
 
     @EventHandler

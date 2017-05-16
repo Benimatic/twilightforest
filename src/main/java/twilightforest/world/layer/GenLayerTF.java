@@ -9,7 +9,6 @@ public abstract class GenLayerTF extends GenLayer {
 
 	public GenLayerTF(long l) {
 		super(l);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static GenLayer[] makeTheWorld(long l) {

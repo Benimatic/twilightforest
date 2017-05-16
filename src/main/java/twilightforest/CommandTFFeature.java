@@ -27,6 +27,8 @@ public class CommandTFFeature extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+//FIXME: AtomicBlom: Disabled for Structures
+/*
 		if (args.length > 0) {
 			if (args[0].equalsIgnoreCase("info")) {
 				// info on current feature
@@ -92,6 +94,7 @@ public class CommandTFFeature extends CommandBase {
 		} else {
 			throw new WrongUsageException("commands.tffeature.usage");
 		}
+
 	}
 
 	private void changeStructureActivity(ICommandSender sender, boolean flag) throws CommandException {
@@ -116,6 +119,7 @@ public class CommandTFFeature extends CommandBase {
 				sender.sendMessage(new TextComponentTranslation("You are not in a structure."));
 			}
 		}
+*/
 	}
 
 }

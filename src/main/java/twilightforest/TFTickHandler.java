@@ -113,6 +113,9 @@ public class TFTickHandler
 	}
 
 	private boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
+//FIXME: AtomicBlom: Disabled for Structures
+		return false;
+/*
 		ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
 		
 		int px = MathHelper.floor(player.posX);
@@ -137,6 +140,7 @@ public class TFTickHandler
 		} else {
 			return false;
 		}
+*/
 	}
 
 	@SubscribeEvent

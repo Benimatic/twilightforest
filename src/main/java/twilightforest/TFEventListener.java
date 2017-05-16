@@ -877,6 +877,8 @@ public class TFEventListener {
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
 	private boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
+//FIXME: AtomicBlom: Disabled for Structures
+/*
 		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
 
 			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
@@ -898,6 +900,7 @@ public class TFEventListener {
 				}
 			}
 		}
+*/
 		return false;
 	}
 
@@ -915,7 +918,8 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public void livingAttack(LivingAttackEvent event) {
-
+//FIXME: AtomicBlom: Disabled for Structures
+/*
 		// area protection check
 		if (event.getEntityLiving() instanceof IMob && event.getSource().getEntity() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getEntity()).capabilities.isCreativeMode && event.getEntityLiving().world.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
@@ -940,6 +944,7 @@ public class TFEventListener {
 				}
 			}
 		}
+*/
 	}
 	
     /**
