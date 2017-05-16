@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import twilightforest.block.enums.NagastoneVariant;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Random;
 
 public class BlockTFNagastone extends Block {
@@ -30,6 +32,12 @@ public class BlockTFNagastone extends Block {
 		this.setCreativeTab(TFItems.creativeTab);
 
 		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, NagastoneVariant.SOLID));
+	}
+
+	@Override
+	public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> stackList) {
+		stackList.add(new ItemStack(item, 1, 0));
+		stackList.add(new ItemStack(item, 1, 1));
 	}
 
 	@Override
