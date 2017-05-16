@@ -92,7 +92,22 @@ jar {
     }
 }
 
+repositories {
+    maven {
+        name 'progwm\'s maven' // JEI
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        name 'tterrag\'s maven' // CTM
+        url 'http://maven.tterrag.com/'
+    }
+}
+
 dependencies {   
     //Disabled until I can speak with azanor
     //deobfCompile files('libs/Thaumcraft-1.7.10-4.2.3.5.jar')
+
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    //TODO switch over to CTM when present (not CTMLib) http://maven.tterrag.com/index.php?dir=team%2Fchisel
+    deobfCompile "team.chisel:master:${ctm_version}"
 }
