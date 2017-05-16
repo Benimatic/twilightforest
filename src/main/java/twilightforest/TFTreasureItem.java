@@ -52,7 +52,7 @@ public class TFTreasureItem {
 		// randomly enchant this item if needed
 		if (result.isItemEnchantable() && randomEnchantmentLevel > 0)
 		{
-			EnchantmentHelper.addRandomEnchantment(rand, result, randomEnchantmentLevel);
+			EnchantmentHelper.addRandomEnchantment(rand, result, randomEnchantmentLevel, true);
 		}
 		
 		return result;

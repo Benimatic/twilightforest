@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -24,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
@@ -52,6 +54,7 @@ import twilightforest.entity.EntityTFYeti;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
+import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
@@ -402,7 +405,8 @@ public class TFEventListener {
 		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
 			
-			if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.enderBow) {
+			if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == TFItems.enderBow ||
+					player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.enderBow) {
 				
 				double sourceX = player.posX;
 				double sourceY = player.posY;
@@ -414,12 +418,12 @@ public class TFEventListener {
 				player.rotationYaw = event.getEntityLiving().rotationYaw;
 				player.rotationPitch = event.getEntityLiving().rotationPitch;
 				player.setPositionAndUpdate(event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ);
-				player.playSound("mob.endermen.portal", 1.0F, 1.0F);
+				player.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
 
 				
 				// monsters are easy to move
 				event.getEntityLiving().setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
-				event.getEntityLiving().playSound("mob.endermen.portal", 1.0F, 1.0F);
+				event.getEntityLiving().playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
 				 
 
 				//System.out.println("Enderbow Arrow!");
@@ -432,10 +436,10 @@ public class TFEventListener {
 			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
 			
 			boolean charm1 = false;
-			boolean charm2 = player.inventory.consumeInventoryItem(TFItems.charmOfLife2);
+			boolean charm2 = TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfLife2, 1);
 			if (!charm2)
 			{
-				charm1 = player.inventory.consumeInventoryItem(TFItems.charmOfLife1);
+				charm1 = TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfLife1, 1);
 			}
 			
 			// do they have a charm of life?  OM NOM NOM!
@@ -472,8 +476,7 @@ public class TFEventListener {
 				player.world.spawnEntity(effect2);
 				
 				// sound
-				player.world.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
-
+				player.world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.NEUTRAL, 1.5F, 1.0F, true);
 			}
 		}
 	}
@@ -533,7 +536,7 @@ public class TFEventListener {
 		{
 			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
 			
-			if (player.inventory.consumeInventoryItem(TFItems.charmOfKeeping3))
+			if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping3, 1))
 			{
 				FMLLog.info("[TwilightForest] Player died with charm of keeping III!  Keep it all!");
 				InventoryPlayer keepInventory = new InventoryPlayer(null);
@@ -549,7 +552,7 @@ public class TFEventListener {
 
 				playerKeepsMap.put(player.getName(), keepInventory);
 			}
-			else if (player.inventory.consumeInventoryItem(TFItems.charmOfKeeping2))
+			else if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping2, 1))
 			{
 				FMLLog.info("[TwilightForest] Player died with charm of keeping II!  Keep armor and hotbar!");
 				InventoryPlayer keepInventory = new InventoryPlayer(null);
@@ -564,7 +567,7 @@ public class TFEventListener {
 
 				playerKeepsMap.put(player.getName(), keepInventory);
 			}
-			else if (player.inventory.consumeInventoryItem(TFItems.charmOfKeeping1))
+			else if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping1, 1))
 			{
 				FMLLog.info("[TwilightForest] Player died with charm of keeping I!  Keep armor and current item!");
 				InventoryPlayer keepInventory = new InventoryPlayer(null);
@@ -581,7 +584,7 @@ public class TFEventListener {
 			}
 			
 			// check for tower keys
-			if (player.inventory.hasItem(TFItems.towerKey))
+			if (player.inventory.hasItemStack(new ItemStack(TFItems.towerKey)))
 			{
 				InventoryPlayer keepInventory = retrieveOrMakeKeepInventory(player);
 				// keep them all
@@ -665,7 +668,7 @@ public class TFEventListener {
 				effect2.offset = (float) Math.PI;
 				player.world.spawnEntity(effect2);
 	
-				player.world.playSoundEffect(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, "mob.zombie.unfect", 1.5F, 1.0F);
+				player.world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1.5F, 1.0F, true);
 			}
 
 			playerKeepsMap.remove(player.getName());
@@ -700,7 +703,7 @@ public class TFEventListener {
 	{
 		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT)
 		{
-			if (isRidingUnfriendly(Minecraft.getMinecraft().thePlayer))
+			if (isRidingUnfriendly(Minecraft.getMinecraft().player))
 			{
 				event.setCanceled(true);
 				return false;
@@ -802,25 +805,26 @@ public class TFEventListener {
 	 * Also check for fiery set achievement
 	 */
 	@SubscribeEvent
-	public void rightClickBlock(PlayerInteractEvent event) {
-		if (event.action == Action.RIGHT_CLICK_BLOCK && event.getEntityPlayer().world.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
-
-			World world = event.getEntityPlayer().world;
-			EntityPlayer player = event.getEntityPlayer();
-			int x = event.x;
-			int y = event.y;
-			int z = event.z;
-
-			if (!world.isRemote && isBlockProtectedFromInteraction(world, x, y, z) && isAreaProtected(world, player, x, y, z)) {
-				event.useBlock = Result.DENY;
-			}
-		}
-		
+	public void onPlayerInteract(PlayerInteractEvent event) {
 		ItemStack currentItem = event.getEntityPlayer().inventory.getCurrentItem();
 		if (currentItem != null && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
 			// are they also wearing the armor
 			if (checkPlayerForFieryArmor(event.getEntityPlayer())) {
 				event.getEntityPlayer().addStat(TFAchievementPage.twilightFierySet);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	private void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event)
+	{
+		if (event.getEntityPlayer().world.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
+
+			World world = event.getEntityPlayer().world;
+			EntityPlayer player = event.getEntityPlayer();
+
+			if (!world.isRemote && isBlockProtectedFromInteraction(world, event.getPos()) && isAreaProtected(world, player, event.getPos())) {
+				event.setUseBlock(Result.DENY);
 			}
 		}
 	}
@@ -879,7 +883,7 @@ public class TFEventListener {
 			
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(pos, world);
+				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(pos.getX(), pos.getZ(), world);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAchievement(player) && chunkProvider.isBlockProtected(pos)) {
 					
@@ -888,7 +892,7 @@ public class TFEventListener {
 					sendAreaProtectionPacket(world, pos, sbb);
 					
 					// send a hint monster?
-					nearbyFeature.trySpawnHintMonster(world, player, pos);
+					nearbyFeature.trySpawnHintMonster(world, player, pos.getX(), pos.getY(), pos.getZ());
 
 					return true;
 				}

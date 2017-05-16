@@ -196,12 +196,12 @@ public class TwilightForestMod {
 		// register dimension with Forge
 		if (!DimensionManager.isDimensionRegistered(TwilightForestMod.dimensionID))
 		{
-			DimensionManager.registerDimension(TwilightForestMod.dimensionID, TwilightForestMod.dimensionProviderID);
+			DimensionManager.registerDimension(TwilightForestMod.dimensionID, TwilightForestMod.dimType);
 		}
 		else
 		{
 			FMLLog.warning("[TwilightForest] Twilight Forest detected that the configured dimension id '%d' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", dimensionID);
-			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimensionProviderID);
+			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimType);
 			TwilightForestMod.dimensionID = TwilightForestMod.backupdimensionID;
 		}
 		
@@ -557,7 +557,7 @@ public class TwilightForestMod {
 
 			DimensionManager.unregisterDimension(TwilightForestMod.dimensionID);
 			TwilightForestMod.dimensionID = dim;
-			DimensionManager.registerDimension(TwilightForestMod.dimensionID, TwilightForestMod.dimensionProviderID);
+			DimensionManager.registerDimension(TwilightForestMod.dimensionID, TwilightForestMod.dimType);
 		}
 	}
 }
