@@ -210,15 +210,11 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
                             {
                                 if ((d15 += d16) > 0.0D)
                                 {
-                                    blockStorage[j3 += short1] = Blocks.STONE;
+	                                primer.setBlockState(k * 4 + i3, k2 * 8 + l2, j1 * 4 + k3, Blocks.STONE.getDefaultState());
                                 }
                                 else if (k2 * 8 + l2 < seaLevel)
                                 {
-                                    blockStorage[j3 += short1] = Blocks.WATER;
-                                }
-                                else
-                                {
-                                    blockStorage[j3 += short1] = null;
+	                                primer.setBlockState(k * 4 + i3, k2 * 8 + l2, j1 * 4 + k3, Blocks.WATER.getDefaultState());
                                 }
                             }
 
@@ -337,7 +333,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
                     double d7 = this.field_147428_e[terrainIndex] / 512.0D;
                     double d8 = this.field_147425_f[terrainIndex] / 512.0D;
                     double d9 = (this.field_147427_d[terrainIndex] / 10.0D + 1.0D) / 2.0D;
-                    double terrainCalc = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
+                    double terrainCalc = MathHelper.clampedLerp(d7, d8, d9) - d6;
 
                     if (ay > 29)
                     {
@@ -376,12 +372,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	 */
     public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] biomes)
     {
-        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, primer, biomes);
+        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, primer, world);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Result.DENY) return;
 
         double d0 = 0.03125D;
-        this.stoneNoise = this.field_147430_m.func_151599_a(this.stoneNoise, (double)(chunkX * 16), (double)(chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
+        this.stoneNoise = this.field_147430_m.getRegion(this.stoneNoise, (double)(chunkX * 16), (double)(chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
 
         for (int z = 0; z < 16; ++z)
         {

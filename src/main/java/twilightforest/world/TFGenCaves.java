@@ -185,7 +185,7 @@ public class TFGenCaves extends MapGenCaves
                             for (genZ = minZ; genZ < maxZ; ++genZ)
                             {
                                 double var46 = ((double)(genZ + centerZ * 16) + 0.5D - randZ) / sizeVar;
-                                int caveIndex = (genX * 16 + genZ) * TFWorld.CHUNKHEIGHT + minY;
+                                //int caveIndex = (genX * 16 + genZ) * TFWorld.CHUNKHEIGHT + minY;
                                 boolean hitGrass = false;
 
                                 if (var59 * var59 + var46 * var46 < 1.0D)
@@ -196,32 +196,35 @@ public class TFGenCaves extends MapGenCaves
 
                                         if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 20.0D)
                                         {
-                                            Block blockAt = blockStorage[caveIndex];
+                                            final IBlockState blockStateAt = blockStorage.getBlockState(genX, caveY, genZ);
+                                            Block blockAt = blockStateAt.getBlock();
 
                                             if (blockAt == Blocks.GRASS)
                                             {
                                                 hitGrass = true;
                                             }
 
-                                            if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollSteinn || blockAt.getMaterial() == Material.GROUND || blockAt.getMaterial() == Material.GRASS))
+                                            if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollSteinn || blockStateAt.getMaterial() == Material.GROUND || blockStateAt.getMaterial() == Material.GRASS))
                                             {
                                             	if (var59 * var59 + var51 * var51 + var46 * var46 < 0.85D) {
-                                            		blockStorage[caveIndex] = caveY < 10 ?  Blocks.WATER : Blocks.AIR;
+                                                    final IBlockState state = (caveY < 10 ? Blocks.WATER : Blocks.AIR).getDefaultState();
+                                                    blockStorage.setBlockState(genX, caveY, genZ, state);
                                             	}
                                             	else {
-                                            		Block localBlock = isHighlands ? (mossRNG.nextInt(6) == 0 ? TFBlocks.trollSteinn : Blocks.STONE) : Blocks.DIRT;
-													blockStorage[caveIndex] = hitGrass ? Blocks.GRASS : localBlock;
+                                                    Block localBlock = mossRNG.nextInt(6) == 0 ? TFBlocks.trollSteinn : Blocks.STONE;
+                                                    localBlock = isHighlands ? localBlock : Blocks.DIRT;
+                                            		localBlock = hitGrass ? Blocks.GRASS : localBlock;
+													blockStorage.setBlockState(genX, caveY, genZ, localBlock.getDefaultState());
                                             		hitGrass = false;
                                             	}
 
-                                            	if (hitGrass && blockStorage[caveIndex - 1] == Blocks.DIRT)
+                                            	if (hitGrass && blockStorage.getBlockState(genX, caveY - 1, genZ).getBlock() == Blocks.DIRT)
                                             	{
-                                            		blockStorage[caveIndex - 1] = this.world.getBiome(genX + centerX * 16, genZ + centerZ * 16).topBlock;
+                                                    IBlockState blockState = this.world.getBiome(new BlockPos(genX + centerX * 16, 0, genZ + centerZ * 16)).topBlock;
+                                            	    blockStorage.setBlockState(genX, caveY - 1, genZ, blockState);
                                             	}
                                             }
                                         }
-
-                                        --caveIndex;
                                     }
                                 }
                             }
