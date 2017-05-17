@@ -14,17 +14,20 @@ public class EntityTFUrGhastFireball extends EntityLargeFireball {
 		super(world, entityTFTowerBoss, x, y, z);
 	}
 
+	// [VanillaCopy] super, edits noted
     @Override
-    protected void onImpact(RayTraceResult par1MovingObjectPosition)
+    protected void onImpact(RayTraceResult result)
     {
-        if (!this.world.isRemote && !(par1MovingObjectPosition.entityHit instanceof EntityFireball))
+        if (!this.world.isRemote && !(result.entityHit instanceof EntityFireball)) // TF - don't collide with other fireballs
         {
-            if (par1MovingObjectPosition.entityHit != null)
+            if (result.entityHit != null)
             {
-                par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16);
+                result.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16.0F); // TF - up damage by 10
+                this.applyEnchantments(this.shootingEntity, result.entityHit);
             }
 
-            this.world.newExplosion((Entity)null, this.posX, this.posY, this.posZ, (float)this.field_92057_e, true, this.world.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+            boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
+            this.world.newExplosion(null, this.posX, this.posY, this.posZ, (float)this.explosionPower, flag, flag);
             this.setDead();
         }
     }

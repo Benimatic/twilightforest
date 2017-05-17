@@ -3,13 +3,13 @@ package twilightforest.entity.boss;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -17,23 +17,27 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
@@ -45,10 +49,10 @@ import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
-public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IEntityMultiPart, IBreathAttacker {
+public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IBreathAttacker {
 	
 	private static final int MAX_SUMMONS = 6;
-	private static final DataParameter<Byte> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BYTE);
+	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> PHASE_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BYTE);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
@@ -56,7 +60,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 	public enum Phase { SUMMON, DROP, BEAM };
 
-	public Entity[] iceArray;
+	public final Entity[] iceArray = new Entity[7];
 	
 	private int summonsRemaining = 0;
 	private int successfulDrops;
@@ -65,20 +69,8 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	
 	public EntityTFSnowQueen(World par1World) {
 		super(par1World);
-		
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAITFHoverSummon(this, EntityPlayer.class, 1.0D));
-        this.tasks.addTask(2, new EntityAITFHoverThenDrop(this, EntityPlayer.class, 80, 20));
-        this.tasks.addTask(3, new EntityAITFHoverBeam(this, EntityPlayer.class, 80, 100));
-        this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
         this.setSize(0.7F, 2.2F);
         
-        this.iceArray = new Entity[7];
         for (int i = 0; i < this.iceArray.length; i++) {
         	this.iceArray[i] = new EntityTFSnowQueenIceShield(this);
         }
@@ -87,7 +79,20 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         
         this.isImmuneToFire = true;
         this.experienceValue = 317;
+	}
 
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAITFHoverSummon(this, EntityPlayer.class, 1.0D));
+		this.tasks.addTask(2, new EntityAITFHoverThenDrop(this, EntityPlayer.class, 80, 20));
+		this.tasks.addTask(3, new EntityAITFHoverBeam(this, EntityPlayer.class, 80, 100));
+		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(8, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 	}
 
     @Override
@@ -110,41 +115,32 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     protected void entityInit()
     {
         super.entityInit();
-		dataManager.register(BEAM_FLAG, (byte) 0);
+		dataManager.register(BEAM_FLAG, false);
 		dataManager.register(PHASE_FLAG, (byte) 0);
     }
 
-
     @Override
-    protected String getAmbientSound()
+    protected SoundEvent getAmbientSound()
     {
-    	return TwilightForestMod.ID + ":mob.ice.noise";
+		return TFSounds.ICE_AMBIENT;
     }
 
 	@Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-    	return TwilightForestMod.ID + ":mob.ice.hurt";
+		return TFSounds.ICE_HURT;
     }
 
 	@Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-    	return TwilightForestMod.ID + ":mob.ice.death";
+    	return TFSounds.ICE_DEATH;
     }
 
 	@Override
     protected Item getDropItem()
     {
         return Items.SNOWBALL;
-    }
-    
-    public IEntityLivingData onSpawnWithEgg(IEntityLivingData par1EntityLivingData)
-    {
-    	IEntityLivingData data = super.onSpawnWithEgg(par1EntityLivingData);
-        
-        return data;
-
     }
     
     @Override
@@ -199,27 +195,12 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     			dz *= velocity;
 
     			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
-    			//world.spawnParticle(getFlameParticle(), px, py, pz, dx, dy, dz);
     		}
     		
 			//playBreathSound();
     	}
-
-//    	// am I in a block?!?
-//    	int fx = MathHelper.floor(this.posX);
-//    	int fy = MathHelper.floor(this.posY);
-//    	int fz = MathHelper.floor(this.posZ);
-//    	
-//    	if (this.world.getBlock(fx, fy, fz) != Blocks.AIR) {
-//    		System.out.println("I am in a block!  World =" + this.world);
-//    		this.posY += 1D;
-//    	}
-
     }
     
-    /**
-     * Keep ice shield position updated
-     */
     @Override
 	public void onUpdate() {
 		
@@ -256,7 +237,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
                 double d = rand.nextGaussian() * 0.02D;
                 double d1 = rand.nextGaussian() * 0.02D;
                 double d2 = rand.nextGaussian() * 0.02D;
-                String explosionType = rand.nextBoolean() ?  "hugeexplosion" : "explode";
+                EnumParticleTypes explosionType = rand.nextBoolean() ?  EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
                 
                 world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
             }
@@ -321,10 +302,9 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	}
     
 	private void applyShieldCollisions(Entity collider) {
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.boundingBox.expand(-0.2F, -0.2F, -0.2F));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().expand(-0.2F, -0.2F, -0.2F));
         
         for (Entity collided : list) {
-        	
         	if (collided.canBePushed()) {
                 applyShieldCollision(collider, collided);
             }
@@ -334,24 +314,13 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     /**
      * Do the effect where the shield hits something
      */
-    protected void applyShieldCollision(Entity collider, Entity collided)
+	private void applyShieldCollision(Entity collider, Entity collided)
     {
 		if (collided != this) {
 	    	collided.applyEntityCollision(collider);
-			if (collided instanceof EntityLivingBase) {
-				//FMLLog.info("Spike ball collided with entity %s", collided);
-				
-				// do hit and throw
-		        boolean attackSuccess = super.attackEntityAsMob(collided);
-
-		        if (attackSuccess) {
-		        	collided.motionY += 0.4000000059604645D;
-			        this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
-		            
-		            //System.out.println("Spike ball attack success");
-
-		        }
-
+			if (collided instanceof EntityLivingBase && super.attackEntityAsMob(collided)) {
+				collided.motionY += 0.4;
+				this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
 			}
 		}
     }
@@ -383,26 +352,17 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		return result;
     	
     }
-    
 	
-    private Vec3d getIceShieldPosition(int i) {
-    	return this.getIceShieldPosition(getIceShieldAngle(i), 1F);
+    private Vec3d getIceShieldPosition(int idx) {
+    	return this.getIceShieldPosition(getIceShieldAngle(idx), 1F);
 	}
 
 
-	private float getIceShieldAngle(int i) {
-		//System.out.println("Getting angle for shield " + i + " and it is " + (((float)Math.PI / 3F) * (float)i));
-
-		
-		return 60F * i + (this.ticksExisted * 5F);
-		
+	private float getIceShieldAngle(int idx) {
+		return 60F * idx + (this.ticksExisted * 5F);
 	}
 
-
-	/**
-     * Get the ice shield position
-     */
-    public Vec3d getIceShieldPosition(float angle, float distance)
+    private Vec3d getIceShieldPosition(float angle, float distance)
     {
 		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
@@ -410,19 +370,13 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		return new Vec3d(this.posX + var1, this.posY + this.getShieldYOffset(), this.posZ + var3);
     }
     
-    
-    /**
-     * How high is the shield
-     */
-	public double getShieldYOffset()
+	private double getShieldYOffset()
     {
         return 0.1F;
     }
     
 	@Override
-	public void fall(float par1, float mult) {
-		; // no falling
-	}
+	public void fall(float par1, float mult) {}
 
 	@Override
 	public World getWorld() {
@@ -442,10 +396,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         return iceArray;
     }
     
-	/**
-     * Destroys all ice related blocks in the AABB
-     */
-    public boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
+    private void destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
     	
         int minX = MathHelper.floor(par1AxisAlignedBB.minX);
@@ -454,47 +405,32 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
         int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
         int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
         int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-        boolean wasBlocked = false;
         for (int dx = minX; dx <= maxX; ++dx) {
             for (int dy = minY; dy <= maxY; ++dy) {
                 for (int dz = minZ; dz <= maxZ; ++dz) {
-                    Block block = this.world.getBlock(dx, dy, dz);
-                    
-                    if (block != Blocks.AIR) {
-                    	int currentMeta = this.world.getBlockMetadata(dx, dy, dz);
-                    	
-                    	if (block == Blocks.ICE || block == Blocks.PACKED_ICE) {
-                            this.world.setBlock(dx, dy, dz, Blocks.AIR, 0, 2);
-                            
-                            // here, this effect will have to do
-                			world.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(block) + (currentMeta << 12));
-                        } else {
-                            wasBlocked = true;
-                        }
-                    }
-                }
+                	BlockPos pos = new BlockPos(dx, dy, dz);
+                	Block block = world.getBlockState(pos).getBlock();
+					if (block == Blocks.ICE || block == Blocks.PACKED_ICE) {
+						world.destroyBlock(pos, false);
+					}
+				}
             }
         }
-
-        return wasBlocked;
     }
 
 	@Override
 	public boolean isBreathing() {
-        return dataManager.get(BEAM_FLAG) == 1;
-
+        return dataManager.get(BEAM_FLAG);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-        dataManager.set(BEAM_FLAG, (byte) (flag ? 1 : 0));
+        dataManager.set(BEAM_FLAG, flag);
 	}
-
 
 	public Phase getCurrentPhase() {
 		return Phase.values()[dataManager.get(PHASE_FLAG)];
 	}
-
 
 	public void setCurrentPhase(Phase currentPhase) {
 		dataManager.set(PHASE_FLAG, (byte) currentPhase.ordinal());
@@ -512,143 +448,46 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 		}
 	}
 
-
 	public int getSummonsRemaining() {
 		return summonsRemaining;
 	}
-
 
 	public void setSummonsRemaining(int summonsRemaining) {
 		this.summonsRemaining = summonsRemaining;
 	}
 	
 	public void summonMinionAt(EntityLivingBase targetedEntity) {
-		
-		// find a good spot
-		Vec3d minionSpot = findVecInLOSOf(targetedEntity);
-		
-		// put a minion there
 		EntityTFIceCrystal minion = new EntityTFIceCrystal(world);
-		minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
+		minion.setPositionAndRotation(posX, posY, posZ, 0, 0);
+
+		for (int i = 0; i < 100; i++) {
+			double attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
+			double attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
+			double attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
+
+			if (minion.attemptTeleport(attemptX, attemptY, attemptZ)) {
+				break;
+			}
+		}
+
 		world.spawnEntity(minion);
-		
 		minion.setAttackTarget(targetedEntity);
 		minion.setToDieIn30Seconds(); // don't stick around
-		
-		// reduce summons
+
 		this.summonsRemaining--;
 	}
 
-
-    /**
-     * Returns coords that would be good to teleport to.
-     * 
-     * Returns null if we can't find anything
-     */
-    protected Vec3d findVecInLOSOf(Entity targetEntity)
-    {
-    	// for some reason we occasionally get null here
-    	if (targetEntity == null)
-    	{
-    		return null;
-    	}
-    	
-        double tx = 0, ty = 0, tz = 0;
-        int tries = 100;
-        for (int i = 0; i < tries; i++) {
-        	tx = targetEntity.posX + rand.nextGaussian() * 16D;
-        	ty = targetEntity.posY + rand.nextGaussian() * 8D;
-        	tz = targetEntity.posZ + rand.nextGaussian() * 16D;
-        	
-        	// put the y on something solid
-        	boolean groundFlag = false;
-        	// we need to get the integer coordinates for this calculation
-        	int bx = MathHelper.floor(tx);
-        	int by = MathHelper.floor(ty);
-        	int bz = MathHelper.floor(tz);
-        	while (!groundFlag && ty > 0) 
-        	{
-                Block whatsThere = world.getBlock(bx, by - 1, bz);
-                if (whatsThere == Blocks.AIR || !whatsThere.getMaterial().isSolid())
-                {
-                    ty--;
-                    by--;
-                }
-                else
-                {
-                	groundFlag = true;
-                }
-        	}
-        	
-        	// did we not find anything at all to stand on?
-        	if (by == 0) {
-//        		System.out.println("teleport find failed to find a block to stand on");
-        		continue;
-        	}
-        	
-        	// 
-        	if (!canEntitySee(targetEntity, tx, ty, tz)) {
-//        		System.out.println("teleport find failed because of lack of LOS");
-//        		System.out.println("ty = " + ty);
-        		continue;
-        	}
-        	
-        	// check that we're not colliding and not in liquid
-        	float halfWidth = this.width / 2.0F;
-        	AxisAlignedBB destBox = new AxisAlignedBB(tx - halfWidth, ty - yOffset + ySize, tz - halfWidth, tx + halfWidth, ty - yOffset + ySize + height, tz + halfWidth);
-        	if (world.getCollidingBoundingBoxes(this, destBox).size() > 0)
-            {
-//        		System.out.println("teleport find failed because of collision");
-        		continue;
-            }
-        	
-        	if (world.isAnyLiquid(destBox)) {
-//        		System.out.println("teleport find failed because of liquid at destination");
-        		continue;
-        	}
-        	
-        	// if we made it this far, we win!
-        	break;
-        }
-        
-        if (tries == 99) {
-            //System.out.println("Found no spots, giving up");
-        	return null;
-        }
-        
-        //System.out.println("I think we found a good destination at " + tx + ", " + ty + ", " + tz);
-//        System.out.println("canEntitySee = " + canEntitySee(targetEntity, tx, ty, tz));
-        return new Vec3d(tx, ty, tz);
-    }
-    
-    /**
-     * Can the specified entity see the specified location?
-     */
-    protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
-
-    }
-    
-	@SuppressWarnings("unchecked")
 	public int countMyMinions() {
-    	// check if there are enough minions.  we check a 32x16x32 area
-		List<EntityTFIceCrystal> nearbyMinons = world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
-
-		return nearbyMinons.size();
+		return world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D)).size();
 	}
-
 
 	public void incrementSuccessfulDrops() {
 		this.successfulDrops++;
 	}
 
-
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE)) {
-			// slow target?
-    	}
+		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
+		// TODO: slow target?
 	}
-	
-
 }
