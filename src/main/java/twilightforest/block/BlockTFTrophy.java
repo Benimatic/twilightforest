@@ -20,6 +20,7 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 
 public class BlockTFTrophy extends BlockSkull
 {
+    // TODO integrate BossVariant into the TE of this and make helper to be used by BlockTFTrophyPedestal
 
     private static final AxisAlignedBB HYDRA_Y_BB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
     private static final AxisAlignedBB HYDRA_X_BB = new AxisAlignedBB(0.0F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);

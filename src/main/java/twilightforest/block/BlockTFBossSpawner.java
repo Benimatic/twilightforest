@@ -1,32 +1,27 @@
 package twilightforest.block;
 
-import java.util.List;
 import java.util.Random;
 
-import com.google.common.base.Predicate;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.TileEntityTFHydraSpawner;
-import twilightforest.tileentity.TileEntityTFKnightPhantomsSpawner;
-import twilightforest.tileentity.TileEntityTFLichSpawner;
-import twilightforest.tileentity.TileEntityTFNagaSpawner;
-import twilightforest.tileentity.TileEntityTFSnowQueenSpawner;
-import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockTFBossSpawner extends Block {
-	public static final PropertyEnum<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class, (Predicate<BossVariant>) input -> input != BossVariant.NONE);
+	public static final PropertyEnum<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class, input -> input != BossVariant.NONE);
 
-	protected BlockTFBossSpawner()
-	{
+	protected BlockTFBossSpawner() {
 		super(Material.ROCK);
 		this.setHardness(20F);
 		//this.setResistance(10F);
@@ -51,17 +46,16 @@ public class BlockTFBossSpawner extends Block {
 	}
 
 	@Override
+	@Nonnull
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		switch (state.getValue(VARIANT)) {
-			case NAGA: return new TileEntityTFNagaSpawner();
-			case LICH: return new TileEntityTFLichSpawner();
-			case HYDRA: return new TileEntityTFHydraSpawner();
-			case URGHAST: return new TileEntityTFTowerBossSpawner();
-			case KNIGHT_PHANTOM: return new TileEntityTFKnightPhantomsSpawner();
-			case SNOW_QUEEN: return new TileEntityTFSnowQueenSpawner();
-			default: return null;
+		try {
+			return state.getValue(VARIANT).getSpawnerClass().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
-    }
+
+		return null;
+	}
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int fortune)
@@ -80,14 +74,4 @@ public class BlockTFBossSpawner extends Block {
 	{
 		return false;
 	}
-
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
-    {
-        //par3List.add(new ItemStack(par1, 1, 0));
-        //par3List.add(new ItemStack(par1, 1, 1));
-        //par3List.add(new ItemStack(par1, 1, 2));
-        //par3List.add(new ItemStack(par1, 1, 3));
-        //par3List.add(new ItemStack(par1, 1, 4));
-    }
 }
