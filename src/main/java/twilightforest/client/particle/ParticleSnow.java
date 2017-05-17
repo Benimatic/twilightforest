@@ -1,7 +1,10 @@
 package twilightforest.client.particle;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.ItemTFIceBomb;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,8 +36,8 @@ public class ParticleSnow extends Particle
         this.particleMaxAge = (int)(6.0D / (Math.random() * 0.8D + 0.6D));
         this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
         this.canCollide = true;
-        
-        this.setParticleIcon(((ItemTFIceBomb)TFItems.iceBomb).getSnowIcon(rand.nextInt(4)));
+
+        this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(TwilightForestMod.ID, "snow_" + (rand.nextInt(4))).toString());
         
         this.onUpdate();
     }
