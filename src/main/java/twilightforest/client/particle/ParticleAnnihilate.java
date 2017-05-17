@@ -1,11 +1,12 @@
 package twilightforest.client.particle;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import twilightforest.item.ItemTFCubeOfAnnihilation;
-import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 
 @SideOnly(Side.CLIENT)
 public class ParticleAnnihilate extends Particle
@@ -33,9 +34,9 @@ public class ParticleAnnihilate extends Particle
         this.particleMaxAge = (int)(60.0D / (Math.random() * 0.8D + 0.6D));
         this.particleMaxAge = (int)((float)this.particleMaxAge * par14);
         this.canCollide = true;
-        
-        this.particleTexture = ((ItemTFCubeOfAnnihilation)TFItems.cubeOfAnnihilation).getAnnihilateIcon();
-        
+
+        this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(TwilightForestMod.ID, "annihilate_particle").toString());
+
         this.onUpdate();
     }
 
