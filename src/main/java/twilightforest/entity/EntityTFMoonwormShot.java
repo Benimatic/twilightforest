@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -10,34 +11,22 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFMoonworm;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-
 public class EntityTFMoonwormShot extends EntityThrowable {
-
-	public EntityTFMoonwormShot(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
-	}
-
-	public EntityTFMoonwormShot(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
-	}
-
-	public EntityTFMoonwormShot(World par1World) {
-		super(par1World);
-	}
-
-	/**
-	 * projectile speed
-	 */
-    protected float func_40077_c()
-    {
-        return 0.5F;
+    public EntityTFMoonwormShot(World par1World) {
+        super(par1World);
     }
-	
+
+	public EntityTFMoonwormShot(World world, EntityLivingBase thrower) {
+		super(world, thrower);
+		setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 0.5F, 1.0F);
+	}
+
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
@@ -58,8 +47,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
     }
 
 	
-
-	public void makeTrail() {
+	private void makeTrail() {
 //		for (int i = 0; i < 5; i++) {
 //			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 //			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
@@ -93,37 +81,25 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult mop) {
+        if (!world.isRemote) {
+            if (mop.typeOfHit == Type.BLOCK)
+            {
+                IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(TFBlocks.FACING, mop.sideHit);
+                world.setBlockState(mop.getBlockPos().offset(mop.sideHit), state);
+                // todo sound
+            }
 
-		// did we hit a block?  Make a worm there!
-		
-		if (mop.typeOfHit == Type.BLOCK)
-		{
-			if (!world.isRemote)
-			{
-				TFItems.moonwormQueen.onItemUse(null, (EntityPlayer)this.getThrower(), this.world, mop.getBlockPos(), EnumHand.MAIN_HAND, mop.sideHit, 0, 0, 0);
-			}
-			else
-			{
-				//particles
-				
-			}
-		}
-		
-        if (mop.entityHit != null)
-        {
-            mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
-        }
+            if (mop.entityHit != null)
+            {
+                mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+            }
 
-        for (int var3 = 0; var3 < 8; ++var3)
-        {
-            this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
-        }
-
-        if (!this.world.isRemote)
-        {
             this.setDead();
+        } else {
+            for (int var3 = 0; var3 < 8; ++var3)
+            {
+                this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
+            }
         }
 	}
-
-
 }

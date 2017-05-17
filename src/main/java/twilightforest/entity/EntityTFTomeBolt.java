@@ -40,7 +40,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 		return 0.003F;
     }
 
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
@@ -50,33 +50,25 @@ public class EntityTFTomeBolt extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
-		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
-		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6))
-			{
-				// inflict move slowdown
-				byte potionStrength = (byte) (world.getDifficulty() == EnumDifficulty.PEACEFUL ? 3 : world.getDifficulty() == EnumDifficulty.NORMAL ? 7 : 9);
-				if(potionStrength > 0)
-				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, potionStrength * 20, 1));
-				}
-
-			}
-		}
-
-
-		for (int i = 0; i < 8; ++i)
-		{
-			this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
-		}
-
+	protected void onImpact(RayTraceResult result) {
 		if (!this.world.isRemote)
 		{
-			this.setDead();
-		}
+			if (result.entityHit instanceof EntityLivingBase
+					&& result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6))
+			{
+				// inflict move slowdown
+				int duration = world.getDifficulty() == EnumDifficulty.PEACEFUL ? 3 : world.getDifficulty() == EnumDifficulty.NORMAL ? 7 : 9;
+				((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration * 20, 1));
+			}
 
+			this.setDead();
+		} else
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
+			}
+		}
 	}
 
 }

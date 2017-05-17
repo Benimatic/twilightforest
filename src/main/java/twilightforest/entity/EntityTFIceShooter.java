@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -109,15 +110,18 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
     }
 
 	@Override
-    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float par2)
     {
-		EntityTFIceSnowball entitysnowball = new EntityTFIceSnowball(this.world, this);
-        double d0 = par1EntityLivingBase.posX - this.posX;
-        double d1 = par1EntityLivingBase.posY + (double)par1EntityLivingBase.getEyeHeight() - 1.100000023841858D - entitysnowball.posY;
-        double d2 = par1EntityLivingBase.posZ - this.posZ;
-        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-        entitysnowball.setThrowableHeading(d0, d1 + (double)f1, d2, 0.6F, 12.0F);
-        this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.world.spawnEntity(entitysnowball);
+		EntityTFIceSnowball snowball = new EntityTFIceSnowball(this.world, this);
+
+		// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
+        double d0 = target.posX - this.posX;
+        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - snowball.posY;
+        double d2 = target.posZ - this.posZ;
+        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+        snowball.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+
+        this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.world.spawnEntity(snowball);
     }
 }

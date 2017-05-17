@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
@@ -29,7 +30,7 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 		return 0.006F;
     }
 
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
@@ -41,40 +42,34 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
-        setBeenAttacked();
-		pop();
+    	super.attackEntityFrom(damagesource, i);
+		die();
         return true;
      }
 
 	@Override
-	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
+	protected void onImpact(RayTraceResult target) {
 		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+		if (!world.isRemote && target.entityHit instanceof EntityLivingBase)
 		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8))
-			{
-				// damage armor?
-				//TODO:
-			}
+			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8);
+			// TODO: damage armor?
 		}
 
-		pop();
-
+		die();
 	}
 
-	private void pop() {
-		for (int i = 0; i < 8; ++i)
-		{
-			this.world.spawnParticle(EnumParticleTypes.SLIME, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
-		}
-		
-		// noise
-		this.world.playSoundAtEntity(this, "mob.slime.big", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-
-
+	private void die() {
 		if (!this.world.isRemote)
 		{
+			this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 			this.setDead();
+		} else
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				this.world.spawnParticle(EnumParticleTypes.SLIME, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			}
 		}
 	}
 

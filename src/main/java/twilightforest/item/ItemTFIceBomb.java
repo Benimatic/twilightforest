@@ -26,7 +26,9 @@ public class ItemTFIceBomb extends ItemTF {
 			if (!player.capabilities.isCreativeMode) {
 				--stack.stackSize;
 			}
-        	world.spawnEntity(new EntityTFIceBomb(world, player));
+			EntityTFIceBomb ice = new EntityTFIceBomb(world, player);
+			ice.setHeadingFromThrower(player, player.rotationPitch, player.rotationYaw, -20.0F, 0.75F, 1.0F);
+        	world.spawnEntity(ice);
         }
 
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

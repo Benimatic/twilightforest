@@ -11,6 +11,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -25,19 +26,12 @@ import net.minecraft.world.World;
 
 
 public class EntityTFNatureBolt extends EntityThrowable {
-
-	private EntityPlayer playerTarget;
-
-	public EntityTFNatureBolt(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
+	public EntityTFNatureBolt(World par1World) {
+		super(par1World);
 	}
 
 	public EntityTFNatureBolt(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-	}
-
-	public EntityTFNatureBolt(World par1World) {
-		super(par1World);
 	}
 
 	@Override
@@ -52,7 +46,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 		return 0.003F;
     }
 
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
@@ -63,44 +57,40 @@ public class EntityTFNatureBolt extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult ray) {
-		// only damage living things
-		if (ray.entityHit != null && ray.entityHit instanceof EntityLivingBase)
-		{
-			if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
-			{
-				// similar to EntityCaveSpider
-				byte poisonStrength = (byte) (world.getDifficulty() == EnumDifficulty.PEACEFUL ? 0 : world.getDifficulty() == EnumDifficulty.NORMAL ? 3 : 7);
-				if(poisonStrength > 0)
-				{
-					((EntityLivingBase)ray.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, poisonStrength * 20, 0));
-					
-//					System.out.println("Poisoning entityHit " + par1MovingObjectPosition.entityHit);
-				}
-
-			}
-		}
-
-		for (int i = 0; i < 8; ++i)
-		{
-			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Block.getStateId(Blocks.LEAVES.getDefaultState()));
-		}
-
 		if (!this.world.isRemote)
 		{
-			this.setDead();
-
-			if (ray.getBlockPos() != null) {
-				// if we hit a solid block, maybe do our nature burst effect.
+			if (ray.getBlockPos() != null)
+			{
 				Material materialHit = world.getBlockState(ray.getBlockPos()).getMaterial();
 
-				if (materialHit == Material.GRASS && this.playerTarget != null)
+				if (materialHit == Material.GRASS)
 				{
-					Items.DYE.onItemUse(new ItemStack(Items.DYE, 1, 15), playerTarget, world, ray.getBlockPos(), EnumHand.MAIN_HAND, ray.sideHit, 0, 0, 0);
-				}
-				else if (materialHit.isSolid() && canReplaceBlock(world, ray.getBlockPos()))
+					ItemStack dummy = new ItemStack(Items.DYE, 1, 15);
+					if (ItemDye.applyBonemeal(dummy, world, ray.getBlockPos())) {
+						world.playEvent(2005, ray.getBlockPos(), 0);
+					}
+				} else if (materialHit.isSolid() && canReplaceBlock(world, ray.getBlockPos()))
 				{
 					world.setBlockState(ray.getBlockPos(), Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH));
 				}
+			}
+
+			if (ray.entityHit instanceof EntityLivingBase)
+			{
+				if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
+						&& world.getDifficulty() != EnumDifficulty.PEACEFUL)
+				{
+					int poisonTime = world.getDifficulty() == EnumDifficulty.HARD ? 7 : 3;
+					((EntityLivingBase) ray.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, poisonTime * 20, 0));
+				}
+			}
+
+			this.setDead();
+		} else
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Block.getStateId(Blocks.LEAVES.getDefaultState()));
 			}
 		}
 	}
@@ -110,13 +100,4 @@ public class EntityTFNatureBolt extends EntityThrowable {
 		float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
 		return hardness >= 0 && hardness < 50F;
 	}
-
-	public void setTarget(EntityLivingBase attackTarget) 
-	{
-		if (attackTarget instanceof EntityPlayer)
-		{
-			this.playerTarget = (EntityPlayer)attackTarget;
-		}
-	}
-
 }

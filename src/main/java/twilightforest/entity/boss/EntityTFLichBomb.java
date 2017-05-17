@@ -9,35 +9,21 @@ import net.minecraft.world.World;
 
 
 public class EntityTFLichBomb extends EntityThrowable {
-	
-	public EntityTFLichBomb(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
+	public EntityTFLichBomb(World par1World) {
+		super(par1World);
 	}
 
 	public EntityTFLichBomb(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 	}
 
-	public EntityTFLichBomb(World par1World) {
-		super(par1World);
-	}
-
-	@Override
-    protected float func_40077_c()
-    {
-        return 0.35F;
-    }
-	
-	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
         makeTrail();
 	}
-	
 
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 1; i++) {
 			double sx =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionX;
 			double sy =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionY;
@@ -73,26 +59,18 @@ public class EntityTFLichBomb extends EntityThrowable {
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
-//		System.out.println("Lich bolt being attacked!");
-		
-        setBeenAttacked();
-        if (damagesource.getEntity() != null)
-        {
-        	// explode
+    	super.attackEntityFrom(damagesource, i);
+
+    	if (damagesource.getEntity() != null) {
         	explode();
-        	
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-	protected void explode() {
-		float explosionPower = 2F;
-        this.world.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, false, false);
-
+	private void explode() {
+		this.world.newExplosion(this, this.posX, this.posY, this.posZ, 2F, false, false);
         this.setDead();
 	}
 
@@ -103,27 +81,13 @@ public class EntityTFLichBomb extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
-		boolean passThrough = false;
-		
-		// pass through other lich bolts
-		if (par1MovingObjectPosition.entityHit != null && (par1MovingObjectPosition.entityHit instanceof EntityTFLichBolt || par1MovingObjectPosition.entityHit instanceof EntityTFLichBomb)) {
-			passThrough = true;
+	protected void onImpact(RayTraceResult result) {
+		if (result.entityHit instanceof EntityTFLichBolt
+				|| result.entityHit instanceof EntityTFLichBomb
+				|| result.entityHit instanceof EntityTFLich) {
+			return;
 		}
 		
-		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityTFLich)
-		{
-			passThrough = true;
-		}
-        
-    	// if we're not set to pass, damage what we hit
-        if (!passThrough)
-        {
-        	explode();
-        }
-
+		explode();
 	}
-
-
 }

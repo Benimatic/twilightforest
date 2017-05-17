@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -372,7 +373,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		double ty = (targetedEntity.getEntityBoundingBox().minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
 		double tz = targetedEntity.posZ - sz;
 		
-		world.playSoundAtEntity(this, "random.bow", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
+		playSound(SoundEvents.ENTITY_SNOWBALL_THROW, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
 		EntityTFThrownAxe projectile = new EntityTFThrownAxe(world, this);
 		
 		float speed = 0.75F;

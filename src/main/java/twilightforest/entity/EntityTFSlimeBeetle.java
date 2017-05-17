@@ -18,6 +18,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -137,12 +138,12 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
         EntityThrowable projectile = new EntityTFSlimeProjectile(this.world, this);
-        this.world.playSoundAtEntity(this, "mob.slime.small", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        playSound(SoundEvents.ENTITY_SMALL_SLIME_SQUISH, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         double tx = target.posX - this.posX;
         double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
         double tz = target.posZ - this.posZ;
         float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-        projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
+        projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
         this.world.spawnEntity(projectile);
     }
 }

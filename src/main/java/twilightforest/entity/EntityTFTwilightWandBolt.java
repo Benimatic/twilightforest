@@ -20,8 +20,9 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 		super(par1World, par2, par4, par6);
 	}
 
-	public EntityTFTwilightWandBolt(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFTwilightWandBolt(World world, EntityLivingBase thrower) {
+		super(world, thrower);
+		setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 	
 	@Override
@@ -30,7 +31,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
         makeTrail();
 	}
 	
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
@@ -51,22 +52,22 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
-		// only hit living things
-        if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
-        {
-			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
-        }
-
-        for (int i = 0; i < 8; ++i)
-        {
-            this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
-        }
-
+	protected void onImpact(RayTraceResult result) {
         if (!this.world.isRemote)
         {
+			if (result.entityHit instanceof EntityLivingBase)
+			{
+				result.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+			}
+
             this.setDead();
-        }
+        } else
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
+			}
+		}
 	}
 
 }

@@ -3,6 +3,8 @@ package twilightforest.entity;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -33,21 +35,15 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
 	public EntityTFCubeOfAnnihilation(World par1World) {
 		super(par1World);
-		this.setSize(1.1F, 1F);
-		this.isImmuneToFire = true;
-	}
-
-	
-	public EntityTFCubeOfAnnihilation(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
 	}
 
-	public EntityTFCubeOfAnnihilation(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFCubeOfAnnihilation(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
+		this.setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
@@ -58,40 +54,28 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
 	@Override
 	protected void onImpact(RayTraceResult mop) {
+		if (world.isRemote)
+			return;
+
 		// only hit living things
-        if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase)
+        if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase
+				&& mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10))
         {
-            if (mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10))
-            {
-                this.ticksExisted += 60;
-            }
-        }
+			this.ticksExisted += 60;
+		}
         
         if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
-
-        	// demolish some blocks
-        	if (!this.world.isRemote) {
-        		this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F), this.getThrower());
-        	}
-
+			this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F));
         }
-
 	}
 	
-	/**
-     * Do our ball and chain effect on blocks we hit.  Harvest/destroy/whatevs
-	 * @param entity 
-     */
-    private boolean affectBlocksInAABB(AxisAlignedBB par1AxisAlignedBB, EntityLivingBase entity) {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-    	
+    private void affectBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
         int minX = MathHelper.floor(par1AxisAlignedBB.minX);
         int minY = MathHelper.floor(par1AxisAlignedBB.minY);
         int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
         int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
         int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
         int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-        boolean hitBlock = false;
         for (int dx = minX; dx <= maxX; ++dx) {
             for (int dy = minY; dy <= maxY; ++dy) {
                 for (int dz = minZ; dz <= maxZ; ++dz) {
@@ -101,22 +85,15 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
                 	if (state.getBlock() != Blocks.AIR) {
                 		if (canAnnihilate(pos, state)) {
                 			this.world.setBlockToAir(pos);
-
-                    		this.world.playSoundAtEntity(this, "random.fizz", 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
-                    		
+                			this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
                     		this.sendAnnihilateBlockPacket(world, pos);
-
                 		} else {
-                			// return if we hit an obstacle
                 			this.hasHitObstacle = true;
                 		}
-            			hitBlock = true;
                 	}
                 }
             }
         }
-
-        return hitBlock;
     }
 
 
@@ -145,45 +122,28 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     public void onUpdate() {
     	super.onUpdate();
 
-    	// all server side
     	if (!this.world.isRemote) {
-
     		if (this.getThrower() == null) {
     			this.setDead();
     			return;
     		}
 
+			// always head towards either the point or towards the player
+			Vec3d destPoint = new Vec3d(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
+
     		if (this.isReturning()) {
     			// if we are returning, and are near enough to the player, then we are done
-    			List list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+    			List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 
-    			if (list.contains(this.getThrower()) && !this.world.isRemote) {
-    				//System.out.println("we have returned");
+    			if (list.contains(this.getThrower())) {
             		if (this.getThrower() instanceof EntityPlayer) {
             			ItemTFCubeOfAnnihilation.setCubeAsReturned((EntityPlayer)this.getThrower());
             		}
     				this.setDead();
     			}
+    		} else {
+				destPoint = destPoint.add(getThrower().getLookVec().scale(16F));
     		}
-
-
-
-    		// always head towards either the point or towards the player
-			Vec3d destPoint = new Vec3d(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
-
-    		if (!this.isReturning()) {
-    			Vec3d look = this.getThrower().getLookVec();
-    			
-    			
-    			
-    			float dist = 16F;
-
-				look = look.scale(dist);
-				destPoint = destPoint.add(look);
-    		}
-    		
-    		//System.out.println("Dest point = " + destPoint);
-    		
     		
     		// set motions
     		Vec3d velocity = new Vec3d(this.posX - destPoint.xCoord, (this.posY + this.height / 2F) - destPoint.yCoord, this.posZ - destPoint.zCoord);
@@ -209,18 +169,12 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 	    		this.motionZ *= slow;    		
 	    	}
     		
-    		
         	// demolish some blocks
-        	this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F), this.getThrower());
-
+        	this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F));
     	}
-
-
-        
-
     }
     
-    public boolean isReturning() {
+    private boolean isReturning() {
     	if (this.hasHitObstacle || this.getThrower() == null || !(this.getThrower() instanceof EntityPlayer)) {
     		return true;
     	} else {
@@ -229,8 +183,6 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     		return !player.isHandActive();
     	}
     }
-
-	
 
     /**
      * Velocity

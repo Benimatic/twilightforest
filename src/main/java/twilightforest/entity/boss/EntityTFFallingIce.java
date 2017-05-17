@@ -1,12 +1,11 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -14,112 +13,52 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.particle.TFParticleType;
 
-public class EntityTFFallingIce extends Entity {
-
+public class EntityTFFallingIce extends EntityFallingBlock {
 	private static final int HANG_TIME = 100;
-	private int fallTime;
-	private float hurtAmount;
-	private int hurtMax;
-	
+
 	public EntityTFFallingIce(World par1World) {
 		super(par1World);
         this.setSize(2.98F, 2.98F);
-        
-        this.hurtAmount = 10;
-        this.hurtMax = 30;
 	}
 
 	public EntityTFFallingIce(World par1World, int x, int y, int z) {
-		this(par1World);
-
-        this.preventEntitySpawning = true;
-
-        this.setPosition(x, y, z);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-        this.prevPosX = x;
-        this.prevPosY = y;
-        this.prevPosZ = z;
+		super(par1World, x, y, z, Blocks.PACKED_ICE.getDefaultState());
+		this.setSize(2.98F, 2.98F);
+		this.fallHurtAmount = 10.0F;
+		this.fallHurtMax = 30;
+		this.setHurtEntities(true);
 	}
-
-	@Override
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
-	@Override
-    protected void entityInit() {}
-
-    @Override
-    public boolean canBeCollidedWith()
-    {
-    	return !this.isDead;
-    }
 
     @Override
 	public void onUpdate()
     {
-    	this.prevPosX = this.posX;
-    	this.prevPosY = this.posY;
-    	this.prevPosZ = this.posZ;
-    	
-    	++this.fallTime;
-    	
-    	if (this.fallTime > HANG_TIME) {
-    		this.motionY -= 0.03999999910593033D;
-    	}
-    	
-    	this.moveEntity(this.motionX, this.motionY, this.motionZ);
-    	this.motionX *= 0.9800000190734863D;
-    	this.motionY *= 0.9800000190734863D;
-    	this.motionZ *= 0.9800000190734863D;
+    	if (fallTime > HANG_TIME) {
+    		setNoGravity(true);
+		}
 
-    	if (!this.world.isRemote)
-    	{
-    		//int y = MathHelper.floor(this.posY);
-
-    		if (this.onGround)
-    		{
-    			this.motionX *= 0.699999988079071D;
-    			this.motionZ *= 0.699999988079071D;
-    			this.motionY *= -0.5D;
-
-    			this.setDead();
-    		}
-//    		else if (this.fallTime > 100 && !this.world.isRemote && (y < 1 || y > 256) || this.fallTime > 600)
-//    		{
-//    			// something's wrong
-//    			this.setDead();
-//    		}
-    	}
+		super.onUpdate();
     	
     	// kill other nearby blocks if they are not as old as this one
     	if (!this.world.isRemote) {
-    		List<Entity> nearby = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+    		List<EntityTFFallingIce> nearby = this.world.getEntitiesWithinAABB(EntityTFFallingIce.class, this.getEntityBoundingBox());
 
-    		for (Entity entity : nearby) {
-    			if (entity instanceof EntityTFFallingIce) {
-    				EntityTFFallingIce otherIce = (EntityTFFallingIce)entity;
-    				
-    				if (otherIce.getFallTime() < this.fallTime) {
-    					otherIce.setDead();
+    		for (EntityTFFallingIce entity : nearby) {
+    			if (entity != this) {
+    				if (entity.fallTime < this.fallTime) {
+    					entity.setDead();
     				}
     			}
     		}
     		
     		destroyIceInAABB(this.getEntityBoundingBox().expand(0.5, 0, 0.5));
-    	}
-    	
-    	makeTrail();
+    	} else {
+			makeTrail();
+		}
     }
     
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
 			double dx = this.posX + 2F * (rand.nextFloat() - rand.nextFloat()); 
 			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat()); 
@@ -129,23 +68,28 @@ public class EntityTFFallingIce extends Entity {
 		}
 	}
 
-
+	// [VanillaCopy] Like super, but without anvil cases and with extra stuff
 	@Override
-    public void fall(float dist, float multiplier)
+    public void fall(float distance, float multiplier)
     {
-    	int distance = MathHelper.ceil(dist - 1.0F);
+		if (this.hurtEntities)
+		{
+			int i = MathHelper.ceil(distance - 1.0F);
 
-    	if (distance > 0)
-    	{
-    		List<Entity> nearby = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(2, 0, 2));
-    		DamageSource damagesource = DamageSource.fallingBlock;
-    		for (Entity entity : nearby) {
-    			if (!(entity instanceof EntityTFYetiAlpha)) {
-    				entity.attackEntityFrom(damagesource, (float)Math.min(MathHelper.floor((float)distance * this.hurtAmount), this.hurtMax));
-    			}
-    		}
-    	}
-    	
+			if (i > 0)
+			{
+				List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+				DamageSource damagesource = DamageSource.fallingBlock;
+
+				for (Entity entity : list)
+				{
+					if (!(entity instanceof EntityTFYetiAlpha)) {
+						entity.attackEntityFrom(damagesource, (float)Math.min(MathHelper.floor((float)i * this.fallHurtAmount), this.fallHurtMax));
+					}
+				}
+			}
+		}
+
 		for (int i = 0; i < 200; i++) {
 			double dx = this.posX + 3F * (rand.nextFloat() - rand.nextFloat()); 
 			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat()); 
@@ -154,17 +98,11 @@ public class EntityTFFallingIce extends Entity {
 			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 		}
 		
-		this.playSound(Blocks.ANVIL.getSoundType().getBreakSound(), 3F, 0.5F);
 		this.playSound(Blocks.PACKED_ICE.getSoundType().getBreakSound(), 3F, 0.5F);
     }
     
-	/**
-     * Destroys all blocks that aren't associated with 'The End' inside the given bounding box.
-     */
-    public void destroyIceInAABB(AxisAlignedBB par1AxisAlignedBB)
+	private void destroyIceInAABB(AxisAlignedBB par1AxisAlignedBB)
     {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-
     	int minX = MathHelper.floor(par1AxisAlignedBB.minX);
     	int minY = MathHelper.floor(par1AxisAlignedBB.minY);
     	int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
@@ -184,26 +122,5 @@ public class EntityTFFallingIce extends Entity {
     			}
     		}
     	}
-    }
-
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {}
-
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {}
-	
-    @SideOnly(Side.CLIENT)
-	@Override
-    public boolean canRenderOnFire()
-    {
-        return false;
-    }
-    
-    public Block getBlock() {
-    	return Blocks.PACKED_ICE;
-    }
-    
-    public int getFallTime() {
-    	return this.fallTime;
     }
 }

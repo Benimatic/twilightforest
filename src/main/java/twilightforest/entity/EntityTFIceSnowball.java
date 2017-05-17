@@ -8,7 +8,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityTFIceSnowball extends EntityThrowable {
-
 	private static final int DAMAGE = 8;
 
 	public EntityTFIceSnowball(World par1World) {
@@ -43,42 +42,32 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
-        setBeenAttacked();
-		pop();
+    	super.attackEntityFrom(damagesource, i);
+		die();
         return true;
      }
 
 	@Override
-	protected void onImpact(RayTraceResult par1MovingObjectPosition) {
-		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+	protected void onImpact(RayTraceResult result) {
+		if (!world.isRemote && result.entityHit instanceof EntityLivingBase)
 		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE))
-			{
-				// damage armor?
-				//TODO:
-			}
+			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE);
+			// TODO: damage armor?
 		}
 
-		pop();
-
+		die();
 	}
 
-	protected void pop() {
-		for (int i = 0; i < 8; ++i)
-		{
-			this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
-		}
-		
-		// noise
-		//this.world.playSoundAtEntity(this, "mob.slime.big", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-
-
+	private void die() {
 		if (!this.world.isRemote)
 		{
 			this.setDead();
+		} else
+		{
+			for (int j = 0; j < 8; ++j)
+			{
+				this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+			}
 		}
 	}
-
-
 }

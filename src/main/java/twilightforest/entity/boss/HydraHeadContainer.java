@@ -795,15 +795,6 @@ public class HydraHeadContainer {
 			else
 			{
 				EntityTFHydraMortar mortar = new EntityTFHydraMortar(headEntity.world, this.headEntity);
-
-				Vec3d vector = headEntity.getLookVec();
-
-				double dist = 3.5;
-				double px = headEntity.posX + vector.xCoord * dist;
-				double py = headEntity.posY + 1 + vector.yCoord * dist;
-				double pz = headEntity.posZ + vector.zCoord * dist;
-
-				mortar.setLocationAndAngles(px, py, pz, 0, 0);
 				
 				// launch blasting mortars if the player is hiding
 				if (this.targetEntity != null && !headEntity.canEntityBeSeen(this.targetEntity))

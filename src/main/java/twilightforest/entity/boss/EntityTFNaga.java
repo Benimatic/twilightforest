@@ -24,7 +24,6 @@ import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.SpawnerVariant;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;

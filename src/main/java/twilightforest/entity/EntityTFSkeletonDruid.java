@@ -19,6 +19,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -107,15 +108,13 @@ public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAtta
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
 		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
-		this.world.playSoundAtEntity(this, "mob.ghast.fireball", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+		playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 		
-		natureBolt.setTarget(attackTarget);
-
 		double tx = attackTarget.posX - this.posX;
 		double ty = attackTarget.posY + attackTarget.getEyeHeight() - 2.699999988079071D - this.posY;
 		double tz = attackTarget.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F); // 0.6 speed, 6.0 inaccuracy
+		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(natureBolt);
 
 	}

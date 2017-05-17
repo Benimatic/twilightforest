@@ -1,12 +1,10 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
@@ -36,25 +34,18 @@ public class EntityTFIceBomb extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult mop) {
-		if (this.getThrower() != null && this.getThrower() instanceof EntityTFYetiAlpha) {
-			double dist = this.getDistanceSqToEntity(this.getThrower());
-
-			if (dist <= 100) {
-				this.setDead();
-			}
-		}
-		
 		this.motionY = 0;
 		this.hasHit = true;
 		
 		if (!world.isRemote) {
+			if (this.getThrower() instanceof EntityTFYetiAlpha && getDistanceSqToEntity(this.getThrower()) <= 100) {
+				this.setDead();
+			}
+
 			this.doTerrainEffects();
 		}
 	}
 	
-    /**
-     * Called when this EntityThrowable hits a block or entity.
-     */
     private void doTerrainEffects() {
     	int range = 3;
 		int ix = MathHelper.floor(this.lastTickPosX);
@@ -64,7 +55,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
-					this.doTerrainEffect(ix + x, iy + y, iz + z);
+					this.doTerrainEffect(new BlockPos(ix + x, iy + y, iz + z));
 				}
 			}
 		}
@@ -95,24 +86,16 @@ public class EntityTFIceBomb extends EntityThrowable {
 
     	if (this.hasHit)
     	{
-    		if (!world.isRemote)
-    		{
-	    		// slow down
-	    		this.motionX *= 0.1D;
-	    		this.motionY *= 0.1D;
-	    		this.motionZ *= 0.1D;
-    		}
-    		
+			this.motionX *= 0.1D;
+			this.motionY *= 0.1D;
+			this.motionZ *= 0.1D;
+
     		this.zoneTimer--;
-    		
     		makeIceZone();
 
-    		// eventually explode
-    		if (this.zoneTimer <= 0)
-    		{
-    			detonate();
+    		if (!world.isRemote && this.zoneTimer <= 0) {
+    			setDead();
     		}
-
     	} else {
     		makeTrail();
     	}
@@ -129,7 +112,6 @@ public class EntityTFIceBomb extends EntityThrowable {
 	}
 
 	private void makeIceZone() {
-		// nearby sparkles
 		if (this.world.isRemote) {
 			// sparkles
 			for (int i = 0; i < 20; i++) {
@@ -141,40 +123,31 @@ public class EntityTFIceBomb extends EntityThrowable {
 				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
 		} else {
-			// damage
 			if (this.zoneTimer % 10 == 0) {
 	    		hitNearbyEntities();
-
 			}
 		}
 	}
 
 	private void hitNearbyEntities() {
-		List<Entity> nearby = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(3, 2, 3));
+		List<EntityLivingBase> nearby = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(3, 2, 3));
 		
-		for (Entity entity : nearby) {
-			if (entity instanceof EntityLivingBase && entity != this.getThrower()) {
-				
+		for (EntityLivingBase entity : nearby) {
+			if (entity != this.getThrower()) {
 				if (entity instanceof EntityTFYeti) {
 					// TODO: make "frozen yeti" entity?
-					entity.setDead();
 					BlockPos pos = new BlockPos(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
-
 					world.setBlockState(pos, Blocks.ICE.getDefaultState());
 					world.setBlockState(pos.up(), Blocks.ICE.getDefaultState());
-					
+
+					entity.setDead();
 				} else {
 					entity.attackEntityFrom(DamageSource.magic, 1);
-					int chillLevel = 2;
-					((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 5, chillLevel, true, true));
+					entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 5, 2, false, true));
 				}
 				
 			}
 		}
-	}
-
-	private void detonate() {
-        this.setDead();
 	}
 
 	public Block getBlock() {
@@ -182,21 +155,8 @@ public class EntityTFIceBomb extends EntityThrowable {
 	}
 	
     @Override
-    protected float func_70182_d()
-    {
-    	// velocity
-        return 0.75F;
-    }
-    
-    @Override
 	protected float getGravityVelocity()
     {
         return this.hasHit ? 0F : 0.025F;
-    }
-    
-    @Override
-	protected float func_70183_g()
-    {
-        return -20.0F;
     }
 }

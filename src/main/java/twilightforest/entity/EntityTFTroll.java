@@ -210,14 +210,14 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     public void attackEntityWithRangedAttack(EntityLivingBase target, float par2)
     {
     	if (this.hasRock()) {
-
     		EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
-    		double d0 = target.posX - this.posX;
-    		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - target.posY;
-    		double d2 = target.posZ - this.posZ;
-    		float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-    		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
+    		// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
+            double d0 = target.posX - this.posX;
+            double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - ice.posY;
+            double d2 = target.posZ - this.posZ;
+            double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+            ice.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
 
     		this.playSound(SoundEvents. ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     		this.world.spawnEntity(ice);

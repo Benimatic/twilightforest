@@ -19,6 +19,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -496,14 +497,14 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
 		
 		double tx = targetedEntity.posX - sx;
-		double ty = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
+		double ty = (targetedEntity.getEntityBoundingBox().minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
 		double tz = targetedEntity.posZ - sz;
 		
-		world.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+
 		EntityTFLichBolt projectile = new EntityTFLichBolt(world, this);
-		projectile.setThrowableHeading(tx, ty, tz, projectile.func_70182_d(), 1.0F);
-		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
+		projectile.setThrowableHeading(tx, ty, tz, 0.5F, 1.0F);
 
 		world.spawnEntity(projectile);
 	}
@@ -519,14 +520,14 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
 		
 		double tx = targetedEntity.posX - sx;
-		double ty = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
+		double ty = (targetedEntity.getEntityBoundingBox().minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
 		double tz = targetedEntity.posZ - sz;
 		
-		world.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+
 		EntityTFLichBomb projectile = new EntityTFLichBomb(world, this);
-		projectile.setThrowableHeading(tx, ty, tz, projectile.func_40077_c(), 1.0F);
-		
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
+		projectile.setThrowableHeading(tx, ty, tz, 0.35F, 1.0F);
 		
 		world.spawnEntity(projectile);
 	}

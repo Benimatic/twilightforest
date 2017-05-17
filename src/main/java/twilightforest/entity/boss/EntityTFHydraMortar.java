@@ -1,15 +1,12 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -17,26 +14,31 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class EntityTFHydraMortar extends EntityThrowable {
-
     private static final int BURN_FACTOR = 5;
 	private static final int DIRECT_DAMAGE = 18;
 	
-	public EntityLivingBase playerReflects = null;
-	
 	public int fuse = 80;
-	
-	public boolean megaBlast = false;
+	private boolean megaBlast = false;
 
 	public EntityTFHydraMortar(World par1World)
     {
         super(par1World);
         this.setSize(0.75F, 0.75F);
-        
     }
 	
-	public EntityTFHydraMortar(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFHydraMortar(World par1World, EntityTFHydraHead head) {
+		super(par1World, head);
         this.setSize(0.75F, 0.75F);
+
+        Vec3d vector = head.getLookVec();
+
+        double dist = 3.5;
+        double px = head.posX + vector.xCoord * dist;
+        double py = head.posY + 1 + vector.yCoord * dist;
+        double pz = head.posZ + vector.zCoord * dist;
+
+        setLocationAndAngles(px, py, pz, 0, 0);
+        setHeadingFromThrower(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.75F, 1F);
 	}
 
     @Override
@@ -48,27 +50,17 @@ public class EntityTFHydraMortar extends EntityThrowable {
 
     	if (this.onGround)
     	{
-    		if (!world.isRemote)
-    		{
-	    		// slow down
-	    		this.motionX *= 0.9D;
-	    		this.motionY *= 0.9D;
-	    		this.motionZ *= 0.9D;
-    		}
+            this.motionX *= 0.9D;
+            this.motionY *= 0.9D;
+            this.motionZ *= 0.9D;
 
-    		// eventually explode
-    		if (this.fuse-- <= 0)
+    		if (!world.isRemote && this.fuse-- <= 0)
     		{
     			detonate();
     		}
-
     	}
     }
     
-
-    /**
-     * Converts this mortar into a blasting one.
-     */
 	public void setToBlasting() {
 		this.megaBlast = true;
 	}
@@ -80,11 +72,9 @@ public class EntityTFHydraMortar extends EntityThrowable {
 			// we hit the ground
 			this.motionY = 0;
 			this.onGround = true;
-		}
-		else 
+		} else if (!world.isRemote)
 		{
 			detonate();
-
 		}
 	}
 	
@@ -103,27 +93,18 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	
 	private void detonate()
 	{
-		//this.world.playAuxSFX(2004, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), 32764);
-		
-        //this.world.createExplosion((Entity)null, this.posX, this.posY, this.posZ, explosionPower, true);
-        
-		float explosionPower = megaBlast ? 4.0F : 0.1F;
+        float explosionPower = megaBlast ? 4.0F : 0.1F;
         this.world.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, true, true);
 
+        DamageSource src = new EntityDamageSourceIndirect("onFire", this, getThrower()).setFireDamage().setProjectile();
 
-		if (!world.isRemote)
-		{
-			// damage nearby things
-			List<Entity> nearbyList = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D));
-
-			for (Entity nearby : nearbyList)
-			{
-				if (nearby.attackEntityFrom(DamageSource.causeFireballDamage(null, this.getThrower()), DIRECT_DAMAGE) && !nearby.isImmuneToFire())
-				{
-					nearby.setFire(BURN_FACTOR);
-				}
-			}
-		}
+        for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D)))
+        {
+            if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.isImmuneToFire())
+            {
+                nearby.setFire(BURN_FACTOR);
+            }
+        }
 
         this.setDead();
     }
@@ -131,22 +112,22 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	@Override
     public boolean attackEntityFrom(DamageSource damagesource, float i)
     {
-//		System.out.println("Hydra mortar being attacked!");
-		
-        setBeenAttacked();
-        if (damagesource.getEntity() != null && !this.world.isRemote)
+        super.attackEntityFrom(damagesource, i);
+
+        if (damagesource.getSourceOfDamage() != null && !this.world.isRemote)
         {
-            Vec3d vec3d = damagesource.getEntity().getLookVec();
+            Vec3d vec3d = damagesource.getSourceOfDamage().getLookVec();
             if (vec3d != null)
             {
-            	this.setThrowableHeading(vec3d.xCoord, vec3d.yCoord + 1, vec3d.zCoord, 1.5F, 0.1F);  // reflect faster and more accurately
+                // reflect faster and more accurately
+                this.setThrowableHeading(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.5F, 0.1F);  // reflect faster and more accurately
     			this.onGround = false;
     			this.fuse += 20;
-
             }
+
             if (damagesource.getEntity() instanceof EntityLivingBase)
             {
-            	this.playerReflects = (EntityLivingBase)damagesource.getEntity();
+            	this.thrower = (EntityLivingBase)damagesource.getEntity();
             }
             return true;
         }
@@ -156,19 +137,6 @@ public class EntityTFHydraMortar extends EntityThrowable {
         }
     }
 	
-    @Override
-	public EntityLivingBase getThrower()
-    {
-        if (this.playerReflects != null)
-        {
-        	return this.playerReflects;
-        }
-        else
-        {
-        	return super.getThrower();
-        }
-    }
-
 	@Override
 	public boolean isBurning()
 	{
@@ -194,17 +162,5 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	protected float getGravityVelocity()
     {
         return 0.05F;
-    }
-
-    @Override
-	protected float func_70182_d()
-    {
-        return 0.75F;
-    }
-
-    @Override
-	protected float func_70183_g()
-    {
-        return -20.0F;
     }
 }
