@@ -9,6 +9,7 @@ import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleSmokeNormal;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -153,18 +154,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TFClientProxy extends TFCommonProxy {
-
-	int critterRenderID;
-	int plantRenderID;
-	int blockComplexRenderID;
-	int nagastoneRenderID;
-	int magicLeavesRenderID;
-	int pedestalRenderID;
-	int thornsRenderID;
-	int knightmetalBlockRenderID;
-	int hugeLilyPadBlockRenderID;
-	int castleMagicBlockRenderID;
-
 	ModelBiped[] knightlyArmorModel;
 	ModelBiped[] phantomArmorModel;
 	ModelBiped[] yetiArmorModel;
@@ -340,36 +329,18 @@ public class TFClientProxy extends TFCommonProxy {
 
 		
 		// block render ids
-		blockComplexRenderID = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFFireflyJar(blockComplexRenderID));
-				
-		plantRenderID = RenderingRegistry.getNextAvailableRenderId();
+//FIXME: AtomicBlom: These all need BlockState models.
+/*		RenderingRegistry.registerBlockHandler(new RenderBlockTFFireflyJar(blockComplexRenderID));
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFPlants(plantRenderID));
-				
-		critterRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFCritters(critterRenderID));
-		
-		nagastoneRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFNagastone(nagastoneRenderID));
-
-		magicLeavesRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFMagicLeaves(magicLeavesRenderID));
-		
-		pedestalRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFPedestal(pedestalRenderID));
-		
-		thornsRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFThorns(thornsRenderID));
-		
-		knightmetalBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFKnightMetal(knightmetalBlockRenderID));
-		
-		hugeLilyPadBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFHugeLilyPad(hugeLilyPadBlockRenderID));
-		
-		castleMagicBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFCastleMagic(castleMagicBlockRenderID));
-		
+*/
 		// armor model
 		knightlyArmorModel = new ModelBiped[4];
 		knightlyArmorModel[0] = new ModelTFKnightlyArmor(0, 0.5F);
@@ -402,57 +373,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 
 	}
-	
-	@Override
-	public int getCritterBlockRenderID() {
-		return critterRenderID;
-	}
 
-	@Override
-	public int getPlantBlockRenderID() {
-		return plantRenderID;
-	}
-
-	@Override
-	public int getComplexBlockRenderID() {
-		return blockComplexRenderID;
-	}
-	
-	@Override
-	public int getNagastoneBlockRenderID() {
-		return nagastoneRenderID;
-	}
-	
-	@Override
-	public int getMagicLeavesBlockRenderID() {
-		return magicLeavesRenderID;
-	}
-	
-	@Override
-	public int getPedestalBlockRenderID() {
-		return pedestalRenderID;
-	}
-	
-	@Override
-	public int getThornsBlockRenderID() {
-		return thornsRenderID;
-	}
-	
-	@Override
-	public int getKnightmetalBlockRenderID() {
-		return knightmetalBlockRenderID;
-	}
-	
-	@Override
-	public int getHugeLilyPadBlockRenderID() {
-		return hugeLilyPadBlockRenderID;
-	}
-	
-	@Override
-	public int getCastleMagicBlockRenderID() {
-		return castleMagicBlockRenderID;
-	}
-	
 	/**
 	 * The prefix is not actually used, but we do need a render ID
 	 */
