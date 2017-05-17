@@ -80,7 +80,7 @@ public class ModelTFTroll extends ModelBiped {
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-        if (par7Entity.riddenByEntity != null)
+        if (par7Entity.isBeingRidden())
         {
             // arms up!
         	this.bipedRightArm.rotateAngleX += Math.PI;
@@ -88,13 +88,17 @@ public class ModelTFTroll extends ModelBiped {
         	
         }
 
-        if (this.heldItemLeft != 0 || this.heldItemRight != 0) {
-        	this.bipedRightArm.rotateAngleX += Math.PI;
+        if (this.leftArmPose != ArmPose.EMPTY)
+        {
+	        this.bipedRightArm.rotateAngleX += Math.PI;
+        }
+        if (this.rightArmPose != ArmPose.EMPTY)
+        {
         	this.bipedLeftArm.rotateAngleX += Math.PI;
         }
         
-        if (this.onGround > 0F) {
-            float swing = 1.0F - this.onGround;
+        if (this.swingProgress > 0F) {
+            float swing = 1.0F - this.swingProgress;
 
         	this.bipedRightArm.rotateAngleX -= (Math.PI * swing);
         	this.bipedLeftArm.rotateAngleX -= (Math.PI * swing);

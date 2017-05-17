@@ -121,8 +121,8 @@ public class ModelTFSnowQueen extends ModelBiped {
     	// in beam phase, arms forwards
     	if (queen.getCurrentPhase() == Phase.BEAM) {
     		if (queen.isBreathing()) {
-                float f6 = MathHelper.sin(this.onGround * (float)Math.PI);
-                float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
+                float f6 = MathHelper.sin(this.swingProgress * (float)Math.PI);
+                float f7 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
                 this.bipedRightArm.rotateAngleZ = 0.0F;
                 this.bipedLeftArm.rotateAngleZ = 0.0F;
                 this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);

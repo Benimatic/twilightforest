@@ -162,14 +162,14 @@ public class ModelTFMinoshroom extends ModelBiped {
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-        if (this.heldItemLeft != 0)
+        if (this.leftArmPose != ArmPose.EMPTY)
         {
-            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemLeft;
+            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
-        if (this.heldItemRight != 0)
+        if (this.rightArmPose != ArmPose.EMPTY)
         {
-            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemRight;
+            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
 
@@ -179,22 +179,27 @@ public class ModelTFMinoshroom extends ModelBiped {
         this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
         this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 
-        if (this.aimedBow)
+	    float var7 = 0.0F;
+	    float var8 = 0.0F;
+
+        if (this.leftArmPose == ArmPose.BOW_AND_ARROW)
         {
-            float var7 = 0.0F;
-            float var8 = 0.0F;
-            this.bipedRightArm.rotateAngleZ = 0.0F;
             this.bipedLeftArm.rotateAngleZ = 0.0F;
-            this.bipedRightArm.rotateAngleY = -(0.1F - var7 * 0.6F) + this.bipedHead.rotateAngleY;
             this.bipedLeftArm.rotateAngleY = 0.1F - var7 * 0.6F + this.bipedHead.rotateAngleY + 0.4F;
-            this.bipedRightArm.rotateAngleX = -((float)Math.PI / 2F) + this.bipedHead.rotateAngleX;
             this.bipedLeftArm.rotateAngleX = -((float)Math.PI / 2F) + this.bipedHead.rotateAngleX;
-            this.bipedRightArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
             this.bipedLeftArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
-            this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
             this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-            this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
             this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+        }
+
+        if (this.rightArmPose == ArmPose.BOW_AND_ARROW)
+        {
+	        this.bipedRightArm.rotateAngleZ = 0.0F;
+	        this.bipedRightArm.rotateAngleY = -(0.1F - var7 * 0.6F) + this.bipedHead.rotateAngleY;
+	        this.bipedRightArm.rotateAngleX = -((float)Math.PI / 2F) + this.bipedHead.rotateAngleX;
+	        this.bipedRightArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
+	        this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+	        this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
         }
 
         // copied from ModelQuadruped

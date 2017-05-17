@@ -12,18 +12,21 @@ public class ModelTFGoblinKnightLower extends ModelBiped {
 
     public ModelTFGoblinKnightLower()
     {
-        this.heldItemLeft = 0;
-        this.heldItemRight = 0;
         this.isSneak = false;
-        this.aimedBow = false;
         this.textureWidth = 128;
         this.textureHeight = 64;
-        
+
+//FIXME: AtomicBlom: Replace with something like LayerCape
+/*
         this.bipedCloak = new ModelRenderer(this, 0, 0);
         this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
+*/
+//FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
+/*
         this.bipedEars = new ModelRenderer(this, 24, 0);
         this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
-        
+*/
+
         this.bipedHead = new ModelRenderer(this, 0, 32);
         this.bipedHead.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5);
         this.bipedHead.setRotationPoint(0.0F, 10.0F, 1.0F);
@@ -101,7 +104,7 @@ public class ModelTFGoblinKnightLower extends ModelBiped {
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-        if (par7Entity.riddenByEntity != null)
+        if (par7Entity.isBeingRidden())
         {
             this.bipedHead.rotateAngleY = 0;
             this.bipedHead.rotateAngleX = 0;
@@ -109,14 +112,14 @@ public class ModelTFGoblinKnightLower extends ModelBiped {
             this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
         }
 
-        if (this.heldItemLeft != 0)
+        if (this.leftArmPose != ArmPose.EMPTY)
         {
-            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemLeft;
+            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
-        if (this.heldItemRight != 0)
+        if (this.rightArmPose != ArmPose.EMPTY)
         {
-            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemRight;
+            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
         this.bipedRightArm.rotateAngleY = 0.0F;

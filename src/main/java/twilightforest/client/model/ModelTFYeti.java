@@ -99,7 +99,7 @@ public class ModelTFYeti extends ModelBiped {
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-        if (par7Entity.riddenByEntity != null)
+        if (par7Entity.isBeingRidden())
         {
             // arms up!
         	this.bipedRightArm.rotateAngleX += Math.PI;
@@ -107,14 +107,14 @@ public class ModelTFYeti extends ModelBiped {
         	
         }
 
-        if (this.heldItemLeft != 0)
+        if (this.leftArmPose != ArmPose.EMPTY)
         {
-            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemLeft;
+            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
-        if (this.heldItemRight != 0)
+        if (this.rightArmPose != ArmPose.EMPTY)
         {
-            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemRight;
+            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
         this.bipedRightArm.rotateAngleY = 0.0F;
@@ -130,8 +130,8 @@ public class ModelTFYeti extends ModelBiped {
         // if yeti is angry, hold arms forwards like a zombie
         if (yeti.isAngry())
         {
-            float f6 = MathHelper.sin(this.onGround * (float)Math.PI);
-            float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
+            float f6 = MathHelper.sin(this.swingProgress * (float)Math.PI);
+            float f7 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
             this.bipedRightArm.rotateAngleZ = 0.0F;
             this.bipedLeftArm.rotateAngleZ = 0.0F;
             this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);

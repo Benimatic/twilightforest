@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumHand;
 
 public class ModelTFKnightlyArmor extends ModelBiped {
 	
@@ -142,7 +143,7 @@ public class ModelTFKnightlyArmor extends ModelBiped {
 		}
 		
 		if (par1Entity != null && par1Entity instanceof EntityLivingBase) {
-			this.heldItemRight = ((EntityLivingBase)par1Entity).getHeldItem() != null ? 1 : 0;
+			this.rightArmPose = ((EntityLivingBase)par1Entity).getHeldItem(EnumHand.MAIN_HAND) != null ? ArmPose.ITEM : ArmPose.EMPTY;
 		}
 		
 		super.render(par1Entity, par2, par3, par4, par5, par6, par7);

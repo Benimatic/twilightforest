@@ -21,17 +21,20 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 	
     public ModelTFGoblinKnightUpper()
     {
-        this.heldItemLeft = 0;
-        this.heldItemRight = 0;
         this.isSneak = false;
-        this.aimedBow = false;
         this.textureWidth = 128;
         this.textureHeight = 64;
-        
+
+//FIXME: AtomicBlom: Replace with something like LayerCape
+/*
         this.bipedCloak = new ModelRenderer(this, 0, 0);
         this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
+*/
+//FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
+/*
         this.bipedEars = new ModelRenderer(this, 24, 0);
         this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
+*/
         
         this.bipedHead = new ModelRenderer(this, 0, 0);
         this.bipedHead.addBox(0, 0, 0, 0, 0, 0);
@@ -194,16 +197,16 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 //            this.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
         }
 
-        if (this.heldItemLeft != 0)
+        if (this.leftArmPose != ArmPose.EMPTY)
         {
-            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemLeft;
+            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
-        this.heldItemRight = 1;
+        this.rightArmPose = ArmPose.ITEM;
         
-        if (this.heldItemRight != 0)
+        if (this.rightArmPose != ArmPose.EMPTY)
         {
-            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemRight;
+            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
         }
 
         bipedRightArm.rotateAngleX -= (Math.PI * 0.66);

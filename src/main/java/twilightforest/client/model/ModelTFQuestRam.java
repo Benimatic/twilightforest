@@ -12,6 +12,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.MathHelper;
 
 import org.lwjgl.opengl.GL11;
@@ -168,7 +169,9 @@ public class ModelTFQuestRam extends ModelBase
 		for (int i = 0; i < 16; i++) {
 			if (segmentEnabled[i]) {
 	            float var4 = 1.0F;
-	            GL11.glColor3f(var4 * EntitySheep.fleeceColorTable[i][0], var4 * EntitySheep.fleeceColorTable[i][1], var4 * EntitySheep.fleeceColorTable[i][2]);
+				final float[] dyeRgb = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i));
+
+				GL11.glColor3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
 				segments[i].render(f5);
 				
 			}
@@ -223,7 +226,7 @@ public class ModelTFQuestRam extends ModelBase
 		// set up the colors displayed in color order
 		int segmentOffset = 2;
 		for (int color : colorOrder) {
-			if (ram.isColorPresent(color)) {
+			if (ram.isColorPresent(EnumDyeColor.byMetadata(color))) {
 				segmentEnabled[color] = true;
 				segments[color].rotationPointZ = segmentOffset;
 				

@@ -271,7 +271,7 @@ public class ModelTFPinchBeetle extends ModelBase
 	{
 		EntityTFPinchBeetle beetle = (EntityTFPinchBeetle)par1EntityLiving;
 		
-		if (beetle.riddenByEntity == null)
+		if (beetle.isBeingRidden())
 		{
 			// open jaws
 			this.jaw1a.rotateAngleY = 2.96705972839036F;

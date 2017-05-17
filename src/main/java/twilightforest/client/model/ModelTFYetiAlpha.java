@@ -152,8 +152,8 @@ public class ModelTFYetiAlpha extends ModelBiped {
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-        float f6 = MathHelper.sin(this.onGround * (float)Math.PI);
-        float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
+        float f6 = MathHelper.sin(this.swingProgress * (float)Math.PI);
+        float f7 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
         this.bipedRightArm.rotateAngleZ = 0.0F;
         this.bipedLeftArm.rotateAngleZ = 0.0F;
         this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
@@ -210,16 +210,11 @@ public class ModelTFYetiAlpha extends ModelBiped {
         	this.bipedLeftArm.rotateAngleZ = 0.0F;
         }
 
-        if (par7Entity.riddenByEntity != null)
+        if (par7Entity.isBeingRidden())
         {
         	// arms up!
         	this.bipedRightArm.rotateAngleX += Math.PI;
         	this.bipedLeftArm.rotateAngleX += Math.PI;
-
         }
-
-
     }
-    
-
 }

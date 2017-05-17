@@ -174,7 +174,6 @@ public class ModelTFBlockGoblin extends ModelBiped
     @Override
     public void setRotationAngles(float f, float f1, float f2, float yaw, float pitch, float time, Entity entity)
     {
-    	aimedBow = false;
         super.setRotationAngles(f, f1, f2, yaw, pitch, time, entity);
         
         bipedHead.rotationPointY = 11.0F;
