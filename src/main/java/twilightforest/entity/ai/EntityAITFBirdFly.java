@@ -17,11 +17,4 @@ public class EntityAITFBirdFly extends EntityAIBase {
 	public boolean shouldExecute() {
        return !entity.isBirdLanded();
 	}
-	
-    @Override
-	public boolean continueExecuting()
-    {
-        return !entity.isBirdLanded();
-    }
-
 }

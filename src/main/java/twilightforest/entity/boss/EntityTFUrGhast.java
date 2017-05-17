@@ -410,7 +410,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         // check if our target is still within range
 		double targetRange = (this.aggroCounter > 0 || this.isAggressive) ? aggroRange : stareRange;
 
-        if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < targetRange * targetRange && this.canEntityBeSeen(this.targetedEntity))
+        if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < targetRange * targetRange && this.getEntitySenses().canSee(this.targetedEntity))
         {
             // turn towards target
         	this.faceEntity(this.targetedEntity, 10F, this.getVerticalFaceSpeed());

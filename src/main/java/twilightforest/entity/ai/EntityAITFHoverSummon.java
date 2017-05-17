@@ -49,7 +49,7 @@ public class EntityAITFHoverSummon extends EntityAIBase {
         } else {
     		//System.out.println("We can hover at target!");
 
-            return attacker.canEntityBeSeen(target);
+            return attacker.getEntitySenses().canSee(target);
         }
 
 	}

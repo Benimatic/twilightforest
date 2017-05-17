@@ -864,7 +864,7 @@ public class TFFeature {
 		// check if the bounding box is clear
 		boolean isClearSpawn = world.checkNoEntityCollision(hinty.getEntityBoundingBox()) && world.getCollisionBoxes(hinty, hinty.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(hinty.getEntityBoundingBox());
 		
-		if (isClearSpawn && hinty.canEntityBeSeen(player)) {
+		if (isClearSpawn && hinty.getEntitySenses().canSee(player)) {
 			
 			// add items and hint book
 			ItemStack book = this.createHintBook();

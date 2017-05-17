@@ -797,7 +797,7 @@ public class HydraHeadContainer {
 				EntityTFHydraMortar mortar = new EntityTFHydraMortar(headEntity.world, this.headEntity);
 				
 				// launch blasting mortars if the player is hiding
-				if (this.targetEntity != null && !headEntity.canEntityBeSeen(this.targetEntity))
+				if (this.targetEntity != null && !headEntity.getEntitySenses().canSee(this.targetEntity))
 				{
 					//System.out.println("Launching blasting mortar at hiding target.");
 					mortar.setToBlasting();

@@ -41,7 +41,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	{
         this.attackTarget = this.entityHost.getAttackTarget();
 
-        if (this.attackTarget == null || this.entityHost.getDistanceToEntity(attackTarget) > this.breathRange || !this.entityHost.canEntityBeSeen(attackTarget))
+        if (this.attackTarget == null || this.entityHost.getDistanceToEntity(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget))
         {
             return false;
         }
@@ -78,7 +78,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	{
 		return this.durationLeft > 0 && !this.entityHost.isDead && !this.attackTarget.isDead 
 				&& this.entityHost.getDistanceToEntity(attackTarget) <= this.breathRange 
-				&& this.entityHost.canEntityBeSeen(attackTarget);
+				&& this.entityHost.getEntitySenses().canSee(attackTarget);
 	}
 
 	/**

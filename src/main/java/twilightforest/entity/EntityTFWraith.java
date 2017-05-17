@@ -121,7 +121,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
             }
         } else {
              float f1 = targetedEntity.getDistanceToEntity(this);
-             if(canEntityBeSeen(targetedEntity))
+             if(getEntitySenses().canSee(targetedEntity))
              {
                  attackEntity(targetedEntity, f1);
              } else
@@ -136,7 +136,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
             //double d6 = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
             double d7 = targetedEntity.posZ - posZ;
             renderYawOffset = rotationYaw = (-(float)Math.atan2(d5, d7) * 180F) / 3.141593F;
-            if(canEntityBeSeen(targetedEntity))
+            if(getEntitySenses().canSee(targetedEntity))
             {
                 if(attackCounter == 10)
                 {
@@ -217,7 +217,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     protected Entity findPlayerToAttack()
     {
         EntityPlayer entityplayer = world.getClosestVulnerablePlayerToEntity(this, 16D);
-        if(entityplayer != null && canEntityBeSeen(entityplayer))
+        if(entityplayer != null && getEntitySenses().canSee(entityplayer))
         {
             return entityplayer;
         } else

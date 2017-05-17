@@ -426,7 +426,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 	        {
 	            float distance = this.currentTarget.getDistanceToEntity(this);
 
-	            if (this.canEntityBeSeen(this.currentTarget))
+	            if (this.getEntitySenses().canSee(this.currentTarget))
 	            {
 	                this.attackEntity(this.currentTarget, distance);
 	            }
@@ -736,7 +736,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 			}
 			
 			// only things we can see
-			if (!this.canEntityBeSeen(nearbyLiving))
+			if (!this.getEntitySenses().canSee(nearbyLiving))
 			{
 				continue;
 			}

@@ -265,7 +265,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
             {
                 float f1 = target.getDistanceToEntity(this);
 
-                if (this.canEntityBeSeen(target))
+                if (this.getEntitySenses().canSee(target))
                 {
                     this.attackEntity(target, f1);
                 }

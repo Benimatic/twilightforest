@@ -396,7 +396,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	    		}
 	    	}
 	    	
-	    	if(canEntityBeSeen(targetedEntity) && attackTime == 0 && f < 20F)
+	    	if(getEntitySenses().canSee(targetedEntity) && attackTime == 0 && f < 20F)
 	    	{
     			if (this.getNextAttackType() == 0)
     			{
@@ -439,7 +439,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	    			this.attackEntityAsMob(targetedEntity);
 	    			attackTime = 20;
 	    		}
-	    		else if (f < 20F && canEntityBeSeen(targetedEntity)) {
+	    		else if (f < 20F && getEntitySenses().canSee(targetedEntity)) {
 	    			// if not, and we can see the target, launch a bolt
 	    			if (this.getNextAttackType() == 0)
 	    			{
@@ -540,7 +540,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		List<Entity> nearbyMobs = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 
 		for (Entity entity : nearbyMobs) {
-			if (entity instanceof EntityLiving && canPop(entity) && canEntityBeSeen(entity)) {
+			if (entity instanceof EntityLiving && canPop(entity) && getEntitySenses().canSee(entity)) {
 				EntityLiving mob = (EntityLiving)entity;
 
 				if (!world.isRemote) {
@@ -752,7 +752,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
             faceEntity(entity, 100F, 100F);
             this.renderYawOffset = this.rotationYaw;
             
-            if (!this.canEntityBeSeen(entity)) {
+            if (!this.getEntitySenses().canSee(entity)) {
             	// um teleport mishap, return to start
 //            	System.out.println("Teleport fail!!!");
             	teleportToNoChecks(srcX, srcY, srcZ);
