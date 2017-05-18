@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -104,6 +105,8 @@ public class TwilightForestMod {
 		
 		// cheevos!
 		AchievementPage.registerAchievementPage(new TFAchievementPage());
+
+		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
 		
 		// just call this so that we register structure IDs correctly
 //FIXME: AtomicBlom: Disabled for Structures
