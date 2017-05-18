@@ -1,15 +1,24 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCompressed;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.ItemSlab;
+import net.minecraft.util.IStringSerializable;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.DeadrockVariant;
+import twilightforest.block.enums.ThornVariant;
+import twilightforest.item.ItemBlockTFHugeLilyPad;
+import twilightforest.item.ItemBlockTFHugeWaterLily;
 import twilightforest.item.ItemBlockTFMeta;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import twilightforest.item.ItemBlockTFPlant;
+
+import java.util.Arrays;
 
 public class TFBlocks {
 
@@ -145,67 +154,69 @@ public class TFBlocks {
         castleUnlock = (new BlockTFCastleUnlock()).setUnlocalizedName("CastleUnlock");
 
 		// register blocks with their pickup values
-		registerMyBlock(log);
-		registerMyBlock(root);
-		registerMyBlock(leaves);
-		registerMyBlock(firefly, ItemBlock.class);
-		registerMyBlock(cicada, ItemBlock.class);
-		registerMyBlock(portal, ItemBlock.class);
-		registerMyBlock(mazestone);
-		registerMyBlock(hedge);
-		registerMyBlock(bossSpawner);
-		registerMyBlock(fireflyJar, ItemBlock.class);
-		registerMyBlock(plant, twilightforest.item.ItemBlockTFPlant.class);
-		registerMyBlock(uncraftingTable, ItemBlock.class);
-		registerMyBlock(fireJet);
-		registerMyBlock(nagastone);
-		registerMyBlock(sapling);
-		registerMyBlock(moonworm, ItemBlock.class);
-		registerMyBlock(magicLog);
-		registerMyBlock(magicLeaves);
-		registerMyBlock(magicLogSpecial);
-		registerMyBlock(towerWood);
-		registerMyBlock(towerDevice);
-		registerMyBlock(towerTranslucent);
-		registerMyBlock(trophy);
-		registerMyBlock(shield);
-		registerMyBlock(trophyPedestal);
-		registerMyBlock(auroraBlock, ItemBlock.class);
-		registerMyBlock(underBrick);
-		registerMyBlock(thorns, twilightforest.item.ItemBlockTFThorns.class, thorns, ((BlockTFThorns) thorns).getNames());
-		registerMyBlock(burntThorns, ItemBlock.class);
-		registerMyBlock(thornRose, ItemBlock.class);
-		registerMyBlock(leaves3);
-		registerMyBlock(deadrock, twilightforest.item.ItemBlockTFDeadrock.class, deadrock, BlockTFDeadrock.names);
-		registerMyBlock(darkleaves, ItemBlock.class);
-		registerMyBlock(auroraPillar, ItemBlock.class);
-		registerMyBlock(auroraSlab,  twilightforest.item.ItemBlockTFAuroraSlab.class, ((BlockSlab) auroraSlab), ((BlockSlab) auroraDoubleSlab), false);
-		registerMyBlock(auroraDoubleSlab, twilightforest.item.ItemBlockTFAuroraSlab.class, ((BlockSlab) auroraSlab), ((BlockSlab) auroraDoubleSlab), true);
-		registerMyBlock(trollSteinn, ItemBlock.class);
-		registerMyBlock(wispyCloud, ItemBlock.class);
-		registerMyBlock(fluffyCloud, ItemBlock.class);
-		registerMyBlock(giantCobble, ItemBlock.class);
-		registerMyBlock(giantLog, ItemBlock.class);
-		registerMyBlock(giantLeaves, ItemBlock.class);
-		registerMyBlock(giantObsidian, ItemBlock.class);
-		registerMyBlock(uberousSoil, ItemBlock.class);
-		registerMyBlock(hugeStalk, ItemBlock.class);
-		registerMyBlock(hugeGloomBlock, ItemBlock.class);
-		registerMyBlock(trollVidr, ItemBlock.class);
-		registerMyBlock(unripeTrollBer, ItemBlock.class);
-		registerMyBlock(trollBer, ItemBlock.class);
-		registerMyBlock(knightmetalStorage, ItemBlock.class);
-		registerMyBlock(hugeLilyPad, twilightforest.item.ItemBlockTFHugeLilyPad.class);
-		registerMyBlock(hugeWaterLily, twilightforest.item.ItemBlockTFHugeWaterLily.class);
-		registerMyBlock(slider);
-		registerMyBlock(castleBlock);
-		registerMyBlock(castleMagic);
-		registerMyBlock(forceField);
-		registerMyBlock(cinderFurnace, ItemBlock.class);
-		registerMyBlock(cinderFurnaceLit, ItemBlock.class);
-		registerMyBlock(cinderLog);
-		registerMyBlock(castleDoor);
-		registerMyBlock(castleDoorVanished);
+		registerMyBlock(log, "twilight_log");
+		registerMyBlock(root, "root");
+		registerMyBlock(leaves, "twilight_leaves");
+		registerMyBlock(firefly, "firefly", new ItemBlock(firefly));
+		registerMyBlock(cicada, "cicada", new ItemBlock(cicada));
+		registerMyBlock(portal, "twilight_portal", null);
+		registerMyBlock(mazestone, "maze_stone");
+		registerMyBlock(hedge, "hedge");
+		registerMyBlock(bossSpawner, "boss_spawner");
+		registerMyBlock(fireflyJar, "firefly_jar", new ItemBlock(fireflyJar));
+		registerMyBlock(plant, "twilight_plant", new ItemBlockTFPlant(plant));
+		registerMyBlock(uncraftingTable, "uncrafting_table", new ItemBlock(uncraftingTable));
+		registerMyBlock(fireJet, "fire_jet");
+		registerMyBlock(nagastone, "naga_stone");
+		registerMyBlock(sapling, "twilight_sapling");
+		registerMyBlock(moonworm, "moonworm", new ItemBlock(moonworm));
+		registerMyBlock(magicLog, "magic_log");
+		registerMyBlock(magicLeaves, "magic_leaves");
+		registerMyBlock(magicLogSpecial, "magic_log_core");
+		registerMyBlock(towerWood, "tower_wood");
+		registerMyBlock(towerDevice, "tower_device");
+		registerMyBlock(towerTranslucent, "tower_translucent");
+		registerMyBlock(trophy, "trophy");
+		registerMyBlock(shield, "stronghold_shield");
+		registerMyBlock(trophyPedestal, "trophy_pedestal");
+		registerMyBlock(auroraBlock, "aurora_block", new ItemBlock(auroraBlock));
+		registerMyBlock(underBrick, "underbrick");
+		String[] thornNames = Arrays.stream(ThornVariant.values()).map(IStringSerializable::getName).toArray(String[]::new);
+		registerMyBlock(thorns, "thorns", new ItemMultiTexture(thorns, thorns, thornNames));
+		registerMyBlock(burntThorns, "burnt_thorns", new ItemBlock(burntThorns));
+		registerMyBlock(thornRose, "thorn_rose", new ItemBlock(thornRose));
+		registerMyBlock(leaves3, "twilight_leaves_3");
+        String[] deadrockNames = Arrays.stream(DeadrockVariant.values()).map(IStringSerializable::getName).toArray(String[]::new);
+		registerMyBlock(deadrock, "deadrock", new ItemMultiTexture(deadrock, deadrock, deadrockNames));
+		registerMyBlock(darkleaves, "dark_leaves", new ItemBlock(darkleaves));
+		registerMyBlock(auroraPillar, "aurora_pillar", new ItemBlock(auroraPillar));
+		registerMyBlock(auroraSlab,  "aurora_slab", new ItemSlab(auroraSlab, auroraSlab, auroraDoubleSlab));
+        registerMyBlock(auroraDoubleSlab,  "double_aurora_slab", null);
+		registerMyBlock(trollSteinn, "trollsteinn", new ItemBlock(trollSteinn));
+		registerMyBlock(wispyCloud, "wispy_cloud", new ItemBlock(wispyCloud));
+		registerMyBlock(fluffyCloud, "fluffy_cloud", new ItemBlock(fluffyCloud));
+		registerMyBlock(giantCobble, "giant_cobblestone", new ItemBlock(giantCobble));
+		registerMyBlock(giantLog, "giant_log", new ItemBlock(giantLog));
+		registerMyBlock(giantLeaves, "giant_leaves", new ItemBlock(giantLeaves));
+		registerMyBlock(giantObsidian, "giant_obsidian", new ItemBlock(giantObsidian));
+		registerMyBlock(uberousSoil, "uberous_soil", new ItemBlock(uberousSoil));
+		registerMyBlock(hugeStalk, "huge_stalk", new ItemBlock(hugeStalk));
+		registerMyBlock(hugeGloomBlock, "huge_mushgloom", new ItemBlock(hugeGloomBlock));
+		registerMyBlock(trollVidr, "trollvidr", new ItemBlock(trollVidr));
+		registerMyBlock(unripeTrollBer, "unripe_trollber", new ItemBlock(unripeTrollBer));
+		registerMyBlock(trollBer, "trollber", new ItemBlock(trollBer));
+		registerMyBlock(knightmetalStorage, "knightmetal_block", new ItemBlock(knightmetalStorage));
+		registerMyBlock(hugeLilyPad, "huge_lilypad", new ItemBlockTFHugeLilyPad(hugeLilyPad));
+		registerMyBlock(hugeWaterLily, "huge_waterlily", new ItemBlockTFHugeWaterLily(hugeWaterLily));
+		registerMyBlock(slider, "slider");
+		registerMyBlock(castleBlock, "castle_brick");
+		registerMyBlock(castleMagic, "castle_rune_brick");
+		registerMyBlock(forceField, "force_field");
+		registerMyBlock(cinderFurnace, "cinder_furnace", new ItemBlock(cinderFurnace));
+		registerMyBlock(cinderFurnaceLit, "cinder_furnace_lit", null);
+		registerMyBlock(cinderLog, "cinder_log");
+		registerMyBlock(castleDoor, "castle_door");
+		registerMyBlock(castleDoorVanished, "castle_door_vanished");
 
 		// fire info
         Blocks.FIRE.setFireInfo(log, 5, 5);
@@ -213,23 +224,20 @@ public class TFBlocks {
         Blocks.FIRE.setFireInfo(leaves3, 30, 60);
 	}
 
-	private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, BlockSlab singleSlab, BlockSlab doubleSlab, boolean isDouble) {
-		GameRegistry.registerBlock(block, pickup, block.getUnlocalizedName(), singleSlab, doubleSlab, isDouble);
+	private static void registerMyBlock(Block block, String registryName)
+    {
+        registerMyBlock(block, registryName, new ItemBlockTFMeta(block));
+    }
 
-	}
+	private static void registerMyBlock(Block block, String registryName, Item itemForm)
+    {
+        block.setRegistryName(TwilightForestMod.ID, registryName);
+        GameRegistry.register(block);
 
-	private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, Block blockAgain, String[] names) {
-		GameRegistry.registerBlock(block, pickup, block.getUnlocalizedName(), blockAgain, names);
-	}
-
-	private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup) 
-	{
-		GameRegistry.registerBlock(block, pickup, block.getUnlocalizedName());
-	}
-	
-	private static void registerMyBlock(Block block) 
-	{
-		GameRegistry.registerBlock(block, ItemBlockTFMeta.class, block.getUnlocalizedName());
-	}
-
+        if (itemForm != null)
+        {
+            itemForm.setRegistryName(TwilightForestMod.ID, registryName);
+            GameRegistry.register(itemForm);
+        }
+    }
 }

@@ -37,7 +37,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 @Mod(modid = TwilightForestMod.ID, name = "The Twilight Forest", version = TwilightForestMod.VERSION)
 public class TwilightForestMod {
 	
-	public static final String ID = "TwilightForest";
+	public static final String ID = "twilightforest";
 	public static final String VERSION = "2.3.8dev";
 	
 	public static final String MODEL_DIR = "twilightforest:textures/model/";

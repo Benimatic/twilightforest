@@ -11,14 +11,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockTFMeta extends ItemBlock {
 
-	private final Block myBlock;
-
 	public ItemBlockTFMeta(Block block) {
 		super(block);
         setHasSubtypes(true);
-        setMaxDamage(0);
-        
-        this.myBlock = block;
 	}
 
     @Override
@@ -43,6 +38,7 @@ public class ItemBlockTFMeta extends ItemBlock {
 		// add warning for [WIP] tag
 		if (par1ItemStack.getDisplayName().contains("[WIP]"))
 		{
+			// TODO 1.10 localize these messages.
 			par3List.add("This block is a work in progress");
 			par3List.add("and may have bugs or unintended");
 			par3List.add("effects that may damage your world.");
