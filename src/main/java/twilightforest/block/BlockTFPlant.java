@@ -44,38 +44,9 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	protected BlockTFPlant() {
 		super(Material.PLANTS);
         this.setTickRandomly(true);
-        float var3 = 0.4F;
-        this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.8F, 0.5F + var3);
         this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.icons = new IIcon[iconNames.length];
-
-        for (int i = 0; i < this.icons.length; ++i)
-        {
-        	if (this.iconNames[i] != null)
-        	{
-        		this.icons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + iconNames[i]);
-        	}
-        }
-        
-        this.icons[META_FORESTGRASS] = Blocks.TALLGRASS.getIcon(2, 1);
-        this.icons[META_DEADBUSH] = Blocks.DEADBUSH.getBlockTextureFromSide(2);
-        
-        BlockTFPlant.mayappleSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":mayapple_side");
-    }
-    @Override
-	public int getBlockColor()
-    {
-        double var1 = 0.5D;
-        double var3 = 1.0D;
-        return ColorizerGrass.getGrassColor(var1, var3);
-    }
     
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
@@ -112,34 +83,31 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     }
     
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos)
     {
         PlantVariant variant = state.getValue(VARIANT);
 
+        long seed = pos.getX() * 3129871 ^ pos.getY() * 116129781L ^ pos.getZ();
+        seed = seed * seed * 42317861L + seed * 11L;
+
         if (variant == PlantVariant.MOSSPATCH)
         {
-            long seed = x * 3129871 ^ y * 116129781L ^ z;
-            seed = seed * seed * 42317861L + seed * 11L;
-            
             int xOff0 = (int) (seed >> 12 & 3L);
             int xOff1 = (int) (seed >> 15 & 3L);
             int zOff0 = (int) (seed >> 18 & 3L);
             int zOff1 = (int) (seed >> 21 & 3L);
             
-            boolean xConnect0 = par1IBlockAccess.getBlock(x + 1, y, z) == this && par1IBlockAccess.getBlockMetadata(x + 1, y, z) == META_MOSSPATCH;
-        	boolean xConnect1 = par1IBlockAccess.getBlock(x - 1, y, z) == this && par1IBlockAccess.getBlockMetadata(x - 1, y, z) == META_MOSSPATCH;
-        	boolean zConnect0 = par1IBlockAccess.getBlock(x, y, z + 1) == this && par1IBlockAccess.getBlockMetadata(x, y, z + 1) == META_MOSSPATCH;
-        	boolean zConnect1 = par1IBlockAccess.getBlock(x, y, z - 1) == this && par1IBlockAccess.getBlockMetadata(x, y, z - 1) == META_MOSSPATCH;
-        	
-            this.setBlockBounds(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F, 
+            boolean xConnect0 = par1IBlockAccess.getBlockState(pos.east()).getBlock() == this && par1IBlockAccess.getBlockState(pos.east()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+        	boolean xConnect1 = par1IBlockAccess.getBlockState(pos.west()).getBlock() == this && par1IBlockAccess.getBlockState(pos.west()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+        	boolean zConnect0 = par1IBlockAccess.getBlockState(pos.south()).getBlock() == this && par1IBlockAccess.getBlockState(pos.south()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+        	boolean zConnect1 = par1IBlockAccess.getBlockState(pos.north()).getBlock() == this && par1IBlockAccess.getBlockState(pos.north()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+
+            return new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
             		xConnect0 ? 1F : (15F - xOff0) / 16F, 1F / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F);
 
         }
         else if (variant == PlantVariant.CLOVERPATCH)
         {
-            long seed = x * 3129871 ^ y * 116129781L ^ z;
-            seed = seed * seed * 42317861L + seed * 11L;
-            
             int xOff0 = (int) (seed >> 12 & 3L);
             int xOff1 = (int) (seed >> 15 & 3L);
             int zOff0 = (int) (seed >> 18 & 3L);
@@ -147,14 +115,13 @@ public class BlockTFPlant extends BlockBush implements IShearable {
             
             int yOff0 = (int) (seed >> 24 & 1L);
             int yOff1 = (int) (seed >> 27 & 1L);
-            
 
-        	boolean xConnect0 = par1IBlockAccess.getBlock(x + 1, y, z) == this && par1IBlockAccess.getBlockMetadata(x + 1, y, z) == META_CLOVERPATCH;
-        	boolean xConnect1 = par1IBlockAccess.getBlock(x - 1, y, z) == this && par1IBlockAccess.getBlockMetadata(x - 1, y, z) == META_CLOVERPATCH;
-        	boolean zConnect0 = par1IBlockAccess.getBlock(x, y, z + 1) == this && par1IBlockAccess.getBlockMetadata(x, y, z + 1) == META_CLOVERPATCH;
-        	boolean zConnect1 = par1IBlockAccess.getBlock(x, y, z - 1) == this && par1IBlockAccess.getBlockMetadata(x, y, z - 1) == META_CLOVERPATCH;
+        	boolean xConnect0 = par1IBlockAccess.getBlockState(pos.east()).getBlock() == this && par1IBlockAccess.getBlockState(pos.east()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
+        	boolean xConnect1 = par1IBlockAccess.getBlockState(pos.west()).getBlock() == this && par1IBlockAccess.getBlockState(pos.west()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
+        	boolean zConnect0 = par1IBlockAccess.getBlockState(pos.south()).getBlock() == this && par1IBlockAccess.getBlockState(pos.south()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
+        	boolean zConnect1 = par1IBlockAccess.getBlockState(pos.north()).getBlock() == this && par1IBlockAccess.getBlockState(pos.north()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
         	
-            this.setBlockBounds(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F, 
+            return new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
             		xConnect0 ? 1F : (15F - xOff0) / 16F, (1F + yOff0 + yOff1) / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F);
         	
             //this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2F / 16F, 1.0F);
@@ -167,6 +134,14 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         {
             return FULL_BLOCK_AABB;
         }
+    }
+
+    @Override
+    public int getBlockColor()
+    {
+        double var1 = 0.5D;
+        double var3 = 1.0D;
+        return ColorizerGrass.getGrassColor(var1, var3);
     }
     
     @Override
@@ -307,15 +282,15 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
-        par3List.add(new ItemStack(this, 1, PlantVariant.MOSSPATCH.meta));
-        par3List.add(new ItemStack(this, 1, PlantVariant.MAYAPPLE.meta));
+        par3List.add(new ItemStack(this, 1, PlantVariant.MOSSPATCH.itemMetadata));
+        par3List.add(new ItemStack(this, 1, PlantVariant.MAYAPPLE.itemMetadata));
         //par3List.add(new ItemStack(this, 1, META_CLOVERPATCH));
-        par3List.add(new ItemStack(this, 1, 8));
-        par3List.add(new ItemStack(this, 1, 9));
-        par3List.add(new ItemStack(this, 1, PlantVariant.FORESTGRASS.meta));
-        par3List.add(new ItemStack(this, 1, PlantVariant.DEADBUSH.meta));
-        par3List.add(new ItemStack(this, 1, 13));
-        par3List.add(new ItemStack(this, 1, 14));
+        par3List.add(new ItemStack(this, 1, PlantVariant.FIDDLEHEAD.itemMetadata));
+        par3List.add(new ItemStack(this, 1, PlantVariant.MUSHGLOOM.itemMetadata));
+        par3List.add(new ItemStack(this, 1, PlantVariant.FORESTGRASS.itemMetadata));
+        par3List.add(new ItemStack(this, 1, PlantVariant.DEADBUSH.itemMetadata));
+        par3List.add(new ItemStack(this, 1, PlantVariant.TORCHBERRY.itemMetadata));
+        par3List.add(new ItemStack(this, 1, PlantVariant.ROOT_STRAND.itemMetadata));
 
     }
 	
