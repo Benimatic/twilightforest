@@ -65,7 +65,6 @@ public class TwilightForestMod {
     public static String twilightForestSeed;
     public static boolean disablePortalCreation;
     public static boolean disableUncrafting;
-    public static boolean oldMapGen;
     public static String portalCreationItemString;
 
     // performance
@@ -84,11 +83,6 @@ public class TwilightForestMod {
 	@SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
 	public static TFCommonProxy proxy;
 
-	public TwilightForestMod()
-	{
-		TwilightForestMod.instance = this;
-	}
-	
     @EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// load config
@@ -172,9 +166,6 @@ public class TwilightForestMod {
 		TFBiomeBase.registerWithBiomeDictionary();
 	}
 	
-	/**
-	 * Post init
-	 */
     @EventHandler
 	public void postInit(FMLPostInitializationEvent evt) 
 	{
@@ -208,7 +199,7 @@ public class TwilightForestMod {
 		// dispenser behaviors
 		registerDispenseBehaviors(event.getServer());
 		
-		//event.registerServerCommand(new CommandTFFeature());
+		event.registerServerCommand(new CommandTFFeature());
 		event.registerServerCommand(new CommandTFProgress());
 	}
 
@@ -274,7 +265,7 @@ public class TwilightForestMod {
 		TFCreatures.registerTFCreature(twilightforest.entity.EntityTFAdherent.class, "Adherent", id++, 0x0a0000, 0x00008b);
 		TFCreatures.registerTFCreature(twilightforest.entity.EntityTFRovingCube.class, "RovingCube", id++, 0x0a0000, 0x00009b);
 		
-		EntityRegistry.registerModEntity(twilightforest.entity.boss.EntityTFHydraHead.class, "HydraHead", 11, this, id++, 3, false);
+		EntityRegistry.registerModEntity(twilightforest.entity.boss.EntityTFHydraHead.class, "HydraHead", id++, this, 11, 3, false);
 		
 		EntityRegistry.registerModEntity(twilightforest.entity.EntityTFNatureBolt.class, "tfnaturebolt", id++, this, 150, 5, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.boss.EntityTFLichBolt.class, "tflichbolt",  id++, this, 150, 2, true);
@@ -515,8 +506,6 @@ public class TwilightForestMod {
 	    configFile.get(Configuration.CATEGORY_GENERAL, "DisablePortalCreation", false).setComment("Disable Twilight Forest portal creation entirely.  Provided for server operators looking to restrict action to the dimension.");
 	    disableUncrafting = configFile.get(Configuration.CATEGORY_GENERAL, "DisableUncrafting", false).getBoolean(false);
 	    configFile.get(Configuration.CATEGORY_GENERAL, "DisableUncrafting", false).setComment("Disable the uncrafting function of the uncrafting table.  Provided as an option when interaction with other mods produces exploitable recipes.");
-	    oldMapGen = configFile.get(Configuration.CATEGORY_GENERAL, "OldMapGen", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "OldMapGen", false).setComment("Use old (pre Minecraft 1.7) map gen.  May not be fully supported.");
 	    portalCreationItemString = configFile.get(Configuration.CATEGORY_GENERAL, "PortalCreationItem", "diamond").getString();
 	    configFile.get(Configuration.CATEGORY_GENERAL, "PortalCreationItem", "diamond").setComment("Item to create the Twilight Forest Portal.  Defaults to 'diamond'");
 

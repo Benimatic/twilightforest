@@ -44,16 +44,7 @@ public class TFBiomeProvider extends BiomeProvider
 
     public TFBiomeProvider(long par1, WorldType par3WorldType)
     {
-        GenLayer agenlayer[];
-        // new world gen!
-        if (TwilightForestMod.oldMapGen)
-        {
-        	agenlayer = GenLayerTF.makeTheWorldOldMapGen(par1);
-        }
-        else
-        {
-        	agenlayer = GenLayerTF.makeTheWorld(par1);
-        }
+        GenLayer[] agenlayer = GenLayerTF.makeTheWorld(par1);
         unzoomedBiomes = agenlayer[0];
         zoomedBiomes = agenlayer[1];
     }
@@ -220,12 +211,6 @@ public class TFBiomeProvider extends BiomeProvider
 	 * @param world 
      */
     public boolean isInFeatureChunk(World world, int mapX, int mapZ) {
-    	// legacy support
-		if (TwilightForestMod.oldMapGen)
-		{
-			return isInFeatureChunkOld(world, mapX, mapZ);
-		}
-		
 		int chunkX = mapX >> 4;
 		int chunkZ = mapZ >> 4;
 		BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
@@ -256,16 +241,4 @@ public class TFBiomeProvider extends BiomeProvider
 //    	return Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ;
 
     }
-
-	/**
-     * Checks if the coordinates are in a feature chunk.
-	 * @param world 
-     */
-    public boolean isInFeatureChunkOld(World world, int mapX, int mapZ) {
-    	int chunkX = mapX >> 4; 
-    	int chunkZ = mapZ >> 4;
-
-    	return chunkX % 16 == 0 && chunkZ % 16 == 0;
-    }
-
 }

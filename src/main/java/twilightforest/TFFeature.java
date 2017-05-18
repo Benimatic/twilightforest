@@ -318,111 +318,7 @@ public class TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	public static TFFeature generateFeatureForOldMapGen(int chunkX, int chunkZ, World world) 
-	{
-//		if (false)
-//		{
-//			//return generateFeaturePreset5x5(chunkX, chunkZ, world);
-//			return generateFeaturePreset6x6(chunkX, chunkZ, world);
-//		}
-
-		// what biome is at the center of the chunk?
-    	Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
-    	
-    	// get random value 
-    	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
-    	int randnum = hillRNG.nextInt(16);
-    	
-    	// glaciers have ice towers
-    	if (biomeAt == TFBiomeBase.glacier) {
-    		return iceTower;
-    	}
-    	
-    	// lakes have quest islands
-    	if (biomeAt == TFBiomeBase.tfLake) {
-    		return questIsland;
-    	}
-    	
-    	// enchanted forests have groves
-    	if (biomeAt == TFBiomeBase.enchantedForest) {
-    		return questGrove;
-    	}
-    	
-    	// fire swamp has hydra lair
-    	if (biomeAt == TFBiomeBase.fireSwamp) {
-    		return hydraLair;
-    	}
-    	
-    	// temporary, clearing has maze ruins
-    	if (biomeAt == TFBiomeBase.clearing || biomeAt == TFBiomeBase.oakSavanna) {
-    		return labyrinth;
-    	}
-    	
-    	// dark forests have their own things
-    	if (biomeAt == TFBiomeBase.darkForest)
-    	{
-    		switch (randnum % 3)
-    		{
-    		case 0:
-    			//return druidGrove;
-    			break;
-    		case 1:
-    			return darkTower;
-    		case 2:
-    			return tfStronghold;
-    		}
-    	}
-    	
-    	
-    	// highlands center has castle
-    	if (biomeAt == TFBiomeBase.highlandsCenter) {
-    		return finalCastle;
-    	}
-    	// highlands has trolls
-    	if (biomeAt == TFBiomeBase.highlands) {
-    		return trollCave;
-    	}    	
-
-    	// deep mushrooms has mushroom tower
-    	if (biomeAt == TFBiomeBase.deepMushrooms) {
-    		return mushroomTower;
-    	}
-
-    	// okay, well that takes care of most special cases
-    	switch (randnum)
-    	{
-    	default:
-    	case 0: // oops, I forgot about zero for a long time, now there are too many hill 1s
-    	case 1:
-    	case 2:
-    	case 3:
-    	case 4:
-    	case 5:
-    	case 6:
-    		return hill1;
-    	case 7:
-    	case 8:
-    	case 9:
-    		return hill2;
-    	case 10:
-    		return hill3;
-    	case 11:
-    	case 12:
-    		return hedgeMaze;
-       	case 13:
-    		return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
-    	case 14:
-    	case 15:
-    		return lichTower;
-    	}	
-	}
-	
 	public static TFFeature generateFeatureFor1Point7(int chunkX, int chunkZ, World world) {
-		if (TwilightForestMod.oldMapGen)
-		{
-			return generateFeatureForOldMapGen(chunkX, chunkZ, world);
-		}
-		
 		// set the chunkX and chunkZ to the center of the biome
     	chunkX = Math.round(chunkX / 16F) * 16;
     	chunkZ = Math.round(chunkZ / 16F) * 16;
@@ -692,13 +588,7 @@ public class TFFeature {
      * 
      */
     public static BlockPos getNearestCenterXYZ(int cx, int cz, World world) {
-    	// legacy support
-		if (TwilightForestMod.oldMapGen)
-		{
-			return getNearestCenterXYZOld(cx, cz, world);
-		}
-
-    	int chunkX = cx; 
+    	int chunkX = cx;
     	int chunkZ = cz;
 
     	// generate random number for the whole biome area
@@ -733,19 +623,8 @@ public class TFFeature {
 	    }
     	
     	return new BlockPos(ccx, TFWorld.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ;
-    	
-    	
-    	
-      }
+  	}
     
-    private static BlockPos getNearestCenterXYZOld(int cx, int cz, World world) {
-      	int fx = (int) (Math.round(cx / 256.0) * 256 + 8);
-    	int fz = (int) (Math.round(cz / 256.0) * 256 + 8);
-    	
-    	return new BlockPos(fx, TFWorld.SEALEVEL, fz);
-
-	}
-
 	/**
      * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
      */
