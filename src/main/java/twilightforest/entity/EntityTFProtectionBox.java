@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFProtectionBox extends Entity {
 
-	public int lifeTime;
+	public int lifeTime = 60;
 	public int sizeX;
 	public int sizeY;
 	public int sizeZ;
@@ -23,11 +23,6 @@ public class EntityTFProtectionBox extends Entity {
 		sizeZ = Math.abs(maxZ - minZ) + 1;
 		
 		this.setSize(Math.max(sizeX, sizeZ), sizeY);
-		
-		this.lifeTime = 60;
-		
-		//System.out.println("Made new box");
-
 	}
 
     @Override

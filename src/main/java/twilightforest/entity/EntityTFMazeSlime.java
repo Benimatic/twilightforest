@@ -3,9 +3,11 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
@@ -19,10 +21,10 @@ import twilightforest.item.TFItems;
 public class EntityTFMazeSlime extends EntitySlime
 {
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/maze_slime");
+    private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, 1).setSaved(false);
 
 	public EntityTFMazeSlime(World par1World) {
 		super(par1World);
-        //texture = TwilightForestMod.MODEL_DIR + "mazeslime.png";
         this.setSlimeSize(1 << (1 + this.rand.nextInt(2)));
 	}
 
@@ -51,8 +53,7 @@ public class EntityTFMazeSlime extends EntitySlime
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        int size = this.getSlimeSize();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(2.0D * size * size);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(DOUBLE_HEALTH);
     }
 
     @Override
@@ -87,32 +88,28 @@ public class EntityTFMazeSlime extends EntitySlime
         return true;
     }
 
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
-    protected boolean isValidLightLevel()
+    // [VanillaCopy] exact copy from EntityMob.isValidLightLevel
+    private boolean isValidLightLevel()
     {
-        int var1 = MathHelper.floor(this.posX);
-        int var2 = MathHelper.floor(this.boundingBox.minY);
-        int var3 = MathHelper.floor(this.posZ);
+        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (this.world.getSavedLightValue(EnumSkyBlock.Sky, var1, var2, var3) > this.rand.nextInt(32))
+        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
         {
             return false;
         }
         else
         {
-            int var4 = this.world.getBlockLightValue(var1, var2, var3);
+            int i = this.world.getLightFromNeighbors(blockpos);
 
             if (this.world.isThundering())
             {
-                int var5 = this.world.skylightSubtracted;
-                this.world.skylightSubtracted = 10;
-                var4 = this.world.getBlockLightValue(var1, var2, var3);
-                this.world.skylightSubtracted = var5;
+                int j = this.world.getSkylightSubtracted();
+                this.world.setSkylightSubtracted(10);
+                i = this.world.getLightFromNeighbors(blockpos);
+                this.world.setSkylightSubtracted(j);
             }
 
-            return var4 <= this.rand.nextInt(8);
+            return i <= this.rand.nextInt(8);
         }
     }
 

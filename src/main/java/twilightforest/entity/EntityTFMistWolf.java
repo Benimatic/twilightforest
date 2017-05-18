@@ -15,8 +15,6 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 	public EntityTFMistWolf(World world) {
 		super(world);
         this.setSize(1.4F, 1.9F);
-        
-        //this.texture = TwilightForestMod.MODEL_DIR + "mistwolf.png";
 	}
 
 	@Override
@@ -34,22 +32,14 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
         {
             float myBrightness = this.getBrightness(1.0F);
             
-            //System.out.println("Biting and brightness is " + myBrightness);
-
             if (par1Entity instanceof EntityLivingBase && myBrightness < 0.10F)
             {
-                byte effectDuration = 0;
-
-                if (this.world.getDifficulty() != EnumDifficulty.EASY)
-                {
-                    if (this.world.getDifficulty() == EnumDifficulty.NORMAL)
-                    {
-                        effectDuration = 7;
-                    }
-                    else if (this.world.getDifficulty() == EnumDifficulty.HARD)
-                    {
-                        effectDuration = 15;
-                    }
+                int effectDuration;
+                switch (world.getDifficulty()) {
+                    case EASY: effectDuration = 0; break;
+                    default:
+                    case NORMAL: effectDuration = 7; break;
+                    case HARD: effectDuration = 15; break;
                 }
 
                 if (effectDuration > 0)

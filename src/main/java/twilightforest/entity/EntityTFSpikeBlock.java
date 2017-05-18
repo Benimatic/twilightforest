@@ -34,14 +34,10 @@ public class EntityTFSpikeBlock extends Entity {
     	lastTickPosY = posY;
     	lastTickPosZ = posZ;
 
-    	
-    	//System.out.println("Updating " + this + " with angles " + rotationYawHead + ", " + rotationPitch);
-
     	for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
     	for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
     	for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
     	for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
-
     }
     
     @Override
@@ -70,13 +66,4 @@ public class EntityTFSpikeBlock extends Entity {
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) { }
-    
-//    /**
-//     * Returns the texture's file path as a String.
-//     */
-//	@Override
-//    public String getTexture()
-//    {
-//        return this.texture;
-//    }
 }

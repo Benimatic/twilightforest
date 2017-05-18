@@ -22,7 +22,7 @@ public class EntityTFNagaSegment extends Entity {
 	private EntityTFNaga naga;
 	private int segment;
 	private int deathCounter;
-	private final AttributeModifier slowdown = new AttributeModifier("Long Naga Slowdown", -0.2F / 12F, 0);
+	private final AttributeModifier slowdown = new AttributeModifier("Long Naga Slowdown", -0.2F / 12F, 0).setSaved(false);
 
 	public EntityTFNagaSegment(World par1World) {
 		super(par1World);

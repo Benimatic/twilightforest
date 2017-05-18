@@ -19,21 +19,22 @@ public class EntityTFKingSpider extends EntitySpider {
 
 	public EntityTFKingSpider(World world) {
 		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "kingspider.png";
         this.setSize(1.6F, 1.6F);
-        //this.moveSpeed = 0.35F;
+	}
 
+	@Override
+    protected void initEntityAI() {
+	    // todo modernize to match superclass where necessary?
         this.setPathPriority(PathNodeType.WATER, -1.0F);
-		//this.tasks.addTask(1, new EntityAITFChargeAttack(this, 0.4F));
+        //this.tasks.addTask(1, new EntityAITFChargeAttack(this, 0.4F));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.3F));
         this.tasks.addTask(6, new EntityAIWander(this, 0.2F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
-
-	}
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+    }
 
 	@Override
     protected void applyEntityAttributes()

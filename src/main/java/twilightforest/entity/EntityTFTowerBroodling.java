@@ -5,15 +5,13 @@ import net.minecraft.world.World;
 
 public class EntityTFTowerBroodling extends EntityTFSwarmSpider 
 {
-
 	public EntityTFTowerBroodling(World world) {
 		this(world, true);
 	}
 
 	public EntityTFTowerBroodling(World world, boolean spawnMore) {
 		super(world, spawnMore);
-		experienceValue = 3; // XP value
-		//texture = TwilightForestMod.MODEL_DIR + "towerbroodling.png";
+		experienceValue = 3;
 	}
 	
 	@Override

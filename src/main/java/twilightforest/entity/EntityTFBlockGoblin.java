@@ -18,6 +18,7 @@ import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -42,39 +43,30 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	private int recoilCounter;
 	private float chainAngle;
 	
-	public EntityTFSpikeBlock block;
-	public EntityTFGoblinChain chain1;
-	public EntityTFGoblinChain chain2;
-	public EntityTFGoblinChain chain3;
+	public final EntityTFSpikeBlock block = new EntityTFSpikeBlock(this);
+	public final EntityTFGoblinChain chain1 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain2 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain3 = new EntityTFGoblinChain(this);
 	
-	private Entity[] partsArray;
-
+	private final Entity[] partsArray = new Entity[] { block, chain1, chain2, chain3 };
 
 	public EntityTFBlockGoblin(World world)
     {
         super(world);
-        //texture = TwilightForestMod.MODEL_DIR + "blockgoblin.png";
-        //moveSpeed = 0.28F;
         setSize(0.9F, 1.4F);
-        
+    }
+
+    @Override
+    protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityTNTPrimed.class, 2.0F, 0.8F, 1.5F));
+        this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityTNTPrimed.class, 2.0F, 0.8F, 1.5F));
         this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0F, false));
         this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
-        
-        this.recoilCounter = 0;
-
-        this.partsArray = (new Entity[]
-        		{
-        		block = new EntityTFSpikeBlock(this), chain1 = new EntityTFGoblinChain(this), chain2 = new EntityTFGoblinChain(this), chain3 = new EntityTFGoblinChain(this)
-        		});
-
     }
-
 
 	@Override
     protected void entityInit()
@@ -91,6 +83,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(11.0D);
     }
 
     @Override
@@ -160,12 +153,10 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	public boolean attackEntityAsMob(Entity par1Entity) {
         swingArm(EnumHand.MAIN_HAND);
 		return false;
-		//return super.attackEntityAsMob(par1Entity);
 	}
 	
     @Override
 	public void onUpdate() {
-		
 		super.onUpdate();
 		block.onUpdate();
 		chain1.onUpdate();
@@ -229,16 +220,10 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     {
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
-        if (list != null && !list.isEmpty())
-        {
-            for (int i = 0; i < list.size(); ++i)
+        for (Entity entity : list) {
+            if (entity.canBePushed())
             {
-                Entity entity = (Entity)list.get(i);
-
-                if (entity.canBePushed())
-                {
-                    applyBlockCollision(collider, entity);
-                }
+                applyBlockCollision(collider, entity);
             }
         }
     }
@@ -253,18 +238,10 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	    	collided.applyEntityCollision(collider);
 			if (collided instanceof EntityLivingBase)
 			{
-				//FMLLog.info("Spike ball collided with entity %s", collided);
-				
-				// do hit and throw
-		        boolean attackSuccess = super.attackEntityAsMob(collided);
-
-		        if (attackSuccess)
+		        if (super.attackEntityAsMob(collided))
 		        {
-		        	collided.motionY += 0.4000000059604645D;
-			        this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
-		            
-		            //System.out.println("Spike ball attack success");
-		            
+		        	collided.motionY += 0.4;
+			        this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
 		            this.recoilCounter = 40;
 		        }
 
@@ -275,7 +252,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     /**
      * Angle between 0 and 360 to place the chain at
      */
-    public float getChainAngle()
+    private float getChainAngle()
     {
         if (!this.world.isRemote)
         {
@@ -290,7 +267,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	/**
 	 * Between 0.0F and 2.0F, how long is the chain right now?
 	 */
-	public float getChainLength()
+    private float getChainLength()
 	{
         if (!this.world.isRemote)
         {
@@ -318,8 +295,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	public boolean attackEntityFromPart(EntityDragonPart entitydragonpart, DamageSource damagesource, float i) {
 		return false;
 	}
-	
-    
+
     /**
      * We need to do this for the bounding boxes on the parts to become active
      */
@@ -328,25 +304,4 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     {
         return partsArray;
     }
-    
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
-    @Override
-    public int getTotalArmorValue()
-    {
-        int i = super.getTotalArmorValue() + 11;
-
-        if (i > 20)
-        {
-            i = 20; // todo 1.9 attributes
-        }
-
-        return i;
-    }
-
-    
-    
-    
-
 }

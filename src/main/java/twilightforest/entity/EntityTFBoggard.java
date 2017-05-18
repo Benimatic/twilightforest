@@ -27,23 +27,13 @@ import twilightforest.item.TFItems;
 
 public class EntityTFBoggard extends EntityMob {
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/boggard");
-	private boolean shy;
 
     public EntityTFBoggard(World world)
     {
         super(world);
-        //texture = "/mob/pigzombie.png";
         setSize(0.8F, 1.1F);
-
-        shy = true;
     }
     
-    public EntityTFBoggard(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -89,43 +79,6 @@ public class EntityTFBoggard extends EntityMob {
         return LOOT_TABLE;
     }
 
-    public boolean isShy() {
-    	return shy && this.recentlyHit <= 0;
-    }
-    
-    /**
-     * Fairly straightforward.  Returns true in a 120 degree arc in front of the player's view.
-     * @return
-     */
-    public boolean isTargetLookingAtMe() {
-    	// find angle of approach
-    	double dx = posX - getAttackTarget().posX;
-    	double dz = posZ - getAttackTarget().posZ;
-    	float angle = (float)((Math.atan2(dz, dx) * 180D) / 3.1415927410125732D) - 90F;
-
-    	float difference = MathHelper.abs((getAttackTarget().rotationYaw - angle) % 360);
-    	
-//    	System.out.println("Difference in angle of approach is " + difference);
-
-    	return difference < 60 || difference > 300;
-    }
-    
-  
-    
-//    @Override
-//	public boolean attackEntityFrom(Entity entity, int i) {
-//    	
-//    	if (entityToAttack != null && entityToAttack == entity) {
-//    		shy = false;
-//    		// possibly notify others?
-//    	}
-//    	
-//		return super.attackEntityFrom(entity, i);
-//	}
-
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -138,16 +91,6 @@ public class EntityTFBoggard extends EntityMob {
 				// award level 1 hill cheevo
 				((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHill1);
 			}
-
 		}
-	}
-
-	@Override
-	public void moveEntityWithHeading(float par1, float par2) {
-		super.moveEntityWithHeading(par1, par2);
-		
-//		System.out.println("prevLegYaw = " + this.prevLimbYaw);
-//		System.out.println("legYaw = " + this.limbYaw);
-
 	}
 }

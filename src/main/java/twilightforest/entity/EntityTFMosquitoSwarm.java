@@ -62,24 +62,15 @@ public class EntityTFMosquitoSwarm extends EntityMob {
         {
             if (par1Entity instanceof EntityLivingBase)
             {
-                byte duration = 7;
-
-                if (this.world.getDifficulty() != EnumDifficulty.EASY)
-                {
-                    if (this.world.getDifficulty() == EnumDifficulty.NORMAL)
-                    {
-                        duration = 15;
-                    }
-                    else if (this.world.getDifficulty() == EnumDifficulty.HARD)
-                    {
-                        duration = 30;
-                    }
+                int duration;
+                switch (world.getDifficulty()) {
+                    case EASY: duration = 7; break;
+                    default:
+                    case NORMAL: duration = 15; break;
+                    case HARD: duration = 30; break;
                 }
 
-                if (duration > 0)
-                {
-                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
-                }
+                ((EntityLivingBase) par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
             }
 
             return true;
@@ -93,13 +84,10 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	@Override
 	public boolean getCanSpawnHere()
     {
-		// are we in the swamp
 		if (world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSwamp) {
 			// don't check light level
 	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
-		}
-		else {
-			// normal EntityMob spawn check, checks light level
+		} else {
 			return super.getCanSpawnHere();
 		}
     }
@@ -107,7 +95,6 @@ public class EntityTFMosquitoSwarm extends EntityMob {
     @Override
 	public int getMaxSpawnedInChunk()
     {
-    	// we are solitary creatures
         return 1;
     }
 
@@ -118,5 +105,4 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
-
 }

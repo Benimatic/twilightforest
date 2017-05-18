@@ -12,9 +12,11 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -30,7 +32,6 @@ public class EntityTFPinchBeetle extends EntityMob
 {
 	public EntityTFPinchBeetle(World world) {
 		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "pinchbeetle.png";
 		setSize(1.2F, 1.1F);
 	}
 
@@ -54,37 +55,25 @@ public class EntityTFPinchBeetle extends EntityMob
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 
     @Override
-	public int getTotalArmorValue()
+	protected SoundEvent getHurtSound()
     {
-        int var1 = super.getTotalArmorValue() + 2;
-
-        if (var1 > 20)
-        {
-            var1 = 20;
-        }
-
-        return var1;
+        return SoundEvents.ENTITY_SPIDER_HURT;
     }
 
     @Override
-	protected String getHurtSound()
+	protected SoundEvent getDeathSound()
     {
-        return "mob.spider.say";
-    }
-
-    @Override
-	protected String getDeathSound()
-    {
-        return "mob.spider.death";
+        return SoundEvents.ENTITY_SPIDER_DEATH;
     }
 
     @Override
 	protected void playStepSound(BlockPos pos, Block var4)
     {
-        this.world.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
+        playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
     }
 
     @Override
@@ -94,11 +83,8 @@ public class EntityTFPinchBeetle extends EntityMob
     	{
     		this.setSize(1.9F, 2.0F);
     		
-            // stop player sneaking so that they can't dismount!
             if (this.getPassengers().get(0).isSneaking())
             {
-            	//System.out.println("Pinch beetle sneaking detected!");
-            	
             	this.getPassengers().get(0).setSneaking(false);
             }
     	}
@@ -110,18 +96,13 @@ public class EntityTFPinchBeetle extends EntityMob
     	
     	super.onLivingUpdate();
 
-    	// look at things in our jaws
     	if (!this.getPassengers().isEmpty())
     	{
             this.getLookHelper().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
-    		//this.faceEntity(riddenByEntity, 100F, 100F);
 
-            
             // push out of user in wall
             Vec3d riderPos = this.getRiderPosition();
-            this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord); // push out of block
-            
-
+            this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
     	}
     }
 
@@ -150,35 +131,11 @@ public class EntityTFPinchBeetle extends EntityMob
     	
 		return super.attackEntityAsMob(par1Entity);
 	}
-
-    @Override
-	public boolean processInteract(EntityPlayer par1EntityPlayer, EnumHand hand, @Nullable ItemStack stack)
-    {
-        if (super.processInteract(par1EntityPlayer, hand, stack))
-        {
-            return true;
-        }
-//        else if (!this.world.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
-//        {
-//            par1EntityPlayer.mountEntity(this);
-//            return true;
-//        }
-        else
-        {
-            return false;
-        }
-    }
     
 	@Override
 	public float getEyeHeight() {
 		return 0.25F;
 	}
-
-    @Override
-	public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
-    }
 
     @Override
 	public void updatePassenger(Entity passenger)
@@ -197,7 +154,7 @@ public class EntityTFPinchBeetle extends EntityMob
         return 0.75D;
     }
 
-    public Vec3d getRiderPosition()
+    private Vec3d getRiderPosition()
     {
     	if (!this.getPassengers().isEmpty())
     	{

@@ -7,9 +7,11 @@ import java.util.List;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,13 +30,9 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 	private static final int WARMUP_TIME = 20;
 	private IBlockState myState;
-	private short slideTime;
-	private boolean canDropItem = true;
-	
-	private float moveX;
-	private float moveY;
-	private float moveZ;
-	
+	private int slideTime;
+	private EnumFacing moveDirection = null;
+
 	public EntityTFSlideBlock(World world) {
 		super(world);
         this.preventEntitySpawning = true;
@@ -63,13 +61,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         this.determineMoveDirection();
 	}
 
-	/**
-	 * Called when creating the entity to determine which direction the block will slide.  The logic here is a little tricky
-	 */
 	private void determineMoveDirection() {
-		this.moveX = 0F;
-		this.moveY = 0F;
-		this.moveZ = 0F;
+		this.moveDirection = null;
 		
         BlockPos pos = new BlockPos(this);
         BlockPos up = pos.up();
@@ -82,63 +75,61 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.X) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
         	if (!this.world.isAirBlock(up) && this.world.isAirBlock(down)) {
-        		this.moveY = -1F;
+        	    this.moveDirection = EnumFacing.DOWN;
         	} else if (!this.world.isAirBlock(down) && this.world.isAirBlock(up)) {
-        		this.moveY = 1F;
+                this.moveDirection = EnumFacing.UP;
         	} else if (!this.world.isAirBlock(south) && this.world.isAirBlock(north)) { // then try Z
-        		this.moveZ = -1F;
+                this.moveDirection = EnumFacing.NORTH;
         	} else if (!this.world.isAirBlock(north) && this.world.isAirBlock(south)) {
-        		this.moveZ = 1F;
+                this.moveDirection = EnumFacing.SOUTH;
         	} else if (this.world.isAirBlock(down)) { // if no wall, travel towards open air
-        		this.moveY = -1F;
+                this.moveDirection = EnumFacing.DOWN;
         	} else if (this.world.isAirBlock(up)) {
-        		this.moveY = 1F;
+                this.moveDirection = EnumFacing.UP;
         	} else if (this.world.isAirBlock(north)) {
-        		this.moveZ = -1F;
+                this.moveDirection = EnumFacing.NORTH;
         	} else if (this.world.isAirBlock(south)) {
-        		this.moveZ = 1F;
+                this.moveDirection = EnumFacing.SOUTH;
         	}
         } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Z) {
         	// horizontal blocks will go up or down if there is a block on one side and air on the other
         	if (!this.world.isAirBlock(up) && this.world.isAirBlock(down)) {
-        		this.moveY = -1F;
+        		this.moveDirection = EnumFacing.DOWN;
         	} else if (!this.world.isAirBlock(down) && this.world.isAirBlock(up)) {
-        		this.moveY = 1F;
+        		this.moveDirection = EnumFacing.UP;
         	} else if (!this.world.isAirBlock(east) && this.world.isAirBlock(west)) { // then try X
-        		this.moveX = -1F;
+        		this.moveDirection = EnumFacing.WEST;
         	} else if (!this.world.isAirBlock(west) && this.world.isAirBlock(east)) {
-        		this.moveX = 1F;
+        		this.moveDirection = EnumFacing.EAST;
         	} else if (this.world.isAirBlock(down)) { // if no wall, travel towards open air
-        		this.moveY = -1F;
+        		this.moveDirection = EnumFacing.DOWN;
         	} else if (this.world.isAirBlock(up)) {
-        		this.moveY = 1F;
+        		this.moveDirection = EnumFacing.UP;
         	} else if (this.world.isAirBlock(west)) {
-        		this.moveX = -1F;
+        		this.moveDirection = EnumFacing.WEST;
         	} else if (this.world.isAirBlock(east)) {
-        		this.moveX = 1F;
+        		this.moveDirection = EnumFacing.EAST;
         	}
         } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Y) {
         	// vertical blocks priority is -x, +x, -z, +z
         	if (!this.world.isAirBlock(east) && this.world.isAirBlock(west)) {
-        		this.moveX = -1F;
+        		this.moveDirection = EnumFacing.WEST;
         	} else if (!this.world.isAirBlock(west) && this.world.isAirBlock(east)) {
-        		this.moveX = 1F;
+        		this.moveDirection = EnumFacing.EAST;
         	} else if (!this.world.isAirBlock(south) && this.world.isAirBlock(north)) {
-        		this.moveZ = -1F;
+        		this.moveDirection = EnumFacing.NORTH;
         	} else if (!this.world.isAirBlock(north) && this.world.isAirBlock(south)) {
-        		this.moveZ = 1F;
+        		this.moveDirection = EnumFacing.SOUTH;
         	} else if (this.world.isAirBlock(west)) { // if no wall, travel towards open air
-        		this.moveX = -1F;
+        		this.moveDirection = EnumFacing.WEST;
         	} else if (this.world.isAirBlock(east)) {
-        		this.moveX = 1F;
+        		this.moveDirection = EnumFacing.EAST;
         	} else if (this.world.isAirBlock(north)) {
-        		this.moveZ = -1F;
+        		this.moveDirection = EnumFacing.NORTH;
         	} else if (this.world.isAirBlock(south)) {
-        		this.moveZ = 1F;
+        		this.moveDirection = EnumFacing.SOUTH;
         	}
-        	
         }
-
 	}
 
 	@Override
@@ -178,23 +169,21 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
             ++this.slideTime;
             // start moving after warmup
             if (this.slideTime > WARMUP_TIME) {
-	            this.motionX += this.moveX * 0.03999999910593033D;
-	            this.motionY += this.moveY * 0.03999999910593033D;
-	            this.motionZ += this.moveZ * 0.03999999910593033D;
-	            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+	            this.motionX += moveDirection.getFrontOffsetX() * 0.03999999910593033D;
+	            this.motionY += moveDirection.getFrontOffsetY() * 0.03999999910593033D;
+	            this.motionZ += moveDirection.getFrontOffsetZ() * 0.03999999910593033D;
+	            this.move(this.motionX, this.motionY, this.motionZ);
             }
             this.motionX *= 0.9800000190734863D;
             this.motionY *= 0.9800000190734863D;
             this.motionZ *= 0.9800000190734863D;
             
-            // sound
-            if (this.slideTime % 5 == 0) {
-            	this.world.playSoundEffect(this.posX, this.posY, this.posZ, TwilightForestMod.ID + ":random.slider", 1.0F, 0.9F + (this.rand.nextFloat() * 0.4F));
-            }
-
-
             if (!this.world.isRemote)
             {
+                if (this.slideTime % 5 == 0) {
+                    playSound(TFSounds.SLIDER, 1.0F, 0.9F + (this.rand.nextFloat() * 0.4F));
+                }
+
                 BlockPos pos = new BlockPos(this);
 
                 if (this.slideTime == 1)
@@ -208,19 +197,14 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
                     this.world.setBlockToAir(pos);
                 }
                 
-                // if we have not hit anything after 2 seconds of movement, reverse direction
                 if (this.slideTime == WARMUP_TIME + 40) {
                 	this.motionX = 0;
                 	this.motionY = 0;
                 	this.motionZ = 0;
-                	
-                	this.moveX *= -1F;
-                	this.moveY *= -1F;
-                	this.moveZ *= -1F;
+
+                	this.moveDirection = this.moveDirection.getOpposite();
                 }
 
-                //System.out.println("Status! onGround = " + this.onGround + ", isCollided = " + this.isCollided + ", hv = " + this.isCollidedHorizontally + ", " + this.isCollidedVertically);
-                
                 if (this.isCollided || this.isStopped())
                 {
                     this.motionX *= 0.699999988079071D;
@@ -229,35 +213,25 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
                     this.setDead();
 
-                    if (this.world.canPlaceEntityOnSide(this.myBlock, bx, by, bz, true, 1, (Entity)null, (ItemStack)null) && this.world.setBlock(bx, by, bz, this.myBlock, this.myMeta, 3))
-                    {
-                    	// successfully set block
-                    }
-                    else if (this.canDropItem )
-                    {
+                    if (this.world.canBlockBePlaced(myState.getBlock(), pos, true, EnumFacing.UP, null, null)) {
+                        world.setBlockState(pos, myState);
+                    } else {
                         this.entityDropItem(new ItemStack(myState.getBlock(), 1, myState.getBlock().damageDropped(myState)), 0.0F);
                     }
                 }
-                else if (this.slideTime > 100 && !this.world.isRemote && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600)
+                else if (this.slideTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600)
                 {
-                    if (this.canDropItem)
-                    {
-                        this.entityDropItem(new ItemStack(this.myState.getBlock(), 1, this.myState.getBlock().damageDropped(this.myState)), 0.0F);
-                    }
-
+                    this.entityDropItem(new ItemStack(this.myState.getBlock(), 1, this.myState.getBlock().damageDropped(this.myState)), 0.0F);
                     this.setDead();
                 }
                 
                 // push things out and damage them
-                this.damageKnockbackEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()), this);
+                this.damageKnockbackEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()));
             }
         }
     }
 
-    /**
-     * Pushes all entities inside the list out and damages them
-     */
-    private void damageKnockbackEntities(List<Entity> par1List, Entity me)
+    private void damageKnockbackEntities(List<Entity> par1List)
     {
      	for (Entity entity : par1List)
     	{
@@ -280,7 +254,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     }
 
     private boolean isStopped() {
-		return this.moveX == 0 && this.moveY == 0 && this.moveZ == 0;
+		return moveDirection == null;
 	}
 
     @Override
@@ -292,37 +266,33 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
-		Block b = Block.getBlockById(nbtTagCompound.getInteger("TileID"));
+		Block b = Block.REGISTRY.getObject(new ResourceLocation(nbtTagCompound.getString("TileID")));
 		int meta = nbtTagCompound.getByte("Meta");
         this.myState = b.getStateFromMeta(meta);
-		this.slideTime = nbtTagCompound.getShort("Time");
-		this.moveX = nbtTagCompound.getFloat("MoveX");
-		this.moveY = nbtTagCompound.getFloat("MoveY");
-		this.moveZ = nbtTagCompound.getFloat("MoveZ");
-		
+		this.slideTime = nbtTagCompound.getInteger("Time");
+		if (nbtTagCompound.hasKey("Direction")) {
+		    moveDirection = EnumFacing.getFront(nbtTagCompound.getByte("Direction"));
+        }
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setInteger("TileID", Block.getIdFromBlock(this.myState.getBlock()));
+        nbtTagCompound.setString("TileID", myState.getBlock().getRegistryName().toString());
         nbtTagCompound.setByte("Meta", (byte)this.myState.getBlock().getMetaFromState(myState));
-        nbtTagCompound.setShort("Time", this.slideTime);
-        nbtTagCompound.setFloat("MoveX", this.moveX);
-        nbtTagCompound.setFloat("MoveY", this.moveY);
-        nbtTagCompound.setFloat("MoveZ", this.moveZ);
+        nbtTagCompound.setInteger("Time", this.slideTime);
+        if (moveDirection != null) {
+            nbtTagCompound.setByte("Direction", (byte) moveDirection.getIndex());
+        }
     }
 	
 	@Override
 	public void writeSpawnData(ByteBuf buffer) {
 		buffer.writeInt(Block.getStateId(myState));
-		//System.out.println("Wrote additional spawn data as " + blockData);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf additionalData) {
         myState = Block.getStateById(additionalData.readInt());
-		//System.out.println("Read additional spawn data as " + blockData + " so my block is " + this.myBlock);
-
 	}
 
     @Override

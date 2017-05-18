@@ -7,7 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -17,6 +16,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumParticleTypes;
@@ -38,8 +38,6 @@ public class EntityTFTowerGolem extends EntityMob
 	public EntityTFTowerGolem(World par1World)
     {
         super(par1World);
-        //this.texture = TwilightForestMod.MODEL_DIR + "carminitegolem.png";
-
         this.setSize(1.4F, 2.9F);
     }
 
@@ -61,22 +59,7 @@ public class EntityTFTowerGolem extends EntityMob
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(9.0D);
-    }
-
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
-    @Override
-	public int getTotalArmorValue()
-    {
-        int var1 = super.getTotalArmorValue() + 2;
-
-        if (var1 > 20)
-        {
-            var1 = 20;
-        }
-
-        return var1;
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 
     @Override
@@ -91,39 +74,27 @@ public class EntityTFTowerGolem extends EntityMob
             par1Entity.motionY += 0.4000000059604645D;
         }
 
-        this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
         return attackSuccess;
     }
 
     @Override
     protected SoundEvent getHurtSound()
     {
-        return "mob.irongolem.hit";
+        return SoundEvents.ENTITY_IRONGOLEM_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return "mob.irongolem.death";
+        return SoundEvents.ENTITY_IRONGOLEM_DEATH;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block block)
     {
-        this.playSound("mob.irongolem.walk", 1.0F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_IRONGOLEM_STEP, 1.0F, 1.0F);
     }
     
-    @Override
-    protected void collideWithEntity(Entity par1Entity)
-    {
-        if (par1Entity instanceof IMob && this.getRNG().nextInt(10) == 0)
-        {
-            this.setAttackTarget((EntityLivingBase)par1Entity);
-        }
-
-        super.collideWithEntity(par1Entity);
-    }
-
     @Override
     public void onLivingUpdate()
     {
@@ -149,15 +120,12 @@ public class EntityTFTowerGolem extends EntityMob
         }
         // End copy
         
-        // redstone sparkles?
         if (this.rand.nextBoolean())
         {
             this.world.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
         }
-
     }
 
-    
     @SideOnly(Side.CLIENT)
     @Override
     public void handleStatusUpdate(byte par1)
@@ -165,7 +133,7 @@ public class EntityTFTowerGolem extends EntityMob
         if (par1 == 4)
         {
             this.attackTimer = 10;
-            this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
+            this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
         }
         else
         {
@@ -173,7 +141,6 @@ public class EntityTFTowerGolem extends EntityMob
         }
     }
 
-    @SideOnly(Side.CLIENT)
     public int getAttackTimer()
     {
         return this.attackTimer;

@@ -1,7 +1,6 @@
 
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IRangedAttackMob;
@@ -15,55 +14,33 @@ import net.minecraft.entity.ai.EntityAIRestrictSun;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
 
-//todo 1.9 made this extend skeleton instead of mob, verify
-public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAttackMob
+public class EntityTFSkeletonDruid extends EntitySkeleton
 {
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/skeleton_druid");
 
-	public EntityTFSkeletonDruid(World world)
-	{
+	public EntityTFSkeletonDruid(World world) {
 		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "skeletondruid.png";
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
-
 	}
 
-    @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIRestrictSun(this));
-        this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 60, 10.0F));
-        this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
-    }
-
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
     }
 
     @Override
@@ -71,12 +48,6 @@ public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAtta
         return LOOT_TABLE;
     }
     
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.UNDEAD;
-    }
-
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -96,7 +67,6 @@ public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAtta
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(natureBolt);
-
 	}
 
     // [VanillaCopy] of super. Edits noted.

@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -31,11 +32,13 @@ import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class EntityTFYeti extends EntityMob
 {
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti");
-	private static final DataParameter<Byte> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BYTE);
+	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, 0).setSaved(false);
 
 	public EntityTFYeti(World par1World)
     {
@@ -69,34 +72,21 @@ public class EntityTFYeti extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        dataManager.register(ANGER_FLAG, (byte) 0);
+        dataManager.register(ANGER_FLAG, false);
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     @Override
 	public void onLivingUpdate()
     {
     	if (!this.getPassengers().isEmpty())
     	{
-    		this.setSize(1.4F, 2.4F);
-    		
             // stop player sneaking so that they can't dismount!
             if (this.getPassengers().get(0).isSneaking())
             {
-            	//System.out.println("Pinch beetle sneaking detected!");
-            	
             	this.getPassengers().get(0).setSneaking(false);
             }
     	}
-    	else
-    	{
-    		this.setSize(1.4F, 2.4F);
 
-    	}
-    	
     	super.onLivingUpdate();
 
     	// look at things in our jaws
@@ -107,33 +97,13 @@ public class EntityTFYeti extends EntityMob
             // push out of user in wall
             Vec3d riderPos = this.getRiderPosition(getPassengers().get(0));
             this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
-            
-
     	}
-    }
-
-    @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
-    {
-        if (super.processInteract(player, hand, stack))
-        {
-            return true;
-        }
-//        else if (!this.world.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
-//        {
-//            par1EntityPlayer.mountEntity(this);
-//            return true;
-//        }
-        else
-        {
-            return false;
-        }
     }
 
     @Override
 	public boolean attackEntityAsMob(Entity par1Entity) 
     {
-    	if (this.getPassengers().isEmpty() && par1Entity.getRidingEntity() == null)
+    	if (this.getPassengers().isEmpty() && !par1Entity.isRiding())
     	{
     		par1Entity.startRiding(this);
     	}
@@ -144,7 +114,7 @@ public class EntityTFYeti extends EntityMob
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-    	if (par1DamageSource.getSourceOfDamage() != null) {
+    	if (par1DamageSource.getEntity() != null) {
     		// become angry
     		this.setAngry(true);
     	}
@@ -152,26 +122,19 @@ public class EntityTFYeti extends EntityMob
     	return super.attackEntityFrom(par1DamageSource, par2);
     }
 
-
-    
-    /**
-     * Determines whether this yeti is angry or not.
-     */
     public boolean isAngry() {
-        return (dataManager.get(ANGER_FLAG) & 2) != 0;
+        return dataManager.get(ANGER_FLAG);
     }
 
-    /**
-     * Sets whether this yeti is angry or not.
-     */
     public void setAngry(boolean anger) {
-        byte b0 = dataManager.get(ANGER_FLAG);
+        dataManager.set(ANGER_FLAG, anger);
 
-        if (anger) {
-            this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
-            dataManager.set(ANGER_FLAG, (byte) (b0 | 2));
-        } else {
-            dataManager.set(ANGER_FLAG, (byte) (b0 & -3));
+        if (!world.isRemote) {
+            if (anger) {
+                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
+            } else {
+                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
+            }
         }
     }
 
@@ -245,28 +208,19 @@ public class EntityTFYeti extends EntityMob
 	@Override
 	public boolean getCanSpawnHere()
     {
-		// are we in the snow
+		// don't check light level in the snow
 		if (world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow) {
-			// don't check light level
 	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
-		}
-		else {
+		} else {
 			// normal EntityMob spawn check, checks light level
 			return super.getCanSpawnHere();
 		}
     }
 
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
 	@Override
 	protected boolean isValidLightLevel() {
-		if (world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow) {
-			return true;
-		} else {
-			return super.isValidLightLevel();
-		}
-	}
+        return world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow || super.isValidLightLevel();
+    }
 
     @Override
     public ResourceLocation getLootTable() {

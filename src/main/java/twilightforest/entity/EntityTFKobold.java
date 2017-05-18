@@ -32,24 +32,12 @@ public class EntityTFKobold extends EntityMob {
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/kobold");
 	private static final DataParameter<Boolean> PANICKED = EntityDataManager.createKey(EntityTFKobold.class, DataSerializers.BOOLEAN);
 
-    private boolean shy;
-
     public EntityTFKobold(World world)
     {
         super(world);
-        //texture = TwilightForestMod.MODEL_DIR + "kobold.png";
-        //moveSpeed = 0.28F;
         setSize(0.8F, 1.1F);
-
-        shy = true;
     }
     
-    public EntityTFKobold(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -103,10 +91,6 @@ public class EntityTFKobold extends EntityMob {
         return LOOT_TABLE;
     }
 
-    public boolean isShy() {
-    	return shy && this.recentlyHit <= 0;
-    }
-    
     public boolean isPanicked()
     {
         return dataManager.get(PANICKED);
@@ -121,9 +105,8 @@ public class EntityTFKobold extends EntityMob {
 	public void onLivingUpdate()
     {
     	super.onLivingUpdate();
-    	
-    	//when panicked, spawn tears/sweat
-    	if (isPanicked())
+
+    	if (world.isRemote && isPanicked())
     	{
     		for (int i = 0; i < 2; i++)
     		{

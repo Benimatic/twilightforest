@@ -7,31 +7,25 @@ import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
-
 	private float pursueSpeed;
-	private int delayTemptCounter;
-	private BlockPos tntPos = BlockPos.ORIGIN;
+	private int delay;
+	private BlockPos tntPos = null;
 
 	public EntityAITFRedcapLightTNT(EntityTFRedcap hostEntity, float speed) {
-		this.entityObj = hostEntity;
+	    super(hostEntity);
 		this.pursueSpeed = speed;
         this.setMutexBits(3);
 	}
 	
-	/**
-	 * Is there an unlit TNT block nearby?
-	 */
 	@Override
 	public boolean shouldExecute() {
-
-		BlockPos nearbyTNT = this.findBlockTNTNearby(8);
-		
-        if (this.delayTemptCounter > 0)
+        if (this.delay > 0)
         {
-            --this.delayTemptCounter;
+            --this.delay;
             return false;
         }
-		
+
+        BlockPos nearbyTNT = this.findBlockTNTNearby(8);
 		if (nearbyTNT != null)
 		{
 			this.tntPos = nearbyTNT;
@@ -50,15 +44,16 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
     @Override
 	public void startExecuting()
     {
-    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, EntityTFRedcap.heldFlint);
+    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.heldFlint);
     }
 
     @Override
 	public void resetTask()
     {
         this.entityObj.getNavigator().clearPathEntity();
-    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.getPick());
-        this.delayTemptCounter = 20;
+    	this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.heldPick);
+        this.delay = 20;
+        this.tntPos = null;
     }
 
     @Override
@@ -68,7 +63,6 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
         if (this.entityObj.getDistanceSq(tntPos) < 2.4D * 2.4D)
         {
-        	// light it!
         	entityObj.playLivingSound();
         	
         	Blocks.TNT.onBlockDestroyedByPlayer(entityObj.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));

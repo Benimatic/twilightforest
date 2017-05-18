@@ -1,7 +1,9 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,8 +27,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		
 		setSize(0.8F, 0.4F);
 		setSpawnMore(spawnMore);
-		//texture = TwilightForestMod.MODEL_DIR + "swarmspider.png";
-		experienceValue = 2; // XP value
+		experienceValue = 2;
 	}
 	
     public EntityTFSwarmSpider(World world, double x, double y, double z)
@@ -46,7 +47,18 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
-		// todo 1.9 need to replace player target task with the normal one that doesnt turn docile in light
+
+		// Remove default spider melee task
+		this.tasks.taskEntries.removeIf(t -> t.action instanceof EntityAIAttackMelee);
+
+		// Replace with one that doesn't become docile in light
+		// [VanillaCopy] based on EntitySpider.AISpiderAttack
+		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1, true) {
+			@Override
+			protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+				return 4.0F + attackTarget.width;
+			}
+		});
 	}
 
 	@Override
@@ -56,14 +68,12 @@ public class EntityTFSwarmSpider extends EntitySpider {
 
 	@Override
 	public void onUpdate() {
-		if (shouldSpawnMore()) {
-			if (!world.isRemote) {
-				int more = 1 + rand.nextInt(2);
-				for (int i = 0; i < more; i++) {
-					// try twice to spawn
-					if (!spawnAnother()) {
-						spawnAnother();
-					}
+		if (!world.isRemote && shouldSpawnMore()) {
+			int more = 1 + rand.nextInt(2);
+			for (int i = 0; i < more; i++) {
+				// try twice to spawn
+				if (!spawnAnother()) {
+					spawnAnother();
 				}
 			}
 			setSpawnMore(false);
@@ -97,20 +107,12 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-    protected boolean isValidLightLevel()
-    {
+    protected boolean isValidLightLevel() {
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze)
-		{
-			return true;
-		}
-		else
-		{
-			return super.isValidLightLevel();
-		}
-    }
+		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze || super.isValidLightLevel();
+	}
 	
     public boolean shouldSpawnMore()
     {

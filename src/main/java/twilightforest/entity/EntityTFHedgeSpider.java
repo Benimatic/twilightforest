@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
@@ -8,7 +9,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
-
 
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
@@ -20,19 +20,23 @@ public class EntityTFHedgeSpider extends EntitySpider {
 
 	public EntityTFHedgeSpider(World world) {
 		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "hedgespider.png";
 	}
-
-    public EntityTFHedgeSpider(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
 
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
-		// todo 1.9 need to replace player target task with the normal one that doesnt turn docile in light
+
+		// Remove default spider melee task
+		this.tasks.taskEntries.removeIf(t -> t.action instanceof EntityAIAttackMelee);
+
+		// Replace with one that doesn't become docile in light
+		// [VanillaCopy] based on EntitySpider.AISpiderAttack
+		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1, true) {
+			@Override
+			protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+				return 4.0F + attackTarget.width;
+			}
+		});
 	}
 
 	@Override

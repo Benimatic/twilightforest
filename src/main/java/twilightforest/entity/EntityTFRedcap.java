@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
@@ -22,6 +23,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
@@ -33,27 +35,14 @@ import twilightforest.entity.ai.EntityAITFRedcapShy;
 public class EntityTFRedcap extends EntityMob {
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/redcap");
 
-    public static ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
-    public static ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
-    public static ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
+    public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
+    public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
+    public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
     
-	private boolean shy;
-	
-	private int tntLeft = 0;
-
 	public EntityTFRedcap(World world)
     {
         super(world);
-        //texture = TwilightForestMod.MODEL_DIR + "redcap.png";
         setSize(0.9F, 1.4F);
-
-        shy = true;
-        
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
-        this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
-
-        this.setDropChance(EntityEquipmentSlot.MAINHAND, 0.2F);
-        this.setDropChance(EntityEquipmentSlot.FEET, 0.2F);
     }
     
     public EntityTFRedcap(World world, double x, double y, double z)
@@ -107,23 +96,38 @@ public class EntityTFRedcap extends EntityMob {
         return LOOT_TABLE;
     }
 
-    public boolean isShy()
-    {
-    	return shy && this.recentlyHit <= 0;
+    public boolean isShy() {
+    	return this.recentlyHit <= 0;
     }
     
     public int getTntLeft() {
-		return tntLeft;
+		return heldTNT == null ? 0 : heldTNT.stackSize;
 	}
 
 	public void setTntLeft(int tntLeft) {
-		this.tntLeft = tntLeft;
+		if (tntLeft == 0) {
+		    heldTNT = null;
+        } else {
+		    if (heldTNT != null) {
+		        heldTNT.stackSize = tntLeft;
+            } else {
+		        heldTNT = new ItemStack(Blocks.TNT, tntLeft);
+            }
+        }
 	}
 	
-	public ItemStack getPick()
-	{
-		return heldPick;
-	}
+	@Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+	    IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+
+	    this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
+        this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
+
+        this.setDropChance(EntityEquipmentSlot.MAINHAND, 0.2F);
+        this.setDropChance(EntityEquipmentSlot.FEET, 0.2F);
+
+        return data;
+    }
 
 	@Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)

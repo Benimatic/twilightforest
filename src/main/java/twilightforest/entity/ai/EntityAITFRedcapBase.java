@@ -11,12 +11,14 @@ import twilightforest.entity.EntityTFRedcap;
 
 public abstract class EntityAITFRedcapBase extends EntityAIBase
 {
+	protected final EntityTFRedcap entityObj;
 
-	protected EntityTFRedcap entityObj;
+	protected EntityAITFRedcapBase(EntityTFRedcap entity) {
+		this.entityObj = entity;
+	}
 
 	/**
 	 * Fairly straightforward.  Returns true in a 120 degree arc in front of the target's view.
-	 * @return
 	 */
 	public boolean isTargetLookingAtMe(EntityLivingBase attackTarget) {
 	    	// find angle of approach
@@ -25,15 +27,10 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	    	float angle = (float)((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 	
 	    	float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
-	    	
-	//    	System.out.println("Difference in angle of approach is " + difference);
-	
+
 	    	return difference < 60 || difference > 300;
 	    }
 
-	/**
-	 * Check within the specified range to see if any of the blocks nearby are TNT
-	 */
 	public BlockPos findBlockTNTNearby(int range) {
 	    BlockPos entityPos = new BlockPos(entityObj);
 	    
@@ -54,17 +51,9 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	    return null;
 	}
 
-	/**
-	 * Check within the specified range to see if any of the blocks nearby are TNT
-	 * 
-	 * @param range
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean isLitTNTNearby(int range) 
+	public boolean isLitTNTNearby(int range)
 	{
 		AxisAlignedBB expandedBox = entityObj.getEntityBoundingBox().expand(range, range, range);
-		
 	    return !entityObj.world.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
 	}
 

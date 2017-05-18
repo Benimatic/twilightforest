@@ -76,20 +76,16 @@ public class EntityTFSnowGuardian extends EntityMob {
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.8F;
     }
 
-    protected void addRandomArmor()
+    @Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
-        // always random armor
-    	
-    	// random armor type
     	int type = rand.nextInt(4);
-    	
     	this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.MAINHAND, type)));
-    	
     	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.CHEST, type)));
     	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.HEAD, type)));
     }
     
-    protected Item makeItemForSlot(EntityEquipmentSlot slot, int type) {
+    private Item makeItemForSlot(EntityEquipmentSlot slot, int type) {
     	switch (slot) {
 		case MAINHAND:
     	default:
@@ -164,12 +160,8 @@ public class EntityTFSnowGuardian extends EntityMob {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData)
     {
     	IEntityLivingData data = super.onInitialSpawn(difficulty, livingData);
-        
-    	this.addRandomArmor();
-    	//this.enchantEquipment();
-    	
+    	this.setEquipmentBasedOnDifficulty(difficulty);
         return data;
-
     }
     
     @Override
@@ -184,7 +176,6 @@ public class EntityTFSnowGuardian extends EntityMob {
 	    	
 			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
-
     }
     
     @Override

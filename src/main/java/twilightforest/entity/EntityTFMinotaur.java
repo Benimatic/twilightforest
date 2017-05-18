@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -13,6 +14,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
@@ -35,9 +38,6 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 
 	public EntityTFMinotaur(World par1World) {
 		super(par1World);
-		//this.texture = TwilightForestMod.MODEL_DIR + "minotaur.png";
-
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
 
     @Override
@@ -69,6 +69,13 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     }
 
     @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+	    IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
+        return data;
+    }
+
+    @Override
     public boolean isCharging()
     {
         return dataManager.get(CHARGING);
@@ -87,8 +94,8 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 
         if (success && this.isCharging())
         {
-            par1Entity.motionY += 0.4000000059604645D;
-            this.world.playSoundAtEntity(this, "mob.irongolem.throw", 1.0F, 1.0F);
+            par1Entity.motionY += 0.4;
+            playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
         }
 
         return success;
@@ -99,36 +106,34 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     {
     	super.onLivingUpdate();
     	
-    	//when charging, move legs fast
     	if (isCharging())
     	{
 			this.limbSwingAmount += 0.6;
     	}
-
     }
 
     @Override
 	protected SoundEvent getAmbientSound()
     {
-        return "mob.cow.say";
+        return SoundEvents.ENTITY_COW_AMBIENT;
     }
 
     @Override
 	protected SoundEvent getHurtSound()
     {
-        return "mob.cow.hurt";
+        return SoundEvents.ENTITY_COW_HURT;
     }
 
     @Override
 	protected SoundEvent getDeathSound()
     {
-        return "mob.cow.hurt";
+        return SoundEvents.ENTITY_COW_DEATH;
     }
 
     @Override
 	protected void playStepSound(BlockPos pos, Block par4)
     {
-        this.world.playSoundAtEntity(this, "mob.cow.step", 0.15F, 0.8F);
+        playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 0.8F);
     }
 
     @Override

@@ -37,8 +37,6 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
 
 	public EntityTFSlimeBeetle(World world) {
 		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "slimebeetle.png";
-		//moveSpeed = 0.23F;
 		setSize(0.9F, 1.75F);
 	}
 
@@ -66,44 +64,21 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
     }
 
     @Override
-	protected SoundEvent getAmbientSound()
-    {
-        return null;
-    }
-
-    @Override
 	protected SoundEvent getHurtSound()
     {
-        return "mob.spider.say";
+        return SoundEvents.ENTITY_SPIDER_HURT;
     }
 
     @Override
 	protected SoundEvent getDeathSound()
     {
-        return "mob.spider.death";
+        return SoundEvents.ENTITY_SPIDER_DEATH;
     }
 
     @Override
 	protected void playStepSound(BlockPos pos, Block var4)
     {
-        this.world.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
-    }
-
-    @Override
-	public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
-
-//    	// dribble slime particles out of mouth
-//    	Vec3 look = this.getLookVec();
-//
-//    	double dist = 0.9;
-//    	double px = this.posX + look.xCoord * dist;
-//    	double py = this.posY + 0.25 + look.yCoord * dist;
-//    	double pz = this.posZ + look.zCoord * dist;
-//
-//		world.spawnParticle("slime", px, py, pz, 0, 0, 0);
-
+        playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
     }
 
     @Override

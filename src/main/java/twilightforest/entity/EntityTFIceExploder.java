@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
-import net.minecraft.block.BlockHardenedClay;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -13,15 +12,11 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +30,6 @@ import twilightforest.client.particle.TFParticleType;
 public class EntityTFIceExploder extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;
-
 
 	public EntityTFIceExploder(World par1World) {
 		super(par1World);
@@ -78,7 +72,6 @@ public class EntityTFIceExploder extends EntityMob {
 	    	
 			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
     	}
-
     }
 
     @Override
@@ -117,44 +110,23 @@ public class EntityTFIceExploder extends EntityMob {
 	protected void onDeathUpdate() {
         ++this.deathTime;
 
-        if (this.deathTime == 60)
+        if (this.deathTime == 60) // delay until 3 seconds
         {
-            int i;
-            
-            
-            boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)EntityTFIceExploder.EXPLOSION_RADIUS, flag);
+            boolean mobGriefing = this.world.getGameRules().getBoolean("mobGriefing");
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
 
-            if (flag) {
-            	this.detonate();
+            if (mobGriefing) {
+            	this.transformBlocks();
             }
 
-            if (!this.world.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot"))
-            {
-                i = this.getExperiencePoints(this.attackingPlayer);
-
-                while (i > 0)
-                {
-                    int j = EntityXPOrb.getXPSplit(i);
-                    i -= j;
-                    this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
-                }
-            }
-
-            this.setDead();
-
-            for (i = 0; i < 20; ++i)
-            {
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1);
-            }
+            // Fake to trigger super's behaviour
+            deathTime = 20;
+            super.onDeathUpdate();
+            deathTime = 60;
         }
 	}
 
-
-	private void detonate() {
+	private void transformBlocks() {
 		int range = 4;
 		
 		BlockPos pos = new BlockPos(this);
@@ -181,21 +153,8 @@ public class EntityTFIceExploder extends EntityMob {
 
 		// check if we should even explode this
 		if (block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0) {
-			
-			int blockColor = 16777215;
-
-			// todo 1.9 wtf
-			//TODO: use a better check than exception handling to determine if we have access to client-side methods or not
-			try {
-				// figure out color
-				blockColor = block.colorMultiplier(world, x, y, z);
-			} catch (NoSuchMethodError e) {
-				// fine, we're on a server
-			}
-
-			if (blockColor == 16777215) {
-				blockColor = state.getMapColor().colorValue;
-			}
+			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
+			int blockColor = state.getMapColor().colorValue;
 
 			// do appropriate transformation
 			if (this.shouldTransformGlass(state, pos)) {
@@ -232,8 +191,7 @@ public class EntityTFIceExploder extends EntityMob {
 		int bestDifference = 1024;
 		
 		for (EnumDyeColor color : EnumDyeColor.values()) {
-			int iColor = Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, color)
-					.getMapColor().colorValue;
+			int iColor = color.getMapColor().colorValue;
 			
 			int iRed = (iColor >> 16) & 255; 
 			int iGreen = (iColor >> 8) & 255; 

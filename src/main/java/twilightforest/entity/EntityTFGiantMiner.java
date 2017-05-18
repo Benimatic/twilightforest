@@ -1,9 +1,11 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DifficultyInstance;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -26,11 +28,8 @@ public class EntityTFGiantMiner extends EntityMob {
 	public EntityTFGiantMiner(World par1World) {
 		super(par1World);
 		this.setSize(this.width * 4.0F, this.height * 4.0F);
-		
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
 
-        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values())
-        {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             setDropChance(slot, 0);
         }
 	}
@@ -59,6 +58,13 @@ public class EntityTFGiantMiner extends EntityMob {
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
 	}
+
+	@Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+	    IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+	    setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
+	    return data;
+    }
 
     @Override
     public ResourceLocation getLootTable() {

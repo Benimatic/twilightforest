@@ -220,7 +220,6 @@ public class EntityTFTowerGhast extends EntityGhast {
         {
         	this.inTrapCounter--;
         	setAttackTarget(null);
-        	return; // do nothing if in trap;
         }
     }
     

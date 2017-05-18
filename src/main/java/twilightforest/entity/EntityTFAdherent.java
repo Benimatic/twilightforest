@@ -83,9 +83,6 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 
 	}
 	
-    /**
-     * In this case we're not charging like a bull, but charging up a ranged attack
-     */
     @Override
 	public boolean isCharging()
     {

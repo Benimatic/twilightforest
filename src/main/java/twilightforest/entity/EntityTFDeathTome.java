@@ -30,7 +30,6 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
 	public EntityTFDeathTome(World par1World) {
 		super(par1World);
-        //texture = "/item/book.png";
 	}
 
     @Override
@@ -74,7 +73,6 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
     	
     	if (super.attackEntityFrom(par1DamageSource, par2))
         {
-        	// we took damage
     		if (this.rand.nextInt(2) == 0)
     		{
     			dropItemWithOffset(Items.PAPER, 1, 1.0F);

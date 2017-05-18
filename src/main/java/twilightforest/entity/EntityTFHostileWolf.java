@@ -24,14 +24,12 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	public EntityTFHostileWolf(World world) {
 		super(world);
 		setAngry(true);
-		
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
 	}
-	
-    public EntityTFHostileWolf(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
+
+	@Override
+    protected void initEntityAI() {
+	    super.initEntityAI();
+        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
     }
 
 	@Override

@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -36,8 +37,6 @@ public class EntityTFTowerTermite extends EntityMob
 
 	public EntityTFTowerTermite(World par1World) {
 		super(par1World);
-		
-        //this.texture = TwilightForestMod.MODEL_DIR + "towertermite.png";
         this.setSize(0.3F, 0.7F);
 	}
 
@@ -72,19 +71,19 @@ public class EntityTFTowerTermite extends EntityMob
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return "mob.silverfish.say";
+        return SoundEvents.ENTITY_SILVERFISH_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound()
     {
-        return "mob.silverfish.hit";
+        return SoundEvents.ENTITY_SILVERFISH_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return "mob.silverfish.kill";
+        return SoundEvents.ENTITY_SILVERFISH_DEATH;
     }
 
     // [VanillaCopy] EntitySilverfish.attackEntityFrom
@@ -109,7 +108,7 @@ public class EntityTFTowerTermite extends EntityMob
 	@Override
     protected void playStepSound(BlockPos pos, Block par4)
     {
-        this.playSound("mob.silverfish.step", 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
     }
 
     @Override

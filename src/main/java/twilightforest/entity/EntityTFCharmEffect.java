@@ -8,6 +8,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -15,7 +16,6 @@ import twilightforest.item.TFItems;
 
 public class EntityTFCharmEffect extends Entity
 {
-
 	private static final DataParameter<String> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.STRING);
     private static final DataParameter<Integer> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final double DISTANCE = 1.75;
@@ -45,7 +45,6 @@ public class EntityTFCharmEffect extends Entity
 		this.setSize(0.25F, 0.25F);
 		
 		this.orbiting = par2EntityLiving;
-		//this.setOwner(orbiting.getEntityName());
 		this.setItemID(item);
 		
 		Vec3d look = new Vec3d(DISTANCE, 0, 0);
@@ -127,7 +126,6 @@ public class EntityTFCharmEffect extends Entity
         this.newPosRotationIncrements = posRotationIncrements;
     }
 
-
     @Override
     protected void entityInit()
     {
@@ -155,23 +153,24 @@ public class EntityTFCharmEffect extends Entity
         return dataManager.get(DATA_ITEMID);
     }
 
-    public void setItemID(Item charmOfLife1)
+    public void setItemID(Item item)
     {
-        //this.dataWatcher.updateObject(DATA_ITEMID, Integer.valueOf(charmOfLife1));
+        dataManager.set(DATA_ITEMID, Item.getIdFromItem(item));
     }
 
     @Override
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) 
 	{
         par1NBTTagCompound.setString("Owner", this.getOwnerName());
-        par1NBTTagCompound.setShort("ItemID", (short) this.getItemID());
+        par1NBTTagCompound.setString("ItemID", Item.getItemById(getItemID()).getRegistryName().toString());
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) 
 	{
         this.setOwner(par1NBTTagCompound.getString("Owner"));
-        //this.setItemID(par1NBTTagCompound.getShort("ItemID"));
+        Item item = Item.REGISTRY.getObject(new ResourceLocation(par1NBTTagCompound.getString("ItemID")));
+        this.setItemID(item);
 	}
 
 }

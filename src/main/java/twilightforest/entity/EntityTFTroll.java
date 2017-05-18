@@ -15,6 +15,7 @@ import net.minecraft.entity.ai.EntityAIRestrictSun;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -37,10 +38,13 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.item.TFItems;
 
+import java.util.UUID;
+
 public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 {
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/troll");
     private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
+    private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, 0).setSaved(false);
 
     private EntityAIAttackRanged aiArrowAttack = new EntityAIAttackRanged(this, 1.0D, 20, 60, 15.0F);
     private EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
@@ -89,11 +93,14 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     }
 
     public void setHasRock(boolean rock) {
-        if (rock) {
-            this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
-            dataManager.set(ROCK_FLAG, true);
-        } else {
-            dataManager.set(ROCK_FLAG, false);
+        dataManager.set(ROCK_FLAG, rock);
+
+        if (!world.isRemote) {
+            if (rock) {
+                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
+            } else {
+                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
+            }
         }
         
         this.setCombatTask();
@@ -119,10 +126,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
         this.setHasRock(par1NBTTagCompound.getBoolean("HasRock"));
     }
     
-    
-    /**
-     * sets this entity's combat AI.
-     */
     private void setCombatTask()
     {
         this.tasks.removeTask(this.aiAttackOnCollide);
@@ -148,7 +151,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 		}
 	}
 
-
 	private void ripenTrollBerNearby(int offset) {
 		BlockPos pos = new BlockPos(this);
 		
@@ -162,14 +164,12 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 		}
 	}
 
-
 	private void ripenBer(int offset, BlockPos pos) {
 		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripeTrollBer && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
 			this.world.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
 			world.playEvent(2004, pos, 0);
 		}
 	}
-
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
@@ -181,8 +181,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 		
     private void makeTrollStoneInAABB(AxisAlignedBB par1AxisAlignedBB)
     {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-    	
         int minX = MathHelper.ceil(par1AxisAlignedBB.minX);
         int minY = MathHelper.ceil(par1AxisAlignedBB.minY);
         int minZ = MathHelper.ceil(par1AxisAlignedBB.minZ);
@@ -221,16 +219,17 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     	}
     }
 
+    // [VanillaCopy] super but hardcode swing progress to ignore potions
     @Override
     protected void updateArmSwingProgress()
     {
-        int maxSwing = this.getArmSwingAnimationEnd();
+        int i = 6;
 
         if (this.isSwingInProgress)
         {
             ++this.swingProgressInt;
 
-            if (this.swingProgressInt >= maxSwing)
+            if (this.swingProgressInt >= i)
             {
                 this.swingProgressInt = 0;
                 this.isSwingInProgress = false;
@@ -241,15 +240,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
             this.swingProgressInt = 0;
         }
 
-        this.swingProgress = (float)this.swingProgressInt / (float)maxSwing;
-    }
-    
-    /**
-     * Returns an integer indicating the end point of the swing animation, used by {@link #swingProgress} to provide a
-     * progress indicator. Takes dig speed enchantments into account.
-     */
-    private int getArmSwingAnimationEnd()
-    {
-        return 6; // todo 1.9 reconcile with EntityLivingBase's version
+        this.swingProgress = (float)this.swingProgressInt / (float)i;
     }
 }

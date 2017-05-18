@@ -21,10 +21,12 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -33,9 +35,11 @@ public class EntityTFLoyalZombie extends EntityTameable {
 
 	public EntityTFLoyalZombie(World par1World) {
         super(par1World);
-        //this.texture = "/mob/zombie.png";
-        //this.moveSpeed = 0.3F;
         this.setSize(0.6F, 1.8F);
+	}
+
+	@Override
+    protected void initEntityAI() {
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
@@ -48,8 +52,7 @@ public class EntityTFLoyalZombie extends EntityTameable {
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityMob.class, 0, true, false, null));
-
-	}
+    }
 
 	@Override
 	public EntityAnimal createChild(EntityAgeable entityanimal)
@@ -66,19 +69,14 @@ public class EntityTFLoyalZombie extends EntityTameable {
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
     }
 	
-	/**
-	 * Rawr!
-	 */
     @Override
     public boolean attackEntityAsMob(Entity par1Entity)
     {
-        int attackpower = 7;
-        boolean success = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), attackpower);
+        boolean success = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
         
-        // throw some enemies around!
         if (success)
         {
-            par1Entity.motionY += 0.2000000059604645D;
+            par1Entity.motionY += 0.2;
         }
         
         return success;
@@ -104,27 +102,27 @@ public class EntityTFLoyalZombie extends EntityTameable {
     }
 
     @Override
-	protected String getAmbientSound()
+	protected SoundEvent getAmbientSound()
     {
-        return "mob.zombie.say";
+        return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
     }
 
     @Override
-	protected String getHurtSound()
+	protected SoundEvent getHurtSound()
     {
-        return "mob.zombie.hurt";
+        return SoundEvents.ENTITY_ZOMBIE_HURT;
     }
 
     @Override
-	protected String getDeathSound()
+	protected SoundEvent getDeathSound()
     {
-        return "mob.zombie.death";
+        return SoundEvents.ENTITY_ZOMBIE_DEATH;
     }
 
     @Override
 	protected void playStepSound(BlockPos pos, Block par4)
     {
-        this.world.playSoundAtEntity(this, "mob.zombie.step", 0.15F, 1.0F);
+        playSound(SoundEvents.ENTITY_ZOMBIE_STEP, 0.15F, 1.0F);
     }
 
     @Override
