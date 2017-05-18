@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -13,14 +14,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TFItems {
 
-	public static ItemArmor.ArmorMaterial ARMOR_NAGA = EnumHelper.addArmorMaterial("NAGA_SCALE", 21, new int[] {2, 7, 6, 3}, 15);
-	public static ItemArmor.ArmorMaterial ARMOR_IRONWOOD = EnumHelper.addArmorMaterial("IRONWOOD", 20, new int[] {2, 7, 5, 2}, 15);
-	public static ItemArmor.ArmorMaterial ARMOR_FIERY = EnumHelper.addArmorMaterial("FIERY", 25, new int[] {4, 9, 7, 4}, 10);
-	public static ItemArmor.ArmorMaterial ARMOR_STEELEAF = EnumHelper.addArmorMaterial("STEELEAF", 10, new int[] {3, 8, 6, 3}, 9);
-	public static ItemArmor.ArmorMaterial ARMOR_KNIGHTLY = EnumHelper.addArmorMaterial("KNIGHTMETAL", 20, new int[] {3, 8, 6, 3}, 8);
-	public static ItemArmor.ArmorMaterial ARMOR_PHANTOM = EnumHelper.addArmorMaterial("KNIGHTPHANTOM", 30, new int[] {3, 8, 6, 3}, 8);
-	public static ItemArmor.ArmorMaterial ARMOR_YETI = EnumHelper.addArmorMaterial("YETI", 20, new int[] {4, 7, 6, 3}, 15);
-	public static ItemArmor.ArmorMaterial ARMOR_ARCTIC = EnumHelper.addArmorMaterial("ARCTIC", 10, new int[] {2, 7, 5, 2}, 8);
+	public static ItemArmor.ArmorMaterial ARMOR_NAGA = EnumHelper.addArmorMaterial("NAGA_SCALE", "naga_scale", 21, new int[] {2, 7, 6, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+	public static ItemArmor.ArmorMaterial ARMOR_IRONWOOD = EnumHelper.addArmorMaterial("IRONWOOD", "ironwood", 20, new int[] {2, 7, 5, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+	public static ItemArmor.ArmorMaterial ARMOR_FIERY = EnumHelper.addArmorMaterial("FIERY", "fiery", 25, new int[] {4, 9, 7, 4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+	public static ItemArmor.ArmorMaterial ARMOR_STEELEAF = EnumHelper.addArmorMaterial("STEELEAF", "steeleaf", 10, new int[] {3, 8, 6, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+	public static ItemArmor.ArmorMaterial ARMOR_KNIGHTLY = EnumHelper.addArmorMaterial("KNIGHTMETAL", "knightly", 20, new int[] {3, 8, 6, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+	public static ItemArmor.ArmorMaterial ARMOR_PHANTOM = EnumHelper.addArmorMaterial("KNIGHTPHANTOM", "phantom", 30, new int[] {3, 8, 6, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+	public static ItemArmor.ArmorMaterial ARMOR_YETI = EnumHelper.addArmorMaterial("YETI", "yetiarmor", 20, new int[] {4, 7, 6, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+	public static ItemArmor.ArmorMaterial ARMOR_ARCTIC = EnumHelper.addArmorMaterial("ARCTIC", "arcticarmor", 10, new int[] {2, 7, 5, 2}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
 	
 	
 	public static Item.ToolMaterial TOOL_IRONWOOD = EnumHelper.addToolMaterial("IRONWOOD", 2, 512, 6.5F, 2, 25);
