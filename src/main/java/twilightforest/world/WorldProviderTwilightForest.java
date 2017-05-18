@@ -25,19 +25,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class WorldProviderTwilightForest extends WorldProviderSurface {
+	private final String saveFolder = "DIM" + TwilightForestMod.dimensionID;
 
-
-	public final String saveFolder;
-	public ChunkGeneratorTwilightForest chunkProvider;
-	
 	public WorldProviderTwilightForest() {
 		setDimension(TwilightForestMod.dimensionID);
-		saveFolder = "DIM" + TwilightForestMod.dimensionID;
 	}
 	
 	@Override
 	public float[] calcSunriseSunsetColors(float celestialAngle, float f1) {
-		return null;//super.calcSunriseSunsetColors(celestialAngle, f1);
+		return null;
 	}
 	
 	@Override
@@ -64,10 +60,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     @Override
 	public float calculateCelestialAngle(long par1, float par3)
     {
-    	//return super.calculateCelestialAngle(par1, par3);
         return 0.225f;
     }
-
 
 	@Override
     public void createBiomeProvider()
@@ -78,19 +72,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     @Override
 	public IChunkGenerator createChunkGenerator()
     {
-    	// save chunk generator?
-    	if (this.chunkProvider == null) {
-	    	this.chunkProvider = new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
-	        return this.chunkProvider;
-    	} else {
-    		return new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
-    	}
-    }
-    
-    public ChunkGeneratorTwilightForest getChunkProvider() {
-    	return this.chunkProvider;
-    }
-    
+		return new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
+	}
+
 	/**
 	 * This seems to be a function checking whether we have an ocean.
 	 */
@@ -105,20 +89,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     {
         return 30;
     }
-
-//	@Override
-//    public boolean canCoordinateBeSpawn(int i, int j)
-//    {
-//        int k = world.getFirstUncoveredBlock(i, j);
-//        if(k == 0)
-//        {
-//            return false;
-//        } else
-//        {
-//            return Blocks.BLOCKSLIST[k].getMaterial().isSolid();
-//        }
-//    }
-	
 	
 	@Override
     public boolean canRespawnHere()
@@ -197,27 +167,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		}
 	}
 	
-	/**
-	 * We're just going to check here for chunks with the relight flag set and KILL THEM!
-	 */
-	@Override
-    public void updateWeather()
-    {
-        super.updateWeather();
-        
-//        for (ChunkCoordIntPair coord : (HashSet<ChunkCoordIntPair>)this.world.activeChunkSet)
-//        {
-//        	Chunk chunk = this.world.getChunkFromChunkCoords(coord.chunkXPos, coord.chunkZPos);
-//        	
-//        	if (chunk.queuedLightChecks < 4096)
-//        	{
-//        		//System.out.println("Stopping light checks!");
-//        		chunk.queuedLightChecks = 4096;
-//        	}
-//        }
-    }
-
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IRenderHandler getSkyRenderer()
@@ -242,9 +191,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return super.getWeatherRenderer();
     }
 	
-    /**
-     * the y level at which clouds are rendered.
-     */
     //@SideOnly(Side.CLIENT) // need for magic beans, even on server
     @Override
 	public float getCloudHeight()

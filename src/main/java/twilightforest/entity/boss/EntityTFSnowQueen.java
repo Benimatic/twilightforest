@@ -48,6 +48,7 @@ import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IBreathAttacker {
@@ -259,12 +260,12 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			if (world.provider instanceof WorldProviderTwilightForest){
-				ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest){
+				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.lichTower) {
-					chunkProvider.setStructureConquered(dx, dy, dz, true);
+					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}
 		}

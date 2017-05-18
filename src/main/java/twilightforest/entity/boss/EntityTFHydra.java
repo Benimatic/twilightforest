@@ -34,6 +34,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 
@@ -1065,16 +1066,16 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		}
 		
 		// mark the lair as defeated
-		if (!world.isRemote && world.provider instanceof WorldProviderTwilightForest) {
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 			
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
-			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.worldChunkMgr).getFeatureAt(dx, dz, world);
+			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 			
 			if (nearbyFeature == TFFeature.hydraLair) {
-				chunkProvider.setStructureConquered(dx, dy, dz, true);
+				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}
 	}

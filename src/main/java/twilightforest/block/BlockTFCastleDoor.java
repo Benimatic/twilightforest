@@ -22,7 +22,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TFWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -123,10 +123,9 @@ public class BlockTFCastleDoor extends Block
 
 	private static boolean isBlockLocked(World par1World, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
-		if (!par1World.isRemote && par1World.provider instanceof WorldProviderTwilightForest) {
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)par1World.provider).getChunkProvider();
-
-			return chunkProvider.isStructureLocked(pos, meta);
+		if (!par1World.isRemote && TFWorld.getChunkGenerator(par1World) instanceof ChunkGeneratorTwilightForest) {
+			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(par1World);
+			return generator.isStructureLocked(pos, meta);
 		} else {
 			return false;
 		}

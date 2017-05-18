@@ -30,6 +30,7 @@ import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayData {
@@ -838,17 +839,17 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		}
 
 		// mark the tower as defeated
-		if (!world.isRemote && world.provider instanceof WorldProviderTwilightForest) {
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
         	BlockPos chestCoords = this.findChestCoords();
 			int dx = chestCoords.posX;
 			int dy = chestCoords.posY;
 			int dz = chestCoords.posZ;
 
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 
 			if (nearbyFeature == TFFeature.darkTower) {
-				chunkProvider.setStructureConquered(dx, dy, dz, true);
+				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}
 	}

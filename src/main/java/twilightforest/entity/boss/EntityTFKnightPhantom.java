@@ -33,6 +33,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFKnightPhantom extends EntityFlying implements IMob 
@@ -152,16 +153,16 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		}
 		
 		// mark the stronghold as defeated
-		if (!world.isRemote && world.provider instanceof WorldProviderTwilightForest) {
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
 			int dx = getHomePosition().getX();
 			int dy = getHomePosition().getY();
 			int dz = getHomePosition().getZ();
 			
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
 			
 			if (nearbyFeature == TFFeature.tfStronghold) {
-				chunkProvider.setStructureConquered(dx, dy, dz, true);
+				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}
 		
