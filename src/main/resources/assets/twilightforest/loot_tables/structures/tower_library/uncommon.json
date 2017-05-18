@@ -8,7 +8,6 @@
         "name": "minecraft:iron_leggings",
         "functions": [{
           "function": "enchant_with_levels",
-          "treasure": true,
           "levels": 5
         }]
       },

@@ -8,7 +8,6 @@
         "name": "minecraft:bow",
         "functions": [{
           "function": "enchant_with_levels",
-          "treasure": true,
           "levels": 5
         }]
       },
@@ -17,7 +16,6 @@
         "name": "minecraft:stone_sword",
         "functions": [{
           "function": "enchant_with_levels",
-          "treasure": true,
           "levels": 10
         }]
       },
@@ -26,7 +24,6 @@
         "name": "minecraft:wooden_sword",
         "functions": [{
           "function": "enchant_with_levels",
-          "treasure": true,
           "levels": 15
         }]
       },
