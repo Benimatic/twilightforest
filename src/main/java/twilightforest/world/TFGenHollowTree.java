@@ -470,7 +470,7 @@ public class TFGenHollowTree extends TFGenerator
 
 	private void makeLeafDungeonChest(World world, Random random, BlockPos pos) {
 		pos = pos.offset(EnumFacing.HORIZONTALS[random.nextInt(4)]);
-		TFTreasure.tree_cache.generate(world, random, pos.down());
+		TFTreasure.tree_cache.generateChest(world, pos.down());
 	}
 
 	/**

@@ -64,7 +64,7 @@ public class TFGenFoundation extends TFGenerator {
 			// make chest
 			int cx = rand.nextInt(sx - 1) + 1;
 			int cz = rand.nextInt(sz - 1) + 1;
-			TFTreasure.basement.generate(world, rand, pos.add(cx, -4, cz));
+			TFTreasure.basement.generateChest(world, pos.add(cx, -4, cz));
 			
 		}
 		

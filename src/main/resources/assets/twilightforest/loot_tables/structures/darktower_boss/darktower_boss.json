@@ -1,0 +1,30 @@
+{
+  "pools": [
+    {
+      "name": "common",
+      "rolls": 4,
+      "entries": [{
+        "type": "loot_table",
+        "name": "twilightforest:structures/darktower_boss/common"
+      }]
+    },
+
+    {
+      "name": "uncommon",
+      "rolls": 2,
+      "entries": [{
+        "type": "loot_table",
+        "name": "twilightforest:structures/darktower_boss/uncommon"
+      }]
+    },
+
+    {
+      "name": "rare",
+      "rolls": 1,
+      "entries": [{
+        "type": "loot_table",
+        "name": "twilightforest:structures/darktower_boss/rare"
+      }]
+    }
+  ]
+}

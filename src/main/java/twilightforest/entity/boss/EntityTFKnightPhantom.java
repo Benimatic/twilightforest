@@ -186,14 +186,14 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 	private void makeATreasure() {
 		if (this.getHomePosition().getY() != -1) {
 			// if we have a proper home position, generate the treasure there
-			TFTreasure.stronghold_boss.generate(world, null, getHomePosition().posX, getHomePosition().posY - 1, getHomePosition().posZ);
+			TFTreasure.stronghold_boss.generateChest(world, null, getHomePosition().posX, getHomePosition().posY - 1, getHomePosition().posZ);
 		} else {
 			// if not, spawn it right where we are
 			int px = MathHelper.floor(this.lastTickPosX);
 			int py = MathHelper.floor(this.lastTickPosY);
 			int pz = MathHelper.floor(this.lastTickPosZ);
 			
-			TFTreasure.stronghold_boss.generate(world, null, px, py, pz);
+			TFTreasure.stronghold_boss.generateChest(world, null, px, py, pz);
 		}
 	}
 

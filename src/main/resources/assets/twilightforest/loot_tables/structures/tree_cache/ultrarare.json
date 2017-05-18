@@ -1,0 +1,33 @@
+{
+  "pools": [{
+    "name": "main",
+    "rolls": 1,
+    "entries": [
+      {
+        "type": "item",
+        "name": "twilightforest:twilight_sapling",
+        "functions": [{ "function": "set_data", "data": 4 }]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:twilight_sapling",
+        "functions": [{ "function": "set_data", "data": 5 }]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:twilight_sapling",
+        "functions": [{ "function": "set_data", "data": 6 }]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:twilight_sapling",
+        "functions": [{ "function": "set_data", "data": 7 }]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:twilight_sapling",
+        "functions": [{ "function": "set_data", "data": 8 }]
+      }
+    ]
+  }]
+}

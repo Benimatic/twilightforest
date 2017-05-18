@@ -1,0 +1,59 @@
+{
+  "pools": [{
+    "name": "main",
+    "rolls": 1,
+    "entries": [
+      {
+        "type": "item",
+        "name": "minecraft:enchanted_book",
+        "functions": [{
+          "function": "twilightforest:enchant",
+          "enchantments": {
+            "minecraft:sharpness": 4
+          }
+        }]
+      },
+      {
+        "type": "item",
+        "name": "minecraft:enchanted_book",
+        "functions": [{
+          "function": "twilightforest:enchant",
+          "enchantments": {
+            "minecraft:power": 4
+          }
+        }]
+      },
+      {
+        "type": "item",
+        "name": "minecraft:enchanted_book",
+        "functions": [{
+          "function": "twilightforest:enchant",
+          "enchantments": {
+            "minecraft:punch": 2
+          }
+        }]
+      },
+      {
+        "type": "item",
+        "name": "minecraft:enchanted_book",
+        "weight": 2,
+        "functions": [{
+          "function": "twilightforest:enchant",
+          "enchantments": {
+            "minecraft:unbreaking": 2
+          }
+        }]
+      },
+      {
+        "type": "item",
+        "name": "minecraft:enchanted_book",
+        "functions": [{
+          "function": "twilightforest:enchant",
+          "enchantments": {
+            "minecraft:infinity": 1
+          }
+        }]
+      }
+    ]
+  }]
+}

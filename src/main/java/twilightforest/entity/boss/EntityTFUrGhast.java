@@ -31,7 +31,6 @@ import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayData {
 
@@ -822,7 +821,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         {
         	// make chest
         	BlockPos chestCoords = this.findChestCoords();
-        	TFTreasure.darktower_boss.generate(world, null, chestCoords.posX, chestCoords.posY, chestCoords.posZ);
+        	TFTreasure.darktower_boss.generateChest(world, null, chestCoords.posX, chestCoords.posY, chestCoords.posZ);
         }
     }
     
