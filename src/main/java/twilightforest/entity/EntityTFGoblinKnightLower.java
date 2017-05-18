@@ -242,10 +242,4 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         return armor;
     }
 
-    @Override
-    protected Item getDropItem()
-    {
-        return TFItems.armorShard;
-    }
-    
 }

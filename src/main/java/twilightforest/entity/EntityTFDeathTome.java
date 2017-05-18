@@ -18,12 +18,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome");
 
 	public EntityTFDeathTome(World par1World) {
 		super(par1World);
@@ -83,38 +86,10 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
             return false;
         }
     }
-	
-    @Override
-	protected Item getDropItem()
-    {
-        return Items.PAPER;
-    }
 
     @Override
-	protected void dropFewItems(boolean par1, int par2)
-    {
-        int var3 = this.rand.nextInt(3 + par2);
-        int var4;
-
-        for (var4 = 0; var4 < var3; ++var4)
-        {
-            this.dropItem(Items.PAPER, 1);
-        }
-
-        if (this.rand.nextInt(5) - par2 <= 0)
-        {
-        	this.dropItem(Items.WRITABLE_BOOK, 1);
-        }
-        else
-        {
-        	this.dropItem(Items.BOOK, 1);
-        }
-    }
-
-    @Override
-	protected void dropRareDrop(int par1)
-    {
-        this.dropItem(TFItems.magicMapFocus, 1);
+    public ResourceLocation getLootTable() {
+	    return LOOT_TABLE;
     }
 
 	@Override

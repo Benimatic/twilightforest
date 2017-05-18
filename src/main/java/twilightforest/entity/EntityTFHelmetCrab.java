@@ -18,17 +18,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 import java.util.UUID;
 
 
 public class EntityTFHelmetCrab extends EntityMob {
-
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/helmet_crab");
     private static final AttributeModifier ARMOR_BOOST =
             new AttributeModifier(UUID.fromString("97ec11e4-af6a-4e09-801f-dfbfa01346a8"), "HelmetCrab permanent armor boost", 6, 0);
 
@@ -91,20 +93,8 @@ public class EntityTFHelmetCrab extends EntityMob {
     }
 
     @Override
-    protected Item getDropItem()
-    {
-        return TFItems.armorShard;
-    }
-    
-    @Override
-    protected void dropFewItems(boolean flag, int i)
-    {
-    	super.dropFewItems(flag, i);
-    	
-        if (rand.nextInt(2) == 0)
-        {
-            this.dropItem(Items.FISH, 1 + i);
-        }
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -29,6 +30,7 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
@@ -38,7 +40,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEntityMultiPart, IMob
 {
-
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/hydra");
 	private static int TICKS_BEFORE_HEALING = 1000;
 	private static int HEAD_RESPAWN_TICKS = 100;
 	private static int HEAD_MAX_DAMAGE = 120;
@@ -1076,29 +1078,10 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 			}
 		}
 	}
-	
-	/**
-	 * EPIC LOOTZ!
-	 */
+
 	@Override
-	protected void dropFewItems(boolean par1, int par2) {
-		
-		// chops
-        int totalDrops = this.rand.nextInt(3 + par2) + 5;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(TFItems.hydraChop, 5);
-        }
-
-        // blood
-        totalDrops = this.rand.nextInt(4 + par2) + 7;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(TFItems.fieryBlood, 1);
-        }
-
-        // trophy
-        this.dropItem(TFItems.trophy, 1);
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 
     /**

@@ -18,10 +18,12 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker 
 {
-
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/fire_beetle");
     private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntityTFFireBeetle.class, DataSerializers.BOOLEAN);
     private static final int BREATH_DURATION = 10;
     private static final int BREATH_DAMAGE = 2;
@@ -99,11 +101,10 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
         this.world.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
     }
 
-    @Override
-	protected Item getDropItem()
-    {
-        return Items.GUNPOWDER;
-    }
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
     @Override
 	public boolean isBreathing()

@@ -19,11 +19,13 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.item.TFItems;
@@ -32,7 +34,7 @@ import javax.annotation.Nullable;
 
 public class EntityTFYeti extends EntityMob
 {
-
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti");
 	private static final DataParameter<Byte> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BYTE);
 
 	public EntityTFYeti(World par1World)
@@ -267,10 +269,8 @@ public class EntityTFYeti extends EntityMob
 	}
 
     @Override
-    protected Item getDropItem()
-    {
-        return TFItems.arcticFur;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
-	
 }

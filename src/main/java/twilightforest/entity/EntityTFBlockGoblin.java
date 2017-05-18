@@ -24,6 +24,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -33,6 +34,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/block_goblin");
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_CHAINPOS = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
@@ -110,11 +112,10 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
     }
 
     @Override
-    protected Item getDropItem()
-    {
-        return TFItems.armorShard;
+    public ResourceLocation getLootTable() {
+	    return LOOT_TABLE;
     }
-    
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

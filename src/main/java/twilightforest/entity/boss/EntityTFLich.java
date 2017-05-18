@@ -27,6 +27,7 @@ import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -34,6 +35,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
@@ -44,8 +46,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 
 public class EntityTFLich extends EntityMob implements IBossDisplayData {
-	
-
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/lich");
 	private static final DataParameter<Byte> DATA_ISCLONE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_SHIELDSTRENGTH = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_MINIONSLEFT = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
@@ -128,69 +129,6 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     {
         return heldItems[getPhase() - 1];
     }
-	
-	@Override
-	protected void dropFewItems(boolean par1, int par2) {
-		dropScepter();
-		
-        int totalDrops = this.rand.nextInt(3 + par2) + 2;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            dropGoldThing();
-        }
-
-        totalDrops = this.rand.nextInt(4 + par2) + 1;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(Items.ENDER_PEARL, 1);
-        }
-
-        // bones
-        totalDrops = this.rand.nextInt(5 + par2) + 5;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(Items.BONE, 1);
-        }
-        
-        // trophy
-        this.entityDropItem(new ItemStack(TFItems.trophy, 1, 2), 0);
-	}
-
-	private void dropScepter() {
-		int scepterType = rand.nextInt(3);
-		if (scepterType == 0) {
-			this.entityDropItem(new ItemStack(TFItems.scepterZombie), 0);
-		}
-		else if (scepterType == 1) {
-			this.entityDropItem(new ItemStack(TFItems.scepterLifeDrain), 0);
-		}
-		else {
-			this.entityDropItem(new ItemStack(TFItems.scepterTwilight), 0);
-		}
-	}
-
-	private void dropGoldThing() {
-		ItemStack goldThing;
-		int thingType = rand.nextInt(5);
-		if (thingType == 0) {
-			goldThing = new ItemStack(Items.GOLDEN_SWORD);
-		}
-		else if (thingType == 1) {
-			goldThing = new ItemStack(Items.GOLDEN_HELMET);
-		}
-		else if (thingType == 2) {
-			goldThing = new ItemStack(Items.GOLDEN_CHESTPLATE);
-		}
-		else if (thingType == 3) {
-			goldThing = new ItemStack(Items.GOLDEN_LEGGINGS);
-		}
-		else {
-			goldThing = new ItemStack(Items.GOLDEN_BOOTS);
-		}
-		// enchant!
-		EnchantmentHelper.addRandomEnchantment(rand, goldThing, 10 + rand.nextInt(30));
-		this.entityDropItem(goldThing, 0);
-	}
 
     @Override
     public void setInWeb() {}
@@ -996,6 +934,11 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     {
         return "mob.blaze.death";
     }
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)

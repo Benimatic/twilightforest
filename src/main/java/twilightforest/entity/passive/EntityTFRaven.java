@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
@@ -19,7 +20,8 @@ import twilightforest.item.TFItems;
 
 
 public class EntityTFRaven extends EntityTFTinyBird {
-	
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/raven");
+
     public EntityTFRaven(World par1World) {
 		super(par1World);
         this.setSize(0.3F, 0.7F);
@@ -64,11 +66,10 @@ public class EntityTFRaven extends EntityTFTinyBird {
     {
         return TFSounds.RAVEN_SQUAWK;
     }
-	
+
     @Override
-	protected Item getDropItem()
-    {
-        return TFItems.feather;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
 	@Override

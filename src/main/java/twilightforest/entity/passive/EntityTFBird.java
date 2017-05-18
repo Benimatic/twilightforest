@@ -4,10 +4,13 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 
 public abstract class EntityTFBird extends EntityAnimal {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bird");
 
 	public float flapLength = 0.0F;
 	public float flapIntensity = 0.0F;
@@ -67,10 +70,10 @@ public abstract class EntityTFBird extends EntityAnimal {
     {
         return false;
     }
-	
+
 	@Override
-	protected Item getDropItem() {
-	    return Items.FEATHER;
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 
 	@Override

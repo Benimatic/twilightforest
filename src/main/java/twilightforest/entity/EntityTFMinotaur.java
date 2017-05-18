@@ -20,15 +20,17 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.item.TFItems;
 
 public class EntityTFMinotaur extends EntityMob implements ITFCharger {
-
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minotaur");
     private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityTFMinotaur.class, DataSerializers.BOOLEAN);
 
 	public EntityTFMinotaur(World par1World) {
@@ -136,45 +138,9 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return TFItems.meefRaw;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
-
-    @Override
-	protected void dropFewItems(boolean par1, int par2)
-    {
-        int numDrops = this.rand.nextInt(2) + this.rand.nextInt(1 + par2);
-
-        for (int i = 0; i < numDrops; ++i)
-        {
-            if (this.isBurning())
-            {
-                this.dropItem(TFItems.meefSteak, 1);
-            }
-            else
-            {
-                this.dropItem(TFItems.meefRaw, 1);
-            }
-        }
-    }
-    
-    @Override
-	protected void dropRareDrop(int par1)
-    {
-        this.dropItem(TFItems.mazeMapFocus, 1);
-    }
-
-    
-//    /**
-//     * Initialize this creature.
-//     */
-//    @Override
-//	public void initCreature()
-//    {
-//    	//this.func_82164_bB();
-//        this.func_82162_bC();
-//    }
 
     @Override
     public void onDeath(DamageSource par1DamageSource) {

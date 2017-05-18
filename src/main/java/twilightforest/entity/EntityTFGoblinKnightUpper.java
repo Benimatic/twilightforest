@@ -23,18 +23,20 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFGoblinKnightUpper extends EntityMob {
-	
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/goblin_knight");
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 
 	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightUpper.class, DataSerializers.BYTE);
@@ -441,11 +443,8 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         return armor;
     }
 
-    @Override
-    protected Item getDropItem()
-    {
-        return TFItems.armorShard;
-    }
-    
-
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }

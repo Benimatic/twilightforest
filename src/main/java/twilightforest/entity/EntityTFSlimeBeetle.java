@@ -21,6 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -28,9 +29,11 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 
 public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
 {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/slime_beetle");
 
 	public EntityTFSlimeBeetle(World world) {
 		super(world);
@@ -128,11 +131,10 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob
     {
         return EnumCreatureAttribute.ARTHROPOD;
     }
-    
+
     @Override
-	protected Item getDropItem()
-    {
-        return Items.SLIME_BALL;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

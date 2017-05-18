@@ -24,16 +24,19 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 //todo 1.9 made this extend skeleton instead of mob, verify
 public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAttackMob
 {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/skeleton_druid");
 
 	public EntityTFSkeletonDruid(World world)
 	{
@@ -64,31 +67,8 @@ public class EntityTFSkeletonDruid extends EntitySkeleton implements IRangedAtta
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return TFItems.torchberries;
-    }
-    
-    @Override
-    protected void dropFewItems(boolean par1, int lootingModifier)
-    {
-        // todo 1.9 this won't get called due to superclass's loot table, remove when loot table for druid is done
-    	int numberOfItemsToDrop;
-    	int i;
-
-    	numberOfItemsToDrop = this.rand.nextInt(3 + lootingModifier);
-
-    	for (i = 0; i < numberOfItemsToDrop; ++i)
-    	{
-    		this.dropItem(TFItems.torchberries, 1);
-    	}
-
-    	numberOfItemsToDrop = this.rand.nextInt(3 + lootingModifier);
-
-    	for (i = 0; i < numberOfItemsToDrop; ++i)
-    	{
-    		this.dropItem(Items.BONE, 1);
-    	}
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
     
     @Override

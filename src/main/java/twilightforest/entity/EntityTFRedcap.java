@@ -19,17 +19,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;
 import twilightforest.entity.ai.EntityAITFRedcapShy;
 
 public class EntityTFRedcap extends EntityMob {
-	
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/redcap");
 
     public static ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
     public static ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
@@ -101,12 +103,11 @@ public class EntityTFRedcap extends EntityMob {
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return Items.COAL;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
-    
-    public boolean isShy() 
+
+    public boolean isShy()
     {
     	return shy && this.recentlyHit <= 0;
     }

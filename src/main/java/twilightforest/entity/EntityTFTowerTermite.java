@@ -17,13 +17,11 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerWoodVariant;
@@ -33,6 +31,7 @@ import java.util.Random;
 
 public class EntityTFTowerTermite extends EntityMob 
 {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_termite");
     private AISummonSilverfish summonSilverfish;
 
 	public EntityTFTowerTermite(World par1World) {
@@ -114,9 +113,8 @@ public class EntityTFTowerTermite extends EntityMob
     }
 
     @Override
-    protected Item getDropItem()
-    {
-        return TFItems.borerEssence;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

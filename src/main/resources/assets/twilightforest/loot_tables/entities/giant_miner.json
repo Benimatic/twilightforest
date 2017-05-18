@@ -1,0 +1,13 @@
+{
+  "pools": [
+    {
+      "name": "pick",
+      "rolls": 1,
+      "conditions": [{ "condition": "killed_by_player" }],
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:giant_pickaxe"
+      }]
+    }
+  ]
+}

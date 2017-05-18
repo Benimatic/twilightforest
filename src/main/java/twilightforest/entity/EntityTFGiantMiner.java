@@ -3,6 +3,8 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.ResourceLocation;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -19,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class EntityTFGiantMiner extends EntityMob {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/giant_miner");
 
 	public EntityTFGiantMiner(World par1World) {
 		super(par1World);
@@ -56,20 +59,9 @@ public class EntityTFGiantMiner extends EntityMob {
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
 	}
-	
-    @Override
-    protected Item getDropItem()
-    {
-        return TFItems.giantPick;
-    }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2)
-    {
-        Item item = this.getDropItem();
-        // just drop 1 item every time
-        if (item != null && par1) {
-            this.dropItem(item, 1);
-        }
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 }

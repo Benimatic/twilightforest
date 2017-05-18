@@ -278,7 +278,7 @@ public class TFItems {
         registerTFItem(magicMap, "magic_map");
         registerTFItem(mazeMap, "maze_map");
         registerTFItem(oreMap, "ore_Map");
-        registerTFItem(feather, "twilight_feather");
+        registerTFItem(feather, "raven_feather");
         registerTFItem(magicMapFocus, "magic_map_focus");
         registerTFItem(mazeMapFocus, "maze_map_focus");
         registerTFItem(liveRoot, "liveroot");
@@ -365,7 +365,7 @@ public class TFItems {
         registerTFItem(arcticLegs, "arctic_leggings");
         registerTFItem(arcticBoots, "arctic_boots");
         registerTFItem(magicBeans, "magic_beans");
-        registerTFItem(giantPick, "giant_pick");
+        registerTFItem(giantPick, "giant_pickaxe");
         registerTFItem(giantSword, "giant_sword");
         registerTFItem(tripleBow, "triple_bow");
         registerTFItem(seekerBow, "seeker_bow");

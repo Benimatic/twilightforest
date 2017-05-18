@@ -8,10 +8,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
@@ -27,6 +29,7 @@ import javax.annotation.Nullable;
  */
 public class EntityTFDeer extends EntityCow
 {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/deer");
 
     public EntityTFDeer(World world)
     {
@@ -65,30 +68,8 @@ public class EntityTFDeer extends EntityCow
     }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2)
-    {
-        // todo 1.9 this is hidden by loot tables
-        int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
-        int var4;
-
-        for (var4 = 0; var4 < var3; ++var4)
-        {
-            this.dropItem(Items.LEATHER, 1);
-        }
-
-        var3 = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + par2);
-
-        for (var4 = 0; var4 < var3; ++var4)
-        {
-            if (this.isBurning())
-            {
-                this.dropItem(TFItems.venisonCooked, 1);
-            }
-            else
-            {
-                this.dropItem(TFItems.venisonRaw, 1);
-            }
-        }
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

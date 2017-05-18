@@ -27,6 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -51,6 +52,7 @@ import javax.annotation.Nullable;
 
 public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti_alpha");
     private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private int collisionCounter;
@@ -191,35 +193,12 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         this.canRampage = true;
         return super.attackEntityFrom(par1DamageSource, par2);
     }
-    
-    @Override
-    protected void dropFewItems(boolean flag, int looting) {
-    	Item fur = getDropItem();
-    	if(fur != null)
-    	{
-    		int drops = 6 + rand.nextInt(6 + looting);
-    		for(int d = 0; d < drops; d++)
-    		{
-    			this.dropItem(fur, 1);
-    		}
 
-    	}
-    	
-    	Item bombs = TFItems.iceBomb;
-		int drops = 6 + rand.nextInt(6 + looting);
-		for(int d = 0; d < drops; d++)
-		{
-			this.dropItem(bombs, 1);
-		}
-
-    }
-    
     @Override
-	protected Item getDropItem()
-    {
-        return TFItems.alphaFur;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
-    
+
     @Override
 	public void updatePassenger(Entity passenger)
     {

@@ -13,6 +13,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -23,7 +24,7 @@ import twilightforest.entity.ai.EntityAITFBreathAttack;
 import twilightforest.item.TFItems;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathAttacker {
-
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/winter_wolf");
 	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 
 	public EntityTFWinterWolf(World world) {
@@ -130,11 +131,10 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 		return world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow
 				|| super.isValidLightLevel();
 	}
-	
+
 	@Override
-    protected Item getDropItem()
-    {
-        return TFItems.arcticFur;
-    }
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
 }

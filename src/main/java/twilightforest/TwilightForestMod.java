@@ -106,6 +106,7 @@ public class TwilightForestMod {
 		// cheevos!
 		AchievementPage.registerAchievementPage(new TFAchievementPage());
 
+		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
 		
 		// just call this so that we register structure IDs correctly

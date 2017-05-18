@@ -15,6 +15,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -24,6 +25,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
 public class EntityTFSnowGuardian extends EntityMob {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/snow_guardian");
 
 	public EntityTFSnowGuardian(World par1World) {
 		super(par1World);
@@ -152,12 +154,11 @@ public class EntityTFSnowGuardian extends EntityMob {
     		}
     	}
     }
-    
-    @Override
-    protected Item getDropItem()
-    {
-        return Items.SNOWBALL;
-    }
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
 	@Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData)

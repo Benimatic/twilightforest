@@ -1,0 +1,22 @@
+{
+  "pools": [
+    {
+      "name": "scales",
+      "rolls": 1,
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:naga_scale",
+        "functions": [{ "function": "set_count", "count": { "min": 6, "max": 11 } }]
+      }]
+    },
+    {
+      "name": "trophy",
+      "rolls": 1,
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:trophy",
+        "functions": [{ "function": "set_data", "data": 1 }]
+      }]
+    }
+  ]
+}

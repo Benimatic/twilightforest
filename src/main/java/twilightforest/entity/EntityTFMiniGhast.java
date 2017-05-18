@@ -6,13 +6,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 public class EntityTFMiniGhast extends EntityTFTowerGhast
 {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/mini_ghast");
 	public boolean isMinion = false;
 	
 	public EntityTFMiniGhast(World par1World) {
@@ -129,17 +132,12 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
 		
 		this.setHealth(this.getMaxHealth());
 	}
-	
+
     @Override
-    protected void dropFewItems(boolean par1, int par2)
-    {
-    	// no loot from minions
-        if (!this.isMinion)
-        {
-        	super.dropFewItems(par1, par2);
-        }
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
-	
+
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {

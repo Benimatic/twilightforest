@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +23,7 @@ import net.minecraftforge.common.util.Constants;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
@@ -31,6 +33,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 
 public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/naga");
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
 	private static final int LEASH_X = 46;
@@ -470,6 +473,11 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		return TFSounds.NAGA_HURT;
     }
 
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
     private void crumbleBelowTarget(int range) {
 		int floor = (int) getEntityBoundingBox().minY;
 		int targetY = (int) getAttackTarget().getEntityBoundingBox().minY;
@@ -603,29 +611,6 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		{
 			return 0.0F;
 		}
-    }
-
-    @Override
-	protected Item getDropItem()
-    {
-        return TFItems.nagaScale;
-    }
-
-    @Override
-    protected void dropFewItems(boolean flag, int z) {
-    	Item i = getDropItem();
-    	if(i != null)
-    	{
-    		int j = 6 + rand.nextInt(6);
-    		for(int k = 0; k < j; k++)
-    		{
-    			this.dropItem(i, 1);
-    		}
-
-    	}
-    	
-        // trophy
-        this.entityDropItem(new ItemStack(TFItems.trophy, 1, 1), 0);
     }
 
 	private void despawnIfPeaceful() {

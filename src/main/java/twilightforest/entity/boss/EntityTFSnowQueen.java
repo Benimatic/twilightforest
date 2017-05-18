@@ -28,6 +28,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -50,7 +51,7 @@ import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IBreathAttacker {
-	
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/snow_queen");
 	private static final int MAX_SUMMONS = 6;
 	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> PHASE_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BYTE);
@@ -138,11 +139,10 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
     }
 
 	@Override
-    protected Item getDropItem()
-    {
-        return Items.SNOWBALL;
-    }
-    
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
     @Override
     public void onLivingUpdate()
     {
@@ -244,37 +244,6 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		}
     }
 
-	@Override
-	protected void dropFewItems(boolean par1, int par2) {
-    	dropBow();
-
-        // ice cubes
-        int totalDrops = this.rand.nextInt(4 + par2) + 1;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(Item.getItemFromBlock(Blocks.PACKED_ICE), 7);
-        }
-
-        // snowballs
-        totalDrops = this.rand.nextInt(5 + par2) + 5;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(Items.SNOWBALL, 16);
-        }
-        
-        // trophy
-        this.entityDropItem(new ItemStack(TFItems.trophy, 1, 4), 0);
-	}
-	
-	private void dropBow() {
-		int bowType = rand.nextInt(2);
-		if (bowType == 0) {
-			this.entityDropItem(new ItemStack(TFItems.tripleBow), 0);
-		} else {
-			this.entityDropItem(new ItemStack(TFItems.seekerBow), 0);
-		}
-	}
-	
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);

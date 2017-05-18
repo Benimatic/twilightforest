@@ -20,17 +20,19 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFTowerGolem extends EntityMob
 {
-
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_golem");
     private int attackTimer;
 
 	public EntityTFTowerGolem(World par1World)
@@ -178,23 +180,8 @@ public class EntityTFTowerGolem extends EntityMob
     }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2)
-    {
-        int var4;
-
-        var4 = this.rand.nextInt(3);
-
-        for (int i = 0; i < var4; ++i)
-        {
-            this.dropItem(Items.IRON_INGOT, 1);
-        }
-        
-        var4 = this.rand.nextInt(3);
-        
-        for (int i = 0; i < var4; ++i)
-        {
-            this.dropItem(Item.getItemFromBlock(TFBlocks.towerWood), 1);
-        }
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

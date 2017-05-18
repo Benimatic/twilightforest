@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -25,6 +26,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_shooter");
 
 	public EntityTFIceShooter(World par1World) {
 		super(par1World);
@@ -55,11 +57,10 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
     {
         return this.height * 0.6F;
     }
- 
+
     @Override
-    protected Item getDropItem()
-    {
-        return Items.SNOWBALL;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

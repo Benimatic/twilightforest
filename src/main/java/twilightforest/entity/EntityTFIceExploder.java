@@ -22,6 +22,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -32,7 +33,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFIceExploder extends EntityMob {
-
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;
 
 
@@ -61,10 +62,9 @@ public class EntityTFIceExploder extends EntityMob {
     }
 
 	@Override
-    protected Item getDropItem()
-    {
-        return Items.SNOWBALL;
-    }
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
     @Override
     public void onLivingUpdate()

@@ -18,6 +18,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -28,6 +29,7 @@ import twilightforest.entity.ai.EntityAITFPanicOnFlockDeath;
 
 
 public class EntityTFKobold extends EntityMob {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/kobold");
 	private static final DataParameter<Boolean> PANICKED = EntityDataManager.createKey(EntityTFKobold.class, DataSerializers.BOOLEAN);
 
     private boolean shy;
@@ -97,22 +99,10 @@ public class EntityTFKobold extends EntityMob {
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return Items.WHEAT;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
-    
-    @Override
-    protected void dropFewItems(boolean flag, int i)
-    {
-    	super.dropFewItems(flag, i);
-    	
-        if (rand.nextInt(2) == 0)
-        {
-            this.dropItem(Items.GOLD_NUGGET, 1 + i);
-        }
-    }
- 
+
     public boolean isShy() {
     	return shy && this.recentlyHit <= 0;
     }

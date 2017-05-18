@@ -4,12 +4,15 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFMinotaur;
 import twilightforest.item.TFItems;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
-	
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minoshroom");
+
 	public EntityTFMinoshroom(World par1World) {
 		super(par1World);
 		//this.texture = TwilightForestMod.MODEL_DIR + "minoshroomtaur.png";
@@ -29,20 +32,8 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return TFItems.meefStroganoff;
-    }
-
-    @Override
-	protected void dropFewItems(boolean par1, int par2)
-    {
-        int numDrops = this.rand.nextInt(4) + 2 + this.rand.nextInt(1 + par2);
-
-        for (int i = 0; i < numDrops; ++i)
-        {
-            this.dropItem(TFItems.meefStroganoff, 1);
-        }
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
     
     @Override

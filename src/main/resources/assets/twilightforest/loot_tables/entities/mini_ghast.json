@@ -1,0 +1,11 @@
+{
+  "pools": [{
+    "name": "main",
+    "rolls": 1,
+    "conditions": [{ "condition": "twilightforest:is_minion", "inverse": true }],
+    "entries": [{
+      "type": "loot_table",
+      "name": "minecraft:entities/ghast"
+    }]
+  }]
+}

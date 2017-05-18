@@ -7,10 +7,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import twilightforest.entity.*;
+import twilightforest.entity.boss.*;
+import twilightforest.entity.passive.EntityTFBird;
+import twilightforest.entity.passive.EntityTFDeer;
+import twilightforest.entity.passive.EntityTFRaven;
 
 public class TFTreasure {
-	private final ResourceLocation lootTable;
-
 	public static final TFTreasure hill1 = new TFTreasure("hill_1");
 	public static final TFTreasure hill2 = new TFTreasure("hill_2");
 	public static final TFTreasure hill3 = new TFTreasure("hill_3");
@@ -34,10 +37,49 @@ public class TFTreasure {
 	public static final TFTreasure troll_garden = new TFTreasure("troll_garden");
 	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
 
+	public static void init() {
+		// Preload all entity tables
+		LootTableList.register(EntityTFArmoredGiant.LOOT_TABLE);
+		LootTableList.register(EntityTFBird.LOOT_TABLE);
+		LootTableList.register(EntityTFBlockGoblin.LOOT_TABLE);
+		LootTableList.register(EntityTFDeathTome.LOOT_TABLE);
+		LootTableList.register(EntityTFDeer.LOOT_TABLE);
+		LootTableList.register(EntityTFFireBeetle.LOOT_TABLE);
+		LootTableList.register(EntityTFGiantMiner.LOOT_TABLE);
+		LootTableList.register(EntityTFGoblinKnightUpper.LOOT_TABLE);
+		LootTableList.register(EntityTFHelmetCrab.LOOT_TABLE);
+		LootTableList.register(EntityTFHydra.LOOT_TABLE);
+		LootTableList.register(EntityTFIceCrystal.LOOT_TABLE);
+		LootTableList.register(EntityTFIceExploder.LOOT_TABLE);
+		LootTableList.register(EntityTFIceShooter.LOOT_TABLE);
+		LootTableList.register(EntityTFKobold.LOOT_TABLE);
+		LootTableList.register(EntityTFLich.LOOT_TABLE);
+		LootTableList.register(EntityTFMazeSlime.LOOT_TABLE);
+		LootTableList.register(EntityTFMiniGhast.LOOT_TABLE);
+		LootTableList.register(EntityTFMinoshroom.LOOT_TABLE);
+		LootTableList.register(EntityTFMinotaur.LOOT_TABLE);
+		LootTableList.register(EntityTFNaga.LOOT_TABLE);
+		LootTableList.register(EntityTFRaven.LOOT_TABLE);
+		LootTableList.register(EntityTFRedcap.LOOT_TABLE);
+		LootTableList.register(EntityTFSkeletonDruid.LOOT_TABLE);
+		LootTableList.register(EntityTFSlimeBeetle.LOOT_TABLE);
+		LootTableList.register(EntityTFSnowGuardian.LOOT_TABLE);
+		LootTableList.register(EntityTFSnowQueen.LOOT_TABLE);
+		LootTableList.register(EntityTFTowerGolem.LOOT_TABLE);
+		LootTableList.register(EntityTFTowerTermite.LOOT_TABLE);
+		LootTableList.register(EntityTFTroll.LOOT_TABLE);
+		LootTableList.register(EntityTFWinterWolf.LOOT_TABLE);
+		LootTableList.register(EntityTFWraith.LOOT_TABLE);
+		LootTableList.register(EntityTFYeti.LOOT_TABLE);
+		LootTableList.register(EntityTFYetiAlpha.LOOT_TABLE);
+	}
+
+	private final ResourceLocation lootTable;
+
 	private TFTreasure(String path) {
 		lootTable = new ResourceLocation(TwilightForestMod.ID, String.format("structures/%s/%s", path, path));
 
-		// only register the primary table, the subtables will be loaded on-demand the first time the primary table fires
+		// only preload the primary table, the subtables will be loaded on-demand the first time the primary table is used
 		LootTableList.register(lootTable);
 	}
 

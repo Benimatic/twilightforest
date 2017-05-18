@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -25,6 +26,7 @@ import twilightforest.item.TFItems;
 
 
 public class EntityTFBoggard extends EntityMob {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/boggard");
 	private boolean shy;
 
     public EntityTFBoggard(World world)
@@ -83,26 +85,8 @@ public class EntityTFBoggard extends EntityMob {
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return Items.IRON_BOOTS;
-    }
-    
-    @Override
-    protected void dropFewItems(boolean flag, int i)
-    {
-        if (rand.nextInt(5) == 0)
-        {
-            this.dropItem(TFItems.mazeMapFocus, 1 + i);
-        }
-        if (rand.nextInt(6) == 0)
-        {
-            this.dropItem(Items.IRON_BOOTS, 1 + i);
-        }
-        if (rand.nextInt(9) == 0)
-        {
-        	this.dropItem(Items.IRON_PICKAXE, 1 + i);
-        }
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     public boolean isShy() {

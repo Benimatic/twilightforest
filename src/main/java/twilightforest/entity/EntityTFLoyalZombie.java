@@ -128,12 +128,6 @@ public class EntityTFLoyalZombie extends EntityTameable {
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return Item.getItemById(0);
-    }
-
-    @Override
 	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;

@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import twilightforest.TFSounds;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -15,8 +16,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 public class EntityTFIceCrystal extends EntityMob {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_crystal");
 	private int crystalAge;
 	private int maxCrystalAge = -1;
 
@@ -49,9 +52,8 @@ public class EntityTFIceCrystal extends EntityMob {
     }
 
     @Override
-    protected Item getDropItem()
-    {
-        return Items.SNOWBALL;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

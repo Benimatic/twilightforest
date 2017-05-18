@@ -25,18 +25,21 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.item.TFItems;
 
 public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/troll");
     private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
 
     private EntityAIAttackRanged aiArrowAttack = new EntityAIAttackRanged(this, 1.0D, 20, 60, 15.0F);
@@ -196,14 +199,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     }
 
     @Override
-    protected Item getDropItem()
-    {
-        return null;
-    }
-
-    protected void dropRareDrop(int p_70600_1_)
-    {
-        this.dropItem(TFItems.magicBeans, 1);
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
     @Override

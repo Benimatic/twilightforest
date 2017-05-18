@@ -5,10 +5,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
@@ -16,8 +18,7 @@ import twilightforest.item.TFItems;
 
 public class EntityTFMazeSlime extends EntitySlime
 {
-
-	private String slimeParticleString;
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/maze_slime");
 
 	public EntityTFMazeSlime(World par1World) {
 		super(par1World);
@@ -121,12 +122,10 @@ public class EntityTFMazeSlime extends EntitySlime
     	// OH MY GOD, SHUT UP
         return 0.1F * this.getSlimeSize();
     }
-    
-    
+
     @Override
-	protected void dropRareDrop(int par1)
-    {
-        this.dropItem(TFItems.charmOfKeeping1, 1);
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
 
 }

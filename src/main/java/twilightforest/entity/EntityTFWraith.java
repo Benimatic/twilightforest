@@ -7,6 +7,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -22,6 +23,7 @@ import twilightforest.TwilightForestMod;
 
 
 public class EntityTFWraith extends EntityFlying implements IMob {
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/wraith");
 
     public EntityTFWraith(World world)
     {
@@ -263,11 +265,10 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     }
 
     @Override
-	protected Item getDropItem()
-    {
-        return Items.GLOWSTONE_DUST;
+    public ResourceLocation getLootTable() {
+        return LOOT_TABLE;
     }
-    
+
     public int courseChangeCooldown;
     public double waypointX;
     public double waypointY;
