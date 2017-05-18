@@ -156,7 +156,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
-		return new Vec3d(43 / 256.0, 46 / 256.0, 99 / 256.0);
+		// TODO Maybe in the future we can get the return of sky color by biome?
+		return new Vec3d(32 / 256.0, 34 / 256.0, 74 / 256.0);
 	}
 
 	@Override
@@ -165,10 +166,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return 1.0F;
 	}
 
-
 	@Override
 	public double getHorizon() {
-		return 32.0D;
+		return TFWorld.SEALEVEL;
 	}
 
 	@Override
