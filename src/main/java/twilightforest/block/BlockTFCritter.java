@@ -114,7 +114,7 @@ public abstract class BlockTFCritter extends Block {
 
 	
 	@Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack)
     {
         IBlockState state = getDefaultState();
 
