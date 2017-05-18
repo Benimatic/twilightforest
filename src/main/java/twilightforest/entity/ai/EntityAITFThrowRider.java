@@ -63,7 +63,6 @@ public class EntityAITFThrowRider extends EntityAIBase {
     		TwilightForestMod.genericChannel.sendTo(message, player);
         }
         
-        System.out.println("throw!");
         this.throwTimer = 0;
     }
 

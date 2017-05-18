@@ -273,7 +273,7 @@ public class BlockTFPortal extends BlockBreakable
     				if (playerMP.dimension != TwilightForestMod.dimensionID) {
     					playerMP.addStat(TFAchievementPage.twilightPortal);
     					playerMP.addStat(TFAchievementPage.twilightArrival);
-    					FMLLog.info("[TwilightForest] Player touched the portal block.  Sending the player to dimension " + TwilightForestMod.dimensionID);
+						TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TwilightForestMod.dimensionID);
 
     					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TwilightForestMod.dimensionID, new TFTeleporter(playerMP.mcServer.worldServerForDimension(TwilightForestMod.dimensionID)));
     					playerMP.addExperienceLevel(0);

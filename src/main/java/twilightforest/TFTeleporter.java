@@ -46,23 +46,23 @@ public class TFTeleporter extends Teleporter
 				int pz = MathHelper.floor(par1Entity.posZ);
 				BlockPos pos = new BlockPos(par1Entity);
 				if (!isSafeBiomeAt(pos, par1Entity)) {
-					System.out.println("[TwilightForest] Portal destination looks unsafe, rerouting!");
+					TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
 					
 					BlockPos safeCoords = findSafeCoords(200, pos, par1Entity);
 					
 					if (safeCoords != null) {
 			            par1Entity.setLocationAndAngles(safeCoords.getX(), par1Entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
 
-			            System.out.println("[TwilightForest] Safely rerouted!");
+						TwilightForestMod.LOGGER.debug("Safely rerouted!");
 					} else {
-			            System.out.println("[TwilightForest] Did not find a safe spot at first try, trying again with longer range.");
+						TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
 						safeCoords = findSafeCoords(400, pos, par1Entity);
 						if (safeCoords != null) {
 				            par1Entity.setLocationAndAngles(safeCoords.getX(), par1Entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
 
-				            System.out.println("[TwilightForest] Safely rerouted to long range portal.  Return trip not guaranteed.");
+							TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
 						} else {
-				            System.out.println("[TwilightForest] Did not find a safe spot.");
+							TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
 						}
 					}
 				}
@@ -189,24 +189,24 @@ public class TFTeleporter extends Teleporter
         
         if (spot != null)
         {
-        	FMLLog.info("[TwilightForest] Found ideal portal spot");
+			TwilightForestMod.LOGGER.debug("Found ideal portal spot");
         	makePortalAt(myWorld, spot);
         	return true;
         }
         else
         {
-        	FMLLog.info("[TwilightForest] Did not find ideal portal spot, shooting for okay one");
+			TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one");
         	spot = findPortalCoords(entity, false);
             if (spot != null)
             {
-            	FMLLog.info("[TwilightForest] Found okay portal spot");
+				TwilightForestMod.LOGGER.debug("Found okay portal spot");
             	makePortalAt(myWorld, spot);
             	return true;
             }
         }
 
         // well I don't think we can actally just return false and fail here
-    	FMLLog.info("[TwilightForest] Did not even find an okay portal spot, just making a random one");
+		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one");
     	
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = myWorld.provider.getDimension() == 0 ? 2 : 0.5;

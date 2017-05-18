@@ -14,6 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFLoyalZombie;
 import net.minecraftforge.fml.common.FMLLog;
 
@@ -45,7 +46,7 @@ public class ItemTFZombieWand extends ItemTF {
 						zombie.setOwnerId(player.getUniqueID());
 					} catch (NoSuchMethodError ex) {
 						// ignore?
-						FMLLog.warning("[TwilightForest] Could not determine player name for loyal zombie, ignoring error.");
+						TwilightForestMod.LOGGER.warn("Could not determine player name for loyal zombie, ignoring error.");
 					}
 					zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
 					world.spawnEntity(zombie);

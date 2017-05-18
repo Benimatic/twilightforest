@@ -62,7 +62,7 @@ public class TFTickHandler
 					}
 				} catch (NoSuchMethodError ex) {
 					// stop checking admin
-					FMLLog.warning("[TwilightForest] Could not determine op status for adminOnlyPortals option, ignoring option.");
+					TwilightForestMod.LOGGER.warn("Could not determine op status for adminOnlyPortals option, ignoring option.");
 					TwilightForestMod.adminOnlyPortals = false;
 				}
 			} else {
@@ -142,13 +142,6 @@ public class TFTickHandler
 		}
 */
 	}
-
-	@SubscribeEvent
-	public void tickStart(ItemTossEvent event) {
-		System.out.println("ItemTossEvent Tick");
-	}
-
-
 
 	private void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
 		// make sure we are allowed to make a portal in this dimension

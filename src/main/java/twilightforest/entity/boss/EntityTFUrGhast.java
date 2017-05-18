@@ -159,7 +159,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         	{
         		this.damageUntilNextPhase -= this.getLastDamage();
 
-        		FMLLog.info("[Urghast] Attack successful, %f damage until phase switch.", this.damageUntilNextPhase);
+				TwilightForestMod.LOGGER.debug("Urghast Attack successful, {} damage until phase switch.", this.damageUntilNextPhase);
 
         		if (this.damageUntilNextPhase <= 0)
         		{
@@ -168,7 +168,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         	}
         	else
         	{
-        		FMLLog.info("[Urghast] Attack fail with %s type attack for %f damage", source.damageType, damage);
+				TwilightForestMod.LOGGER.debug("Urghast Attack fail with {} type attack for {} damage", source.damageType, damage);
         	}
         }
 
@@ -326,7 +326,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         // did we find any traps?
         if (this.trapLocations.isEmpty() && !this.noTrapMode)
         {
-        	FMLLog.info("[TwilightForest] Ur-ghast cannot find traps nearby, entering trap-less mode");
+			TwilightForestMod.LOGGER.debug("Ur-ghast cannot find traps nearby, entering trap-less mode");
         	this.noTrapMode = true;
         }
         

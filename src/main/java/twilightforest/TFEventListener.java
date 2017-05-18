@@ -538,7 +538,7 @@ public class TFEventListener {
 			
 			if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping3, 1))
 			{
-				FMLLog.info("[TwilightForest] Player died with charm of keeping III!  Keep it all!");
+				TwilightForestMod.LOGGER.debug("Player died with charm of keeping III!  Keep it all!");
 				InventoryPlayer keepInventory = new InventoryPlayer(null);
 				
 				// armor and full inventory
@@ -554,7 +554,7 @@ public class TFEventListener {
 			}
 			else if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping2, 1))
 			{
-				FMLLog.info("[TwilightForest] Player died with charm of keeping II!  Keep armor and hotbar!");
+				TwilightForestMod.LOGGER.debug("Player died with charm of keeping II!  Keep armor and hotbar!");
 				InventoryPlayer keepInventory = new InventoryPlayer(null);
 				
 				keepAllArmor(player, keepInventory);
@@ -569,7 +569,7 @@ public class TFEventListener {
 			}
 			else if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping1, 1))
 			{
-				FMLLog.info("[TwilightForest] Player died with charm of keeping I!  Keep armor and current item!");
+				TwilightForestMod.LOGGER.debug("Player died with charm of keeping I!  Keep armor and current item!");
 				InventoryPlayer keepInventory = new InventoryPlayer(null);
 				
 				keepAllArmor(player, keepInventory);
@@ -602,7 +602,7 @@ public class TFEventListener {
 		
 		if (playerKeepsMap.size() > 1)
 		{
-			FMLLog.warning("[TwilightForest] Twilight Forest mod is keeping track of a lot of dead player inventories.  Has there been an apocalypse?");
+			TwilightForestMod.LOGGER.warn("Keeping track of a lot of dead player inventories.  Has there been an apocalypse?");
 		}
 	}
 
@@ -639,7 +639,7 @@ public class TFEventListener {
 		EntityPlayer player = event.player;
 		if (playerKeepsMap.containsKey(player.getName()))
 		{
-			FMLLog.info("[TwilightForest] Player %s respawned and recieved items held in storage", player.getName());
+			TwilightForestMod.LOGGER.debug("Player {} respawned and recieved items held in storage", player.getName());
 			
 			InventoryPlayer keepInventory = playerKeepsMap.get(player.getName());
 			
@@ -683,7 +683,7 @@ public class TFEventListener {
 		EntityPlayer player = event.player;
 		if (playerKeepsMap.containsKey(player.getName()))
 		{
-			FMLLog.warning("[TwilightForest] Mod was keeping inventory items in reserve for player %s but they logged out!  Items are being dropped.", player.getName());
+			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player %s but they logged out!  Items are being dropped.", player.getName());
 			InventoryPlayer keepInventory = playerKeepsMap.get(player.getName());
 			
 			// set player to the player logging out
@@ -980,7 +980,7 @@ public class TFEventListener {
 	public void worldLoaded(WorldEvent.Load event) {
 		// check rule
 		if (!event.getWorld().isRemote && !event.getWorld().getGameRules().hasRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-			FMLLog.info("[TwilightForest] Loaded a world with the tfEnforcedProgression game rule not defined.  Defining it.");
+			TwilightForestMod.LOGGER.info("Loaded a world with the tfEnforcedProgression game rule not defined.  Defining it.");
 			
 			event.getWorld().getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, "true", GameRules.ValueType.BOOLEAN_VALUE);
 		}

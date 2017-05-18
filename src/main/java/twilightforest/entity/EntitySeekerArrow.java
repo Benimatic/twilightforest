@@ -65,7 +65,7 @@ public class EntitySeekerArrow extends EntityArrow {
         			if (thing instanceof EntityLivingBase && !(thing instanceof EntityPlayer)) {
         				EntityLivingBase living = (EntityLivingBase)thing;
 
-        				System.out.println("Possible target : " + living);
+        				//System.out.println("Possible target : " + living);
         				//System.out.println("Selection box =  " + targetBB);
 
         				courseVec = new Vec3d(this.motionX, this.motionY, this.motionZ);

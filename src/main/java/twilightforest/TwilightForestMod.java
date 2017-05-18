@@ -24,6 +24,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
@@ -71,6 +73,7 @@ public class TwilightForestMod {
 	
 	public static final TFEventListener eventListener = new TFEventListener();
 	public static final TFTickHandler tickHandler = new TFTickHandler();
+	public static final Logger LOGGER = LogManager.getLogger(ID);
 	public static SimpleNetworkWrapper genericChannel;
 
 	
@@ -135,13 +138,13 @@ public class TwilightForestMod {
 		if (Item.REGISTRY.containsKey(loc)) {
 			portalItem = Item.REGISTRY.getObject(loc);
 			if (portalItem != Items.DIAMOND) {
-				FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
+				TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", portalItem.getUnlocalizedName());
 			}
 		} else if (Block.REGISTRY.containsKey(loc)) {
 			portalItem = Item.getItemFromBlock(Block.REGISTRY.getObject(loc));
-			FMLLog.info("Set Twilight Forest portal item to %s", portalItem.getUnlocalizedName());
+			TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", portalItem.getUnlocalizedName());
 		} else {
-			FMLLog.info("Twilight Forest config lists portal item as '%s'.  Not found, defaulting to diamond.", portalCreationItemString);
+			TwilightForestMod.LOGGER.info("Config lists portal item as '%s'.  Not found, defaulting to diamond.", portalCreationItemString);
 			portalItem = Items.DIAMOND;
 		}
 		tickHandler.portalItem = portalItem;
@@ -178,7 +181,7 @@ public class TwilightForestMod {
 		}
 		else
 		{
-			FMLLog.warning("[TwilightForest] Twilight Forest detected that the configured dimension id '%d' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", dimensionID);
+			TwilightForestMod.LOGGER.warn("Detected that the configured dimension id '{}' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", dimensionID);
 			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimType);
 			TwilightForestMod.dimensionID = TwilightForestMod.backupdimensionID;
 		}
@@ -191,7 +194,7 @@ public class TwilightForestMod {
 		}
 		else
 		{
-			FMLLog.info("[TwilightForest] Did not find Thaumcraft, did not load ThaumcraftApi integration.");
+			TwilightForestMod.LOGGER.info("Did not find Thaumcraft, did not load ThaumcraftApi integration.");
 		}
 	}
 	
@@ -531,7 +534,7 @@ public class TwilightForestMod {
 	{
 		if (TwilightForestMod.dimensionID != dim)
 		{
-			FMLLog.info("[TwilightForest] Server has a different dimension ID (%d) for the Twilight Forest.  Changing this on the client.  This change will not be saved.", dim);
+			TwilightForestMod.LOGGER.info("Server has a different dimension ID {} for the Twilight Forest.  Changing this on the client.  This change will not be saved.", dim);
 
 			DimensionManager.unregisterDimension(TwilightForestMod.dimensionID);
 			TwilightForestMod.dimensionID = dim;

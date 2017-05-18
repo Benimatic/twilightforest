@@ -38,11 +38,7 @@ public class EntityAITFFlockTarget extends EntityAITarget
     	else
     	{
     		// hmm, just pick a random target?
-    		EntityLivingBase randomTarget = targetList.get(this.flockCreature.world.rand.nextInt(targetList.size()));
-    		
-    		System.out.println("randomTarget = " + randomTarget);
-    		
-	        this.flockTarget = randomTarget;
+			this.flockTarget = targetList.get(this.flockCreature.world.rand.nextInt(targetList.size()));
 	        return this.isSuitableTarget(this.flockTarget, true);
     	}
     }

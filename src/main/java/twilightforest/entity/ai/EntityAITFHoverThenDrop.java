@@ -2,6 +2,7 @@ package twilightforest.entity.ai;
 
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 import net.minecraft.entity.Entity;
@@ -174,7 +175,7 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 		}
 		
         if (tries == 99) {
-            System.out.println("Found no spots, giving up");
+			TwilightForestMod.LOGGER.debug("Found no spots, giving up");
         }
 		
 		this.hoverPosX = hx;
