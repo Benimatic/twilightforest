@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPig;
@@ -8,6 +9,7 @@ import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleSmokeNormal;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
@@ -15,12 +17,16 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import twilightforest.TFCommonProxy;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
 import twilightforest.client.model.ModelTFAdherent;
 import twilightforest.client.model.ModelTFArcticArmor;
 import twilightforest.client.model.ModelTFBighorn;
@@ -152,6 +158,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import javax.annotation.Nullable;
 
 public class TFClientProxy extends TFCommonProxy {
 	ModelBiped[] knightlyArmorModel;
@@ -180,6 +187,16 @@ public class TFClientProxy extends TFCommonProxy {
 	@Override
 	public void doOnLoadRegistration() {
 		Minecraft mc = FMLClientHandler.instance().getClient();
+
+		mc.getBlockColors().registerBlockColorHandler(new IBlockColor() {
+			@Override
+			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
+			{
+				final PlantVariant value = state.getValue(BlockTFPlant.VARIANT);
+
+				return value.isGrassColored ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : 0xFFFFFF;
+			}
+		}, TFBlocks.plant);
 		
 		// client tick listener
 		clientTicker = new TFClientTicker();

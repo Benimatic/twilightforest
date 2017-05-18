@@ -1,45 +1,42 @@
 package twilightforest.block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.common.util.ForgeDirection;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.enums.PlantVariant;
-import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.block.enums.PlantVariant;
+import twilightforest.item.TFItems;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class BlockTFPlant extends BlockBush implements IShearable {
+public class BlockTFPlant extends BlockBush implements IShearable
+{
 
     public static final PropertyEnum<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
-
-    boolean[] isGrassColor = {false, false, false, false, true, true, false, false, true, false, true, false, false, false, false, false};
 
 	protected BlockTFPlant() {
 		super(Material.PLANTS);
@@ -134,27 +131,6 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         {
             return FULL_BLOCK_AABB;
         }
-    }
-
-    @Override
-    public int getBlockColor()
-    {
-        double var1 = 0.5D;
-        double var3 = 1.0D;
-        return ColorizerGrass.getGrassColor(var1, var3);
-    }
-    
-    @Override
-	public int getRenderColor(int par1)
-    {
-        return isGrassColor[par1] ? ColorizerFoliage.getFoliageColorBasic() : 0xFFFFFF;
-    }
-
-    @Override
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
-    {
-    	int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-    	return isGrassColor[meta] ? par1IBlockAccess.getBiome(x, z).getBiomeGrassColor(x, y, z) : 0xFFFFFF;
     }
     
     @Override
