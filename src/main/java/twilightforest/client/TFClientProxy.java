@@ -234,7 +234,9 @@ public class TFClientProxy extends TFCommonProxy {
 //		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFMoonworm.class, new TileEntityTFMoonwormRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophy.class, new TileEntityTFTrophyRenderer());
-		
+
+//FIXME: AtomicBlom: These all need to be rewritten from scratch.
+/*
 		// map item renderer
 		MinecraftForgeClient.registerItemRenderer(TFItems.magicMap, new TFMagicMapRenderer(mc.gameSettings, mc.getTextureManager()));
 		TFMazeMapRenderer mazeRenderer = new TFMazeMapRenderer(mc.gameSettings, mc.getTextureManager());
@@ -267,7 +269,7 @@ public class TFClientProxy extends TFCommonProxy {
 		MinecraftForgeClient.registerItemRenderer(TFItems.iceSword, iceRenderer);
 		MinecraftForgeClient.registerItemRenderer(TFItems.glassSword, iceRenderer);
 		MinecraftForgeClient.registerItemRenderer(TFItems.iceBow, iceRenderer);
-
+*/
 		
 		// block render ids
 //FIXME: AtomicBlom: These all need BlockState models.
