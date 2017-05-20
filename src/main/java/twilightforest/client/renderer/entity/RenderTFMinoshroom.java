@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,9 +21,10 @@ public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
 
 	public RenderTFMinoshroom(RenderManager manager, ModelBiped model, float shadowSize) {
 		super(manager, model, shadowSize);
+        this.addLayer(new LayerHeldItem(this));
 	}
 
-	// TODO: does LayerHeldItem take care of this? if not make own
+    // FIXME: AtomicBlom: I think this needs it's own layer, this seems to do more than held items
     protected void renderMooshroomEquippedItems(EntityLivingBase par1EntityLiving, float par2)
     {
         super.renderEquippedItems(par1EntityLiving, par2);
