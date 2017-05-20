@@ -16,7 +16,6 @@ public class TFMazeMapData extends MapData
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readFromNBT(par1NBTTagCompound);
-		
 		this.yCenter = par1NBTTagCompound.getInteger("yCenter");
 	}
 

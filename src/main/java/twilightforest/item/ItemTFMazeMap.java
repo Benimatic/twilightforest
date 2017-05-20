@@ -1,8 +1,13 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -10,17 +15,20 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec4b;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.storage.MapData.MapCoord;
-import net.minecraft.world.storage.MapData.MapInfo;
-import twilightforest.TFMapPacketHandler;
-import twilightforest.TFMazeMapData;
-import twilightforest.TwilightForestMod;
+import net.minecraft.world.storage.MapData;
+import twilightforest.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.network.PacketMapRewrap;
+
+import javax.annotation.Nullable;
 
 public class ItemTFMazeMap extends ItemMap
 {
@@ -31,215 +39,245 @@ public class ItemTFMazeMap extends ItemMap
 	protected ItemTFMazeMap(boolean par2MapOres)
     {
         this.mapOres = par2MapOres;
-		//this.setCreativeTab(TFItems.creativeTab);
     }
 
+    // [VanillaCopy] super, with own string ID and class, narrowed types
     @SideOnly(Side.CLIENT)
-    public static TFMazeMapData getMPMapData(int par0, World par1World)
+    public static TFMazeMapData loadMapData(int mapId, World worldIn)
     {
-        String mapName = STR_ID + "_" + par0;
+        String s = STR_ID + "_" + mapId;
+        TFMazeMapData mapdata = (TFMazeMapData)worldIn.loadData(TFMazeMapData.class, s);
 
-    	TFMazeMapData mapData = (TFMazeMapData)par1World.loadItemData(TFMazeMapData.class, mapName);
-    	
-    	//System.out.println("Incoming maze data! = " + mapData);
-
-        if (mapData == null)
+        if (mapdata == null)
         {
-            mapData = new TFMazeMapData(mapName);
-            par1World.setItemData(mapName, mapData);
+            mapdata = new TFMazeMapData(s);
+            worldIn.setData(s, mapdata);
         }
 
-        return mapData;
+        return mapdata;
     }
 
+    // [VanillaCopy] super, with own string ID and class
     @Override
-	public TFMazeMapData getMapData(ItemStack par1ItemStack, World par2World)
+    public TFMazeMapData getMapData(ItemStack stack, World worldIn)
     {
-    	TFMazeMapData mapData = (TFMazeMapData)par2World.loadItemData(TFMazeMapData.class, STR_ID + "_" + par1ItemStack.getItemDamage());
+        String s = STR_ID + "_" + stack.getMetadata();
+        TFMazeMapData mapdata = (TFMazeMapData) worldIn.loadData(TFMazeMapData.class, s);
 
-        if (mapData == null && !par2World.isRemote)
+        if (mapdata == null && !worldIn.isRemote)
         {
-            par1ItemStack.setItemDamage(par2World.getUniqueDataId(STR_ID));
-            String mapName = STR_ID + "_" + par1ItemStack.getItemDamage();
-            mapData = new TFMazeMapData(mapName);
-            mapData.xCenter = par2World.getWorldInfo().getSpawnX();
-            mapData.zCenter = par2World.getWorldInfo().getSpawnZ();
-            mapData.scale = 0;
-            mapData.dimension = par2World.provider.getDimension();
-            mapData.markDirty();
-            par2World.setItemData(mapName, mapData);
+            stack.setItemDamage(worldIn.getUniqueDataId(STR_ID));
+            s = STR_ID + "_" + stack.getMetadata();
+            mapdata = new TFMazeMapData(s);
+            mapdata.scale = 0; // TF - fix scale at 0
+            mapdata.calculateMapCenter((double)worldIn.getWorldInfo().getSpawnX(), (double)worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
+            mapdata.dimension = worldIn.provider.getDimension();
+            mapdata.markDirty();
+            worldIn.setData(s, mapdata);
         }
 
-        return mapData;
+        return mapdata;
     }
 
-    /**
-     * Maze map update data.  Look at scale 0 for walls, and maybe ores.
-     */
-    public void updateMapData(World par1World, Entity par2Entity, TFMazeMapData par3MapData)
+    // [VanillaCopy] of superclass, with sane variable names and noted changes
+    @Override
+    public void updateMapData(World world, Entity viewer, MapData data)
     {
-    	int yDraw = MathHelper.floor(par2Entity.posY - (double)par3MapData.yCenter);
-    	
-        if (par1World.provider.getDimension() == par3MapData.dimension && yDraw > -YSEARCH && yDraw < YSEARCH)
+        if (world.provider.getDimension() == data.dimension && viewer instanceof EntityPlayer)
         {
-            short xSize = 128;
-            short zSize = 128;
-            int xCenter = par3MapData.xCenter;
-            int zCenter = par3MapData.zCenter;
-            int xDraw = MathHelper.floor(par2Entity.posX - (double)xCenter)  + xSize / 2;
-            int zDraw = MathHelper.floor(par2Entity.posZ - (double)zCenter)  + zSize / 2;
-            int drawSize = 16;
+            int blocksPerPixel = 1 << data.scale;
+            int centerX = data.xCenter;
+            int centerZ = data.zCenter;
+            int viewerX = MathHelper.floor(viewer.posX - (double)centerX) / blocksPerPixel + 64;
+            int viewerZ = MathHelper.floor(viewer.posZ - (double)centerZ) / blocksPerPixel + 64;
+            int viewRadiusPixels = 128 / blocksPerPixel;
 
-            MapInfo mapInfo = par3MapData.func_82568_a((EntityPlayer)par2Entity);
-            ++mapInfo.field_82569_d;
-
-            for (int xStep = xDraw - drawSize + 1; xStep < xDraw + drawSize; ++xStep)
+            if (world.provider.hasNoSky())
             {
-                if ((xStep & 15) == (mapInfo.field_82569_d & 15))
+                viewRadiusPixels /= 2;
+            }
+
+            MapData.MapInfo mapdata$mapinfo = data.getMapInfo((EntityPlayer)viewer);
+            ++mapdata$mapinfo.step;
+            boolean flag = false;
+
+            for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel)
+            {
+                if ((xPixel & 15) == (mapdata$mapinfo.step & 15) || flag)
                 {
-                    int highNumber = 255;
-                    int lowNumber = 0;
-                    
-                    for (int zStep = zDraw - drawSize - 1; zStep < zDraw + drawSize; ++zStep)
+                    flag = false;
+                    double d0 = 0.0D;
+
+                    for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel)
                     {
-                        if (xStep >= 0 && zStep >= -1 && xStep < xSize && zStep < zSize)
+                        if (xPixel >= 0 && zPixel >= -1 && xPixel < 128 && zPixel < 128)
                         {
-                            int xOffset = xStep - xDraw;
-                            int zOffset = zStep - zDraw;
-                            boolean var20 = xOffset * xOffset + zOffset * zOffset > (drawSize - 2) * (drawSize - 2);
-                            int xDraw2 = (xCenter + xStep - xSize / 2);
-                            int zDraw2 = (zCenter + zStep - zSize / 2);
-                            Chunk chunk = par1World.getChunkFromBlockCoords(xDraw2, zDraw2);
-                            int x15 = xDraw2 & 15;
-                            int z15 = zDraw2 & 15;
-                            int heightValue;
-                            int colorIndex;
+                            int xPixelDist = xPixel - viewerX;
+                            int zPixelDist = zPixel - viewerZ;
+                            boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
+                            int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
+                            int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
+                            Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
+                            Chunk chunk = world.getChunkFromBlockCoords(new BlockPos(worldX, 0, worldZ));
 
-                            heightValue = par3MapData.yCenter;
-                            Block blockID = chunk.getBlock(x15, heightValue, z15);
-
-                            byte tint = 1;
-
-                            colorIndex = 0;
-                            
-                            // for stone, search up and down for ores
-                            
-                            if (blockID == Blocks.STONE && mapOres) {
-                            	for (int i = -YSEARCH; i <= YSEARCH; i++) {
-                            		Block searchID = chunk.getBlock(x15, heightValue + i, z15);
-                            		if (searchID != Blocks.STONE) {
-                            			blockID = searchID;
-                            			if (i > 0) {
-                            				tint = 2;
-                            			}
-                            			if (i < 0) {
-                            				tint = 0;
-                            			}
-                            			// stop searching
-                            			break;
-                            		}
-                            	}
-                            	
-                            	
-                            }
-                            
-
-                            if (blockID != Blocks.AIR)
+                            int brightness = 1;
+                            if (!chunk.isEmpty())
                             {
-                                MapColor mapColor = blockID.getMaterial().getMaterialMapColor();
-                                colorIndex = mapColor.colorIndex;
-                            }
+                                int worldXRounded = worldX & 15;
+                                int worldZRounded = worldZ & 15;
+                                int numLiquid = 0;
+                                double d1 = 0.0D;
 
-                            if (mapOres) {
-                            	// need to reobfuscate
-                            	// recolor ores
-                            	if (blockID == Blocks.COAL_ORE) {
-                            		colorIndex = MapColor.obsidianColor.colorIndex;
-                            	}
-                            	else if (blockID == Blocks.GOLD_ORE) {
-                            		colorIndex = MapColor.goldColor.colorIndex;
-                            	}
-                            	else if (blockID == Blocks.IRON_ORE) {
-                            		colorIndex = MapColor.ironColor.colorIndex;
-                            	}
-                            	else if (blockID == Blocks.LAPIS_ORE) {
-                            		colorIndex = MapColor.lapisColor.colorIndex;
-                            	}
-                            	else if (blockID == Blocks.REDSTONE_ORE || blockID == Blocks.LIT_REDSTONE_ORE) {
-                            		colorIndex = MapColor.redColor.colorIndex;
-                            	}
-                            	else if (blockID == Blocks.DIAMOND_ORE) {
-                            		colorIndex = MapColor.diamondColor.colorIndex;
-                            	}
-                            	else if (blockID == Blocks.EMERALD_ORE) {
-                            		colorIndex = MapColor.emeraldColor.colorIndex;
-                            	}
-                            	else if (blockID != Blocks.AIR && blockID.getUnlocalizedName().toLowerCase().contains("ore"))
-                            	{
-                            		// any other ore, catchall
-                            		colorIndex = MapColor.pinkColor.colorIndex;
-                            	}
-                            }
-
-                            if (zStep >= 0 && xOffset * xOffset + zOffset * zOffset < drawSize * drawSize && (!var20 || (xStep + zStep & 1) != 0))
-                            {
-                                byte existingColor = par3MapData.colors[xStep + zStep * xSize];
-                                byte tintedColor = (byte)(colorIndex * 4 + tint);
-
-                                if (existingColor != tintedColor)
+                                if (world.provider.hasNoSky())
                                 {
-                                    if (highNumber > zStep)
+                                    int l3 = worldX + worldZ * 231871;
+                                    l3 = l3 * l3 * 31287121 + l3 * 11;
+
+                                    if ((l3 >> 20 & 1) == 0)
                                     {
-                                        highNumber = zStep;
+                                        multiset.add(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT).getMapColor(), 10);
+                                    }
+                                    else
+                                    {
+                                        multiset.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE).getMapColor(), 100);
                                     }
 
-                                    if (lowNumber < zStep)
-                                    {
-                                        lowNumber = zStep;
+                                    d1 = 100.0D;
+                                }
+                                else
+                                {
+                                    // TF - remove extra 2 levels of loops
+                                    // maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
+                                    int yCenter = ((TFMazeMapData) data).yCenter;
+                                    BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
+                                    IBlockState state = world.getBlockState(blockpos$mutableblockpos);
+
+                                    if (state.getBlock() == Blocks.STONE) {
+                                        for (int i = -YSEARCH; i <= YSEARCH; i++) {
+                                            blockpos$mutableblockpos.setY(yCenter + i);
+                                            IBlockState searchID = chunk.getBlockState(blockpos$mutableblockpos);
+                                            if (searchID != Blocks.STONE) {
+                                                state = searchID;
+                                                if (i > 0) {
+                                                    brightness = 2;
+                                                }
+                                                if (i < 0) {
+                                                    brightness = 0;
+                                                }
+
+                                                break;
+                                            }
+                                        }
                                     }
 
-                                    par3MapData.colors[xStep + zStep * xSize] = tintedColor;
+                                    if (mapOres) {
+                                        // recolor ores
+                                        if (state.getBlock() == Blocks.COAL_ORE) {
+                                            multiset.add(MapColor.OBSIDIAN);
+                                        } else if (state.getBlock() == Blocks.GOLD_ORE) {
+                                            multiset.add(MapColor.GOLD);
+                                        } else if (state.getBlock() == Blocks.IRON_ORE) {
+                                            multiset.add(MapColor.IRON);
+                                        } else if (state.getBlock() == Blocks.LAPIS_ORE) {
+                                            multiset.add(MapColor.LAPIS);
+                                        } else if (state.getBlock() == Blocks.REDSTONE_ORE || state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
+                                            multiset.add(MapColor.RED);
+                                        } else if (state.getBlock() == Blocks.DIAMOND_ORE) {
+                                            multiset.add(MapColor.DIAMOND);
+                                        } else if (state.getBlock() == Blocks.EMERALD_ORE) {
+                                            multiset.add(MapColor.EMERALD);
+                                        } else if (state.getBlock() != Blocks.AIR && state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
+                                        {
+                                            // any other ore, catchall
+                                            multiset.add(MapColor.PINK);
+                                        }
+                                    } else {
+                                        multiset.add(state.getMapColor());
+                                    }
+                                }
+
+                                /*numLiquid = numLiquid / (blocksPerPixel * blocksPerPixel);
+                                double d2 = (d1 - d0) * 4.0D / (double)(blocksPerPixel + 4) + ((double)(xPixel + zPixel & 1) - 0.5D) * 0.4D;
+                                int brightness = 1;
+
+                                if (d2 > 0.6D)
+                                {
+                                    brightness = 2;
+                                }
+
+                                if (d2 < -0.6D)
+                                {
+                                    brightness = 0;
+                                }*/
+
+                                MapColor mapcolor = (MapColor) Iterables.getFirst(Multisets.<MapColor>copyHighestCountFirst(multiset), MapColor.AIR);
+
+                                /*if (mapcolor == MapColor.WATER)
+                                {
+                                    d2 = (double)numLiquid * 0.1D + (double)(xPixel + zPixel & 1) * 0.2D;
+                                    brightness = 1;
+
+                                    if (d2 < 0.5D)
+                                    {
+                                        brightness = 2;
+                                    }
+
+                                    if (d2 > 0.9D)
+                                    {
+                                        brightness = 0;
+                                    }
+                                }*/
+
+                                d0 = d1;
+
+                                if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0))
+                                {
+                                    byte b0 = data.colors[xPixel + zPixel * 128];
+                                    byte b1 = (byte)(mapcolor.colorIndex * 4 + brightness);
+
+                                    if (b0 != b1)
+                                    {
+                                        data.colors[xPixel + zPixel * 128] = b1;
+                                        data.updateMapData(xPixel, zPixel);
+                                        flag = true;
+                                    }
                                 }
                             }
                         }
-                    }
-
-                    if (highNumber <= lowNumber)
-                    {
-                        par3MapData.setColumnDirty(xStep, highNumber, lowNumber);
                     }
                 }
             }
         }
     }
 
+    // [VanillaCopy] super but shows a dot if player is too far in the vertical direction as well
     @Override
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean isActiveItem)
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean isSelected)
     {
-        if (!par2World.isRemote)
+        if (!worldIn.isRemote)
         {
-        	TFMazeMapData mapData = this.getMapData(par1ItemStack, par2World);
+            TFMazeMapData mapdata = this.getMapData(stack, worldIn);
 
-            if (par3Entity instanceof EntityPlayer)
+            if (entityIn instanceof EntityPlayer)
             {
-                EntityPlayer player = (EntityPlayer)par3Entity;
-            	mapData.updateVisiblePlayers(player, par1ItemStack);
+                EntityPlayer entityplayer = (EntityPlayer)entityIn;
+                mapdata.updateVisiblePlayers(entityplayer, stack);
 
-            	int yProximity = MathHelper.floor(player.posY - mapData.yCenter);
-            	if (yProximity < -YSEARCH || yProximity > YSEARCH) {
-            		// fix player icon so that it's a dot
-            		
-            		MapCoord mapCoord = (MapCoord) mapData.playersVisibleOnMap.get(player.getName());
-            		if (mapCoord != null)
-            		{
-            			mapCoord.iconSize = 6;
-            		}
-            	}
+                // TF - if player is far away vertically, show a dot
+                int yProximity = MathHelper.floor(entityplayer.posY - mapdata.yCenter);
+                if (yProximity < -YSEARCH || yProximity > YSEARCH)
+                {
+                    Vec4b decoration = mapdata.mapDecorations.get(entityplayer.getName());
+                    if (decoration != null)
+                    {
+                        mapdata.mapDecorations.put(entityplayer.getName(), new Vec4b((byte) 6, decoration.getX(), decoration.getY(), decoration.getRotation()));
+                    }
+                }
             }
 
-            if (isActiveItem)
+            if (isSelected || entityIn instanceof EntityPlayer && ((EntityPlayer)entityIn).getHeldItemOffhand() == stack)
             {
-                this.updateMapData(par2World, par3Entity, mapData);
+                this.updateMapData(worldIn, entityIn, mapdata);
             }
         }
     }
@@ -247,49 +285,22 @@ public class ItemTFMazeMap extends ItemMap
     @Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        par1ItemStack.setItemDamage(par2World.getUniqueDataId(STR_ID));
-        String mapName = STR_ID + "_" + par1ItemStack.getItemDamage();
-        TFMazeMapData mapData = new TFMazeMapData(mapName);
-        par2World.setItemData(mapName, mapData);
-        mapData.xCenter = MathHelper.floor(par3EntityPlayer.posX);
-        mapData.yCenter = MathHelper.floor(par3EntityPlayer.posY);
-        mapData.zCenter = MathHelper.floor(par3EntityPlayer.posZ);
-        mapData.scale = 0;
-        mapData.dimension = par2World.provider.getDimension();
-        mapData.markDirty();
+        // disable zooming
     }
     
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
     	return mapOres ? EnumRarity.EPIC : EnumRarity.UNCOMMON;
 	}
-    
-    @Override
-	public boolean hasEffect(ItemStack par1ItemStack)
+
+    @Nullable
+    public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player)
     {
-        return false;
-    }
-	
-    /**
-     * returns null if no update is to be sent
-     * 
-     * We have re-written this to provide a Packet250CustomPayload to be sent, since the map data packet is only for the actual map map.
-     */
-	@Override
-    public Packet func_150911_c(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-		//System.out.println("Making maze map packet");
-		//System.out.println("yCenter = " + this.getMapData(par1ItemStack, par2World).yCenter);
-		
-        byte[] mapBytes = this.getMapData(par1ItemStack, par2World).getUpdatePacketData(par1ItemStack, par2World, par3EntityPlayer);
-        
-        if (mapBytes == null) {
-        	return null;
-        }
-        else {
-        	short uniqueID = (short)par1ItemStack.getItemDamage();
-        	
-        	return TFMapPacketHandler.makeMagicMapPacket(ItemTFMazeMap.STR_ID, uniqueID, mapBytes);
+        Packet<?> p = super.createMapDataPacket(stack, worldIn, player);
+        if (p instanceof SPacketMaps) {
+            return TwilightForestMod.genericChannel.getPacketFrom(new PacketMapRewrap(true, (SPacketMaps) p));
+        } else {
+            return p;
         }
     }
 

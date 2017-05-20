@@ -14,6 +14,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketMaps;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
@@ -28,6 +29,7 @@ import twilightforest.TFMagicMapData;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.network.PacketMagicMapFeatures;
+import twilightforest.network.PacketMapRewrap;
 import twilightforest.world.TFBiomeProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -112,7 +114,6 @@ public class ItemTFMagicMap extends ItemMap
                         {
                             int xPixelDist = xPixel - viewerX;
                             int zPixelDist = zPixel - viewerZ;
-                            // Causes the fuzz that appears on the view boundary
                             boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
                             int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
                             int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
@@ -229,7 +230,7 @@ public class ItemTFMagicMap extends ItemMap
     @Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-    	// we don't need to do anything here, I think
+    	// disable zooming
     }
     
     @Override
@@ -248,7 +249,12 @@ public class ItemTFMagicMap extends ItemMap
             IMessage packet = new PacketMagicMapFeatures(stack.getItemDamage(), data.serializeFeatures());
             return TwilightForestMod.genericChannel.getPacketFrom(packet);
         } else {
-            return super.createMapDataPacket(stack, world, player);
+            Packet<?> p = super.createMapDataPacket(stack, world, player);
+            if (p instanceof SPacketMaps) {
+                return TwilightForestMod.genericChannel.getPacketFrom(new PacketMapRewrap(false, (SPacketMaps) p));
+            } else {
+                return p;
+            }
         }
     }
 
