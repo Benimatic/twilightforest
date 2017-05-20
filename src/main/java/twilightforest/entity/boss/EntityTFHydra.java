@@ -12,10 +12,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -28,6 +28,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
@@ -39,33 +41,32 @@ import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 
-public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEntityMultiPart, IMob
+public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMob
 {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/hydra");
-	private static int TICKS_BEFORE_HEALING = 1000;
-	private static int HEAD_RESPAWN_TICKS = 100;
-	private static int HEAD_MAX_DAMAGE = 120;
-	private static float ARMOR_MULTIPLIER = 8.0F;
+	private static final int TICKS_BEFORE_HEALING = 1000;
+	private static final int HEAD_RESPAWN_TICKS = 100;
+	private static final int HEAD_MAX_DAMAGE = 120;
+	private static final float ARMOR_MULTIPLIER = 8.0F;
 	private static int MAX_HEALTH = 360;
 	private static float HEADS_ACTIVITY_FACTOR = 0.3F;
 
-	private static int SECONDARY_FLAME_CHANCE = 10;
-	private static int SECONDARY_MORTAR_CHANCE = 16;
+	private static final int SECONDARY_FLAME_CHANCE = 10;
+	private static final int SECONDARY_MORTAR_CHANCE = 16;
 	
 	private static final DataParameter<Byte> DATA_SPAWNHEADS = EntityDataManager.createKey(EntityTFHydra.class, DataSerializers.BYTE);
 	private static final DataParameter<Integer> DATA_BOSSHEALTH = EntityDataManager.createKey(EntityTFHydra.class, DataSerializers.VARINT);
 	
-	public Entity partArray[];
+	private Entity partArray[];
 	public EntityDragonPart body;
 	
 	public HydraHeadContainer[] hc;
 	public int numHeads = 7;
 	
-	public EntityDragonPart leftLeg;
-	public EntityDragonPart rightLeg;
-	public EntityDragonPart tail;
-
-	Entity currentTarget = null;
+	private EntityDragonPart leftLeg;
+	private EntityDragonPart rightLeg;
+	private EntityDragonPart tail;
+	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
 
 	public int ticksSinceDamaged = 0;
 
@@ -112,6 +113,18 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
     }
+
+    @Override
+	public void addTrackingPlayer(EntityPlayerMP player) {
+		super.addTrackingPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
+
+	@Override
+	public void removeTrackingPlayer(EntityPlayerMP player) {
+		super.removeTrackingPlayer(player);
+		this.bossInfo.removePlayer(player);
+	}
 	
 	@Override
     public void onLivingUpdate()
@@ -157,79 +170,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         // update fight variables for difficulty setting
         setDifficultyVariables();
 
-        if (this.newPosRotationIncrements > 0)
-        {
-            double var1 = this.posX + (this.newPosX - this.posX) / this.newPosRotationIncrements;
-            double var3 = this.posY + (this.newPosY - this.posY) / this.newPosRotationIncrements;
-            double var5 = this.posZ + (this.newPosZ - this.posZ) / this.newPosRotationIncrements;
-            double var7 = MathHelper.wrapDegrees(this.newRotationYaw - this.rotationYaw);
-            this.rotationYaw = (float)(this.rotationYaw + var7 / this.newPosRotationIncrements);
-            this.rotationPitch = (float)(this.rotationPitch + (this.newRotationPitch - this.rotationPitch) / this.newPosRotationIncrements);
-            --this.newPosRotationIncrements;
-            this.setPosition(var1, var3, var5);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-        }
-
-        if (Math.abs(this.motionX) < 0.005D)
-        {
-            this.motionX = 0.0D;
-        }
-
-        if (Math.abs(this.motionY) < 0.005D)
-        {
-            this.motionY = 0.0D;
-        }
-
-        if (Math.abs(this.motionZ) < 0.005D)
-        {
-            this.motionZ = 0.0D;
-        }
-
-        this.world.theProfiler.startSection("ai");
-
-        if (this.isMovementBlocked())
-        {
-            this.isJumping = false;
-            this.moveStrafing = 0.0F;
-            this.moveForward = 0.0F;
-            this.randomYawVelocity = 0.0F;
-        }
-        else if (this.isServerWorld())
-        {
-        	this.world.theProfiler.startSection("oldAi");
-        	this.updateEntityActionState();
-        	this.world.theProfiler.endSection();
-        	this.rotationYawHead = this.rotationYaw;
-        }
-
-        this.world.theProfiler.endSection();
-        this.world.theProfiler.startSection("jump");
-
-        if (this.isJumping)
-        {
-            if (!this.isInWater() && !this.handleLavaMovement())
-            {
-                if (this.onGround)
-                {
-                    this.jump();
-                }
-            }
-            else
-            {
-                this.motionY += 0.03999999910593033D;
-            }
-        }
-
-        this.world.theProfiler.endSection();
-        this.world.theProfiler.startSection("travel");
-        this.moveStrafing *= 0.98F;
-        this.moveForward *= 0.98F;
-        this.randomYawVelocity *= 0.9F;
-//        float var9 = this.landMovementFactor;
-//        this.landMovementFactor *= this.getSpeedModifier();
-        this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
-//        this.landMovementFactor = var9;
-        this.world.theProfiler.endSection();
+        super.onLivingUpdate();
 
         body.width = body.height = 6.0F;
         tail.width = 6.0F; tail.height = 2.0F;
@@ -250,22 +191,15 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     	dy = posY + 0.1;
     	dz = posZ + MathHelper.cos(angle) * 10.5;
     	tail.setPosition(dx, dy, dz);
-
-    	//world.spawnParticle("mobSpell", body.posX, body.posY, body.posZ, 0.2, 0.2, 0.2);
-
-        this.world.theProfiler.startSection("push");
-
-        if (!this.world.isRemote && this.hurtTime == 0)
-        {
-            this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.body.boundingBox), this.body);
-            this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.tail.boundingBox), this.tail);
-        }
         
-        this.world.theProfiler.endSection();
-
         // destroy blocks
         if (!this.world.isRemote)
         {
+        	if (hurtTime == 0) {
+				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.body.getEntityBoundingBox()), this.body);
+				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.tail.getEntityBoundingBox()), this.tail);
+			}
+
             this.destroyBlocksInAABB(this.body.getEntityBoundingBox());
             this.destroyBlocksInAABB(this.tail.getEntityBoundingBox());
             
@@ -286,10 +220,10 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 
         		}
         	}
+
+        	bossInfo.setPercent(getHealth() / getMaxHealth());
         }
-
     }
-
 	
 	@Override
     protected void entityInit()
@@ -333,14 +267,12 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         activateNumberOfHeads(nbttagcompound.getByte("NumHeads"));
     }
 
+
+    // TODO modernize this more (old AI copypasta still kind of here)
+	private int numTicksToChaseTarget;
 	@Override
 	protected void updateAITasks()
 	{
-//		System.out.println("Calling updateEntityActionState");
-//		System.out.println("Current target = " + currentTarget);
-		
-		entityAge++;
-		despawnEntity();
 		moveStrafing = 0.0F;
 		moveForward = 0.0F;
 		float f = 48F;
@@ -366,11 +298,10 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		if (rand.nextFloat() < 0.7F)
 		{
 			EntityPlayer entityplayer1 = world.getNearestAttackablePlayer(this, f, f);
-			//EntityPlayer entityplayer1 = world.getClosestPlayerToEntity(this, f);
 
 			if (entityplayer1 != null)
 			{
-				currentTarget = entityplayer1;
+				setAttackTarget(entityplayer1);
 				numTicksToChaseTarget = 100 + rand.nextInt(20);
 			}
 			else
@@ -379,33 +310,33 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 			}
 		}
 
-		if (currentTarget != null)
+		if (getAttackTarget() != null)
 		{
-			faceEntity(currentTarget, 10F, getVerticalFaceSpeed());
+			faceEntity(getAttackTarget(), 10F, getVerticalFaceSpeed());
 
 			// have any heads not currently attacking switch to the primary target
         	for (int i = 0; i < numHeads; i++)
         	{
         		if (!isHeadAttacking(hc[i]) && !hc[i].isSecondaryAttacking)
         		{
-        			hc[i].setTargetEntity(currentTarget);
+        			hc[i].setTargetEntity(getAttackTarget());
         		}
         	}
 
 			// let's pick an attack
-			if (this.currentTarget.isEntityAlive())
+			if (this.getAttackTarget().isEntityAlive())
 	        {
-	            float distance = this.currentTarget.getDistanceToEntity(this);
+	            float distance = this.getAttackTarget().getDistanceToEntity(this);
 
-	            if (this.getEntitySenses().canSee(this.currentTarget))
+	            if (this.getEntitySenses().canSee(this.getAttackTarget()))
 	            {
-	                this.attackEntity(this.currentTarget, distance);
+	                this.attackEntity(this.getAttackTarget(), distance);
 	            }
 	        }
 
-			if (numTicksToChaseTarget-- <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity(this) > (double)(f * f))
+			if (numTicksToChaseTarget-- <= 0 || getAttackTarget().isDead || getAttackTarget().getDistanceSqToEntity(this) > (double)(f * f))
 			{
-				currentTarget = null;
+				setAttackTarget(null);
 			}
 		}
 		else
@@ -416,7 +347,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 			}
 
 			rotationYaw += randomYawVelocity;
-			rotationPitch = defaultPitch;
+			rotationPitch = 0;
 
 			// TODO: while we are idle, consider having the heads breathe fire on passive mobs
 
@@ -432,14 +363,6 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 
 		// heads that are free at this point may consider attacking secondary targets
 		this.secondaryAttacks();
-
-		boolean flag = isInWater();
-		boolean flag1 = handleLavaMovement();
-
-		if (flag || flag1)
-		{
-			isJumping = rand.nextFloat() < 0.8F;
-		}
 	}
 
 	private void setDifficultyVariables() {
@@ -451,7 +374,6 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		{
 			EntityTFHydra.HEADS_ACTIVITY_FACTOR = 0.5F;  // higher is harder
 		}
-
 	}
 
 	/**
@@ -573,13 +495,13 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 
 	private boolean isHeadAttacking(HydraHeadContainer head) {
 		return head.currentState == HydraHeadContainer.State.BITE_BEGINNING || head.currentState == HydraHeadContainer.State.BITE_READY
-				|| head.currentState == HydraHeadContainer.State.BITE_BITING || head.currentState == HydraHeadContainer.State.FLAME_BEGINNING
-						|| head.currentState == HydraHeadContainer.State.FLAME_BREATHING || head.currentState == HydraHeadContainer.State.MORTAR_BEGINNING
-								 || head.currentState == HydraHeadContainer.State.MORTAR_LAUNCH;
+				|| head.currentState == HydraHeadContainer.State.BITING || head.currentState == HydraHeadContainer.State.FLAME_BEGINNING
+						|| head.currentState == HydraHeadContainer.State.FLAMING || head.currentState == HydraHeadContainer.State.MORTAR_BEGINNING
+								 || head.currentState == HydraHeadContainer.State.MORTAR_SHOOTING;
 
 	}
 
-	protected boolean areOtherHeadsBiting(int testHead)
+	private boolean areOtherHeadsBiting(int testHead)
 	{
 		for (int i = 0; i < numHeads; i++)
 		{
@@ -592,10 +514,10 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		return false;
 	}
 
-	protected boolean isHeadBiting(HydraHeadContainer head)
+	private boolean isHeadBiting(HydraHeadContainer head)
 	{
 		return head.currentState == HydraHeadContainer.State.BITE_BEGINNING || head.currentState == HydraHeadContainer.State.BITE_READY
-				|| head.currentState == HydraHeadContainer.State.BITE_BITING || head.nextState == HydraHeadContainer.State.BITE_BEGINNING;
+				|| head.currentState == HydraHeadContainer.State.BITING || head.nextState == HydraHeadContainer.State.BITE_BEGINNING;
 	}
 
 	/**
@@ -663,7 +585,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
         return this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
-				.filter(e -> e != currentTarget && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
+				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
 				.sorted(Comparator.comparingDouble(this::getDistanceSqToEntity))
 				.findFirst().orElse(null);
     }
