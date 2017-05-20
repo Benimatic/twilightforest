@@ -2,6 +2,7 @@ package twilightforest.client.model;
 
 
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
@@ -26,10 +27,10 @@ public class ModelTFLichMinion extends ModelZombie {
         EntityTFLichMinion minion = (EntityTFLichMinion)par1EntityLiving;
         // make minions greener
         if (minion.getActivePotionEffect(MobEffects.STRENGTH) != null) {
-        	GL11.glColor3f(0.25F, 2.0F, 0.25F);
+        	GlStateManager.color(0.25F, 2.0F, 0.25F);
         }
         else {
-        	GL11.glColor3f(0.5F, 1.0F, 0.5F);
+            GlStateManager.color(0.5F, 1.0F, 0.5F);
         }
     }
     

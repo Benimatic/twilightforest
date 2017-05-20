@@ -19,19 +19,12 @@ import twilightforest.TFAchievementPage;
 
 
 public class EntityTFLichMinion extends EntityZombie {
-	
 	EntityTFLich master;
 
 	public EntityTFLichMinion(World par1World) {
 		super(par1World);
 		this.master = null;
 	}
-
-	public EntityTFLichMinion(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
 
 	public EntityTFLichMinion(World par1World, EntityTFLich entityTFLich) {
 		super(par1World);
@@ -44,16 +37,13 @@ public class EntityTFLichMinion extends EntityZombie {
 		
 		if (super.attackEntityFrom(par1DamageSource, par2)) {
 			if (par1DamageSource.getEntity() instanceof EntityTFLich) {
-				// return to previous target
-				setAttackTarget(prevTarget);
+				// return to previous target but speed up
 				setRevengeTarget(prevTarget);
-				// but speed up
 				addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 4));
 				addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 1));
 			}
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -96,52 +86,4 @@ public class EntityTFLichMinion extends EntityZombie {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
-    
-    /*@Override todo 1.9 seems to be close copy of super super class
-	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
-    {
-        float[] equipChances = new float[] {0.0F, 0.25F, 0.75F, 1F};
-    	
-        if (this.rand.nextFloat() < equipChances[2]) //this.world.difficultySetting])
-        {
-            int var1 = this.rand.nextInt(2);
-            float var2 = this.world.getDifficulty() == EnumDifficulty.HARD ? 0.1F : 0.25F;
-
-            if (this.rand.nextFloat() < 0.07F)
-            {
-                ++var1;
-            }
-
-            if (this.rand.nextFloat() < 0.07F)
-            {
-                ++var1;
-            }
-
-            if (this.rand.nextFloat() < 0.07F)
-            {
-                ++var1;
-            }
-
-            for (int var3 = 3; var3 >= 0; --var3)
-            {
-                ItemStack var4 = this.func_130225_q(var3);
-
-                if (var3 < 3 && this.rand.nextFloat() < var2)
-                {
-                    break;
-                }
-
-                if (var4 == null)
-                {
-                    Item var5 = getArmorByChance(var3 + 1, var1);
-
-                    if (var5 != null)
-                    {
-                        this.setCurrentItemOrArmor(var3 + 1, new ItemStack(var5));
-                    }
-                }
-            }
-        }
-    }*/
-
 }

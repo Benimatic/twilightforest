@@ -40,10 +40,6 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 	        }
 	        else 
 	        {
-	        	if (lich.ticksExisted > 0)
-	        	{
-	        		BossStatus.setBossStatus(lich, false);
-	        	}
 	        	// shield alpha (shield texture already has alpha
 	        	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0f);
 	        	return 1;
