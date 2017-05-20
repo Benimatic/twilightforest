@@ -1,35 +1,36 @@
 package twilightforest.item;
 
 import java.util.List;
+import java.util.UUID;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSkull;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.TFBlocks;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFTrophy extends ItemTF 
 {
     private static final String[] trophyTypes = new String[] {"hydra", "naga", "lich", "ur-ghast", "snowQueen"};
     public static final String[] trophyTextures = new String[] {"hydraTrophy", "nagaTrophy", "lichTrophy", "urGhastTrophy", "snowQueenTrophy"};
-	public IIcon[] trophyIcons;
 
-	
 	public ItemTFTrophy() 
 	{
         this.setCreativeTab(TFItems.creativeTab);
@@ -49,87 +50,69 @@ public class ItemTFTrophy extends ItemTF
     	return EnumRarity.RARE;
 	}
 
-    @Override
-    public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float par8, float par9, float par10)
+    // [VanillaCopy] ItemSkull, with own block and no player heads
+	@Override
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (direction == 0)
+        if (facing == EnumFacing.DOWN)
         {
-            return false;
-        }
-        else if (!world.getBlock(x, y, z).getMaterial().isSolid())
-        {
-            return false;
+            return EnumActionResult.FAIL;
         }
         else
         {
-            if (direction == 1)
+            if (worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos))
             {
-                ++y;
+                facing = EnumFacing.UP;
+                pos = pos.down();
+            }
+            IBlockState iblockstate = worldIn.getBlockState(pos);
+            Block block = iblockstate.getBlock();
+            boolean flag = block.isReplaceable(worldIn, pos);
+
+            if (!flag)
+            {
+                if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.isSideSolid(pos, facing, true))
+                {
+                    return EnumActionResult.FAIL;
+                }
+
+                pos = pos.offset(facing);
             }
 
-            if (direction == 2)
+            if (playerIn.canPlayerEdit(pos, facing, stack) && TFBlocks.trophy.canPlaceBlockAt(worldIn, pos))
             {
-                --z;
-            }
+                if (worldIn.isRemote)
+                {
+                    return EnumActionResult.SUCCESS;
+                }
+                else
+                {
+                    worldIn.setBlockState(pos, TFBlocks.trophy.getDefaultState().withProperty(BlockTFTrophy.FACING, facing), 11);
+                    int i = 0;
 
-            if (direction == 3)
-            {
-                ++z;
-            }
+                    if (facing == EnumFacing.UP)
+                    {
+                        i = MathHelper.floor((double)(playerIn.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
+                    }
 
-            if (direction == 4)
-            {
-                --x;
-            }
+                    TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            if (direction == 5)
-            {
-                ++x;
-            }
+                    if (tileentity instanceof TileEntitySkull)
+                    {
+                        TileEntitySkull tileentityskull = (TileEntitySkull)tileentity;
 
-            if (!player.canPlayerEdit(x, y, z, direction, itemStack))
-            {
-                return false;
-            }
-            else if (!TFBlocks.trophy.canPlaceBlockAt(world, x, y, z))
-            {
-                return false;
+                        tileentityskull.setType(stack.getMetadata());
+
+                        tileentityskull.setSkullRotation(i);
+                    }
+
+                    --stack.stackSize;
+                    return EnumActionResult.SUCCESS;
+                }
             }
             else
             {
-                world.setBlock(x, y, z, TFBlocks.trophy, direction, 3);
-                int skullRotate = 0;
-
-                if (direction == 1)
-                {
-                    skullRotate = MathHelper.floor((double)(player.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
-                }
-
-                TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-                if (tileEntity != null && tileEntity instanceof TileEntitySkull)
-                {
-                	TileEntitySkull skull = ((TileEntitySkull)tileEntity);
-                	
-                	// use NBT method to set skulltype in order to have 1.7.10 compatibility
-        		    NBTTagCompound tags = new NBTTagCompound();
-        		    skull.writeToNBT(tags);
-        		    tags.setByte("SkullType", (byte)(itemStack.getItemDamage() & 255));
-        		    skull.readFromNBT(tags);
-        		    
-//                	try {
-//                		String skullName = "";
-//                		((TileEntitySkull)tileEntity).func_145905_a(itemStack.getItemDamage(), skullName);
-//                	} catch (NoSuchMethodError ex) {
-//                		// stop checking admin
-//                		FMLLog.warning("[TwilightForest] Could not determine op status for adminOnlyPortals option, ignoring option.");
-//                		TwilightForestMod.adminOnlyPortals = false;
-//                	}
-        		    skull.func_145903_a(skullRotate);
-                }
-
-                --itemStack.stackSize;
-                return true;
+                return EnumActionResult.FAIL;
             }
         }
     }
@@ -145,35 +128,5 @@ public class ItemTFTrophy extends ItemTF
         }
 
         return super.getUnlocalizedName() + "." + trophyTypes[i];
-    }
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.trophyIcons = new IIcon[trophyTextures.length];
-
-        for (int i = 0; i < trophyTextures.length; ++i)
-        {
-            this.trophyIcons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + trophyTextures[i]);
-        }
-    }
-    
-
-    /**
-     * Gets an icon index based on an item's damage value
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1)
-    {
-        if (par1 < 0 || par1 >= trophyTypes.length)
-        {
-            par1 = 0;
-        }
-
-        return this.trophyIcons[par1];
     }
 }
