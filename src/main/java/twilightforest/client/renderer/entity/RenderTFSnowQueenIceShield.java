@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -20,15 +21,15 @@ public class RenderTFSnowQueenIceShield extends Render<EntityTFSnowQueenIceShiel
     }
 
     @Override
-	public void doRender(EntityTFSnowQueenIceShield var1, double var2, double var4, double var6, float var8, float var9) {
-        this.doRender((EntityTFSnowQueenIceShield)var1, var2, var4, var6, var8, var9);
+	public void doRender(EntityTFSnowQueenIceShield entity, double x, double y, double z, float var8, float var9) {
+        this.doRender((EntityTFSnowQueenIceShield)entity, x, y, z, var8, var9);
         World world = entity.world;
         Block block = Blocks.PACKED_ICE;
         int i = MathHelper.floor(entity.posX);
         int j = MathHelper.floor(entity.posY);
         int k = MathHelper.floor(entity.posZ);
 
-        if (block != null && block != world.getBlock(i, j, k))
+        if (block != null && block != world.getBlockState(new BlockPos(i, j, k)).getBlock())
         {
         	GL11.glPushMatrix();
         	GL11.glTranslatef((float)x, (float)y, (float)z);
