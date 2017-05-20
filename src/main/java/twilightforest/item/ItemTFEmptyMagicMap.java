@@ -1,18 +1,16 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import twilightforest.TFAchievementPage;
-import twilightforest.TFMagicMapData;
-import twilightforest.TwilightForestMod;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFEmptyMagicMap extends ItemMapBase
 {
@@ -21,38 +19,38 @@ public class ItemTFEmptyMagicMap extends ItemMapBase
 		this.setCreativeTab(TFItems.creativeTab);
     }
 
+    // [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
     @Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-        ItemStack mapItem = new ItemStack(TFItems.magicMap, 1, par2World.getUniqueDataId(ItemTFMagicMap.STR_ID));
-        String mapName = ItemTFMagicMap.STR_ID + "_" + mapItem.getItemDamage();
-        MapData mapData = new TFMagicMapData(mapName);
-        par2World.setItemData(mapName, mapData);
-        mapData.scale = 4;
-        int step = 128 * (1 << mapData.scale);
-        mapData.xCenter = (int)(Math.round(par3EntityPlayer.posX / step) * step);
-        mapData.zCenter = (int)(Math.round(par3EntityPlayer.posZ / step) * step);
-        mapData.dimension = (byte)par2World.provider.getDimension();
-        mapData.markDirty();
-        --par1ItemStack.stackSize;
-        
-        //cheevo
-    	if (mapItem.getItem() == TFItems.magicMap) {
-    		par3EntityPlayer.addStat(TFAchievementPage.twilightMagicMap);
-    	}	
+        // TF - own string id
+        ItemStack itemstack = new ItemStack(Items.FILLED_MAP, 1, worldIn.getUniqueDataId(ItemTFMagicMap.STR_ID));
+        String s = ItemTFMagicMap.STR_ID + "_" + itemstack.getMetadata();
+        MapData mapdata = new MapData(s);
+        worldIn.setData(s, mapdata);
+        mapdata.scale = 4; // TF - hardcode scale
+        mapdata.calculateMapCenter(playerIn.posX, playerIn.posZ, mapdata.scale);
+        mapdata.dimension = worldIn.provider.getDimension();
+        mapdata.trackingPosition = true;
+        mapdata.markDirty();
+        --itemStackIn.stackSize;
 
-        if (par1ItemStack.stackSize <= 0)
+        // TF - achievement
+        playerIn.addStat(TFAchievementPage.twilightMagicMap);
+
+        if (itemStackIn.stackSize <= 0)
         {
-            return mapItem;
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
         }
         else
         {
-            if (!par3EntityPlayer.inventory.addItemStackToInventory(mapItem.copy()))
+            if (!playerIn.inventory.addItemStackToInventory(itemstack.copy()))
             {
-                par3EntityPlayer.dropPlayerItemWithRandomChoice(mapItem, false);
+                playerIn.dropItem(itemstack, false);
             }
 
-            return par1ItemStack;
+            playerIn.addStat(StatList.getObjectUseStats(this));
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
         }
     }
 }
