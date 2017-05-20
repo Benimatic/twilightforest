@@ -306,4 +306,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     {
         return false;
     }
+
+    public IBlockState getBlockState() {
+		return myState;
+    }
 }
