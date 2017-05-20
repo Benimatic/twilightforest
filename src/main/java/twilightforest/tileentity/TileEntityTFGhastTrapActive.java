@@ -78,9 +78,9 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 				//stop boss tantrum
 				if (ghast instanceof EntityTFUrGhast)
 				{
-					((EntityTFUrGhast)ghast).stopTantrum();
+                    ((EntityTFUrGhast)ghast).setInTantrum(false);
 
-					// move boss to this point
+                    // move boss to this point
 					ghast.motionX = (ghast.posX - this.pos.getX() - 0.5) * -0.1;
 					ghast.motionY = (ghast.posY - this.pos.getY() - 2.5) * -0.1;
 					ghast.motionZ = (ghast.posZ - this.pos.getZ() - 0.5) * -0.1;
