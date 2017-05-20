@@ -172,13 +172,6 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     }
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public float getShadowSize() 
-	{
-		return 1.1F;
-	}
-	
-	@Override
 	public float getEyeHeight() {
 		return 0.25F;
 	}

@@ -114,13 +114,6 @@ public class EntityTFPinchBeetle extends EntityMob
     	}
     }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getShadowSize() 
-	{
-		return 1.1F;
-	}
-
     @Override
 	public boolean attackEntityAsMob(Entity par1Entity) 
     {

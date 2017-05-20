@@ -19,6 +19,7 @@ public class RenderTFSlimeBeetle extends RenderLiving<EntityTFSlimeBeetle> {
 
 	public RenderTFSlimeBeetle(RenderManager manager, ModelBase par1ModelBase, float shadowSize) {
 		super(manager, par1ModelBase, shadowSize);
+		this.shadowSize = 1.1f;
 	}
 
     /**
