@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
@@ -18,12 +19,12 @@ public class RenderTFTowerGhast extends RenderTFMiniGhast {
 	
     private float ghastScale = 8.0F;
 
-	public RenderTFTowerGhast(ModelTFGhast modelTFGhast, float f) {
-		super(modelTFGhast, f);
+	public RenderTFTowerGhast(RenderManager renderManager, ModelTFGhast modelTFGhast, float f) {
+		super(renderManager, modelTFGhast, f);
 	}
 
-	public RenderTFTowerGhast(ModelTFGhast modelTFGhast, float f, float scale) {
-		super(modelTFGhast, f);
+	public RenderTFTowerGhast(RenderManager renderManager, ModelTFGhast modelTFGhast, float f, float scale) {
+		super(renderManager, modelTFGhast, f);
 		this.ghastScale = scale;
 	}
 	
