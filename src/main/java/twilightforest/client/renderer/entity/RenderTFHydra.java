@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
@@ -10,20 +11,15 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFHydra;
 
-
-
-public class RenderTFHydra extends RenderLiving {
-	
+public class RenderTFHydra extends RenderLiving<EntityTFHydra> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
-
 	
-	public RenderTFHydra(ModelBase modelbase, float f) {
-		super(modelbase, f);
-		
+	public RenderTFHydra(RenderManager manager, ModelBase modelbase, float shadowSize) {
+		super(manager, modelbase, shadowSize);
 	}
 
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
+	public void doRender(EntityTFHydra entity, double d, double d1, double d2, float f, float f1) {
 		// render the hydra body, legs, tail normally
 		super.doRender(entity, d, d1, d2, f, f1);
 
@@ -42,21 +38,13 @@ public class RenderTFHydra extends RenderLiving {
 	}
 
 	@Override
-	protected float getDeathMaxRotation(EntityLivingBase par1EntityLiving) {
+	protected float getDeathMaxRotation(EntityTFHydra par1EntityLiving) {
 		return 0F;
 	}
 
-	/**
-	 * Return our specific texture
-	 */
     @Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(EntityTFHydra par1Entity)
     {
         return textureLoc;
     }
-
-
-	
-	
-
 }

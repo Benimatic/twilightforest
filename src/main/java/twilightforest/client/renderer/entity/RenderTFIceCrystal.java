@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
@@ -10,33 +12,25 @@ import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFIceCrystal;
+import twilightforest.entity.boss.EntityTFIceCrystal;
 
-public class RenderTFIceCrystal extends RenderLiving {
-
+public class RenderTFIceCrystal extends RenderLiving<EntityTFIceCrystal> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "icecrystal.png");
 
-
-	public RenderTFIceCrystal() {
-		super(new ModelTFIceCrystal(), 1.0F);
+	public RenderTFIceCrystal(RenderManager manager) {
+		super(manager, new ModelTFIceCrystal(), 1.0F);
 	}
 
-    
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
     @Override
-	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTick)
+	protected void preRenderCallback(EntityTFIceCrystal par1EntityLivingBase, float partialTick)
     {
 		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
-		
-		GL11.glTranslatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
     }
 
-
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1) {
-		return RenderTFIceCrystal.textureLoc;
+	protected ResourceLocation getEntityTexture(EntityTFIceCrystal var1) {
+		return textureLoc;
 	}
 
 }

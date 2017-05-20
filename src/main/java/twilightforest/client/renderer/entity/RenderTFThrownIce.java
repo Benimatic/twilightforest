@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
@@ -13,23 +14,14 @@ import org.lwjgl.opengl.GL11;
 
 import twilightforest.entity.boss.EntityTFIceBomb;
 
-public class RenderTFThrownIce extends Render {
+public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 
-    private final RenderBlocks renderBlocks = new RenderBlocks();
+    public RenderTFThrownIce(RenderManager manager) {
+        super(manager);
+    }
 
-	@Override
-	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-        this.doRender((EntityTFIceBomb)var1, var2, var4, var6, var8, var9);
-	}
-	
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(EntityTFIceBomb entity, double x, double y, double z, float p_147918_8_, float p_147918_9_)
-    {
+    @Override
+	public void doRender(EntityTFIceBomb var1, double var2, double var4, double var6, float var8, float var9) {
         World world = entity.world;
         Block block = entity.getBlock();
         int i = MathHelper.floor(entity.posX);
@@ -52,9 +44,8 @@ public class RenderTFThrownIce extends Render {
     }
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1) {
-        return TextureMap.locationBlocksTexture;
-
+	protected ResourceLocation getEntityTexture(EntityTFIceBomb var1) {
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 
 }

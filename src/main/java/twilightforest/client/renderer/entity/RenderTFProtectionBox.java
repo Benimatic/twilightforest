@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -11,21 +12,18 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFProtectionBox;
 import twilightforest.entity.EntityTFProtectionBox;
 
-public class RenderTFProtectionBox extends Render {
-
-
-
-    private ModelTFProtectionBox boxModel;
+public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "protectionbox.png");
+    private final ModelTFProtectionBox boxModel = new ModelTFProtectionBox();
 
-	public RenderTFProtectionBox()
+	public RenderTFProtectionBox(RenderManager manager)
     {
-        this.boxModel = new ModelTFProtectionBox();
+        super(manager);
         this.shadowSize = 0.5F;
     }
 	
 	@Override
-	public void doRender(Entity var1, double x, double y, double z, float var8, float partialTick) {
+	public void doRender(EntityTFProtectionBox var1, double x, double y, double z, float var8, float partialTick) {
         GL11.glPushMatrix();
         
         
@@ -71,21 +69,8 @@ public class RenderTFProtectionBox extends Render {
         GL11.glPopMatrix();
 	}
 	
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
-    {
-    	float scale = 1.0F;
-        GL11.glScalef(scale, scale, scale);
-    }
-
-	/**
-	 * Return our specific texture
-	 */
 	@Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTFProtectionBox par1Entity)
     {
         return textureLoc;
     }

@@ -2,6 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,15 +12,17 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.boss.EntityTFMinoshroom;
 
-public class RenderTFMinoshroom extends RenderBiped {
+public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
 
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "minoshroomtaur.png");
 
-	public RenderTFMinoshroom(ModelBiped par1ModelBase, float par2) {
-		super(par1ModelBase, par2);
+	public RenderTFMinoshroom(RenderManager manager, ModelBiped model, float shadowSize) {
+		super(manager, model, shadowSize);
 	}
-	
+
+	// TODO: does LayerHeldItem take care of this? if not make own
     protected void renderMooshroomEquippedItems(EntityLivingBase par1EntityLiving, float par2)
     {
         super.renderEquippedItems(par1EntityLiving, par2);
@@ -51,11 +54,8 @@ public class RenderTFMinoshroom extends RenderBiped {
         this.renderMooshroomEquippedItems(par1EntityLiving, par2);
     }
 
-	/**
-	 * Return our specific texture
-	 */
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTFMinoshroom par1Entity)
     {
         return textureLoc;
     }

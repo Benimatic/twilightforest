@@ -2,6 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -12,13 +13,12 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFQuestRam;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
-public class RenderTFQuestRam extends RenderLiving {
-
+public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram.png");
     private static final ResourceLocation textureLocLines = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram_lines.png");
 
-	public RenderTFQuestRam() {
-		super(new ModelTFQuestRam(), 1.0F);
+	public RenderTFQuestRam(RenderManager manager) {
+		super(manager, new ModelTFQuestRam(), 1.0F);
         this.setRenderPassModel(new ModelTFQuestRam());
 	}
 
@@ -58,12 +58,8 @@ public class RenderTFQuestRam extends RenderLiving {
         return this.setQuestRamLineBrightness((EntityTFQuestRam)par1EntityLiving, par2, par3);
     }
 
-    
-	/**
-	 * Return our specific texture
-	 */
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTFQuestRam par1Entity)
     {
         return textureLoc;
     }

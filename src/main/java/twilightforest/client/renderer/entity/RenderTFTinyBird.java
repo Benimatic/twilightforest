@@ -1,33 +1,25 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.passive.EntityTFBird;
 import twilightforest.entity.passive.EntityTFTinyBird;
 
 public class RenderTFTinyBird extends RenderTFBird {
-	
-	final ResourceLocation textureLocSparrow;
-	final ResourceLocation textureLocFinch;
-	final ResourceLocation textureLocCardinal;
-	final ResourceLocation textureLocBluebird;
+	private static final ResourceLocation textureLocSparrow = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdbrown.png");
+	private static final ResourceLocation textureLocFinch = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdgold.png");
+	private static final ResourceLocation textureLocCardinal = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdred.png");
+	private static final ResourceLocation textureLocBluebird = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdblue.png");
 
-
-	public RenderTFTinyBird(ModelBase par1ModelBase, float par2) {
-		super(par1ModelBase, par2, "tinybirdbrown.png");
-		
-		textureLocSparrow = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdbrown.png");
-		textureLocFinch = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdgold.png");
-		textureLocCardinal = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdred.png");
-		textureLocBluebird = new ResourceLocation(TwilightForestMod.MODEL_DIR + "tinybirdblue.png");	
+	public RenderTFTinyBird(RenderManager manager, ModelBase model, float shadowSize) {
+		super(manager, model, shadowSize, "");
 	}
 
-	/**
-	 * Return our specific texture
-	 */
 	@Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(EntityTFBird par1Entity)
 	{
 		if (par1Entity instanceof EntityTFTinyBird)
 		{

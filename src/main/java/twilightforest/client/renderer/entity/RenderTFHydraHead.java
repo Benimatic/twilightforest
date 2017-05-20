@@ -7,23 +7,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFHydra;
+import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydraPart;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class RenderTFHydraHead extends RenderLiving {
-
+public class RenderTFHydraHead extends RenderLiving<EntityTFHydraHead> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
 
-	public RenderTFHydraHead(ModelBase modelbase, float f) {
-		super(modelbase, f);
-		
+	public RenderTFHydraHead(RenderManager manager, ModelBase modelbase, float shadowSize) {
+		super(manager, modelbase, shadowSize);
 	}
 	
-	/**
-	 * Override render to perform a few special rendering tricks, like not rendering "dead" heads & their necks
-	 */
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
+	public void doRender(EntityTFHydraHead entity, double d, double d1, double d2, float f, float f1) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
@@ -80,11 +76,8 @@ public class RenderTFHydraHead extends RenderLiving {
 		return null;
 	}
 
-	/**
-	 * Return our specific texture
-	 */
     @Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(EntityTFHydraHead par1Entity)
     {
         return textureLoc;
     }

@@ -1,9 +1,11 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -11,19 +13,14 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFMistWolf extends RenderWolf {
-
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "mistwolf.png");
 
-	public RenderTFMistWolf(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3) {
-		super(par1ModelBase, par2ModelBase, par3);
+	public RenderTFMistWolf(RenderManager manager, ModelBase model, float shadowSize) {
+		super(manager, model, shadowSize);
 	}
 
-	
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
+	@Override
+    protected void preRenderCallback(EntityWolf par1EntityLiving, float par2)
     {
     	float wolfScale = 1.9F;
         GL11.glScalef(wolfScale, wolfScale, wolfScale);
@@ -58,10 +55,8 @@ public class RenderTFMistWolf extends RenderWolf {
         return -1;
     }
     
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+	@Override
+    protected ResourceLocation getEntityTexture(EntityWolf par1Entity)
     {
         return textureLoc;
     }

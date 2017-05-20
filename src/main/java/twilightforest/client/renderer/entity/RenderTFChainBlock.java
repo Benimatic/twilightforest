@@ -12,12 +12,12 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFChainBlock;
 
-public class RenderTFChainBlock extends Render {
-
-	private ModelBase model;
+public class RenderTFChainBlock extends Render<EntityTFChainBlock> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
+    private final ModelBase model;
 
-	public RenderTFChainBlock(ModelBase modelTFSpikeBlock, float f) {
+	public RenderTFChainBlock(RenderManager manager, ModelBase modelTFSpikeBlock) {
+	    super(manager);
 		this.model = modelTFSpikeBlock;
 	}
 
@@ -44,16 +44,10 @@ public class RenderTFChainBlock extends Render {
         GL11.glPopMatrix();
     }
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
     @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityTFChainBlock chainBlock, double par2, double par4, double par6, float par8, float par9)
     {
-        EntityTFChainBlock chainBlock = (EntityTFChainBlock)par1Entity;
+        super.doRender(chainBlock, par2, par4, par6, par8, par9);
 
         this.renderSpikeBlock(chainBlock, par2, par4, par6, par8, par9);
                 
@@ -64,12 +58,8 @@ public class RenderTFChainBlock extends Render {
 		RenderManager.instance.renderEntitySimple(chainBlock.chain5, par9);
     }
 
-    
-	/**
-	 * Return our specific texture
-	 */
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTFChainBlock par1Entity)
     {
         return textureLoc;
     }

@@ -3,6 +3,8 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -12,18 +14,19 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import twilightforest.entity.boss.EntityTFThrownAxe;
 
 
-public class RenderTFThrownAxe extends RenderItem {
-	
-	Item myItem;
+public class RenderTFThrownAxe extends Render<EntityTFThrownAxe> {
+	private final Item myItem;
 
-	public RenderTFThrownAxe(Item knightlyAxe) {
+	public RenderTFThrownAxe(RenderManager manager, Item knightlyAxe) {
+		super(manager);
 		this.myItem = knightlyAxe;
 	}
 
 	@Override
-	public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9) {
+	public void doRender(EntityTFThrownAxe entity, double par2, double par4, double par6, float par8, float par9) {
 
         GL11.glPushMatrix();
         //GL11.glScalef(1.25F, 1.25F, 1.25F);
@@ -88,17 +91,7 @@ public class RenderTFThrownAxe extends RenderItem {
     }
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.renderManager.renderEngine.getResourceLocation(this.myItem.getSpriteNumber());
+	protected ResourceLocation getEntityTexture(EntityTFThrownAxe entity) {
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
-
-	
-    /**
-     * Items should have a bob effect
-     * @return
-     */
-    public boolean shouldBob()
-    {
-       return false;
-    }
 }

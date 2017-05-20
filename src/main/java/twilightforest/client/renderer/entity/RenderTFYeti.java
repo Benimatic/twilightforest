@@ -1,24 +1,22 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 
 import org.lwjgl.opengl.GL11;
+import twilightforest.entity.EntityTFYeti;
 
-public class RenderTFYeti extends RenderTFBiped {
-
-	public RenderTFYeti(ModelBiped modelBiped, float scale, String textureName) {
-		super(modelBiped, scale, textureName);
+public class RenderTFYeti extends RenderTFBiped<EntityTFYeti> {
+	public RenderTFYeti(RenderManager manager, ModelBiped modelBiped, float scale, String textureName) {
+		super(manager, modelBiped, scale, textureName);
 	}
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
     @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+    protected void preRenderCallback(EntityTFYeti EntityTFYeti, float par2)
     {
     	float scale = 1.0F;
-        GL11.glScalef(scale, scale, scale);
+        GlStateManager.translate(scale, scale, scale);
     }
 }

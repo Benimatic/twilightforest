@@ -2,6 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -10,18 +11,15 @@ import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFSlimeBeetle;
+import twilightforest.entity.EntityTFSlimeBeetle;
 
-public class RenderTFSlimeBeetle extends RenderLiving {
-	
-	ModelBase renderModel;
+public class RenderTFSlimeBeetle extends RenderLiving<EntityTFSlimeBeetle> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "slimebeetle.png");
+    private final ModelBase renderModel = new ModelTFSlimeBeetle(true);
 
-	public RenderTFSlimeBeetle(ModelBase par1ModelBase, float par2) {
-		super(par1ModelBase, par2);
-		
-		renderModel = new ModelTFSlimeBeetle(true);
+	public RenderTFSlimeBeetle(RenderManager manager, ModelBase par1ModelBase, float shadowSize) {
+		super(manager, par1ModelBase, shadowSize);
 	}
-
 
     /**
      * Queries whether should render the specified pass or not.
@@ -61,11 +59,8 @@ public class RenderTFSlimeBeetle extends RenderLiving {
         }
     }
     
-	/**
-	 * Return our specific texture
-	 */
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTFSlimeBeetle par1Entity)
     {
         return textureLoc;
     }

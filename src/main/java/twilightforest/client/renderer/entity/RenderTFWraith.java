@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -10,19 +11,16 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFWraith;
 
 
-public class RenderTFWraith extends RenderBiped {
-	
-    //texture = TwilightForestMod.MODEL_DIR + "ghost-crown.png";
-
+public class RenderTFWraith extends RenderBiped<EntityTFWraith> {
     private static final ResourceLocation textureWraith = new ResourceLocation(TwilightForestMod.MODEL_DIR + "ghost.png");
     private static final ResourceLocation textureCrown = new ResourceLocation(TwilightForestMod.MODEL_DIR + "ghost-crown.png");
 
-	public RenderTFWraith(ModelBiped modelbiped, float f) {
-		super(modelbiped, f);
+	public RenderTFWraith(RenderManager manager, ModelBiped modelbiped, float shadowSize) {
+		super(manager, modelbiped, shadowSize);
 	}
-
 
     protected int shouldRenderPass(EntityLivingBase entityliving, int i, float f)
     {
@@ -43,13 +41,9 @@ public class RenderTFWraith extends RenderBiped {
     	}
     }
     
-	/**
-	 * Return our specific texture
-	 */
     @Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(EntityTFWraith par1Entity)
     {
         return textureCrown;
     }
-
 }

@@ -39,7 +39,7 @@ public class ModelTFApocalypseCube extends ModelQuadruped {
         leg4.setRotationPoint(9F, 16F, -14F);
 
         
-        this.field_78145_g = 4.0F;
+        this.childYOffset = 4.0F;
     }
     
     /**

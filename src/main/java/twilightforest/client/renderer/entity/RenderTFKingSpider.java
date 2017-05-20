@@ -1,31 +1,34 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSpider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFKingSpider;
 
-public class RenderTFKingSpider extends RenderSpider {
-
+public class RenderTFKingSpider extends RenderSpider<EntityTFKingSpider> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "kingspider.png");
 
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
+    public RenderTFKingSpider(RenderManager manager) {
+        super(manager);
+    }
+
+    @Override
+	protected ResourceLocation getEntityTexture(EntityTFKingSpider entity) {
 		return textureLoc;
 	}
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
     @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+    protected void preRenderCallback(EntityTFKingSpider par1EntityLivingBase, float par2)
     {
     	float scale = 1.9F;
-        GL11.glScalef(scale, scale, scale);
+        GlStateManager.scale(scale, scale, scale);
     }
 }

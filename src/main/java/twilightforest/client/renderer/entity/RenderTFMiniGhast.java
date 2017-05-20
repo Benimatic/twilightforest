@@ -2,49 +2,37 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 
-public class RenderTFMiniGhast extends RenderLiving {
+public class RenderTFMiniGhast extends RenderLiving<EntityTFTowerGhast> {
 	
-	final ResourceLocation textureLocClosed;
-	final ResourceLocation textureLocOpen;
-	final ResourceLocation textureLocAttack;
+	private static final ResourceLocation textureLocClosed = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast.png");
+	private static final ResourceLocation textureLocOpen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast_openeyes.png");
+	private static final ResourceLocation textureLocAttack = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast_fire.png");
 	
-	public RenderTFMiniGhast(ModelBase par1ModelBase, float par2) {
-		super(par1ModelBase, par2);
-		
-		textureLocClosed = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast.png");
-		textureLocOpen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast_openeyes.png");
-		textureLocAttack = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast_fire.png");
+	public RenderTFMiniGhast(RenderManager manager, ModelBase model, float shadowSize) {
+		super(manager, model, shadowSize);
 	}
 
-	/**
-	 * Return our specific texture
-	 */
 	@Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(EntityTFTowerGhast par1Entity)
 	{
-		if (par1Entity instanceof EntityTFTowerGhast)
-		{
-			switch (((EntityTFTowerGhast)par1Entity).getAttackStatus())
-			{
-			default: 
-			case 0:
-				return textureLocClosed;
+		switch (((EntityTFTowerGhast)par1Entity).getAttackStatus())
+        {
+        default:
+        case 0:
+            return textureLocClosed;
 
-			case 1:
-				return textureLocOpen;
+        case 1:
+            return textureLocOpen;
 
-			case 2:
-				return textureLocAttack;
-			}
-		}
-
-		// fallback
-		return textureLocClosed;
-    }
-
+        case 2:
+            return textureLocAttack;
+        }
+	}
 }

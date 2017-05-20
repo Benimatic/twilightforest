@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
@@ -14,17 +15,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFLich;
 import twilightforest.entity.boss.EntityTFLich;
 
-
-
-public class RenderTFLich extends RenderBiped {
-	
-	public static EntityTFLich entityLich = null;
-	
+public class RenderTFLich extends RenderBiped<EntityTFLich> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "twilightlich64.png");
 
-
-	public RenderTFLich(ModelBiped modelbiped, float f) {
-		super(modelbiped, f);
+	public RenderTFLich(RenderManager manager, ModelBiped modelbiped, float shadowSize) {
+		super(manager, modelbiped, shadowSize);
 		this.setRenderPassModel(new ModelTFLich(true));
 	}
 	

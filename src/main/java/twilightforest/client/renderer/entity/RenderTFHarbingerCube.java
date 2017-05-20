@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -8,33 +10,25 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFHarbingerCube;
 
-public class RenderTFHarbingerCube extends RenderLiving {
-
+public class RenderTFHarbingerCube extends RenderLiving<EntityTFHarbingerCube> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "apocalypse2.png");
 
-	public RenderTFHarbingerCube() {
-        super(new ModelTFApocalypseCube(), 1.0F);
+	public RenderTFHarbingerCube(RenderManager manager) {
+        super(manager, new ModelTFApocalypseCube(), 1.0F);
 	}
 
-    
-	/**
-	 * Return our specific texture
-	 */
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTFHarbingerCube par1Entity)
     {
         return textureLoc;
     }
     
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
     @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+    protected void preRenderCallback(EntityTFHarbingerCube par1EntityLivingBase, float par2)
     {
     	float scale = 1.0F;
-        GL11.glScalef(scale, scale, scale);
+        GlStateManager.scale(scale, scale, scale);
     }
 }

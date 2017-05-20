@@ -8,35 +8,25 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFBlockGoblin;
 
-public class RenderTFBlockGoblin extends RenderBiped {
-
+public class RenderTFBlockGoblin extends RenderBiped<EntityTFBlockGoblin> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
 
-	public RenderTFBlockGoblin(ModelBiped par1ModelBiped, float par2) {
-		super(par1ModelBiped, par2);
+	public RenderTFBlockGoblin(RenderManager manager, ModelBiped model, float shadowSize) {
+		super(manager, model, shadowSize);
 	}
 
-	/**
-	 * Render the goblin and the block both
-	 */
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
-
-		EntityTFBlockGoblin goblin = (EntityTFBlockGoblin)entity;
-
-		super.doRender(entity, d, d1, d2, f, f1);
+	public void doRender(EntityTFBlockGoblin goblin, double d, double d1, double d2, float f, float f1) {
+		super.doRender(goblin, d, d1, d2, f, f1);
 
 		RenderManager.instance.renderEntitySimple(goblin.block, f1);
 		RenderManager.instance.renderEntitySimple(goblin.chain1, f1);
 		RenderManager.instance.renderEntitySimple(goblin.chain2, f1);
 		RenderManager.instance.renderEntitySimple(goblin.chain3, f1);//renderEntity
 	}
-    
-	/**
-	 * Return our specific texture
-	 */
+
     @Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(EntityTFBlockGoblin par1Entity)
     {
         return textureLoc;
     }

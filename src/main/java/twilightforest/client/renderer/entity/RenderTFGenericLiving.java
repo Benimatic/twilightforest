@@ -2,16 +2,17 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFGenericLiving extends RenderLiving {
-	
-	final ResourceLocation textureLoc;
+public class RenderTFGenericLiving<T extends EntityLiving> extends RenderLiving<T> {
+	private final ResourceLocation textureLoc;
 
-	public RenderTFGenericLiving(ModelBase par1ModelBase, float par2, String textureName) {
-		super(par1ModelBase, par2);
+	public RenderTFGenericLiving(RenderManager manager, ModelBase model, float shadowSize, String textureName) {
+		super(manager, model, shadowSize);
 		
 		if (textureName.startsWith("textures"))
 		{
@@ -23,11 +24,8 @@ public class RenderTFGenericLiving extends RenderLiving {
 		}
 	}
 
-	/**
-	 * Return our specific texture
-	 */
     @Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(T par1Entity)
     {
         return textureLoc;
     }

@@ -1,31 +1,24 @@
 package twilightforest.client.renderer.entity;
 
-import java.util.UUID;
-
+import net.minecraft.client.renderer.entity.RenderManager;
 import org.lwjgl.opengl.GL11;
-
-import com.mojang.authlib.GameProfile;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.StringUtils;
+import twilightforest.entity.EntityTFKobold;
 
-public class RenderTFKobold extends RenderTFBiped {
+public class RenderTFKobold extends RenderTFBiped<EntityTFKobold> {
 
-	public RenderTFKobold(ModelBiped modelBiped, float scale, String textureName) {
-		super(modelBiped, scale, textureName);
+	public RenderTFKobold(RenderManager manager, ModelBiped modelBiped, float scale, String textureName) {
+		super(manager, modelBiped, scale, textureName);
 	}
-	
-	
+
+	// TODO does LayerHeldItem take care of this? if not, make a custom one
     protected void renderEquippedItems(EntityLiving p_77029_1_, float p_77029_2_)
     {
         GL11.glColor3f(1.0F, 1.0F, 1.0F);

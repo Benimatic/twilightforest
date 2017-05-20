@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 import java.nio.FloatBuffer;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,30 +15,15 @@ import twilightforest.client.model.ModelTFTinyFirefly;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 import twilightforest.entity.passive.EntityTFTinyFirefly;
 
-
-
-
 public class RenderTFTinyFirefly extends Render {
+	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "firefly-tiny.png");
+	private final ModelTFTinyFirefly fireflyModel = new ModelTFTinyFirefly();
 
-	ModelTFTinyFirefly fireflyModel;
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "firefly-tiny.png");
-	
-    public RenderTFTinyFirefly()
+    public RenderTFTinyFirefly(RenderManager manager)
     {
-    	fireflyModel = new ModelTFTinyFirefly();
+		super(manager);
     }
 
-
-	/**
-	 * Draw a cute firefly!
-	 * 
-	 * @param firefly
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param f
-	 * @param f1
-	 */
 	public void doRenderTinyFirefly(EntityTFTinyFirefly firefly, double x, double y, double z, float brightness, float size) {
 
 		GL11.glPushMatrix();
@@ -108,9 +94,6 @@ public class RenderTFTinyFirefly extends Render {
 
 	}
 
-	/**
-	 * Return our specific texture
-	 */
     @Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity)
     {

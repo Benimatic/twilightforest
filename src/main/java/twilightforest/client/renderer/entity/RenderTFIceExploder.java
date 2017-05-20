@@ -1,24 +1,23 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.client.model.ModelTFIceExploder;
+import twilightforest.entity.EntityTFIceExploder;
 
-public class RenderTFIceExploder extends RenderTFBiped {
+public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
 
-	public RenderTFIceExploder() {
-		super(new ModelTFIceExploder(), 1.0F, "iceexploder.png");
+	public RenderTFIceExploder(RenderManager manager) {
+		super(manager, new ModelTFIceExploder(), 1.0F, "iceexploder.png");
 	}
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
     @Override
-	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTick)
+	protected void preRenderCallback(EntityTFIceExploder par1EntityLivingBase, float partialTick)
     {
 		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
 		
@@ -49,20 +48,16 @@ public class RenderTFIceExploder extends RenderTFBiped {
     }
     
     @Override
-	protected void rotateCorpse(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4)
+	protected void applyRotations(EntityTFIceExploder par1EntityLivingBase, float par2, float par3, float par4)
     {
-        GL11.glRotatef(180.0F - par3, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(180.0F - par3, 0.0F, 1.0F, 0.0F);
     }
 
-
-    /**
-     * Returns an ARGB int color back. Args: entityLiving, lightBrightness, partialTickTime
-     */
     @Override
-	protected int getColorMultiplier(EntityLivingBase par1EntityLivingBase, float par2, float par3)
+	protected int getColorMultiplier(EntityTFIceExploder par1EntityLivingBase, float brightness, float partialTicks)
     {
     	if (par1EntityLivingBase.deathTime > 0) {
-    		float f2 = par1EntityLivingBase.deathTime + par3;
+    		float f2 = par1EntityLivingBase.deathTime + partialTicks;
 
     		if ((int)(f2 / 2) % 2 == 0)
     		{
