@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -9,6 +10,9 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -20,7 +24,8 @@ import twilightforest.TFFeature;
 import java.util.Random;
 
 public class EntityTFTowerGhast extends EntityGhast {
-	protected boolean isAggressive;
+    // 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
+    private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 
 	protected float stareRange;
 	protected float wanderFactor;
@@ -36,6 +41,12 @@ public class EntityTFTowerGhast extends EntityGhast {
     	this.wanderFactor = 16.0F;
     	this.inTrapCounter = 0;
 	}
+
+	@Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(ATTACK_STATUS, (byte) 0);
+    }
 
 	@Override
     protected void initEntityAI() {
@@ -116,6 +127,7 @@ public class EntityTFTowerGhast extends EntityGhast {
         public AIAttack(EntityTFTowerGhast ghast)
         {
             this.parentEntity = ghast;
+            setMutexBits(2);
         }
 
         @Override
@@ -152,7 +164,7 @@ public class EntityTFTowerGhast extends EntityGhast {
                     world.playEvent((EntityPlayer)null, 1015, new BlockPos(this.parentEntity), 0);
                 }
 
-                if (this.attackTimer == 20)
+                if (this.attackTimer == 20 && this.parentEntity.shouldAttack(entitylivingbase))
                 {
                     // TF - face target and call custom method
                     this.parentEntity.faceEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
@@ -221,6 +233,18 @@ public class EntityTFTowerGhast extends EntityGhast {
         	this.inTrapCounter--;
         	setAttackTarget(null);
         }
+
+        int status = isAttacking() ? 2 : getAttackTarget() != null ? 1 : 0;
+
+        dataManager.set(ATTACK_STATUS, (byte) status);
+    }
+
+    public int getAttackStatus() {
+	    return dataManager.get(ATTACK_STATUS);
+    }
+
+    protected boolean shouldAttack(EntityLivingBase living) {
+	    return true;
     }
     
 	/**
@@ -248,7 +272,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
 		if (rand.nextInt(6) == 0)
 		{
-			this.isAggressive = false;
+			setAttackTarget(null);
 		}
 	}
 

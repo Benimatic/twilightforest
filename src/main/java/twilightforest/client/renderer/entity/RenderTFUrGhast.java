@@ -20,7 +20,7 @@ public class RenderTFUrGhast extends RenderTFTowerGhast {
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTFTowerGhast par1Entity)
 	{
-		switch (((EntityTFTowerGhast)par1Entity).getAttackStatus())
+		switch (par1Entity.getAttackStatus())
         {
         default:
         case 0:
