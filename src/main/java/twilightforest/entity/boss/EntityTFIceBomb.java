@@ -150,8 +150,8 @@ public class EntityTFIceBomb extends EntityThrowable {
 		}
 	}
 
-	public Block getBlock() {
-		return Blocks.PACKED_ICE;
+	public IBlockState getBlock() {
+		return Blocks.PACKED_ICE.getDefaultState();
 	}
 	
     @Override

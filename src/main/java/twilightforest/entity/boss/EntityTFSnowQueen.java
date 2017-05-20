@@ -366,7 +366,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
         return iceArray;
     }
     
-    private void destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
+    public void destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
     	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
     	
         int minX = MathHelper.floor(par1AxisAlignedBB.minX);
