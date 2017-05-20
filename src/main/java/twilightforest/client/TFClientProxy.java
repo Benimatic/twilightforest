@@ -225,11 +225,6 @@ public class TFClientProxy extends TFCommonProxy {
 		MinecraftForgeClient.registerItemRenderer(TFItems.mazeMap, mazeRenderer);
 		MinecraftForgeClient.registerItemRenderer(TFItems.oreMap, mazeRenderer);
 		
-		// giant item renderers
-		TFGiantItemRenderer giantRenderer = new TFGiantItemRenderer(mc.gameSettings, mc.getTextureManager());
-		MinecraftForgeClient.registerItemRenderer(TFItems.giantPick, giantRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.giantSword, giantRenderer);
-		
 		TFGiantBlockRenderer giantBlockRenderer = new TFGiantBlockRenderer(mc.gameSettings, mc.getTextureManager());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TFBlocks.giantLeaves), giantBlockRenderer);
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TFBlocks.giantCobble), giantBlockRenderer);
@@ -245,12 +240,6 @@ public class TFClientProxy extends TFCommonProxy {
 		MinecraftForgeClient.registerItemRenderer(TFItems.fieryPlate, fieryRenderer);
 		MinecraftForgeClient.registerItemRenderer(TFItems.fieryLegs, fieryRenderer);
 		MinecraftForgeClient.registerItemRenderer(TFItems.fieryBoots, fieryRenderer);
-
-		// ice item renderers
-		TFIceItemRenderer iceRenderer = new TFIceItemRenderer(mc.gameSettings, mc.getTextureManager());
-		MinecraftForgeClient.registerItemRenderer(TFItems.iceSword, iceRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.glassSword, iceRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.iceBow, iceRenderer);
 */
 		
 		// block render ids
