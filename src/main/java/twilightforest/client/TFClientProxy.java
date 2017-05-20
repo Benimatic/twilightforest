@@ -1,33 +1,22 @@
 package twilightforest.client;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelPig;
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleSmokeNormal;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeColorHelper;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import twilightforest.TFCommonProxy;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockColorHandler;
-import twilightforest.block.BlockTFPlant;
-import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.PlantVariant;
+import twilightforest.block.ColorHandler;
 import twilightforest.client.model.ModelTFAdherent;
 import twilightforest.client.model.ModelTFArcticArmor;
 import twilightforest.client.model.ModelTFBighorn;
@@ -90,8 +79,6 @@ import twilightforest.tileentity.TileEntityTFFirefly;
 import twilightforest.tileentity.TileEntityTFMoonworm;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
-import javax.annotation.Nullable;
-
 public class TFClientProxy extends TFCommonProxy {
 	private ModelBiped[] knightlyArmorModel;
 	private ModelBiped[] phantomArmorModel;
@@ -109,7 +96,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void doOnLoadRegistration() {
-		BlockColorHandler.init();
+		ColorHandler.init();
 		
 		// client tick listener
 		clientTicker = new TFClientTicker();

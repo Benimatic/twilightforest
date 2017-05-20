@@ -4,6 +4,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
@@ -16,11 +19,11 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 @SideOnly(Side.CLIENT)
-public final class BlockColorHandler {
+public final class ColorHandler {
 
     public static void init() {
-        BlockColors colors = Minecraft.getMinecraft().getBlockColors();
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+        BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			int red = 0;
 			int green = 0;
 			int blue = 0;
@@ -50,7 +53,7 @@ public final class BlockColorHandler {
 
 			return red << 16 | blue << 8 | green;
 		}, TFBlocks.auroraBlock);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			int red = 0;
 			int green = 0;
 			int blue = 0;
@@ -65,7 +68,7 @@ public final class BlockColorHandler {
 
 			return Color.HSBtoRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
 		}, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.auroraDoubleSlab);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (worldIn == null || pos == null) {
 				return ColorizerFoliage.getFoliageColorBasic();
 			}
@@ -87,7 +90,7 @@ public final class BlockColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.darkleaves, TFBlocks.giantLeaves);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			FireJetVariant variant = state.getValue(BlockTFFireJet.VARIANT);
 
 			if (worldIn == null || pos == null
@@ -116,8 +119,8 @@ public final class BlockColorHandler {
 				return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 			}
 		}, TFBlocks.fireJet);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x208030, TFBlocks.hugeLilyPad);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x208030, TFBlocks.hugeLilyPad);
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (worldIn == null || pos == null) {
 				switch (state.getValue(BlockTFMagicLog.VARIANT)) {
 					case TIME :
@@ -202,7 +205,7 @@ public final class BlockColorHandler {
 				return red << 16 | green << 8 | blue;
 			}
 		}, TFBlocks.magicLeaves);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (worldIn == null || pos == null || state.getValue(BlockTFTowerWood.VARIANT) == TowerWoodVariant.ENCASED) {
 				return -1;
 			} else {
@@ -219,7 +222,7 @@ public final class BlockColorHandler {
 				return value << 16 | value << 8 | value;
 			}
 		}, TFBlocks.towerWood);
-        colors.registerBlockColorHandler((state, world, pos, tintIndex) -> {
+        blockColors.registerBlockColorHandler((state, world, pos, tintIndex) -> {
 			if (world == null || pos == null) {
 				switch (state.getValue(BlockTFLeaves.VARIANT)) {
 					case CANOPY: return 0x609860;
@@ -288,7 +291,7 @@ public final class BlockColorHandler {
 				}
 			}
 		}, TFBlocks.leaves);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			// todo 1.9 wrong meta values?
 			// return (meta & 3) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((meta & 3) == 2 ? ColorizerFoliage.getFoliageColorBirch() : super.getRenderColor(meta));;
 			Leaves3Variant variant = state.getValue(BlockTFLeaves3.VARIANT);
@@ -296,16 +299,24 @@ public final class BlockColorHandler {
 					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
 					: -1;
 		}, TFBlocks.leaves3);
-		colors.registerBlockColorHandler(new IBlockColor() {
+		blockColors.registerBlockColorHandler(new IBlockColor() {
 			@Override
 			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
 			{
 				final PlantVariant value = state.getValue(BlockTFPlant.VARIANT);
 
-				return value.isGrassColored ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : 0xFFFFFF;
+				return value.isGrassColored && worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : 0xFFFFFF;
+			}
+		}, TFBlocks.plant);
+
+		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
+		itemColors.registerItemColorHandler(new IItemColor() {
+			@Override
+			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+				return Minecraft.getMinecraft().getBlockColors().colorMultiplier(TFBlocks.plant.getStateFromMeta(stack.getItemDamage()), null, null, tintIndex);
 			}
 		}, TFBlocks.plant);
     }
 
-    private BlockColorHandler() {}
+    private ColorHandler() {}
 }
