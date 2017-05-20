@@ -11,13 +11,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import twilightforest.TFGenericPacketHandler;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFPacketHandler;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFCubeOfAnnihilation;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -115,7 +113,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
 		
-		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
+		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
 	}
 	
     @Override

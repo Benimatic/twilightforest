@@ -298,7 +298,7 @@ public class ItemTFMazeMap extends ItemMap
     {
         Packet<?> p = super.createMapDataPacket(stack, worldIn, player);
         if (p instanceof SPacketMaps) {
-            return TwilightForestMod.genericChannel.getPacketFrom(new PacketMapRewrap(true, (SPacketMaps) p));
+            return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMapRewrap(true, (SPacketMaps) p));
         } else {
             return p;
         }

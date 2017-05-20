@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-import twilightforest.TwilightForestMod;
+import twilightforest.TFPacketHandler;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.world.ChunkGeneratorTwilightForest;
@@ -182,7 +182,7 @@ public class BlockTFCastleDoor extends Block
 
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
 		
-		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
+		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
 	}
 
 	private static void playVanishSound(World par1World, BlockPos pos) {

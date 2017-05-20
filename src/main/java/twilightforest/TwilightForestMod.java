@@ -11,7 +11,6 @@ import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -22,7 +21,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -74,9 +72,8 @@ public class TwilightForestMod {
 	public static final TFEventListener eventListener = new TFEventListener();
 	public static final TFTickHandler tickHandler = new TFTickHandler();
 	public static final Logger LOGGER = LogManager.getLogger(ID);
-	public static SimpleNetworkWrapper genericChannel;
 
-	
+
 	@Instance(ID)
 	public static TwilightForestMod instance;
 
@@ -153,7 +150,7 @@ public class TwilightForestMod {
 		NetworkRegistry.INSTANCE.newEventDrivenChannel(ItemTFMazeMap.STR_ID).register(mapPacketHandler);
 
 		// packets
-		TFGenericPacketHandler.init();
+		TFPacketHandler.init();
 		
 		// render and other client stuff
 		proxy.doOnLoadRegistration();

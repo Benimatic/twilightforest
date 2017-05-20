@@ -25,8 +25,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFFeature;
+import twilightforest.TFPacketHandler;
 import twilightforest.TFMagicMapData;
-import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.network.PacketMagicMapFeatures;
 import twilightforest.network.PacketMapRewrap;
@@ -247,11 +247,11 @@ public class ItemTFMagicMap extends ItemMap
             data.checkExistingFeatures(world);
 
             IMessage packet = new PacketMagicMapFeatures(stack.getItemDamage(), data.serializeFeatures());
-            return TwilightForestMod.genericChannel.getPacketFrom(packet);
+            return TFPacketHandler.CHANNEL.getPacketFrom(packet);
         } else {
             Packet<?> p = super.createMapDataPacket(stack, world, player);
             if (p instanceof SPacketMaps) {
-                return TwilightForestMod.genericChannel.getPacketFrom(new PacketMapRewrap(false, (SPacketMaps) p));
+                return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMapRewrap(false, (SPacketMaps) p));
             } else {
                 return p;
             }

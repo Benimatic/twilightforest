@@ -6,9 +6,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import twilightforest.TFGenericPacketHandler;
-import twilightforest.TwilightForestMod;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import twilightforest.TFPacketHandler;
 import twilightforest.network.PacketThrowPlayer;
 
 public class EntityAITFThrowRider extends EntityAIBase {
@@ -60,7 +58,7 @@ public class EntityAITFThrowRider extends EntityAIBase {
         	EntityPlayerMP player = (EntityPlayerMP)rider;
 
             IMessage message = new PacketThrowPlayer((float)throwVec.xCoord, (float)throwVec.yCoord, (float)throwVec.zCoord);
-    		TwilightForestMod.genericChannel.sendTo(message, player);
+    		TFPacketHandler.CHANNEL.sendTo(message, player);
         }
         
         this.throwTimer = 0;

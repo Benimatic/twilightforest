@@ -10,11 +10,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.biomes.TFBiomeBase;
@@ -22,9 +20,7 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
-import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.WorldProviderTwilightForest;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -95,7 +91,7 @@ public class TFTickHandler
 		// send packet
 		IMessage message = new PacketStructureProtection(sbb);
 		if (player instanceof EntityPlayerMP) {
-			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
+			TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) player);
 			//System.out.println("Sent structure protection");
 		} else {
 			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");
@@ -105,7 +101,7 @@ public class TFTickHandler
 	private void sendAllClearPacket(World world, EntityPlayer player) {
 		IMessage message = new PacketStructureProtectionClear();
 		if (player instanceof EntityPlayerMP) {
-			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
+			TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) player);
 			//System.out.println("Sent structure all clear");
 		} else {
 			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");

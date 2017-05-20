@@ -23,14 +23,12 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import twilightforest.TFGenericPacketHandler;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFPacketHandler;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.enums.MagicWoodVariant;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import twilightforest.network.PacketChangeBiome;
 
 public class BlockTFMagicLogSpecial extends BlockTFMagicLog 
@@ -193,7 +191,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), 128, pos.getZ(), 128);
 		
-		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
+		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
 		//FMLLog.info("Sent chunk update packet from tree.");
 		
 	}
