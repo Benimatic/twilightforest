@@ -3,15 +3,14 @@ package twilightforest.entity.boss;
 import java.util.List;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -19,56 +18,52 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
-import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
-import twilightforest.TwilightForestMod;
+import twilightforest.*;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
+import javax.annotation.Nullable;
+
 public class EntityTFKnightPhantom extends EntityFlying implements IMob 
 {
-	
 	private static final float CIRCLE_SMALL_RADIUS = 2.5F;
 	private static final float CIRCLE_LARGE_RADIUS = 8.5F;
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
 	private int number;
 	private int ticksProgress;
 	private Formation currentFormation;
-	
-    private BlockPos homePosition = new BlockPos(0, -1, 0);
-    /** If -1 there is no maximum distance */
-    private float maximumHomeDistance = -1.0F;
-
 	private BlockPos chargePos = BlockPos.ORIGIN;
 
 	private enum Formation { HOVER, LARGE_CLOCKWISE, SMALL_CLOCKWISE, LARGE_ANTICLOCKWISE, SMALL_ANTICLOCKWISE, CHARGE_PLUSX, CHARGE_MINUSX, CHARGE_PLUSZ, CHARGE_MINUSZ, WAITING_FOR_LEADER, ATTACK_PLAYER_START,  ATTACK_PLAYER_ATTACK};
 
 	public EntityTFKnightPhantom(World par1World) {
 		super(par1World);
-
 		this.setSize(1.5F, 3.0F);
-
 		this.noClip = true;
         this.isImmuneToFire = true;
-        
 		this.currentFormation = Formation.HOVER;
-		
 		this.experienceValue = 93;
-		
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
-        this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantomPlate));
-        this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantomHelm));
+	}
+
+	@Override
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
+		this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantomPlate));
+		this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantomHelm));
+		return data;
 	}
 	
 	@Override
@@ -181,33 +176,18 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 	}
 
-	/**
-	 * Make a treasure for when we're dead
-	 */
 	private void makeATreasure() {
-		if (this.getHomePosition().getY() != -1) {
-			// if we have a proper home position, generate the treasure there
-			TFTreasure.stronghold_boss.generateChest(world, null, getHomePosition().posX, getHomePosition().posY - 1, getHomePosition().posZ);
+		if (this.hasHome()) {
+			TFTreasure.stronghold_boss.generateChest(world, getHomePosition().down());
 		} else {
-			// if not, spawn it right where we are
-			int px = MathHelper.floor(this.lastTickPosX);
-			int py = MathHelper.floor(this.lastTickPosY);
-			int pz = MathHelper.floor(this.lastTickPosZ);
-			
-			TFTreasure.stronghold_boss.generateChest(world, null, px, py, pz);
+			TFTreasure.stronghold_boss.generateChest(world, new BlockPos(this));
 		}
 	}
 
+	// TODO move to AI tasks?
 	@Override
     protected void updateAITasks()
     {
-        if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
-        {
-            this.setDead();
-        }
-
-        this.despawnEntity();
-        
         this.noClip = this.ticksProgress % 20 != 0;
         
         ticksProgress++;
@@ -226,7 +206,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
         {
 			BlockPos targetPos = new BlockPos(target.lastTickPosX, target.lastTickPosY, target.lastTickPosZ);
 
-        	if (this.isWithinHomeArea(targetPos))
+        	if (this.isWithinHomeDistanceFromPosition(targetPos))
         	{
 				this.chargePos = targetPos;
         	}
@@ -289,61 +269,69 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
         
         //this.setPosition(dest.xCoord, dest.yCoord, dest.zCoord);
     }
-    
-    
-    /**
-     * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
-     */
-    protected void attackEntity(Entity par1Entity, float par2)
+
+	private void attackEntity(Entity par1Entity, float par2)
     {
-    	
         if (this.attackTime <= 0 && par2 < 2.0F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
         {
             this.attackTime = 20;
             this.attackEntityAsMob(par1Entity);
-
         }
     }
 
-	@Override
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        float f = getAttackDamage();
-        int i = 0;
+    // [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
+	public boolean attackEntityAsMob(Entity entityIn)
+	{
+		float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+		int i = 0;
 
-        if (par1Entity instanceof EntityLivingBase)
-        {
-            f += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)par1Entity);
-            i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
-        }
+		if (entityIn instanceof EntityLivingBase)
+		{
+			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase)entityIn).getCreatureAttribute());
+			i += EnchantmentHelper.getKnockbackModifier(this);
+		}
 
-        boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+		boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
 
-        if (flag)
-        {
-            if (i > 0)
-            {
-                par1Entity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F));
-                this.motionX *= 0.6D;
-                this.motionZ *= 0.6D;
-            }
+		if (flag)
+		{
+			if (i > 0 && entityIn instanceof EntityLivingBase)
+			{
+				((EntityLivingBase)entityIn).knockBack(this, (float)i * 0.5F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				this.motionX *= 0.6D;
+				this.motionZ *= 0.6D;
+			}
 
-            int j = EnchantmentHelper.getFireAspectModifier(this);
+			int j = EnchantmentHelper.getFireAspectModifier(this);
 
-            if (j > 0)
-            {
-                par1Entity.setFire(j * 4);
-            }
+			if (j > 0)
+			{
+				entityIn.setFire(j * 4);
+			}
 
-            if (par1Entity instanceof EntityLivingBase)
-            {
-                //EnchantmentThorns.func_151367_b(this, (EntityLivingBase)par1Entity, this.rand);
-            }
-        }
+			if (entityIn instanceof EntityPlayer)
+			{
+				EntityPlayer entityplayer = (EntityPlayer)entityIn;
+				ItemStack itemstack = this.getHeldItemMainhand();
+				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : null;
 
-        return flag;
-    }
+				if (itemstack != null && itemstack1 != null && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD)
+				{
+					float f1 = 0.25F + (float)EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
+					if (this.rand.nextFloat() < f1)
+					{
+						entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);
+						this.world.setEntityState(entityplayer, (byte)30);
+					}
+				}
+			}
+
+			this.applyEnchantments(this, entityIn);
+		}
+
+		return flag;
+	}
 
     /**
      * How much damage do we deal, per attack?
@@ -360,11 +348,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		return damage;
 	}
 
-	/**
-     * Fires an axe at the target
-     * @param targetedEntity
-     */
-	protected void launchAxeAt(Entity targetedEntity) {
+	private void launchAxeAt(Entity targetedEntity) {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 1);
 		double sy = posY + (height * 0.82);
@@ -386,9 +370,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		world.spawnEntity(projectile);
 	}
 	
-	protected void launchPicks()
+	private void launchPicks()
 	{
-		world.playSoundAtEntity(this, "random.bow", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
+		playSound(SoundEvents.ENTITY_ARROW_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -447,7 +431,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
      * 
      * If the current knight is the leader knight, it will pick and broadcast a new formation.
      */
-    public void switchToNextFormation() {
+	private void switchToNextFormation() {
 		List<EntityTFKnightPhantom> nearbyKnights = getNearbyKnights();
 
     	if (this.currentFormation == Formation.ATTACK_PLAYER_START)
@@ -608,9 +592,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     }
 
 
-    /**
-     * Tell all the knights on the list to do something
-     */
 	private void broadcastMyFormation(List<EntityTFKnightPhantom> nearbyKnights) {
     	// find more knights
 
@@ -639,21 +620,21 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     }
     
     @Override
-	protected String getAmbientSound()
+	protected SoundEvent getAmbientSound()
     {
-        return TwilightForestMod.ID + ":mob.wraith.wraith";
+        return TFSounds.WRAITH;
     }
 
     @Override
-	protected String getHurtSound()
+	protected SoundEvent getHurtSound()
     {
-        return TwilightForestMod.ID + ":mob.wraith.wraith";
+        return TFSounds.WRAITH;
     }
 
     @Override
-	protected String getDeathSound()
+	protected SoundEvent getDeathSound()
     {
-        return TwilightForestMod.ID + ":mob.wraith.wraith";
+        return TFSounds.WRAITH;
     }
 
 
@@ -833,7 +814,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		return new Vec3d(dx, dy, dz);
 	}
 
-
 	private Vec3d getAttackPlayerPosition() {
 		if (isSwordKnight())
 		{
@@ -846,17 +826,17 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 	}
 
-
 	public boolean isSwordKnight() {
 		return this.getHeldItemMainhand() != null && this.getHeldItemMainhand().getItem() == TFItems.knightlySword;
 	}
+
 	public boolean isAxeKnight() {
 		return this.getHeldItemMainhand() != null && this.getHeldItemMainhand().getItem() == TFItems.knightlyAxe;
 	}
+
 	public boolean isPickKnight() {
 		return this.getHeldItemMainhand() != null && this.getHeldItemMainhand().getItem() == TFItems.knightlyPick;
 	}
-
 
 	public int getNumber() {
 		return number;
@@ -884,11 +864,10 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeEntityToNBT(nbttagcompound);
-    	BlockPos home = this.getHomePosition();
-        nbttagcompound.setTag("Home", newDoubleNBTList(new double[] {
-        		home.getX(), home.getY(), home.getZ()
-            }));
-        nbttagcompound.setBoolean("HasHome", this.hasHome());
+		if (hasHome()) {
+			BlockPos home = this.getHomePosition();
+			nbttagcompound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
+		}
         nbttagcompound.setInteger("MyNumber", this.getNumber());
         nbttagcompound.setInteger("Formation", this.getFormationAsNumber());
         nbttagcompound.setInteger("TicksProgress", this.getTicksProgress());
@@ -905,53 +884,55 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
             int hx = (int) nbttaglist.getDoubleAt(0);
             int hy = (int) nbttaglist.getDoubleAt(1);
             int hz = (int) nbttaglist.getDoubleAt(2);
-            this.setHomeArea(new BlockPos(hx, hy, hz), 20);
-        }
-        if (!nbttagcompound.getBoolean("HasHome"))
-        {
-        	this.detachHome();
-        }
+            this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 20);
+        } else {
+        	detachHome();
+		}
         this.setNumber(nbttagcompound.getInteger("MyNumber"));
         this.switchToFormationByNumber(nbttagcompound.getInteger("Formation"));
         this.setTicksProgress(nbttagcompound.getInteger("TicksProgress"));
     }
 
-//    public boolean func_110173_bK()
-//    {
-//        return this.func_110176_b(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
-//    }
+	// [VanillaCopy] Home fields and methods from EntityCreature, changes noted
+	private BlockPos homePosition = BlockPos.ORIGIN;
+	private float maximumHomeDistance = -1.0F;
 
-    public boolean isWithinHomeArea(BlockPos pos)
-    {
-        return this.maximumHomeDistance == -1.0F ? true : this.homePosition.distanceSq(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
-    }
+	public boolean isWithinHomeDistanceCurrentPosition()
+	{
+		return this.isWithinHomeDistanceFromPosition(new BlockPos(this));
+	}
 
-    public void setHomeArea(BlockPos pos, int par4)
-    {
-        this.homePosition = pos;
-        this.maximumHomeDistance = (float)par4;
+	public boolean isWithinHomeDistanceFromPosition(BlockPos pos)
+	{
+		return this.maximumHomeDistance == -1.0F ? true : this.homePosition.distanceSq(pos) < (double)(this.maximumHomeDistance * this.maximumHomeDistance);
+	}
 
-    }
+	public void setHomePosAndDistance(BlockPos pos, int distance)
+	{
+		this.homePosition = pos;
+		this.maximumHomeDistance = (float)distance;
+	}
 
-    public BlockPos getHomePosition()
-    {
-        return this.homePosition;
-    }
+	public BlockPos getHomePosition()
+	{
+		return this.homePosition;
+	}
 
-    public float getMaximumHomeDistance()
-    {
-        return this.maximumHomeDistance;
-    }
+	public float getMaximumHomeDistance()
+	{
+		return this.maximumHomeDistance;
+	}
 
-    public void detachHome()
-    {
-        this.maximumHomeDistance = -1.0F;
-    }
+	public void detachHome()
+	{
+		this.maximumHomeDistance = -1.0F;
+	}
 
-    public boolean hasHome()
-    {
-        return this.maximumHomeDistance != -1.0F;
-    }
+	public boolean hasHome()
+	{
+		return this.maximumHomeDistance != -1.0F;
+	}
+	// End copy
     
     
 }
