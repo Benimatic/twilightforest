@@ -1,51 +1,43 @@
 package twilightforest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec4b;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import twilightforest.world.TFBiomeProvider;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class TFMagicMapData extends MapData
 {
+	public final List<Vec4b> featuresVisibleOnMap = new ArrayList<>();
 
-    private static final int FEATURE_DATA_BYTE = 18;
-	public List<Vec4b> featuresVisibleOnMap = new ArrayList<>();
-	
-    public TFMagicMapData(String par1Str)
+    public TFMagicMapData(String name)
     {
-        super(par1Str);
+        super(name);
     }
     
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound cmp) {
+		super.readFromNBT(cmp);
 		
-		byte[] featureStorage = par1NBTTagCompound.getByteArray("features");
+		byte[] featureStorage = cmp.getByteArray("features");
 		if (featureStorage.length > 0) {
-			this.updateMPMapData(featureStorage);
+			this.deserializeFeatures(featureStorage);
 		}
-//		else {
-//			System.out.println("Can't find feature storage for " + this.mapName);
-//		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
-		par1NBTTagCompound = super.writeToNBT(par1NBTTagCompound);
+	public NBTTagCompound writeToNBT(NBTTagCompound cmp) {
+		cmp = super.writeToNBT(cmp);
 		
 		if (this.featuresVisibleOnMap.size() > 0) {
-			byte[] featureStorage = makeFeatureStorageArray();
-			par1NBTTagCompound.setByteArray("features", featureStorage);
+			cmp.setByteArray("features", serializeFeatures());
 		}
 
-        return par1NBTTagCompound;
+        return cmp;
 	}
-
 
 	/**
      * Adds a twilight forest feature to the map.
@@ -63,105 +55,74 @@ public class TFMagicMapData extends MapData
             byte mapZ = (byte)(relativeZ << 1);
             byte mapRotation = 8;
 
-            boolean featureFound = false;
-            
             // look for a feature already at those coordinates
             for (Vec4b existingCoord : featuresVisibleOnMap) {
             	if (existingCoord.getX() == mapX && existingCoord.getY() == mapZ) {
-            		featureFound = true;
+            		return;
             	}
             }
             
             // if we didn't find it, add it
-            if (!featureFound)
-            {
-                this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
-            }
+            this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
         }
     }
     
     /**
-     * Checks existing features against the feature cache and removes/changes wrong ones.  Does not add features.
+     * Checks existing features against the feature cache changes wrong ones
      */
     public void checkExistingFeatures(World world)
     {
-    	ArrayList<Vec4b> toRemove = null;
+    	List<Vec4b> toRemove = new ArrayList<>();
+        List<Vec4b> toAdd = new ArrayList<>();
 
-            for (Vec4b coord : featuresVisibleOnMap)
-            {
-
-            	//System.out.printf("Existing feature at %d, %d.\n", coord.centerX,  coord.centerZ);
-            	
-            	int worldX = (coord.centerX << this.scale - 1) + this.xCenter;
-            	int worldZ = (coord.centerZ << this.scale - 1) + this.zCenter;
-
-         		if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider)
-        		{
-        			TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
-        			coord.iconSize = (byte) tfManager.getFeatureID(worldX, worldZ, world);
-        			
-        			if (coord.getType() == 0)
-        			{
-        				if (toRemove == null)
-        				{
-        					toRemove = new ArrayList<>();
-        				}
-        				toRemove.add(coord);
-        				
-        				//System.out.println("Removing bad mapcoord " + coord + " from " + worldX + ", " + worldZ);
-        			}
-        		}
-            }
-            
-            if (toRemove != null)
-            {
-            	featuresVisibleOnMap.removeAll(toRemove);
-            }
-    }
-
-    /**
-     * Updates the client's map with information from other players in MP
-     */
-    @Override
-    public void updateMPMapData(byte[] par1ArrayOfByte)
-    {
-        if (par1ArrayOfByte[0] == FEATURE_DATA_BYTE)
+        for (Vec4b coord : featuresVisibleOnMap)
         {
-    		// this is feature data, we can handle that directly
-            this.featuresVisibleOnMap.clear();
+            int worldX = (coord.getX() << this.scale - 1) + this.xCenter;
+            int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
 
-            for (int i = 0; i < (par1ArrayOfByte.length - 1) / 3; ++i)
+            if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider)
             {
-                byte markerIcon = par1ArrayOfByte[i * 3 + 1];
-                byte mapX = par1ArrayOfByte[i * 3 + 2];
-                byte mapZ = par1ArrayOfByte[i * 3 + 3];
-                byte mapRotation = 8;
-                this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
+                TFBiomeProvider provider  = (TFBiomeProvider) world.getBiomeProvider();
+
+                byte trueId = (byte) provider.getFeatureID(worldX, worldZ, world);
+                if (coord.getType() != trueId)
+                {
+                    toRemove.add(coord);
+                    toAdd.add(new Vec4b(trueId, coord.getX(), coord.getY(), coord.getRotation()));
+                }
             }
         }
-        else
+
+        featuresVisibleOnMap.removeAll(toRemove);
+        featuresVisibleOnMap.addAll(toAdd);
+    }
+
+    public void deserializeFeatures(byte[] arr)
+    {
+        this.featuresVisibleOnMap.clear();
+
+        for (int i = 0; i < arr.length / 3; ++i)
         {
-            super.updateMPMapData(par1ArrayOfByte);
+            byte markerIcon = arr[i * 3];
+            byte mapX = arr[i * 3 + 1];
+            byte mapZ = arr[i * 3 + 2];
+            byte mapRotation = 8;
+            this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
         }
     }
-    
-    /**
-     * This makes a byte array that we store our feature data in to send with map update packets
-     */
-    public byte[] makeFeatureStorageArray()
+
+    public byte[] serializeFeatures()
     {
-        byte[] storage = new byte[this.featuresVisibleOnMap.size() * 3 + 1];
-        storage[0] = FEATURE_DATA_BYTE;
+        byte[] storage = new byte[this.featuresVisibleOnMap.size() * 3];
 
         for (int i = 0; i < featuresVisibleOnMap.size(); ++i)
         {
             Vec4b featureCoord = this.featuresVisibleOnMap.get(i);
-            storage[i * 3 + 1] = (featureCoord.getType());
-            storage[i * 3 + 2] = featureCoord.getX();
-            storage[i * 3 + 3] = featureCoord.getY();
+            storage[i * 3] = featureCoord.getType();
+            storage[i * 3 + 1] = featureCoord.getX();
+            storage[i * 3 + 2] = featureCoord.getY();
         }
-        
+
         return storage;
     }
-
 }

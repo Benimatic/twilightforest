@@ -39,8 +39,6 @@ import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 
 public class TFBiomeBase extends Biome  {
-
-    // todo 1.9 removed all setColor calls, check if theyre needed
 	public static final Biome tfLake = new TFBiomeTwilightLake(new BiomeProperties("Twilight Lake").setTemperature(0.66F).setRainfall(1).setBaseHeight(-1.8F).setHeightVariation(0.1F));
 	public static final Biome twilightForest = new TFBiomeBase(new BiomeProperties("Twilight Forest"));
 	public static final Biome twilightForest2 = new TFBiomeTwilightForestVariant(new BiomeProperties("Dense Twilight Forest").setWaterColor(0x005522).setTemperature(0.7F).setRainfall(0.8F).setBaseHeight(0.2F).setHeightVariation(0.2F));

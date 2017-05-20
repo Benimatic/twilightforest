@@ -2,13 +2,7 @@ package twilightforest;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import twilightforest.network.PacketAnnihilateBlock;
-import twilightforest.network.PacketAreaProtection;
-import twilightforest.network.PacketChangeBiome;
-import twilightforest.network.PacketEnforceProgressionStatus;
-import twilightforest.network.PacketStructureProtection;
-import twilightforest.network.PacketStructureProtectionClear;
-import twilightforest.network.PacketThrowPlayer;
+import twilightforest.network.*;
 
 public class TFGenericPacketHandler {
 
@@ -23,6 +17,7 @@ public class TFGenericPacketHandler {
 		TwilightForestMod.genericChannel.registerMessage(PacketStructureProtection.Handler.class, PacketStructureProtection.class, id++, Side.CLIENT);
 		TwilightForestMod.genericChannel.registerMessage(PacketStructureProtectionClear.Handler.class, PacketStructureProtectionClear.class, id++, Side.CLIENT);
 		TwilightForestMod.genericChannel.registerMessage(PacketThrowPlayer.Handler.class, PacketThrowPlayer.class, id++, Side.CLIENT);
+		TwilightForestMod.genericChannel.registerMessage(PacketMagicMapFeatures.Handler.class, PacketMagicMapFeatures.class, id++, Side.CLIENT);
 	}
 
 }
