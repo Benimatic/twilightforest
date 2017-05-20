@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -21,14 +22,14 @@ public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
     }
 
     @Override
-	public void doRender(EntityTFIceBomb var1, double var2, double var4, double var6, float var8, float var9) {
+	public void doRender(EntityTFIceBomb entity, double var2, double var4, double var6, float var8, float var9) {
         World world = entity.world;
         Block block = entity.getBlock();
         int i = MathHelper.floor(entity.posX);
         int j = MathHelper.floor(entity.posY);
         int k = MathHelper.floor(entity.posZ);
 
-        if (block != null && block != world.getBlock(i, j, k))
+        if (block != null && block != world.getBlockState(new BlockPos(i, j, k)).getBlock())
         {
         	GL11.glPushMatrix();
         	GL11.glTranslatef((float)x, (float)y, (float)z);
