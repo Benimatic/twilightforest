@@ -23,6 +23,7 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 
     public RenderTFSlideBlock(RenderManager manager) {
         super(manager);
+        shadowSize = 0.0f;
     }
 
 	@Override
