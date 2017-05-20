@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.entity.Entity;
@@ -23,13 +24,13 @@ public class RenderTFMistWolf extends RenderWolf {
     protected void preRenderCallback(EntityWolf par1EntityLiving, float par2)
     {
     	float wolfScale = 1.9F;
-        GL11.glScalef(wolfScale, wolfScale, wolfScale);
-        
-        GL11.glEnable(3042 /*GL_BLEND*/);
-        GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-        //GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        //GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
+        GlStateManager.scale(wolfScale, wolfScale, wolfScale);
+
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        //GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        //GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
         
         float misty = par1EntityLiving.getBrightness(0F) * 3F + 0.25F;
         misty = Math.min(1F, misty);
@@ -38,7 +39,7 @@ public class RenderTFMistWolf extends RenderWolf {
 
         //System.out.println("Misty value is " + misty);
         
-        GL11.glColor4f(misty, misty, misty, smoky);
+        GlStateManager.color(misty, misty, misty, smoky);
 
     }
     

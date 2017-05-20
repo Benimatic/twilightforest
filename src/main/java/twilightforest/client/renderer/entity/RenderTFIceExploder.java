@@ -21,7 +21,7 @@ public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
     {
 		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
 		
-		GL11.glTranslatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 
 		// flash
 
@@ -43,7 +43,7 @@ public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
 			f1 *= f1;
 			float f3 = (1.0F + f1 * 0.4F) * f2;
 			float f4 = (1.0F + f1 * 0.1F) / f2;
-			GL11.glScalef(f3, f4, f3);
+			GlStateManager.scale(f3, f4, f3);
 		}
     }
     

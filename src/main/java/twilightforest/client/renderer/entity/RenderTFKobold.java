@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import org.lwjgl.opengl.GL11;
@@ -26,7 +27,7 @@ public class RenderTFKobold extends RenderTFBiped<EntityTFKobold> {
 	//TODO: AtomicBlom: Somehow introduce this into LayerHeldItem
     protected void func_82422_c()
     {
-        GL11.glTranslatef(0.0F, 0.01875F, 0.0F);
+        GlStateManager.translate(0.0F, 0.01875F, 0.0F);
     }
 
 }

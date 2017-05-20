@@ -2,6 +2,7 @@ package twilightforest.client.renderer.entity;
 
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -28,13 +29,13 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
     {
     	EntityTFLich lich = (EntityTFLich)entity;
     	if (i == 2) {
-	        GL11.glEnable(3042 /*GL_BLEND*/);
-//	        GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GlStateManager.enableBlend();
+//	        GlStateManager.disableAlpha();
+	        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	        if (lich.isShadowClone()) {
 	        	// clone alpha
 	        	float shadow = 0.33f;
-	            GL11.glColor4f(shadow, shadow, shadow, 0.8F);
+	            GlStateManager.color(shadow, shadow, shadow, 0.8F);
 	        	return 2;
 	        }
 	        else 
@@ -44,7 +45,7 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 	        		BossStatus.setBossStatus(lich, false);
 	        	}
 	        	// shield alpha (shield texture already has alpha
-	        	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0f);
+	        	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0f);
 	        	return 1;
 	        }
 	    	
@@ -54,9 +55,6 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
     	}
     }
 
-	/**
-	 * Return our specific texture
-	 */
     @Override
 	protected ResourceLocation getEntityTexture(EntityTFLich par1Entity)
     {

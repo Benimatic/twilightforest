@@ -2,6 +2,7 @@ package twilightforest.client.renderer.entity;
 
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -28,12 +29,12 @@ public class RenderTFWraith extends RenderBiped<EntityTFWraith> {
 
     	if (i == 1) {
             this.bindTexture(textureWraith);
-	        GL11.glEnable(3042 /*GL_BLEND*/);
-	        GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-	        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-	        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	        //GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5f);
+			GlStateManager.enableBlend();
+	        GlStateManager.disableAlpha();
+	        GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+	        //GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	        //GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
+	        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5f);
 	    	
 	        return 1;
     	} else {

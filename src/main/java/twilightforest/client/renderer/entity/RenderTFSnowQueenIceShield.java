@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -22,7 +23,6 @@ public class RenderTFSnowQueenIceShield extends Render<EntityTFSnowQueenIceShiel
 
     @Override
 	public void doRender(EntityTFSnowQueenIceShield entity, double x, double y, double z, float var8, float var9) {
-        this.doRender((EntityTFSnowQueenIceShield)entity, x, y, z, var8, var9);
         World world = entity.world;
         Block block = Blocks.PACKED_ICE;
         int i = MathHelper.floor(entity.posX);
@@ -31,16 +31,16 @@ public class RenderTFSnowQueenIceShield extends Render<EntityTFSnowQueenIceShiel
 
         if (block != null && block != world.getBlockState(new BlockPos(i, j, k)).getBlock())
         {
-        	GL11.glPushMatrix();
-        	GL11.glTranslatef((float)x, (float)y, (float)z);
+        	GlStateManager.pushMatrix();
+        	GlStateManager.translate((float)x, (float)y, (float)z);
         	this.bindEntityTexture(entity);
-        	GL11.glDisable(GL11.GL_LIGHTING);
+            GlStateManager.disableLighting();
 
         	this.renderBlocks.setRenderBoundsFromBlock(block);
         	this.renderBlocks.renderBlockSandFalling(block, world, i, j, k, 0);
 
-        	GL11.glEnable(GL11.GL_LIGHTING);
-        	GL11.glPopMatrix();
+        	GlStateManager.enableLighting();
+        	GlStateManager.popMatrix();
         }
     }
 

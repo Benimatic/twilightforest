@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
@@ -30,24 +31,24 @@ public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
         super.renderEquippedItems(par1EntityLiving, par2);
 
         this.bindTexture(TextureMap.locationBlocksTexture);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glPushMatrix();
-        GL11.glScalef(1.0F, -1.0F, 1.0F);
-        GL11.glTranslatef(0.2F, 0.375F, 0.5F);
-        GL11.glRotatef(42.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.enableCull();
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.0F, -1.0F, 1.0F);
+        GlStateManager.translate(0.2F, 0.375F, 0.5F);
+        GlStateManager.rotate(42.0F, 0.0F, 1.0F, 0.0F);
         this.field_147909_c.renderBlockAsItem(Blocks.RED_MUSHROOM, 0, 1.0F);
-        GL11.glTranslatef(0.1F, 0.0F, -0.6F);
-        GL11.glRotatef(42.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(0.1F, 0.0F, -0.6F);
+        GlStateManager.rotate(42.0F, 0.0F, 1.0F, 0.0F);
         this.field_147909_c.renderBlockAsItem(Blocks.RED_MUSHROOM, 0, 1.0F);
-        GL11.glPopMatrix();
-        GL11.glPushMatrix();
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
         ((ModelBiped)this.mainModel).bipedHead.postRender(0.0625F);
-        GL11.glScalef(1.0F, -1.0F, 1.0F);
-        GL11.glTranslatef(0.0F, 1.0F, 0F);
-        GL11.glRotatef(12.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.scale(1.0F, -1.0F, 1.0F);
+        GlStateManager.translate(0.0F, 1.0F, 0F);
+        GlStateManager.rotate(12.0F, 0.0F, 1.0F, 0.0F);
         this.field_147909_c.renderBlockAsItem(Blocks.RED_MUSHROOM, 0, 1.0F);
-        GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
+        GlStateManager.popMatrix();
+        GlStateManager.disableCull();
     }
     
     @Override

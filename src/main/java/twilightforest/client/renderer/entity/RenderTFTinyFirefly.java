@@ -2,6 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import java.nio.FloatBuffer;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -26,9 +27,9 @@ public class RenderTFTinyFirefly extends Render {
 
 	public void doRenderTinyFirefly(EntityTFTinyFirefly firefly, double x, double y, double z, float brightness, float size) {
 
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 
-		GL11.glTranslatef((float)x, (float)y + 0.5F, (float)z);
+		GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
 		
 		// undo rotations so we can draw a billboarded firefly
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
@@ -47,28 +48,27 @@ public class RenderTFTinyFirefly extends Render {
 		}
 		
 		GL11.glLoadMatrix(modelview);
-		
+
 		//loadTexture(TwilightForestMod.MODEL_DIR + "firefly-tiny.png");
         this.renderManager.renderEngine.bindTexture(textureLoc);
 
-		GL11.glColorMask(true, true, true, true);
+		GlStateManager.colorMask(true, true, true, true);
 
 		// render the firefly glow
-		GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-
-		GL11.glDisable(GL11.GL_LIGHTING);
+		GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.enableAlpha();
+		GlStateManager.disableLighting();
 
         
-//		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, brightness);
+//		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, brightness);
 		fireflyModel.glow1.render(0.0625f * size);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_LIGHTING);
+		GlStateManager.disableBlend();
+		GlStateManager.enableLighting();
 
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glPopMatrix();		
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.popMatrix();
 	}
 	
 

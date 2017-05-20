@@ -17,6 +17,6 @@ public class RenderTFYeti extends RenderTFBiped<EntityTFYeti> {
     protected void preRenderCallback(EntityTFYeti EntityTFYeti, float par2)
     {
     	float scale = 1.0F;
-        GlStateManager.translate(scale, scale, scale);
+        GlStateManager.scale(scale, scale, scale);
     }
 }

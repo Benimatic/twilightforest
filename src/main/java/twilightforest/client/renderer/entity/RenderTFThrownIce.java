@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -31,16 +32,16 @@ public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 
         if (block != null && block != world.getBlockState(new BlockPos(i, j, k)).getBlock())
         {
-        	GL11.glPushMatrix();
-        	GL11.glTranslatef((float)x, (float)y, (float)z);
+        	GlStateManager.pushMatrix();
+        	GlStateManager.translate((float)x, (float)y, (float)z);
         	this.bindEntityTexture(entity);
-        	GL11.glDisable(GL11.GL_LIGHTING);
+            GlStateManager.disableLighting();
 
         	this.renderBlocks.setRenderBoundsFromBlock(block);
         	this.renderBlocks.renderBlockSandFalling(block, world, i, j, k, 0);
 
-        	GL11.glEnable(GL11.GL_LIGHTING);
-        	GL11.glPopMatrix();
+        	GlStateManager.enableLighting();
+        	GlStateManager.popMatrix();
         }
     }
 

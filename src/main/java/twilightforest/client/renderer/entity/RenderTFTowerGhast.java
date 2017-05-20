@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -59,8 +60,8 @@ public class RenderTFTowerGhast extends RenderTFMiniGhast {
         scaleVariable = 1.0F / (scaleVariable * scaleVariable * scaleVariable * scaleVariable * scaleVariable * 2.0F + 1.0F);
 		float yScale = (ghastScale + scaleVariable) / 2.0F;
         float xzScale = (ghastScale + 1.0F / scaleVariable) / 2.0F;
-        GL11.glScalef(xzScale, yScale, xzScale);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.scale(xzScale, yScale, xzScale);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     /**
