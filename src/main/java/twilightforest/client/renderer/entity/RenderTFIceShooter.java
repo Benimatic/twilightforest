@@ -20,6 +20,6 @@ public class RenderTFIceShooter extends RenderTFBiped<EntityTFIceShooter> {
 	protected void preRenderCallback(EntityTFIceShooter par1EntityLivingBase, float partialTick)
     {
 		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
-		GlStateManager.rotate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
     }
 }
