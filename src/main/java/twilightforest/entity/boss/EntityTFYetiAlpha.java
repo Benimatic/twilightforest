@@ -239,7 +239,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
         return true;
     }
     
-    private void destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB)
+    public void destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB)
     {
         int minX = MathHelper.floor(par1AxisAlignedBB.minX);
         int minY = MathHelper.floor(par1AxisAlignedBB.minY);

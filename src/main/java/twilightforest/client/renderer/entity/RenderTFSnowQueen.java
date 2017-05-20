@@ -3,12 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFSnowQueen;
@@ -35,13 +30,8 @@ public class RenderTFSnowQueen extends RenderBiped<EntityTFSnowQueen> {
     }
     
 	@Override
-	public void doRender(EntityTFSnowQueen entity, double d, double d1, double d2, float f, float f1) {
-
-		EntityTFSnowQueen queen = (EntityTFSnowQueen)entity;
-		
-        BossStatus.setBossStatus(queen, false);
-
-		super.doRender(entity, d, d1, d2, f, f1);
+	public void doRender(EntityTFSnowQueen queen, double d, double d1, double d2, float f, float f1) {
+		super.doRender(queen, d, d1, d2, f, f1);
 		
 		for (int i = 0; i < queen.iceArray.length; i++)
 		{

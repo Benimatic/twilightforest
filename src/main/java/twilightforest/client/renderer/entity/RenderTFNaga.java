@@ -3,8 +3,6 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFNaga;
@@ -29,8 +27,6 @@ public class RenderTFNaga extends RenderLiving<EntityTFNaga> {
 					renderManager.renderEntityStatic(naga.getParts()[i], f1, false);
 				}
 			}
-			
-	        BossStatus.setBossStatus(naga, false);
 		}
 	}
 

@@ -186,13 +186,11 @@ public class BlockTFCastleDoor extends Block
 	}
 
 	private static void playVanishSound(World par1World, BlockPos pos) {
-		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.fizz", 0.125f, par1World.rand.nextFloat() * 0.25F + 1.75F);
-//		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.2F, par1World.rand.nextFloat() * 2F);
+		par1World.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, par1World.rand.nextFloat() * 0.25F + 1.75F);
 	}
 
 	private static void playReappearSound(World par1World, BlockPos pos) {
-		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.fizz", 0.125f, par1World.rand.nextFloat() * 0.25F + 1.25F);
-//		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.2F, par1World.rand.nextFloat() * 2F);
+		par1World.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, par1World.rand.nextFloat() * 0.25F + 1.25F);
 	}
 
 	private static Block getOtherBlock(Block block) {
