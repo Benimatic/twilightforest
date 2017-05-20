@@ -33,23 +33,23 @@ public class RenderTFHydraHead extends RenderLiving<EntityTFHydraHead> {
 
 			if (headCon.shouldRenderNeck(0))
 			{
-				RenderManager.instance.renderEntitySimple(headCon.necka, f1);
+				renderManager.renderEntityStatic(headCon.necka, f1, false);
 			}
 			if (headCon.shouldRenderNeck(1))
 			{
-				RenderManager.instance.renderEntitySimple(headCon.neckb, f1);
+				renderManager.renderEntityStatic(headCon.neckb, f1, false);
 			}
 			if (headCon.shouldRenderNeck(2))
 			{
-				RenderManager.instance.renderEntitySimple(headCon.neckc, f1);
+				renderManager.renderEntityStatic(headCon.neckc, f1, false);
 			}
 			if (headCon.shouldRenderNeck(3))
 			{
-				RenderManager.instance.renderEntitySimple(headCon.neckd, f1);
+				renderManager.renderEntityStatic(headCon.neckd, f1, false);
 			}
 			if (headCon.shouldRenderNeck(4))
 			{
-				RenderManager.instance.renderEntitySimple(headCon.necke, f1);
+				renderManager.renderEntityStatic(headCon.necke, f1, false);
 			}
 		}
 		else

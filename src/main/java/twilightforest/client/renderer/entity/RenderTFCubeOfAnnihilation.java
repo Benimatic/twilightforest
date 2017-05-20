@@ -24,7 +24,7 @@ public class RenderTFCubeOfAnnihilation extends Render<EntityTFSpikeBlock> {
     /**
      * The render method used in RenderBoat that renders the boat model.
      */
-    public void renderSpikeBlock(Entity entity, double x, double y, double z, float par8, float time)
+    public void renderSpikeBlock(EntityTFSpikeBlock entity, double x, double y, double z, float par8, float time)
     {
         GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y, (float)z);
@@ -34,7 +34,7 @@ public class RenderTFCubeOfAnnihilation extends Render<EntityTFSpikeBlock> {
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
 
         // rotate
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float(((float)x + (float)z + entity.ticksExisted + time) * 11F), 0, 1, 0);
+        GL11.glRotatef(MathHelper.wrapDegrees(((float)x + (float)z + entity.ticksExisted + time) * 11F), 0, 1, 0);
 
 
         GL11.glDisable(GL11.GL_LIGHTING);

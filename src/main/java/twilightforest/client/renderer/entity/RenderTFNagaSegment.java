@@ -28,7 +28,7 @@ public class RenderTFNagaSegment extends Render<EntityTFNagaSegment> {
     {
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-        GL11.glRotatef(180 - MathHelper.wrapAngleTo180_float(par8), 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(180 - MathHelper.wrapDegrees(par8), 0.0F, 1.0F, 0.0F);
         
         // pitch
         float pitch = par1Entity.prevRotationPitch + (par1Entity.rotationPitch - par1Entity.prevRotationPitch) * time;

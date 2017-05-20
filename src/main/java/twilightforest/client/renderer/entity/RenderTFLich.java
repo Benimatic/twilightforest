@@ -20,6 +20,7 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 
 	public RenderTFLich(RenderManager manager, ModelBiped modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
+		//FIXME: AtomicBlom: setRenderPassModel was replaced with layers
 		this.setRenderPassModel(new ModelTFLich(true));
 	}
 	
@@ -57,7 +58,7 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 	 * Return our specific texture
 	 */
     @Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(EntityTFLich par1Entity)
     {
         return textureLoc;
     }

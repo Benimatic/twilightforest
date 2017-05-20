@@ -34,9 +34,9 @@ public class RenderTFChainBlock extends Render<EntityTFChainBlock> {
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         
         
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float((float)par4), 1, 0, 1);
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float(((float)par2 + (float)par6) * 11F), 0, 1, 0);
-//        GL11.glRotatef(MathHelper.wrapAngleTo180_float((float)par8), 0, 0, 1);
+        GL11.glRotatef(MathHelper.wrapDegrees((float)par4), 1, 0, 1);
+        GL11.glRotatef(MathHelper.wrapDegrees(((float)par2 + (float)par6) * 11F), 0, 1, 0);
+//        GL11.glRotatef(MathHelper.wrapDegrees((float)par8), 0, 0, 1);
         
 
         
@@ -47,15 +47,15 @@ public class RenderTFChainBlock extends Render<EntityTFChainBlock> {
     @Override
     public void doRender(EntityTFChainBlock chainBlock, double par2, double par4, double par6, float par8, float par9)
     {
-        super.doRender(chainBlock, par2, par4, par6, par8, par9);
+	    super.doRender(chainBlock, par2, par4, par6, par8, par9);
 
-        this.renderSpikeBlock(chainBlock, par2, par4, par6, par8, par9);
-                
-		RenderManager.instance.renderEntitySimple(chainBlock.chain1, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain2, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain3, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain4, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain5, par9);
+	    this.renderSpikeBlock(chainBlock, par2, par4, par6, par8, par9);
+
+	    renderManager.renderEntityStatic(chainBlock.chain1, par9, false);
+	    renderManager.renderEntityStatic(chainBlock.chain2, par9, false);
+	    renderManager.renderEntityStatic(chainBlock.chain3, par9, false);
+	    renderManager.renderEntityStatic(chainBlock.chain4, par9, false);
+	    renderManager.renderEntityStatic(chainBlock.chain5, par9, false);
     }
 
     @Override

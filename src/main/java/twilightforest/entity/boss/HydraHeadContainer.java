@@ -534,7 +534,7 @@ public class HydraHeadContainer {
 				biteMinYaw = 90;
 			}
 
-			float yawOffOffset = MathHelper.wrapAngleTo180_float(headEntity.rotationYaw - hydraObj.renderYawOffset);
+			float yawOffOffset = MathHelper.wrapDegrees(headEntity.rotationYaw - hydraObj.renderYawOffset);
 			
 			//System.out.println("biting head yaw = " +  yawOffOffset);
 			
@@ -1134,7 +1134,7 @@ public class HydraHeadContainer {
      */
     private float updateRotation(float current, float intended, float increment)
     {
-        float delta = MathHelper.wrapAngleTo180_float(intended - current);
+        float delta = MathHelper.wrapDegrees(intended - current);
 
         if (delta > increment)
         {
@@ -1146,7 +1146,7 @@ public class HydraHeadContainer {
             delta = -increment;
         }
 
-        return  MathHelper.wrapAngleTo180_float(current + delta);
+        return  MathHelper.wrapDegrees(current + delta);
     }
 	
 	public Entity getTargetEntity() {

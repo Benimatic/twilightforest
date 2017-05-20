@@ -43,8 +43,9 @@ public class RenderTFSnowQueen extends RenderBiped<EntityTFSnowQueen> {
 
 		super.doRender(entity, d, d1, d2, f, f1);
 		
-		for (int i = 0; i < queen.iceArray.length; i++) {
-			RenderManager.instance.renderEntitySimple(queen.iceArray[i], f1);
+		for (int i = 0; i < queen.iceArray.length; i++)
+		{
+			renderManager.renderEntityStatic(queen.iceArray[i], f1, false);
 		}
 	}
 }

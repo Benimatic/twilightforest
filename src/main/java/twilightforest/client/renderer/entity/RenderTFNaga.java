@@ -24,8 +24,9 @@ public class RenderTFNaga extends RenderLiving<EntityTFNaga> {
 		if (naga.getParts() != null)
 		{
 			for (int i = 0; i < naga.getParts().length; i++) {
-				if (!naga.getParts()[i].isDead){
-					RenderManager.instance.renderEntitySimple(naga.getParts()[i], f1);
+				if (!naga.getParts()[i].isDead)
+				{
+					renderManager.renderEntityStatic(naga.getParts()[i], f1, false);
 				}
 			}
 			

@@ -3,7 +3,6 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFBlockGoblin;
@@ -16,13 +15,13 @@ public class RenderTFBlockGoblin extends RenderBiped<EntityTFBlockGoblin> {
 	}
 
 	@Override
-	public void doRender(EntityTFBlockGoblin goblin, double d, double d1, double d2, float f, float f1) {
+	public void doRender(EntityTFBlockGoblin goblin, double d, double d1, double d2, float f, float f1)
+	{
 		super.doRender(goblin, d, d1, d2, f, f1);
-
-		RenderManager.instance.renderEntitySimple(goblin.block, f1);
-		RenderManager.instance.renderEntitySimple(goblin.chain1, f1);
-		RenderManager.instance.renderEntitySimple(goblin.chain2, f1);
-		RenderManager.instance.renderEntitySimple(goblin.chain3, f1);//renderEntity
+		renderManager.renderEntityStatic(goblin.block, f1, false);
+		renderManager.renderEntityStatic(goblin.chain1, f1, false);
+		renderManager.renderEntityStatic(goblin.chain2, f1, false);
+		renderManager.renderEntityStatic(goblin.chain3, f1, false);//renderEntity
 	}
 
     @Override
