@@ -7,13 +7,10 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.block.enums.FireJetVariant;
-import twilightforest.block.enums.Leaves3Variant;
-import twilightforest.block.enums.LeavesVariant;
-import twilightforest.block.enums.MagicWoodVariant;
-import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.block.enums.*;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -299,6 +296,15 @@ public final class BlockColorHandler {
 					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
 					: -1;
 		}, TFBlocks.leaves3);
+		colors.registerBlockColorHandler(new IBlockColor() {
+			@Override
+			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
+			{
+				final PlantVariant value = state.getValue(BlockTFPlant.VARIANT);
+
+				return value.isGrassColored ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : 0xFFFFFF;
+			}
+		}, TFBlocks.plant);
     }
 
     private BlockColorHandler() {}

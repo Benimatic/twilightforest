@@ -24,6 +24,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import twilightforest.TFCommonProxy;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockColorHandler;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.PlantVariant;
@@ -92,42 +93,23 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 import javax.annotation.Nullable;
 
 public class TFClientProxy extends TFCommonProxy {
-	ModelBiped[] knightlyArmorModel;
-	ModelBiped[] phantomArmorModel;
-	ModelBiped[] yetiArmorModel;
-	ModelBiped[] arcticArmorModel;
-	ModelBiped[] fieryArmorModel;
+	private ModelBiped[] knightlyArmorModel;
+	private ModelBiped[] phantomArmorModel;
+	private ModelBiped[] yetiArmorModel;
+	private ModelBiped[] arcticArmorModel;
+	private ModelBiped[] fieryArmorModel;
 	
-	TFClientTicker clientTicker;
-	TFClientEvents clientEvents;
+	private TFClientTicker clientTicker;
+	private TFClientEvents clientEvents;
 	
-	boolean isDangerOverlayShown;
-	/**
-	 * Called during mod pre-load.  We need to register our sound thing here so that it can catch the SoundLoadEvent during loading.
-	 */
+	private boolean isDangerOverlayShown;
+
 	@Override
-	public void doPreLoadRegistration() {
-		// sounds
-		//MinecraftForge.EVENT_BUS.register(new TFSounds());
+	public void doPreLoadRegistration() {}
 
-	}
-
-	/**
-	 * Called during mod loading.  Registers renderers and stuff
-	 */
 	@Override
 	public void doOnLoadRegistration() {
-		Minecraft mc = FMLClientHandler.instance().getClient();
-
-		mc.getBlockColors().registerBlockColorHandler(new IBlockColor() {
-			@Override
-			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
-			{
-				final PlantVariant value = state.getValue(BlockTFPlant.VARIANT);
-
-				return value.isGrassColored ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : 0xFFFFFF;
-			}
-		}, TFBlocks.plant);
+		BlockColorHandler.init();
 		
 		// client tick listener
 		clientTicker = new TFClientTicker();
