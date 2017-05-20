@@ -144,11 +144,6 @@ public class TwilightForestMod {
 		}
 		tickHandler.portalItem = portalItem;
 		
-		// make some channels for our maps
-		TFMapPacketHandler mapPacketHandler = new TFMapPacketHandler();
-		NetworkRegistry.INSTANCE.newEventDrivenChannel(ItemTFMagicMap.STR_ID).register(mapPacketHandler);
-		NetworkRegistry.INSTANCE.newEventDrivenChannel(ItemTFMazeMap.STR_ID).register(mapPacketHandler);
-
 		// packets
 		TFPacketHandler.init();
 		
