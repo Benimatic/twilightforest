@@ -978,7 +978,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		//this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
-	public boolean isStructureLocked(int mapX, int mapY, int mapZ, int lockIndex) {
+	public boolean isStructureLocked(BlockPos pos, boolean lockIndex) {
 		//FIXME: AtomicBlom: Bring this back in with structures
 		return false; //Unlock all structures for development
 		//return this.majorFeatureGenerator.isStructureLocked(mapX, mapY, mapZ, lockIndex);
