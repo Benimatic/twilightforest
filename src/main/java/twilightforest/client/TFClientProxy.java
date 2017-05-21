@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -315,7 +316,8 @@ public class TFClientProxy extends TFCommonProxy {
 					case SNOW_WARNING: particle = new ParticleSnowWarning(world, x, y, z, velX, velY, velZ, 1F); break;
 					case ICE_BEAM: particle = new ParticleIceBeam(world, x, y, z, velX, velY, velZ, 0.75F); break;
 					case ANNIHILATE: particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F); break;
-					case HUGE_SMOKE: particle = new ParticleSmokeNormal(world, x, y, z, velX, velY, velZ, 8);
+					case HUGE_SMOKE:
+						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x, y, z, velX, velY, velZ, 8);
 				}
 
 				if (particle != null) {
