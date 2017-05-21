@@ -1,4 +1,4 @@
-package twilightforest.library;
+package twilightforest.biomes;
 
 import net.minecraft.world.biome.Biome;
 import twilightforest.TwilightForestMod;
@@ -7,7 +7,7 @@ import static net.minecraftforge.fml.common.registry.GameRegistry.*;
 
 @SuppressWarnings("ALL")
 @ObjectHolder(TwilightForestMod.ID)
-public class BiomeLibrary
+public class TFBiomes
 {
 	@ObjectHolder("twilight_lake")
 	public static final Biome tfLake;

@@ -3,7 +3,7 @@ package twilightforest.world.layer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 
 public class GenLayerTFCompanionBiomes extends GenLayer {
@@ -35,21 +35,21 @@ public class GenLayerTFCompanionBiomes extends GenLayer {
                 int up = input[dx + 1 + (dz + 0) * nwidth];
                 int down = input[dx + 1 + (dz + 2) * nwidth];
                 int center = input[dx + 1 + (dz + 1) * nwidth];
-                if (isKey(Biome.getIdForBiome(BiomeLibrary.fireSwamp), center, right, left, up, down))
+                if (isKey(Biome.getIdForBiome(TFBiomes.fireSwamp), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.tfSwamp);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.tfSwamp);
                 }
-                else if (isKey(Biome.getIdForBiome(BiomeLibrary.glacier), center, right, left, up, down))
+                else if (isKey(Biome.getIdForBiome(TFBiomes.glacier), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.snowy_forest);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.snowy_forest);
                 }
-                else if (isKey(Biome.getIdForBiome(BiomeLibrary.darkForestCenter), center, right, left, up, down))
+                else if (isKey(Biome.getIdForBiome(TFBiomes.darkForestCenter), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.darkForest);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.darkForest);
                 }
-                else if (isKey(Biome.getIdForBiome(BiomeLibrary.highlandsCenter), center, right, left, up, down))
+                else if (isKey(Biome.getIdForBiome(TFBiomes.highlandsCenter), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.highlands);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.highlands);
                 }
                 else
                 {

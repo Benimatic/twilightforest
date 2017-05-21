@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFThrowRider;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 import javax.annotation.Nullable;
 
@@ -203,7 +203,7 @@ public class EntityTFYeti extends EntityMob
 	public boolean getCanSpawnHere()
     {
 		// don't check light level in the snow
-		if (world.getBiome(new BlockPos(this)) == BiomeLibrary.snowy_forest) {
+		if (world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest) {
 	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		} else {
 			// normal EntityMob spawn check, checks light level
@@ -213,7 +213,7 @@ public class EntityTFYeti extends EntityMob
 
 	@Override
 	protected boolean isValidLightLevel() {
-        return world.getBiome(new BlockPos(this)) == BiomeLibrary.snowy_forest || super.isValidLightLevel();
+        return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest || super.isValidLightLevel();
     }
 
     @Override

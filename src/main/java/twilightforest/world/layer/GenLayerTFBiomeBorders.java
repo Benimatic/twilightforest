@@ -3,7 +3,7 @@ package twilightforest.world.layer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 
 public class GenLayerTFBiomeBorders extends GenLayer {
@@ -35,21 +35,21 @@ public class GenLayerTFBiomeBorders extends GenLayer {
                 int up = input[dx + 1 + (dz + 0) * nwidth];
                 int down = input[dx + 1 + (dz + 2) * nwidth];
                 int center = input[dx + 1 + (dz + 1) * nwidth];
-                if (onBorder(Biome.getIdForBiome(BiomeLibrary.tfLake), center, right, left, up, down))
+                if (onBorder(Biome.getIdForBiome(TFBiomes.tfLake), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.fireflyForest);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.fireflyForest);
                 }
-                else if (onBorder(Biome.getIdForBiome(BiomeLibrary.clearing), center, right, left, up, down))
+                else if (onBorder(Biome.getIdForBiome(TFBiomes.clearing), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.oakSavanna);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.oakSavanna);
                 }
-                else if (onBorder(Biome.getIdForBiome(BiomeLibrary.deepMushrooms), center, right, left, up, down))
+                else if (onBorder(Biome.getIdForBiome(TFBiomes.deepMushrooms), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.mushrooms);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.mushrooms);
                 }
-                else if (onBorder(Biome.getIdForBiome(BiomeLibrary.glacier), center, right, left, up, down))
+                else if (onBorder(Biome.getIdForBiome(TFBiomes.glacier), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.snowy_forest);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.snowy_forest);
                 }
                 else
                 {

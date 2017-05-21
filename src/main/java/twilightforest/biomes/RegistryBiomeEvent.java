@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.biomes;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.BiomeProperties;
@@ -8,7 +8,7 @@ import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import twilightforest.biomes.*;
+import twilightforest.TwilightForestMod;
 
 @EventBusSubscriber
 public final class RegistryBiomeEvent
@@ -18,7 +18,6 @@ public final class RegistryBiomeEvent
 	public static void onRegisterBiomes(Register<Biome> event) {
 		final BiomeRegistry biomes = new BiomeRegistry(event.getRegistry());
 
-		//tfLake
 		biomes.register(
 				"twilight_lake",
 				new TFBiomeTwilightLake(
@@ -31,7 +30,6 @@ public final class RegistryBiomeEvent
 				Type.OCEAN
 		);
 
-		//twilightForest
 		biomes.register(
 				"twilight_forest",
 				new TFBiomeBase(
@@ -40,7 +38,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST
 		);
 
-		//twilightForest2
 		biomes.register(
 				"dense_twilight_forest",
 				new TFBiomeTwilightForestVariant(
@@ -54,7 +51,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.DENSE
 		);
 
-		//highlands
 		biomes.register(
 				"twilight_highlands",
 				new TFBiomeHighlands(
@@ -67,7 +63,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.MOUNTAIN, Type.CONIFEROUS
 		);
 
-		//mushrooms
 		biomes.register(
 				"mushroom_forest",
 				new TFBiomeMushrooms(
@@ -78,7 +73,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.MUSHROOM
 		);
 
-		//tfSwamp
 		biomes.register(
 				"twilight_swamp",
 				new TFBiomeSwamp(
@@ -92,7 +86,6 @@ public final class RegistryBiomeEvent
 				Type.SWAMP, Type.WET
 		);
 
-		//stream
 		biomes.register(
 				"twilight_stream",
 				new TFBiomeStream(
@@ -105,7 +98,6 @@ public final class RegistryBiomeEvent
 				Type.RIVER
 		);
 
-		//tfSnow
 		biomes.register(
 				"snowy_forest",
 				new TFBiomeSnow(
@@ -118,7 +110,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.SNOWY, Type.COLD, Type.CONIFEROUS
 		);
 
-		//glacier
 		biomes.register(
 				"twilight_glacier",
 				new TFBiomeGlacier(
@@ -129,7 +120,6 @@ public final class RegistryBiomeEvent
 				Type.COLD, Type.SNOWY, Type.WASTELAND
 		);
 
-		//clearing
 		biomes.register(
 				"twilight_clearing",
 				new TFBiomeClearing(
@@ -142,7 +132,6 @@ public final class RegistryBiomeEvent
 				Type.PLAINS, Type.SPARSE
 		);
 
-		//oakSavanna
 		biomes.register(
 				"oak_savannah",
 				new TFBiomeOakSavanna(
@@ -155,7 +144,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.SPARSE
 		);
 
-		//fireflyForest
 		biomes.register(
 				"firefly_forest",
 				new TFBiomeFireflyForest(
@@ -168,7 +156,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.LUSH
 		);
 
-		//deepMushrooms
 		biomes.register(
 				"deep_mushroom_forest",
 				new TFBiomeDeepMushrooms(
@@ -181,7 +168,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.MUSHROOM
 		);
 
-		//darkForest
 		biomes.register(
 				"dark_forest",
 				new TFBiomeDarkForest(
@@ -194,7 +180,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.DENSE, Type.SPOOKY
 		);
 
-		//enchantedForest
 		biomes.register(
 				"enchanted_forest",
 				new TFBiomeEnchantedForest(
@@ -203,7 +188,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.MAGICAL
 		);
 
-		//fireSwamp
 		biomes.register(
 				"fire_swamp",
 				new TFBiomeFireSwamp(
@@ -217,7 +201,6 @@ public final class RegistryBiomeEvent
 				Type.SWAMP, Type.WASTELAND, Type.HOT
 		);
 
-		//darkForestCenter
 		biomes.register(
 				"dark_forest_center",
 				new TFBiomeDarkForestCenter(
@@ -228,7 +211,6 @@ public final class RegistryBiomeEvent
 				Type.FOREST, Type.DENSE, Type.SPOOKY, Type.MAGICAL
 		);
 
-		//highlandsCenter
 		biomes.register(
 				"highlands_center",
 				new TFBiomeFinalPlateau(
@@ -240,8 +222,7 @@ public final class RegistryBiomeEvent
 				),
 				Type.MESA, Type.DEAD, Type.DRY, Type.WASTELAND
 		);
-
-		//thornlands
+		
 		biomes.register(
 				"thornlands",
 				new TFBiomeThornlands(

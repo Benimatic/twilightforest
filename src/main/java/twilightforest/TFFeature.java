@@ -59,7 +59,7 @@ import twilightforest.entity.EntityTFTowerGolem;
 import twilightforest.entity.EntityTFTroll;
 import twilightforest.entity.EntityTFWraith;
 import twilightforest.entity.EntityTFYeti;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.world.TFWorld;
 import twilightforest.world.TFBiomeProvider;
 
@@ -330,53 +330,53 @@ public class TFFeature {
     	int randnum = hillRNG.nextInt(16);
     	
     	// glaciers have ice towers
-    	if (biomeAt == BiomeLibrary.glacier) {
+    	if (biomeAt == TFBiomes.glacier) {
     		return iceTower;
     	}
     	// snow has yeti lair
-    	if (biomeAt == BiomeLibrary.snowy_forest) {
+    	if (biomeAt == TFBiomes.snowy_forest) {
     		return yetiCave;
     	}
     	
     	// lakes have quest islands
-    	if (biomeAt == BiomeLibrary.tfLake) {
+    	if (biomeAt == TFBiomes.tfLake) {
     		return questIsland;
     	}
     	
     	// enchanted forests have groves
-    	if (biomeAt == BiomeLibrary.enchantedForest) {
+    	if (biomeAt == TFBiomes.enchantedForest) {
     		return questGrove;
     	}
     	
     	// fire swamp has hydra lair
-    	if (biomeAt == BiomeLibrary.fireSwamp) {
+    	if (biomeAt == TFBiomes.fireSwamp) {
     		return hydraLair;
     	}
     	// swamp has labyrinth
-    	if (biomeAt == BiomeLibrary.tfSwamp) {
+    	if (biomeAt == TFBiomes.tfSwamp) {
     		return labyrinth;
     	}
     	
     	// dark forests have their own things
-    	if (biomeAt == BiomeLibrary.darkForest)
+    	if (biomeAt == TFBiomes.darkForest)
     	{
     		return tfStronghold;
     	}
-    	if (biomeAt == BiomeLibrary.darkForestCenter) {
+    	if (biomeAt == TFBiomes.darkForestCenter) {
     		return darkTower;
     	}
     	
     	// highlands center has castle
-    	if (biomeAt == BiomeLibrary.highlandsCenter) {
+    	if (biomeAt == TFBiomes.highlandsCenter) {
     		return finalCastle;
     	}
     	// highlands has trolls
-    	if (biomeAt == BiomeLibrary.highlands) {
+    	if (biomeAt == TFBiomes.highlands) {
     		return trollCave;
     	}    	
     	
     	// deep mushrooms has mushroom tower
-    	if (biomeAt == BiomeLibrary.deepMushrooms) {
+    	if (biomeAt == TFBiomes.deepMushrooms) {
     		return mushroomTower;
     	}
        	

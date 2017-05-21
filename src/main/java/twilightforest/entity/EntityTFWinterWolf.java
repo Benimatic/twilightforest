@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathAttacker {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/winter_wolf");
@@ -126,7 +126,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	protected boolean isValidLightLevel() {
-		return world.getBiome(new BlockPos(this)) == BiomeLibrary.snowy_forest
+		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest
 				|| super.isValidLightLevel();
 	}
 

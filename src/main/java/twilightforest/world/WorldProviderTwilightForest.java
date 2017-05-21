@@ -17,7 +17,7 @@ import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 
 /**
@@ -146,7 +146,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		Biome biome = super.getBiomeForCoords(pos);
 		if (biome == null)
 		{
-			biome = BiomeLibrary.twilightForest;
+			biome = TFBiomes.twilightForest;
 		}
 		return biome;
 	}

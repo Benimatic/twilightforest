@@ -32,7 +32,7 @@ import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 import javax.annotation.Nullable;
 
@@ -736,7 +736,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Biome biome = biomes[x & 15 | (z & 15) << 4];
-				if (biome == BiomeLibrary.glacier) {
+				if (biome == TFBiomes.glacier) {
 					// find the (current) top block
 					int topLevel = -1;
 					for (int y = 127; y >= 0; y--) {
@@ -773,7 +773,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					for (int bz = -1; bz <= 1; bz++) {
 						Biome biome = biomesForGeneration[x + bx + 2 + (z + bz + 2) * (10)];
 						
-						if (biome == BiomeLibrary.darkForest || biome == BiomeLibrary.darkForestCenter) {
+						if (biome == TFBiomes.darkForest || biome == TFBiomes.darkForestCenter) {
 							thicks[x + z * 5]++;
 						}
 					}

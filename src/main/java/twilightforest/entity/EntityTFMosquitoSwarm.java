@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 public class EntityTFMosquitoSwarm extends EntityMob {
 
@@ -82,7 +82,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	@Override
 	public boolean getCanSpawnHere()
     {
-		if (world.getBiome(new BlockPos(this)) == BiomeLibrary.tfSwamp) {
+		if (world.getBiome(new BlockPos(this)) == TFBiomes.tfSwamp) {
 			// don't check light level
 	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		} else {

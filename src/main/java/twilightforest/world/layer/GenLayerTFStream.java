@@ -7,7 +7,7 @@ package twilightforest.world.layer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import twilightforest.library.BiomeLibrary;
+import twilightforest.biomes.TFBiomes;
 
 
 // Referenced classes of package net.minecraft.src:
@@ -47,7 +47,7 @@ public class GenLayerTFStream extends GenLayer
 //                }
                 if(shouldStream(mid, left, down, right, up))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(BiomeLibrary.stream);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.stream);
                 } else
                 {
                     output[dx + dz * width] = -1;
@@ -85,53 +85,53 @@ public class GenLayerTFStream extends GenLayer
     		return false;
     	}
     	// glacier and snow have no border
-       	if (biome1 == Biome.getIdForBiome(BiomeLibrary.glacier) && biome2 == Biome.getIdForBiome(BiomeLibrary.snowy_forest)) {
+       	if (biome1 == Biome.getIdForBiome(TFBiomes.glacier) && biome2 == Biome.getIdForBiome(TFBiomes.snowy_forest)) {
     		return false;
     	}
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.snowy_forest) && biome2 == Biome.getIdForBiome(BiomeLibrary.glacier)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.snowy_forest) && biome2 == Biome.getIdForBiome(TFBiomes.glacier)) {
     		return false;
     	}
        	// mushrooms
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.deepMushrooms) && biome2 == Biome.getIdForBiome(BiomeLibrary.mushrooms)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.deepMushrooms) && biome2 == Biome.getIdForBiome(TFBiomes.mushrooms)) {
     		return false;
     	}
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.mushrooms) && biome2 == Biome.getIdForBiome(BiomeLibrary.deepMushrooms)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.mushrooms) && biome2 == Biome.getIdForBiome(TFBiomes.deepMushrooms)) {
     		return false;
     	}
        	// fire swamp
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.tfSwamp) && biome2 == Biome.getIdForBiome(BiomeLibrary.fireSwamp)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.tfSwamp) && biome2 == Biome.getIdForBiome(TFBiomes.fireSwamp)) {
     		return false;
     	}
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.fireSwamp) && biome2 == Biome.getIdForBiome(BiomeLibrary.tfSwamp)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.fireSwamp) && biome2 == Biome.getIdForBiome(TFBiomes.tfSwamp)) {
     		return false;
     	}
        	// highlands
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.highlands) && biome2 == Biome.getIdForBiome(BiomeLibrary.highlandsCenter)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.highlands) && biome2 == Biome.getIdForBiome(TFBiomes.highlandsCenter)) {
     		return false;
     	}
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.highlandsCenter) && biome2 == Biome.getIdForBiome(BiomeLibrary.highlands)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.highlandsCenter) && biome2 == Biome.getIdForBiome(TFBiomes.highlands)) {
     		return false;
     	}
        	// dark forest
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.darkForest) && biome2 == Biome.getIdForBiome(BiomeLibrary.darkForestCenter)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.darkForest) && biome2 == Biome.getIdForBiome(TFBiomes.darkForestCenter)) {
     		return false;
     	}
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.darkForestCenter) && biome2 == Biome.getIdForBiome(BiomeLibrary.darkForest)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.darkForestCenter) && biome2 == Biome.getIdForBiome(TFBiomes.darkForest)) {
     		return false;
     	}
     	// no lake border
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.tfLake) || biome2 == Biome.getIdForBiome(BiomeLibrary.tfLake)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.tfLake) || biome2 == Biome.getIdForBiome(TFBiomes.tfLake)) {
     		return false;
     	}
     	// clearing
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.clearing) || biome2 == Biome.getIdForBiome(BiomeLibrary.oakSavanna)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.clearing) || biome2 == Biome.getIdForBiome(TFBiomes.oakSavanna)) {
     		return false;
     	}
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.oakSavanna) || biome2 == Biome.getIdForBiome(BiomeLibrary.clearing)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.oakSavanna) || biome2 == Biome.getIdForBiome(TFBiomes.clearing)) {
     		return false;
     	}
     	// thorns need no stream
-    	if (biome1 == Biome.getIdForBiome(BiomeLibrary.thornlands) || biome2 == Biome.getIdForBiome(BiomeLibrary.thornlands)) {
+    	if (biome1 == Biome.getIdForBiome(TFBiomes.thornlands) || biome2 == Biome.getIdForBiome(TFBiomes.thornlands)) {
     		return false;
     	}
 
