@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelSilverfish;
@@ -10,6 +11,7 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -92,7 +94,19 @@ public class TFClientProxy extends TFCommonProxy {
 	private boolean isDangerOverlayShown;
 
 	@Override
-	public void doPreLoadRegistration() {}
+	public void doPreLoadRegistration() {
+		for (Block b : Block.REGISTRY) {
+			if (b instanceof ModelRegisterCallback) {
+				((ModelRegisterCallback) b).registerModel();
+			}
+		}
+
+		for (Item i : Item.REGISTRY) {
+			if (i instanceof ModelRegisterCallback) {
+				((ModelRegisterCallback) i).registerModel();
+			}
+		}
+	}
 
 	@Override
 	public void doOnLoadRegistration() {

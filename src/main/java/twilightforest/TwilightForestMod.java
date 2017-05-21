@@ -85,15 +85,16 @@ public class TwilightForestMod {
 		// load config
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		loadConfiguration(config);
-		// sounds on client, and whatever else needs to be registered pre-load
-		proxy.doPreLoadRegistration();
 
 		// initialize & register blocks
 		TFBlocks.registerBlocks();
 
 		// items
 		TFItems.registerItems();
-		
+
+		// sounds on client, and whatever else needs to be registered pre-load
+		proxy.doPreLoadRegistration();
+
 		// cheevos!
 		AchievementPage.registerAchievementPage(new TFAchievementPage());
 

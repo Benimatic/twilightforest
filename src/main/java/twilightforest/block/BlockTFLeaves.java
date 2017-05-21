@@ -9,6 +9,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -17,13 +18,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.LeavesVariant;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFLeaves extends BlockLeaves {
-	
-    public static final String[] unlocalizedNameArray = new String[] {"twilightoak", "canopy", "mangrove", "rainboak"};
-
+public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback {
 	public static final PropertyEnum<LeavesVariant> VARIANT = PropertyEnum.create("variant", LeavesVariant.class);
 
 	protected BlockTFLeaves() {
@@ -31,6 +33,7 @@ public class BlockTFLeaves extends BlockLeaves {
 		this.setLightOpacity(2);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true).withProperty(VARIANT, LeavesVariant.OAK));
+		leavesFancy = true; // TODO update this when the setting is changed / fix this
 	}
 
 	@Override
@@ -124,5 +127,11 @@ public class BlockTFLeaves extends BlockLeaves {
 	@Override
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
 		return ImmutableList.of(); // todo 1.9
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
 	}
 }
