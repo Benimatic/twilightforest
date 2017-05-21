@@ -6,6 +6,7 @@ import java.util.Random;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -31,6 +32,11 @@ public class BlockTFLeaves3 extends BlockLeaves {
 	protected BlockTFLeaves3() {
 		this.setCreativeTab(TFItems.creativeTab);
         this.setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true).withProperty(VARIANT, Leaves3Variant.THORN));
+	}
+
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE, VARIANT);
 	}
 
     @Override
