@@ -68,10 +68,4 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
     	// repair with steeleaf ingots
         return par2ItemStack.getItem() == TFItems.steeleafIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
 }

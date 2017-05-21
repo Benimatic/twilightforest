@@ -73,10 +73,4 @@ public class ItemTFIronwoodArmor extends ItemArmor implements ModelRegisterCallb
     	// repair with ironwood ingots
         return par2ItemStack.getItem() == TFItems.ironwoodIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
 }

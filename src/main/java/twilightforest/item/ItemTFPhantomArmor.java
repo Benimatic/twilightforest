@@ -58,10 +58,4 @@ public class ItemTFPhantomArmor extends ItemArmor implements ModelRegisterCallba
     {
         return TwilightForestMod.proxy.getPhantomArmorModel(armorSlot);
     }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModel() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-    }
 }

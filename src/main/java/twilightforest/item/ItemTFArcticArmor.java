@@ -64,10 +64,4 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
     {
         return TwilightForestMod.proxy.getArcticArmorModel(armorSlot);
     }
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
 }

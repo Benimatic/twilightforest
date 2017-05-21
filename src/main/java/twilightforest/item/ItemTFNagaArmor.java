@@ -39,10 +39,4 @@ public class ItemTFNagaArmor extends ItemArmor implements ModelRegisterCallback 
     	// repair with naga scale
         return par2ItemStack.getItem() == TFItems.nagaScale ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModel() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-    }
 }

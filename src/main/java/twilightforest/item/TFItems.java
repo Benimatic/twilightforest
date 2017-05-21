@@ -150,10 +150,10 @@ public class TFItems {
     	nagaScale = new ItemTF().setUnlocalizedName("nagaScale");
     	plateNaga = new ItemTFNagaArmor(ARMOR_NAGA, EntityEquipmentSlot.CHEST).setUnlocalizedName("plateNaga").setMaxStackSize(1);
     	legsNaga = new ItemTFNagaArmor(ARMOR_NAGA, EntityEquipmentSlot.LEGS).setUnlocalizedName("legsNaga").setMaxStackSize(1);
-    	scepterTwilight = new ItemTFTwilightWand().setUnlocalizedName("scepterTwilight").setMaxStackSize(1).setFull3D();
-    	scepterLifeDrain = new ItemTFScepterLifeDrain().setUnlocalizedName("scepterLifeDrain").setMaxStackSize(1).setFull3D();
-    	scepterZombie = new ItemTFZombieWand().setUnlocalizedName("scepterZombie").setMaxStackSize(1).setFull3D();
-    	//wandPacification = new ItemTF().setIconIndex(6).setUnlocalizedName("wandPacification").setMaxStackSize(1).setFull3D();
+    	scepterTwilight = new ItemTFTwilightWand().setUnlocalizedName("scepterTwilight").setMaxStackSize(1);
+    	scepterLifeDrain = new ItemTFScepterLifeDrain().setUnlocalizedName("scepterLifeDrain").setMaxStackSize(1);
+    	scepterZombie = new ItemTFZombieWand().setUnlocalizedName("scepterZombie").setMaxStackSize(1);
+    	//wandPacification = new ItemTF().setIconIndex(6).setUnlocalizedName("wandPacification").setMaxStackSize(1);
     	oreMeter = new ItemTFOreMeter().setUnlocalizedName("oreMeter").setMaxStackSize(1);
     	magicMap = new ItemTFMagicMap().setUnlocalizedName("magicMap").setMaxStackSize(1);
     	mazeMap = new ItemTFMazeMap(false).setUnlocalizedName("mazeMap").setMaxStackSize(1);

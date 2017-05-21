@@ -83,10 +83,4 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add(I18n.translateToLocal(getUnlocalizedName() + ".tooltip"));
 	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
 }

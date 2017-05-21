@@ -27,10 +27,4 @@ public class ItemTF extends Item implements ModelRegisterCallback {
 		this.isRare = true;
 		return this;
 	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
 }

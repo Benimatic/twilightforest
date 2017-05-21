@@ -10,8 +10,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFGlassSword extends ItemSword {
+public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
 
 	public ItemTFGlassSword(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);

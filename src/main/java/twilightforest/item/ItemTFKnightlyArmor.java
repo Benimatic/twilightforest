@@ -65,10 +65,4 @@ public class ItemTFKnightlyArmor extends ItemArmor implements ModelRegisterCallb
     {
         return TwilightForestMod.proxy.getKnightlyArmorModel(armorSlot);
     }
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
 }
