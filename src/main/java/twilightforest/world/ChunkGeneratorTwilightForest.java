@@ -973,15 +973,16 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return null;
 	}
 
+	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
+		//FIXME: AtomicBlom: Bring this back in with structures
+		//this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
+	}
+
 /*
 	public boolean isBlockInStructureBB(int mapX, int mapY, int mapZ) {
 		return this.majorFeatureGenerator.hasStructureAt(mapX, mapY, mapZ);
 	}
 
-	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
-	}
-	
 	public StructureBoundingBox getSBBAt(int mapX, int mapY, int mapZ) {
 		return this.majorFeatureGenerator.getSBBAt(mapX, mapY, mapZ);
 	}
