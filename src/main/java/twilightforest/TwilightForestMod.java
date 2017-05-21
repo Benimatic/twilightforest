@@ -153,9 +153,6 @@ public class TwilightForestMod {
 		// dimension provider
 		dimType = DimensionType.register("Twilight Forest", "_twilightforest", dimensionID, WorldProviderTwilightForest.class, false);
 		DimensionManager.registerDimension(TwilightForestMod.dimensionProviderID, dimType);
-
-		// enter biomes into dictionary
-		TFBiomeBase.registerWithBiomeDictionary();
 	}
 	
     @EventHandler

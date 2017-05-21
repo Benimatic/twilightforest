@@ -3,7 +3,7 @@ package twilightforest.world.layer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.library.BiomeLibrary;
 
 
 /**
@@ -16,10 +16,20 @@ public class GenLayerTFBiomes extends GenLayer
 {
 
     protected Biome commonBiomes[] = (new Biome[] {
-            TFBiomeBase.twilightForest, TFBiomeBase.twilightForest2, TFBiomeBase.highlands, TFBiomeBase.mushrooms, TFBiomeBase.tfSwamp, TFBiomeBase.clearing, TFBiomeBase.darkForest 
+            BiomeLibrary.twilightForest,
+            BiomeLibrary.denseTwilightForest,
+            BiomeLibrary.highlands,
+            BiomeLibrary.mushrooms,
+            BiomeLibrary.tfSwamp,
+            BiomeLibrary.clearing,
+            BiomeLibrary.darkForest
     });
     protected Biome rareBiomes[] = (new Biome[] {
-            TFBiomeBase.tfLake, TFBiomeBase.glacier, TFBiomeBase.deepMushrooms, TFBiomeBase.enchantedForest, TFBiomeBase.fireSwamp
+            BiomeLibrary.tfLake,
+            BiomeLibrary.glacier,
+            BiomeLibrary.deepMushrooms,
+            BiomeLibrary.enchantedForest,
+            BiomeLibrary.fireSwamp
     });
 
     public GenLayerTFBiomes(long l, GenLayer genlayer)

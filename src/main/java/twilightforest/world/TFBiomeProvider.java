@@ -13,8 +13,7 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.library.BiomeLibrary;
 import twilightforest.world.layer.GenLayerTF;
 
 
@@ -35,11 +34,11 @@ public class TFBiomeProvider extends BiomeProvider
     {
         myBiomeCache = new BiomeCache(this);
         myBiomesToSpawnIn = new ArrayList<Biome>();
-        myBiomesToSpawnIn.add(TFBiomeBase.twilightForest);
-        myBiomesToSpawnIn.add(TFBiomeBase.twilightForest2);
-        myBiomesToSpawnIn.add(TFBiomeBase.clearing);
-        myBiomesToSpawnIn.add(TFBiomeBase.tfSwamp);
-        myBiomesToSpawnIn.add(TFBiomeBase.mushrooms);
+        myBiomesToSpawnIn.add(BiomeLibrary.twilightForest);
+        myBiomesToSpawnIn.add(BiomeLibrary.denseTwilightForest);
+        myBiomesToSpawnIn.add(BiomeLibrary.clearing);
+        myBiomesToSpawnIn.add(BiomeLibrary.tfSwamp);
+        myBiomesToSpawnIn.add(BiomeLibrary.mushrooms);
     }
 
     public TFBiomeProvider(long par1, WorldType par3WorldType)
@@ -89,7 +88,7 @@ public class TFBiomeProvider extends BiomeProvider
         	else
         	{
         		//System.err.println("Got bad biome data : " + ai[i]);
-        		par1ArrayOfBiome[i] = TFBiomeBase.twilightForest;
+        		par1ArrayOfBiome[i] = BiomeLibrary.twilightForest;
         	}
         }
 
@@ -125,7 +124,7 @@ public class TFBiomeProvider extends BiomeProvider
         	else
         	{
         		//System.err.println("Got bad biome data : " + ai[i]);
-        		par1ArrayOfBiome[i] = TFBiomeBase.twilightForest;
+        		par1ArrayOfBiome[i] = BiomeLibrary.twilightForest;
         	}
         }
 

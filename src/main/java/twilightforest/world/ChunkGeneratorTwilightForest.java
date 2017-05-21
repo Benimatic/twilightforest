@@ -13,7 +13,6 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
@@ -27,13 +26,13 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import twilightforest.library.BiomeLibrary;
 
 import javax.annotation.Nullable;
 
@@ -737,7 +736,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Biome biome = biomes[x & 15 | (z & 15) << 4];
-				if (biome == TFBiomeBase.glacier) {
+				if (biome == BiomeLibrary.glacier) {
 					// find the (current) top block
 					int topLevel = -1;
 					for (int y = 127; y >= 0; y--) {
@@ -774,7 +773,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					for (int bz = -1; bz <= 1; bz++) {
 						Biome biome = biomesForGeneration[x + bx + 2 + (z + bz + 2) * (10)];
 						
-						if (biome == TFBiomeBase.darkForest || biome == TFBiomeBase.darkForestCenter) {
+						if (biome == BiomeLibrary.darkForest || biome == BiomeLibrary.darkForestCenter) {
 							thicks[x + z * 5]++;
 						}
 					}

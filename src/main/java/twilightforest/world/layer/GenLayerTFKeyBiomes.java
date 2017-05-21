@@ -3,7 +3,7 @@ package twilightforest.world.layer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.library.BiomeLibrary;
 
 
 /**
@@ -94,13 +94,13 @@ public class GenLayerTFKeyBiomes extends GenLayer
 		switch ((index + offset) % 4) {
 		case 0:
 		default:
-			return Biome.getIdForBiome(TFBiomeBase.glacier);
+			return Biome.getIdForBiome(BiomeLibrary.glacier);
 		case 1:
-			return Biome.getIdForBiome(TFBiomeBase.fireSwamp);
+			return Biome.getIdForBiome(BiomeLibrary.fireSwamp);
 		case 2:
-			return Biome.getIdForBiome(TFBiomeBase.darkForestCenter);
+			return Biome.getIdForBiome(BiomeLibrary.darkForestCenter);
 		case 3:
-			return Biome.getIdForBiome(TFBiomeBase.highlandsCenter);
+			return Biome.getIdForBiome(BiomeLibrary.highlandsCenter);
 		}
 	}
 }
