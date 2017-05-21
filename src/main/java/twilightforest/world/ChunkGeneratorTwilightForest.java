@@ -95,7 +95,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	
 		ravineGenerator = new TFGenRavine();
 		unusedIntArray32x32 = new int[32][32];
-		world = world;
+		this.world = world;
 		rand = new Random(l);
 		//noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
 		//noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
