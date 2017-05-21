@@ -6,13 +6,18 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.WoodVariant;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFLog extends BlockLog {
+public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 
     public static final PropertyEnum<WoodVariant> VARIANT = PropertyEnum.create("variant", WoodVariant.class);
 
@@ -81,4 +86,9 @@ public class BlockTFLog extends BlockLog {
         par3List.add(new ItemStack(par1, 1, 3));
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel() {
+        ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(VARIANT).withSuffix("_log").build());
+    }
 }

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y": { "model": "twilightforest:mangrove_log" },
+    "axis=z": { "model": "twilightforest:mangrove_log", "x": 90 },
+    "axis=x": { "model": "twilightforest:mangrove_log", "x": 90, "y": 90 },
+    "axis=none": { "model": "twilightforest:mangrove_bark" }
+  }
+}
