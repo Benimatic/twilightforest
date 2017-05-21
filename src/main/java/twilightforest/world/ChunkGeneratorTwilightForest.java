@@ -978,6 +978,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		//this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
+	public boolean isStructureLocked(int mapX, int mapY, int mapZ, int lockIndex) {
+		//FIXME: AtomicBlom: Bring this back in with structures
+		return false; //Unlock all structures for development
+		//return this.majorFeatureGenerator.isStructureLocked(mapX, mapY, mapZ, lockIndex);
+	}
+
 /*
 	public boolean isBlockInStructureBB(int mapX, int mapY, int mapZ) {
 		return this.majorFeatureGenerator.hasStructureAt(mapX, mapY, mapZ);
@@ -993,10 +999,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	public boolean isStructureConquered(int mapX, int mapY, int mapZ) {
 		return this.majorFeatureGenerator.isStructureConquered(mapX, mapY, mapZ);
-	}
-	
-	public boolean isStructureLocked(int mapX, int mapY, int mapZ, int lockIndex) {
-		return this.majorFeatureGenerator.isStructureLocked(mapX, mapY, mapZ, lockIndex);
 	}
 	
 
