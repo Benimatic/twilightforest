@@ -1,12 +1,17 @@
 package twilightforest.item;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFNagaArmor extends ItemArmor {
+public class ItemTFNagaArmor extends ItemArmor implements ModelRegisterCallback {
 
 	public ItemTFNagaArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot slot) {
 		super(par2EnumArmorMaterial, 0, slot);

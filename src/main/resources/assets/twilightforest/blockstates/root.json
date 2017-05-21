@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "variant=root": { "model": "twilightforest:root" },
+    "variant=liveroot": { "model": "twilightforest:liveroot" }
+  }
+}

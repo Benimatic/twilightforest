@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "variant=oak": { "model": "twilightforest:oak_leaves" },
+    "variant=canopy": { "model": "twilightforest:canopy_leaves" },
+    "variant=mangrove": { "model": "twilightforest:mangrove_leaves" },
+    "variant=rainboak": { "model": "twilightforest:rainboak_leaves" }
+  }
+}

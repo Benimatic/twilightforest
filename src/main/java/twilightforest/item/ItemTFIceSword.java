@@ -11,9 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.particle.TFParticleType;
 
-public class ItemTFIceSword extends ItemSword {
+public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
 
 	public ItemTFIceSword(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);

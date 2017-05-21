@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "twilightforest:blocks/darkwood_top",
+    "side": "twilightforest:blocks/darkwood_side"
+  }
+}

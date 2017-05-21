@@ -150,10 +150,10 @@ public class TFItems {
     	nagaScale = new ItemTF().setUnlocalizedName("nagaScale");
     	plateNaga = new ItemTFNagaArmor(ARMOR_NAGA, EntityEquipmentSlot.CHEST).setUnlocalizedName("plateNaga").setMaxStackSize(1);
     	legsNaga = new ItemTFNagaArmor(ARMOR_NAGA, EntityEquipmentSlot.LEGS).setUnlocalizedName("legsNaga").setMaxStackSize(1);
-    	scepterTwilight = new ItemTFTwilightWand().setUnlocalizedName("scepterTwilight").setMaxStackSize(1).setFull3D();
-    	scepterLifeDrain = new ItemTFScepterLifeDrain().setUnlocalizedName("scepterLifeDrain").setMaxStackSize(1).setFull3D();
-    	scepterZombie = new ItemTFZombieWand().setUnlocalizedName("scepterZombie").setMaxStackSize(1).setFull3D();
-    	//wandPacification = new ItemTF().setIconIndex(6).setUnlocalizedName("wandPacification").setMaxStackSize(1).setFull3D();
+    	scepterTwilight = new ItemTFTwilightWand().setUnlocalizedName("scepterTwilight").setMaxStackSize(1);
+    	scepterLifeDrain = new ItemTFScepterLifeDrain().setUnlocalizedName("scepterLifeDrain").setMaxStackSize(1);
+    	scepterZombie = new ItemTFZombieWand().setUnlocalizedName("scepterZombie").setMaxStackSize(1);
+    	//wandPacification = new ItemTF().setIconIndex(6).setUnlocalizedName("wandPacification").setMaxStackSize(1);
     	oreMeter = new ItemTFOreMeter().setUnlocalizedName("oreMeter").setMaxStackSize(1);
     	magicMap = new ItemTFMagicMap().setUnlocalizedName("magicMap").setMaxStackSize(1);
     	mazeMap = new ItemTFMazeMap(false).setUnlocalizedName("mazeMap").setMaxStackSize(1);
@@ -174,8 +174,8 @@ public class TFItems {
     	ironwoodAxe = new ItemTFIronwoodAxe(TOOL_IRONWOOD).setUnlocalizedName("ironwoodAxe").setMaxStackSize(1);
     	ironwoodHoe = new ItemTFIronwoodHoe(TOOL_IRONWOOD).setUnlocalizedName("ironwoodHoe").setMaxStackSize(1);
     	torchberries = new ItemTF().setUnlocalizedName("torchberries");
-    	venisonRaw = (new ItemFood(3, 0.3F, true)).setUnlocalizedName("venisonRaw");
-    	venisonCooked = (new ItemFood(8, 0.8F, true)).setUnlocalizedName("venisonCooked");
+    	venisonRaw = (new ItemTFFood(3, 0.3F, true)).setUnlocalizedName("venisonRaw");
+    	venisonCooked = (new ItemTFFood(8, 0.8F, true)).setUnlocalizedName("venisonCooked");
     	hydraChop = (new ItemTFHydraChops(18, 2.0F, true)).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0), 1.0F).setUnlocalizedName("hydraChop");
     	fieryBlood = new ItemTF().makeRare().setUnlocalizedName("fieryBlood");
     	trophy = new ItemTFTrophy().setUnlocalizedName("trophy");
@@ -199,10 +199,10 @@ public class TFItems {
     	minotaurAxe = new ItemTFMinotaurAxe(Item.ToolMaterial.DIAMOND).setUnlocalizedName("minotaurAxe").setMaxStackSize(1);
     	mazebreakerPick = new ItemTFMazebreakerPick(Item.ToolMaterial.DIAMOND).setUnlocalizedName("mazebreakerPick").setMaxStackSize(1);
     	transformPowder = new ItemTFTransformPowder().makeRare().setUnlocalizedName("transformPowder");
-    	meefRaw = (new ItemFood(2, 0.3F, true)).setUnlocalizedName("meefRaw");
-    	meefSteak = (new ItemFood(6, 0.6F, true)).setUnlocalizedName("meefSteak");
-    	meefStroganoff = (new ItemSoup(8)).setUnlocalizedName("meefStroganoff");
-    	mazeWafer = (new ItemFood(4, 0.6F, false)).setUnlocalizedName("mazeWafer");
+    	meefRaw = (new ItemTFFood(2, 0.3F, true)).setUnlocalizedName("meefRaw");
+    	meefSteak = (new ItemTFFood(6, 0.6F, true)).setUnlocalizedName("meefSteak");
+    	meefStroganoff = (new ItemTFSoup(8)).setUnlocalizedName("meefStroganoff");
+    	mazeWafer = (new ItemTFFood(4, 0.6F, false)).setUnlocalizedName("mazeWafer");
     	emptyMagicMap = (new ItemTFEmptyMagicMap()).setUnlocalizedName("emptyMagicMap");
     	emptyMazeMap = (new ItemTFEmptyMazeMap(false)).setUnlocalizedName("emptyMazeMap");
     	emptyOreMap = (new ItemTFEmptyMazeMap(true)).setUnlocalizedName("emptyOreMap");
@@ -218,7 +218,7 @@ public class TFItems {
     	towerKey = new ItemTFTowerKey().setUnlocalizedName("towerKey");
     	borerEssence = new ItemTF().setUnlocalizedName("borerEssence");
     	carminite = new ItemTF().makeRare().setUnlocalizedName("carminite");
-    	experiment115 = (new ItemFood(4, 0.3F, false)).setUnlocalizedName("experiment115");
+    	experiment115 = (new ItemTFFood(4, 0.3F, false)).setUnlocalizedName("experiment115");
     	armorShard = new ItemTF().setUnlocalizedName("armorShards");
     	knightMetal = new ItemTF().setUnlocalizedName("knightMetal");
     	shardCluster = new ItemTF().setUnlocalizedName("shardCluster");
@@ -302,7 +302,7 @@ public class TFItems {
         registerTFItem(steeleafPlate, "steeleaf_chestplate");
         registerTFItem(steeleafLegs, "steeleaf_leggings");
         registerTFItem(steeleafBoots, "steeleaf_boots");
-        registerTFItem(steeleafSword, "steeleaf_sowrd");
+        registerTFItem(steeleafSword, "steeleaf_sword");
         registerTFItem(steeleafShovel, "steeleaf_shovel");
         registerTFItem(steeleafPick, "steeleaf_pickaxe");
         registerTFItem(steeleafAxe, "steeleaf_axe");

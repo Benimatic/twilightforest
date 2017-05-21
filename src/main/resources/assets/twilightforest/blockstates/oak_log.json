@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y": { "model": "twilightforest:oak_log" },
+    "axis=z": { "model": "twilightforest:oak_log", "x": 90 },
+    "axis=x": { "model": "twilightforest:oak_log", "x": 90, "y": 90 },
+    "axis=none": { "model": "twilightforest:oak_bark" }
+  }
+}

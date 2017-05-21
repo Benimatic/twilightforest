@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,11 +14,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.client.model.ModelLoader;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFYetiArmor extends ItemArmor {
+public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback {
 
 	public ItemTFYetiArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, 0, armorType);

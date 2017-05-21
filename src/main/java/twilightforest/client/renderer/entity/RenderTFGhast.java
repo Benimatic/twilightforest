@@ -9,14 +9,13 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 
-// todo not sure why mini is at the top of the hierarchy intsead of tower...
-public class RenderTFMiniGhast<T extends EntityTFTowerGhast> extends RenderLiving<T> {
+public class RenderTFGhast<T extends EntityTFTowerGhast> extends RenderLiving<T> {
 	
 	private static final ResourceLocation textureLocClosed = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast.png");
 	private static final ResourceLocation textureLocOpen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast_openeyes.png");
 	private static final ResourceLocation textureLocAttack = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast_fire.png");
 	
-	public RenderTFMiniGhast(RenderManager manager, ModelBase model, float shadowSize) {
+	public RenderTFGhast(RenderManager manager, ModelBase model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 

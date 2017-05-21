@@ -1,16 +1,17 @@
 package twilightforest.client;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleSmokeNormal;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -93,7 +94,19 @@ public class TFClientProxy extends TFCommonProxy {
 	private boolean isDangerOverlayShown;
 
 	@Override
-	public void doPreLoadRegistration() {}
+	public void doPreLoadRegistration() {
+		for (Block b : Block.REGISTRY) {
+			if (b instanceof ModelRegisterCallback) {
+				((ModelRegisterCallback) b).registerModel();
+			}
+		}
+
+		for (Item i : Item.REGISTRY) {
+			if (i instanceof ModelRegisterCallback) {
+				((ModelRegisterCallback) i).registerModel();
+			}
+		}
+	}
 
 	@Override
 	public void doOnLoadRegistration() {
@@ -137,7 +150,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFPinchBeetle.class, m -> new RenderTFGenericLiving<>(m, new ModelTFPinchBeetle(), 1.1F, "pinchbeetle.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMistWolf.class, m -> new RenderTFMistWolf(m, new ModelWolf(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMobileFirefly.class, RenderTFTinyFirefly::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFMiniGhast.class, m -> new RenderTFMiniGhast(m, new ModelTFGhast(), 0.625F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFMiniGhast.class, m -> new RenderTFGhast(m, new ModelTFGhast(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFTowerGolem.class, m -> new RenderTFTowerGolem(m, new ModelTFTowerGolem(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFTowerTermite.class, m -> new RenderTFGenericLiving<>(m, new ModelSilverfish(), 0.3F, "towertermite.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFTowerGhast.class, m -> new RenderTFTowerGhast(m, new ModelTFGhast(), 0.625F));
@@ -377,7 +390,7 @@ public class TFClientProxy extends TFCommonProxy {
         	        double gx = world.rand.nextGaussian() * 0.2D;
         	        double gy = world.rand.nextGaussian() * 0.2D;
         	        double gz = world.rand.nextGaussian() * 0.2D;
-                    
+
         			TwilightForestMod.proxy.spawnParticle(world, TFParticleType.ANNIHILATE, d0, d1, d2, gx, gy, gz);
                 }
             }
