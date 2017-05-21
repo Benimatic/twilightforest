@@ -275,14 +275,6 @@ public class TFClientProxy extends TFCommonProxy {
 
 	}
 
-	/**
-	 * The prefix is not actually used, but we do need a render ID
-	 */
-	@Override
-	public int registerArmorRenderID(String prefix) {
-		return RenderingRegistry.addNewArmourRendererPrefix(prefix);
-	}
-
 	@Override
 	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().world;
