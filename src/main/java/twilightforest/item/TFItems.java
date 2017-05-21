@@ -302,7 +302,7 @@ public class TFItems {
         registerTFItem(steeleafPlate, "steeleaf_chestplate");
         registerTFItem(steeleafLegs, "steeleaf_leggings");
         registerTFItem(steeleafBoots, "steeleaf_boots");
-        registerTFItem(steeleafSword, "steeleaf_sowrd");
+        registerTFItem(steeleafSword, "steeleaf_sword");
         registerTFItem(steeleafShovel, "steeleaf_shovel");
         registerTFItem(steeleafPick, "steeleaf_pickaxe");
         registerTFItem(steeleafAxe, "steeleaf_axe");
