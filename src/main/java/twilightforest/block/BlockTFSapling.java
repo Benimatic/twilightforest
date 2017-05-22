@@ -40,13 +40,12 @@ public class BlockTFSapling extends BlockSapling
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState()
 				.withProperty(STAGE, 0)
-				.withProperty(TYPE, BlockPlanks.EnumType.OAK)
 				.withProperty(TF_TYPE, SaplingVariant.OAK));
 	}
 
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, STAGE, TYPE, TF_TYPE);
+		return new BlockStateContainer(this, STAGE, TF_TYPE);
 	}
 	
     @Override
