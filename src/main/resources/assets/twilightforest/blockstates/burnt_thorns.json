@@ -2,8 +2,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "end": "twilightforest:blocks/brown_thorns_top",
-      "side": "twilightforest:blocks/brown_thorns_side"
+      "end": "twilightforest:blocks/burnt_thorns_top",
+      "side": "twilightforest:blocks/burnt_thorns_side"
     },
     "model": "block"
   },
@@ -39,10 +39,7 @@
     },
     "variant": {
       "brown": {},
-      "green":{ "textures": {
-          "end": "twilightforest:blocks/green_thorns_top",
-          "side": "twilightforest:blocks/green_thorns_side"
-      } }
+      "green":{}
     }
   }
 }
