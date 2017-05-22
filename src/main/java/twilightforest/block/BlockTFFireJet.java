@@ -9,6 +9,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -43,7 +44,30 @@ public class BlockTFFireJet extends Block {
 		this.setTickRandomly(true);
 	}
 
-    @Override
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		final FireJetVariant[] values = FireJetVariant.values();
+		final FireJetVariant variant = values[meta % values.length];
+
+		return getDefaultState().withProperty(VARIANT, variant);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+
+		final FireJetVariant value = state.getValue(VARIANT);
+
+		return value.ordinal();
+	}
+
+	@Override
 	public int damageDropped(IBlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case ENCASED_SMOKER_ON: state = state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF); break;
