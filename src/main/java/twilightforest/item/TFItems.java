@@ -268,7 +268,7 @@ public class TFItems {
         registerTFItem(oreMeter, "ore_meter");
         registerTFItem(magicMap, "magic_map");
         registerTFItem(mazeMap, "maze_map");
-        registerTFItem(oreMap, "ore_Map");
+        registerTFItem(oreMap, "ore_map");
         registerTFItem(feather, "raven_feather");
         registerTFItem(magicMapFocus, "magic_map_focus");
         registerTFItem(mazeMapFocus, "maze_map_focus");
