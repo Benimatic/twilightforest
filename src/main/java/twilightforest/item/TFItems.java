@@ -1,18 +1,14 @@
 package twilightforest.item;
 
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemSoup;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.EnumHelper;
-import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import twilightforest.TwilightForestMod;
 
 @GameRegistry.ObjectHolder(TwilightForestMod.ID)
+@SuppressWarnings("WeakerAccess")
 public class TFItems {
 
     public static ItemArmor.ArmorMaterial ARMOR_NAGA = EnumHelper.addArmorMaterial("NAGA_SCALE", "naga_scale", 21, new int[] {2, 7, 6, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);

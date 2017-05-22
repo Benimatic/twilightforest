@@ -6,6 +6,7 @@ import twilightforest.TwilightForestMod;
 
 import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
+@SuppressWarnings("WeakerAccess")
 @ObjectHolder(TwilightForestMod.ID)
 public class TFBlocks {
     @ObjectHolder("twilight_log")
@@ -73,7 +74,7 @@ public class TFBlocks {
     public static Block leaves3;
     @ObjectHolder("deadrock")
     public static Block deadrock;
-    @ObjectHolder("dead_leaves")
+    @ObjectHolder("dark_leaves")
     public static Block darkleaves;
     @ObjectHolder("aurora_pillar")
     public static Block auroraPillar;

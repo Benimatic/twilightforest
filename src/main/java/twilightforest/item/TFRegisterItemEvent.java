@@ -69,10 +69,10 @@ public class TFRegisterItemEvent {
         items.register("fiery_sword", new ItemTFFierySword(TOOL_FIERY).setUnlocalizedName("fierySword").setMaxStackSize(1));
         items.register("fiery_pickaxe", new ItemTFFieryPick(TOOL_FIERY).setUnlocalizedName("fieryPick").setMaxStackSize(1));
         items.register("steeleaf_ingot", new ItemTF().setUnlocalizedName("steeleafIngot"));
-        items.register("steeleaf_helmet", new ItemTFSteeleafArmor(ARMOR_IRONWOOD, HEAD).setUnlocalizedName("steeleafHelm").setMaxStackSize(1));
-        items.register("steeleaf_chestplate", new ItemTFSteeleafArmor(ARMOR_IRONWOOD, CHEST).setUnlocalizedName("steeleafPlate").setMaxStackSize(1));
-        items.register("steeleaf_leggings", new ItemTFSteeleafArmor(ARMOR_IRONWOOD, LEGS).setUnlocalizedName("steeleafLegs").setMaxStackSize(1));
-        items.register("steeleaf_boots", new ItemTFSteeleafArmor(ARMOR_IRONWOOD, FEET).setUnlocalizedName("steeleafBoots").setMaxStackSize(1));
+        items.register("steeleaf_helmet", new ItemTFSteeleafArmor(ARMOR_STEELEAF, HEAD).setUnlocalizedName("steeleafHelm").setMaxStackSize(1));
+        items.register("steeleaf_chestplate", new ItemTFSteeleafArmor(ARMOR_STEELEAF, CHEST).setUnlocalizedName("steeleafPlate").setMaxStackSize(1));
+        items.register("steeleaf_leggings", new ItemTFSteeleafArmor(ARMOR_STEELEAF, LEGS).setUnlocalizedName("steeleafLegs").setMaxStackSize(1));
+        items.register("steeleaf_boots", new ItemTFSteeleafArmor(ARMOR_STEELEAF, FEET).setUnlocalizedName("steeleafBoots").setMaxStackSize(1));
         items.register("steeleaf_sword", new ItemTFSteeleafSword(TOOL_STEELEAF).setUnlocalizedName("steeleafSword").setMaxStackSize(1));
         items.register("steeleaf_shovel", new ItemTFSteeleafShovel(TOOL_STEELEAF).setUnlocalizedName("steeleafShovel").setMaxStackSize(1));
         items.register("steeleaf_pickaxe", new ItemTFSteeleafPick(TOOL_STEELEAF).setUnlocalizedName("steeleafPick").setMaxStackSize(1));
