@@ -33,22 +33,22 @@ public class BlockTFShield extends Block
         this.setResistance(6000000.0F);
         this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
-        this.setDefaultState(blockState.getBaseState().withProperty(TFBlocks.FACING, EnumFacing.DOWN));
+        this.setDefaultState(blockState.getBaseState().withProperty(TFBlockProperties.FACING, EnumFacing.DOWN));
     }
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TFBlocks.FACING);
+        return new BlockStateContainer(this, TFBlockProperties.FACING);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(TFBlocks.FACING).getIndex();
+        return state.getValue(TFBlockProperties.FACING).getIndex();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.getFront(meta));
+        return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
     }
     
 	@Override
@@ -71,7 +71,7 @@ public class BlockTFShield extends Block
     
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(TFBlocks.FACING, BlockPistonBase.getFacingFromEntity(pos, placer));
+        return getDefaultState().withProperty(TFBlockProperties.FACING, BlockPistonBase.getFacingFromEntity(pos, placer));
     }
     
     @Override
@@ -81,7 +81,7 @@ public class BlockTFShield extends Block
         RayTraceResult mop = getPlayerPointVec(world, player, 6.0);
     	
         EnumFacing hitFace = mop != null ? mop.sideHit : null;
-        EnumFacing blockFace = state.getValue(TFBlocks.FACING);
+        EnumFacing blockFace = state.getValue(TFBlockProperties.FACING);
         
         //System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
         

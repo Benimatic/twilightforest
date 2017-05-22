@@ -320,7 +320,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 							if (notIntersecting)
 							{
-								world.setBlockState(pos, TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, calculateShieldFacing(shieldBox, x, y, z)), 2);
+								world.setBlockState(pos, TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, calculateShieldFacing(shieldBox, x, y, z)), 2);
 							}
 
 						}
