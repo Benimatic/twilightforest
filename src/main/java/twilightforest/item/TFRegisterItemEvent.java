@@ -15,7 +15,7 @@ import static twilightforest.item.TFItems.*;
 public class TFRegisterItemEvent {
     public static void onRegisterItems(RegistryEvent.Register<Item> event) {
         ItemRegistryHelper items = new ItemRegistryHelper(event.getRegistry());
-        
+
         items.register("naga_scale", new ItemTF().setUnlocalizedName("nagaScale"));
         items.register("naga_chestplate", new ItemTFNagaArmor(ARMOR_NAGA, EntityEquipmentSlot.CHEST).setUnlocalizedName("plateNaga").setMaxStackSize(1));
         items.register("naga_leggings", new ItemTFNagaArmor(ARMOR_NAGA, EntityEquipmentSlot.LEGS).setUnlocalizedName("legsNaga").setMaxStackSize(1));
@@ -26,7 +26,7 @@ public class TFRegisterItemEvent {
         items.register("ore_meter", new ItemTFOreMeter().setUnlocalizedName("oreMeter").setMaxStackSize(1));
         items.register("magic_map", new ItemTFMagicMap().setUnlocalizedName("magicMap").setMaxStackSize(1));
         items.register("maze_map", new ItemTFMazeMap(false).setUnlocalizedName("mazeMap").setMaxStackSize(1));
-        items.register("ore_Map", new ItemTFMazeMap(true).setUnlocalizedName("oreMap").setMaxStackSize(1));
+        items.register("ore_map", new ItemTFMazeMap(true).setUnlocalizedName("oreMap").setMaxStackSize(1));
         items.register("raven_feather", new ItemTF().setUnlocalizedName("tfFeather"));
         items.register("magic_map_focus", new ItemTF().setUnlocalizedName("magicMapFocus"));
         items.register("maze_map_focus", new ItemTF().setUnlocalizedName("mazeMapFocus"));

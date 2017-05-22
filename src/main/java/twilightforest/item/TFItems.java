@@ -50,7 +50,7 @@ public class TFItems {
     public static final Item magicMap;
     @GameRegistry.ObjectHolder("maze_map")
     public static final Item mazeMap;
-    @GameRegistry.ObjectHolder("ore_Map")
+    @GameRegistry.ObjectHolder("ore_map")
     public static final Item oreMap;
     @GameRegistry.ObjectHolder("raven_feather")
     public static final Item feather;
