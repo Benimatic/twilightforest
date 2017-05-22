@@ -44,7 +44,6 @@ public class TFItems {
     public static final Item scepterLifeDrain;
     @GameRegistry.ObjectHolder("zombie_scepter")
     public static final Item scepterZombie;
-    //items.register(wandPacification, "Wand of Pacification [NYI]");
     @GameRegistry.ObjectHolder("ore_meter")
     public static final Item oreMeter;
     @GameRegistry.ObjectHolder("magic_map")
