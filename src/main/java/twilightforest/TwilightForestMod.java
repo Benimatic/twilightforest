@@ -86,12 +86,6 @@ public class TwilightForestMod {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		loadConfiguration(config);
 
-		// initialize & register blocks
-		TFBlocks.registerBlocks();
-
-		// items
-		TFItems.registerItems();
-
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.doPreLoadRegistration();
 
@@ -154,9 +148,6 @@ public class TwilightForestMod {
 		// dimension provider
 		dimType = DimensionType.register("Twilight Forest", "_twilightforest", dimensionID, WorldProviderTwilightForest.class, false);
 		DimensionManager.registerDimension(TwilightForestMod.dimensionProviderID, dimType);
-
-		// enter biomes into dictionary
-		TFBiomeBase.registerWithBiomeDictionary();
 	}
 	
     @EventHandler

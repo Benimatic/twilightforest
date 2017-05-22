@@ -295,14 +295,17 @@ public class BlockTFPlant extends BlockBush implements IShearable
     @Override
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
-    	switch (world.getBlockState(pos).getValue(VARIANT))
-    	{
-    	case MOSSPATCH :
-    	case MUSHGLOOM :
-    		return EnumPlantType.Cave;
-    	default :
-    		return EnumPlantType.Plains;
-    	}
+        IBlockState blockState = world.getBlockState(pos);
+        if (blockState.getBlock() == this) {
+            switch (blockState.getValue(VARIANT)) {
+                case MOSSPATCH:
+                case MUSHGLOOM:
+                    return EnumPlantType.Cave;
+                default:
+                    return EnumPlantType.Plains;
+            }
+        }
+        return EnumPlantType.Plains;
     }
 
    /* @Override
