@@ -26,6 +26,12 @@ public class EntitySeekerArrow extends EntityArrow {
 		super(world, player);
 	}
 
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(TARGET, -1);
+	}
+
     @Override
 	public void onUpdate()
     {
@@ -34,38 +40,40 @@ public class EntitySeekerArrow extends EntityArrow {
     			updateTarget();
 			}
 
-			Entity target = getTarget();
-			Vec3d targetVec = new Vec3d(this.posX - target.posX, this.posY - (target.posY + target.getEyeHeight()), this.posZ - target.posZ);
-			targetVec = targetVec.normalize();
+			if (getTarget() != null) {
+				Entity target = getTarget();
+				Vec3d targetVec = new Vec3d(this.posX - target.posX, this.posY - (target.posY + target.getEyeHeight()), this.posZ - target.posZ);
+				targetVec = targetVec.normalize();
 
-			Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
-			courseVec = courseVec.normalize();
+				Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
+				courseVec = courseVec.normalize();
 
-			double dotProduct = courseVec.dotProduct(targetVec);
-			//System.out.println("target vec compared to course vec= " + dotProduct);
+				double dotProduct = courseVec.dotProduct(targetVec);
+				//System.out.println("target vec compared to course vec= " + dotProduct);
 
-			if (dotProduct < 0) {
+				if (dotProduct < 0) {
 
-				// match current speed
-				float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+					// match current speed
+					float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 
-				currentSpeed *= 1.0;
+					currentSpeed *= 1.0;
 
-				targetVec = targetVec.scale(currentSpeed);
+					targetVec = targetVec.scale(currentSpeed);
 
-				// adjust current heading
-				double dx = MathHelper.clamp(targetVec.xCoord, -2.0, 2.0);
-				double dy = MathHelper.clamp(targetVec.yCoord, -1.0, 1.0);
-				double dz = MathHelper.clamp(targetVec.zCoord, -2.0, 2.0);
+					// adjust current heading
+					double dx = MathHelper.clamp(targetVec.xCoord, -2.0, 2.0);
+					double dy = MathHelper.clamp(targetVec.yCoord, -1.0, 1.0);
+					double dz = MathHelper.clamp(targetVec.zCoord, -2.0, 2.0);
 
-				this.motionX -= dx;
-				this.motionY -= dy;
-				this.motionZ -= dz;
-			} else if (!world.isRemote) {
-				setTarget(null);
+					this.motionX -= dx;
+					this.motionY -= dy;
+					this.motionZ -= dz;
+				} else if (!world.isRemote) {
+					setTarget(null);
+				}
+
+				this.motionY += 0.045F;
 			}
-
-			this.motionY += 0.045F;
 		}
 
         super.onUpdate();

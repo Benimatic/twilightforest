@@ -1,12 +1,14 @@
 package twilightforest.item;
 
-import java.util.HashMap;
-
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -14,37 +16,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class ItemTFCubeOfAnnihilation extends ItemTF {
-	private HashMap<ItemStack, Entity> launchedCubesMap = new HashMap<ItemStack, Entity>();
-	
 	protected ItemTFCubeOfAnnihilation() {
         this.maxStackSize = 1;
 		this.setCreativeTab(TFItems.creativeTab);
-
+		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				return isThrown(stack) ? 1 : 0;
+			}
+		});
 	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		player.setActiveHand(hand);
 
-		if (!world.isRemote && !this.hasLaunchedCube(stack)) {
+		if (!world.isRemote && !isThrown(stack)) {
 			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(world, player);
 
 			world.spawnEntity(launchedCube);
-			
-			this.setLaunchedCube(stack, launchedCube);
+
 			setCubeAsThrown(stack);
 		}
 
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
-	
-	/**
-	 * Set this item as having been thrown
-	 * @param stack
-	 */
-	public static void setCubeAsThrown(ItemStack stack) {
+
+	private static boolean isThrown(ItemStack stack) {
+		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("thrown");
+	}
+
+	private static void setCubeAsThrown(ItemStack stack) {
 		// set NBT tag for stack
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
@@ -52,31 +59,13 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		stack.getTagCompound().setBoolean("thrown", true);
 	}
 
-	/**
-	 * Set the cube for this item as returned to the player
-	 * @param stack
-	 */
-	public static void setCubeAsReturned(ItemStack stack) {
+	private static void setCubeAsReturned(ItemStack stack) {
 		// set NBT tag for stack
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		stack.getTagCompound().setBoolean("thrown", false);
 	}
-	
-
-	/**
-	 * Method for the client to determine if the cube has been thrown or not.  Not as accurate as server method due to lag, etc.
-	 * @param stack
-	 */
-	public static boolean doesTalismanHaveCube(ItemStack stack) {
-		if (stack.getTagCompound() == null) {
-			return true;
-		} else {
-			return !stack.getTagCompound().getBoolean("thrown");
-		}
-	}
-
 	
 	/**
 	 * Set the cube belonging to the player as returned
@@ -86,25 +75,6 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		if (player != null && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == TFItems.cubeOfAnnihilation) {
 			setCubeAsReturned(player.getActiveItemStack());
 		}
-	}
-
-	public boolean hasLaunchedCube(ItemStack stack) {
-		Entity cube = this.launchedCubesMap.get(stack);
-		
-		return cube != null && !cube.isDead;
-	}
-	
-	public void setLaunchedCube(ItemStack stack, EntityTFCubeOfAnnihilation launchedCube) {
-		this.launchedCubesMap.put(stack, launchedCube);
-	}
-
-    @Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
-//		if (stack.getItemDamage() >= this.getMaxDamage()) {
-//			// do not use
-//			player.stopUsingItem();
-//			return;
-//		}
 	}
 
     @Override

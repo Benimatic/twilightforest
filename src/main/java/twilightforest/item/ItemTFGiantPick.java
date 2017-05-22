@@ -15,8 +15,9 @@ import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFGiantPick extends ItemPickaxe {
+public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallback {
 
 	protected ItemTFGiantPick(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);
