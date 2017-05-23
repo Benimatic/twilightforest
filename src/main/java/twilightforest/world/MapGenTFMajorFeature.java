@@ -191,12 +191,12 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public boolean isStructureConquered(int mapX, int mapY, int mapZ) {
+	public boolean isStructureConquered(BlockPos pos) {
 		
 		boolean conquered = false;
 		
 		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
+			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 				if (start instanceof StructureTFMajorFeatureStart) {
 					
 					conquered = ((StructureTFMajorFeatureStart)start).isConquered;
@@ -211,12 +211,12 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	 * Check the lock at the specified lockIndex for the structure at the specified coords
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean isStructureLocked(int mapX, int mapY, int mapZ, int lockIndex) {
+	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
 		
 		boolean locked = false;
 		
 		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
+			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 				if (start instanceof StructureTFMajorFeatureStart) {
 					
 					locked = ((StructureTFMajorFeatureStart)start).isLocked(lockIndex);

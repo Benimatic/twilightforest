@@ -26,6 +26,7 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import twilightforest.TFFeature;
@@ -82,14 +83,14 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
     double[] field_147426_g;
     int[][] field_73219_j = new int[32][32];
 
-//	private MapGenTFMajorFeature majorFeatureGenerator;
+	private MapGenTFMajorFeature majorFeatureGenerator;
 //	private MapGenTFHollowTree hollowTreeGenerator;
 
 	public ChunkGeneratorTwilightForest(World world, long l, boolean flag) {
 		stoneNoise = new double[256];
 		caveGenerator = new TFGenCaves();
 	
-//		majorFeatureGenerator = new MapGenTFMajorFeature();
+		majorFeatureGenerator = new MapGenTFMajorFeature();
 //		hollowTreeGenerator = new MapGenTFHollowTree();
 	
 		ravineGenerator = new TFGenRavine();
@@ -142,7 +143,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		ChunkPrimer fake = new ChunkPrimer();
 		// todo 1.9 why is it faking here?
-//		majorFeatureGenerator.generate(world, cx, cz, fake);
+		majorFeatureGenerator.generate(world, cx, cz, fake);
 //		hollowTreeGenerator.generate(world, cx, cz, fake);
 	
 		Chunk chunk = new Chunk(world, primer, cx, cz);
@@ -937,12 +938,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precicely in a feature?
-/*		TFFeature nearestFeature = TFFeature.getFeatureForRegion(mapX >> 4, mapZ >> 4, world);
+		TFFeature nearestFeature = TFFeature.getFeatureForRegion(pos.getX() >> 4, pos.getZ() >> 4, world);
 
 
 		if (nearestFeature != TFFeature.nothing) {
 			// if the feature is already conquered, no spawns
-			if (this.isStructureConquered(mapX, mapY, mapZ)) {
+			if (this.isStructureConquered(pos)) {
 				return null;
 			}
 
@@ -952,7 +953,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
 			}
 		}
-*/
+
 		Biome biome = world.getBiome(pos);
 
 		if (biome == null) {
@@ -973,31 +974,28 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	}
 
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		//FIXME: AtomicBlom: Bring this back in with structures
-		//this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
+		this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
-	public boolean isStructureLocked(BlockPos pos, boolean lockIndex) {
-		//FIXME: AtomicBlom: Bring this back in with structures
-		return false; //Unlock all structures for development
-		//return this.majorFeatureGenerator.isStructureLocked(mapX, mapY, mapZ, lockIndex);
+	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
+		return this.majorFeatureGenerator.isStructureLocked(pos, lockIndex);
 	}
 
-/*
-	public boolean isBlockInStructureBB(int mapX, int mapY, int mapZ) {
-		return this.majorFeatureGenerator.hasStructureAt(mapX, mapY, mapZ);
+
+	public boolean isBlockInStructureBB(BlockPos pos) {
+		return this.majorFeatureGenerator.isInsideStructure(pos);
 	}
 
-	public StructureBoundingBox getSBBAt(int mapX, int mapY, int mapZ) {
-		return this.majorFeatureGenerator.getSBBAt(mapX, mapY, mapZ);
+	public StructureBoundingBox getSBBAt(BlockPos pos) {
+		return this.majorFeatureGenerator.getSBBAt(pos);
 	}
 
-	public boolean isBlockProtected(int x, int y, int z) {
-		return this.majorFeatureGenerator.isBlockProtectedAt(x, y, z);
+	public boolean isBlockProtected(BlockPos pos) {
+		return this.majorFeatureGenerator.isBlockProtectedAt(pos);
 	}
 
-	public boolean isStructureConquered(int mapX, int mapY, int mapZ) {
-		return this.majorFeatureGenerator.isStructureConquered(mapX, mapY, mapZ);
+	public boolean isStructureConquered(BlockPos pos) {
+		return this.majorFeatureGenerator.isStructureConquered(pos);
 	}
 	
 
@@ -1018,11 +1016,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return this.majorFeatureGenerator.getFullSBBNear(mapX, mapZ, range);
 
 	}
-*/
+
 
 	@Override
 	public void recreateStructures(Chunk chunk, int var1, int var2) {
-//		majorFeatureGenerator.generate(world, var1, var2, null);
+		majorFeatureGenerator.generate(world, var1, var2, null);
+//TODO: Structure Disable
 //		hollowTreeGenerator.generate(world, var1, var2, null);
 	}
 }

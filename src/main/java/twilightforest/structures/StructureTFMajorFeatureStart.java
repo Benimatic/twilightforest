@@ -53,7 +53,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //FIXME: Disabled Structure
 //        MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
-//        MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
