@@ -151,7 +151,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         BlockPos pos = new BlockPos(dx, dy, dz);
         if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST)
         {
-            treasureType.generate(world, rand, pos, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
+            treasureType.generateChest(world, pos);
         }
     }
 
@@ -178,7 +178,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         BlockPos pos = new BlockPos(dx, dy, dz);
         if(sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST)
         {
-            treasureType.generate(world, null, pos, trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST);
+            treasureType.generateChest(world, pos);
         }
     }
     
@@ -392,7 +392,8 @@ public abstract class StructureTFComponent extends StructureComponent {
     // [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
     protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {
         EnumFacing oldBase = fakeBaseMode(rotation);
-	    func_189914_a(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false);
+	    final int minimumLightLevel = 15;
+	    func_189914_a(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
         setCoordBaseMode(oldBase);
     }
     

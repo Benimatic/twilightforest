@@ -21,7 +21,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
-import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
+import twilightforest.biomes.TFBiomes;
 
 
 public class MapGenTFHollowTree extends MapGenBase {
@@ -97,9 +97,17 @@ public class MapGenTFHollowTree extends MapGenBase {
 	}
 
 	/** A list of all the biomes twilight oaks can spawn in. */
-    private static final List<Biome> oakSpawnBiomes = Arrays.asList(TFBiomeBase.twilightForest, TFBiomeBase.twilightForest2,
-            TFBiomeBase.mushrooms, TFBiomeBase.tfSwamp, TFBiomeBase.clearing, TFBiomeBase.oakSavanna,
-            TFBiomeBase.fireflyForest, TFBiomeBase.deepMushrooms, TFBiomeBase.enchantedForest, TFBiomeBase.fireSwamp);
+    private static final List<Biome> oakSpawnBiomes = Arrays.asList(
+            TFBiomes.twilightForest,
+            TFBiomes.denseTwilightForest,
+            TFBiomes.mushrooms,
+            TFBiomes.tfSwamp,
+            TFBiomes.clearing,
+            TFBiomes.oakSavanna,
+            TFBiomes.fireflyForest,
+            TFBiomes.deepMushrooms,
+            TFBiomes.enchantedForest,
+            TFBiomes.fireSwamp);
 
 	private boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
 		return rand.nextInt(TwilightForestMod.twilightOakChance) == 0 && TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled
@@ -107,7 +115,9 @@ public class MapGenTFHollowTree extends MapGenBase {
 	}
 
 	private StructureStart getStructureStart(int chunkX, int chunkZ) {
-		return new StructureTFHollowTreeStart(world, rand, chunkX, chunkZ);
+	    throw new RuntimeException("Not Implemented");
+//TODO: Structure Disabled
+//        return new StructureTFHollowTreeStart(world, rand, chunkX, chunkZ);
 	}
 	
 }

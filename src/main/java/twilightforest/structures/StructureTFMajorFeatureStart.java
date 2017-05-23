@@ -18,23 +18,9 @@ import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
+import twilightforest.biomes.TFBiomes;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
-import twilightforest.structures.darktower.TFDarkTowerPieces;
-import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
-import twilightforest.structures.hollowtree.TFHollowTreePieces;
-import twilightforest.structures.icetower.ComponentTFIceTowerMain;
-import twilightforest.structures.icetower.TFIceTowerPieces;
-import twilightforest.structures.lichtower.ComponentTFTowerMain;
-import twilightforest.structures.lichtower.TFLichTowerPieces;
-import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
-import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
-import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
-import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
-import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
-import twilightforest.structures.stronghold.TFStrongholdPieces;
-import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
-import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.world.TFWorld;
 import twilightforest.world.TFBiomeProvider;
 
@@ -50,27 +36,29 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     static
     {
     	MapGenStructureIO.registerStructure(StructureTFMajorFeatureStart.class, "TFFeature");
-    	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
-    	
-    	TFStrongholdPieces.registerPieces();
-    	TFMinotaurMazePieces.registerPieces();
-    	TFDarkTowerPieces.registerPieces();
-    	TFLichTowerPieces.registerPieces();
-    	TFIceTowerPieces.registerPieces();
-    	TFMushroomTowerPieces.registerPieces();
-    	TFHollowTreePieces.registerPieces();
-    	TFTrollCavePieces.registerPieces();
-    	TFFinalCastlePieces.registerFinalCastlePieces();
+//FIXME: Disabled Structure
+//    	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
+//FIXME: Disabled Structure
+//    	TFStrongholdPieces.registerPieces();
+//    	TFMinotaurMazePieces.registerPieces();
+//    	TFDarkTowerPieces.registerPieces();
+//    	TFLichTowerPieces.registerPieces();
+//    	TFIceTowerPieces.registerPieces();
+//    	TFMushroomTowerPieces.registerPieces();
+//    	TFHollowTreePieces.registerPieces();
+//    	TFTrollCavePieces.registerPieces();
+//    	TFFinalCastlePieces.registerFinalCastlePieces();
     	
     	// register one-off pieces here
-        MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
-        MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
-        MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
-        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
-        MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
-        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
-        MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
-}
+//FIXME: Disabled Structure
+//        MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
+//        MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
+//        MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+//        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
+//        MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
+//        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
+//        MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
+	}
     
     public StructureTFMajorFeatureStart() {}
 
@@ -122,10 +110,11 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 		}
 
-        if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain)
-        {
-        	moveToAvgGroundLevel(world, x, z);
-        }
+//FIXME: Disabled Structure
+//        if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain)
+//        {
+//        	moveToAvgGroundLevel(world, x, z);
+//        }
 	}
 	
 	/**
@@ -133,55 +122,55 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	 * @return The first component we should add to our structure
 	 */
 	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
-		
-		if (feature == TFFeature.nagaCourtyard) {
-			return new ComponentTFNagaCourtyard(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.hedgeMaze) {
-			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.hill1) {
-			return new ComponentTFHollowHill(world, rand, 0, 1, x, y, z);
-		}
-		if (feature == TFFeature.hill2) {
-			return new ComponentTFHollowHill(world, rand, 0, 2, x, y, z);
-		}
-		if (feature == TFFeature.hill3) {
-			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
-		}
-		if (feature == TFFeature.lichTower) {
-			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.questGrove) {
-			return new ComponentTFQuestGrove(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.hydraLair) {
-			return new ComponentTFHydraLair(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.labyrinth) {
-			return new ComponentTFMazeRuins(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.darkTower) {
-			return new ComponentTFDarkTowerMain(world, rand, 0, x, y - 1, z);
-		}
-		if (feature == TFFeature.tfStronghold) {
-			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.iceTower) {
-			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.mushroomTower) {
-			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.yetiCave) {
-			return new ComponentTFYetiCave(world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.trollCave) {
-			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
-		}		
-		if (feature == TFFeature.finalCastle) {
-			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
-		}
+//FIXME: Disabled Structure
+//		if (feature == TFFeature.nagaCourtyard) {
+//			return new ComponentTFNagaCourtyard(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.hedgeMaze) {
+//			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.hill1) {
+//			return new ComponentTFHollowHill(world, rand, 0, 1, x, y, z);
+//		}
+//		if (feature == TFFeature.hill2) {
+//			return new ComponentTFHollowHill(world, rand, 0, 2, x, y, z);
+//		}
+//		if (feature == TFFeature.hill3) {
+//			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
+//		}
+//		if (feature == TFFeature.lichTower) {
+//			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.questGrove) {
+//			return new ComponentTFQuestGrove(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.hydraLair) {
+//			return new ComponentTFHydraLair(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.labyrinth) {
+//			return new ComponentTFMazeRuins(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.darkTower) {
+//			return new ComponentTFDarkTowerMain(world, rand, 0, x, y - 1, z);
+//		}
+//		if (feature == TFFeature.tfStronghold) {
+//			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.iceTower) {
+//			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.mushroomTower) {
+//			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.yetiCave) {
+//			return new ComponentTFYetiCave(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.trollCave) {
+//			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
+//		}
+//		if (feature == TFFeature.finalCastle) {
+//			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
+//		}
 		
 		return null;
 	}
@@ -206,7 +195,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     		int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
     		
     		// dark forest doesn't seem to get the right value.  Why is my calculation so bad?
-    		if (biomeAt == TFBiomeBase.darkForest)
+    		if (biomeAt == TFBiomes.darkForest)
     		{
     			offY += 4;
     		}
