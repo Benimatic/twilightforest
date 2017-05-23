@@ -129,15 +129,15 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //		if (feature == TFFeature.hedgeMaze) {
 //			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
 //		}
-//		if (feature == TFFeature.hill1) {
-//			return new ComponentTFHollowHill(world, rand, 0, 1, x, y, z);
-//		}
-//		if (feature == TFFeature.hill2) {
-//			return new ComponentTFHollowHill(world, rand, 0, 2, x, y, z);
-//		}
-//		if (feature == TFFeature.hill3) {
-//			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
-//		}
+		if (feature == TFFeature.hill1) {
+			return new ComponentTFHollowHill(world, rand, 0, 1, x, y, z);
+		}
+		if (feature == TFFeature.hill2) {
+			return new ComponentTFHollowHill(world, rand, 0, 2, x, y, z);
+		}
+		if (feature == TFFeature.hill3) {
+			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
+		}
 //		if (feature == TFFeature.lichTower) {
 //			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
 //		}
