@@ -4,8 +4,8 @@
     "up": "twilightforest:blocks/nagastone_top_tip",
     "down": "twilightforest:blocks/nagastone_cross_section",
     "west": "twilightforest:blocks/nagastone_tip_up",
-    "north": "twilightforest:blocks/nagastone_right_down",
+    "north": "twilightforest:blocks/nagastone_left_down",
     "east": "twilightforest:blocks/nagastone_cross_section",
-    "south": "twilightforest:blocks/nagastone_left_down"
+    "south": "twilightforest:blocks/nagastone_right_down"
   }
 }

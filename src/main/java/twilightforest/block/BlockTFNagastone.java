@@ -88,7 +88,7 @@ public class BlockTFNagastone extends Block {
 
 		// If state is not a head then you may go ahead and update
 		int connectionCount = 0;
-		IBlockState stateOut = stateIn;
+		IBlockState stateOut;
 		EnumFacing[] facings = new EnumFacing[2];
 
 		// get sides
