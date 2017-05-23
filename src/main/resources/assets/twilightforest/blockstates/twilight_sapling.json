@@ -3,7 +3,7 @@
   "defaults": {
     "transform": "forge:default-block",
     "model": "minecraft:cross",
-    "textures": { "texture": "twilightforest:blocks/sapling_oak" },
+    "textures": { "cross": "twilightforest:blocks/sapling_oak" },
     "display": {
       "gui": {
         "scale": [1, 1.5, 1]
