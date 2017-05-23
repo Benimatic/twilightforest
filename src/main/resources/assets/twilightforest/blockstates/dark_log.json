@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "axis=y": { "model": "twilightforest:dark_log" },
-    "axis=z": { "model": "twilightforest:dark_log", "x": 90 },
-    "axis=x": { "model": "twilightforest:dark_log", "x": 90, "y": 90 },
-    "axis=none": { "model": "twilightforest:dark_bark" }
-  }
-}

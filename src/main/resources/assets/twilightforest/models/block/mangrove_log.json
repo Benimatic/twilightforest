@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_column",
-  "textures": {
-    "end": "twilightforest:blocks/mangrove_top",
-    "side": "twilightforest:blocks/mangrove_side"
-  }
-}

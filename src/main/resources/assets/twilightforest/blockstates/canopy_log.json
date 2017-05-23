@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "axis=y": { "model": "twilightforest:canopy_log" },
-    "axis=z": { "model": "twilightforest:canopy_log", "x": 90 },
-    "axis=x": { "model": "twilightforest:canopy_log", "x": 90, "y": 90 },
-    "axis=none": { "model": "twilightforest:canopy_bark" }
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "twilightforest:blocks/darkwood_side"
-  }
-}

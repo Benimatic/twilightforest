@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_column",
-  "textures": {
-    "end": "twilightforest:blocks/oak_top",
-    "side": "twilightforest:blocks/oak_side"
-  }
-}
