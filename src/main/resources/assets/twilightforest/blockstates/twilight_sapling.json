@@ -41,6 +41,16 @@
     }
   },
   "variants": {
+    "inventory,tf_type=oak": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_oak"}},
+    "inventory,tf_type=canopy": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_canopy"}},
+    "inventory,tf_type=mangrove": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_mangrove"}},
+    "inventory,tf_type=darkwood": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_darkwood"}},
+    "inventory,tf_type=hollow_oak": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_hollow_oak"}},
+    "inventory,tf_type=time": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_time"}},
+    "inventory,tf_type=transformation": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_transformation"}},
+    "inventory,tf_type=mining": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_mining"}},
+    "inventory,tf_type=sorting": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_sorting"}},
+    "inventory,tf_type=rainbow": { "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/sapling_rainboak"}},
     "tf_type":{
       "canopy":{
         "textures":{
