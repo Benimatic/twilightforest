@@ -65,7 +65,9 @@ public class BlockTFFireflyJar extends Block {
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
     {
-    	double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
+        //TODO Reenable when entity renders are not white cuboids
+
+    	/*double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
     	double dy = pos.getY() - 0.1F + ((rand.nextFloat() - rand.nextFloat()) * 0.4F);
     	double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
 
@@ -77,7 +79,7 @@ public class BlockTFFireflyJar extends Block {
     	dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
 
     	tinyfly = new EntityTFTinyFirefly(world, dx, dy, dz);
-    	world.addWeatherEffect(tinyfly);
+    	world.addWeatherEffect(tinyfly);*/
     }
 
     @Override

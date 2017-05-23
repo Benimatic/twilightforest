@@ -3,11 +3,13 @@ package twilightforest.block;
 import java.util.Locale;
 import java.util.Random;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +17,10 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import twilightforest.item.TFItems;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockTFAuroraSlab extends BlockSlab {
 
     private static final PropertyEnum<Dummy> DUMMY_PROP = PropertyEnum.create("dummy", Dummy.class);
@@ -30,7 +36,14 @@ public class BlockTFAuroraSlab extends BlockSlab {
 		
         this.setLightOpacity(isDouble ? 255 : 0);
 
+        this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, EnumBlockHalf.BOTTOM));
 	}
+
+	@Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, HALF);
+    }
 
     @Override
     public String getUnlocalizedName(int meta) {
@@ -62,6 +75,16 @@ public class BlockTFAuroraSlab extends BlockSlab {
     protected ItemStack getSilkTouchDrop(IBlockState state)
     {
         return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+	    return this.getDefaultState().withProperty(HALF, EnumBlockHalf.values()[meta % EnumBlockHalf.values().length]);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+	    return state.getValue(HALF).ordinal();
     }
     
     private enum Dummy implements IStringSerializable {

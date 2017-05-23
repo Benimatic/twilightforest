@@ -86,9 +86,9 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
         par3List.add(new ItemStack(par1, 1, 3));
     }
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
         ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(VARIANT).withSuffix("_log").build());
-    }
+    }*/
 }
