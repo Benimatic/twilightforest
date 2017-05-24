@@ -9,7 +9,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.SpawnerVariant;
+import twilightforest.block.enums.BossVariant;
 
 public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
@@ -48,7 +48,7 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		}
 
 		// boss spawner seems important
-		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, SpawnerVariant.HYDRA), 27, 3, 27, sbb);
+		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA), 27, 3, 27, sbb);
 
 		return true;
 	}

@@ -49,14 +49,13 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //    	TFFinalCastlePieces.registerFinalCastlePieces();
     	
     	// register one-off pieces here
-//FIXME: Disabled Structure
         MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
 	    MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
         MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
-//        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
         MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
-//        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
-//        MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
+        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
+        MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 	}
     
     public StructureTFMajorFeatureStart() {}
@@ -136,15 +135,18 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		if (feature == TFFeature.hill3) {
 			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
 		}
+		if (feature == TFFeature.questGrove) {
+			return new ComponentTFQuestGrove(world, rand, 0, x, y, z);
+		}
+		if (feature == TFFeature.hydraLair) {
+			return new ComponentTFHydraLair(world, rand, 0, x, y, z);
+		}
+		if (feature == TFFeature.yetiCave) {
+			return new ComponentTFYetiCave(world, rand, 0, x, y, z);
+		}
 //FIXME: Disabled Structure
 //		if (feature == TFFeature.lichTower) {
 //			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
-//		}
-//		if (feature == TFFeature.questGrove) {
-//			return new ComponentTFQuestGrove(world, rand, 0, x, y, z);
-//		}
-//		if (feature == TFFeature.hydraLair) {
-//			return new ComponentTFHydraLair(world, rand, 0, x, y, z);
 //		}
 //		if (feature == TFFeature.labyrinth) {
 //			return new ComponentTFMazeRuins(world, rand, 0, x, y, z);
@@ -160,9 +162,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //		}
 //		if (feature == TFFeature.mushroomTower) {
 //			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
-//		}
-//		if (feature == TFFeature.yetiCave) {
-//			return new ComponentTFYetiCave(world, rand, 0, x, y, z);
 //		}
 //		if (feature == TFFeature.trollCave) {
 //			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
