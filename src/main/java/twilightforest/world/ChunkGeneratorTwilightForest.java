@@ -668,7 +668,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				
 				// generate several centers for other clouds
 		    	int regionX = (cx + 8) >> 4;
-		    	int regionZ = (cx + 8) >> 4;
+		    	int regionZ = (cz + 8) >> 4;
 
 			    long seed = (long)(regionX * 3129871) ^ (long)regionZ * 116129781L;
 			    seed = seed * seed * 42317861L + seed * 7L;
@@ -714,15 +714,19 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				// generate cloud
 				for (int sx = 0; sx < 4; sx++) {
 					for (int sz = 0; sz < 4; sz++) {
+						int lx = bx * 4 + sx;
+						int lz = bz * 4 + sz;
+
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlockState(bx, y, bz, TFBlocks.wispyCloud.getDefaultState());
+
+							primer.setBlockState(lx, y, lz, TFBlocks.wispyCloud.getDefaultState());
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(bx, y - d, bz, TFBlocks.fluffyCloud.getDefaultState());
+								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffyCloud.getDefaultState());
 							}
-							primer.setBlockState(bx, y - depth, bz, TFBlocks.wispyCloud.getDefaultState());
+							primer.setBlockState(lx, y - depth, lz, TFBlocks.wispyCloud.getDefaultState());
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(bx, y - d, bz, TFBlocks.wispyCloud.getDefaultState());
+								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffyCloud.getDefaultState());
 							}
 						}					
 					}
