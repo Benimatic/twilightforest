@@ -77,7 +77,7 @@ public class TFMaze {
 		tall = 3;
 		head = 0;
 		roots = 0;
-		wallBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PILLAR);
+		wallBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
 		rootBlockState = TFBlocks.mazestone.getDefaultState();
 		torchBlockState = Blocks.TORCH.getDefaultState();
 		pillarBlockState = null;

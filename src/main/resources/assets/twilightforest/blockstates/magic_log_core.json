@@ -1,18 +1,8 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "cube_column",
-    "textures": {
-      "side": "#side_off"
-    }
-  },
+  "defaults": { "model": "cube_column", "textures": { "side": "#side_off" } },
   "variants": {
-    "axis": {
-      "y": {},
-      "z": {},
-      "x": {},
-      "none": { "model": "cube_column", "textures": { "side": "#side_on" } }
-    },
+    "axis": { "y": {}, "z": {}, "x": {}, "none": { "textures": { "side": "#side_on" } } },
     "variant": {
       "time": {
         "textures": {
