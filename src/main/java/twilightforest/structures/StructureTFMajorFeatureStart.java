@@ -54,7 +54,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	    MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
         MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
-//        MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
+        MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 	}
