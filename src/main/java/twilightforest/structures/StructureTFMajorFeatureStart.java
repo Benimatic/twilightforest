@@ -121,10 +121,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	 * @return The first component we should add to our structure
 	 */
 	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
-//FIXME: Disabled Structure
-//		if (feature == TFFeature.nagaCourtyard) {
-//			return new ComponentTFNagaCourtyard(world, rand, 0, x, y, z);
-//		}
+		if (feature == TFFeature.nagaCourtyard) {
+			return new ComponentTFNagaCourtyard(world, rand, 0, x, y, z);
+		}
 		if (feature == TFFeature.hedgeMaze) {
 			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
 		}
@@ -137,6 +136,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		if (feature == TFFeature.hill3) {
 			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
 		}
+//FIXME: Disabled Structure
 //		if (feature == TFFeature.lichTower) {
 //			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
 //		}
