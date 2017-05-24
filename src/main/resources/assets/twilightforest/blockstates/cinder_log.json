@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_column",
+    "textures": {
+      "side": "twilightforest:blocks/cinder_side",
+      "end": "twilightforest:blocks/cinder_corner"
+    }
+  },
+  "variants": {
+    "axis": {
+      "y": {},
+      "z": { "x": 90 },
+      "x": { "x": 90, "y": 90 }
+    }
+  }
+}
