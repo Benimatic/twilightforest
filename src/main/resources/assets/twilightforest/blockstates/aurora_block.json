@@ -4,23 +4,69 @@
     "model": "twilightforest:util/tinted_cube_all"
   },
   "variants": {
-    "variant": {
-      0 : { "textures": { "all": "twilightforest:blocks/aurorabrick0" } },
-      1 : { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
-      2 : { "textures": { "all": "twilightforest:blocks/aurorabrick2" } },
-      3 : { "textures": { "all": "twilightforest:blocks/aurorabrick3" } },
-      4 : { "textures": { "all": "twilightforest:blocks/aurorabrick4" } },
-      5 : { "textures": { "all": "twilightforest:blocks/aurorabrick5" } },
-      6 : { "textures": { "all": "twilightforest:blocks/aurorabrick6" } },
-      7 : { "textures": { "all": "twilightforest:blocks/aurorabrick7" } },
-      8 : { "textures": { "all": "twilightforest:blocks/aurorabrick0" } },
-      9 : { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
-      10: { "textures": { "all": "twilightforest:blocks/aurorabrick2" } },
-      11: { "textures": { "all": "twilightforest:blocks/aurorabrick3" } },
-      12: { "textures": { "all": "twilightforest:blocks/aurorabrick4" } },
-      13: { "textures": { "all": "twilightforest:blocks/aurorabrick5" } },
-      14: { "textures": { "all": "twilightforest:blocks/aurorabrick6" } },
-      15: { "textures": { "all": "twilightforest:blocks/aurorabrick7" } }
-    }
+    "variant=0": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick0" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick1" } }
+    ],
+    "variant=1": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick2" } }
+    ],
+    "variant=2": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick2" } }
+    ],
+    "variant=3": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick2" } }
+    ],
+    "variant=4": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick2" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick3" } }
+    ],
+    "variant=5": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick3" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick4" } }
+    ],
+    "variant=6": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick4" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick5" } }
+    ],
+    "variant=7": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick5" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick6" } }
+    ],
+    "variant=8": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick7" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick6" } }
+    ],
+    "variant=9": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick7" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick6" } }
+    ],
+    "variant=10": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick6" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick5" } }
+    ],
+    "variant=11": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick5" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick4" } }
+    ],
+    "variant=12": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick4" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick3" } }
+    ],
+    "variant=13": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick3" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick2" } }
+    ],
+    "variant=14": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick2" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick1" } }
+    ],
+    "variant=15": [
+      { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
+      { "textures": { "all": "twilightforest:blocks/aurorabrick0" } }
+    ]
   }
 }
