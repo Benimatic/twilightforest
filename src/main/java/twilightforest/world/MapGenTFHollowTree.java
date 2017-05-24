@@ -22,6 +22,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 
 
 public class MapGenTFHollowTree extends MapGenBase {
@@ -115,9 +116,7 @@ public class MapGenTFHollowTree extends MapGenBase {
 	}
 
 	private StructureStart getStructureStart(int chunkX, int chunkZ) {
-	    throw new RuntimeException("Not Implemented");
-//TODO: Structure Disabled
-//        return new StructureTFHollowTreeStart(world, rand, chunkX, chunkZ);
+        return new StructureTFHollowTreeStart(world, rand, chunkX, chunkZ);
 	}
 	
 }

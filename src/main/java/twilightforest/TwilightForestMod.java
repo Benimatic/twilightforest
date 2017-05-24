@@ -32,6 +32,7 @@ import twilightforest.item.ItemTFMagicMap;
 import twilightforest.item.ItemTFMazeMap;
 import twilightforest.item.TFItems;
 import twilightforest.item.TFRecipes;
+import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -97,9 +98,9 @@ public class TwilightForestMod {
 		
 		// just call this so that we register structure IDs correctly
 //FIXME: AtomicBlom: Disabled for Structures
-/*
+
 		new StructureTFMajorFeatureStart();
-*/
+
 	}
 
     @EventHandler

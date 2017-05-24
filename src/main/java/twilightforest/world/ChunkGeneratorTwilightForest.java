@@ -85,14 +85,14 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
     int[][] field_73219_j = new int[32][32];
 
 	private MapGenTFMajorFeature majorFeatureGenerator;
-//	private MapGenTFHollowTree hollowTreeGenerator;
+	private MapGenTFHollowTree hollowTreeGenerator;
 
 	public ChunkGeneratorTwilightForest(World world, long l, boolean flag) {
 		stoneNoise = new double[256];
 		caveGenerator = new TFGenCaves();
 	
 		majorFeatureGenerator = new MapGenTFMajorFeature();
-//		hollowTreeGenerator = new MapGenTFHollowTree();
+		hollowTreeGenerator = new MapGenTFHollowTree();
 	
 		ravineGenerator = new TFGenRavine();
 		unusedIntArray32x32 = new int[32][32];
@@ -145,7 +145,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		ChunkPrimer fake = new ChunkPrimer();
 		// todo 1.9 why is it faking here?
 		majorFeatureGenerator.generate(world, cx, cz, fake);
-//		hollowTreeGenerator.generate(world, cx, cz, fake);
+		hollowTreeGenerator.generate(world, cx, cz, fake);
 	
 		Chunk chunk = new Chunk(world, primer, cx, cz);
 	
@@ -880,8 +880,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
 		disableFeatures |= !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
 
-//TODO: Feature Disable
-//		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
+		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
 
 		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.theBiomeDecorator.generateLakes) {
 			int i1 = worldPos.getX() + rand.nextInt(16) + 8;
@@ -1023,7 +1022,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Override
 	public void recreateStructures(Chunk chunk, int var1, int var2) {
 		majorFeatureGenerator.generate(world, var1, var2, null);
-//TODO: Structure Disable
-//		hollowTreeGenerator.generate(world, var1, var2, null);
+		hollowTreeGenerator.generate(world, var1, var2, null);
 	}
 }

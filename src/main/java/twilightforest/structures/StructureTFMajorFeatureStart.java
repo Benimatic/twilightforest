@@ -20,6 +20,7 @@ import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
+import twilightforest.structures.hollowtree.TFHollowTreePieces;
 import twilightforest.world.TFWorld;
 import twilightforest.world.TFBiomeProvider;
 
@@ -44,7 +45,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //    	TFLichTowerPieces.registerPieces();
 //    	TFIceTowerPieces.registerPieces();
 //    	TFMushroomTowerPieces.registerPieces();
-//    	TFHollowTreePieces.registerPieces();
+    	TFHollowTreePieces.registerPieces();
 //    	TFTrollCavePieces.registerPieces();
 //    	TFFinalCastlePieces.registerFinalCastlePieces();
     	

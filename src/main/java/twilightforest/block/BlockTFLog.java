@@ -24,6 +24,7 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 	protected BlockTFLog() {
 		this.setHardness(2.0F);
 		this.setCreativeTab(TFItems.creativeTab);
+		this.setDefaultState(this.getDefaultState().withProperty(LOG_AXIS, EnumAxis.Y));
 	}
 
     @Override

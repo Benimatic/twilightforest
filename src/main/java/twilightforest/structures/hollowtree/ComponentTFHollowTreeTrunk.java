@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockVine;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -11,9 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFGenerator;
+
+import static twilightforest.block.TFBlockProperties.FACING;
 
 
 public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
@@ -28,6 +33,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 
 	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
 		super(index);
+
+		TwilightForestMod.LOGGER.info("Hollow Tree @ {},{},{}", x, y, z);
 
 		height = rand.nextInt(64) + 32;
 		radius =  rand.nextInt(4) + 1;
@@ -178,7 +185,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 * Where should we start this branch?
 	 */
 	private BlockPos getBranchSrc(int branchHeight, double branchRotation) {
-		return TFGenerator.translate(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1, radius, branchRotation, 0.5);
+		return TFGenerator.translate(new BlockPos(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1), radius, branchRotation, 0.5);
 	}
 
 	/**
@@ -216,18 +223,18 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 				{
 					// fill the body of the trunk
 					if (dist <= radius && dist > hollow) {
-						this.setBlockState(world, TFBlocks.log, 0, dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
+						this.setBlockState(world, TFBlocks.log.getDefaultState(), dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 				
 				// fill to ground
 				if (dist <= radius) {
-					this.replaceAirAndLiquidDownwards(world, TFBlocks.log, 0, dx + 1, -1, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, TFBlocks.log.getDefaultState(), dx + 1, -1, dz + 1, sbb);
 				}
 				
 				// add vines
 				if (dist == hollow && dx == hollow + radius) {
-					this.replaceAirAndLiquidDownwards(world, Blocks.VINE, 8, dx + 1, height, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true), dx + 1, height, dz + 1, sbb);
 				}
 			}
 		}
@@ -248,40 +255,41 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 */
 	protected void addInsect(World world, int fHeight, double fAngle, Random random, StructureBoundingBox sbb)
 	{
-		BlockPos bugSpot = TFGenerator.translate(this.radius + 1, fHeight, this.radius + 1, this.radius + 1, fAngle, 0.5);
+		BlockPos bugSpot = TFGenerator.translate(new BlockPos(this.radius + 1, fHeight, this.radius + 1), this.radius + 1, fAngle, 0.5);
 		
 		fAngle = fAngle % 1.0;
-		int insectMeta = 0;
+		EnumFacing insectDirection = EnumFacing.DOWN;
 		
 		if (fAngle > 0.875 || fAngle <= 0.125)
 		{
-			insectMeta = 3;
+			insectDirection = EnumFacing.SOUTH;
 		}
 		else if (fAngle > 0.125 && fAngle <= 0.375)
 		{
-			insectMeta = 1;
+			insectDirection = EnumFacing.EAST;
 		}
 		else if (fAngle > 0.375 && fAngle <= 0.625)
 		{
-			insectMeta = 4;
+			insectDirection = EnumFacing.NORTH;
 		}
 		else if (fAngle > 0.625 && fAngle <= 0.875)
 		{
-			insectMeta = 2;
+			insectDirection = EnumFacing.WEST;
 		}
-		
-		addInsect(world, random.nextBoolean() ? TFBlocks.firefly :  TFBlocks.cicada, insectMeta, bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
+
+		final IBlockState block = (random.nextBoolean() ? TFBlocks.firefly : TFBlocks.cicada).getDefaultState();
+		addInsect(world, block.withProperty(FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
 	}
 
 	/**
 	 * Add an insect if we can at the position specified
 	 */
-	private void addInsect(World world, Block blockID, int insectMeta, int posX, int posY, int posZ, StructureBoundingBox sbb) {
+	private void addInsect(World world, IBlockState blockState, int posX, int posY, int posZ, StructureBoundingBox sbb) {
 		final BlockPos posWithOffset = getBlockPosWithOffset(posX, posY, posZ);
 
-		if (sbb.isVecInside(posWithOffset) && blockID != null && blockID.canPlaceBlockAt(world, posWithOffset))
+		if (sbb.isVecInside(posWithOffset) && blockState != null && blockState.getBlock().canPlaceBlockAt(world, posWithOffset))
         {
-        	world.setBlockState(posWithOffset, blockID, insectMeta, 2);
+        	world.setBlockState(posWithOffset, blockState, 2);
         }
 	}
 
