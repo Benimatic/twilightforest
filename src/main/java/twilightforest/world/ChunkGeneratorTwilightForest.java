@@ -427,12 +427,10 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
 					// hedge mazes, naga arena
 					flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.yetiCave) {
+				} else if (nearFeature == TFFeature.yetiCave)
+				{
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.trollCave) {
-					// troll cloud, more like
-					//deformTerrainForTrollCloud(blockStorage, metaStorage, nearFeature, x, z, dx, dz);
 				}
 			}
 		}
@@ -634,31 +632,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 			}
 		}
 	}
-	
-	private void deformTerrainForTrollCloud(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int y = 164;
-		
-		int bx = dx >> 2;
-		int bz = dz >> 2;
-
-		double dist = Math.sqrt(bx * bx + bz * bz);
-		float pr = pseudoRand(x >> 2, z >> 2);
-		double cv = (dist - 9F) - (pr * 4F);
-		
-		if (dist < 9 || cv < 0.05F) {
-			primer.setBlockState(x, y, z, Blocks.STAINED_GLASS.getDefaultState());
-			primer.setBlockState(x, y - 1, z, Blocks.QUARTZ_BLOCK.getDefaultState());
-			primer.setBlockState(x, y - 2, z, Blocks.QUARTZ_BLOCK.getDefaultState());
-			primer.setBlockState(x, y - 3, z, Blocks.QUARTZ_BLOCK.getDefaultState());
-			primer.setBlockState(x, y - 4, z, Blocks.STAINED_GLASS.getDefaultState());
-		} else if (dist < 10 || cv < 1F) {
-			primer.setBlockState(x, y - 1, z, Blocks.STAINED_GLASS.getDefaultState());
-			primer.setBlockState(x, y - 2, z, Blocks.STAINED_GLASS.getDefaultState());
-			primer.setBlockState(x, y - 3, z, Blocks.STAINED_GLASS.getDefaultState());
-		}
-
-	}
-
 
 	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
