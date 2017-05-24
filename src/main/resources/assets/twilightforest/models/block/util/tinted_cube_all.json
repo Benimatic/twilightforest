@@ -1,5 +1,5 @@
 {
-    "parent": "twilightforest:block/tinted_cube",
+    "parent": "twilightforest:block/util/tinted_cube",
     "textures": {
         "particle": "#all",
         "down": "#all",

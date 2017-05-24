@@ -8,10 +8,12 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockLeaves;
@@ -23,9 +25,10 @@ import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.block.enums.Leaves3Variant;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFLeaves3 extends BlockLeaves {
+public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback {
 
     public static final PropertyEnum<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
 
@@ -131,4 +134,10 @@ public class BlockTFLeaves3 extends BlockLeaves {
     public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         return ImmutableList.of(); // todo 1.9
     }
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
+	}
 }

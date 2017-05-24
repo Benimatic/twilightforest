@@ -1,10 +1,6 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "particle": "twilightforest:blocks/nagastone_cross_section"
-    }
-  },
+  "defaults": { "textures": { "particle": "twilightforest:blocks/nagastone_cross_section" } },
   "variants": {
     "variant": {
       "north_head": { "model": "twilightforest:naga_segment/head", "y": 90 },

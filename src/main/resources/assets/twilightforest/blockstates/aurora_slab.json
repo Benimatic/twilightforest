@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "twilightforest:tinted_slab",
+    "model": "twilightforest:util/tinted_slab",
     "textures": {
       "top": "twilightforest:blocks/aurora_pillar_top",
       "side": "twilightforest:blocks/aurora_slab_side",

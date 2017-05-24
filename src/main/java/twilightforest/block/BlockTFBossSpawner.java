@@ -8,10 +8,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.BossVariant;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nonnull;
@@ -19,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockTFBossSpawner extends Block {
+public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	public static final PropertyEnum<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class, input -> input != BossVariant.NONE);
 
 	protected BlockTFBossSpawner() {
@@ -79,5 +85,17 @@ public class BlockTFBossSpawner extends Block {
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer()
+	{
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
 	}
 }

@@ -1,0 +1,11 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_all" },
+  "variants": {
+    "variant": {
+      "surface": { "textures": { "all": "twilightforest:blocks/deadrock_surface" } },
+      "cracked": { "textures": { "all": "twilightforest:blocks/deadrock_cracked" } },
+      "solid": { "textures": { "all": "twilightforest:blocks/deadrock_solid" } }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "twilightforest:tinted_cube_all"
+    "model": "twilightforest:util/tinted_cube_all"
   },
   "variants": {
     "variant": {
