@@ -40,14 +40,8 @@ public class BlockTFAuroraBrick extends Block {
 		double repetition = 3.5d;
 		double beforeByteOp = (SimplexNoise.noise( ((double) pos.getX()) / size, ((double) pos.getY()) / size, ((double) pos.getZ()) / size)+1.0d)*15.0d*repetition;
 		double finalnum = beforeByteOp % 16.0d;
-		//double finalnum = Math.abs(( beforeByteOp % 15.0d)-7.5d)*2.0d;
-
-		System.out.println("got " + beforeByteOp + " And the number is " + finalnum);
-
-		if (finalnum > 16) System.out.println("Whoops, " + finalnum + " should be ? " + (finalnum % 16));
 
 		return getDefaultState().withProperty(VARIANT, (int) finalnum % 16);
-		//return getDefaultState().withProperty(VARIANT, Math.abs(pos.getX() + pos.getZ()) % 16);
 	}
 
 	@Override
