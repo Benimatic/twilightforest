@@ -17,7 +17,6 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces;
 import twilightforest.TFFeature;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
@@ -51,9 +50,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	
     	// register one-off pieces here
 //FIXME: Disabled Structure
-//        MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
-//        MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
-        MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
+	    MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+        MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
 //        MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
@@ -126,9 +125,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //		if (feature == TFFeature.nagaCourtyard) {
 //			return new ComponentTFNagaCourtyard(world, rand, 0, x, y, z);
 //		}
-//		if (feature == TFFeature.hedgeMaze) {
-//			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
-//		}
+		if (feature == TFFeature.hedgeMaze) {
+			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
+		}
 		if (feature == TFFeature.hill1) {
 			return new ComponentTFHollowHill(world, rand, 0, 1, x, y, z);
 		}

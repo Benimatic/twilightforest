@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,27 +26,36 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IShearable;
 import twilightforest.block.enums.HedgeVariant;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTFHedge extends BlockLeaves {
-
+public class BlockTFHedge extends Block
+{
 	public static final PropertyEnum<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
 	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
 
-	public int damageDone; 
+	public int damageDone;
+	private boolean leavesFancy = true; // TODO update this when the setting is changed / fix this
 
 	protected BlockTFHedge() {
-		// todo 1.9 cactus material
+		super(Material.CACTUS);
+
 		this.damageDone = 3;
 		this.setHardness(2F);
 		this.setResistance(10F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
-    @Override
+
+	@Override
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+	{
+		return !this.leavesFancy && blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
+
+	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
     {
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
@@ -60,11 +70,6 @@ public class BlockTFHedge extends BlockLeaves {
     {
         return true;
     }
-
-	@Override
-	public BlockPlanks.EnumType getWoodType(int meta) {
-		return BlockPlanks.EnumType.DARK_OAK;
-	}
 
     @Override
 	public int damageDropped(IBlockState state) {
@@ -199,11 +204,6 @@ public class BlockTFHedge extends BlockLeaves {
     		}
     	}
     }
-
-	@Override
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
-		return ImmutableList.of(); // todo 1.9 disable shearing or implement this
-	}
 
 	@Override
 	protected BlockStateContainer createBlockState()

@@ -51,41 +51,33 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     {
     	int highestFoundIndex = -1;
 
-        Iterator startIterator = this.structureMap.values().iterator();
+	    for (StructureStart start : this.structureMap.values())
+	    {
+		    if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
+		    {
 
-        while (startIterator.hasNext())
-        {
-            StructureStart start = (StructureStart)startIterator.next();
+			    for (StructureComponent component : start.getComponents())
+			    {
+				    if (component != null && component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos))
+				    {
+					    if (component instanceof StructureTFComponent)
+					    {
+						    StructureTFComponent tfComponent = (StructureTFComponent) component;
 
-            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-            {
-                Iterator<StructureComponent> componentIterator = start.getComponents().iterator();
+						    //System.out.println("found a tfComponent at the specified coordinates.  It's a " + tfComponent + ", index = " + tfComponent.spawnListIndex);
 
-                while (componentIterator.hasNext())
-                {
-                    StructureComponent component = (StructureComponent)componentIterator.next();
-
-                    if (component != null && component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos))
-                    {
-                    	if (component instanceof StructureTFComponent)
-                    	{
-                    		StructureTFComponent tfComponent = (StructureTFComponent)component;
-                    		
-                    		//System.out.println("found a tfComponent at the specified coordinates.  It's a " + tfComponent + ", index = " + tfComponent.spawnListIndex);
-                    		
-                    		if (tfComponent.spawnListIndex > highestFoundIndex)
-                    		{
-                    			highestFoundIndex = tfComponent.spawnListIndex;
-                    		}
-                    	}
-                    	else
-                    	{
-                    		return 0;
-                    	}
-                    }
-                }
-            }
-        }
+						    if (tfComponent.spawnListIndex > highestFoundIndex)
+						    {
+							    highestFoundIndex = tfComponent.spawnListIndex;
+						    }
+					    } else
+					    {
+						    return 0;
+					    }
+				    }
+			    }
+		    }
+	    }
 
         return highestFoundIndex;
     }
@@ -96,27 +88,20 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	public StructureBoundingBox getSBBAt(BlockPos pos) {
 		StructureBoundingBox boxFound = null;
 
-        Iterator<StructureStart> startIterator = this.structureMap.values().iterator();
+		for (StructureStart start : this.structureMap.values())
+		{
+			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
+			{
 
-        while (startIterator.hasNext())
-        {
-            StructureStart start = (StructureStart)startIterator.next();
-
-            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-            {
-                Iterator<StructureComponent> componentIterator = start.getComponents().iterator();
-
-                while (componentIterator.hasNext())
-                {
-                    StructureComponent component = (StructureComponent)componentIterator.next();
-
-                    if (component.getBoundingBox().isVecInside(pos))
-                    {
-                    	boxFound = component.getBoundingBox();
-                    }
-                }
-            }
-        }
+				for (StructureComponent component : start.getComponents())
+				{
+					if (component.getBoundingBox().isVecInside(pos))
+					{
+						boxFound = component.getBoundingBox();
+					}
+				}
+			}
+		}
 
         return boxFound;
 	}
@@ -127,33 +112,32 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	public boolean isBlockProtectedAt(BlockPos pos) {
 		boolean blockProtected = false;
 
-        Iterator<StructureStart> startIterator = this.structureMap.values().iterator();
+		for (StructureStart start : this.structureMap.values())
+		{
+			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
+			{
 
-        while (startIterator.hasNext()) {
-            StructureStart start = (StructureStart)startIterator.next();
+				for (StructureComponent component : start.getComponents())
+				{
+					if (component.getBoundingBox().isVecInside(pos))
+					{
 
-            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
-                Iterator<StructureComponent> componentIterator = start.getComponents().iterator();
+						if (component instanceof StructureTFComponent)
+						{
+							StructureTFComponent tfComp = (StructureTFComponent) component;
 
-                while (componentIterator.hasNext()) {
-                    StructureComponent component = (StructureComponent)componentIterator.next();
+							blockProtected = tfComp.isComponentProtected();
 
-                    if (component.getBoundingBox().isVecInside(pos)) {
-                    	
-                    	if (component instanceof StructureTFComponent) {
-                    		StructureTFComponent tfComp = (StructureTFComponent)component;
-                    		
-                    		blockProtected = tfComp.isComponentProtected();
+						} else
+						{
+							blockProtected = true;
+						}
 
-                    	} else {
-                    		blockProtected = true;
-                    	}
-                    	
-                    	// check if it's a twilight forest component, then check if it's protected
-                    }
-                }
-            }
-        }
+						// check if it's a twilight forest component, then check if it's protected
+					}
+				}
+			}
+		}
 
         return blockProtected;
 
