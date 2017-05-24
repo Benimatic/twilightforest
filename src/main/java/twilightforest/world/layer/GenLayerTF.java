@@ -27,8 +27,6 @@ public abstract class GenLayerTF extends GenLayer {
 		biomes = new GenLayerZoom(1003, biomes);
 		biomes = new GenLayerZoom(1004, biomes);
 		biomes = new GenLayerZoom(1005, biomes);
-		biomes = new GenLayerZoom(1006, biomes);
-		biomes = new GenLayerZoom(1007, biomes);
 
 		GenLayer riverLayer = new GenLayerTFStream(1L, biomes);
 		riverLayer = new GenLayerSmooth(7000L, riverLayer);

@@ -133,9 +133,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		generateTerrain2(cx, cz, primer);
 		
 		squishTerrain(primer);
-		
+
+		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in generateTerrain2
 		addDarkForestCanopy2(cx, cz, primer);
-		biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, cx * 16, cz * 16, 16, 16);
+
+		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
+		this.biomesForGeneration = world.getBiomeProvider().getBiomes(biomesForGeneration, cx * 16, cz * 16, 16, 16);
 		addGlaciers(cx, cz, primer, biomesForGeneration);
 		deformTerrainForFeature(cx, cz, primer);
 		replaceBlocksForBiome(cx, cz, primer, biomesForGeneration);
