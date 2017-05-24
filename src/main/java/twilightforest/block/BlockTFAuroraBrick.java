@@ -34,6 +34,12 @@ public class BlockTFAuroraBrick extends Block {
 	}
 
 	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		return getDefaultState().withProperty(VARIANT, Math.abs(pos.getX() + pos.getZ()) % 16);
+	}
+
+	@Override
 	public BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, VARIANT);
 	}
@@ -45,7 +51,7 @@ public class BlockTFAuroraBrick extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, MathHelper.clamp(meta, 0, 15));
+		return getDefaultState();
 	}
 
 	@Override
@@ -59,10 +65,4 @@ public class BlockTFAuroraBrick extends Block {
 	public int damageDropped(IBlockState state) {
     	return 0;
 	}
-
-    @Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-		return getDefaultState().withProperty(VARIANT, Math.abs(pos.getX() + pos.getZ()) % 16);
-    }
 }
