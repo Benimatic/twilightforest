@@ -23,6 +23,8 @@ import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
+import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
+import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.lichtower.TFLichTowerPieces;
 import twilightforest.world.TFWorld;
@@ -186,9 +188,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //		if (feature == TFFeature.mushroomTower) {
 //			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
 //		}
-//		if (feature == TFFeature.trollCave) {
-//			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
-//		}
+		if (feature == TFFeature.trollCave) {
+			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
+		}
 //		if (feature == TFFeature.finalCastle) {
 //			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
 //		}

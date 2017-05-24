@@ -14,6 +14,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFTreasure;
 import twilightforest.biomes.TFBiomeBase;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFGenCaveStalactite;
@@ -210,12 +211,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		return null;
 	}
 	
-	
+
+
 	/**
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
 	@Override
-	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, int direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, EnumFacing direction) {
 		
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -245,7 +247,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 
         for (int x = minX; x <= maxX; x++) {
         	for (int z = minZ; z <= maxZ; z++) {
-        		if (world.getBiome(new BlockPos(x, 0, z)) != TFBiomeBase.highlands) {
+        		if (world.getBiome(new BlockPos(x, 0, z)) != TFBiomes.highlands) {
         			return true;
         		}
         	}        
