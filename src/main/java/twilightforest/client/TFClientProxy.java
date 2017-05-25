@@ -94,19 +94,7 @@ public class TFClientProxy extends TFCommonProxy {
 	private boolean isDangerOverlayShown;
 
 	@Override
-	public void doPreLoadRegistration() {
-		for (Block b : Block.REGISTRY) {
-			if (b instanceof ModelRegisterCallback) {
-				((ModelRegisterCallback) b).registerModel();
-			}
-		}
-
-		for (Item i : Item.REGISTRY) {
-			if (i instanceof ModelRegisterCallback) {
-				((ModelRegisterCallback) i).registerModel();
-			}
-		}
-	}
+	public void doPreLoadRegistration() {}
 
 	@Override
 	public void doOnLoadRegistration() {
