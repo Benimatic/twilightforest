@@ -12,9 +12,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import twilightforest.block.enums.UnderBrickVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFUnderBrick extends Block {
+public class BlockTFUnderBrick extends Block implements ModelRegisterCallback {
 
     public static final PropertyEnum<UnderBrickVariant> VARIANT = PropertyEnum.create("variant", UnderBrickVariant.class);
 
@@ -53,5 +55,10 @@ public class BlockTFUnderBrick extends Block {
     @Override
 	public int damageDropped(IBlockState state) {
     	return getMetaFromState(state);
+	}
+
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 }
