@@ -15,12 +15,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.entity.passive.EntityTFTinyFirefly;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTFFireflyJar extends Block implements{
+public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
 
@@ -65,9 +66,7 @@ public class BlockTFFireflyJar extends Block implements{
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
     {
-        //TODO Reenable when entity renders are not white cuboids
-
-    	/*double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
+    	double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
     	double dy = pos.getY() - 0.1F + ((rand.nextFloat() - rand.nextFloat()) * 0.4F);
     	double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
 
@@ -79,7 +78,7 @@ public class BlockTFFireflyJar extends Block implements{
     	dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
 
     	tinyfly = new EntityTFTinyFirefly(world, dx, dy, dz);
-    	world.addWeatherEffect(tinyfly);*/
+    	world.addWeatherEffect(tinyfly);
     }
 
     @Override

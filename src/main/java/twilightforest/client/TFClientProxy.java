@@ -94,21 +94,7 @@ public class TFClientProxy extends TFCommonProxy {
 	private boolean isDangerOverlayShown;
 
 	@Override
-	public void doPreLoadRegistration() {}
-
-	@Override
-	public void doOnLoadRegistration() {
-		ColorHandler.init();
-		
-		// client tick listener
-		clientTicker = new TFClientTicker();
-		FMLCommonHandler.instance().bus().register(clientTicker);
-		
-		// client events
-		clientEvents = new TFClientEvents();
-		MinecraftForge.EVENT_BUS.register(clientEvents);
-		
-		// entity renderers
+	public void doPreLoadRegistration() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBoar.class, m -> new RenderTFBoar(m, new ModelTFBoar(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBighorn.class, m -> new RenderTFBighorn(m, new ModelTFBighorn(), new ModelTFBighornFur(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFDeer.class, m -> new RenderTFDeer(m, new ModelTFDeer(), 0.7F));
@@ -192,10 +178,23 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceBomb.class, RenderTFThrownIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new RenderSnowball<>(m, Items.SNOWBALL, Minecraft.getMinecraft().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlideBlock.class, RenderTFSlideBlock::new);
-		
+
 		// I guess the hydra gets its own section
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraHead.class, m -> new RenderTFHydraHead(m, new ModelTFHydraHead(), 1.0F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraNeck.class, m -> new RenderTFGenericLiving<>(m, new ModelTFHydraNeck(), 1.0F, "hydra4.png"));
+	}
+
+	@Override
+	public void doOnLoadRegistration() {
+		ColorHandler.init();
+		
+		// client tick listener
+		clientTicker = new TFClientTicker();
+		FMLCommonHandler.instance().bus().register(clientTicker);
+		
+		// client events
+		clientEvents = new TFClientEvents();
+		MinecraftForge.EVENT_BUS.register(clientEvents);
 		
 		// tile entities
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFFirefly.class, new TileEntityTFFireflyRenderer());
