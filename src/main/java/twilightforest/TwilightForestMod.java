@@ -55,7 +55,6 @@ public class TwilightForestMod {
 	public static int dimensionID;
 	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
-	public static int dimensionProviderID;
     
 	// misc options
     public static boolean silentCicadas;
@@ -148,7 +147,6 @@ public class TwilightForestMod {
 		
 		// dimension provider
 		dimType = DimensionType.register("Twilight Forest", "_twilightforest", dimensionID, WorldProviderTwilightForest.class, false);
-		DimensionManager.registerDimension(TwilightForestMod.dimensionProviderID, dimType);
 	}
 	
     @EventHandler
@@ -474,9 +472,6 @@ public class TwilightForestMod {
 		
 		dimensionID = configFile.get("dimension", "dimensionID", 7).getInt();
 		configFile.get("dimension", "dimensionID", 7).setComment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.");
-		
-		dimensionProviderID = configFile.get("dimension", "dimensionProviderID", -777).getInt();
-		configFile.get("dimension", "dimensionProviderID", 7).setComment("Dimension provider ID.  Does not normally need to be changed, but the option is provided to work around a bug in MCPC+");
 
 	    // other misc otions
 	    silentCicadas = configFile.get(Configuration.CATEGORY_GENERAL, "SilentCicadas", false).getBoolean(false);
