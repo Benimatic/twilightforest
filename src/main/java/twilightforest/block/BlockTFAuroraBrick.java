@@ -33,7 +33,7 @@ public class BlockTFAuroraBrick extends Block {
 
 	}
 
-	private double getFractalNoise(int iteration, double size, BlockPos pos) {
+	private static double getFractalNoise(int iteration, double size, BlockPos pos) {
 		return iteration == 0 ? 0 : ((SimplexNoise.noise(
 				((double) pos.getX() + (iteration * size)) / size,
 				((double) pos.getY() + (iteration * size)) / size,
@@ -41,12 +41,16 @@ public class BlockTFAuroraBrick extends Block {
 				+ 1.0d ) * 0.5d) + getFractalNoise(iteration - 1, size, pos);
 	}
 
+	public static double fractalNoise(int iterations, double size, BlockPos pos) {
+		return getFractalNoise(iterations, size, pos)/(double) iterations;
+	}
+
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
 		double repetition = 8.0d;
 		int iterations = 3;
-		double beforeByteOp = (getFractalNoise(iterations, 48.0d, pos) / ((double) iterations) ) * 15.0d * repetition;
+		double beforeByteOp = fractalNoise(iterations, 48.0d, pos) * 15.0d * repetition;
 		double finalnum = beforeByteOp % 16.0d;
 
 		return getDefaultState().withProperty(VARIANT, (int) finalnum % 16);
