@@ -15,6 +15,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.entity.EntityTFSlideBlock;
 import twilightforest.item.TFItems;
 import net.minecraft.block.BlockRotatedPillar;
@@ -163,5 +164,8 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(DELAY).build());
+		for (int i = 0; i < 4; i++) {
+			ModelUtils.registerToState(this, i, getDefaultState());
+		}
 	}
 }

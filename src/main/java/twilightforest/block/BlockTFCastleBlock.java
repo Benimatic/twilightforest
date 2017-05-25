@@ -17,6 +17,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.enums.CastleBrickVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
 
@@ -28,7 +30,7 @@ import twilightforest.item.TFItems;
  * @author Ben
  *
  */
-public class BlockTFCastleBlock extends Block {
+public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 
     public static final PropertyEnum<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
 
@@ -82,6 +84,11 @@ public class BlockTFCastleBlock extends Block {
     @Override
 	public int damageDropped(IBlockState state) {
     	return getMetaFromState(state);
+	}
+
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 }

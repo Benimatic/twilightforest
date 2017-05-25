@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.block.enums.Leaves3Variant;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback {
@@ -139,5 +140,6 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 }

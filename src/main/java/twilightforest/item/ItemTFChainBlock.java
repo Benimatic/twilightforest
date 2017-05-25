@@ -13,6 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.entity.EntityTFChainBlock;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 import twilightforest.entity.EntityTFTwilightWandBolt;
@@ -27,7 +28,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class ItemTFChainBlock extends ItemTool {
+public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback {
 	
 	// which items have launched which blocks?
 	private Map<ItemStack, Entity> launchedBlocksMap = new IdentityHashMap<ItemStack, Entity>();
