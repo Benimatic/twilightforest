@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
@@ -94,6 +95,7 @@ public class TwilightForestMod {
 
 		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
+		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
 		
 		// just call this so that we register structure IDs correctly
 //FIXME: AtomicBlom: Disabled for Structures

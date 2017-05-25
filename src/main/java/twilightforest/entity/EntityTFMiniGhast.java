@@ -109,6 +109,10 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
         return LOOT_TABLE;
     }
 
+    public boolean isMinion() {
+	    return isMinion;
+    }
+
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
