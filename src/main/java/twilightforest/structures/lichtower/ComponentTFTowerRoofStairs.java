@@ -3,6 +3,7 @@ package twilightforest.structures.lichtower;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -18,7 +19,7 @@ public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 		super(i, wing);
 		
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		this.size = wing.size; // assuming only square towers and roofs right now.
 		this.height = size / 2;

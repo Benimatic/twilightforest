@@ -56,19 +56,19 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 
 		// make walls
 		for (int x = 0; x < 3; x++) {
-			setBlockState(world, Blocks.FENCE, 0, x, 2, 0, sbb);
-			setBlockState(world, Blocks.FENCE, 0, x, 2, 2, sbb);
-			setBlockState(world, Blocks.STONEBRICK, 0, x, 1, 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK, 0, x, 1, 2, sbb);
-			setBlockState(world, Blocks.STONEBRICK, 0, x, 0, 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK, 0, x, 0, 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK, 0, x, 0, 2, sbb);
-			setBlockState(world, Blocks.STONEBRICK, 0, x, -1, 1, sbb);
+			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, 2, 0, sbb);
+			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, 2, 2, sbb);
+			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 1, 0, sbb);
+			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 1, 2, sbb);
+			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 0, 0, sbb);
+			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 0, 1, sbb);
+			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 0, 2, sbb);
+			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, -1, 1, sbb);
 		}
 		
 		// try two blocks outside the boundries
-		setBlockState(world, Blocks.STONEBRICK, 0, -1, -1, 1, sbb);
-		setBlockState(world, Blocks.STONEBRICK, 0, 3, -1, 1, sbb);
+		setBlockState(world, Blocks.STONEBRICK.getDefaultState(), -1, -1, 1, sbb);
+		setBlockState(world, Blocks.STONEBRICK.getDefaultState(), 3, -1, 1, sbb);
 		
 		// clear bridge walkway
 		this.fillWithAir(world, sbb, 0, 1, 1, 2, 2, 1);

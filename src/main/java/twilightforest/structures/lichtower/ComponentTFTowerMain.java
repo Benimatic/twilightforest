@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -232,7 +234,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		floorLevel++;
 		int dx = 6;
 		for (int dz = 3; dz <= 11; dz++) {
-			setBlockState(world, Blocks.FENCE, 0, dx, floorLevel, dz, sbb);
+			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), dx, floorLevel, dz, sbb);
 		}
 		dx++;
 		for (int dz = 3; dz <= 11; dz++) {
@@ -240,15 +242,15 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 		dx++;
 		for (int dz = 3; dz <= 11; dz++) {
-			setBlockState(world, Blocks.FENCE, 0, dx, floorLevel, dz, sbb);
+			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), dx, floorLevel, dz, sbb);
 		}
 
 		// we need 2 extra blocks and 2 extra fences to look good
 		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, 6, floorLevel - 1, 11, sbb);
 		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, 8, floorLevel - 1, 3, sbb);
 		
-		setBlockState(world, Blocks.FENCE, 0, 5, floorLevel, 11, sbb);
-		setBlockState(world, Blocks.FENCE, 0, 9, floorLevel, 3, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 5, floorLevel, 11, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 9, floorLevel, 3, sbb);
 		
 		// place spawner in the middle
 		String mobID = "Skeleton";
@@ -268,10 +270,10 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setSpawner(world, rand, 7, floorLevel + 2, 7, mobID, sbb);
 		
 		// make a fence arch support for the spawner
-		setBlockState(world, Blocks.FENCE, 0, 6, floorLevel + 1, 7, sbb);
-		setBlockState(world, Blocks.FENCE, 0, 8, floorLevel + 1, 7, sbb);
-		setBlockState(world, Blocks.FENCE, 0, 6, floorLevel + 2, 7, sbb);
-		setBlockState(world, Blocks.FENCE, 0, 8, floorLevel + 2, 7, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 1, 7, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 8, floorLevel + 1, 7, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 2, 7, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 8, floorLevel + 2, 7, sbb);
 		
 		
 		this.setCoordBaseMode(temp);
@@ -352,16 +354,16 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 						setBlockState(world, Blocks.PLANKS, 2, fx, floorLevel, fz, sbb);
 					}
 					else {
-						setBlockState(world, Blocks.GLASS, 0, fx, floorLevel, fz, sbb);
+						setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
 					}
 				}
 				else if ((fx == 2 || fx == 3) && (fz == 2 || fz == 3)) {
 					// glass blocks in the corners
-					setBlockState(world, Blocks.GLASS, 0, fx, floorLevel, fz, sbb);
+					setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
 				}
 				else if ((fx == 11 || fx == 12) && (fz == 11 || fz == 12)) {
 					// glass blocks in the corners
-					setBlockState(world, Blocks.GLASS, 0, fx, floorLevel, fz, sbb);
+					setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
 				}
 				else {
 					setBlockState(world, Blocks.PLANKS, 2, fx, floorLevel, fz, sbb);
@@ -390,41 +392,41 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		int cy = floorLevel + 4;
 		int cz = size / 2;
 
-		setBlockState(world, Blocks.FENCE, 0, cx + 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 2, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 0, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 0, cy, cz + 2, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx - 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx - 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx - 2, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx - 1, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 0, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 0, cy, cz - 2, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 1, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz + 2, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 2, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz - 1, sbb);
 		
 		cy++;
-		setBlockState(world, Blocks.FENCE, 0, cx + 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx + 2, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx + 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 0, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx + 0, cy, cz + 2, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx - 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx - 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx - 2, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx - 1, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.FENCE, 0, cx + 0, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx + 0, cy, cz - 2, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx + 1, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz + 2, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz - 2, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz - 1, sbb);
 		
 		cy++;
-		setBlockState(world, Blocks.TORCH, 0, cx + 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx + 0, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx - 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH, 0, cx + 0, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz - 1, sbb);
 		
 		for (int y = floorLevel + 5; y < height - 1; y++) {
-			setBlockState(world, Blocks.FENCE, 0, cx + 0, y, cz + 0, sbb);
+			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, y, cz + 0, sbb);
 		}
 	}
 
@@ -474,28 +476,28 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// offset to see where the fence should be
-			BlockPos tCoords = new BlockPos(wCoords);
+			BlockPos.MutableBlockPos tCoords = new BlockPos.MutableBlockPos(wCoords);
 			if (direction == 0) {
-				tCoords.posZ++;
+				tCoords.getZ()++;
 			}
 			if (direction == 1) {
-				tCoords.posX--;
+				tCoords.getX()--;
 			}
 			if (direction == 2) {
-				tCoords.posZ--;
+				tCoords.getZ()--;
 			}
 			if (direction == 3) {
-				tCoords.posX++;
+				tCoords.getX()++;
 			}
 
 
 			// is there a painting or another torch there?
-			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.posX, tCoords.posY, tCoords.posZ, tCoords.posX + 1.0, tCoords.posY + 2.0, tCoords.posZ + 1.0);
-	        if (world.getBlock(tCoords.posX, tCoords.posY, tCoords.posZ) == Blocks.AIR && world.getBlock(tCoords.posX, tCoords.posY + 1, tCoords.posZ) == Blocks.AIR && world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
+			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.getX(), tCoords.getY(), tCoords.getZ(), tCoords.getX() + 1.0, tCoords.getY() + 2.0, tCoords.getZ() + 1.0);
+	        if (world.getBlock(tCoords.getX(), tCoords.getY(), tCoords.getZ()) == Blocks.AIR && world.getBlock(tCoords.getX(), tCoords.getY() + 1, tCoords.getZ()) == Blocks.AIR && world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
 	        {
 	        	// if not, place a torch
-				world.setBlock(tCoords.posX, tCoords.posY, tCoords.posZ, Blocks.FENCE, 0, 2);
-				world.setBlock(tCoords.posX, tCoords.posY + 1, tCoords.posZ, Blocks.TORCH, 5, 2);
+				world.setBlock(tCoords.getX(), tCoords.getY(), tCoords.getZ(), Blocks.OAK_FENCE.getDefaultState(), 2);
+				world.setBlock(tCoords.getX(), tCoords.getY() + 1, tCoords.getZ(), Blocks.TORCH, 5, 2);
 			}
 		}
 	}
