@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.WoodVariant;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
@@ -87,9 +88,12 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
         par3List.add(new ItemStack(par1, 1, 3));
     }
 
-    /*@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(VARIANT).withSuffix("_log").build());
-    }*/
+        for (int i = 0; i < WoodVariant.values().length; i++) {
+            IBlockState state = getDefaultState().withProperty(VARIANT, WoodVariant.values()[i]);
+            ModelUtils.registerToState(this, i, state);
+        }
+    }
 }
