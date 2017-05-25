@@ -7,11 +7,14 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.ModelLoader;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,7 +31,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockTFForceField extends BlockPane {
+public class BlockTFForceField extends BlockPane implements ModelRegisterCallback {
 
     private static final List<EnumDyeColor> COLORS = ImmutableList.of(EnumDyeColor.PURPLE, EnumDyeColor.PINK, EnumDyeColor.ORANGE, EnumDyeColor.GREEN, EnumDyeColor.BLUE);
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, COLORS);
@@ -58,10 +61,10 @@ public class BlockTFForceField extends BlockPane {
         return getDefaultState().withProperty(COLOR, COLORS.get(meta));
     }
 
-    @SideOnly(Side.CLIENT)
-    public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
-    	return 15 << 20 | 15 << 4;
-    }
+    //@SideOnly(Side.CLIENT)
+    //public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+    //	return 15 << 20 | 15 << 4;
+    //}
 
     @Override
     public int damageDropped(IBlockState state)
@@ -98,5 +101,15 @@ public class BlockTFForceField extends BlockPane {
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel() {
+        for (int i = 0; i < COLORS.size(); i++) {
+            String variant = "inventory_" + COLORS.get(i).getName();
+            ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
+        }
     }
 }

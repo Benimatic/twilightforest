@@ -1,16 +1,22 @@
 {
   "forge_marker": 1,
   "defaults": {
+    "transform": "forge:default-item",
     "model": "twilightforest:util/pane_post",
-    "textures": { "edge": "#pane" }
+    "uvlock":true
   },
   "variants": {
+    "inventory_purple": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/forcefield_purple"}}],
+    "inventory_pink": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/forcefield_pink"}}],
+    "inventory_orange": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/forcefield_orange"}}],
+    "inventory_green": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/forcefield_green"}}],
+    "inventory_blue": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/forcefield_blue"}}],
     "color": {
-      "purple": { "textures": { "pane": "twilightforest:blocks/forcefield_purple" } },
-      "pink": { "textures": { "pane": "twilightforest:blocks/forcefield_pink" } },
-      "orange": { "textures": { "pane": "twilightforest:blocks/forcefield_orange" } },
-      "green": { "textures": { "pane": "twilightforest:blocks/forcefield_green" } },
-      "blue": { "textures": { "pane": "twilightforest:blocks/forcefield_blue" } }
+      "purple": { "textures": { "edge": "#pane", "pane": "twilightforest:blocks/forcefield_purple" } },
+      "pink":   { "textures": { "edge": "#pane", "pane": "twilightforest:blocks/forcefield_pink" } },
+      "orange": { "textures": { "edge": "#pane", "pane": "twilightforest:blocks/forcefield_orange" } },
+      "green":  { "textures": { "edge": "#pane", "pane": "twilightforest:blocks/forcefield_green" } },
+      "blue":   { "textures": { "edge": "#pane", "pane": "twilightforest:blocks/forcefield_blue" } }
     },
     "north": {
       "true" : { "submodel": { "key_n": { "model": "twilightforest:util/pane_side" } } },
