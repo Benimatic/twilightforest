@@ -17,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.entity.EntityTFTowerTermite;
 import twilightforest.item.TFItems;
 
@@ -27,7 +29,7 @@ import twilightforest.item.TFItems;
  * @author Ben
  *
  */
-public class BlockTFTowerWood extends Block {
+public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	
 	public static final PropertyEnum<TowerWoodVariant> VARIANT = PropertyEnum.create("variant", TowerWoodVariant.class);
 	
@@ -119,6 +121,11 @@ public class BlockTFTowerWood extends Block {
 	@Override
 	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return 0;
+	}
+
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 }
