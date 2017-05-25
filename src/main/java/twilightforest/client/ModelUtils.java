@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
@@ -21,5 +22,12 @@ public class ModelUtils {
 				.putStateModelLocations(state.getBlock())
 				.get(state);
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), itemMeta, mrl);
+	}
+
+	public static <T extends Enum<T>> void registerToStateSingleVariant(Block b, IProperty<T> variant) {
+		T[] variants = variant.getValueClass().getEnumConstants();
+		for (int i = 0; i < variants.length; i++) {
+			registerToState(b, i, b.getDefaultState().withProperty(variant, variants[i]));
+		}
 	}
 }

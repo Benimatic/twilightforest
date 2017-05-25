@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.MagicWoodVariant;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
@@ -139,5 +140,6 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
+		ModelUtils.registerToStateSingleVariant(this, BlockTFMagicLog.VARIANT);
 	}
 }

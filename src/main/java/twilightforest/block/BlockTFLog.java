@@ -91,9 +91,6 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        for (int i = 0; i < WoodVariant.values().length; i++) {
-            IBlockState state = getDefaultState().withProperty(VARIANT, WoodVariant.values()[i]);
-            ModelUtils.registerToState(this, i, state);
-        }
+	    ModelUtils.registerToStateSingleVariant(this, VARIANT);
     }
 }

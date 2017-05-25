@@ -77,10 +77,7 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 
     @Override
 	public void registerModel() {
-		for (int i = 0; i < RootVariant.values().length; i++) {
-			IBlockState state = getDefaultState().withProperty(VARIANT, RootVariant.values()[i]);
-			ModelUtils.registerToState(this, i, state);
-		}
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 }
