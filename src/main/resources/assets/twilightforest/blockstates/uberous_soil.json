@@ -3,7 +3,7 @@
   "defaults": {
     "model": "cube_all",
     "textures": {
-      "end": "twilightforest:blocks/uberous_soil"
+      "all": "twilightforest:blocks/uberous_soil"
     }
   },
   "variants": { "normal": [{}] }

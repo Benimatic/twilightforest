@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -325,5 +326,11 @@ public class BlockTFPlant extends BlockBush implements IShearable
             par1World.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + par5Random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
         }
     
+    }
+
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
     }
 }

@@ -52,7 +52,7 @@ public final class ColorHandler {
 
 			//return Color.HSBtoRGB(Math.min(Math.max(((((float) BlockTFAuroraBrick.fractalNoise(3, 32.0d, pos != null ? pos.up(128) : new BlockPos(0, 0, 0)))-0.5f)*0.75f)+0.5f, 0.3f), 0.666f), 1.0f, 1.0f); //red << 16 | blue << 8 | green;
 			//return Color.HSBtoRGB((Math.abs((((float) BlockTFAuroraBrick.fractalNoise(3, 32.0d, pos != null ? pos.up(128) : new BlockPos(0, 0, 0))-0.5f)*0.75f)*3.0f)%0.333f)+0.333f, 1.0f, 1.0f);
-			return Color.HSBtoRGB((Math.abs((((float) BlockTFAuroraBrick.fractalNoise(3, 80.0d, pos != null ? pos.up(128) : new BlockPos(0, 0, 0))*3.0f)%1.0f)-0.5f)*0.66f)+0.33f, 1.0f, 1.0f);
+			return Color.HSBtoRGB((Math.abs((((float) BlockTFAuroraBrick.fractalNoise(3, 256.0d, pos != null ? pos.up(128) : new BlockPos(0, 0, 0))*10.0f)%1.0f)-0.5f)*0.6f)+0.37f, 1.0f, 1.0f);
 		}, TFBlocks.auroraBlock);
         blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			int red = 0;

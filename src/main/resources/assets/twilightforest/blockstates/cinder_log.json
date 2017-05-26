@@ -3,16 +3,16 @@
   "defaults": {
     "model": "cube_column",
     "textures": {
-      "side": "twilightforest:blocks/cinder_side",
-      "end": "twilightforest:blocks/cinder_corner"
+      "side": "twilightforest:blocks/cinder_log_side",
+      "end": "twilightforest:blocks/cinder_log_end"
     }
   },
   "variants": {
     "axis": {
-      "none": { "model": "cube_all", "textures": { "all": "twilightforest:blocks/cinder_corner" } },
       "y": {},
       "z": { "x": 90 },
-      "x": { "x": 90, "y": 90 }
+      "x": { "x": 90, "y": 90 },
+      "none": { "model": "cube_all", "textures": { "all": "#side" } }
     }
   }
 }
