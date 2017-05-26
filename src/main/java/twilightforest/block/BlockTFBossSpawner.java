@@ -27,7 +27,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
-	public static final PropertyEnum<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class, input -> input != BossVariant.NONE);
+	public static final PropertyEnum<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class);
 
 	protected BlockTFBossSpawner() {
 		super(Material.ROCK);
