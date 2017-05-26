@@ -615,7 +615,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			if (!chainCollides(chain, chainList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				for (int dy = bottom; dy < top; dy++) {
-					setBlockState(world, Blocks.IRON_BARS, 0, chain.getX(), dy, chain.getZ(), sbb);
+					setBlockState(world, Blocks.IRON_BARS.getDefaultState(), chain.getX(), dy, chain.getZ(), sbb);
 				}
 				chainList.add(chain);
 			}
@@ -664,9 +664,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			BlockPos slab = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
 			if (!chainCollides(slab, slabList)) {
 				// if it doesn't collide, manufacture it and add it to the list
-				setBlockState(world, Blocks.IRON_BARS, 0, slab.getX(), bottom + 0, slab.getZ(), sbb);
+				setBlockState(world, Blocks.IRON_BARS.getDefaultState(), slab.getX(), bottom + 0, slab.getZ(), sbb);
 				setBlockState(world, Blocks.WOODEN_SLAB, 2, slab.getX(), bottom + 1, slab.getZ(), sbb);
-				setBlockState(world, Blocks.SOUL_SAND, 0, slab.getX(), bottom + 2, slab.getZ(), sbb);
+				setBlockState(world, Blocks.SOUL_SAND.getDefaultState(), slab.getX(), bottom + 2, slab.getZ(), sbb);
 				slabList.add(slab);
 			}
 		}
@@ -680,11 +680,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
 				// sand
-				setBlockState(world, Blocks.SAND, 0, dx, bottom - 1, dz, sbb);
+				setBlockState(world, Blocks.SAND.getDefaultState(), dx, bottom - 1, dz, sbb);
 				if (!isWindowPos(dx, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 					// not an occupied position
 					if (rand.nextInt(4) == 0) {
-						setBlockState(world, Blocks.DEADBUSH, 0, dx, bottom, dz, sbb);
+						setBlockState(world, Blocks.DEADBUSH.getDefaultState(), dx, bottom, dz, sbb);
 					}
 				}
 			}
@@ -698,7 +698,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			if (!chainCollides(cactus, cactusList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 				for (int dy = bottom; dy < top; dy++) {
-					setBlockState(world, Blocks.CACTUS, 0, cactus.getX(), dy, cactus.getZ(), sbb);
+					setBlockState(world, Blocks.CACTUS.getDefaultState(), cactus.getX(), dy, cactus.getZ(), sbb);
 				}
 				cactusList.add(cactus);
 			}
@@ -1326,7 +1326,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */ 
 	protected void decorateOneChain(World world, Random rand, int dx, int decoTop, int length, int dz, StructureBoundingBox sbb) {
 		for (int y = 1; y <= length; y++) {
-			setBlockState(world, Blocks.IRON_BARS, 0, dx, decoTop - y - 1, dz, sbb);
+			setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx, decoTop - y - 1, dz, sbb);
 		}		
 		// make the "ball" at the end.
 		Block ballBlock;

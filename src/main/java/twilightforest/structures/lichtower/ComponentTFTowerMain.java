@@ -3,6 +3,11 @@ package twilightforest.structures.lichtower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockTorch;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -11,7 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.entity.TFCreatures;
 import twilightforest.structures.StructureTFComponent;
 
@@ -25,12 +32,11 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
 	public ComponentTFTowerMain(World world, Random rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(index, x, y, z, 15, 55 + rand.nextInt(32), 0);
+		super(index, x, y, z, 15, 55 + rand.nextInt(32), EnumFacing.SOUTH);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		// add a roof?
 		makeARoof(parent, list, rand);
 
@@ -220,13 +226,14 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			this.setCoordBaseMode((getCoordBaseMode() + 1) % 4);
 		}
 		
-		int floorMeta = rand.nextInt(2) == 0 ? 0 : 2;
+		BlockPlanks.EnumType floorVariant = rand.nextInt(2) == 0 ? BlockPlanks.EnumType.OAK : BlockPlanks.EnumType.BIRCH;
 		int floorLevel = 0 + flight * 5;
 		
 		// place platform
+		IBlockState doubleStoneSlab = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, floorVariant);
 		for (int dx = 6; dx <= 8; dx++) {
 			for (int dz = 4; dz <= 10; dz++) {
-				setBlockState(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, dx, floorLevel, dz, sbb);
+				setBlockState(world, doubleStoneSlab, dx, floorLevel, dz, sbb);
 			}
 		}
 		
@@ -246,8 +253,8 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 
 		// we need 2 extra blocks and 2 extra fences to look good
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, 6, floorLevel - 1, 11, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, floorMeta, 8, floorLevel - 1, 3, sbb);
+		setBlockState(world, doubleStoneSlab, 6, floorLevel - 1, 11, sbb);
+		setBlockState(world, doubleStoneSlab, 8, floorLevel - 1, 3, sbb);
 		
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 5, floorLevel, 11, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 9, floorLevel, 3, sbb);
@@ -267,7 +274,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			mobID = TFCreatures.getSpawnerNameFor("Swarm Spider");
 			break;
 		}
-		setSpawner(world, rand, 7, floorLevel + 2, 7, mobID, sbb);
+		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
 		
 		// make a fence arch support for the spawner
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 1, 7, sbb);
@@ -298,7 +305,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		decorateTorches(world, rand, floorLevel, sbb);
 		
 		// seems like we should have a spawner
-		setBlockState(world, TFBlocks.bossSpawner, 1, size / 2, floorLevel + 2, size / 2, sbb);
+		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
 
@@ -331,6 +338,12 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		int temp = this.getCoordBaseMode();
 		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
 
+		BlockPlanks.EnumType birch = BlockPlanks.EnumType.BIRCH;
+		IBlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState()
+				.withProperty(BlockPlanks.VARIANT, birch)
+				.withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
+		IBlockState birchPlank = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, birch);
+
 		// place a platform there
 		for (int fx = 1; fx < 14; fx++) {
 			for (int fz = 1; fz < 14; fz++) {
@@ -338,20 +351,20 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 					// blank, leave room for stairs
 					if (fz == 6) {
 						// upside down plank slabs
-						setBlockState(world, Blocks.WOODEN_SLAB, 10, fx, floorLevel, fz, sbb);
+						setBlockState(world, birchSlab, fx, floorLevel, fz, sbb);
 					}
 				}
 				else if ((fx == 12 || fx == 13) && (fz >= 3 && fz <= 8)) {
 					// blank, leave room for stairs
 					if (fz == 8) {
 						// upside down plank slabs
-						setBlockState(world, Blocks.WOODEN_SLAB, 10, fx, floorLevel, fz, sbb);
+						setBlockState(world, birchSlab, fx, floorLevel, fz, sbb);
 					}
 				}
 				else if ((fx >= 4 && fx <= 10) && (fz >= 4 && fz <= 10)) {
 					// glass floor in center, aside from 2 corners
 					if ((fx == 4 && fz == 4) || (fx == 10 && fz == 10)) {
-						setBlockState(world, Blocks.PLANKS, 2, fx, floorLevel, fz, sbb);
+						setBlockState(world, birchPlank, fx, floorLevel, fz, sbb);
 					}
 					else {
 						setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
@@ -366,7 +379,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 					setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
 				}
 				else {
-					setBlockState(world, Blocks.PLANKS, 2, fx, floorLevel, fz, sbb);
+					setBlockState(world, birchPlank, fx, floorLevel, fz, sbb);
 				}
 			}
 		}
@@ -478,26 +491,30 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			// offset to see where the fence should be
 			BlockPos.MutableBlockPos tCoords = new BlockPos.MutableBlockPos(wCoords);
 			if (direction == 0) {
-				tCoords.getZ()++;
+				tCoords.move(EnumFacing.SOUTH);
 			}
 			if (direction == 1) {
-				tCoords.getX()--;
+				tCoords.move(EnumFacing.WEST);
 			}
 			if (direction == 2) {
-				tCoords.getZ()--;
+				tCoords.move(EnumFacing.NORTH);
 			}
 			if (direction == 3) {
-				tCoords.getX()++;
+				tCoords.move(EnumFacing.EAST);
 			}
 
 
 			// is there a painting or another torch there?
 			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.getX(), tCoords.getY(), tCoords.getZ(), tCoords.getX() + 1.0, tCoords.getY() + 2.0, tCoords.getZ() + 1.0);
-	        if (world.getBlock(tCoords.getX(), tCoords.getY(), tCoords.getZ()) == Blocks.AIR && world.getBlock(tCoords.getX(), tCoords.getY() + 1, tCoords.getZ()) == Blocks.AIR && world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
+			IBlockState blockState = world.getBlockState(tCoords);
+			IBlockState aboveBlockState = world.getBlockState(tCoords.up());
+			if (blockState.getMaterial() == Material.AIR &&
+					aboveBlockState.getMaterial() == Material.AIR &&
+					world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
 	        {
 	        	// if not, place a torch
-				world.setBlock(tCoords.getX(), tCoords.getY(), tCoords.getZ(), Blocks.OAK_FENCE.getDefaultState(), 2);
-				world.setBlock(tCoords.getX(), tCoords.getY() + 1, tCoords.getZ(), Blocks.TORCH, 5, 2);
+				world.setBlockState(tCoords, Blocks.OAK_FENCE.getDefaultState(), 2);
+				world.setBlockState(tCoords.up(), Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.UP), 2);
 			}
 		}
 	}

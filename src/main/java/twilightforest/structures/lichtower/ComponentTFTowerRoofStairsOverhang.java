@@ -2,7 +2,11 @@ package twilightforest.structures.lichtower;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockStairs;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -18,7 +22,7 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 		super(i, wing);
 		
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		this.size = wing.size + 2; // assuming only square towers and roofs right now.
 		this.height = size / 2;
@@ -33,6 +37,14 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+		IBlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		IBlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+
+		IBlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH);
+		IBlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH);
+		IBlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST);
+		IBlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST);
+
 		for (int y = 0; y <= height; y++) {
 			int min = y;
 			int max = size - y - 1;
@@ -40,30 +52,30 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 				for (int z = min; z <= max; z++) {
 					if (x == min) {
 						if (z == min || z == max) {
-							setBlockState(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
+							setBlockState(world, woodenSlab, x, y, z, sbb);
 						}
 						else
 						{
-							setBlockState(world, Blocks.BIRCH_STAIRS, 0, x, y, z, sbb);
+							setBlockState(world, birchStairsNorth, x, y, z, sbb);
 						}
 					}
 					else if (x == max) {
 						if (z == min || z == max) {
-							setBlockState(world, Blocks.WOODEN_SLAB, 2, x, y, z, sbb);
+							setBlockState(world, woodenSlab, x, y, z, sbb);
 						}
 						else
 						{
-							setBlockState(world, Blocks.BIRCH_STAIRS, 1, x, y, z, sbb);
+							setBlockState(world, birchStairsSouth, x, y, z, sbb);
 						}
 					}
 					else if (z == max) {
-						setBlockState(world, Blocks.BIRCH_STAIRS, 3, x, y, z, sbb);
+						setBlockState(world, birchStairsEast, x, y, z, sbb);
 					}
 					else if (z == min) {
-						setBlockState(world, Blocks.BIRCH_STAIRS, 2, x, y, z, sbb);
+						setBlockState(world, birchStairsWest, x, y, z, sbb);
 					}
 					else {
-						setBlockState(world, Blocks.PLANKS, 2, x, y, z, sbb);
+						setBlockState(world, woodenPlanks, x, y, z, sbb);
 					}
 				}
 			}
