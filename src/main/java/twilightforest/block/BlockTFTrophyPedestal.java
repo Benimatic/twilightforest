@@ -6,6 +6,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -13,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -22,7 +24,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.item.TFItems;
+import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -30,6 +34,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class BlockTFTrophyPedestal extends Block {
 	private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	private static final PropertyEnum<BossVariant> BOSS = PropertyEnum.create("boss", BossVariant.class, BossVariant::hasTrophy);
 	private static final PropertyBool LATENT = PropertyBool.create("latent");
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
@@ -38,14 +43,14 @@ public class BlockTFTrophyPedestal extends Block {
 		super(Material.ROCK);
 		this.setHardness(2.0F);
 		this.setResistance(2000.0F);
-        this.setSoundType(SoundType.STONE);
+		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(getDefaultState().withProperty(LATENT, true).withProperty(FACING, EnumFacing.NORTH));
+		this.setDefaultState(getDefaultState().withProperty(LATENT, true).withProperty(FACING, EnumFacing.NORTH).withProperty(BOSS, BossVariant.NAGA));
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, LATENT);
+		return new BlockStateContainer(this, FACING, LATENT, BOSS);
 	}
 
 	@Override
@@ -66,22 +71,45 @@ public class BlockTFTrophyPedestal extends Block {
 		}
 		return ret;
 	}
-    
-    @Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-    	return AABB;
-    }
-    
-    @Override
-	public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
 
     @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        IBlockState stateAbove = world.getBlockState(pos.up());
+        TileEntity tile = world.getTileEntity(pos);
+
+        if (stateAbove.getBlock() != TFBlocks.trophy || (!state.getValue(LATENT)) || tile == null || (!(tile instanceof TileEntityTFTrophy)))
+            return state;
+
+        TileEntityTFTrophy trophy = (TileEntityTFTrophy)tile;
+
+        BossVariant variant;
+
+        switch (trophy.getSkullType()) {
+            case 0:
+                variant = BossVariant.HYDRA;
+                break;
+            default: variant = BossVariant.UR_GHAST;
+        }
+
+        return state.withProperty(BOSS, variant);
+    }
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return AABB;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state)
+	{
+		return false;
+	}
+
+	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
-        if (!world.isRemote && state.getValue(LATENT)) {
-        	if (isTrophyOnTop(world, pos)) {
+		if (!world.isRemote && state.getValue(LATENT)) {
+			if (isTrophyOnTop(world, pos)) {
 				if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 					if (this.areNearbyPlayersEligible(world, pos))
 						doPedestalEffect(world, pos, state);
@@ -91,11 +119,11 @@ public class BlockTFTrophyPedestal extends Block {
 				}
 
 				rewardNearbyPlayers(world, pos);
-        	}
-        }
-    }
+			}
+		}
+	}
 
-    private boolean isTrophyOnTop(World world, BlockPos pos) {
+	private boolean isTrophyOnTop(World world, BlockPos pos) {
 		return world.getBlockState(pos.up()).getBlock() == TFBlocks.trophy;
 	}
 
@@ -142,11 +170,11 @@ public class BlockTFTrophyPedestal extends Block {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
-    // todo ambiguous in 1.7, what was this supposed to be?
-    @Override
+	// todo ambiguous in 1.7, what was this supposed to be?
+	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 		return state.getValue(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
-    }
+	}
 
 
 }
