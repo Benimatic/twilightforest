@@ -234,6 +234,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
         par3List.add(new ItemStack(par1, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
 	public void registerModel() {
     	FireJetVariant[] variants = { FireJetVariant.SMOKER, FireJetVariant.JET_IDLE, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_JET_IDLE };

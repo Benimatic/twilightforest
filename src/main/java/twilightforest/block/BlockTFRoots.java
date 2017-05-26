@@ -75,6 +75,7 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
         par3List.add(new ItemStack(par1, 1, 1));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
