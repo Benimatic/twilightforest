@@ -18,8 +18,9 @@ import com.google.common.collect.Multimap;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFKnightlyPick extends ItemPickaxe {
+public class ItemTFKnightlyPick extends ItemPickaxe implements ModelRegisterCallback {
 
 	private static final int BONUS_DAMAGE = 2;
 	private EntityPlayer bonusDamagePlayer;

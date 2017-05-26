@@ -11,6 +11,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.RegistryDelegate;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ModelUtils {
@@ -25,9 +27,9 @@ public class ModelUtils {
 	}
 
 	public static <T extends Enum<T>> void registerToStateSingleVariant(Block b, IProperty<T> variant) {
-		T[] variants = variant.getValueClass().getEnumConstants();
-		for (int i = 0; i < variants.length; i++) {
-			registerToState(b, i, b.getDefaultState().withProperty(variant, variants[i]));
+		List<T> variants = new ArrayList<>(variant.getAllowedValues());
+		for (int i = 0; i < variants.size(); i++) {
+			registerToState(b, i, b.getDefaultState().withProperty(variant, variants.get(i)));
 		}
 	}
 }

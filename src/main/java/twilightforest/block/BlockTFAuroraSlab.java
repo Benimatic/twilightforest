@@ -15,6 +15,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -96,8 +97,10 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
     public void registerModel() {
         if (this.isDouble())
             ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).ignore(HALF).build());
-        else
+        else {
             ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
+            ModelUtils.registerToState(this, 0, getDefaultState());
+        }
     }
 
     private enum AuroraSlabVariant implements IStringSerializable {

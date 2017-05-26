@@ -3,7 +3,8 @@
   "defaults": {
     "textures": {
       "end": "twilightforest:blocks/brown_thorns_top",
-      "side": "twilightforest:blocks/brown_thorns_side"
+      "side": "twilightforest:blocks/brown_thorns_side",
+      "particle": "#end"
     },
     "model": "block"
   },

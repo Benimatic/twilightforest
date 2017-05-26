@@ -3,7 +3,8 @@
   "defaults": {
     "textures": {
       "end": "twilightforest:blocks/burnt_thorns_top",
-      "side": "twilightforest:blocks/burnt_thorns_side"
+      "side": "twilightforest:blocks/burnt_thorns_side",
+      "particle": "#end"
     },
     "model": "block"
   },

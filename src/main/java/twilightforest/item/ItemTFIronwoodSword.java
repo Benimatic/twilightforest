@@ -7,8 +7,9 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFIronwoodSword extends ItemSword {
+public class ItemTFIronwoodSword extends ItemSword implements ModelRegisterCallback {
 
 	public ItemTFIronwoodSword(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);

@@ -16,11 +16,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTFAuroraBrick extends Block {
+public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	
 	public static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 15);
 

@@ -9,6 +9,7 @@
   },
   "variants": {
     "axis": {
+      "none": { "model": "cube_all", "textures": { "all": "twilightforest:blocks/cinder_corner" } },
       "y": {},
       "z": { "x": 90 },
       "x": { "x": 90, "y": 90 }

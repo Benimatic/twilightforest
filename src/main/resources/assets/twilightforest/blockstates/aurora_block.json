@@ -5,22 +5,22 @@
   },
   "variants": {
     "variant": {
-      0 : { "textures": { "all": "twilightforest:blocks/aurorabrick0" } },
-      1 : { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
-      2 : { "textures": { "all": "twilightforest:blocks/aurorabrick2" } },
-      3 : { "textures": { "all": "twilightforest:blocks/aurorabrick3" } },
-      4 : { "textures": { "all": "twilightforest:blocks/aurorabrick4" } },
-      5 : { "textures": { "all": "twilightforest:blocks/aurorabrick5" } },
-      6 : { "textures": { "all": "twilightforest:blocks/aurorabrick6" } },
-      7 : { "textures": { "all": "twilightforest:blocks/aurorabrick7" } },
-      8 : { "textures": { "all": "twilightforest:blocks/aurorabrick8" } },
-      9 : { "textures": { "all": "twilightforest:blocks/aurorabrick9" } },
-      10: { "textures": { "all": "twilightforest:blocks/aurorabrick10" } },
-      11: { "textures": { "all": "twilightforest:blocks/aurorabrick11" } },
-      12: { "textures": { "all": "twilightforest:blocks/aurorabrick12" } },
-      13: { "textures": { "all": "twilightforest:blocks/aurorabrick13" } },
-      14: { "textures": { "all": "twilightforest:blocks/aurorabrick14" } },
-      15: { "textures": { "all": "twilightforest:blocks/aurorabrick15" } }
+      "0" : { "textures": { "all": "twilightforest:blocks/aurorabrick0" } },
+      "1" : { "textures": { "all": "twilightforest:blocks/aurorabrick1" } },
+      "2" : { "textures": { "all": "twilightforest:blocks/aurorabrick2" } },
+      "3" : { "textures": { "all": "twilightforest:blocks/aurorabrick3" } },
+      "4" : { "textures": { "all": "twilightforest:blocks/aurorabrick4" } },
+      "5" : { "textures": { "all": "twilightforest:blocks/aurorabrick5" } },
+      "6" : { "textures": { "all": "twilightforest:blocks/aurorabrick6" } },
+      "7" : { "textures": { "all": "twilightforest:blocks/aurorabrick7" } },
+      "8" : { "textures": { "all": "twilightforest:blocks/aurorabrick8" } },
+      "9" : { "textures": { "all": "twilightforest:blocks/aurorabrick9" } },
+      "10": { "textures": { "all": "twilightforest:blocks/aurorabrick10" } },
+      "11": { "textures": { "all": "twilightforest:blocks/aurorabrick11" } },
+      "12": { "textures": { "all": "twilightforest:blocks/aurorabrick12" } },
+      "13": { "textures": { "all": "twilightforest:blocks/aurorabrick13" } },
+      "14": { "textures": { "all": "twilightforest:blocks/aurorabrick14" } },
+      "15": { "textures": { "all": "twilightforest:blocks/aurorabrick15" } }
     }
   }
 }

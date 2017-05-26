@@ -28,11 +28,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import twilightforest.block.enums.HedgeVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTFHedge extends Block
+public class BlockTFHedge extends Block implements ModelRegisterCallback
 {
 	public static final PropertyEnum<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
 	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
@@ -220,5 +222,12 @@ public class BlockTFHedge extends Block
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
+
 }
 

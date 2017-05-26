@@ -13,8 +13,9 @@ import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFKnightlyAxe extends ItemAxe {
+public class ItemTFKnightlyAxe extends ItemAxe implements ModelRegisterCallback {
 
 	private static final int BONUS_DAMAGE = 2;
 	private EntityPlayer bonusDamagePlayer;

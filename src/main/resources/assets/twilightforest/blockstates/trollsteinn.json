@@ -7,7 +7,8 @@
       "west":  "twilightforest:blocks/trollsteinn",
       "north": "twilightforest:blocks/trollsteinn",
       "east":  "twilightforest:blocks/trollsteinn",
-      "south": "twilightforest:blocks/trollsteinn"
+      "south": "twilightforest:blocks/trollsteinn",
+      "particle": "twilightforest:blocks/trollsteinn"
     },
     "model": "cube"
   },

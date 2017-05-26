@@ -18,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nonnull;
@@ -97,5 +98,6 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
+		ModelUtils.registerToState(this, 0, getDefaultState());
 	}
 }
