@@ -173,6 +173,7 @@ public class EntityTFTinyBird extends EntityTFBird {
             if (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(posX, posY - 1, posZ)))
             {
                 this.setIsBirdLanded(false);
+                this.world.playEvent(1025, new BlockPos(this), 0);
                 this.motionY = 0.4;
                 //FMLLog.info("bird taking off because it is no longer on land");
             }
@@ -181,6 +182,7 @@ public class EntityTFTinyBird extends EntityTFBird {
                 if (isSpooked())
                 {
                     this.setIsBirdLanded(false);
+                    this.world.playEvent(1025, new BlockPos(this), 0);
                     this.motionY = 0.4;
                     //FMLLog.info("bird taking off because it was spooked");
                 }
