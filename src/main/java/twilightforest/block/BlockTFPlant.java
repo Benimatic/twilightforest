@@ -82,24 +82,24 @@ public class BlockTFPlant extends BlockBush implements IShearable
 
     @Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-    	
-    	//System.out.println("Can block stay? meta is " + meta);
         IBlockState soil = world.getBlockState(pos.down());
-    	
-       	switch (state.getValue(VARIANT)) {
-    	case TORCHBERRY :
-    	case ROOT_STRAND :
-    		return BlockTFPlant.canPlaceRootBelow(world, pos.up());
-    	case FORESTGRASS:
-    	case DEADBUSH:
-    		return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
-    	case MUSHGLOOM:
-    	case MOSSPATCH:
-    		return soil.isSideSolid(world, pos, EnumFacing.UP);
-     	default :
-            return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) &&
-                    soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
-    	}
+
+        if (state.getBlock() != this) {
+            return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+        } else {
+            switch (state.getValue(VARIANT)) {
+                case TORCHBERRY :
+                case ROOT_STRAND :
+                    return BlockTFPlant.canPlaceRootBelow(world, pos.up());
+                case FORESTGRASS:
+                case DEADBUSH:
+                    return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+                case MUSHGLOOM:
+                case MOSSPATCH:
+                    return soil.isSideSolid(world, pos, EnumFacing.UP);
+                default: return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+            }
+        }
     }
     
     @Override
@@ -228,9 +228,6 @@ public class BlockTFPlant extends BlockBush implements IShearable
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         
-        //TODO: this needs to not drop if the player is shearing!  Grrr!
-        
-        // blah
         switch (state.getValue(VARIANT)) {
         case TORCHBERRY:
         	ret.add(new ItemStack(TFItems.torchberries));
@@ -308,12 +305,6 @@ public class BlockTFPlant extends BlockBush implements IShearable
         }
         return EnumPlantType.Plains;
     }
-
-   /* @Override
-    public IBlockState getPlant(IBlockAccess world, BlockPos pos)
-    {
-        return this; todo 1.9
-    }*/
 
     @Override
 	@SideOnly(Side.CLIENT)
