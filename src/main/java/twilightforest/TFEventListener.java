@@ -42,6 +42,7 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.enchantment.TFEnchantment;
@@ -209,17 +210,11 @@ public class TFEventListener {
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
     	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.stackSize == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 
     	}
-	}
-
-	private void addToPlayerInventoryOrDrop(EntityPlayer player, ItemStack planks) {
-		if (!player.inventory.addItemStackToInventory(planks)) {
-			player.dropItem(planks, false);
-		}
 	}
 
 	private boolean doesCraftMatrixHaveGiantLog(IInventory inv) {
@@ -230,8 +225,7 @@ public class TFEventListener {
 				return true;
 			}
 		}
-		
-		
+
 		return false;
 	}
 

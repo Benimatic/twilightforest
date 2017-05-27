@@ -126,20 +126,14 @@ public class TwilightForestMod {
 		
 		// set up portal item
 		ResourceLocation loc = new ResourceLocation(portalCreationItemString);
-		Item portalItem;
+
 		if (Item.REGISTRY.containsKey(loc)) {
-			portalItem = Item.REGISTRY.getObject(loc);
-			if (portalItem != Items.DIAMOND) {
-				TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", portalItem.getUnlocalizedName());
-			}
-		} else if (Block.REGISTRY.containsKey(loc)) {
-			portalItem = Item.getItemFromBlock(Block.REGISTRY.getObject(loc));
-			TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", portalItem.getUnlocalizedName());
+			TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", loc);
 		} else {
-			TwilightForestMod.LOGGER.info("Config lists portal item as '%s'.  Not found, defaulting to diamond.", portalCreationItemString);
-			portalItem = Items.DIAMOND;
+			TwilightForestMod.LOGGER.info("Config lists portal item as '{}'.  Not found, defaulting to diamond.", loc);
+			loc = new ResourceLocation("minecraft", "diamond");
 		}
-		tickHandler.portalItem = portalItem;
+		tickHandler.portalItem = loc;
 		
 		// packets
 		TFPacketHandler.init();
