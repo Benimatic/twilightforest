@@ -9,6 +9,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -35,7 +36,6 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 		this.setLightOpacity(2);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true).withProperty(VARIANT, LeavesVariant.OAK));
-		leavesFancy = true; // TODO update this when the setting is changed / fix this
 	}
 
 	@Override
@@ -66,12 +66,6 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 		return i;
 	}
 	
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return Blocks.LEAVES.isOpaqueCube(Blocks.LEAVES.getDefaultState());
-    }
-
 	@Override
 	public BlockPlanks.EnumType getWoodType(int meta) {
 		return BlockPlanks.EnumType.OAK;
@@ -136,11 +130,5 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer()
-	{
-		return BlockRenderLayer.CUTOUT;
 	}
 }
