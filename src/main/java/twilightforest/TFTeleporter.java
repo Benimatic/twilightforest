@@ -21,8 +21,7 @@ import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
 
-// todo 1.10 modernize this whole thing
-public class TFTeleporter extends Teleporter 
+public class TFTeleporter extends Teleporter
 {
 	public TFTeleporter(WorldServer par1WorldServer) {
 		super(par1WorldServer);

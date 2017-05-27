@@ -191,7 +191,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return super.getWeatherRenderer();
     }
 	
-    //@SideOnly(Side.CLIENT) // need for magic beans, even on server
+    // no sideonly
     @Override
 	public float getCloudHeight()
     {
