@@ -26,9 +26,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.TowerDeviceVariant;
 import twilightforest.block.enums.TowerTranslucentVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFTowerTranslucent extends Block
+public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallback
 {
 	public static final PropertyEnum<TowerTranslucentVariant> VARIANT = PropertyEnum.create("variant", TowerTranslucentVariant.class);
 	private static final Random sideRNG = new Random();
@@ -196,6 +198,12 @@ public class BlockTFTowerTranslucent extends Block
 	public BlockRenderLayer getBlockLayer()
 	{
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 }
