@@ -6,17 +6,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockMushroom;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.BlockSlab;
+import net.minecraft.block.*;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.item.EntityPainting.EnumArt;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -27,6 +27,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
 import twilightforest.structures.StructureTFComponent;
 
+import static net.minecraft.block.BlockStoneSlab.EnumType.SMOOTHBRICK;
+import static twilightforest.block.BlockTFCastleMagic.COLOR;
 
 
 public class ComponentTFTowerWing extends StructureTFComponent {
@@ -410,21 +412,26 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void makeOpeningMarkers(World world, Random rand, int numMarkers, StructureBoundingBox sbb) {
 		if (size > 4) {
-	        for (int i = 0; i < numMarkers; i++) {
+			final IBlockState woolWhite = Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.WHITE);
+			final IBlockState woolOrange = Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.ORANGE);
+			final IBlockState woolMagenta = Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.MAGENTA);
+			final IBlockState woolLightBlue = Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.LIGHT_BLUE);
+
+			for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 0);
-	        	setBlockState(world, Blocks.WOOL, 0, spot[0], spot[1], spot[2], sbb);
+	        	setBlockState(world, woolWhite, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 1);
-	        	setBlockState(world, Blocks.WOOL, 1, spot[0], spot[1], spot[2], sbb);
+	        	setBlockState(world, woolOrange, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 2);
-	        	setBlockState(world, Blocks.WOOL, 2, spot[0], spot[1], spot[2], sbb);
+	        	setBlockState(world, woolMagenta, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
 	        	int[] spot = getValidOpening(rand, 3);
-	        	setBlockState(world, Blocks.WOOL, 3, spot[0], spot[1], spot[2], sbb);
+	        	setBlockState(world, woolLightBlue, spot[0], spot[1], spot[2], sbb);
 	        }
         }
 	}
@@ -458,6 +465,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * Decorates a dead end tower.  These towers have no stairs, and will be the focus of our interior design.
 	 */
 	protected void decorateDeadEnd(World world, Random rand, StructureBoundingBox sbb) {
+		final IBlockState birchPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 		int floors = (this.height - 1) / 5;
 
 		// divide the tower into floors
@@ -466,7 +474,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			// put down a floor
 			for (int x = 1; x < size - 1; x++) {
 				for (int z = 1; z < size - 1; z++) {
-					setBlockState(world, Blocks.PLANKS, 2, x, (i * floorHeight), z, sbb);
+					setBlockState(world, birchPlanks, x, (i * floorHeight), z, sbb);
 				}
 			}
 		}
@@ -507,7 +515,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param bottom
 	 * @param top
 	 * @param ladderUpDir
-	 * @param laddderDownDir
+	 * @param ladderDownDir
 	 */
 	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		
@@ -577,26 +585,30 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cz = cx;
 		int cy = bottom;
 		
-		Block waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA : Blocks.WATER;
+		IBlockState waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA.getDefaultState() : Blocks.WATER.getDefaultState();
 		
 		if (size > 5) {
 			// actual well structure
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, cy + 0, cz - 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 0, cy + 0, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, cy + 0, cz - 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, waterOrLava, 0, cx + 0, cy + 0, cz + 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, cy + 0, cz + 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz + 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 0, cy + 0, cz + 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, cy + 0, cz + 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz + 1, sbb);
+			final IBlockState stoneBricks = Blocks.STONEBRICK.getDefaultState();
+			final IBlockState stoneSlabs = Blocks.STONE_SLAB.getDefaultState()
+					.withProperty(BlockStoneSlab.VARIANT, SMOOTHBRICK);
+
+			setBlockState(world, stoneBricks, cx - 1, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneSlabs, cx - 1, cy + 1, cz - 1, sbb);
+			setBlockState(world, stoneBricks, cx + 0, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneBricks, cx + 1, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneSlabs, cx + 1, cy + 1, cz - 1, sbb);
+			setBlockState(world, stoneBricks, cx - 1, cy + 0, cz + 0, sbb);
+			setBlockState(world, waterOrLava, cx + 0, cy + 0, cz + 0, sbb);
+			setBlockState(world, stoneBricks, cx + 1, cy + 0, cz + 0, sbb);
+			setBlockState(world, stoneBricks, cx - 1, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneSlabs, cx - 1, cy + 1, cz + 1, sbb);
+			setBlockState(world, stoneBricks, cx + 0, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneBricks, cx + 1, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneSlabs, cx + 1, cy + 1, cz + 1, sbb);
 		}
 		
-		setBlockState(world, waterOrLava, 0, cx + 0, cy - 1, cz + 0, sbb);
+		setBlockState(world, waterOrLava, cx + 0, cy - 1, cz + 0, sbb);
 
 	}
 
@@ -605,7 +617,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateSkeletonRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		// skeleton spawner
-		setSpawner(world, rand, size / 2, bottom + 2, size / 2, "Skeleton", sbb);
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, "Skeleton");
 
 		// floor-to-ceiling chains
 		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
@@ -643,15 +655,20 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateZombieRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		// zombie spawner
-		setSpawner(world, rand, size / 2, bottom + 2, size / 2, "Zombie", sbb);
-		
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, "Zombie");
+		final IBlockState ironBars = Blocks.IRON_BARS.getDefaultState();
+		final IBlockState soulSand = Blocks.SOUL_SAND.getDefaultState();
+		final IBlockState brownMushroom = Blocks.BROWN_MUSHROOM.getDefaultState();
+		final IBlockState birchSlabs = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+
+
 		// random brown mushrooms
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
 				if (!isWindowPos(dx, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 					// not an occupied position
 					if (rand.nextInt(5) == 0) {
-						setBlockState(world, Blocks.BROWN_MUSHROOM, 0, dx, bottom, dz, sbb);
+						setBlockState(world, brownMushroom, dx, bottom, dz, sbb);
 					}
 				}
 			}
@@ -664,9 +681,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			BlockPos slab = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
 			if (!chainCollides(slab, slabList)) {
 				// if it doesn't collide, manufacture it and add it to the list
-				setBlockState(world, Blocks.IRON_BARS.getDefaultState(), slab.getX(), bottom + 0, slab.getZ(), sbb);
-				setBlockState(world, Blocks.WOODEN_SLAB, 2, slab.getX(), bottom + 1, slab.getZ(), sbb);
-				setBlockState(world, Blocks.SOUL_SAND.getDefaultState(), slab.getX(), bottom + 2, slab.getZ(), sbb);
+
+				setBlockState(world, ironBars, slab.getX(), bottom + 0, slab.getZ(), sbb);
+				setBlockState(world, birchSlabs, slab.getX(), bottom + 1, slab.getZ(), sbb);
+				setBlockState(world, soulSand, slab.getX(), bottom + 2, slab.getZ(), sbb);
 				slabList.add(slab);
 			}
 		}
@@ -714,20 +732,21 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected void decorateTreasureChest(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		int cx = size / 2;
 		int cz = cx;
-		
+		final IBlockState stoneBrick = Blocks.STONEBRICK.getDefaultState();
+
 		// bottom decoration
 		setBlockState(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(1), cx + 0, bottom, cz - 1, sbb);
 		setBlockState(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(0), cx - 1, bottom, cz + 0, sbb);
 		setBlockState(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(2), cx + 1, bottom, cz + 0, sbb);
 		setBlockState(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(3), cx + 0, bottom, cz + 1, sbb);
-		setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 0, bottom, cz + 0, sbb);
+		setBlockState(world, stoneBrick, cx + 0, bottom, cz + 0, sbb);
 
 		if (size > 5)
 		{
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, bottom, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, bottom, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, bottom, cz + 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, bottom, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, bottom, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, bottom, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, bottom, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, bottom, cz + 1, sbb);
 		}
 		
 		// top decoration
@@ -735,14 +754,14 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		setBlockState(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(0) + 4, cx - 1, top - 1, cz + 0, sbb);
 		setBlockState(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(2) + 4, cx + 1, top - 1, cz + 0, sbb);
 		setBlockState(world, Blocks.STONE_BRICK_STAIRS, getStairMeta(3) + 4, cx + 0, top - 1, cz + 1, sbb);
-		setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 0, top - 1, cz + 0, sbb);
+		setBlockState(world, stoneBrick, cx + 0, top - 1, cz + 0, sbb);
 
 		if (size > 5)
 		{
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, top - 1, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, top - 1, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, top - 1, cz + 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, top - 1, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, top - 1, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, top - 1, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, top - 1, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, top - 1, cz + 1, sbb);
 		}
 		
 		if (size > 5)
@@ -802,7 +821,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				break;
 			}
 			
-			setSpawner(world, rand, size / 2, bottom + 2, size / 2, spiderName, sbb);
+			setSpawner(world, size / 2, bottom + 2, size / 2, sbb, spiderName);
 			
 
 		}
@@ -1115,6 +1134,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * 
 	 */
 	protected void decorateStairTower(World world, Random rand, StructureBoundingBox sbb) {
+		final IBlockState planks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+
 		// if it's tall enough, consider adding extra floors onto the top.
 		if (height - highestOpening > 8) {
 			int base = highestOpening + 3;
@@ -1126,11 +1147,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				// put down a floor
 				for (int x = 1; x < size - 1; x++) {
 					for (int z = 1; z < size - 1; z++) {
-						setBlockState(world, Blocks.PLANKS, 2, x, (i * floorHeight + base), z, sbb);
+						setBlockState(world, planks, x, (i * floorHeight + base), z, sbb);
 					}
 				}
 			}
-
 
 			int ladderDir = 3;
 			int downLadderDir = -1;
@@ -1251,21 +1271,24 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cx = size / 2;
 		int cy = decoTop - rand.nextInt(decoTop - 7) - 2;
 		int cz = size / 2;
+
+		final IBlockState oakFence = Blocks.OAK_FENCE.getDefaultState();
+		final IBlockState torch = Blocks.TORCH.getDefaultState();
+
+		setBlockState(world, oakFence, cx + 0, cy + 0, cz + 0, sbb);
+		setBlockState(world, oakFence, cx - 1, cy + 0, cz + 0, sbb);
+		setBlockState(world, oakFence, cx + 1, cy + 0, cz + 0, sbb);
+		setBlockState(world, oakFence, cx + 0, cy + 0, cz - 1, sbb);
+		setBlockState(world, oakFence, cx + 0, cy + 0, cz + 1, sbb);
 	
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy + 0, cz + 0, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy + 0, cz + 0, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy + 0, cz + 0, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy + 0, cz - 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy + 0, cz + 1, sbb);
-	
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy + 1, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy + 1, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy + 1, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy + 1, cz - 1, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy + 1, cz + 1, sbb);
+		setBlockState(world, oakFence, cx + 0, cy + 1, cz + 0, sbb);
+		setBlockState(world, torch, cx - 1, cy + 1, cz + 0, sbb);
+		setBlockState(world, torch, cx + 1, cy + 1, cz + 0, sbb);
+		setBlockState(world, torch, cx + 0, cy + 1, cz - 1, sbb);
+		setBlockState(world, torch, cx + 0, cy + 1, cz + 1, sbb);
 		
 		for (int y = cy; y < decoTop - 1; y++) {
-			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, y, cz + 0, sbb);
+			setBlockState(world, oakFence, cx + 0, y, cz + 0, sbb);
 		}
 	}
 
@@ -1315,58 +1338,42 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	    // we're good
 	    return false;
 	}
-	
-	/**
-	 * Puts one chain in a tower at the specified coordinates.
-	 *
-	 * @param dx
-	 * @param length
-	 * @param dz
-	 * @param getZ()
-	 */ 
+
 	protected void decorateOneChain(World world, Random rand, int dx, int decoTop, int length, int dz, StructureBoundingBox sbb) {
 		for (int y = 1; y <= length; y++) {
 			setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx, decoTop - y - 1, dz, sbb);
 		}		
 		// make the "ball" at the end.
-		Block ballBlock;
-		int ballMeta;
+		IBlockState ballBlock;
 		switch (rand.nextInt(10)) {
 		case 0:
-			ballBlock = Blocks.IRON_BLOCK;
-			ballMeta = 0;
+			ballBlock = Blocks.IRON_BLOCK.getDefaultState();
 			break;
 		case 1:
-			ballBlock = Blocks.BOOKSHELF;
-			ballMeta = 0;
+			ballBlock = Blocks.BOOKSHELF.getDefaultState();
 			break;
 		case 2:
-			ballBlock = Blocks.NETHERRACK;
-			ballMeta = 0;
+			ballBlock = Blocks.NETHERRACK.getDefaultState();
 			break;
 		case 3:
-			ballBlock = Blocks.SOUL_SAND;
-			ballMeta = 0;
+			ballBlock = Blocks.SOUL_SAND.getDefaultState();
 			break;
 		case 4:
-			ballBlock = Blocks.GLASS;
-			ballMeta = 0;
+			ballBlock = Blocks.GLASS.getDefaultState();
 			break;
 		case 5:
-			ballBlock = Blocks.LAPIS_BLOCK;
-			ballMeta = 0;
+			ballBlock = Blocks.LAPIS_BLOCK.getDefaultState();
 			break;
 		case 6:
-			ballBlock = Blocks.MONSTER_EGG;
-			ballMeta = 2;
+			ballBlock = Blocks.MONSTER_EGG.getDefaultState()
+							.withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK);
 			break;
 		case 7:
 		default:
-			ballBlock = Blocks.GLOWSTONE;
-			ballMeta = 0;
+			ballBlock = Blocks.GLOWSTONE.getDefaultState();
 			break;
 		}
-		setBlockState(world, ballBlock, ballMeta, dx, decoTop - length - 2, dz, sbb);
+		setBlockState(world, ballBlock, dx, decoTop - length - 2, dz, sbb);
 	}
 
 	/**
@@ -1398,6 +1405,13 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param decoTop 
 	 */
 	protected void decorateFloatingVines(World world, Random rand, int decoTop, StructureBoundingBox sbb) {
+		final IBlockState mossyCobbleStone = Blocks.MOSSY_COBBLESTONE.getDefaultState();
+		final IBlockState vine = Blocks.VINE.getDefaultState();
+		final IBlockState vineNorth = vine.withProperty(BlockVine.NORTH, true);
+		final IBlockState vineSouth = vine.withProperty(BlockVine.SOUTH, true);
+		final IBlockState vineEast = vine.withProperty(BlockVine.EAST, true);
+		final IBlockState vineWest = vine.withProperty(BlockVine.WEST, true);
+
 		// a list of existing blocks
 		ArrayList<BlockPos> mossList = new ArrayList<BlockPos>();
 		// try size + 2 times to find a rock pillar that does not collide
@@ -1409,12 +1423,12 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				int bottom = 2 + rand.nextInt(decoTop - 7);
 				int top = rand.nextInt(bottom - 1) + 2;
 				for (int y = top; y <= bottom; y++) {
-					setBlockState(world, Blocks.MOSSY_COBBLESTONE, 0, moss.getX(), decoTop - y, moss.getZ(), sbb);
+					setBlockState(world, mossyCobbleStone, moss.getX(), decoTop - y, moss.getZ(), sbb);
 					// surround it with vines
-					setBlockState(world, Blocks.VINE, getVineMeta(2), moss.getX() + 1, decoTop - y, moss.getZ() + 0, sbb);
-					setBlockState(world, Blocks.VINE, getVineMeta(0), moss.getX() - 1, decoTop - y, moss.getZ() + 0, sbb);
-					setBlockState(world, Blocks.VINE, getVineMeta(3), moss.getX() + 0, decoTop - y, moss.getZ() + 1, sbb);
-					setBlockState(world, Blocks.VINE, getVineMeta(1), moss.getX() + 0, decoTop - y, moss.getZ() - 1, sbb);
+					setBlockState(world, vineNorth, moss.getX() + 1, decoTop - y, moss.getZ() + 0, sbb);
+					setBlockState(world, vineSouth, moss.getX() - 1, decoTop - y, moss.getZ() + 0, sbb);
+					setBlockState(world, vineEast, moss.getX() + 0, decoTop - y, moss.getZ() + 1, sbb);
+					setBlockState(world, vineWest, moss.getX() + 0, decoTop - y, moss.getZ() - 1, sbb);
 				}		
 				mossList.add(moss);
 			}
@@ -1424,18 +1438,18 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		for (int y = highestOpening + 3; y < decoTop - 1; y++) {
 			for (int x = 1; x < size - 1; x++) {
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, Blocks.VINE, getVineMeta(3), x, y, 1, sbb);
+					setBlockState(world, vineEast, x, y, 1, sbb);
 				}
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, Blocks.VINE, getVineMeta(1), x, y, size - 2, sbb);
+					setBlockState(world, vineWest, x, y, size - 2, sbb);
 				}
 			}
 			for (int z = 1; z < size - 1; z++) {
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, Blocks.VINE, getVineMeta(2), 1, y, z, sbb);
+					setBlockState(world, vineNorth, 1, y, z, sbb);
 				}
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, Blocks.VINE, getVineMeta(0), size - 2, y, z, sbb);
+					setBlockState(world, vineSouth, size - 2, y, z, sbb);
 				}
 			}
 		}
@@ -1448,7 +1462,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param vineDir
 	 * @return
 	 */
-	protected int getVineMeta(int vineDir) {
+	//TODO: I'm pretty sure vines can now use rotateBlock
+	/*protected int getVineMeta(int vineDir) {
 		switch ((this.getCoordBaseMode() + vineDir) % 4) {
 		case 0:
 			return 8;
@@ -1461,7 +1476,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		default:
 			return -1; // this is impossible
 		}
-	}
+	}*/
 	
 
 	
@@ -1471,71 +1486,69 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected void decoratePlanter(World world, Random rand, StructureBoundingBox sbb) {
 		int cx = size / 2;
 		int cz = cx;
-		
-		setBlockState(world, Blocks.STONE_SLAB, 0, cx + 0, 1, cz + 1, sbb);
-		setBlockState(world, Blocks.STONE_SLAB, 0, cx + 0, 1, cz - 1, sbb);
-		setBlockState(world, Blocks.STONE_SLAB, 0, cx + 1, 1, cz + 0, sbb);
-		setBlockState(world, Blocks.STONE_SLAB, 0, cx - 1, 1, cz + 0, sbb);
+		final IBlockState doubleStoneSlab = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
+		final IBlockState stoneSlab = Blocks.STONE_SLAB.getDefaultState();
+
+		setBlockState(world, stoneSlab, cx + 0, 1, cz + 1, sbb);
+		setBlockState(world, stoneSlab, cx + 0, 1, cz - 1, sbb);
+		setBlockState(world, stoneSlab, cx + 1, 1, cz + 0, sbb);
+		setBlockState(world, stoneSlab, cx - 1, 1, cz + 0, sbb);
 
 		if (size > 7)
 		{
-			setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, cx - 1, 1, cz - 1, sbb);
-			setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, cx + 1, 1, cz - 1, sbb);
-			setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, cx + 1, 1, cz + 1, sbb);
-			setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, cx - 1, 1, cz + 1, sbb);
+			setBlockState(world, doubleStoneSlab, cx - 1, 1, cz - 1, sbb);
+			setBlockState(world, doubleStoneSlab, cx + 1, 1, cz - 1, sbb);
+			setBlockState(world, doubleStoneSlab, cx + 1, 1, cz + 1, sbb);
+			setBlockState(world, doubleStoneSlab, cx - 1, 1, cz + 1, sbb);
 		}
 
 		// place a cute planted thing
-		setBlockState(world, Blocks.GRASS, 0, cx + 0, 1, cz + 0, sbb);
+		setBlockState(world, Blocks.GRASS.getDefaultState(), cx + 0, 1, cz + 0, sbb);
 
-		Block planterBlock;
-		int planterMeta;
+		IBlockState planterBlock;
 		switch (rand.nextInt(6)) {
 		case 0:
-			planterBlock = Blocks.SAPLING;
-			planterMeta = 0;
+			planterBlock = Blocks.SAPLING.getDefaultState()
+							.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.OAK);
 			break;
 		case 1:
-			planterBlock = Blocks.SAPLING;
-			planterMeta = 1;
+			planterBlock = Blocks.SAPLING.getDefaultState()
+					.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.SPRUCE);
 			break;
 		case 2:
-			planterBlock = Blocks.SAPLING;
-			planterMeta = 2;
+			planterBlock = Blocks.SAPLING.getDefaultState()
+					.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.BIRCH);
 			break;
 		case 3:
-			planterBlock = Blocks.SAPLING;
-			planterMeta = 3;
+			planterBlock = Blocks.SAPLING.getDefaultState()
+					.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.JUNGLE);
 			break;
 		case 4:
-			planterBlock = Blocks.BROWN_MUSHROOM;
-			planterMeta = 0;
+			planterBlock = Blocks.BROWN_MUSHROOM.getDefaultState();
 			break;
 		case 5:
 		default:
-			planterBlock = Blocks.RED_MUSHROOM;
-			planterMeta = 0;
+			planterBlock = Blocks.RED_MUSHROOM.getDefaultState();
 			break;
 		}
-		setBlockState(world, planterBlock, planterMeta, cx + 0, 2, cz + 0, sbb);
+		setBlockState(world, planterBlock, cx + 0, 2, cz + 0, sbb);
 		
 		// try to grow a tree
-		if (planterBlock == Blocks.SAPLING) {
+		if (planterBlock.getBlock() == Blocks.SAPLING) {
 			final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
-	        ((BlockSapling)Blocks.SAPLING).grow(world, pos, world.rand);
+	        ((BlockSapling)Blocks.SAPLING).grow(world, pos, planterBlock, world.rand);
 		}
 		// or a mushroom
-		if (planterBlock == Blocks.BROWN_MUSHROOM || planterBlock == Blocks.RED_MUSHROOM) {
+		if (planterBlock.getBlock() == Blocks.BROWN_MUSHROOM || planterBlock.getBlock() == Blocks.RED_MUSHROOM) {
 			final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
-			((BlockMushroom)planterBlock).updateTick(world, pos, world.rand);
+			((BlockMushroom)planterBlock).updateTick(world, pos, planterBlock, world.rand);
 		}
 		
 		// otherwise, place the block into a flowerpot
-		Block whatHappened = this.getBlockStateFromPos(world, cx + 0, 2, cz + 0, sbb);
-		if (whatHappened == planterBlock || whatHappened == Blocks.AIR)
+		IBlockState whatHappened = this.getBlockStateFromPos(world, cx + 0, 2, cz + 0, sbb);
+		if (whatHappened.getBlock() == planterBlock.getBlock() || whatHappened.getBlock() == Blocks.AIR)
 		{
-			int potMeta = 0;//BlockFlowerPot.getMetaForPlant(new ItemStack(planterBlock, 1, planterMeta));
-			setBlockState(world, Blocks.FLOWER_POT, potMeta, cx + 0, 2, cz + 0, sbb);
+			setBlockState(world, Blocks.FLOWER_POT.getDefaultState(), cx + 0, 2, cz + 0, sbb);
 		}
 	}
 	
@@ -1547,26 +1560,29 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int cz = cx;
 		int cy = 1;
 		
-		Block waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA : Blocks.WATER;
-		
+		IBlockState waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA.getDefaultState() : Blocks.WATER.getDefaultState();
+
+		final IBlockState stoneSlab = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, SMOOTHBRICK);
+		final IBlockState stoneBrick = Blocks.STONEBRICK.getDefaultState();
+
 		if (size > 7) {
 			// actual well structure
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, cy + 0, cz - 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 0, cy + 0, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, cy + 0, cz - 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, waterOrLava, 0, cx + 0, cy + 0, cz + 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx - 1, cy + 0, cz + 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx - 1, cy + 1, cz + 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 0, cy + 0, cz + 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), cx + 1, cy + 0, cz + 1, sbb);
-			setBlockState(world, Blocks.STONE_SLAB, 5, cx + 1, cy + 1, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneSlab, cx - 1, cy + 1, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx + 0, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneSlab, cx + 1, cy + 1, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, cy + 0, cz + 0, sbb);
+			setBlockState(world, waterOrLava, cx + 0, cy + 0, cz + 0, sbb);
+			setBlockState(world, stoneBrick, cx + 1, cy + 0, cz + 0, sbb);
+			setBlockState(world, stoneBrick, cx - 1, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneSlab, cx - 1, cy + 1, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx + 0, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneSlab, cx + 1, cy + 1, cz + 1, sbb);
 		}
 		
-		setBlockState(world, waterOrLava, 0, cx + 0, cy - 1, cz + 0, sbb);
+		setBlockState(world, waterOrLava, cx + 0, cy - 1, cz + 0, sbb);
 
 	}
 
@@ -1640,8 +1656,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 //        updateLight(world, dx, dy + 0, dz);
 //        updateLight(world, dx, dy + 1, dz);
         
-        if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
-        	setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, dx, dy + 2, dz, sbb);
+        if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb).getBlock() != Blocks.AIR) {
+        	setBlockState(world, Blocks.DOUBLE_STONE_SLAB.getDefaultState(), dx, dy + 2, dz, sbb);
         }
         
         // clear the door
@@ -1797,15 +1813,16 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected void makeWindows(World world, Random rand, StructureBoundingBox sbb, boolean real) {
 		
 		
-		for (int i = 0; i < 4; i++) {
-			boolean realWindows = real && !openingTowards[i];
-			makeWindowBlock(world, size - 1, 2, size / 2, i, sbb, realWindows);
-			makeWindowBlock(world, size - 1, 3, size / 2, i, sbb, realWindows);
-			makeWindowBase(world, size - 1, 1, size / 2, i, sbb);
+		//for (int i = 0; i < 4; i++) {
+		for (Rotation rotation : Rotation.values()) {
+			boolean realWindows = real && !openingTowards[rotation.ordinal()];
+			makeWindowBlock(world, size - 1, 2, size / 2, rotation, sbb, realWindows);
+			makeWindowBlock(world, size - 1, 3, size / 2, rotation, sbb, realWindows);
+			makeWindowBase(world, size - 1, 1, size / 2, rotation, sbb);
 			if (height > 8) {
-				makeWindowBlock(world, size - 1, height - 3, size / 2, i, sbb, realWindows);
-				makeWindowBlock(world, size - 1, height - 4, size / 2, i, sbb, realWindows);
-				makeWindowBase(world, size - 1, height - 5, size / 2, i, sbb);
+				makeWindowBlock(world, size - 1, height - 3, size / 2, rotation, sbb, realWindows);
+				makeWindowBlock(world, size - 1, height - 4, size / 2, rotation, sbb, realWindows);
+				makeWindowBase(world, size - 1, height - 5, size / 2, rotation, sbb);
 			}
 		}
 	}
@@ -1816,23 +1833,23 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * Makes a window block.  Specify a point in a wall, and this function checks to 
 	 * see if it is blocked on the inside or outside, and if not, adds a pane of glass.
 	 */
-	protected void makeWindowBlock(World world, int x, int y, int z, int rotation, StructureBoundingBox sbb, boolean realWindows) {
-		int temp = this.getCoordBaseMode();
-		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
+	protected void makeWindowBlock(World world, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb, boolean realWindows) {
+		EnumFacing temp = this.getCoordBaseMode();
+		this.setCoordBaseMode(rotation.rotate(temp));
 		
 		// look outside
-		Block outside = getBlockStateFromPos(world, x + 1, y, z, sbb);
+		Block outside = getBlockStateFromPos(world, x + 1, y, z, sbb).getBlock();
 		
 		// look inside
-		Block inside = getBlockStateFromPos(world, x - 1, y, z, sbb);
+		Block inside = getBlockStateFromPos(world, x - 1, y, z, sbb).getBlock();
 		
 		// make a window!
 		if (realWindows && inside == Blocks.AIR && outside == Blocks.AIR) {
-			setBlockState(world, Blocks.GLASS_PANE, 0, x, y, z, sbb);
+			setBlockState(world, Blocks.GLASS_PANE.getDefaultState(), x, y, z, sbb);
 		}
 		else {
 			// cobblestone where the window might have been
-			setBlockState(world, Blocks.COBBLESTONE, 0, x, y, z, sbb);
+			setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y, z, sbb);
 		}
 		
 		this.setCoordBaseMode(temp);
@@ -1842,10 +1859,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Makes a window base
 	 */
-	protected void makeWindowBase(World world, int x, int y, int z, int rotation, StructureBoundingBox sbb) {
-		int temp = this.getCoordBaseMode();
-		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, x, y, z, sbb);
+	protected void makeWindowBase(World world, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb) {
+		EnumFacing temp = this.getCoordBaseMode();
+		this.setCoordBaseMode(rotation.rotate(temp));
+		setBlockState(world, Blocks.DOUBLE_STONE_SLAB.getDefaultState(), x, y, z, sbb);
 		this.setCoordBaseMode(temp);
 				
 	}
@@ -1879,7 +1896,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 //		int numFlights = ((this.height - 3) / rise) - 1;
 		int numFlights = (highestOpening / rise);
 		for (int i = 0; i < numFlights; i++) {
-			makeStairs5flight(world, rand, sbb, i * rise, 0 + (i * 3), 2);
+			makeStairs5flight(world, rand, sbb, i * rise, getRotation(Rotation.NONE, i * 3), true);
 		}
 
 		return true;
@@ -1891,16 +1908,20 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param height
 	 * @param rotation
 	 */
-	protected void makeStairs5flight(World world, Random rand, StructureBoundingBox sbb, int height, int rotation, int meta) {
-		int temp = this.getCoordBaseMode();
+	protected void makeStairs5flight(World world, Random rand, StructureBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+		EnumFacing temp = this.getCoordBaseMode();
 		
-		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
+		this.setCoordBaseMode(rotation.rotate(temp));
 		
-		BlockSlab singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
-		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
+		IBlockState singleSlabBlock = useBirchWood ?
+				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.STONE_SLAB.getDefaultState();
+		IBlockState doubleSlabBlock = useBirchWood ?
+				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 		
-		setBlockState(world, singleSlabBlock, meta, 2, 1 + height, 3, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 3, 1 + height, 3, sbb);
+		setBlockState(world, singleSlabBlock, 2, 1 + height, 3, sbb);
+		setBlockState(world, doubleSlabBlock, 3, 1 + height, 3, sbb);
 		
 		this.setCoordBaseMode(temp);
 	}
@@ -1910,19 +1931,19 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected boolean makeStairs7(World world, Random rand, StructureBoundingBox sbb) {
 		// foot of stairs
-		setBlockState(world, Blocks.WOODEN_SLAB, 2, 1, 1, 4, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 1, 1, 5, sbb);
+		setBlockState(world, Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH), 1, 1, 4, sbb);
+		setBlockState(world, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH), 1, 1, 5, sbb);
 		
-		setBlockState(world, Blocks.STONE_SLAB, 0, 5, 1, 2, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 5, 1, 1, sbb);
+		setBlockState(world, Blocks.STONE_SLAB.getDefaultState(), 5, 1, 2, sbb);
+		setBlockState(world, Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 5, 1, 1, sbb);
 		
 		// staircases rotating around the tower
 		int rise = 2;
 //		int numFlights = ((this.height - 3) / rise) - 1;
 		int numFlights = (highestOpening / rise);
 		for (int i = 0; i < numFlights; i++) {
-			makeStairs7flight(world, rand, sbb, 1 + i * rise, 0 + (i * 3), 2);
-			makeStairs7flight(world, rand, sbb, 1 + i * rise, 2 + (i * 3), 0);
+			makeStairs7flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.NONE, i * 3), true);
+			makeStairs7flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.CLOCKWISE_180, i * 3), false);
 		}
 
 		return true;
@@ -1934,18 +1955,21 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param height
 	 * @param rotation
 	 */
-	protected void makeStairs7flight(World world, Random rand, StructureBoundingBox sbb, int height, int rotation, int meta) {
-		int temp = this.getCoordBaseMode();
+	protected void makeStairs7flight(World world, Random rand, StructureBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+		EnumFacing temp = this.getCoordBaseMode();
 		
-		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
+		this.setCoordBaseMode(rotation.rotate(temp));
+		IBlockState singleSlabBlock = useBirchWood ?
+				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.STONE_SLAB.getDefaultState();
+		IBlockState doubleSlabBlock = useBirchWood ?
+				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 		
-		BlockSlab singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
-		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
-		
-		setBlockState(world, singleSlabBlock, meta, 2, 1 + height, 5, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 3, 1 + height, 5, sbb);
-		setBlockState(world, singleSlabBlock, meta, 4, 2 + height, 5, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 5, 2 + height, 5, sbb);
+		setBlockState(world, singleSlabBlock, 2, 1 + height, 5, sbb);
+		setBlockState(world, doubleSlabBlock, 3, 1 + height, 5, sbb);
+		setBlockState(world, singleSlabBlock, 4, 2 + height, 5, sbb);
+		setBlockState(world, doubleSlabBlock, 5, 2 + height, 5, sbb);
 		
 		this.setCoordBaseMode(temp);
 	}
@@ -1954,20 +1978,25 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * Stair maker for a size 9 tower
 	 */
 	protected boolean makeStairs9(World world, Random rand, StructureBoundingBox sbb) {
-		// foot of stairs
-		setBlockState(world, Blocks.WOODEN_SLAB, 2, 1, 1, 6, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 1, 1, 7, sbb);
+		final IBlockState planks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		final IBlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		final IBlockState stoneSlab = Blocks.STONE_SLAB.getDefaultState();
+		final IBlockState doubleStoneSlab = Blocks.STONE_SLAB.getDefaultState();
 
-		setBlockState(world, Blocks.STONE_SLAB, 0, 7, 1, 2, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 7, 1, 1, sbb);
+		// foot of stairs
+		setBlockState(world, birchSlab, 1, 1, 6, sbb);
+		setBlockState(world, planks, 1, 1, 7, sbb);
+
+		setBlockState(world, stoneSlab, 7, 1, 2, sbb);
+		setBlockState(world, doubleStoneSlab, 7, 1, 1, sbb);
 		
 		// staircases rotating around the tower
 		int rise = 3;
 //		int numFlights = ((this.height - 3) / rise) - 1;
 		int numFlights = (highestOpening / rise);
 		for (int i = 0; i < numFlights; i++) {
-			makeStairs9flight(world, rand, sbb, 1 + i * rise, 0 + (i * 3), 2);
-			makeStairs9flight(world, rand, sbb, 1 + i * rise, 2 + (i * 3), 0);
+			makeStairs9flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.NONE, i * 3), true);
+			makeStairs9flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.CLOCKWISE_180, i * 3), false);
 		}
 		
 		return true;
@@ -1979,20 +2008,24 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param height
 	 * @param rotation
 	 */
-	protected void makeStairs9flight(World world, Random rand, StructureBoundingBox sbb, int height, int rotation, int meta) {
-		int temp = this.getCoordBaseMode();
+	protected void makeStairs9flight(World world, Random rand, StructureBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+		//TODO: Can we just... not do this?
+		EnumFacing temp = this.getCoordBaseMode();
+		this.setCoordBaseMode(rotation.rotate(temp));
+
+		IBlockState singleSlabBlock = useBirchWood ?
+				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.STONE_SLAB.getDefaultState();
+		IBlockState doubleSlabBlock = useBirchWood ?
+				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 		
-		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
-		
-		Block singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
-		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
-		
-		setBlockState(world, singleSlabBlock, meta, 2, 1 + height, 7, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 3, 1 + height, 7, sbb);
-		setBlockState(world, singleSlabBlock, meta, 4, 2 + height, 7, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 5, 2 + height, 7, sbb);
-		setBlockState(world, singleSlabBlock, meta, 6, 3 + height, 7, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 7, 3 + height, 7, sbb);
+		setBlockState(world, singleSlabBlock, 2, 1 + height, 7, sbb);
+		setBlockState(world, doubleSlabBlock, 3, 1 + height, 7, sbb);
+		setBlockState(world, singleSlabBlock, 4, 2 + height, 7, sbb);
+		setBlockState(world, doubleSlabBlock, 5, 2 + height, 7, sbb);
+		setBlockState(world, singleSlabBlock, 6, 3 + height, 7, sbb);
+		setBlockState(world, doubleSlabBlock, 7, 3 + height, 7, sbb);
 		
 		this.setCoordBaseMode(temp);
 	}
@@ -2001,49 +2034,56 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * Stair maker for a size 15 tower
 	 */
 	protected boolean makeStairs15(World world, Random rand, StructureBoundingBox sbb) {
-		// foot of stairs
-		setBlockState(world, Blocks.WOODEN_SLAB, 2, 1, 1, 9, sbb);
-		setBlockState(world, Blocks.WOODEN_SLAB, 2, 2, 1, 9, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 1, 1, 10, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 2, 1, 10, sbb);
-		setBlockState(world, Blocks.WOODEN_SLAB, 2, 1, 2, 11, sbb);
-		setBlockState(world, Blocks.WOODEN_SLAB, 2, 2, 2, 11, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 1, 2, 12, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 2, 2, 12, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 1, 2, 13, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 2, 2, 13, sbb);
-		
-		setBlockState(world, Blocks.PLANKS, 2, 3, 2, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 3, 3, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 3, 4, 11, sbb);
-//		setBlockState(world, Blocks.TORCH.getDefaultState(), 3, 5, 11, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 3, 1, 10, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 3, 2, 10, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 3, 3, 10, sbb);
-		setBlockState(world, Blocks.PLANKS, 2, 3, 1, 9, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 3, 2, 9, sbb);
+		final IBlockState planks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		final IBlockState oakFence = Blocks.OAK_FENCE.getDefaultState();
+		final IBlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		final IBlockState stoneSlab = Blocks.STONE_SLAB.getDefaultState();
+		final IBlockState doubleStoneSlab = Blocks.STONE_SLAB.getDefaultState();
 
-		setBlockState(world, Blocks.STONE_SLAB, 0, 13, 1, 5, sbb);
-		setBlockState(world, Blocks.STONE_SLAB, 0, 12, 1, 5, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 13, 1, 4, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 12, 1, 4, sbb);
-		setBlockState(world, Blocks.STONE_SLAB, 0, 13, 2, 3, sbb);
-		setBlockState(world, Blocks.STONE_SLAB, 0, 12, 2, 3, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 13, 2, 2, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 12, 2, 2, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 13, 2, 1, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 12, 2, 1, sbb);
+		// foot of stairs
+		setBlockState(world, birchSlab, 1, 1, 9, sbb);
+		setBlockState(world, birchSlab, 2, 1, 9, sbb);
+
+		setBlockState(world, planks, 1, 1, 10, sbb);
+		setBlockState(world, planks, 2, 1, 10, sbb);
+		setBlockState(world, birchSlab, 1, 2, 11, sbb);
+		setBlockState(world, birchSlab, 2, 2, 11, sbb);
+		setBlockState(world, planks, 1, 2, 12, sbb);
+		setBlockState(world, planks, 2, 2, 12, sbb);
+		setBlockState(world, planks, 1, 2, 13, sbb);
+		setBlockState(world, planks, 2, 2, 13, sbb);
+		
+		setBlockState(world, planks, 3, 2, 11, sbb);
+		setBlockState(world, oakFence, 3, 3, 11, sbb);
+		setBlockState(world, oakFence, 3, 4, 11, sbb);
+//		setBlockState(world, Blocks.TORCH.getDefaultState(), 3, 5, 11, sbb);
+		setBlockState(world, planks, 3, 1, 10, sbb);
+		setBlockState(world, oakFence, 3, 2, 10, sbb);
+		setBlockState(world, oakFence, 3, 3, 10, sbb);
+		setBlockState(world, planks, 3, 1, 9, sbb);
+		setBlockState(world, oakFence, 3, 2, 9, sbb);
+
+		setBlockState(world, stoneSlab, 13, 1, 5, sbb);
+		setBlockState(world, stoneSlab, 12, 1, 5, sbb);
+		setBlockState(world, doubleStoneSlab, 13, 1, 4, sbb);
+		setBlockState(world, doubleStoneSlab, 12, 1, 4, sbb);
+		setBlockState(world, stoneSlab, 13, 2, 3, sbb);
+		setBlockState(world, stoneSlab, 12, 2, 3, sbb);
+		setBlockState(world, doubleStoneSlab, 13, 2, 2, sbb);
+		setBlockState(world, doubleStoneSlab, 12, 2, 2, sbb);
+		setBlockState(world, doubleStoneSlab, 13, 2, 1, sbb);
+		setBlockState(world, doubleStoneSlab, 12, 2, 1, sbb);
 //		setBlockState(world, Blocks.STONE_SLAB, 0, 7, 1, 2, sbb);
 //		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 7, 1, 1, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 11, 2, 3, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 11, 3, 3, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 11, 4, 3, sbb);
+		setBlockState(world, doubleStoneSlab, 11, 2, 3, sbb);
+		setBlockState(world, oakFence, 11, 3, 3, sbb);
+		setBlockState(world, oakFence, 11, 4, 3, sbb);
 //		setBlockState(world, Blocks.TORCH.getDefaultState(), 11, 5, 3, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 11, 1, 4, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 11, 2, 4, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 11, 3, 4, sbb);
-		setBlockState(world, Blocks.DOUBLE_STONE_SLAB, 0, 11, 1, 5, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 11, 2, 5, sbb);
+		setBlockState(world, doubleStoneSlab, 11, 1, 4, sbb);
+		setBlockState(world, oakFence, 11, 2, 4, sbb);
+		setBlockState(world, oakFence, 11, 3, 4, sbb);
+		setBlockState(world, doubleStoneSlab, 11, 1, 5, sbb);
+		setBlockState(world, oakFence, 11, 2, 5, sbb);
 		
 		
 		// staircases rotating around the tower
@@ -2051,74 +2091,86 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 //		int numFlights = ((this.height - 3) / rise) - 1;
 		int numFlights = (highestOpening / rise);
 		for (int i = 0; i < numFlights; i++) {
-			makeStairs15flight(world, rand, sbb, 2 + i * rise, 0 + (i * 3), 2);
-			makeStairs15flight(world, rand, sbb, 2 + i * rise, 2 + (i * 3), 0);
+			makeStairs15flight(world, rand, sbb, 2 + i * rise, getRotation(Rotation.NONE, i * 3), true);
+			makeStairs15flight(world, rand, sbb, 2 + i * rise, getRotation(Rotation.CLOCKWISE_180, i * 3), false);
 		}
 		
 		return true;
 	}
-	
+
+	private Rotation getRotation(Rotation startRotation, int rotations)
+	{
+		final int totalIncrements = startRotation.ordinal() + rotations;
+		return Rotation.values()[totalIncrements & 3];
+	}
+
 	/**
 	 * Function called by makeStairs7 to place stair blocks
 	 * 
 	 * @param height
 	 * @param rotation
 	 */
-	protected void makeStairs15flight(World world, Random rand, StructureBoundingBox sbb, int height, int rotation, int meta) {
-		int temp = this.getCoordBaseMode();
+	protected void makeStairs15flight(World world, Random rand, StructureBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+		EnumFacing temp = this.getCoordBaseMode();
 		
-		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
+		this.setCoordBaseMode(rotation.rotate(temp));
+
+		final IBlockState oakFence = Blocks.OAK_FENCE.getDefaultState();
+
+		IBlockState singleSlabBlock = useBirchWood ?
+				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.STONE_SLAB.getDefaultState();
+		IBlockState doubleSlabBlock = useBirchWood ?
+				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
+				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 		
-		Block singleSlabBlock = meta == 0 ? Blocks.STONE_SLAB : Blocks.WOODEN_SLAB;
-		Block doubleSlabBlock = meta == 0 ? Blocks.DOUBLE_STONE_SLAB : Blocks.PLANKS;
-		
-		setBlockState(world, singleSlabBlock, meta, 3, 1 + height, 13, sbb);
-		setBlockState(world, sbb, rand, 0.9F, 4, 1 + height, 13, doubleSlabBlock, meta);
-		setBlockState(world, singleSlabBlock, meta, 5, 2 + height, 13, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 6, 2 + height, 13, sbb);
-		setBlockState(world, singleSlabBlock, meta, 7, 3 + height, 13, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 8, 3 + height, 13, sbb);
-		setBlockState(world, singleSlabBlock, meta, 9, 4 + height, 13, sbb);
-		setBlockState(world, sbb, rand, 0.9F, 10, 4 + height, 13, doubleSlabBlock, meta);
-		setBlockState(world, sbb, rand, 0.9F, 11, 5 + height, 13, singleSlabBlock, meta);
-		setBlockState(world, doubleSlabBlock, meta, 12, 5 + height, 13, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 13, 5 + height, 13, sbb);
+		setBlockState(world, singleSlabBlock, 3, 1 + height, 13, sbb);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 4, 1 + height, 13, doubleSlabBlock);
+		setBlockState(world, singleSlabBlock, 5, 2 + height, 13, sbb);
+		setBlockState(world, doubleSlabBlock, 6, 2 + height, 13, sbb);
+		setBlockState(world, singleSlabBlock, 7, 3 + height, 13, sbb);
+		setBlockState(world, doubleSlabBlock, 8, 3 + height, 13, sbb);
+		setBlockState(world, singleSlabBlock, 9, 4 + height, 13, sbb);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 10, 4 + height, 13, doubleSlabBlock);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 11, 5 + height, 13, singleSlabBlock);
+		setBlockState(world, doubleSlabBlock, 12, 5 + height, 13, sbb);
+		setBlockState(world, doubleSlabBlock, 13, 5 + height, 13, sbb);
 
-		setBlockState(world, sbb, rand, 0.9F, 3, 1 + height, 12, singleSlabBlock, meta);
-		setBlockState(world, doubleSlabBlock, meta, 4, 1 + height, 12, sbb);
-		setBlockState(world, singleSlabBlock, meta, 5, 2 + height, 12, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 6, 2 + height, 12, sbb);
-		setBlockState(world, sbb, rand, 0.9F, 7, 3 + height, 12, singleSlabBlock, meta);
-		setBlockState(world, doubleSlabBlock, meta, 8, 3 + height, 12, sbb);
-		setBlockState(world, singleSlabBlock, meta, 9, 4 + height, 12, sbb);
-		setBlockState(world, sbb, rand, 0.9F, 10, 4 + height, 12, doubleSlabBlock, meta);
-		setBlockState(world, singleSlabBlock, meta, 11, 5 + height, 12, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 12, 5 + height, 12, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 13, 5 + height, 12, sbb);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 3, 1 + height, 12, singleSlabBlock);
+		setBlockState(world, doubleSlabBlock, 4, 1 + height, 12, sbb);
+		setBlockState(world, singleSlabBlock, 5, 2 + height, 12, sbb);
+		setBlockState(world, doubleSlabBlock, 6, 2 + height, 12, sbb);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 7, 3 + height, 12, singleSlabBlock);
+		setBlockState(world, doubleSlabBlock, 8, 3 + height, 12, sbb);
+		setBlockState(world, singleSlabBlock, 9, 4 + height, 12, sbb);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 10, 4 + height, 12, doubleSlabBlock);
+		setBlockState(world, singleSlabBlock, 11, 5 + height, 12, sbb);
+		setBlockState(world, doubleSlabBlock, 12, 5 + height, 12, sbb);
+		setBlockState(world, doubleSlabBlock, 13, 5 + height, 12, sbb);
 
-		setBlockState(world, doubleSlabBlock, meta, 4, 1 + height, 11, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 5, 2 + height, 11, sbb);
-		setBlockState(world, sbb, rand, 0.9F, 6, 2 + height, 11, doubleSlabBlock, meta);
-		setBlockState(world, doubleSlabBlock, meta, 7, 3 + height, 11, sbb);
-		setBlockState(world, sbb, rand, 0.9F, 8, 3 + height, 11, doubleSlabBlock, meta);
-		setBlockState(world, doubleSlabBlock, meta, 9, 4 + height, 11, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 10, 4 + height, 11, sbb);
-		setBlockState(world, doubleSlabBlock, meta, 11, 5 + height, 11, sbb);
+		setBlockState(world, doubleSlabBlock, 4, 1 + height, 11, sbb);
+		setBlockState(world, doubleSlabBlock, 5, 2 + height, 11, sbb);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 6, 2 + height, 11, doubleSlabBlock);
+		setBlockState(world, doubleSlabBlock, 7, 3 + height, 11, sbb);
+		randomlyPlaceBlock(world, sbb, rand, 0.9F, 8, 3 + height, 11, doubleSlabBlock);
+		setBlockState(world, doubleSlabBlock, 9, 4 + height, 11, sbb);
+		setBlockState(world, doubleSlabBlock, 10, 4 + height, 11, sbb);
+		setBlockState(world, doubleSlabBlock, 11, 5 + height, 11, sbb);
 
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 4, 2 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 5, 3 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, 3 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 7, 4 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 8, 4 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 9, 5 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 10, 5 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 11, 6 + height, 11, sbb);
+		setBlockState(world, oakFence, 4, 2 + height, 11, sbb);
+		setBlockState(world, oakFence, 5, 3 + height, 11, sbb);
+		setBlockState(world, oakFence, 6, 3 + height, 11, sbb);
+		setBlockState(world, oakFence, 7, 4 + height, 11, sbb);
+		setBlockState(world, oakFence, 8, 4 + height, 11, sbb);
+		setBlockState(world, oakFence, 9, 5 + height, 11, sbb);
+		setBlockState(world, oakFence, 10, 5 + height, 11, sbb);
+		setBlockState(world, oakFence, 11, 6 + height, 11, sbb);
 
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 4, 3 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, 4 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 8, 5 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 10, 6 + height, 11, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 11, 7 + height, 11, sbb);
+		setBlockState(world, oakFence, 4, 3 + height, 11, sbb);
+		setBlockState(world, oakFence, 6, 4 + height, 11, sbb);
+		setBlockState(world, oakFence, 8, 5 + height, 11, sbb);
+		setBlockState(world, oakFence, 10, 6 + height, 11, sbb);
+		setBlockState(world, oakFence, 11, 7 + height, 11, sbb);
 
 //		setBlockState(world, Blocks.TORCH.getDefaultState(), 11, 8 + height, 11, sbb);
 
@@ -2133,15 +2185,14 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Makes paintings of the minimum size or larger on the specified wall
 	 */
-	protected void generatePaintingsOnWall(World world, Random rand, int howMany, int floorLevel, int direction, int minSize, StructureBoundingBox sbb) {
+	protected void generatePaintingsOnWall(World world, Random rand, int howMany, int floorLevel, EnumFacing direction, int minSize, StructureBoundingBox sbb) {
 		for (int i = 0; i < howMany; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 			
 			// initialize a painting object
-			EntityPainting painting = new EntityPainting(world, pCoords.getX(), pCoords.getY(), pCoords.getZ(), direction);
+			EntityPainting painting = new EntityPainting(world, pCoords, direction);
 			painting.art = getPaintingOfSize(rand, minSize);
-			painting.setDirection(direction);
 			
 			// temporary function, make a real bounding box for the painting
 			
@@ -2190,9 +2241,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		}
 		
 		//TODO: this is a temporary workaround to fix the bad painting bounding boxes
-		
+		//TODO: Check if this is still neccessary
 		AxisAlignedBB largerBox;
-		if (painting.hangingDirection == 0 || painting.hangingDirection == 2) {
+		/*if (painting.facingDirection.hangingDirection == 0 || painting.hangingDirection == 2) {
 			largerBox = painting.boundingBox.expand(1, 1, 0.06);
 		}
 		else {
@@ -2202,7 +2253,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
         if (world.getCollidingBoundingBoxes(painting, largerBox).size() > 0)
         {
             return false;
-        }
+        }*/
+
+		largerBox = painting.getCollisionBoundingBox();
         
         List<Entity> collidingEntities = world.getEntitiesWithinAABBExcludingEntity(painting, largerBox);
 
@@ -2222,7 +2275,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * This returns the real-world coordinates of a possible painting or torch spot on the specified wall of this tower.
 	 */
-	protected BlockPos getRandomWallSpot(Random rand, int floorLevel, int direction, StructureBoundingBox sbb) {
+	protected BlockPos getRandomWallSpot(Random rand, int floorLevel, EnumFacing direction, StructureBoundingBox sbb) {
 		int minX = this.boundingBox.minX + 2;
 		int maxX = this.boundingBox.maxX - 2;
 
@@ -2234,19 +2287,19 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 		// constrain the paintings to one wall
 		// these directions correspond to painting facing directions, not necessarily to the structure orienting directions
-		if (direction == 0) {
+		if (direction == EnumFacing.SOUTH) {
 			minZ = this.boundingBox.minZ;
 			maxZ = this.boundingBox.minZ;
 		}
-		if (direction == 1) {
+		if (direction == EnumFacing.WEST) {
 			maxX = this.boundingBox.maxX;
 			minX = this.boundingBox.maxX;
 		}
-		if (direction == 2) {
+		if (direction == EnumFacing.NORTH) {
 			maxZ = this.boundingBox.maxZ;
 			minZ = this.boundingBox.maxZ;
 		}
-		if (direction == 3) {
+		if (direction == EnumFacing.EAST) {
 			minX = this.boundingBox.minX;
 			maxX = this.boundingBox.minX;
 		}
@@ -2256,10 +2309,12 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			int cx = minX + (maxX > minX ? rand.nextInt(maxX - minX) : 0);
 			int cy = minY + (maxY > minY ? rand.nextInt(maxY - minY) : 0);
 			int cz = minZ + (maxZ > minZ ? rand.nextInt(maxZ - minZ) : 0);
-			
-			if (sbb.isVecInside(cx, cy, cz)) {
+
+			final BlockPos blockPos = new BlockPos(cx, cy, cz);
+			if (sbb.isVecInside(blockPos)) {
 //				System.out.println("Found a valid random spot on the wall.  It's " + cx + ", " + cy + ", " + cz );
-				return new BlockPos(cx, cy, cz);
+
+				return blockPos;
 			}
 		}
 		
@@ -2272,7 +2327,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * This method is for final castle towers actually.  
 	 * We need to break up this class into a more abstract tower class and a concrete lich tower class one day
 	 */
-	protected void makeGlyphBranches(World world, Random rand, int meta, StructureBoundingBox sbb) {
+	protected void makeGlyphBranches(World world, Random rand, EnumDyeColor colour, StructureBoundingBox sbb) {
 		// pick a random side of the tower
 		int rotation = rand.nextInt(4);
 		
@@ -2281,15 +2336,18 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		// near the middle
 		int startZ = 3 + rand.nextInt(this.size - 6);
-		
+
+		final IBlockState magicBlock = TFBlocks.castleMagic.getDefaultState().withProperty(COLOR, colour);
+
 		// make a line all the way down to the foundation
 		int dx = this.getXWithOffsetRotated(0, startZ, rotation);
 		int dz = this.getZWithOffsetRotated(0, startZ, rotation);
-		if (sbb.isVecInside(dx, this.boundingBox.minY + 1, dz)) {
+		if (sbb.isVecInside(new BlockPos(dx, this.boundingBox.minY + 1, dz))) {
 			for (int dy = this.getYWithOffset(startHeight); dy > 0; dy--) {
-				if (world.getBlock(dx, dy, dz) == TFBlocks.castleBlock) {
+				final BlockPos pos = new BlockPos(dx, dy, dz);
+				if (world.getBlockState(pos).getBlock() == TFBlocks.castleBlock) {
 					//System.out.println("placing glyph brick over " + world.getBlock(dx, dy, dz));
-					world.setBlock(dx, dy, dz, TFBlocks.castleMagic, meta, 2);
+					world.setBlockState(pos, magicBlock, 2);
 				} else {
 					//System.out.println("Stopping glyphs because block is " + world.getBlock(dx, dy, dz));
 					//System.out.println("dy = " + dy + " because startHeight = " + startHeight + " and startZ = " + startZ);
@@ -2303,10 +2361,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int leftHeight = rand.nextInt(this.height - startHeight);
 		if (leftOffset >= 0) {
 			for (int z = startZ; z > leftOffset; z--) {
-				this.setBlockStateRotated(world, TFBlocks.castleMagic, meta, 0, startHeight, z, rotation, sbb);
+				this.setBlockStateRotated(world, magicBlock, 0, startHeight, z, rotation, sbb);
 			}
 			for (int y = startHeight; y < (startHeight + leftHeight); y++) {
-				this.setBlockStateRotated(world, TFBlocks.castleMagic, meta, 0, y, leftOffset, rotation, sbb);
+				this.setBlockStateRotated(world, magicBlock, 0, y, leftOffset, rotation, sbb);
 			}
 
 		}
@@ -2316,10 +2374,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int rightHeight = rand.nextInt(this.height - startHeight);
 		if (rightOffset < this.size - 1) {
 			for (int z = startZ; z < rightOffset; z++) {
-				this.setBlockStateRotated(world, TFBlocks.castleMagic, meta, 0, startHeight, z, rotation, sbb);
+				this.setBlockStateRotated(world, magicBlock, 0, startHeight, z, rotation, sbb);
 			}
 			for (int y = startHeight; y < (startHeight + rightHeight); y++) {
-				this.setBlockStateRotated(world, TFBlocks.castleMagic, meta, 0, y, rightOffset, rotation, sbb);
+				this.setBlockStateRotated(world, magicBlock, 0, y, rightOffset, rotation, sbb);
 			}
 
 		}

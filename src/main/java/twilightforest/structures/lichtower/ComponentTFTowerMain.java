@@ -449,24 +449,13 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	protected void decoratePaintings(World world, Random rand, int floorLevel, StructureBoundingBox sbb) {
 		int howMany = 100;
 
-		// do wall 0.
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 0, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 0, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 0, 0, sbb);
-
-		// do wall 1.
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 1, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 1, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 1, 0, sbb);
-		// do wall 2.
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 2, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 2, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 2, 0, sbb);
-		// do wall 3.
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 3, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 3, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, floorLevel, 3, 0, sbb);
-
+		for (final EnumFacing horizontal : EnumFacing.HORIZONTALS)
+		{
+			// do wall 0.
+			generatePaintingsOnWall(world, rand, howMany, floorLevel, horizontal, 48, sbb);
+			generatePaintingsOnWall(world, rand, howMany, floorLevel, horizontal, 32, sbb);
+			generatePaintingsOnWall(world, rand, howMany, floorLevel, horizontal, 0, sbb);
+		}
 	}
 	
 	/**
@@ -483,14 +472,16 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	 * Place up to 10 torches (with fence holders) on the wall, checking that they don't overlap any paintings or other torches
 	 */
 	protected void generateTorchesOnWall(World world, Random rand,
-			int floorLevel, int direction, StructureBoundingBox sbb) {
+			int floorLevel, EnumFacing direction, StructureBoundingBox sbb) {
 		for (int i = 0; i < 10; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// offset to see where the fence should be
 			BlockPos.MutableBlockPos tCoords = new BlockPos.MutableBlockPos(wCoords);
-			if (direction == 0) {
+			//TODO: Verify this works ok, I think using EnumFacing simplifies this code
+			tCoords.move(direction);
+			/*if (direction == 0) {
 				tCoords.move(EnumFacing.SOUTH);
 			}
 			if (direction == 1) {
@@ -501,7 +492,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			}
 			if (direction == 3) {
 				tCoords.move(EnumFacing.EAST);
-			}
+			}*/
 
 
 			// is there a painting or another torch there?
