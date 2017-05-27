@@ -100,7 +100,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 
         if (!world.isRemote) {
             if (rock) {
-                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
+                if (!getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
+                    this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
+                }
             } else {
                 this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
             }

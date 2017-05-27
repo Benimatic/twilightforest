@@ -125,7 +125,9 @@ public class EntityTFYeti extends EntityMob
 
         if (!world.isRemote) {
             if (anger) {
-                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
+                if (!getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
+                    this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
+                }
             } else {
                 this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
             }
