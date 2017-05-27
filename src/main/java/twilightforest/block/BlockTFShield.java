@@ -20,16 +20,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFShield extends Block 
+public class BlockTFShield extends Block implements ModelRegisterCallback
 {
 
     public BlockTFShield()
     {
         super(Material.ROCK);
         this.setBlockUnbreakable();
-        //this.setResistance(2000.0F);
         this.setResistance(6000000.0F);
         this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);

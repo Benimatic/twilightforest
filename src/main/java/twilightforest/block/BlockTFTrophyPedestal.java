@@ -22,9 +22,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
@@ -32,7 +36,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockTFTrophyPedestal extends Block {
+public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallback {
 	private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	private static final PropertyEnum<BossVariant> BOSS = PropertyEnum.create("boss", BossVariant.class, BossVariant::hasTrophy);
 	private static final PropertyBool LATENT = PropertyBool.create("latent");
@@ -175,6 +179,5 @@ public class BlockTFTrophyPedestal extends Block {
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 		return state.getValue(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
-
 
 }
