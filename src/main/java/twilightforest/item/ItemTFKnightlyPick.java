@@ -22,16 +22,9 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFKnightlyPick extends ItemPickaxe implements ModelRegisterCallback {
 
-	private static final int BONUS_DAMAGE = 2;
-	private EntityPlayer bonusDamagePlayer;
-	private Entity bonusDamageEntity;
-	private float damageVsEntity;
-
 	protected ItemTFKnightlyPick(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.damageVsEntity = 4 + par2EnumToolMaterial.getDamageVsEntity();
-
 	}
 
     @Override
@@ -42,41 +35,8 @@ public class ItemTFKnightlyPick extends ItemPickaxe implements ModelRegisterCall
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
-    	// repair with knightmetal ingots
-        return par2ItemStack.getItem() == TFItems.knightMetal ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return par2ItemStack.getItem() == TFItems.knightMetal || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
-
-	@Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) 
-    {
-    	// extra damage to armored targets
-    	if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).getTotalArmorValue() > 0)
-    	{
-    		this.bonusDamageEntity = entity;
-    		this.bonusDamagePlayer = player;
-    	}
-    	
-        return false;
-    }
-    
-//    /**
-//     * Returns the damage against a given entity.
-//     */
-//    @Override
-//    public float getDamageVsEntity(Entity par1Entity, ItemStack itemStack)
-//    {
-//       	if (this.bonusDamagePlayer != null && this.bonusDamageEntity != null && par1Entity == this.bonusDamageEntity)
-//       	{
-//       		this.bonusDamagePlayer.onEnchantmentCritical(par1Entity);
-//       		this.bonusDamagePlayer = null;
-//       		this.bonusDamageEntity = null;
-//       		return this.damageVsEntity + BONUS_DAMAGE;
-//       	}
-//       	else
-//       	{
-//       		return super.getDamageVsEntity(par1Entity, itemStack);
-//       	}
-//    }
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -84,13 +44,4 @@ public class ItemTFKnightlyPick extends ItemPickaxe implements ModelRegisterCall
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add(I18n.translateToLocal(getUnlocalizedName() + ".tooltip"));
 	}
-
-	@Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
-    {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        multimap.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
-        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double)this.damageVsEntity, 0));
-        return multimap;
-    }
 }
