@@ -19,18 +19,18 @@ public class ItemTFIceBomb extends ItemTF {
 	}
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 	    player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
         if (!world.isRemote) {
 			if (!player.capabilities.isCreativeMode) {
-				--stack.stackSize;
+				player.getHeldItem(hand).shrink(1);
 			}
 			EntityTFIceBomb ice = new EntityTFIceBomb(world, player);
 			ice.setHeadingFromThrower(player, player.rotationPitch, player.rotationYaw, -20.0F, 0.75F, 1.0F);
         	world.spawnEntity(ice);
         }
 
-        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+        return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 }

@@ -89,13 +89,13 @@ public class BlockTFForceField extends BlockPane implements ModelRegisterCallbac
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity)
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity, boolean useActualState)
     {
         // fill in the whole bounding box when we connect on all sides
         if (state.getValue(NORTH) && state.getValue(SOUTH) & state.getValue(WEST) && state.getValue(EAST)) {
             addCollisionBoxToList(pos, aabb, list, FULL_BLOCK_AABB);
         } else {
-            super.addCollisionBoxToList(state, world, pos, aabb, list, entity);
+            super.addCollisionBoxToList(state, world, pos, aabb, list, entity, useActualState);
         }
     }
 

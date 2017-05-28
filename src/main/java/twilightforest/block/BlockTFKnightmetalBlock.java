@@ -37,7 +37,7 @@ public class BlockTFKnightmetalBlock extends Block {
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
-    	entity.attackEntityFrom(DamageSource.cactus, BLOCK_DAMAGE);
+    	entity.attackEntityFrom(DamageSource.CACTUS, BLOCK_DAMAGE);
     }
 
     @Override

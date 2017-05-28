@@ -394,7 +394,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {
         EnumFacing oldBase = fakeBaseMode(rotation);
 	    final int minimumLightLevel = 15;
-	    func_189914_a(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
+	    generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
         setCoordBaseMode(oldBase);
     }
     

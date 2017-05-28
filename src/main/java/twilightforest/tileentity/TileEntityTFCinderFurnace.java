@@ -51,24 +51,28 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 
         if (!this.world.isRemote)
         {
-            if (this.isBurning() || this.furnaceItemStacks[1] != null && this.furnaceItemStacks[0] != null)
+            ItemStack itemstack = (ItemStack)this.furnaceItemStacks.get(1);
+
+            if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack)this.furnaceItemStacks.get(0)).isEmpty())
             {
                 if (!this.isBurning() && this.canSmelt())
                 {
-                    this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
+                    this.furnaceBurnTime = getItemBurnTime(itemstack);
                     this.currentItemBurnTime = this.furnaceBurnTime;
 
                     if (this.isBurning())
                     {
                         flag1 = true;
 
-                        if (this.furnaceItemStacks[1] != null)
+                        if (!itemstack.isEmpty())
                         {
-                            --this.furnaceItemStacks[1].stackSize;
+                            Item item = itemstack.getItem();
+                            itemstack.shrink(1);
 
-                            if (this.furnaceItemStacks[1].stackSize == 0)
+                            if (itemstack.isEmpty())
                             {
-                                this.furnaceItemStacks[1] = furnaceItemStacks[1].getItem().getContainerItem(furnaceItemStacks[1]);
+                                ItemStack item1 = item.getContainerItem(itemstack);
+                                this.furnaceItemStacks.set(1, item1);
                             }
                         }
                     }
@@ -82,7 +86,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
                     if (this.cookTime >= this.totalCookTime) // TF - change to geq since we can increment by >1
                     {
                         this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime(this.furnaceItemStacks[0]);
+                        this.totalCookTime = this.getCookTime((ItemStack)this.furnaceItemStacks.get(0));
                         this.smeltItem();
                         flag1 = true;
                     }
@@ -202,18 +206,26 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 	// [VanillaCopy] of superclass ver, changes noted
     private boolean canSmelt()
     {
-        if (this.furnaceItemStacks[0] == null)
+        if (((ItemStack)this.furnaceItemStacks.get(0)).isEmpty())
         {
             return false;
         }
         else
         {
-            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
-            if (itemstack == null) return false;
-            if (this.furnaceItemStacks[2] == null) return true;
-            if (!this.furnaceItemStacks[2].isItemEqual(itemstack)) return false;
-            int result = furnaceItemStacks[2].stackSize + getMaxOutputStacks(this.furnaceItemStacks[0], itemstack); // TF - account for multiplying
-            return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks[2].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult((ItemStack)this.furnaceItemStacks.get(0));
+
+            if (itemstack.isEmpty())
+            {
+                return false;
+            }
+            else
+            {
+                ItemStack itemstack1 = (ItemStack)this.furnaceItemStacks.get(2);
+                if (itemstack1.isEmpty()) return true;
+                if (!itemstack1.isItemEqual(itemstack)) return false;
+                int result = itemstack1.getCount() + getMaxOutputStacks(furnaceItemStacks.get(0), itemstack); // TF - account for multiplying
+                return result <= getInventoryStackLimit() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+            }
         }
     }
 
@@ -222,9 +234,9 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
      */
     public int getMaxOutputStacks(ItemStack input, ItemStack output) {
     	if (this.canMultiply(input, output)) {
-    		return output.stackSize * this.getCurrentMaxSmeltMultiplier();
+    		return output.getCount() * this.getCurrentMaxSmeltMultiplier();
     	} else {
-    		return output.stackSize;
+    		return output.getCount();
     	}
     }
 
@@ -234,32 +246,26 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
     {
         if (this.canSmelt())
         {
-            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
+            ItemStack itemstack = (ItemStack)this.furnaceItemStacks.get(0);
+            ItemStack itemstack1 = FurnaceRecipes.instance().getSmeltingResult(itemstack);
+            itemstack1.setCount(itemstack1.getCount() * getCurrentSmeltMultiplier());
+            ItemStack itemstack2 = (ItemStack)this.furnaceItemStacks.get(2);
 
-            // TF - multiply output
-            itemstack = itemstack.copy();
-            itemstack.stackSize *= getCurrentSmeltMultiplier();
-
-            if (this.furnaceItemStacks[2] == null)
+            if (itemstack2.isEmpty())
             {
-                this.furnaceItemStacks[2] = itemstack.copy();
+                this.furnaceItemStacks.set(2, itemstack1.copy());
             }
-            else if (this.furnaceItemStacks[2].getItem() == itemstack.getItem())
+            else if (itemstack2.getItem() == itemstack1.getItem())
             {
-                this.furnaceItemStacks[2].stackSize += itemstack.stackSize; // Forge BugFix: Results may have multiple items
-            }
-
-            if (this.furnaceItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks[0].getMetadata() == 1 && this.furnaceItemStacks[1] != null && this.furnaceItemStacks[1].getItem() == Items.BUCKET)
-            {
-                this.furnaceItemStacks[1] = new ItemStack(Items.WATER_BUCKET);
+                itemstack2.grow(itemstack1.getCount());
             }
 
-            --this.furnaceItemStacks[0].stackSize;
-
-            if (this.furnaceItemStacks[0].stackSize <= 0)
+            if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 1 && !((ItemStack)this.furnaceItemStacks.get(1)).isEmpty() && ((ItemStack)this.furnaceItemStacks.get(1)).getItem() == Items.BUCKET)
             {
-                this.furnaceItemStacks[0] = null;
+                this.furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
             }
+
+            itemstack.shrink(1);
         }
     }
 

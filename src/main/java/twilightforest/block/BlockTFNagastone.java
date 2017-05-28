@@ -76,8 +76,8 @@ public class BlockTFNagastone extends Block {
 	// If player places head on horz side of block, use that block face. Else, defer to player rotation.
 	@Nonnull
 	@Override
-	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, ItemStack stack) {
-		return stack.getItemDamage() == 0
+	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
+		return meta == 0
 				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
 				: this.getDefaultState();
 	}

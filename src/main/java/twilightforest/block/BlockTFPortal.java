@@ -334,7 +334,7 @@ public class BlockTFPortal extends BlockBreakable
 
 			worldserver.updateEntityWithOptionalForce(toTeleport, false);
 			toTeleport.world.profiler.endStartSection("reloading");
-			Entity entity = EntityList.createEntityByName(EntityList.getEntityString(toTeleport), worldserver1);
+			Entity entity = EntityList.newEntity(toTeleport.getClass(), worldserver1);
 
 			if (entity != null)
 			{

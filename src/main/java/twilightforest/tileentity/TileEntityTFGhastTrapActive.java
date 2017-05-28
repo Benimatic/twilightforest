@@ -87,7 +87,7 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 
 					if (rand.nextInt(10) == 0)
 					{
-						ghast.attackEntityFrom(DamageSource.generic, 3);
+						ghast.attackEntityFrom(DamageSource.GENERIC, 3);
 					}
 
 				}
@@ -100,7 +100,7 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 
 					if (rand.nextInt(10) == 0)
 					{
-						ghast.attackEntityFrom(DamageSource.generic, 10);
+						ghast.attackEntityFrom(DamageSource.GENERIC, 10);
 					}
 				}
 				

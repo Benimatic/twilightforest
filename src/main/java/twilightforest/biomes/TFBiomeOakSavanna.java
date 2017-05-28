@@ -28,9 +28,9 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
         getTFBiomeDecorator().alternateCanopyChance = 0.8F;
         getTFBiomeDecorator().alternateCanopyGen = new TFGenNoTree();
 		
-        this.theBiomeDecorator.treesPerChunk = 1;
-        this.theBiomeDecorator.flowersPerChunk = 4;
-        this.theBiomeDecorator.grassPerChunk = 20;
+        this.decorator.treesPerChunk = 1;
+        this.decorator.flowersPerChunk = 4;
+        this.decorator.grassPerChunk = 20;
 	}
 
     @Override

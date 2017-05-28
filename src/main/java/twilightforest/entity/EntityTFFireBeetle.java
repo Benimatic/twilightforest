@@ -185,7 +185,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
 	@Override
 	public void doBreathAttack(Entity target) 
 	{
-		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.inFire, BREATH_DAMAGE))
+		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE))
     	{
     		target.setFire(BREATH_DURATION);
     	}

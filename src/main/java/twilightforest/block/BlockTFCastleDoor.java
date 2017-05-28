@@ -84,7 +84,7 @@ public class BlockTFCastleDoor extends Block
     }
 
     @Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!state.getValue(ACTIVE))
         {
@@ -121,7 +121,7 @@ public class BlockTFCastleDoor extends Block
 		{
 			par1World.setBlockState(pos, stateAt.withProperty(ACTIVE, active), 3);
 			par1World.markBlockRangeForRenderUpdate(pos, pos);
-			par1World.notifyNeighborsRespectDebug(pos, stateAt.getBlock());
+			par1World.notifyNeighborsRespectDebug(pos, stateAt.getBlock(), false);
 		}
 	}
 

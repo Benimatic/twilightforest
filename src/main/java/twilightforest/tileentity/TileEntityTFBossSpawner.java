@@ -8,14 +8,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumDifficulty;
 
 
 public abstract class TileEntityTFBossSpawner extends TileEntity implements ITickable {
 	
-    protected String mobID = "Pig";
-    protected int counter;
-
+    protected ResourceLocation mobID = new ResourceLocation("minecraft:pig");
+    private int counter;
     protected Entity displayCreature = null;
 
     
@@ -110,6 +110,6 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	}
 
 	protected EntityLiving makeMyCreature() {
-		return (EntityLiving)EntityList.createEntityByName(mobID, world);
+		return (EntityLiving)EntityList.createEntityByIDFromName(mobID, world);
 	}
 }

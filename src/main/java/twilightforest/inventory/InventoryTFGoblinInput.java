@@ -9,25 +9,24 @@ import net.minecraft.util.text.TextComponentString;
 
 public class InventoryTFGoblinInput implements IInventory {
 	
-	private ItemStack[] stackInput = new ItemStack[1];
+	private ItemStack[] stackInput = new ItemStack[] { ItemStack.EMPTY };
 	private ContainerTFUncrafting craftingContainer;
 
     public InventoryTFGoblinInput(ContainerTFUncrafting containerTFGoblinCrafting) {
 		this.craftingContainer = containerTFGoblinCrafting;
 	}
 
-	/**
-     * Returns the number of slots in the inventory.
-     */
     @Override
 	public int getSizeInventory()
     {
         return 1;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
+    @Override
+    public boolean isEmpty() {
+        return stackInput[0].isEmpty();
+    }
+
     @Override
 	public ItemStack getStackInSlot(int par1)
     {
@@ -48,7 +47,7 @@ public class InventoryTFGoblinInput implements IInventory {
         {
             ItemStack takenStack;
 
-            if (this.stackInput[slotNum].stackSize <= amount)
+            if (this.stackInput[slotNum].getCount() <= amount)
             {
                 takenStack = this.stackInput[slotNum];
                 this.stackInput[slotNum] = null;
@@ -58,12 +57,6 @@ public class InventoryTFGoblinInput implements IInventory {
             else
             {
                 takenStack = this.stackInput[slotNum].splitStack(amount);
-
-                if (this.stackInput[slotNum].stackSize == 0)
-                {
-                    this.stackInput[slotNum] = null;
-                }
-
                 this.craftingContainer.onCraftMatrixChanged(this);
                 return takenStack;
             }

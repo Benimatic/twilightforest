@@ -30,7 +30,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCall
 
     // [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
         // TF - Use own string ID and MapData class
         ItemStack itemstack = new ItemStack(Items.FILLED_MAP, 1, worldIn.getUniqueDataId(ItemTFMazeMap.STR_ID));

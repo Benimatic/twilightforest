@@ -44,7 +44,7 @@ public class SlotTFGoblinUncrafting extends Slot {
     	// if there is anything in the assembly matrix, then you cannot have these items
     	for (int i = 0; i < this.assemblyMatrix.getSizeInventory(); i++)
     	{
-    		if (this.assemblyMatrix.getStackInSlot(i) != null)
+    		if (!this.assemblyMatrix.getStackInSlot(i).isEmpty())
     		{
     			return false;
     		}
@@ -67,9 +67,7 @@ public class SlotTFGoblinUncrafting extends Slot {
      * Called when the player picks up an item from an inventory slot
      */
 	@Override
-	public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack) {
-		super.onPickupFromSlot(par1EntityPlayer, par1ItemStack);
-		
+	public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack) {
         // charge the player for this
 		if (this.uncraftingMatrix.uncraftingCost > 0) {
 			this.thePlayer.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
@@ -82,7 +80,7 @@ public class SlotTFGoblinUncrafting extends Slot {
         // the assembly grid should be empty for this to even happen, so just plop the items right in
         for (int i = 0; i < 9; i++) {
         	ItemStack transferStack =  this.uncraftingMatrix.getStackInSlot(i);
-        	if (transferStack != null && transferStack.stackSize > 0) {
+        	if (transferStack != null && transferStack.getCount() > 0) {
 	        	this.assemblyMatrix.setInventorySlotContents(i, transferStack.copy());
         	}
         }
@@ -90,13 +88,13 @@ public class SlotTFGoblinUncrafting extends Slot {
 		// decrement the inputslot by 1
         // do this second so that it doesn't change the contents of the uncrafting grid
         ItemStack inputStack = this.inputSlot.getStackInSlot(0);
-        if (inputStack != null)
+        if (!inputStack.isEmpty())
         {
             this.inputSlot.decrStackSize(0, uncraftingMatrix.numberOfInputItems);
         }
         
 		
-
+		return super.onTake(par1EntityPlayer, par1ItemStack);
 	}
     
     

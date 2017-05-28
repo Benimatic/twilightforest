@@ -104,7 +104,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
     	return false;
     }

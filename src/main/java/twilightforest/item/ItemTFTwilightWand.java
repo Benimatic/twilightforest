@@ -25,8 +25,8 @@ public class ItemTFTwilightWand extends ItemTF {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
-		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage())
 		{
 			player.setActiveHand(hand);
 		}
@@ -35,7 +35,7 @@ public class ItemTFTwilightWand extends ItemTF {
 			player.resetActiveHand();
 		}
 		
-		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 	
     @Override

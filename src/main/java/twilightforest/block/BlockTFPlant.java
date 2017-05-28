@@ -75,7 +75,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
 	}
 	
     @Override
-	public boolean canReplace(World par1World, BlockPos pos, EnumFacing side, ItemStack par6ItemStack)
+	public boolean canPlaceBlockOnSide(World par1World, BlockPos pos, EnumFacing side)
     {
     	IBlockState state = par1World.getBlockState(pos);
         return (state.getBlock().isAir(state, par1World, pos) || state.getMaterial().isReplaceable()) && canBlockStay(par1World, pos, state);

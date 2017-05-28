@@ -270,7 +270,7 @@ public class ItemTFMazeMap extends ItemMap
                     MapDecoration decoration = mapdata.mapDecorations.get(entityplayer.getName());
                     if (decoration != null)
                     {
-                        mapdata.mapDecorations.put(entityplayer.getName(), new MapDecoration((byte) 6, decoration.getX(), decoration.getY(), decoration.getRotation()));
+                        mapdata.mapDecorations.put(entityplayer.getName(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRotation()));
                     }
                 }
             }

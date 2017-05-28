@@ -64,7 +64,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
     }
 
 	@Override
-    public void createBiomeProvider()
+    public void init()
     {
     	this.biomeProvider = new TFBiomeProvider(world);
     }

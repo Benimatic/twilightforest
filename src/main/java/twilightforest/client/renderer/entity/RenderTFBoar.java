@@ -11,8 +11,9 @@ import twilightforest.TwilightForestMod;
 public class RenderTFBoar extends RenderPig {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "wildboar.png");
 
-	public RenderTFBoar(RenderManager manager, ModelBase model, float shadowSize) {
-		super(manager, model, shadowSize);
+	public RenderTFBoar(RenderManager manager, ModelBase model) {
+		super(manager);
+		this.mainModel = model;
 	}
 	
 	@Override

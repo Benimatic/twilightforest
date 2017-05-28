@@ -16,8 +16,9 @@ import twilightforest.TwilightForestMod;
 public class RenderTFMistWolf extends RenderWolf {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "mistwolf.png");
 
-	public RenderTFMistWolf(RenderManager manager, ModelBase model, float shadowSize) {
-		super(manager, model, shadowSize);
+	public RenderTFMistWolf(RenderManager manager) {
+		super(manager);
+		this.shadowSize = 0.0625F;
 	}
 
 	@Override

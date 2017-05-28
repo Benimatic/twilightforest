@@ -104,19 +104,19 @@ public class ContainerTFUncrafting extends Container {
 	    		// let's not get leftovers if something changes like the recipe size
 	    		for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++)
 	    		{
-	    			this.uncraftingMatrix.setInventorySlotContents(i, null);
+	    			this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
 	    		}
 	    		
 	    		// set uncrafting grid
 	    		for (int invY = 0; invY < recipeHeight; invY++)  {
 	    			for (int invX = 0; invX < recipeWidth; invX++)  {
-	    				ItemStack ingredient = ItemStack.copyItemStack(recipeItems[invX + invY * recipeWidth]);
+	    				ItemStack ingredient = recipeItems[invX + invY * recipeWidth].copy();
 	    				// fix weird recipe for diamond/ingot blocks
-	    				if (ingredient != null && ingredient.stackSize > 1)
+	    				if (!ingredient.isEmpty() && ingredient.getCount() > 1)
 	    				{
-	    					ingredient.stackSize = 1;
+	    					ingredient.setCount(1);
 	    				}
-	    				if (ingredient != null && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+	    				if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
 	    				{
 	    					ingredient.setItemDamage(0);
 	    				}
@@ -148,7 +148,7 @@ public class ContainerTFUncrafting extends Container {
 	    		}
 	    		
 	    		// store number of items this recipe produces (and thus how many input items are required for uncrafting)
-	    		this.uncraftingMatrix.numberOfInputItems = recipe.getRecipeOutput().stackSize;
+	    		this.uncraftingMatrix.numberOfInputItems = recipe.getRecipeOutput().getCount();
 	    		this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
 	    		this.uncraftingMatrix.recraftingCost = 0;
 	    	}
@@ -156,7 +156,7 @@ public class ContainerTFUncrafting extends Container {
 	    		//System.out.println("Could not find a recipe for input " + this.tinkerInput.getStackInSlot(0));
 	    		
 	    		for (int i = 0; i < 9; i++) {
-	    			this.uncraftingMatrix.setInventorySlotContents(i, null);
+	    			this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
 	    		}
 	    		this.uncraftingMatrix.numberOfInputItems = 0;
     			this.uncraftingMatrix.uncraftingCost = 0;
@@ -178,7 +178,7 @@ public class ContainerTFUncrafting extends Container {
 //    			}
 //    			else {
     				// we placed an item in the assembly matrix, the next step will re-initialize these with correct values
-	    			this.tinkerResult.setInventorySlotContents(0, null);
+	    			this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
 	    			this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
 	    			this.uncraftingMatrix.recraftingCost = 0;
 //    			}
@@ -192,7 +192,7 @@ public class ContainerTFUncrafting extends Container {
     			if (this.assemblyMatrix.getStackInSlot(i) != null) {
     				this.combineMatrix.setInventorySlotContents(i, this.assemblyMatrix.getStackInSlot(i));
     			}
-    			else if (this.uncraftingMatrix.getStackInSlot(i) != null && this.uncraftingMatrix.getStackInSlot(i).stackSize > 0) {
+    			else if (this.uncraftingMatrix.getStackInSlot(i) != null && this.uncraftingMatrix.getStackInSlot(i).getCount() > 0) {
     				this.combineMatrix.setInventorySlotContents(i, this.uncraftingMatrix.getStackInSlot(i));
     			}
     			else {
