@@ -48,12 +48,6 @@ public class ItemTFFieryArmor extends ItemArmor {
         par3List.add(istack);
     }
     
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-        return par2ItemStack.getItem() == TFItems.fieryIngot || super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {

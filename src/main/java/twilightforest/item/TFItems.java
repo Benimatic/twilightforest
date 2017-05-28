@@ -1,8 +1,10 @@
 package twilightforest.item;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TwilightForestMod;
@@ -249,6 +251,24 @@ public class TFItems {
     public static final Item cubeOfAnnihilation;
 
     public static CreativeTabTwilightForest creativeTab = new CreativeTabTwilightForest("twilightForest");
+
+    public static void initRepairMaterials() {
+        ARMOR_NAGA.customCraftingMaterial = nagaScale;
+        ARMOR_IRONWOOD.customCraftingMaterial = ironwoodIngot;
+        ARMOR_FIERY.customCraftingMaterial = fieryIngot;
+        ARMOR_STEELEAF.customCraftingMaterial = steeleafIngot;
+        ARMOR_KNIGHTLY.customCraftingMaterial = knightMetal;
+        ARMOR_PHANTOM.customCraftingMaterial = knightMetal;
+        ARMOR_YETI.customCraftingMaterial = alphaFur;
+        ARMOR_ARCTIC.customCraftingMaterial = arcticFur;
+
+        TOOL_IRONWOOD.setRepairItem(new ItemStack(ironwoodIngot));
+        TOOL_FIERY.setRepairItem(new ItemStack(fieryIngot));
+        TOOL_STEELEAF.setRepairItem(new ItemStack(steeleafIngot));
+        TOOL_KNIGHTLY.setRepairItem(new ItemStack(knightMetal));
+        TOOL_GIANT.setRepairItem(new ItemStack(knightMetal));
+        TOOL_ICE.setRepairItem(new ItemStack(Blocks.PACKED_ICE));
+    }
 
     static {
         nagaScale = null;

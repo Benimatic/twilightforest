@@ -51,12 +51,6 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
         par3List.add(istack);
     }
     
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-        return par2ItemStack.getItem() == TFItems.arcticFur || super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-
     @SideOnly(Side.CLIENT)
 	@Override
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped oldM)

@@ -61,13 +61,6 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
     	par3List.add(istack);
     }
     
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with ?????
-        return par2ItemStack.getItem() == TFItems.alphaFur ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
     @SideOnly(Side.CLIENT)
 	@Override
 	public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default)

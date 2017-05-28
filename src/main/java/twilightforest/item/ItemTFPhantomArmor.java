@@ -46,13 +46,6 @@ public class ItemTFPhantomArmor extends ItemArmor implements ModelRegisterCallba
     }
     
     @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with knightmetal ingots
-        return par2ItemStack.getItem() == TFItems.knightMetal ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped original)
     {

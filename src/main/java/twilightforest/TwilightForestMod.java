@@ -1,7 +1,5 @@
 package twilightforest;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
@@ -26,11 +24,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import twilightforest.biomes.TFBiomeBase;
-import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
-import twilightforest.item.ItemTFMagicMap;
-import twilightforest.item.ItemTFMazeMap;
 import twilightforest.item.TFItems;
 import twilightforest.item.TFRecipes;
 import twilightforest.structures.StructureTFMajorFeatureStart;
@@ -106,6 +100,8 @@ public class TwilightForestMod {
 
     @EventHandler
 	public void load(FMLInitializationEvent evt) {
+
+    	TFItems.initRepairMaterials();
 
 		// creatures
 		registerCreatures();

@@ -23,11 +23,4 @@ public class ItemTFSteeleafAxe extends ItemAxe implements ModelRegisterCallback 
     	istack.addEnchantment(Enchantments.EFFICIENCY, 2);
         par3List.add(istack);
     }
-    
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with steeleaf ingots
-        return par2ItemStack.getItem() == TFItems.steeleafIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
 }

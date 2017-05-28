@@ -32,11 +32,4 @@ public class ItemTFNagaArmor extends ItemArmor implements ModelRegisterCallback 
         }
         return TwilightForestMod.ARMOR_DIR + "naga_scale_1.png";
 	}
-
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with naga scale
-        return par2ItemStack.getItem() == TFItems.nagaScale ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
 }

@@ -161,10 +161,4 @@ public class ItemTFFieryPick extends ItemPickaxe {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
-    
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-        return par2ItemStack.getItem() == TFItems.fieryIngot || super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
 }

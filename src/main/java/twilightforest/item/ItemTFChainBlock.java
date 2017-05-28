@@ -121,10 +121,4 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
             return -1;
         }
     }
-	
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-        return par2ItemStack.getItem() == TFItems.knightMetal || super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
 }
