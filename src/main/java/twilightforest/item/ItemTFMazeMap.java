@@ -18,7 +18,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketMaps;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec4b;
+import net.minecraft.util.math.MapDecoration;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -267,10 +267,10 @@ public class ItemTFMazeMap extends ItemMap
                 int yProximity = MathHelper.floor(entityplayer.posY - mapdata.yCenter);
                 if (yProximity < -YSEARCH || yProximity > YSEARCH)
                 {
-                    Vec4b decoration = mapdata.mapDecorations.get(entityplayer.getName());
+                    MapDecoration decoration = mapdata.mapDecorations.get(entityplayer.getName());
                     if (decoration != null)
                     {
-                        mapdata.mapDecorations.put(entityplayer.getName(), new Vec4b((byte) 6, decoration.getX(), decoration.getY(), decoration.getRotation()));
+                        mapdata.mapDecorations.put(entityplayer.getName(), new MapDecoration((byte) 6, decoration.getX(), decoration.getY(), decoration.getRotation()));
                     }
                 }
             }

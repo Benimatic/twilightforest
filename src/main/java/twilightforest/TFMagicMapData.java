@@ -1,9 +1,9 @@
 package twilightforest;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.Vec4b;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
+import net.minecraft.world.storage.MapDecoration;
 import twilightforest.world.TFBiomeProvider;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TFMagicMapData extends MapData
 {
-	public final List<Vec4b> featuresVisibleOnMap = new ArrayList<>();
+	public final List<MapDecoration> featuresVisibleOnMap = new ArrayList<>();
 
     public TFMagicMapData(String name)
     {
@@ -56,14 +56,14 @@ public class TFMagicMapData extends MapData
             byte mapRotation = 8;
 
             // look for a feature already at those coordinates
-            for (Vec4b existingCoord : featuresVisibleOnMap) {
+            for (MapDecoration existingCoord : featuresVisibleOnMap) {
             	if (existingCoord.getX() == mapX && existingCoord.getY() == mapZ) {
             		return;
             	}
             }
             
             // if we didn't find it, add it
-            this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
+            this.featuresVisibleOnMap.add(new MapDecoration(markerIcon, mapX, mapZ, mapRotation));
         }
     }
     
@@ -72,10 +72,10 @@ public class TFMagicMapData extends MapData
      */
     public void checkExistingFeatures(World world)
     {
-    	List<Vec4b> toRemove = new ArrayList<>();
-        List<Vec4b> toAdd = new ArrayList<>();
+    	List<MapDecoration> toRemove = new ArrayList<>();
+        List<MapDecoration> toAdd = new ArrayList<>();
 
-        for (Vec4b coord : featuresVisibleOnMap)
+        for (MapDecoration coord : featuresVisibleOnMap)
         {
             int worldX = (coord.getX() << this.scale - 1) + this.xCenter;
             int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
@@ -88,7 +88,7 @@ public class TFMagicMapData extends MapData
                 if (coord.getType() != trueId)
                 {
                     toRemove.add(coord);
-                    toAdd.add(new Vec4b(trueId, coord.getX(), coord.getY(), coord.getRotation()));
+                    toAdd.add(new MapDecoration(trueId, coord.getX(), coord.getY(), coord.getRotation()));
                 }
             }
         }
@@ -107,7 +107,7 @@ public class TFMagicMapData extends MapData
             byte mapX = arr[i * 3 + 1];
             byte mapZ = arr[i * 3 + 2];
             byte mapRotation = 8;
-            this.featuresVisibleOnMap.add(new Vec4b(markerIcon, mapX, mapZ, mapRotation));
+            this.featuresVisibleOnMap.add(new MapDecoration(markerIcon, mapX, mapZ, mapRotation));
         }
     }
 
@@ -117,7 +117,7 @@ public class TFMagicMapData extends MapData
 
         for (int i = 0; i < featuresVisibleOnMap.size(); ++i)
         {
-            Vec4b featureCoord = this.featuresVisibleOnMap.get(i);
+            MapDecoration featureCoord = this.featuresVisibleOnMap.get(i);
             storage[i * 3] = featureCoord.getType();
             storage[i * 3 + 1] = featureCoord.getX();
             storage[i * 3 + 2] = featureCoord.getY();

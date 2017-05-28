@@ -2,12 +2,9 @@ package twilightforest.item;
 
 import java.util.List;
 
-import mezz.jei.util.FakeClientWorld;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,7 +38,7 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 
 			if (target.getTotalArmorValue() > 0 && weapon != null && (weapon.getItem() == TFItems.knightlyAxe || weapon.getItem() == TFItems.knightlyPick || weapon.getItem() == TFItems.knightlySword)) {
 				// TODO scale bonus dmg with the amount of armor?
-				target.attackEntityFrom(DamageSource.magic, BONUS_DAMAGE);
+				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying
 				target.hurtResistantTime = 0;
 				// enchantment attack sparkles

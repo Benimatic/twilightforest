@@ -291,7 +291,7 @@ public class BlockTFPortal extends BlockBreakable
 		if (!toTeleport.world.isRemote && !toTeleport.isDead)
 		{
 			if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(toTeleport, dimensionIn)) return;
-			toTeleport.world.theProfiler.startSection("changeDimension");
+			toTeleport.world.profiler.startSection("changeDimension");
 			MinecraftServer minecraftserver = toTeleport.getServer();
 			int i = toTeleport.dimension;
 			WorldServer worldserver = minecraftserver.worldServerForDimension(i);
@@ -306,7 +306,7 @@ public class BlockTFPortal extends BlockBreakable
 
 			toTeleport.world.removeEntity(toTeleport);
 			toTeleport.isDead = false;
-			toTeleport.world.theProfiler.startSection("reposition");
+			toTeleport.world.profiler.startSection("reposition");
 			BlockPos blockpos;
 
 			if (dimensionIn == 1)
@@ -333,7 +333,7 @@ public class BlockTFPortal extends BlockBreakable
 			}
 
 			worldserver.updateEntityWithOptionalForce(toTeleport, false);
-			toTeleport.world.theProfiler.endStartSection("reloading");
+			toTeleport.world.profiler.endStartSection("reloading");
 			Entity entity = EntityList.createEntityByName(EntityList.getEntityString(toTeleport), worldserver1);
 
 			if (entity != null)
@@ -372,10 +372,10 @@ public class BlockTFPortal extends BlockBreakable
 			}
 
 			toTeleport.isDead = true;
-			toTeleport.world.theProfiler.endSection();
+			toTeleport.world.profiler.endSection();
 			worldserver.resetUpdateEntityTick();
 			worldserver1.resetUpdateEntityTick();
-			toTeleport.world.theProfiler.endSection();
+			toTeleport.world.profiler.endSection();
 		}
 	}
 
