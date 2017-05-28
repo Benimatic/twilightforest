@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.google.common.collect.Sets;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -51,7 +52,9 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+
 		if (getThrownUuid(stack) != null)
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 
@@ -113,7 +116,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
     }
     
     @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass)
+    public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState state)
     {
         if ("pickaxe".equals(toolClass)) {
             return 2;

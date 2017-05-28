@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -106,7 +107,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
     }
     
     @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
     	switch (state.getValue(AXIS)) {
     	case Y:
@@ -129,7 +130,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
-    	entity.attackEntityFrom(DamageSource.cactus, THORN_DAMAGE);
+    	entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
     }
 
 	@Override

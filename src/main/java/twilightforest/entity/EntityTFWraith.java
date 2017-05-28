@@ -136,7 +136,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         }
 
         @Override
-        public boolean continueExecuting()
+        public boolean shouldContinueExecuting()
         {
             return false;
         }

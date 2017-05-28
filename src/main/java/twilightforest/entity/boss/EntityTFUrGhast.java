@@ -114,7 +114,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		}
 
 		@Override
-		public boolean continueExecuting() {
+		public boolean shouldContinueExecuting() {
 			return false;
 		}
 

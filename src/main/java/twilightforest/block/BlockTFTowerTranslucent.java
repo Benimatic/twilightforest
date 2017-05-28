@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -87,7 +88,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos)
 	{
 		TowerTranslucentVariant variant = state.getValue(VARIANT);
 
@@ -138,7 +139,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
 
     @Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
+	public boolean blocksMovement(IBlockAccess world, BlockPos pos)
     {
     	switch (world.getBlockState(pos).getValue(VARIANT))
     	{

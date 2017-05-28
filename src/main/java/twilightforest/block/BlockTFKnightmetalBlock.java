@@ -29,7 +29,7 @@ public class BlockTFKnightmetalBlock extends Block {
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
 		return AABB;
 	}

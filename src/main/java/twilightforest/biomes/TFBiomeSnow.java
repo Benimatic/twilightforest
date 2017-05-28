@@ -50,7 +50,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 	}
 
 	@Override
-    public WorldGenAbstractTree genBigTreeChance(Random random)
+    public WorldGenAbstractTree getRandomTreeFeature(Random random)
     {
     	if (random.nextInt(3) == 0) {
     		return new WorldGenTaiga1();

@@ -57,7 +57,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
     }
     
     @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
     	return NULL_AABB;
     }
     
@@ -72,7 +72,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
     }
 	
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
         this.checkAndDropBlock(world, pos);
     }
     

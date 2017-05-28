@@ -13,6 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import twilightforest.block.enums.RootVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;

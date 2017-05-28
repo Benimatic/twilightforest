@@ -22,6 +22,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 
 
@@ -47,7 +48,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
 
 	@Override
-    protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager)
     {
         this.spawnListIndex = par1NBTTagCompound.getInteger("si");
         this.deco = StructureTFDecorator.getDecoFor(par1NBTTagCompound.getString("deco"));

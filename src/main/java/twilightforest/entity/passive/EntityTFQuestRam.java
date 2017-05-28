@@ -152,30 +152,25 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
     
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-        ItemStack currentItem = player.inventory.getCurrentItem();
+        ItemStack currentItem = player.getHeldItem(hand);
 
-        if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage())))
+        if (!currentItem.isEmpty() && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage())))
         {
         	this.setColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage()));
         	this.animateAddColor(EnumDyeColor.byMetadata(currentItem.getItemDamage()), 50);
         	
             if (!player.capabilities.isCreativeMode)
             {
-                --currentItem.stackSize;
-
-                if (currentItem.stackSize <= 0)
-                {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-                }
+                currentItem.shrink(1);
             }
         	
             return true;
         }
         else
         {
-            return super.processInteract(player, hand, stack);
+            return super.processInteract(player, hand);
         }
     }
     

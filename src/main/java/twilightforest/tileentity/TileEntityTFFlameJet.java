@@ -82,7 +82,7 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 				{
 					if (!entity.isImmuneToFire())
 			        {
-						entity.attackEntityFrom(DamageSource.inFire, 2);
+						entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
 						entity.setFire(15);
 			        }
 				}

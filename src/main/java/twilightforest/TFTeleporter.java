@@ -81,7 +81,7 @@ public class TFTeleporter extends Teleporter
 	}
 
 	private boolean isSafeBiomeAt(BlockPos pos, Entity par1Entity) {
-		Biome biomeAt = worldServerInstance.getBiome(pos);
+		Biome biomeAt = world.getBiome(pos);
 
 		if (biomeAt instanceof TFBiomeBase && par1Entity instanceof EntityPlayerMP) {
 			TFBiomeBase tfBiome = (TFBiomeBase)biomeAt;
@@ -110,7 +110,7 @@ public class TFTeleporter extends Teleporter
 			Teleporter.PortalPosition teleporter$portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.get(l);
 			d0 = 0.0D;
 			blockpos = teleporter$portalposition;
-			teleporter$portalposition.lastUpdateTime = this.worldServerInstance.getTotalWorldTime();
+			teleporter$portalposition.lastUpdateTime = this.world.getTotalWorldTime();
 			flag = false;
 		}
 		else
@@ -123,14 +123,14 @@ public class TFTeleporter extends Teleporter
 
 				for (int j1 = -i; j1 <= i; ++j1)
 				{
-					for (BlockPos blockpos1 = blockpos3.add(i1, this.worldServerInstance.getActualHeight() - 1 - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2)
+					for (BlockPos blockpos1 = blockpos3.add(i1, this.world.getActualHeight() - 1 - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2)
 					{
 						blockpos2 = blockpos1.down();
 
 						// TF - use our portal block
-						if (this.worldServerInstance.getBlockState(blockpos1).getBlock() == TFBlocks.portal)
+						if (this.world.getBlockState(blockpos1).getBlock() == TFBlocks.portal)
 						{
-							for (blockpos2 = blockpos1.down(); this.worldServerInstance.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down())
+							for (blockpos2 = blockpos1.down(); this.world.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down())
 							{
 								blockpos1 = blockpos2;
 							}
@@ -152,26 +152,26 @@ public class TFTeleporter extends Teleporter
 		{
 			if (flag)
 			{
-				this.destinationCoordinateCache.put(l, new Teleporter.PortalPosition(blockpos, this.worldServerInstance.getTotalWorldTime()));
+				this.destinationCoordinateCache.put(l, new Teleporter.PortalPosition(blockpos, this.world.getTotalWorldTime()));
 			}
 
 			// TF - replace with our own placement logic
 			double portalX = blockpos.getX() + 0.5D;
 			double portalY = blockpos.getY() + 0.5D;
 			double portalZ = blockpos.getZ() + 0.5D;
-			if(isBlockPortal(worldServerInstance, blockpos.west()))
+			if(isBlockPortal(world, blockpos.west()))
 			{
 				portalX -= 0.5D;
 			}
-			if(isBlockPortal(worldServerInstance, blockpos.east()))
+			if(isBlockPortal(world, blockpos.east()))
 			{
 				portalX += 0.5D;
 			}
-			if(isBlockPortal(worldServerInstance, blockpos.north()))
+			if(isBlockPortal(world, blockpos.north()))
 			{
 				portalZ -= 0.5D;
 			}
-			if(isBlockPortal(worldServerInstance, blockpos.south()))
+			if(isBlockPortal(world, blockpos.south()))
 			{
 				portalZ += 0.5D;
 			}
@@ -214,7 +214,7 @@ public class TFTeleporter extends Teleporter
         if (spot != null)
         {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot");
-        	makePortalAt(worldServerInstance, spot);
+        	makePortalAt(world, spot);
         	return true;
         }
         else
@@ -224,7 +224,7 @@ public class TFTeleporter extends Teleporter
             if (spot != null)
             {
 				TwilightForestMod.LOGGER.debug("Found okay portal spot");
-            	makePortalAt(worldServerInstance, spot);
+            	makePortalAt(world, spot);
             	return true;
             }
         }
@@ -233,16 +233,16 @@ public class TFTeleporter extends Teleporter
 		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one");
     	
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = worldServerInstance.provider.getDimension() == 0 ? 2 : 0.5;
+		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
-        makePortalAt(worldServerInstance, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ));
+        makePortalAt(world, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ));
 
         return false;
 	}
 
 	private BlockPos findPortalCoords(Entity entity, boolean ideal) {
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = worldServerInstance.provider.getDimension() == 0 ? 2 : 0.5;
+		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
         int entityX = MathHelper.floor(entity.posX);
         int entityZ = MathHelper.floor(entity.posZ);
@@ -263,12 +263,12 @@ public class TFTeleporter extends Teleporter
         		{
         			BlockPos pos = new BlockPos(rx, ry, rz);
 
-        			if(!worldServerInstance.isAirBlock(pos))
+        			if(!world.isAirBlock(pos))
         			{
         				continue;
         			}
 
-        			while (pos.getY() > 0 && worldServerInstance.isAirBlock(pos.down())) pos = pos.down();
+        			while (pos.getY() > 0 && world.isAirBlock(pos.down())) pos = pos.down();
 
         			if (ideal ? isIdealPortal(pos) : isOkayPortal(pos))
         			{
@@ -297,7 +297,7 @@ public class TFTeleporter extends Teleporter
 				for(int potentialY = -1; potentialY < 3; potentialY++)
 				{
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && worldServerInstance.getBlockState(tPos).getMaterial() != Material.GRASS || potentialY >= 0 && !worldServerInstance.getBlockState(tPos).getMaterial().isReplaceable())
+					if (potentialY == -1 && world.getBlockState(tPos).getMaterial() != Material.GRASS || potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable())
 					{
 						return false;
 					}
@@ -317,7 +317,7 @@ public class TFTeleporter extends Teleporter
 				for(int potentialY = -1; potentialY < 3; potentialY++)
 				{
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && !worldServerInstance.getBlockState(tPos).getMaterial().isSolid() || potentialY >= 0 && !worldServerInstance.getBlockState(tPos).getMaterial().isReplaceable())
+					if (potentialY == -1 && !world.getBlockState(tPos).getMaterial().isSolid() || potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable())
 					{
 						return false;
 					}

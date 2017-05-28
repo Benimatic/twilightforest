@@ -58,7 +58,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
 			return HEDGE_BB;

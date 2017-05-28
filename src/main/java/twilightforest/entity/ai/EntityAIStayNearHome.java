@@ -21,7 +21,7 @@ public class EntityAIStayNearHome extends EntityAIBase {
 	}
 
 	@Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
 	{
 		return !this.entity.getNavigator().noPath();
 	}

@@ -71,7 +71,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
     }
 	
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random random)
+    public WorldGenAbstractTree getRandomTreeFeature(Random random)
     {
         if(random.nextInt(5) == 0)
         {

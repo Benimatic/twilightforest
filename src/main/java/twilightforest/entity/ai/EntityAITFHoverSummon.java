@@ -56,7 +56,7 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		EntityLivingBase target = this.attacker.getAttackTarget();
 
 		if (target == null || !target.isEntityAlive()) {

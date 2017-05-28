@@ -73,12 +73,12 @@ public class BlockTFCastleDoor extends Block
     }
     
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
 		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, par1World, pos);
 	}
 	
     @Override
-	public boolean isPassable(IBlockAccess par1IBlockAccess, BlockPos pos)
+	public boolean blocksMovement(IBlockAccess par1IBlockAccess, BlockPos pos)
     {
     	return !this.isVanished;
     }

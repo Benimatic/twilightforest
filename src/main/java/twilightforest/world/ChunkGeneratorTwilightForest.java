@@ -862,7 +862,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
 
-		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.theBiomeDecorator.generateLakes) {
+		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.decorator.generateLakes) {
 			int i1 = worldPos.getX() + rand.nextInt(16) + 8;
 			int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
 			int i3 = worldPos.getZ() + rand.nextInt(16) + 8;

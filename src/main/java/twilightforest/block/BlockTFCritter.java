@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -90,7 +91,7 @@ public abstract class BlockTFCritter extends Block {
     }
     
     @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return NULL_AABB;
     }
@@ -150,7 +151,7 @@ public abstract class BlockTFCritter extends Block {
     }
 
     @Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID, BlockPos fromPos)
     {
         if(dropCritterIfCantStay(world, pos))
         {

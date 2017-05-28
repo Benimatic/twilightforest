@@ -74,7 +74,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	 * Keep breathing until the target dies, or moves out of range or line of sight
 	 */
 	@Override
-	public boolean continueExecuting() 
+	public boolean shouldContinueExecuting()
 	{
 		return this.durationLeft > 0 && !this.entityHost.isDead && !this.attackTarget.isDead 
 				&& this.entityHost.getDistanceToEntity(attackTarget) <= this.breathRange 

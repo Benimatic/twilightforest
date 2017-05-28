@@ -44,7 +44,7 @@ public class EntityAICubeCenterOnSymbol extends EntityAIBase {
 	}
 
 	@Override
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
     	// inch towards it
         this.myCube.getMoveHelper().setMoveTo(this.xPosition + 0.5F, this.yPosition, this.zPosition + 0.5F, this.speed);

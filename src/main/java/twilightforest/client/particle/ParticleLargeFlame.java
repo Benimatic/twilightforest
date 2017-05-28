@@ -82,7 +82,7 @@ public class ParticleLargeFlame extends Particle
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
 
-        if (this.isCollided)
+        if (this.onGround)
         {
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;

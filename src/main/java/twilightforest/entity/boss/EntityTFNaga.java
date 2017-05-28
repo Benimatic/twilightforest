@@ -220,7 +220,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		public void updateTask() {
 			if (!taskOwner.getNavigator().noPath()) {
 				// If we still have an uncompleted path don't run yet
-				// This isn't in shouldExecute/continueExecuting because we don't want to reset the task
+				// This isn't in shouldExecute/shouldContinueExecuting because we don't want to reset the task
 				// todo 1.10 there's a better way to do this I think
 				return;
 			}

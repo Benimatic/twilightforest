@@ -61,7 +61,7 @@ public class BlockTFPortal extends BlockBreakable
 	}
 
     @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return NULL_AABB;
     }
@@ -204,7 +204,7 @@ public class BlockTFPortal extends BlockBreakable
      * Each twilight portal pool block should have grass or dirt on one side and a portal on the other.  If this is not true, delete this block, presumably causing a chain reaction.
      */
     @Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos)
     {
     	boolean good = Arrays.stream(EnumFacing.HORIZONTALS)
 				.filter(e -> world.getBlockState(pos.offset(e)).getBlock() == this

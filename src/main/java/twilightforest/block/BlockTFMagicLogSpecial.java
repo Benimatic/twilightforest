@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -93,7 +94,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     }
     
     @Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, ItemStack stack, EnumFacing side, float par7, float par8, float par9)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9)
     {
 		if (state.getValue(LOG_AXIS) == EnumAxis.Y) {
 			// turn off
@@ -318,9 +319,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				{
 					
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
-					if (currentItem != null && isSortingMatch(beingSorted, currentItem))
+					if (!currentItem.isEmpty() && isSortingMatch(beingSorted, currentItem))
 					{
-						currentChestMatches += currentItem.stackSize;
+						currentChestMatches += currentItem.getCount();
 					}
 				}
 				
@@ -353,7 +354,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 			}
 			
 			// if the stack is not full, combine items from other stacks
-			if (beingSorted.stackSize < beingSorted.getMaxStackSize())
+			if (beingSorted.getCount() < beingSorted.getMaxStackSize())
 			{
 				for (IInventory chest : chests)
 				{
@@ -361,13 +362,13 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 					{
 						ItemStack currentItem = chest.getStackInSlot(slotNum);
 						
-						if (currentItem!= null && currentItem != beingSorted && beingSorted.isItemEqual(currentItem))
+						if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem))
 						{
-							if (currentItem.stackSize <= (beingSorted.getMaxStackSize() - beingSorted.stackSize))
+							if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount()))
 							{
-								chest.setInventorySlotContents(slotNum, null);
-								beingSorted.stackSize += currentItem.stackSize;
-								currentItem.stackSize = 0;
+								chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
+								beingSorted.grow(currentItem.getCount());
+								currentItem.setCount(0);
 							}
 						}
 					}

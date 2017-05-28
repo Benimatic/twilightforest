@@ -100,11 +100,11 @@ public class TFBiomeBase extends Biome  {
     }
     
     protected TFBiomeDecorator getTFBiomeDecorator() {
-    	return (TFBiomeDecorator)this.theBiomeDecorator;
+    	return (TFBiomeDecorator)this.decorator;
     }
 
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random random)
+    public WorldGenAbstractTree getRandomTreeFeature(Random random)
     {
         if(random.nextInt(5) == 0)
         {

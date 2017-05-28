@@ -151,7 +151,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
-    	entity.attackEntityFrom(DamageSource.generic, BLOCK_DAMAGE);
+    	entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
     	if (entity instanceof EntityLivingBase) {
 			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.posZ) * 2.0;

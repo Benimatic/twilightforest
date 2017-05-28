@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 import twilightforest.entity.TFCreatures;
 import twilightforest.world.TFGenCaveStalactite;
@@ -42,8 +43,8 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.hillSize = par1NBTTagCompound.getInteger("hillSize");
         this.radius = ((hillSize * 2 + 1) * 8) - 6;
 

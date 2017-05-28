@@ -7,6 +7,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFSteeleafPick extends ItemPickaxe implements ModelRegisterCallback {

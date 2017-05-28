@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 
@@ -61,8 +62,8 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
 
         this.radius = par1NBTTagCompound.getInteger("leafRadius");
 	}

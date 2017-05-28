@@ -96,7 +96,7 @@ public class EntityTFTowerTermite extends EntityMob
         }
         else
         {
-            if ((source instanceof EntityDamageSource || source == DamageSource.magic) && this.summonSilverfish != null)
+            if ((source instanceof EntityDamageSource || source == DamageSource.MAGIC) && this.summonSilverfish != null)
             {
                 this.summonSilverfish.notifyHurt();
             }
@@ -185,9 +185,9 @@ public class EntityTFTowerTermite extends EntityMob
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean continueExecuting()
+        public boolean shouldContinueExecuting()
         {
-            return this.doMerge ? false : super.continueExecuting();
+            return this.doMerge ? false : super.shouldContinueExecuting();
         }
 
         /**

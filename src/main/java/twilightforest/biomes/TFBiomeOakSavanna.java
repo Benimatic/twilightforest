@@ -34,7 +34,7 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 	}
 
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random random)
+    public WorldGenAbstractTree getRandomTreeFeature(Random random)
     {
         if(random.nextInt(10) == 0)
         {

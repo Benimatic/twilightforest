@@ -30,7 +30,7 @@ public class ItemTFOreMeter extends ItemTF {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		int useX = MathHelper.floor(player.posX);
 		int useZ = MathHelper.floor(player.posZ);
 		
@@ -38,7 +38,7 @@ public class ItemTFOreMeter extends ItemTF {
 			countOreInArea(player, world, useX, useZ, 3);
 		}
 		
-		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 	
 	private void countOreInArea(EntityPlayer player, World world, int useX, int useZ, int radius) {

@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -81,7 +82,7 @@ public class EntityTFNagaSegment extends Entity {
             this.motionZ *= 0.800000011920929D;
     	}
     	
-        this.move(motionX, motionY, motionZ);
+        this.move(MoverType.SELF, motionX, motionY, motionZ);
         
         collideWithOthers();
         

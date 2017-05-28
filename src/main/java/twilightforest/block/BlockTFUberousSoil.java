@@ -69,7 +69,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
     }
 
 	@Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor, BlockPos fromPos) {
         IBlockState above = world.getBlockState(pos.up());
         Material aboveMaterial = above.getMaterial();
 

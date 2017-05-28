@@ -33,7 +33,7 @@ public class ItemTFPeacockFan extends ItemTF
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 
 		if (!world.isRemote) 
 		{
@@ -49,8 +49,7 @@ public class ItemTFPeacockFan extends ItemTF
 
 				if (fanned > 0)
 				{
-					par1ItemStack.damageItem(fanned, player);
-
+					player.getHeldItem(hand).damageItem(fanned, player);
 				}
 			}
 			
@@ -89,7 +88,7 @@ public class ItemTFPeacockFan extends ItemTF
 		
 		player.setActiveHand(hand);
 		
-		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 	
     @Override

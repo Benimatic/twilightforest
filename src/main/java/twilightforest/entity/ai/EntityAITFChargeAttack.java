@@ -80,7 +80,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
     }
 
     @Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
     {
         return windup > 0 || !this.charger.getNavigator().noPath();
     }
