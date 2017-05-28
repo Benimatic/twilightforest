@@ -9,13 +9,10 @@ import net.minecraft.item.crafting.CraftingManager;
 
 
 public class SlotTFGoblinCraftResult extends SlotCrafting {
-	
-    /** The player that is using the GUI where this slot resides. */
-	protected EntityPlayer thePlayer;
-	protected IInventory inputSlot;
-	protected InventoryTFGoblinUncrafting uncraftingMatrix;
-	protected InventoryCrafting assemblyMatrix;
-	protected IInventory resultSlot;
+	private EntityPlayer thePlayer;
+	private IInventory inputSlot;
+	private InventoryTFGoblinUncrafting uncraftingMatrix;
+	private InventoryCrafting assemblyMatrix;
 
 	public SlotTFGoblinCraftResult(EntityPlayer player, IInventory input,  IInventory uncraftingMatrix, IInventory assemblyMatrix, IInventory result, int slotIndex, int x, int y) {
 		super(player, (InventoryCrafting) assemblyMatrix, result, slotIndex, x, y);
@@ -25,9 +22,6 @@ public class SlotTFGoblinCraftResult extends SlotCrafting {
 		this.assemblyMatrix = (InventoryCrafting) assemblyMatrix;
 	}
 
-    /**
-     * Called when the player picks up an item from an inventory slot
-     */
 	@Override
 	public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack) {
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
