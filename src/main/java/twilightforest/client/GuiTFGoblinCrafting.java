@@ -106,8 +106,9 @@ public class GuiTFGoblinCrafting extends GuiContainer {
         itemRender.renderItemOverlayIntoGUI(this.fontRenderer, itemStackToRender, screenX, screenY, "");
         
         boolean itemBroken = false;
-        
-        if (backgroundSlot.getHasStack() && backgroundSlot.getStack().stackSize == 0) {
+
+        // TODO 1.11 this isn't going to work properly
+        if (backgroundSlot.getHasStack() && backgroundSlot.getStack().getCount() == 0) {
         	itemBroken = true;
         }
         

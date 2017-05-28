@@ -547,7 +547,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	protected int getSampledDirtLevel(World world, StructureBoundingBox sbb) {
 	    int dirtLevel = 256;
 
-        Vec3i center = sbb.getCenter();
+        Vec3i center = new BlockPos(sbb.minX + (sbb.maxX - sbb.minX + 1) / 2, sbb.minY + (sbb.maxY - sbb.minY + 1) / 2, sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2);;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
         for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)

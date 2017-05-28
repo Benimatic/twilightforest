@@ -114,9 +114,9 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 
 					if (!flag1)
 					{
-						--itemstack.stackSize;
+						itemstack.shrink(1);
 
-						if (itemstack.stackSize == 0)
+						if (itemstack.isEmpty())
 						{
 							entityplayer.inventory.deleteStack(itemstack);
 						}
