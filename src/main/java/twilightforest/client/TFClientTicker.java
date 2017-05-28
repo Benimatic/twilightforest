@@ -4,17 +4,17 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.relauncher.Side;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
+@Mod.EventBusSubscriber(Side.CLIENT)
 public class TFClientTicker {
-    /**
-     * On the tick, we kill the vignette
-	 */
 	@SubscribeEvent
-	public void clientTick(ClientTickEvent event) {
+	public static void clientTick(ClientTickEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		World world = mc.world;
 

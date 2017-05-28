@@ -260,38 +260,10 @@ public class TFEventListener {
 	}
 	
 	/**
-	 * Check to see if a smeltable block has dropped with a fiery tool, and if so, smelt it
 	 * Also check if we need to transform 64 cobbles into a giant cobble
 	 */
 	@SubscribeEvent
 	public void harvestDrops(HarvestDropsEvent event) {
-		if (event.getHarvester() != null && event.getHarvester().inventory.getCurrentItem() != null && event.getHarvester().inventory.getCurrentItem().getItem().canHarvestBlock(event.getState())) {
-			if (event.getHarvester().inventory.getCurrentItem().getItem() == TFItems.fieryPick) {
-				ArrayList<ItemStack> removeThese = new ArrayList<ItemStack>(1);
-				ArrayList<ItemStack> addThese = new ArrayList<ItemStack>(1);
-
-				for (ItemStack input : event.getDrops())
-				{
-					// does it smelt?
-					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
-					if (result != null)
-					{
-						addThese.add(new ItemStack(result.getItem(), input.stackSize));
-						removeThese.add(input);
-
-						// spawn XP
-						spawnSpeltXP(result, event.getWorld(), event.getPos());
-					}
-				}
-
-				// remove things we've decided to remove
-				event.getDrops().removeAll(removeThese);
-				
-				// add things we add
-				event.getDrops().addAll(addThese);
-			} 
-		} 
-		
 		// this flag is set in reaction to the breakBlock event, but we need to remove the drops in this event
 		if (this.shouldMakeGiantCobble && event.getDrops().size() > 0) {
 			// turn the next 64 cobblestone drops into one giant cobble
@@ -307,26 +279,6 @@ public class TFEventListener {
 					this.shouldMakeGiantCobble = false;
 				}
 			}
-		}
-	}
-
-	/**
-	 * Spawn XP for smelting the specified item at the specified location
-	 */
-	private void spawnSpeltXP(ItemStack smelted, World world, BlockPos pos) {
-		float floatXP = FurnaceRecipes.instance().getSmeltingExperience(smelted);
-		int smeltXP = (int)floatXP;
-		// random chance of +1 XP to handle fractions
-		if (floatXP > smeltXP && world.rand.nextFloat() < (floatXP - smeltXP))
-		{
-			smeltXP++;
-		}
-
-		while (smeltXP > 0)
-		{
-			int splitXP = EntityXPOrb.getXPSplit(smeltXP);
-			smeltXP -= splitXP;
-			world.spawnEntity(new EntityXPOrb(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, splitXP));
 		}
 	}
 

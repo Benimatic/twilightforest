@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.TwilightForestMod;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -28,9 +29,9 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
 		if (result) {
-	    	par1ItemStack.damageItem(1000, par3EntityLiving);
+	    	par1ItemStack.damageItem(par1ItemStack.getMaxDamage(), par3EntityLiving);
 		}
-		
+
 		return result;
 	}
     
@@ -38,7 +39,6 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
     	if (player.world.isRemote) {
-			// snow animation!
 	        for (int var1 = 0; var1 < 20; ++var1) {
 	    		double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
 				double py = entity.posY + itemRand.nextFloat() * entity.height;
@@ -50,5 +50,4 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
     	}
         return false;
     }
-
 }

@@ -11,42 +11,56 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
+import twilightforest.TwilightForestMod;
 import twilightforest.item.ItemTFBowBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Mod.EventBusSubscriber(Side.CLIENT)
 public class TFClientEvents {
 
-	private final Random random = new Random();
+	private static final Random random = new Random();
 
 	// Slowness potion uses an attribute modifier with specific UUID
 	// We can detect whether an entity has slowness from the client by looking for this UUID
 	private static final AttributeModifier SLOWNESS_POTION_MODIFIER =
 			new AttributeModifier(UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890"), "doesntmatter", 0, 0);
 
+	@SubscribeEvent
+	public static void texStitch(TextureStitchEvent.Pre evt) {
+		System.out.println("texture stitch");
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_0"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_1"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_2"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_3"));
+	}
+
     /**
      * Do ice effect on slowed monsters
 	 */
 	@SubscribeEvent
-	public void renderLivingPost(RenderLivingEvent.Post event) {
+	public static void renderLivingPost(RenderLivingEvent.Post event) {
 		boolean hasSlowness = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(SLOWNESS_POTION_MODIFIER);
 		boolean showParticles = event.getEntity().getDataManager().get(EntityLivingBase.HIDE_PARTICLES);
 		if (hasSlowness && showParticles) {
 			//System.out.println("Rendering slowed entity");
-			this.renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
+			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
-
 	}
 
     /**
      * Alter FOV for our bows
 	 */
 	@SubscribeEvent
-	public void fovUpdate(FOVUpdateEvent event) {
+	public static void fovUpdate(FOVUpdateEvent event) {
         if (event.getEntity().isHandActive() && (event.getEntity().getHeldItem(event.getEntity().getActiveHand()).getItem() instanceof ItemTFBowBase))
         {
             int i = event.getEntity().getItemInUseCount();
@@ -69,13 +83,13 @@ public class TFClientEvents {
 	 * Render an entity with the ice effect.
 	 * This just displays a bunch of ice cubes around on their model
 	 */
-	private void renderIcedEntity(EntityLivingBase entity, RenderLivingBase renderer, double x, double y, double z) {
+	private static void renderIcedEntity(EntityLivingBase entity, RenderLivingBase renderer, double x, double y, double z) {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-		this.random.setSeed(entity.getEntityId() * entity.getEntityId() * 3121 + entity.getEntityId() * 45238971);
+		random.setSeed(entity.getEntityId() * entity.getEntityId() * 3121 + entity.getEntityId() * 45238971);
 
 		// number of cubes
 		int numCubes = (int) (entity.height / 0.4F);

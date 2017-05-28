@@ -87,10 +87,7 @@ public class TFClientProxy extends TFCommonProxy {
 	private ModelBiped[] yetiArmorModel;
 	private ModelBiped[] arcticArmorModel;
 	private ModelBiped[] fieryArmorModel;
-	
-	private TFClientTicker clientTicker;
-	private TFClientEvents clientEvents;
-	
+
 	private boolean isDangerOverlayShown;
 
 	@Override
@@ -189,14 +186,6 @@ public class TFClientProxy extends TFCommonProxy {
 	@Override
 	public void doOnLoadRegistration() {
 		ColorHandler.init();
-		
-		// client tick listener
-		clientTicker = new TFClientTicker();
-		FMLCommonHandler.instance().bus().register(clientTicker);
-		
-		// client events
-		clientEvents = new TFClientEvents();
-		MinecraftForge.EVENT_BUS.register(clientEvents);
 		
 		// tile entities
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFFirefly.class, new TileEntityTFFireflyRenderer());
