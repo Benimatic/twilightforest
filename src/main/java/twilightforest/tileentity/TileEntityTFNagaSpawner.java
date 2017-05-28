@@ -1,13 +1,14 @@
 package twilightforest.tileentity;
 
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.boss.EntityTFNaga;
 
 public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
 	
 	public TileEntityTFNagaSpawner() {
-		this.mobID = TFCreatures.getSpawnerNameFor("Naga");
+		this.mobID = EntityList.getKey(EntityTFNaga.class);
 	}
 
 	@Override

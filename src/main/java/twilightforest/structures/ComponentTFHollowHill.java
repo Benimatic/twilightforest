@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.*;
 import twilightforest.world.TFGenCaveStalactite;
 
 
@@ -84,7 +87,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		for (int i = 0; i < mg; i++)
 		{
 			int[] dest = getCoordsInHill2D(rand);
-			String mobID = getMobID(rand);
+			ResourceLocation mobID = getMobID(rand);
 			
 			setSpawner(world, dest[0], rand.nextInt(4), dest[1], sbb, mobID);
 //			placeMobSpawner(dest[0], hy + rand.nextInt(4), dest[1]);
@@ -242,7 +245,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	/**
 	 * Gets the id of a mob appropriate to the current hill size.
 	 */
-	protected String getMobID(Random rand)
+	protected ResourceLocation getMobID(Random rand)
 	{
 		return getMobID(rand, this.hillSize);
 	}
@@ -254,7 +257,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	 * @param level
 	 * @return
 	 */
-	protected String getMobID(Random rand, int level)
+	protected ResourceLocation getMobID(Random rand, int level)
 	{
 		if (level == 1)
 		{
@@ -269,90 +272,89 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 			return getLevel3Mob(rand);
 		}
 		
-		/// aaah, default: spider!
-		return "Spider";
+		return EntityList.getKey(EntitySpider.class);
 	}
 	
 	/**
 	 * Returns a mob string appropriate for a level 1 hill
 	 */
-	public String getLevel1Mob(Random rand)
+	public ResourceLocation getLevel1Mob(Random rand)
 	{
 		switch (rand.nextInt(10))
 		{
 		case 0:
 		case 1:
 		case 2:
-			return TFCreatures.getSpawnerNameFor("Swarm Spider");
+			return EntityList.getKey(EntityTFSwarmSpider.class);
 		case 3:
 		case 4:
 		case 5:
-			return "Spider";
+			return EntityList.getKey(EntitySpider.class);
 		case 6:
 		case 7:
-			return "Zombie";
+			return EntityList.getKey(EntityZombie.class);
 		case 8:
-			return "Silverfish";
+			return EntityList.getKey(EntitySilverfish.class);
 		case 9:
-			return TFCreatures.getSpawnerNameFor("Redcap");
+			return EntityList.getKey(EntityTFRedcap.class);
 		default:
-			return TFCreatures.getSpawnerNameFor("Swarm Spider");
+			return EntityList.getKey(EntityTFSwarmSpider.class);
 		}
 	}
 	
 	/**
 	 * Returns a mob string appropriate for a level 2 hill
 	 */
-	public String getLevel2Mob(Random rand)
+	public ResourceLocation getLevel2Mob(Random rand)
 	{
 		switch (rand.nextInt(10))
 		{
 		case 0:
 		case 1:
 		case 2:
-			return TFCreatures.getSpawnerNameFor("Redcap");
+			return EntityList.getKey(EntityTFRedcap.class);
 		case 3:
 		case 4:
 		case 5:
-			return "Zombie";
+			return EntityList.getKey(EntityZombie.class);
 		case 6:
 		case 7:
-			return "Skeleton";
+			return EntityList.getKey(EntitySkeleton.class);
 		case 8:
-			return TFCreatures.getSpawnerNameFor("Swarm Spider");
+			return EntityList.getKey(EntityTFSwarmSpider.class);
 		case 9:
-			return "CaveSpider";
+			return EntityList.getKey(EntityCaveSpider.class);
 		default:
-			return TFCreatures.getSpawnerNameFor("Redcap");
+			return EntityList.getKey(EntityTFRedcap.class);
 		}
 	}
 	
 	/**
 	 * Returns a mob string appropriate for a level 3 hill.  The level 3 also has 2 mid-air wraith spawners.
 	 */
-	public String getLevel3Mob(Random rand)
+	public ResourceLocation getLevel3Mob(Random rand)
 	{
 		switch (rand.nextInt(11))
 		{
 		case 0:
-			return TFCreatures.getSpawnerNameFor("Slime Beetle");
+			return EntityList.getKey(EntityTFSlimeBeetle.class);
 		case 1:
-			return TFCreatures.getSpawnerNameFor("Fire Beetle");
+			return EntityList.getKey(EntityTFFireBeetle.class);
 		case 2:
-			return TFCreatures.getSpawnerNameFor("Pinch Beetle");
+			return EntityList.getKey(EntityTFPinchBeetle.class);
 		case 3:
 		case 4:
 		case 5:
-			return "Skeleton";
+			return EntityList.getKey(EntitySkeleton.class);
 		case 6:
 		case 7:
 		case 8:
-			return "CaveSpider";
+			return EntityList.getKey(EntityCaveSpider.class);
 		case 9:
-			return "Creeper";
+			return EntityList.getKey(EntityCreeper.class);
 		case 10:
 		default:
-			return TFCreatures.getSpawnerNameFor("Twilight Wraith");
+			return EntityList.getKey(EntityTFWraith.class);
 		}
 	}
 

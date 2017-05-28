@@ -4,14 +4,17 @@ import java.util.Random;
 
 import net.minecraft.block.BlockPumpkin;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFCreatures;
-
+import twilightforest.entity.EntityTFHedgeSpider;
+import twilightforest.entity.EntityTFHostileWolf;
+import twilightforest.entity.EntityTFSwarmSpider;
 
 
 public class ComponentTFHedgeMaze extends StructureTFComponent {
@@ -172,18 +175,18 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		String mobID; 
+		ResourceLocation mobID;
 
 		switch (rand.nextInt(3)) {
 		case 1 :
-			mobID = TFCreatures.getSpawnerNameFor("Swarm Spider");
+			mobID = EntityList.getKey(EntityTFSwarmSpider.class);
 			break;
 		case 2 :
-			mobID = TFCreatures.getSpawnerNameFor("Hostile Wolf");
+			mobID = EntityList.getKey(EntityTFHostileWolf.class);
 			break;
 		case 0 : 
 		default:
-			mobID = TFCreatures.getSpawnerNameFor("Hedge Spider");
+			mobID = EntityList.getKey(EntityTFHedgeSpider.class);
 		}
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);

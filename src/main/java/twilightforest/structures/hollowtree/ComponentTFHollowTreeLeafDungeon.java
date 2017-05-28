@@ -3,10 +3,9 @@ package twilightforest.structures.hollowtree;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +16,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.structures.StructureTFComponent;
 
 
@@ -102,7 +101,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 		this.placeTreasureAtCurrentPosition(world, rand, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
 			
 		// then spawner
-		setSpawner(world, radius, radius, radius, sbb, TFCreatures.getSpawnerNameFor("Swarm Spider"));
+		setSpawner(world, radius, radius, radius, sbb, EntityList.getKey(EntityTFSwarmSpider.class));
 		
 		return true;
 	}

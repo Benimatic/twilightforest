@@ -1,14 +1,14 @@
 package twilightforest.tileentity;
 
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import twilightforest.entity.TFCreatures;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
 public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 	
 	public TileEntityTFKnightPhantomsSpawner() {
-		this.mobID = TFCreatures.getSpawnerNameFor("Knight Phantom");
+		this.mobID = EntityList.getKey(EntityTFKnightPhantom.class);
 	}
 	
     @Override

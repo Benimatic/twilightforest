@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
@@ -100,7 +101,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
     
     // [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-    protected TileEntityMobSpawner setSpawner(World world, int x, int y, int z, StructureBoundingBox sbb, String monsterID)
+    protected TileEntityMobSpawner setSpawner(World world, int x, int y, int z, StructureBoundingBox sbb, ResourceLocation monsterID)
     {
     	TileEntityMobSpawner tileEntitySpawner = null;
     	
@@ -114,14 +115,14 @@ public abstract class StructureTFComponent extends StructureComponent {
             tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(pos);
             if(tileEntitySpawner != null)
             {
-            	tileEntitySpawner.getSpawnerBaseLogic().setEntityName(monsterID);
+            	tileEntitySpawner.getSpawnerBaseLogic().setEntityId(monsterID);
             }
         }
         
         return tileEntitySpawner;
     }
 
-    protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, int rotation, String monsterID, StructureBoundingBox sbb)
+    protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, int rotation, ResourceLocation monsterID, StructureBoundingBox sbb)
     {
         EnumFacing oldBase = fakeBaseMode(rotation);
         TileEntityMobSpawner ret = setSpawner(world, x, y, z, sbb, monsterID);

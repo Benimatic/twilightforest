@@ -18,11 +18,6 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
     private int counter;
     protected Entity displayCreature = null;
 
-    
-	public TileEntityTFBossSpawner() {
-		;
-	}
-	
 	public boolean anyPlayerInRange()
     {
         return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false) != null;

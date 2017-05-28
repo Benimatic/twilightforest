@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
@@ -15,7 +16,7 @@ import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.EntityTFSwarmSpider;
 
 public class TFGenHollowTree extends TFGenerator
 {
@@ -462,7 +463,7 @@ public class TFGenHollowTree extends TFGenerator
         world.setBlockState(pos.up(), Blocks.MOB_SPAWNER.getDefaultState(), 2);
         TileEntityMobSpawner ms = (TileEntityMobSpawner)world.getTileEntity(pos.up());
         if (ms != null) {
-        	ms.getSpawnerBaseLogic().setEntityName(TFCreatures.getSpawnerNameFor("Swarm Spider"));
+        	ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSwarmSpider.class));
         }
 		
 		// treasure chests?
