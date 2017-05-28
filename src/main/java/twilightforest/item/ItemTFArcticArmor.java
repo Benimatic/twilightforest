@@ -54,8 +54,7 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
     @Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
-    	// repair with ?????
-        return par2ItemStack.getItem() == TFItems.arcticFur ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return par2ItemStack.getItem() == TFItems.arcticFur || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     @SideOnly(Side.CLIENT)

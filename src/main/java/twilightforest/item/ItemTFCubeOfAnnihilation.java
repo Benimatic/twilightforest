@@ -1,10 +1,12 @@
 package twilightforest.item;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
@@ -17,8 +19,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class ItemTFCubeOfAnnihilation extends ItemTF {
+	private static final String THROWN_UUID_KEY = "cubeEntity";
+
 	protected ItemTFCubeOfAnnihilation() {
         this.maxStackSize = 1;
 		this.setCreativeTab(TFItems.creativeTab);
@@ -26,55 +31,67 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
-				return isThrown(stack) ? 1 : 0;
+				return getThrownUuid(stack) != null ? 1 : 0;
 			}
 		});
+	}
+
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity holder, int slot, boolean isSelected) {
+		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Most");
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Least");
+			if (holder instanceof EntityPlayer) {
+				((EntityPlayer) holder).inventoryContainer.detectAndSendChanges();
+			}
+		}
 	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		player.setActiveHand(hand);
+		if (getThrownUuid(stack) != null)
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
 
-		if (!world.isRemote && !isThrown(stack)) {
+		if (!world.isRemote) {
 			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(world, player);
-
 			world.spawnEntity(launchedCube);
-
-			setCubeAsThrown(stack);
+			setThrownEntity(stack, launchedCube);
+			player.inventoryContainer.detectAndSendChanges();
 		}
 
-
+		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	private static boolean isThrown(ItemStack stack) {
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("thrown");
+	@Nullable
+	private static UUID getThrownUuid(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasUniqueId(THROWN_UUID_KEY)) {
+			return stack.getTagCompound().getUniqueId(THROWN_UUID_KEY);
+		}
+
+		return null;
 	}
 
-	private static void setCubeAsThrown(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
+	@Nullable
+	private static EntityTFCubeOfAnnihilation getThrownEntity(World world, ItemStack stack) {
+		if (world instanceof WorldServer) {
+			UUID id = getThrownUuid(stack);
+			if (id != null) {
+				Entity e = ((WorldServer) world).getEntityFromUuid(id);
+				if (e instanceof EntityTFCubeOfAnnihilation) {
+					return (EntityTFCubeOfAnnihilation) e;
+				}
+			}
 		}
-		stack.getTagCompound().setBoolean("thrown", true);
+
+		return null;
 	}
 
-	private static void setCubeAsReturned(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
+	private static void setThrownEntity(ItemStack stack, EntityTFCubeOfAnnihilation cube) {
+		if (!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		stack.getTagCompound().setBoolean("thrown", false);
-	}
-	
-	/**
-	 * Set the cube belonging to the player as returned
-	 * @param player
-	 */
-	public static void setCubeAsReturned(EntityPlayer player) {
-		if (player != null && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == TFItems.cubeOfAnnihilation) {
-			setCubeAsReturned(player.getActiveItemStack());
-		}
+		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}
 
     @Override
