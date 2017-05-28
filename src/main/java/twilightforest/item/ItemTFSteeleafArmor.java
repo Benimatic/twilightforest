@@ -43,7 +43,7 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
 	}
 	
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	switch (this.armorType) {
     	case HEAD:

@@ -192,7 +192,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
 
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {}
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {}
 
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer()

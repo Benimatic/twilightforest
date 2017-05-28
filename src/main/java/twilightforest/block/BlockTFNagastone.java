@@ -35,7 +35,7 @@ public class BlockTFNagastone extends Block {
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> stackList) {
+	public void getSubBlocks(Item item, CreativeTabs creativeTabs, NonNullList<ItemStack> stackList) {
 		stackList.add(new ItemStack(item, 1, 0));
 		stackList.add(new ItemStack(item, 1, 1));
 	}

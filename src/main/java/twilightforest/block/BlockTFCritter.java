@@ -175,7 +175,7 @@ public abstract class BlockTFCritter extends Block {
     public abstract TileEntity createTileEntity(World world, IBlockState state);
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }

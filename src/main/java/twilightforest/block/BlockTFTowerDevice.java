@@ -78,7 +78,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
     }
 
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.REAPPEARING_INACTIVE.ordinal()));
         par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_INACTIVE.ordinal()));
@@ -178,7 +178,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
 				for (int dz = -2; dz <= 2; dz++)
 				{
 					IBlockState state = world.getBlockState(pos.add(dx, dy, dz));
-					if (state.getBlock() == TFBlocks.towerDevice 
+					if (state.getBlock() == TFBlocks.towerDevice
 							&& state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED)
 					{
 						locked = true;
