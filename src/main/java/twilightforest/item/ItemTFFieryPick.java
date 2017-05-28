@@ -44,13 +44,13 @@ public class ItemTFFieryPick extends ItemPickaxe {
 			{
 				// does it smelt?
 				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
-				if (result != null)
+				if (!result.isEmpty())
 				{
-					addThese.add(new ItemStack(result.getItem(), input.stackSize, result.getItemDamage()));
+					addThese.add(new ItemStack(result.getItem(), input.getCount(), result.getItemDamage()));
 					removeThese.add(input);
 
 					// [VanillaCopy] SlotFurnaceOutput.onCrafting
-					int i = result.stackSize;
+					int i = result.getCount();
 					float f = FurnaceRecipes.instance().getSmeltingExperience(result);
 
 					if (f == 0.0F)
@@ -96,7 +96,7 @@ public class ItemTFFieryPick extends ItemPickaxe {
 				{
 					// does it smelt?
 					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
-					if (result != null)
+					if (!result.isEmpty())
 					{
 
 						// display fire animation

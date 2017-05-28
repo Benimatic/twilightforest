@@ -52,7 +52,7 @@ public class EntityAITFKidnapRider extends EntityAIBase
     }
 
     @Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
     {
         return !this.theEntityCreature.getNavigator().noPath();
     }

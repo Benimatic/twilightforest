@@ -16,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -101,15 +100,15 @@ public class EntityTFRedcap extends EntityMob {
     }
     
     public int getTntLeft() {
-		return heldTNT == null ? 0 : heldTNT.stackSize;
+		return heldTNT.isEmpty() ? 0 : heldTNT.getCount();
 	}
 
 	public void setTntLeft(int tntLeft) {
 		if (tntLeft == 0) {
-		    heldTNT = null;
+		    heldTNT = ItemStack.EMPTY;
         } else {
-		    if (heldTNT != null) {
-		        heldTNT.stackSize = tntLeft;
+		    if (!heldTNT.isEmpty()) {
+		        heldTNT.setCount(tntLeft);
             } else {
 		        heldTNT = new ItemStack(Blocks.TNT, tntLeft);
             }

@@ -862,7 +862,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
 
-		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.theBiomeDecorator.generateLakes) {
+		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.decorator.generateLakes) {
 			int i1 = worldPos.getX() + rand.nextInt(16) + 8;
 			int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
 			int i3 = worldPos.getZ() + rand.nextInt(16) + 8;
@@ -915,7 +915,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	 * Twilight Forest varient! First check features, then only if we're not in
 	 * a feature, check the biome.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precicely in a feature?
@@ -949,7 +948,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	@Nullable
 	@Override
-	public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
+	public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
 		// todo 1.10
 		return null;
 	}

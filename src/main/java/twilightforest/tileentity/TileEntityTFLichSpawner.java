@@ -1,12 +1,13 @@
 package twilightforest.tileentity;
 
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.boss.EntityTFLich;
 
 public class TileEntityTFLichSpawner extends TileEntityTFBossSpawner {
 
 	public TileEntityTFLichSpawner() {
-		this.mobID = TFCreatures.getSpawnerNameFor("Twilight Lich");
+		this.mobID = EntityList.getKey(EntityTFLich.class);
 	}
 	
     @Override

@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -90,7 +91,7 @@ public abstract class BlockTFCritter extends Block {
     }
     
     @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return NULL_AABB;
     }
@@ -114,7 +115,7 @@ public abstract class BlockTFCritter extends Block {
 
 	
 	@Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         IBlockState state = getDefaultState();
 
@@ -150,7 +151,7 @@ public abstract class BlockTFCritter extends Block {
     }
 
     @Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID, BlockPos fromPos)
     {
         if(dropCritterIfCantStay(world, pos))
         {
@@ -175,7 +176,7 @@ public abstract class BlockTFCritter extends Block {
     public abstract TileEntity createTileEntity(World world, IBlockState state);
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }

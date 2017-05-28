@@ -120,7 +120,7 @@ public class ItemTFTransformPowder extends ItemTF
 				}
 			}
 			
-            --par1ItemStack.stackSize;
+            par1ItemStack.shrink(1);
 			
 			return true;
 		}
@@ -131,7 +131,7 @@ public class ItemTFTransformPowder extends ItemTF
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
 		if (world.isRemote)
 		{
@@ -148,7 +148,7 @@ public class ItemTFTransformPowder extends ItemTF
 
 		}
 
-		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 	
 	private AxisAlignedBB getEffectAABB(EntityPlayer player) {

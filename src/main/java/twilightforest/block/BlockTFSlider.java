@@ -8,6 +8,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import net.minecraft.util.math.BlockPos;
@@ -140,7 +141,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 	
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -151,7 +152,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
-    	entity.attackEntityFrom(DamageSource.generic, BLOCK_DAMAGE);
+    	entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
     	if (entity instanceof EntityLivingBase) {
 			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.posZ) * 2.0;

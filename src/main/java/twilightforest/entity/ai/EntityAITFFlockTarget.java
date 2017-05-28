@@ -27,8 +27,8 @@ public class EntityAITFFlockTarget extends EntityAITarget
     	
     	for (EntityLivingBase flocker : flockList)
     	{
-    		if (flocker.getAITarget() != null) {
-    			targetList.add(flocker.getAITarget());
+    		if (flocker.getRevengeTarget() != null) {
+    			targetList.add(flocker.getRevengeTarget());
     		}
     	}
     	

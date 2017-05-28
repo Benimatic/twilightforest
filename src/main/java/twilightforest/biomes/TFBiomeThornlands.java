@@ -29,13 +29,13 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
         getTFBiomeDecorator().canopyPerChunk = -999;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
-        this.theBiomeDecorator.deadBushPerChunk = 2;
-        this.theBiomeDecorator.cactiPerChunk = -9999;
+        this.decorator.deadBushPerChunk = 2;
+        this.decorator.cactiPerChunk = -9999;
         this.spawnableCreatureList.clear();
         
         this.tfGenThorns = new TFGenThorns();
         
-		this.theBiomeDecorator.generateLakes = false;
+		this.decorator.generateLakes = false;
 	}
 	
 	@Override

@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.enums.NagastoneVariant;
@@ -35,7 +36,7 @@ public class BlockTFNagastone extends Block {
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> stackList) {
+	public void getSubBlocks(Item item, CreativeTabs creativeTabs, NonNullList<ItemStack> stackList) {
 		stackList.add(new ItemStack(item, 1, 0));
 		stackList.add(new ItemStack(item, 1, 1));
 	}
@@ -52,7 +53,7 @@ public class BlockTFNagastone extends Block {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
@@ -75,8 +76,8 @@ public class BlockTFNagastone extends Block {
 	// If player places head on horz side of block, use that block face. Else, defer to player rotation.
 	@Nonnull
 	@Override
-	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, ItemStack stack) {
-		return stack.getItemDamage() == 0
+	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
+		return meta == 0
 				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
 				: this.getDefaultState();
 	}

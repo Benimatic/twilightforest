@@ -256,7 +256,7 @@ public class EntityTFLich extends EntityMob {
 		if (super.attackEntityFrom(src, damage))
 		{
 			// Prevent AIHurtByTarget from targeting our own companions
-			if (getAITarget() instanceof EntityTFLich && ((EntityTFLich) getAITarget()).masterLich == this.masterLich) {
+			if (getRevengeTarget() instanceof EntityTFLich && ((EntityTFLich) getRevengeTarget()).masterLich == this.masterLich) {
 				setRevengeTarget(null);
 			}
 			

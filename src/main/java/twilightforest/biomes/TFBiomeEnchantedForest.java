@@ -77,7 +77,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	}
 
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random random)
+    public WorldGenAbstractTree getRandomTreeFeature(Random random)
     {
         if (random.nextInt(15) == 0)
         {

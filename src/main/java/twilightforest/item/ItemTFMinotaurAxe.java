@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
@@ -27,7 +28,7 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 	}
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	//istack.addEnchantment(Enchantments.EFFICIENCY, 2);

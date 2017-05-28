@@ -37,8 +37,8 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 		this.tfGenHangingLamps = new TFGenHangingLamps();
 		this.tfGenLampposts = new TFGenLampposts();
 
-        this.theBiomeDecorator.flowersPerChunk = 4;
-        this.theBiomeDecorator.grassPerChunk = 1;
+        this.decorator.flowersPerChunk = 4;
+        this.decorator.grassPerChunk = 1;
 
         this.getTFBiomeDecorator().setTreesPerChunk(2);
 

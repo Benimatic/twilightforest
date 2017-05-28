@@ -111,7 +111,7 @@ public class ParticleFirefly extends Particle
         motionX *= 0.95999997854232788D;
         motionY *= 0.95999997854232788D;
         motionZ *= 0.95999997854232788D;
-        if(isCollided)
+        if(onGround)
         {
             motionX *= 0.69999998807907104D;
             motionZ *= 0.69999998807907104D;

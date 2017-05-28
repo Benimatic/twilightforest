@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import twilightforest.block.TFBlocks;
 
 public class CreativeTabTwilightForest extends CreativeTabs 
@@ -12,8 +13,8 @@ public class CreativeTabTwilightForest extends CreativeTabs
 	}
 	
 	@Override
-    public Item getTabIconItem()
+    public ItemStack getTabIconItem()
     {
-        return Item.getItemFromBlock(TFBlocks.fireflyJar);
+        return new ItemStack(TFBlocks.fireflyJar);
     }
 }

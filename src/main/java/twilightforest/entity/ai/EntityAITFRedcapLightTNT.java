@@ -36,7 +36,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 	}
 
     @Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
     {
         return entityObj.world.getBlockState(tntPos).getBlock() == Blocks.TNT;
     }

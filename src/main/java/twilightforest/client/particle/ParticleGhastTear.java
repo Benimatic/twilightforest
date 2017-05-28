@@ -48,7 +48,7 @@ public class ParticleGhastTear extends Particle
     {
 	    super.onUpdate();    
     	
-        if (this.isCollided && rand.nextBoolean())
+        if (this.onGround && rand.nextBoolean())
         {
         	//world.playSoundEffect(this.posX, this.posY + 1D, this.posZ, "random.fizz", 2.0F, 2.0F);
             //world.spawnParticle("lava", this.posX, this.posY, this.posZ, 0, 0, 0);

@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
@@ -74,7 +75,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
 	}
 	
     @Override
-	public boolean canReplace(World par1World, BlockPos pos, EnumFacing side, ItemStack par6ItemStack)
+	public boolean canPlaceBlockOnSide(World par1World, BlockPos pos, EnumFacing side)
     {
     	IBlockState state = par1World.getBlockState(pos);
         return (state.getBlock().isAir(state, par1World, pos) || state.getMaterial().isReplaceable()) && canBlockStay(par1World, pos, state);
@@ -157,7 +158,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
     }
     
     @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos)
     {
     	return NULL_AABB;
     }
@@ -269,14 +270,14 @@ public class BlockTFPlant extends BlockBush implements IShearable
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
     {
     	// do not call normal harvest if the player is shearing
-        if (world.isRemote || stack == null || stack.getItem() != Items.SHEARS)
+        if (world.isRemote || stack.isEmpty() || stack.getItem() != Items.SHEARS)
         {
             super.harvestBlock(world, player, pos, state, te, stack);
         }
     }
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(this, 1, PlantVariant.MOSSPATCH.itemMetadata));
         par3List.add(new ItemStack(this, 1, PlantVariant.MAYAPPLE.itemMetadata));

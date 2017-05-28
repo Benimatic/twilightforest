@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -87,7 +88,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos)
 	{
 		TowerTranslucentVariant variant = state.getValue(VARIANT);
 
@@ -138,7 +139,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
 
     @Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
+	public boolean blocksMovement(IBlockAccess world, BlockPos pos)
     {
     	switch (world.getBlockState(pos).getValue(VARIANT))
     	{
@@ -166,7 +167,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
             if (variant == TowerTranslucentVariant.BUILT_ACTIVE)
             {
 				par1World.setBlockToAir(pos);
-				par1World.notifyNeighborsRespectDebug(pos, this);
+				par1World.notifyNeighborsRespectDebug(pos, this, false);
 				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
                 //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
                 
@@ -179,7 +180,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
             if (variant == TowerTranslucentVariant.REAPPEARING_ACTIVE)
             {
             	par1World.setBlockState(pos, TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
-                par1World.notifyNeighborsRespectDebug(pos, this);
+                par1World.notifyNeighborsRespectDebug(pos, this, false);
 				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
                 //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
              }
@@ -192,7 +193,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
 
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {}
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {}
 
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer()

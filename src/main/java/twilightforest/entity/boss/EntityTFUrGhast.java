@@ -114,7 +114,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		}
 
 		@Override
-		public boolean continueExecuting() {
+		public boolean shouldContinueExecuting() {
 			return false;
 		}
 
@@ -207,7 +207,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
     public boolean attackEntityFrom(DamageSource source, float damage)
     {
     	// ignore suffocation
-    	if (source == DamageSource.inWall)
+    	if (source == DamageSource.IN_WALL)
     	{
     		return false;
     	}
@@ -390,7 +390,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		{
 			if (world.canSeeSky(new BlockPos(player)))
 			{
-				player.attackEntityFrom(DamageSource.anvil, 3);
+				player.attackEntityFrom(DamageSource.ANVIL, 3);
 			}
 		}
 

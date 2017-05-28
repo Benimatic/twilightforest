@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -46,8 +47,8 @@ public class ItemTFMoonwormQueen extends ItemTF
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		if (stack.getItemDamage() < getMaxDamage(stack))
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (player.getHeldItem(hand).getItemDamage() < getMaxDamage(player.getHeldItem(hand)))
 		{
 			player.setActiveHand(hand);
 		}
@@ -55,54 +56,52 @@ public class ItemTFMoonwormQueen extends ItemTF
 		{
 			player.resetActiveHand();
 		}
-		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
-//	[VanillaCopy] ItemBlock.onItemUse
+	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		IBlockState currentState = world.getBlockState(pos);
-		Block currentBlock = currentState.getBlock();
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		IBlockState iblockstate = worldIn.getBlockState(pos);
+		Block block = iblockstate.getBlock();
 
-		if (currentBlock == TFBlocks.moonworm) return EnumActionResult.FAIL;
-
-		if (stack != null && stack.getItemDamage() == getMaxDamage(stack)) return EnumActionResult.FAIL;
-
-		if (!currentBlock.isReplaceable(world, pos))
+		if (!block.isReplaceable(worldIn, pos))
 		{
 			pos = pos.offset(facing);
 		}
 
-		if (player.canPlayerEdit(pos, facing, stack) && world.canBlockBePlaced(TFBlocks.moonworm, pos, false, facing, null, stack))
+		ItemStack itemstack = player.getHeldItem(hand);
+
+		if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, facing, (Entity)null))
 		{
-			IBlockState state = TFBlocks.moonworm.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, 0, player, null);
+			int i = this.getMetadata(itemstack.getMetadata());
+			IBlockState iblockstate1 = TFBlocks.moonworm.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
-			if (placeMoonwormAt(player, world, pos, facing, hitX, hitY, hitZ, state))
+			if (placeMoonwormAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1))
 			{
-				IBlockState real = world.getBlockState(pos);
-				SoundType type = real.getBlock().getSoundType(real, world, pos, player);
-				world.playSound(player, pos, type.getPlaceSound(), SoundCategory.BLOCKS, (type.getVolume() + 1f) / 2f, type.getPitch() * 0.8f);
-
-				if (stack != null)
-				{
-					stack.damageItem(1, player);
-					player.stopActiveHand();
-				}
+				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
+				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+				// TF - damage stack instead of shrinking
+				itemstack.damageItem(1, player);
+				player.resetActiveHand();
 			}
 
 			return EnumActionResult.SUCCESS;
 		}
-		return EnumActionResult.FAIL;
+		else
+		{
+			return EnumActionResult.FAIL;
+		}
 	}
 
 //	[VanillaCopy] ItemBlock.placeBlockAt
-	private boolean placeMoonwormAt(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState state) {
-		if (!world.setBlockState(pos, state, 3)) return false;
+	private boolean placeMoonwormAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState state) {
+		if (!world.setBlockState(pos, state, 11)) return false;
 
 		IBlockState real = world.getBlockState(pos);
 		if (real.getBlock() == TFBlocks.moonworm)
 		{
-			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, null);
+			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, stack);
 		}
 
 		return true;

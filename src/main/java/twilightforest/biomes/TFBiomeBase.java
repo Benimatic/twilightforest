@@ -43,7 +43,6 @@ public class TFBiomeBase extends Biome  {
 	protected WorldGenBirchTree birchGen;
     protected List<SpawnListEntry> undergroundMonsterList;
 
-	@SuppressWarnings("unchecked")
 	public TFBiomeBase(BiomeProperties props)
 	{
 		super(props);
@@ -100,11 +99,11 @@ public class TFBiomeBase extends Biome  {
     }
     
     protected TFBiomeDecorator getTFBiomeDecorator() {
-    	return (TFBiomeDecorator)this.theBiomeDecorator;
+    	return (TFBiomeDecorator)this.decorator;
     }
 
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random random)
+    public WorldGenAbstractTree getRandomTreeFeature(Random random)
     {
         if(random.nextInt(5) == 0)
         {

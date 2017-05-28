@@ -11,6 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -43,7 +44,7 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
 	}
 	
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	switch (this.armorType) {
     	case HEAD:

@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.MoverType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -165,7 +166,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	            this.motionX += moveDirection.getFrontOffsetX() * 0.03999999910593033D;
 	            this.motionY += moveDirection.getFrontOffsetY() * 0.03999999910593033D;
 	            this.motionZ += moveDirection.getFrontOffsetZ() * 0.03999999910593033D;
-	            this.move(this.motionX, this.motionY, this.motionZ);
+	            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             }
             this.motionX *= 0.9800000190734863D;
             this.motionY *= 0.9800000190734863D;
@@ -206,7 +207,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
                     this.setDead();
 
-                    if (this.world.canBlockBePlaced(myState.getBlock(), pos, true, EnumFacing.UP, null, null)) {
+                    if (this.world.mayPlace(myState.getBlock(), pos, true, EnumFacing.UP, null)) {
                         world.setBlockState(pos, myState);
                     } else {
                         this.entityDropItem(new ItemStack(myState.getBlock(), 1, myState.getBlock().damageDropped(myState)), 0.0F);
@@ -230,7 +231,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     	{
     		if (entity instanceof EntityLivingBase)
     		{
-    			entity.attackEntityFrom(DamageSource.generic, 5);
+    			entity.attackEntityFrom(DamageSource.GENERIC, 5);
     			
     			double kx = (this.posX - entity.posX) * 2.0;
     			double kz = (this.posZ - entity.posZ) * 2.0;

@@ -26,13 +26,14 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 
 	// [VanillaCopy] ItemLilyPad.onItemRightClick, edits noted
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
 	{
+        ItemStack itemstack = playerIn.getHeldItem(hand);
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
 
         if (raytraceresult == null)
         {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.PASS, itemstack);
         }
         else
         {
@@ -40,15 +41,15 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
             {
                 BlockPos blockpos = raytraceresult.getBlockPos();
 
-                if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
+                if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack))
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<>(EnumActionResult.FAIL, itemstack);
                 }
 
                 BlockPos blockpos1 = blockpos.up();
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getMaterial() == Material.WATER && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(blockpos1))
+                if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1))
                 {
                     // special case for handling block placement with water lilies
                     net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
@@ -56,7 +57,7 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
                     if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, hand).isCanceled())
                     {
                         blocksnapshot.restore(true, false);
-                        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+                        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
                     }
 
                     // TF - our block
@@ -64,16 +65,16 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 
                     if (!playerIn.capabilities.isCreativeMode)
                     {
-                        --itemStackIn.stackSize;
+                        itemstack.shrink(1);
                     }
 
                     playerIn.addStat(StatList.getObjectUseStats(this));
                     worldIn.playSound(playerIn, blockpos, SoundEvents.BLOCK_WATERLILY_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
                 }
             }
 
-            return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+            return new ActionResult<>(EnumActionResult.FAIL, itemstack);
         }
     }
 

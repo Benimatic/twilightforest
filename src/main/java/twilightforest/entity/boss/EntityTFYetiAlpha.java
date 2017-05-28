@@ -155,9 +155,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 	}
     
     @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
+    protected boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-        if (super.processInteract(player, hand, stack))
+        if (super.processInteract(player, hand))
         {
             return true;
         }

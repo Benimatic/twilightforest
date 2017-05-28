@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -93,7 +94,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     }
     
     @Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, ItemStack stack, EnumFacing side, float par7, float par8, float par9)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9)
     {
 		if (state.getValue(LOG_AXIS) == EnumAxis.Y) {
 			// turn off
@@ -272,7 +273,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		//FMLLog.info("Found " + chests.size() + " non-empty chests, containing " + itemCount + " items");
 		
 		// find a random item in one of the chests
-		ItemStack beingSorted = null;
+		ItemStack beingSorted = ItemStack.EMPTY;
 		int sortedChestNum = -1;
 		int sortedSlotNum = -1;
 		
@@ -288,7 +289,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				{
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
 					
-					if (currentItem != null)
+					if (!currentItem.isEmpty())
 					{
 						if (currentNumber++ == itemNumber)
 						{
@@ -303,7 +304,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		
 		//FMLLog.info("Decided to sort item " + beingSorted);
 
-		if (beingSorted != null)
+		if (!beingSorted.isEmpty())
 		{
 			int matchChestNum = -1;
 			int matchCount = 0;
@@ -318,9 +319,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				{
 					
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
-					if (currentItem != null && isSortingMatch(beingSorted, currentItem))
+					if (!currentItem.isEmpty() && isSortingMatch(beingSorted, currentItem))
 					{
-						currentChestMatches += currentItem.stackSize;
+						currentChestMatches += currentItem.getCount();
 					}
 				}
 				
@@ -343,7 +344,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				if (moveSlot >= 0)
 				{
 					// remove old item
-					oldChest.setInventorySlotContents(sortedSlotNum, null);
+					oldChest.setInventorySlotContents(sortedSlotNum, ItemStack.EMPTY);
 					
 					// add new item
 					moveChest.setInventorySlotContents(moveSlot, beingSorted);
@@ -353,7 +354,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 			}
 			
 			// if the stack is not full, combine items from other stacks
-			if (beingSorted.stackSize < beingSorted.getMaxStackSize())
+			if (beingSorted.getCount() < beingSorted.getMaxStackSize())
 			{
 				for (IInventory chest : chests)
 				{
@@ -361,13 +362,13 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 					{
 						ItemStack currentItem = chest.getStackInSlot(slotNum);
 						
-						if (currentItem!= null && currentItem != beingSorted && beingSorted.isItemEqual(currentItem))
+						if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem))
 						{
-							if (currentItem.stackSize <= (beingSorted.getMaxStackSize() - beingSorted.stackSize))
+							if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount()))
 							{
-								chest.setInventorySlotContents(slotNum, null);
-								beingSorted.stackSize += currentItem.stackSize;
-								currentItem.stackSize = 0;
+								chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
+								beingSorted.grow(currentItem.getCount());
+								currentItem.setCount(0);
 							}
 						}
 					}
@@ -407,7 +408,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	private int getEmptySlotIn(IInventory chest) {
 		for (int i = 0; i < chest.getSizeInventory(); i++)
 		{
-			if (chest.getStackInSlot(i) == null)
+			if (chest.getStackInSlot(i).isEmpty())
 			{
 				return i;
 			}
@@ -423,7 +424,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     }
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
     	par3List.add(new ItemStack(par1, 1, 0));
     	par3List.add(new ItemStack(par1, 1, 1));

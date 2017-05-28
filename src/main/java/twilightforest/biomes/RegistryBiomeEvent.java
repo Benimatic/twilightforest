@@ -252,7 +252,7 @@ public final class RegistryBiomeEvent
 		{
 			biome.setRegistryName(TwilightForestMod.ID, registryName);
 			registry.register(biome);
-			BiomeDictionary.registerBiomeType(biome, biomeTypes);
+			BiomeDictionary.addTypes(biome, biomeTypes);
 		}
 	}
 }

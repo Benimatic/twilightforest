@@ -100,7 +100,7 @@ public class LootFunctionEnchant extends LootFunction {
                     short lvl = e.getValue().getAsShort();
 
                     for (Enchantment other : enchantments.keySet()) {
-                        if (!other.canApplyTogether(ench) || !ench.canApplyTogether(other)) {
+                        if (!ench.func_191560_c(other)) {
                             throw new JsonParseException(String.format("Enchantments %s and %s conflict", ench.getRegistryName(), other.getRegistryName()));
                         }
                     }

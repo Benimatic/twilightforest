@@ -142,7 +142,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 
 					entity.setDead();
 				} else {
-					entity.attackEntityFrom(DamageSource.magic, 1);
+					entity.attackEntityFrom(DamageSource.MAGIC, 1);
 					entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 5, 2, false, true));
 				}
 			}

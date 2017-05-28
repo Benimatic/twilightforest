@@ -18,12 +18,23 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 
 	public InventoryTFGoblinUncrafting(ContainerTFUncrafting containerTFGoblinCrafting) {
-		// TODO Auto-generated constructor stub
+		Arrays.fill(contents, ItemStack.EMPTY);
 	}
 
 	@Override
 	public int getSizeInventory() {
 		return 9;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		for (ItemStack s : contents) {
+			if (!s.isEmpty()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override
@@ -37,10 +48,10 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 		{
 			ItemStack takenStack;
 
-			if (this.contents[slotNum].stackSize <= amount)
+			if (this.contents[slotNum].getCount() <= amount)
 			{
 				takenStack = this.contents[slotNum];
-				this.contents[slotNum] = null;
+				this.contents[slotNum] = ItemStack.EMPTY;
 
 				//this.eventHandler.onCraftMatrixChanged(this);
 				return takenStack;
@@ -48,36 +59,27 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 			else
 			{
 				takenStack = this.contents[slotNum].splitStack(amount);
-
-				//System.out.println("Stack size in slot " + slotNum + " is now " + this.contents[slotNum].stackSize);
-
-				if (this.contents[slotNum].stackSize == 0)
-				{
-					this.contents[slotNum] = null;
-				}
-
-				//this.eventHandler.onCraftMatrixChanged(this);
 				return takenStack;
 			}
 		}
 		else
 		{
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int par1) {
-		if (this.contents[par1] != null)
+		if (!this.contents[par1].isEmpty())
 		{
 			ItemStack var2 = this.contents[par1];
-			this.contents[par1] = null;
+			this.contents[par1] = ItemStack.EMPTY;
 			return var2;
 		}
 		else
 		{
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
@@ -85,9 +87,9 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
 		this.contents[par1] = par2ItemStack;
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+		if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit())
 		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
+			par2ItemStack.setCount(this.getInventoryStackLimit());
 		}
 
 		this.markDirty();
@@ -140,7 +142,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public void clear() {
-		Arrays.fill(contents, null);
+		Arrays.fill(contents, ItemStack.EMPTY);
 	}
 
 	@Override

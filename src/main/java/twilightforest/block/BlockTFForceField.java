@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.model.ModelLoader;
@@ -73,7 +74,7 @@ public class BlockTFForceField extends BlockPane implements ModelRegisterCallbac
     }
     
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         for (int i = 0; i < COLOR.getAllowedValues().size(); i++) {
             par3List.add(new ItemStack(par1, 1, i));
@@ -88,13 +89,13 @@ public class BlockTFForceField extends BlockPane implements ModelRegisterCallbac
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity)
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity, boolean useActualState)
     {
         // fill in the whole bounding box when we connect on all sides
         if (state.getValue(NORTH) && state.getValue(SOUTH) & state.getValue(WEST) && state.getValue(EAST)) {
             addCollisionBoxToList(pos, aabb, list, FULL_BLOCK_AABB);
         } else {
-            super.addCollisionBoxToList(state, world, pos, aabb, list, entity);
+            super.addCollisionBoxToList(state, world, pos, aabb, list, entity, useActualState);
         }
     }
 

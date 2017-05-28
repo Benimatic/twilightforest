@@ -157,15 +157,15 @@ public class TFEventListener {
 		{
 			ItemStack stack = inv.getStackInSlot(i);
 			
-			if (stack != null && stack.getItem() == TFItems.scepterTwilight)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterTwilight)
 			{
 				scepterTwilight = true;
 			}
-			if (stack != null && stack.getItem() == TFItems.scepterLifeDrain)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterLifeDrain)
 			{
 				scepterLifeDrain = true;
 			}
-			if (stack != null && stack.getItem() == TFItems.scepterZombie)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterZombie)
 			{
 				scepterZombie = true;
 			}
@@ -209,7 +209,7 @@ public class TFEventListener {
     	}
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-    	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.stackSize == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
+    	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.getCount() == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
@@ -221,7 +221,7 @@ public class TFEventListener {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			
-			if (stack != null && stack.getItem() == Item.getItemFromBlock(TFBlocks.giantLog)) {
+			if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(TFBlocks.giantLog)) {
 				return true;
 			}
 		}
@@ -243,11 +243,11 @@ public class TFEventListener {
 		{
 			ItemStack stack = inv.getStackInSlot(i);
 			
-			if (stack != null && stack.getItem() == TFItems.nagaScale)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.nagaScale)
 			{
 				nagaScale = true;
 			}
-			if (stack != null && stack.getItem() == TFItems.legsNaga)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.legsNaga)
 			{
 				legsNaga = true;
 			}
@@ -469,10 +469,10 @@ public class TFEventListener {
 				
 				// armor and full inventory
 				keepAllArmor(player, keepInventory);
-				for (int i = 0; i < player.inventory.mainInventory.length; i++)
+				for (int i = 0; i < player.inventory.mainInventory.size(); i++)
 				{
-					keepInventory.mainInventory[i] = ItemStack.copyItemStack(player.inventory.mainInventory[i]);
-					player.inventory.mainInventory[i] = null;
+					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
 				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping3));
 
@@ -486,8 +486,8 @@ public class TFEventListener {
 				keepAllArmor(player, keepInventory);
 				for (int i = 0; i < 9; i++)
 				{
-					keepInventory.mainInventory[i] = ItemStack.copyItemStack(player.inventory.mainInventory[i]);
-					player.inventory.mainInventory[i] = null;
+					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
 				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping2));
 
@@ -499,10 +499,10 @@ public class TFEventListener {
 				InventoryPlayer keepInventory = new InventoryPlayer(null);
 				
 				keepAllArmor(player, keepInventory);
-				if (player.inventory.getCurrentItem() != null)
+				if (!player.inventory.getCurrentItem().isEmpty())
 				{
-					keepInventory.mainInventory[player.inventory.currentItem] = ItemStack.copyItemStack(player.inventory.mainInventory[player.inventory.currentItem]);
-					player.inventory.mainInventory[player.inventory.currentItem] = null;
+					keepInventory.mainInventory.set(player.inventory.currentItem, player.inventory.mainInventory.get(player.inventory.currentItem).copy());
+					player.inventory.mainInventory.set(player.inventory.currentItem, ItemStack.EMPTY);
 				}
 				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping1));
 
@@ -514,12 +514,12 @@ public class TFEventListener {
 			{
 				InventoryPlayer keepInventory = retrieveOrMakeKeepInventory(player);
 				// keep them all
-				for (int i = 0; i < player.inventory.mainInventory.length; i++)
+				for (int i = 0; i < player.inventory.mainInventory.size(); i++)
 				{
-					if (player.inventory.mainInventory[i] != null && player.inventory.mainInventory[i].getItem() == TFItems.towerKey)
+					if (!player.inventory.mainInventory.get(i).isEmpty() && player.inventory.mainInventory.get(i).getItem() == TFItems.towerKey)
 					{
-						keepInventory.mainInventory[i] = ItemStack.copyItemStack(player.inventory.mainInventory[i]);
-						player.inventory.mainInventory[i] = null;
+						keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+						player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 					}
 				}
 				playerKeepsMap.put(player.getName(), keepInventory);
@@ -551,10 +551,10 @@ public class TFEventListener {
 	 * Move the full armor inventory to the keep pile
 	 */
 	private void keepAllArmor(EntityPlayer player, InventoryPlayer keepInventory) {
-		for (int i = 0; i < player.inventory.armorInventory.length; i++)
+		for (int i = 0; i < player.inventory.armorInventory.size(); i++)
 		{
-			keepInventory.armorInventory[i] = ItemStack.copyItemStack(player.inventory.armorInventory[i]);
-			player.inventory.armorInventory[i] = null;
+			keepInventory.armorInventory.set(i, player.inventory.armorInventory.get(i).copy());
+			player.inventory.armorInventory.set(i, ItemStack.EMPTY);
 		}
 	}
 	/**
@@ -569,23 +569,23 @@ public class TFEventListener {
 			
 			InventoryPlayer keepInventory = playerKeepsMap.get(player.getName());
 			
-			for (int i = 0; i < player.inventory.armorInventory.length; i++)
+			for (int i = 0; i < player.inventory.armorInventory.size(); i++)
 			{
-				if (keepInventory.armorInventory[i] != null)
+				if (!keepInventory.armorInventory.get(i).isEmpty())
 				{
-					player.inventory.armorInventory[i] = keepInventory.armorInventory[i];
+					player.inventory.armorInventory.set(i, keepInventory.armorInventory.get(i));
 				}
 			}
-			for (int i = 0; i < player.inventory.mainInventory.length; i++)
+			for (int i = 0; i < player.inventory.mainInventory.size(); i++)
 			{
-				if (keepInventory.mainInventory[i] != null)
+				if (!keepInventory.mainInventory.get(i).isEmpty())
 				{
-					player.inventory.mainInventory[i] = keepInventory.mainInventory[i];
+					player.inventory.mainInventory.set(i, keepInventory.mainInventory.get(i));
 				}
 			}
 			
 			// spawn effect thingers
-			if (keepInventory.getItemStack() != null)
+			if (!keepInventory.getItemStack().isEmpty())
 			{
 				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.world, player, keepInventory.getItemStack().getItem());
 				player.world.spawnEntity(effect);
@@ -733,7 +733,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		ItemStack currentItem = event.getEntityPlayer().inventory.getCurrentItem();
-		if (currentItem != null && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
+		if (!currentItem.isEmpty() && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
 			// are they also wearing the armor
 			if (checkPlayerForFieryArmor(event.getEntityPlayer())) {
 				event.getEntityPlayer().addStat(TFAchievementPage.twilightFierySet);
@@ -792,10 +792,10 @@ public class TFEventListener {
 		ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 		ItemStack head = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 
-		return feet != null && feet.getItem() == TFItems.fieryBoots
-				|| legs != null && legs.getItem() == TFItems.fieryLegs
-				|| chest != null && chest.getItem() == TFItems.fieryPlate
-				|| head != null && head.getItem() == TFItems.fieryHelm;
+		return !feet.isEmpty() && feet.getItem() == TFItems.fieryBoots
+				|| !legs.isEmpty() && legs.getItem() == TFItems.fieryLegs
+				|| !chest.isEmpty() && chest.getItem() == TFItems.fieryPlate
+				|| !head.isEmpty() && head.getItem() == TFItems.fieryHelm;
 	}
 
 	/**

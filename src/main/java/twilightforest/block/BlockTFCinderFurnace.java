@@ -70,24 +70,14 @@ public class BlockTFCinderFurnace extends Block {
 	}
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (world.isRemote)
+        if (!world.isRemote && world.getTileEntity(pos) instanceof TileEntityTFCinderFurnace)
         {
-            return true;
+            player.openGui(TwilightForestMod.instance, TwilightForestMod.GUI_ID_FURNACE, world, pos.getX(), pos.getY(), pos.getZ());
         }
-        else
-        {
-            TileEntityTFCinderFurnace tileentityfurnace = (TileEntityTFCinderFurnace)world.getTileEntity(pos);
 
-            if (tileentityfurnace != null)
-            {
-            	player.openGui(TwilightForestMod.instance, TwilightForestMod.GUI_ID_FURNACE, world, pos.getX(), pos.getY(), pos.getZ());
-            	return true;
-            }
-
-            return true;
-        }
+        return true;
     }
 
     @Override

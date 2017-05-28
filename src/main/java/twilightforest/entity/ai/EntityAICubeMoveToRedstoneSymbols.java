@@ -43,7 +43,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 	}
 
 	@Override
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return !this.myCube.getNavigator().noPath();
     }

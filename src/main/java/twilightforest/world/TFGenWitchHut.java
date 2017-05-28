@@ -2,12 +2,12 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.EntityTFSkeletonDruid;
 
 
 public class TFGenWitchHut extends TFGenerator {
@@ -180,7 +180,7 @@ public class TFGenWitchHut extends TFGenerator {
 		// skeleton spawner!
         world.setBlockState(pos.add(3, 1, 3), Blocks.MOB_SPAWNER.getDefaultState(), 2);
         TileEntityMobSpawner ms = (TileEntityMobSpawner)world.getTileEntity(pos.add(3, 1, 3));
-		ms.getSpawnerBaseLogic().setEntityName(TFCreatures.getSpawnerNameFor("Skeleton Druid"));
+		ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));
 
 		return true;
 	}

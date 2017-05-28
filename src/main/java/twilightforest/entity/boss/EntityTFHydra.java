@@ -694,7 +694,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
     public boolean attackEntityFromPart(EntityTFHydraPart part, DamageSource damagesource, float damageAmount)
     {
         // if we're in a wall, kill that wall
-        if (!world.isRemote && damagesource == DamageSource.inWall)
+        if (!world.isRemote && damagesource == DamageSource.IN_WALL)
         {
         	destroyBlocksInAABB(part.getEntityBoundingBox());
         }

@@ -10,6 +10,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,24 @@ import javax.annotation.Nullable;
 
 public class ItemTFMagicMap extends ItemMap
 {
-    public static final String STR_ID = "magicmap";
+    private static final String STR_ID = "magicmap";
+
+    // [VanillaCopy] super with own id
+    public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking)
+    {
+        // TF - own item and string id
+        ItemStack itemstack = new ItemStack(TFItems.magicMap, 1, world.getUniqueDataId(ItemTFMagicMap.STR_ID));
+        String s = ItemTFMagicMap.STR_ID + "_" + itemstack.getMetadata();
+        MapData mapdata = new TFMagicMapData(s);
+        world.setData(s, mapdata);
+        mapdata.scale = scale;
+        mapdata.calculateMapCenter(worldX, worldZ, mapdata.scale);
+        mapdata.dimension = world.provider.getDimension();
+        mapdata.trackingPosition = trackingPosition;
+        mapdata.unlimitedTracking = unlimitedTracking;
+        mapdata.markDirty();
+        return itemstack;
+    }
 
     // [VanillaCopy] super, with own string ID and class, narrowed types
     @SideOnly(Side.CLIENT)

@@ -79,7 +79,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			if (i > 0)
 			{
 				List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
-				DamageSource damagesource = DamageSource.fallingBlock;
+				DamageSource damagesource = DamageSource.FALLING_BLOCK;
 
 				for (Entity entity : list)
 				{

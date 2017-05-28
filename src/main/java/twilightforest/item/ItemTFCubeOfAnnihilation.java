@@ -45,7 +45,9 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+
 		if (getThrownUuid(stack) != null)
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 

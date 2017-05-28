@@ -13,6 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import twilightforest.block.enums.RootVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -69,7 +70,7 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
     
     @Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

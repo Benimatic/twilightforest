@@ -61,7 +61,7 @@ public class BlockTFPortal extends BlockBreakable
 	}
 
     @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return NULL_AABB;
     }
@@ -204,7 +204,7 @@ public class BlockTFPortal extends BlockBreakable
      * Each twilight portal pool block should have grass or dirt on one side and a portal on the other.  If this is not true, delete this block, presumably causing a chain reaction.
      */
     @Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos)
     {
     	boolean good = Arrays.stream(EnumFacing.HORIZONTALS)
 				.filter(e -> world.getBlockState(pos.offset(e)).getBlock() == this
@@ -291,7 +291,7 @@ public class BlockTFPortal extends BlockBreakable
 		if (!toTeleport.world.isRemote && !toTeleport.isDead)
 		{
 			if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(toTeleport, dimensionIn)) return;
-			toTeleport.world.theProfiler.startSection("changeDimension");
+			toTeleport.world.profiler.startSection("changeDimension");
 			MinecraftServer minecraftserver = toTeleport.getServer();
 			int i = toTeleport.dimension;
 			WorldServer worldserver = minecraftserver.worldServerForDimension(i);
@@ -306,7 +306,7 @@ public class BlockTFPortal extends BlockBreakable
 
 			toTeleport.world.removeEntity(toTeleport);
 			toTeleport.isDead = false;
-			toTeleport.world.theProfiler.startSection("reposition");
+			toTeleport.world.profiler.startSection("reposition");
 			BlockPos blockpos;
 
 			if (dimensionIn == 1)
@@ -333,8 +333,8 @@ public class BlockTFPortal extends BlockBreakable
 			}
 
 			worldserver.updateEntityWithOptionalForce(toTeleport, false);
-			toTeleport.world.theProfiler.endStartSection("reloading");
-			Entity entity = EntityList.createEntityByName(EntityList.getEntityString(toTeleport), worldserver1);
+			toTeleport.world.profiler.endStartSection("reloading");
+			Entity entity = EntityList.newEntity(toTeleport.getClass(), worldserver1);
 
 			if (entity != null)
 			{
@@ -372,10 +372,10 @@ public class BlockTFPortal extends BlockBreakable
 			}
 
 			toTeleport.isDead = true;
-			toTeleport.world.theProfiler.endSection();
+			toTeleport.world.profiler.endSection();
 			worldserver.resetUpdateEntityTick();
 			worldserver1.resetUpdateEntityTick();
-			toTeleport.world.theProfiler.endSection();
+			toTeleport.world.profiler.endSection();
 		}
 	}
 

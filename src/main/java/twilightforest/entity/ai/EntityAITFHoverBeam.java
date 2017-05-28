@@ -65,7 +65,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		EntityLivingBase target = this.attacker.getAttackTarget();
 
 		if (target == null || !target.isEntityAlive()) {
@@ -176,7 +176,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 	/**
 	 * What, if anything, is the head currently looking at?
 	 */
-	@SuppressWarnings("unchecked")
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;

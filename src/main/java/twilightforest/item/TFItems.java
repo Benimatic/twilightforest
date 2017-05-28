@@ -253,14 +253,14 @@ public class TFItems {
     public static CreativeTabTwilightForest creativeTab = new CreativeTabTwilightForest("twilightForest");
 
     public static void initRepairMaterials() {
-        ARMOR_NAGA.customCraftingMaterial = nagaScale;
-        ARMOR_IRONWOOD.customCraftingMaterial = ironwoodIngot;
-        ARMOR_FIERY.customCraftingMaterial = fieryIngot;
-        ARMOR_STEELEAF.customCraftingMaterial = steeleafIngot;
-        ARMOR_KNIGHTLY.customCraftingMaterial = knightMetal;
-        ARMOR_PHANTOM.customCraftingMaterial = knightMetal;
-        ARMOR_YETI.customCraftingMaterial = alphaFur;
-        ARMOR_ARCTIC.customCraftingMaterial = arcticFur;
+        ARMOR_NAGA.setRepairItem(new ItemStack(nagaScale));
+        ARMOR_IRONWOOD.setRepairItem(new ItemStack(ironwoodIngot));
+        ARMOR_FIERY.setRepairItem(new ItemStack(fieryIngot));
+        ARMOR_STEELEAF.setRepairItem(new ItemStack(steeleafIngot));
+        ARMOR_KNIGHTLY.setRepairItem(new ItemStack(knightMetal));
+        ARMOR_PHANTOM.setRepairItem(new ItemStack(knightMetal));
+        ARMOR_YETI.setRepairItem(new ItemStack(alphaFur));
+        ARMOR_ARCTIC.setRepairItem(new ItemStack(arcticFur));
 
         TOOL_IRONWOOD.setRepairItem(new ItemStack(ironwoodIngot));
         TOOL_FIERY.setRepairItem(new ItemStack(fieryIngot));

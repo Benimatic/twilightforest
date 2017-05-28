@@ -25,7 +25,7 @@ public class RenderTFCharm extends RenderSnowball<EntityTFCharmEffect>
             return new ItemStack(TFItems.charmOfKeeping1);
         } else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 }

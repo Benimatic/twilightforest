@@ -25,8 +25,8 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
-		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage(player.getHeldItem(hand)))
 		{
 			player.setActiveHand(hand);
 		}
@@ -34,11 +34,11 @@ public class ItemTFLampOfCinders extends ItemTF {
 		{
 			player.resetActiveHand();
 		}
-		return ActionResult.newResult(EnumActionResult.SUCCESS, par1ItemStack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
         if (burnBlock(world, pos)) {
         	player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F, 1.5F);
@@ -76,7 +76,7 @@ public class ItemTFLampOfCinders extends ItemTF {
     	int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
 
 
-    	if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage()) 
+    	if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage(par1ItemStack))
     	{
     		doBurnEffect(world, living);
     		

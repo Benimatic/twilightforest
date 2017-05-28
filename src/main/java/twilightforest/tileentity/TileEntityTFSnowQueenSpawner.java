@@ -1,12 +1,13 @@
 package twilightforest.tileentity;
 
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.boss.EntityTFSnowQueen;
 
 public class TileEntityTFSnowQueenSpawner extends TileEntityTFBossSpawner {
 
 	public TileEntityTFSnowQueenSpawner() {
-		this.mobID = TFCreatures.getSpawnerNameFor("Snow Queen");
+		this.mobID = EntityList.getKey(EntityTFSnowQueen.class);
 	}
 	
     @Override

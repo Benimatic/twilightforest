@@ -768,7 +768,7 @@ public class HydraHeadContainer {
 	        		// stop hurting yourself!
 	        		this.endCurrentAction();
 	        	}
-	        	else if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.inFire, FLAME_DAMAGE))
+	        	else if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, FLAME_DAMAGE))
 	        	{
 	        		target.setFire(FLAME_BURN_FACTOR);
 	        	}

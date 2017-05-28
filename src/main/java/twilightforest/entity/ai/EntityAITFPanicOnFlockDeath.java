@@ -84,7 +84,7 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
     {
         return fleeTimer > 0 && !this.flockCreature.getNavigator().noPath();
     }

@@ -30,8 +30,8 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 	@Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2)
     {
-        this.fontRendererObj.drawString("Uncrafting Table", 8, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString("Uncrafting Table", 8, 6, 4210752);
+        this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
 	@Override
@@ -61,7 +61,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
         GlStateManager.popMatrix();
         
         // show the costs if there are any
-        FontRenderer fontRendererObj = this.mc.fontRendererObj;
+        FontRenderer fontRendererObj = this.mc.fontRenderer;
         RenderHelper.disableStandardItemLighting();
         
         int costVal =  tfContainer.getUncraftingCost();
@@ -103,11 +103,12 @@ public class GuiTFGoblinCrafting extends GuiContainer {
         itemRender.zLevel = 50.0F;
 
         itemRender.renderItemIntoGUI(itemStackToRender, screenX, screenY);
-        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, itemStackToRender, screenX, screenY, "");
+        itemRender.renderItemOverlayIntoGUI(this.fontRenderer, itemStackToRender, screenX, screenY, "");
         
         boolean itemBroken = false;
-        
-        if (backgroundSlot.getHasStack() && backgroundSlot.getStack().stackSize == 0) {
+
+        // TODO 1.11 this isn't going to work properly
+        if (backgroundSlot.getHasStack() && backgroundSlot.getStack().getCount() == 0) {
         	itemBroken = true;
         }
         

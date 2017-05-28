@@ -54,16 +54,16 @@ public class EntityTFDeer extends EntityCow
 	protected void playStepSound(BlockPos pos, Block par4) {}
     
     @Override
-    public boolean processInteract(EntityPlayer entityplayer, EnumHand hand, @Nullable ItemStack stack)
+    public boolean processInteract(EntityPlayer entityplayer, EnumHand hand)
     {
         ItemStack itemstack = entityplayer.inventory.getCurrentItem();
-        if(itemstack != null && itemstack.getItem() == Items.BUCKET)
+        if(!itemstack.isEmpty() && itemstack.getItem() == Items.BUCKET)
         {
         	// specifically do not respond to this
             return false;
         } else
         {
-            return super.processInteract(entityplayer, hand, stack);
+            return super.processInteract(entityplayer, hand);
         }
     }
 

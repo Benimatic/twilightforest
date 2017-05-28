@@ -111,7 +111,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!world.isRemote && state.getValue(LATENT)) {
 			if (isTrophyOnTop(world, pos)) {
 				if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {

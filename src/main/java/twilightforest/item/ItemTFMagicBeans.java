@@ -23,7 +23,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
 		Block blockAt = world.getBlockState(pos).getBlock();
 		

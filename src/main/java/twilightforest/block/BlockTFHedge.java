@@ -58,7 +58,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
 			return HEDGE_BB;
@@ -87,7 +87,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE && shouldDamage(entity)) {
-			entity.attackEntityFrom(DamageSource.cactus, damageDone);
+			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
 		}
     }
 
@@ -95,7 +95,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	public void onEntityWalk(World world, BlockPos pos, Entity entity)
     {
 		if (world.getBlockState(pos).getValue(VARIANT) == HedgeVariant.HEDGE && shouldDamage(entity)) {
-			entity.attackEntityFrom(DamageSource.cactus, damageDone);
+			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
 		}
     }
 
@@ -112,7 +112,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
     {
     	super.harvestBlock(world, entityplayer, pos, state, te, stack);
     	if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
-    		entityplayer.attackEntityFrom(DamageSource.cactus, damageDone);
+    		entityplayer.attackEntityFrom(DamageSource.CACTUS, damageDone);
     	}
     }
     
@@ -134,7 +134,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
     			if (mop != null && mop.getBlockPos() != null
 					&& world.getBlockState(mop.getBlockPos()).getBlock() == this) {
     				// prick them!  prick them hard!
-    				player.attackEntityFrom(DamageSource.cactus, damageDone);
+    				player.attackEntityFrom(DamageSource.CACTUS, damageDone);
 
     				// trigger this again!
     				world.scheduleUpdate(pos, this, 10);

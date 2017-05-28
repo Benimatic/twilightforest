@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -66,7 +67,7 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	{
 		// damage the player's pickaxe
     	ItemStack cei = entityplayer.getHeldItemMainhand();
-        if(cei != null && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) 
+        if(!cei.isEmpty() && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick))
         {
             cei.damageItem(16, entityplayer);
         }
@@ -75,7 +76,7 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
     }
     
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

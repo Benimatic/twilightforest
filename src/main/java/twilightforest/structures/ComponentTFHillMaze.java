@@ -2,8 +2,13 @@ package twilightforest.structures;
 
 import java.util.Random;
 
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
@@ -155,18 +160,18 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		String mobID; 
+		ResourceLocation mobID;
 
 		switch (rand.nextInt(3)) {
 		case 1 :
-			mobID = "Skeleton";
+			mobID = EntityList.getKey(EntitySkeleton.class);
 			break;
 		case 2 :
-			mobID = "Zombie";
+			mobID = EntityList.getKey(EntityZombie.class);
 			break;
 		case 0 : 
 		default:
-			mobID = "Spider";
+			mobID = EntityList.getKey(EntitySpider.class);
 		}
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);

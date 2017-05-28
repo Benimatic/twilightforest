@@ -64,7 +64,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
     }
 
     @Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
     {
         EntityLivingBase attackTarget = this.me.getAttackTarget();
         

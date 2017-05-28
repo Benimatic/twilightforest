@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -28,46 +29,15 @@ public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCall
         this.mapOres = mapOres;
     }
 
-    // [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
+    // [VanillaCopy] ItemEmptyMap.onItemRightClick calling own setup method
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        // TF - Use own string ID and MapData class
-        ItemStack itemstack = new ItemStack(Items.FILLED_MAP, 1, worldIn.getUniqueDataId(ItemTFMazeMap.STR_ID));
-        String s = ItemTFMazeMap.STR_ID + "_" + itemstack.getMetadata();
-        TFMazeMapData mapdata = new TFMazeMapData(s);
-        worldIn.setData(s, mapdata);
-        mapdata.scale = 0;
+        ItemStack itemstack = ItemTFMazeMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte)0, true, false, playerIn.posY);
+        ItemStack itemstack1 = playerIn.getHeldItem(handIn);
+        itemstack1.shrink(1);
 
-        // TF - Center map exactly on player like in 1.7 and below, instead of snapping to grid
-        int step = 128 * (1 << mapdata.scale);
-        // need to fix center for feature offset
-        if (worldIn.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor(playerIn.posX) >> 4, MathHelper.floor(playerIn.posZ) >> 4, worldIn) == TFFeature.labyrinth) {
-            BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor(playerIn.posX) >> 4, MathHelper.floor(playerIn.posZ) >> 4, worldIn);
-            mapdata.xCenter = mc.getX();
-            mapdata.zCenter = mc.getZ();
-            mapdata.yCenter = MathHelper.floor(playerIn.posY);
-        } else {
-            mapdata.xCenter = (int)(Math.round(playerIn.posX / step) * step) + 10; // mazes are offset slightly
-            mapdata.zCenter = (int)(Math.round(playerIn.posZ / step) * step) + 10; // mazes are offset slightly
-            mapdata.yCenter = MathHelper.floor(playerIn.posY);
-        }
-
-        mapdata.dimension = worldIn.provider.getDimension();
-        mapdata.trackingPosition = true;
-        mapdata.markDirty();
-        --itemStackIn.stackSize;
-
-        // TF - achievements
-        if (itemstack.getItem() == TFItems.mazeMap) {
-            playerIn.addStat(TFAchievementPage.twilightMazeMap);
-        }
-
-        if (itemstack.getItem() == TFItems.oreMap) {
-            playerIn.addStat(TFAchievementPage.twilightOreMap);
-        }
-
-        if (itemStackIn.stackSize <= 0)
+        if (itemstack1.isEmpty())
         {
             return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
         }
@@ -79,7 +49,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCall
             }
 
             playerIn.addStat(StatList.getObjectUseStats(this));
-            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemstack1);
         }
     }
 }

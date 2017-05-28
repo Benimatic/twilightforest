@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFGenerator;
@@ -85,8 +86,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
 		
 
         this.src = new BlockPos(par1NBTTagCompound.getInteger("srcPosX"), par1NBTTagCompound.getInteger("srcPosY"), par1NBTTagCompound.getInteger("srcPosZ"));

@@ -85,7 +85,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 
         // From AIFly
         @Override
-        public boolean continueExecuting()
+        public boolean shouldContinueExecuting()
         {
             return false;
         }

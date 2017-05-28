@@ -19,7 +19,7 @@ public class EntityAITFHeavySpearAttack extends EntityAIBase {
 	}
 	
     @Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
     {
         return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
     }

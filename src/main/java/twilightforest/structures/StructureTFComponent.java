@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
@@ -22,6 +23,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 
 
@@ -73,7 +75,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
 
 	@Override
-    protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager)
     {
         this.spawnListIndex = par1NBTTagCompound.getInteger("si");
         this.deco = StructureTFDecorator.getDecoFor(par1NBTTagCompound.getString("deco"));
@@ -125,7 +127,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
     
     // [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-    protected TileEntityMobSpawner setSpawner(World world, int x, int y, int z, StructureBoundingBox sbb, String monsterID)
+    protected TileEntityMobSpawner setSpawner(World world, int x, int y, int z, StructureBoundingBox sbb, ResourceLocation monsterID)
     {
     	TileEntityMobSpawner tileEntitySpawner = null;
     	
@@ -139,14 +141,14 @@ public abstract class StructureTFComponent extends StructureComponent {
             tileEntitySpawner = (TileEntityMobSpawner)world.getTileEntity(pos);
             if(tileEntitySpawner != null)
             {
-            	tileEntitySpawner.getSpawnerBaseLogic().setEntityName(monsterID);
+            	tileEntitySpawner.getSpawnerBaseLogic().setEntityId(monsterID);
             }
         }
         
         return tileEntitySpawner;
     }
 
-    protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, int rotation, String monsterID, StructureBoundingBox sbb)
+    protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, int rotation, ResourceLocation monsterID, StructureBoundingBox sbb)
     {
         EnumFacing oldBase = fakeBaseMode(rotation);
         TileEntityMobSpawner ret = setSpawner(world, x, y, z, sbb, monsterID);
@@ -419,7 +421,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {
         EnumFacing oldBase = fakeBaseMode(rotation);
 	    final int minimumLightLevel = 15;
-	    func_189914_a(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
+	    generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
         setCoordBaseMode(oldBase);
     }
     
@@ -571,7 +573,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	protected int getSampledDirtLevel(World world, StructureBoundingBox sbb) {
 	    int dirtLevel = 256;
 
-        Vec3i center = sbb.getCenter();
+        Vec3i center = new BlockPos(sbb.minX + (sbb.maxX - sbb.minX + 1) / 2, sbb.minY + (sbb.maxY - sbb.minY + 1) / 2, sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2);;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
         for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)

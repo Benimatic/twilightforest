@@ -18,10 +18,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -78,7 +75,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
     }
 
     @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.REAPPEARING_INACTIVE.ordinal()));
         par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_INACTIVE.ordinal()));
@@ -91,7 +88,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
     }
     
     @Override
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, ItemStack stack, EnumFacing side, float par7, float par8, float par9)
+	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9)
     {
         TowerDeviceVariant variant = state.getValue(VARIANT);
 
@@ -178,7 +175,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
 				for (int dz = -2; dz <= 2; dz++)
 				{
 					IBlockState state = world.getBlockState(pos.add(dx, dy, dz));
-					if (state.getBlock() == TFBlocks.towerDevice 
+					if (state.getBlock() == TFBlocks.towerDevice
 							&& state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED)
 					{
 						locked = true;
@@ -216,7 +213,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
 		{
 			par1World.setBlockState(pos, state, 3);
 			par1World.markBlockRangeForRenderUpdate(pos, pos);
-			par1World.notifyNeighborsRespectDebug(pos, thereBlockID);
+			par1World.notifyNeighborsRespectDebug(pos, thereBlockID, false);
 		}
 	}
     
@@ -236,7 +233,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
     }
 
     @Override
-	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block myBlockID)
+	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block myBlockID, BlockPos fromPos)
     {
         TowerDeviceVariant variant = state.getValue(VARIANT);
 
@@ -305,7 +302,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
                     par1World.setBlockState(pos, TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REAPPEARING_INACTIVE));
             		par1World.scheduleUpdate(pos, TFBlocks.towerTranslucent, 80);
             	}
-                par1World.notifyNeighborsRespectDebug(pos, this);
+                par1World.notifyNeighborsRespectDebug(pos, this, false);
 				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
                 //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
                 

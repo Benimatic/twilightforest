@@ -59,7 +59,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
     }
 
     @Override
-	public boolean continueExecuting()
+	public boolean shouldContinueExecuting()
     {
     	EntityLivingBase attackTarget = this.entityObj.getAttackTarget();
         

@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -64,7 +65,7 @@ public class BlockTFMazestone extends Block implements ModelRegisterCallback {
 	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
 	{
 		// damage the player's pickaxe
-        if(stack != null && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick))
+        if(!stack.isEmpty() && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick))
         {
             stack.damageItem(16, entityplayer);
         }
@@ -73,7 +74,7 @@ public class BlockTFMazestone extends Block implements ModelRegisterCallback {
     }
     
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

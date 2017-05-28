@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -35,7 +36,7 @@ public class ItemTFTrophy extends ItemTF
 	}
 	
     @Override
-	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 	    for (BossVariant v : BossVariant.values()) {
 	        if (v.hasTrophy()) {
                 list.add(new ItemStack(item, 1, v.ordinal()));
@@ -50,7 +51,7 @@ public class ItemTFTrophy extends ItemTF
 
     // [VanillaCopy] ItemSkull, with own block and no player heads
 	@Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (facing == EnumFacing.DOWN)
         {
@@ -77,7 +78,9 @@ public class ItemTFTrophy extends ItemTF
                 pos = pos.offset(facing);
             }
 
-            if (playerIn.canPlayerEdit(pos, facing, stack) && TFBlocks.trophy.canPlaceBlockAt(worldIn, pos))
+            ItemStack itemstack = playerIn.getHeldItem(hand);
+
+            if (playerIn.canPlayerEdit(pos, facing, itemstack) && TFBlocks.trophy.canPlaceBlockAt(worldIn, pos))
             {
                 if (worldIn.isRemote)
                 {
@@ -99,12 +102,12 @@ public class ItemTFTrophy extends ItemTF
                     {
                         TileEntitySkull tileentityskull = (TileEntitySkull)tileentity;
 
-                        tileentityskull.setType(stack.getMetadata());
+                        tileentityskull.setType(itemstack.getMetadata());
 
                         tileentityskull.setSkullRotation(i);
                     }
 
-                    --stack.stackSize;
+                    itemstack.shrink(1);
                     return EnumActionResult.SUCCESS;
                 }
             }

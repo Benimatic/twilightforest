@@ -73,18 +73,18 @@ public class BlockTFCastleDoor extends Block
     }
     
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World par1World, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
 		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, par1World, pos);
 	}
 	
     @Override
-	public boolean isPassable(IBlockAccess par1IBlockAccess, BlockPos pos)
+	public boolean blocksMovement(IBlockAccess par1IBlockAccess, BlockPos pos)
     {
     	return !this.isVanished;
     }
 
     @Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!state.getValue(ACTIVE))
         {
@@ -121,7 +121,7 @@ public class BlockTFCastleDoor extends Block
 		{
 			par1World.setBlockState(pos, stateAt.withProperty(ACTIVE, active), 3);
 			par1World.markBlockRangeForRenderUpdate(pos, pos);
-			par1World.notifyNeighborsRespectDebug(pos, stateAt.getBlock());
+			par1World.notifyNeighborsRespectDebug(pos, stateAt.getBlock(), false);
 		}
 	}
 

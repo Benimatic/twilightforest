@@ -31,12 +31,12 @@ public class ItemTFTripleBow extends ItemTFBowBase {
             ItemStack itemstack = this.findAmmo(entityplayer);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer)entityLiving, i, itemstack != null || flag);
+            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer)entityLiving, i, !itemstack.isEmpty() || flag);
             if (i < 0) return;
 
-            if (itemstack != null || flag)
+            if (!itemstack.isEmpty() || flag)
             {
-                if (itemstack == null)
+                if (itemstack.isEmpty())
                 {
                     itemstack = new ItemStack(Items.ARROW);
                 }
@@ -111,9 +111,9 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 
                     if (!flag1)
                     {
-                        --itemstack.stackSize;
+                        itemstack.shrink(1);
 
-                        if (itemstack.stackSize == 0)
+                        if (itemstack.isEmpty())
                         {
                             entityplayer.inventory.deleteStack(itemstack);
                         }

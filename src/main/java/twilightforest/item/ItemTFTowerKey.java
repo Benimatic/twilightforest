@@ -15,7 +15,7 @@ import twilightforest.block.enums.TowerDeviceVariant;
 public class ItemTFTowerKey extends ItemTF 
 {
 	@Override
-	public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz)
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz)
 	{
 		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock() == TFBlocks.towerDevice && state.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED)
@@ -23,7 +23,7 @@ public class ItemTFTowerKey extends ItemTF
 			if (!world.isRemote)
 			{
 				BlockTFTowerDevice.unlockBlock(world, pos);
-				--itemStack.stackSize;
+				player.getHeldItem(hand).shrink(1);
 			}
 
 			return EnumActionResult.SUCCESS;
