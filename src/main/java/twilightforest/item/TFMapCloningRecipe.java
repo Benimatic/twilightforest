@@ -3,131 +3,110 @@ package twilightforest.item;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.crafting.RecipesMapCloning;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
-public class TFMapCloningRecipe implements IRecipe
+public class TFMapCloningRecipe extends RecipesMapCloning
 {
-	public Item fullMapID;
-	public Item blankMapID;
+	private final Item fullMapID;
+	private final Item blankMapID;
 	
 	public TFMapCloningRecipe(Item magicMap, Item emptyMagicMap)
 	{
 		this.fullMapID = magicMap;
 		this.blankMapID = emptyMagicMap;
 	}
-	
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
+
+	// [VanillaCopy] super with own items
     @Override
-	public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
+    public boolean matches(InventoryCrafting inv, World worldIn)
     {
-        int var3 = 0;
-        ItemStack var4 = null;
+        int i = 0;
+        ItemStack itemstack = ItemStack.EMPTY;
 
-        for (int var5 = 0; var5 < par1InventoryCrafting.getSizeInventory(); ++var5)
+        for (int j = 0; j < inv.getSizeInventory(); ++j)
         {
-            ItemStack var6 = par1InventoryCrafting.getStackInSlot(var5);
+            ItemStack itemstack1 = inv.getStackInSlot(j);
 
-            if (var6 != null)
+            if (!itemstack1.isEmpty())
             {
-                if (var6.getItem() == this.fullMapID)
+                if (itemstack1.getItem() == fullMapID)
                 {
-                    if (var4 != null)
+                    if (!itemstack.isEmpty())
                     {
                         return false;
                     }
 
-                    var4 = var6;
+                    itemstack = itemstack1;
                 }
                 else
                 {
-                    if (var6.getItem() != this.blankMapID)
+                    if (itemstack1.getItem() != blankMapID)
                     {
                         return false;
                     }
 
-                    ++var3;
+                    ++i;
                 }
             }
         }
 
-        return var4 != null && var3 > 0;
+        return !itemstack.isEmpty() && i > 0;
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
+    // [VanillaCopy] super with own items
     @Override
-	public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
+    public ItemStack getCraftingResult(InventoryCrafting inv)
     {
-        int var2 = 0;
-        ItemStack var3 = null;
+        int i = 0;
+        ItemStack itemstack = ItemStack.EMPTY;
 
-        for (int var4 = 0; var4 < par1InventoryCrafting.getSizeInventory(); ++var4)
+        for (int j = 0; j < inv.getSizeInventory(); ++j)
         {
-            ItemStack var5 = par1InventoryCrafting.getStackInSlot(var4);
+            ItemStack itemstack1 = inv.getStackInSlot(j);
 
-            if (var5 != null)
+            if (!itemstack1.isEmpty())
             {
-                if (var5.getItem() == this.fullMapID)
+                if (itemstack1.getItem() == fullMapID)
                 {
-                    if (var3 != null)
+                    if (!itemstack.isEmpty())
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
 
-                    var3 = var5;
+                    itemstack = itemstack1;
                 }
                 else
                 {
-                    if (var5.getItem() != this.blankMapID)
+                    if (itemstack1.getItem() != blankMapID)
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
 
-                    ++var2;
+                    ++i;
                 }
             }
         }
 
-        if (var3 != null && var2 >= 1)
+        if (!itemstack.isEmpty() && i >= 1)
         {
-            ItemStack var6 = new ItemStack(this.fullMapID, var2 + 1, var3.getItemDamage());
+            ItemStack itemstack2 = new ItemStack(fullMapID, i + 1, itemstack.getMetadata());
 
-            if (var3.hasDisplayName())
+            if (itemstack.hasDisplayName())
             {
-                var6.setStackDisplayName(var3.getDisplayName());
+                itemstack2.setStackDisplayName(itemstack.getDisplayName());
             }
 
-            return var6;
+            if (itemstack.hasTagCompound())
+            {
+                itemstack2.setTagCompound(itemstack.getTagCompound());
+            }
+
+            return itemstack2;
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
-    }
-
-    /**
-     * Returns the size of the recipe area
-     */
-    @Override
-	public int getRecipeSize()
-    {
-        return 9;
-    }
-
-    @Override
-	public ItemStack getRecipeOutput()
-    {
-        return null;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }
 }
