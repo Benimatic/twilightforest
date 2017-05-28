@@ -260,6 +260,7 @@ public class TwilightForestMod {
 		EntityRegistry.registerModEntity(twilightforest.entity.boss.EntityTFFallingIce.class, "tffallingice", id++, this, 80, 3, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.boss.EntityTFIceBomb.class, "tfthrownice", id++, this, 80, 2, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntitySeekerArrow.class, "tfSeekerArrow", id++, this, 150, 1, true);
+		EntityRegistry.registerModEntity(twilightforest.entity.EntityIceArrow.class, "tfIceArrow", id++, this, 150, 1, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntityTFIceSnowball.class, "tficesnowball", id++, this, 150, 3, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntityTFChainBlock.class, "tfchainBlock", id++, this, 80, 1, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntityTFCubeOfAnnihilation.class, "tfcubeannihilation", id++, this, 80, 1, true);

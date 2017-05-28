@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -40,6 +41,13 @@ public class EntitySeekerArrow extends EntityArrow {
     			updateTarget();
 			}
 
+			if (world.isRemote && !inGround) {
+				for (int k = 0; k < 4; ++k) {
+					this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double)k / 4.0D, this.posY + this.motionY * (double)k / 4.0D, this.posZ + this.motionZ * (double)k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+				}
+			}
+
+			// TODO this is a bit wonky
 			if (getTarget() != null) {
 				Entity target = getTarget();
 				Vec3d targetVec = new Vec3d(this.posX - target.posX, this.posY - (target.posY + target.getEyeHeight()), this.posZ - target.posZ);
@@ -88,20 +96,17 @@ public class EntitySeekerArrow extends EntityArrow {
 			AxisAlignedBB targetBB = new AxisAlignedBB(lastTickPosX, lastTickPosY, lastTickPosZ, lastTickPosX, lastTickPosY, lastTickPosZ);
 
 			// add two possible courses to our selection box
-			Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
-			courseVec.rotateYaw((float) (Math.PI / 6F));
+			Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance).rotateYaw((float) (Math.PI / 6F));
 			targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
 
-			courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
-			courseVec.rotateYaw(-(float) (Math.PI / 6F));
+			courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance).rotateYaw(-(float) (Math.PI / 6F));
 			targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord).expand(0, 3, 0);
 
 			double closestDot = 1;
 
 			for (EntityLivingBase living : this.world.getEntitiesWithinAABB(EntityLivingBase.class, targetBB)) {
 				if (!(living instanceof EntityPlayer)) {
-					courseVec = new Vec3d(this.motionX, this.motionY, this.motionZ);
-					courseVec = courseVec.normalize();
+					courseVec = new Vec3d(this.motionX, this.motionY, this.motionZ).normalize();
 					Vec3d targetVec = new Vec3d(this.posX - living.posX, this.posY - (living.posY + (double)living.getEyeHeight()), this.posZ - living.posZ);
 
 					//double d0 = targetVec.lengthVector(); // do we need this?

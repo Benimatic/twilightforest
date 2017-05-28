@@ -377,18 +377,6 @@ public class TFEventListener {
 			}
 		}
 		
-		// ice bow freezes
-		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
-
-			if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == TFItems.iceBow
-					|| player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.iceBow) {
-
-				int chillLevel = 2;
-				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 10, chillLevel, true, true));
-			}
-		}
-		
 		// enderbow teleports
 		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
@@ -469,10 +457,8 @@ public class TFEventListener {
 		}
 	}
 
-	/**
-	 * Is this damage likely to kill the target?
-	 */
-	public boolean willEntityDie(LivingHurtEvent event) 
+	// todo modernize the calculations
+	private boolean willEntityDie(LivingHurtEvent event)
 	{
 		float amount = event.getAmount();
 		DamageSource source = event.getSource();
