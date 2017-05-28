@@ -37,7 +37,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage()) {
+		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage(player.getHeldItem(hand))) {
 			player.setActiveHand(hand);
 		}
 		else {
@@ -120,7 +120,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
 		World world = living.world;
 		
-		if (stack.getItemDamage() >= this.getMaxDamage()) {
+		if (stack.getItemDamage() >= this.getMaxDamage(stack)) {
 			// do not use
 			living.resetActiveHand();
 			return;

@@ -29,7 +29,7 @@ public class ItemTFZombieWand extends ItemTF {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage()) {
+		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage(player.getHeldItem(hand))) {
 			player.setActiveHand(hand);
 			
 			if (!world.isRemote) {

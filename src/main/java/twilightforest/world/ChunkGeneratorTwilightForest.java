@@ -915,7 +915,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	 * Twilight Forest varient! First check features, then only if we're not in
 	 * a feature, check the biome.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precicely in a feature?
