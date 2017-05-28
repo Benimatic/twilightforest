@@ -41,9 +41,6 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
 			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Most");
 			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Least");
-			if (holder instanceof EntityPlayer) {
-				((EntityPlayer) holder).inventoryContainer.detectAndSendChanges();
-			}
 		}
 	}
 	
@@ -56,7 +53,6 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(world, player);
 			world.spawnEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
-			player.inventoryContainer.detectAndSendChanges();
 		}
 
 		player.setActiveHand(hand);
