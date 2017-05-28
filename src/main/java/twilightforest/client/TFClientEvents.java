@@ -3,6 +3,7 @@ package twilightforest.client;
 import java.util.Random;
 import java.util.UUID;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -11,9 +12,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,8 +25,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFBowBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import twilightforest.world.WorldProviderTwilightForest;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class TFClientEvents {
@@ -111,6 +117,30 @@ public class TFClientEvents {
 		}
 
 		GlStateManager.disableBlend();
+	}
+
+	/**
+	 * On the tick, we kill the vignette
+	 */
+	@SubscribeEvent
+	public void clientTick(TickEvent.ClientTickEvent event) {
+		Minecraft mc = Minecraft.getMinecraft();
+		World world = mc.world;
+
+		((BlockLeaves) TFBlocks.leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+		((BlockLeaves) TFBlocks.leaves3).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+		((BlockLeaves) TFBlocks.magicLeaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+
+		// only fire if we're in the twilight forest
+		if (world != null && (world.provider instanceof WorldProviderTwilightForest))
+		{
+			// vignette
+			if (mc.ingameGUI != null)
+			{
+				mc.ingameGUI.prevVignetteBrightness = 0.0F;
+			}
+
+		}
 	}
 	
 }

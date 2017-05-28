@@ -43,7 +43,6 @@ public class TFBiomeBase extends Biome  {
 	protected WorldGenBirchTree birchGen;
     protected List<SpawnListEntry> undergroundMonsterList;
 
-	@SuppressWarnings("unchecked")
 	public TFBiomeBase(BiomeProperties props)
 	{
 		super(props);
