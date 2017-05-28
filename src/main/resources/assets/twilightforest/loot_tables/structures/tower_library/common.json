@@ -13,7 +13,7 @@
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",
-          "tag": "{Potion: \"minecraft:water\""
+          "tag": "{Potion: \"minecraft:water\"}"
         }]
       },
       {
