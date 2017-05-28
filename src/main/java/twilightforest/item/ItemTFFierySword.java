@@ -26,13 +26,6 @@ public class ItemTFFierySword extends ItemSword {
     	return EnumRarity.RARE;
 	}
 
-    
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-        return par2ItemStack.getItem() == TFItems.fieryIngot || super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
     @Override
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);

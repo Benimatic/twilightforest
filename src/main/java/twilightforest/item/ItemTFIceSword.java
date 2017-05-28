@@ -22,12 +22,6 @@ public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
 	}
 
     @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-        return par2ItemStack.getItem() == Item.getItemFromBlock(Blocks.PACKED_ICE) || super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-
-    @Override
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
 		

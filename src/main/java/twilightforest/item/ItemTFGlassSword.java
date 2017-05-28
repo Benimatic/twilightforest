@@ -21,11 +21,6 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 	}
 
     @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return false;
-    }
-    
-    @Override
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
 		if (result) {

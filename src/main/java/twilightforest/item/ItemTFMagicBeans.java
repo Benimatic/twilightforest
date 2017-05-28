@@ -48,8 +48,8 @@ public class ItemTFMagicBeans extends ItemTF {
 			// WorldProviderTwilightForest has this method on both server and client
 			return world.provider.getCloudHeight();
 		} else {
-			// otherwise, world.provider.getCloudHeight() is client only. guess the actual height
-			return world.provider.getActualHeight();
+			// otherwise, world.provider.getCloudHeight() is client only. guess 128
+			return 128;
 		}
 	}
 

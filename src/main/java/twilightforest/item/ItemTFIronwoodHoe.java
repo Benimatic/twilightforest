@@ -11,11 +11,4 @@ public class ItemTFIronwoodHoe extends ItemHoe implements ModelRegisterCallback 
 		super(par2EnumToolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with ironwood ingots
-        return par2ItemStack.getItem() == TFItems.ironwoodIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
 }
