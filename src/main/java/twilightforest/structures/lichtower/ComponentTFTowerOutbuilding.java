@@ -3,6 +3,7 @@ package twilightforest.structures.lichtower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -45,11 +46,12 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+		final IBlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
 		for (int x = 0; x < this.size; x++)
 		{
 			for (int z = 0; z < this.size; z++)
 			{
-				this.func_151554_b(world, Blocks.COBBLESTONE, 0, x, -1, z, sbb);
+				this.replaceAirAndLiquidDownwards(world, cobblestone, x, -1, z, sbb);
 			}
 		}
 		return super.addComponentParts(world, rand, sbb);

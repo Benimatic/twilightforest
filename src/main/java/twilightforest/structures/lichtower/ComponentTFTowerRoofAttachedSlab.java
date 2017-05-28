@@ -2,6 +2,7 @@ package twilightforest.structures.lichtower;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -22,7 +23,6 @@ public class ComponentTFTowerRoofAttachedSlab extends ComponentTFTowerRoofSlab {
 	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		int slabMeta = 2;
-		return makeConnectedCap(world, slabMeta, sbb);
+		return makeConnectedCap(world, BlockPlanks.EnumType.BIRCH, sbb);
 	}
 }

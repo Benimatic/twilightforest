@@ -163,13 +163,13 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		
 		// clear inside
 		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
-		
+		final IBlockState defaultState = Blocks.COBBLESTONE.getDefaultState();
 		// stone to ground
 		for (int x = 0; x < this.size; x++)
 		{
 			for (int z = 0; z < this.size; z++)
 			{
-				this.func_151554_b(world, Blocks.COBBLESTONE, 0, x, -1, z, sbb);
+				this.replaceAirAndLiquidDownwards(world, defaultState, x, -1, z, sbb);
 			}
 
 		}
@@ -221,9 +221,9 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	}
 
 	protected void makeStairCrossing(World world, Random rand, int flight, StructureBoundingBox sbb) {
-		int temp = this.getCoordBaseMode();
+		EnumFacing temp = this.getCoordBaseMode();
 		if (flight % 2 == 0) {
-			this.setCoordBaseMode((getCoordBaseMode() + 1) % 4);
+			this.setCoordBaseMode(getStructureRelativeRotation(1));
 		}
 		
 		BlockPlanks.EnumType floorVariant = rand.nextInt(2) == 0 ? BlockPlanks.EnumType.OAK : BlockPlanks.EnumType.BIRCH;
@@ -313,30 +313,30 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		int howMany = 10;
 
 		// do wall 0.
-		generatePaintingsOnWall(world, rand, howMany, 0, 0, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 0, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 0, 0, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.WEST, 48, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.WEST, 32, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.WEST, 0, sbb);
 	
 		// do wall 1.
-		generatePaintingsOnWall(world, rand, howMany, 0, 1, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 1, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 1, 0, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.EAST, 48, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.EAST, 32, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.EAST, 0, sbb);
 		// do wall 2.
-		generatePaintingsOnWall(world, rand, howMany, 0, 2, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 2, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 2, 0, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.NORTH, 48, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.NORTH, 32, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.NORTH, 0, sbb);
 		// do wall 3.
-		generatePaintingsOnWall(world, rand, howMany, 0, 3, 48, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 3, 32, sbb);
-		generatePaintingsOnWall(world, rand, howMany, 0, 3, 0, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.SOUTH, 48, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.SOUTH, 32, sbb);
+		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.SOUTH, 0, sbb);
 	}
 
 	/**
 	 * Make the floor for the liches room
 	 */
 	protected void makeLichFloor(World world, int floorLevel, int rotation, StructureBoundingBox sbb) {
-		int temp = this.getCoordBaseMode();
-		this.setCoordBaseMode((this.getCoordBaseMode() + rotation) % 4);
+		EnumFacing temp = this.getCoordBaseMode();
+		this.setCoordBaseMode(getStructureRelativeRotation(rotation));
 
 		BlockPlanks.EnumType birch = BlockPlanks.EnumType.BIRCH;
 		IBlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState()
@@ -462,10 +462,10 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	 * Put torches on each wall
 	 */
 	protected void decorateTorches(World world, Random rand, int floorLevel, StructureBoundingBox sbb) {
-		generateTorchesOnWall(world, rand, floorLevel, 0, sbb);
-		generateTorchesOnWall(world, rand, floorLevel, 1, sbb);
-		generateTorchesOnWall(world, rand, floorLevel, 2, sbb);
-		generateTorchesOnWall(world, rand, floorLevel, 3, sbb);
+		generateTorchesOnWall(world, rand, floorLevel, EnumFacing.SOUTH, sbb);
+		generateTorchesOnWall(world, rand, floorLevel, EnumFacing.EAST, sbb);
+		generateTorchesOnWall(world, rand, floorLevel, EnumFacing.NORTH, sbb);
+		generateTorchesOnWall(world, rand, floorLevel, EnumFacing.WEST, sbb);
 	}
 
 	/**
