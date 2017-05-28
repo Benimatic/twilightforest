@@ -949,7 +949,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	@Nullable
 	@Override
-	public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
+	public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
 		// todo 1.10
 		return null;
 	}

@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -22,24 +23,17 @@ public class ItemTFEmptyMagicMap extends ItemMapBase implements ModelRegisterCal
 
     // [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        // TF - own string id
-        ItemStack itemstack = new ItemStack(Items.FILLED_MAP, 1, worldIn.getUniqueDataId(ItemTFMagicMap.STR_ID));
-        String s = ItemTFMagicMap.STR_ID + "_" + itemstack.getMetadata();
-        MapData mapdata = new MapData(s);
-        worldIn.setData(s, mapdata);
-        mapdata.scale = 4; // TF - hardcode scale
-        mapdata.calculateMapCenter(playerIn.posX, playerIn.posZ, mapdata.scale);
-        mapdata.dimension = worldIn.provider.getDimension();
-        mapdata.trackingPosition = true;
-        mapdata.markDirty();
-        --itemStackIn.stackSize;
+        // TF - scale at 4
+        ItemStack itemstack = ItemTFMagicMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte) 4, true, false);
+        ItemStack itemstack1 = playerIn.getHeldItem(handIn);
+        itemstack1.shrink(1);
 
         // TF - achievement
         playerIn.addStat(TFAchievementPage.twilightMagicMap);
 
-        if (itemStackIn.stackSize <= 0)
+        if (itemstack1.isEmpty())
         {
             return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
         }
@@ -51,7 +45,7 @@ public class ItemTFEmptyMagicMap extends ItemMapBase implements ModelRegisterCal
             }
 
             playerIn.addStat(StatList.getObjectUseStats(this));
-            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemstack1);
         }
     }
 }

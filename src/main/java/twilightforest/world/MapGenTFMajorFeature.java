@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureData;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -13,6 +14,8 @@ import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.StructureTFMajorFeatureStart;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
+import javax.annotation.Nullable;
 
 
 public class MapGenTFMajorFeature extends MapGenStructure {
@@ -43,8 +46,15 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     {
         return "TFFeature";
     }
-	
-    /**
+
+	@Nullable
+	@Override
+	public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean findUnexplored) {
+    	// todo 1.11
+		return null;
+	}
+
+	/**
      * Returns true if the structure generator has generated a structure located at the given position tuple.
      */
 	public int getSpawnListIndexAt(BlockPos pos)

@@ -25,7 +25,6 @@ public class EntityTFMazeSlime extends EntitySlime
 
 	public EntityTFMazeSlime(World par1World) {
 		super(par1World);
-        this.setSlimeSize(1 << (1 + this.rand.nextInt(2)));
 	}
 
     @Override
@@ -35,10 +34,10 @@ public class EntityTFMazeSlime extends EntitySlime
     }
     
     @Override
-	public void setSlimeSize(int par1)
+	public void setSlimeSize(int size, boolean resetHealth)
     {
-        super.setSlimeSize(par1);
-        this.experienceValue = par1 + 3;
+        super.setSlimeSize(size, resetHealth);
+        this.experienceValue += 3;
     }
 
     @Override

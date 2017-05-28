@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
@@ -27,18 +28,49 @@ import twilightforest.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.network.PacketMapRewrap;
+import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nullable;
 
 public class ItemTFMazeMap extends ItemMap
 {
-    public static final String STR_ID = "mazemap";
+    private static final String STR_ID = "mazemap";
 	private static final int YSEARCH = 3;
     protected boolean mapOres;
 
 	protected ItemTFMazeMap(boolean par2MapOres)
     {
         this.mapOres = par2MapOres;
+    }
+
+    // [VanillaCopy] super with own item and id, and y parameter
+    public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, double worldY)
+    {
+        ItemStack itemstack = new ItemStack(TFItems.mazeMap, 1, world.getUniqueDataId(STR_ID));
+        String s = STR_ID + "_" + itemstack.getMetadata();
+        TFMazeMapData mapdata = new TFMazeMapData(s);
+        world.setData(s, mapdata);
+        mapdata.scale = scale;
+
+        // TF - Center map exactly on player like in 1.7 and below, instead of snapping to grid
+        int step = 128 * (1 << mapdata.scale);
+        // need to fix center for feature offset
+        if (world.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor(worldX) >> 4, MathHelper.floor(worldZ) >> 4, world) == TFFeature.labyrinth) {
+            BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor(worldX) >> 4, MathHelper.floor(worldZ) >> 4, world);
+            mapdata.xCenter = mc.getX();
+            mapdata.zCenter = mc.getZ();
+            mapdata.yCenter = MathHelper.floor(worldY);
+        } else {
+            mapdata.xCenter = (int)(Math.round(worldX / step) * step) + 10; // mazes are offset slightly
+            mapdata.zCenter = (int)(Math.round(worldZ / step) * step) + 10; // mazes are offset slightly
+            mapdata.yCenter = MathHelper.floor(worldY);
+        }
+
+        mapdata.dimension = world.provider.getDimension();
+        mapdata.trackingPosition = trackingPosition;
+        mapdata.unlimitedTracking = unlimitedTracking;
+        mapdata.markDirty();
+        return itemstack;
     }
 
     // [VanillaCopy] super, with own string ID and class, narrowed types

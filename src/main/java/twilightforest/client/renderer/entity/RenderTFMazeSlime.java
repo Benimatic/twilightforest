@@ -11,8 +11,9 @@ import twilightforest.TwilightForestMod;
 public class RenderTFMazeSlime extends RenderSlime {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "mazeslime.png");
 
-	public RenderTFMazeSlime(RenderManager manager, ModelBase model, float shadowSize) {
-		super(manager, model, shadowSize);
+	public RenderTFMazeSlime(RenderManager manager, float shadowSize) {
+		super(manager);
+		this.shadowSize = shadowSize;
 	}
 
 	@Override
