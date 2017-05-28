@@ -21,6 +21,9 @@ import twilightforest.block.enums.TowerDeviceVariant;
 import twilightforest.enchantment.TFEnchantment;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 
 public class TFRecipes {
 
@@ -93,7 +96,7 @@ public class TFRecipes {
 		addEnchantedRecipe(TFItems.ironwoodShovel, Enchantments.UNBREAKING, 1, "#", "X", "X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.ironwoodPick, Enchantments.EFFICIENCY, 1, "###", " X ", " X ", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.ironwoodAxe, Enchantments.FORTUNE, 1, "##", "#X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
-		addEnchantedRecipe(TFItems.ironwoodHoe, null, 0, "##", " X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
+		GameRegistry.addRecipe(new ItemStack(TFItems.ironwoodHoe), "##", " X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.uncraftingTable), "###", "#X#", "###", '#', Blocks.CRAFTING_TABLE, 'X', TFItems.mazeMapFocus);
 
@@ -116,7 +119,7 @@ public class TFRecipes {
 		addEnchantedRecipe(TFItems.steeleafShovel, Enchantments.EFFICIENCY, 2, "#", "X", "X", '#', TFItems.steeleafIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.steeleafPick, Enchantments.FORTUNE, 2, "###", " X ", " X ", '#', TFItems.steeleafIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.steeleafAxe, Enchantments.EFFICIENCY, 2, "##", "#X", " X", '#', TFItems.steeleafIngot, 'X', Items.STICK);
-		addEnchantedRecipe(TFItems.steeleafHoe, null, 0, "##", " X", " X", '#', TFItems.steeleafIngot, 'X', Items.STICK);
+		GameRegistry.addRecipe(new ItemStack(TFItems.steeleafHoe), "##", " X", " X", '#', TFItems.steeleafIngot, 'X', Items.STICK);
 
 		GameRegistry.addSmelting(TFItems.meefRaw, new ItemStack(TFItems.meefSteak), 0.3F);
 
@@ -163,7 +166,7 @@ public class TFRecipes {
 		addEnchantedRecipe(TFItems.yetiHelm, Enchantments.PROTECTION, 2, "###", "# #", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiPlate, Enchantments.PROTECTION, 2, "# #", "###", "###", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiLegs, Enchantments.PROTECTION, 2, "###", "# #", "# #", '#', TFItems.alphaFur);
-		addEnchantedRecipe(TFItems.yetiBoots, Enchantments.PROTECTION, 2, Enchantments.FEATHER_FALLING, 4, new Object[] {"# #", "# #", '#', TFItems.alphaFur});
+		addEnchantedRecipe(TFItems.yetiBoots, Enchantments.PROTECTION, 2, Enchantments.FEATHER_FALLING, 4, "# #", "# #", '#', TFItems.alphaFur);
 
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticHelm), "###", "# #", '#', TFItems.arcticFur);
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticPlate), "# #", "###", "###", '#', TFItems.arcticFur);
@@ -188,13 +191,15 @@ public class TFRecipes {
 
 	}
 
-	public static void addEnchantedRecipe(Item item, Object... inputs) {
+	@ParametersAreNonnullByDefault
+	private static void addEnchantedRecipe(Item item, Object... inputs) {
 		ItemStack result = new ItemStack(item);
 		int i = 0;
 		while (i < inputs.length && inputs[i] instanceof Enchantment) {
 			result.addEnchantment((Enchantment)inputs[i], (Integer)inputs[i + 1]);
 			i += 2;
 		}
+
 		Object[] ingredients = new Object[inputs.length - i];
 		System.arraycopy(inputs, i, ingredients, 0, ingredients.length);
 		GameRegistry.addRecipe(result, ingredients);
