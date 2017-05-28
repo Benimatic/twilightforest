@@ -151,7 +151,7 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 				}
 			}
 
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
