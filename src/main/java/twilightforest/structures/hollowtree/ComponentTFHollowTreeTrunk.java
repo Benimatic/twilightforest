@@ -34,8 +34,6 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
 		super(index);
 
-		TwilightForestMod.LOGGER.info("Hollow Tree @ {},{},{}", x, y, z);
-
 		height = rand.nextInt(64) + 32;
 		radius =  rand.nextInt(4) + 1;
 

@@ -1513,48 +1513,49 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		// place a cute planted thing
 		setBlockState(world, Blocks.GRASS.getDefaultState(), cx + 0, 1, cz + 0, sbb);
 
-		IBlockState planterBlock;
+		IBlockState planterBlockState;
 		switch (rand.nextInt(6)) {
 		case 0:
-			planterBlock = Blocks.SAPLING.getDefaultState()
+			planterBlockState = Blocks.SAPLING.getDefaultState()
 							.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.OAK);
 			break;
 		case 1:
-			planterBlock = Blocks.SAPLING.getDefaultState()
+			planterBlockState = Blocks.SAPLING.getDefaultState()
 					.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.SPRUCE);
 			break;
 		case 2:
-			planterBlock = Blocks.SAPLING.getDefaultState()
+			planterBlockState = Blocks.SAPLING.getDefaultState()
 					.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.BIRCH);
 			break;
 		case 3:
-			planterBlock = Blocks.SAPLING.getDefaultState()
+			planterBlockState = Blocks.SAPLING.getDefaultState()
 					.withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.JUNGLE);
 			break;
 		case 4:
-			planterBlock = Blocks.BROWN_MUSHROOM.getDefaultState();
+			planterBlockState = Blocks.BROWN_MUSHROOM.getDefaultState();
 			break;
 		case 5:
 		default:
-			planterBlock = Blocks.RED_MUSHROOM.getDefaultState();
+			planterBlockState = Blocks.RED_MUSHROOM.getDefaultState();
 			break;
 		}
-		setBlockState(world, planterBlock, cx + 0, 2, cz + 0, sbb);
+		setBlockState(world, planterBlockState, cx + 0, 2, cz + 0, sbb);
 		
 		// try to grow a tree
-		if (planterBlock.getBlock() == Blocks.SAPLING) {
+		final Block planterBlock = planterBlockState.getBlock();
+		if (planterBlock == Blocks.SAPLING) {
 			final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
-	        ((BlockSapling)Blocks.SAPLING).grow(world, pos, planterBlock, world.rand);
+	        ((BlockSapling)Blocks.SAPLING).grow(world, pos, planterBlockState, world.rand);
 		}
 		// or a mushroom
-		if (planterBlock.getBlock() == Blocks.BROWN_MUSHROOM || planterBlock.getBlock() == Blocks.RED_MUSHROOM) {
+		if (planterBlock == Blocks.BROWN_MUSHROOM || planterBlock == Blocks.RED_MUSHROOM) {
 			final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
-			((BlockMushroom)planterBlock).updateTick(world, pos, planterBlock, world.rand);
+			planterBlock.updateTick(world, pos, planterBlockState, world.rand);
 		}
 		
 		// otherwise, place the block into a flowerpot
 		IBlockState whatHappened = this.getBlockStateFromPos(world, cx + 0, 2, cz + 0, sbb);
-		if (whatHappened.getBlock() == planterBlock.getBlock() || whatHappened.getBlock() == Blocks.AIR)
+		if (whatHappened.getBlock() == planterBlock || whatHappened.getBlock() == Blocks.AIR)
 		{
 			setBlockState(world, Blocks.FLOWER_POT.getDefaultState(), cx + 0, 2, cz + 0, sbb);
 		}
@@ -2263,7 +2264,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
             return false;
         }*/
 
-		largerBox = painting.getCollisionBoundingBox();
+		largerBox = painting.getEntityBoundingBox();
         
         List<Entity> collidingEntities = world.getEntitiesWithinAABBExcludingEntity(painting, largerBox);
 

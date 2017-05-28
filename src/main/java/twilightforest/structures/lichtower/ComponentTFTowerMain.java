@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -144,7 +145,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		ComponentTFTowerOutbuilding outbuilding = new ComponentTFTowerOutbuilding(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, outbuilding.getBoundingBox());
-		if (intersect == null || intersect == this) {
+		if (intersect == null) {
 			list.add(outbuilding);
 			outbuilding.buildComponent(this, list, rand);
 			addOpening(x, y, z, rotation);
@@ -187,7 +188,8 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		makeStairs(world, rand, sbb);
 
 		// throw a bunch of opening markers in there
-//      makeOpeningMarkers(world, rand, 100, sbb);
+
+		makeOpeningMarkers(world, rand, 100, sbb);
 
 		// openings
 		makeOpenings(world, sbb);
@@ -225,12 +227,12 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		if (flight % 2 == 0) {
 			this.setCoordBaseMode(getStructureRelativeRotation(1));
 		}
-		
-		BlockPlanks.EnumType floorVariant = rand.nextInt(2) == 0 ? BlockPlanks.EnumType.OAK : BlockPlanks.EnumType.BIRCH;
+
+		BlockStoneSlab.EnumType floorVariant = rand.nextInt(2) == 0 ? BlockStoneSlab.EnumType.STONE : BlockStoneSlab.EnumType.WOOD;
 		int floorLevel = 0 + flight * 5;
 		
 		// place platform
-		IBlockState doubleStoneSlab = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, floorVariant);
+		IBlockState doubleStoneSlab = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, floorVariant);
 		for (int dx = 6; dx <= 8; dx++) {
 			for (int dz = 4; dz <= 10; dz++) {
 				setBlockState(world, doubleStoneSlab, dx, floorLevel, dz, sbb);

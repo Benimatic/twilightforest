@@ -17,10 +17,14 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
+import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
+import twilightforest.structures.lichtower.ComponentTFTowerMain;
+import twilightforest.structures.lichtower.TFLichTowerPieces;
 import twilightforest.world.TFWorld;
 import twilightforest.world.TFBiomeProvider;
 
@@ -36,13 +40,12 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     static
     {
     	MapGenStructureIO.registerStructure(StructureTFMajorFeatureStart.class, "TFFeature");
-//FIXME: Disabled Structure
-//    	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
+    	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
 //FIXME: Disabled Structure
 //    	TFStrongholdPieces.registerPieces();
 //    	TFMinotaurMazePieces.registerPieces();
 //    	TFDarkTowerPieces.registerPieces();
-//    	TFLichTowerPieces.registerPieces();
+    	TFLichTowerPieces.registerPieces();
 //    	TFIceTowerPieces.registerPieces();
 //    	TFMushroomTowerPieces.registerPieces();
     	TFHollowTreePieces.registerPieces();
@@ -109,11 +112,13 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 		}
 
-//FIXME: Disabled Structure
-//        if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain)
-//        {
-//        	moveToAvgGroundLevel(world, x, z);
-//        }
+
+        if (firstComponent instanceof ComponentTFTowerMain)
+        //FIXME: Disabled Structure
+        //|| firstComponent instanceof ComponentTFDarkTowerMain
+        {
+        	moveToAvgGroundLevel(world, x, z);
+        }
 	}
 	
 	/**
@@ -122,33 +127,43 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	 */
 	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
 		if (feature == TFFeature.nagaCourtyard) {
+			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
 			return new ComponentTFNagaCourtyard(world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.hedgeMaze) {
+			TwilightForestMod.LOGGER.info("Hedge Maze @ {} {} {}", x, y, z);
 			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.hill1) {
+			TwilightForestMod.LOGGER.info("Hill 1 @ {} {} {}", x, y, z);
 			return new ComponentTFHollowHill(world, rand, 0, 1, x, y, z);
 		}
 		if (feature == TFFeature.hill2) {
+			TwilightForestMod.LOGGER.info("Hill 2 @ {} {} {}", x, y, z);
 			return new ComponentTFHollowHill(world, rand, 0, 2, x, y, z);
 		}
 		if (feature == TFFeature.hill3) {
+			TwilightForestMod.LOGGER.info("Hill 3 @ {} {} {}", x, y, z);
 			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
 		}
 		if (feature == TFFeature.questGrove) {
+			TwilightForestMod.LOGGER.info("Quest Grove @ {} {} {}", x, y, z);
 			return new ComponentTFQuestGrove(world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.hydraLair) {
+			TwilightForestMod.LOGGER.info("Hydra Lair @ {} {} {}", x, y, z);
 			return new ComponentTFHydraLair(world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.yetiCave) {
+			TwilightForestMod.LOGGER.info("Yeti Cave @ {} {} {}", x, y, z);
 			return new ComponentTFYetiCave(world, rand, 0, x, y, z);
 		}
+
+		if (feature == TFFeature.lichTower) {
+			TwilightForestMod.LOGGER.info("Lich Tower @ {} {} {}", x, y, z);
+			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
+		}
 //FIXME: Disabled Structure
-//		if (feature == TFFeature.lichTower) {
-//			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
-//		}
 //		if (feature == TFFeature.labyrinth) {
 //			return new ComponentTFMazeRuins(world, rand, 0, x, y, z);
 //		}
