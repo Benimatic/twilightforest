@@ -64,7 +64,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 		}
 		else
 		{
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 	}
@@ -142,7 +142,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public void clear() {
-		Arrays.fill(contents, null);
+		Arrays.fill(contents, ItemStack.EMPTY);
 	}
 
 	@Override

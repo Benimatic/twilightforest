@@ -67,7 +67,7 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	{
 		// damage the player's pickaxe
     	ItemStack cei = entityplayer.getHeldItemMainhand();
-        if(cei != null && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) 
+        if(!cei.isEmpty() && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick))
         {
             cei.damageItem(16, entityplayer);
         }

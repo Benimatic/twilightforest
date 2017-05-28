@@ -63,7 +63,7 @@ public class InventoryTFGoblinInput implements IInventory {
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -78,7 +78,7 @@ public class InventoryTFGoblinInput implements IInventory {
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 

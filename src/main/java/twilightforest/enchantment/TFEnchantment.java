@@ -27,7 +27,7 @@ public class TFEnchantment extends Enchantment
 		int modifier = 0;
 
 		for (ItemStack armor : par0InventoryPlayer.armorInventory) {
-			if (armor != null && armor.getItem() instanceof ItemTFFieryArmor) {
+			if (!armor.isEmpty() && armor.getItem() instanceof ItemTFFieryArmor) {
 				modifier += 5;
 			}
 		}
@@ -43,7 +43,7 @@ public class TFEnchantment extends Enchantment
 		int modifier = 0;
 
 		for (ItemStack armor : par0InventoryPlayer.armorInventory) {
-			if (armor != null && armor.getItem() instanceof ItemTFYetiArmor) {
+			if (!armor.isEmpty() && armor.getItem() instanceof ItemTFYetiArmor) {
 				modifier++;
 			}
 		}

@@ -65,7 +65,7 @@ public class BlockTFMazestone extends Block implements ModelRegisterCallback {
 	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
 	{
 		// damage the player's pickaxe
-        if(stack != null && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick))
+        if(!stack.isEmpty() && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick))
         {
             stack.damageItem(16, entityplayer);
         }

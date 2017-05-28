@@ -80,7 +80,7 @@ public class SlotTFGoblinUncrafting extends Slot {
         // the assembly grid should be empty for this to even happen, so just plop the items right in
         for (int i = 0; i < 9; i++) {
         	ItemStack transferStack =  this.uncraftingMatrix.getStackInSlot(i);
-        	if (transferStack != null && transferStack.getCount() > 0) {
+        	if (!transferStack.isEmpty() && transferStack.getCount() > 0) {
 	        	this.assemblyMatrix.setInventorySlotContents(i, transferStack.copy());
         	}
         }

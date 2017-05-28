@@ -157,15 +157,15 @@ public class TFEventListener {
 		{
 			ItemStack stack = inv.getStackInSlot(i);
 			
-			if (stack != null && stack.getItem() == TFItems.scepterTwilight)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterTwilight)
 			{
 				scepterTwilight = true;
 			}
-			if (stack != null && stack.getItem() == TFItems.scepterLifeDrain)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterLifeDrain)
 			{
 				scepterLifeDrain = true;
 			}
-			if (stack != null && stack.getItem() == TFItems.scepterZombie)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterZombie)
 			{
 				scepterZombie = true;
 			}
@@ -221,7 +221,7 @@ public class TFEventListener {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			
-			if (stack != null && stack.getItem() == Item.getItemFromBlock(TFBlocks.giantLog)) {
+			if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(TFBlocks.giantLog)) {
 				return true;
 			}
 		}
@@ -243,11 +243,11 @@ public class TFEventListener {
 		{
 			ItemStack stack = inv.getStackInSlot(i);
 			
-			if (stack != null && stack.getItem() == TFItems.nagaScale)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.nagaScale)
 			{
 				nagaScale = true;
 			}
-			if (stack != null && stack.getItem() == TFItems.legsNaga)
+			if (!stack.isEmpty() && stack.getItem() == TFItems.legsNaga)
 			{
 				legsNaga = true;
 			}
@@ -733,7 +733,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		ItemStack currentItem = event.getEntityPlayer().inventory.getCurrentItem();
-		if (currentItem != null && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
+		if (!currentItem.isEmpty() && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
 			// are they also wearing the armor
 			if (checkPlayerForFieryArmor(event.getEntityPlayer())) {
 				event.getEntityPlayer().addStat(TFAchievementPage.twilightFierySet);
@@ -792,10 +792,10 @@ public class TFEventListener {
 		ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 		ItemStack head = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 
-		return feet != null && feet.getItem() == TFItems.fieryBoots
-				|| legs != null && legs.getItem() == TFItems.fieryLegs
-				|| chest != null && chest.getItem() == TFItems.fieryPlate
-				|| head != null && head.getItem() == TFItems.fieryHelm;
+		return !feet.isEmpty() && feet.getItem() == TFItems.fieryBoots
+				|| !legs.isEmpty() && legs.getItem() == TFItems.fieryLegs
+				|| !chest.isEmpty() && chest.getItem() == TFItems.fieryPlate
+				|| !head.isEmpty() && head.getItem() == TFItems.fieryHelm;
 	}
 
 	/**

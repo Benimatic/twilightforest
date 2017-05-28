@@ -270,7 +270,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
     {
     	// do not call normal harvest if the player is shearing
-        if (world.isRemote || stack == null || stack.getItem() != Items.SHEARS)
+        if (world.isRemote || stack.isEmpty() || stack.getItem() != Items.SHEARS)
         {
             super.harvestBlock(world, player, pos, state, te, stack);
         }

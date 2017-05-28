@@ -38,7 +38,7 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 				else
 				{
 					ItemStack itemstack = entityIn.getActiveItemStack();
-					return itemstack != null && itemstack.getItem() instanceof ItemTFBowBase ? (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+					return !itemstack.isEmpty() && itemstack.getItem() instanceof ItemTFBowBase ? (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
 				}
 			}
 		});
@@ -54,12 +54,12 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 			ItemStack itemstack = this.findAmmo(entityplayer);
 
 			int i = this.getMaxItemUseDuration(stack) - timeLeft;
-			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer)entityLiving, i, itemstack != null || flag);
+			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer)entityLiving, i, !itemstack.isEmpty() || flag);
 			if (i < 0) return;
 
-			if (itemstack != null || flag)
+			if (!itemstack.isEmpty() || flag)
 			{
-				if (itemstack == null)
+				if (itemstack.isEmpty())
 				{
 					itemstack = new ItemStack(Items.ARROW);
 				}

@@ -51,7 +51,7 @@ public class ItemTFOreMagnet extends ItemTF
 				else
 				{
 					ItemStack itemstack = entityIn.getActiveItemStack();
-					return itemstack != null && itemstack.getItem() == TFItems.oreMagnet ? (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.oreMagnet ? (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
 				}
 			}
 		});

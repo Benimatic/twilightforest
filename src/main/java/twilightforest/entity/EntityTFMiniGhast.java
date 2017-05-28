@@ -47,7 +47,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
     {
         ItemStack helmet = living.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 
-        if (helmet != null && helmet.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN))
+        if (!helmet.isEmpty() && helmet.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN))
         {
             return false;
         }

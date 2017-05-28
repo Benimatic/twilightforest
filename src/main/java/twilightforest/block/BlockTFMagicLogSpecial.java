@@ -273,7 +273,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		//FMLLog.info("Found " + chests.size() + " non-empty chests, containing " + itemCount + " items");
 		
 		// find a random item in one of the chests
-		ItemStack beingSorted = null;
+		ItemStack beingSorted = ItemStack.EMPTY;
 		int sortedChestNum = -1;
 		int sortedSlotNum = -1;
 		
@@ -289,7 +289,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				{
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
 					
-					if (currentItem != null)
+					if (!currentItem.isEmpty())
 					{
 						if (currentNumber++ == itemNumber)
 						{
@@ -304,7 +304,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		
 		//FMLLog.info("Decided to sort item " + beingSorted);
 
-		if (beingSorted != null)
+		if (!beingSorted.isEmpty())
 		{
 			int matchChestNum = -1;
 			int matchCount = 0;
@@ -344,7 +344,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				if (moveSlot >= 0)
 				{
 					// remove old item
-					oldChest.setInventorySlotContents(sortedSlotNum, null);
+					oldChest.setInventorySlotContents(sortedSlotNum, ItemStack.EMPTY);
 					
 					// add new item
 					moveChest.setInventorySlotContents(moveSlot, beingSorted);
@@ -408,7 +408,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	private int getEmptySlotIn(IInventory chest) {
 		for (int i = 0; i < chest.getSizeInventory(); i++)
 		{
-			if (chest.getStackInSlot(i) == null)
+			if (chest.getStackInSlot(i).isEmpty())
 			{
 				return i;
 			}
