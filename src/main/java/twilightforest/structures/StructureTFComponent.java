@@ -4,13 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStandingSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityAreaEffectCloud;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
@@ -37,6 +37,32 @@ public abstract class StructureTFComponent extends StructureComponent {
     
 	public StructureTFComponent(int i) {
 		super(i);
+	}
+
+	protected void setDebugEntity(World world, int x, int y, int z, String s)
+	{
+		BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
+
+		EntityAreaEffectCloud entity = new EntityAreaEffectCloud(world);
+		entity.setCustomNameTag(s);
+		entity.setDuration(Integer.MAX_VALUE);
+		entity.setPotion(PotionTypes.EMPTY);
+		entity.setLocationAndAngles(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 0, 0);
+
+		//entity.addPotionEffect(new PotionEffect(potion, Integer.MAX_VALUE, 0, true, false));
+		world.spawnEntity(entity);
+
+		EntitySheep sheep = new EntitySheep(world);
+		sheep.setCustomNameTag(s);
+		sheep.setNoAI(true);
+		sheep.setLocationAndAngles(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 0, 0);
+		sheep.setEntityInvulnerable(true);
+		sheep.setInvisible(true);
+		sheep.setAlwaysRenderNameTag(true);
+		sheep.setSilent(true);
+		sheep.setNoGravity(true);
+		world.spawnEntity(sheep);
+
 	}
 
 	@Override

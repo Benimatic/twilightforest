@@ -9,8 +9,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class CommandTFFeature extends CommandBase {
@@ -27,8 +29,6 @@ public class CommandTFFeature extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-//FIXME: AtomicBlom: Disabled for Structures
-/*
 		if (args.length > 0) {
 			if (args[0].equalsIgnoreCase("info")) {
 				// info on current feature
@@ -48,13 +48,15 @@ public class CommandTFFeature extends CommandBase {
 					sender.sendMessage(new TextComponentTranslation("The nearest feature is %s", nearbyFeature.name));
 					
 					// are you in a structure?
-					ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
-					
-					if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
+
+					ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest)TFWorld.getChunkGenerator(player.world);
+
+					final BlockPos pos = new BlockPos(dx, dy, dz);
+
+					if (chunkProvider.isBlockInStructureBB(pos)) {
 						sender.sendMessage(new TextComponentTranslation("You are in the structure for that feature."));
 
-						sender.sendMessage(new TextComponentTranslation("Structure conquer flag = %s.", chunkProvider.isStructureConquered(dx, dy, dz)));
-
+						sender.sendMessage(new TextComponentTranslation("Structure conquer flag = %s.", chunkProvider.isStructureConquered(pos)));
 						// are you in a room?
 						
 						// what is the spawn list
@@ -109,17 +111,17 @@ public class CommandTFFeature extends CommandBase {
 			throw new WrongUsageException("commands.tffeature.not_in_twilight_forest");
 		} else {
 			// are you in a structure?
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)player.world.provider).getChunkProvider();
-			
-			if (chunkProvider.isBlockInStructureBB(dx, dy, dz)) {
-				sender.sendMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", chunkProvider.isStructureConquered(dx, dy, dz), flag));
+			ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest)TFWorld.getChunkGenerator(player.world);
+
+			final BlockPos pos = new BlockPos(dx, dy, dz);
+			if (chunkProvider.isBlockInStructureBB(pos)) {
+				sender.sendMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", chunkProvider.isStructureConquered(pos), flag));
 				
 				chunkProvider.setStructureConquered(dx, dy, dz, flag);
 			} else {
 				sender.sendMessage(new TextComponentTranslation("You are not in a structure."));
 			}
 		}
-*/
 	}
 
 }

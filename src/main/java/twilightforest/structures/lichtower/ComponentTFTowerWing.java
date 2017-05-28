@@ -1288,6 +1288,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		setBlockState(world, oakFence, cx + 1, cy + 0, cz + 0, sbb);
 		setBlockState(world, oakFence, cx + 0, cy + 0, cz - 1, sbb);
 		setBlockState(world, oakFence, cx + 0, cy + 0, cz + 1, sbb);
+
+		setDebugEntity(world, cx, cy, cz, "TowerWing.decorateChandelier");
 	
 		setBlockState(world, oakFence, cx + 0, cy + 1, cz + 0, sbb);
 		setBlockState(world, torch, cx - 1, cy + 1, cz + 0, sbb);
@@ -1299,7 +1301,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			setBlockState(world, oakFence, cx + 0, y, cz + 0, sbb);
 		}
 	}
-
 
 
 	/**
@@ -1928,7 +1929,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		IBlockState doubleSlabBlock = useBirchWood ?
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
-		
+
+		setDebugEntity(world, 2, 1 + height, 3, "TowerWing.makeStairs5flight");
 		setBlockState(world, singleSlabBlock, 2, 1 + height, 3, sbb);
 		setBlockState(world, doubleSlabBlock, 3, 1 + height, 3, sbb);
 		
@@ -1974,7 +1976,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		IBlockState doubleSlabBlock = useBirchWood ?
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
-		
+
+		setDebugEntity(world, 2, 1 + height, 5, "TowerWing.makeStairs7flight");
 		setBlockState(world, singleSlabBlock, 2, 1 + height, 5, sbb);
 		setBlockState(world, doubleSlabBlock, 3, 1 + height, 5, sbb);
 		setBlockState(world, singleSlabBlock, 4, 2 + height, 5, sbb);
@@ -2028,7 +2031,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		IBlockState doubleSlabBlock = useBirchWood ?
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
-		
+
+		setDebugEntity(world, 2, 1 + height, 7, "TowerWing.makeStairs9flight");
 		setBlockState(world, singleSlabBlock, 2, 1 + height, 7, sbb);
 		setBlockState(world, doubleSlabBlock, 3, 1 + height, 7, sbb);
 		setBlockState(world, singleSlabBlock, 4, 2 + height, 7, sbb);
@@ -2050,6 +2054,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		final IBlockState doubleStoneSlab = Blocks.STONE_SLAB.getDefaultState();
 
 		// foot of stairs
+		setDebugEntity(world, 1, 1, 9, "TowerWing.makeStairs15");
 		setBlockState(world, birchSlab, 1, 1, 9, sbb);
 		setBlockState(world, birchSlab, 2, 1, 9, sbb);
 
@@ -2132,7 +2137,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		IBlockState doubleSlabBlock = useBirchWood ?
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
-		
+
+		setDebugEntity(world, 3, 1 + height, 13, "TowerWing.makeStairs15flight\n" + rotation.name());
 		setBlockState(world, singleSlabBlock, 3, 1 + height, 13, sbb);
 		randomlyPlaceBlock(world, sbb, rand, 0.9F, 4, 1 + height, 13, doubleSlabBlock);
 		setBlockState(world, singleSlabBlock, 5, 2 + height, 13, sbb);
