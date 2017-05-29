@@ -37,6 +37,7 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider
 			return false;
 		}
 		world.spawnEntity(another);
+		another.spawnExplosionParticle();
 		
 		return true;
 	}

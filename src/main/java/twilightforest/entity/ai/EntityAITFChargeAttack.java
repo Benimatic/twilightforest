@@ -53,8 +53,8 @@ public class EntityAITFChargeAttack extends EntityAIBase {
             }
             else {
             	Vec3d chargePos = findChargePoint(charger, chargeTarget, 2.1);
-            	boolean canSeeTargetFromDest = chargeTarget.world.rayTraceBlocks(new Vec3d(chargeTarget.posX, chargeTarget.posY + chargeTarget.getEyeHeight(), chargeTarget.posZ), chargePos) == null;
-            	if (chargePos == null || !canSeeTargetFromDest) 
+            	boolean canSeeTargetFromDest = charger.getEntitySenses().canSee(chargeTarget);
+            	if (!canSeeTargetFromDest)
             	{
             		return false;
             	}

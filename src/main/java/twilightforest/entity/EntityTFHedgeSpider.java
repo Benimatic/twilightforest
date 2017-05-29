@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
@@ -37,6 +38,11 @@ public class EntityTFHedgeSpider extends EntitySpider {
 				return 4.0F + attackTarget.width;
 			}
 		});
+
+		// Remove default spider target player task
+		this.targetTasks.taskEntries.removeIf(t -> t.priority == 2 && t.action instanceof EntityAINearestAttackableTarget);
+		// Replace with one that doesn't care about light
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 	}
 
 	@Override

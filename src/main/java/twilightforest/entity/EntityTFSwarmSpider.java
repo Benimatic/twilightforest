@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -59,6 +60,11 @@ public class EntityTFSwarmSpider extends EntitySpider {
 				return 4.0F + attackTarget.width;
 			}
 		});
+
+		// Remove default spider target player task
+		this.targetTasks.taskEntries.removeIf(t -> t.priority == 2 && t.action instanceof EntityAINearestAttackableTarget);
+		// Replace with one that doesn't care about light
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 	}
 
 	@Override
@@ -102,6 +108,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 			return false;
 		}
 		world.spawnEntity(another);
+		another.spawnExplosionParticle();
 		
 		return true;
 	}

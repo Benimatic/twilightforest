@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -15,12 +16,13 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 	public EntityTFMistWolf(World world) {
 		super(world);
         this.setSize(1.4F, 1.9F);
-	}
+        setCollarColor(EnumDyeColor.GRAY);
+    }
 
 	@Override
-    protected void applyEntityAttributes()
+    protected void setAttributes()
     {
-        super.applyEntityAttributes();
+        super.setAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
     }
@@ -31,6 +33,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
         if (super.attackEntityAsMob(par1Entity))
         {
             float myBrightness = this.getBrightness(1.0F);
+            System.out.println(myBrightness);
             
             if (par1Entity instanceof EntityLivingBase && myBrightness < 0.10F)
             {

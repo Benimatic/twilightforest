@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -24,19 +25,26 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	public EntityTFHostileWolf(World world) {
 		super(world);
 		setAngry(true);
+		setCollarColor(EnumDyeColor.BLACK);
+		setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
 	}
+
+	// Split out from applyEntityAttributes because of above comment
+	protected void setAttributes() {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+    }
+
+    @Override
+    protected final void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        setAttributes();
+    }
 
 	@Override
     protected void initEntityAI() {
 	    super.initEntityAI();
         this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
-    }
-
-	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
     }
 
     @Override
@@ -63,13 +71,10 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		// are we near a hedge maze?
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze) {
-			// don't check light level
-	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !world.containsAnyLiquid(getEntityBoundingBox());
-		}
-		else {
-			return isValidLightLevel() && world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0 && !world.containsAnyLiquid(getEntityBoundingBox());
-		}
+        return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze || isValidLightLevel())
+                && world.checkNoEntityCollision(getEntityBoundingBox())
+                && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0
+                && !world.containsAnyLiquid(getEntityBoundingBox());
     }
     
     // [VanillaCopy] Direct copy of EntityMob.isValidLightLevel

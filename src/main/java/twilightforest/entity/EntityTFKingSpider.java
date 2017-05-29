@@ -24,16 +24,8 @@ public class EntityTFKingSpider extends EntitySpider {
 
 	@Override
     protected void initEntityAI() {
-	    // todo modernize to match superclass where necessary?
-        this.setPathPriority(PathNodeType.WATER, -1.0F);
+	    super.initEntityAI();
         //this.tasks.addTask(1, new EntityAITFChargeAttack(this, 0.4F));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.3F));
-        this.tasks.addTask(6, new EntityAIWander(this, 0.2F));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
     }
 
 	@Override
@@ -60,7 +52,7 @@ public class EntityTFKingSpider extends EntitySpider {
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData par1EntityLivingData)
     {
-        Object par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
+        IEntityLivingData par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
 
     	// always a spider jockey
         EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.world);
@@ -69,13 +61,13 @@ public class EntityTFKingSpider extends EntitySpider {
         this.world.spawnEntity(druid);
         druid.startRiding(this);
         
-        return (IEntityLivingData)par1EntityLivingData1;
+        return par1EntityLivingData1;
     }
 
     @Override
     public double getMountedYOffset()
     {
-        return (double)this.height * 0.5D;
+        return (double)this.height * 0.75D;
     }
 
 }

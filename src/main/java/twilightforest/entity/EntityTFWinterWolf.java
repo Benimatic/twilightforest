@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -28,6 +29,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 	public EntityTFWinterWolf(World world) {
 		super(world);
         this.setSize(1.4F, 1.9F);
+		setCollarColor(EnumDyeColor.LIGHT_BLUE);
 	}
 
 	@Override
@@ -42,9 +44,9 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 	}
 
 	@Override
-    protected void applyEntityAttributes()
+    protected void setAttributes()
     {
-        super.applyEntityAttributes();
+        super.setAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
     }
