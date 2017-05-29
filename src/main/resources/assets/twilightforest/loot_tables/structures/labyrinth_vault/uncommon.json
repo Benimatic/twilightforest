@@ -5,6 +5,7 @@
     "entries": [
       {
         "type": "item",
+        "entryName": "infpunch",
         "name": "minecraft:bow",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -16,6 +17,7 @@
       },
       {
         "type": "item",
+        "entryName": "powerflame",
         "name": "minecraft:bow",
         "functions": [{
           "function": "twilightforest:enchant",

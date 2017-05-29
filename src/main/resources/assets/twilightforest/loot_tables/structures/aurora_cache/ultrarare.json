@@ -5,6 +5,7 @@
     "entries": [
       {
         "type": "item",
+        "entryName": "sharpness",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -15,6 +16,7 @@
       },
       {
         "type": "item",
+        "entryName": "power",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -25,6 +27,7 @@
       },
       {
         "type": "item",
+        "entryName": "punch",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -35,6 +38,7 @@
       },
       {
         "type": "item",
+        "entryName": "unbreaking",
         "name": "minecraft:enchanted_book",
         "weight": 2,
         "functions": [{
@@ -46,6 +50,7 @@
       },
       {
         "type": "item",
+        "entryName": "infinity",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",

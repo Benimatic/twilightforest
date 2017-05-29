@@ -37,6 +37,7 @@
       },
       {
         "type": "item",
+        "entryName": "regen 2",
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",
@@ -45,6 +46,7 @@
       },
       {
         "type": "item",
+        "entryName": "health 2",
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",
@@ -53,6 +55,7 @@
       },
       {
         "type": "item",
+        "entryName": "speed 2 extended",
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",

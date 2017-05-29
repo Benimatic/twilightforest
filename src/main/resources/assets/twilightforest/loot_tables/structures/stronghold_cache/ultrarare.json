@@ -5,6 +5,7 @@
     "entries": [
       {
         "type": "item",
+        "entryName": "boa",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -15,6 +16,7 @@
       },
       {
         "type": "item",
+        "entryName": "sharp",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -25,6 +27,7 @@
       },
       {
         "type": "item",
+        "entryName": "smite",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -35,6 +38,7 @@
       },
       {
         "type": "item",
+        "entryName": "unbreaking",
         "name": "minecraft:enchanted_book",
         "weight": 2,
         "functions": [{
@@ -46,6 +50,7 @@
       },
       {
         "type": "item",
+        "entryName": "prot",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -56,6 +61,7 @@
       },
       {
         "type": "item",
+        "entryName": "projprot",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -66,6 +72,7 @@
       },
       {
         "type": "item",
+        "entryName": "ff",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",

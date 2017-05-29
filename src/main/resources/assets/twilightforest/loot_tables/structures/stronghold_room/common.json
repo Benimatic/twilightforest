@@ -10,7 +10,7 @@
       },
       {
         "type": "item",
-        "name": "minecraft:maze_wafer",
+        "name": "twilightforest:maze_wafer",
         "functions": [{ "function": "set_count", "count": { "min": 1, "max": 12 } }]
       },
       {

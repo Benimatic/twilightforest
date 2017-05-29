@@ -24,6 +24,7 @@
       },
       {
         "type": "item",
+        "entryName": "sharpknock",
         "name": "twilightforest:steeleaf_sword",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -35,6 +36,7 @@
       },
       {
         "type": "item",
+        "entryName": "boafire",
         "name": "twilightforest:steeleaf_sword",
         "functions": [{
           "function": "twilightforest:enchant",

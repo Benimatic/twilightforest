@@ -9,6 +9,7 @@
       },
       {
         "type": "item",
+        "entryName": "ff",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -19,6 +20,7 @@
       },
       {
         "type": "item",
+        "entryName": "knock",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",
@@ -29,6 +31,7 @@
       },
       {
         "type": "item",
+        "entryName": "eff",
         "name": "minecraft:enchanted_book",
         "functions": [{
           "function": "twilightforest:enchant",

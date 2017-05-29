@@ -14,6 +14,7 @@
       },
       {
         "type": "item",
+        "entryName": "speed 2",
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",
@@ -22,6 +23,7 @@
       },
       {
         "type": "item",
+        "entryName": "regen 2",
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",
@@ -30,6 +32,7 @@
       },
       {
         "type": "item",
+        "entryName": "splash heal",
         "name": "minecraft:splash_potion",
         "functions": [{
           "function": "set_nbt",
@@ -38,6 +41,7 @@
       },
       {
         "type": "item",
+        "entryName": "splash dmg 2",
         "name": "minecraft:splash_potion",
         "functions": [{
           "function": "set_nbt",
