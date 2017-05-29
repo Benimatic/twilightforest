@@ -40,7 +40,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
 
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 	}
 
 	@Override

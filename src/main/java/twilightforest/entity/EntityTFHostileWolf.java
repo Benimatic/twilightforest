@@ -44,7 +44,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	@Override
     protected void initEntityAI() {
 	    super.initEntityAI();
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, null));
+        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
     }
 
     @Override

@@ -51,7 +51,7 @@ public class EntityTFLoyalZombie extends EntityTameable {
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityMob.class, 0, true, false, null));
+        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityMob.class, true));
     }
 
 	@Override
