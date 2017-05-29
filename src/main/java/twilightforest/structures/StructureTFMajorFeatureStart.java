@@ -41,18 +41,19 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     {
     	MapGenStructureIO.registerStructure(StructureTFMajorFeatureStart.class, "TFFeature");
     	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
+
 //FIXME: Disabled Structure
 //    	TFStrongholdPieces.registerPieces();
 //    	TFMinotaurMazePieces.registerPieces();
 //    	TFDarkTowerPieces.registerPieces();
-    	TFLichTowerPieces.registerPieces();
 //    	TFIceTowerPieces.registerPieces();
 //    	TFMushroomTowerPieces.registerPieces();
-    	TFHollowTreePieces.registerPieces();
 //    	TFTrollCavePieces.registerPieces();
 //    	TFFinalCastlePieces.registerFinalCastlePieces();
-    	
-    	// register one-off pieces here
+		TFHollowTreePieces.registerPieces();
+		TFLichTowerPieces.registerPieces();
+
+		// register one-off pieces here
         MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
 	    MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
         MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");

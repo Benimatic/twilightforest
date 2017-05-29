@@ -16,16 +16,19 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFCreatures;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.TFEntityNames;
+import twilightforest.util.VanillaEntityNames;
 
 import static net.minecraft.block.BlockStoneSlab.EnumType.SMOOTHBRICK;
 import static twilightforest.block.BlockTFCastleMagic.COLOR;
@@ -97,8 +100,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.size = par1NBTTagCompound.getInteger("towerSize");
         this.height = par1NBTTagCompound.getInteger("towerHeight");
         
@@ -619,7 +622,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateSkeletonRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		// skeleton spawner
-		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, "Skeleton");
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, VanillaEntityNames.SKELETON);
 
 		// floor-to-ceiling chains
 		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
@@ -657,7 +660,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateZombieRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
 		// zombie spawner
-		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, "Zombie");
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, VanillaEntityNames.ZOMBIE);
 		final IBlockState ironBars = Blocks.IRON_BARS.getDefaultState();
 		final IBlockState soulSand = Blocks.SOUL_SAND.getDefaultState();
 		final IBlockState brownMushroom = Blocks.BROWN_MUSHROOM.getDefaultState();
@@ -811,20 +814,20 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		// 20% chance of a spider spawner!
 		if (rand.nextInt(5) == 0) {
-			String spiderName;
+			ResourceLocation spiderName;
 			switch(rand.nextInt(4)) {
 			case 3:
-				spiderName = "CaveSpider";
+				spiderName = VanillaEntityNames.CAVE_SPIDER;
 				break;
 			case 2:
-				spiderName = TFCreatures.getSpawnerNameFor("Swarm Spider");
+				spiderName = TFEntityNames.SWARM_SPIDER;
 				break;
 			case 1:
-				spiderName = TFCreatures.getSpawnerNameFor("Hedge Spider");
+				spiderName = TFEntityNames.HEDGE_SPIDER;
 				break;
 			case 0:
 			default:
-				spiderName = "Spider";
+				spiderName = VanillaEntityNames.SPIDER;
 				break;
 			}
 			
