@@ -38,6 +38,29 @@ public class EntityTFSkeletonDruid extends EntitySkeleton
 		super(world);
 	}
 
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
+        this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.25D, 20, 10.0F) {
+            @Override
+            public void startExecuting() {
+                super.startExecuting();
+                setSwingingArms(true);
+            }
+
+            @Override
+            public void resetTask() {
+                super.resetTask();
+                setSwingingArms(false);
+            }
+        });
+    }
+
+    @Override
+    public void setCombatTask() {
+        // Don't mess with tasks when switching items
+    }
+
 	@Override
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
