@@ -6,6 +6,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFIceSnowball extends EntityThrowable {
 	private static final int DAMAGE = 8;
@@ -45,7 +47,20 @@ public class EntityTFIceSnowball extends EntityThrowable {
     	super.attackEntityFrom(damagesource, i);
 		die();
         return true;
-     }
+    }
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void handleStatusUpdate(byte id) {
+		if (id == 3) {
+			for (int j = 0; j < 8; ++j)
+			{
+				this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+			}
+		} else {
+			super.handleStatusUpdate(id);
+		}
+	}
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
@@ -61,13 +76,8 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	private void die() {
 		if (!this.world.isRemote)
 		{
+			this.world.setEntityState(this, (byte) 3);
 			this.setDead();
-		} else
-		{
-			for (int j = 0; j < 8; ++j)
-			{
-				this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-			}
 		}
 	}
 }

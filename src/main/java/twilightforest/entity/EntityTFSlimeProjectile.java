@@ -7,6 +7,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFSlimeProjectile extends EntityThrowable {
 
@@ -45,7 +47,20 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
     	super.attackEntityFrom(damagesource, i);
 		die();
         return true;
-     }
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void handleStatusUpdate(byte id) {
+		if (id == 3) {
+			for (int i = 0; i < 8; ++i)
+			{
+				this.world.spawnParticle(EnumParticleTypes.SLIME, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			}
+		} else {
+			super.handleStatusUpdate(id);
+		}
+	}
 
 	@Override
 	protected void onImpact(RayTraceResult target) {
@@ -64,14 +79,8 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 		{
 			this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 			this.setDead();
-		} else
-		{
-			for (int i = 0; i < 8; ++i)
-			{
-				this.world.spawnParticle(EnumParticleTypes.SLIME, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
-			}
+			this.world.setEntityState(this, (byte) 3);
 		}
 	}
-
 
 }

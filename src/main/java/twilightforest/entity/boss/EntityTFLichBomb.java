@@ -70,8 +70,10 @@ public class EntityTFLichBomb extends EntityThrowable {
     }
 
 	private void explode() {
-		this.world.newExplosion(this, this.posX, this.posY, this.posZ, 2F, false, false);
-        this.setDead();
+		if (!this.world.isRemote) {
+			this.world.newExplosion(this, this.posX, this.posY, this.posZ, 2F, false, false);
+			this.setDead();
+		}
 	}
 
 	@Override

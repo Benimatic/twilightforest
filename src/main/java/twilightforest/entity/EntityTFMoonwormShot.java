@@ -80,6 +80,19 @@ public class EntityTFMoonwormShot extends EntityThrowable {
         return 0.03F;
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void handleStatusUpdate(byte id) {
+        if (id == 3) {
+            for (int var3 = 0; var3 < 8; ++var3)
+            {
+                this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
+            }
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
+
 	@Override
 	protected void onImpact(RayTraceResult mop) {
         if (!world.isRemote) {
@@ -95,12 +108,8 @@ public class EntityTFMoonwormShot extends EntityThrowable {
                 mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
             }
 
+            this.world.setEntityState(this, (byte) 3);
             this.setDead();
-        } else {
-            for (int var3 = 0; var3 < 8; ++var3)
-            {
-                this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
-            }
         }
 	}
 }

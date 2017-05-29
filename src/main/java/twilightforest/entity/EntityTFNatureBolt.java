@@ -23,6 +23,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class EntityTFNatureBolt extends EntityThrowable {
@@ -52,6 +54,19 @@ public class EntityTFNatureBolt extends EntityThrowable {
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
 			world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void handleStatusUpdate(byte id) {
+		if (id == 3) {
+			for (int i = 0; i < 8; ++i)
+			{
+				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Block.getStateId(Blocks.LEAVES.getDefaultState()));
+			}
+		} else {
+			super.handleStatusUpdate(id);
 		}
 	}
 
@@ -85,13 +100,8 @@ public class EntityTFNatureBolt extends EntityThrowable {
 				}
 			}
 
+			this.world.setEntityState(this, (byte) 3);
 			this.setDead();
-		} else
-		{
-			for (int i = 0; i < 8; ++i)
-			{
-				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Block.getStateId(Blocks.LEAVES.getDefaultState()));
-			}
 		}
 	}
 

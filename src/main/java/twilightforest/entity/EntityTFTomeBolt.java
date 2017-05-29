@@ -11,6 +11,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class EntityTFTomeBolt extends EntityThrowable {
@@ -49,6 +51,19 @@ public class EntityTFTomeBolt extends EntityThrowable {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void handleStatusUpdate(byte id) {
+		if (id == 3) {
+			for (int i = 0; i < 8; ++i)
+			{
+				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
+			}
+		} else {
+			super.handleStatusUpdate(id);
+		}
+	}
+
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (!this.world.isRemote)
@@ -61,13 +76,8 @@ public class EntityTFTomeBolt extends EntityThrowable {
 				((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration * 20, 1));
 			}
 
+			this.world.setEntityState(this, (byte) 3);
 			this.setDead();
-		} else
-		{
-			for (int i = 0; i < 8; ++i)
-			{
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
-			}
 		}
 	}
 
