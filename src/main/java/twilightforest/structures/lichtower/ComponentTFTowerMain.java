@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import net.minecraft.util.math.BlockPos;
@@ -20,8 +21,9 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
-import twilightforest.entity.TFCreatures;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.TFEntityNames;
+import twilightforest.util.VanillaEntityNames;
 
 
 public class ComponentTFTowerMain extends ComponentTFTowerWing {
@@ -262,18 +264,18 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 9, floorLevel, 3, sbb);
 		
 		// place spawner in the middle
-		String mobID = "Skeleton";
+		ResourceLocation mobID = VanillaEntityNames.SKELETON;
 		switch (rand.nextInt(4))
 		{
 		case 0:
 		case 1:
-			mobID = "Skeleton";
+			mobID = VanillaEntityNames.SKELETON;
 			break;
 		case 2:
-			mobID = "Zombie";
+			mobID = VanillaEntityNames.ZOMBIE;
 			break;
 		case 3:
-			mobID = TFCreatures.getSpawnerNameFor("Swarm Spider");
+			mobID = TFEntityNames.SWARM_SPIDER;
 			break;
 		}
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
