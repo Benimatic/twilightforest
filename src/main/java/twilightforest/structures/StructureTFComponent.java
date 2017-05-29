@@ -43,18 +43,9 @@ public abstract class StructureTFComponent extends StructureComponent {
 
 	protected void setDebugEntity(World world, int x, int y, int z, String s)
 	{
-		BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
+		final BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
 
-		EntityAreaEffectCloud entity = new EntityAreaEffectCloud(world);
-		entity.setCustomNameTag(s);
-		entity.setDuration(Integer.MAX_VALUE);
-		entity.setPotion(PotionTypes.EMPTY);
-		entity.setLocationAndAngles(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 0, 0);
-
-		//entity.addPotionEffect(new PotionEffect(potion, Integer.MAX_VALUE, 0, true, false));
-		world.spawnEntity(entity);
-
-		EntitySheep sheep = new EntitySheep(world);
+		final EntitySheep sheep = new EntitySheep(world);
 		sheep.setCustomNameTag(s);
 		sheep.setNoAI(true);
 		sheep.setLocationAndAngles(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 0, 0);
@@ -300,6 +291,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	@Override
     protected int getXWithOffset(int x, int z)
     {
+    	//return super.getXWithOffset(x, z);
         // [VanillaCopy] of super, edits noted.
         EnumFacing enumfacing = this.getCoordBaseMode();
 
@@ -311,12 +303,12 @@ public abstract class StructureTFComponent extends StructureComponent {
         {
             switch (enumfacing)
             {
+	            case SOUTH:
+		            return this.boundingBox.minX + x;
+	            case WEST:
+		            return this.boundingBox.maxX - z;
                 case NORTH:
                     return this.boundingBox.maxX - x; // TF - Add case for NORTH todo 1.9 is this correct?
-                case SOUTH:
-                    return this.boundingBox.minX + x;
-                case WEST:
-                    return this.boundingBox.maxX - z;
                 case EAST:
                     return this.boundingBox.minX + z;
                 default:
@@ -328,6 +320,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     @Override
     protected int getZWithOffset(int x, int z)
     {
+    	//return super.getZWithOffset(x, z);
         // [VanillaCopy] of super, edits noted.
         EnumFacing enumfacing = this.getCoordBaseMode();
 
@@ -339,13 +332,14 @@ public abstract class StructureTFComponent extends StructureComponent {
         {
             switch (enumfacing)
             {
+	            case SOUTH:
+		            return this.boundingBox.minZ + z;
+	            case WEST:
+		            return this.boundingBox.minZ + x;
                 case NORTH:
                     return this.boundingBox.maxZ - z;
-                case SOUTH:
-                    return this.boundingBox.minZ + z;
-                case WEST: // todo 1.9 incomplete - discrepancy vs old code
                 case EAST:
-                    return this.boundingBox.minZ + x;
+                    return this.boundingBox.maxZ - x;
                 default:
                     return z;
             }
@@ -397,7 +391,7 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
 
     @Override
-    public void setBlockState(World worldIn, IBlockState blockstateIn, int x, int y, int z, StructureBoundingBox sbb) {
+    protected void setBlockState(World worldIn, IBlockState blockstateIn, int x, int y, int z, StructureBoundingBox sbb) {
         // Making public
         super.setBlockState(worldIn, blockstateIn, x, y, z, sbb);
     }

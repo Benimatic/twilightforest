@@ -25,6 +25,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.TFEntityNames;
@@ -525,7 +526,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		final IBlockState ladder = Blocks.LADDER.getDefaultState();
 		if (ladderUpDir > -1) {
 			// add ladder going up
-			final IBlockState ladderUp = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderUpDir));
+			final IBlockState ladderUp = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderUpDir).getOpposite());
 
 			int dx = getLadderX(ladderUpDir);
 			int dz = getLadderZ(ladderUpDir);
@@ -536,7 +537,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		if (ladderDownDir > -1) {
 			// add ladder going down
-			final IBlockState ladderDown = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderDownDir));
+			final IBlockState ladderDown = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderDownDir).getOpposite());
 			int dx = getLadderX(ladderDownDir);
 			int dz = getLadderZ(ladderDownDir);
 			for (int dy = bottom - 1; dy < bottom + 2; dy++) {
@@ -1933,7 +1934,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 
-		setDebugEntity(world, 2, 1 + height, 3, "TowerWing.makeStairs5flight");
 		setBlockState(world, singleSlabBlock, 2, 1 + height, 3, sbb);
 		setBlockState(world, doubleSlabBlock, 3, 1 + height, 3, sbb);
 		
@@ -1980,7 +1980,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 
-		setDebugEntity(world, 2, 1 + height, 5, "TowerWing.makeStairs7flight");
 		setBlockState(world, singleSlabBlock, 2, 1 + height, 5, sbb);
 		setBlockState(world, doubleSlabBlock, 3, 1 + height, 5, sbb);
 		setBlockState(world, singleSlabBlock, 4, 2 + height, 5, sbb);
@@ -2035,7 +2034,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 
-		setDebugEntity(world, 2, 1 + height, 7, "TowerWing.makeStairs9flight");
 		setBlockState(world, singleSlabBlock, 2, 1 + height, 7, sbb);
 		setBlockState(world, doubleSlabBlock, 3, 1 + height, 7, sbb);
 		setBlockState(world, singleSlabBlock, 4, 2 + height, 7, sbb);
@@ -2057,7 +2055,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		final IBlockState doubleStoneSlab = Blocks.STONE_SLAB.getDefaultState();
 
 		// foot of stairs
-		setDebugEntity(world, 1, 1, 9, "TowerWing.makeStairs15");
 		setBlockState(world, birchSlab, 1, 1, 9, sbb);
 		setBlockState(world, birchSlab, 2, 1, 9, sbb);
 
@@ -2141,7 +2138,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH) :
 				Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 
-		setDebugEntity(world, 3, 1 + height, 13, "TowerWing.makeStairs15flight\n" + rotation.name());
 		setBlockState(world, singleSlabBlock, 3, 1 + height, 13, sbb);
 		randomlyPlaceBlock(world, sbb, rand, 0.9F, 4, 1 + height, 13, doubleSlabBlock);
 		setBlockState(world, singleSlabBlock, 5, 2 + height, 13, sbb);
@@ -2328,16 +2324,16 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			int cy = minY + (maxY > minY ? rand.nextInt(maxY - minY) : 0);
 			int cz = minZ + (maxZ > minZ ? rand.nextInt(maxZ - minZ) : 0);
 
-			final BlockPos blockPos = new BlockPos(cx, cy, cz);
+			final BlockPos blockPos = new BlockPos(cx, cy, cz).offset(direction);
 			if (sbb.isVecInside(blockPos)) {
-//				System.out.println("Found a valid random spot on the wall.  It's " + cx + ", " + cy + ", " + cz );
+				//TwilightForestMod.LOGGER.info("getRandomWallSpot - Found a valid random spot on the wall.  It's " + cx + ", " + cy + ", " + cz );
 
 				return blockPos;
 			}
 		}
 		
 		// I guess we didn't get one
-//		System.out.println("We didn't find a valid random spot on the wall.");
+		//TwilightForestMod.LOGGER.info("getRandomWallSpot - We didn't find a valid random spot on the wall.");
 		return null;
 	}
 
