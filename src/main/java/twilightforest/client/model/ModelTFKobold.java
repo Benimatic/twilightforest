@@ -85,13 +85,10 @@ public class ModelTFKobold extends ModelBiped
 		jaw.rotateAngleX = 0.20944F;
 
 		bipedHead.addChild(jaw);
-}
+	}
 
-
-    /**
-     * Sets the models various rotation angles.
-     */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
+    @Override
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity)
     {
         this.bipedHead.rotateAngleY = par4 / (180F / (float)Math.PI);
         this.bipedHead.rotateAngleX = par5 / (180F / (float)Math.PI);
@@ -124,10 +121,6 @@ public class ModelTFKobold extends ModelBiped
         }
     }
     
-    /**
-     * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-     * and third as in the setRotationAngles method.
-     */
 	@Override
 	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
 		// check if entity is jumping
@@ -138,7 +131,7 @@ public class ModelTFKobold extends ModelBiped
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		setRotationAngles(f, f1, f2, f3, f4, f5);
+		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		bipedHead.render(f5);
 		bipedBody.render(f5);
 		bipedRightArm.render(f5);
@@ -146,6 +139,4 @@ public class ModelTFKobold extends ModelBiped
 		bipedRightLeg.render(f5);
 		bipedLeftLeg.render(f5);
 	}
-
-
 }
