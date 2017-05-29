@@ -2,6 +2,7 @@ package twilightforest.client.model;
 
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
@@ -9,20 +10,16 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class ModelTFDeathTome extends ModelBook {
-	
-	ModelRenderer everything;
-	ModelRenderer book;
+	private ModelRenderer everything;
 
-	ModelRenderer loosePage1;
-	ModelRenderer loosePage2;
-	ModelRenderer loosePage3;
-	ModelRenderer loosePage4;
-
+	private ModelRenderer book;
+	private ModelRenderer loosePage1;
+	private ModelRenderer loosePage2;
+	private ModelRenderer loosePage3;
+	private ModelRenderer loosePage4;
 	
     public ModelTFDeathTome()
     {
-        super();
-        
         everything = (new ModelRenderer(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
         
         book = (new ModelRenderer(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
@@ -48,34 +45,23 @@ public class ModelTFDeathTome extends ModelBook {
 
     }
 
-    /**
-     * Sets the models various rotation angles then renders the model.
-     */
     @Override
-    public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float scale)
+    public void render(Entity par1Entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-    	//this.everything.rotateAngleX = par6 / (180F / (float)Math.PI);
-    	GL11.glEnable(GL11.GL_CULL_FACE);
-    	this.setRotationAngles(par1Entity.ticksExisted, 0.4F, 0.6F, 0.9F, par6, 0.0625F);
+        GlStateManager.enableCull();
+    	this.setRotationAngles(par1Entity.ticksExisted, 0.4F, 0.6F, 0.9F, headPitch, 0.0625F, par1Entity);
     	this.everything.render(scale);
-    	GL11.glDisable(GL11.GL_CULL_FACE);
+    	GlStateManager.disableCull();
 
     }
     
-    /**
-     * Sets the models various rotation angles.
-     */
-    public void setRotationAngles(float bounce, float flipRight, float flipLeft, float open, float rotate, float scale)
+    @Override
+    public void setRotationAngles(float bounce, float flipRight, float flipLeft, float open, float rotate, float scale, Entity entity)
     {
     	book.rotateAngleZ = -0.8726646259971647F;
         this.everything.rotateAngleY = rotate / (180F / (float)Math.PI) + (float)Math.PI / 2.0F;
-    	
     }
 
-    /**
-     * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-     * and third as in the setRotationAngles method.
-     */
 	@Override
 	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
 		float bounce = par1EntityLiving.ticksExisted + partialTick;
@@ -117,6 +103,4 @@ public class ModelTFDeathTome extends ModelBook {
 		loosePage4.rotateAngleX =  -MathHelper.sin((bounce) / 2.0F) / 4.0F;
 		loosePage4.rotateAngleZ =  MathHelper.cos((bounce) / 7.0F) / 5.0F;
 	}
-    
-    
 }

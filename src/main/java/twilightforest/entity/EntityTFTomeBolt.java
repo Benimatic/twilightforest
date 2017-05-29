@@ -16,12 +16,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class EntityTFTomeBolt extends EntityThrowable {
-
-	public EntityTFTomeBolt(World par1World, double par2, double par4,
-			double par6) {
-		super(par1World, par2, par4, par6);
-	}
-
 	public EntityTFTomeBolt(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 	}
@@ -57,7 +51,7 @@ public class EntityTFTomeBolt extends EntityThrowable {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i)
 			{
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.FIRE_CHARGE));
+				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.PAPER));
 			}
 		} else {
 			super.handleStatusUpdate(id);
