@@ -120,7 +120,7 @@ public class EntityTFIceExploder extends EntityMob {
             }
 
             // Fake to trigger super's behaviour
-            deathTime = 20;
+            deathTime = 19;
             super.onDeathUpdate();
             deathTime = 60;
         }

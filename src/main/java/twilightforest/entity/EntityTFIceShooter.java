@@ -115,12 +115,13 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
     {
 		EntityTFIceSnowball snowball = new EntityTFIceSnowball(this.world, this);
 
-		// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
-        double d0 = target.posX - this.posX;
-        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - snowball.posY;
-        double d2 = target.posZ - this.posZ;
-        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
-        snowball.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+		// [VanillaCopy] Adapted from EntitySnowman
+        double d0 = target.posY + (double)target.getEyeHeight() - 1.4;
+        double d1 = target.posX - this.posX;
+        double d2 = d0 - snowball.posY;
+        double d3 = target.posZ - this.posZ;
+        float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+        snowball.setThrowableHeading(d1, d2 + (double)f, d3, 1.6F, 0.0F);
 
         this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(snowball);

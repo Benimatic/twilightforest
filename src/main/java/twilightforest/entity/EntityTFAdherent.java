@@ -73,12 +73,15 @@ public class EntityTFAdherent  extends EntityMob implements IRangedAttackMob, IT
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
 		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-		
-		double tx = attackTarget.posX - this.posX;
-		double ty = attackTarget.posY + attackTarget.getEyeHeight() - 2.699999988079071D - this.posY;
-		double tz = attackTarget.posZ - this.posZ;
-		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
+
+		// [VanillaCopy] adapted from EntitySnowman, with lower velocity and inaccuracy calculation
+		double d0 = attackTarget.posY + (double)attackTarget.getEyeHeight() - 1.100000023841858D;
+		double d1 = attackTarget.posX - this.posX;
+		double d2 = d0 - natureBolt.posY;
+		double d3 = attackTarget.posZ - this.posZ;
+		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+		natureBolt.setThrowableHeading(d1, d2 + (double)f, d3, 0.6F, 10 - this.world.getDifficulty().getDifficultyId() * 4);
+
 		this.world.spawnEntity(natureBolt);
 
 	}
