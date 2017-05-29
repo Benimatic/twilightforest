@@ -127,11 +127,11 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	 * @return The first component we should add to our structure
 	 */
 	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
-		if (feature != null) {
+		/*if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Lich Tower @ {} {} {}", x, y, z);
 			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
-		}
+		}*/
 
 		if (feature == TFFeature.nagaCourtyard) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
