@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 
@@ -47,8 +48,8 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
 
         // too lazy to do this as a loop
         this.openingTowards[0] = par1NBTTagCompound.getBoolean("openingTowards0");

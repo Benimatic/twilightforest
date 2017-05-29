@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
@@ -63,8 +64,8 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.size = par1NBTTagCompound.getInteger("size");
         this.height = par1NBTTagCompound.getInteger("height");
 	}
@@ -223,13 +224,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		
-		if (direction == 0) {
+		if (direction == EnumFacing.SOUTH) {
 			return new BlockPos(dx - 1, dy - 1, dz - towerSize / 2);
-		} else if (direction == 1) {
+		} else if (direction == EnumFacing.WEST) {
 			return new BlockPos(dx + towerSize / 2, dy - 1, dz - 1);
-		} else if (direction == 2) {
+		} else if (direction == EnumFacing.NORTH) {
 			return new BlockPos(dx + 1, dy - 1, dz + towerSize / 2);
-		} else if (direction == 3) {
+		} else if (direction == EnumFacing.EAST) {
 			return new BlockPos(dx - towerSize / 2, dy - 1, dz + 1);
 		}
 		
