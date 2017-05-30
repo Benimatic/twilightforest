@@ -239,8 +239,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 					break;
 				}
 				case CHARGE: {
-					Vec3d tpoint = taskOwner.findCirclePoint(clockwise, 14, Math.PI);
-					taskOwner.getNavigator().tryMoveToXYZ(tpoint.xCoord, tpoint.yCoord, tpoint.zCoord, 1); // todo 1.10 check speed
+                    BlockPos tpoint = taskOwner.findCirclePoint(clockwise, 14, Math.PI);
+					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					break;
 				}
 				case CIRCLE: {
@@ -258,8 +258,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 						rotation = 0.1;
 					}
 
-					Vec3d tpoint = taskOwner.findCirclePoint(clockwise, radius, rotation);
-					taskOwner.getNavigator().tryMoveToXYZ(tpoint.xCoord, tpoint.yCoord, tpoint.zCoord, 1); // todo 1.10 check speed
+                    BlockPos tpoint = taskOwner.findCirclePoint(clockwise, radius, rotation);
+					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					break;
 				}
 			}
@@ -322,8 +322,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.75D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
     }
 	
 	/**
@@ -558,7 +559,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	/**
      * Finds a point that allows us to circle the target clockwise.
      */
-	private Vec3d findCirclePoint(boolean clockwise, double radius, double rotation)
+	private BlockPos findCirclePoint(boolean clockwise, double radius, double rotation)
     {
     	EntityLivingBase toCircle = getAttackTarget();
 
@@ -577,7 +578,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
         double dy = Math.min(getEntityBoundingBox().minY, toCircle.posY);
 
         // add that to the target entity's position, and we have our destination
-    	return new Vec3d(toCircle.posX + dx, dy, toCircle.posZ + dz);
+    	return new BlockPos(toCircle.posX + dx, dy, toCircle.posZ + dz);
     }
 
 	@Override

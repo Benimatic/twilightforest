@@ -186,7 +186,7 @@ public class TwilightForestMod {
 
 		TFEntities.registerEntity(TFEntityNames.REDCAP, twilightforest.entity.EntityTFRedcap.class, id++, 0x3b3a6c, 0xab1e14);
 		TFEntities.registerEntity(TFEntityNames.SWARM_SPIDER, twilightforest.entity.EntityTFSwarmSpider.class, id++, 0x32022e, 0x17251e);
-		TFEntities.registerEntity(TFEntityNames.NAGA, twilightforest.entity.boss.EntityTFNaga.class, id++, 0xa4d316, 0x1b380b);
+		TFEntities.registerEntity(TFEntityNames.NAGA, twilightforest.entity.boss.EntityTFNaga.class, id++, 0xa4d316, 0x1b380b, 150, 1, true);
 		TFEntities.registerEntity(TFEntityNames.SKELETON_DRUID, twilightforest.entity.EntityTFSkeletonDruid.class, id++, 0xa3a3a3, 0x2a3b17);
 		TFEntities.registerEntity(TFEntityNames.HOSTILE_WOLF, twilightforest.entity.EntityTFHostileWolf.class, id++, 0xd7d3d3, 0xab1e14);
 		TFEntities.registerEntity(TFEntityNames.WRAITH, twilightforest.entity.EntityTFWraith.class, id++, 0x505050, 0x838383);
