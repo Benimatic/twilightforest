@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStandingSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -438,57 +439,10 @@ public abstract class StructureTFComponent extends StructureComponent {
 		return rotationsCW.rotate(getCoordBaseMode());
 	}
 
-	/**
-	 * Gets the metadata necessary to make stairs facing the proper direction.
-	 *
-	 * @param dir
-	 * @return
-	 */
-	/*protected EnumFacing getStairMeta(int dir) {
-		//TODO: AtomicBlom Verify this is even needed
-		switch (getStructureRelativeRotation(dir)) {
-			case SOUTH:
-				return EnumFacing.SOUTH;
-			case NORTH:
-				return EnumFacing.NORTH;
-			case EAST:
-				return EnumFacing.EAST;
-			case WEST:
-				return EnumFacing.WEST;
-			default:
-				return EnumFacing.NORTH; // this is impossible
-		}
-	}*/
-
-	/**
-	 * Gets the metadata necessary to stick the ladder on the specified wall.
-	 *
-	 * @param ladderDir
-	 * @return
-	 */
-	/*protected EnumFacing getLadderMeta(int ladderDir) {
-		// ladder data values are... dumb.
-		//TODO: AtomicBlom Verify this is even needed
-		switch (getStructureRelativeRotation(ladderDir)) {
-			case NORTH:
-				return EnumFacing.NORTH;
-			case SOUTH:
-				return EnumFacing.SOUTH;
-			case EAST:
-				return EnumFacing.EAST;
-			case WEST:
-				return EnumFacing.WEST;
-			default:
-				return EnumFacing.NORTH; // this is impossible
-		}
-	}*/
-
-	/**
-	 * Gets the metadata necessary to stick the ladder on the specified wall.
-	 */
-	/*protected EnumFacing getLadderMeta(int ladderDir, int rotation) {
-		return getLadderMeta(ladderDir + rotation);
-	}*/
+	protected static IBlockState getStairState(IBlockState stairState, EnumFacing direction, Rotation rotation, boolean isTopHalf) {
+		return stairState.withProperty(BlockStairs.FACING, rotation.rotate(direction))
+				.withProperty(BlockStairs.HALF, isTopHalf ? BlockStairs.EnumHalf.TOP : BlockStairs.EnumHalf.BOTTOM);
+	}
 
 	/**
 	 * Nullify all the sky light in this component bounding box

@@ -37,7 +37,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 		}
 		
 		// we should have a door where we started
-		addOpening(0, 1, size / 2, 2);
+		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 
 		// add a beard
 		makeABeard(parent, list, rand);
