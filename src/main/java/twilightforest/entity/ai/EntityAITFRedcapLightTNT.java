@@ -3,6 +3,7 @@ package twilightforest.entity.ai;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.EntityTFRedcap;
 
@@ -66,6 +67,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
         	entityObj.playLivingSound();
         	
         	Blocks.TNT.onBlockDestroyedByPlayer(entityObj.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
+        	entityObj.swingArm(EnumHand.MAIN_HAND);
         	entityObj.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
             this.entityObj.getNavigator().clearPathEntity();
         }

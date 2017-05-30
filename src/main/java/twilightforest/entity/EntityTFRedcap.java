@@ -99,22 +99,6 @@ public class EntityTFRedcap extends EntityMob {
     	return this.recentlyHit <= 0;
     }
     
-    public int getTntLeft() {
-		return heldTNT.isEmpty() ? 0 : heldTNT.getCount();
-	}
-
-	public void setTntLeft(int tntLeft) {
-		if (tntLeft == 0) {
-		    heldTNT = ItemStack.EMPTY;
-        } else {
-		    if (!heldTNT.isEmpty()) {
-		        heldTNT.setCount(tntLeft);
-            } else {
-		        heldTNT = new ItemStack(Blocks.TNT, tntLeft);
-            }
-        }
-	}
-	
 	@Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 	    IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
@@ -132,14 +116,14 @@ public class EntityTFRedcap extends EntityMob {
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("TNTLeft", this.getTntLeft());
+        par1NBTTagCompound.setInteger("TNTLeft", heldTNT.getCount());
     }
 
 	@Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-        this.setTntLeft(par1NBTTagCompound.getInteger("TNTLeft"));
+        heldTNT.setCount(par1NBTTagCompound.getInteger("TNTLeft"));
     }
 
 	@Override

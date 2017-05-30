@@ -11,6 +11,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
@@ -45,7 +46,7 @@ public class EntityTFTowerGolem extends EntityMob
     protected void initEntityAI() {
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
+        this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));

@@ -22,7 +22,7 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 	public EntityTFRedcapSapper(World world) {
 		super(world);
 		this.heldPick = new ItemStack(TFItems.ironwoodPick);
-        this.setTntLeft(3);
+		this.heldTNT.setCount(3);
 	}
 
 	@Override

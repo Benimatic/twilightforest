@@ -17,7 +17,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 	public boolean shouldExecute() {
 		EntityLivingBase attackTarget = this.entityObj.getAttackTarget();
 		return attackTarget != null
-				&& entityObj.getTntLeft() > 0
+				&& !entityObj.heldTNT.isEmpty()
 				&& entityObj.getDistanceSqToEntity(attackTarget) < 25
 				&& !isTargetLookingAtMe(attackTarget)
 				&& !isLitTNTNearby(8)
@@ -33,7 +33,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 
     	if (this.entityObj.world.isAirBlock(entityPos))
     	{
-    		entityObj.setTntLeft(entityObj.getTntLeft() - 1);
+    		entityObj.heldTNT.shrink(1);
     		entityObj.playLivingSound();
     		entityObj.world.setBlockState(entityPos, Blocks.TNT.getDefaultState());
     	}
