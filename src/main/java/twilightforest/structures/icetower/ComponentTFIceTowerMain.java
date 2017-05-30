@@ -6,10 +6,12 @@ import java.util.Random;
 import net.minecraft.nbt.NBTTagCompound;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing 
 {
@@ -53,8 +55,8 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.hasBossWing = par1NBTTagCompound.getBoolean("hasBossWing");
 	}
 	
@@ -80,7 +82,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 			//System.out.println("Offset for door -x = " + length);
         	if (length >= 0) {
 	        	entranceDoor = entranceDoor.west(length);
-	    		makeEntranceBridge(list, rand, this.getComponentType() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, 2);
+	    		makeEntranceBridge(list, rand, this.getComponentType() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
         	}
         }
         if (myDoor.getX() == this.size - 1) {
@@ -94,10 +96,10 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
         	entranceDoor = entranceDoor.south(towerBB.maxZ - this.getBoundingBox().maxZ);
         }
         
-		makeEntranceTower(list, rand, this.getComponentType() + 1, entranceDoor.getX(), entranceDoor.getY(), entranceDoor.getZ(), SIZE, 11, this.getCoordBaseMode());
+		makeEntranceTower(list, rand, this.getComponentType() + 1, entranceDoor.getX(), entranceDoor.getY(), entranceDoor.getZ(), SIZE, 11, this.rotation);
 	}
 
-	private void makeEntranceBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int length, int rotation) {
+	private void makeEntranceBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
@@ -107,7 +109,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing
 		bridge.buildComponent(list.get(0), list, rand);
 	}
 
-	public boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, EnumFacing rotation) {
+	public boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 

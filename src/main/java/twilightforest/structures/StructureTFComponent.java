@@ -140,7 +140,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         return tileEntitySpawner;
     }
 
-    protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, int rotation, ResourceLocation monsterID, StructureBoundingBox sbb)
+    protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, Rotation rotation, ResourceLocation monsterID, StructureBoundingBox sbb)
     {
         EnumFacing oldBase = fakeBaseMode(rotation);
         TileEntityMobSpawner ret = setSpawner(world, x, y, z, sbb, monsterID);
@@ -180,7 +180,7 @@ public abstract class StructureTFComponent extends StructureComponent {
      * 
      * @param treasureType
      */
-    protected void placeTreasureRotated(World world, int x, int y, int z, int rotation, TFTreasure treasureType, StructureBoundingBox sbb)
+    protected void placeTreasureRotated(World world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, StructureBoundingBox sbb)
     {
         this.placeTreasureRotated(world, x, y, z, rotation, treasureType, false, sbb);
     }
@@ -190,7 +190,7 @@ public abstract class StructureTFComponent extends StructureComponent {
      * 
      * @param treasureType
      */
-    protected void placeTreasureRotated(World world, int x, int y, int z, int rotation, TFTreasure treasureType, boolean trapped, StructureBoundingBox sbb)
+    protected void placeTreasureRotated(World world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, boolean trapped, StructureBoundingBox sbb)
     {
         int dx = getXWithOffsetRotated(x, z, rotation);
         int dy = getYWithOffset(y);
@@ -347,22 +347,6 @@ public abstract class StructureTFComponent extends StructureComponent {
         }
     }
 
-    @Deprecated
-    private EnumFacing fakeBaseMode(int rotationsCW) {
-        EnumFacing oldBaseMode = getCoordBaseMode();
-
-        if (oldBaseMode != null) {
-            EnumFacing pretendBaseMode = oldBaseMode;
-            for (int i = 0; i < rotationsCW; i++) {
-                pretendBaseMode = pretendBaseMode.rotateY();
-            }
-
-            setCoordBaseMode(pretendBaseMode);
-        }
-
-        return oldBaseMode;
-    }
-
 	private EnumFacing fakeBaseMode(Rotation rotationsCW) {
 		final EnumFacing oldBaseMode = getCoordBaseMode();
 
@@ -377,7 +361,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
     // [VanillaCopy] Keep pinned to the signature of getXWithOffset
-	protected int getXWithOffsetRotated(int x, int z, int rotationsCW) {
+	protected int getXWithOffsetRotated(int x, int z, Rotation rotationsCW) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         int ret = getXWithOffset(x, z);
         setCoordBaseMode(oldMode);
@@ -385,19 +369,11 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
     // [VanillaCopy] Keep pinned to the signature of getZWithOffset
-    protected int getZWithOffsetRotated(int x, int z, int rotationsCW) {
+    protected int getZWithOffsetRotated(int x, int z, Rotation rotationsCW) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         int ret = getZWithOffset(x, z);
         setCoordBaseMode(oldMode);
         return ret;
-    }
-
-    // [VanillaCopy] Keep pinned to the signature of setBlockState
-	@Deprecated
-    protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, int rotationsCW, StructureBoundingBox sbb) {
-        EnumFacing oldMode = fakeBaseMode(rotationsCW);
-        setBlockState(world, state, x, y, z, sbb);
-        setCoordBaseMode(oldMode);
     }
 
 	protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, Rotation rotationsCW, StructureBoundingBox sbb) {
@@ -419,19 +395,11 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
 
     // [VanillaCopy] Keep pinned to the signature of getBlockStateFromPos
-    public IBlockState getBlockStateFromPosRotated(World world, int x, int y, int z, StructureBoundingBox sbb, int rotationsCW) {
+    public IBlockState getBlockStateFromPosRotated(World world, int x, int y, int z, StructureBoundingBox sbb, Rotation rotationsCW) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         IBlockState ret = getBlockStateFromPos(world, x, y, z, sbb);
         setCoordBaseMode(oldMode);
         return ret;
-    }
-    
-    // [VanillaCopy] Keep pinned to the signature of fillWithBlocks with false existingOnly arg and repeated state argument
-	@Deprecated
-    protected void fillBlocksRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState state, int rotation) {
-        EnumFacing oldBase = fakeBaseMode(rotation);
-        fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, state, state, false);
-        setCoordBaseMode(oldBase);
     }
 
 	protected void fillBlocksRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState state, Rotation rotation) {
@@ -441,7 +409,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
     // [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
-    protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {
+    protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, Rotation rotation) {
         EnumFacing oldBase = fakeBaseMode(rotation);
 	    final int minimumLightLevel = 15;
 	    generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
@@ -449,27 +417,25 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
     
     // [VanillaCopy] Keep pinned to signature of replaceAirAndLiquidDownwards
-	public void replaceAirAndLiquidDownwardsRotated(World world, IBlockState state, int x, int y, int z, int rotation, StructureBoundingBox sbb) {
+	public void replaceAirAndLiquidDownwardsRotated(World world, IBlockState state, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb) {
         EnumFacing oldBaseMode = fakeBaseMode(rotation);
         replaceAirAndLiquidDownwards(world, state, x, y, z, sbb);
         setCoordBaseMode(oldBaseMode);
 	}
 
-    // [VanillaCopy] Keep pinned to the signature of fillWithAir
-    protected void fillAirRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int rotation)
-    {
-        EnumFacing oldBaseMode = fakeBaseMode(rotation);
-        fillWithAir(world, sbb, minX, minY, minZ, maxX, maxY, maxZ);
-        setCoordBaseMode(oldBaseMode);
-    }
+	protected void fillAirRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Rotation rotation)
+	{
+		EnumFacing oldBaseMode = fakeBaseMode(rotation);
+		fillWithAir(world, sbb, minX, minY, minZ, maxX, maxY, maxZ);
+		setCoordBaseMode(oldBaseMode);
+	}
 
     protected static StructureComponent.BlockSelector getStrongholdStones() {
     	return strongholdStones;
     }
 	
-	protected EnumFacing getStructureRelativeRotation(int rotationsCW) {
-        EnumFacing base = getCoordBaseMode();
-        return EnumFacing.getHorizontal(base == null ? 0 : base.getHorizontalIndex() + rotationsCW);
+	protected EnumFacing getStructureRelativeRotation(Rotation rotationsCW) {
+		return rotationsCW.rotate(getCoordBaseMode());
 	}
 
 	/**
@@ -478,7 +444,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	 * @param dir
 	 * @return
 	 */
-	protected EnumFacing getStairMeta(int dir) {
+	/*protected EnumFacing getStairMeta(int dir) {
 		//TODO: AtomicBlom Verify this is even needed
 		switch (getStructureRelativeRotation(dir)) {
 			case SOUTH:
@@ -492,7 +458,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 			default:
 				return EnumFacing.NORTH; // this is impossible
 		}
-	}
+	}*/
 
 	/**
 	 * Gets the metadata necessary to stick the ladder on the specified wall.
@@ -500,7 +466,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	 * @param ladderDir
 	 * @return
 	 */
-	protected EnumFacing getLadderMeta(int ladderDir) {
+	/*protected EnumFacing getLadderMeta(int ladderDir) {
 		// ladder data values are... dumb.
 		//TODO: AtomicBlom Verify this is even needed
 		switch (getStructureRelativeRotation(ladderDir)) {
@@ -515,14 +481,14 @@ public abstract class StructureTFComponent extends StructureComponent {
 			default:
 				return EnumFacing.NORTH; // this is impossible
 		}
-	}
+	}*/
 
 	/**
 	 * Gets the metadata necessary to stick the ladder on the specified wall.
 	 */
-	protected EnumFacing getLadderMeta(int ladderDir, int rotation) {
+	/*protected EnumFacing getLadderMeta(int ladderDir, int rotation) {
 		return getLadderMeta(ladderDir + rotation);
-	}
+	}*/
 
 	/**
 	 * Nullify all the sky light in this component bounding box

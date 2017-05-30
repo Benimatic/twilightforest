@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import net.minecraft.util.math.BlockPos;
@@ -44,8 +45,8 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		makeARoof(parent, list, rand);
 
 		// sub towers
-		for (int i = 0; i < 4; i++) {
-			int[] dest = getValidOpening(rand, i);
+		for (final Rotation rotation : Rotation.values()) {
+			int[] dest = getValidOpening(rand, rotation);
 			
 			// adjust height if we're too low at this point
 			if (dest[1] < height / 2) {
@@ -54,14 +55,15 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			
 			int childHeight = Math.min(21 + rand.nextInt(10), this.height - dest[1] - 3);
 			
-			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 9, childHeight, i)) {
-				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 7, childHeight, i);
+			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 9, childHeight, rotation)) {
+				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 7, childHeight, rotation);
 			}
 		}
 
 		// try one more time for large towers
-		for (int i = 0; i < 4; i++) {
-			int[] dest = getValidOpening(rand, i);
+		for (final Rotation rotation : Rotation.values())
+		{
+			int[] dest = getValidOpening(rand, rotation);
 			
 			// adjust height if we're too low at this point
 			if (dest[1] < height / 2) {
@@ -70,39 +72,43 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			
 			int childHeight = Math.min(21 + rand.nextInt(10), this.height - dest[1] - 3);
 			
-			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 9, childHeight, i)) {
-				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 7, childHeight, i);
+			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 9, childHeight, rotation)) {
+				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 7, childHeight, rotation);
 			}
 		}
 
 		// another set, if possible
-		for (int i = 0; i < 4; i++) {
-			int[] dest = getValidOpening(rand, i);
+		for (final Rotation rotation : Rotation.values()) {
+			int[] dest = getValidOpening(rand, rotation);
 			
 			int childHeight = Math.min(7 + rand.nextInt(6), this.height - dest[1] - 3);
 			
-			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 5, childHeight, i)) {
-				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 3, childHeight, i);
+			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 5, childHeight, rotation)) {
+				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 3, childHeight, rotation);
 			}
 		}
 		
 		// outbuildings
-		for (int i = 0; i < 4; i++) {
-			int[] dest = getOutbuildingOpening(rand, i);
+		for (final Rotation rotation : Rotation.values()) {
+			int[] dest = getOutbuildingOpening(rand, rotation);
 			
 			int childHeight = 11 + rand.nextInt(10);
 			int childSize = 7 + (rand.nextInt(2) * 2);
 			
-			makeTowerOutbuilding(list, rand, 1, dest[0], dest[1], dest[2], childSize, childHeight, i);
+			makeTowerOutbuilding(list, rand, 1, dest[0], dest[1], dest[2], childSize, childHeight, rotation);
 		}
 		
 		// TINY TOWERS!
-		for (int i = 0; i < 16; i++) {
-			int[] dest = getValidOpening(rand, i % 4);
-			int childHeight = 6 + rand.nextInt(5);
-			if (rand.nextInt(3) == 0 || !makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 5, childHeight, i % 4)) {
-				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 3, childHeight, i % 4);
+		for (int i = 0; i < 4; i++) {
+			for (final Rotation towerRotation : Rotation.values())
+			{
+				int[] dest = getValidOpening(rand, towerRotation);
+				int childHeight = 6 + rand.nextInt(5);
+				if (rand.nextInt(3) == 0 || !makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 5, childHeight, towerRotation)) {
+					makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 3, childHeight, towerRotation);
+				}
 			}
+
 		}
 		
 	}
@@ -110,38 +116,38 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Gets a random position in the specified direction that we can make an outbuilding at
 	 */
-	public int[] getOutbuildingOpening(Random rand, int rotation) {
+	public int[] getOutbuildingOpening(Random rand, Rotation rotation) {
 		
 		int rx = 0;
 		int ry = 1;
 		int rz = 0;
 		
 		switch (rotation) {
-		case 0:
-			// for directions 0 or 2, the wall lies along the z axis
-			rx = size -1;
-			rz = 6 + rand.nextInt(8);
-			break;
-		case 1:
-			// for directions 1 or 3, the wall lies along the x axis
-			rx = 1 + rand.nextInt(11);
-			rz = size - 1;
-			break;
-		case 2:
-			rx = 0;
-			rz = 1 + rand.nextInt(8);
-			break;
-		case 3:
-			rx = 3 + rand.nextInt(11);
-			rz = 0;
-			break;
+			case NONE:
+				// for directions 0 or 2, the wall lies along the z axis
+				rx = size -1;
+				rz = 6 + rand.nextInt(8);
+				break;
+			case CLOCKWISE_90:
+				// for directions 1 or 3, the wall lies along the x axis
+				rx = 1 + rand.nextInt(11);
+				rz = size - 1;
+				break;
+			case CLOCKWISE_180:
+				rx = 0;
+				rz = 1 + rand.nextInt(8);
+				break;
+			case COUNTERCLOCKWISE_90:
+				rx = 3 + rand.nextInt(11);
+				rz = 0;
+				break;
 		}
 
 		return new int[] {rx, ry, rz};
 	}
 
 	
-	public boolean makeTowerOutbuilding(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	public boolean makeTowerOutbuilding(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		ComponentTFTowerOutbuilding outbuilding = new ComponentTFTowerOutbuilding(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
@@ -227,7 +233,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	protected void makeStairCrossing(World world, Random rand, int flight, StructureBoundingBox sbb) {
 		EnumFacing temp = this.getCoordBaseMode();
 		if (flight % 2 == 0) {
-			this.setCoordBaseMode(getStructureRelativeRotation(1));
+			this.setCoordBaseMode(getStructureRelativeRotation(Rotation.CLOCKWISE_90));
 		}
 
 		BlockStoneSlab.EnumType floorVariant = rand.nextInt(2) == 0 ? BlockStoneSlab.EnumType.STONE : BlockStoneSlab.EnumType.WOOD;
@@ -297,7 +303,8 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// figure out where the stairs end
 		int floorLevel = 2 + (this.highestOpening / 5) * 5;
 		// we need a floor
-		makeLichFloor(world, floorLevel, (this.highestOpening / 5) % 2,  sbb);
+		final Rotation i = (this.highestOpening / 5) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_90;
+		makeLichFloor(world, floorLevel, i, sbb);
 		
 		// now a chandelier
 		decorateLichChandelier(world, floorLevel, sbb);
@@ -338,7 +345,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Make the floor for the liches room
 	 */
-	protected void makeLichFloor(World world, int floorLevel, int rotation, StructureBoundingBox sbb) {
+	protected void makeLichFloor(World world, int floorLevel, Rotation rotation, StructureBoundingBox sbb) {
 		EnumFacing temp = this.getCoordBaseMode();
 		this.setCoordBaseMode(getStructureRelativeRotation(rotation));
 

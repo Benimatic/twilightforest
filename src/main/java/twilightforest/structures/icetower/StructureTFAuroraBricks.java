@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFAuroraBrick;
 import twilightforest.block.TFBlocks;
 
 public class StructureTFAuroraBricks extends StructureComponent.BlockSelector {
@@ -12,13 +13,14 @@ public class StructureTFAuroraBricks extends StructureComponent.BlockSelector {
 	public void selectBlocks(Random par1Random, int x, int y, int z, boolean wall) {
         if (!wall)
         {
-            this.field_151562_a = Blocks.AIR;
-            this.selectedBlockMetaData = 0;
+        	this.blockstate = Blocks.AIR.getDefaultState();
         }
         else
         {
-            this.field_151562_a = TFBlocks.auroraBlock;
-            this.selectedBlockMetaData = Math.abs(x + z) % 16;
+            this.blockstate = TFBlocks.auroraBlock.getDefaultState().withProperty(
+		            BlockTFAuroraBrick.VARIANT,
+		            Math.abs(x + z) % 16
+            );
         }
 	}
 

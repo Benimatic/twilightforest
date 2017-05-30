@@ -31,6 +31,8 @@ import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.TFEntityNames;
 import twilightforest.util.VanillaEntityNames;
 
+import javax.annotation.Nullable;
+
 import static net.minecraft.block.BlockStoneSlab.EnumType.SMOOTHBRICK;
 import static twilightforest.block.BlockTFCastleMagic.COLOR;
 
@@ -131,7 +133,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		// we should have a door where we started
-		addOpening(0, 1, size / 2, 2);
+		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 
 		// add a roof?
 		makeARoof(parent, list, rand);
@@ -142,24 +144,20 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		if (size > 4) {
 			// sub towers
-			for (int i = 0; i < 4; i++) {
-				if (i == 2) {
-					// no towers behind us
-					continue;
-				}
-				int[] dest = getValidOpening(rand, i);
-				if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 2, height - 4, i) && this.size > 8) {
-					if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 4, height - 6, i)) {
-						makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 6, height - 12, i);
+			for (final Rotation towerRotation : Rotation.values())
+			{
+				if (towerRotation == Rotation.CLOCKWISE_180) continue;
+				int[] dest = getValidOpening(rand, towerRotation);
+				if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 2, height - 4, towerRotation) && this.size > 8) {
+					if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 4, height - 6, towerRotation)) {
+						makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 6, height - 12, towerRotation);
 					}
 				}
 			}
 		}
-		
-		
 	}
 	
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 6) {
 			return false;
@@ -196,7 +194,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 
 
-	protected boolean makeBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	protected boolean makeBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// bridges are size 3 always
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -228,8 +226,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Add an opening to the outside (or another tower) in the specified direction.
 	 */
-	public void addOpening(int dx, int dy, int dz, int direction) {
-		openingTowards[direction] = true;
+	public void addOpening(int dx, int dy, int dz, Rotation direction) {
+		openingTowards[direction.ordinal()] = true;
 		if (dy > highestOpening) {
 			highestOpening = dy;
 		}
@@ -422,19 +420,19 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			final IBlockState woolLightBlue = Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.LIGHT_BLUE);
 
 			for (int i = 0; i < numMarkers; i++) {
-	        	int[] spot = getValidOpening(rand, 0);
+	        	int[] spot = getValidOpening(rand, Rotation.NONE);
 	        	setBlockState(world, woolWhite, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
-	        	int[] spot = getValidOpening(rand, 1);
+	        	int[] spot = getValidOpening(rand, Rotation.CLOCKWISE_90);
 	        	setBlockState(world, woolOrange, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
-	        	int[] spot = getValidOpening(rand, 2);
+	        	int[] spot = getValidOpening(rand, Rotation.CLOCKWISE_180);
 	        	setBlockState(world, woolMagenta, spot[0], spot[1], spot[2], sbb);
 	        }
 	        for (int i = 0; i < numMarkers; i++) {
-	        	int[] spot = getValidOpening(rand, 3);
+	        	int[] spot = getValidOpening(rand, Rotation.COUNTERCLOCKWISE_90);
 	        	setBlockState(world, woolLightBlue, spot[0], spot[1], spot[2], sbb);
 	        }
         }
@@ -485,11 +483,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		
 		if (floors > 1) {
-			int ladderDir = 3;
-			int downLadderDir = -1;
+			Rotation ladderDir = Rotation.COUNTERCLOCKWISE_90;
+			Rotation downLadderDir = null;
 
 			// decorate bottom floor
-			decorateFloor(world, rand, 0, 1, floorHeight, ladderDir, -1, sbb);
+			decorateFloor(world, rand, 0, 1, floorHeight, ladderDir, null, sbb);
 
 			// decorate middle floors
 			for (int i = 1; i < floors - 1; i++) {
@@ -497,18 +495,17 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				int top = floorHeight * (i + 1);
 
 				downLadderDir = ladderDir;
-				ladderDir++;
-				ladderDir %= 4;
+				ladderDir = ladderDir.add(Rotation.CLOCKWISE_90);
 
 				decorateFloor(world, rand, i, bottom, top, ladderDir, downLadderDir, sbb);
 			}
 
 			// decorate top floor
-			decorateFloor(world, rand, floors, 1 + floorHeight * (floors - 1), height - 1, -1, ladderDir, sbb);
+			decorateFloor(world, rand, floors, 1 + floorHeight * (floors - 1), height - 1, null, ladderDir, sbb);
 		}
 		else {
 			// just one floor, decorate that, no ladders
-			decorateFloor(world, rand, 0, 1, height - 1, -1, -1, sbb);
+			decorateFloor(world, rand, 0, 1, height - 1, null, null, sbb);
 		}
 	}
 	
@@ -521,10 +518,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param ladderUpDir
 	 * @param ladderDownDir
 	 */
-	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, StructureBoundingBox sbb) {
 
 		final IBlockState ladder = Blocks.LADDER.getDefaultState();
-		if (ladderUpDir > -1) {
+		if (ladderUpDir != null ) {
 			// add ladder going up
 			final IBlockState ladderUp = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderUpDir).getOpposite());
 
@@ -535,7 +532,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			}
 		}
 		
-		if (ladderDownDir > -1) {
+		if (ladderDownDir != null) {
 			// add ladder going down
 			final IBlockState ladderDown = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderDownDir).getOpposite());
 			int dx = getLadderX(ladderDownDir);
@@ -546,25 +543,25 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		}
 		
 		// pick a decoration?
-		if (rand.nextInt(7) == 0 && ladderDownDir == -1) {
+		if (rand.nextInt(7) == 0 && ladderDownDir == null) {
 			decorateWell(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
-		else if (rand.nextInt(7) == 0 && ladderDownDir == -1) {
+		else if (rand.nextInt(7) == 0 && ladderDownDir == null) {
 			decorateSkeletonRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
-		else if (rand.nextInt(6) == 0 && ladderDownDir == -1) {
+		else if (rand.nextInt(6) == 0 && ladderDownDir == null) {
 			decorateZombieRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
-		else if (rand.nextInt(5) == 0 && ladderDownDir == -1) {
+		else if (rand.nextInt(5) == 0 && ladderDownDir == null) {
 			decorateCactusRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
-		else if (rand.nextInt(4) == 0 && ladderDownDir > -1) {
+		else if (rand.nextInt(4) == 0 && ladderDownDir != null) {
 			decorateTreasureChest(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} 
 		else if (rand.nextInt(5) == 0) {
 			decorateSpiderWebs(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} 
-		else if (rand.nextInt(12) == 0 && ladderDownDir > -1) {
+		else if (rand.nextInt(12) == 0 && ladderDownDir != null) {
 			// these are annoying
 			decorateSolidRock(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} 
@@ -586,7 +583,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Decorate this floor with a scenic well.
 	 */
-	protected void decorateWell(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateWell(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		int cx = size / 2;
 		int cz = cx;
 		int cy = bottom;
@@ -621,7 +618,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Add a skeleton spawner on this floor and decorate it in an appropriately scary manner.
 	 */
-	protected void decorateSkeletonRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateSkeletonRoom(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		// skeleton spawner
 		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, VanillaEntityNames.SKELETON);
 
@@ -659,7 +656,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Add a zombie spawner on this floor and decorate it in an appropriately scary manner.
 	 */
-	protected void decorateZombieRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateZombieRoom(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		// zombie spawner
 		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, VanillaEntityNames.ZOMBIE);
 		final IBlockState ironBars = Blocks.IRON_BARS.getDefaultState();
@@ -699,7 +696,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Fill this room with sand and floor-to-ceiling cacti
 	 */
-	protected void decorateCactusRoom(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateCactusRoom(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		// sand & random dead bush
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -735,7 +732,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Decorate this floor with an enticing treasure chest.
 	 */
-	protected void decorateTreasureChest(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateTreasureChest(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		int cx = size / 2;
 		int cz = cx;
 		final IBlockState stoneBrick = Blocks.STONEBRICK.getDefaultState();
@@ -801,7 +798,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Decorate this floor with a mass of messy spider webs.
 	 */
-	protected void decorateSpiderWebs(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateSpiderWebs(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		for (int dy = bottom; dy < top; dy++) {
 			int chance = (top - dy + 2);
 			for (int dx = 1; dx <= size - 2; dx++) {
@@ -872,7 +869,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Decorate this floor with solid rock
 	 */
-	protected void decorateSolidRock(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateSolidRock(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		for (int dy = bottom; dy < top; dy++) {
 			for (int dx = 1; dx <= size - 2; dx++) {
 				for (int dz = 1; dz <= size - 2; dz++) {
@@ -891,7 +888,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Decorate this floor with an orderly library
 	 */
-	protected void decorateLibrary(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateLibrary(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		// put some bookshelves around the room
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -922,7 +919,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Place a library treasure chest somewhere in the library
 	 */
-	protected void decorateLibraryTreasure(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateLibraryTreasure(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		switch (rand.nextInt(4)) {
 		case 0:
 		default:
@@ -951,7 +948,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Decorate this floor with an overflowing library
 	 */
-	protected void decorateFullLibrary(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateFullLibrary(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		// put some bookshelves around the room
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -1081,7 +1078,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 	
 	
-	protected boolean isLadderPos(int x, int z, int ladderUpDir, int ladderDownDir) {
+	protected boolean isLadderPos(int x, int z, Rotation ladderUpDir, Rotation ladderDownDir) {
 		if (x == getLadderX(ladderUpDir) && z == getLadderZ(ladderUpDir)) {
 			return true;
 		}
@@ -1099,18 +1096,18 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param ladderDir
 	 * @return
 	 */
-	protected int getLadderX(int ladderDir) {
+	protected int getLadderX(Rotation ladderDir) {
 		switch (ladderDir) {
-		case 0:
-			return size - 2;
-		case 1:
-			return size / 2 + 1;
-		case 2:
-			return 1;
-		case 3:
-			return size / 2 - 1;
-		default:
-			return size / 2;
+			case NONE:
+				return size - 2;
+			case CLOCKWISE_90:
+				return size / 2 + 1;
+			case CLOCKWISE_180:
+				return 1;
+			case COUNTERCLOCKWISE_90:
+				return size / 2 - 1;
+			default:
+				return size / 2;
 		}
 	}
 	
@@ -1120,19 +1117,19 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * @param ladderDir
 	 * @return
 	 */
-	protected int getLadderZ(int ladderDir) {
+	protected int getLadderZ(Rotation ladderDir) {
 		
 		switch (ladderDir) {
-		case 0:
-			return size / 2 - 1;
-		case 1:
-			return size - 2;
-		case 2:
-			return size / 2 + 1;
-		case 3:
-			return 1;
-		default:
-			return size / 2;
+			case NONE:
+				return size / 2 - 1;
+			case CLOCKWISE_90:
+				return size - 2;
+			case CLOCKWISE_180:
+				return size / 2 + 1;
+			case COUNTERCLOCKWISE_90:
+				return 1;
+			default:
+				return size / 2;
 		}
 	}
 
@@ -1164,8 +1161,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				}
 			}
 
-			int ladderDir = 3;
-			int downLadderDir = -1;
+			Rotation ladderDir = Rotation.COUNTERCLOCKWISE_90;
+			Rotation downLadderDir = null;
 			
 			// place a ladder going up
 			//TODO: make this ladder connect better to the stairs
@@ -1182,14 +1179,13 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				int top = base + floorHeight * (i + 1);
 
 				downLadderDir = ladderDir;
-				ladderDir++;
-				ladderDir %= 4;
+				ladderDir = ladderDir.add(Rotation.CLOCKWISE_90);
 
 				decorateFloor(world, rand, i, bottom, top, ladderDir, downLadderDir, sbb);
 			}
 
 			// decorate top floor
-			decorateFloor(world, rand, floors, base + 1 + floorHeight * (floors - 1), height - 1, -1, ladderDir, sbb);
+			decorateFloor(world, rand, floors, base + 1 + floorHeight * (floors - 1), height - 1, null, ladderDir, sbb);
 			
 			// decorate below the bottom floor, into the stairs
 			if (base > 8)
@@ -1708,7 +1704,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
-	public int[] getValidOpening(Random rand, int direction) {
+	public int[] getValidOpening(Random rand, Rotation direction) {
 		// variables!
 		int wLength = size - 2; // wall length
 		int offset = 1; // wall thickness
@@ -1720,8 +1716,8 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		}
 		
 		// for directions 0 or 2, the wall lies along the z axis
-		if (direction == 0 || direction == 2) {
-			int rx = direction == 0 ? size - 1 : 0;
+		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
+			int rx = direction == Rotation.NONE ? size - 1 : 0;
 			int rz = offset + rand.nextInt(wLength);
 			int ry = getYByStairs(rz, rand, direction);
 			
@@ -1729,9 +1725,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		}
 		
 		// for directions 1 or 3, the wall lies along the x axis
-		if (direction == 1 || direction == 3) {
+		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
 			int rx = offset + rand.nextInt(wLength);
-			int rz = direction == 1 ? size - 1 : 0;
+			int rz = direction == Rotation.CLOCKWISE_90 ? size - 1 : 0;
 			int ry = getYByStairs(rx, rand, direction);
 			
 			return new int[] {rx, ry, rz};
@@ -1747,7 +1743,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 * Gets a Y value where the stairs meet the specified X coordinate.
 	 * Also works for Z coordinates.
 	 */
-	protected int getYByStairs(int rx, Random rand, int direction) {
+	protected int getYByStairs(int rx, Random rand, Rotation direction) {
 		// initialize some variables
 		int rise = 1;
 		int base = 0;
@@ -1755,32 +1751,32 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		if (size == 15) {
 			rise = 10;
 			// we lie a little here to get the towers off the ground
-			base = (direction == 0 || direction == 2) ? 23 : 28;
+			base = (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) ? 23 : 28;
 		}
 		if (size == 9) {
 			rise = 6;
-			base = (direction == 0 || direction == 2) ? 2 : 5;
+			base = (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) ? 2 : 5;
 		}
 		if (size == 7) {
 			rise = 4;
-			base = (direction == 0 || direction == 2) ? 2 : 4;
+			base = (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) ? 2 : 4;
 		}
 		if (size == 5) {
 			rise = 4;
 			// bleh, a switch.
 			switch (direction) {
-			case 0:
-				base = 3;
-				break;
-			case 1:
-				base = 2;
-				break;
-			case 2:
-				base = 5;
-				break;
-			case 3:
-				base = 4;
-				break;
+				case NONE:
+					base = 3;
+					break;
+				case CLOCKWISE_90:
+					base = 2;
+					break;
+				case CLOCKWISE_180:
+					base = 5;
+					break;
+				case COUNTERCLOCKWISE_90:
+					base = 4;
+					break;
 			}
 		}
 		
@@ -1794,11 +1790,11 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			// the staircase (a/de)scends across the room.
 			if (size == 15) {
 				// blech, another dumb kludge here
-				dy -= (direction == 0 || direction == 3) ? (rx - 2) / 2 : (size - rx - 3) / 2;
+				dy -= (direction == Rotation.NONE || direction == Rotation.COUNTERCLOCKWISE_90) ? (rx - 2) / 2 : (size - rx - 3) / 2;
 			}
 			else {
 				// the rest are fairly normal
-				dy -= (direction == 0 || direction == 3) ? (rx - 1) / 2 : (size - rx - 2) / 2;
+				dy -= (direction == Rotation.NONE || direction == Rotation.COUNTERCLOCKWISE_90) ? (rx - 1) / 2 : (size - rx - 2) / 2;
 			}
 //			// even xs can be one higher if they want.
 //			if (rx % 2 == 0 && size != 15) {
@@ -2343,7 +2339,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void makeGlyphBranches(World world, Random rand, EnumDyeColor colour, StructureBoundingBox sbb) {
 		// pick a random side of the tower
-		int rotation = rand.nextInt(4);
+		Rotation rotation = Rotation.values()[rand.nextInt(4)];
 		
 		// start somewhere in the lower part
 		int startHeight = rand.nextInt((int) (this.height * 0.66F));

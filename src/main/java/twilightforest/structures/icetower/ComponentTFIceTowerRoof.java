@@ -42,7 +42,7 @@ public class ComponentTFIceTowerRoof extends ComponentTFTowerRoof {
 				//int rHeight = MathHelper.ceiling_float_int(Math.min(x * x / 9F, z * z / 9F));
 				
 				for (int y = 0; y < rHeight; y++) {
-					this.setBlockState(world, deco.blockID, deco.blockMeta, x, y, z, sbb);
+					this.setBlockState(world, deco.blockState, x, y, z, sbb);
 
 				}
 			}

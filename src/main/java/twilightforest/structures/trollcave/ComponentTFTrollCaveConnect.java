@@ -67,11 +67,12 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// make 4 caves
 		if (this.getComponentType() < 3) {
 
-			for (int i = 0; i < 4; i++) {
-				BlockPos dest = getValidOpening(rand, 2, i);
+			for (final Rotation rotation : Rotation.values())
+			{
+				BlockPos dest = getValidOpening(rand, 2, rotation);
 
-				if (rand.nextBoolean() || !makeGardenCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 30, 15, i)) {
-					makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 20, 15, i);
+				if (rand.nextBoolean() || !makeGardenCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 30, 15, rotation)) {
+					makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 20, 15, rotation);
 				}
 
 			}
@@ -89,9 +90,9 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
     		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
     		
             // wall decorations
-    		for (int i = 0; i < 4; i++) {
-    			if (!this.openingTowards[i]) {
-    				decorateWall(world, sbb, decoRNG, i);
+    		for (Rotation rotation : Rotation.values()) {
+    			if (!this.openingTowards[rotation.ordinal()]) {
+    				decorateWall(world, sbb, decoRNG, rotation);
     			}
     		}
     		
@@ -127,7 +128,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// monolith
 		int mid = this.size / 2;
 		int height = 7 + rand.nextInt(8);
-		int rotation = rand.nextInt(4);
+		Rotation rotation = Rotation.values()[rand.nextInt(4)];
 		
 		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid - 1, mid - 1, height, mid - 1, Blocks.OBSIDIAN.getDefaultState(), rotation);
 		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid - 1, mid + 0, height - 2, mid - 1, Blocks.OBSIDIAN.getDefaultState(), rotation);
@@ -145,11 +146,11 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		return count;
 	}
 
-	private void decorateWall(World world, StructureBoundingBox sbb, Random decoRNG, int rotation) {
+	private void decorateWall(World world, StructureBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		
 		if (decoRNG.nextBoolean()) {
 			//FIXME: AtomicBlom: Don't do this, bring rotation all the way through.
-			decorateBracketMushrooms(world, sbb, decoRNG, Rotation.values()[rotation]);
+			decorateBracketMushrooms(world, sbb, decoRNG, rotation);
 		} else if (decoRNG.nextBoolean()) {
 			decorateStoneFormation(world, sbb, decoRNG, rotation);
 			decorateStoneFormation(world, sbb, decoRNG, rotation);
@@ -159,7 +160,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	}
 
-	private void decorateStoneFormation(World world, StructureBoundingBox sbb, Random decoRNG, int rotation) {
+	private void decorateStoneFormation(World world, StructureBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		int z = 5 + decoRNG.nextInt(7);
 		int startY = 1 + decoRNG.nextInt(2);
 		
@@ -177,7 +178,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		}
 	}
 
-	private void makeSingleStoneFormation(World world, StructureBoundingBox sbb, Random decoRNG, int rotation, int z, int y, int width, int depth) {
+	private void makeSingleStoneFormation(World world, StructureBoundingBox sbb, Random decoRNG, Rotation rotation, int z, int y, int width, int depth) {
 		if (decoRNG.nextInt(8) == 0) {
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.OBSIDIAN.getDefaultState(), rotation);
 		} else if (decoRNG.nextInt(4) == 0) {
@@ -189,7 +190,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		//this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.5F, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollSteinn, 0, Blocks.STONE, 0, rotation);
 	}
 
-	private void decorateStoneProjection(World world, StructureBoundingBox sbb, Random decoRNG, int rotation) {
+	private void decorateStoneProjection(World world, StructureBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		int z = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		int y = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		
@@ -284,7 +285,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		return state.withProperty(BlockHugeMushroom.VARIANT, rotationalStates[rotationalStateIndex % rotationalStates.length]);
 	}
 
-	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
+	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
@@ -297,7 +298,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 			cave.buildComponent(list.get(0), list, rand);
 			//addOpening(x, y, z, rotation);
 			
-			this.openingTowards[rotation] = true;
+			this.openingTowards[rotation.ordinal()] = true;
 
 			return true;
 		}
@@ -328,9 +329,9 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 	
 	@Override
-	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
+	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		if (super.makeSmallerCave(list, rand, index, x, y, z, caveSize, caveHeight, rotation)) {
-			this.openingTowards[rotation] = true;
+			this.openingTowards[rotation.ordinal()] = true;
 			return true;
 		} else {
 			return false;

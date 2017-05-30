@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -49,18 +50,19 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 			}
 			
 		}
-		
-		this.func_151554_b(world, deco.blockID, deco.blockMeta, 0, 0, 5, sbb);
+
+		this.setBlockState(world, deco.blockState, 0, 0, 5, sbb);
 
 		
 		return true;
 	}
 
 	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, int stairMeta) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).isReplaceable(world, x, y, z)) {
-			this.setBlockState(world, deco.blockID, deco.blockMeta, x, y, z, sbb);
+		BlockPos pos = new BlockPos(x, y, z);
+		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, pos)) {
+			this.setBlockState(world, deco.blockState, x, y, z, sbb);
 			//this.setBlockState(world, deco.stairID, this.getStairMeta(stairMeta), x, y, z, sbb);
-			this.func_151554_b(world, deco.blockID, deco.blockMeta, x, y - 1, z, sbb);
+			this.setBlockState(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}
 }

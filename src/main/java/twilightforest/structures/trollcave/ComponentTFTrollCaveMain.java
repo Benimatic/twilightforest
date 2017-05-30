@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -74,13 +75,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		// make 4 caves
-		for (int i = 0; i < 4; i++) {
-			BlockPos dest = getValidOpening(rand, 5, i);
-			
-			makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, i);
+		for (final Rotation caveRotation : Rotation.values())
+		{
+			BlockPos dest = getValidOpening(rand, 5, caveRotation);
 
+			makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, caveRotation);
 		}
-		
+
 		// add cloud castle
 		ComponentTFCloudCastle castle = new ComponentTFCloudCastle(this.getComponentType() + 1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), 168, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
 		list.add(castle);
@@ -93,7 +94,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	}
 
 
-	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
+	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 		
@@ -185,14 +186,14 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
-	public BlockPos getValidOpening(Random rand, int caveHeight, int direction) {
+	public BlockPos getValidOpening(Random rand, int caveHeight, Rotation direction) {
 		// variables!
 		int offset = this.size / 4; // wall thickness
 		int wLength = size - (offset * 2); // wall length
 
 		// for directions 0 or 2, the wall lies along the z axis
-		if (direction == 0 || direction == 2) {
-			int rx = direction == 0 ? size - 1 : 0;
+		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
+			int rx = direction == Rotation.NONE ? size - 1 : 0;
 			int rz = offset + rand.nextInt(wLength);
 			int ry = (rand.nextInt(offset) - rand.nextInt(offset));
 			
@@ -200,9 +201,9 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		}
 		
 		// for directions 1 or 3, the wall lies along the x axis
-		if (direction == 1 || direction == 3) {
+		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
 			int rx = offset + rand.nextInt(wLength);
-			int rz = direction == 1 ? size - 1 : 0;
+			int rz = direction == Rotation.CLOCKWISE_90 ? size - 1 : 0;
 			int ry = (rand.nextInt(offset) - rand.nextInt(offset));
 			
 			return new BlockPos(rx, ry, rz);

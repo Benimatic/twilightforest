@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -46,8 +47,8 @@ public class ComponentTFIceTowerBeard extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.size = par1NBTTagCompound.getInteger("beardSize");
         this.height = par1NBTTagCompound.getInteger("beardHeight");
 	}

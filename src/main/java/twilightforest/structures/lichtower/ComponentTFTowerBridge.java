@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -38,7 +39,7 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 		
 		int[] dest = new int[] {2, 1, 1};//getValidOpening(rand, 0);
 		
-		makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], dSize, dHeight, 0);
+		makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], dSize, dHeight, Rotation.NONE);
 	}
 	
 	/**

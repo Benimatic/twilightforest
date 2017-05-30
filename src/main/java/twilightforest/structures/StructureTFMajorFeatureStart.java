@@ -23,6 +23,8 @@ import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
+import twilightforest.structures.icetower.ComponentTFIceTowerMain;
+import twilightforest.structures.icetower.TFIceTowerPieces;
 import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
@@ -48,9 +50,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //    	TFStrongholdPieces.registerPieces();
 //    	TFMinotaurMazePieces.registerPieces();
 //    	TFDarkTowerPieces.registerPieces();
-//    	TFIceTowerPieces.registerPieces();
 //    	TFMushroomTowerPieces.registerPieces();
 //    	TFFinalCastlePieces.registerFinalCastlePieces();
+	    TFIceTowerPieces.registerPieces();
 	    TFTrollCavePieces.registerPieces();
 	    TFHollowTreePieces.registerPieces();
 		TFLichTowerPieces.registerPieces();
@@ -105,7 +107,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			
 			boundingBox.offset(0, offY, 0);
 
-			for (StructureComponent com : (LinkedList<StructureComponent>) getComponents())
+			for (StructureComponent com : getComponents())
 			{
 				com.getBoundingBox().offset(0, offY, 0);
 			}
@@ -132,7 +134,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);
-			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
+			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
 		}
 
 		if (feature == TFFeature.nagaCourtyard) {
@@ -173,7 +175,12 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.trollCave) {
+			TwilightForestMod.LOGGER.info("Troll Cave @ {} {} {}", x, y, z);
 			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
+		}
+		if (feature == TFFeature.iceTower) {
+			TwilightForestMod.LOGGER.info("Ice Tower @ {} {} {}", x, y, z);
+			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
 		}
 //FIXME: Disabled Structure
 //		if (feature == TFFeature.labyrinth) {
@@ -185,9 +192,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //		if (feature == TFFeature.tfStronghold) {
 //			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
 //		}
-//		if (feature == TFFeature.iceTower) {
-//			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
-//		}
+
 //		if (feature == TFFeature.mushroomTower) {
 //			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
 //		}

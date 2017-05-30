@@ -8,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
 
 public class ComponentTFIceTowerBridge extends StructureTFComponent {
@@ -43,8 +44,8 @@ public class ComponentTFIceTowerBridge extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.length = par1NBTTagCompound.getInteger("bridgeLength");
 	}
 
