@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
@@ -346,6 +347,7 @@ public abstract class StructureTFComponent extends StructureComponent {
         }
     }
 
+    @Deprecated
     private EnumFacing fakeBaseMode(int rotationsCW) {
         EnumFacing oldBaseMode = getCoordBaseMode();
 
@@ -360,6 +362,19 @@ public abstract class StructureTFComponent extends StructureComponent {
 
         return oldBaseMode;
     }
+
+	private EnumFacing fakeBaseMode(Rotation rotationsCW) {
+		final EnumFacing oldBaseMode = getCoordBaseMode();
+
+		if (oldBaseMode != null) {
+			EnumFacing pretendBaseMode = oldBaseMode;
+			pretendBaseMode = rotationsCW.rotate(pretendBaseMode);
+
+			setCoordBaseMode(pretendBaseMode);
+		}
+
+		return oldBaseMode;
+	}
 
     // [VanillaCopy] Keep pinned to the signature of getXWithOffset
 	protected int getXWithOffsetRotated(int x, int z, int rotationsCW) {
@@ -378,11 +393,18 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
 
     // [VanillaCopy] Keep pinned to the signature of setBlockState
+	@Deprecated
     protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, int rotationsCW, StructureBoundingBox sbb) {
         EnumFacing oldMode = fakeBaseMode(rotationsCW);
         setBlockState(world, state, x, y, z, sbb);
         setCoordBaseMode(oldMode);
     }
+
+	protected void setBlockStateRotated(World world, IBlockState state, int x, int y, int z, Rotation rotationsCW, StructureBoundingBox sbb) {
+		EnumFacing oldMode = fakeBaseMode(rotationsCW);
+		setBlockState(world, state, x, y, z, sbb);
+		setCoordBaseMode(oldMode);
+	}
 
     @Override
     public IBlockState getBlockStateFromPos(World world, int x, int y, int z, StructureBoundingBox sbb) {
@@ -405,11 +427,18 @@ public abstract class StructureTFComponent extends StructureComponent {
     }
     
     // [VanillaCopy] Keep pinned to the signature of fillWithBlocks with false existingOnly arg and repeated state argument
+	@Deprecated
     protected void fillBlocksRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState state, int rotation) {
         EnumFacing oldBase = fakeBaseMode(rotation);
         fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, state, state, false);
         setCoordBaseMode(oldBase);
     }
+
+	protected void fillBlocksRotated(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState state, Rotation rotation) {
+		EnumFacing oldBase = fakeBaseMode(rotation);
+		fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, state, state, false);
+		setCoordBaseMode(oldBase);
+	}
 
     // [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
     protected void randomlyFillBlocksRotated(World worldIn, StructureBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, IBlockState blockstate1, IBlockState blockstate2, int rotation) {

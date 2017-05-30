@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFArmoredGiant;
 import twilightforest.entity.EntityTFGiantMiner;
@@ -45,8 +46,8 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.minerPlaced = par1NBTTagCompound.getBoolean("minerPlaced");
         this.warriorPlaced = par1NBTTagCompound.getBoolean("warriorPlaced");
 	}

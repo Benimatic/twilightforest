@@ -172,6 +172,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			TwilightForestMod.LOGGER.info("Lich Tower @ {} {} {}", x, y, z);
 			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
 		}
+		if (feature == TFFeature.trollCave) {
+			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
+		}
 //FIXME: Disabled Structure
 //		if (feature == TFFeature.labyrinth) {
 //			return new ComponentTFMazeRuins(world, rand, 0, x, y, z);
@@ -188,9 +191,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //		if (feature == TFFeature.mushroomTower) {
 //			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
 //		}
-		if (feature == TFFeature.trollCave) {
-			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
-		}
+
 //		if (feature == TFFeature.finalCastle) {
 //			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
 //		}

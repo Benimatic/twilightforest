@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -145,7 +148,8 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	private void decorateWall(World world, StructureBoundingBox sbb, Random decoRNG, int rotation) {
 		
 		if (decoRNG.nextBoolean()) {
-			decorateBracketMushrooms(world, sbb, decoRNG, rotation);
+			//FIXME: AtomicBlom: Don't do this, bring rotation all the way through.
+			decorateBracketMushrooms(world, sbb, decoRNG, Rotation.values()[rotation]);
 		} else if (decoRNG.nextBoolean()) {
 			decorateStoneFormation(world, sbb, decoRNG, rotation);
 			decorateStoneFormation(world, sbb, decoRNG, rotation);
@@ -202,7 +206,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	/**
 	 * Decorate with a patch of bracket fungi
 	 */
-	private void decorateBracketMushrooms(World world, StructureBoundingBox sbb, Random decoRNG, int rotation) {
+	private void decorateBracketMushrooms(World world, StructureBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		int z = 5 + decoRNG.nextInt(7);
 		int startY = 1 + decoRNG.nextInt(4);
 		
@@ -211,7 +215,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 			int width = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
 			int depth = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
 			Block mushBlock = ((decoRNG.nextInt(3) == 0) ? TFBlocks.hugeGloomBlock : (decoRNG.nextBoolean() ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK));
-			makeSingleBracketMushroom(world, sbb, rotation, z, y, width, depth, mushBlock);
+			makeSingleBracketMushroom(world, sbb, rotation, z, y, width, depth, mushBlock.getDefaultState());
 
 			// wiggle a little
 			z += decoRNG.nextInt(4) - decoRNG.nextInt(4);
@@ -224,72 +228,60 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	/**
 	 * Make one mushroom with the specified parameters
 	 */
-	private void makeSingleBracketMushroom(World world, StructureBoundingBox sbb, int rotation, int z, int y, int width, int depth, Block mushBlock) {
-		
-		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock, 5, rotation);
+	private void makeSingleBracketMushroom(World world, StructureBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, IBlockState mushBlock) {
 
-		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), mushBlock, getMushroomMetaFor(4, rotation), rotation);
-		
-		for (int d = 0; d < (depth - 1); d++) {
-			this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(2, rotation), size - (2 + d), y, z - width, rotation, sbb);
-		}
-		this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(1, rotation), size - (depth + 1), y, z - width, rotation, sbb);
 
+
+		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), rotation);
+
+		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, BlockHugeMushroom.EnumType.WEST, rotation), rotation);
+
+		final IBlockState northMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH, rotation);
 		for (int d = 0; d < (depth - 1); d++) {
-			this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(8, rotation), size - (2 + d), y, z + width, rotation, sbb);
+			this.setBlockStateRotated(world, northMushroom, size - (2 + d), y, z - width, rotation, sbb);
 		}
-		this.setBlockStateRotated(world, mushBlock, getMushroomMetaFor(7, rotation), size - (depth + 1), y, z + width, rotation, sbb);
+		final IBlockState northWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH_WEST, rotation);
+		this.setBlockStateRotated(world, northWestMushroom, size - (depth + 1), y, z - width, rotation, sbb);
+
+		final IBlockState southMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH, rotation);
+		for (int d = 0; d < (depth - 1); d++) {
+			this.setBlockStateRotated(world, southMushroom, size - (2 + d), y, z + width, rotation, sbb);
+		}
+		final IBlockState southWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH_WEST, rotation);
+		this.setBlockStateRotated(world, southWestMushroom, size - (depth + 1), y, z + width, rotation, sbb);
 
 		
 	}
 
-
-	/**
-	 * Hacky, incomplete method to generate mushroom block metadata
-	 */
-	private int getMushroomMetaFor(int meta, int rotation) {
-		if (meta > 0 && meta < 10) {
-
-			int totalRot = (getCoordBaseMode() + rotation) % 4;
-
-			switch (totalRot) {
-			case 0:
-				return meta;
-			case 1:
-				switch (meta) {
-				case 1:
-					return 3;
-				case 2:
-					return 6;
-				case 4:
-					return 2;
-				case 7:
-					return 1;
-				case 8:
-					return 4;
-				}			
-			case 2:
-				return 10 - (meta % 10);
-			case 3:
-				switch (meta) {
-				case 1:
-					return 7;
-				case 2:
-					return 4;
-				case 4:
-					return 8;
-				case 7:
-					return 9;
-				case 8:
-					return 6;
-				}			
-			default:
-				return 15;
-			}
-		} else {
-			return meta;
+	private IBlockState getMushroomState(IBlockState mushroomBlockState, BlockHugeMushroom.EnumType defaultRotation, Rotation rotation)
+	{
+		if (mushroomBlockState.getPropertyKeys().contains(BlockHugeMushroom.VARIANT))
+		{
+			return rotateMushroom(mushroomBlockState.withProperty(BlockHugeMushroom.VARIANT, defaultRotation), rotation);
 		}
-		
+		return mushroomBlockState;
+	}
+
+	private IBlockState rotateMushroom(IBlockState state, Rotation rotation) {
+		BlockHugeMushroom.EnumType[] rotationalStates = {
+				BlockHugeMushroom.EnumType.NORTH,
+				BlockHugeMushroom.EnumType.NORTH_EAST,
+				BlockHugeMushroom.EnumType.EAST,
+				BlockHugeMushroom.EnumType.SOUTH_EAST,
+				BlockHugeMushroom.EnumType.SOUTH,
+				BlockHugeMushroom.EnumType.SOUTH_WEST,
+				BlockHugeMushroom.EnumType.WEST,
+				BlockHugeMushroom.EnumType.NORTH_WEST,
+		};
+
+		int[] rotationMapping = {7, 0, 1, 6, -1, 2, 5, 4, 3, -1, -1, -1, -1, -1, -1, -1};
+		int rotationalStateIndex = state.getValue(BlockHugeMushroom.VARIANT).ordinal();
+		if (rotationMapping[rotationalStateIndex] == -1) {
+			return state;
+		}
+
+		rotationalStateIndex += rotation.ordinal()* 2;
+		return state.withProperty(BlockHugeMushroom.VARIANT, rotationalStates[rotationalStateIndex % rotationalStates.length]);
 	}
 
 	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, int rotation) {
