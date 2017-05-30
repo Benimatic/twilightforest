@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -41,9 +42,9 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 		// add a beard
 		makeABeard(parent, list, rand);
 		
-		for (int i = 0; i < 4; i++)
+		for (Rotation i : Rotation.values())
 		{
-			if (i == 2 || rand.nextBoolean())
+			if (i == Rotation.CLOCKWISE_180 || rand.nextBoolean())
 			{
 				continue;
 			}
@@ -109,14 +110,14 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 	 */
 	protected void addBossTrapFloors(World world, Random rand, StructureBoundingBox sbb, int bottom, int top) {
 
-		makeFullFloor(world, sbb, 3, 4, 4);
+		makeFullFloor(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, 4);
 
-		addStairsDown(world, sbb, 3, 4, size - 2, 4);
-		addStairsDown(world, sbb, 3, 4, size - 3, 4);
+		addStairsDown(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, size - 2, 4);
+		addStairsDown(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, size - 3, 4);
 
 		// stairs to roof
-		addStairsDown(world, sbb, 1, this.height - 1, size - 2, 4);
-		addStairsDown(world, sbb, 1, this.height - 1, size - 3, 4);
+		addStairsDown(world, sbb, Rotation.CLOCKWISE_90, this.height - 1, size - 2, 4);
+		addStairsDown(world, sbb, Rotation.CLOCKWISE_90, this.height - 1, size - 3, 4);
 	}
 
 

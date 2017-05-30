@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -33,12 +34,12 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing
 		{
 			this.deco = ((StructureTFComponent)parent).deco;
 		}
-		makeTowerWing(list, rand, this.getComponentType(), 4, 1, 2, dSize, dHeight, 0);
+		makeTowerWing(list, rand, this.getComponentType(), 4, 1, 2, dSize, dHeight, Rotation.NONE);
 	}
 	
 	
 	@Override
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 6) {
 			return false;
