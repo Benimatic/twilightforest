@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStandingSign;
 import net.minecraft.block.material.Material;
@@ -439,11 +441,6 @@ public abstract class StructureTFComponent extends StructureComponent {
 		return rotationsCW.rotate(getCoordBaseMode());
 	}
 
-	protected static IBlockState getStairState(IBlockState stairState, EnumFacing direction, Rotation rotation, boolean isTopHalf) {
-		return stairState.withProperty(BlockStairs.FACING, rotation.rotate(direction))
-				.withProperty(BlockStairs.HALF, isTopHalf ? BlockStairs.EnumHalf.TOP : BlockStairs.EnumHalf.BOTTOM);
-	}
-
 	/**
 	 * Nullify all the sky light in this component bounding box
 	 */
@@ -570,4 +567,18 @@ public abstract class StructureTFComponent extends StructureComponent {
 			    getZWithOffset(x, z)
 	    );
 	}
+
+	/* BlockState Helpers */
+    protected static IBlockState getStairState(IBlockState stairState, EnumFacing direction, Rotation rotation, boolean isTopHalf) {
+        return stairState
+                .withProperty(BlockStairs.FACING, rotation.rotate(direction))
+                .withProperty(BlockStairs.HALF, isTopHalf ? BlockStairs.EnumHalf.TOP : BlockStairs.EnumHalf.BOTTOM);
+    }
+
+    protected static IBlockState getSlabState(IBlockState inputBlockState, BlockPlanks.EnumType type, BlockSlab.EnumBlockHalf half) {
+        return inputBlockState
+                .withProperty(BlockPlanks.VARIANT, type)
+                .withProperty(BlockSlab.HALF, half);
+
+    }
 }

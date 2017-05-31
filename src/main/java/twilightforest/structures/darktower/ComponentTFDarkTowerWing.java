@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLadder;
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -658,7 +656,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		cx = this.size > 9 ? 5 : 3;
 		
 		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.EAST, rotation, true), cx, y + 1, cz + 0, rotation, sbb);
-		setBlockStateRotated(world, Blocks.WOODEN_SLAB, 1 + 8, cx, y + 1, cz + 1, rotation, sbb);
+		setBlockStateRotated(world, getSlabState(Blocks.WOODEN_SLAB.getDefaultState(), BlockPlanks.EnumType.SPRUCE, BlockSlab.EnumBlockHalf.TOP), cx, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, true), cx, y + 1, cz + 2, rotation, sbb);
 	}
 
