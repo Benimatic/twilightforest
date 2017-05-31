@@ -13,6 +13,10 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 
 	private boolean yetiPlaced;
 
+	public ComponentTFYetiCave() {
+		super();
+	}
+
 	public ComponentTFYetiCave(World world, Random rand, int i, int x, int y, int z) {
 		super(world, rand, i, 2, x, y + 2, z);
 	}

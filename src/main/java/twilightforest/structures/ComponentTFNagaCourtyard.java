@@ -20,7 +20,12 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 
 	static int RADIUS = 46;
 	static int DIAMETER = 2 * RADIUS + 1;
-	
+
+
+	public ComponentTFNagaCourtyard() {
+		super();
+	}
+
 	public ComponentTFNagaCourtyard(World world, Random rand, int i, int x, int y, int z) {
 		super(i);
 		

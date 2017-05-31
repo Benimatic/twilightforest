@@ -24,6 +24,10 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 	private static final int DIAMETER = 2 * RADIUS;
 	private static final int FLOOR_LEVEL = 3;
 
+	public ComponentTFHedgeMaze() {
+		super();
+	}
+
 	public ComponentTFHedgeMaze(World world, Random rand, int i, int x, int y, int z) {
 		super(i);
 		

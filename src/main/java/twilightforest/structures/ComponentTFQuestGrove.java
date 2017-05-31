@@ -23,7 +23,11 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 	private static final IBlockState CHISELED_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED);
 	
 	protected boolean beastPlaced = false; 
-	protected boolean dispenserPlaced = false; 
+	protected boolean dispenserPlaced = false;
+
+	public ComponentTFQuestGrove() {
+		super();
+	}
 
 	public ComponentTFQuestGrove(World world, Random rand, int i, int x, int y, int z) {
 		super(i);

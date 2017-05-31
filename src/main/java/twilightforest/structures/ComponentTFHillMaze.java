@@ -21,6 +21,10 @@ public class ComponentTFHillMaze extends StructureTFComponent {
 
 	private static final int FLOOR_LEVEL = 1;
 	private int hillSize;
+
+	public ComponentTFHillMaze() {
+		super();
+	}
 	
 	public ComponentTFHillMaze(int i, int x, int y, int z, int hsize) {
 		super(i);

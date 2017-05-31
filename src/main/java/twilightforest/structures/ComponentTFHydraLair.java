@@ -13,6 +13,10 @@ import twilightforest.block.enums.BossVariant;
 
 public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
+	public ComponentTFHydraLair() {
+		super();
+	}
+
 	public ComponentTFHydraLair(World world, Random rand, int i, int x, int y, int z) {
 		super(world, rand, i, 2, x, y + 2, z);
 	}

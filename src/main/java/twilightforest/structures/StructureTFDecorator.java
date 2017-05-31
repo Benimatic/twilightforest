@@ -3,6 +3,7 @@ package twilightforest.structures;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.structures.icetower.StructureDecoratorIceTower;
 
 /**
  *	Stores information about what blocks to use in constructing this structure
@@ -30,10 +31,10 @@ public class StructureTFDecorator
 //		{
 //			return "DecoDarkTower";
 //		}
-//		if (deco instanceof StructureDecoratorIceTower)
-//		{
-//			return "DecoIceTower";
-//		}
+		if (deco instanceof StructureDecoratorIceTower)
+		{
+			return "DecoIceTower";
+		}
 //		if (deco instanceof StructureDecoratorMushroomTower)
 //		{
 //			return "DecoMushroomTower";
@@ -57,10 +58,10 @@ public class StructureTFDecorator
 //		{
 //			return new StructureDecoratorDarkTower();
 //		}
-//		if (decoString.equals("DecoIceTower"))
-//		{
-//			return new StructureDecoratorIceTower();
-//		}
+		if (decoString.equals("DecoIceTower"))
+		{
+			return new StructureDecoratorIceTower();
+		}
 //		if (decoString.equals("DecoMushroomTower"))
 //		{
 //			return new StructureDecoratorMushroomTower();

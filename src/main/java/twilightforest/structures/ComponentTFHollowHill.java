@@ -26,6 +26,10 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	int hillSize;
 	int radius;
 
+	public ComponentTFHollowHill() {
+		super();
+	}
+
 	public ComponentTFHollowHill(World world, Random rand, int i, int size, int x, int y, int z) {
 		super(i);
 
