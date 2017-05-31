@@ -1,27 +1,26 @@
 package twilightforest.block;
 
-import java.util.List;
-
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.item.TFItems;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	
 	public static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 15);
@@ -36,11 +35,11 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	}
 
 	private static float getFractalNoise(int iteration, float size, BlockPos pos) {
-		return iteration == 0 ? 0 : (float) (((SimplexNoise.noise(
-				((float) pos.getX() + (iteration * size)) / size,
-				((float) pos.getY() + (iteration * size)) / size,
-				((float) pos.getZ() + (iteration * size)) / size)
-				+ 1.0f) * 0.5f) + getFractalNoise(iteration - 1, size, pos));
+		return iteration == 0 ? 0 : ((SimplexNoise.noise(
+                        ((float) pos.getX() + (iteration * size)) / size,
+                        ((float) pos.getY() + (iteration * size)) / size,
+                        ((float) pos.getZ() + (iteration * size)) / size)
+                        + 1.0f) * 0.5f) + getFractalNoise(iteration - 1, size, pos);
 	}
 
 	public static float fractalNoise(int iterations, float size, BlockPos pos) {
@@ -145,7 +144,7 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 			return g.x*x + g.y*y + g.z*z; }
 
 		// 3D simplex noise
-		public static float noise(float xin, float yin, float zin) {
+		static float noise(float xin, float yin, float zin) {
 			float n0, n1, n2, n3; // Noise contributions from the four corners
 			// Skew the input space to determine which simplex cell we're in
 			float s = (xin+yin+zin)*F3; // Very nice and simple skew factor for 3D
