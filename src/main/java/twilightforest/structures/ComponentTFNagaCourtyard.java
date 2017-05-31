@@ -321,10 +321,10 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true), x + 1, y + i, z + 0, sbb);
 					break;
 				case 2:
-					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true), x + 0, y + i, z + 1, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true), x + 0, y + i, z - 1, sbb);
 					break;
 				case 3:
-					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, true), x + 0, y + i, z - 1, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, true), x + 0, y + i, z + 1, sbb);
 					break;
 				}
 			}
