@@ -54,32 +54,16 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
         blue *= bright * 0.91F + 0.09F;
         return new Vec3d(red, green, blue);
     }
-	
-    @Override
-	public float calculateCelestialAngle(long par1, float par3) { return 0.0001f; } //TODO: do we still need this if we have getSunBrightnessFactor?
 
-	/**
-	 * The current sun brightness factor for this dimension.
-	 * 0.0f means no light at all, and 1.0f means maximum sunlight.
-	 * This will be used for the "calculateSkylightSubtracted"
-	 * which is for Sky light value calculation.
-	 *
-	 * @return The current brightness factor
-	 * */
-	@Override
-	public float getSunBrightnessFactor(float par1)
-	{
-		//TODO: what was this value in version 1.7? 0.625?
-		return 0.625F;
-	}
+    // Pin the celestial angle at night/evening so things that use it see night
+    @Override
+	public float calculateCelestialAngle(long par1, float par3) { return 0.0001f; }
 
 	@Override
     public void init()
     {
     	super.init();
     	this.biomeProvider = new TFBiomeProvider(world);
-    	this.hasSkyLight = true;
-    	this.hasNoSky = false;
     }
    
     @Override
