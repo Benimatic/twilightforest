@@ -55,9 +55,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		int variantMeta = meta & 15;
-		final PlantVariant[] plantVariants = PlantVariant.values();
-		PlantVariant variant = plantVariants[variantMeta % plantVariants.length];
+		PlantVariant variant = PlantVariant.values()[meta & 16 % PlantVariant.values().length];
 
 		return getDefaultState().withProperty(VARIANT, variant);
 	}
@@ -276,18 +274,12 @@ public class BlockTFPlant extends BlockBush implements IShearable
     }
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> stackList)
     {
-        par3List.add(new ItemStack(this, 1, PlantVariant.MOSSPATCH.itemMetadata));
-        par3List.add(new ItemStack(this, 1, PlantVariant.MAYAPPLE.itemMetadata));
-        //par3List.add(new ItemStack(this, 1, META_CLOVERPATCH));
-        par3List.add(new ItemStack(this, 1, PlantVariant.FIDDLEHEAD.itemMetadata));
-        par3List.add(new ItemStack(this, 1, PlantVariant.MUSHGLOOM.itemMetadata));
-        par3List.add(new ItemStack(this, 1, PlantVariant.FORESTGRASS.itemMetadata));
-        par3List.add(new ItemStack(this, 1, PlantVariant.DEADBUSH.itemMetadata));
-        par3List.add(new ItemStack(this, 1, PlantVariant.TORCHBERRY.itemMetadata));
-        par3List.add(new ItemStack(this, 1, PlantVariant.ROOT_STRAND.itemMetadata));
-
+        for(int i = 0; i < PlantVariant.values().length; i++)
+        {
+            stackList.add(new ItemStack(this, 1, i));
+        }
     }
 	
     @Override
