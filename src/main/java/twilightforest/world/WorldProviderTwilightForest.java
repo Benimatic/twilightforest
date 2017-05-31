@@ -25,8 +25,6 @@ import twilightforest.biomes.TFBiomes;
  *
  */
 public class WorldProviderTwilightForest extends WorldProviderSurface {
-	private final String saveFolder = "DIM" + TwilightForestMod.dimensionID;
-
 	public WorldProviderTwilightForest() {
 		setDimension(TwilightForestMod.dimensionID);
 	}
@@ -97,11 +95,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		// otherwise the server will try to generate enough terrain for a spawn point and that's annoying
         return world.getWorldInfo().isInitialized();
     }
-
-	@Override
-	public String getSaveFolder() {
-		return this.saveFolder;
-	}
 
 	@Override
 	public String getWelcomeMessage() {
