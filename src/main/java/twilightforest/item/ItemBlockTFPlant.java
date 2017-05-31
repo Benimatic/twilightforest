@@ -34,7 +34,7 @@ public class ItemBlockTFPlant extends ItemBlock {
     {
     	int meta = stack.getItemDamage();
 
-    	if ((meta == PlantVariant.ROOT_STRAND.itemMetadata || meta == PlantVariant.TORCHBERRY.itemMetadata)
+    	if ((meta == PlantVariant.ROOT_STRAND.ordinal() || meta == PlantVariant.TORCHBERRY.ordinal())
     			&& side == EnumFacing.DOWN && BlockTFPlant.canPlaceRootBelow(world, pos))
     	{
     		return true;

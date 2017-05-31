@@ -1,0 +1,10 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+      "type":"MCTM",
+      "layer":"CUTOUT",
+      "textures":[
+        "twilightforest:blocks/patch/clover_2_ctm"
+      ]
+  }
+} 

@@ -1,0 +1,41 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross"
+  },
+  "variants": {
+    "variant=mosspatch": [
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_0", "texturem":"twilightforest:blocks/patch/moss_0_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_1", "texturem":"twilightforest:blocks/patch/moss_1_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_2", "texturem":"twilightforest:blocks/patch/moss_2_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_3", "texturem":"twilightforest:blocks/patch/moss_3_m" } }
+    ],
+    "variant=mayapple": [{ "model": "twilightforest:mayapple" }],
+    "variant=cloverpatch": [
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_0", "texturem":"twilightforest:blocks/patch/clover_0_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_1", "texturem":"twilightforest:blocks/patch/clover_1_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_2", "texturem":"twilightforest:blocks/patch/clover_2_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_3", "texturem":"twilightforest:blocks/patch/clover_3_m" } }
+    ],
+    "variant=fiddlehead": [{
+      "model": "tinted_cross",
+      "textures": { "cross":"twilightforest:blocks/fiddlehead" }
+    }],
+    "variant=mushgloom": [{
+        "model": "twilightforest:util/cross_2_layer",
+        "textures": { "cross":"twilightforest:blocks/mushgloom", "cross2":"twilightforest:blocks/mushgloom_head" },
+        "uvlock": true
+    }],
+    "variant=forestgrass": [{ "model": "tall_grass" }],
+    "variant=deadbush": [{ "model": "dead_bush" }],
+    "variant=torchberry": [{
+      "model": "twilightforest:util/cross_2_layer",
+      "textures": { "cross":"twilightforest:blocks/torchberry", "cross2":"twilightforest:blocks/torchberry_glow" },
+      "uvlock": true
+    }],
+    "variant=root_strand": [{
+      "model": "crop",
+      "textures": { "crop":"twilightforest:blocks/rootstrand" }
+    }]
+  }
+}
