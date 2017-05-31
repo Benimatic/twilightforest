@@ -23,38 +23,7 @@ public final class ColorHandler {
 
     public static void init() {
         BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
-        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-			/*int red = 0;
-			int green = 0;
-			int blue = 0;
-
-			// aurora fade
-			red = 16;
-
-			blue = pos.getX() * 12 + pos.getZ() * 6;
-			if ((blue & 256) != 0){
-				blue = 255 - (blue & 255);
-			}
-			blue ^= 255;
-			blue &= 255;
-
-
-			green = pos.getX() * 4 + pos.getZ() * 8;
-			if ((green & 256) != 0){
-				green = 255 - (green & 255);
-			}
-			green &= 255;
-
-			// don't let things get black
-			if (green + blue < 128){
-				green = 128 - blue;
-			}*/
-
-			//return Color.HSBtoRGB(Math.min(Math.max(((((float) BlockTFAuroraBrick.fractalNoise(3, 32.0d, pos != null ? pos.up(128) : new BlockPos(0, 0, 0)))-0.5f)*0.75f)+0.5f, 0.3f), 0.666f), 1.0f, 1.0f); //red << 16 | blue << 8 | green;
-			//return Color.HSBtoRGB((Math.abs((((float) BlockTFAuroraBrick.fractalNoise(3, 32.0d, pos != null ? pos.up(128) : new BlockPos(0, 0, 0))-0.5f)*0.75f)*3.0f)%0.333f)+0.333f, 1.0f, 1.0f);
-			//return Color.HSBtoRGB((Math.abs(((BlockTFAuroraBrick.fractalNoise(3, 256.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0)) *10.0f)%1.0f)-0.5f)*0.6f)+0.37f, 1.0f, 1.0f);
-			return Color.HSBtoRGB(BlockTFAuroraBrick.rippleFractialNoise(3, 256.0f, pos!=null?pos.up(128):new BlockPos(0, 0, 0), 0.37f, 0.67f, 2.0f), 1.0f, 1.0f);
-		}, TFBlocks.auroraBlock);
+        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> Color.HSBtoRGB(BlockTFAuroraBrick.rippleFractialNoise(3, 256.0f, pos!=null?pos.up(128):new BlockPos(0, 0, 0), 0.37f, 0.67f, 2.0f), 1.0f, 1.0f), TFBlocks.auroraBlock);
         blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			int red = 0;
 			int green = 0;
