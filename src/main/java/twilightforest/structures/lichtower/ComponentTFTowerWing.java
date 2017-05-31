@@ -543,16 +543,16 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		}
 		
 		// pick a decoration?
-		if (rand.nextInt(7) == 0 && ladderDownDir == null) {
+		if (rand.nextInt(7) == 0 && ladderDownDir != null) {
 			decorateWell(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
-		else if (rand.nextInt(7) == 0 && ladderDownDir == null) {
+		else if (rand.nextInt(7) == 0 && ladderDownDir != null) {
 			decorateSkeletonRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
-		else if (rand.nextInt(6) == 0 && ladderDownDir == null) {
+		else if (rand.nextInt(6) == 0 && ladderDownDir != null) {
 			decorateZombieRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
-		else if (rand.nextInt(5) == 0 && ladderDownDir == null) {
+		else if (rand.nextInt(5) == 0 && ladderDownDir != null) {
 			decorateCactusRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		}
 		else if (rand.nextInt(4) == 0 && ladderDownDir != null) {
@@ -1079,10 +1079,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	
 	
 	protected boolean isLadderPos(int x, int z, Rotation ladderUpDir, Rotation ladderDownDir) {
-		if (ladderUpDir != null && x == getLadderX(ladderUpDir) && z == getLadderZ(ladderUpDir)) {
+		if (x == getLadderX(ladderUpDir) && z == getLadderZ(ladderUpDir)) {
 			return true;
 		}
-		if (ladderDownDir != null && x == getLadderX(ladderDownDir) && z == getLadderZ(ladderDownDir)) {
+		if (x == getLadderX(ladderDownDir) && z == getLadderZ(ladderDownDir)) {
 			return true;
 		}
 		
