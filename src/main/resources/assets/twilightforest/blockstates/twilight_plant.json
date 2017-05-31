@@ -1,0 +1,41 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross"
+  },
+  "variants": {
+    "variant=mosspatch": [
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_0" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_1" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_2" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_3" } }
+    ],
+    "variant=mayapple": [{ "model": "twilightforest:mayapple" }],
+    "variant=cloverpatch": [
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_0" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_1" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_2" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_3" } }
+    ],
+    "variant=fiddlehead": [{
+      "model": "tinted_cross",
+      "textures": { "cross":"twilightforest:blocks/fiddlehead" }
+    }],
+    "variant=mushgloom": [{
+        "model": "twilightforest:util/cross_2_layer",
+        "textures": { "cross":"twilightforest:blocks/mushgloom", "cross2":"twilightforest:blocks/mushgloom_head" },
+        "uvlock": true
+    }],
+    "variant=forestgrass": [{ "model": "tall_grass" }],
+    "variant=deadbush": [{ "model": "dead_bush" }],
+    "variant=torchberry": [{
+      "model": "twilightforest:util/cross_2_layer",
+      "textures": { "cross":"twilightforest:blocks/torchberry", "cross2":"twilightforest:blocks/torchberry_glow" },
+      "uvlock": true
+    }],
+    "variant=root_strand": [{
+      "model": "crop",
+      "textures": { "crop":"twilightforest:blocks/rootstrand" }
+    }]
+  }
+}
