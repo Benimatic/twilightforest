@@ -3,6 +3,7 @@ package twilightforest.structures.hollowtree;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
@@ -90,7 +91,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFComponent {
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		
 		// leaves on the outside
-		drawBlockBlob(world, sbb, radius, radius, radius, 4, TFBlocks.leaves.getDefaultState(), true);
+		drawBlockBlob(world, sbb, radius, radius, radius, 4, TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false), true);
 		// then wood
 		drawBlockBlob(world, sbb, radius, radius, radius, 3, TFBlocks.log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
 		// then air

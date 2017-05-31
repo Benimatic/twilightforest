@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -254,7 +255,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						final IBlockState leaves = TFBlocks.leaves.getDefaultState();
+						final IBlockState leaves = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz + dz, sbb);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz - dz, sbb);
 						placeLeafBlock(world, leaves, sx - dx, sy + dy, sz + dz, sbb);
@@ -280,7 +281,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFComponent {
 		{
 			IBlockState whatsThere = world.getBlockState(posWithOffset);
 
-			if (whatsThere.getBlock().canBeReplacedByLeaves(blockState, world, posWithOffset))
+			if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, posWithOffset))
 			{
 				world.setBlockState(posWithOffset, blockState, 2);
 			}

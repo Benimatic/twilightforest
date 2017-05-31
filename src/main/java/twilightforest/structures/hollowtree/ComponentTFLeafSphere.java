@@ -3,6 +3,7 @@ package twilightforest.structures.hollowtree;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -103,7 +104,7 @@ public class ComponentTFLeafSphere extends StructureTFComponent {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						final IBlockState leaves = TFBlocks.leaves.getDefaultState();
+						final IBlockState leaves = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 						placeBlockIfEmpty(world, leaves, sx + dx, sy + dy, sz + dz, sbb);
 						placeBlockIfEmpty(world, leaves, sx + dx, sy + dy, sz - dz, sbb);
 						placeBlockIfEmpty(world, leaves, sx - dx, sy + dy, sz + dz, sbb);

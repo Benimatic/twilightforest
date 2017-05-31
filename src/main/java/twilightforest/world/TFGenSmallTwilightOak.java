@@ -3,6 +3,7 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -29,7 +30,7 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator
         
     	treeState = TFBlocks.log.getDefaultState();
     	branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-        leafState = TFBlocks.leaves.getDefaultState();
+        leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
     	rootState = TFBlocks.root.getDefaultState();
     }
 

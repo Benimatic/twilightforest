@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +22,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
     	super(par1);
     	this.treeState = TFBlocks.log.getDefaultState();
     	this.branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.leaves.getDefaultState();
+		this.leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 		this.rootState = TFBlocks.root.getDefaultState();
 
     }

@@ -3,6 +3,7 @@ package twilightforest.world;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.state.IBlockState;
@@ -13,9 +14,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFTreasure;
+import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.LeavesVariant;
 import twilightforest.entity.EntityTFSwarmSpider;
 
 public class TFGenHollowTree extends TFGenerator
@@ -25,7 +28,7 @@ public class TFGenHollowTree extends TFGenerator
 	
 	protected IBlockState treeState = TFBlocks.log.getDefaultState();
 	protected IBlockState branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected IBlockState leafState = TFBlocks.leaves.getDefaultState();
+	protected IBlockState leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
     public TFGenHollowTree()

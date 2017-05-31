@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,7 @@ import twilightforest.block.enums.PlantVariant;
 public class TFGenFallenHollowLog extends TFGenerator {
 
 	final IBlockState mossPatch = TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH);
-	final IBlockState oakLeaves = TFBlocks.leaves.getDefaultState();
+	final IBlockState oakLeaves = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 	final IBlockState oakLogWithZAxis = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 	final IBlockState oakLogWithXAxis = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.X);
 	final IBlockState dirt = Blocks.DIRT.getDefaultState();
