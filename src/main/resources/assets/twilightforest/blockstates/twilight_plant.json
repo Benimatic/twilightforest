@@ -5,17 +5,17 @@
   },
   "variants": {
     "variant=mosspatch": [
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_0" } },
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_1" } },
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_2" } },
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_3" } }
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_0", "texturem":"twilightforest:blocks/patch/moss_0_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_1", "texturem":"twilightforest:blocks/patch/moss_1_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_2", "texturem":"twilightforest:blocks/patch/moss_2_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/moss_3", "texturem":"twilightforest:blocks/patch/moss_3_m" } }
     ],
     "variant=mayapple": [{ "model": "twilightforest:mayapple" }],
     "variant=cloverpatch": [
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_0" } },
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_1" } },
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_2" } },
-      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_3" } }
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_0", "texturem":"twilightforest:blocks/patch/clover_0_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_1", "texturem":"twilightforest:blocks/patch/clover_1_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_2", "texturem":"twilightforest:blocks/patch/clover_2_m" } },
+      { "model": "twilightforest:util/flat_tex", "textures": { "texture":"twilightforest:blocks/patch/clover_3", "texturem":"twilightforest:blocks/patch/clover_3_m" } }
     ],
     "variant=fiddlehead": [{
       "model": "tinted_cross",
