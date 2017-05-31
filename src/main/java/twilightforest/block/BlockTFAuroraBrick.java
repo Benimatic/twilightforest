@@ -35,27 +35,26 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 
 	}
 
-	private static double getFractalNoise(int iteration, double size, BlockPos pos) {
-		return iteration == 0 ? 0 : ((SimplexNoise.noise(
-				((double) pos.getX() + (iteration * size)) / size,
-				((double) pos.getY() + (iteration * size)) / size,
-				((double) pos.getZ() + (iteration * size)) / size )
-				+ 1.0d ) * 0.5d) + getFractalNoise(iteration - 1, size, pos);
+	private static float getFractalNoise(int iteration, float size, BlockPos pos) {
+		return iteration == 0 ? 0 : (float) (((SimplexNoise.noise(
+				((float) pos.getX() + (iteration * size)) / size,
+				((float) pos.getY() + (iteration * size)) / size,
+				((float) pos.getZ() + (iteration * size)) / size)
+				+ 1.0f) * 0.5f) + getFractalNoise(iteration - 1, size, pos));
 	}
 
-	public static double fractalNoise(int iterations, double size, BlockPos pos) {
-		return getFractalNoise(iterations, size, pos)/(double) iterations;
+	public static float fractalNoise(int iterations, float size, BlockPos pos) {
+		return getFractalNoise(iterations, size, pos)/(float) iterations;
+	}
+
+	public static float rippleFractialNoise(int iterations, float size, BlockPos pos, float minimum, float maximum, float frequency) {
+		float i = maximum-minimum;
+		return Math.abs(((getFractalNoise(iterations, size, pos)*frequency)%(2*i))-i)+minimum;
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		double repetition = 8.0d;
-		int iterations = 3;
-		double beforeByteOp = fractalNoise(iterations, 48.0d, pos) * 15.0d * repetition;
-		double finalnum = beforeByteOp % 16.0d;
-
-		return getDefaultState().withProperty(VARIANT, (int) finalnum % 16);
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return getDefaultState().withProperty(VARIANT, ((int) ((fractalNoise(3, 48.0f, pos) * 120.0f) % 16.0f)) % 16);
 	}
 
 	@Override
@@ -133,33 +132,33 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 		}
 
 		// Skewing and unskewing factors for 2, 3, and 4 dimensions
-		private static final double F3 = 1.0/3.0;
-		private static final double G3 = 1.0/6.0;
+		private static final float F3 = 1.0f/3.0f;
+		private static final float G3 = 1.0f/6.0f;
 
 		// This method is a *lot* faster than using (int)Math.floor(x)
-		private static int fastfloor(double x) {
+		private static int fastfloor(float x) {
 			int xi = (int)x;
 			return x<xi ? xi-1 : xi;
 		}
 
-		private static double dot(Grad g, double x, double y, double z) {
+		private static float dot(Grad g, float x, float y, float z) {
 			return g.x*x + g.y*y + g.z*z; }
 
 		// 3D simplex noise
-		public static double noise(double xin, double yin, double zin) {
-			double n0, n1, n2, n3; // Noise contributions from the four corners
+		public static float noise(float xin, float yin, float zin) {
+			float n0, n1, n2, n3; // Noise contributions from the four corners
 			// Skew the input space to determine which simplex cell we're in
-			double s = (xin+yin+zin)*F3; // Very nice and simple skew factor for 3D
+			float s = (xin+yin+zin)*F3; // Very nice and simple skew factor for 3D
 			int i = fastfloor(xin+s);
 			int j = fastfloor(yin+s);
 			int k = fastfloor(zin+s);
-			double t = (i+j+k)*G3;
-			double X0 = i-t; // Unskew the cell origin back to (x,y,z) space
-			double Y0 = j-t;
-			double Z0 = k-t;
-			double x0 = xin-X0; // The x,y,z distances from the cell origin
-			double y0 = yin-Y0;
-			double z0 = zin-Z0;
+			float t = (i+j+k)*G3;
+			float X0 = i-t; // Unskew the cell origin back to (x,y,z) space
+			float Y0 = j-t;
+			float Z0 = k-t;
+			float x0 = xin-X0; // The x,y,z distances from the cell origin
+			float y0 = yin-Y0;
+			float z0 = zin-Z0;
 			// For the 3D case, the simplex shape is a slightly irregular tetrahedron.
 			// Determine which simplex we are in.
 			int i1, j1, k1; // Offsets for second corner of simplex in (i,j,k) coords
@@ -179,15 +178,15 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 			// a step of (0,1,0) in (i,j,k) means a step of (-c,1-c,-c) in (x,y,z), and
 			// a step of (0,0,1) in (i,j,k) means a step of (-c,-c,1-c) in (x,y,z), where
 			// c = 1/6.
-			double x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
-			double y1 = y0 - j1 + G3;
-			double z1 = z0 - k1 + G3;
-			double x2 = x0 - i2 + 2.0*G3; // Offsets for third corner in (x,y,z) coords
-			double y2 = y0 - j2 + 2.0*G3;
-			double z2 = z0 - k2 + 2.0*G3;
-			double x3 = x0 - 1.0 + 3.0*G3; // Offsets for last corner in (x,y,z) coords
-			double y3 = y0 - 1.0 + 3.0*G3;
-			double z3 = z0 - 1.0 + 3.0*G3;
+			float x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
+			float y1 = y0 - j1 + G3;
+			float z1 = z0 - k1 + G3;
+			float x2 = x0 - i2 + 2.0f*G3; // Offsets for third corner in (x,y,z) coords
+			float y2 = y0 - j2 + 2.0f*G3;
+			float z2 = z0 - k2 + 2.0f*G3;
+			float x3 = x0 - 1.0f + 3.0f*G3; // Offsets for last corner in (x,y,z) coords
+			float y3 = y0 - 1.0f + 3.0f*G3;
+			float z3 = z0 - 1.0f + 3.0f*G3;
 			// Work out the hashed gradient indices of the four simplex corners
 			int ii = i & 255;
 			int jj = j & 255;
@@ -197,26 +196,26 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 			int gi2 = permMod12[ii+i2+perm[jj+j2+perm[kk+k2]]];
 			int gi3 = permMod12[ii+1+perm[jj+1+perm[kk+1]]];
 			// Calculate the contribution from the four corners
-			double t0 = 0.6 - x0*x0 - y0*y0 - z0*z0;
-			if(t0<0) n0 = 0.0;
+			float t0 = 0.6f - x0*x0 - y0*y0 - z0*z0;
+			if(t0<0) n0 = 0.0f;
 			else {
 				t0 *= t0;
 				n0 = t0 * t0 * dot(grad3[gi0], x0, y0, z0);
 			}
-			double t1 = 0.6 - x1*x1 - y1*y1 - z1*z1;
-			if(t1<0) n1 = 0.0;
+			float t1 = 0.6f - x1*x1 - y1*y1 - z1*z1;
+			if(t1<0) n1 = 0.0f;
 			else {
 				t1 *= t1;
 				n1 = t1 * t1 * dot(grad3[gi1], x1, y1, z1);
 			}
-			double t2 = 0.6 - x2*x2 - y2*y2 - z2*z2;
-			if(t2<0) n2 = 0.0;
+			float t2 = 0.6f - x2*x2 - y2*y2 - z2*z2;
+			if(t2<0) n2 = 0.0f;
 			else {
 				t2 *= t2;
 				n2 = t2 * t2 * dot(grad3[gi2], x2, y2, z2);
 			}
-			double t3 = 0.6 - x3*x3 - y3*y3 - z3*z3;
-			if(t3<0) n3 = 0.0;
+			float t3 = 0.6f - x3*x3 - y3*y3 - z3*z3;
+			if(t3<0) n3 = 0.0f;
 			else {
 				t3 *= t3;
 				n3 = t3 * t3 * dot(grad3[gi3], x3, y3, z3);
@@ -226,16 +225,16 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 
 			//System.out.println("got " + (32.0*(n0 + n1 + n2 + n3)) + " for " + xin + ", " + yin + ", " + zin + ", ");
 
-			return 32.0*(n0 + n1 + n2 + n3);
+			return 32.0f*(n0 + n1 + n2 + n3);
 		}
 
 		// Inner class to speed upp gradient computations
 		// (In Java, array access is a lot slower than member access)
 		private static class Grad
 		{
-			double x, y, z, w;
+			float x, y, z;
 
-			Grad(double x, double y, double z)
+			Grad(float x, float y, float z)
 			{
 				this.x = x;
 				this.y = y;
