@@ -102,7 +102,7 @@ public final class RegistryBiomeEvent
 				"snowy_forest",
 				new TFBiomeSnow(
 						new BiomeProperties("Snowy Forest")
-								.setTemperature(0.9F)
+								.setTemperature(0.09F)
 								.setRainfall(0.9F)
 								.setBaseHeight(0.2F)
 								.setHeightVariation(0.2F)
