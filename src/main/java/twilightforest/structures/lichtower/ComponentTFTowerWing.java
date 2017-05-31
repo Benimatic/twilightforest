@@ -1079,10 +1079,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	
 	
 	protected boolean isLadderPos(int x, int z, Rotation ladderUpDir, Rotation ladderDownDir) {
-		if (x == getLadderX(ladderUpDir) && z == getLadderZ(ladderUpDir)) {
+		if (ladderUpDir != null && x == getLadderX(ladderUpDir) && z == getLadderZ(ladderUpDir)) {
 			return true;
 		}
-		if (x == getLadderX(ladderDownDir) && z == getLadderZ(ladderDownDir)) {
+		if (ladderDownDir != null && x == getLadderX(ladderDownDir) && z == getLadderZ(ladderDownDir)) {
 			return true;
 		}
 		
