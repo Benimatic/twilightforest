@@ -78,6 +78,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
     public void init()
     {
+    	super.init();
     	this.biomeProvider = new TFBiomeProvider(world);
     	this.hasSkyLight = true;
     	this.hasNoSky = false;
