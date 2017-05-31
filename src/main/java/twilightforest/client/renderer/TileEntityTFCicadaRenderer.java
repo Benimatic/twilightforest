@@ -58,6 +58,7 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
         cicadaModel.render(0.0625f);
         GlStateManager.popMatrix();
         GlStateManager.color(1, 1, 1, 1);
+        GlStateManager.popMatrix();
 	}
 
 }

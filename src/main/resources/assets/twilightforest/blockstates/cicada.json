@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:util/dummy",
+    "textures": {
+      "particle": "blocks/soul_sand"
+    },
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "normal": [{}]
+  }
+}
