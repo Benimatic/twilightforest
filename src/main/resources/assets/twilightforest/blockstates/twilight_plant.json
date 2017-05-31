@@ -28,7 +28,11 @@
     }],
     "variant=forestgrass": [{ "model": "tall_grass" }],
     "variant=deadbush": [{ "model": "dead_bush" }],
-    "variant=torchberry": [{ "textures": { "cross":"twilightforest:blocks/torchberry" } }],
+    "variant=torchberry": [{
+      "model": "twilightforest:util/cross_2_layer",
+      "textures": { "cross":"twilightforest:blocks/torchberry", "cross2":"twilightforest:blocks/torchberry_glow" },
+      "uvlock": true
+    }],
     "variant=root_strand": [{
       "model": "crop",
       "textures": { "crop":"twilightforest:blocks/rootstrand" }
