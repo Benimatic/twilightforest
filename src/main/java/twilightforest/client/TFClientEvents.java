@@ -123,7 +123,7 @@ public class TFClientEvents {
 	 * On the tick, we kill the vignette
 	 */
 	@SubscribeEvent
-	public void clientTick(TickEvent.ClientTickEvent event) {
+	public static void clientTick(TickEvent.ClientTickEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		World world = mc.world;
 
