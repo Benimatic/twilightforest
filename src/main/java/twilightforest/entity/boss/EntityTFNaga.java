@@ -1,9 +1,6 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.entity.Entity;
@@ -58,7 +55,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	private int currentSegmentCount = 0; // not including head
 	private final float healthPerSegment;
-	private final EntityTFNagaSegment[] body = new EntityTFNagaSegment[MAX_SEGMENTS];
+	private final EntityTFNagaSegment[] bodySegments = new EntityTFNagaSegment[MAX_SEGMENTS];
 	private AIMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 
@@ -343,9 +340,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		if (newSegments != oldSegments) {
 			if (newSegments < oldSegments) {
 				for (int i = newSegments; i < oldSegments; i++) {
-					if (body[i] != null) {
-						body[i].selfDestruct();
-						body[i] = null;
+					if (bodySegments[i] != null) {
+						bodySegments[i].selfDestruct();
+						bodySegments[i] = null;
 					}
 				}
 			} else {
@@ -394,6 +391,14 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
     	setSegmentsPerHealth();
 
 		super.onUpdate();
+
+		// update bodySegments parts
+        for (EntityTFNagaSegment segment : bodySegments) {
+            if (segment != null)
+            {
+                segment.onUpdate();
+            }
+        }
 		
 		moveSegments();
 	}
@@ -671,22 +676,22 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	{
 		for (int i = 0; i < currentSegmentCount; i++)
 		{
-			if (body[i] == null || body[i].isDead)
+			if (bodySegments[i] == null || bodySegments[i].isDead)
 			{
-				body[i] = new EntityTFNagaSegment(this, i);
-				body[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
-				if (!world.isRemote) world.spawnEntity(body[i]);
+				bodySegments[i] = new EntityTFNagaSegment(this, i);
+				bodySegments[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
+				if (!world.isRemote) world.spawnEntity(bodySegments[i]);
 			}
 		}
 	}
 	
 	/**
-	 * Sets the heading (ha ha) of the body segments
+	 * Sets the heading (ha ha) of the bodySegments segments
 	 */
 	private void moveSegments() {
 		for (int i = 0; i < this.currentSegmentCount; i++)
 		{
-			Entity leader = i == 0 ? this : this.body[i - 1];
+			Entity leader = i == 0 ? this : this.bodySegments[i - 1];
 			double followX = leader.posX;
 			double followY = leader.posY;
 			double followZ = leader.posZ;
@@ -701,7 +706,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	    	double idealZ = MathHelper.cos(angle) * straightenForce;
 			
 			
-			Vec3d diff = new Vec3d(body[i].posX - followX, body[i].posY - followY, body[i].posZ - followZ);
+			Vec3d diff = new Vec3d(bodySegments[i].posX - followX, bodySegments[i].posY - followY, bodySegments[i].posZ - followZ);
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position
@@ -713,12 +718,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
             double destY = followY + f * diff.yCoord;
             double destZ = followZ + f * diff.zCoord;
 
-            body[i].setPosition(destX, destY, destZ);
-            
-            body[i].motionX = f * diff.xCoord;
-            body[i].motionY = f * diff.yCoord;
-            body[i].motionZ = f * diff.zCoord;
-            
+            bodySegments[i].setPosition(destX, destY, destZ);
+
             double distance = (double)MathHelper.sqrt(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
             
             if (i == 0)
@@ -726,7 +727,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				diff = diff.addVector(0, -0.15, 0);
             }
             
-            body[i].setRotation((float) (Math.atan2(diff.zCoord, diff.xCoord) * 180.0D / Math.PI) + 90.0F, -(float)(Math.atan2(diff.yCoord, distance) * 180.0D / Math.PI));
+            bodySegments[i].setRotation((float) (Math.atan2(diff.zCoord, diff.xCoord) * 180.0D / Math.PI) + 90.0F, -(float)(Math.atan2(diff.yCoord, distance) * 180.0D / Math.PI));
 		}
 	}
 	
@@ -793,7 +794,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
     @Override
     public Entity[] getParts()
     {
-    	return Arrays.stream(body).filter(Objects::nonNull).toArray(Entity[]::new);
+    	return Arrays.stream(bodySegments).filter(Objects::nonNull).toArray(Entity[]::new);
     }
 
 

@@ -60,7 +60,7 @@ public class EntityTFNagaSegment extends Entity {
     		this.setDead();
     	}
 
-    	this.ticksExisted++;
+		++this.ticksExisted;
     	
     	lastTickPosX = posX;
     	lastTickPosY = posY;
@@ -71,40 +71,7 @@ public class EntityTFNagaSegment extends Entity {
     	for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
     	for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
 
-       	
-    	if (!this.onGround)
-    	{
-    		this.motionY -= 0.08D;
-    	}
-    	else
-    	{
-            this.motionX *= 0.800000011920929D;
-            this.motionZ *= 0.800000011920929D;
-    	}
-    	
-        this.move(MoverType.SELF, motionX, motionY, motionZ);
-        
         collideWithOthers();
-        
-		if (deathCounter > 0) {
-			deathCounter--;
-			
-			if (deathCounter == 0) {
-				
-                for(int k = 0; k < 20; k++)
-                {
-                    double d = rand.nextGaussian() * 0.02D;
-                    double d1 = rand.nextGaussian() * 0.02D;
-                    double d2 = rand.nextGaussian() * 0.02D;
-                    EnumParticleTypes explosionType = rand.nextBoolean() ?  EnumParticleTypes.EXPLOSION_LARGE : EnumParticleTypes.EXPLOSION_NORMAL;
-                    
-                    world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
-                }
-                
-                setDead();
-			}
-		}
-
     }
     
 	private void collideWithOthers()
