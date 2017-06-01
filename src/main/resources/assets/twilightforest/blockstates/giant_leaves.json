@@ -1,0 +1,11 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": [{
+      "model": "leaves",
+      "textures": {
+        "all": "twilightforest:blocks/giant/leaves_oak"
+      }
+    }]
+  }
+}
