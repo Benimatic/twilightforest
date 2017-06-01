@@ -144,10 +144,4 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
-
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer()
-	{
-		return BlockRenderLayer.CUTOUT;
-	}
 }
