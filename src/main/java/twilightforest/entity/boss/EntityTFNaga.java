@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.DamageSource;
@@ -30,6 +31,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -59,7 +62,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private AIMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 
-	public EntityTFNaga(World world) {
+    private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
+
+    public EntityTFNaga(World world) {
 		super(world);
 		
 		this.setSize(1.75f, 3.0f);
@@ -418,7 +423,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				vec3d = getNavigator().getPath().getPosition(this);
 			}
 		}
-	}
+
+		// BOSS BAR!
+        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+    }
 
     static class NagaMoveHelper extends EntityMoveHelper {
 		public NagaMoveHelper(EntityLiving naga) {
@@ -786,5 +794,18 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
     public Entity[] getParts()
     {
     	return Arrays.stream(body).filter(Objects::nonNull).toArray(Entity[]::new);
+    }
+
+
+    @Override
+    public void addTrackingPlayer(EntityPlayerMP player) {
+        super.addTrackingPlayer(player);
+        this.bossInfo.addPlayer(player);
+    }
+
+    @Override
+    public void removeTrackingPlayer(EntityPlayerMP player) {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
     }
 }
