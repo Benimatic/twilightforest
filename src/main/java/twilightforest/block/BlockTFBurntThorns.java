@@ -1,14 +1,16 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.item.TFItems;
 
 public class BlockTFBurntThorns extends BlockTFThorns {
@@ -19,6 +21,16 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 		this.setSoundType(SoundType.SAND);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setNames(new String[] {"burnt"});
+
+		this.setDefaultState(blockState.getBaseState()
+				.withProperty(AXIS, EnumFacing.Axis.Y)
+				//.withProperty(DOWN, false).withProperty(UP, false)
+				.withProperty(NORTH, false).withProperty(SOUTH, false)
+				.withProperty(WEST, false).withProperty(EAST, false));
+	}
+
+	protected boolean hasVariant() {
+		return false;
 	}
 
 	@Override
@@ -45,6 +57,12 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 	@Override
     public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
-    	;
+
     }
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+
+	}
 }

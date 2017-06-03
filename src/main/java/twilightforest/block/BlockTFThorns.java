@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockRotatedPillar;
@@ -31,11 +30,13 @@ import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCallback {
 
 	public static final PropertyEnum<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
-	public static final PropertyBool DOWN = PropertyBool.create("down");
-	public static final PropertyBool UP = PropertyBool.create("up");
+	//public static final PropertyBool DOWN = PropertyBool.create("down");
+	//public static final PropertyBool UP = PropertyBool.create("up");
 	public static final PropertyBool NORTH = PropertyBool.create("north");
 	public static final PropertyBool SOUTH = PropertyBool.create("south");
 	public static final PropertyBool WEST = PropertyBool.create("west");
@@ -48,49 +49,72 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
     
     private String[] names;
 
-	protected BlockTFThorns() {
+    protected BlockTFThorns() {
 		super(Material.WOOD);
 		this.setNames(new String[] {"brown", "green"});
 		this.setHardness(50.0F);
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState()
-				.withProperty(AXIS, EnumFacing.Axis.Y)
-				.withProperty(VARIANT, ThornVariant.BROWN)
-				.withProperty(DOWN, false).withProperty(UP, false)
-				.withProperty(NORTH, false).withProperty(SOUTH, false)
-				.withProperty(WEST, false).withProperty(EAST, false)
-		);
+
+		if(hasVariant())
+			this.setDefaultState(blockState.getBaseState()
+					.withProperty(AXIS, EnumFacing.Axis.Y)
+					.withProperty(VARIANT, ThornVariant.BROWN)
+					//.withProperty(DOWN, false).withProperty(UP, false)
+					.withProperty(NORTH, false).withProperty(SOUTH, false)
+					.withProperty(WEST, false).withProperty(EAST, false));
+	}
+
+	protected boolean hasVariant() {
+		return true;
 	}
 
 	@Override
 	public BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, AXIS, VARIANT, DOWN, UP, NORTH, SOUTH, WEST, EAST);
+		return hasVariant() ? new BlockStateContainer(this, AXIS, VARIANT, /*DOWN, UP,*/ NORTH, SOUTH, WEST, EAST) : new BlockStateContainer(this, AXIS, /*DOWN, UP,*/ NORTH, SOUTH, WEST, EAST);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return super.getMetaFromState(state) | state.getValue(VARIANT).ordinal();
+		return hasVariant() ? super.getMetaFromState(state) | state.getValue(VARIANT).ordinal() : super.getMetaFromState(state);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return super.getStateFromMeta(meta).withProperty(VARIANT, ThornVariant.values()[meta & 0b11]);
+		return hasVariant() ? super.getStateFromMeta(meta).withProperty(VARIANT, ThornVariant.values()[meta & 0b11]) : super.getStateFromMeta(meta);
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+	public IBlockState getActualState(@Nullable IBlockState state, IBlockAccess world, BlockPos pos)
 	{
-		return state.withProperty(DOWN, canConnectTo(state, world, pos, EnumFacing.DOWN))
-				.withProperty(UP, canConnectTo(state, world, pos, EnumFacing.UP))
-				.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.NORTH))
-				.withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.SOUTH))
-				.withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.WEST))
-				.withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.EAST));
+		if (state == null)
+			state = getDefaultState();
+
+		switch (state.getValue(AXIS))
+		{
+			case X:
+				return state
+						.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.UP))
+						.withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.DOWN))
+						.withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.NORTH))
+						.withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.SOUTH));
+			case Z:
+				return state
+						.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.UP))
+						.withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.DOWN))
+						.withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.WEST))
+						.withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.EAST));
+			default:
+				return state
+						.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.NORTH))
+						.withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.SOUTH))
+						.withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.WEST))
+						.withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.EAST));
+		}
 	}
 
 	private boolean canConnectTo(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing connectTo)
