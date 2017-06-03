@@ -21,6 +21,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
+import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
+import twilightforest.structures.darktower.TFDarkTowerPieces;
 import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
 import twilightforest.structures.icetower.ComponentTFIceTowerMain;
@@ -49,9 +51,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //FIXME: Disabled Structure
 //    	TFStrongholdPieces.registerPieces();
 //    	TFMinotaurMazePieces.registerPieces();
-//    	TFDarkTowerPieces.registerPieces();
 //    	TFMushroomTowerPieces.registerPieces();
 //    	TFFinalCastlePieces.registerFinalCastlePieces();
+	    TFDarkTowerPieces.registerPieces();
 	    TFIceTowerPieces.registerPieces();
 	    TFTrollCavePieces.registerPieces();
 	    TFHollowTreePieces.registerPieces();
@@ -131,11 +133,11 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	 * @return The first component we should add to our structure
 	 */
 	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
-		/*if (feature != null) {
+		if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);
-			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
-		}*/
+			return new ComponentTFDarkTowerMain(world, rand, 0, x, y - 1, z);
+		}
 
 		if (feature == TFFeature.nagaCourtyard) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
@@ -182,12 +184,12 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			TwilightForestMod.LOGGER.info("Ice Tower @ {} {} {}", x, y, z);
 			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
 		}
+		if (feature == TFFeature.darkTower) {
+			return new ComponentTFDarkTowerMain(world, rand, 0, x, y - 1, z);
+		}
 //FIXME: Disabled Structure
 //		if (feature == TFFeature.labyrinth) {
 //			return new ComponentTFMazeRuins(world, rand, 0, x, y, z);
-//		}
-//		if (feature == TFFeature.darkTower) {
-//			return new ComponentTFDarkTowerMain(world, rand, 0, x, y - 1, z);
 //		}
 //		if (feature == TFFeature.tfStronghold) {
 //			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);

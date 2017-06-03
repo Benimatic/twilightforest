@@ -815,8 +815,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		setBlockStateRotated(world, deco.blockState, x + 1, y + 3, z + 1, rotation, sbb);
 		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP), x + 1, y + 3, z - 1, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, x + 1, y + 3, z - 2, rotation, sbb);
-		setBlockStateRotated(world, Blocks.LEVER, getLeverMeta(rotation, 5), x + 2, y + 3, z - 2, rotation, sbb);
-		
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.UP_Z, rotation, false), x + 2, y + 3, z - 2, rotation, sbb);
+
 		placeTreasureRotated(world, x + 1, y + 2, z + 1, rotation, TFTreasure.darktower_cache, sbb);
 	}
 
@@ -1010,7 +1010,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 */
 	protected void makeTimberFloor(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, int spacing)
 	{
-		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 		IBlockState beamStateNS = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 		IBlockState beamStateUD = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
 		IBlockState beamStateEW = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
@@ -1051,7 +1051,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 */
 	protected void makeSmallTimberBeams(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top)
 	{
-		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 		IBlockState beamStateNS = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 		IBlockState beamStateUD = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
 		IBlockState beamStateEW = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);

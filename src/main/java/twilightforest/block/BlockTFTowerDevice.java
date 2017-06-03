@@ -333,7 +333,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
      * Start the builder block tileentity building!
      */
 	private void letsBuild(World par1World, BlockPos pos) {
-    	TileEntityTFTowerBuilder tileEntity = (TileEntityTFTowerBuilder) par1World.getBlockState(pos);
+    	TileEntityTFTowerBuilder tileEntity = (TileEntityTFTowerBuilder) par1World.getTileEntity(pos);
 
     	if (tileEntity != null && !tileEntity.makingBlocks)
     	{

@@ -3,6 +3,7 @@ package twilightforest.structures;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.structures.icetower.StructureDecoratorIceTower;
 
 /**
@@ -27,10 +28,10 @@ public class StructureTFDecorator
 	public static String getDecoString(StructureTFDecorator deco)
 	{
 //TODO: Structure Disabled
-//		if (deco instanceof StructureDecoratorDarkTower)
-//		{
-//			return "DecoDarkTower";
-//		}
+		if (deco instanceof StructureDecoratorDarkTower)
+		{
+			return "DecoDarkTower";
+		}
 		if (deco instanceof StructureDecoratorIceTower)
 		{
 			return "DecoIceTower";
@@ -54,10 +55,10 @@ public class StructureTFDecorator
 	public static StructureTFDecorator getDecoFor(String decoString)
 	{
 //TODO: Structure Disabled
-//		if (decoString.equals("DecoDarkTower"))
-//		{
-//			return new StructureDecoratorDarkTower();
-//		}
+		if (decoString.equals("DecoDarkTower"))
+		{
+			return new StructureDecoratorDarkTower();
+		}
 		if (decoString.equals("DecoIceTower"))
 		{
 			return new StructureDecoratorIceTower();
