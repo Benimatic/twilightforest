@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFCreatures;
 
 public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 

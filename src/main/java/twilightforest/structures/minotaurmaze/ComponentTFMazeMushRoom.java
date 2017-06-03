@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -18,7 +19,7 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 	public ComponentTFMazeMushRoom(int i, Random rand, int x, int y, int z) {
 		super(i, rand, x, y, z);
 		
-		this.coordBaseMode = 0;  // let's just make this easy on us?
+		this.setCoordBaseMode(EnumFacing.SOUTH); // let's just make this easy on us?
 	}
 
 	

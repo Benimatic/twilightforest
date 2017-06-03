@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -24,7 +25,7 @@ public class ComponentTFMazeMound extends StructureTFComponent {
 
 	public ComponentTFMazeMound(int i, Random rand, int x, int y, int z) {
 		super(i);
-        this.coordBaseMode = rand.nextInt(4);
+        this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(4)]);
 
         this.boundingBox = new StructureBoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);
 	}
@@ -80,16 +81,16 @@ public class ComponentTFMazeMound extends StructureTFComponent {
         		// leave a hole in the middle
         		if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) 
         		{
-	        		this.setBlockState(world, Blocks.GRASS, 0, x, hheight, z, sbb);
+	        		this.setBlockState(world, Blocks.GRASS.getDefaultState(), x, hheight, z, sbb);
 	        		
 	        		// only fill to the bottom when we're not in the entrances
 	        		if (!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1))
 	        		{
-		        		this.func_151554_b(world, Blocks.DIRT, 0, x, hheight - 1, z, sbb);
+		        		this.func_151554_b(world, Blocks.DIRT.getDefaultState(), x, hheight - 1, z, sbb);
 	        		}
 	        		else if (hheight > 6)
 	        		{
-	        			this.fillWithBlocks(world, sbb, x, 6, z, x, hheight - 1, z, Blocks.DIRT, Blocks.AIR, false);
+	        			this.fillWithBlocks(world, sbb, x, 6, z, x, hheight - 1, z, Blocks.DIRT.getDefaultState(), AIR, false);
 	        		}
         		}
             }

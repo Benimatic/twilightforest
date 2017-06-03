@@ -3,7 +3,10 @@ package twilightforest.structures.minotaurmaze;
 import java.util.List;
 import java.util.Random;
 
+import jdk.nashorn.internal.ir.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -23,7 +26,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
 
 	public ComponentTFMazeEntranceShaft(int i, Random rand, int x, int y, int z) {
 		super(i);
-        this.coordBaseMode = rand.nextInt(4);
+        this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(4)]);
 
         this.boundingBox = new StructureBoundingBox(x, y, z, x + 6 - 1, y + 14, z + 6 - 1);
 	}
@@ -51,7 +54,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
         }
 		
 		
-        this.fillWithMetadataBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone, 1, AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone, 1, AIR, true);
         this.fillWithAir(world, sbb, 1, 0 - 10, 1, 4, 0 + 30, 4);
         
         //System.out.println("Drawing entrance");
@@ -82,7 +85,8 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
         {
             for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6)
             {
-                if (par2StructureBoundingBox.isVecInside(var6, 64, var5))
+            	BlockPos pos = new BlockPos(var6, 64, var5);
+                if (par2StructureBoundingBox.isVecInside(pos))
                 {
                     var3 += Math.max(par1World.getTopSolidOrLiquidBlock(var6, var5), par1World.provider.getAverageGroundLevel());
                     ++var4;

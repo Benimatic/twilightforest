@@ -5,9 +5,11 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.TFMaze;
@@ -27,9 +29,9 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 
 	public ComponentTFMinotaurMaze(int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
 		super(index);
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		this.level = level;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, EnumFacing.SOUTH);
 
 		// make maze object
 		maze =  new TFMaze(getMazeSize(), getMazeSize());
@@ -94,8 +96,8 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.level = par1NBTTagCompound.getInteger("mazeLevel");
         this.rcoords = par1NBTTagCompound.getIntArray("roomCoords");
  
@@ -226,7 +228,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 	/**
 	 * Add a dead end structure at the specified coords
 	 */
-	protected ComponentTFMazeDeadEnd makeDeadEnd(Random random, int dx, int dz, int rotation) {
+	protected ComponentTFMazeDeadEnd makeDeadEnd(Random random, int dx, int dz, EnumFacing rotation) {
 		int worldX = boundingBox.minX + dx * 5 + 1;
 		int worldY = boundingBox.minY;
 		int worldZ = boundingBox.minZ + dz * 5 + 1;
@@ -258,7 +260,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 
 	}
 
-	protected ComponentTFMazeCorridor makeCorridor(Random random, int dx, int dz, int rotation) {
+	protected ComponentTFMazeCorridor makeCorridor(Random random, int dx, int dz, EnumFacing rotation) {
 		int worldX = boundingBox.minX + dx * 5 + 1;
 		int worldY = boundingBox.minY;
 		int worldZ = boundingBox.minZ + dz * 5 + 1;
@@ -322,15 +324,15 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 		// level 2 maze surrounded by bedrock
 		if (level == 2)
 		{
-			fillWithBlocks(world, sbb, 0, -1, 0, getDiameter() + 2, 6, getDiameter() + 2, Blocks.BEDROCK, Blocks.AIR, false);
+			fillWithBlocks(world, sbb, 0, -1, 0, getDiameter() + 2, 6, getDiameter() + 2, Blocks.BEDROCK.getDefaultState(), AIR, false);
 		}
 		
 		// clear the area
 		fillWithAir(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
 //		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, Blocks.STONE, false);
 //		fillWithBlocks(world, sbb, 0, 5, 0, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, Blocks.STONE, true);
-		fillWithMetadataBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, 0, Blocks.STONE, 0, this.level == 1);
-		fillWithMetadataBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, 6, Blocks.STONE, 0, false);
+		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, 0, Blocks.STONE, 0, this.level == 1);
+		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, 6, Blocks.STONE, 0, false);
 		
 		//
 		maze.headBlockID = TFBlocks.mazestone;

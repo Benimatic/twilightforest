@@ -73,33 +73,33 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		}
 		
 		// mushroom chest shelves in corner
-		fillWithMetadataBlocks(world, sbb, 1, 1, 1, 3, 1, 3, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 1, 2, 1, 1, 3, 4, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 2, 2, 1, 4, 3, 1, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 1, 4, 1, 3, 4, 3, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 1, 1, 1, 3, 1, 3, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 2, 2, 1, 4, 3, 1, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 1, 4, 1, 3, 4, 3, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
 
-		fillWithMetadataBlocks(world, sbb, 12, 1, 12, 14, 1, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 14, 2, 11, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 11, 2, 14, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 12, 4, 12, 14, 4, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 12, 1, 12, 14, 1, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 14, 2, 11, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 11, 2, 14, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 12, 4, 12, 14, 4, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
 
-		fillWithMetadataBlocks(world, sbb, 1, 1, 12, 3, 1, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 1, 2, 11, 1, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 2, 2, 14, 4, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 1, 4, 12, 3, 4, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 1, 1, 12, 3, 1, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 1, 2, 11, 1, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 2, 2, 14, 4, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 1, 4, 12, 3, 4, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
 
-		fillWithMetadataBlocks(world, sbb, 12, 1, 1, 14, 1, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 11, 2, 1, 14, 3, 1, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 14, 2, 2, 14, 3, 4, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 12, 4, 1, 14, 4, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 12, 1, 1, 14, 1, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 11, 2, 1, 14, 3, 1, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 14, 2, 2, 14, 3, 4, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 12, 4, 1, 14, 4, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		// a few more ceilingshrooms
-		fillWithMetadataBlocks(world, sbb, 5, 4, 5, 7, 5, 7, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithMetadataBlocks(world, sbb, 8, 4, 8, 10, 5, 10, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
 
 		
 		// the moo-cen-mino-shrom-taur!

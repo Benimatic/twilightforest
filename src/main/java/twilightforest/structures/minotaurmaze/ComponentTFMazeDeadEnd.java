@@ -8,27 +8,24 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.structures.StructureTFComponent;
 
-public class ComponentTFMazeCorridor extends StructureTFComponent {
+public class ComponentTFMazeDeadEnd extends StructureTFComponent {
 
-	public ComponentTFMazeCorridor() {
+	public ComponentTFMazeDeadEnd() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeCorridor(int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeDeadEnd(int i, int x, int y, int z, EnumFacing rotation) {
 		super(i);
-        this.coordBaseMode = rotation;
+        this.setCoordBaseMode(rotation);
         this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);
+
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		
-		//arch
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 2, 4, 4, 3, Blocks.FENCE, 0, AIR, false);
-		this.fillWithAir(world, sbb, 2, 1, 2, 3, 3, 3);
-		
+	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+		this.fillWithBlocks(world, sbb, 1, 1, 0, 4, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
+		this.fillWithAir(world, sbb, 2, 1, 0, 3, 3, 0);
 		return true;
 	}
-
 }

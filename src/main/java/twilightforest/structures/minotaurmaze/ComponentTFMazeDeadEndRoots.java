@@ -8,52 +8,55 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.PlantVariant;
 
-public class ComponentTFMazeCorridorRoots extends ComponentTFMazeCorridor {
+public class ComponentTFMazeDeadEndRoots extends ComponentTFMazeDeadEnd {
 
-	public ComponentTFMazeCorridorRoots() {
+	public ComponentTFMazeDeadEndRoots() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeCorridorRoots(int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeDeadEndRoots(int i, int x, int y, int z, EnumFacing rotation) {
 		super(i, x, y, z, rotation);
 	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+		// no door
 		for (int x = 1; x < 5; x++)
 		{
 			for (int z = 0; z < 5; z++)
 			{
-				int freq = x;
-				if (rand.nextInt(freq + 2) > 0)
+				// as we go +z, there are more vines
+				if (rand.nextInt(z + 2) > 0)
 				{
 					int length = rand.nextInt(6);
 
 					//place dirt above ceiling
-					this.setBlockState(world, Blocks.DIRT, 0, x, 6, z, sbb);
+					this.setBlockState(world, Blocks.DIRT.getDefaultState(), x, 6, z, sbb);
 					
 					// roots
 					for (int y = 6 - length; y < 6; y++)
 					{
-						this.setBlockState(world, TFBlocks.plant, BlockTFPlant.META_ROOT_STRAND, x, y, z, sbb);
+						this.setBlockState(world, TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.ROOT_STRAND), x, y, z, sbb);
 					}
 					
 					// occasional gravel
-					if (rand.nextInt(freq + 1) > 1)
+					if (rand.nextInt(z + 1) > 1)
 					{
-						this.setBlockState(world, Blocks.GRAVEL, 0, x, 1, z, sbb);
+						this.setBlockState(world, Blocks.GRAVEL.getDefaultState(), x, 1, z, sbb);
 						
-						if (rand.nextInt(freq + 1) > 1)
+						if (rand.nextInt(z + 1) > 1)
 						{
-							this.setBlockState(world, Blocks.GRAVEL, 0, x, 2, z, sbb);
+							this.setBlockState(world, Blocks.GRAVEL.getDefaultState(), x, 2, z, sbb);
 						}
 					}
 				}
 			}
 		}
+		
 		return true;
 	}
-
 }
+

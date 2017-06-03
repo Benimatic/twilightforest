@@ -21,9 +21,9 @@ public class ComponentTFMazeCorridorIronFence extends ComponentTFMazeCorridor {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
-		this.fillWithMetadataBlocks(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.mazestone, 3, AIR, false);
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.mazestone, 2, AIR, false);
-		this.fillWithBlocks(world, sbb, 2, 1, 2, 3, 3, 3, Blocks.IRON_BARS, Blocks.AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.mazestone, 3, AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.mazestone, 2, AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 1, 2, 3, 3, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		return true;
 	}
 }

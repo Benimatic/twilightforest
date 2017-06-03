@@ -44,7 +44,7 @@ public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 				else if (root > 0)
 				{
 					this.fillWithBlocks(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT, Blocks.AIR, true);
-					this.fillWithMetadataBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.plant, BlockTFPlant.META_ROOT_STRAND, AIR, false);
+					this.fillWithBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.plant, BlockTFPlant.META_ROOT_STRAND, AIR, false);
 				}
 				else if (rand.nextInt(dist + 1) > 0)
 				{

@@ -3,6 +3,7 @@ package twilightforest.structures.minotaurmaze;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -23,10 +24,10 @@ public class ComponentTFMazeRuins extends StructureTFComponent {
 
 	public ComponentTFMazeRuins(World world, Random rand, int i, int x, int y, int z) {
 		super(i);
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		// I have no bounding box
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, EnumFacing.SOUTH);
 
 	}
 	

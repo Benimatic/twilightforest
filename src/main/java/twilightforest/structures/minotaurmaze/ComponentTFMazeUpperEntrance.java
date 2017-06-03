@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -23,7 +24,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 
 	public ComponentTFMazeUpperEntrance(int i, Random rand, int x, int y, int z) {
 		super(i);
-        this.coordBaseMode = rand.nextInt(4);
+        this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(4)]);
 
         this.boundingBox = new StructureBoundingBox(x, y, z, x + 15, y + 4, z + 15);
 	}
@@ -42,10 +43,10 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 		// ceiling
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.mazestone, Blocks.AIR, true);
 
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.mazestone, 6, AIR, false);
-        this.fillWithMetadataBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.mazestone, 3, AIR, true);
-        this.fillWithMetadataBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.mazestone, 1, AIR, true);
-        this.fillWithMetadataBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.mazestone, 3, AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.mazestone, 6, AIR, false);
+        this.fillWithBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.mazestone, 3, AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.mazestone, 1, AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.mazestone, 3, AIR, true);
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.2F, 0, 0, 0, 15, 5, 15, Blocks.GRAVEL, Blocks.AIR, true);
 		
 
@@ -66,10 +67,10 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
         this.fillWithAir(world, sbb, 1, 1, 1, 14, 4, 14);
 
         // entrance pit
-		this.fillWithMetadataBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, AIR, false);
-		this.fillWithMetadataBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone, 3, AIR, false);
+		this.fillWithBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, AIR, false);
+		this.fillWithBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone, 3, AIR, false);
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, Blocks.AIR, false);
-//		this.fillWithMetadataBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
+//		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
 
 
 
