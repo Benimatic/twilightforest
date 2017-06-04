@@ -10,7 +10,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.TFMaze;
 
@@ -194,26 +196,26 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 				
 				// dead ends
 				if (!maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, 3);
+					component = makeDeadEnd(random, x, z, EnumFacing.EAST);
 				}
 				if (maze.isWall(x, z, x - 1, z) && !maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, 1);
+					component = makeDeadEnd(random, x, z, EnumFacing.WEST);
 				}
 				if (maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z) && !maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, 0);
+					component = makeDeadEnd(random, x, z, EnumFacing.SOUTH);
 				}
 				if (maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && !maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, 2);
+					component = makeDeadEnd(random, x, z, EnumFacing.NORTH);
 				}
 				
 				// corridors
 				if (!maze.isWall(x, z, x - 1, z) && !maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)
 						&& maze.isWall(x - 1, z, x - 1, z - 1) && maze.isWall(x - 1, z, x - 1, z + 1) && maze.isWall(x + 1, z, x + 1, z - 1) && maze.isWall(x + 1, z, x + 1, z + 1)) {
-					component = makeCorridor(random, x, z, 1);
+					component = makeCorridor(random, x, z, EnumFacing.WEST);
 				}
 				if (!maze.isWall(x, z, x, z - 1) && !maze.isWall(x, z, x, z + 1) && maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z)
 						&& maze.isWall(x, z - 1, x - 1, z - 1) && maze.isWall(x, z - 1, x + 1, z - 1) && maze.isWall(x, z + 1, x - 1, z + 1) && maze.isWall(x, z + 1, x + 1, z + 1)) {
-					component = makeCorridor(random, x, z, 0);
+					component = makeCorridor(random, x, z, EnumFacing.SOUTH);
 				}
 				
 				if (component != null)
@@ -331,20 +333,15 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 		fillWithAir(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
 //		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, Blocks.STONE, false);
 //		fillWithBlocks(world, sbb, 0, 5, 0, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, Blocks.STONE, true);
-		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, 0, Blocks.STONE, 0, this.level == 1);
-		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, 6, Blocks.STONE, 0, false);
+		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), Blocks.STONE.getDefaultState(), this.level == 1);
+		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), Blocks.STONE.getDefaultState(), false);
 		
 		//
-		maze.headBlockID = TFBlocks.mazestone;
-		maze.headBlockMeta = 3;
-		maze.wallBlockID = TFBlocks.mazestone;
-		maze.wallBlockMeta = 1;
-		maze.rootBlockID = TFBlocks.mazestone;
-		maze.rootBlockMeta = 3;
-		maze.pillarBlockID = TFBlocks.mazestone;
-		maze.pillarBlockMeta = 2;
-		maze.wallVar0ID = TFBlocks.mazestone;
-		maze.wallVar0Meta = 4;
+		maze.headBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
+		maze.wallBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
+		maze.rootBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
+		maze.pillarBlockState = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
+		maze.wallVar0State = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED);
 		maze.wallVarRarity = 0.2F;
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;

@@ -37,7 +37,7 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 				// make part of the floor mycelium
 				if (rand.nextInt(dist + 1) > 0)
 				{
-					this.setBlockState(world, Blocks.MYCELIUM, 0, x, 0, z, sbb);
+					this.setBlockState(world, Blocks.MYCELIUM.getDefaultState(), x, 0, z, sbb);
 				}
 				// add small mushrooms all over
 				if (rand.nextInt(dist) > 0)

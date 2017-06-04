@@ -3,6 +3,7 @@ package twilightforest.structures.minotaurmaze;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
@@ -107,13 +108,15 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 			int bx = this.getXWithOffset(7, 7);
 			int by = this.getYWithOffset(1);
 			int bz = this.getZWithOffset(7, 7);
-			
-			if (sbb.isVecInside(bx, by, bz)) {
+
+			BlockPos pos = new BlockPos(bx, by, bz);
+
+			if (sbb.isVecInside(pos)) {
 				taurPlaced  = true;
 				
 				EntityTFMinoshroom taur = new EntityTFMinoshroom(world);
 				taur.setPosition(bx, by, bz);
-				taur.setHomeArea(bx, by, bz, 7);
+				taur.setHomePosAndDistance(pos, 7);
 				
 				world.spawnEntity(taur);
 			}

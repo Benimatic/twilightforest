@@ -6,7 +6,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MazestoneVariant;
 
 public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 
@@ -25,7 +27,7 @@ public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 		
 		// back wall brick
-		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.mazestone, 1, AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, false);
 
 		// water
 		this.setBlockState(world, Blocks.FLOWING_WATER.getDefaultState(), 2, 3, 4, sbb);

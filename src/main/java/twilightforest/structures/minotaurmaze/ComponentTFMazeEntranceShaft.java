@@ -10,7 +10,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponent;
 
 public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
@@ -54,7 +56,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
         }
 		
 		
-        this.fillWithBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone, 1, AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
         this.fillWithAir(world, sbb, 1, 0 - 10, 1, 4, 0 + 30, 4);
         
         //System.out.println("Drawing entrance");

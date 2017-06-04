@@ -8,6 +8,8 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 
+import static twilightforest.block.enums.PlantVariant.ROOT_STRAND;
+
 public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 
 	public ComponentTFMazeRoomCollapse() {
@@ -38,13 +40,13 @@ public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 				if (gravel > 0)
 				{
 					gravel++; // get it out of the floor
-					this.fillWithBlocks(world, sbb, x, 1, z, x, gravel, z, Blocks.GRAVEL, Blocks.AIR, false);
+					this.fillWithBlocks(world, sbb, x, 1, z, x, gravel, z, Blocks.GRAVEL.getDefaultState(), AIR, false);
 					this.fillWithAir(world, sbb, x, gravel, z, x, gravel + 5, z);
 				}
 				else if (root > 0)
 				{
-					this.fillWithBlocks(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT, Blocks.AIR, true);
-					this.fillWithBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.plant, BlockTFPlant.META_ROOT_STRAND, AIR, false);
+					this.fillWithBlocks(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT.getDefaultState(), AIR, true);
+					this.fillWithBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, ROOT_STRAND), AIR, false);
 				}
 				else if (rand.nextInt(dist + 1) > 0)
 				{

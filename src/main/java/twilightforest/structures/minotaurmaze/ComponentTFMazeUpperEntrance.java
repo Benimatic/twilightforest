@@ -8,7 +8,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponent;
 
 public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
@@ -43,21 +45,21 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 		// ceiling
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.mazestone, Blocks.AIR, true);
 
-        this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.mazestone, 6, AIR, false);
-        this.fillWithBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.mazestone, 3, AIR, true);
-        this.fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.mazestone, 1, AIR, true);
-        this.fillWithBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.mazestone, 3, AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), AIR, false);
+        this.fillWithBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
+        this.fillWithBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, true);
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.2F, 0, 0, 0, 15, 5, 15, Blocks.GRAVEL, Blocks.AIR, true);
 		
 
 		// doorways
-		fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.FENCE, Blocks.AIR, false);
+		fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		fillWithAir(world, sbb, 7, 1, 0, 8, 3, 0);
-		fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.FENCE, Blocks.AIR, false);
+		fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		fillWithAir(world, sbb, 7, 1, 15, 8, 3, 15);
-		fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.FENCE, Blocks.AIR, false);
+		fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		fillWithAir(world, sbb, 0, 1, 7, 0, 3, 8);
-		fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.FENCE, Blocks.AIR, false);
+		fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		fillWithAir(world, sbb, 15, 1, 7, 15, 3, 8);
         
 		// random holes
@@ -67,8 +69,8 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
         this.fillWithAir(world, sbb, 1, 1, 1, 14, 4, 14);
 
         // entrance pit
-		this.fillWithBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, AIR, false);
-		this.fillWithBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone, 3, AIR, false);
+		this.fillWithBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
+		this.fillWithBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
 		this.randomlyFillWithBlocks(world, sbb, rand, 0.7F, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, Blocks.AIR, false);
 //		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
 

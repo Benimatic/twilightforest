@@ -7,7 +7,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
+import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.MazestoneVariant;
 
 public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
@@ -42,8 +44,8 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 //		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
 		
 		// doorway w/ bars
-		this.fillWithBlocks(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.mazestone, 2, AIR, false);
-		this.fillWithBlocks(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.mazestone, 3, AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
 		this.fillWithBlocks(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.getDefaultState(), AIR, false);
 		
 		return true;
