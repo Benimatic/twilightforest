@@ -8,7 +8,9 @@ import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFWorld;
 
 public class StructureTFHollowTreeStart extends StructureStart {
-	
+
+	public StructureTFHollowTreeStart() {}
+
 	public StructureTFHollowTreeStart(World world, Random rand, int chunkX, int chunkZ) {
 		int x = (chunkX << 4) + 8;
 		int z = (chunkZ << 4) + 8;
