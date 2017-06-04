@@ -3,6 +3,8 @@ package twilightforest.structures.mushroomtower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
 
 public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTowerBridge {
@@ -12,13 +14,13 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 		// TODO Auto-generated constructor stub
 	}
 
-	protected ComponentTFMushroomTowerMainBridge(int i, int x, int y, int z, int pSize, int pHeight, int direction) {
+	protected ComponentTFMushroomTowerMainBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		// bridge only 11 long
 		super(i, x, y, z, 11, pHeight, direction);
 	}
 
 	@Override
-	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		// make a new size 15 main tower
 		EnumFacing direction = getStructureRelativeRotation(rotation);

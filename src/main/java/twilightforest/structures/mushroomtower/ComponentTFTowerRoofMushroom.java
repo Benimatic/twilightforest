@@ -3,6 +3,7 @@ package twilightforest.structures.mushroomtower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -22,7 +23,7 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		
 		this.size = wing.size + (overhang * 2);
 		
-		this.setCoordBaseMode(0);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 		
 		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - overhang, wing.getBoundingBox().maxY + 2, wing.getBoundingBox().minZ - overhang, wing.getBoundingBox().maxX + overhang, wing.getBoundingBox().maxY + this.height + 1, wing.getBoundingBox().maxZ + overhang);
 
@@ -50,7 +51,7 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		for (int y = 0; y <= height; y++) {
 			
 			int radius = (int)(MathHelper.sin((y + height/1.2F) / (height * 2.05F) * 3.14F) * this.size / 2F);
-			int hollow = MathHelper.floor_float(radius * .9F);
+			int hollow = MathHelper.floor(radius * .9F);
 			
 			if ((height - y) < 3)
 			{
@@ -76,19 +77,19 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 				// determine how far we are from the center.
 //				int ax = Math.abs(dx);
 //				int az = Math.abs(dz);
-				float dist = MathHelper.sqrt_float(dx * dx + dz * dz);
+				float dist = MathHelper.sqrt(dx * dx + dz * dz);
 
 				// make a trunk!
 				if (dist <= (radius + 0.5F)) 
 				{
 					if (dist > hollow)
 					{
-						setBlockState(world, deco.accentID, deco.accentMeta, dx + cx, y, dz + cz, sbb);
+						setBlockState(world, deco.accentState, dx + cx, y, dz + cz, sbb);
 					}
 					else
 					{
 						// spore
-						setBlockState(world, deco.accentID, 0, dx + cx, y, dz + cz, sbb);
+						setBlockState(world, deco.accentState.getBlock().getDefaultState(), dx + cx, y, dz + cz, sbb);
 
 					}
 				}

@@ -3,12 +3,17 @@ package twilightforest.structures.mushroomtower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -46,8 +51,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.hasBase = par1NBTTagCompound.getBoolean("hasBase");
         this.isAscender = par1NBTTagCompound.getBoolean("isAscender");
 	}
@@ -60,7 +65,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		}
 		
 		// we should have a door where we started
-		addOpening(0, 1, size / 2, 2);
+		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 		
 		// should we build a base?
 		this.hasBase = size > 3;
@@ -68,14 +73,14 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		// if we are an acender, build the destination tower
 		if (this.isAscender)
 		{
-			int[] dest = getValidOpening(rand, 2);
+			int[] dest = getValidOpening(rand, Rotation.CLOCKWISE_180);
 			
 			dest[1] = this.height - 3;
 			
 			int childHeight = (rand.nextInt(3) + rand.nextInt(3) + 2) * FLOOR_HEIGHT + 1;
 			
 			
-			boolean madeIt = makeMainBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size + 4, childHeight, 2);
+			boolean madeIt = makeMainBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size + 4, childHeight, Rotation.CLOCKWISE_180);
 			
 			if (!madeIt)
 			{
@@ -91,9 +96,10 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		if (this.getComponentType() < 5 && this.size > 6)
 		{
 			// make sub towers
-			for (int i = 0; i < 4; i++) {
+			//for (int i = 0; i < 4; i++) {
+			for (Rotation i : Rotation.values()) {
 				
-				if (this.size < MAIN_SIZE && i == 2)
+				if (this.size < MAIN_SIZE && i == Rotation.CLOCKWISE_180)
 				{
 					continue;
 				}
@@ -122,16 +128,19 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 //		System.out.println("x range is " + Math.abs(nx - parent.getBoundingBox().minX));
 //		System.out.println("z range is " + Math.abs(nz - parent.getBoundingBox().minZ));
 //		System.out.println("nz is " + nz + ", parent.minz is " + parent.getBoundingBox().minZ);
-		
-		return Math.abs(nx - parent.getBoundingBox().getCenterX()) > range
-				|| Math.abs(nz - parent.getBoundingBox().getCenterZ()) > range;
+
+		final StructureBoundingBox sbb = parent.getBoundingBox();
+		final int centerX = sbb.minX + (sbb.maxX - sbb.minX + 1) / 2;
+		final int centerZ = sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2;
+		return Math.abs(nx - centerX) > range
+				|| Math.abs(nz - centerZ) > range;
 	}
 
 	/**
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
@@ -175,7 +184,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	/**
 	 * Adjust the coordinates for this tower to link up with any others within 3
 	 */
-	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, int direction, List list) {
+	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, EnumFacing direction, List list) {
 		
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
 		
@@ -192,14 +201,14 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 					
 					switch (direction)
 					{
-					case 0:
-						return new int[] {otherWing.getBoundingBox().minX, y, otherWing.getBoundingBox().minZ};
-					case 1:
-						return new int[] {otherWing.getBoundingBox().maxX, y, otherWing.getBoundingBox().minZ};
-					case 2:
-						return new int[] {otherWing.getBoundingBox().maxX, y, otherWing.getBoundingBox().maxZ};
-					case 3:
-						return new int[] {otherWing.getBoundingBox().minX, y, otherWing.getBoundingBox().maxZ};
+						case SOUTH:
+							return new int[] {otherWing.getBoundingBox().minX, y, otherWing.getBoundingBox().minZ};
+						case WEST:
+							return new int[] {otherWing.getBoundingBox().maxX, y, otherWing.getBoundingBox().minZ};
+						case NORTH:
+							return new int[] {otherWing.getBoundingBox().maxX, y, otherWing.getBoundingBox().maxZ};
+						case EAST:
+							return new int[] {otherWing.getBoundingBox().minX, y, otherWing.getBoundingBox().maxZ};
 					}
 				}
 			}
@@ -270,11 +279,11 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 
 
 	@Override
-	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		return this.makeBridge(list, rand, index, x, y, z, wingSize, wingHeight, rotation, false);
 	}
 	
-	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation, boolean ascender) {
+	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation, boolean ascender) {
 		// bridges are size  always
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -306,7 +315,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		}
 	}
 	
-	private boolean makeMainBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, int rotation) {
+	private boolean makeMainBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -324,14 +333,14 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
 	@Override
-	public int[] getValidOpening(Random rand, int direction) {
+	public int[] getValidOpening(Random rand, Rotation direction) {
 		// variables!
 		int wLength = Math.min(size / 3, 3); // wall length
 		int offset = (size - wLength) / 2; // wall thickness
 		
 		// for directions 0 or 2, the wall lies along the z axis
-		if (direction == 0 || direction == 2) {
-			int rx = direction == 0 ? size - 1 : 0;
+		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
+			int rx = direction == Rotation.NONE ? size - 1 : 0;
 			int rz = offset + rand.nextInt(wLength);
 			int ry = getYByStairs(rz, rand, direction);
 			
@@ -339,9 +348,9 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		}
 		
 		// for directions 1 or 3, the wall lies along the x axis
-		if (direction == 1 || direction == 3) {
+		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
 			int rx = offset + rand.nextInt(wLength);
-			int rz = direction == 1 ? size - 1 : 0;
+			int rz = direction == Rotation.CLOCKWISE_90 ? size - 1 : 0;
 			int ry = getYByStairs(rx, rand, direction);
 			
 			return new int[] {rx, ry, rz};
@@ -357,7 +366,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * Also works for Z coordinates.
 	 */
 	@Override
-	protected int getYByStairs(int rx, Random rand, int direction) {
+	protected int getYByStairs(int rx, Random rand, Rotation direction) {
 		
 		int floors = this.height / FLOOR_HEIGHT;
 	
@@ -411,15 +420,15 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 				if (dist <= diameter) 
 				{
 					// make floor/ceiling
-					setBlockState(world, deco.floorID, deco.floorMeta, dx + cx, 0, dz + cz, sbb);
-					setBlockState(world, deco.floorID, deco.floorMeta, dx + cx, height, dz + cz, sbb);
+					setBlockState(world, deco.floorState, dx + cx, 0, dz + cz, sbb);
+					setBlockState(world, deco.floorState, dx + cx, height, dz + cz, sbb);
 
 					// make walls
 					if (dist > hollow)
 					{
 						for (int dy = 0; dy <= height; dy++)
 						{
-							setBlockState(world, deco.blockID, deco.blockMeta, dx + cx, dy, dz + cz, sbb);
+							setBlockState(world, deco.blockState, dx + cx, dy, dz + cz, sbb);
 						}
 					}
 					else
@@ -433,7 +442,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 					// make base
 					if (this.hasBase) 
 					{
-						this.func_151554_b(world, deco.blockID, deco.blockMeta, dx + cx, -1, dz + cz, sbb);
+						this.setBlockState(world, deco.blockState, dx + cx, -1, dz + cz, sbb);
 					}
 				}
 			}
@@ -486,7 +495,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 				if (dist <= hollow) 
 				{
 					{
-						setBlockState(world, deco.floorID, this.isAscender ? 3 : deco.floorMeta, dx + cx, dy, dz + cz, sbb);
+						setBlockState(world, this.isAscender ? deco.floorState.withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE) : deco.floorState, dx + cx, dy, dz + cz, sbb);
 					}
 				}
 			}
@@ -501,7 +510,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
         
         if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
-        	setBlockState(world, deco.accentID, deco.accentMeta, dx, dy + 2, dz, sbb);
+        	setBlockState(world, deco.accentState, dx, dy + 2, dz, sbb);
         }
 	}
 	
@@ -512,10 +521,10 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 	 * @param bottom
 	 * @param top
 	 * @param ladderUpDir
-	 * @param laddderDownDir
+	 * @param ladderDownDir
 	 */
 	@Override
-	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, int ladderUpDir, int ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
 		//decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 
 	}

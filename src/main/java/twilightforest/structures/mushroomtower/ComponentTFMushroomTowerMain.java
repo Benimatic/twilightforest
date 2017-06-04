@@ -3,7 +3,8 @@ package twilightforest.structures.mushroomtower;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -20,10 +21,10 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 	}
 
 	public ComponentTFMushroomTowerMain(World world, Random rand, int index, int x, int y, int z) {
-		this(world, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, 2);
+		this(world, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, EnumFacing.NORTH);
 	}
 	
-	public ComponentTFMushroomTowerMain(World world, Random rand, int index, int x, int y, int z, int rotation) {
+	public ComponentTFMushroomTowerMain(World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
 		super(index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 		
 //		// check to make sure we can build the whole tower
@@ -45,7 +46,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 	}
 
 	
-	protected ComponentTFMushroomTowerMain(int i, int x, int y, int z, int pSize, int pHeight, int direction) 
+	protected ComponentTFMushroomTowerMain(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction)
 	{
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
@@ -58,12 +59,12 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 		}
 		
 		// we should have a door where we started
-		addOpening(0, 1, size / 2, 2);
+		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 		
 		// should we build a base?
 		this.hasBase = true;
 		
-		int mainDir = -1;
+		Rotation mainDir = null;
 		
 		// limit sprawl to a reasonable amount
 		if (this.getComponentType() < 3)
@@ -74,14 +75,15 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 			{
 				mainDir = makeAscenderTower(list, rand);
 				
-				if (mainDir != -1)
+				if (mainDir != null)
 				{
 					break;
 				}
 			}
 
 			// make sub towers
-			for (int i = 0; i < 4; i++) {
+			//for (int i = 0; i < 4; i++) {
+			for (Rotation i : Rotation.values()) {
 
 				if (i == mainDir)
 				{
@@ -106,11 +108,11 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 	/**
 	 * Make a new ascender tower.  Return direction (0-4) if successful, -1 if not.
 	 */
-	private int makeAscenderTower(List list, Random rand) {
-		int mainDir;
+	private Rotation makeAscenderTower(List list, Random rand) {
+		Rotation mainDir;
 		int[] dest;
 		int childHeight;
-		mainDir = rand.nextInt(4);
+		mainDir = Rotation.values()[rand.nextInt(4)];
 		
 		dest = getValidOpening(rand,  mainDir);
 		
@@ -126,7 +128,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 		else
 		{
 			System.out.println("Main tower failed to branch off at index " + this.componentType);
-			return -1;
+			return null;
 		}
 		
 	}

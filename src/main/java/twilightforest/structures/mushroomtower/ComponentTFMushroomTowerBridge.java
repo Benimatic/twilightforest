@@ -3,11 +3,14 @@ package twilightforest.structures.mushroomtower;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
 
 public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing {
@@ -44,8 +47,8 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.dSize = par1NBTTagCompound.getInteger("destSize");
         this.dHeight = par1NBTTagCompound.getInteger("destHeight");
 	}
@@ -59,7 +62,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		
 		int[] dest = new int[] {dSize - 1, 1, 1};
 		
-		boolean madeWing = makeTowerWing(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], dSize, dHeight, 0);
+		boolean madeWing = makeTowerWing(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], dSize, dHeight, Rotation.NONE);
 		
 		if (!madeWing)
 		{
@@ -80,10 +83,10 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 
 		// make walls
 		for (int x = 0; x < dSize; x++) {
-			setBlockState(world, deco.fenceID, deco.fenceMeta, x, 1, 0, sbb);
-			setBlockState(world, deco.fenceID, deco.fenceMeta, x, 1, 2, sbb);
+			setBlockState(world, deco.fenceState, x, 1, 0, sbb);
+			setBlockState(world, deco.fenceState, x, 1, 2, sbb);
 
-			setBlockState(world, deco.floorID, this.isAscender ? 3 : deco.floorMeta, x, 0, 1, sbb);
+			setBlockState(world, this.isAscender ? deco.floorState.withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE) : deco.floorState, x, 0, 1, sbb);
 		}
 
 		// clear bridge walkway
