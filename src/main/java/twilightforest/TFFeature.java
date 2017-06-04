@@ -317,7 +317,7 @@ public class TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	public static TFFeature generateFeatureFor1Point7(int chunkX, int chunkZ, World world) {
+	public static TFFeature generateFeature(int chunkX, int chunkZ, World world) {
 		// set the chunkX and chunkZ to the center of the biome
     	chunkX = Math.round(chunkX / 16F) * 16;
     	chunkZ = Math.round(chunkZ / 16F) * 16;
@@ -528,7 +528,7 @@ public class TFFeature {
     	int featureX = Math.round(chunkX / 16F) * 16;
     	int featureZ = Math.round(chunkZ / 16F) * 16;
     	
-		return TFFeature.generateFeatureFor1Point7(featureX, featureZ, world);
+		return TFFeature.generateFeature(featureX, featureZ, world);
     	
     	/* old version
     	for (int rad = 1; rad <= 3; rad++)
@@ -742,7 +742,7 @@ public class TFFeature {
 		// check if the bounding box is clear
 		boolean isClearSpawn = world.checkNoEntityCollision(hinty.getEntityBoundingBox()) && world.getCollisionBoxes(hinty, hinty.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(hinty.getEntityBoundingBox());
 		
-		if (isClearSpawn && hinty.getEntitySenses().canSee(player)) {
+		if (hinty.getCanSpawnHere() && hinty.getEntitySenses().canSee(player)) {
 			
 			// add items and hint book
 			ItemStack book = this.createHintBook();

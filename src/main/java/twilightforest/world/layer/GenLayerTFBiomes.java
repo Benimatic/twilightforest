@@ -15,21 +15,19 @@ import twilightforest.biomes.TFBiomes;
 public class GenLayerTFBiomes extends GenLayer
 {
 
-    protected Biome commonBiomes[] = (new Biome[] {
+    private static final int RARE_BIOME_CHANCE = 15;
+	protected Biome commonBiomes[] = (new Biome[] {
             TFBiomes.twilightForest,
             TFBiomes.denseTwilightForest,
-            TFBiomes.highlands,
             TFBiomes.mushrooms,
-            TFBiomes.tfSwamp,
-            TFBiomes.clearing,
-            TFBiomes.darkForest
+            TFBiomes.oakSavanna,
+            TFBiomes.fireflyForest
     });
     protected Biome rareBiomes[] = (new Biome[] {
             TFBiomes.tfLake,
-            TFBiomes.glacier,
             TFBiomes.deepMushrooms,
             TFBiomes.enchantedForest,
-            TFBiomes.fireSwamp
+            TFBiomes.clearing
     });
 
     public GenLayerTFBiomes(long l, GenLayer genlayer)
@@ -42,8 +40,8 @@ public class GenLayerTFBiomes extends GenLayer
 		super(l);
 	}
 
-	@Override
-    public int[] getInts(int x, int z, int width, int depth)
+    @Override
+	public int[] getInts(int x, int z, int width, int depth)
     {
         int dest[] = IntCache.getIntCache(width * depth);
         for(int dz = 0; dz < depth; dz++)
@@ -51,13 +49,13 @@ public class GenLayerTFBiomes extends GenLayer
             for(int dx = 0; dx < width; dx++)
             {
                 initChunkSeed(dx + x, dz + z);
-                if (nextInt(15) == 0 ) {
+                if (nextInt(RARE_BIOME_CHANCE) == 0 ) {
                 	// make rare biome
                 	dest[dx + dz * width] = Biome.getIdForBiome(rareBiomes[nextInt(rareBiomes.length)]);
                 }
                 else {
                 	// make common biome
-                	dest[dx + dz * width] = Biome.getIdForBiome(commonBiomes[nextInt(commonBiomes.length)]);
+                	dest[dx + dz * width] =Biome.getIdForBiome(commonBiomes[nextInt(commonBiomes.length)]);
                 }
             }
 

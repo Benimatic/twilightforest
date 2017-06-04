@@ -31,7 +31,7 @@ public class TFBiomeProvider extends BiomeProvider
 
     public TFFeature getFeatureAt(int mapX, int mapZ, World world)
     {
-		return TFFeature.generateFeatureFor1Point7(mapX >> 4, mapZ >> 4, world);
+		return TFFeature.generateFeature(mapX >> 4, mapZ >> 4, world);
     }
 
     public boolean isInFeatureChunk(World world, int mapX, int mapZ) {

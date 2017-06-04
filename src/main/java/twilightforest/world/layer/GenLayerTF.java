@@ -12,7 +12,7 @@ public abstract class GenLayerTF extends GenLayer {
 	}
 
 	public static GenLayer[] makeTheWorld(long l) {
-		GenLayer biomes = new GenLayerTFBiomes1Point7(1L);
+		GenLayer biomes = new GenLayerTFBiomes(1L);
 		biomes = new GenLayerTFKeyBiomes(1000L, biomes);
 		biomes = new GenLayerTFCompanionBiomes(1000L, biomes);
 
