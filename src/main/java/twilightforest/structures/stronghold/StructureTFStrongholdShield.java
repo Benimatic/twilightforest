@@ -8,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.BlockTFShield;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 
 public class StructureTFStrongholdShield extends StructureTFStrongholdComponent {
@@ -15,13 +16,13 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 	public StructureTFStrongholdShield() {}
 
 	public StructureTFStrongholdShield(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		super(0, 0, minX, minY, minZ);
+		super(0, EnumFacing.SOUTH, minX, minY, minZ);
 		this.boundingBox = new StructureBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 		this.spawnListIndex = -1;
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
 		return null;
 	}
 

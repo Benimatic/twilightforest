@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -28,7 +29,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 
 		// make a random component in each direction
 		lowerPieces.prepareStructurePieces();
-		addNewComponent(parent, list, random, 0, 4, 1, 18);
+		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
 		lowerPieces.prepareStructurePieces();
 		if (!listContainsBossRoom(list))
 		{
@@ -38,7 +39,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		{
 			lowerPieces.markBossRoomUsed();
 		}
-		addNewComponent(parent, list, random, 1, -1, 1, 13);
+		addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 13);
 		lowerPieces.prepareStructurePieces();
 		if (!listContainsBossRoom(list))
 		{
@@ -48,7 +49,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		{
 			lowerPieces.markBossRoomUsed();
 		}
-		addNewComponent(parent, list, random, 2, 13, 1, -1);
+		addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 13, 1, -1);
 		lowerPieces.prepareStructurePieces();
 		if (!listContainsBossRoom(list))
 		{
@@ -58,7 +59,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		{
 			lowerPieces.markBossRoomUsed();
 		}
-		addNewComponent(parent, list, random, 3, 18, 1, 4);
+		addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
 		if (!listContainsBossRoom(list))
 		{
 			System.out.println("Did not find boss room from exit 3 - EPIC FAIL");

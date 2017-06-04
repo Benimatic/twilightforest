@@ -7,9 +7,11 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 
 public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent {
@@ -31,8 +33,8 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
 
         this.chestTrapped = par1NBTTagCompound.getBoolean("chestTrapped");
 	}
@@ -74,13 +76,13 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 		
 		for (int z = 2; z < 5; z++)
 		{
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(0)), 3, 1, z, sbb);
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(2)), 5, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.NONE)), 3, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_180)), 5, 1, z, sbb);
 		}
 		
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(1)), 4, 1, 2, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(3)), 4, 1, 4, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(1)), 4, 2, 3, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 4, 1, 2, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.COUNTERCLOCKWISE_90)), 4, 1, 4, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 4, 2, 3, sbb);
 		
 		return true;
 	}

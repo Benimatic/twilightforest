@@ -6,9 +6,11 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdComponent {
 	
@@ -28,8 +30,8 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.enterBottom = par1NBTTagCompound.getBoolean("enterBottom");
 	}
 
@@ -66,34 +68,34 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 		super.buildComponent(parent, list, random);
 		
 		// lower left exit
-		addNewComponent(parent, list, random, 0, 13, 1, 27);
+		addNewComponent(parent, list, random, Rotation.NONE, 13, 1, 27);
 		
 		// lower middle right exit
-		addNewComponent(parent, list, random, 1, -1, 1, 13);
+		addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 13);
 		
 		// lower middle left exit
-		addNewComponent(parent, list, random, 3, 18, 1, 13);
+		addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 18, 1, 13);
 		
 		// upper left exit
-		addNewComponent(parent, list, random, 0, 4, 8, 27);
+		addNewComponent(parent, list, random, Rotation.NONE, 4, 8, 27);
 		
 		// upper close right exit
-		addNewComponent(parent, list, random, 1, -1, 8, 4);
+		addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 8, 4);
 		
 		// upper far left exit
-		addNewComponent(parent, list, random, 3, 18, 8, 22);
+		addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 8, 22);
 		
 		if (this.enterBottom)
 		{
 			this.addDoor(4, 1, 0);
 			//this.addDoor(4, 1, 1);
-			addNewComponent(parent, list, random, 2, 13, 8, -1);
+			addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 13, 8, -1);
 		}
 		else
 		{
 			this.addDoor(13, 8, 0);
 			//this.addDoor(13, 8, 1);
-			addNewComponent(parent, list, random, 2, 4, 1, -1);
+			addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 4, 1, -1);
 		}
 
 
@@ -112,8 +114,8 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 		this.fillWithAir(world, sbb, 5, 6, 5, 12, 8, 21);
 		
 		// stairs & pillars
-		placeStairsAndPillars(world, sbb, 0);
-		placeStairsAndPillars(world, sbb, 2);
+		placeStairsAndPillars(world, sbb, Rotation.NONE);
+		placeStairsAndPillars(world, sbb, Rotation.CLOCKWISE_180);
 
 		// doors
 		placeDoors(world, rand, sbb);
@@ -121,7 +123,7 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 		return true;
 	}
 
-	private void placeStairsAndPillars(World world, StructureBoundingBox sbb, int rotation) {
+	private void placeStairsAndPillars(World world, StructureBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 4, 1, 4, 4, 12, 4, deco.pillarState, rotation);
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), 4, 1, 5, rotation, sbb);
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), 5, 1, 4, rotation, sbb);
@@ -154,7 +156,7 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 			{
 				this.setBlockStateRotated(world, AIR, y + 6, y + 1, z, rotation, sbb);
 				this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), y + 6, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, deco.blockID, deco.blockMeta, y + 6, y - 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.blockState, y + 6, y - 1, z, rotation, sbb);
 			}
 		}
 	}

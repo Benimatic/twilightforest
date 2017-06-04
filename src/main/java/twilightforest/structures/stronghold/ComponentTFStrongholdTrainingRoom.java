@@ -7,6 +7,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockPumpkin;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -30,7 +31,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		super.buildComponent(parent, list, random);
 		
 		this.addDoor(13, 1, 0);
-		addNewComponent(parent, list, random, 0, 4, 1, 18);
+		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
 	}
 
 	@Override
@@ -47,9 +48,9 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.fillWithBlocksRandomly(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
 		
 		// training dummies
-		placeTrainingDummy(world, sbb, 0);
-		placeTrainingDummy(world, sbb, 1);
-		placeTrainingDummy(world, sbb, 2);
+		placeTrainingDummy(world, sbb, Rotation.NONE);
+		placeTrainingDummy(world, sbb, Rotation.CLOCKWISE_90);
+		placeTrainingDummy(world, sbb, Rotation.CLOCKWISE_180);
 		
 		// anvil pad
 		this.fillWithBlocks(world, sbb, 5, 0, 10, 7, 0, 12, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
@@ -57,11 +58,11 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.setBlockState(world, deco.pillarState, 5, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 2, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 6, 1, 12, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(2)), 6, 2, 12, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(2)), 7, 1, 12, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_180)), 6, 2, 12, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_180)), 7, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 1, 11, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(1)), 5, 2, 11, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(1)), 5, 1, 10, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 5, 2, 11, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 5, 1, 10, sbb);
 
 		this.setBlockState(world, Blocks.ANVIL.getDefaultState(), 6, 1, 11, sbb);
 
@@ -71,13 +72,13 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		return true;
 	}
 
-	private void placeTrainingDummy(World world, StructureBoundingBox sbb, int rotation) {
+	private void placeTrainingDummy(World world, StructureBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 5, 0, 5, 7, 0, 7, Blocks.SAND.getDefaultState(), rotation);
-		this.setBlockStateRotated(world, deco.fenceState, 6, 1, 6, sbb, rotation);
-		this.setBlockStateRotated(world, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH), 6, 2, 6, sbb, rotation);
-		this.setBlockStateRotated(world, Blocks.OAK_FENCE.getDefaultState(), 5, 2, 6, sbb, rotation);
-		this.setBlockStateRotated(world, Blocks.OAK_FENCE.getDefaultState(), 7, 2, 6, sbb, rotation);
-		this.setBlockStateRotated(world, Blocks.PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(rotation)), 6, 3, 6, sbb, rotation);
+		this.setBlockStateRotated(world, deco.fenceState, 6, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH), 6, 2, 6, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.OAK_FENCE.getDefaultState(), 5, 2, 6, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.OAK_FENCE.getDefaultState(), 7, 2, 6, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(rotation)), 6, 3, 6, rotation, sbb);
 	}
 
 }

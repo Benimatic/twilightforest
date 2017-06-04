@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -31,7 +32,7 @@ public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComp
 		this.addDoor(4, 1, 0);
 
 		// make a random component at the end
-		addNewComponent(parent, list, random, 0, 4, 1, 18);
+		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
 		
 	}
 

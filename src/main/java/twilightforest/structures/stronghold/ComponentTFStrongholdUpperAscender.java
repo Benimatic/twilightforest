@@ -7,9 +7,11 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdComponent {
 	
@@ -29,8 +31,8 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.exitTop = par1NBTTagCompound.getBoolean("exitTop");
 	}
 
@@ -54,7 +56,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 		super.buildComponent(parent, list, random);
 
 		// make a random component on the other side
-		addNewUpperComponent(parent, list, random, 0, 2, exitTop ? 6 : 1, 10);
+		addNewUpperComponent(parent, list, random, Rotation.NONE, 2, exitTop ? 6 : 1, 10);
 	}
 
 	@Override
@@ -76,20 +78,20 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
         	// steps!
         	if (exitTop)
         	{
-        		makeStairsAt(world, 1, 3, 1, sbb);
-        		makeStairsAt(world, 2, 4, 1, sbb);
-        		makeStairsAt(world, 3, 5, 1, sbb);
-        		makeStairsAt(world, 4, 6, 1, sbb);
-        		makeStairsAt(world, 5, 7, 1, sbb);
+        		makeStairsAt(world, 1, 3, Rotation.CLOCKWISE_90, sbb);
+        		makeStairsAt(world, 2, 4, Rotation.CLOCKWISE_90, sbb);
+        		makeStairsAt(world, 3, 5, Rotation.CLOCKWISE_90, sbb);
+        		makeStairsAt(world, 4, 6, Rotation.CLOCKWISE_90, sbb);
+        		makeStairsAt(world, 5, 7, Rotation.CLOCKWISE_90, sbb);
         		makePlatformAt(world, 5, 8, sbb);
         	}
         	else
         	{
-        		makeStairsAt(world, 1, 6, 3, sbb);
-        		makeStairsAt(world, 2, 5, 3, sbb);
-        		makeStairsAt(world, 3, 4, 3, sbb);
-        		makeStairsAt(world, 4, 3, 3, sbb);
-        		makeStairsAt(world, 5, 2, 3, sbb);
+        		makeStairsAt(world, 1, 6, Rotation.COUNTERCLOCKWISE_90, sbb);
+        		makeStairsAt(world, 2, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
+        		makeStairsAt(world, 3, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
+        		makeStairsAt(world, 4, 3, Rotation.COUNTERCLOCKWISE_90, sbb);
+        		makeStairsAt(world, 5, 2, Rotation.COUNTERCLOCKWISE_90, sbb);
         		makePlatformAt(world, 5, 1, sbb);
         	}
         	return true;
@@ -99,7 +101,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	/**
 	 * Check if we can find at least one wall, and if so, generate stairs
 	 */
-	private void makeStairsAt(World world, int y, int z, int facing, StructureBoundingBox sbb) {
+	private void makeStairsAt(World world, int y, int z, Rotation facing, StructureBoundingBox sbb) {
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR)
 		{

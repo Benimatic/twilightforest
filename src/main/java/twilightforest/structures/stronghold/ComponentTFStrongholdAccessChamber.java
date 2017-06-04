@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -31,10 +32,10 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		super.buildComponent(parent, list, random);
 		
 		// make a random component in each direction
-		addNewUpperComponent(parent, list, random, 0, 4, 1, 9);
-		addNewUpperComponent(parent, list, random, 1, -1, 1, 4);
-		addNewUpperComponent(parent, list, random, 2, 4, 1, -1);
-		addNewUpperComponent(parent, list, random, 3, 9, 1, 4);
+		addNewUpperComponent(parent, list, random, Rotation.NONE, 4, 1, 9);
+		addNewUpperComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 4);
+		addNewUpperComponent(parent, list, random, Rotation.CLOCKWISE_180, 4, 1, -1);
+		addNewUpperComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 9, 1, 4);
 		
 	}
 
@@ -49,24 +50,24 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		placeSmallDoorwayAt(world, rand, 3, 8, 1, 4, sbb);
 		
 		// shaft down
-		this.fillWithMetadataBlocks(world, sbb, 2, -2, 2, 6, 0, 6, Blocks.STONEBRICK, 1, AIR, false);
+		this.fillWithBlocks(world, sbb, 2, -2, 2, 6, 0, 6, Blocks.STONEBRICK, 1, AIR, false);
 
 		this.fillWithAir(world, sbb, 3, -2, 3, 5, 2, 5);
 		
 		// stairs surrounding shaft
-		this.fillWithMetadataBlocks(world, sbb, 2, 0, 3, 2, 0, 6, deco.stairID, this.getStairMeta(2), AIR, false);
-		this.fillWithMetadataBlocks(world, sbb, 6, 0, 2, 6, 0, 6, deco.stairID, this.getStairMeta(0), AIR, false);
-		this.fillWithMetadataBlocks(world, sbb, 3, 0, 2, 5, 0, 2, deco.stairID, this.getStairMeta(3), AIR, false);
-		this.fillWithMetadataBlocks(world, sbb, 3, 0, 6, 5, 0, 6, deco.stairID, this.getStairMeta(1), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, deco.stairID, this.getStairMeta(2), AIR, false);
+		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, deco.stairID, this.getStairMeta(0), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, deco.stairID, this.getStairMeta(3), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, deco.stairID, this.getStairMeta(1), AIR, false);
 		
 		// pillar
-		this.setBlockState(world, deco.pillarID, deco.pillarMeta, 2, 0, 2, sbb);
+		this.setBlockState(world, deco.pillarState, 2, 0, 2, sbb);
 		
 		// pedestal
 		this.setBlockState(world, TFBlocks.trophyPedestal, 15, 2, 1, 2, sbb);
 		
 		// block point
-		this.fillWithMetadataBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.shield, 15, AIR, false);
+		this.fillWithBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.shield, 15, AIR, false);
 		
 		return true;
 	}

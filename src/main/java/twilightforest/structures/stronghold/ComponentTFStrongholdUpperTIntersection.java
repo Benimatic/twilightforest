@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -28,10 +29,10 @@ public class ComponentTFStrongholdUpperTIntersection extends StructureTFStrongho
 		super.buildComponent(parent, list, random);
 
 		// make a random component to the left
-		addNewUpperComponent(parent, list, random, 3, 5, 1, 2);
+		addNewUpperComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 5, 1, 2);
 
 		// make a random component to the right
-		addNewUpperComponent(parent, list, random, 1, -1, 1, 2);
+		addNewUpperComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 2);
 	}
 
 	@Override

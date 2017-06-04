@@ -9,8 +9,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
-import twilightforest.entity.TFCreatures;
+import twilightforest.util.TFEntityNames;
 
 public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComponent {
 
@@ -30,8 +31,8 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.enterBottom = par1NBTTagCompound.getBoolean("enterBottom");
 	}
 
@@ -66,9 +67,9 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 		this.fillWithBlocks(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
 		
 		// spawnwers
-		this.setSpawner(world, 4, 1, 4, sbb, TFCreatures.getSpawnerNameFor("Helmet Crab"));
+		this.setSpawner(world, 4, 1, 4, sbb, TFEntityNames.HELMET_CRAB);
 		
-		this.setSpawner(world, 4, 4, 15, sbb, TFCreatures.getSpawnerNameFor("Helmet Crab"));
+		this.setSpawner(world, 4, 4, 15, sbb, TFEntityNames.HELMET_CRAB);
 		
 		// treasure!
 		this.placeTreasureAtCurrentPosition(world, rand, 2, 4, 13, TFTreasure.stronghold_room, sbb);

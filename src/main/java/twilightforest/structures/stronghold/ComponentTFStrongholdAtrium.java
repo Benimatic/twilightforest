@@ -3,14 +3,22 @@ package twilightforest.structures.stronghold;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.world.TFGenSmallRainboak;
 import twilightforest.world.TFGenSmallTwilightOak;
 
@@ -20,7 +28,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 	public ComponentTFStrongholdAtrium() {}
 
-	public ComponentTFStrongholdAtrium(int i, int facing, int x, int y, int z) {
+	public ComponentTFStrongholdAtrium(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 	}
 	
@@ -38,8 +46,8 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.enterBottom = par1NBTTagCompound.getBoolean("enterBottom");
 	}
 
@@ -81,16 +89,16 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		if (this.enterBottom)
 		{
 			this.addDoor(4, 1, 0);
-			addNewComponent(parent, list, random, 2, 13, 8, -1);
+			addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 13, 8, -1);
 		}
 		else
 		{
 			this.addDoor(13, 8, 0);
-			addNewComponent(parent, list, random, 2, 4, 1, -1);
+			addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 4, 1, -1);
 		}
 		
-		addNewComponent(parent, list, random, 0, 13, 1, 18);
-		addNewComponent(parent, list, random, 0, 4, 8, 18);
+		addNewComponent(parent, list, random, Rotation.NONE, 13, 1, 18);
+		addNewComponent(parent, list, random, Rotation.NONE, 4, 8, 18);
 
 	}
 
@@ -104,14 +112,14 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 		// balcony
 		this.fillWithRandomizedBlocks(world, sbb, 1, 6, 1, 16, 7, 16, false, rand, deco.randomBlocks);
-		this.fillWithBlocks(world, sbb, 5, 8, 5, 12, 8, 12, deco.fenceID, Blocks.AIR, false);
+		this.fillWithBlocks(world, sbb, 5, 8, 5, 12, 8, 12, deco.fenceState, AIR, false);
 		this.fillWithAir(world, sbb, 6, 6, 6, 11, 8, 11);
 		
 		// balcony pillars
-		placeBalconyPillar(world, sbb, 0);
-		placeBalconyPillar(world, sbb, 1);
-		placeBalconyPillar(world, sbb, 2);
-		placeBalconyPillar(world, sbb, 3);
+		placeBalconyPillar(world, sbb, Rotation.NONE);
+		placeBalconyPillar(world, sbb, Rotation.CLOCKWISE_90);
+		placeBalconyPillar(world, sbb, Rotation.CLOCKWISE_180);
+		placeBalconyPillar(world, sbb, Rotation.COUNTERCLOCKWISE_90);
 		
 		// corner pillars
 		this.fillWithRandomizedBlocks(world, sbb, 1, 1, 1, 1, 12, 2, false, rand, deco.randomBlocks);
@@ -127,8 +135,9 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithRandomizedBlocks(world, sbb, 15, 1, 16, 15, 12, 16, false, rand, deco.randomBlocks);
 
 		// grass
-		this.randomlyFillWithBlocks(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, Blocks.GRASS, Blocks.GRASS, false);
-		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, Blocks.GRASS, Blocks.AIR, false);
+		IBlockState grass = Blocks.GRASS.getDefaultState();
+		this.randomlyFillWithBlocks(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, grass, grass, false);
+		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, grass, AIR, false);
 		
 		// tree
 		this.spawnATree(world, rand.nextInt(5), 8, 1, 8, sbb);
@@ -147,10 +156,9 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	
 	private void spawnATree(World world, int treeNum, int x, int y, int z, StructureBoundingBox sbb) 
 	{
-        int dx = getXWithOffset(x, z);
-        int dy = getYWithOffset(y);
-        int dz = getZWithOffset(x, z);
-        if (sbb.isVecInside(dx, dy, dz))
+		BlockPos pos = getBlockPosWithOffset(x, y, z);
+
+		if (sbb.isVecInside(pos))
         {
     		WorldGenerator treeGen;
     		// grow a tree
@@ -161,15 +169,21 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
     		case 0:
     		default:
     			// oak tree
-    			treeGen = new WorldGenTrees(true, minHeight, 0, 0, false);
+				IBlockState oakWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
+    			IBlockState oakLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK);
+    			treeGen = new WorldGenTrees(true, minHeight, oakWood, oakLeaves, false);
     			break;
     		case 1:
     			// jungle tree
-    			treeGen = new WorldGenTrees(true, minHeight, 3, 3, false);
+				IBlockState jungleWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+				IBlockState jungleLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE);
+    			treeGen = new WorldGenTrees(true, minHeight, jungleWood, jungleLeaves, false);
     			break;
     		case 2:
     			// birch
-    			treeGen = new WorldGenTrees(true, minHeight, 2, 2, false);
+				IBlockState birchWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
+				IBlockState birchLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH);
+    			treeGen = new WorldGenTrees(true, minHeight, birchWood, birchLeaves, false);
     			break;
     		case 3:
     			treeGen = new TFGenSmallTwilightOak(false, minHeight);
@@ -181,7 +195,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
     		
     		for (int i = 0; i < 100; i++)
     		{
-    			if (treeGen.generate(world, world.rand, dx, dy, dz))
+    			if (treeGen.generate(world, world.rand, pos))
     			{
     				break;
     			}
@@ -195,8 +209,8 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	}
 
 	
-	private void placeBalconyPillar(World world, StructureBoundingBox sbb, int rotation) {
-		this.fillBlocksRotated(world, sbb, 5, 1, 5, 5, 12, 5, deco.pillarID, deco.pillarMeta, rotation);
+	private void placeBalconyPillar(World world, StructureBoundingBox sbb, Rotation rotation) {
+		this.fillBlocksRotated(world, sbb, 5, 1, 5, 5, 12, 5, deco.pillarState, rotation);
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), 5, 1, 6, rotation, sbb);
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), 6, 1, 5, rotation, sbb);
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 5, 5, 6, rotation, sbb);

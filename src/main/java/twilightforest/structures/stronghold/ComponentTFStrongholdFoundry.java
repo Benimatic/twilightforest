@@ -8,9 +8,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent {
 	
@@ -30,8 +32,8 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.entranceLevel = par1NBTTagCompound.getInteger("entranceLevel");
 	}
 
@@ -62,21 +64,21 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		{
 		case 1:
 			this.addDoor(4, 6, 0);
-			addNewComponent(parent, list, random, 1, -1, 13, 13);
-			addNewComponent(parent, list, random, 3, 18, 13, 4);
-			addNewComponent(parent, list, random, 0, 13, 20, 18);
+			addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 13, 13);
+			addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 13, 4);
+			addNewComponent(parent, list, random, Rotation.NONE, 13, 20, 18);
 			break;
 		case 2:
 			this.addDoor(4, 13, 0);
-			addNewComponent(parent, list, random, 1, -1, 6, 13);
-			addNewComponent(parent, list, random, 3, 18, 20, 4);
-			addNewComponent(parent, list, random, 0, 13, 13, 18);
+			addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 6, 13);
+			addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 20, 4);
+			addNewComponent(parent, list, random, Rotation.NONE, 13, 13, 18);
 			break;
 		case 3:
 			this.addDoor(4, 20, 0);
-			addNewComponent(parent, list, random, 0, 13, 6, 18);
-			addNewComponent(parent, list, random, 1, -1, 13, 13);
-			addNewComponent(parent, list, random, 3, 18, 13, 4);
+			addNewComponent(parent, list, random, Rotation.NONE, 13, 6, 18);
+			addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 13, 13);
+			addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 13, 4);
 		}
 		
 

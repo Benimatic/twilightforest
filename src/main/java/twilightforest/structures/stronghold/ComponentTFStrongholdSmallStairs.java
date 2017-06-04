@@ -7,9 +7,11 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 
 public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdComponent {
@@ -34,8 +36,8 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
         this.enterBottom = par1NBTTagCompound.getBoolean("enterBottom");
         this.hasTreasure = par1NBTTagCompound.getBoolean("hasTreasure");
         this.chestTrapped = par1NBTTagCompound.getBoolean("chestTrapped");
@@ -76,12 +78,12 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 		if (this.enterBottom)
 		{
 			this.addDoor(4, 1, 0);
-			addNewComponent(parent, list, random, 0, 4, 8, 9);
+			addNewComponent(parent, list, random, Rotation.NONE, 4, 8, 9);
 		}
 		else
 		{
 			this.addDoor(4, 8, 0);
-			addNewComponent(parent, list, random, 0, 4, 1, 9);
+			addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 9);
 		}
 		
 		this.hasTreasure = random.nextBoolean();
@@ -96,16 +98,16 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 		this.fillWithBlocks(world, sbb, 1, 7, 1, 7, 7, 7, deco.platformState, Blocks.AIR.getDefaultState(), false);
 		this.fillWithAir(world, sbb, 2, 7, 2, 6, 7, 6);
 		
-		int rotation = this.enterBottom ? 0 : 2;
+		Rotation rotation = this.enterBottom ? Rotation.NONE : Rotation.CLOCKWISE_180;
 		
 		// stairs
 		for (int y = 1; y < 8; y++)
 		{
 			for (int x = 3; x < 6; x++)
 			{
-				this.setBlockStateRotated(world, Blocks.AIR.getDefaultState(), x, y + 1, y, sbb, rotation);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 1)), x, y, y, sbb, rotation);
-				this.setBlockStateRotated(world, deco.blockState, x, y - 1, y, sbb, rotation);
+				this.setBlockStateRotated(world, Blocks.AIR.getDefaultState(), x, y + 1, y, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), x, y, y, rotation, sbb);
+				this.setBlockStateRotated(world, deco.blockState, x, y - 1, y, rotation, sbb);
 			}
 		}
 		
@@ -116,18 +118,18 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 			
 			if (this.chestTrapped)
 			{
-				this.setBlockStateRotated(world, Blocks.TNT.getDefaultState(), 4, 0, 6, sbb, rotation);
+				this.setBlockStateRotated(world, Blocks.TNT.getDefaultState(), 4, 0, 6, rotation, sbb);
 			}
 
 			for (int z = 5; z < 8; z++)
 			{
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation)), 3, 1, z, sbb, rotation);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 2)), 5, 1, z, sbb, rotation);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation)), 3, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_180))), 5, 1, z, rotation, sbb);
 			}
 
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 1)), 4, 1, 5, sbb, rotation);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 3)), 4, 1, 7, sbb, rotation);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 1)), 4, 2, 6, sbb, rotation);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 4, 1, 5, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.COUNTERCLOCKWISE_90))), 4, 1, 7, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 4, 2, 6, rotation, sbb);
 		}
 		
 		if (enterBottom)

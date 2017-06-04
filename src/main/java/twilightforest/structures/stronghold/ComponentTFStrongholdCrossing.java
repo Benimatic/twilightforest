@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -29,9 +30,9 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		super.buildComponent(parent, list, random);
 		
 		this.addDoor(13, 1, 0);
-		addNewComponent(parent, list, random, 0, 4, 1, 18);
-		addNewComponent(parent, list, random, 1, -1, 1, 13);
-		addNewComponent(parent, list, random, 3, 18, 1, 4);
+		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
+		addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 13);
+		addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		placeCornerStatue(world, 15, 1, 15, 3, sbb);
 		
 		// center pillar
-		this.fillBlocksRotated(world, sbb, 8, 1, 8, 9, 5, 9, deco.pillarState, 0);
+		this.fillBlocksRotated(world, sbb, 8, 1, 8, 9, 5, 9, deco.pillarState, Rotation.NONE);
 		
 		// statues
 		placeWallStatue(world, 8, 1, 7, 0, sbb);
@@ -64,17 +65,17 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		return true;
 	}
 
-	private void placeTableAndChairs(World world, StructureBoundingBox sbb, int rotation) {
+	private void placeTableAndChairs(World world, StructureBoundingBox sbb, Rotation rotation) {
 		// table
 		this.setBlockStateRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(0 + rotation) + 4, 5, 1, 3, sbb, rotation);
 		this.setBlockStateRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(3 + rotation) + 4, 5, 1, 4, sbb, rotation);
 		this.setBlockStateRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(1 + rotation) + 4, 6, 1, 3, sbb, rotation);
 		this.setBlockStateRotated(world, Blocks.OAK_STAIRS, this.getStairMeta(2 + rotation) + 4, 6, 1, 4, sbb, rotation);
 		// chairs
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 3)), 5, 1, 2, sbb, rotation);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation)), 7, 1, 3, sbb, rotation);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 1)), 6, 1, 5, sbb, rotation);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation + 3)), 4, 1, 4, sbb, rotation);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.COUNTERCLOCKWISE_90))), 5, 1, 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation)), 7, 1, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.COUNTERCLOCKWISE_90))), 4, 1, 4, rotation, sbb);
 	}
 
 

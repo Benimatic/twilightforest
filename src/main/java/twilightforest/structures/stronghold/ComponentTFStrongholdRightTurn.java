@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -31,7 +32,7 @@ public class ComponentTFStrongholdRightTurn extends StructureTFStrongholdCompone
 		this.addDoor(4, 1, 0);
 
 		// make a random component to the right
-		addNewComponent(parent, list, random, 1, -1, 1, 4);
+		addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 4);
 		
 	}
 

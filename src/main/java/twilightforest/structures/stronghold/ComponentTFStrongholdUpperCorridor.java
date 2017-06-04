@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -28,7 +29,7 @@ public class ComponentTFStrongholdUpperCorridor extends StructureTFStrongholdCom
 		super.buildComponent(parent, list, random);
 
 		// make a random component at the end
-		addNewUpperComponent(parent, list, random, 0, 2, 1, 9);
+		addNewUpperComponent(parent, list, random, Rotation.NONE, 2, 1, 9);
 		
 	}
 

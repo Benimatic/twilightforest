@@ -1,17 +1,17 @@
 package twilightforest.structures.stronghold;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.SpawnerVariant;
+import twilightforest.block.enums.BossVariant;
+
+import java.util.List;
+import java.util.Random;
 
 public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponent {
 	
@@ -75,13 +75,13 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		placePillarDecorations(world, sbb, 3);
 		
 		// sarcophagi
-		placeSarcophagus(world, sbb, 8, 1, 8, 0);
-		placeSarcophagus(world, sbb, 13, 1, 8, 0);
-		placeSarcophagus(world, sbb, 18, 1, 8, 0);
+		placeSarcophagus(world, sbb, 8, 1, 8, Rotation.NONE);
+		placeSarcophagus(world, sbb, 13, 1, 8, Rotation.NONE);
+		placeSarcophagus(world, sbb, 18, 1, 8, Rotation.NONE);
 
-		placeSarcophagus(world, sbb, 8, 1, 15, 0);
-		placeSarcophagus(world, sbb, 13, 1, 15, 0);
-		placeSarcophagus(world, sbb, 18, 1, 15, 0);
+		placeSarcophagus(world, sbb, 8, 1, 15, Rotation.NONE);
+		placeSarcophagus(world, sbb, 13, 1, 15, Rotation.NONE);
+		placeSarcophagus(world, sbb, 18, 1, 15, Rotation.NONE);
 
 		
 		// doorway
@@ -96,7 +96,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 
 		
 		//spawner
-		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, SpawnerVariant.KNIGHT_PHANTOM), 13, 2, 13, sbb);
+		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM), 13, 2, 13, sbb);
 
 		
 		// out of order
@@ -111,46 +111,46 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 
 
 
-	private void placeSarcophagus(World world, StructureBoundingBox sbb, int x, int y, int z, int rotation) {
+	private void placeSarcophagus(World world, StructureBoundingBox sbb, int x, int y, int z, Rotation rotation) {
 		
-		this.setBlockStateRotated(world, deco.pillarID, deco.pillarMeta, x + 1, y, z + 0, rotation, sbb);
-		this.setBlockStateRotated(world, deco.pillarID, deco.pillarMeta, x - 1, y, z + 0, rotation, sbb);
-		this.setBlockStateRotated(world, deco.pillarID, deco.pillarMeta, x + 1, y, z + 3, rotation, sbb);
-		this.setBlockStateRotated(world, deco.pillarID, deco.pillarMeta, x - 1, y, z + 3, rotation, sbb);
+		this.setBlockStateRotated(world, deco.pillarState, x - 1, y, z + 0, rotation, sbb);
+		this.setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 3, rotation, sbb);
+		this.setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 0, rotation, sbb);
+		this.setBlockStateRotated(world, deco.pillarState, x - 1, y, z + 3, rotation, sbb);
 		
 		// make either torches or fence posts
 		
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.setBlockStateRotated(world, Blocks.TORCH, 0, x + 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x + 1, y + 1, z + 0, rotation, sbb);
 		}
 		else
 		{
-			this.setBlockStateRotated(world, deco.fenceID, deco.fenceMeta, x + 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, deco.fenceState, x + 1, y + 1, z + 0, rotation, sbb);
 		}
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.setBlockStateRotated(world, Blocks.TORCH, 0, x - 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x - 1, y + 1, z + 0, rotation, sbb);
 		}
 		else
 		{
-			this.setBlockStateRotated(world, deco.fenceID, deco.fenceMeta, x - 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, deco.fenceState, x - 1, y + 1, z + 0, rotation, sbb);
 		}
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.setBlockStateRotated(world, Blocks.TORCH, 0, x + 1, y + 1, z + 3, rotation, sbb);
+			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x + 1, y + 1, z + 3, rotation, sbb);
 		}
 		else
 		{
-			this.setBlockStateRotated(world, deco.fenceID, deco.fenceMeta, x + 1, y + 1, z + 3, rotation, sbb);
+			this.setBlockStateRotated(world, deco.fenceState, x + 1, y + 1, z + 3, rotation, sbb);
 		}
 		if (world.rand.nextInt(7) == 0)
 		{
-			this.setBlockStateRotated(world, Blocks.TORCH, 0, x - 1, y + 1, z + 3, rotation, sbb);
+			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x - 1, y + 1, z + 3, rotation, sbb);
 		}
 		else
 		{
-			this.setBlockStateRotated(world, deco.fenceID, deco.fenceMeta, x - 1, y + 1, z + 3, rotation, sbb);
+			this.setBlockStateRotated(world, deco.fenceState, x - 1, y + 1, z + 3, rotation, sbb);
 		}
 		
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(1 + rotation), x + 0, y, z + 0, rotation, sbb);
@@ -161,8 +161,8 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), x - 1, y, z + 1, rotation, sbb);
 		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), x - 1, y, z + 2, rotation, sbb);
 		
-		this.setBlockStateRotated(world, Blocks.STONE_SLAB, 0, x + 0, y + 1, z + 1, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.STONE_SLAB, 0, x + 0, y + 1, z + 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 1, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 2, rotation, sbb);
 
 	}
 

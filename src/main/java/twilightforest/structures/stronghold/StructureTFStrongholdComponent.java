@@ -11,10 +11,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
 
 public abstract class StructureTFStrongholdComponent extends StructureTFComponent {
@@ -53,8 +55,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readStructureFromNBT(par1NBTTagCompound);
+	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
 		
 		// init doors
         this.readOpeningsFromArray(par1NBTTagCompound.getIntArray("doorInts"));
@@ -106,7 +108,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Add a new component in the specified direction
 	 */
-	protected void addNewComponent(StructureComponent entrance, List list, Random random, int facing, int x, int y, int z) 
+	protected void addNewComponent(StructureComponent entrance, List list, Random random, Rotation facing, int x, int y, int z)
 	{
 		int index = this.componentType + 1;
 		EnumFacing nFacing = getStructureRelativeRotation(facing);
@@ -161,7 +163,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 	
 
-	protected void addNewUpperComponent(StructureComponent parent, List list, Random random, int facing, int x, int y, int z)
+	protected void addNewUpperComponent(StructureComponent parent, List list, Random random, Rotation facing, int x, int y, int z)
 	{
 		StructureTFStrongholdComponent attempted = null;
 		
@@ -440,21 +442,21 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Add a door to our list
 	 */
-	public void addDoorwayTo(int dx, int dy, int dz, int facing) {
+	public void addDoorwayTo(int dx, int dy, int dz, Rotation facing) {
 		switch (facing)
 		{
-		case 0:
-			addDoor(dx, dy, dz - 1);
-			break;
-		case 1:
-			addDoor(dx + 1, dy, dz);
-			break;
-		case 2:
-			addDoor(dx, dy, dz + 1);
-			break;
-		case 3:
-			addDoor(dx - 1, dy, dz);
-			break;
+			case NONE:
+				addDoor(dx, dy, dz - 1);
+				break;
+			case CLOCKWISE_90:
+				addDoor(dx + 1, dy, dz);
+				break;
+			case CLOCKWISE_180:
+				addDoor(dx, dy, dz + 1);
+				break;
+			case COUNTERCLOCKWISE_90:
+				addDoor(dx - 1, dy, dz);
+				break;
 		}
 	}
 	
