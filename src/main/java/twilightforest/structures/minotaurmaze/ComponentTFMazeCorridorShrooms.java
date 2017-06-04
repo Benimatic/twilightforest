@@ -3,6 +3,8 @@ package twilightforest.structures.minotaurmaze;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -39,18 +41,18 @@ public class ComponentTFMazeCorridorShrooms extends ComponentTFMazeCorridor {
 		}
 		
 		// brackets?
-		Block mushType = rand.nextBoolean() ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK;
+		IBlockState mushType = (rand.nextBoolean() ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 		int mushY = rand.nextInt(4) + 1;
 		int mushZ = rand.nextInt(4) + 1;
-		this.setBlockState(world, mushType, 15, 1, mushY - 1, mushZ, sbb);
-		this.fillWithBlocks(world, sbb, 1, 1, mushZ, 1, mushY, mushZ, mushType, 10, AIR, false);
-		this.fillWithBlocks(world, sbb, 1, mushY, mushZ - 1, 2, mushY, mushZ + 1, mushType, 14, AIR, false);
+		this.setBlockState(world, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM), 1, mushY - 1, mushZ, sbb);
+		this.fillWithBlocks(world, sbb, 1, 1, mushZ, 1, mushY, mushZ, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, mushY, mushZ - 1, 2, mushY, mushZ + 1, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE), AIR, false);
 
-		mushType = mushType == Blocks.BROWN_MUSHROOM_BLOCK ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK;
+		mushType = (mushType == Blocks.BROWN_MUSHROOM_BLOCK ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 		mushY = rand.nextInt(4) + 1;
 		mushZ = rand.nextInt(4) + 1;
-		this.fillWithBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType, 10, AIR, false);
-		this.fillWithBlocks(world, sbb, 3, mushY, mushZ - 1, 4, mushY, mushZ + 1, mushType, 14, AIR, false);
+		this.fillWithBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, mushY, mushZ - 1, 4, mushY, mushZ + 1, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE), AIR, false);
 
 		
 		return true;

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
@@ -64,16 +65,19 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		}
 		setBlockState(world, Blocks.PLANKS.getDefaultState(), dx + 1, 1, dz + 1, sbb);
 		setBlockState(world, Blocks.PLANKS.getDefaultState(), dx + 1, 4, dz + 1, sbb);
-		
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(1), dx + 1, 1, dz + 0, sbb);
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(0), dx + 0, 1, dz + 1, sbb);
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(2), dx + 2, 1, dz + 1, sbb);
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(3), dx + 1, 1, dz + 2, sbb);
 
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(1) + 4, dx + 1, 4, dz + 0, sbb);
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(0) + 4, dx + 0, 4, dz + 1, sbb);
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(2) + 4, dx + 2, 4, dz + 1, sbb);
-		setBlockState(world, Blocks.OAK_STAIRS, getStairMeta(3) + 4, dx + 1, 4, dz + 2, sbb);
+		final IBlockState defaultState = Blocks.OAK_STAIRS.getDefaultState();
+
+
+		setBlockState(world, getStairState(defaultState, EnumFacing.WEST, rotation, false), dx + 1, 1, dz + 0, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.SOUTH, rotation, false), dx + 0, 1, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.NORTH, rotation, false), dx + 2, 1, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.EAST, rotation, false), dx + 1, 1, dz + 2, sbb);
+
+		setBlockState(world, getStairState(defaultState, EnumFacing.WEST, rotation, true), dx + 1, 4, dz + 0, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.SOUTH, rotation, true), dx + 0, 4, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.NORTH, rotation, true), dx + 2, 4, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.EAST, rotation, true), dx + 1, 4, dz + 2, sbb);
 
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 2, dz + 0, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 0, 2, dz + 1, sbb);

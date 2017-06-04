@@ -2,6 +2,8 @@ package twilightforest.structures.minotaurmaze;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,22 +33,22 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		// doorways
 		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.FENCE, Blocks.AIR, false);
+			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
 		if (this.getBlockStateFromPos(world, 7, 1, 15, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.FENCE, Blocks.AIR, false);
+			fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
 		if (this.getBlockStateFromPos(world, 0, 1, 7, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.FENCE, Blocks.AIR, false);
+			fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
 		if (this.getBlockStateFromPos(world, 15, 1, 7, sbb) == Blocks.AIR)
 		{
-			fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.FENCE, Blocks.AIR, false);
+			fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
 		// mycelium / small mushrooms on floor
@@ -63,44 +65,47 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 				// make part of the floor mycelium
 				if (mycelium)
 				{
-					this.setBlockState(world, Blocks.MYCELIUM, 0, x, 0, z, sbb);
+					this.setBlockState(world, Blocks.MYCELIUM.getDefaultState(), x, 0, z, sbb);
 				}
 				// add small mushrooms all over
 				if (mushroom)
 				{
-					this.setBlockState(world, mushRed ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM, 0, x, 1, z, sbb);
+					this.setBlockState(world, (mushRed ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM).getDefaultState(), x, 1, z, sbb);
 				}
 			}
 		}
 		
 		// mushroom chest shelves in corner
-		fillWithBlocks(world, sbb, 1, 1, 1, 3, 1, 3, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 2, 2, 1, 4, 3, 1, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 1, 4, 1, 3, 4, 3, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		final IBlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
+		final IBlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
+
+		fillWithBlocks(world, sbb, 1, 1, 1, 3, 1, 3, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 2, 2, 1, 4, 3, 1, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 1, 4, 1, 3, 4, 3, redMushroom, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
 
-		fillWithBlocks(world, sbb, 12, 1, 12, 14, 1, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 14, 2, 11, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 11, 2, 14, 14, 3, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 12, 4, 12, 14, 4, 14, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 12, 1, 12, 14, 1, 14, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 14, 2, 11, 14, 3, 14, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 11, 2, 14, 14, 3, 14, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 12, 4, 12, 14, 4, 14, redMushroom, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
 
-		fillWithBlocks(world, sbb, 1, 1, 12, 3, 1, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 1, 2, 11, 1, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 2, 2, 14, 4, 3, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 1, 4, 12, 3, 4, 14, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 1, 1, 12, 3, 1, 14, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 1, 2, 11, 1, 3, 14, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 2, 2, 14, 4, 3, 14, redMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 1, 4, 12, 3, 4, 14, redMushroom, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
 
-		fillWithBlocks(world, sbb, 12, 1, 1, 14, 1, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 11, 2, 1, 14, 3, 1, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 14, 2, 2, 14, 3, 4, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 12, 4, 1, 14, 4, 3, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 12, 1, 1, 14, 1, 3, brownMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 11, 2, 1, 14, 3, 1, brownMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 14, 2, 2, 14, 3, 4, brownMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 12, 4, 1, 14, 4, 3, brownMushroom, AIR, false);
 		placeTreasureAtCurrentPosition(world, rand, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		// a few more ceilingshrooms
-		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, Blocks.BROWN_MUSHROOM_BLOCK, 14, AIR, false);
-		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, Blocks.RED_MUSHROOM_BLOCK, 14, AIR, false);
+		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);
+		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
 		
 		// the moo-cen-mino-shrom-taur!

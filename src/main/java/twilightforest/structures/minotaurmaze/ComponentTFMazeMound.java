@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -86,7 +87,7 @@ public class ComponentTFMazeMound extends StructureTFComponent {
 	        		// only fill to the bottom when we're not in the entrances
 	        		if (!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1))
 	        		{
-		        		this.func_151554_b(world, Blocks.DIRT.getDefaultState(), x, hheight - 1, z, sbb);
+		        		this.setBlockState(world, Blocks.DIRT.getDefaultState(), x, hheight - 1, z, sbb);
 	        		}
 	        		else if (hheight > 6)
 	        		{
@@ -114,9 +115,12 @@ public class ComponentTFMazeMound extends StructureTFComponent {
         {
             for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6)
             {
-                if (par2StructureBoundingBox.isVecInside(var6, 64, var5))
+            	BlockPos pos = new BlockPos(var6, 64, var5);
+
+                if (par2StructureBoundingBox.isVecInside(pos))
                 {
-                    totalHeight += Math.max(par1World.getTopSolidOrLiquidBlock(var6, var5), par1World.provider.getAverageGroundLevel());
+	                final BlockPos topPos = par1World.getTopSolidOrLiquidBlock(pos);
+	                totalHeight += Math.max(topPos.getY(), par1World.provider.getAverageGroundLevel());
                     ++totalMeasures;
                 }
             }

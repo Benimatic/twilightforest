@@ -571,7 +571,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/* BlockState Helpers */
     protected static IBlockState getStairState(IBlockState stairState, EnumFacing direction, Rotation rotation, boolean isTopHalf) {
         return stairState
-                .withProperty(BlockStairs.FACING, direction)
+                .withProperty(BlockStairs.FACING, rotation.rotate(direction))
                 .withProperty(BlockStairs.HALF, isTopHalf ? BlockStairs.EnumHalf.TOP : BlockStairs.EnumHalf.BOTTOM);
     }
 

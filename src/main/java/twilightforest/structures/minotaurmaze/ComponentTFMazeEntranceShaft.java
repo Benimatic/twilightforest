@@ -90,7 +90,8 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
             	BlockPos pos = new BlockPos(var6, 64, var5);
                 if (par2StructureBoundingBox.isVecInside(pos))
                 {
-                    var3 += Math.max(par1World.getTopSolidOrLiquidBlock(var6, var5), par1World.provider.getAverageGroundLevel());
+	                final BlockPos topBlock = par1World.getTopSolidOrLiquidBlock(pos);
+	                var3 += Math.max(topBlock.getY(), par1World.provider.getAverageGroundLevel());
                     ++var4;
                 }
             }
