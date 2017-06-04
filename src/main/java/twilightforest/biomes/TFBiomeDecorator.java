@@ -125,6 +125,9 @@ public class TFBiomeDecorator extends BiomeDecorator {
             }
         }
 
+		//TODO: is there a better place for this? We want to load this value once the config file is loaded.
+		this.canopyPerChunk = TwilightForestMod.canopyCoverage;
+
 		// add canopy trees
     	int nc = (int)canopyPerChunk + ((randomGenerator.nextFloat() < (canopyPerChunk - (int)canopyPerChunk)) ? 1 : 0);
     	for (int i = 0; i < nc; i++) {

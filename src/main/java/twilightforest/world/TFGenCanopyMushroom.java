@@ -53,8 +53,8 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		}
 
 		
-		this.treeState = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK.getDefaultState() :  Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState();
-		this.leafState = treeState;
+		this.treeState = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM) :  Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
+		this.leafState = treeState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
 
 		//okay build a tree!  Go up to the height
 		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);
@@ -111,7 +111,6 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 			TFGenerator.drawBresehnam(this, world, src, dest.down(), treeState);
 		}
 		
-		// do this here until that bug with the lighting is fixed
 		if (trunk) {
 			// add a firefly (torch) to the trunk
 			addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
@@ -121,9 +120,11 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	}
 	
 	/**
-	 * Draw a flat blob (a circle?) of whatevs (I'm guessing... leaves).
+	 * Draw a flat blob (a circle?) of mushroom pieces
+     *
+     * This assumes that the baseState you've passed in is the center variant
 	 */
-	private void drawMushroomCircle(World world, BlockPos pos, int rad, IBlockState state)
+	private void drawMushroomCircle(World world, BlockPos pos, int rad, IBlockState baseState)
 	{
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++)
@@ -137,43 +138,42 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 					dist = 6;
 				}
 
-				//FIXME: AtomicBlom: Mushrooms don't seem to use metadata? Not sure what's with all the Metadata that's in use here..?
 				// if we're inside the blob, fill it
 				if (dx == 0) {
 					// two!
 					if (dz < rad) {
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), baseState);
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), baseState);
 					}
 					else {
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), state);
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), state);
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
+						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH));
 					}
 				}
 				else if (dz == 0) {
 					// two!
 					if (dx < rad) {
-						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
-						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
+						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), baseState);
+						setBlockAndNotifyAdequately(world, pos.add(-dx, 0, 0), baseState);
 					}
 					else {
-						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
-						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), state);
+						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.EAST));
+						setBlockAndNotifyAdequately(world, pos.add(-dx, 0, 0), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.WEST));
 					}
 				}
 				else if (dist < rad) {
 					// do four at a time for easiness!
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), state);
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), state);
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), state);
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), baseState);
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), baseState);
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), baseState);
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), baseState);
 				}
 				else if (dist == rad) {
 					// do four at a time for easiness!
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), state);
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), state);
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), state);
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), state);
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));
+					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
+					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
 				}
 			}
 		}
