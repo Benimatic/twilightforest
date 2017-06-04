@@ -20,6 +20,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
@@ -56,8 +57,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		PlantVariant variant = PlantVariant.values()[meta & 16 % PlantVariant.values().length];
-
+		PlantVariant variant = PlantVariant.values()[MathHelper.clamp(meta, 0, PlantVariant.values().length)];
 		return getDefaultState().withProperty(VARIANT, variant);
 	}
 
