@@ -71,6 +71,11 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
         return false;
     }
 
+    @Override
+	public boolean isFullCube(IBlockState p_isFullCube_1_) {
+		return false;
+	}
+
 	@Override
     public int tickRate(World world)
     {
