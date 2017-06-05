@@ -62,7 +62,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable
 			// if we are at the half second marker, make a block and advance the block cursor
 			if (this.ticksRunning % 10 == 0 && lastBlockCoords != null && nextFacing != null)
 			{
-				BlockPos nextPos = pos.offset(nextFacing);
+				BlockPos nextPos = lastBlockCoords.offset(nextFacing);
 				
 				// make a block
 				if (blocksMade <= RANGE && world.isAirBlock(nextPos))
