@@ -11,6 +11,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFFirefly;
 import twilightforest.tileentity.TileEntityTFFirefly;
 
+import javax.annotation.Nullable;
+
 
 public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileEntityTFFirefly> {
 
@@ -24,9 +26,9 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 
 	
 	@Override
-	public void renderTileEntityAt(TileEntityTFFirefly tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
+	public void renderTileEntityAt(@Nullable TileEntityTFFirefly tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
         GlStateManager.pushMatrix();
-        int facing = tileentity.getBlockMetadata();
+        int facing = tileentity != null ? tileentity.getBlockMetadata() : 0;
 
         float rotX = 90.0F;
         float rotZ = 0.0F;
@@ -57,7 +59,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
         GlStateManager.translate((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);
         GlStateManager.rotate(rotX, 1F, 0F, 0F);
         GlStateManager.rotate(rotZ, 0F, 0F, 1F);
-        GlStateManager.rotate((float) tileentity.currentYaw, 0F, 1F, 0F);
+        GlStateManager.rotate(tileentity != null ? tileentity.currentYaw : 0, 0F, 1F, 0F);
  
         this.bindTexture(textureLoc);
         GlStateManager.pushMatrix();
@@ -80,7 +82,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
         GlStateManager.disableAlpha();
         GlStateManager.disableLighting();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, 1);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, tileentity.glowIntensity);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, tileentity != null ? tileentity.glowIntensity : 0);
         fireflyModel.glow.render(0.0625f);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();

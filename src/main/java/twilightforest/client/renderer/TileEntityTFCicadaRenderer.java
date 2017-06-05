@@ -11,6 +11,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFCicada;
 import twilightforest.tileentity.TileEntityTFCicada;
 
+import javax.annotation.Nullable;
+
 
 public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEntityTFCicada> {
 
@@ -18,9 +20,9 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cicada-model.png");
 
 	@Override
-	public void renderTileEntityAt(TileEntityTFCicada tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
+	public void renderTileEntityAt(@Nullable TileEntityTFCicada tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
-        int facing = tileentity.getBlockMetadata();
+        int facing = tileentity != null ? tileentity.getBlockMetadata() : 0;
         float rotX = 90.0F;
         float rotZ = 0.0F;
         if(facing == 3)
@@ -50,7 +52,7 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
         GlStateManager.translate((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);
         GlStateManager.rotate(rotX, 1F, 0F, 0F);
         GlStateManager.rotate(rotZ, 0F, 0F, 1F);
-		GlStateManager.rotate((float) tileentity.currentYaw, 0F, 1F, 0F);
+		GlStateManager.rotate(tileentity != null ? tileentity.currentYaw : 0, 0F, 1F, 0F);
         
         this.bindTexture(textureLoc);
         GlStateManager.pushMatrix();
