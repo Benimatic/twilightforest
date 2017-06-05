@@ -11,6 +11,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFMoonworm;
 import twilightforest.tileentity.TileEntityTFMoonworm;
 
+import javax.annotation.Nullable;
+
 
 public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<TileEntityTFMoonworm> {
 
@@ -24,9 +26,9 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
 
 	
 	@Override
-	public void renderTileEntityAt(TileEntityTFMoonworm tileentity, double d, double d1, double d2, float partialTime, int destroyStage) {
+	public void renderTileEntityAt(@Nullable TileEntityTFMoonworm tileentity, double d, double d1, double d2, float partialTime, int destroyStage) {
 		GlStateManager.pushMatrix();
-        int facing = tileentity.getBlockMetadata();
+        int facing = tileentity != null ? tileentity.getBlockMetadata() : 0;
 
         float rotX = 90.0F;
         float rotZ = 0.0F;
@@ -57,7 +59,7 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
         GL11.glTranslatef((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);
         GlStateManager.rotate(rotX, 1F, 0F, 0F);
 		GlStateManager.rotate(rotZ, 0F, 0F, 1F);
-		GlStateManager.rotate((float) tileentity.currentYaw, 0F, 1F, 0F);
+		GlStateManager.rotate(tileentity != null ? tileentity.currentYaw : 0, 0F, 1F, 0F);
  
         this.bindTexture(textureLoc);
 
