@@ -105,12 +105,12 @@ public abstract class BlockTFCritter extends Block {
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
         for (EnumFacing e : EnumFacing.VALUES) {
-            if (!canPlaceAt(world, pos.offset(e))) {
-                return false;
+            if (canPlaceAt(world, pos.offset(e))) {
+                return true;
             }
         }
 
-		return true;
+		return false;
 	}
 
 	
