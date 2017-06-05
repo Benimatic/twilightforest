@@ -10,6 +10,8 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +23,8 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class BlockTFHugeLilyPad extends BlockBush {
 
@@ -42,15 +46,15 @@ public class BlockTFHugeLilyPad extends BlockBush {
 		return new BlockStateContainer(this, FACING, PIECE);
 	}
 
-	// todo 1.9
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return 0;
+		return (state.getValue(FACING).getHorizontalIndex() | (state.getValue(PIECE).ordinal() << 2)) & 0b1111;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState();
+		meta = meta & 0b1111;
+		return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 0b0011)).withProperty(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
 	}
 
 	@Override
@@ -101,12 +105,11 @@ public class BlockTFHugeLilyPad extends BlockBush {
 
     	for (int dx = 0; dx < 2; dx++) {
     		for (int dz = 0; dz < 2; dz++) {
-				BlockPos dPos = new BlockPos(bx + dx, pos.getY(), bz + dz);
-				IBlockState dState = world.getBlockState(dPos);
-				IBlockState dStateBelow = world.getBlockState(dPos.down());
+				BlockPos dPos = new BlockPos(bx + dx, pos.getY() - 1, bz + dz);
+				//IBlockState dState = world.getBlockState(dPos);
+				IBlockState dStateBelow = world.getBlockState(dPos);
 
-				if (dState.getBlock() != this
-						|| !(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
+				if ( !(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
 						|| dStateBelow.getValue(BlockLiquid.LEVEL) != 0) {
 					return false;
 				}
@@ -132,4 +135,24 @@ public class BlockTFHugeLilyPad extends BlockBush {
     {
         return EnumPushReaction.BLOCK;
     }
+
+    @Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_)
+	{
+		if (!(entityIn instanceof EntityBoat))
+		{
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB);
+		}
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+	{
+		super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
+
+		if (entityIn instanceof EntityBoat)
+		{
+			worldIn.destroyBlock(new BlockPos(pos), true);
+		}
+	}
 }
