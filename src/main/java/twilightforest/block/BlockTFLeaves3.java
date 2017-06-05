@@ -144,4 +144,14 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
+
+	@Override
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 60;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 30;
+	}
 }

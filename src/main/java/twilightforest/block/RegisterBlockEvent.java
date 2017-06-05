@@ -15,7 +15,6 @@ public final class RegisterBlockEvent
     public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
         BlockRegistryHelper blocks = new BlockRegistryHelper(event.getRegistry());
 
-        // register blocks with their pickup values
         blocks.register("twilight_log", (new BlockTFLog()).setUnlocalizedName("TFLog"));
         blocks.register("root", (new BlockTFRoots()).setUnlocalizedName("TFRoots"));
         blocks.register("twilight_leaves", (new BlockTFLeaves()).setUnlocalizedName("TFLeaves"));
@@ -78,11 +77,6 @@ public final class RegisterBlockEvent
         blocks.register("castle_door", (new BlockTFCastleDoor(false)).setUnlocalizedName("CastleDoor"));
         blocks.register("castle_door_vanished", (new BlockTFCastleDoor(true)).setUnlocalizedName("CastleDoorVanished"));
         blocks.register("castle_unlock", (new BlockTFCastleUnlock()).setUnlocalizedName("CastleUnlock"));
-
-        // fire info
-        Blocks.FIRE.setFireInfo((new BlockTFLog()).setUnlocalizedName("TFLog"), 5, 5);
-        Blocks.FIRE.setFireInfo((new BlockTFLeaves()).setUnlocalizedName("TFLeaves"), 30, 60);
-        Blocks.FIRE.setFireInfo((new BlockTFLeaves3()).setUnlocalizedName("TFLeaves3"), 30, 60);
     }
 
     private static class BlockRegistryHelper {
