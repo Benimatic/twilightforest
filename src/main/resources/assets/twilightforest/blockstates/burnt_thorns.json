@@ -12,22 +12,22 @@
     "axis":{
       "x":{ "x": 90, "y": 90 },
       "y":{},
-      "z":{ "x": 90 }
+      "z":{ "x": 270, "y": 180 }
     },
     "north":{
-      "true":{ "submodel": { "key_n": { "model": "twilightforest:util/thorns_section_top", "x": 90 } } },
+      "true":{ "submodel": { "key_n": { "model": "twilightforest:util/thorns_section_top", "y": 270 } } },
       "false":{}
     },
     "south":{
-      "true":{ "submodel": { "key_s": { "model": "twilightforest:util/thorns_section_bottom", "x": 90 } } },
+      "true":{ "submodel": { "key_s": { "model": "twilightforest:util/thorns_section_bottom", "y": 270 } } },
       "false":{}
     },
     "east":{
-      "true":{ "submodel": { "key_e": { "model": "twilightforest:util/thorns_section_top", "x": 90, "y": 90 } } },
+      "true":{ "submodel": { "key_e": { "model": "twilightforest:util/thorns_section_top", "y": 0 } } },
       "false":{}
     },
     "west":{
-      "true":{ "submodel": { "key_w": { "model": "twilightforest:util/thorns_section_bottom", "x": 90, "y": 90 } } },
+      "true":{ "submodel": { "key_w": { "model": "twilightforest:util/thorns_section_bottom", "y": 0 } } },
       "false":{}
     }
   }
