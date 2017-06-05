@@ -94,20 +94,21 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 		if (state == null)
 			state = getDefaultState();
 
-		switch (state.getValue(AXIS))
-		{
+		// Don't question these.
+		// I'd rather them not make sense on the code side than the asset side.
+		switch (state.getValue(AXIS)) {
 			case X:
 				return state
-						.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.UP))
-						.withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.DOWN))
+						.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.DOWN))
+						.withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.UP))
 						.withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.NORTH))
 						.withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.SOUTH));
 			case Z:
 				return state
 						.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.UP))
 						.withProperty(SOUTH, canConnectTo(state, world, pos, EnumFacing.DOWN))
-						.withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.WEST))
-						.withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.EAST));
+						.withProperty(WEST, canConnectTo(state, world, pos, EnumFacing.EAST))
+						.withProperty(EAST, canConnectTo(state, world, pos, EnumFacing.WEST));
 			default:
 				return state
 						.withProperty(NORTH, canConnectTo(state, world, pos, EnumFacing.NORTH))
@@ -281,9 +282,15 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 		return BlockRenderLayer.CUTOUT;
 	}
 
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return side.getAxis() == blockState.getValue(AXIS) && (blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side));
 	}
 }
