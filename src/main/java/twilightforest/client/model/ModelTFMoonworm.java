@@ -17,6 +17,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.tileentity.TileEntityTFMoonworm;
 
+import javax.annotation.Nullable;
+
 public class ModelTFMoonworm extends ModelBase
 {
 	//fields
@@ -72,14 +74,14 @@ public class ModelTFMoonworm extends ModelBase
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 
-	public void setLivingAnimations(TileEntityTFMoonworm moonworm, float partialTime) {
+	public void setLivingAnimations(@Nullable TileEntityTFMoonworm moonworm, float partialTime) {
 
 		head.rotationPointY = 7F;
 		Shape1.rotationPointY = 7F;
 		Shape2.rotationPointY = 7F;
 		Shape3.rotationPointY = 7F;
 		
-		if (moonworm.yawDelay == 0)
+		if (moonworm != null && moonworm.yawDelay == 0)
 		{
 			float time = (moonworm.desiredYaw - moonworm.currentYaw) - partialTime;
 			
