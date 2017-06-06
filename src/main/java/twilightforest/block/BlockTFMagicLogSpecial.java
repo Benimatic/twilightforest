@@ -53,7 +53,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     @Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
     {
-        return Item.getItemFromBlock(TFBlocks.magicLog); // change into normal magic log
+        return Item.getItemFromBlock(TFBlocks.magicLog);
     }
 
     @Override
@@ -61,47 +61,37 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
     {
     	if (state.getValue(LOG_AXIS) == EnumAxis.NONE)
     	{
-    		// block is off, do not tick
     		return;
     	}
 
     	if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TIME)
     	{
-    		// tree of time effect
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
-
     		doTreeOfTimeEffect(world, pos, rand);
     	}
     	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TRANS)
     	{
-    		// tree of transformation effect
     		doTreeOfTransformationEffect(world, pos, rand);
     	}
     	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.MINE)
     	{
-    		// miner's tree effect
     		doMinersTreeEffect(world, pos, rand);
     	}
     	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.SORT)
     	{
-    		// sorting tree effect
     		doSortingTreeEffect(world, pos, rand);
     	}
 
-
 		world.scheduleUpdate(pos, this, this.tickRate(world));
-
     }
     
     @Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9)
     {
 		if (state.getValue(LOG_AXIS) == EnumAxis.Y) {
-			// turn off
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
 			return true;
 		} else if (state.getValue(LOG_AXIS) == EnumAxis.NONE) {
-			// turn on
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.Y));
 			world.scheduleUpdate(pos, this, this.tickRate(world));
 			return true;
@@ -115,12 +105,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
      */
 	private void doTreeOfTimeEffect(World world, BlockPos pos, Random rand) {
 		int numticks = 8 * 3 * this.tickRate(world);
-	
-		int successes = 0;
-	
+
 		for (int i = 0; i < numticks; i++)
 		{
-			// find a nearby block
 			BlockPos dPos = pos.add(
 					rand.nextInt(32) - 16,
 					rand.nextInt(32) - 16,
@@ -133,14 +120,8 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 			if (thereID != Blocks.AIR && thereID.getTickRandomly())
 			{
 				thereID.updateTick(world, dPos, thereState, rand);
-	
-				//System.out.println("tree of time ticked a block at " + (x + dx) + ", " + (y + dy) + ", " + (z + dz) + " and the block was " + Blocks.BLOCKSLIST[thereID] );
-	
-				successes++;
 			}
 		}
-	
-		//System.out.println("Tree of time had " + successes + " successes out of " + numticks + " attempts");
 	}
 
 	/**
@@ -161,25 +142,14 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 
 				if (biomeAt != TFBiomes.enchantedForest)
 				{
-					// I wonder how possible it is to change this
-
 					Chunk chunkAt = world.getChunkFromBlockCoords(dPos);
-
 					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte)Biome.getIdForBiome(TFBiomes.enchantedForest);
 
-					// todo 1.9 world.notifyBlockUpdate((x + dx), y, (z + dz));
-
-					//System.out.println("Set biome at " + (x + dx) + ", " + (z + dz) + " to enchanted forest.");
-					
-					// send chunk?!
-					
 					if (world instanceof WorldServer)
 					{
 						sendChangedBiome(world, dPos);
 					}
-					
 				}
-
 			}
 		}
 	}
@@ -193,8 +163,6 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), 128, pos.getZ(), 128);
 		
 		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
-		//FMLLog.info("Sent chunk update packet from tree.");
-		
 	}
 
 	/**
@@ -214,10 +182,6 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		if (moved > 0)
 		{
 			world.playSound(null, pos, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 0.1F, 1.0F);
-		}
-		else
-		{
-			//System.out.println("Miner block did not find ore at " + (x + dx) + ", " + (y + dy) + ", " + (z + dz) + ", nope.");
 		}
 	}
 
@@ -252,7 +216,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 							// count items
 							for (int i = 0; i < thisChest.getSizeInventory(); i++)
 							{
-								if (thisChest.getStackInSlot(i) != null)
+								if (!thisChest.getStackInSlot(i).isEmpty())
 								{
 									itemsInChest++;
 									itemCount++;

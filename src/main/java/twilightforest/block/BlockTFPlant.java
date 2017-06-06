@@ -39,7 +39,6 @@ import java.util.Random;
 
 public class BlockTFPlant extends BlockBush implements IShearable
 {
-
     public static final PropertyEnum<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
 
 	protected BlockTFPlant() {
@@ -198,7 +197,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
     }
 	  
 
-//    /**
+//    /** todo thaumcraft
 //     * Drops the block items with a specified chance of dropping the specified items
 //     */
 //    public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6, int var7)
@@ -313,6 +312,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
     }
 
     @SideOnly(Side.CLIENT)
+	@Override
     public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;

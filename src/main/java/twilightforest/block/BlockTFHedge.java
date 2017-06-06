@@ -40,7 +40,6 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
 
 	public int damageDone;
-	private boolean leavesFancy = true; // TODO update this when the setting is changed / fix this
 
 	protected BlockTFHedge() {
 		super(Material.CACTUS);
@@ -54,7 +53,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	@Override
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 	{
-		return !this.leavesFancy && blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+		return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
 	@Override

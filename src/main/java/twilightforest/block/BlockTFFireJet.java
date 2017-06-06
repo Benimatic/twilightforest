@@ -41,7 +41,6 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	protected BlockTFFireJet() {
 		super(Material.ROCK);
 		this.setHardness(1.5F);
-		//this.setResistance(10.0F);
 		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setTickRandomly(true);
@@ -64,10 +63,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-
-		final FireJetVariant value = state.getValue(VARIANT);
-
-		return value.ordinal();
+		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
@@ -104,20 +100,13 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
     {
-    	// idle jets may turn active
     	if (!world.isRemote && state.getValue(VARIANT) == FireJetVariant.JET_IDLE) {
     		BlockPos lavaPos = findLavaAround(world, pos.down());
     		
     		if (isLava(world, lavaPos))
     		{
-    			// deplete lava reservoir
-    			world.setBlockState(lavaPos, Blocks.AIR.getDefaultState(), 2);
-    			// change jet state
-    			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.JET_POPPING), 0);
-    		}
-    		else
-    		{
-    			//System.out.println("Can't fire jet because reservoir is empty.  Block  meta is " + world.getBlockMetadata(lavaPos.posX, lavaPos.posY, lavaPos.posZ));
+    			world.setBlockState(lavaPos, Blocks.AIR.getDefaultState());
+    			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.JET_POPPING), 2);
     		}
     	}
 	}
@@ -159,7 +148,6 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 			return pos;
 		}
 
-		// try three random spots nearby
 		for (int i = 0; i < 3; i++) {
 			BlockPos randPos = pos.add(world.rand.nextInt(3) - 1, 0, world.rand.nextInt(3) - 1);
 			if (isLava(world, randPos)) {
@@ -167,7 +155,6 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 			}
 		}
 		
-		// finally, give up
 		return pos;
 	}
     
@@ -175,11 +162,9 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
     {
 		IBlockState state = world.getBlockState(pos);
 		Block b = state.getBlock();
-		IProperty<Integer> levelProp = b instanceof BlockLiquid
+		IProperty<Integer> levelProp = b instanceof BlockLiquid || b instanceof BlockFluidBase
 				? BlockLiquid.LEVEL
-				: b instanceof BlockFluidBase
-					? BlockFluidBase.LEVEL
-					: null;
+				: null;
     	return state.getMaterial() == Material.LAVA
 				&& (levelProp == null || state.getValue(levelProp) == 0);
     }
@@ -239,8 +224,8 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
     @Override
 	public void registerModel() {
     	FireJetVariant[] variants = { FireJetVariant.SMOKER, FireJetVariant.JET_IDLE, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_JET_IDLE };
-    	for (int i = 0; i < variants.length; i++) {
-			ModelUtils.registerToState(this, variants[i].ordinal(), getDefaultState().withProperty(VARIANT, variants[i]));
+		for (FireJetVariant variant : variants) {
+			ModelUtils.registerToState(this, variant.ordinal(), getDefaultState().withProperty(VARIANT, variant));
 		}
 	}
 

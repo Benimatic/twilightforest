@@ -67,6 +67,7 @@ public class BlockTFNagastone extends Block {
 	// BUT:
 	//      Item meta 0 will be head
 	//      Item meta 1 will be body
+	// todo fix getStateForPlacement to respect this
 	@Override
 	public int damageDropped(IBlockState state) {
 		return NagastoneVariant.isHead(state.getValue(VARIANT)) ? 0 : 1 ;

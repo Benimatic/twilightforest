@@ -65,7 +65,6 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	@Override
 	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
 	{
-		// damage the player's pickaxe
     	ItemStack cei = entityplayer.getHeldItemMainhand();
         if(!cei.isEmpty() && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick))
         {

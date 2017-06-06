@@ -181,11 +181,8 @@ public class BlockTFCastleDoor extends Block
     }
     
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-		// send packet
 		IMessage message = new PacketAnnihilateBlock(pos);
-
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
-		
 		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
 	}
 
@@ -281,6 +278,7 @@ public class BlockTFCastleDoor extends Block
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public BlockRenderLayer getBlockLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;

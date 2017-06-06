@@ -52,7 +52,6 @@ public class BlockTFPortal extends BlockBreakable
         this.setHardness(-1F);
         this.setSoundType(SoundType.GLASS);
         this.setLightLevel(0.75F);
-		//this.setCreativeTab(TFItems.creativeTab);
     }
 
 	@Override

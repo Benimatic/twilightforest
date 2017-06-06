@@ -81,11 +81,4 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
     	tinyfly = new EntityTFTinyFirefly(world, dx, dy, dz);
     	world.addWeatherEffect(tinyfly);
     }
-
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
-
 }

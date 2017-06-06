@@ -62,11 +62,6 @@ public class BlockTFForceField extends BlockPane implements ModelRegisterCallbac
         return getDefaultState().withProperty(COLOR, COLORS.get(meta));
     }
 
-    //@SideOnly(Side.CLIENT)
-    //public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
-    //	return 15 << 20 | 15 << 4;
-    //}
-
     @Override
     public int damageDropped(IBlockState state)
     {

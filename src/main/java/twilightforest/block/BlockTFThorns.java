@@ -45,11 +45,8 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	private static final AxisAlignedBB X_BB = new AxisAlignedBB(0, 0.1875, 0.1875, 1F, 0.8125, 0.8125);
 	private static final AxisAlignedBB Z_BB = new AxisAlignedBB(0.1875, 0.1875, 0, 0.8125, 0.8125, 1F);
     
-    private String[] names;
-
     protected BlockTFThorns() {
 		super(Material.WOOD);
-		this.setNames(new String[] {"brown", "green"});
 		this.setHardness(50.0F);
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.WOOD);
@@ -165,7 +162,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
     	} else {
             world.setBlockToAir(pos);
     	}
-    	
+
     	return true;
     }
 
@@ -258,18 +255,10 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
-    	for (int i = 0; i < getNames().length; i++) {
+    	for (int i = 0; i < (hasVariant() ? ThornVariant.values().length : 1); i++) {
             par3List.add(new ItemStack(par1, 1, i));
     	}
     }
-
-	public String[] getNames() {
-		return names;
-	}
-
-	public void setNames(String[] names) {
-		this.names = names;
-	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

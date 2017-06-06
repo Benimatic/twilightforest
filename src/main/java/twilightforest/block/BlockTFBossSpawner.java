@@ -32,7 +32,6 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	protected BlockTFBossSpawner() {
 		super(Material.ROCK);
 		this.setHardness(20F);
-		//this.setResistance(10F);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, BossVariant.NAGA));
 	}
@@ -89,6 +88,7 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public BlockRenderLayer getBlockLayer()
 	{
 		return BlockRenderLayer.CUTOUT;
