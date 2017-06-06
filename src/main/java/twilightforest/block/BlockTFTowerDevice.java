@@ -77,7 +77,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
     @Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
-        par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.REAPPEARING_INACTIVE.ordinal()));
+    	par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.REAPPEARING_INACTIVE.ordinal()));
         par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_INACTIVE.ordinal()));
         par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_LOCKED.ordinal()));
         par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_UNLOCKED.ordinal()));
@@ -582,4 +582,9 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer()
+	{
+		return BlockRenderLayer.CUTOUT;
+	}
 }

@@ -1,14 +1,35 @@
 {
   "forge_marker": 1,
-  "defaults": { "model": "cube_all" },
+  "defaults": { "model": "twilightforest:util/cube_all_2_layer_no_shade" },
   "variants": {
     "variant": {
-      "reappearing_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_reappearing_trace_off" } },
-      "reappearing_active": { "textures": { "all": "twilightforest:blocks/towerdev_reappearing_trace_on" } },
-      "built_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_built_off" } },
-      "built_active": { "textures": { "all": "twilightforest:blocks/towerdev_built_on" } },
-      "reverter_replacement": { "textures": { "all": "twilightforest:blocks/towerdev_antibuilt" } },
-      "reactor_debris": { "textures": { "all": "blocks/destroy_stage_9" } },
+      "reappearing_inactive": {
+        "model": "twilightforest:util/4_cubed",
+        "textures": { "all": "twilightforest:blocks/towerdev_reappearing_trace_off" }
+      },
+      "reappearing_active": {
+        "model": "twilightforest:util/4_cubed",
+        "textures": { "all": "twilightforest:blocks/towerdev_reappearing_trace_on" }
+      },
+      "built_inactive": {
+        "textures": {
+          "all": "twilightforest:blocks/towerdev_built_off",
+          "all2": "twilightforest:blocks/tower_device_level_1/towerdev_builder_off_1"
+        }
+      },
+      "built_active": {
+        "textures": {
+          "all": "twilightforest:blocks/towerdev_built_on",
+          "all2": "twilightforest:blocks/tower_device_level_1/towerdev_builder_on_1"
+        }
+      },
+      "reverter_replacement": {
+        "textures": {
+          "all": "twilightforest:blocks/towerdev_antibuilt",
+          "all2": "twilightforest:blocks/tower_device_level_2/towerdev_antibuilt_1"
+        }
+      },
+      "reactor_debris": { "model": "cube_all", "textures": { "all": "blocks/destroy_stage_9" } },
       "fake_gold": { "model": "gold_block" },
       "fake_diamond": { "model": "diamond_block" }
     }
