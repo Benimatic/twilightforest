@@ -23,6 +23,8 @@ import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 import twilightforest.structures.darktower.TFDarkTowerPieces;
+import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
+import twilightforest.structures.finalcastle.TFFinalCastlePieces;
 import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
 import twilightforest.structures.icetower.ComponentTFIceTowerMain;
@@ -54,7 +56,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	MapGenStructureIO.registerStructure(StructureTFMajorFeatureStart.class, "TFFeature");
     	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
 
-//FIXME: Disabled Structure
     	TFFinalCastlePieces.registerFinalCastlePieces();
 	    TFStrongholdPieces.registerPieces();
 	    TFMushroomTowerPieces.registerPieces();
@@ -140,7 +141,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);
-			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
+			return new ComponentTFFinalCastleMain(world, rand, 0, x, y, z);
 		}
 
 		if (feature == TFFeature.nagaCourtyard) {
@@ -201,7 +202,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.finalCastle) {
-			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
+			return new ComponentTFFinalCastleMain(world, rand, 0, x, y, z);
 		}
 		
 		return null;
