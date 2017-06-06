@@ -1656,7 +1656,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 				}
 			}
 		}
-		
+
+		//TODO 1.11: still getting some bad switches
+
 		// make switches
 		for (int i = 0; i < 5; i++)
 		{

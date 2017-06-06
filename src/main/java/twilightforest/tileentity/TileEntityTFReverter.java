@@ -56,13 +56,13 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 			{
 				
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (blockData == null)
+				if (blockData == null && world.isAreaLoaded(this.pos, this.radius))
 				{
 					captureBlockData();
 					this.slowScan = true;
 				}
 				
-				if (!this.slowScan || this.tickCount % 20 == 0)
+				if (blockData != null && (!this.slowScan || this.tickCount % 20 == 0))
 				{
 					if (scanAndRevertChanges())
 					{
@@ -230,7 +230,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 				{
 					IBlockState stateThere = world.getBlockState(pos.add(x, y, z));
 					
-					if (blockData[index] != stateThere)
+					if (blockData[index].getBlock() != stateThere.getBlock())
 					{
 						if (revertBlock(pos.add(x, y, z), stateThere, blockData[index]))
 						{
@@ -252,7 +252,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable
 
 	private boolean revertBlock(BlockPos pos, IBlockState stateThere, IBlockState replaceWith) 
 	{
-		if (stateThere.getBlock() == Blocks.AIR && !stateThere.getMaterial().blocksMovement())
+		if (stateThere.getBlock() == Blocks.AIR && !replaceWith.getMaterial().blocksMovement())
 		{
 			return false;
 		}
