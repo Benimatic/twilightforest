@@ -160,7 +160,7 @@ public class TFStrongholdPieces {
 	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponent> pieceClass, int index, EnumFacing facing, int x, int y, int z) {
         // todo 1.9
 		try {
-			return (StructureTFStrongholdComponent) pieceClass.getConstructor(int.class, int.class, int.class, int.class, int.class).newInstance(index, facing, x, y, z);
+			return (StructureTFStrongholdComponent) pieceClass.getConstructor(int.class, EnumFacing.class, int.class, int.class, int.class).newInstance(index, facing, x, y, z);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
