@@ -3,9 +3,11 @@ package twilightforest.block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -13,9 +15,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFKnightmetalBlock extends Block {
+public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallback {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(1/16F, 1/16F, 1/16F, 15/16F, 15/16F, 15/16F);
 	private static final float BLOCK_DAMAGE = 4;
@@ -52,4 +56,11 @@ public class BlockTFKnightmetalBlock extends Block {
     {
         return true;
     }
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().build());
+		ModelUtils.registerToState(this, 0, getDefaultState());
+	}
 }
