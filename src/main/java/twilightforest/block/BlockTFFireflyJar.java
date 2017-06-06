@@ -35,6 +35,7 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 	}
 
     @Override
+    @Deprecated
 	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -47,6 +48,7 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
     }
 
     @Override
+    @Deprecated
 	public int getLightValue(IBlockState state)
     {
     	return 15;
@@ -59,6 +61,7 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
     }
     
     @Override
+    @Deprecated
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
     	return AABB;
     }

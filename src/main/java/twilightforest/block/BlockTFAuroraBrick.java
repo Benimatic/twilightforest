@@ -52,6 +52,7 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return getDefaultState().withProperty(VARIANT, ((int) ((fractalNoise(3, 48.0f, pos) * 120.0f) % 16.0f)) % 16);
 	}
@@ -67,6 +68,7 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState();
 	}

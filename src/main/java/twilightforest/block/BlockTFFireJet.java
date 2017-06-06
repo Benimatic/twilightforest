@@ -52,6 +52,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta)
 	{
 		final FireJetVariant[] values = FireJetVariant.values();
@@ -112,6 +113,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
     
     @Override
+    @Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block myBlockID, BlockPos fromPos)
     {
         if (!world.isRemote)

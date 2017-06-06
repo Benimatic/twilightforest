@@ -37,11 +37,13 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
     }
 
 	@Override
+	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
 	}
 
 	@Override
+	@Deprecated
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -69,6 +71,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
     }
 
 	@Override
+	@Deprecated
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor, BlockPos fromPos) {
         IBlockState above = world.getBlockState(pos.up());
         Material aboveMaterial = above.getMaterial();

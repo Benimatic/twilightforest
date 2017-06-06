@@ -48,11 +48,13 @@ public class BlockTFNagastone extends Block {
 
 	@Nonnull
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(VARIANT, NagastoneVariant.values()[(meta & 15)]);
 	}
 
 	@Override
+	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
@@ -77,6 +79,7 @@ public class BlockTFNagastone extends Block {
 	// If player places head on horz side of block, use that block face. Else, defer to player rotation.
 	@Nonnull
 	@Override
+	@Deprecated
 	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
 		return meta == 0
 				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))

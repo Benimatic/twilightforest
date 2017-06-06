@@ -48,6 +48,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback
     }
 
     @Override
+    @Deprecated
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
     }
@@ -59,11 +60,13 @@ public class BlockTFShield extends Block implements ModelRegisterCallback
     }
     
     @Override
+    @Deprecated
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
     }
     
     @Override
+    @Deprecated
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos)
     {
         // why can't we just pass the side to this method?  This is annoying and failure-prone

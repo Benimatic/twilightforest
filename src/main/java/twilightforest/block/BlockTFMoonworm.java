@@ -34,6 +34,7 @@ public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCall
     }
 
 	@Override
+	@Deprecated
 	public int getLightValue(IBlockState state) {
     	return 14; 
 	}

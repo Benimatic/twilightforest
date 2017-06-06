@@ -83,6 +83,7 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
     }
 
     @Override
+    @Deprecated
     public IBlockState getStateFromMeta(int meta) {
 	    return this.isDouble() ? this.getDefaultState() : this.getDefaultState().withProperty(HALF, EnumBlockHalf.values()[meta % EnumBlockHalf.values().length]);
     }

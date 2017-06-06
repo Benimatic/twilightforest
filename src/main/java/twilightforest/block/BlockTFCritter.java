@@ -51,11 +51,13 @@ public abstract class BlockTFCritter extends Block {
 
     @Nonnull
     @Override
+    @Deprecated
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
     }
     
     @Override
+    @Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         switch (state.getValue(TFBlockProperties.FACING)) {
@@ -69,12 +71,14 @@ public abstract class BlockTFCritter extends Block {
     }
     
     @Override
+    @Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return NULL_AABB;
     }
 
 	@Override
+    @Deprecated
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
@@ -93,6 +97,7 @@ public abstract class BlockTFCritter extends Block {
 
 	
 	@Override
+    @Deprecated
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         IBlockState state = getDefaultState();
@@ -122,6 +127,7 @@ public abstract class BlockTFCritter extends Block {
     }
 
     @Override
+    @Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID, BlockPos fromPos)
     {
         checkAndDrop(world, pos, state);

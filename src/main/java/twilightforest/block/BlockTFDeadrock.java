@@ -44,6 +44,7 @@ public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, DeadrockVariant.values()[meta]);
 	}

@@ -59,6 +59,7 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
     }
 
     @Override
+    @Deprecated
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         for (EnumFacing e : EnumFacing.VALUES) {
             state = state.withProperty(PROPS.get(e), isBlockLit(world, pos.offset(e)));

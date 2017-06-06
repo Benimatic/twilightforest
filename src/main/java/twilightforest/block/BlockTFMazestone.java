@@ -57,6 +57,7 @@ public class BlockTFMazestone extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, MazestoneVariant.values()[meta]);
 	}

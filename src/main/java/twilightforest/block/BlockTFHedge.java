@@ -51,12 +51,14 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	}
 
 	@Override
+	@Deprecated
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 	{
 		return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
 	@Override
+	@Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
@@ -67,6 +69,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
     }
     
     @Override
+    @Deprecated
 	public boolean isOpaqueCube(IBlockState state)
     {
         return true;
@@ -213,6 +216,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(VARIANT, HedgeVariant.values()[meta % HedgeVariant.values().length]);
 	}

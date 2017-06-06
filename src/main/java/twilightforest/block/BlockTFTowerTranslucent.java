@@ -60,18 +60,21 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta)
 	{
 		return getDefaultState().withProperty(VARIANT, TowerTranslucentVariant.values()[meta]);
 	}
     
     @Override
+    @Deprecated
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
+    @Deprecated
 	public boolean isFullCube(IBlockState p_isFullCube_1_) {
 		return false;
 	}
@@ -93,6 +96,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
 	
 	@Override
+	@Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos)
 	{
 		TowerTranslucentVariant variant = state.getValue(VARIANT);
@@ -108,6 +112,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	}
 
     @Override
+    @Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos)
     {
 		TowerTranslucentVariant variant = state.getValue(VARIANT);
@@ -128,6 +133,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
     }
     
     @Override
+    @Deprecated
 	public float getBlockHardness(IBlockState state, World world, BlockPos pos)
     {
     	// reverter replacement is like glass

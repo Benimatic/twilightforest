@@ -33,6 +33,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 	}
 	
 	@Override
+	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		return AABB;
@@ -45,6 +46,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
     }
 
     @Override
+    @Deprecated
 	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -52,6 +54,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 
     @Override
 	@SideOnly(Side.CLIENT)
+    @Deprecated
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side)
     {
         return true;

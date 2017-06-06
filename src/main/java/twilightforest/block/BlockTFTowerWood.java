@@ -57,6 +57,7 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, TowerWoodVariant.values()[meta]);
 	}
@@ -90,6 +91,7 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
     }
     
     @Override
+    @Deprecated
 	public float getBlockHardness(IBlockState state, World world, BlockPos pos)
     {
     	if (state.getValue(VARIANT) == TowerWoodVariant.INFESTED)

@@ -32,6 +32,7 @@ public class BlockTFFirefly extends BlockTFCritter implements ModelRegisterCallb
     }
     
 	@Override
+	@Deprecated
 	public int getLightValue(IBlockState state) {
     	return 15; 
 	}

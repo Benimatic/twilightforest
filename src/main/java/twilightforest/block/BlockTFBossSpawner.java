@@ -47,6 +47,7 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, BossVariant.values()[meta]);
 	}
@@ -82,6 +83,7 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;

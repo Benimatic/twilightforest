@@ -382,6 +382,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	}
 
     @Override
+    @Deprecated
 	public int getLightValue(IBlockState state)
     {
         return 15;

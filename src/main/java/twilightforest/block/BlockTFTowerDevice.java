@@ -63,6 +63,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta)
 	{
 		return getDefaultState().withProperty(VARIANT, TowerDeviceVariant.values()[meta]);
@@ -142,6 +143,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
     }
     
     @Override
+    @Deprecated
 	public float getBlockHardness(IBlockState state, World world, BlockPos pos)
     {
     	// most vanish blocks can't be broken
@@ -233,6 +235,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
     }
 
     @Override
+    @Deprecated
 	public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block myBlockID, BlockPos fromPos)
     {
         TowerDeviceVariant variant = state.getValue(VARIANT);

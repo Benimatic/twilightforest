@@ -59,6 +59,7 @@ public class BlockTFCastleDoor extends Block
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 
 		return getDefaultState()
@@ -67,12 +68,14 @@ public class BlockTFCastleDoor extends Block
 	}
     
     @Override
+    @Deprecated
     public boolean isOpaqueCube(IBlockState state)
     {
         return !this.isVanished;
     }
     
 	@Override
+	@Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
 		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, par1World, pos);
 	}

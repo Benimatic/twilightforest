@@ -67,6 +67,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		IBlockState ret = getDefaultState();
 		ret = ret.withProperty(FACING, EnumFacing.getHorizontal(meta & 0b11));
@@ -77,6 +78,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
     @Override
+    @Deprecated
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         IBlockState stateAbove = world.getBlockState(pos.up());
@@ -100,17 +102,20 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
     }
 
 	@Override
+	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
 	}
 
 	@Override
+	@Deprecated
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
 
 	@Override
+	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!world.isRemote && state.getValue(LATENT)) {
 			if (isTrophyOnTop(world, pos)) {
@@ -170,12 +175,14 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	// todo ambiguous in 1.7, what was this supposed to be?
 	@Override
+	@Deprecated
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 		return state.getValue(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}

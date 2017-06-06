@@ -57,11 +57,13 @@ public class BlockTFTrollRoot extends Block implements IShearable {
     }
     
     @Override
+    @Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
     	return NULL_AABB;
     }
     
     @Override
+    @Deprecated
 	public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
@@ -72,6 +74,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
     }
 	
     @Override
+    @Deprecated
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
         this.checkAndDropBlock(world, pos);
     }

@@ -28,11 +28,13 @@ public class BlockTFThornRose extends Block {
 	}
     
     @Override
+    @Deprecated
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         return AABB;
     }
     
     @Override
+    @Deprecated
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -45,12 +47,14 @@ public class BlockTFThornRose extends Block {
     }
     
     @Override
+    @Deprecated
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return NULL_AABB;
     }
     
     @Override
+    @Deprecated
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
     {
         if (!canBlockStay(world, pos)) {

@@ -54,6 +54,7 @@ public class BlockTFPlant extends BlockBush implements IShearable
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta)
 	{
 		PlantVariant variant = PlantVariant.values()[MathHelper.clamp(meta, 0, PlantVariant.values().length)];

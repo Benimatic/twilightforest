@@ -66,6 +66,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
     @Override
+    @Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
 		switch (state.getValue(AXIS)) {
@@ -80,6 +81,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
     }
     
 	@Override
+	@Deprecated
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;

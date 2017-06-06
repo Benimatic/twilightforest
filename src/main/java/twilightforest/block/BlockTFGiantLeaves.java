@@ -20,6 +20,7 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 	}
 
     @Override
+    @Deprecated
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -27,6 +28,7 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 
     @SideOnly(Side.CLIENT)
     @Override
+    @Deprecated
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         switch (side) {
         case DOWN:

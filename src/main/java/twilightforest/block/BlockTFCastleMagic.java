@@ -52,6 +52,7 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta));
 	}

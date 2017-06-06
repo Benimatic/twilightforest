@@ -103,6 +103,7 @@ public abstract class BlockTFGiantBlock extends Block {
     }
     
 	@Override
+	@Deprecated
     public EnumPushReaction getMobilityFlag(IBlockState state)
     {
         return EnumPushReaction.BLOCK;

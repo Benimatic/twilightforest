@@ -84,6 +84,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
 		// If our axis is rotated (i.e. not upright), then adjust the actual sides tested
@@ -118,12 +119,14 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
+	@Deprecated
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
     
     @Override
+    @Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
     	switch (state.getValue(AXIS)) {
@@ -139,6 +142,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 
 	@Override
     @SideOnly(Side.CLIENT)
+	@Deprecated
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos)
     {
         return this.getCollisionBoundingBox(state, world, pos);
@@ -167,6 +171,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
     }
 
 	@Override
+	@Deprecated
     public EnumPushReaction getMobilityFlag(IBlockState state)
     {
         return EnumPushReaction.BLOCK;
@@ -276,6 +281,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 
 	@SideOnly(Side.CLIENT)
 	@Override
+	@Deprecated
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return side.getAxis() == blockState.getValue(AXIS) && (blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side));
 	}

@@ -60,6 +60,7 @@ public class BlockTFCinderFurnace extends Block {
     }
 
     @Override
+    @Deprecated
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(BlockFurnace.FACING, EnumFacing.getHorizontal(meta));
     }

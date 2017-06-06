@@ -55,6 +55,7 @@ public class BlockTFHugeLilyPad extends BlockBush {
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		meta = meta & 0b1111;
 		return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 0b0011)).withProperty(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
@@ -134,12 +135,14 @@ public class BlockTFHugeLilyPad extends BlockBush {
 	}
 
 	@Override
+	@Deprecated
     public EnumPushReaction getMobilityFlag(IBlockState state)
     {
         return EnumPushReaction.BLOCK;
     }
 
     @Override
+    @Deprecated
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_)
 	{
 		if (!(entityIn instanceof EntityBoat))

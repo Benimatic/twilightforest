@@ -60,6 +60,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
+	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		int variant = meta & 0b11;
 		boolean checkDecay = (meta & 0b1000) > 0;

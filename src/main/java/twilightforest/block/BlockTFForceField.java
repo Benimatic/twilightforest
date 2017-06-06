@@ -58,6 +58,7 @@ public class BlockTFForceField extends BlockPane implements ModelRegisterCallbac
     }
 
     @Override
+    @Deprecated
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(COLOR, COLORS.get(meta));
     }
