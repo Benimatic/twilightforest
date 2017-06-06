@@ -108,19 +108,19 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
         par3List.add(new ItemStack(par1, 1, 9));
     }
 
+    @Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		return SAPLING_AABB;
 	}
 
-	/**
-	 * Gets the localized name of this block. Used for the statistics page.
-	 */
+	@Override
 	public String getLocalizedName()
 	{
 		return I18n.translateToLocal(this.getUnlocalizedName() + "." + BlockPlanks.EnumType.OAK.getUnlocalizedName() + ".name");
 	}
 
+	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
 	{
 		if (!worldIn.isRemote)
