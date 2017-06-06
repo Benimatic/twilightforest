@@ -31,6 +31,8 @@ import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
 import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
+import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
+import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
@@ -53,9 +55,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
 
 //FIXME: Disabled Structure
-//    	TFStrongholdPieces.registerPieces();
 //    	TFFinalCastlePieces.registerFinalCastlePieces();
-    	TFMushroomTowerPieces.registerPieces();
+	    TFStrongholdPieces.registerPieces();
+	    TFMushroomTowerPieces.registerPieces();
 	    TFMinotaurMazePieces.registerPieces();
 	    TFDarkTowerPieces.registerPieces();
 	    TFIceTowerPieces.registerPieces();
@@ -137,11 +139,11 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	 * @return The first component we should add to our structure
 	 */
 	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
-		/*if (feature != null) {
+		if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);
-			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
-		}*/
+			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
+		}
 
 		if (feature == TFFeature.nagaCourtyard) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
@@ -197,11 +199,11 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		if (feature == TFFeature.mushroomTower) {
 			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
 		}
-//FIXME: Disabled Structure
-//		if (feature == TFFeature.tfStronghold) {
-//			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
-//		}
+		if (feature == TFFeature.tfStronghold) {
+			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
+		}
 
+//FIXME: Disabled Structure
 //		if (feature == TFFeature.finalCastle) {
 //			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
 //		}

@@ -43,9 +43,9 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		placeCornerStatue(world, 15, 1, 15, 3, sbb);
 
 		// sand floor
-		this.fillWithBlocksRandomly(world, sbb, rand, 0.7F, 4, 0, 4, 8, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
-		this.fillWithBlocksRandomly(world, sbb, rand, 0.7F, 9, 0, 4, 13, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
-		this.fillWithBlocksRandomly(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 4, 0, 4, 8, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 4, 13, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
 		
 		// training dummies
 		placeTrainingDummy(world, sbb, Rotation.NONE);

@@ -152,10 +152,10 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		placeCornerStatue(world, 12, 1, 12, 3, sbb);
 		
 		// statues
-		this.placeWallStatue(world, 9, 1, 16, 0, sbb);
-		this.placeWallStatue(world, 1, 1, 9, 1, sbb);
-		this.placeWallStatue(world, 8, 1, 1, 2, sbb);
-		this.placeWallStatue(world, 16, 1, 8, 3, sbb);
+		this.placeWallStatue(world, 9, 1, 16, Rotation.NONE, sbb);
+		this.placeWallStatue(world, 1, 1, 9, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 8, 1, 1, Rotation.CLOCKWISE_180, sbb);
+		this.placeWallStatue(world, 16, 1, 8, Rotation.COUNTERCLOCKWISE_90, sbb);
 		
 		// doors
 		this.placeDoors(world, rand, sbb);

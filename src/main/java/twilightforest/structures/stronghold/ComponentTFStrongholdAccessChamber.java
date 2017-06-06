@@ -3,13 +3,17 @@ package twilightforest.structures.stronghold;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFTrophyPedestal;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.BossVariant;
 
 public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdComponent {
 
@@ -50,24 +54,32 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		placeSmallDoorwayAt(world, rand, 3, 8, 1, 4, sbb);
 		
 		// shaft down
-		this.fillWithBlocks(world, sbb, 2, -2, 2, 6, 0, 6, Blocks.STONEBRICK, 1, AIR, false);
+		final IBlockState defaultState = Blocks.STONEBRICK
+				.getDefaultState()
+				.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+		this.fillWithBlocks(world, sbb, 2, -2, 2, 6, 0, 6, defaultState, AIR, false);
 
 		this.fillWithAir(world, sbb, 3, -2, 3, 5, 2, 5);
 		
 		// stairs surrounding shaft
-		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, deco.stairState, this.getStairMeta(2), AIR, false);
-		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, deco.stairState, this.getStairMeta(0), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, deco.stairState, this.getStairMeta(3), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, deco.stairState, this.getStairMeta(1), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.SOUTH), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, getStairState(deco.stairState, Rotation.NONE.rotate(EnumFacing.SOUTH), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.SOUTH), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_90.rotate(EnumFacing.SOUTH), rotation, false), AIR, false);
 		
 		// pillar
 		this.setBlockState(world, deco.pillarState, 2, 0, 2, sbb);
 		
 		// pedestal
-		this.setBlockState(world, TFBlocks.trophyPedestal, 15, 2, 1, 2, sbb);
+		final IBlockState blockstateIn = TFBlocks.trophyPedestal
+				.getDefaultState()
+				.withProperty(BlockTFTrophyPedestal.LATENT, true)
+				//TODO: Atomic: Verify this facing.
+				.withProperty(BlockTFTrophyPedestal.FACING, EnumFacing.EAST);
+		this.setBlockState(world, blockstateIn, 2, 1, 2, sbb);
 		
 		// block point
-		this.fillWithBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.shield, 15, AIR, false);
+		this.fillWithBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.shield.getDefaultState(), AIR, false);
 		
 		return true;
 	}

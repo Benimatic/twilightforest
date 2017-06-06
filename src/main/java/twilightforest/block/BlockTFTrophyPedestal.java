@@ -37,9 +37,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallback {
-	private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	private static final PropertyEnum<BossVariant> BOSS = PropertyEnum.create("boss", BossVariant.class, BossVariant::hasTrophy);
-	private static final PropertyBool LATENT = PropertyBool.create("latent");
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyEnum<BossVariant> BOSS = PropertyEnum.create("boss", BossVariant.class, BossVariant::hasTrophy);
+	public static final PropertyBool LATENT = PropertyBool.create("latent");
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
 

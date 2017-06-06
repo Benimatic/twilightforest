@@ -60,9 +60,9 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 8, rand, deco.randomBlocks);
 		
 		// statues
-		this.placeWallStatue(world, 1, 1, 4, 1, sbb);
-		this.placeWallStatue(world, 7, 1, 4, 3, sbb);
-		this.placeWallStatue(world, 4, 1, 7, 0, sbb);
+		this.placeWallStatue(world, 1, 1, 4, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 4, 1, 7, Rotation.NONE, sbb);
 
 		// doors
 		placeDoors(world, rand, sbb);
