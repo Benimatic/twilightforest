@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +30,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
+import javax.annotation.Nullable;
 
 
 public abstract class StructureTFComponent extends StructureComponent {
@@ -60,6 +62,36 @@ public abstract class StructureTFComponent extends StructureComponent {
 		sheep.setNoGravity(true);
 		world.spawnEntity(sheep);
 
+	}
+
+	//Let's not use vanilla's weird rotation+mirror thing...
+	@Override
+	public void setCoordBaseMode(@Nullable EnumFacing facing)
+	{
+		this.coordBaseMode = facing;
+		this.mirror = Mirror.NONE;
+
+		if (facing == null)
+		{
+			this.rotation = Rotation.NONE;
+		}
+		else
+		{
+			switch (facing)
+			{
+				case SOUTH:
+					this.rotation = Rotation.CLOCKWISE_180;
+					break;
+				case WEST:
+					this.rotation = Rotation.COUNTERCLOCKWISE_90;
+					break;
+				case EAST:
+					this.rotation = Rotation.CLOCKWISE_90;
+					break;
+				default:
+					this.rotation = Rotation.NONE;
+			}
+		}
 	}
 
 	@Override
