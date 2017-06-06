@@ -1,4 +1,4 @@
-package twilightforest.structures;
+package twilightforest.structures.finalcastle;
 
 import java.util.ArrayList;
 import java.util.Iterator;
