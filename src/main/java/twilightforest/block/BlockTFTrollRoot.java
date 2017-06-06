@@ -88,6 +88,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
     }
 
     @SideOnly(Side.CLIENT)
+	@Override
     public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;

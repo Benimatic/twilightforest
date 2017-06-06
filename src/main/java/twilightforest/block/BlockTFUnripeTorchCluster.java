@@ -13,7 +13,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
-	
 	private static final int RIPEN_THRESHHOLD = 6;
 
 	@Override
@@ -24,11 +23,5 @@ public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
         	// ripen!
         	world.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
     }
 }

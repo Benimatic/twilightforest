@@ -52,18 +52,6 @@ public class BlockTFShield extends Block implements ModelRegisterCallback
         return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
     }
     
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
-    
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return true;
-    }
-    
     @Override
 	public int quantityDropped(Random par1Random)
     {

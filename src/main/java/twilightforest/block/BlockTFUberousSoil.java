@@ -48,9 +48,9 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
     }
 
 	@Override
-    public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Blocks.DIRT.getItemDropped(Blocks.DIRT.getDefaultState(), p_149650_2_, p_149650_3_);
+        return Item.getItemFromBlock(Blocks.DIRT);
     }
 
 	@Override
@@ -110,11 +110,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 
 	@Override
 	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
-		if (rand.nextBoolean()) {
-			pos = pos.offset(EnumFacing.EAST, rand.nextBoolean() ? 1 : -1);
-		} else {
-			pos = pos.offset(EnumFacing.SOUTH, rand.nextBoolean() ? 1 : -1);
-		}
+		pos = pos.offset(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length)]);
 
 		Block blockAt = world.getBlockState(pos).getBlock();
 		if (world.isAirBlock(pos.up()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS || blockAt == Blocks.FARMLAND)) {

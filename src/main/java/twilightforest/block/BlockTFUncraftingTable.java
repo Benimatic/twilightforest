@@ -1,25 +1,17 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
-
-import javax.annotation.Nullable;
 
 public class BlockTFUncraftingTable extends Block implements ModelRegisterCallback {
 	
@@ -35,10 +27,4 @@ public class BlockTFUncraftingTable extends Block implements ModelRegisterCallba
     	player.openGui(TwilightForestMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
     	return true;
 	}
-
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
 }

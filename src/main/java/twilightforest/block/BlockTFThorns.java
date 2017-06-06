@@ -35,8 +35,6 @@ import javax.annotation.Nullable;
 public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCallback {
 
 	public static final PropertyEnum<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
-	//public static final PropertyBool DOWN = PropertyBool.create("down");
-	//public static final PropertyBool UP = PropertyBool.create("up");
 	public static final PropertyBool NORTH = PropertyBool.create("north");
 	public static final PropertyBool SOUTH = PropertyBool.create("south");
 	public static final PropertyBool WEST = PropertyBool.create("west");
@@ -73,7 +71,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
 	public BlockStateContainer createBlockState()
 	{
-		return hasVariant() ? new BlockStateContainer(this, AXIS, VARIANT, /*DOWN, UP,*/ NORTH, SOUTH, WEST, EAST) : new BlockStateContainer(this, AXIS, /*DOWN, UP,*/ NORTH, SOUTH, WEST, EAST);
+		return hasVariant() ? new BlockStateContainer(this, AXIS, VARIANT, NORTH, SOUTH, WEST, EAST) : new BlockStateContainer(this, AXIS, NORTH, SOUTH, WEST, EAST);
 	}
 
 	@Override
@@ -89,13 +87,10 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
-	public IBlockState getActualState(@Nullable IBlockState state, IBlockAccess world, BlockPos pos)
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
-		if (state == null)
-			state = getDefaultState();
-
-		// Don't question these.
-		// I'd rather them not make sense on the code side than the asset side.
+		// If our axis is rotated (i.e. not upright), then adjust the actual sides tested
+		// This allows the entire model to be rotated in the assets in a cleaner way
 		switch (state.getValue(AXIS)) {
 			case X:
 				return state
@@ -277,6 +272,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public BlockRenderLayer getBlockLayer()
 	{
 		return BlockRenderLayer.CUTOUT;
@@ -290,6 +286,7 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return side.getAxis() == blockState.getValue(AXIS) && (blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side));
 	}
