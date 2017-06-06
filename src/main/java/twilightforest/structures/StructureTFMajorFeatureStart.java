@@ -55,7 +55,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
     	MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
 
 //FIXME: Disabled Structure
-//    	TFFinalCastlePieces.registerFinalCastlePieces();
+    	TFFinalCastlePieces.registerFinalCastlePieces();
 	    TFStrongholdPieces.registerPieces();
 	    TFMushroomTowerPieces.registerPieces();
 	    TFMinotaurMazePieces.registerPieces();
@@ -126,9 +126,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		}
 
 
-        if (firstComponent instanceof ComponentTFTowerMain)
-        //FIXME: Disabled Structure
-        //|| firstComponent instanceof ComponentTFDarkTowerMain
+        if (firstComponent instanceof ComponentTFTowerMain||firstComponent instanceof ComponentTFDarkTowerMain)
         {
         	moveToAvgGroundLevel(world, x, z);
         }
@@ -139,11 +137,11 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	 * @return The first component we should add to our structure
 	 */
 	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
-		/*if (feature != null) {
+		if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);
-			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
-		}*/
+			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
+		}
 
 		if (feature == TFFeature.nagaCourtyard) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
@@ -202,11 +200,9 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		if (feature == TFFeature.tfStronghold) {
 			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
 		}
-
-//FIXME: Disabled Structure
-//		if (feature == TFFeature.finalCastle) {
-//			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
-//		}
+		if (feature == TFFeature.finalCastle) {
+			return new TFFinalCastlePieces.Main(world, rand, 0, x, y, z);
+		}
 		
 		return null;
 	}
