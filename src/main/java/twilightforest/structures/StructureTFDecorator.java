@@ -5,6 +5,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.structures.icetower.StructureDecoratorIceTower;
+import twilightforest.structures.mushroomtower.StructureDecoratorMushroomTower;
+import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;
 
 /**
  *	Stores information about what blocks to use in constructing this structure
@@ -36,18 +38,18 @@ public class StructureTFDecorator
 		{
 			return "DecoIceTower";
 		}
-//		if (deco instanceof StructureDecoratorMushroomTower)
-//		{
-//			return "DecoMushroomTower";
-//		}
-//		if (deco instanceof StructureTFDecoratorStronghold)
-//		{
-//			return "DecoStronghold";
-//		}
-//		if (deco instanceof StructureTFDecoratorCastle)
-//		{
-//			return "DecoCastle";
-//		}
+		if (deco instanceof StructureDecoratorMushroomTower)
+		{
+			return "DecoMushroomTower";
+		}
+		if (deco instanceof StructureTFDecoratorStronghold)
+		{
+			return "DecoStronghold";
+		}
+		if (deco instanceof StructureTFDecoratorCastle)
+		{
+			return "DecoCastle";
+		}
 		
 		return "";
 	}
@@ -63,18 +65,18 @@ public class StructureTFDecorator
 		{
 			return new StructureDecoratorIceTower();
 		}
-//		if (decoString.equals("DecoMushroomTower"))
-//		{
-//			return new StructureDecoratorMushroomTower();
-//		}
-//		if (decoString.equals("DecoStronghold"))
-//		{
-//			return new StructureTFDecoratorStronghold();
-//		}
-//		if (decoString.equals("DecoCastle"))
-//		{
-//			return new StructureTFDecoratorCastle();
-//		}
+		if (decoString.equals("DecoMushroomTower"))
+		{
+			return new StructureDecoratorMushroomTower();
+		}
+		if (decoString.equals("DecoStronghold"))
+		{
+			return new StructureTFDecoratorStronghold();
+		}
+		if (decoString.equals("DecoCastle"))
+		{
+			return new StructureTFDecoratorCastle();
+		}
 		
 		return new StructureTFDecorator();
 	}

@@ -343,7 +343,7 @@ public class BlockTFPortal extends BlockBreakable
 				// todo 1.9.4 factor out reflectionmappings
 				// TF - reflectively call copyDataFromOld
 				Method copyDataFromOld =
-						ReflectionHelper.findMethod(Entity.class, null, new String[]{ "copyDataFromOld", "func_180432_n", "a" }, Entity.class);
+						ReflectionHelper.findMethod(Entity.class, "copyDataFromOld", "func_180432_n", Entity.class);
 				try {
 					copyDataFromOld.invoke(entity, toTeleport);
 				} catch (IllegalAccessException | InvocationTargetException e) {
