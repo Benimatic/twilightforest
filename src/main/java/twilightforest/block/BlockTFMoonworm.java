@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
@@ -61,18 +62,17 @@ public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCall
 		}
 	}
 
-    @Override
-	public boolean dropCritterIfCantStay(World world, BlockPos pos)
-    {
-        if(!canPlaceBlockAt(world, pos))
-        {
-            world.destroyBlock(pos, false);
+	@Override
+	protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state)
+	{
+		EnumFacing facing = state.getValue(TFBlockProperties.FACING);
+		if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
+			world.destroyBlock(pos, false);
 			return false;
-        } else
-        {
-            return true;
-        }
-    }
+		}
+
+		return true;
+	}
 
     @Override
 	public int quantityDropped(IBlockState state, int fortune, Random random)

@@ -3,6 +3,7 @@ package twilightforest.client.renderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -28,33 +29,33 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 	@Override
 	public void renderTileEntityAt(@Nullable TileEntityTFFirefly tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
         GlStateManager.pushMatrix();
-        int facing = tileentity != null ? tileentity.getBlockMetadata() : 0;
+        EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
 
         float rotX = 90.0F;
         float rotZ = 0.0F;
-        if(facing == 3)
+        if(facing == EnumFacing.SOUTH)
         {
-        	rotZ = 0F;
+            rotZ = 0F;
         }
-        if(facing == 4)
+        if(facing == EnumFacing.NORTH)
         {
-        	rotZ = 180F;
+            rotZ = 180F;
         }
-        if(facing == 1)
+        if(facing == EnumFacing.EAST)
         {
-        	rotZ = -90F;
+            rotZ = -90F;
         }
-        if(facing == 2)
+        if(facing == EnumFacing.WEST)
         {
-        	rotZ = 90F;
+            rotZ = 90F;
         }
-        if(facing == 5)
+        if(facing == EnumFacing.UP)
         {
-        	rotX = 0F;
+            rotX = 0F;
         }
-        if(facing == 6)
+        if(facing == EnumFacing.DOWN)
         {
-        	rotX = 180F;
+            rotX = 180F;
         }
         GlStateManager.translate((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);
         GlStateManager.rotate(rotX, 1F, 0F, 0F);

@@ -1,27 +1,20 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public abstract class BlockTFCritter extends Block {
 
@@ -53,28 +46,13 @@ public abstract class BlockTFCritter extends Block {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        switch (state.getValue(TFBlockProperties.FACING)) {
-            case DOWN: return 6;
-            default: case UP: return 5;
-            case NORTH: return 4;
-            case SOUTH: return 3;
-            case WEST: return 2;
-            case EAST: return 1;
-        }
+        return state.getValue(TFBlockProperties.FACING).getIndex();
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing facing = EnumFacing.UP;
-        switch (meta) {
-            case 6: facing = EnumFacing.DOWN; break;
-            case 5: facing = EnumFacing.UP; break;
-            case 4: facing = EnumFacing.NORTH; break;
-            case 3: facing = EnumFacing.SOUTH; break;
-            case 2: facing = EnumFacing.WEST; break;
-            case 1: facing = EnumFacing.EAST; break;
-        }
-        return getDefaultState().withProperty(TFBlockProperties.FACING, facing);
+        return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
     }
     
     @Override
@@ -129,43 +107,30 @@ public abstract class BlockTFCritter extends Block {
     @Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        dropCritterIfCantStay(world, pos);
-
-        /*// for fireflies, schedule a lighting update todo 1.9 needed?
-        int meta = world.getBlockMetadata(x, y, z);
-        if (meta == 0) {
-        	world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
-        }*/
+        checkAndDrop(world, pos, state);
     }
 
-    public boolean dropCritterIfCantStay(World world, BlockPos pos)
+    protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state)
     {
-        if(!canPlaceBlockAt(world, pos))
-        {
+        EnumFacing facing = state.getValue(TFBlockProperties.FACING);
+        if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
             world.destroyBlock(pos, true);
             return false;
-        } else
-        {
-            return true;
         }
+
+        return true;
     }
 
     @Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID, BlockPos fromPos)
     {
-        if(dropCritterIfCantStay(world, pos))
-        {
-            EnumFacing facing = state.getValue(TFBlockProperties.FACING);
-            if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
-                world.destroyBlock(pos, true);
-            }
-        }
+        checkAndDrop(world, pos, state);
     }
 
-    private boolean canPlaceAt(World world, BlockPos pos)
+    protected boolean canPlaceAt(World world, BlockPos pos)
     {
     	return world.isBlockNormalCube(pos, true) || world.getBlockState(pos).getMaterial() == Material.LEAVES || world.getBlockState(pos).getMaterial() == Material.CACTUS;
-    }	
+    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -174,12 +139,4 @@ public abstract class BlockTFCritter extends Block {
     
     @Override
     public abstract TileEntity createTileEntity(World world, IBlockState state);
-
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
 }
-	
-	
