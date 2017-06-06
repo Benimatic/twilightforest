@@ -41,7 +41,7 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 				entity.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, px, py, pz, 0, 0, 0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
 	        }
 	        
-	        player.playSound(Blocks.GLASS.getSoundType().getBreakSound(), 1F, 0.5F);
+	        player.playSound(Blocks.GLASS.getSoundType(Blocks.GLASS.getDefaultState(), entity.world, entity.getPosition(), player).getBreakSound(), 1F, 0.5F);
     	}
         return false;
     }

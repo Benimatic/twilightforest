@@ -107,6 +107,8 @@ public class ItemTFMoonwormQueen extends ItemTF
 		return true;
 	}
 
+	//Atomic: Not sure why getMaxDamage was deprecated since it's actively used?
+	@SuppressWarnings("deprecation")
     @Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining)
     {

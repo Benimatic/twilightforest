@@ -283,6 +283,8 @@ public final class ColorHandler {
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 		itemColors.registerItemColorHandler(new IItemColor() {
 			@Override
+			//Atomic: This is one place where getStateFromMeta is still commonly used
+			@SuppressWarnings("deprecation")
 			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
 				return Minecraft.getMinecraft().getBlockColors().colorMultiplier(TFBlocks.plant.getStateFromMeta(stack.getItemDamage()), null, null, tintIndex);
 			}

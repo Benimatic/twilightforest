@@ -98,7 +98,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 		}
 		
-		this.playSound(Blocks.PACKED_ICE.getSoundType().getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);
     }
     
 	private void destroyIceInAABB(AxisAlignedBB par1AxisAlignedBB)

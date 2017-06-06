@@ -27,6 +27,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class TFRecipes {
 
+	//AtomicBlom: I'm not sure why getMaxDamage is deprecated, since it seems to be actively used?
+	@SuppressWarnings("deprecation")
 	public static void registerRecipes() {
 		
 		// ore dictionary

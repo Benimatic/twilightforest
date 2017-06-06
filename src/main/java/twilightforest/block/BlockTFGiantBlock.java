@@ -19,6 +19,8 @@ public abstract class BlockTFGiantBlock extends Block {
 	private IBlockState baseState;
 	private boolean isSelfDestructing;
 
+	//Atomic: Suppressing deprecation because this seems like a reasonable use for it.
+	@SuppressWarnings("deprecation")
 	public BlockTFGiantBlock(IBlockState state) {
 		super(state.getMaterial());
 		this.setSoundType(state.getBlock().getSoundType());

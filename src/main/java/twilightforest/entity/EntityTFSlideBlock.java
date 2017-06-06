@@ -258,6 +258,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
         return false;
     }
 
+    //Atomic: Suppressed deprecation, Ideally I'd use a state string here, but that is more work than I'm willing to put in right now.
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
 		Block b = Block.REGISTRY.getObject(new ResourceLocation(nbtTagCompound.getString("TileID")));

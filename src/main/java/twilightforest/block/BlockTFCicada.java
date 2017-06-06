@@ -20,6 +20,8 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 		return new TileEntityTFCicada();
 	}
 
+	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
+	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {

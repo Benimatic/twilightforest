@@ -24,6 +24,8 @@ public class ItemTFTwilightWand extends ItemTF {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	//Atomic: Not sure why getMaxDamage was deprecated since it's actively used?
+	@SuppressWarnings("deprecation")
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage())
@@ -37,9 +39,12 @@ public class ItemTFTwilightWand extends ItemTF {
 		
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
-	
+
+	//Atomic: Not sure why getMaxDamage was deprecated since it's actively used?
+	@SuppressWarnings("deprecation")
     @Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
+
 		if (stack.getItemDamage() >= this.getMaxDamage()) {
 			living.resetActiveHand();
 			return;
