@@ -134,11 +134,11 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 		
 		if (enterBottom)
 		{
-			this.placeWallStatue(world, 4, 8, 1, 2, sbb);
+			this.placeWallStatue(world, 4, 8, 1, Rotation.CLOCKWISE_180, sbb);
 		}
 		else
 		{
-			this.placeWallStatue(world, 4, 8, 7, 0, sbb);
+			this.placeWallStatue(world, 4, 8, 7, Rotation.NONE, sbb);
 		}
 		
 		// doors

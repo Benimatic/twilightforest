@@ -55,10 +55,10 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		this.fillWithAir(world, sbb, 3, -2, 3, 5, 2, 5);
 		
 		// stairs surrounding shaft
-		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, deco.stairID, this.getStairMeta(2), AIR, false);
-		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, deco.stairID, this.getStairMeta(0), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, deco.stairID, this.getStairMeta(3), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, deco.stairID, this.getStairMeta(1), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, deco.stairState, this.getStairMeta(2), AIR, false);
+		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, deco.stairState, this.getStairMeta(0), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, deco.stairState, this.getStairMeta(3), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, deco.stairState, this.getStairMeta(1), AIR, false);
 		
 		// pillar
 		this.setBlockState(world, deco.pillarState, 2, 0, 2, sbb);

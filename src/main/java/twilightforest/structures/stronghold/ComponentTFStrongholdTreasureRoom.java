@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -57,11 +58,11 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
 		
 		// statues
-		this.placeWallStatue(world, 1, 1, 4, 1, sbb);
-		this.placeWallStatue(world, 1, 1, 13, 1, sbb);
-		this.placeWallStatue(world, 7, 1, 4, 3, sbb);
-		this.placeWallStatue(world, 7, 1, 13, 3, sbb);
-		this.placeWallStatue(world, 4, 1, 16, 0, sbb);
+		this.placeWallStatue(world, 1, 1, 4, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 1, 1, 13, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 13, Rotation.COUNTERCLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 4, 1, 16, Rotation.NONE, sbb);
 		
 		this.fillWithRandomizedBlocks(world, sbb, 1, 1, 8, 7, 5, 9, false, rand, deco.randomBlocks);
 		this.fillWithBlocks(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);

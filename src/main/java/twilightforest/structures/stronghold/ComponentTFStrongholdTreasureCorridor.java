@@ -43,10 +43,10 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 26, rand, deco.randomBlocks);
 
 		// statues
-		this.placeWallStatue(world, 1, 1, 9, 1, sbb);
-		this.placeWallStatue(world, 1, 1, 17, 1, sbb);
-		this.placeWallStatue(world, 7, 1, 9, 3, sbb);
-		this.placeWallStatue(world, 7, 1, 17, 3, sbb);
+		this.placeWallStatue(world, 1, 1, 9, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 1, 1, 17, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 9, Rotation.COUNTERCLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 17, Rotation.COUNTERCLOCKWISE_90, sbb);
 		
 		Rotation rotation = (this.boundingBox.minX ^ this.boundingBox.minZ) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
 		
@@ -54,8 +54,9 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 		this.placeTreasureRotated(world, 8, 2, 13, rotation, TFTreasure.stronghold_cache, sbb);
 		
 		// niche!
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 8, 3, 12, sbb, rotation);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation) + 4, 8, 3, 13, sbb, rotation);
+
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.SOUTH), rotation, true), 8, 3, 12, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(EnumFacing.SOUTH), rotation, true), 8, 3, 13, rotation, sbb);
 		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 8, 3, 14, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 12, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 14, rotation, sbb);

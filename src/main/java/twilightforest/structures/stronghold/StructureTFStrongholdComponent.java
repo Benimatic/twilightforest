@@ -279,8 +279,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		// set offsets and stair metas
 		int ox = 1;
 		int oz = 1;
-		int smx = 2;
-		int smz = 3;
+		EnumFacing smx = EnumFacing.NORTH;
+		EnumFacing smz = EnumFacing.EAST;
 
 
 		switch (facing)
@@ -290,17 +290,17 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			break;
 		case 1:
 			oz = -1;
-			smz = 1;
+			smz = EnumFacing.WEST;
 			break;
 		case 2 :
 			ox = -1;
-			smx = 0;
+			smx = EnumFacing.SOUTH;
 			break;
 		case 3:
 			ox = -1;
 			oz = -1;
-			smx = 0;
-			smz = 1;
+			smx = EnumFacing.SOUTH;
+			smz = EnumFacing.WEST;
 			break;			
 		}
 
@@ -315,26 +315,27 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z + 0, sbb);
 
 		// arms
-		this.setBlockState(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 3, z + oz, sbb);
-		this.setBlockState(world, deco.stairID, this.getStairMeta(smx), x + ox, y + 3, z + 0, sbb);
-		this.setBlockState(world, deco.stairID, this.getStairMeta(smz) + 4, x + 0, y + 2, z + oz, sbb);
-		this.setBlockState(world, deco.stairID, this.getStairMeta(smx) + 4, x + ox, y + 2, z + 0, sbb);
-		this.setBlockState(world, deco.stairID, this.getStairMeta(smx) + 4, x + ox, y + 2, z + oz, sbb);
+
+		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, false), x + 0, y + 3, z + oz, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, false), x + ox, y + 3, z + 0, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, true), x + 0, y + 2, z + oz, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, true), x + ox, y + 2, z + 0, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, true), x + ox, y + 2, z + oz, sbb);
 
 		// sword
 		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z + oz, sbb);
 		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z + oz, sbb);
 
 		// feet
-		this.setBlockState(world, deco.stairID, this.getStairMeta(smz), x + 0, y + 0, z + oz, sbb);
-		this.setBlockState(world, deco.stairID, this.getStairMeta(smx), x + ox, y + 0, z + 0, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, false), x + 0, y + 0, z + oz, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, false), x + ox, y + 0, z + 0, sbb);
 
 	}
 	
 	/**
 	 * Make a statue that faces out from a wall
 	 */
-	public void placeWallStatue(World world, int x, int y, int z, int facing, StructureBoundingBox sbb) {
+	public void placeWallStatue(World world, int x, int y, int z, Rotation facing, StructureBoundingBox sbb) {
 		int ox = 1;
 		int oz = 1;
 		
@@ -344,9 +345,9 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.setBlockState(world, deco.pillarState, x, y + sy, z, sbb);
 		}
 		
-		if (facing == 0 || facing == 2)
+		if (facing == Rotation.NONE || facing == Rotation.CLOCKWISE_180)
 		{
-			if (facing == 2)
+			if (facing == Rotation.CLOCKWISE_180)
 			{
 				ox = -ox;
 				oz = -oz;
@@ -357,28 +358,29 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z, sbb);
 	
 			// arms
-			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 3, z, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x + ox, y + 3, z, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x - ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z - oz, sbb);
 
-			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing) + 4, x - ox, y + 2, z, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing) + 4, x + ox, y + 2, z, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + 0, y + 2, z - oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x - ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x - ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x - ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z - oz, sbb);
+
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, true), x - ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + 0, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x - ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z - oz, sbb);
 			
 			// sword
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 0, z - oz, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 1, z - oz, sbb);
 			
 			// feet
-			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x - ox, y + 0, z + 0, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x + ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x - ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 0, z + 0, sbb);
 		}
 		else
 		{
-			if (facing == 3)
+			if (facing == Rotation.COUNTERCLOCKWISE_90)
 			{
 				oz = -oz;
 				ox = -ox;
@@ -389,24 +391,24 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
 	
 			// arms
-			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 3, z - oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x, y + 3, z + oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing), x + ox, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z + oz, sbb);
 
-			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing) + 4, x, y + 2, z - oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing) + 4, x, y + 2, z + oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + oz, y + 2, z + 0, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(1 + facing) + 4, x + ox, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, true), x, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, true), x, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + oz, y + 2, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z + oz, sbb);
 			
 			// sword
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z, sbb);
 			
 			// feet
-			this.setBlockState(world, deco.stairID, this.getStairMeta(0 + facing), x, y + 0, z - ox, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(2 + facing), x, y + 0, z + ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x, y + 0, z - ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x, y + 0, z + ox, sbb);
 		}
 
 	}

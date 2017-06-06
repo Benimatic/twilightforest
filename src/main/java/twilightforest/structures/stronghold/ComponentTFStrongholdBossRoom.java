@@ -153,13 +153,13 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 			this.setBlockStateRotated(world, deco.fenceState, x - 1, y + 1, z + 3, rotation, sbb);
 		}
 		
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(1 + rotation), x + 0, y, z + 0, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), x + 0, y, z + 3, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(1 + rotation), x + 0, y, z + 0, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation), x + 0, y, z + 3, rotation, sbb);
 	
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), x + 1, y, z + 1, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), x + 1, y, z + 2, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), x - 1, y, z + 1, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), x - 1, y, z + 2, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation), x + 1, y, z + 1, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation), x + 1, y, z + 2, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation), x - 1, y, z + 1, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation), x - 1, y, z + 2, rotation, sbb);
 		
 		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 1, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 2, rotation, sbb);
@@ -167,16 +167,16 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 	}
 
 	protected void placePillarDecorations(World world, StructureBoundingBox sbb, int rotation) {
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), 4, 1, 8, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), 8, 1, 4, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 4, 5, 8, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation) + 4, 8, 5, 4, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), 5, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), 6, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 5, 5, 6, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation) + 4, 6, 5, 6, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation) + 4, 6, 5, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation), 4, 1, 8, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation), 8, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 4, 5, 8, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation) + 4, 8, 5, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation), 5, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation), 6, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 5, 5, 6, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation) + 4, 6, 5, 6, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation) + 4, 6, 5, 5, rotation, sbb);
 	}
 	
 	@Override

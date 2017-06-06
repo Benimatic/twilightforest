@@ -125,37 +125,37 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 
 	private void placeStairsAndPillars(World world, StructureBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 4, 1, 4, 4, 12, 4, deco.pillarState, rotation);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), 4, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation), 5, 1, 4, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 4, 5, 5, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation) + 4, 5, 5, 4, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 4, 12, 5, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(2 + rotation) + 4, 5, 12, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation), 4, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation), 5, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 4, 5, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation) + 4, 5, 5, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 4, 12, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(2 + rotation) + 4, 5, 12, 4, rotation, sbb);
 		
 		this.fillBlocksRotated(world, sbb, 13, 1, 4, 13, 12, 4, deco.pillarState, rotation);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), 13, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), 12, 1, 4, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 13, 5, 5, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation) + 4, 12, 5, 4, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 13, 12, 5, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation) + 4, 12, 12, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation), 13, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation), 12, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 13, 5, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation) + 4, 12, 5, 4, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 13, 12, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation) + 4, 12, 12, 4, rotation, sbb);
 		
 		this.fillBlocksRotated(world, sbb, 13, 1, 8, 13, 12, 8, deco.pillarState, rotation);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation), 13, 1, 9, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(1 + rotation), 13, 1, 7, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), 12, 1, 8, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 13, 5, 9, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(1 + rotation) + 4, 13, 5, 7, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(3 + rotation) + 4, 13, 12, 9, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(1 + rotation) + 4, 13, 12, 7, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation) + 4, 12, 12, 8, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation), 13, 1, 9, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(1 + rotation), 13, 1, 7, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation), 12, 1, 8, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 13, 5, 9, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(1 + rotation) + 4, 13, 5, 7, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(3 + rotation) + 4, 13, 12, 9, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(1 + rotation) + 4, 13, 12, 7, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation) + 4, 12, 12, 8, rotation, sbb);
 		
 		for (int y = 1; y < 8; y++)
 		{
 			for (int z = 5; z < 8; z++)
 			{
 				this.setBlockStateRotated(world, AIR, y + 6, y + 1, z, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairID, this.getStairMeta(0 + rotation), y + 6, y, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState, this.getStairMeta(0 + rotation), y + 6, y, z, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, y + 6, y - 1, z, rotation, sbb);
 			}
 		}
