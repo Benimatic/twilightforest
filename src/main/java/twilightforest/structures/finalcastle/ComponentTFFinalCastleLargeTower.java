@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -64,8 +65,8 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing
     }
 
 
-	public int getGlyphMeta() {
-		return 0;
+	public EnumDyeColor getGlyphMeta() {
+		return EnumDyeColor.WHITE;
 	}
 
 

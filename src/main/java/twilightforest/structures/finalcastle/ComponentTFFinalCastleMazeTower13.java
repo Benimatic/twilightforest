@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -19,11 +20,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
     public static final int LOWEST_DOOR = 144;
     public static final int HIGHEST_DOOR = 222;
 
-    public int type;
+    public EnumDyeColor type;
 
     public ComponentTFFinalCastleMazeTower13() {}
 
-	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int type, EnumFacing direction) {
+	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, EnumDyeColor type, EnumFacing direction) {
 		super(i);
 		this.setCoordBaseMode(direction);
 		this.type = type;
@@ -54,7 +55,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 	}
 
-	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, int type, EnumFacing direction) {
+	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumDyeColor type, EnumFacing direction) {
 		super(i);
 		this.setCoordBaseMode(direction);
 		this.type = type;
@@ -362,7 +363,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 		// what type of tower?
 		ComponentTFFinalCastleMazeTower13 eTower;
-		if (this.type == 0) {
+		if (this.type == EnumDyeColor.WHITE) {
 			eTower = new ComponentTFFinalCastleEntranceTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
 		} else {
 			eTower = new ComponentTFFinalCastleBellTower21(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
@@ -498,7 +499,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		return true;
 	}
 
-	public int getGlyphMeta() {
+	public EnumDyeColor getGlyphMeta() {
 		return type;
 	}
 

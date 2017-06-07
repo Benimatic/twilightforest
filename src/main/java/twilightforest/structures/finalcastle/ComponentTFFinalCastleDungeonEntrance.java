@@ -49,7 +49,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 		}
 
 		// door
-	    this.fillWithBlocks(world, sbb, 23, 0, 12, 23, 3, 14, TFBlocks.castleDoor, 2, Blocks.AIR.getDefaultState(), false);
+	    this.fillWithBlocks(world, sbb, 23, 0, 12, 23, 3, 14, TFBlocks.castleDoor, 2, AIR, false);
 	    this.fillWithBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
 
 
