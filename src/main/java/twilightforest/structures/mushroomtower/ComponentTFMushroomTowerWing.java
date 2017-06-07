@@ -442,7 +442,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 					// make base
 					if (this.hasBase) 
 					{
-						this.setBlockState(world, deco.blockState, dx + cx, -1, dz + cz, sbb);
+						this.replaceAirAndLiquidDownwards(world, deco.blockState, dx + cx, -1, dz + cz, sbb);
 					}
 				}
 			}

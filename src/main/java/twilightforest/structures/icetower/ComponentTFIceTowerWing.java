@@ -226,7 +226,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 			{
 				for (int z = 0; z < this.size; z++)
 				{
-					this.setBlockState(world, deco.blockState, x, -1, z, sbb);
+					this.replaceAirAndLiquidDownwards(world, deco.blockState, x, -1, z, sbb);
 				}
 			}
 		}
