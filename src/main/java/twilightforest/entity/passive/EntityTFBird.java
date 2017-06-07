@@ -1,12 +1,16 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nonnull;
 
 
 public abstract class EntityTFBird extends EntityAnimal {
@@ -61,6 +65,9 @@ public abstract class EntityTFBird extends EntityAnimal {
 //        	this.moveForward *= 2F;
 //        }
 	}
+
+	@Override
+	protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {}
 
 	@Override
 	public void fall(float dist, float damageMultiplier) {}
