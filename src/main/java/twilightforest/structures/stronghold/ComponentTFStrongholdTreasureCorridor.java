@@ -55,14 +55,14 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 		
 		// niche!
 
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.SOUTH), rotation, true), 8, 3, 12, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(EnumFacing.SOUTH), rotation, true), 8, 3, 13, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 8, 3, 14, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState,EnumFacing.SOUTH, rotation, true), 8, 3, 12, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, true), 8, 3, 13, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState,EnumFacing.NORTH, rotation, true), 8, 3, 14, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 12, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 14, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 7, 1, 12, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation)), 7, 1, 13, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.COUNTERCLOCKWISE_90))), 7, 1, 14, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 7, 1, 12, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.WEST), 7, 1, 13, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 7, 1, 14, rotation, sbb);
 
 		// doors
 		placeDoors(world, rand, sbb);

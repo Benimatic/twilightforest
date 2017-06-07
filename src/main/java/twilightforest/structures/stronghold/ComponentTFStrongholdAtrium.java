@@ -211,11 +211,11 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	
 	private void placeBalconyPillar(World world, StructureBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 5, 1, 5, 5, 12, 5, deco.pillarState, rotation);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, rotation.add(Rotation.COUNTERCLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), 5, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, rotation.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, true), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, rotation.add(Rotation.COUNTERCLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), 5, 5, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, rotation.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), 6, 5, 5, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, rotation.add(Rotation.COUNTERCLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), 5, 12, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, rotation.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), 6, 12, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, false), 5, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, false), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, true), 5, 5, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, true), 6, 5, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, true), 5, 12, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, true), 6, 12, 5, rotation, sbb);
 	}
 }

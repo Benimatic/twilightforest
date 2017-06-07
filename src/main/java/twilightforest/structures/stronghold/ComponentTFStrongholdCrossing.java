@@ -70,15 +70,15 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		// table
 		IBlockState oakStairs = Blocks.OAK_STAIRS.getDefaultState();
 		;
-		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.NONE.rotate(EnumFacing.SOUTH), rotation, true), 5, 1, 3, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.SOUTH), rotation, true), 5, 1, 4, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_90.rotate(EnumFacing.SOUTH), rotation, true), 6, 1, 3, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_180.rotate(EnumFacing.SOUTH), rotation, true), 6, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.NONE.rotate(EnumFacing.WEST), rotation, true), 5, 1, 3, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, true), 5, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_90.rotate(EnumFacing.WEST), rotation, true), 6, 1, 3, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, true), 6, 1, 4, rotation, sbb);
 		// chairs
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.COUNTERCLOCKWISE_90))), 5, 1, 2, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation)), 7, 1, 3, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.COUNTERCLOCKWISE_90))), 4, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST)), 5, 1, 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.NONE.rotate(EnumFacing.WEST)), 7, 1, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.CLOCKWISE_90.rotate(EnumFacing.WEST)), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST)), 4, 1, 4, rotation, sbb);
 	}
 
 

@@ -76,13 +76,13 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 		
 		for (int z = 2; z < 5; z++)
 		{
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.NONE)), 3, 1, z, sbb);
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_180)), 5, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.WEST), 3, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.EAST), 5, 1, z, sbb);
 		}
 		
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 4, 1, 2, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.COUNTERCLOCKWISE_90)), 4, 1, 4, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 4, 2, 3, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 1, 2, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 4, 1, 4, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 2, 3, sbb);
 		
 		return true;
 	}

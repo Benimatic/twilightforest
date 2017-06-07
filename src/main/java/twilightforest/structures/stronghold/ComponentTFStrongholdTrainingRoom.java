@@ -58,11 +58,11 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.setBlockState(world, deco.pillarState, 5, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 2, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 6, 1, 12, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_180)), 6, 2, 12, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_180)), 7, 1, 12, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.EAST), 6, 2, 12, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.EAST), 7, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 1, 11, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 5, 2, 11, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, getStructureRelativeRotation(Rotation.CLOCKWISE_90)), 5, 1, 10, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.NORTH), 5, 2, 11, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.NORTH), 5, 1, 10, sbb);
 
 		this.setBlockState(world, Blocks.ANVIL.getDefaultState(), 6, 1, 11, sbb);
 

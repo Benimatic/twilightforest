@@ -106,7 +106,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 			for (int x = 3; x < 6; x++)
 			{
 				this.setBlockStateRotated(world, Blocks.AIR.getDefaultState(), x, y + 1, y, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), x, y, y, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), x, y, y, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, x, y - 1, y, rotation, sbb);
 			}
 		}
@@ -123,13 +123,13 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 
 			for (int z = 5; z < 8; z++)
 			{
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation)), 3, 1, z, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_180))), 5, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.WEST), 3, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.EAST), 5, 1, z, rotation, sbb);
 			}
 
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 4, 1, 5, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.COUNTERCLOCKWISE_90))), 4, 1, 7, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, getStructureRelativeRotation(rotation.add(Rotation.CLOCKWISE_90))), 4, 2, 6, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 1, 5, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 4, 1, 7, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 2, 6, rotation, sbb);
 		}
 		
 		if (enterBottom)

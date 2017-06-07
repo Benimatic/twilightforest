@@ -279,8 +279,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		// set offsets and stair metas
 		int ox = 1;
 		int oz = 1;
-		EnumFacing smx = EnumFacing.NORTH;
-		EnumFacing smz = EnumFacing.EAST;
+		EnumFacing smx = EnumFacing.EAST;
+		EnumFacing smz = EnumFacing.SOUTH;
 
 
 		switch (facing)
@@ -290,17 +290,17 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			break;
 		case 1:
 			oz = -1;
-			smz = EnumFacing.WEST;
+			smz = EnumFacing.SOUTH;
 			break;
 		case 2 :
 			ox = -1;
-			smx = EnumFacing.SOUTH;
+			smx = EnumFacing.WEST;
 			break;
 		case 3:
 			ox = -1;
 			oz = -1;
-			smx = EnumFacing.SOUTH;
-			smz = EnumFacing.WEST;
+			smx = EnumFacing.WEST;
+			smz = EnumFacing.NORTH;
 			break;			
 		}
 
@@ -359,24 +359,24 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	
 			// arms
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x - ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x - ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x - ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x - ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, true), x - ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + 0, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x - ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, true), x - ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + 0, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x - ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
 			
 			// sword
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 0, z - oz, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 1, z - oz, sbb);
 			
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x - ox, y + 0, z + 0, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x - ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 0, z + 0, sbb);
 		}
 		else
 		{
@@ -391,24 +391,24 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
 	
 			// arms
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x, y + 3, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, false), x + ox, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z + oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, true), x, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, true), x, y + 2, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + oz, y + 2, z + 0, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.SOUTH), rotation, true), x + ox, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, true), x, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, true), x, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + oz, y + 2, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z + oz, sbb);
 			
 			// sword
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z, sbb);
 			
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.SOUTH), rotation, false), x, y + 0, z - ox, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH), rotation, false), x, y + 0, z + ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x, y + 0, z - ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x, y + 0, z + ox, sbb);
 		}
 
 	}
