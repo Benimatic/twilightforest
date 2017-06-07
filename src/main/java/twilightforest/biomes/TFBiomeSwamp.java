@@ -56,8 +56,8 @@ public class TFBiomeSwamp extends TFBiomeBase {
         getTFBiomeDecorator().setTreesPerChunk(2);
         getTFBiomeDecorator().setWaterlilyPerChunk(20);
 
-		
-        getTFBiomeDecorator().canopyPerChunk = -999;
+
+        ((TFBiomeDecorator)decorator).hasCanopy = false;
         getTFBiomeDecorator().lakesPerChunk = 2;
         getTFBiomeDecorator().mangrovesPerChunk = 3;
         

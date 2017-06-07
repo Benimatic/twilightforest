@@ -31,7 +31,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(1);
 		getTFBiomeDecorator().setGrassPerChunk(0);
 
-        getTFBiomeDecorator().canopyPerChunk = -999;
+        ((TFBiomeDecorator)decorator).hasCanopy = false;
 		
         spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFPenguin.class, 10, 4, 4));
 

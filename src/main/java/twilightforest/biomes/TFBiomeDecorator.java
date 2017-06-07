@@ -53,7 +53,8 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	private WorldGenLiquids caveWaterGen = new WorldGenLiquids(Blocks.FLOWING_WATER);
 	private TFGenTorchBerries torchBerryGen = new TFGenTorchBerries();
 
-    public float canopyPerChunk = TwilightForestMod.canopyCoverage;
+	public float canopyPerChunk = TwilightForestMod.canopyCoverage;
+	public boolean hasCanopy = true;
     public float alternateCanopyChance = 0;
     public int myceliumPerChunk = 0;
     public int mangrovesPerChunk = 0;
@@ -125,21 +126,28 @@ public class TFBiomeDecorator extends BiomeDecorator {
             }
         }
 
-		//TODO: is there a better place for this? We want to load this value once the config file is loaded.
-		this.canopyPerChunk = TwilightForestMod.canopyCoverage;
+        if (this.hasCanopy)
+		{
+			//TODO: is there a better place for this? We want to load this value once the config file is loaded.
+			this.canopyPerChunk = TwilightForestMod.canopyCoverage;
 
-		// add canopy trees
-    	int nc = (int)canopyPerChunk + ((randomGenerator.nextFloat() < (canopyPerChunk - (int)canopyPerChunk)) ? 1 : 0);
-    	for (int i = 0; i < nc; i++) {
-    		int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
-    		int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
-			BlockPos genPos = world.getHeight(new BlockPos(rx, 0, rz));
-    		if (this.alternateCanopyChance > 0 && randomGenerator.nextFloat() <= alternateCanopyChance) {
-    			alternateCanopyGen.generate(world, randomGenerator, genPos);
-    		} else {
-    			canopyTreeGen.generate(world, randomGenerator, genPos);
-	        }
-    	}
+			// add canopy trees
+			int nc = (int)canopyPerChunk + ((randomGenerator.nextFloat() < (canopyPerChunk - (int)canopyPerChunk)) ? 1 : 0);
+			for (int i = 0; i < nc; i++)
+			{
+				int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
+				int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
+				BlockPos genPos = world.getHeight(new BlockPos(rx, 0, rz));
+				if (this.alternateCanopyChance > 0 && randomGenerator.nextFloat() <= alternateCanopyChance)
+				{
+					alternateCanopyGen.generate(world, randomGenerator, genPos);
+				}
+				else
+				{
+					canopyTreeGen.generate(world, randomGenerator, genPos);
+				}
+			}
+		}
 
     	// mangrove trees
     	for (int i = 0; i < mangrovesPerChunk; i++) {
