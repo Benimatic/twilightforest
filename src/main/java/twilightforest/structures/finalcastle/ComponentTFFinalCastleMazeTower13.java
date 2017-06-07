@@ -308,8 +308,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			list.add(eTower);
 			eTower.buildComponent(this, list, rand);
 			// add bridge
-			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction);
-			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction.rotate(EnumFacing.SOUTH));
+			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction.rotate(EnumFacing.SOUTH));
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);
 
@@ -344,24 +344,28 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 	private boolean buildEndTowerTowards(List list, Random rand, BlockPos dest, Rotation direction, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, direction);
+		opening = new BlockPos(
+				opening.getX(),
+				// adjust opening towards dest.getY()
+				this.adjustOpening(opening.getY(), dest),
+				opening.getZ()
+		);
 
-		// adjust opening towards dest.getY()
-		opening.getY() = this.adjustOpening(opening.getY(), dest);
 
 		direction += this.coordBaseMode;
 		direction %= 4;
 
 		// build towards
-		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, direction);
+		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, direction.rotate(EnumFacing.SOUTH));
 
 		//System.out.println("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + direction + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
 
 		// what type of tower?
 		ComponentTFFinalCastleMazeTower13 eTower;
 		if (this.type == 0) {
-			eTower = new ComponentTFFinalCastleEntranceTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
+			eTower = new ComponentTFFinalCastleEntranceTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
 		} else {
-			eTower = new ComponentTFFinalCastleBellTower21(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
+			eTower = new ComponentTFFinalCastleBellTower21(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
 		}
 
 		StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
@@ -563,13 +567,13 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
         // clear the door
 		if (dx == 0 || dx == size - 1)
 		{
-			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 4, dz + 2, deco.accentID, deco.accentMeta, Blocks.AIR.getDefaultState(), false);
+			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 4, dz + 2, deco.accentState, Blocks.AIR.getDefaultState(), false);
 			//this.fillWithAir(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1);
 			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
 		}
 		if (dz == 0 || dz == size - 1)
 		{
-			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 4, dz, deco.accentID, deco.accentMeta, Blocks.AIR.getDefaultState(), false);
+			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 4, dz, deco.accentState, Blocks.AIR.getDefaultState(), false);
 			//this.fillWithAir(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz);
 			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
 		}

@@ -48,12 +48,12 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponent
 		// doorframes
 		this.fillWithBlocks(world, sbb, 0, 2, 1, 0, 7, 1, deco.pillarState, deco.pillarState, false);
 		this.fillWithBlocks(world, sbb, 0, 2, 5, 0, 7, 5, deco.pillarState, deco.pillarState, false);
-		this.fillWithBlocks(world, sbb, 0, 6, 2, 0, 6, 4, deco.accentID, deco.accentMeta, deco.accentID, deco.accentMeta, false);
+		this.fillWithBlocks(world, sbb, 0, 6, 2, 0, 6, 4, deco.accentState, deco.accentState, false);
 		this.setBlockState(world, deco.pillarState, 0, 7, 3, sbb);
 
 		this.fillWithBlocks(world, sbb, length, 2, 1, length, 7, 1, deco.pillarState, deco.pillarState, false);
 		this.fillWithBlocks(world, sbb, length, 2, 5, length, 7, 5, deco.pillarState, deco.pillarState, false);
-		this.fillWithBlocks(world, sbb, length, 6, 2, length, 6, 4, deco.accentID, deco.accentMeta, deco.accentID, deco.accentMeta, false);
+		this.fillWithBlocks(world, sbb, length, 6, 2, length, 6, 4, deco.accentState, deco.accentState, false);
 		this.setBlockState(world, deco.pillarState, length, 7, 3, sbb);
 
 		return true;

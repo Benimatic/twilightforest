@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
@@ -52,14 +53,17 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	@Override
 	protected void determineBlockDestroyed(World world, ArrayList<DestroyArea> areas, int y, int x, int z) {
 		boolean isInside = false;
+
+		BlockPos pos = new BlockPos(x, y, z);
+
 		for (DestroyArea dArea : areas) {
-			if (dArea != null && dArea.isVecInside(x, y, z)) {
+			if (dArea != null && dArea.isVecInside(pos)) {
 				isInside = true;
 			}
 		}
 
 		if (!isInside) {
-			world.setBlockToAir(x, y, z);
+			world.setBlockToAir(pos);
 		}
 
 	}

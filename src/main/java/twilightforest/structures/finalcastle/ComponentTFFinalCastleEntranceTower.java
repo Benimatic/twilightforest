@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -43,12 +44,12 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	    int middleFloors = missingFloors - bottomFloors;
 
 	    // what direction can we put the side tower in, if any?
-	    int direction = 1;
+	    Rotation direction = Rotation.CLOCKWISE_90;
 	    int howFar = 20;
 	    if (!this.buildSideTower(list, rand, middleFloors + 1, direction, howFar)) {
-		    direction = 3;
+		    direction = Rotation.COUNTERCLOCKWISE_90;
 	        if (!this.buildSideTower(list, rand, middleFloors + 1, direction, howFar)) {
-		        direction = 0;
+		        direction = Rotation.NONE;
 	            if (!this.buildSideTower(list, rand, middleFloors + 1, direction, howFar)) {
 		            // side tower no worky
 	            }
@@ -63,7 +64,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 
 	    // add bridge to bottom
 		BlockPos opening = this.getValidOpeningCC(rand, direction);
-		opening.getY() -= middleFloors * 8;
+		opening = opening.down(middleFloors * 8);
 
 		BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, brDirection);
 		ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, brDirection);
@@ -71,7 +72,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		bridge.buildComponent(this, list, rand);
 	}
 
-	private boolean buildSideTower(List list, Random rand, int middleFloors, int direction, int howFar) {
+	private boolean buildSideTower(List list, Random rand, int middleFloors, Rotation direction, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, direction);
 
 		direction += this.coordBaseMode;
@@ -98,7 +99,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 			eTower.buildComponent(this, list, rand);
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction);
-			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction.rotate(EnumFacing.SOUTH));
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);
 
@@ -117,10 +118,10 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
 	@Override
-	public BlockPos getValidOpeningCC(Random rand, int direction) {
+	public BlockPos getValidOpeningCC(Random rand, Rotation direction) {
 		// for directions 0 or 2, the wall lies along the z axis
-		if (direction == 0 || direction == 2) {
-			int rx = direction == 0 ? 12 : 0;
+		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
+			int rx = direction == Rotation.NONE ? 12 : 0;
 			int rz = 6;
 			int ry = 0;
 
@@ -128,9 +129,9 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		}
 
 		// for directions 1 or 3, the wall lies along the x axis
-		if (direction == 1 || direction == 3) {
+		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
 			int rx = 6;
-			int rz = direction == 1 ? 12 : 0;
+			int rz = direction == Rotation.CLOCKWISE_90 ? 12 : 0;
 			int ry = 0;
 
 			return new BlockPos(rx, ry, rz);

@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.biomes.TFBiomeBase;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -42,7 +43,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 	    // add exit if we're far enough away and don't have one
 	    if (mySpread == maxSpread && !isExitBuildForLevel(parent)) {
-		    int direction = rand.nextInt(4);
+		    Rotation direction = getRandomDirection(rand);
 		    for (int i = 0; i < 8 && !isExitBuildForLevel(parent); i++) {
 			    direction = (direction + i) % 4;
 			    if (this.addDungeonExit(parent, list, rand, direction)) {
@@ -53,7 +54,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 	    // add other rooms
 	    if (mySpread < maxSpread) {
-		    int direction = rand.nextInt(4);
+		    Rotation direction = getRandomDirection(rand);
 		    for (int i = 0; i < 12; i++) {
 			    direction = (direction + i) % 4;
 			    this.addDungeonRoom(parent, list, rand, direction, this.level);
@@ -170,9 +171,12 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
         int maxX = this.boundingBox.maxX + 1;
         int maxZ = this.boundingBox.maxZ + 1;
 
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
         for (int x = minX; x <= maxX; x++) {
 	        for (int z = minZ; z <= maxZ; z++) {
-		        if (world.getBiome(x, z) != TFBiomeBase.highlandsCenter && world.getBiome(x, z) != TFBiomeBase.thornlands) {
+	        	pos.setPos(x, 0, z);
+		        if (world.getBiome(pos) != TFBiomes.highlandsCenter && world.getBiome(pos) != TFBiomes.thornlands) {
 			        return true;
 		        }
 	        }

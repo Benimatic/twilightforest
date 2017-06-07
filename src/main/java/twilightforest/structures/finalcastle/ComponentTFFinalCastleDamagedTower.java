@@ -115,7 +115,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 	protected void determineBlockDestroyed(World world, ArrayList<DestroyArea> areas, int y, int x, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		for (DestroyArea dArea : areas) {
-			if (dArea != null && dArea.isVecInside(x, y, z)) {
+			if (dArea != null && dArea.isVecInside(pos)) {
 				world.setBlockToAir(pos);
 			}
 		}

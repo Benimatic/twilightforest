@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -30,9 +31,9 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	    // no need for additional rooms, we're along the outside anyways
 
 	    // add stairway down
-	    int bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX, parent.getBoundingBox().minZ);
+	    Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX, parent.getBoundingBox().minZ);
 
-	    ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 15, boundingBox.minY + 0, boundingBox.minZ + 15, bestDir);
+	    ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 15, boundingBox.minY + 0, boundingBox.minZ + 15, bestDir.rotate(EnumFacing.SOUTH));
 	    list.add(steps0);
 	    steps0.buildComponent(this, list, rand);
 
@@ -58,7 +59,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	}
 
 
-	public int findStairDirectionTowards(int x, int z) {
+	public Rotation findStairDirectionTowards(int x, int z) {
 		// center of component
 		int cx = this.boundingBox.getCenter().getX();
 		int cz = this.boundingBox.getCenter().getZ();
@@ -67,11 +68,11 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		int dx = cx - x;
 		int dz = cz - z;
 
-		int absoluteDir;
+		Rotation absoluteDir;
 		if (Math.abs(dz) >= Math.abs(dx)) {
-			absoluteDir = (dz >= 0) ? 2 : 0;
+			absoluteDir = (dz >= 0) ? Rotation.CLOCKWISE_180 : Rotation.NONE;
 		} else {
-			absoluteDir = (dx >= 0) ? 3 : 1;
+			absoluteDir = (dx >= 0) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 		}
 
 		return absoluteDir;

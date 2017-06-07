@@ -104,13 +104,13 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	    ComponentTFFinalCastleDungeonEntrance dRoom = steps3.buildLevelUnder(parent, list, rand, 1);
 
 	    // mural on front
-		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, 0);
+		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, EnumFacing.SOUTH);
 	    ComponentTFFinalCastleMural mural0 = new ComponentTFFinalCastleMural(rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, EnumFacing.SOUTH);
 	    list.add(mural0);
 	    mural0.buildComponent(this, list, rand);
 
 	    // mural inside
-		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, 0);
+		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, EnumFacing.SOUTH);
 	    ComponentTFFinalCastleMural mural1 = new ComponentTFFinalCastleMural(rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, EnumFacing.NORTH);
 	    list.add(mural1);
 	    mural1.buildComponent(this, list, rand);
@@ -172,25 +172,25 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
 	@Override
-	protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, int direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, EnumFacing direction) {
 
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 
 		switch (direction) {
-		case 0:
-			dx += howFar;
-			break;
-		case 1:
-			dz += howFar;
-			break;
-		case 2:
-			dx -= howFar;
-			break;
-		case 3:
-			dz -= howFar;
-			break;
+			case SOUTH:
+				dx += howFar;
+				break;
+			case WEST:
+				dz += howFar;
+				break;
+			case NORTH:
+				dx -= howFar;
+				break;
+			case EAST:
+				dz -= howFar;
+				break;
 		}
 
 		// ugh?
@@ -204,11 +204,11 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 
 	    // 2M
 	    fillWithRandomizedBlocks(world, sbb, 13, 30, 1, 47, 30, 12, false, rand, deco.randomBlocks);
-	    this.fillWithBlocks(world, sbb, 13, 31, 12, 36, 31, 12, deco.fenceID, deco.fenceID, false);
+	    this.fillWithBlocks(world, sbb, 13, 31, 12, 36, 31, 12, deco.fenceState, deco.fenceState, false);
 	    fillWithRandomizedBlocks(world, sbb, 13, 30, 36, 47, 30, 47, false, rand, deco.randomBlocks);
-	    this.fillWithBlocks(world, sbb, 13, 31, 36, 36, 31, 36, deco.fenceID, deco.fenceID, false);
+	    this.fillWithBlocks(world, sbb, 13, 31, 36, 36, 31, 36, deco.fenceState, deco.fenceState, false);
 	    fillWithRandomizedBlocks(world, sbb, 1, 30, 1, 12, 30, 47, false, rand, deco.randomBlocks);
-	    this.fillWithBlocks(world, sbb, 12, 31, 12, 12, 31, 36, deco.fenceID, deco.fenceID, false);
+	    this.fillWithBlocks(world, sbb, 12, 31, 12, 12, 31, 36, deco.fenceState, deco.fenceState, false);
 
 	    // second floor stairs to mezzanine
 	    fillWithRandomizedBlocks(world, sbb, 38, 25, 13, 47, 25, 35, false, rand, deco.randomBlocks);
@@ -243,11 +243,11 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	    }
 
 	    // side pillars
-	    for (int rotation = 0; rotation < 4; rotation++) {
+	    for (Rotation rotation : ROTATIONS) {
 		    for (int z = 11; z < 47; z += 12) {
 
 			    // no middle pillars on walls with entrances
-			    if (z == 23 && (rotation == 0 || rotation == 2)) {
+			    if (z == 23 && (rotation == Rotation.NONE|| rotation == Rotation.CLOCKWISE_180)) {
 				    continue;
 			    }
 

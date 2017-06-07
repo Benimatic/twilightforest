@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -45,29 +46,31 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		int twist = decoRNG.nextInt(4);
 		int twistMod = 3 + decoRNG.nextInt(3);
 
+		final IBlockState thorns = TFBlocks.thorns.getDefaultState();
+
 		while (this.getBlockIDRotated(world, x, y, z, rotation, sbb) != TFBlocks.deadrock && this.getYWithOffset(y) > 60) {
-			this.setBlockStateRotated(world, TFBlocks.thorns, 0, x, y, z, rotation, sbb);
+			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {
 			case 0:
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x + 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x, y, z + 1, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x + 1, y, z + 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x + 1, y, z, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x, y, z + 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x + 1, y, z + 1, rotation, sbb);
 				break;
 			case 1:
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x + 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x, y, z - 1, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x + 1, y, z - 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x + 1, y, z, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x, y, z - 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x + 1, y, z - 1, rotation, sbb);
 				break;
 			case 2:
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x - 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x, y, z - 1, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x - 1, y, z - 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x - 1, y, z, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x, y, z - 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x - 1, y, z - 1, rotation, sbb);
 				break;
 			case 3:
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x - 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x, y, z + 1, rotation, sbb);
-				this.setBlockStateRotated(world, TFBlocks.thorns, 0, x - 1, y, z + 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x - 1, y, z, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x, y, z + 1, rotation, sbb);
+				this.setBlockStateRotated(world, thorns, x - 1, y, z + 1, rotation, sbb);
 				break;
 			}
 
