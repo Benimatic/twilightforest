@@ -24,6 +24,7 @@ import twilightforest.world.TFGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +39,7 @@ public class ItemTFOreMagnet extends ItemTF
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
         this.setMaxDamage(12);
-		// [VanillaCopy] ItemBow
+		// [VanillaCopy] ItemBow with our item
 		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter()
 		{
 			@SideOnly(Side.CLIENT)
@@ -65,8 +66,9 @@ public class ItemTFOreMagnet extends ItemTF
 		});
 	}
 
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
 		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
@@ -122,6 +124,7 @@ public class ItemTFOreMagnet extends ItemTF
 
     }
 
+    @Nonnull
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
@@ -148,9 +151,6 @@ public class ItemTFOreMagnet extends ItemTF
 		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
 
-	/**
-	 * This function makes the magnet work
-	 */
 	public static int doMagnet(World world, BlockPos usePos, BlockPos destPos) {
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
@@ -221,13 +221,7 @@ public class ItemTFOreMagnet extends ItemTF
 					world.setBlockState(replacePos, foundState, 2);
 					blocksMoved++;
 				}
-				else
-				{
-					//System.out.println("Not moving a block because we did not find a replaceable block to move to");
-				}
 			}
-			
-//			player.sendMessage("Moved blocks!  " + blocksMoved);
 		}
 		return blocksMoved;
 	}

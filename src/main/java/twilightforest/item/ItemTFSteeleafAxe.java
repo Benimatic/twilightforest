@@ -8,20 +8,25 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
+
+import javax.annotation.Nonnull;
 
 public class ItemTFSteeleafAxe extends ItemAxe implements ModelRegisterCallback {
 
-	protected ItemTFSteeleafAxe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial, par2EnumToolMaterial.getDamageVsEntity(), -3.0f);
+	protected ItemTFSteeleafAxe(Item.ToolMaterial material) {
+		super(material, material.getDamageVsEntity(), -3.0f);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
     @Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+    	ItemStack istack = new ItemStack(item);
     	istack.addEnchantment(Enchantments.EFFICIENCY, 2);
-        par3List.add(istack);
+        list.add(istack);
     }
 }

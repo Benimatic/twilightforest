@@ -58,7 +58,7 @@ public class TFRegisterItemEvent {
         items.register("torchberries", new ItemTF().setUnlocalizedName("torchberries"));
         items.register("raw_venison", (new ItemTFFood(3, 0.3F, true)).setUnlocalizedName("venisonRaw"));
         items.register("cooked_venison", (new ItemTFFood(8, 0.8F, true)).setUnlocalizedName("venisonCooked"));
-        items.register("hydra_chop", (new ItemTFHydraChops(18, 2.0F, true)).setPotionEffect(new PotionEffect(REGENERATION, 100, 0), 1.0F).setUnlocalizedName("hydraChop"));
+        items.register("hydra_chop", (new ItemTFHydraChops(18, 2.0F)).setPotionEffect(new PotionEffect(REGENERATION, 100, 0), 1.0F).setUnlocalizedName("hydraChop"));
         items.register("fiery_blood", new ItemTF().makeRare().setUnlocalizedName("fieryBlood"));
         items.register("trophy", new ItemTFTrophy().setUnlocalizedName("trophy"));
         items.register("fiery_ingot", new ItemTF().makeRare().setUnlocalizedName("fieryIngot"));

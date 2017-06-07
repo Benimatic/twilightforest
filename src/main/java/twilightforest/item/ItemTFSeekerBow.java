@@ -8,8 +8,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntitySeekerArrow;
 
 public class ItemTFSeekerBow extends ItemTFBowBase {
-	
-    
     public ItemTFSeekerBow() {
 		this.setCreativeTab(TFItems.creativeTab);
     }

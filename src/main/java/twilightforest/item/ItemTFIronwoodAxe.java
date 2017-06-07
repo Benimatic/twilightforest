@@ -12,16 +12,16 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFIronwoodAxe extends ItemAxe implements ModelRegisterCallback {
 
-	protected ItemTFIronwoodAxe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial, par2EnumToolMaterial.getDamageVsEntity(), -3.2F);
+	protected ItemTFIronwoodAxe(Item.ToolMaterial material) {
+		super(material, material.getDamageVsEntity(), -3.2F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
     @Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+    	ItemStack istack = new ItemStack(item);
     	istack.addEnchantment(Enchantments.FORTUNE, 1);
-        par3List.add(istack);
+        list.add(istack);
     }
 }

@@ -83,7 +83,7 @@ public class ItemBlockTFHugeLilyPad extends ItemColored {
                     }
 
                     playerIn.addStat(StatList.getObjectUseStats(this));
-                    worldIn.playSound(playerIn, blockpos, TFBlocks.hugeLilyPad.getSoundType(iblockstate, worldIn, blockpos, null).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(playerIn, blockpos, TFBlocks.hugeLilyPad.getSoundType(iblockstate, worldIn, blockpos, playerIn).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
                 }
             }

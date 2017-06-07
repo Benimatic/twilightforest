@@ -33,15 +33,10 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 	
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-		switch (slot) {
-		case HEAD :
-		case CHEST :
-		case FEET :
-		default :
-			return TwilightForestMod.ARMOR_DIR + "arcticarmor_1.png";
-		case LEGS :
+		if (slot == EntityEquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_2.png";
-
+		} else {
+			return TwilightForestMod.ARMOR_DIR + "arcticarmor_1.png";
 		}
 	}
 	

@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 
 public class ItemTFHydraChops extends ItemTFFood {
 
-	public ItemTFHydraChops(int par2, float par3, boolean par4) {
-		super(par2, par3, par4);
+	public ItemTFHydraChops(int amount, float saturation) {
+		super(amount, saturation, true);
 	}
 
     @Override

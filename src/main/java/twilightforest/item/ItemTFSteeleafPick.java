@@ -12,16 +12,16 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFSteeleafPick extends ItemPickaxe implements ModelRegisterCallback {
 
-	protected ItemTFSteeleafPick(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	protected ItemTFSteeleafPick(Item.ToolMaterial material) {
+		super(material);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 	
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+    	ItemStack istack = new ItemStack(item);
     	istack.addEnchantment(Enchantments.FORTUNE, 2);
-        par3List.add(istack);
+        list.add(istack);
     }
 }

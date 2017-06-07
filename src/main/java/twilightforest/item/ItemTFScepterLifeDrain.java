@@ -27,6 +27,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFScepterLifeDrain extends ItemTF {
 
 	protected ItemTFScepterLifeDrain() {
@@ -34,16 +36,11 @@ public class ItemTFScepterLifeDrain extends ItemTF {
         this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
+
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage(player.getHeldItem(hand))) {
-			player.setActiveHand(hand);
-		}
-		else {
-			player.resetActiveHand();
-		}
-		
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
@@ -231,13 +228,15 @@ public class ItemTFScepterLifeDrain extends ItemTF {
     {
         return 72000;
     }
-    
+
+    @Nonnull
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
         return EnumAction.BOW;
     }
 
+    @Nonnull
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
     	return EnumRarity.RARE;
@@ -245,8 +244,8 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		super.addInformation(stack, player, tooltip, advanced);
+		tooltip.add((stack.getMaxDamage() -  stack.getItemDamage()) + " charges left");
 	}
 }

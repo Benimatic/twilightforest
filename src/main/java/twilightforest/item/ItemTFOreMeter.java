@@ -20,6 +20,7 @@ import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.RootVariant;
 
+import javax.annotation.Nonnull;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -29,8 +30,9 @@ public class ItemTFOreMeter extends ItemTF {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
 		int useX = MathHelper.floor(player.posX);
 		int useZ = MathHelper.floor(player.posZ);
 		

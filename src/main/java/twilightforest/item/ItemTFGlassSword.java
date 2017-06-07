@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nullable;
+
 public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
 
 	public ItemTFGlassSword(Item.ToolMaterial par2EnumToolMaterial) {
@@ -21,10 +23,10 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 	}
 
     @Override
-	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
-		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
+		boolean result = super.hitEntity(stack, target, attacker);
 		if (result) {
-	    	par1ItemStack.damageItem(par1ItemStack.getMaxDamage(), par3EntityLiving);
+			stack.attemptDamageItem(stack.getMaxDamage(), itemRand);
 		}
 
 		return result;

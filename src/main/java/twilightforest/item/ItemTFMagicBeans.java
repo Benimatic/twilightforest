@@ -16,12 +16,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFMagicBeans extends ItemTF {
 	
 	public ItemTFMagicBeans() {
 		this.makeRare();
 	}
 
+	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
@@ -40,9 +43,6 @@ public class ItemTFMagicBeans extends ItemTF {
 		}
     }
 
-	/**
-	 * Try to find the given world's cloud height
-	 */
 	private float getCloudHeight(World world) {
 		if (world.provider instanceof WorldProviderTwilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client

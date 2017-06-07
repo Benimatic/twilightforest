@@ -14,19 +14,22 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
+
+@Mod.EventBusSubscriber
 public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallback {
 
 	private static final int BONUS_DAMAGE = 2;
 
-	public ItemTFKnightlySword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	public ItemTFKnightlySword(Item.ToolMaterial material) {
+		super(material);
 		this.setCreativeTab(TFItems.creativeTab);
-		MinecraftForge.EVENT_BUS.register(getClass());
 	}
 
 	@SubscribeEvent
@@ -36,7 +39,7 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 		if (!target.world.isRemote && evt.getSource().getSourceOfDamage() instanceof EntityLivingBase) {
 			ItemStack weapon = ((EntityLivingBase) evt.getSource().getSourceOfDamage()).getHeldItemMainhand();
 
-			if (target.getTotalArmorValue() > 0 && weapon != null && (weapon.getItem() == TFItems.knightlyAxe || weapon.getItem() == TFItems.knightlyPick || weapon.getItem() == TFItems.knightlySword)) {
+			if (target.getTotalArmorValue() > 0 && !weapon.isEmpty() && (weapon.getItem() == TFItems.knightlyAxe || weapon.getItem() == TFItems.knightlyPick || weapon.getItem() == TFItems.knightlySword)) {
 				// TODO scale bonus dmg with the amount of armor?
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying
@@ -46,7 +49,8 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 			}
 		}
 	}
-    
+
+	@Nonnull
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
     	return EnumRarity.RARE;
@@ -54,8 +58,8 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+		super.addInformation(stack, player, list, advanced);
+		list.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }

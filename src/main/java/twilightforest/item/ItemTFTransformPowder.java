@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +27,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFHedgeSpider;
 import twilightforest.entity.EntityTFHostileWolf;
 import twilightforest.entity.EntityTFMinotaur;
@@ -39,21 +39,17 @@ import twilightforest.entity.passive.EntityTFBoar;
 import twilightforest.entity.passive.EntityTFDeer;
 import twilightforest.entity.passive.EntityTFPenguin;
 import twilightforest.entity.passive.EntityTFRaven;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class ItemTFTransformPowder extends ItemTF 
 {
-	
-	private HashMap<Class<? extends EntityLivingBase>, Class<? extends EntityLivingBase>> transformMap;
+	private final Map<Class<? extends EntityLivingBase>, Class<? extends EntityLivingBase>> transformMap = new HashMap<>();
 
 	protected ItemTFTransformPowder() 
 	{
         this.maxStackSize = 64;
 		this.setCreativeTab(TFItems.creativeTab);
-        
-        transformMap = new HashMap<>();
-        
         
         addTwoWayTransformation(EntityTFMinotaur.class, EntityPigZombie.class);
         addTwoWayTransformation(EntityTFDeer.class, EntityCow.class);
@@ -69,24 +65,20 @@ public class ItemTFTransformPowder extends ItemTF
         addTwoWayTransformation(EntityTFSkeletonDruid.class, EntityWitch.class);
 	}
 
-    public void addTwoWayTransformation(Class<? extends EntityLivingBase> class1, Class<? extends EntityLivingBase> class2) {
-
+    private void addTwoWayTransformation(Class<? extends EntityLivingBase> class1, Class<? extends EntityLivingBase> class2) {
     	transformMap.put(class1, class2);
     	transformMap.put(class2, class1);
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, EntityLivingBase target, EnumHand hand)
+	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand)
 	{
-		// this is where we transform normal entities into twilight entities and vice versa
-		
-		Class<?> transformClass = getMonsterTransform(target.getClass());
+		Class<?> transformClass = transformMap.get(target.getClass());
 		
 		if (transformClass != null)
 		{
 			if (target.world.isRemote)
 			{
-				// particles, sound
 				if (target instanceof EntityLiving)
 				{
 					((EntityLiving) target).spawnExplosionParticle();
@@ -97,11 +89,10 @@ public class ItemTFTransformPowder extends ItemTF
 			}
 			else
 			{
-				// add new monster with old monster's attributes
 				EntityLivingBase newMonster = null;
 				try 
 				{
-					newMonster = (EntityLivingBase)transformClass.getConstructor(new Class[] {World.class}).newInstance(target.world);
+					newMonster = (EntityLivingBase)transformClass.getConstructor(World.class).newInstance(target.world);
 				}
 				catch (Exception e)
 				{
@@ -117,11 +108,10 @@ public class ItemTFTransformPowder extends ItemTF
 					newMonster.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
 					target.world.spawnEntity(newMonster);
 					target.setDead();
+					stack.shrink(1);
 				}
 			}
-			
-            par1ItemStack.shrink(1);
-			
+
 			return true;
 		}
 		else
@@ -130,8 +120,9 @@ public class ItemTFTransformPowder extends ItemTF
 		}
 	}
 
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
 	{
 		if (world.isRemote)
 		{
@@ -160,12 +151,5 @@ public class ItemTFTransformPowder extends ItemTF
 		
 		return new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
 	}
-	
-	/**
-	 * Which class should the specified monster class transform into?
-	 */
-	public Class<? extends EntityLivingBase> getMonsterTransform(Class<? extends EntityLivingBase> originalMonster)
-	{
-		return transformMap.get(originalMonster);
-	}
+
 }

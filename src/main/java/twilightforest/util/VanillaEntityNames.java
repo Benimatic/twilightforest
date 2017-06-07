@@ -3,9 +3,6 @@ package twilightforest.util;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-/**
- * Created by codew on 29/05/2017.
- */
 public class VanillaEntityNames {
     public static final ResourceLocation CAVE_SPIDER = prefix("cave_spider");
     public static final ResourceLocation SPIDER = prefix("spider");

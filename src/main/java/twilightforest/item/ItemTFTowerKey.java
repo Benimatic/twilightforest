@@ -12,8 +12,11 @@ import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerDeviceVariant;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFTowerKey extends ItemTF 
 {
+	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz)
 	{

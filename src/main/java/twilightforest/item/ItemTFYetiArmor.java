@@ -19,13 +19,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback {
 
-	public ItemTFYetiArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+	public ItemTFYetiArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot) {
+		super(material, 0, slot);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
 		return EnumRarity.EPIC;
@@ -33,21 +36,17 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-		switch (slot) {
-		case FEET :
-		case HEAD :
-		default :
-			return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
-		case LEGS :
-		case CHEST :
+		if (slot == EntityEquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
-
+		} else {
+			return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
 		}
 	}
 	
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    	ItemStack istack = new ItemStack(item);
     	switch (this.armorType) {
     	case HEAD:
     	case CHEST:
@@ -59,7 +58,7 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
     		istack.addEnchantment(Enchantments.FEATHER_FALLING, 4);
             break;	
     	}
-    	par3List.add(istack);
+    	list.add(istack);
     }
     
     @SideOnly(Side.CLIENT)
@@ -71,8 +70,8 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
     
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltips, boolean advanced) {
+		super.addInformation(stack, player, tooltips, advanced);
+		tooltips.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }

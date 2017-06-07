@@ -9,6 +9,7 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import twilightforest.entity.EntityTFMiniGhast;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class LootConditionIsMinion implements LootCondition {
@@ -19,7 +20,7 @@ public class LootConditionIsMinion implements LootCondition {
 	}
 
 	@Override
-	public boolean testCondition(Random rand, LootContext context) {
+	public boolean testCondition(@Nonnull Random rand, @Nonnull LootContext context) {
 		return context.getLootedEntity() instanceof EntityTFMiniGhast && ((EntityTFMiniGhast) context.getLootedEntity()).isMinion() == !inverse;
 	}
 
@@ -29,12 +30,13 @@ public class LootConditionIsMinion implements LootCondition {
 		}
 
 		@Override
-		public void serialize(JsonObject json, LootConditionIsMinion value, JsonSerializationContext context) {
+		public void serialize(@Nonnull JsonObject json, @Nonnull LootConditionIsMinion value, @Nonnull JsonSerializationContext context) {
 			json.addProperty("inverse", value.inverse);
 		}
 
+		@Nonnull
 		@Override
-		public LootConditionIsMinion deserialize(JsonObject json, JsonDeserializationContext context) {
+		public LootConditionIsMinion deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
 			return new LootConditionIsMinion(JsonUtils.getBoolean(json, "inverse", false));
 		}
 	}

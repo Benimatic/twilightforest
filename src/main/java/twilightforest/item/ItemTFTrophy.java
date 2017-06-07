@@ -26,6 +26,8 @@ import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFTrophy extends ItemTF
 {
 	public ItemTFTrophy()
@@ -44,12 +46,14 @@ public class ItemTFTrophy extends ItemTF
         }
     }
 
+    @Nonnull
     @Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
     	return EnumRarity.RARE;
 	}
 
     // [VanillaCopy] ItemSkull, with own block and no player heads
+    @Nonnull
 	@Override
     public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
@@ -117,7 +121,8 @@ public class ItemTFTrophy extends ItemTF
             }
         }
     }
-    
+
+    @Nonnull
     @Override
     public String getUnlocalizedName(ItemStack stack)
     {

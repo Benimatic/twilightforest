@@ -19,6 +19,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMoonwormShot;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ItemTFMoonwormQueen extends ItemTF
@@ -107,15 +108,12 @@ public class ItemTFMoonwormQueen extends ItemTF
 		return true;
 	}
 
-	//Atomic: Not sure why getMaxDamage was deprecated since it's actively used?
-	@SuppressWarnings("deprecation")
     @Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining)
     {
     	int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
 
-
-    	if (!world.isRemote && useTime > FIRING_TIME && (stack.getItemDamage() + 1) < this.getMaxDamage())
+    	if (!world.isRemote && useTime > FIRING_TIME && (stack.getItemDamage() + 1) < stack.getMaxDamage())
     	{
     		boolean fired = world.spawnEntity(new EntityTFMoonwormShot(world, living));
 
@@ -129,6 +127,7 @@ public class ItemTFMoonwormQueen extends ItemTF
 
     }
 
+    @Nonnull
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {

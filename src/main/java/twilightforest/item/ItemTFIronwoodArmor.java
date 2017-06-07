@@ -32,20 +32,13 @@ public class ItemTFIronwoodArmor extends ItemArmor implements ModelRegisterCallb
 
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-
-
-		if(itemstack.getItem() == TFItems.ironwoodPlate || itemstack.getItem() == TFItems.ironwoodHelm || itemstack.getItem() == TFItems.ironwoodBoots)
-		{
+		if (slot == EntityEquipmentSlot.LEGS) {
+			return TwilightForestMod.ARMOR_DIR + "ironwood_2.png";
+		} else {
 			return TwilightForestMod.ARMOR_DIR + "ironwood_1.png";
 		}
-		if(itemstack.getItem() == TFItems.ironwoodLegs)
-		{
-			return TwilightForestMod.ARMOR_DIR + "ironwood_2.png";
-		}
-		return TwilightForestMod.ARMOR_DIR + "ironwood_1.png";
 	}
 
-	
 	@Override
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {

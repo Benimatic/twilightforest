@@ -7,8 +7,8 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFIronwoodHoe extends ItemHoe implements ModelRegisterCallback {
 
-	public ItemTFIronwoodHoe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	public ItemTFIronwoodHoe(Item.ToolMaterial material) {
+		super(material);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 }

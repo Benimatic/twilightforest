@@ -13,22 +13,25 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFKnightlyPick extends ItemPickaxe implements ModelRegisterCallback {
 
-	protected ItemTFKnightlyPick(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	protected ItemTFKnightlyPick(Item.ToolMaterial material) {
+		super(material);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Nonnull
     @Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
     	return EnumRarity.RARE;
 	}
     
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+		super.addInformation(stack, player, list, advanced);
+		list.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }

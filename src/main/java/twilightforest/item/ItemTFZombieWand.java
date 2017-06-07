@@ -18,6 +18,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFLoyalZombie;
 import net.minecraftforge.fml.common.FMLLog;
 
+import javax.annotation.Nonnull;
+
 
 public class ItemTFZombieWand extends ItemTF {
 
@@ -27,35 +29,25 @@ public class ItemTFZombieWand extends ItemTF {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage(player.getHeldItem(hand))) {
-			player.setActiveHand(hand);
-			
-			if (!world.isRemote) {
-				// what block is the player pointing at?
-				RayTraceResult mop = getPlayerPointVec(world, player, 20.0F);
-				
-				if (mop != null) {
-					// make a zombie there
-					EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
-					zombie.setPositionAndRotation(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord, 1.0F, 1.0F);  /// NPE here needs to be fixed
-					zombie.setTamed(true);
-					try {
-						zombie.setOwnerId(player.getUniqueID());
-					} catch (NoSuchMethodError ex) {
-						// ignore?
-						TwilightForestMod.LOGGER.warn("Could not determine player name for loyal zombie, ignoring error.");
-					}
-					zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
-					world.spawnEntity(zombie);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+		player.setActiveHand(hand);
 
-					player.getHeldItem(hand).damageItem(1, player);
-				}
+		if (!world.isRemote) {
+			// what block is the player pointing at?
+			RayTraceResult mop = getPlayerPointVec(world, player, 20.0F);
+
+			if (mop != null && mop.hitVec != null) {
+				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
+				zombie.setPositionAndRotation(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord, 1.0F, 1.0F);
+				zombie.setTamed(true);
+				zombie.setOwnerId(player.getUniqueID());
+				zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
+				world.spawnEntity(zombie);
+
+				player.getHeldItem(hand).damageItem(1, player);
 			}
-		}
-		else {
-			player.resetActiveHand();
 		}
 		
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
@@ -81,20 +73,22 @@ public class ItemTFZombieWand extends ItemTF {
     {
         return 30;
     }
-    
+
+    @Nonnull
     @Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
         return EnumAction.BOW;
     }
-    
+
+    @Nonnull
     @Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
     	return EnumRarity.RARE;
 	}
     
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+		list.add((stack.getMaxDamage() -  stack.getItemDamage()) + " charges left");
 	}
 }

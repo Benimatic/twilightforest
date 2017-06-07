@@ -19,13 +19,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFKnightlyArmor extends ItemArmor implements ModelRegisterCallback {
 
-	public ItemTFKnightlyArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+	public ItemTFKnightlyArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot) {
+		super(material, 0, slot);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
 		return EnumRarity.RARE;
@@ -34,7 +37,6 @@ public class ItemTFKnightlyArmor extends ItemArmor implements ModelRegisterCallb
 	@Override
     public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer)
     {
-
 		if (slot == EntityEquipmentSlot.LEGS)
 		{
 			return TwilightForestMod.ARMOR_DIR + "knightly_2.png";
@@ -46,11 +48,11 @@ public class ItemTFKnightlyArmor extends ItemArmor implements ModelRegisterCallb
 	}
 	
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+    	ItemStack istack = new ItemStack(item);
     	//istack.addEnchantment(TFEnchantment.reactFire, 2);
-        par3List.add(istack);
+        list.add(istack);
     }
     
 	@Override

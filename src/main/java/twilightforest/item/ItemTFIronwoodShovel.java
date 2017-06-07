@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
@@ -9,6 +7,8 @@ import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import twilightforest.client.ModelRegisterCallback;
+
+import javax.annotation.Nonnull;
 
 public class ItemTFIronwoodShovel extends ItemSpade implements ModelRegisterCallback {
 
@@ -18,10 +18,10 @@ public class ItemTFIronwoodShovel extends ItemSpade implements ModelRegisterCall
 	}
 
     @Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+    	ItemStack istack = new ItemStack(item);
     	istack.addEnchantment(Enchantments.UNBREAKING, 1);
-        par3List.add(istack);
+        list.add(istack);
     }
 }

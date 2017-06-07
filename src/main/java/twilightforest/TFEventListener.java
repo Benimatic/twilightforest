@@ -404,7 +404,7 @@ public class TFEventListener {
 				player.world.spawnEntity(effect2);
 				
 				// sound
-				player.world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.NEUTRAL, 1.5F, 1.0F, true);
+				player.world.setEntityState(player, (byte)35);
 			}
 		}
 	}

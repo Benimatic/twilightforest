@@ -18,13 +18,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallback {
 
-	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot) {
+		super(material, 0, slot);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
 		return EnumRarity.UNCOMMON;
@@ -32,20 +35,16 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
 
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-		if(itemstack.getItem() == TFItems.steeleafPlate || itemstack.getItem() == TFItems.steeleafHelm || itemstack.getItem() == TFItems.steeleafBoots)
-		{
+		if (slot == EntityEquipmentSlot.LEGS) {
+			return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";
+		} else {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
 		}
-		if(itemstack.getItem() == TFItems.steeleafLegs)
-		{
-			return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";
-		}
-		return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
 	}
 	
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    	ItemStack istack = new ItemStack(item);
     	switch (this.armorType) {
     	case HEAD:
     		istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
@@ -60,6 +59,6 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
     		istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
             break;	
     	}
-    	par3List.add(istack);
+    	list.add(istack);
     }
 }

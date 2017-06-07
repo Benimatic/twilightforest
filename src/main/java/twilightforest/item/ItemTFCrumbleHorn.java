@@ -71,16 +71,13 @@ public class ItemTFCrumbleHorn extends ItemTF
         return 72000;
     }
 
-	/**
-	 * Bleeeat!
-	 */
 	private int doCrumble(World world, EntityLivingBase living)
 	{
 		double range = 3.0D;
 		double radius = 2.0D;
 		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
-		Vec3d lookVec = living.getLookVec();
-		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+		Vec3d lookVec = living.getLookVec().scale(range);
+		Vec3d destVec = srcVec.add(lookVec);
 		
 		AxisAlignedBB crumbleBox =  new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
 		
@@ -89,8 +86,6 @@ public class ItemTFCrumbleHorn extends ItemTF
 
     private int crumbleBlocksInAABB(World world, EntityLivingBase living, AxisAlignedBB par1AxisAlignedBB)
     {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-    	
         int minX = MathHelper.floor(par1AxisAlignedBB.minX);
         int minY = MathHelper.floor(par1AxisAlignedBB.minY);
         int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
@@ -114,16 +109,13 @@ public class ItemTFCrumbleHorn extends ItemTF
         return crumbled;
     }
 
-    /**
-     * Crumble a specific block.
-     */
 	private int crumbleBlock(World world, EntityLivingBase living, BlockPos pos) {
 		int cost = 0;
 
 		IBlockState state = world.getBlockState(pos);
 		Block currentID = state.getBlock();
 		
-		if (currentID != Blocks.AIR)
+		if (!currentID.isAir(state, world, pos))
 		{
 			if (currentID == Blocks.STONE && world.rand.nextInt(CHANCE_CRUMBLE) == 0)
 		    {
@@ -160,7 +152,7 @@ public class ItemTFCrumbleHorn extends ItemTF
 					if (currentID.canHarvestBlock(world, pos, (EntityPlayer) living) && world.rand.nextInt(CHANCE_HARVEST) == 0)
 					{
 						world.setBlockToAir(pos);
-						currentID.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), null);
+						currentID.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 						world.playEvent(2001, pos, Block.getStateId(state));
 						cost++;
 					}

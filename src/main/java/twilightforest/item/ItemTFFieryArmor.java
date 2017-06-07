@@ -32,12 +32,10 @@ public class ItemTFFieryArmor extends ItemArmor {
 
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-		switch (slot) {
-			case CHEST:
-			case HEAD:
-			case FEET:
-			default: return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
-			case LEGS: return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
+		if (slot == EntityEquipmentSlot.LEGS) {
+			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
+		} else {
+			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
 		}
 	}
 	

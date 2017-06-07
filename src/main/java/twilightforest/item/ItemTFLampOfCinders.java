@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.block.TFBlocks;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFLampOfCinders extends ItemTF {
 
 	private static final int FIRING_TIME = 12;
@@ -23,20 +25,15 @@ public class ItemTFLampOfCinders extends ItemTF {
 		this.maxStackSize = 1;
         this.setMaxDamage(1024);
 	}
-	
+
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage(player.getHeldItem(hand)))
-		{
-			player.setActiveHand(hand);
-		}
-		else 
-		{
-			player.resetActiveHand();
-		}
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
-	
+
+	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
@@ -57,13 +54,12 @@ public class ItemTFLampOfCinders extends ItemTF {
         } else {
         	return EnumActionResult.PASS;
         }
-        
 	}
 
 	private boolean burnBlock(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
         if (state.getBlock() == TFBlocks.thorns) {
-        	world.setBlockState(pos, TFBlocks.burntThorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)), 2);
+        	world.setBlockState(pos, TFBlocks.burntThorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)));
         	return true;
         } else {
         	return false;
@@ -74,7 +70,6 @@ public class ItemTFLampOfCinders extends ItemTF {
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining)
     {
     	int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
-
 
     	if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage(par1ItemStack))
     	{

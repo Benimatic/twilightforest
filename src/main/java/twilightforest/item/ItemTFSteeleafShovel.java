@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
+
 public class ItemTFSteeleafShovel extends ItemSpade implements ModelRegisterCallback {
 
 	public ItemTFSteeleafShovel(Item.ToolMaterial par2EnumToolMaterial) {
@@ -18,10 +20,10 @@ public class ItemTFSteeleafShovel extends ItemSpade implements ModelRegisterCall
 	}
 
     @Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+    	ItemStack istack = new ItemStack(item);
     	istack.addEnchantment(Enchantments.EFFICIENCY, 2);
-        par3List.add(istack);
+        list.add(istack);
     }
 }

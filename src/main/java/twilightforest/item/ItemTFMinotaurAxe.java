@@ -5,67 +5,60 @@ import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.network.play.server.SPacketAnimation;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
+
+@Mod.EventBusSubscriber
 public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback {
+	private static final int BONUS_CHARGING_DAMAGE = 7;
 
-	public static final int BONUS_CHARGING_DAMAGE = 7;
-	private Entity bonusDamageEntity;
-	private EntityPlayer bonusDamagePlayer;
-
-	protected ItemTFMinotaurAxe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial, par2EnumToolMaterial.getDamageVsEntity(), -3.0f);
-		this.damageVsEntity = 4 + par2EnumToolMaterial.getDamageVsEntity();
+	protected ItemTFMinotaurAxe(Item.ToolMaterial material) {
+		super(material, material.getDamageVsEntity(), -3.0f);
+		this.damageVsEntity = 4 + material.getDamageVsEntity();
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
+    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
+    	ItemStack istack = new ItemStack(item, 1, 0);
     	//istack.addEnchantment(Enchantments.EFFICIENCY, 2);
-        par3List.add(istack);
+        list.add(istack);
     }
-    
-    @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) 
-    {
-    	// if the player is sprinting, keep the entity, we will do extra damage to it
-    	if (player.isSprinting())
-    	{
-    		this.bonusDamageEntity = entity;
-    		this.bonusDamagePlayer = player;
-    	}
-    	
-        return false;
-    }
-    
-    /**
-     * Returns the damage against a given entity.
-     */
-    public float getDamageVsEntity(Entity par1Entity, ItemStack itemStack)
-    {
-       	if (this.bonusDamagePlayer != null && this.bonusDamageEntity != null && par1Entity == this.bonusDamageEntity)
-       	{
-       		//System.out.println("Minotaur Axe extra damage!");
-       		this.bonusDamagePlayer.onEnchantmentCritical(par1Entity);
-       		this.bonusDamagePlayer = null;
-       		this.bonusDamageEntity = null;
-       		return damageVsEntity + BONUS_CHARGING_DAMAGE;
-       	}
-       	else
-       	{
-       		return damageVsEntity;
-       	}
-    }
+
+    @SubscribeEvent
+	public static void onAttack(LivingAttackEvent evt) {
+		EntityLivingBase target = evt.getEntityLiving();
+
+		if (!target.world.isRemote && evt.getSource().getSourceOfDamage() instanceof EntityLivingBase
+				&& evt.getSource().getSourceOfDamage().isSprinting()) {
+			ItemStack weapon = ((EntityLivingBase) evt.getSource().getSourceOfDamage()).getHeldItemMainhand();
+
+			if (!weapon.isEmpty() && weapon.getItem() == TFItems.minotaurAxe) {
+				target.attackEntityFrom(DamageSource.MAGIC, BONUS_CHARGING_DAMAGE);
+				// don't prevent main damage from applying
+				target.hurtResistantTime = 0;
+				// enchantment attack sparkles
+				((WorldServer) target.world).getEntityTracker().sendToTrackingAndSelf(target, new SPacketAnimation(target, 5));
+			}
+		}
+	}
     
     @Override
     public int getItemEnchantability()
@@ -75,9 +68,9 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
     
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+		super.addInformation(stack, player, list, advanced);
+		list.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }
 
