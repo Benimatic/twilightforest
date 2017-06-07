@@ -1,6 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
 public class EntityAITFHeavySpearAttack extends EntityAIBase {
@@ -10,18 +11,20 @@ public class EntityAITFHeavySpearAttack extends EntityAIBase {
     public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper par1EntityCreature)
     {
         this.entity = par1EntityCreature;
-        this.setMutexBits(7);
+        this.setMutexBits(3); // Prevent moving
     }
-	
+
+    @Override
+	public void updateTask() {
+		if (entity.heavySpearTimer == 25)
+		{
+			entity.landHeavySpearAttack();
+		}
+	}
+
 	@Override
 	public boolean shouldExecute() {
-       return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
+       return entity.heavySpearTimer > 0 && entity.heavySpearTimer < EntityTFGoblinKnightUpper.HEAVY_SPEAR_TIMER_START;
 	}
-	
-    @Override
-	public boolean shouldContinueExecuting()
-    {
-        return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
-    }
 
 }

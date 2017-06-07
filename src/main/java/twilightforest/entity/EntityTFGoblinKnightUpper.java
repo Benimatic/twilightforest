@@ -17,7 +17,6 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -33,7 +32,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
-import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,8 +40,10 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightUpper.class, DataSerializers.BYTE);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, 0).setSaved(false);
-	
-	public int shieldHits = 0;
+	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, 0).setSaved(false);
+	public static final int HEAVY_SPEAR_TIMER_START = 60;
+
+	private int shieldHits = 0;
 	public int heavySpearTimer;
 
 
@@ -53,8 +53,6 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		
 		this.setHasArmor(true);
 		this.setHasShield(true);
-		
-        //this.setCurrentItemOrArmor(0, new ItemStack(Items.SWORDSTEEL));
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
     }
 	
 	@Override
@@ -90,7 +88,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         return (dataManager.get(DATA_EQUIP) & 1) > 0;
     }
 
-    public void setHasArmor(boolean flag)
+    private void setHasArmor(boolean flag)
     {
     	byte otherFlags = dataManager.get(DATA_EQUIP);
 		dataManager.set(DATA_EQUIP, flag ? (byte) (otherFlags | 1) : (byte) (otherFlags & ~1));
@@ -133,7 +131,17 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         this.setHasArmor(par1NBTTagCompound.getBoolean("hasArmor"));
         this.setHasShield(par1NBTTagCompound.getBoolean("hasShield"));
     }
-    
+
+    @Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		// Must be decremented on client as well for rendering
+		if ((world.isRemote || !isAIDisabled()) && heavySpearTimer > 0)
+		{
+			--heavySpearTimer;
+		}
+	}
+
     @Override
 	public void updateAITasks()
     {
@@ -146,26 +154,23 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         	{
         		this.setAttackTarget(((EntityLiving) this.getRidingEntity()).getAttackTarget());
         	}
-
-        	if (this.heavySpearTimer > 0)
-        	{
-        		--this.heavySpearTimer;
-        		
-        		if (this.heavySpearTimer == 25)
-        		{
-        			this.landHeavySpearAttack();
-        		}
-        	}
         	
-        	// break shield if we're on the ground
         	if (!isRiding() && this.hasShield())
         	{
         		this.breakShield();
         	}
+
+        	if (heavySpearTimer > 0) {
+        		if (!getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(DAMAGE_MODIFIER)) {
+        			getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(DAMAGE_MODIFIER);
+				}
+			} else {
+				getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(DAMAGE_MODIFIER.getID());
+			}
         }
     }
 	
-	private void landHeavySpearAttack() {
+	public void landHeavySpearAttack() {
     	// find vector in front of us
 		Vec3d vector = this.getLookVec();
 		
@@ -185,29 +190,17 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 		AxisAlignedBB spearBB =  new AxisAlignedBB(px - radius, py - radius, pz - radius, px + radius, py + radius, pz + radius);
 
-		List<Entity> inBox = world.getEntitiesWithinAABBExcludingEntity(this, spearBB);
-		
+		List<Entity> inBox = world.getEntitiesInAABBexcluding(this, spearBB, e -> e != this.getRidingEntity());
+
 		for (Entity entity : inBox)
 		{
-			if (entity != this.getRidingEntity())
-			{
-				super.attackEntityAsMob(entity);
-			}
+			super.attackEntityAsMob(entity);
 		}
 
+		if (!inBox.isEmpty()) {
+			playSound(SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, getSoundVolume(), getSoundPitch());
+		}
 	}
-
-    public int getAttackStrength(Entity par1Entity)
-    {
-    	if (this.heavySpearTimer > 0)
-    	{
-    		return 20;
-    	}
-    	else
-    	{
-    		return 8;
-    	}
-    }
 
 	@Override
 	public void updateRidden()
@@ -226,9 +219,15 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     {
         if (par1 == 4)
         {
-            this.heavySpearTimer = 60;
+            this.heavySpearTimer = HEAVY_SPEAR_TIMER_START;
         }
-        else
+        else if (par1 == 5)
+        {
+        	ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);
+			this.renderBrokenItemStack(broken);
+			this.renderBrokenItemStack(broken);
+			this.renderBrokenItemStack(broken);
+		} else
         {
             super.handleStatusUpdate(par1);
         }
@@ -244,18 +243,13 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		
         if (rand.nextInt(2) == 0)
         {
-        	this.startHeavySpearAttack();
-        	return false;
+			this.heavySpearTimer = HEAVY_SPEAR_TIMER_START;
+			this.world.setEntityState(this, (byte)4);
+			return false;
         }
         
         this.swingArm(EnumHand.MAIN_HAND);
 		return super.attackEntityAsMob(par1Entity);
-	}
-
-
-    private void startHeavySpearAttack() {
-        this.heavySpearTimer = 60;
-        this.world.setEntityState(this, (byte)4);
 	}
 
 	@Override
@@ -276,7 +270,6 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	
 	    	float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
 	    	
-	    	// if we have a shield, the shield will take the damage instead
 	    	if (this.hasShield() && difference > 150 && difference < 230)
 	    	{
 		    	if (takeHitOnShield(par1DamageSource, damageAmount))
@@ -286,44 +279,28 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	    	}
 	    	else
 	    	{
-	    		// unblocked hits may eventually break shield
 	    		if (this.hasShield() && rand.nextBoolean())
 	    		{
 	    			damageShield();
 	    		}
 	    	}
 	    	
-	    	// break armor?
 	    	if (this.hasArmor() && (difference > 300 || difference < 60))
 	    	{
 		    	breakArmor();
 	    	}
         }
         
-        boolean attackSuccess = super.attackEntityFrom(par1DamageSource, damageAmount);
-        
-        if (attackSuccess && getRidingEntity() instanceof EntityLiving && attacker != null)
-        {
-        	((EntityLiving)this.getRidingEntity()).knockBack(attacker, damageAmount, 0.1, 0.1);
-        }
-		
-		return attackSuccess;
+        return super.attackEntityFrom(par1DamageSource, damageAmount);
 	}
 
 	private void breakArmor() {
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		
+		world.setEntityState(this, (byte) 5);
 		this.setHasArmor(false);
 	}
 	
 	private void breakShield() {
-		
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		
+		world.setEntityState(this, (byte) 5);
 		this.setHasShield(false);
 	}
 

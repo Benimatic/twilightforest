@@ -33,7 +33,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 	public EntityTFGoblinKnightLower(World par1World) {
 		super(par1World);
         setSize(0.7F, 1.1F);
-
 		this.setHasArmor(true);
     }
 
@@ -70,7 +69,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
         return dataManager.get(ARMOR);
     }
 
-    public void setHasArmor(boolean flag)
+    private void setHasArmor(boolean flag)
     {
     	dataManager.set(ARMOR, flag);
 
@@ -104,7 +103,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
     {
         Object par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
 
-    	// we start with the upper guy riding us
     	EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.world);
         upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
         upper.onInitialSpawn(difficulty, null);
@@ -169,8 +167,6 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 	
 	    	float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
 	    	
-	    	//System.out.println("Difference in angle of approach is " + difference);
-	
 	    	// shield?
 	    	EntityTFGoblinKnightUpper upper = null;
 	    	
@@ -193,38 +189,16 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 		    	breakArmor();
 	    	}
         }
-        
-        
-        boolean attackSuccess = super.attackEntityFrom(par1DamageSource, damageAmount);
-        
-		// I think we're done
-		return attackSuccess;
+
+		return super.attackEntityFrom(par1DamageSource, damageAmount);
 	}
 	
-	public void breakArmor() {
+	private void breakArmor() {
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		
 		this.setHasArmor(false);
 	}
-
-    @Override
-    public int getTotalArmorValue()
-    {
-        int armor = super.getTotalArmorValue();
-        
-        if (this.hasArmor())
-        {
-        	armor += 17; // todo 1.9 attributes
-        }
-
-        if (armor > 20)
-        {
-            armor = 20;
-        }
-
-        return armor;
-    }
 
 }

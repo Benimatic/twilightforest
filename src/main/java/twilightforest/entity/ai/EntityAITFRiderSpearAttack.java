@@ -11,37 +11,20 @@ public class EntityAITFRiderSpearAttack extends EntityAIBase {
     public EntityAITFRiderSpearAttack(EntityTFGoblinKnightLower par1EntityCreature)
     {
         this.entity = par1EntityCreature;
-        this.setMutexBits(7);
+        this.setMutexBits(3); // Prevent moving
     }
 	
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
 	@Override
 	public boolean shouldExecute() {
-       return isRiderDoingSpearAttack();
-	}
-
-	public boolean isRiderDoingSpearAttack()
-	{
 		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof EntityTFGoblinKnightUpper)
 		{
-			int timer = ((EntityTFGoblinKnightUpper)this.entity.getPassengers().get(0)).heavySpearTimer;
-			return timer > 0 && timer < 50;
+			int timer = ((EntityTFGoblinKnightUpper) this.entity.getPassengers().get(0)).heavySpearTimer;
+			return timer > 0 && timer < EntityTFGoblinKnightUpper.HEAVY_SPEAR_TIMER_START;
 		}
 		else
 		{
 			return false;
 		}
 	}
-	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    @Override
-	public boolean shouldContinueExecuting()
-    {
-        return isRiderDoingSpearAttack();
-    }
 
 }
