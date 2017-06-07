@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -8,6 +9,8 @@ import twilightforest.structures.StructureTFComponent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static net.minecraft.item.EnumDyeColor.ORANGE;
 
 public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDamagedTower
 {
@@ -45,8 +48,8 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
     }
 
 	@Override
-	public int getGlyphMeta() {
-		return 1;
+	public EnumDyeColor getGlyphMeta() {
+		return ORANGE;
 	}
 
 

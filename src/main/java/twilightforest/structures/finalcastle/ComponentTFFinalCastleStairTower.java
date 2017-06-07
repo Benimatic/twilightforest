@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
@@ -21,7 +22,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
 	    this.setCoordBaseMode(rotation);
 	    this.size = 9;
 	    this.height = 51;
-	    this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, 0);
+	    this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, EnumFacing.SOUTH);
 
     }
 
@@ -121,8 +122,8 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
     }
 
 
-	public int getGlyphMeta() {
-		return 1;
+	public EnumDyeColor getGlyphMeta() {
+		return EnumDyeColor.ORANGE;
 	}
 
 

@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +16,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	public ComponentTFFinalCastleEntranceTower() { }
 
 	public ComponentTFFinalCastleEntranceTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, 3, 2, 0, direction);
+		super(rand, i, x, y, z, 3, 2, EnumDyeColor.WHITE, direction);
 	}
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
