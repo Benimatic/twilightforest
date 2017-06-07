@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -78,7 +79,7 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent
 
 
 
-		for (int rotation = 1; rotation < 4; rotation += 2) {
+		for (Rotation rotation : new Rotation[] { Rotation.CLOCKWISE_90, Rotation.COUNTERCLOCKWISE_90 }) {
 			// this might be one of my more confusing instances of code recycling
 			this.fillBlocksRotated(world, sbb, 4, 0, 1, 12, 1, 1, deco.blockState, rotation);
 			// more teeny crenellations
@@ -88,14 +89,12 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent
 		}
 
 		// corners
-		for (int rotation = 0; rotation < 4; rotation++) {
+		for (Rotation rotation : Rotation.values()) {
             this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
             this.setBlockStateRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
-}
-
-
+		}
 
 		return true;
 	}

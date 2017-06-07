@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -59,8 +60,10 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
 	    this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 3, 2, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
 
 	    // stairs
+	    Rotation rotation = Rotation.CLOCKWISE_90;
 	    for (int f = 0; f < 5; f++) {
-		    int rotation = (f + 2) % 4;
+		    //int rotation = (f + 2) % 4;
+		    rotation = rotation.add(Rotation.CLOCKWISE_90);
 		    int y = f * 3 + 1;
 		    for (int i = 0; i < 3; i++) {
 			    int sx = 3 + i;
@@ -90,8 +93,10 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
 	    this.fillWithBlocks(world, sbb, 1, 39, 0, 2, 41, 0, TFBlocks.castleDoor, this.getGlyphMeta(), Blocks.AIR.getDefaultState(), false);
 
 	    // stairs
+	    rotation = Rotation.COUNTERCLOCKWISE_90;
 	    for (int f = 0; f < 7; f++) {
-		    int rotation = (f + 0) % 4;
+		    //int rotation = (f + 0) % 4;
+		    rotation = rotation.add(Rotation.CLOCKWISE_90);
 		    int y = f * 3 + 18;
 		    for (int i = 0; i < 3; i++) {
 			    int sx = 3 + i;

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -52,7 +53,7 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
         // assume square
         int size = this.boundingBox.maxX - this.boundingBox.minX;
 
-        for (int rotation = 0; rotation < 4; rotation++) {
+        for (Rotation rotation : Rotation.values()) {
             // do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 1, rotation, sbb);
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);

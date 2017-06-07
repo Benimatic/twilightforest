@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -43,7 +44,7 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponent
 		}
 
 		int mid = 16;
-for (int rotation = 0; rotation < 4; rotation++) {
+		for (Rotation rotation : Rotation.values()) {
             // do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 3, -2, 3, rotation, sbb);
 
@@ -63,17 +64,17 @@ for (int rotation = 0; rotation < 4; rotation++) {
 }
 
 // add supports for entrance bridge
-		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -2, 0, 1, sbb);
-		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -4, 1, 1, sbb);
-		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -6, 2, 1, sbb);
-		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -2, 0, 1, sbb);
-		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -4, 1, 1, sbb);
-		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -6, 2, 1, sbb);
+		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -2, 0, Rotation.CLOCKWISE_90, sbb);
+		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -4, 1, Rotation.CLOCKWISE_90, sbb);
+		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -6, 2, Rotation.CLOCKWISE_90, sbb);
+		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -2, 0, Rotation.CLOCKWISE_90, sbb);
+		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -4, 1, Rotation.CLOCKWISE_90, sbb);
+		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 27, -6, 2, Rotation.CLOCKWISE_90, sbb);
 
         return true;
 	}
 
-	private void makePiling(World world, StructureBoundingBox sbb, int mid, int rotation, int i) {
+	private void makePiling(World world, StructureBoundingBox sbb, int mid, Rotation rotation, int i) {
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -7, 3, rotation, sbb);
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -mid, 2, rotation, sbb);
 

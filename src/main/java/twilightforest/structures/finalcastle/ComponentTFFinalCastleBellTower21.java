@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -24,7 +25,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		this.height = floors * 8 + 1;
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, -6, -8, -this.size / 2, this.size - 1, this.height, this.size - 1, direction);
 		this.openings.clear();
-	    addOpening(0, 9, size / 2, 2);
+	    addOpening(0, 9, size / 2, Rotation.CLOCKWISE_180);
 	}
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

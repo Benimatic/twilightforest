@@ -27,7 +27,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponent
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		this.height = this.boundingBox.getYSize();
-		this.width = (this.coordBaseMode == 0 || this.coordBaseMode == 2) ? this.boundingBox.getZSize() :  this.boundingBox.getXSize();
+		this.width = (this.coordBaseMode == EnumFacing.SOUTH || this.coordBaseMode == EnumFacing.NORTH) ? this.boundingBox.getZSize() :  this.boundingBox.getXSize();
 
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -49,7 +50,7 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponent
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-for (int rotation = 0; rotation < 4; rotation++) {
+		for (Rotation rotation : Rotation.values()) {
             this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
@@ -76,8 +77,7 @@ for (int rotation = 0; rotation < 4; rotation++) {
             // point!
             this.fillBlocksRotated(world, sbb, 8, (slope * 6) + 2, 8, 8, (slope * 7) + 2, 8, deco.roofID, deco.roofMeta, rotation);
 
-}
-
+		}
 
 		return true;
 	}

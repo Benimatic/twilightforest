@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
@@ -28,10 +29,10 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	    }
 
 	    // stairs
-	    addStairs(list, rand, this.getComponentType() + 1, this.size - 1, 1, size / 2, 0);
-	    addStairs(list, rand, this.getComponentType() + 1, 0, 1, size / 2, 2);
-	    addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, 0, 3);
-	    addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, this.size - 1, 1);
+	    addStairs(list, rand, this.getComponentType() + 1, this.size - 1, 1, size / 2, Rotation.NONE);
+	    addStairs(list, rand, this.getComponentType() + 1, 0, 1, size / 2, Rotation.CLOCKWISE_180);
+	    addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, 0, Rotation.COUNTERCLOCKWISE_90);
+	    addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, this.size - 1, Rotation.CLOCKWISE_90);
 
     }
 
@@ -39,7 +40,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
     /**
      * Add some stairs leading to this tower
      */
-    private boolean addStairs(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int rotation) {
+    private boolean addStairs(List<StructureComponent> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
 	    // add door
 	    this.addOpening(x, y, z, rotation);
 

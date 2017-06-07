@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
@@ -27,14 +28,14 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		// thorns
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
-		for (int i = 0; i < 4; i++) {
+		for (Rotation i : Rotation.values()) {
 			this.makeThornVine(world, decoRNG, i, sbb);
 		}
 
 		return true;
 	}
 
-	private void makeThornVine(World world, Random decoRNG, int rotation, StructureBoundingBox sbb) {
+	private void makeThornVine(World world, Random decoRNG, Rotation rotation, StructureBoundingBox sbb) {
 
 		int x = 3 + decoRNG.nextInt(13);
 		int z = 3 + decoRNG.nextInt(13);
@@ -85,7 +86,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		}
 	}
 
-	private void makeThornBranch(World world, int x, int y, int z, int rotation, StructureBoundingBox sbb) {
+	private void makeThornBranch(World world, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb) {
 		Random rand = new Random(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
 
 		// pick a direction

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -30,7 +31,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent
     /**
      * build more steps towards the specified direction
      */
-    public ComponentTFFinalCastleDungeonSteps buildMoreStepsTowards(StructureComponent parent, List list, Random rand, int rotation) {
+    public ComponentTFFinalCastleDungeonSteps buildMoreStepsTowards(StructureComponent parent, List list, Random rand, Rotation rotation) {
 
 	    EnumFacing direction = getStructureRelativeRotation(rotation);
 
@@ -39,18 +40,18 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent
 	    int sz = 17;
 
 		switch (rotation) {
-		case 0:
-			sz -= 5;
-			break;
-		case 1:
-			sx -= 5;
-			break;
-		case 2:
-			sz += 5;
-			break;
-		case 3:
-			sx += 6;
-			break;
+			case NONE:
+				sz -= 5;
+				break;
+			case CLOCKWISE_90:
+				sx -= 5;
+				break;
+			case CLOCKWISE_180:
+				sz += 5;
+				break;
+			case COUNTERCLOCKWISE_90:
+				sx += 6;
+				break;
 		}
 
 	    // find center of landing

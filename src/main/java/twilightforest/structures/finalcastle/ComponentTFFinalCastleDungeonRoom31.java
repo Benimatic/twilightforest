@@ -26,7 +26,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		this.size = 31;
 		this.height = 7;
 		this.level = level;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, EnumFacing.SOUTH);
 	}
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -3,6 +3,7 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -26,7 +27,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 		x = ((x + 127) >> 8) << 8;
 		z = ((z + 127) >> 8) << 8;
 
-	    this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, 0);
+	    this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, EnumFacing.SOUTH);
 
 		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4, world);
 
@@ -63,54 +64,54 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 
 
 	    // build 4 towers on sides
-	    ComponentTFFinalCastleStairTower tower0 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.minZ, 2);
+	    ComponentTFFinalCastleStairTower tower0 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.NORTH);
 	    list.add(tower0);
 	    tower0.buildComponent(this, list, rand);
 
-	    ComponentTFFinalCastleLargeTower tower1 = new ComponentTFFinalCastleLargeTower(rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.minZ, 3);
+	    ComponentTFFinalCastleLargeTower tower1 = new ComponentTFFinalCastleLargeTower(rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.EAST);
 	    list.add(tower1);
 	    tower1.buildComponent(this, list, rand);
 
-	    ComponentTFFinalCastleStairTower tower2 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.maxZ, 1);
+	    ComponentTFFinalCastleStairTower tower2 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.WEST);
 	    list.add(tower2);
 	    tower2.buildComponent(this, list, rand);
 
-	    ComponentTFFinalCastleStairTower tower3 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.maxZ, 0);
+	    ComponentTFFinalCastleStairTower tower3 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.SOUTH);
 	    list.add(tower3);
 	    tower3.buildComponent(this, list, rand);
 
 	    // tower maze towards entrance
 	    BlockPos dest = new BlockPos(boundingBox.minX - 4, boundingBox.maxY, boundingBox.minZ - 24);
-		buildTowerMaze(list, rand, 48, 0, 24, 60, 0, 0, dest);
+		buildTowerMaze(list, rand, 48, 0, 24, 60, EnumFacing.SOUTH, 0, dest);
 
 
 		// another tower/bridge maze towards the clock tower
 		dest = new BlockPos(boundingBox.maxX + 4, boundingBox.minY, boundingBox.maxZ + 24);
-		buildTowerMaze(list, rand, 0, 30, 24, 60, 2, 1, dest);
+		buildTowerMaze(list, rand, 0, 30, 24, 60, EnumFacing.NORTH, 1, dest);
 
 
 		// initial stairs down towards dungeon
-	    ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 18, boundingBox.minY + 1, boundingBox.minZ + 18, 0);
+	    ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 18, boundingBox.minY + 1, boundingBox.minZ + 18, EnumFacing.SOUTH);
 	    list.add(steps0);
 	    steps0.buildComponent(this, list, rand);
 
 	    // continued steps
-	    ComponentTFFinalCastleDungeonSteps steps1 = steps0.buildMoreStepsTowards(parent, list, rand, 3);
-	    ComponentTFFinalCastleDungeonSteps steps2 = steps1.buildMoreStepsTowards(parent, list, rand, 3);
-	     ComponentTFFinalCastleDungeonSteps steps3 = steps2.buildMoreStepsTowards(parent, list, rand, 3);
+	    ComponentTFFinalCastleDungeonSteps steps1 = steps0.buildMoreStepsTowards(parent, list, rand, Rotation.COUNTERCLOCKWISE_90);
+	    ComponentTFFinalCastleDungeonSteps steps2 = steps1.buildMoreStepsTowards(parent, list, rand, Rotation.COUNTERCLOCKWISE_90);
+	     ComponentTFFinalCastleDungeonSteps steps3 = steps2.buildMoreStepsTowards(parent, list, rand, Rotation.COUNTERCLOCKWISE_90);
 
 	    // start dungeon
 	    ComponentTFFinalCastleDungeonEntrance dRoom = steps3.buildLevelUnder(parent, list, rand, 1);
 
 	    // mural on front
 		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, 0);
-	    ComponentTFFinalCastleMural mural0 = new ComponentTFFinalCastleMural(rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, 0);
+	    ComponentTFFinalCastleMural mural0 = new ComponentTFFinalCastleMural(rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, EnumFacing.SOUTH);
 	    list.add(mural0);
 	    mural0.buildComponent(this, list, rand);
 
 	    // mural inside
 		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, 0);
-	    ComponentTFFinalCastleMural mural1 = new ComponentTFFinalCastleMural(rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, 2);
+	    ComponentTFFinalCastleMural mural1 = new ComponentTFFinalCastleMural(rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, EnumFacing.NORTH);
 	    list.add(mural1);
 	    mural1.buildComponent(this, list, rand);
 
@@ -119,7 +120,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
     /**
      * Build a side tower, then tell it to start building towards the destination
      */
-    private void buildTowerMaze(List list, Random rand, int x, int y, int z, int howFar, int direction, int type, BlockPos dest) {
+    private void buildTowerMaze(List list, Random rand, int x, int y, int z, int howFar, EnumFacing direction, int type, BlockPos dest) {
 	    // duplicate list
 	    LinkedList before = new LinkedList(list);
 
@@ -276,10 +277,10 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	    this.fillWithBlocks(world, sbb, 17, 1, 24, 19, 4, 24, TFBlocks.castleDoor, 2, Blocks.AIR.getDefaultState(), false);
 
 	    // stairs to stair towers
-	    makeSmallTowerStairs(world, sbb, 0);
-	    makeSmallTowerStairs(world, sbb, 1);
-	    makeSmallTowerStairs(world, sbb, 3);
-	    makeLargeTowerStairs(world, sbb, 2);
+	    makeSmallTowerStairs(world, sbb, Rotation.NONE);
+	    makeSmallTowerStairs(world, sbb, Rotation.CLOCKWISE_90);
+	    makeSmallTowerStairs(world, sbb, Rotation.COUNTERCLOCKWISE_90);
+	    makeLargeTowerStairs(world, sbb, Rotation.CLOCKWISE_180);
 
 	    // door, first floor
 	    this.fillWithBlocks(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.castleDoor, 0, Blocks.AIR.getDefaultState(), false);
@@ -290,7 +291,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	    return true;
     }
 
-	private void makeSmallTowerStairs(World world, StructureBoundingBox sbb, int rotation) {
+	private void makeSmallTowerStairs(World world, StructureBoundingBox sbb, Rotation rotation) {
 		for (int y = 1; y < 4; y++) {
 		    int z = 40 + y;
 			this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockState, rotation);
@@ -298,7 +299,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	    }
 	}
 
-	private void makeLargeTowerStairs(World world, StructureBoundingBox sbb, int rotation) {
+	private void makeLargeTowerStairs(World world, StructureBoundingBox sbb, Rotation rotation) {
 		for (int y = 1; y < 4; y++) {
 		    int z = 38 + y;
 			this.fillBlocksRotated(world, sbb, 2, 1, z, 6, y, z, deco.blockState, rotation);
@@ -312,7 +313,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 		this.fillWithAir(world, sbb, 38, y + 1, z, 46, y + 3, z);
 	}
 
-	private void makeHalfPillarBase(World world, StructureBoundingBox sbb, int rotation, int y, int z, int metaBit) {
+	private void makeHalfPillarBase(World world, StructureBoundingBox sbb, Rotation rotation, int y, int z, int metaBit) {
 		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, deco.stairID, getStairMeta(2 + rotation) | metaBit, rotation);
 		this.setBlockStateRotated(world, deco.stairID, getStairMeta(1 + rotation) | metaBit, 1, y, z - 1, rotation, sbb);
 		this.setBlockStateRotated(world, deco.stairID, getStairMeta(3 + rotation) | metaBit, 1, y, z + 3, rotation, sbb);

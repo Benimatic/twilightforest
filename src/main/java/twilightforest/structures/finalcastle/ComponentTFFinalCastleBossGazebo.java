@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -37,7 +38,7 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// walls
-		for (int rotation = 0; rotation < 4; rotation++) {
+		for (Rotation rotation : Rotation.values()) {
 			this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, deco.fenceState, rotation);
 		}
 

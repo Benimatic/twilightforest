@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -44,10 +45,10 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			entranceFloor = floors - 1;
 		}
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, 0);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
 
 	    // we should have a door where we started
-	    addOpening(0, entranceFloor * 8 + 1, size / 2, 2);
+	    addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 
 	}
 
@@ -57,8 +58,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		this.type = type;
 		this.size = 13;
 		this.height = floors * 8 + 1;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, 0);
-	    addOpening(0, entranceFloor * 8 + 1, size / 2, 2);
+		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
+	    addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
     }
 
     @Override
@@ -205,7 +206,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		}
 	}
 
-	private boolean buildContinueTowerTowards(List list, Random rand, BlockPos dest, int direction, int howFar) {
+	private boolean buildContinueTowerTowards(List list, Random rand, BlockPos dest, Rotation direction, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, direction);
 
 		// adjust opening towards dest.getY() if we are getting close to dest
@@ -274,7 +275,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	}
 
 
-	protected boolean buildDamagedTower(List list, Random rand, int direction) {
+	protected boolean buildDamagedTower(List list, Random rand, Rotation direction) {
 		BlockPos opening = this.getValidOpeningCC(rand, direction);
 
 		direction += this.coordBaseMode;
@@ -316,7 +317,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		}
 	}
 
-	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, int direction, BlockPos tc) {
+	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Rotation direction, BlockPos tc) {
 		return new ComponentTFFinalCastleDamagedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
 	}
 
@@ -335,7 +336,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		return openY;
 	}
 
-	private boolean buildEndTowerTowards(List list, Random rand, BlockPos dest, int direction, int howFar) {
+	private boolean buildEndTowerTowards(List list, Random rand, BlockPos dest, Rotation direction, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, direction);
 
 		// adjust opening towards dest.getY()
@@ -400,7 +401,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	/**
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
-	public BlockPos getValidOpeningCC(Random rand, int direction) {
+	public BlockPos getValidOpeningCC(Random rand, Rotation direction) {
 		int floors = (this.height / 8);
 
 		// for directions 0 or 2, the wall lies along the z axis

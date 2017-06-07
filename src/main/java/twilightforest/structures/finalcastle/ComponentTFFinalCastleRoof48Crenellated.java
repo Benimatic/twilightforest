@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -36,14 +37,14 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, TFBlocks.castleMagic, 3, TFBlocks.castleMagic, 3, false);
 
 	    // crenellations
-for (int rotation = 0; rotation < 4; rotation++) {
+		for (Rotation rotation : Rotation.values()) {
 		    this.fillBlocksRotated(world, sbb, 3, 1, 1, 45, 3, 1, deco.blockState, rotation);
 
 		    for (int i = 10; i < 41; i += 5) {
 			    this.fillBlocksRotated(world, sbb, i, 1, 0, i + 2, 5, 2, deco.blockState, rotation);
 			    this.setBlockStateRotated(world, deco.blockState, i + 1, 0, 1, rotation, sbb);
 		    }
-}
+		}
 
 		return true;
 	}

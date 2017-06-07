@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -33,7 +34,7 @@ public class ComponentTFFinalCastleRoof13Crenellated extends StructureTFComponen
         // assume square
         int size = this.boundingBox.maxX - this.boundingBox.minX;
 
-for (int rotation = 0; rotation < 4; rotation++) {
+		for (Rotation rotation : Rotation.values()) {
             // corner
             this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 3, 3, deco.blockState, rotation);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);

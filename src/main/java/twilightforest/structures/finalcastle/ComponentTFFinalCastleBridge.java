@@ -27,7 +27,7 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponent
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		int length = (this.coordBaseMode == 0 || this.coordBaseMode == 2) ? this.boundingBox.maxX - this.boundingBox.minX : this.boundingBox.maxZ - this.boundingBox.minZ;
+		int length = (this.coordBaseMode == EnumFacing.SOUTH || this.coordBaseMode == EnumFacing.NORTH) ? this.boundingBox.maxX - this.boundingBox.minX : this.boundingBox.maxZ - this.boundingBox.minZ;
 
 		// span
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, length, 1, 6, false, rand, deco.randomBlocks);
