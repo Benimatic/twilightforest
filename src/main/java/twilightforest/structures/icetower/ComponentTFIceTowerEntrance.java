@@ -90,10 +90,10 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	protected void decoratePillarsCornersHigh(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
 		final IBlockState pillarXAxis = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
 		final IBlockState pillarZAxis = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
-		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarXAxis, rotation);
-		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarXAxis, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 3, 9, bottom + 5, 3, pillarZAxis, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 7, 9, bottom + 5, 7, pillarZAxis, rotation);
+		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarZAxis, rotation);
+		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarZAxis, rotation);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 3, 9, bottom + 5, 3, pillarXAxis, rotation);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 7, 9, bottom + 5, 7, pillarXAxis, rotation);
 		
 		this.fillAirRotated(world, sbb, 3, bottom + 5, 3, 7, bottom + 5, 7, rotation);
 		

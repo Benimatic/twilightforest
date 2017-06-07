@@ -409,8 +409,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	private void decoratePillarsGrid(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
-		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
-		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
 
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarEW, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarEW, rotation);
@@ -423,8 +423,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 	private void decoratePillarsCorners(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
-		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
-		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
 		
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarEW, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarEW, rotation);
@@ -470,7 +470,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 			this.setBlockStateRotated(world, AIR, 9, top, z, ladderUpDir, sbb);
 		}
 
-		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
 		// treasure!
 		if (hasTreasure) {
 			this.placeTreasureRotated(world, 1, bottom + 8, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
@@ -512,7 +512,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		if (hasTreasure) {
 			this.placeTreasureRotated(world, 1, bottom + 5, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
-			final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+			final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 4, 5, ladderUpDir, sbb);
 		}
 	}
@@ -521,8 +521,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		Rotation rotation = ladderDownDir;
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
-		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
-		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
 		
 		this.decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, false, sbb);
 		this.decoratePillars(world, rand, bottom, top, rotation, sbb);
@@ -691,8 +691,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
 
-		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
-		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarEW = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final IBlockState pillarNS = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
 
 		// 4 pillars
 		this.decoratePillars(world, rand, bottom, top, rotation, sbb);
