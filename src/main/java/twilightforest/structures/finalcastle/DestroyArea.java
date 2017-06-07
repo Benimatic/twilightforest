@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,8 +26,8 @@ public class DestroyArea
 		return this.destroyBox.minY > y;
 	}
 
-	public boolean isVecInside(int x, int y, int z) {
-		return destroyBox.isVecInside(x, y, z);
+	public boolean isVecInside(BlockPos pos) {
+		return destroyBox.isVecInside(pos);
 	}
 
 	/**

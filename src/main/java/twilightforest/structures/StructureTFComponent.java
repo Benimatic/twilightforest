@@ -613,4 +613,10 @@ public abstract class StructureTFComponent extends StructureComponent {
                 .withProperty(BlockSlab.HALF, half);
 
     }
+
+    protected static final Rotation[] ROTATIONS = Rotation.values();
+
+    protected static Rotation getRandomDirection(Random random) {
+    	return ROTATIONS[random.nextInt(4)];
+    }
 }

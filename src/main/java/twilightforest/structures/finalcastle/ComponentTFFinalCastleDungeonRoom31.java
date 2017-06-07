@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -74,12 +75,12 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		} else {}
 	}
 
-	protected boolean addDungeonRoom(StructureComponent parent, List list, Random rand, int rotation, int level) {
+	protected boolean addDungeonRoom(StructureComponent parent, List list, Random rand, Rotation rotation, int level) {
 		rotation = (this.coordBaseMode + rotation) % 4;
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		ComponentTFFinalCastleDungeonRoom31 dRoom = new ComponentTFFinalCastleDungeonRoom31(rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation, level);
+		ComponentTFFinalCastleDungeonRoom31 dRoom = new ComponentTFFinalCastleDungeonRoom31(rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(EnumFacing.SOUTH), level);
 
 		StructureBoundingBox largerBB = new StructureBoundingBox(dRoom.getBoundingBox());
 
@@ -99,13 +100,13 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		}
 	}
 
-	protected boolean addDungeonExit(StructureComponent parent, List list, Random rand, int rotation) {
+	protected boolean addDungeonExit(StructureComponent parent, List list, Random rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 
 		rotation = (this.coordBaseMode + rotation) % 4;
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
-		ComponentTFFinalCastleDungeonExit dRoom = new ComponentTFFinalCastleDungeonExit(rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation, this.level);
+		ComponentTFFinalCastleDungeonExit dRoom = new ComponentTFFinalCastleDungeonExit(rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(EnumFacing.SOUTH), this.level);
 		StructureComponent intersect = StructureTFComponent.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
 		if (intersect == null) {
 			list.add(dRoom);
@@ -116,7 +117,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		}
 	}
 
-	private BlockPos getNewRoomCoords(Random rand, int rotation) {
+	private BlockPos getNewRoomCoords(Random rand, Rotation rotation) {
 		// make the rooms connect around the corners, not the centers
 		int offset = rand.nextInt(15) - 9;
 		if (rand.nextBoolean()) {
@@ -125,14 +126,14 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 		switch (rotation) {
 		default:
-		case 0:
-			return new BlockPos(this.boundingBox.maxX + 9, this.boundingBox.minY, this.boundingBox.minZ + offset);
-		case 1:
-			return new BlockPos(this.boundingBox.minX + offset, this.boundingBox.minY, this.boundingBox.maxZ + 9);
-		case 2:
-			return new BlockPos(this.boundingBox.minX - 9, this.boundingBox.minY, this.boundingBox.minZ + offset);
-		case 3:
-			return new BlockPos(this.boundingBox.minX + offset, this.boundingBox.minY, this.boundingBox.minZ - 9);
+			case NONE:
+				return new BlockPos(this.boundingBox.maxX + 9, this.boundingBox.minY, this.boundingBox.minZ + offset);
+			case CLOCKWISE_90:
+				return new BlockPos(this.boundingBox.minX + offset, this.boundingBox.minY, this.boundingBox.maxZ + 9);
+			case CLOCKWISE_180:
+				return new BlockPos(this.boundingBox.minX - 9, this.boundingBox.minY, this.boundingBox.minZ + offset);
+			case COUNTERCLOCKWISE_90:
+				return new BlockPos(this.boundingBox.minX + offset, this.boundingBox.minY, this.boundingBox.minZ - 9);
 		}
 	}
 

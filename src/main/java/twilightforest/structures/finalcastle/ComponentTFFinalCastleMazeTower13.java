@@ -21,6 +21,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
     public int type;
 
+    public ComponentTFFinalCastleMazeTower13() {}
+
 	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int type, EnumFacing direction) {
 		super(i);
 		this.setCoordBaseMode(direction);
@@ -102,16 +104,16 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		    } else {
 
 			    int howFar = 14 + rand.nextInt(24);
-			    int direction = this.findBestDirectionTowards(dest);
+			    Rotation direction = this.findBestDirectionTowards(dest);
 
 			    // build left or right, not straight if we can help it
-			    if (direction == 0 || !buildContinueTowerTowards(list, rand, dest, direction, howFar)) {
+			    if (direction == Rotation.NONE || !buildContinueTowerTowards(list, rand, dest, direction, howFar)) {
 				    direction = this.findSecondDirectionTowards(dest);
-				    if (direction == 0 || !buildContinueTowerTowards(list, rand, dest, direction, howFar)) {
+				    if (direction == Rotation.NONE || !buildContinueTowerTowards(list, rand, dest, direction, howFar)) {
 					    direction = this.findThirdDirectionTowards(dest);
-					    if (direction == 0 || !buildContinueTowerTowards(list, rand, dest, direction, howFar)) {
+					    if (direction == Rotation.NONE|| !buildContinueTowerTowards(list, rand, dest, direction, howFar)) {
 						    // fine, just go straight
-						    if (!buildContinueTowerTowards(list, rand, dest, 0, howFar)) {
+						    if (!buildContinueTowerTowards(list, rand, dest, Rotation.NONE, howFar)) {
 							    //System.out.println("Could not build tower randomly");
 						    }
 					    }
@@ -127,12 +129,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 	protected void buildNonCriticalTowers(StructureComponent parent, List list, Random rand) {
 		// pick a random direction
-		int dir = rand.nextInt(4);
+		Rotation dir = getRandomDirection(rand);
 
 		// if there isn't something in that direction, check if we can add a wrecked tower
-		if (this.openingTowards[dir] == false) {
+		if (this.openingTowards[dir.ordinal()] == false) {
 			if (!buildDamagedTower(list, rand, dir)) {
-				dir = (dir + rand.nextInt(4)) % 4;
+				dir = dir.add(getRandomDirection(rand));
 				if (!buildDamagedTower(list, rand, dir)) {
 				// maybe just a balcony?
 				//buildBalconyTowards(list, rand, dir);
@@ -143,7 +145,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 	}
 
-	private int findBestDirectionTowards(BlockPos dest) {
+	private Rotation findBestDirectionTowards(BlockPos dest) {
 
 		// center of tower
 		int cx = this.boundingBox.minX + 6;
@@ -153,14 +155,14 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		int dx = cx - dest.getX();
 		int dz = cz - dest.getZ();
 
-		int absoluteDir = 0;
+		Rotation absoluteDir = Rotation.NONE;
 		if (Math.abs(dx) > Math.abs(dz)) {
-			absoluteDir = (dx >= 0) ? 2 : 0;
+			absoluteDir = (dx >= 0) ? Rotation.CLOCKWISE_180 : Rotation.NONE;
 		} else {
-			absoluteDir = (dz >= 0) ? 3 : 1;
+			absoluteDir = (dz >= 0) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 		}
 
-		int relativeDir = (absoluteDir + 4 - this.coordBaseMode) % 4;
+		Rotation relativeDir = (absoluteDir + 4 - this.coordBaseMode) % 4;
 
 		//System.out.println("Determining best direction!  center is at " + cx + ", " + cz + " and dest is at " + dest + " offset is " + dx + ", " + dz + " so the best absolute direction is " + absoluteDir + " and relative dir is " + relativeDir);
 
@@ -168,7 +170,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		return relativeDir;
 	}
 
-	private int findSecondDirectionTowards(BlockPos dest) {
+	private Rotation findSecondDirectionTowards(BlockPos dest) {
 
 		// center of tower
 		int cx = this.boundingBox.minX + 6;
@@ -178,13 +180,13 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		int dx = cx - dest.getX();
 		int dz = cz - dest.getZ();
 
-		int absoluteDir = 0;
+		Rotation absoluteDir = Rotation.NONE;
 		if (Math.abs(dx) < Math.abs(dz)) {  // reversed from findBestDirectionTowards
-			absoluteDir = (dx >= 0) ? 2 : 0;
+			absoluteDir = (dx >= 0) ? Rotation.CLOCKWISE_180 : Rotation.NONE;
 		} else {
-			absoluteDir = (dz >= 0) ? 3 : 1;
+			absoluteDir = (dz >= 0) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 		}
-		int relativeDir = (absoluteDir + 4 - this.coordBaseMode) % 4;
+		Rotation relativeDir = (absoluteDir + 4 - this.coordBaseMode) % 4;
 
 
 		//System.out.println("Determining second direction!  center is at " + cx + ", " + cz + " and dest is at " + dest + " offset is " + dx + ", " + dz + " so the best absolute direction is " + absoluteDir + " and relative dir is " + relativeDir);
@@ -193,16 +195,16 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		return relativeDir;
 	}
 
-	private int findThirdDirectionTowards(BlockPos dest) {
-		int first = this.findBestDirectionTowards(dest);
-		int second = this.findSecondDirectionTowards(dest);
+	private Rotation findThirdDirectionTowards(BlockPos dest) {
+		Rotation first = this.findBestDirectionTowards(dest);
+		Rotation second = this.findSecondDirectionTowards(dest);
 
-		if (first == 0 && second == 1) {
-			return 3;
-		} else if (first == 1 && second == 3) {
-			return 0;
+		if (first == Rotation.NONE && second == Rotation.CLOCKWISE_90) {
+			return Rotation.COUNTERCLOCKWISE_90;
+		} else if (first == Rotation.CLOCKWISE_90 && second == Rotation.COUNTERCLOCKWISE_90) {
+			return Rotation.NONE;
 		} else {
-			return 1;
+			return Rotation.CLOCKWISE_90;
 		}
 	}
 
@@ -212,7 +214,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		// adjust opening towards dest.getY() if we are getting close to dest
 		int adjustmentRange = 60;
 		if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX + 6, this.boundingBox.minZ + 6, adjustmentRange)) {
-			opening.getY() = this.adjustOpening(opening.getY(), dest);
+			opening = new BlockPos(
+					opening.getX(),
+					this.adjustOpening(opening.getY(), dest),
+					opening.getZ()
+					);
 		}
 
 		//System.out.println("original direction is " + direction);
@@ -236,7 +242,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 		if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
-			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), this.type, direction);
+			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), this.type, direction.rotate(EnumFacing.SOUTH));
 
 			StructureBoundingBox largerBB = new StructureBoundingBox(sTower.getBoundingBox());
 
@@ -255,8 +261,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 				sTower.buildTowards(this, list, rand, dest);
 
 				// add bridge
-				BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction);
-				ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+				BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction.rotate(EnumFacing.SOUTH));
+				ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction.rotate(EnumFacing.SOUTH));
 				list.add(bridge);
 				bridge.buildComponent(this, list, rand);
 
@@ -318,7 +324,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	}
 
 	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Rotation direction, BlockPos tc) {
-		return new ComponentTFFinalCastleDamagedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
+		return new ComponentTFFinalCastleDamagedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
 	}
 
 	private int adjustOpening(int posY, BlockPos dest) {
@@ -405,8 +411,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		int floors = (this.height / 8);
 
 		// for directions 0 or 2, the wall lies along the z axis
-		if (direction == 0 || direction == 2) {
-			int rx = direction == 0 ? 12 : 0;
+		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
+			int rx = direction == Rotation.NONE ? 12 : 0;
 			int rz = 6;
 			int ry = rand.nextInt(floors) * 8;
 
@@ -414,9 +420,9 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		}
 
 		// for directions 1 or 3, the wall lies along the x axis
-		if (direction == 1 || direction == 3) {
+		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
 			int rx = 6;
-			int rz = direction == 1 ? 12 : 0;
+			int rz = direction == Rotation.CLOCKWISE_90 ? 12 : 0;
 			int ry = rand.nextInt(floors) * 8;
 
 			return new BlockPos(rx, ry, rz);
@@ -514,7 +520,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		return this.height - this.highestOpening < 9;
 	}
 
-	private void addStairsDown(World world, StructureBoundingBox sbb, int rotation, int y) {
+	private void addStairsDown(World world, StructureBoundingBox sbb, Rotation rotation, int y) {
 		// top flight
 		for (int i = 0; i < 4; i++) {
 			int sx = 8 - i;

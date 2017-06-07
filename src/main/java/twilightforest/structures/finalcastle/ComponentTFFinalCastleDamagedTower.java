@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -46,8 +47,8 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 
 
 	@Override
-	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, int direction, BlockPos tc) {
-		return new ComponentTFFinalCastleWreckedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction);
+	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Rotation direction, BlockPos tc) {
+		return new ComponentTFFinalCastleWreckedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
 	}
 
 
@@ -71,11 +72,13 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 
 		// go down from the top of the tower to the ground, taking out rectangular chunks
 		//for (int y = this.boundingBox.maxY; y > this.boundingBox.minY; y--) {
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		for (int y = this.boundingBox.maxY; !hitDeadRock && y > 64; y--) {
 			for (int x = this.boundingBox.minX - 2; x <= this.boundingBox.maxX + 2; x++) {
 				for (int z = this.boundingBox.minZ - 2; z <= this.boundingBox.maxZ + 2; z++) {
-					if (sbb.isVecInside(x, y, z)) {
-						if (world.getBlock(x, y, z) == TFBlocks.deadrock) {
+					pos.setPos(x, y, z);
+					if (sbb.isVecInside(pos)) {
+						if (world.getBlockState(pos).getBlock() == TFBlocks.deadrock) {
 							hitDeadRock = true;
 						}
 						determineBlockDestroyed(world, areas, y, x, z);
@@ -110,9 +113,10 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 	}
 
 	protected void determineBlockDestroyed(World world, ArrayList<DestroyArea> areas, int y, int x, int z) {
+		BlockPos pos = new BlockPos(x, y, z);
 		for (DestroyArea dArea : areas) {
 			if (dArea != null && dArea.isVecInside(x, y, z)) {
-				world.setBlockToAir(x, y, z);
+				world.setBlockToAir(pos);
 			}
 		}
 	}
