@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFWraith;
 
+import javax.annotation.Nonnull;
 
 public class RenderTFWraith extends RenderBiped<EntityTFWraith> {
     private static final ResourceLocation textureWraith = new ResourceLocation(TwilightForestMod.MODEL_DIR + "ghost.png");
@@ -26,23 +27,18 @@ public class RenderTFWraith extends RenderBiped<EntityTFWraith> {
 	}
 
     @Override
-	protected ResourceLocation getEntityTexture(EntityTFWraith par1Entity)
+	protected ResourceLocation getEntityTexture(@Nonnull EntityTFWraith wraith)
     {
         return textureCrown;
     }
 
     class LayerWraith implements LayerRenderer<EntityTFWraith> {
 		@Override
-		public void doRenderLayer(EntityTFWraith entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		public void doRenderLayer(@Nonnull EntityTFWraith wraith, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 			RenderTFWraith.this.bindTexture(textureWraith);
-			GlStateManager.enableBlend();
-			GlStateManager.disableAlpha();
-			GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
-			//GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5f);
-			RenderTFWraith.this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-			// TODO fix gl state?
+			GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
+			RenderTFWraith.this.mainModel.render(wraith, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
 		}
 
 		@Override
