@@ -13,7 +13,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 
 	public ComponentTFFinalCastleEntranceTower() { }
 
-	public ComponentTFFinalCastleEntranceTower(Random rand, int i, int x, int y, int z, int direction) {
+	public ComponentTFFinalCastleEntranceTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, 3, 2, 0, direction);
 	}
 

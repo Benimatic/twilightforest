@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
 import java.util.List;
@@ -9,7 +10,7 @@ public class ComponentTFFinalCastleEntranceSideTower extends ComponentTFFinalCas
 {
 	public ComponentTFFinalCastleEntranceSideTower() {}
 
-	public ComponentTFFinalCastleEntranceSideTower(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, int direction) {
+	public ComponentTFFinalCastleEntranceSideTower(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumFacing direction) {
 		super(rand, i, x, y, z, floors, entranceFloor, 0, direction);
 
 	    addOpening(0, 1, size / 2, 2);

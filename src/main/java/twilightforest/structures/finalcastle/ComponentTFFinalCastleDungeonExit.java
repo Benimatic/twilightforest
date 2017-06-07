@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -14,7 +15,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	public ComponentTFFinalCastleDungeonExit() {
 	}
 
-	public ComponentTFFinalCastleDungeonExit(Random rand, int i, int x, int y, int z, int direction, int level) {
+	public ComponentTFFinalCastleDungeonExit(Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
 		super(rand, i, x, y, z, direction, level);
 	}
 

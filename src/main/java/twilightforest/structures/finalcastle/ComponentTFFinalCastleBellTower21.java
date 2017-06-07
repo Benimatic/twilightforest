@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -16,7 +17,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 
 	public ComponentTFFinalCastleBellTower21() { }
 
-	public ComponentTFFinalCastleBellTower21(Random rand, int i, int x, int y, int z, int direction) {
+	public ComponentTFFinalCastleBellTower21(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, FLOORS, 1, 1, direction);
 		this.size = 21;
 		int floors = FLOORS;

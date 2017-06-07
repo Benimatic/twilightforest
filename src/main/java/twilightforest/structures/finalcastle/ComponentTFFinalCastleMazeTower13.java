@@ -20,7 +20,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
     public int type;
 
-	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int type, int direction) {
+	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int type, EnumFacing direction) {
 		super(i);
 		this.setCoordBaseMode(direction);
 		this.type = type;
@@ -51,7 +51,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 	}
 
-	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, int type, int direction) {
+	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, int type, EnumFacing direction) {
 		super(i);
 		this.setCoordBaseMode(direction);
 		this.type = type;

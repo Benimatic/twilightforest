@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
@@ -10,7 +11,7 @@ import java.util.Random;
 public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDamagedTower
 {
 
-	public ComponentTFFinalCastleWreckedTower(Random rand, int i, int x, int y, int z, int direction) {
+	public ComponentTFFinalCastleWreckedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, direction);
 	}
 

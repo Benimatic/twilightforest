@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -15,7 +16,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
 
     public ComponentTFFinalCastleStairTower() { }
 
-    public ComponentTFFinalCastleStairTower(Random rand, int i, int x, int y, int z, int rotation) {
+    public ComponentTFFinalCastleStairTower(Random rand, int i, int x, int y, int z, EnumFacing rotation) {
 	    this.setCoordBaseMode(rotation);
 	    this.size = 9;
 	    this.height = 51;

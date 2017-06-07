@@ -11,7 +11,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 {
 	public ComponentTFFinalCastleEntranceBottomTower() {}
 
-	public ComponentTFFinalCastleEntranceBottomTower(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, int direction) {
+	public ComponentTFFinalCastleEntranceBottomTower(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumFacing direction) {
 		super(rand, i, x, y, z, floors, entranceFloor, 0, direction);
 
 //    		addOpening(12, 1, size / 2, 0);

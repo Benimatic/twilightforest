@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -19,7 +20,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 {
 
     public ComponentTFFinalCastleMain(World world, Random rand, int i, int x, int y, int z) {
-	    this.setCoordBaseMode(0);
+	    this.setCoordBaseMode(EnumFacing.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
 		x = ((x + 127) >> 8) << 8;

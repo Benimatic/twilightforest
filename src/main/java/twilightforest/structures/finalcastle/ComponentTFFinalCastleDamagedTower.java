@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -13,7 +14,7 @@ import java.util.Random;
 public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMazeTower13
 {
 
-	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, int direction) {
+	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, 2, direction);  //TODO: change rune type
 	}
 
