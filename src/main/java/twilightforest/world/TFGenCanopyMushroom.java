@@ -82,41 +82,30 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	{
 		BlockPos src = pos.up(height);
 		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
-		
-		// constrain branch spread
-		if ((dest.getX() - pos.getX()) < -4)
+
+		// only actually draw the branch if it's not going to load new chunks
+		if (world.isAreaLoaded(dest, 5))
 		{
-			dest = dest.add(-4, 0, 0);
+			if (src.getX() != dest.getX() || src.getZ() != dest.getZ())
+			{
+				// branch
+				TFGenerator.drawBresehnam(this, world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
+				TFGenerator.drawBresehnam(this, world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
+			}
+			else
+			{
+				// trunk
+				TFGenerator.drawBresehnam(this, world, src, dest.down(), treeState);
+			}
+
+			if (trunk)
+			{
+				// add a firefly (torch) to the trunk
+				addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+			}
+
+			drawMushroomCircle(world, dest, 4, leafState);
 		}
-		if ((dest.getX() - pos.getX()) > 4)
-		{
-			dest = dest.add(4, 0, 0);
-		}
-		if ((dest.getZ() - pos.getZ()) < -4)
-		{
-			dest = dest.add(0, 0, -4);
-		}
-		if ((dest.getZ() - pos.getZ()) > 4)
-		{
-			dest = dest.add(0, 0, 4);
-		}
-		
-		if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
-			// branch
-			TFGenerator.drawBresehnam(this, world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
-			TFGenerator.drawBresehnam(this, world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
-		}
-		else {
-			// trunk
-			TFGenerator.drawBresehnam(this, world, src, dest.down(), treeState);
-		}
-		
-		if (trunk) {
-			// add a firefly (torch) to the trunk
-			addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
-		}
-		
-		drawMushroomCircle(world, dest, 4, leafState);
 	}
 	
 	/**

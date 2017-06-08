@@ -107,34 +107,13 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 	{
 		BlockPos src = pos.up(height);
 		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
-		
-		// constrain branch spread
-		if ((dest.getX() - pos.getX()) < -4)
-		{
-			dest = new BlockPos(pos.getX() - 4, dest.getY(), dest.getZ());
-		}
-		if ((dest.getX() - pos.getX()) > 4)
-		{
-			dest = new BlockPos(pos.getX() + 4, dest.getY(), dest.getZ());
-		}
-		if ((dest.getZ() - pos.getZ()) < -4)
-		{
-			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - 4);
-		}
-		if ((dest.getZ() - pos.getZ()) > 4)
-		{
-			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + 4);
-		}
-		
-		TFGenerator.drawBresehnam(this, world, src, dest, branchState);
 
-		if (Math.abs(pos.getX() - dest.getX()) + 2 > 7 || Math.abs(pos.getZ() - dest.getZ()) + 2 > 7 )
+		// only actually draw the branch if it's not going to load new chunks
+		if (world.isAreaLoaded(dest, 6))
 		{
-			// System.out.println("getting branch too far.  x = " + (x - dest.posX + 2) + ", z = " + (z - dest.posZ + 2));
+			TFGenerator.drawBresehnam(this, world, src, dest, branchState);
+			leafAround(world, dest);
 		}
-		
-		leafAround(world, dest);
-
 	}
 
 	/**
