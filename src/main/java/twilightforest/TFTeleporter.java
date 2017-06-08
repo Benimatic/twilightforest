@@ -5,11 +5,10 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -19,12 +18,25 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFWorld;
 
 public class TFTeleporter extends Teleporter
 {
-	public TFTeleporter(WorldServer par1WorldServer) {
-		super(par1WorldServer);
+	public static TFTeleporter getTeleporterForDim(MinecraftServer server, int dim) {
+		WorldServer ws = server.worldServerForDimension(dim);
+
+		for (Teleporter t : ws.customTeleporters) {
+			if (t instanceof TFTeleporter) {
+				return (TFTeleporter) t;
+			}
+		}
+
+		TFTeleporter tp = new TFTeleporter(ws);
+		ws.customTeleporters.add(tp);
+		return tp;
+	}
+
+	private TFTeleporter(WorldServer dest) {
+		super(dest);
 	}
 
 	@Override

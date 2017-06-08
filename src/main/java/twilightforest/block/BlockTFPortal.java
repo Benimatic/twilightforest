@@ -44,7 +44,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTFPortal extends BlockBreakable
 {
-
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
 
     public BlockTFPortal()
@@ -261,13 +260,13 @@ public class BlockTFPortal extends BlockBreakable
     					playerMP.addStat(TFAchievementPage.twilightArrival);
 						TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TFConfig.dimension.dimensionID);
 
-    					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TFConfig.dimension.dimensionID, new TFTeleporter(playerMP.mcServer.worldServerForDimension(TFConfig.dimension.dimensionID)));
+    					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TFConfig.dimension.dimensionID, TFTeleporter.getTeleporterForDim(playerMP.mcServer, TFConfig.dimension.dimensionID));
 
     					// set respawn point for TF dimension to near the arrival portal
     					playerMP.setSpawnChunk(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
     				}
     				else {
-    					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, 0, new TFTeleporter(playerMP.mcServer.worldServerForDimension(0)));
+    					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, 0, TFTeleporter.getTeleporterForDim(playerMP.mcServer, 0));
     				}
     			}
     		}
@@ -330,7 +329,7 @@ public class BlockTFPortal extends BlockBreakable
 				d1 = (double)MathHelper.clamp((int)d1, -29999872, 29999872);
 				float f = toTeleport.rotationYaw;
 				toTeleport.setLocationAndAngles(d0, toTeleport.posY, d1, 90.0F, 0.0F);
-				Teleporter teleporter = new TFTeleporter(worldserver1); // TF - custom teleporter
+				Teleporter teleporter = TFTeleporter.getTeleporterForDim(minecraftserver, dimensionIn); // TF - custom teleporter
 				teleporter.placeInExistingPortal(toTeleport, f);
 				blockpos = new BlockPos(toTeleport);
 			}
@@ -364,8 +363,6 @@ public class BlockTFPortal extends BlockBreakable
 					// TF - inline moveToBlockPosAndAngles without +0.5 offsets, since teleporter already took care of it
 					entity.setLocationAndAngles((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), entity.rotationYaw, entity.rotationPitch);
 				}
-
-				TwilightForestMod.LOGGER.info("{}, {}", entity.world.provider.getDimension(), blockpos);
 
 				boolean flag = entity.forceSpawn;
 				entity.forceSpawn = true;
