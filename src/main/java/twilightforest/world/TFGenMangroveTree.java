@@ -77,42 +77,29 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	{
 		BlockPos src = pos.up(height);
 		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
-		
-		// constrain branch spread
-		if ((dest.getX() - pos.getX()) < -4)
-		{
-			dest = new BlockPos(pos.getX() - 4, dest.getY(), dest.getZ());
-		}
-		if ((dest.getX() - pos.getX()) > 4)
-		{
-			dest = new BlockPos(pos.getX() + 4, dest.getY(), dest.getZ());
-		}
-		if ((dest.getZ() - pos.getZ()) < -4)
-		{
-			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - 4);
-		}
-		if ((dest.getZ() - pos.getZ()) > 4)
-		{
-			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + 4);
-		}
-		
-		TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
-		
-		
+
 		// variable size leaves
 		int bSize = 2 + random.nextInt(3);
-		
-		// we only need these side blocks if the size is > 2
-		if (bSize > 2) {
-			setBlockAndNotifyAdequately(world, dest.east(), branchState);
-			setBlockAndNotifyAdequately(world, dest.west(), branchState);
-			setBlockAndNotifyAdequately(world, dest.south(), branchState);
-			setBlockAndNotifyAdequately(world, dest.north(), branchState);
+
+		// only actually draw the branch if it's not going to load new chunks
+		if (world.isAreaLoaded(dest, bSize + 1))
+		{
+
+			TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
+
+			// we only need these side blocks if the size is > 2
+			if (bSize > 2)
+			{
+				setBlockAndNotifyAdequately(world, dest.east(), branchState);
+				setBlockAndNotifyAdequately(world, dest.west(), branchState);
+				setBlockAndNotifyAdequately(world, dest.south(), branchState);
+				setBlockAndNotifyAdequately(world, dest.north(), branchState);
+			}
+			// leaves!
+			TFGenerator.makeLeafCircle(this, world, dest.down(), bSize - 1, leafState, false);
+			TFGenerator.makeLeafCircle(this, world, dest, bSize, leafState, false);
+			TFGenerator.makeLeafCircle(this, world, dest.up(), bSize - 2, leafState, false);
 		}
-		// leaves!
-		TFGenerator.makeLeafCircle(this, world, dest.down(), bSize - 1, leafState, false);
-		TFGenerator.makeLeafCircle(this, world, dest, bSize, leafState, false);
-		TFGenerator.makeLeafCircle(this, world, dest.up(), bSize - 2, leafState, false);
 	}
 	
 	/**
@@ -122,22 +109,27 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	{
 		BlockPos src = pos.up(height);
 		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
-		
-		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(src, dest);
-		boolean stillAboveGround = true; 
-		for (BlockPos coord : lineArray)
+
+		// only actually draw the root if it's not going to load new chunks
+		if (world.isAreaLoaded(dest, 1))
 		{
-			if (stillAboveGround && TFGenerator.hasAirAround(world, coord)) {
-				this.setBlockAndNotifyAdequately(world, coord, branchState);
-				this.setBlockAndNotifyAdequately(world, coord.down(), branchState);
-			}
-			else {
-				this.placeRootBlock(world, coord, rootState);
-				this.placeRootBlock(world, coord.down(), rootState);
-				stillAboveGround = false;
+			BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(src, dest);
+			boolean stillAboveGround = true;
+			for (BlockPos coord : lineArray)
+			{
+				if (stillAboveGround && TFGenerator.hasAirAround(world, coord))
+				{
+					this.setBlockAndNotifyAdequately(world, coord, branchState);
+					this.setBlockAndNotifyAdequately(world, coord.down(), branchState);
+				}
+				else
+				{
+					this.placeRootBlock(world, coord, rootState);
+					this.placeRootBlock(world, coord.down(), rootState);
+					stillAboveGround = false;
+				}
 			}
 		}
-
 	}
 
 	/**
