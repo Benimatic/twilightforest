@@ -35,6 +35,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import twilightforest.TFAchievementPage;
+import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.FMLLog;
@@ -255,15 +256,15 @@ public class BlockTFPortal extends BlockBreakable
     			else {
 
     				// send to twilight
-    				if (playerMP.dimension != TwilightForestMod.dimensionID) {
+    				if (playerMP.dimension != TFConfig.dimension.dimensionID) {
     					playerMP.addStat(TFAchievementPage.twilightPortal);
     					playerMP.addStat(TFAchievementPage.twilightArrival);
-						TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TwilightForestMod.dimensionID);
+						TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TFConfig.dimension.dimensionID);
 
-    					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TwilightForestMod.dimensionID, new TFTeleporter(playerMP.mcServer.worldServerForDimension(TwilightForestMod.dimensionID)));
+    					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TFConfig.dimension.dimensionID, new TFTeleporter(playerMP.mcServer.worldServerForDimension(TFConfig.dimension.dimensionID)));
 
     					// set respawn point for TF dimension to near the arrival portal
-    					playerMP.setSpawnChunk(new BlockPos(playerMP), true, TwilightForestMod.dimensionID);
+    					playerMP.setSpawnChunk(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
     				}
     				else {
     					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, 0, new TFTeleporter(playerMP.mcServer.worldServerForDimension(0)));
@@ -272,9 +273,9 @@ public class BlockTFPortal extends BlockBreakable
     		}
     		else
     		{
-    			if (entity.dimension != TwilightForestMod.dimensionID)
+    			if (entity.dimension != TFConfig.dimension.dimensionID)
     			{
-        			changeDimension(entity, TwilightForestMod.dimensionID);
+        			changeDimension(entity, TFConfig.dimension.dimensionID);
     			}
     			else
     			{

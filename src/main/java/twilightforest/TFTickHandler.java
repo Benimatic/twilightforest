@@ -42,9 +42,9 @@ public class TFTickHandler
 		World world = player.world;
 
 		// check for portal creation, at least if it's not disabled
-		if (!TwilightForestMod.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
+		if (!TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
 			// skip non admin players when the option is on
-			if (TwilightForestMod.adminOnlyPortals) {
+			if (TFConfig.adminOnlyPortals) {
 				if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null) {
 					// reduce range to 4.0 when the option is on
 					checkForPortalCreation(player, world, 4.0F);
@@ -127,8 +127,8 @@ public class TFTickHandler
 	}
 
 	private void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
-		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TwilightForestMod.dimensionID
-				|| TwilightForestMod.allowPortalsInOtherDimensions))
+		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TFConfig.dimension.dimensionID
+				|| TFConfig.allowPortalsInOtherDimensions))
 		{
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
 			

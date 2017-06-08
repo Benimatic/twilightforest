@@ -12,6 +12,7 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -26,7 +27,7 @@ import twilightforest.biomes.TFBiomes;
  */
 public class WorldProviderTwilightForest extends WorldProviderSurface {
 	public WorldProviderTwilightForest() {
-		setDimension(TwilightForestMod.dimensionID);
+		setDimension(TFConfig.dimension.dimensionID);
 	}
 	
 	@Override
@@ -149,13 +150,13 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
 	public long getSeed() 
 	{
-		if (TwilightForestMod.twilightForestSeed == null || TwilightForestMod.twilightForestSeed.length() == 0)
+		if (TFConfig.dimension.twilightForestSeed == null || TFConfig.dimension.twilightForestSeed.length() == 0)
 		{
 			return super.getSeed();
 		}
 		else
 		{
-			return TwilightForestMod.twilightForestSeed.hashCode();
+			return TFConfig.dimension.twilightForestSeed.hashCode();
 		}
 	}
 	

@@ -20,6 +20,7 @@ import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureStart;
+import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
@@ -59,7 +60,7 @@ public class MapGenTFHollowTree extends MapGenStructure {
 
     @Override
 	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
-		return rand.nextInt(TwilightForestMod.twilightOakChance) == 0
+		return rand.nextInt(TFConfig.performance.twilightOakChance) == 0
                 && TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled
 				&&  this.world.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, oakSpawnBiomes);
 	}

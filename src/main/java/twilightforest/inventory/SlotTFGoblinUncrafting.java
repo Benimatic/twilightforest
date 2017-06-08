@@ -1,5 +1,6 @@
 package twilightforest.inventory;
 
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -51,7 +52,7 @@ public class SlotTFGoblinUncrafting extends Slot {
     	}
     	
     	// if uncrafting is disabled, no!
-    	if (TwilightForestMod.disableUncrafting) {
+    	if (TFConfig.disableUncrafting) {
     		return false;
     	}
     	

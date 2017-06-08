@@ -890,7 +890,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public void playerPortals(PlayerChangedDimensionEvent event) {
 		// check enforced progression
-		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TwilightForestMod.dimensionID) {
+		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TFConfig.dimension.dimensionID) {
 			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 		}
 	}

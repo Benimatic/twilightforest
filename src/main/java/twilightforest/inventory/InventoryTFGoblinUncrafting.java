@@ -1,6 +1,7 @@
 package twilightforest.inventory;
 
 import net.minecraft.util.text.ITextComponent;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -110,7 +111,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer var1) {
-		return !TwilightForestMod.disableUncrafting;
+		return !TFConfig.disableUncrafting;
 	}
 
 	@Override

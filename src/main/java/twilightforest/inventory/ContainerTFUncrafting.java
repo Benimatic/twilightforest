@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -454,7 +455,7 @@ public class ContainerTFUncrafting extends Container {
     	}
     	
     	// don't allow uncrafting if the server option is turned off
-    	if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix && TwilightForestMod.disableUncrafting) {
+    	if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix && TFConfig.disableUncrafting) {
     		return ItemStack.EMPTY;
     	}
     	

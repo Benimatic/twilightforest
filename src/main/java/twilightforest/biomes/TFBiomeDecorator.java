@@ -15,6 +15,7 @@ import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenLiquids;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.TFGenCanopyMushroom;
@@ -53,7 +54,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	private WorldGenLiquids caveWaterGen = new WorldGenLiquids(Blocks.FLOWING_WATER);
 	private TFGenTorchBerries torchBerryGen = new TFGenTorchBerries();
 
-	public float canopyPerChunk = TwilightForestMod.canopyCoverage;
+	public float canopyPerChunk = TFConfig.performance.canopyCoverage;
 	public boolean hasCanopy = true;
     public float alternateCanopyChance = 0;
     public int myceliumPerChunk = 0;
@@ -129,7 +130,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
         if (this.hasCanopy)
 		{
 			//TODO: is there a better place for this? We want to load this value once the config file is loaded.
-			this.canopyPerChunk = TwilightForestMod.canopyCoverage;
+			this.canopyPerChunk = TFConfig.performance.canopyCoverage;
 
 			// add canopy trees
 			int nc = (int)canopyPerChunk + ((randomGenerator.nextFloat() < (canopyPerChunk - (int)canopyPerChunk)) ? 1 : 0);

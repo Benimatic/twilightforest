@@ -47,23 +47,9 @@ public class TwilightForestMod {
 	public static final int GUI_ID_FURNACE = 2;
 
 
-	public static int dimensionID;
 	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
     
-	// misc options
-    public static boolean silentCicadas;
-    public static boolean allowPortalsInOtherDimensions;
-    public static boolean adminOnlyPortals;
-    public static String twilightForestSeed;
-    public static boolean disablePortalCreation;
-    public static boolean disableUncrafting;
-    public static String portalCreationItemString;
-
-    // performance
-    public static float canopyCoverage;
-    public static int twilightOakChance;
-	
 	public static final TFEventListener eventListener = new TFEventListener();
 	public static final TFTickHandler tickHandler = new TFTickHandler();
 	public static final Logger LOGGER = LogManager.getLogger(ID);
@@ -77,10 +63,6 @@ public class TwilightForestMod {
 
     @EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		// load config
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		loadConfiguration(config);
-
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.doPreLoadRegistration();
 
@@ -121,7 +103,7 @@ public class TwilightForestMod {
 		MinecraftForge.EVENT_BUS.register(tickHandler);
 		
 		// set up portal item
-		ResourceLocation loc = new ResourceLocation(portalCreationItemString);
+		ResourceLocation loc = new ResourceLocation(TFConfig.portalCreationItem);
 
 		if (Item.REGISTRY.containsKey(loc)) {
 			TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", loc);
@@ -138,22 +120,22 @@ public class TwilightForestMod {
 		proxy.doOnLoadRegistration();
 		
 		// dimension provider
-		dimType = DimensionType.register("Twilight Forest", "_twilightforest", dimensionID, WorldProviderTwilightForest.class, false);
+		dimType = DimensionType.register("Twilight Forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 	}
 	
     @EventHandler
 	public void postInit(FMLPostInitializationEvent evt) 
 	{
 		// register dimension with Forge
-		if (!DimensionManager.isDimensionRegistered(TwilightForestMod.dimensionID))
+		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID))
 		{
-			DimensionManager.registerDimension(TwilightForestMod.dimensionID, TwilightForestMod.dimType);
+			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, TwilightForestMod.dimType);
 		}
 		else
 		{
-			TwilightForestMod.LOGGER.warn("Detected that the configured dimension id '{}' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", dimensionID);
+			TwilightForestMod.LOGGER.warn("Detected that the configured dimension id '{}' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
 			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimType);
-			TwilightForestMod.dimensionID = TwilightForestMod.backupdimensionID;
+			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
 		}
 		
 		// thaumcraft integration
@@ -171,9 +153,6 @@ public class TwilightForestMod {
     @EventHandler
 	public void startServer(FMLServerStartingEvent event)
 	{
-		// dispenser behaviors
-		registerDispenseBehaviors(event.getServer());
-		
 		event.registerServerCommand(new CommandTFFeature());
 		event.registerServerCommand(new CommandTFProgress());
 	}
@@ -449,61 +428,4 @@ public class TwilightForestMod {
 		ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), list);
 	}
 	*/
-
-
-	/**
-	 * Register all dispenser behaviors.
-	 */
-	private void registerDispenseBehaviors(MinecraftServer minecraftServer) {}
-	
-	/**
-	 * Load our config file and set default values
-	 */
-	private void loadConfiguration(Configuration configFile) {
-		configFile.load();
-		
-		dimensionID = configFile.get("dimension", "dimensionID", 7).getInt();
-		configFile.get("dimension", "dimensionID", 7).setComment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.");
-
-	    // other misc otions
-	    silentCicadas = configFile.get(Configuration.CATEGORY_GENERAL, "SilentCicadas", false).getBoolean(false);
-		configFile.get(Configuration.CATEGORY_GENERAL, "SilentCicadas", false).setComment("Make cicadas silent  for those having sound library problems, or otherwise finding them annoying");
-	    allowPortalsInOtherDimensions = configFile.get(Configuration.CATEGORY_GENERAL, "AllowPortalsInOtherDimensions", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "AllowPortalsInOtherDimensions", false).setComment("Allow portals to the Twilight Forest to be made outside of dimension 0.  May be considered an exploit.");
-	    adminOnlyPortals = configFile.get(Configuration.CATEGORY_GENERAL, "AdminOnlyPortals", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "AdminOnlyPortals", false).setComment("Allow portals only for admins (ops).  This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.");
-	    twilightForestSeed = configFile.get(Configuration.CATEGORY_GENERAL, "TwilightForestSeed", "").getString();
-	    configFile.get(Configuration.CATEGORY_GENERAL, "TwilightForestSeed", "").setComment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.");
-	    disablePortalCreation = configFile.get(Configuration.CATEGORY_GENERAL, "DisablePortalCreation", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "DisablePortalCreation", false).setComment("Disable Twilight Forest portal creation entirely.  Provided for server operators looking to restrict action to the dimension.");
-	    disableUncrafting = configFile.get(Configuration.CATEGORY_GENERAL, "DisableUncrafting", false).getBoolean(false);
-	    configFile.get(Configuration.CATEGORY_GENERAL, "DisableUncrafting", false).setComment("Disable the uncrafting function of the uncrafting table.  Provided as an option when interaction with other mods produces exploitable recipes.");
-	    portalCreationItemString = configFile.get(Configuration.CATEGORY_GENERAL, "PortalCreationItem", "diamond").getString();
-	    configFile.get(Configuration.CATEGORY_GENERAL, "PortalCreationItem", "diamond").setComment("Item to create the Twilight Forest Portal.  Defaults to 'diamond'");
-
-	    canopyCoverage = (float) (configFile.get("Performance", "CanopyCoverage", 1.7).getDouble(1.7));
-		configFile.get("performance", "CanopyCoverage", 1.7).setComment("Amount of canopy coverage, from 0.0 on up.  Lower numbers improve chunk generation speed at the cost of a thinner forest.");
-		twilightOakChance = configFile.get("Performance", "TwilightOakChance", 48).getInt(48);
-		configFile.get("Performance", "TwilightOakChance", 48).setComment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree.  Higher numbers reduce the number of trees, increasing performance.");
-
-	    if (configFile.hasChanged()) {
-	    	configFile.save();
-	    }
-	}
-
-	/**
-	 * Change what dimension ID the Twilight Forest is.  
-	 * This is called when we connect to a server that has a different dimensionID set.
-	 */
-	public static void setDimensionID(int dim) 
-	{
-		if (TwilightForestMod.dimensionID != dim)
-		{
-			TwilightForestMod.LOGGER.info("Server has a different dimension ID {} for the Twilight Forest.  Changing this on the client.  This change will not be saved.", dim);
-
-			DimensionManager.unregisterDimension(TwilightForestMod.dimensionID);
-			TwilightForestMod.dimensionID = dim;
-			DimensionManager.registerDimension(TwilightForestMod.dimensionID, TwilightForestMod.dimType);
-		}
-	}
 }
