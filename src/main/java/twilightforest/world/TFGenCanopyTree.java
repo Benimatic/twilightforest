@@ -6,6 +6,7 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFRoots;
@@ -98,43 +99,29 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 	{
 		BlockPos src = pos.up(height);
 		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
-		
-		// constrain branch spread
-		if ((dest.getX() - pos.getX()) < -4)
-		{
-			dest = new BlockPos(pos.getX() - 4, dest.getY(), dest.getZ());
-		}
-		if ((dest.getX() - pos.getX()) > 4)
-		{
-			dest = new BlockPos(pos.getX() + 4, dest.getY(), dest.getZ());
-		}
-		if ((dest.getZ() - pos.getZ()) < -4)
-		{
-			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - 4);
-		}
-		if ((dest.getZ() - pos.getZ()) > 4)
-		{
-			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + 4);
-		}
-		
-		TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
-	
-		// do this here until that bug with the lighting is fixed
-		if (trunk) 
-		{
-			// add a firefly (torch) to the trunk
-			addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
-		}
 
-		TFGenerator.makeLeafCircle(this, world, dest.down(), 3, leafState, true);
-		TFGenerator.makeLeafCircle(this, world, dest, 4, leafState, true);
-		TFGenerator.makeLeafCircle(this, world, dest.up(), 2, leafState, true);
-		
-		setBlockAndNotifyAdequately(world, dest.east(), branchState);
-		setBlockAndNotifyAdequately(world, dest.west(), branchState);
-		setBlockAndNotifyAdequately(world, dest.south(), branchState);
-		setBlockAndNotifyAdequately(world, dest.north(), branchState);
-		
+		// only actually draw the branch if it's not going to load new chunks
+		if (world.isAreaLoaded(dest, 5))
+		{
+
+			TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
+
+			// do this here until that bug with the lighting is fixed
+			if (trunk)
+			{
+				// add a firefly (torch) to the trunk
+				addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+			}
+
+			TFGenerator.makeLeafCircle(this, world, dest.down(), 3, leafState, true);
+			TFGenerator.makeLeafCircle(this, world, dest, 4, leafState, true);
+			TFGenerator.makeLeafCircle(this, world, dest.up(), 2, leafState, true);
+
+			setBlockAndNotifyAdequately(world, dest.east(), branchState);
+			setBlockAndNotifyAdequately(world, dest.west(), branchState);
+			setBlockAndNotifyAdequately(world, dest.south(), branchState);
+			setBlockAndNotifyAdequately(world, dest.north(), branchState);
+		}
 	}
 	
 	/**
