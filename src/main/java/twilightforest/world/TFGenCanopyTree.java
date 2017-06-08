@@ -112,7 +112,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		{
 			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - 4);
 		}
-		if ((dest.getX() - pos.getZ()) > 4)
+		if ((dest.getZ() - pos.getZ()) > 4)
 		{
 			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + 4);
 		}
