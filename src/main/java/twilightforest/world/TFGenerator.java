@@ -211,7 +211,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	public static void putLeafBlock(IBlockSettable generator, World world, BlockPos pos, IBlockState state) {
         IBlockState whatsThere = world.getBlockState(pos);
 
-		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos))
+		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock())
         {
             generator.setBlockAndNotifyAdequately(world, pos, state);
         }

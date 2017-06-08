@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import java.util.Random;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +35,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
     	super(par1);
 		treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-    	leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY);
+    	leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY).withProperty(BlockLeaves.CHECK_DECAY, false);
 		rootState = TFBlocks.root.getDefaultState();
     }
     
@@ -113,14 +114,14 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 				addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 			}
 
-			TFGenerator.makeLeafCircle(this, world, dest.down(), 3, leafState, true);
-			TFGenerator.makeLeafCircle(this, world, dest, 4, leafState, true);
-			TFGenerator.makeLeafCircle(this, world, dest.up(), 2, leafState, true);
-
 			setBlockAndNotifyAdequately(world, dest.east(), branchState);
 			setBlockAndNotifyAdequately(world, dest.west(), branchState);
 			setBlockAndNotifyAdequately(world, dest.south(), branchState);
 			setBlockAndNotifyAdequately(world, dest.north(), branchState);
+
+			TFGenerator.makeLeafCircle(this, world, dest.down(), 3, leafState, true);
+			TFGenerator.makeLeafCircle(this, world, dest, 4, leafState, true);
+			TFGenerator.makeLeafCircle(this, world, dest.up(), 2, leafState, true);
 		}
 	}
 	
