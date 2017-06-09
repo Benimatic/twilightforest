@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +19,6 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -47,7 +44,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 public class EntityTFLich extends EntityMob {
@@ -779,7 +775,7 @@ public class EntityTFLich extends EntityMob {
 			
 			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest){
 				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.lichTower) {
 					generator.setStructureConquered(dx, dy, dz, true);

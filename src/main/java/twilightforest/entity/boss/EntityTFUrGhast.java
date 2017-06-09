@@ -32,7 +32,6 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
@@ -630,7 +629,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			int dz = chestCoords.getZ();
 
 			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
+			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 			if (nearbyFeature == TFFeature.darkTower) {
 				generator.setStructureConquered(dx, dy, dz, true);

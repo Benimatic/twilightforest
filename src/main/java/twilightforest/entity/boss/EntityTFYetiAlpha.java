@@ -1,7 +1,5 @@
 package twilightforest.entity.boss;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,8 +15,6 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -38,18 +34,12 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.EntityTFYeti;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
 import twilightforest.entity.ai.EntityAITFYetiTired;
-import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
-import twilightforest.world.WorldProviderTwilightForest;
-
-import javax.annotation.Nullable;
 
 public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 {
@@ -398,7 +388,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 			
 			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest){
 				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.yetiCave) {
 					generator.setStructureConquered(dx, dy, dz, true);

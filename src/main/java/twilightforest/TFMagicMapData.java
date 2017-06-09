@@ -86,7 +86,7 @@ public class TFMagicMapData extends MapData
                 TFBiomeProvider provider  = (TFBiomeProvider) world.getBiomeProvider();
 
                 // FIXME 1.11 decoration type
-                byte trueId = (byte) provider.getFeatureID(worldX, worldZ, world);
+                byte trueId = (byte) TFFeature.getFeatureID(worldX, worldZ, world);
                 if (coord.getType() != MapDecoration.Type.RED_MARKER)
                 {
                     toRemove.add(coord);

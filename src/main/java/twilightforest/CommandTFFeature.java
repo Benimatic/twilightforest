@@ -9,7 +9,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
@@ -43,7 +42,7 @@ public class CommandTFFeature extends CommandBase {
 					throw new WrongUsageException("commands.tffeature.not_in_twilight_forest");
 				} else {
 					// nearest feature
-					TFFeature nearbyFeature = ((TFBiomeProvider)player.world.provider.getBiomeProvider()).getFeatureAt(dx, dz, player.world);
+					TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, player.world);
 					
 					sender.sendMessage(new TextComponentTranslation("The nearest feature is %s", nearbyFeature.name));
 					
@@ -86,7 +85,7 @@ public class CommandTFFeature extends CommandBase {
 				
 				TFBiomeProvider wcm = (TFBiomeProvider)player.world.provider.getBiomeProvider();
 				
-				boolean fc = wcm.isInFeatureChunk(player.world, dx, dz);
+				boolean fc = TFFeature.isInFeatureChunk(player.world, dx, dz);
 				sender.sendMessage(new TextComponentTranslation("Center of feature = %s.", cc));
 				sender.sendMessage(new TextComponentTranslation("Are in feature chunk = %s.", fc));
 			} else {

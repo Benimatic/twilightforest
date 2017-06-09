@@ -37,7 +37,6 @@ import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 
@@ -825,7 +824,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			int dz = MathHelper.floor(this.posZ);
 
 			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
+			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 			if (nearbyFeature == TFFeature.hydraLair) {
 				generator.setStructureConquered(dx, dy, dz, true);

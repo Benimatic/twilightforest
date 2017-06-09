@@ -223,7 +223,25 @@ public class TFFeature {
 
 		ambientCreatureList.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
 	}
-	
+
+	public static int getFeatureID(int mapX, int mapZ, World world)
+	{
+		return getFeatureAt(mapX, mapZ, world).featureID;
+	}
+
+	public static TFFeature getFeatureAt(int mapX, int mapZ, World world)
+	{
+		return generateFeature(mapX >> 4, mapZ >> 4, world);
+	}
+
+	public static boolean isInFeatureChunk(World world, int mapX, int mapZ) {
+		int chunkX = mapX >> 4;
+		int chunkZ = mapZ >> 4;
+		BlockPos cc = getNearestCenterXYZ(chunkX, chunkZ, world);
+
+		return chunkX == (cc.getX() >> 4) && chunkZ == (cc.getZ() >> 4);
+	}
+
 	/**
 	 * Turns on biome-specific decorations like grass and trees near this feature.
 	 */
@@ -298,9 +316,9 @@ public class TFFeature {
 		{
 			TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
 			
-			if (tfManager.isInFeatureChunk(world, chunkX << 4, chunkZ << 4))
+			if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4))
 			{
-		    	return tfManager.getFeatureAt(chunkX << 4, chunkZ << 4, world);
+		    	return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 			}
 			else
 			{

@@ -11,7 +11,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
@@ -182,7 +181,7 @@ public class ItemTFMagicMap extends ItemMap
                                             {
                                                 TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
 
-                                                if (tfManager.isInFeatureChunk(world, worldXRounded + localX, worldZRounded + localZ) && zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels)
+                                                if (TFFeature.isInFeatureChunk(world, worldXRounded + localX, worldZRounded + localZ) && zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels)
                                                 {
                                                     ((TFMagicMapData) data).addFeatureToMap(TFFeature.getNearestFeature((worldXRounded + localX) >> 4, (worldZRounded + localZ) >> 4, world), worldX, worldZ);
                                                 }

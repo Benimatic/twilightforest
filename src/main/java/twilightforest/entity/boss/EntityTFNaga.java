@@ -41,7 +41,6 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 
@@ -772,7 +771,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			int dz = MathHelper.floor(this.posZ);
 			
 			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(dx, dz, world);
+			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 			
 			if (nearbyFeature == TFFeature.nagaCourtyard) {
 				generator.setStructureConquered(dx, dy, dz, true);
