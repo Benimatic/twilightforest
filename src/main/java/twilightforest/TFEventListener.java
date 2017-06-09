@@ -331,8 +331,8 @@ public class TFEventListener {
 		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
 			
-			if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == TFItems.enderBow ||
-					player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.enderBow) {
+			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.enderBow ||
+					!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.enderBow) {
 				
 				double sourceX = player.posX;
 				double sourceY = player.posY;
@@ -631,7 +631,7 @@ public class TFEventListener {
 		if (!event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.getPos()) && isBlockProtectedFromBreaking(event.getWorld(), event.getPos())) {
 			event.setCanceled(true);
 		} else if (!isBreakingWithGiantPick
-				&& event.getPlayer().getHeldItemMainhand() != null
+				&& !event.getPlayer().getHeldItemMainhand().isEmpty()
 				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giantPick
 				&& event.getPlayer().getHeldItemMainhand().getItem().canHarvestBlock(event.getState(), event.getPlayer().getHeldItemMainhand())) {
 			//System.out.println("Breaking with giant pick!");

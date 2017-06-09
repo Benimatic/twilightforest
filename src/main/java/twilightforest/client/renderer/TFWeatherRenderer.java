@@ -73,7 +73,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 		// do normal weather rendering
 		renderNormalWeather(partialTicks, mc);
         
-		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && !mc.player.capabilities.isCreativeMode) {
+		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
 			renderLockedBiome(partialTicks, world, mc);
 
