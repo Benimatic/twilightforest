@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
@@ -40,6 +41,7 @@ import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
@@ -358,26 +360,13 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
         return iceArray;
     }
     
-    public void destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-    	
-        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-        for (int dx = minX; dx <= maxX; ++dx) {
-            for (int dy = minY; dy <= maxY; ++dy) {
-                for (int dz = minZ; dz <= maxZ; ++dz) {
-                	BlockPos pos = new BlockPos(dx, dy, dz);
-                	Block block = world.getBlockState(pos).getBlock();
-					if (block == Blocks.ICE || block == Blocks.PACKED_ICE) {
-						world.destroyBlock(pos, false);
-					}
-				}
-            }
-        }
+    public void destroyBlocksInAABB(AxisAlignedBB box) {
+    	for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+			IBlockState state = world.getBlockState(pos);
+			if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
+				world.destroyBlock(pos, false);
+			}
+		}
     }
 
 	@Override

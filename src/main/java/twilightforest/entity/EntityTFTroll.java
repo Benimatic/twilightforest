@@ -37,6 +37,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.item.TFItems;
+import twilightforest.util.WorldUtil;
 
 import java.util.UUID;
 
@@ -157,15 +158,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 	}
 
 	private void ripenTrollBerNearby(int offset) {
-		BlockPos pos = new BlockPos(this);
-		
 		int range = 12;
-		for (int dx = -range; dx < range; dx++) {
-			for (int dy = -range; dy < range; dy++) {
-				for (int dz = -range; dz < range; dz++) {
-                    ripenBer(offset, pos.add(dx, dy, dz));
-				}
-			}
+		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this), range)) {
+			ripenBer(offset, pos);
 		}
 	}
 

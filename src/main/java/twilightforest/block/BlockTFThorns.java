@@ -29,6 +29,7 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nullable;
 
@@ -222,26 +223,18 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
     public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
-        byte range = 4;
+        int range = 4;
         int exRange = range + 1;
 
         if (world.isAreaLoaded(pos, exRange))
         {
-            for (int dx = -range; dx <= range; ++dx)
-            {
-                for (int dy = -range; dy <= range; ++dy)
-                {
-                    for (int dz = -range; dz <= range; ++dz)
-                    {
-						BlockPos pos_ = pos.add(dx, dy, dz);
-						IBlockState state_ = world.getBlockState(pos_);
-                        if (state_.getBlock().isLeaves(state_, world, pos_))
-                        {
-                            state.getBlock().beginLeavesDecay(state_, world, pos_);
-                        }
-                    }
-                }
-            }
+        	for (BlockPos pos_ : WorldUtil.getAllAround(pos, range)) {
+				IBlockState state_ = world.getBlockState(pos_);
+				if (state_.getBlock().isLeaves(state_, world, pos_))
+				{
+					state.getBlock().beginLeavesDecay(state_, world, pos_);
+				}
+			}
         }
     }
 

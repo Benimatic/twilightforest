@@ -25,6 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import twilightforest.network.PacketAnnihilateBlock;
+import twilightforest.util.WorldUtil;
 
 
 public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
@@ -67,33 +68,20 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
         }
 	}
 	
-    private void affectBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
-        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-        for (int dx = minX; dx <= maxX; ++dx) {
-            for (int dy = minY; dy <= maxY; ++dy) {
-                for (int dz = minZ; dz <= maxZ; ++dz) {
-					BlockPos pos = new BlockPos(dx, dy, dz);
-					IBlockState state = world.getBlockState(pos);
-
-                	if (state.getBlock() != Blocks.AIR) {
-                		if (canAnnihilate(pos, state)) {
-                			this.world.setBlockToAir(pos);
-                			this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
-                    		this.sendAnnihilateBlockPacket(world, pos);
-                		} else {
-                			this.hasHitObstacle = true;
-                		}
-                	}
-                }
-            }
-        }
-    }
-
+    private void affectBlocksInAABB(AxisAlignedBB box) {
+		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+			IBlockState state = world.getBlockState(pos);
+			if (!state.getBlock().isAir(state, world, pos)) {
+				if (canAnnihilate(pos, state)) {
+					this.world.setBlockToAir(pos);
+					this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
+					this.sendAnnihilateBlockPacket(world, pos);
+				} else {
+					this.hasHitObstacle = true;
+				}
+			}
+		}
+	}
 
 	private boolean canAnnihilate(BlockPos pos, IBlockState state) {
 		// whitelist many castle blocks

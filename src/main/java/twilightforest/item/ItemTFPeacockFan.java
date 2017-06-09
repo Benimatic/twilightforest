@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
 
@@ -136,30 +137,12 @@ public class ItemTFPeacockFan extends ItemTF
 		return new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
 	}
 
-    private int fanBlocksInAABB(World world, EntityPlayer player, AxisAlignedBB par1AxisAlignedBB)
+    private int fanBlocksInAABB(World world, EntityPlayer player, AxisAlignedBB box)
     {
-        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-
         int fan = 0;
-
-        for (int dx = minX; dx <= maxX; ++dx)
-        {
-            for (int dy = minY; dy <= maxY; ++dy)
-            {
-                for (int dz = minZ; dz <= maxZ; ++dz)
-                {
-                    fan += fanBlock(world, player, new BlockPos(dx, dy, dz));
-                }
-            }
-        }
-        
-
-
+        for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+			fan += fanBlock(world, player, pos);
+		}
         return fan;
     }
 

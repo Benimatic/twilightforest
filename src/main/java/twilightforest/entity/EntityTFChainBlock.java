@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.ForgeHooks;
 import twilightforest.item.ItemTFChainBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -18,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import twilightforest.util.WorldUtil;
 
 
 public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiPart  {
@@ -156,37 +158,25 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
         }
 	}
 
-    private void affectBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
-        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-        for (int dx = minX; dx <= maxX; ++dx) {
-            for (int dy = minY; dy <= maxY; ++dy) {
-                for (int dz = minZ; dz <= maxZ; ++dz) {
-					BlockPos pos = new BlockPos(dx, dy, dz);
-					IBlockState state = world.getBlockState(pos);
-                    Block block = state.getBlock();
+    private void affectBlocksInAABB(AxisAlignedBB box) {
+		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+			IBlockState state = world.getBlockState(pos);
+			Block block = state.getBlock();
 
-                    if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(world, pos) >= 0) {
+			if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(world, pos) >= 0) {
 
-                    	if (getThrower() instanceof EntityPlayer) {
-                    		EntityPlayer player = (EntityPlayer)getThrower();
+				if (getThrower() instanceof EntityPlayer) {
+					EntityPlayer player = (EntityPlayer)getThrower();
 
-                    		if (block.canHarvestBlock(world, pos, player)){
-                    			block.harvestBlock(this.world, player, pos, state, world.getTileEntity(pos), player.getHeldItemMainhand());
-                    		}
-                    	}
+					if (ForgeHooks.canHarvestBlock(block, player, world, pos)){
+						block.harvestBlock(this.world, player, pos, state, world.getTileEntity(pos), player.getHeldItemMainhand());
+					}
+				}
 
-                    	world.destroyBlock(pos, false);
-            			
-            			this.blocksSmashed++;
-                    }
-                }
-            }
-        }
+				world.destroyBlock(pos, false);
+				this.blocksSmashed++;
+			}
+		}
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,6 +37,7 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
@@ -650,33 +652,15 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		return ((float)solid / (float)total) < 0.6F;
 	}
 
-    private void destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB)
+    private void destroyBlocksInAABB(AxisAlignedBB box)
     {
-        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-        for (int dx = minX; dx <= maxX; ++dx)
-        {
-            for (int dy = minY; dy <= maxY; ++dy)
-            {
-                for (int dz = minZ; dz <= maxZ; ++dz)
-                {
-                	BlockPos pos = new BlockPos(dx, dy, dz);
-                    Block currentID = this.world.getBlockState(pos).getBlock();
-
-                    if (currentID != Blocks.AIR)
-                    {
-                    	if (currentID != Blocks.OBSIDIAN && currentID != Blocks.END_STONE && currentID != Blocks.BEDROCK)
-                        {
-                        	world.destroyBlock(pos, false);
-                        }
-                    }
-                }
-            }
-        }
+    	for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+			IBlockState state = world.getBlockState(pos);
+			if (!state.getBlock().isAir(state, world, pos) && state.getBlock() != Blocks.OBSIDIAN
+					&& state.getBlock() != Blocks.END_STONE && state.getBlock() != Blocks.BEDROCK) {
+				world.destroyBlock(pos, false);
+			}
+		}
     }
 
 	@Override

@@ -23,6 +23,7 @@ import twilightforest.block.TFBlocks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.MazestoneVariant;
+import twilightforest.util.WorldUtil;
 
 public class ItemTFCrumbleHorn extends ItemTF
 {
@@ -84,28 +85,12 @@ public class ItemTFCrumbleHorn extends ItemTF
 		return crumbleBlocksInAABB(world, living, crumbleBox);
 	}
 
-    private int crumbleBlocksInAABB(World world, EntityLivingBase living, AxisAlignedBB par1AxisAlignedBB)
+    private int crumbleBlocksInAABB(World world, EntityLivingBase living, AxisAlignedBB box)
     {
-        int minX = MathHelper.floor(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
-
-        int crumbled = 0;
-
-        for (int dx = minX; dx <= maxX; ++dx)
-        {
-            for (int dy = minY; dy <= maxY; ++dy)
-            {
-                for (int dz = minZ; dz <= maxZ; ++dz)
-                {
-                    crumbled += crumbleBlock(world, living, new BlockPos(dx, dy, dz));
-                }
-            }
-        }
-        
+    	int crumbled = 0;
+    	for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+			crumbled += crumbleBlock(world, living, pos);
+		}
         return crumbled;
     }
 
