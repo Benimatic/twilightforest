@@ -2,11 +2,18 @@ package twilightforest.entity;
 
 import io.netty.buffer.ByteBuf;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.MoverType;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -27,12 +34,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 
-public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawnData {
+import javax.annotation.Nonnull;
 
+public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawnData {
 	private static final int WARMUP_TIME = 20;
+	private static final DataParameter<EnumFacing> MOVE_DIRECTION = EntityDataManager.createKey(EntityTFSlideBlock.class, DataSerializers.FACING);
+
 	private IBlockState myState;
 	private int slideTime;
-	private EnumFacing moveDirection = null;
 
 	public EntityTFSlideBlock(World world) {
 		super(world);
@@ -63,78 +72,40 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	private void determineMoveDirection() {
-		this.moveDirection = null;
-		
         BlockPos pos = new BlockPos(this);
-        BlockPos up = pos.up();
-        BlockPos down = pos.down();
-        BlockPos north = pos.north();
-        BlockPos south = pos.south();
-        BlockPos west = pos.west();
-        BlockPos east = pos.east();
-		
-        if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.X) {
-        	// horizontal blocks will go up or down if there is a block on one side and air on the other
-        	if (!this.world.isAirBlock(up) && this.world.isAirBlock(down)) {
-        	    this.moveDirection = EnumFacing.DOWN;
-        	} else if (!this.world.isAirBlock(down) && this.world.isAirBlock(up)) {
-                this.moveDirection = EnumFacing.UP;
-        	} else if (!this.world.isAirBlock(south) && this.world.isAirBlock(north)) { // then try Z
-                this.moveDirection = EnumFacing.NORTH;
-        	} else if (!this.world.isAirBlock(north) && this.world.isAirBlock(south)) {
-                this.moveDirection = EnumFacing.SOUTH;
-        	} else if (this.world.isAirBlock(down)) { // if no wall, travel towards open air
-                this.moveDirection = EnumFacing.DOWN;
-        	} else if (this.world.isAirBlock(up)) {
-                this.moveDirection = EnumFacing.UP;
-        	} else if (this.world.isAirBlock(north)) {
-                this.moveDirection = EnumFacing.NORTH;
-        	} else if (this.world.isAirBlock(south)) {
-                this.moveDirection = EnumFacing.SOUTH;
-        	}
-        } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Z) {
-        	// horizontal blocks will go up or down if there is a block on one side and air on the other
-        	if (!this.world.isAirBlock(up) && this.world.isAirBlock(down)) {
-        		this.moveDirection = EnumFacing.DOWN;
-        	} else if (!this.world.isAirBlock(down) && this.world.isAirBlock(up)) {
-        		this.moveDirection = EnumFacing.UP;
-        	} else if (!this.world.isAirBlock(east) && this.world.isAirBlock(west)) { // then try X
-        		this.moveDirection = EnumFacing.WEST;
-        	} else if (!this.world.isAirBlock(west) && this.world.isAirBlock(east)) {
-        		this.moveDirection = EnumFacing.EAST;
-        	} else if (this.world.isAirBlock(down)) { // if no wall, travel towards open air
-        		this.moveDirection = EnumFacing.DOWN;
-        	} else if (this.world.isAirBlock(up)) {
-        		this.moveDirection = EnumFacing.UP;
-        	} else if (this.world.isAirBlock(west)) {
-        		this.moveDirection = EnumFacing.WEST;
-        	} else if (this.world.isAirBlock(east)) {
-        		this.moveDirection = EnumFacing.EAST;
-        	}
-        } else if (myState.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Y) {
-        	// vertical blocks priority is -x, +x, -z, +z
-        	if (!this.world.isAirBlock(east) && this.world.isAirBlock(west)) {
-        		this.moveDirection = EnumFacing.WEST;
-        	} else if (!this.world.isAirBlock(west) && this.world.isAirBlock(east)) {
-        		this.moveDirection = EnumFacing.EAST;
-        	} else if (!this.world.isAirBlock(south) && this.world.isAirBlock(north)) {
-        		this.moveDirection = EnumFacing.NORTH;
-        	} else if (!this.world.isAirBlock(north) && this.world.isAirBlock(south)) {
-        		this.moveDirection = EnumFacing.SOUTH;
-        	} else if (this.world.isAirBlock(west)) { // if no wall, travel towards open air
-        		this.moveDirection = EnumFacing.WEST;
-        	} else if (this.world.isAirBlock(east)) {
-        		this.moveDirection = EnumFacing.EAST;
-        	} else if (this.world.isAirBlock(north)) {
-        		this.moveDirection = EnumFacing.NORTH;
-        	} else if (this.world.isAirBlock(south)) {
-        		this.moveDirection = EnumFacing.SOUTH;
-        	}
-        }
+
+		EnumFacing[] toCheck;
+
+		switch (myState.getValue(BlockRotatedPillar.AXIS)) {
+			case X: // horizontal blocks will go up or down if there is a block on one side and air on the other
+					toCheck = new EnumFacing[] { EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH }; break;
+			case Z: // horizontal blocks will go up or down if there is a block on one side and air on the other
+					toCheck = new EnumFacing[] { EnumFacing.DOWN, EnumFacing.UP, EnumFacing.WEST, EnumFacing.EAST }; break;
+			default:
+			case Y: // vertical blocks priority is -x, +x, -z, +z
+					toCheck = new EnumFacing[] { EnumFacing.WEST, EnumFacing.EAST, EnumFacing.NORTH, EnumFacing.SOUTH }; break;
+		}
+
+		for (EnumFacing e : toCheck) {
+			if (world.isAirBlock(pos.offset(e)) && !world.isAirBlock(pos.offset(e.getOpposite()))) {
+				dataManager.set(MOVE_DIRECTION, e);
+				return;
+			}
+		}
+
+		// if no wall, travel towards open air
+		for (EnumFacing e : toCheck) {
+			if (world.isAirBlock(pos.offset(e))) {
+				dataManager.set(MOVE_DIRECTION, e);
+				return;
+			}
+		}
 	}
 
 	@Override
-	protected void entityInit() { }
+	protected void entityInit() {
+		dataManager.register(MOVE_DIRECTION, EnumFacing.DOWN);
+	}
 
     @Override
     protected boolean canTriggerWalking()
@@ -163,14 +134,14 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
             ++this.slideTime;
             // start moving after warmup
             if (this.slideTime > WARMUP_TIME) {
-	            this.motionX += moveDirection.getFrontOffsetX() * 0.03999999910593033D;
-	            this.motionY += moveDirection.getFrontOffsetY() * 0.03999999910593033D;
-	            this.motionZ += moveDirection.getFrontOffsetZ() * 0.03999999910593033D;
+	            this.motionX += dataManager.get(MOVE_DIRECTION).getFrontOffsetX() * 0.04;
+	            this.motionY += dataManager.get(MOVE_DIRECTION).getFrontOffsetY() * 0.04;
+	            this.motionZ += dataManager.get(MOVE_DIRECTION).getFrontOffsetZ() * 0.04;
 	            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             }
-            this.motionX *= 0.9800000190734863D;
-            this.motionY *= 0.9800000190734863D;
-            this.motionZ *= 0.9800000190734863D;
+            this.motionX *= 0.98;
+            this.motionY *= 0.98;
+            this.motionZ *= 0.98;
             
             if (!this.world.isRemote)
             {
@@ -196,10 +167,10 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
                 	this.motionY = 0;
                 	this.motionZ = 0;
 
-                	this.moveDirection = this.moveDirection.getOpposite();
+                	dataManager.set(MOVE_DIRECTION, dataManager.get(MOVE_DIRECTION).getOpposite());
                 }
 
-                if (this.isCollided || this.isStopped())
+                if (this.isCollided)
                 {
                     this.motionX *= 0.699999988079071D;
                     this.motionZ *= 0.699999988079071D;
@@ -236,7 +207,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     			double kx = (this.posX - entity.posX) * 2.0;
     			double kz = (this.posZ - entity.posZ) * 2.0;
     			
-    			((EntityLivingBase) entity).knockBack(this, 5, kx, kz);
+    			((EntityLivingBase) entity).knockBack(this, 2, kx, kz);
     		}
     	}
     }
@@ -246,10 +217,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     {
         return null;
     }
-
-    private boolean isStopped() {
-		return moveDirection == null;
-	}
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -261,25 +228,21 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
     //Atomic: Suppressed deprecation, Ideally I'd use a state string here, but that is more work than I'm willing to put in right now.
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
+	protected void readEntityFromNBT(@Nonnull NBTTagCompound nbtTagCompound) {
 		Block b = Block.REGISTRY.getObject(new ResourceLocation(nbtTagCompound.getString("TileID")));
 		int meta = nbtTagCompound.getByte("Meta");
         this.myState = b.getStateFromMeta(meta);
 		this.slideTime = nbtTagCompound.getInteger("Time");
-		if (nbtTagCompound.hasKey("Direction")) {
-		    moveDirection = EnumFacing.getFront(nbtTagCompound.getByte("Direction"));
-        }
+		dataManager.set(MOVE_DIRECTION, EnumFacing.getFront(nbtTagCompound.getByte("Direction")));
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
+	protected void writeEntityToNBT(@Nonnull NBTTagCompound nbtTagCompound) {
         nbtTagCompound.setString("TileID", myState.getBlock().getRegistryName().toString());
         nbtTagCompound.setByte("Meta", (byte)this.myState.getBlock().getMetaFromState(myState));
         nbtTagCompound.setInteger("Time", this.slideTime);
-        if (moveDirection != null) {
-            nbtTagCompound.setByte("Direction", (byte) moveDirection.getIndex());
-        }
-    }
+		nbtTagCompound.setByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
+	}
 	
 	@Override
 	public void writeSpawnData(ByteBuf buffer) {

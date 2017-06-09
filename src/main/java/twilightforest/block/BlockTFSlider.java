@@ -159,7 +159,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.posZ) * 2.0;
 			
-			((EntityLivingBase) entity).knockBack(null, 5, kx, kz);
+			((EntityLivingBase) entity).knockBack(null, 2, kx, kz);
     	}
     }
 
