@@ -67,7 +67,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// make 4 caves
 		if (this.getComponentType() < 3) {
 
-			for (final Rotation rotation : Rotation.values())
+			for (final Rotation rotation : ROTATIONS)
 			{
 				BlockPos dest = getValidOpening(rand, 2, rotation);
 
@@ -90,7 +90,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
     		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
     		
             // wall decorations
-    		for (Rotation rotation : Rotation.values()) {
+    		for (Rotation rotation : ROTATIONS) {
     			if (!this.openingTowards[rotation.ordinal()]) {
     				decorateWall(world, sbb, decoRNG, rotation);
     			}
@@ -128,7 +128,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// monolith
 		int mid = this.size / 2;
 		int height = 7 + rand.nextInt(8);
-		Rotation rotation = Rotation.values()[rand.nextInt(4)];
+		Rotation rotation = ROTATIONS[rand.nextInt(4)];
 		
 		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid - 1, mid - 1, height, mid - 1, Blocks.OBSIDIAN.getDefaultState(), rotation);
 		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid - 1, mid + 0, height - 2, mid - 1, Blocks.OBSIDIAN.getDefaultState(), rotation);

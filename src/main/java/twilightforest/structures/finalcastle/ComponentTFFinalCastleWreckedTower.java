@@ -48,7 +48,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
     }
 
 	@Override
-	public EnumDyeColor getGlyphMeta() {
+	public EnumDyeColor getGlyphColour() {
 		return ORANGE;
 	}
 

@@ -76,10 +76,10 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// limit sprawl to a reasonable amount
 		if (this.getComponentType() < 5) {
 			
-			Rotation dirOffset = Rotation.values()[rand.nextInt(Rotation.values().length)];
+			Rotation dirOffset = ROTATIONS[rand.nextInt(ROTATIONS.length)];
 			
 			// make sub towers
-			for (final Rotation rotation : Rotation.values()) {
+			for (final Rotation rotation : ROTATIONS) {
 				
 				Rotation dir = dirOffset.add(rotation);
 				
@@ -656,7 +656,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// platforms
 		for (int i = 0; i < 2; i++)
 		{
-			for (Rotation r : Rotation.values())
+			for (Rotation r : ROTATIONS)
 			{
 				if (i == 0 && r == Rotation.NONE) continue;
 				Rotation rotation = ladderUpDir.add(r);

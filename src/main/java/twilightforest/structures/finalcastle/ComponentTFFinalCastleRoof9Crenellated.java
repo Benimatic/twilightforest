@@ -30,7 +30,7 @@ public class ComponentTFFinalCastleRoof9Crenellated extends StructureTFComponent
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		for (Rotation rotation : Rotation.values()) {
+		for (Rotation rotation : ROTATIONS) {
             this.fillBlocksRotated(world, sbb, 0, -1, 0, 2, 3, 2, deco.blockState, rotation);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);

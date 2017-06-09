@@ -97,10 +97,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		
 		if (this.getComponentType() < 2)
 		{
-			mainDir = Rotation.values()[rand.nextInt(Rotation.values().length)];
+			mainDir = ROTATIONS[rand.nextInt(ROTATIONS.length)];
 
 			// make sub towers
-			for (Rotation rotation : Rotation.values()) {
+			for (Rotation rotation : ROTATIONS) {
 				if (rotation == mainDir)
 				{
 					continue;
@@ -116,7 +116,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		else
 		{
 			// make boss trap towers
-			for (Rotation i : Rotation.values()) {
+			for (Rotation i : ROTATIONS) {
 				int[] dest = getValidOpening(rand, i);
 				makeBossTrapWing(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], i);
 			}
@@ -125,7 +125,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (this.getComponentType() > 0)
 		{
 			// sub towers at base of tower
-			for (Rotation i : Rotation.values()) {
+			for (Rotation i : ROTATIONS) {
 				if (i == Rotation.CLOCKWISE_180)
 				{
 					continue;
@@ -372,7 +372,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	protected void addThreeQuarterFloors(World world, Random decoRNG, StructureBoundingBox sbb, int bottom, int top) {
 		
 		int spacing = 5;
-		Rotation rotation = Rotation.values()[(this.boundingBox.minY + bottom) % 4];
+		Rotation rotation = ROTATIONS[(this.boundingBox.minY + bottom) % 4];
 		if (bottom == 0)
 		{
 			makeLargeStairsUp(world, sbb, rotation, 0);
@@ -410,7 +410,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	protected void addThreeQuarterFloorsDecorateBoss(World world, Random decoRNG, StructureBoundingBox sbb, int bottom, int top) {
 		
 		int spacing = 5;
-		Rotation rotation = Rotation.values()[(this.boundingBox.minY + bottom) % 4];
+		Rotation rotation = ROTATIONS[(this.boundingBox.minY + bottom) % 4];
 		if (bottom == 0)
 		{
 			makeLargeStairsUp(world, sbb, rotation, 0);
@@ -1436,7 +1436,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		// do we need a beam going up?
 		if (isTop)
 		{
-			Rotation topFloorRotation = Rotation.values()[(this.boundingBox.minY + top + 1) % 4];
+			Rotation topFloorRotation = ROTATIONS[(this.boundingBox.minY + top + 1) % 4];
 			
 			int ladderX = 4;
 			int ladderZ = 10;
@@ -1513,7 +1513,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		{
 			makeBuilderPlatforms(world, rand, sbb, floorside, y, y == bottom && bottom != spacing, y >= (top - spacing));
 			floorside = floorside.add(Rotation.CLOCKWISE_90);
-			floorside = floorside.add(Rotation.values()[rand.nextInt(3)]);
+			floorside = floorside.add(ROTATIONS[rand.nextInt(3)]);
 		}
 		
 		// add the bottom platforms
@@ -1575,7 +1575,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	 * Add the top floating platform in the builder platforms area
 	 */
 	private void addTopBuilderPlatform(World world, Random rand, int bottom, int top, int spacing, StructureBoundingBox sbb) {
-		Rotation rotation = Rotation.values()[(this.boundingBox.minY + top + 1) % 4];
+		Rotation rotation = ROTATIONS[(this.boundingBox.minY + top + 1) % 4];
 		
 		// platform
 		this.fillBlocksRotated(world, sbb, 5, top - spacing, 9, 7, top - spacing, 11, deco.accentState, rotation);

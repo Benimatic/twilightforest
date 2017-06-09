@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
@@ -19,7 +20,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	public ComponentTFFinalCastleBellTower21() { }
 
 	public ComponentTFFinalCastleBellTower21(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, FLOORS, 1, 1, direction);
+		super(rand, i, x, y, z, FLOORS, 1, EnumDyeColor.ORANGE, direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;
@@ -53,14 +54,14 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		// openings!
 		Block fieldBlock = TFBlocks.forceField;
 		int fieldMeta = 4;
-        for (int rotation = 0; rotation < 4; rotation++) {
+        for (Rotation rotation : ROTATIONS) {
 	        int y = 48;
 	        for (int x = 5; x < this.size - 4; x += 2) {
-//	        		for (int wy = 0; wy < 15; wy++) {
-//		        		fieldMeta = rand.nextInt(4) + 1;
-//	        			this.setBlockStateRotated(world, fieldBlock, fieldMeta, x, y + wy, 0, rotation, sbb);
-//	        		}
-//	        		fieldMeta = rand.nextInt(5);
+//	        	for (int wy = 0; wy < 15; wy++) {
+//		       		fieldMeta = rand.nextInt(4) + 1;
+//	        		this.setBlockStateRotated(world, fieldBlock, fieldMeta, x, y + wy, 0, rotation, sbb);
+//	        	}
+//	        	fieldMeta = rand.nextInt(5);
 		        this.fillBlocksRotated(world, sbb, x, y, 0, x, y + 14, 0, fieldBlock, fieldMeta, rotation);
 	        }
 	        y = 24;

@@ -97,7 +97,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		{
 			// make sub towers
 			//for (int i = 0; i < 4; i++) {
-			for (Rotation i : Rotation.values()) {
+			for (Rotation i : ROTATIONS) {
 				
 				if (this.size < MAIN_SIZE && i == Rotation.CLOCKWISE_180)
 				{

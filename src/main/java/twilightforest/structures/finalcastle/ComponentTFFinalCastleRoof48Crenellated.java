@@ -37,7 +37,7 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, TFBlocks.castleMagic, 3, TFBlocks.castleMagic, 3, false);
 
 	    // crenellations
-		for (Rotation rotation : Rotation.values()) {
+		for (Rotation rotation : ROTATIONS) {
 		    this.fillBlocksRotated(world, sbb, 3, 1, 1, 45, 3, 1, deco.blockState, rotation);
 
 		    for (int i = 10; i < 41; i += 5) {

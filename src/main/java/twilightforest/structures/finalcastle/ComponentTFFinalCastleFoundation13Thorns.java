@@ -29,7 +29,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		// thorns
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
-		for (Rotation i : Rotation.values()) {
+		for (Rotation i : ROTATIONS) {
 			this.makeThornVine(world, decoRNG, i, sbb);
 		}
 
@@ -48,7 +48,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 
 		final IBlockState thorns = TFBlocks.thorns.getDefaultState();
 
-		while (this.getBlockIDRotated(world, x, y, z, rotation, sbb) != TFBlocks.deadrock && this.getYWithOffset(y) > 60) {
+		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation) != TFBlocks.deadrock && this.getYWithOffset(y) > 60) {
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {
@@ -93,25 +93,25 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		Random rand = new Random(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
 
 		// pick a direction
-		int dir = rand.nextInt(4);
+		Rotation dir = getRandomDirection(rand);
 
 		// initialize direction variables
 		int dx = 0;
 		int dz = 0;
 
 		switch (dir) {
-		case 0:
-			dx = +1;
-			break;
-		case 1:
-			dz = +1;
-			break;
-		case 2:
-			dx = -1;
-			break;
-		case 3:
-			dz = -1;
-			break;
+			case NONE:
+				dx = +1;
+				break;
+			case CLOCKWISE_90:
+				dz = +1;
+				break;
+			case CLOCKWISE_180:
+				dx = -1;
+				break;
+			case COUNTERCLOCKWISE_90:
+				dz = -1;
+				break;
 		}
 
 		// how far do we branch?
@@ -124,7 +124,8 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		if (destX > 0 && destX < this.boundingBox.getXSize() && destZ > 0 && destZ < this.boundingBox.getZSize()) {
 			for (int i = 0; i < dist; i++) {
 				// go out that far
-				int branchMeta = ((dir + rotation + this.coordBaseMode) % 2 == 0) ? 5 : 9;
+				final Rotation add = dir.add(rotation).add(this.rotation);
+				int branchMeta = (add == Rotation.NONE || add == Rotation.CLOCKWISE_180) ? 5 : 9;
 				if (i > 0) {
 					this.setBlockStateRotated(world, TFBlocks.thorns, branchMeta, x + (dx * i), y, z + (dz * i), rotation, sbb);
 				}

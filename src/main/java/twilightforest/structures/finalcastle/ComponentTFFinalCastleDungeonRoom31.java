@@ -45,7 +45,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 	    if (mySpread == maxSpread && !isExitBuildForLevel(parent)) {
 		    Rotation direction = getRandomDirection(rand);
 		    for (int i = 0; i < 8 && !isExitBuildForLevel(parent); i++) {
-			    direction = (direction + i) % 4;
+			    direction = direction.add(ROTATIONS[i&3]);
 			    if (this.addDungeonExit(parent, list, rand, direction)) {
 				    this.setExitBuiltForLevel(parent, true);
 			    }
@@ -56,7 +56,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 	    if (mySpread < maxSpread) {
 		    Rotation direction = getRandomDirection(rand);
 		    for (int i = 0; i < 12; i++) {
-			    direction = (direction + i) % 4;
+			    direction = direction.add(ROTATIONS[i&3]);
 			    this.addDungeonRoom(parent, list, rand, direction, this.level);
 		    }
 	    }
@@ -77,7 +77,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 	}
 
 	protected boolean addDungeonRoom(StructureComponent parent, List list, Random rand, Rotation rotation, int level) {
-		rotation = (this.coordBaseMode + rotation) % 4;
+		rotation = rotation.add(this.rotation);
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
@@ -105,7 +105,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 		//TODO: check if we are sufficiently near the castle center
 
-		rotation = (this.coordBaseMode + rotation) % 4;
+		rotation = rotation.add(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 		ComponentTFFinalCastleDungeonExit dRoom = new ComponentTFFinalCastleDungeonExit(rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(EnumFacing.SOUTH), this.level);
 		StructureComponent intersect = StructureTFComponent.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
@@ -150,7 +150,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		int forceFieldMeta = this.getForceFieldMeta(decoRNG);
 		int runeMeta = getRuneMeta(forceFieldMeta);
 
-		for (int rotation = 0; rotation < 4; rotation++) {
+		for (Rotation rotation: ROTATIONS) {
 			int cs = 7;
 			this.fillBlocksRotated(world, sbb, cs, 0, cs + 1, cs, this.height - 1, this.size - 2 - cs, TFBlocks.forceField, forceFieldMeta, rotation);
 			// verticals

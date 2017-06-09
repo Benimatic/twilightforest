@@ -34,7 +34,7 @@ public class ComponentTFFinalCastleRoof13Crenellated extends StructureTFComponen
         // assume square
         int size = this.boundingBox.maxX - this.boundingBox.minX;
 
-		for (Rotation rotation : Rotation.values()) {
+		for (Rotation rotation : ROTATIONS) {
             // corner
             this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 3, 3, deco.blockState, rotation);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);

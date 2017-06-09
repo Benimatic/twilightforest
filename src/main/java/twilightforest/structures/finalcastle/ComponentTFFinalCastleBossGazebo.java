@@ -1,9 +1,12 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.StructureTFDecoratorCastle;
@@ -28,17 +31,15 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent
     @Override
     public void buildComponent(StructureComponent parent, List list, Random rand) {
 	    this.deco = new StructureTFDecoratorCastle();
-	    this.deco.blockID = TFBlocks.castleMagic;
-	    this.deco.blockMeta = 1;
+	    this.deco.blockState = TFBlocks.castleMagic.getDefaultState().withProperty(BlockTFCastleMagic.COLOR, EnumDyeColor.BLUE);
 
-	    this.deco.fenceID = TFBlocks.forceField;
-	    this.deco.fenceMeta = 10;
+	    this.deco.fenceState = TFBlocks.forceField.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PURPLE);
     }
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// walls
-		for (Rotation rotation : Rotation.values()) {
+		for (Rotation rotation : ROTATIONS) {
 			this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, deco.fenceState, rotation);
 		}
 

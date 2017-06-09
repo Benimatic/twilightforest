@@ -144,7 +144,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		if (size > 4) {
 			// sub towers
-			for (final Rotation towerRotation : Rotation.values())
+			for (final Rotation towerRotation : ROTATIONS)
 			{
 				if (towerRotation == Rotation.CLOCKWISE_180) continue;
 				int[] dest = getValidOpening(rand, towerRotation);
@@ -1824,7 +1824,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		
 		//for (int i = 0; i < 4; i++) {
-		for (Rotation rotation : Rotation.values()) {
+		for (Rotation rotation : ROTATIONS) {
 			boolean realWindows = real && !openingTowards[rotation.ordinal()];
 			makeWindowBlock(world, size - 1, 2, size / 2, rotation, sbb, realWindows);
 			makeWindowBlock(world, size - 1, 3, size / 2, rotation, sbb, realWindows);
@@ -2111,7 +2111,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	private Rotation getRotation(Rotation startRotation, int rotations)
 	{
 		final int totalIncrements = startRotation.ordinal() + rotations;
-		return Rotation.values()[totalIncrements & 3];
+		return ROTATIONS[totalIncrements & 3];
 	}
 
 	/**
@@ -2339,7 +2339,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void makeGlyphBranches(World world, Random rand, EnumDyeColor colour, StructureBoundingBox sbb) {
 		// pick a random side of the tower
-		Rotation rotation = Rotation.values()[rand.nextInt(4)];
+		Rotation rotation = ROTATIONS[rand.nextInt(4)];
 		
 		// start somewhere in the lower part
 		int startHeight = rand.nextInt((int) (this.height * 0.66F));

@@ -45,7 +45,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		makeARoof(parent, list, rand);
 
 		// sub towers
-		for (final Rotation rotation : Rotation.values()) {
+		for (final Rotation rotation : ROTATIONS) {
 			int[] dest = getValidOpening(rand, rotation);
 			
 			// adjust height if we're too low at this point
@@ -61,7 +61,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 
 		// try one more time for large towers
-		for (final Rotation rotation : Rotation.values())
+		for (final Rotation rotation : ROTATIONS)
 		{
 			int[] dest = getValidOpening(rand, rotation);
 			
@@ -78,7 +78,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 
 		// another set, if possible
-		for (final Rotation rotation : Rotation.values()) {
+		for (final Rotation rotation : ROTATIONS) {
 			int[] dest = getValidOpening(rand, rotation);
 			
 			int childHeight = Math.min(7 + rand.nextInt(6), this.height - dest[1] - 3);
@@ -89,7 +89,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 		
 		// outbuildings
-		for (final Rotation rotation : Rotation.values()) {
+		for (final Rotation rotation : ROTATIONS) {
 			int[] dest = getOutbuildingOpening(rand, rotation);
 			
 			int childHeight = 11 + rand.nextInt(10);
@@ -100,7 +100,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		
 		// TINY TOWERS!
 		for (int i = 0; i < 4; i++) {
-			for (final Rotation towerRotation : Rotation.values())
+			for (final Rotation towerRotation : ROTATIONS)
 			{
 				int[] dest = getValidOpening(rand, towerRotation);
 				int childHeight = 6 + rand.nextInt(5);

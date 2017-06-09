@@ -75,7 +75,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		// make 4 caves
-		for (final Rotation caveRotation : Rotation.values())
+		for (final Rotation caveRotation : ROTATIONS)
 		{
 			BlockPos dest = getValidOpening(rand, 5, caveRotation);
 

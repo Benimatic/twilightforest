@@ -52,7 +52,7 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent
 			}
 		}
 
-		this.func_151554_b(world, deco.blockState, 0, 0, 5, sbb);
+		this.setBlockState(world, deco.blockState, 0, 0, 5, sbb);
 
 
 		return true;
@@ -62,7 +62,7 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).isReplaceable(world, x, y, z)) {
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
 			this.setBlockState(world, deco.stairID, this.getStairMeta(stairMeta), x, y, z, sbb);
-			this.func_151554_b(world, deco.blockState, x, y - 1, z, sbb);
+			this.setBlockState(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}
 

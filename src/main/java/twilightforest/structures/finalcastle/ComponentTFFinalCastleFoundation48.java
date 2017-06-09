@@ -44,7 +44,7 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponent
 		}
 
 		int mid = 16;
-		for (Rotation rotation : Rotation.values()) {
+		for (Rotation rotation : ROTATIONS) {
             // do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 3, -2, 3, rotation, sbb);
 

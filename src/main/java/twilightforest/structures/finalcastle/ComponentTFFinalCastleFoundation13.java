@@ -53,7 +53,7 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
         // assume square
         int size = this.boundingBox.maxX - this.boundingBox.minX;
 
-        for (Rotation rotation : Rotation.values()) {
+        for (Rotation rotation : ROTATIONS) {
             // do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 1, rotation, sbb);
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);

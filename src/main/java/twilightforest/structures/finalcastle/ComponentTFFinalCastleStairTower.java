@@ -71,9 +71,9 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
 			    int sy = y + i;
 			    int sz = 1;
 
-			    this.setBlockStateRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz, rotation, sbb);
+			    this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz, rotation, sbb);
 			    this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-			    this.setBlockStateRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz + 1, rotation, sbb);
+			    this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
 			    this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
 		    }
 		    // landing
@@ -104,9 +104,11 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
 			    int sy = y + i;
 			    int sz = 1;
 
-			    this.setBlockStateRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz, rotation, sbb);
+
+
+			    this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz, rotation, sbb);
 			    this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-			    this.setBlockStateRotated(world, deco.stairID, getStairMeta(0 + rotation), sx, sy, sz + 1, rotation, sbb);
+			    this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
 			    this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
 		    }
 		    // landing

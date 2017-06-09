@@ -83,7 +83,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 
 			// make sub towers
 			//for (int i = 0; i < 4; i++) {
-			for (Rotation i : Rotation.values()) {
+			for (Rotation i : ROTATIONS) {
 
 				if (i == mainDir)
 				{
@@ -112,7 +112,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 		Rotation mainDir;
 		int[] dest;
 		int childHeight;
-		mainDir = Rotation.values()[rand.nextInt(4)];
+		mainDir = ROTATIONS[rand.nextInt(4)];
 		
 		dest = getValidOpening(rand,  mainDir);
 		

@@ -42,7 +42,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 		// add a beard
 		makeABeard(parent, list, rand);
 		
-		for (Rotation i : Rotation.values())
+		for (Rotation i : ROTATIONS)
 		{
 			if (i == Rotation.CLOCKWISE_180 || rand.nextBoolean())
 			{
