@@ -1,6 +1,5 @@
 package twilightforest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -10,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandGameRule;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,7 +19,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -41,6 +38,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFGiantBlock;
@@ -68,19 +66,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * So much of the mod logic in this one class
  */
+@Mod.EventBusSubscriber
 public class TFEventListener {
 	
-	protected HashMap<String, InventoryPlayer> playerKeepsMap = new HashMap<String, InventoryPlayer>();
-	private boolean isBreakingWithGiantPick = false;
-	private boolean shouldMakeGiantCobble = false;
-	private int amountOfCobbleToReplace = 0;
-	private long lastSpawnedHintMonsterTime;
+	private static HashMap<String, InventoryPlayer> playerKeepsMap = new HashMap<String, InventoryPlayer>();
+	private static boolean isBreakingWithGiantPick = false;
+	private static boolean shouldMakeGiantCobble = false;
+	private static int amountOfCobbleToReplace = 0;
+	private static long lastSpawnedHintMonsterTime;
 
 	/**
 	 * Check if the player picks up a lich scepter, and if so, check for the scepter mastery achievement
 	 */
 	@SubscribeEvent
-	public void pickupItem(EntityItemPickupEvent event) {
+	public static void pickupItem(EntityItemPickupEvent event) {
 		Item item = event.getItem().getEntityItem().getItem();
 		if (item == TFItems.scepterTwilight || item == TFItems.scepterLifeDrain
 				|| item == TFItems.scepterZombie) {
@@ -143,9 +142,8 @@ public class TFEventListener {
 
 	/**
 	 * Does the player have all three scepters somewhere in the inventory?
-	 * @param player
 	 */
-	private void checkPlayerForScepterMastery(EntityPlayer player)
+	private static void checkPlayerForScepterMastery(EntityPlayer player)
 	{
 		boolean scepterTwilight = false;
 		boolean scepterLifeDrain = false;
@@ -181,7 +179,7 @@ public class TFEventListener {
 	 * Check if we've crafted something that there's an achievement for
 	 */
 	@SubscribeEvent
-	public void onCrafting(ItemCraftedEvent event) {
+	public static void onCrafting(ItemCraftedEvent event) {
 		
 		//System.out.println("Getting item crafted event");
 		
@@ -209,7 +207,7 @@ public class TFEventListener {
     	}
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-    	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.getCount() == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
+    	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.getCount() == 64 && doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
@@ -217,7 +215,7 @@ public class TFEventListener {
     	}
 	}
 
-	private boolean doesCraftMatrixHaveGiantLog(IInventory inv) {
+	private static boolean doesCraftMatrixHaveGiantLog(IInventory inv) {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			
@@ -232,7 +230,7 @@ public class TFEventListener {
 	/**
 	 * Does the player have two naga armors?
 	 */
-	private void checkPlayerForNagaArmorer(EntityPlayer player)
+	private static void checkPlayerForNagaArmorer(EntityPlayer player)
 	{
 		boolean nagaScale = false;
 		boolean legsNaga = false;
@@ -263,20 +261,20 @@ public class TFEventListener {
 	 * Also check if we need to transform 64 cobbles into a giant cobble
 	 */
 	@SubscribeEvent
-	public void harvestDrops(HarvestDropsEvent event) {
+	public static void harvestDrops(HarvestDropsEvent event) {
 		// this flag is set in reaction to the breakBlock event, but we need to remove the drops in this event
-		if (this.shouldMakeGiantCobble && event.getDrops().size() > 0) {
+		if (shouldMakeGiantCobble && event.getDrops().size() > 0) {
 			// turn the next 64 cobblestone drops into one giant cobble
 			if (event.getDrops().get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
 				event.getDrops().remove(0);
-				if (this.amountOfCobbleToReplace == 64) {
+				if (amountOfCobbleToReplace == 64) {
 					event.getDrops().add(new ItemStack(TFBlocks.giantCobble));
 				}
 				
-				this.amountOfCobbleToReplace--;
+				amountOfCobbleToReplace--;
 				
-				if (this.amountOfCobbleToReplace <= 0) {
-					this.shouldMakeGiantCobble = false;
+				if (amountOfCobbleToReplace <= 0) {
+					shouldMakeGiantCobble = false;
 				}
 			}
 		}
@@ -286,7 +284,7 @@ public class TFEventListener {
 	 * We wait for a player wearing armor with the fire react enchantment to get hurt, and if that happens, we react
 	 */
 	@SubscribeEvent
-	public void entityHurts(LivingHurtEvent event) 
+	public static void entityHurts(LivingHurtEvent event) 
 	{
 		// fire aura
 		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getEntity() != null)
@@ -322,8 +320,8 @@ public class TFEventListener {
 		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
 			
-			if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
-					|| player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
+			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
+					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
 				//System.out.println("Triplebow Arrows!");
 				event.getEntityLiving().hurtResistantTime = 0;
 			}
@@ -410,7 +408,7 @@ public class TFEventListener {
 	}
 
 	// todo modernize the calculations
-	private boolean willEntityDie(LivingHurtEvent event)
+	private static boolean willEntityDie(LivingHurtEvent event)
 	{
 		float amount = event.getAmount();
 		DamageSource source = event.getSource();
@@ -433,30 +431,12 @@ public class TFEventListener {
 	}
 	
 	/**
-	 * Catch bonemeal use
-	 */
-	@SubscribeEvent
-	public void bonemealUsed(BonemealEvent event)
-	{
-		if (event.getBlock().getBlock() == TFBlocks.sapling)
-		{
-            if (!event.getWorld().isRemote)
-            {
-                ((BlockSapling)TFBlocks.sapling).grow(event.getWorld(), event.getPos(), event.getBlock(), event.getWorld().rand);
-
-                event.setResult(Result.ALLOW);
-            }
-		}
-	}
-	
-	
-	/**
 	 * If a player dies with a charm of keeping, consume the charm and then keep track of what items we need to keep
 	 * 
 	 * Also keep tower keys
 	 */
 	@SubscribeEvent
-	public void livingDies(LivingDeathEvent event)
+	public static void livingDies(LivingDeathEvent event)
 	{
 		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().world.getGameRules().getBoolean("keepInventory"))
 		{
@@ -512,7 +492,7 @@ public class TFEventListener {
 			// check for tower keys
 			if (player.inventory.hasItemStack(new ItemStack(TFItems.towerKey)))
 			{
-				InventoryPlayer keepInventory = retrieveOrMakeKeepInventory(player);
+				InventoryPlayer keepInventory = playerKeepsMap.computeIfAbsent(player.getName(), k -> new InventoryPlayer(null));
 				// keep them all
 				for (int i = 0; i < player.inventory.mainInventory.size(); i++)
 				{
@@ -533,24 +513,9 @@ public class TFEventListener {
 	}
 
 	/**
-	 * If we have a stored inventory already, return that, if not, make a new one.
-	 */
-	private InventoryPlayer retrieveOrMakeKeepInventory(EntityPlayer player) 
-	{
-		if (playerKeepsMap.containsKey(player.getName()))
-		{
-			return playerKeepsMap.get(player.getName());
-		}
-		else
-		{
-			return new InventoryPlayer(null);
-		}
-	}
-
-	/**
 	 * Move the full armor inventory to the keep pile
 	 */
-	private void keepAllArmor(EntityPlayer player, InventoryPlayer keepInventory) {
+	private static void keepAllArmor(EntityPlayer player, InventoryPlayer keepInventory) {
 		for (int i = 0; i < player.inventory.armorInventory.size(); i++)
 		{
 			keepInventory.armorInventory.set(i, player.inventory.armorInventory.get(i).copy());
@@ -561,7 +526,7 @@ public class TFEventListener {
 	 * Maybe we kept some stuff for the player!
 	 */
 	@SubscribeEvent
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
+	public static  void onPlayerRespawn(PlayerRespawnEvent event) {
 		EntityPlayer player = event.player;
 		if (playerKeepsMap.containsKey(player.getName()))
 		{
@@ -605,7 +570,7 @@ public class TFEventListener {
 	 * Dump stored items if player logs out
 	 */
 	@SubscribeEvent
-	public void onPlayerLogout(PlayerLoggedOutEvent event) { 
+	public static void onPlayerLogout(PlayerLoggedOutEvent event) { 
 		EntityPlayer player = event.player;
 		if (playerKeepsMap.containsKey(player.getName()))
 		{
@@ -625,7 +590,7 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public boolean preOverlay(RenderGameOverlayEvent.Pre event)
+	public static boolean preOverlay(RenderGameOverlayEvent.Pre event)
 	{
 		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT)
 		{
@@ -644,7 +609,7 @@ public class TFEventListener {
 	 * Stop the player from sneaking while riding an unfriendly creature
 	 */
 	@SubscribeEvent
-	public boolean livingUpdate(LivingUpdateEvent event)
+	public static boolean livingUpdate(LivingUpdateEvent event)
 	{
 		if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().isSneaking() && isRidingUnfriendly(event.getEntityLiving()))
 		{
@@ -653,10 +618,7 @@ public class TFEventListener {
 		return true;
 	}
 
-	/**
-	 * Is the specified entity riding an unfriendly creature (pinch beetle?)
-	 */
-	private boolean isRidingUnfriendly(EntityLivingBase entity) {
+	private static boolean isRidingUnfriendly(EntityLivingBase entity) {
 		return entity.isRiding() && (entity.getRidingEntity() instanceof EntityTFPinchBeetle || entity.getRidingEntity() instanceof EntityTFYeti);
 	}
 	
@@ -665,16 +627,16 @@ public class TFEventListener {
 	 * Also check for breaking blocks with the giant's pickaxe and maybe break nearby blocks
 	 */
 	@SubscribeEvent
-	public void breakBlock(BreakEvent event) {
+	public static void breakBlock(BreakEvent event) {
 		if (!event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.getPos()) && isBlockProtectedFromBreaking(event.getWorld(), event.getPos())) {
 			event.setCanceled(true);
-		} else if (!this.isBreakingWithGiantPick
+		} else if (!isBreakingWithGiantPick
 				&& event.getPlayer().getHeldItemMainhand() != null
 				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giantPick
 				&& event.getPlayer().getHeldItemMainhand().getItem().canHarvestBlock(event.getState(), event.getPlayer().getHeldItemMainhand())) {
 			//System.out.println("Breaking with giant pick!");
 			
-			this.isBreakingWithGiantPick = true;
+			isBreakingWithGiantPick = true;
 			
 			
 			// check nearby blocks for same block or same drop
@@ -696,11 +658,11 @@ public class TFEventListener {
 	    	
 	    	if (allCobble && !event.getPlayer().capabilities.isCreativeMode) {
 	    		//System.out.println("It's all cobble!");
-				this.shouldMakeGiantCobble = true;
-				this.amountOfCobbleToReplace = 64;
+				shouldMakeGiantCobble = true;
+				amountOfCobbleToReplace = 64;
 	    	} else {
-				this.shouldMakeGiantCobble = false;
-				this.amountOfCobbleToReplace = 0;
+				shouldMakeGiantCobble = false;
+				amountOfCobbleToReplace = 0;
 	    	}
 
 	    	// break all nearby blocks
@@ -721,7 +683,7 @@ public class TFEventListener {
 	    		}
 	    	}
 	    	
-			this.isBreakingWithGiantPick = false;
+			isBreakingWithGiantPick = false;
 
 		}
 	}
@@ -731,7 +693,7 @@ public class TFEventListener {
 	 * Also check for fiery set achievement
 	 */
 	@SubscribeEvent
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public static void onPlayerInteract(PlayerInteractEvent event) {
 		ItemStack currentItem = event.getEntityPlayer().inventory.getCurrentItem();
 		if (!currentItem.isEmpty() && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
 			// are they also wearing the armor
@@ -742,7 +704,7 @@ public class TFEventListener {
 	}
 
 	@SubscribeEvent
-	public void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event)
+	public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event)
 	{
 		if (event.getEntityPlayer().world.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
 
@@ -758,7 +720,7 @@ public class TFEventListener {
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
-	private boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
+	private static boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
 		
 		if (block == TFBlocks.towerDevice || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
@@ -769,24 +731,15 @@ public class TFEventListener {
 		}
 	}
 
-	/**
-	 * Stop the player from breaking blocks.  We protect all blocks except openblocks graves
-	 */
-	private boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
-		Block block = world.getBlockState(pos).getBlock();
-		
-		// graves are okay! todo 1.9 ohgod registry names pls
-		if (block.getUnlocalizedName().equals("tile.openblocks.grave")) {
-			return false;
-		}
-		
-		return true;
+	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
+		// todo improve
+		return !world.getBlockState(pos).getBlock().getRegistryName().getResourcePath().contains("grave");
 	}
 
 	/**
 	 * Return true if the player is wearing at least one piece of fiery armor
 	 */
-	private boolean checkPlayerForFieryArmor(EntityPlayer player) {
+	private static boolean checkPlayerForFieryArmor(EntityPlayer player) {
 		ItemStack feet = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 		ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
 		ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
@@ -802,7 +755,7 @@ public class TFEventListener {
 	 * Return if the area at the coordinates is considered protected for that player.
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
-	private boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
+	private static boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
 //FIXME: AtomicBlom: Disabled for Structures
 /*
 		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
@@ -843,7 +796,7 @@ public class TFEventListener {
 	 * Cancel attacks in protected areas
 	 */
 	@SubscribeEvent
-	public void livingAttack(LivingAttackEvent event) {
+	public static void livingAttack(LivingAttackEvent event) {
 //FIXME: AtomicBlom: Disabled for Structures
 /*
 		// area protection check
@@ -877,10 +830,10 @@ public class TFEventListener {
      * When player logs in, report conflict status, set enforced_progression rule
 	 */
 	@SubscribeEvent
-	public void playerLogsIn(PlayerLoggedInEvent event) {
+	public static void playerLogsIn(PlayerLoggedInEvent event) {
 		// check enforced progression
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
-			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 		}
 	}
 	
@@ -888,14 +841,14 @@ public class TFEventListener {
      * When player changes dimensions, send the rule status if they're moving to the Twilight Forest
 	 */
 	@SubscribeEvent
-	public void playerPortals(PlayerChangedDimensionEvent event) {
+	public static void playerPortals(PlayerChangedDimensionEvent event) {
 		// check enforced progression
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TFConfig.dimension.dimensionID) {
-			this.sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			sendEnforcedProgressionStatus((EntityPlayerMP)event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 		}
 	}
 	
-    private void sendEnforcedProgressionStatus(EntityPlayerMP player, boolean isEnforced) {
+    private static void sendEnforcedProgressionStatus(EntityPlayerMP player, boolean isEnforced) {
 		TFPacketHandler.CHANNEL.sendTo(new PacketEnforceProgressionStatus(isEnforced), player);
 	}
 
@@ -903,7 +856,7 @@ public class TFEventListener {
      * When world is loaded, check if the game rule is defined
      */
 	@SubscribeEvent
-	public void worldLoaded(WorldEvent.Load event) {
+	public static void worldLoaded(WorldEvent.Load event) {
 		// check rule
 		if (!event.getWorld().isRemote && !event.getWorld().getGameRules().hasRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			TwilightForestMod.LOGGER.info("Loaded a world with the tfEnforcedProgression game rule not defined.  Defining it.");
@@ -916,7 +869,7 @@ public class TFEventListener {
      * When a command is used, check if someone's changing the progression game rule
      */
 	@SubscribeEvent
-	public void commandSent(CommandEvent event) {
+	public static void commandSent(CommandEvent event) {
 		if (event.getCommand() instanceof CommandGameRule && event.getParameters().length > 1 && TwilightForestMod.ENFORCED_PROGRESSION_RULE.equals(event.getParameters()[0])) {
 			boolean isEnforced = Boolean.valueOf(event.getParameters()[1]);
 			TFPacketHandler.CHANNEL.sendToAll(new PacketEnforceProgressionStatus(isEnforced));

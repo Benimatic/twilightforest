@@ -50,8 +50,6 @@ public class TwilightForestMod {
 	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
     
-	public static final TFEventListener eventListener = new TFEventListener();
-	public static final TFTickHandler tickHandler = new TFTickHandler();
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 
@@ -93,25 +91,9 @@ public class TwilightForestMod {
 
 		// tile entities
 		registerTileEntities();
+
 		// GUI
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
-		
-		// event listener, for those events that seem worth listening to
-		MinecraftForge.EVENT_BUS.register(eventListener);
-
-		// tick listener
-		MinecraftForge.EVENT_BUS.register(tickHandler);
-		
-		// set up portal item
-		ResourceLocation loc = new ResourceLocation(TFConfig.portalCreationItem);
-
-		if (Item.REGISTRY.containsKey(loc)) {
-			TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", loc);
-		} else {
-			TwilightForestMod.LOGGER.info("Config lists portal item as '{}'.  Not found, defaulting to diamond.", loc);
-			loc = new ResourceLocation("minecraft", "diamond");
-		}
-		tickHandler.portalItem = loc;
 		
 		// packets
 		TFPacketHandler.init();

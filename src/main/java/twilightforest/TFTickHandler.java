@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
@@ -26,18 +28,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
-/**
- * This class listens for ticks in the world.  If the player is near a diamond in the water, this class attempts to open a portal.
- * 
- * @author Ben
- *
- */
-public class TFTickHandler 
+@Mod.EventBusSubscriber
+public class TFTickHandler
 {
-	public ResourceLocation portalItem = null;
-
 	@SubscribeEvent
-	public void playerTick(PlayerTickEvent event) {
+	public static void playerTick(PlayerTickEvent event) {
 		EntityPlayer player = event.player;
 		World world = player.world;
 
@@ -74,28 +69,21 @@ public class TFTickHandler
 		}
 	}
 	
-	private void sendStructureProtectionPacket(World world, EntityPlayer player, StructureBoundingBox sbb) {
-		// send packet
+	private static void sendStructureProtectionPacket(World world, EntityPlayer player, StructureBoundingBox sbb) {
 		IMessage message = new PacketStructureProtection(sbb);
 		if (player instanceof EntityPlayerMP) {
 			TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) player);
-			//System.out.println("Sent structure protection");
-		} else {
-			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");
 		}
 	}
 	
-	private void sendAllClearPacket(World world, EntityPlayer player) {
+	private static void sendAllClearPacket(World world, EntityPlayer player) {
 		IMessage message = new PacketStructureProtectionClear();
 		if (player instanceof EntityPlayerMP) {
 			TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) player);
-			//System.out.println("Sent structure all clear");
-		} else {
-			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");
 		}
 	}
 
-	private boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
+	private static boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
 //FIXME: AtomicBlom: Disabled for Structures
 		return false;
 /*
@@ -126,17 +114,21 @@ public class TFTickHandler
 */
 	}
 
-	private void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
+	private static void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
 		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions))
 		{
+			Item item = Item.REGISTRY.getObject(new ResourceLocation(TFConfig.portalCreationItem));
+			if (item == null) {
+				item = Items.DIAMOND;
+			}
+
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
 			
 			for (EntityItem entityItem : itemList)
 			{
-				if (portalItem.equals(entityItem.getEntityItem().getItem().getRegistryName()) && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER))
+				if (item == entityItem.getEntityItem().getItem() && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER))
 				{
-					// make sparkles in the area
 					Random rand = new Random();
 					for (int k = 0; k < 2; k++)
 					{
@@ -147,7 +139,6 @@ public class TFTickHandler
 						world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 					}
 	
-					// try to make a portal
 					if (((BlockTFPortal)TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem))) {
 						player.addStat(TFAchievementPage.twilightPortal);
 					}
@@ -159,7 +150,7 @@ public class TFTickHandler
 	/**
 	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
 	 */
-	private void checkBiomeForProgression(EntityPlayer player, World world) {
+	private static void checkBiomeForProgression(EntityPlayer player, World world) {
 		Biome currentBiome = world.getBiome(new BlockPos(player));
 		
 		if (currentBiome instanceof TFBiomeBase) {
@@ -171,6 +162,4 @@ public class TFTickHandler
 			}
 		}
 	}
-
-
 }

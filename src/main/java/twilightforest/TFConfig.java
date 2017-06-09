@@ -39,7 +39,7 @@ public class TFConfig {
 	@Config.Comment("Disable the uncrafting function of the uncrafting table.  Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;
 
-	@Config.Comment("Item to create the Twilight Forest Portal.  Defaults to 'diamond'")
+	@Config.Comment("Name of item used to create the Twilight Forest Portal")
 	public static String portalCreationItem = "minecraft:diamond";
 
 }
