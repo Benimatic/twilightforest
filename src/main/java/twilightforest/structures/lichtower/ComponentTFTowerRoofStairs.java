@@ -56,7 +56,7 @@ public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 						}
 						else
 						{
-							setBlockState(world, birchStairsNorth, x, y, z, sbb);
+							setBlockState(world, birchStairsWest, x, y, z, sbb);
 						}
 					}
 					else if (x == max) {
@@ -65,14 +65,14 @@ public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 						}
 						else
 						{
-							setBlockState(world, birchStairsSouth, x, y, z, sbb);
+							setBlockState(world, birchStairsEast, x, y, z, sbb);
 						}
 					}
 					else if (z == max) {
-						setBlockState(world, birchStairsEast, x, y, z, sbb);
+						setBlockState(world, birchStairsSouth, x, y, z, sbb);
 					}
 					else if (z == min) {
-						setBlockState(world, birchStairsWest, x, y, z, sbb);
+						setBlockState(world, birchStairsNorth, x, y, z, sbb);
 					}
 					else {
 						setBlockState(world, birchPlanks, x, y, z, sbb);
