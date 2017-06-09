@@ -34,8 +34,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class BlockTFForceField extends BlockPane implements ModelRegisterCallback {
 
-    private static final List<EnumDyeColor> COLORS = ImmutableList.of(EnumDyeColor.PURPLE, EnumDyeColor.PINK, EnumDyeColor.ORANGE, EnumDyeColor.GREEN, EnumDyeColor.BLUE);
-    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, COLORS);
+    public static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PURPLE, EnumDyeColor.PINK, EnumDyeColor.ORANGE, EnumDyeColor.GREEN, EnumDyeColor.BLUE);
+    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
 	
     protected BlockTFForceField() {
         super(Material.GRASS, false);
@@ -54,13 +54,13 @@ public class BlockTFForceField extends BlockPane implements ModelRegisterCallbac
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return COLORS.indexOf(state.getValue(COLOR));
+        return VALID_COLORS.indexOf(state.getValue(COLOR));
     }
 
     @Override
     @Deprecated
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(COLOR, COLORS.get(meta));
+        return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta));
     }
 
     @Override
@@ -103,8 +103,8 @@ public class BlockTFForceField extends BlockPane implements ModelRegisterCallbac
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        for (int i = 0; i < COLORS.size(); i++) {
-            String variant = "inventory_" + COLORS.get(i).getName();
+        for (int i = 0; i < VALID_COLORS.size(); i++) {
+            String variant = "inventory_" + VALID_COLORS.get(i).getName();
             ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
         }

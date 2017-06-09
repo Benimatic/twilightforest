@@ -1,16 +1,21 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
+import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
@@ -43,9 +48,9 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 	    // add exit if we're far enough away and don't have one
 	    if (mySpread == maxSpread && !isExitBuildForLevel(parent)) {
-		    Rotation direction = getRandomDirection(rand);
+		    Rotation direction = RotationUtil.getRandomRotation(rand);
 		    for (int i = 0; i < 8 && !isExitBuildForLevel(parent); i++) {
-			    direction = direction.add(ROTATIONS[i&3]);
+			    direction = direction.add(RotationUtil.ROTATIONS[i&3]);
 			    if (this.addDungeonExit(parent, list, rand, direction)) {
 				    this.setExitBuiltForLevel(parent, true);
 			    }
@@ -54,9 +59,9 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 	    // add other rooms
 	    if (mySpread < maxSpread) {
-		    Rotation direction = getRandomDirection(rand);
+		    Rotation direction = RotationUtil.getRandomRotation(rand);
 		    for (int i = 0; i < 12; i++) {
-			    direction = direction.add(ROTATIONS[i&3]);
+			    direction = direction.add(RotationUtil.ROTATIONS[i&3]);
 			    this.addDungeonRoom(parent, list, rand, direction, this.level);
 		    }
 	    }
@@ -147,18 +152,25 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
-		int forceFieldMeta = this.getForceFieldMeta(decoRNG);
-		int runeMeta = getRuneMeta(forceFieldMeta);
+		EnumDyeColor forceFieldMeta = this.getForceFieldMeta(decoRNG);
+		EnumDyeColor runeMeta = getRuneMeta(forceFieldMeta);
 
-		for (Rotation rotation: ROTATIONS) {
+		final IBlockState forceField = TFBlocks.forceField.getDefaultState()
+				.withProperty(BlockTFForceField.COLOR, forceFieldMeta);
+		final IBlockState castleMagic = TFBlocks.castleMagic.getDefaultState()
+				.withProperty(BlockTFCastleMagic.COLOR, runeMeta);
+
+		for (Rotation rotation: RotationUtil.ROTATIONS) {
 			int cs = 7;
-			this.fillBlocksRotated(world, sbb, cs, 0, cs + 1, cs, this.height - 1, this.size - 2 - cs, TFBlocks.forceField, forceFieldMeta, rotation);
+
+			this.fillBlocksRotated(world, sbb, cs, 0, cs + 1, cs, this.height - 1, this.size - 2 - cs, forceField, rotation);
 			// verticals
 			for (int z = cs; z < ((this.size - 1) - cs); z += 4) {
-				this.fillBlocksRotated(world, sbb, cs, 0, z, cs, this.height - 1, z, TFBlocks.castleMagic, runeMeta, rotation);
+
+				this.fillBlocksRotated(world, sbb, cs, 0, z, cs, this.height - 1, z, castleMagic, rotation);
 				// horizontals
 				int y = ((z - cs) % 8 == 0) ? decoRNG.nextInt(3) + 0 : decoRNG.nextInt(3) + 4;
-				this.fillBlocksRotated(world, sbb, cs, y, z + 1, cs, y, z + 3, TFBlocks.castleMagic, runeMeta, rotation);
+				this.fillBlocksRotated(world, sbb, cs, y, z + 1, cs, y, z + 3, castleMagic, rotation);
 			}
 		}
 
@@ -185,12 +197,12 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
         return false;
 	}
 
-	protected int getRuneMeta(int forceFieldMeta) {
-		return (forceFieldMeta == 4) ? 1 : 2;
+	protected EnumDyeColor getRuneMeta(EnumDyeColor forceFieldMeta) {
+		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldMeta == EnumDyeColor.BLUE ? 1 : 2);
 	}
 
-	protected int getForceFieldMeta(Random decoRNG) {
-		return decoRNG.nextInt(2) + 3;
+	protected EnumDyeColor getForceFieldMeta(Random decoRNG) {
+		return BlockTFForceField.VALID_COLORS.get(decoRNG.nextInt(2) + 3);
 	}
 
 }

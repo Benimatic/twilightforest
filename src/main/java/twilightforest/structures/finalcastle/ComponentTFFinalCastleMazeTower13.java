@@ -12,6 +12,7 @@ import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
+import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
@@ -131,12 +132,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 	protected void buildNonCriticalTowers(StructureComponent parent, List list, Random rand) {
 		// pick a random direction
-		Rotation dir = getRandomDirection(rand);
+		Rotation dir = RotationUtil.getRandomRotation(rand);
 
 		// if there isn't something in that direction, check if we can add a wrecked tower
 		if (this.openingTowards[dir.ordinal()] == false) {
 			if (!buildDamagedTower(list, rand, dir)) {
-				dir = dir.add(getRandomDirection(rand));
+				dir = dir.add(RotationUtil.getRandomRotation(rand));
 				if (!buildDamagedTower(list, rand, dir)) {
 				// maybe just a balcony?
 				//buildBalconyTowards(list, rand, dir);
@@ -164,7 +165,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			absoluteDir = (dz >= 0) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 		}
 
-		Rotation relativeDir = (absoluteDir + 4 - this.coordBaseMode) % 4;
+		Rotation relativeDir = RotationUtil.subtract(absoluteDir, this.rotation);
 
 		//System.out.println("Determining best direction!  center is at " + cx + ", " + cz + " and dest is at " + dest + " offset is " + dx + ", " + dz + " so the best absolute direction is " + absoluteDir + " and relative dir is " + relativeDir);
 
@@ -188,7 +189,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		} else {
 			absoluteDir = (dz >= 0) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 		}
-		Rotation relativeDir = (absoluteDir + 4 - this.coordBaseMode) % 4;
+		Rotation relativeDir = RotationUtil.subtract(absoluteDir, this.rotation);
 
 
 		//System.out.println("Determining second direction!  center is at " + cx + ", " + cz + " and dest is at " + dest + " offset is " + dx + ", " + dz + " so the best absolute direction is " + absoluteDir + " and relative dir is " + relativeDir);
@@ -519,7 +520,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 		if (hasAccessibleRoof()) {
 			// add stairs to roof
-			addStairsDown(world, sbb, ROTATIONS[(floors + 2) & 3], this.height - 1);
+			addStairsDown(world, sbb, RotationUtil.ROTATIONS[(floors + 2) & 3], this.height - 1);
 		}
 
 	}

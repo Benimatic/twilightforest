@@ -12,6 +12,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 
 import static twilightforest.block.enums.TowerDeviceVariant.GHASTTRAP_INACTIVE;
 
@@ -42,7 +43,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing
 		// add a beard
 		makeABeard(parent, list, rand);
 		
-		for (Rotation i : ROTATIONS)
+		for (Rotation i : RotationUtil.ROTATIONS)
 		{
 			if (i == Rotation.CLOCKWISE_180 || rand.nextBoolean())
 			{

@@ -7,6 +7,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +52,7 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponent
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		for (Rotation rotation : ROTATIONS) {
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
             this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);

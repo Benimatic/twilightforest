@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
@@ -89,7 +90,7 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent
 		}
 
 		// corners
-		for (Rotation rotation : ROTATIONS) {
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
             this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
             this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);

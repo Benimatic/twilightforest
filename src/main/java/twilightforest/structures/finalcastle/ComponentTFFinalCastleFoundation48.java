@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
@@ -44,7 +45,7 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponent
 		}
 
 		int mid = 16;
-		for (Rotation rotation : ROTATIONS) {
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
             // do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 3, -2, 3, rotation, sbb);
 

@@ -15,10 +15,10 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import twilightforest.world.TFGenCaveStalactite;
 import twilightforest.world.TFGenMyceliumBlob;
 
@@ -75,7 +75,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		// make 4 caves
-		for (final Rotation caveRotation : ROTATIONS)
+		for (final Rotation caveRotation : RotationUtil.ROTATIONS)
 		{
 			BlockPos dest = getValidOpening(rand, 5, caveRotation);
 

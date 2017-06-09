@@ -25,9 +25,9 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
 import twilightforest.util.VanillaEntityNames;
 
@@ -144,7 +144,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		if (size > 4) {
 			// sub towers
-			for (final Rotation towerRotation : ROTATIONS)
+			for (final Rotation towerRotation : RotationUtil.ROTATIONS)
 			{
 				if (towerRotation == Rotation.CLOCKWISE_180) continue;
 				int[] dest = getValidOpening(rand, towerRotation);
@@ -1824,7 +1824,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		
 		//for (int i = 0; i < 4; i++) {
-		for (Rotation rotation : ROTATIONS) {
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			boolean realWindows = real && !openingTowards[rotation.ordinal()];
 			makeWindowBlock(world, size - 1, 2, size / 2, rotation, sbb, realWindows);
 			makeWindowBlock(world, size - 1, 3, size / 2, rotation, sbb, realWindows);
@@ -2111,7 +2111,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	private Rotation getRotation(Rotation startRotation, int rotations)
 	{
 		final int totalIncrements = startRotation.ordinal() + rotations;
-		return ROTATIONS[totalIncrements & 3];
+		return RotationUtil.ROTATIONS[totalIncrements & 3];
 	}
 
 	/**
@@ -2339,7 +2339,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void makeGlyphBranches(World world, Random rand, EnumDyeColor colour, StructureBoundingBox sbb) {
 		// pick a random side of the tower
-		Rotation rotation = ROTATIONS[rand.nextInt(4)];
+		Rotation rotation = RotationUtil.ROTATIONS[rand.nextInt(4)];
 		
 		// start somewhere in the lower part
 		int startHeight = rand.nextInt((int) (this.height * 0.66F));

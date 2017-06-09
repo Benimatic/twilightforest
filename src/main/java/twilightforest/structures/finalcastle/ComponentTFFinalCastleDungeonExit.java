@@ -1,13 +1,19 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleDoor;
+import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.StructureBoundingBoxUtils;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +57,9 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		super.addComponentParts(world, rand, sbb);
 
 		// door
-	    this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, TFBlocks.castleDoor, 2, AIR, false);
+		final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
+				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
+		this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
 	    this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
 
 
@@ -60,13 +68,10 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 
 
 	public Rotation findStairDirectionTowards(int x, int z) {
-		// center of component
-		int cx = this.boundingBox.getCenter().getX();
-		int cz = this.boundingBox.getCenter().getZ();
-
+		Vec3i center = StructureBoundingBoxUtils.getCenter(this.boundingBox);
 		// difference
-		int dx = cx - x;
-		int dz = cz - z;
+		int dx = center.getX() - x;
+		int dz = center.getZ() - z;
 
 		Rotation absoluteDir;
 		if (Math.abs(dz) >= Math.abs(dx)) {
@@ -79,12 +84,12 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	}
 
 	@Override
-	protected int getForceFieldMeta(Random decoRNG) {
-		return 1;
+	protected EnumDyeColor getForceFieldMeta(Random decoRNG) {
+		return BlockTFForceField.VALID_COLORS.get(1);
 	}
 
 	@Override
-	protected int getRuneMeta(int fieldMeta) {
-		return 0;
+	protected EnumDyeColor getRuneMeta(EnumDyeColor fieldMeta) {
+		return BlockTFCastleMagic.VALID_COLORS.get(0);
 	}
 }

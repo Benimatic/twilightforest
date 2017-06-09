@@ -1,6 +1,5 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
@@ -15,6 +14,7 @@ import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.StructureTFDecoratorCastle;
+import twilightforest.util.RotationUtil;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -221,14 +221,15 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	    for (int i = 0; i < 5; i++) {
 		    int y = 30 - i;
 
-	        makeMezzTopStairs(world, sbb, y, 10 + i, 3);
-	        makeMezzTopStairs(world, sbb, y, 38 - i, 1);
+	        makeMezzTopStairs(world, sbb, y, 10 + i, EnumFacing.NORTH);
+	        makeMezzTopStairs(world, sbb, y, 38 - i, EnumFacing.WEST);
 
 	        y = 25 - i;
 	        int x = 37 - i;
-		    this.fillWithBlocks(world, sbb, x, y, 14, x, y, 22, deco.stairID, getStairMeta(0), deco.stairID, getStairMeta(0), false);
+		    final IBlockState stairState = getStairState(deco.stairState, EnumFacing.EAST, rotation, false);
+		    this.fillWithBlocks(world, sbb, x, y, 14, x, y, 22, stairState, stairState, false);
 		    this.fillWithBlocks(world, sbb, x, y - 1, 14, x, y - 1, 22, deco.blockState, deco.blockState, false);
-		    this.fillWithBlocks(world, sbb, x, y, 26, x, y, 34, deco.stairID, getStairMeta(0), deco.stairID, getStairMeta(0), false);
+		    this.fillWithBlocks(world, sbb, x, y, 26, x, y, 34, stairState, stairState, false);
 		    this.fillWithBlocks(world, sbb, x, y - 1, 26, x, y - 1, 34, deco.blockState, deco.blockState, false);
 	    }
 
@@ -238,17 +239,17 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	        for (int z = 11; z < 47; z += 12) {
 	            this.fillWithBlocks(world, sbb, x, 1, z, x + 2, 40, z + 2, deco.pillarState, deco.blockState, false);
 
-	            makePillarBase(world, sbb, x, z, 1, 0);
-	            makePillarBase(world, sbb, x, z, 19, 4);
-	            makePillarBase(world, sbb, x, z, 21, 0);
-	            makePillarBase(world, sbb, x, z, 39, 4);
+	            makePillarBase(world, sbb, x, z, 1, false);
+	            makePillarBase(world, sbb, x, z, 19, true);
+	            makePillarBase(world, sbb, x, z, 21, false);
+	            makePillarBase(world, sbb, x, z, 39, true);
 
 
 	        }
 	    }
 
 	    // side pillars
-	    for (Rotation rotation : ROTATIONS) {
+	    for (Rotation rotation : RotationUtil.ROTATIONS) {
 		    for (int z = 11; z < 47; z += 12) {
 
 			    // no middle pillars on walls with entrances
@@ -257,10 +258,10 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 			    }
 
 	            this.fillBlocksRotated(world, sbb, 1, 1, z, 1, 40, z + 2, deco.pillarState, rotation);
-				makeHalfPillarBase(world, sbb, rotation, 1, z, 0);
-				makeHalfPillarBase(world, sbb, rotation, 19, z, 4);
-				makeHalfPillarBase(world, sbb, rotation, 21, z, 0);
-				makeHalfPillarBase(world, sbb, rotation, 39, z, 4);
+				makeHalfPillarBase(world, sbb, rotation, 1, z, false);
+				makeHalfPillarBase(world, sbb, rotation, 19, z, true);
+				makeHalfPillarBase(world, sbb, rotation, 21, z, false);
+				makeHalfPillarBase(world, sbb, rotation, 39, z, true);
 		    }
 	    }
 
@@ -300,36 +301,39 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 		for (int y = 1; y < 4; y++) {
 		    int z = 40 + y;
 			this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockState, rotation);
-		    this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, deco.stairID, getStairMeta(1 + rotation), rotation);
+
+		    this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), rotation);
 	    }
 	}
 
 	private void makeLargeTowerStairs(World world, StructureBoundingBox sbb, Rotation rotation) {
+		final IBlockState stairState = getStairState(deco.stairState, EnumFacing.WEST, rotation, false);
 		for (int y = 1; y < 4; y++) {
 		    int z = 38 + y;
 			this.fillBlocksRotated(world, sbb, 2, 1, z, 6, y, z, deco.blockState, rotation);
-		    this.fillBlocksRotated(world, sbb, 3, y, z, 5, y, z, deco.stairID, getStairMeta(1 + rotation), rotation);
+		    this.fillBlocksRotated(world, sbb, 3, y, z, 5, y, z, stairState, rotation);
 	    }
 	}
 
-	private void makeMezzTopStairs(World world, StructureBoundingBox sbb, int y, int z, int stairMeta) {
-		this.fillWithBlocks(world, sbb, 38, y, z, 46, y, z, deco.stairID, getStairMeta(stairMeta), deco.stairID, getStairMeta(stairMeta), false);
+	private void makeMezzTopStairs(World world, StructureBoundingBox sbb, int y, int z, EnumFacing stairMeta) {
+		final IBlockState stairState = getStairState(deco.stairState, stairMeta, rotation, false);
+		this.fillWithBlocks(world, sbb, 38, y, z, 46, y, z, stairState, stairState, false);
 		this.fillWithBlocks(world, sbb, 38, y - 1, z, 46, y - 1, z, deco.blockState, deco.blockState, false);
 		this.fillWithAir(world, sbb, 38, y + 1, z, 46, y + 3, z);
 	}
 
-	private void makeHalfPillarBase(World world, StructureBoundingBox sbb, Rotation rotation, int y, int z, int metaBit) {
-		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, deco.stairID, getStairMeta(2 + rotation) | metaBit, rotation);
-		this.setBlockStateRotated(world, deco.stairID, getStairMeta(1 + rotation) | metaBit, 1, y, z - 1, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairID, getStairMeta(3 + rotation) | metaBit, 1, y, z + 3, rotation, sbb);
+	private void makeHalfPillarBase(World world, StructureBoundingBox sbb, Rotation rotation, int y, int z, boolean isFlipped) {
+		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), rotation);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, isFlipped), 1, y, z - 1, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), 1, y, z + 3, rotation, sbb);
 	}
 
-	private void makePillarBase(World world, StructureBoundingBox sbb, int x, int z, int y, int metaBit) {
-		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, deco.stairID, getStairMeta(3) | metaBit, Blocks.AIR.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, deco.stairID, getStairMeta(1) | metaBit, Blocks.AIR.getDefaultState(), false);
+	private void makePillarBase(World world, StructureBoundingBox sbb, int x, int z, int y, boolean isFlipped) {
+		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, EnumFacing.WEST, rotation, isFlipped), AIR, false);
 
-		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, deco.stairID, getStairMeta(2) | metaBit, Blocks.AIR.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, deco.stairID, getStairMeta(0) | metaBit, Blocks.AIR.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, getStairState(deco.stairState, EnumFacing.EAST, rotation, isFlipped), AIR, false);
 	}
 
 }

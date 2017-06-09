@@ -1,11 +1,14 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -57,7 +60,9 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing
 	    this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 
 	    // door, first floor
-	    this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, TFBlocks.castleDoor, 0, Blocks.AIR, this.getGlyphMeta(), false);
+	    final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
+			    .withProperty(BlockTFCastleDoor.LOCK_INDEX, 0); //this.getGlyphMeta()?
+	    this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
         this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
 

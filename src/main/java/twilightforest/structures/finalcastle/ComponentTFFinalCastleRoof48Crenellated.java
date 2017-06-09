@@ -1,11 +1,15 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
@@ -34,10 +38,12 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// add second layer of floor
-		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, TFBlocks.castleMagic, 3, TFBlocks.castleMagic, 3, false);
+		final IBlockState castleMagic = TFBlocks.castleMagic.getDefaultState()
+				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(3));
+		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 
 	    // crenellations
-		for (Rotation rotation : ROTATIONS) {
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
 		    this.fillBlocksRotated(world, sbb, 3, 1, 1, 45, 3, 1, deco.blockState, rotation);
 
 		    for (int i = 10; i < 41; i += 5) {

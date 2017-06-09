@@ -13,8 +13,11 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +27,9 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
+import twilightforest.util.StructureBoundingBoxUtils;
+import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -86,10 +92,10 @@ public class TFTickHandler
 	}
 
 	private static boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
-//FIXME: AtomicBlom: Disabled for Structures
-		return false;
-/*
-		ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+		IChunkGenerator uncheckedChunkProvider = TFWorld.getChunkGenerator(world);
+		if (!(uncheckedChunkProvider instanceof ChunkGeneratorTwilightForest)) return false;
+
+		ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest)uncheckedChunkProvider;
 		
 		int px = MathHelper.floor(player.posX);
 		int py = MathHelper.floor(player.posY);
@@ -98,8 +104,10 @@ public class TFTickHandler
 		if (chunkProvider != null && chunkProvider.isBlockNearFullStructure(px, pz, 100)) {
 			
 			StructureBoundingBox fullSBB = chunkProvider.getFullSBBNear(px, pz, 100);
-			
-			TFFeature nearFeature = TFFeature.getFeatureForRegion(fullSBB.getCenter().getX() >> 4, fullSBB.getCenter().getZ() >> 4, world);
+
+			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
+
+			TFFeature nearFeature = TFFeature.getFeatureForRegion(center.getX() >> 4, center.getZ() >> 4, world);
 			
 			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAchievement(player)) {
 				sendAllClearPacket(world, player);
@@ -113,7 +121,6 @@ public class TFTickHandler
 		} else {
 			return false;
 		}
-*/
 	}
 
 	private static void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {

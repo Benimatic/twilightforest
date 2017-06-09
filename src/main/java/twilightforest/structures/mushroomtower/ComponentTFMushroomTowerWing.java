@@ -8,8 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -17,6 +15,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
+import twilightforest.util.RotationUtil;
 
 public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing 
 {
@@ -97,7 +96,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 		{
 			// make sub towers
 			//for (int i = 0; i < 4; i++) {
-			for (Rotation i : ROTATIONS) {
+			for (Rotation i : RotationUtil.ROTATIONS) {
 				
 				if (this.size < MAIN_SIZE && i == Rotation.CLOCKWISE_180)
 				{

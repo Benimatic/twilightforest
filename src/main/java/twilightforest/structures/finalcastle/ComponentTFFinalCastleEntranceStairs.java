@@ -1,6 +1,8 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.BlockStairs;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -36,18 +38,18 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent
 
 		for (int x = 1; x < size; x++) {
 
-			this.placeStairs(world, sbb, x, 1 - x, 5, 2);
+			this.placeStairs(world, sbb, x, 1 - x, 5, EnumFacing.SOUTH);
 
 			for (int z = 0; z <= x; z++) {
 
 				if (z > 0 && z <= size / 2) {
-					this.placeStairs(world, sbb, x, 1 - x, 5 - z, 2);
-					this.placeStairs(world, sbb, x, 1 - x, 5 + z, 2);
+					this.placeStairs(world, sbb, x, 1 - x, 5 - z, EnumFacing.SOUTH);
+					this.placeStairs(world, sbb, x, 1 - x, 5 + z, EnumFacing.SOUTH);
 				}
 
 				if (x <= size / 2) {
-					this.placeStairs(world, sbb, z, 1 - x, 5 - x, 1);
-					this.placeStairs(world, sbb, z, 1 - x, 5 + x, 3);
+					this.placeStairs(world, sbb, z, 1 - x, 5 - x, EnumFacing.WEST);
+					this.placeStairs(world, sbb, z, 1 - x, 5 + x, EnumFacing.NORTH);
 				}
 			}
 		}
@@ -58,10 +60,10 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent
 		return true;
 	}
 
-	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, int stairMeta) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).isReplaceable(world, x, y, z)) {
+	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, EnumFacing facing) {
+		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, new BlockPos(x, y, z))) {
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
-			this.setBlockState(world, deco.stairID, this.getStairMeta(stairMeta), x, y, z, sbb);
+			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, facing), x, y, z, sbb);
 			this.setBlockState(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}

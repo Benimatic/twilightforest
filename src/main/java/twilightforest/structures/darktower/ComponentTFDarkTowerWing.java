@@ -34,6 +34,7 @@ import twilightforest.structures.lichtower.ComponentTFTowerRoofFence;
 import twilightforest.structures.lichtower.ComponentTFTowerRoofGableForwards;
 import twilightforest.structures.lichtower.ComponentTFTowerRoofSlabForwards;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
+import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
 
 public class ComponentTFDarkTowerWing extends ComponentTFTowerWing 
@@ -122,7 +123,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		
 		if (size > 10) {
 			// sub towers
-			for (Rotation direction : ROTATIONS) {
+			for (Rotation direction : RotationUtil.ROTATIONS) {
 				int[] dest = getValidOpening(rand, direction);
 				int childSize = size - 2;
 				int childHeight = validateChildHeight(height - 4 + rand.nextInt(10) - rand.nextInt(10), childSize);
@@ -139,7 +140,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		else if (rand.nextInt(4) == 0)
 		{
 			// occasional balcony on small towers too
-			Rotation direction = ROTATIONS[rand.nextInt(4)];
+			Rotation direction = RotationUtil.ROTATIONS[rand.nextInt(4)];
 			int[] dest = getValidOpening(rand, direction);
 			makeTowerBalcony(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], direction);
 		}
@@ -489,7 +490,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	private void addHalfFloors(World world, Random rand, StructureBoundingBox sbb, int bottom, int top) {
 		
 		int spacing = 4;//this.size > 9 ? 4 : 3;
-		Rotation rotation = ROTATIONS[(this.boundingBox.minY + bottom) % 3];
+		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + bottom) % 3];
 
 		if (bottom == 0)
 		{

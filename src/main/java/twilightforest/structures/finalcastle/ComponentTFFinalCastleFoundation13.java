@@ -3,11 +3,14 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.block.Block;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
+import twilightforest.util.StructureBoundingBoxUtils;
 import java.util.List;
 import java.util.Random;
 
@@ -53,7 +56,7 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
         // assume square
         int size = this.boundingBox.maxX - this.boundingBox.minX;
 
-        for (Rotation rotation : ROTATIONS) {
+        for (Rotation rotation : RotationUtil.ROTATIONS) {
             // do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 1, rotation, sbb);
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
@@ -79,8 +82,10 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
 
 	    for (int y = 150; y > 0; y--) // is 150 a good place to start? :)
 	    {
-		    int cx = sbb.getCenter().getX();
-		    int cz = sbb.getCenter().getZ();
+		    final Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
+
+		    int cx = center.getX();
+		    int cz = center.getZ();
 
 		    Block block = world.getBlockState(new BlockPos(cx, y, cz)).getBlock();
 		    if (block == TFBlocks.deadrock)

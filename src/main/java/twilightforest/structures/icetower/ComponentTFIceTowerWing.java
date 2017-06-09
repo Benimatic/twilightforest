@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -20,6 +19,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFTreasure;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
+import twilightforest.util.RotationUtil;
 
 public class ComponentTFIceTowerWing extends ComponentTFTowerWing 
 {
@@ -76,10 +76,10 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// limit sprawl to a reasonable amount
 		if (this.getComponentType() < 5) {
 			
-			Rotation dirOffset = ROTATIONS[rand.nextInt(ROTATIONS.length)];
+			Rotation dirOffset = RotationUtil.ROTATIONS[rand.nextInt(RotationUtil.ROTATIONS.length)];
 			
 			// make sub towers
-			for (final Rotation rotation : ROTATIONS) {
+			for (final Rotation rotation : RotationUtil.ROTATIONS) {
 				
 				Rotation dir = dirOffset.add(rotation);
 				
@@ -656,7 +656,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing
 		// platforms
 		for (int i = 0; i < 2; i++)
 		{
-			for (Rotation r : ROTATIONS)
+			for (Rotation r : RotationUtil.ROTATIONS)
 			{
 				if (i == 0 && r == Rotation.NONE) continue;
 				Rotation rotation = ladderUpDir.add(r);

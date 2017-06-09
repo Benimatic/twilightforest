@@ -1,5 +1,7 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.BlockStairs;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
@@ -108,9 +110,11 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent
 
     @Override
     public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	    final IBlockState stairState = deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH);
 	    for (int z = 0; z < 15; z++) {
 		    int y = 14 - z;
-		    this.fillWithBlocks(world, sbb, 0, y, z, 4, y, z, deco.stairID, getStairMeta(3), deco.stairID, getStairMeta(3), false);
+
+		    this.fillWithBlocks(world, sbb, 0, y, z, 4, y, z, stairState, stairState, false);
 		    this.fillWithAir(world, sbb, 0, y + 1, z, 4, y + 6, z);
 	    }
 	    this.fillWithAir(world, sbb, 0, 0, 15, 4, 5, 19);

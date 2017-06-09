@@ -10,6 +10,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
+import twilightforest.util.RotationUtil;
 
 public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing 
 {
@@ -83,7 +84,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 
 			// make sub towers
 			//for (int i = 0; i < 4; i++) {
-			for (Rotation i : ROTATIONS) {
+			for (Rotation i : RotationUtil.ROTATIONS) {
 
 				if (i == mainDir)
 				{
@@ -112,7 +113,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing
 		Rotation mainDir;
 		int[] dest;
 		int childHeight;
-		mainDir = ROTATIONS[rand.nextInt(4)];
+		mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
 		
 		dest = getValidOpening(rand,  mainDir);
 		

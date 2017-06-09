@@ -1,11 +1,15 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.block.BlockTFThorns;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.ThornVariant;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import java.util.Random;
 
 /**
@@ -29,7 +33,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		// thorns
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
-		for (Rotation i : ROTATIONS) {
+		for (Rotation i : RotationUtil.ROTATIONS) {
 			this.makeThornVine(world, decoRNG, i, sbb);
 		}
 
@@ -93,7 +97,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		Random rand = new Random(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
 
 		// pick a direction
-		Rotation dir = getRandomDirection(rand);
+		Rotation dir = RotationUtil.getRandomRotation(rand);
 
 		// initialize direction variables
 		int dx = 0;
@@ -125,15 +129,20 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 			for (int i = 0; i < dist; i++) {
 				// go out that far
 				final Rotation add = dir.add(rotation).add(this.rotation);
-				int branchMeta = (add == Rotation.NONE || add == Rotation.CLOCKWISE_180) ? 5 : 9;
+				IBlockState thorns = TFBlocks.thorns.getDefaultState()
+						.withProperty(BlockTFThorns.VARIANT, ThornVariant.GREEN)
+						.withProperty(
+								BlockTFThorns.AXIS,
+								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? EnumFacing.Axis.X : EnumFacing.Axis.Z
+						);
 				if (i > 0) {
-					this.setBlockStateRotated(world, TFBlocks.thorns, branchMeta, x + (dx * i), y, z + (dz * i), rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x + (dx * i), y, z + (dz * i), rotation, sbb);
 				}
 				// go up that far
-				this.setBlockStateRotated(world, TFBlocks.thorns, 1, destX, y + i, destZ, rotation, sbb);
+				this.setBlockStateRotated(world, thorns.withProperty(BlockTFThorns.AXIS, EnumFacing.Axis.Y), destX, y + i, destZ, rotation, sbb);
 				// go back half that far
 				if (i > (dist/ 2)) {
-					this.setBlockStateRotated(world, TFBlocks.thorns, branchMeta, x + (dx * i), y + dist - 1, z + (dz * i), rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x + (dx * i), y + dist - 1, z + (dz * i), rotation, sbb);
 				}
 
 

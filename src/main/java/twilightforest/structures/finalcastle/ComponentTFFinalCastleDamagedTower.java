@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +17,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 {
 
 	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, 2, direction);  //TODO: change rune type
+		super(rand, i, x, y, z, EnumDyeColor.ORANGE, direction);  //TODO: change rune type
 	}
 
     @Override

@@ -1,14 +1,17 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
@@ -52,9 +55,10 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		super.addComponentParts(world, rand, sbb);
 
 		// openings!
-		Block fieldBlock = TFBlocks.forceField;
-		int fieldMeta = 4;
-        for (Rotation rotation : ROTATIONS) {
+		IBlockState fieldBlock = TFBlocks.forceField
+				.getDefaultState()
+				.withProperty(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(4));
+        for (Rotation rotation : RotationUtil.ROTATIONS) {
 	        int y = 48;
 	        for (int x = 5; x < this.size - 4; x += 2) {
 //	        	for (int wy = 0; wy < 15; wy++) {
@@ -62,7 +66,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 //	        		this.setBlockStateRotated(world, fieldBlock, fieldMeta, x, y + wy, 0, rotation, sbb);
 //	        	}
 //	        	fieldMeta = rand.nextInt(5);
-		        this.fillBlocksRotated(world, sbb, x, y, 0, x, y + 14, 0, fieldBlock, fieldMeta, rotation);
+		        this.fillBlocksRotated(world, sbb, x, y, 0, x, y + 14, 0, fieldBlock, rotation);
 	        }
 	        y = 24;
 	        for (int x = 1; x < this.size - 1; x += 8) {
@@ -73,9 +77,9 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 //	        			this.setBlockStateRotated(world, fieldBlock, fieldMeta, x + 2, y + wy, 0, rotation, sbb);
 //	        		}
 //	        		fieldMeta = rand.nextInt(5);
-		        this.fillBlocksRotated(world, sbb, x, y, 0, x, y + 14, 0, fieldBlock, fieldMeta, rotation);
+		        this.fillBlocksRotated(world, sbb, x, y, 0, x, y + 14, 0, fieldBlock, rotation);
 //	        		fieldMeta = rand.nextInt(5);
-		        this.fillBlocksRotated(world, sbb, x + 2, y, 0, x + 2, y + 14, 0, fieldBlock, fieldMeta, rotation);
+		        this.fillBlocksRotated(world, sbb, x + 2, y, 0, x + 2, y + 14, 0, fieldBlock, rotation);
 	        }
         }
 
