@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static net.minecraft.item.EnumDyeColor.ORANGE;
-
 public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDamagedTower
 {
 

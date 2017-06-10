@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFCastleDoor;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -71,7 +72,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing
 
 
 	public EnumDyeColor getGlyphMeta() {
-		return EnumDyeColor.WHITE;
+		return BlockTFCastleMagic.VALID_COLORS.get(0);
 	}
 
 

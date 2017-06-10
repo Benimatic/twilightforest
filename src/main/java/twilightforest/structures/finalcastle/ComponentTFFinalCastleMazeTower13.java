@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFCastleDoor;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -366,7 +367,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 		// what type of tower?
 		ComponentTFFinalCastleMazeTower13 eTower;
-		if (this.type == EnumDyeColor.WHITE) {
+		if (this.type == BlockTFCastleMagic.VALID_COLORS.get(0)) {
 			eTower = new ComponentTFFinalCastleEntranceTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
 		} else {
 			eTower = new ComponentTFFinalCastleBellTower21(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
