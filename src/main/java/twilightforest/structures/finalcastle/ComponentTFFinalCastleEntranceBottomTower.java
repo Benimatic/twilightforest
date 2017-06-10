@@ -5,6 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +15,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	public ComponentTFFinalCastleEntranceBottomTower() {}
 
 	public ComponentTFFinalCastleEntranceBottomTower(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumFacing direction) {
-		super(rand, i, x, y, z, floors, entranceFloor, EnumDyeColor.WHITE, direction);
+		super(rand, i, x, y, z, floors, entranceFloor, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 
 //    		addOpening(12, 1, size / 2, 0);
 //    		addOpening(size / 2, 1, 0, 1);

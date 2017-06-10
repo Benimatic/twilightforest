@@ -10,6 +10,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
+import twilightforest.block.BlockTFCastleDoor;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
@@ -87,12 +89,12 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 
 	    // tower maze towards entrance
 	    BlockPos dest = new BlockPos(boundingBox.minX - 4, boundingBox.maxY, boundingBox.minZ - 24);
-		buildTowerMaze(list, rand, 48, 0, 24, 60, EnumFacing.SOUTH, EnumDyeColor.WHITE, dest);
+		buildTowerMaze(list, rand, 48, 0, 24, 60, EnumFacing.SOUTH, BlockTFCastleMagic.VALID_COLORS.get(0), dest);
 
 
 		// another tower/bridge maze towards the clock tower
 		dest = new BlockPos(boundingBox.maxX + 4, boundingBox.minY, boundingBox.maxZ + 24);
-		buildTowerMaze(list, rand, 0, 30, 24, 60, EnumFacing.NORTH, EnumDyeColor.ORANGE, dest);
+		buildTowerMaze(list, rand, 0, 30, 24, 60, EnumFacing.NORTH, BlockTFCastleMagic.VALID_COLORS.get(1), dest);
 
 
 		// initial stairs down towards dungeon

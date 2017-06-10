@@ -8,6 +8,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
@@ -23,7 +24,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	public ComponentTFFinalCastleBellTower21() { }
 
 	public ComponentTFFinalCastleBellTower21(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, FLOORS, 1, EnumDyeColor.ORANGE, direction);
+		super(rand, i, x, y, z, FLOORS, 1, BlockTFCastleMagic.VALID_COLORS.get(1), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;

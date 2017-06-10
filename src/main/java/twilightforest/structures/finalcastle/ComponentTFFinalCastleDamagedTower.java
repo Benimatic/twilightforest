@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 {
 
 	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, EnumDyeColor.ORANGE, direction);  //TODO: change rune type
+		super(rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune type
 	}
 
     @Override
