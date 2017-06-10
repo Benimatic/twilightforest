@@ -170,7 +170,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 
             structurecomponent = (StructureComponent)iterator.next();
         }
-        while (!((structurecomponent instanceof ComponentTFFinalCastleEntranceTower && type == EnumDyeColor.WHITE) || (structurecomponent instanceof ComponentTFFinalCastleBellTower21 && type == EnumDyeColor.ORANGE)));
+        while (!((structurecomponent instanceof ComponentTFFinalCastleEntranceTower && type == BlockTFCastleMagic.VALID_COLORS.get(0)) || (structurecomponent instanceof ComponentTFFinalCastleBellTower21 && type == BlockTFCastleMagic.VALID_COLORS.get(1))));
 
 		return true;
 	}
