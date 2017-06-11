@@ -5,6 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 
 	@Override
 	public EnumDyeColor getGlyphColour() {
-		return ORANGE;
+		return BlockTFCastleMagic.VALID_COLORS.get(1);
 	}
 
 

@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
@@ -127,16 +128,18 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
     /**
      * Build a side tower, then tell it to start building towards the destination
      */
-    private void buildTowerMaze(List list, Random rand, int x, int y, int z, int howFar, EnumFacing direction, EnumDyeColor type, BlockPos dest) {
+    private void buildTowerMaze(List<StructureComponent> list, Random rand, int x, int y, int z, int howFar, EnumFacing direction, EnumDyeColor type, BlockPos dest) {
 	    // duplicate list
-	    LinkedList before = new LinkedList(list);
+	    LinkedList before = new LinkedList<>(list);
 
 	    // build
 		BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
 	    ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+
 	    // add bridge
 		BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
 		ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);
 
@@ -157,22 +160,21 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 
     }
 
-	private boolean isMazeComplete(List list, EnumDyeColor type) {
-        Iterator iterator = list.iterator();
-        StructureComponent structurecomponent;
-
-        do
-        {
-            if (!iterator.hasNext())
-            {
-                return false;
-            }
-
-            structurecomponent = (StructureComponent)iterator.next();
-        }
-        while (!((structurecomponent instanceof ComponentTFFinalCastleEntranceTower && type == BlockTFCastleMagic.VALID_COLORS.get(0)) || (structurecomponent instanceof ComponentTFFinalCastleBellTower21 && type == BlockTFCastleMagic.VALID_COLORS.get(1))));
-
-		return true;
+	private boolean isMazeComplete(List<StructureComponent> list, EnumDyeColor type) {
+    	int componentsCounted = 0;
+        for (StructureComponent structurecomponent : list) {
+        	componentsCounted++;
+        	if (componentsCounted >= 40) {
+				TwilightForestMod.LOGGER.warn("Maze of type {} is getting a bit excessive.", type);
+			}
+        	if (type == BlockTFCastleMagic.VALID_COLORS.get(0) && structurecomponent instanceof ComponentTFFinalCastleEntranceTower) {
+				return true;
+			}
+			if (type == BlockTFCastleMagic.VALID_COLORS.get(1)&& structurecomponent instanceof ComponentTFFinalCastleBellTower21) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
