@@ -131,7 +131,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
     private void buildTowerMaze(List<StructureComponent> list, Random rand, int x, int y, int z, int howFar, EnumFacing direction, EnumDyeColor type, BlockPos dest) {
 	    boolean complete = false;
 	    int iterations = 0;
-    	while (!complete || iterations > 15) {
+    	while (!complete && iterations < 15) {
     		iterations++;
 			// duplicate list
 			LinkedList before = new LinkedList<>(list);
