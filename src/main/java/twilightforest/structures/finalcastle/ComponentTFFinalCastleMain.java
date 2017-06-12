@@ -129,41 +129,52 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
      * Build a side tower, then tell it to start building towards the destination
      */
     private void buildTowerMaze(List<StructureComponent> list, Random rand, int x, int y, int z, int howFar, EnumFacing direction, EnumDyeColor type, BlockPos dest) {
-	    // duplicate list
-	    LinkedList before = new LinkedList<>(list);
+	    boolean complete = false;
+	    int iterations = 0;
+    	while (!complete || iterations > 15) {
+    		iterations++;
+			// duplicate list
+			LinkedList before = new LinkedList<>(list);
 
-	    // build
-		BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-	    ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+			// build
+			BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
+			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
-	    // add bridge
-		BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
-		ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+			// add bridge
+			BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
+			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 
-		list.add(bridge);
-		bridge.buildComponent(this, list, rand);
+			list.add(bridge);
+			bridge.buildComponent(this, list, rand);
 
-	    // don't check if the bounding box is clear, there's either nothing there or we've made a terrible mistake
-	    list.add(sTower);
-	    sTower.buildTowards(this, list, rand, dest);
+			// don't check if the bounding box is clear, there's either nothing there or we've made a terrible mistake
+			list.add(sTower);
+			sTower.buildTowards(this, list, rand, dest);
 
-	    // check if we've successfully built the end tower
-	    if (this.isMazeComplete(list, type)) {
-		    System.out.println("Tower maze type " + type + " complete!");
-	    } else {
-		    // TODO: add limit on retrying, in case of infinite loop?
-		    System.out.println("Tower maze type " + type + " INCOMPLETE, retrying!");
-		    list.clear();
-		    list.addAll(before);
-		    this.buildTowerMaze(list, rand, x, y, z, howFar, direction, type, dest);
-	    }
-
+			// check if we've successfully built the end tower
+			TwilightForestMod.LOGGER.info("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
+			if (this.isMazeComplete(list, type)) {
+				System.out.println("Tower maze type " + type + " complete!");
+				complete = true;
+			} else {
+				// TODO: add limit on retrying, in case of infinite loop?
+				System.out.println("Tower maze type " + type + " INCOMPLETE, retrying!");
+				list.clear();
+				list.addAll(before);
+				//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, type, dest);
+			}
+		}
     }
 
 	private boolean isMazeComplete(List<StructureComponent> list, EnumDyeColor type) {
     	int componentsCounted = 0;
         for (StructureComponent structurecomponent : list) {
         	componentsCounted++;
+			StructureBoundingBox boundingBox = structurecomponent.getBoundingBox();
+			int x = (boundingBox.maxX - boundingBox.minX / 2) + boundingBox.minX;
+			int y = (boundingBox.maxY - boundingBox.minY / 2) + boundingBox.minY;
+			int z = (boundingBox.maxZ - boundingBox.minZ / 2) + boundingBox.minZ;
+			TwilightForestMod.LOGGER.info("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
         	if (componentsCounted >= 40) {
 				TwilightForestMod.LOGGER.warn("Maze of type {} is getting a bit excessive.", type);
 			}
