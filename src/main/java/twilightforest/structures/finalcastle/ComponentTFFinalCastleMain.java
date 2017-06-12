@@ -154,14 +154,14 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 			// check if we've successfully built the end tower
 			TwilightForestMod.LOGGER.info("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
 			if (this.isMazeComplete(list, type)) {
-				System.out.println("Tower maze type " + type + " complete!");
+				System.out.println("Tower maze color " + type + " complete!");
 				complete = true;
 			} else {
 				// TODO: add limit on retrying, in case of infinite loop?
-				System.out.println("Tower maze type " + type + " INCOMPLETE, retrying!");
+				System.out.println("Tower maze color " + type + " INCOMPLETE, retrying!");
 				list.clear();
 				list.addAll(before);
-				//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, type, dest);
+				//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, color, dest);
 			}
 		}
     }
@@ -175,8 +175,8 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 			int y = (boundingBox.maxY - boundingBox.minY / 2) + boundingBox.minY;
 			int z = (boundingBox.maxZ - boundingBox.minZ / 2) + boundingBox.minZ;
 			TwilightForestMod.LOGGER.info("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
-        	if (componentsCounted >= 40) {
-				TwilightForestMod.LOGGER.warn("Maze of type {} is getting a bit excessive.", type);
+        	if (componentsCounted >= 60) {
+				TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
 			}
         	if (type == BlockTFCastleMagic.VALID_COLORS.get(0) && structurecomponent instanceof ComponentTFFinalCastleEntranceTower) {
 				return true;

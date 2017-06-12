@@ -8,6 +8,8 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.util.RotationUtil;
+
 import java.util.List;
 import java.util.Random;
 
@@ -46,45 +48,44 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	    int middleFloors = missingFloors - bottomFloors;
 
 	    // what direction can we put the side tower in, if any?
-	    Rotation direction = Rotation.CLOCKWISE_90;
+	    EnumFacing facing = Rotation.CLOCKWISE_90.rotate(this.getCoordBaseMode());
 	    int howFar = 20;
-	    if (!this.buildSideTower(list, rand, middleFloors + 1, direction, howFar)) {
-		    direction = Rotation.COUNTERCLOCKWISE_90;
-	        if (!this.buildSideTower(list, rand, middleFloors + 1, direction, howFar)) {
-		        direction = Rotation.NONE;
-	            if (!this.buildSideTower(list, rand, middleFloors + 1, direction, howFar)) {
+	    if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
+			facing = Rotation.COUNTERCLOCKWISE_90.rotate(this.getCoordBaseMode());
+	        if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
+				facing = Rotation.NONE.rotate(this.getCoordBaseMode());
+	            if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
 		            // side tower no worky
 	            }
 	        }
         }
 
 	    // add bottom tower
-	    Rotation brDirection = direction.add(rotation);
-		ComponentTFFinalCastleEntranceBottomTower eTower = new ComponentTFFinalCastleEntranceBottomTower(rand, this.getComponentType() + 1, this.boundingBox.minX + 6, this.boundingBox.minY - (middleFloors) * 8, this.boundingBox.minZ + 6, bottomFloors + 1, bottomFloors, brDirection.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.SOUTH));
+		ComponentTFFinalCastleEntranceBottomTower eTower = new ComponentTFFinalCastleEntranceBottomTower(rand, this.getComponentType() + 1, this.boundingBox.minX + 6, this.boundingBox.minY - (middleFloors) * 8, this.boundingBox.minZ + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
 		list.add(eTower);
 		eTower.buildComponent(this, list, rand);
 
 	    // add bridge to bottom
-		BlockPos opening = this.getValidOpeningCC(rand, direction);
+		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
+		BlockPos opening = this.getValidOpeningCC(rand, relativeRotation);
 		opening = opening.down(middleFloors * 8);
 
-		BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, brDirection.rotate(EnumFacing.SOUTH));
-		ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, brDirection.rotate(EnumFacing.SOUTH));
+		BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
+		ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);
 	}
 
-	private boolean buildSideTower(List list, Random rand, int middleFloors, Rotation direction, int howFar) {
-		BlockPos opening = this.getValidOpeningCC(rand, direction);
-
-		direction = direction.add(rotation);
+	private boolean buildSideTower(List list, Random rand, int middleFloors, EnumFacing facing, int howFar) {
+		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
+		BlockPos opening = this.getValidOpeningCC(rand, relativeRotation);
 
 		// build towards
-		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, direction.rotate(EnumFacing.SOUTH));
+		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
 
 		//System.out.println("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + direction + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
 
-		ComponentTFFinalCastleEntranceSideTower eTower = new ComponentTFFinalCastleEntranceSideTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, direction.rotate(EnumFacing.SOUTH));
+		ComponentTFFinalCastleEntranceSideTower eTower = new ComponentTFFinalCastleEntranceSideTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
 
 		StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
 
@@ -99,13 +100,13 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 			list.add(eTower);
 			eTower.buildComponent(this, list, rand);
 			// add bridge
-			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, direction.rotate(EnumFacing.SOUTH));
-			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction.rotate(EnumFacing.SOUTH));
+			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
+			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);
 
 			// opening
-		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), direction);
+		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), relativeRotation);
 
 			return true;
 		} else {

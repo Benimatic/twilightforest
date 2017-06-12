@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import java.util.Random;
 
@@ -11,6 +12,7 @@ import static net.minecraft.util.Rotation.COUNTERCLOCKWISE_90;
 public final class RotationUtil
 {
 	public static final Rotation[] ROTATIONS = Rotation.values();
+	public static final EnumFacing[] CARDINALS = {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
 
 	private RotationUtil() {}
 
@@ -72,5 +74,64 @@ public final class RotationUtil
 			default:
 				return original;
 		}
+	}
+
+	public static Rotation getRelativeRotation(EnumFacing original, EnumFacing destination)
+	{
+		switch (original) {
+			case NORTH:
+			default:
+				switch (destination) {
+					case NORTH:
+					default:
+						return Rotation.NONE;
+					case SOUTH:
+						return Rotation.CLOCKWISE_180;
+					case EAST:
+						return Rotation.CLOCKWISE_90;
+					case WEST:
+						return Rotation.COUNTERCLOCKWISE_90;
+				}
+			case SOUTH:
+				switch (destination) {
+					case SOUTH:
+					default:
+						return Rotation.NONE;
+					case NORTH:
+						return Rotation.CLOCKWISE_180;
+					case WEST:
+						return Rotation.CLOCKWISE_90;
+					case EAST:
+						return Rotation.COUNTERCLOCKWISE_90;
+				}
+			case EAST:
+				switch (destination) {
+					case EAST:
+					default:
+						return Rotation.NONE;
+					case WEST:
+						return Rotation.CLOCKWISE_180;
+					case SOUTH:
+						return Rotation.CLOCKWISE_90;
+					case NORTH:
+						return Rotation.COUNTERCLOCKWISE_90;
+				}
+			case WEST:
+				switch (destination) {
+					case WEST:
+					default:
+						return Rotation.NONE;
+					case EAST:
+						return Rotation.CLOCKWISE_180;
+					case NORTH:
+						return Rotation.CLOCKWISE_90;
+					case SOUTH:
+						return Rotation.COUNTERCLOCKWISE_90;
+				}
+		}
+	}
+
+	public static EnumFacing getRandomFacing(Random random) {
+		return CARDINALS[random.nextInt(CARDINALS.length)];
 	}
 }

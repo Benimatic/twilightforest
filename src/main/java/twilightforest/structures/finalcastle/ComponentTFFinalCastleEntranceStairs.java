@@ -38,33 +38,33 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent
 
 		for (int x = 1; x < size; x++) {
 
-			this.placeStairs(world, sbb, x, 1 - x, 5, EnumFacing.SOUTH);
+			this.placeStairs(world, sbb, x, 1 - x, 5, EnumFacing.EAST);
 
 			for (int z = 0; z <= x; z++) {
 
 				if (z > 0 && z <= size / 2) {
-					this.placeStairs(world, sbb, x, 1 - x, 5 - z, EnumFacing.SOUTH);
-					this.placeStairs(world, sbb, x, 1 - x, 5 + z, EnumFacing.SOUTH);
+					this.placeStairs(world, sbb, x, 1 - x, 5 - z, EnumFacing.EAST);
+					this.placeStairs(world, sbb, x, 1 - x, 5 + z, EnumFacing.EAST);
 				}
 
 				if (x <= size / 2) {
-					this.placeStairs(world, sbb, z, 1 - x, 5 - x, EnumFacing.WEST);
-					this.placeStairs(world, sbb, z, 1 - x, 5 + x, EnumFacing.NORTH);
+					this.placeStairs(world, sbb, z, 1 - x, 5 - x, EnumFacing.NORTH);
+					this.placeStairs(world, sbb, z, 1 - x, 5 + x, EnumFacing.SOUTH);
 				}
 			}
 		}
 
-		this.setBlockState(world, deco.blockState, 0, 0, 5, sbb);
+		this.replaceAirAndLiquidDownwards(world, deco.blockState, 0, 0, 5, sbb);
 
 
 		return true;
 	}
 
 	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, EnumFacing facing) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, new BlockPos(x, y, z))) {
+		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, this.getBlockPosWithOffset(x, y, z))) {
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
 			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, facing), x, y, z, sbb);
-			this.setBlockState(world, deco.blockState, x, y - 1, z, sbb);
+			this.replaceAirAndLiquidDownwards(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}
 

@@ -18,7 +18,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 {
 
 	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune type
+		super(rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune color
 	}
 
     @Override
@@ -49,8 +49,8 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 
 
 	@Override
-	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Rotation direction, BlockPos tc) {
-		return new ComponentTFFinalCastleWreckedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), direction.rotate(EnumFacing.SOUTH));
+	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, EnumFacing facing, BlockPos tc) {
+		return new ComponentTFFinalCastleWreckedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 
