@@ -198,7 +198,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 	}
 
 	protected EnumDyeColor getRuneMeta(EnumDyeColor forceFieldMeta) {
-		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldMeta == EnumDyeColor.BLUE ? 1 : 2);
+		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldMeta == BlockTFForceField.VALID_COLORS.get(4) ? 1 : 2);
 	}
 
 	protected EnumDyeColor getForceFieldMeta(Random decoRNG) {

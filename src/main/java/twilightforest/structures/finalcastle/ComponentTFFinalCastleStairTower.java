@@ -61,9 +61,10 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing
 	    this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 
 
+
 	    // door, first floor
 	    final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
-			    .withProperty(BlockTFCastleDoor.LOCK_INDEX, getGlyphMeta().ordinal()); //TODO: WTF do I do here...?
+			    .withProperty(BlockTFCastleDoor.LOCK_INDEX, BlockTFCastleMagic.VALID_COLORS.indexOf(getGlyphMeta())); //TODO: WTF do I do here...?
 	    this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 3, 2, castleDoor, AIR, false);
 
 	    // stairs
