@@ -39,7 +39,7 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponent
 		{
 			for (int z = 4; z < 45; z++)
 			{
-				this.setBlockState(world, deco.blockState, x, -1, z, sbb);
+				this.replaceAirAndLiquidDownwards(world, deco.blockState, x, -1, z, sbb);
 			}
 
 		}
