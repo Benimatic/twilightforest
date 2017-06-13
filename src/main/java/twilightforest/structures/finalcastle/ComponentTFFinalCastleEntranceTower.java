@@ -1,6 +1,5 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -66,8 +65,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		eTower.buildComponent(this, list, rand);
 
 	    // add bridge to bottom
-		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
-		BlockPos opening = this.getValidOpeningCC(rand, relativeRotation);
+		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = opening.down(middleFloors * 8);
 
 		BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
@@ -77,8 +75,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	}
 
 	private boolean buildSideTower(List list, Random rand, int middleFloors, EnumFacing facing, int howFar) {
-		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
-		BlockPos opening = this.getValidOpeningCC(rand, relativeRotation);
+		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// build towards
 		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
@@ -106,7 +103,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 			bridge.buildComponent(this, list, rand);
 
 			// opening
-		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), relativeRotation);
+		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 			return true;
 		} else {
@@ -120,27 +117,9 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
 	@Override
-	public BlockPos getValidOpeningCC(Random rand, Rotation direction) {
-		// for directions 0 or 2, the wall lies along the z axis
-		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
-			int rx = direction == Rotation.NONE ? 12 : 0;
-			int rz = 6;
-			int ry = 0;
-
-			return new BlockPos(rx, ry, rz);
-		}
-
-		// for directions 1 or 3, the wall lies along the x axis
-		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
-			int rx = 6;
-			int rz = direction == Rotation.CLOCKWISE_90 ? 12 : 0;
-			int ry = 0;
-
-			return new BlockPos(rx, ry, rz);
-		}
-
-
-		return new BlockPos(0, 0, 0);
+	public BlockPos getValidOpeningCC(Random rand, EnumFacing facing) {
+		BlockPos opening = super.getValidOpeningCC(rand, facing);
+		return new BlockPos(opening.getX(), 0, opening.getZ());
 	}
 
 

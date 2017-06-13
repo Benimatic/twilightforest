@@ -222,7 +222,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Add an opening to the outside (or another tower) in the specified direction.
 	 */
@@ -232,6 +232,13 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			highestOpening = dy;
 		}
 		openings.add(new BlockPos(dx, dy, dz));
+	}
+
+	/**
+	 * Add an opening to the outside (or another tower) in the specified facing.
+	 */
+	public void addOpening(int dx, int dy, int dz, EnumFacing facing) {
+		this.addOpening(dx, dy, dz, RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing));
 	}
 	
 	/**

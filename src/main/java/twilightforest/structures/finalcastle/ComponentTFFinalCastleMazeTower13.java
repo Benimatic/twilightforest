@@ -217,8 +217,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	}
 
 	private boolean buildContinueTowerTowards(List list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
-    	Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
-		BlockPos opening = this.getValidOpeningCC(rand, relativeRotation);
+		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// adjust opening towards dest.getY() if we are getting close to dest
 		int adjustmentRange = 60;
@@ -231,10 +230,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		}
 
 		TwilightForestMod.LOGGER.info("original direction is " + facing);
-
-		//direction = direction.add(rotation);
-		//direction += this.coordBaseMode;
-		//direction %= 4;
 
 		// build towards
 		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
@@ -275,7 +270,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 				bridge.buildComponent(this, list, rand);
 
 				// opening
-			    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), relativeRotation);
+			    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 				return true;
 			} else {
@@ -290,8 +285,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 
 	protected boolean buildDamagedTower(List list, Random rand, EnumFacing facing) {
-		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
-		BlockPos opening = this.getValidOpeningCC(rand, relativeRotation);
+		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		int howFar = 14 + rand.nextInt(24);
 		// build towards
@@ -320,7 +314,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			bridge.buildComponent(this, list, rand);
 
 			// opening
-		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), relativeRotation);
+		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 			return true;
 		} else {
@@ -349,8 +343,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	}
 
 	private boolean buildEndTowerTowards(List list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
-		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
-		BlockPos opening = this.getValidOpeningCC(rand, relativeRotation);
+		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = new BlockPos(
 				opening.getX(),
 				// adjust opening towards dest.getY()
@@ -391,7 +384,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			bridge.buildComponent(this, list, rand);
 
 			// opening
-		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), relativeRotation);
+		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 			return true;
 		} else {
@@ -414,12 +407,13 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	/**
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
-	public BlockPos getValidOpeningCC(Random rand, Rotation direction) {
+	public BlockPos getValidOpeningCC(Random rand, EnumFacing facing) {
+		Rotation relative = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
 		int floors = (this.height / 8);
 
 		// for directions 0 or 2, the wall lies along the z axis
-		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
-			int rx = direction == Rotation.NONE ? 12 : 0;
+		if (relative == Rotation.NONE || relative == Rotation.CLOCKWISE_180) {
+			int rx = relative == Rotation.NONE ? 12 : 0;
 			int rz = 6;
 			int ry = rand.nextInt(floors) * 8;
 
@@ -427,9 +421,9 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		}
 
 		// for directions 1 or 3, the wall lies along the x axis
-		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
+		if (relative == Rotation.CLOCKWISE_90 || relative == Rotation.COUNTERCLOCKWISE_90) {
 			int rx = 6;
-			int rz = direction == Rotation.CLOCKWISE_90 ? 12 : 0;
+			int rz = relative == Rotation.CLOCKWISE_90 ? 12 : 0;
 			int ry = rand.nextInt(floors) * 8;
 
 			return new BlockPos(rx, ry, rz);
