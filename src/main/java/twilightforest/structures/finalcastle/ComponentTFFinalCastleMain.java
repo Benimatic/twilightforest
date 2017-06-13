@@ -237,12 +237,12 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	    for (int i = 0; i < 5; i++) {
 		    int y = 30 - i;
 
-	        makeMezzTopStairs(world, sbb, y, 10 + i, EnumFacing.NORTH);
-	        makeMezzTopStairs(world, sbb, y, 38 - i, EnumFacing.WEST);
+	        makeMezzTopStairs(world, sbb, y, 10 + i, EnumFacing.SOUTH);
+	        makeMezzTopStairs(world, sbb, y, 38 - i, EnumFacing.NORTH);
 
 	        y = 25 - i;
 	        int x = 37 - i;
-		    final IBlockState stairState = getStairState(deco.stairState, EnumFacing.EAST, rotation, false);
+		    final IBlockState stairState = getStairState(deco.stairState, EnumFacing.WEST, rotation, false);
 		    this.fillWithBlocks(world, sbb, x, y, 14, x, y, 22, stairState, stairState, false);
 		    this.fillWithBlocks(world, sbb, x, y - 1, 14, x, y - 1, 22, deco.blockState, deco.blockState, false);
 		    this.fillWithBlocks(world, sbb, x, y, 26, x, y, 34, stairState, stairState, false);
@@ -318,12 +318,12 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 		    int z = 40 + y;
 			this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockState, rotation);
 
-		    this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), rotation);
+		    this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, getStairState(deco.stairState, EnumFacing.NORTH, rotation, false), rotation);
 	    }
 	}
 
 	private void makeLargeTowerStairs(World world, StructureBoundingBox sbb, Rotation rotation) {
-		final IBlockState stairState = getStairState(deco.stairState, EnumFacing.WEST, rotation, false);
+		final IBlockState stairState = getStairState(deco.stairState, EnumFacing.NORTH, rotation, false);
 		for (int y = 1; y < 4; y++) {
 		    int z = 38 + y;
 			this.fillBlocksRotated(world, sbb, 2, 1, z, 6, y, z, deco.blockState, rotation);
@@ -339,17 +339,17 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent
 	}
 
 	private void makeHalfPillarBase(World world, StructureBoundingBox sbb, Rotation rotation, int y, int z, boolean isFlipped) {
-		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), rotation);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, isFlipped), 1, y, z - 1, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), 1, y, z + 3, rotation, sbb);
+		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, EnumFacing.EAST, rotation, isFlipped), rotation);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), 1, y, z - 1, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), 1, y, z + 3, rotation, sbb);
 	}
 
 	private void makePillarBase(World world, StructureBoundingBox sbb, int x, int z, int y, boolean isFlipped) {
-		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), AIR, false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, EnumFacing.WEST, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), AIR, false);
 
-		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), AIR, false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, getStairState(deco.stairState, EnumFacing.EAST, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, getStairState(deco.stairState, EnumFacing.EAST, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, getStairState(deco.stairState, EnumFacing.WEST, rotation, isFlipped), AIR, false);
 	}
 
 }

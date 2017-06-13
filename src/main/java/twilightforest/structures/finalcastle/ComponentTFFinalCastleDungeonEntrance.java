@@ -48,7 +48,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		super.addComponentParts(world, rand, sbb);
 
-		final IBlockState stairs = deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH);
+		final IBlockState stairs = deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH);
 		final IBlockState deadRock = TFBlocks.deadrock.getDefaultState();
 		// stairs
 		for (int y = 0; y <= this.height; y++) {
