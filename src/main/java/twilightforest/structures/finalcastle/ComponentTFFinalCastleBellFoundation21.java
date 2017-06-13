@@ -15,6 +15,7 @@ import java.util.Random;
  */
 public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCastleFoundation13
 {
+	public ComponentTFFinalCastleBellFoundation21() {}
 
 	public ComponentTFFinalCastleBellFoundation21(Random rand, int i, StructureTFComponent sideTower) {
 		super(rand, i, sideTower);

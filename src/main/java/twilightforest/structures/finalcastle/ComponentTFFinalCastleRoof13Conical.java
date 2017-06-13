@@ -19,6 +19,8 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponent
 
 	public int slope;
 
+	public ComponentTFFinalCastleRoof13Conical() {}
+	
 	public ComponentTFFinalCastleRoof13Conical(Random rand, int i, StructureTFComponent sideTower) {
 		super(i);
 

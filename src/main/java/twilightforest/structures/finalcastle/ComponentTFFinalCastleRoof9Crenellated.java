@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class ComponentTFFinalCastleRoof9Crenellated extends StructureTFComponent
 {
+    public ComponentTFFinalCastleRoof9Crenellated() {}
 
 	public ComponentTFFinalCastleRoof9Crenellated(Random rand, int i, StructureTFComponent sideTower) {
 		super(i);

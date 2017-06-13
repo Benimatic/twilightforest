@@ -18,6 +18,8 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
 {
 	protected int groundLevel = -1;
 
+	public ComponentTFFinalCastleFoundation13() {}
+
 	public ComponentTFFinalCastleFoundation13(Random rand, int i, StructureTFComponent sideTower) {
 		super(i);
 

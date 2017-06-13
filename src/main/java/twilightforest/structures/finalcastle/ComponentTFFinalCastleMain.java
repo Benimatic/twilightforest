@@ -27,6 +27,7 @@ import static twilightforest.block.BlockTFCastleDoor.LOCK_INDEX;
 
 public class ComponentTFFinalCastleMain extends StructureTFComponent
 {
+	public ComponentTFFinalCastleMain() {}
 
     public ComponentTFFinalCastleMain(World world, Random rand, int i, int x, int y, int z) {
 	    this.setCoordBaseMode(EnumFacing.SOUTH);

@@ -13,6 +13,7 @@ import java.util.Random;
 
 public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDamagedTower
 {
+	public ComponentTFFinalCastleWreckedTower() {}
 
 	public ComponentTFFinalCastleWreckedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, direction);

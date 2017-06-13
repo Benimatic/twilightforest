@@ -16,6 +16,7 @@ import java.util.Random;
 
 public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMazeTower13
 {
+	public ComponentTFFinalCastleDamagedTower() {}
 
 	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune color

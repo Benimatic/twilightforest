@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class ComponentTFFinalCastleBridge extends StructureTFComponent
 {
+	public ComponentTFFinalCastleBridge() {}
 
 	public ComponentTFFinalCastleBridge(int i, int x, int y, int z, int length, EnumFacing direction) {
 		this.setCoordBaseMode(direction);
