@@ -83,6 +83,12 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
         return i;
     }
 
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return getMetaFromState(state) & 3;
+    }
+
 	@Override
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
