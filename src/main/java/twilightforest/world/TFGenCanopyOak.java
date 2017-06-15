@@ -133,14 +133,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		}
 		
 		TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
-	
-		// do this here until that bug with the lighting is fixed
-		if (trunk) 
-		{
-			// add a firefly (torch) to the trunk
-			addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
-		}
-		
+
 		int blobSize = 2;// + treeRNG.nextInt(2);
 
 		TFGenerator.drawLeafBlob(this, world, dest, blobSize, leafState);

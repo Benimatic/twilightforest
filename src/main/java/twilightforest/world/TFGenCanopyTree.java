@@ -5,12 +5,14 @@ import java.util.Random;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFRoots;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
@@ -107,7 +109,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 			TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
 
-			// do this here until that bug with the lighting is fixed
+			// seems to help lighting to place this firefly now
 			if (trunk)
 			{
 				// add a firefly (torch) to the trunk
@@ -136,19 +138,19 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		int iAngle = (int)(angle * 4.0);
 		if (iAngle == 0)
 		{
-			setBlockAndNotifyAdequately(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.EAST));
 		}
 		else if (iAngle == 1)
 		{
-			setBlockAndNotifyAdequately(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.WEST));
 		}
 		else if (iAngle == 2)
 		{
-			setBlockAndNotifyAdequately(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.SOUTH));
 		}
 		else if (iAngle == 3)
 		{
-			setBlockAndNotifyAdequately(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState());
+			setBlockAndNotifyAdequately(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.NORTH));
 		}
 	}
 	
