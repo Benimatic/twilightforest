@@ -35,6 +35,7 @@ import twilightforest.block.enums.PlantVariant;
 import twilightforest.entity.EntityTFMosquitoSwarm;
 import twilightforest.world.TFGenHugeLilyPad;
 import twilightforest.world.TFGenTallGrass;
+import twilightforest.world.TFGenVines;
 import twilightforest.world.TFWorld;
 
 public class TFBiomeSwamp extends TFBiomeBase {
@@ -42,7 +43,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	private static final int MONSTER_SPAWN_RATE = 20;
 	private Random monsterRNG = new Random(53439L);
 
-    private WorldGenVines worldgenvines = new WorldGenVines();
+    private TFGenVines worldgenvines = new TFGenVines();
     private WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
     private WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
 
@@ -104,9 +105,9 @@ public class TFBiomeSwamp extends TFBiomeBase {
         for (int i = 0; i < 50; i++)
         {
             int j = pos.getX() + par2Random.nextInt(16) + 8;
-            byte byte0 = (byte) TFWorld.SEALEVEL;
+            int l = TFWorld.SEALEVEL + 128;
             int k = pos.getZ() + par2Random.nextInt(16) + 8;
-            worldgenvines.generate(par1World, par2Random, new BlockPos(j, byte0, k));
+            worldgenvines.generate(par1World, par2Random, new BlockPos(j, l, k));
         }
         for (int i = 0; i < 25; i++)
         {
