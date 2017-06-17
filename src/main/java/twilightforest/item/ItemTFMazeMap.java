@@ -122,7 +122,7 @@ public class ItemTFMazeMap extends ItemMap
             int centerZ = data.zCenter;
             int viewerX = MathHelper.floor(viewer.posX - (double)centerX) / blocksPerPixel + 64;
             int viewerZ = MathHelper.floor(viewer.posZ - (double)centerZ) / blocksPerPixel + 64;
-            int viewRadiusPixels = 128 / blocksPerPixel;
+            int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
             if (world.provider.hasNoSky())
             {
@@ -182,7 +182,7 @@ public class ItemTFMazeMap extends ItemMap
                                     // maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
                                     int yCenter = ((TFMazeMapData) data).yCenter;
                                     BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
-                                    IBlockState state = world.getBlockState(blockpos$mutableblockpos);
+                                    IBlockState state = chunk.getBlockState(blockpos$mutableblockpos);
 
                                     if (state.getBlock() == Blocks.STONE) {
                                         for (int i = -YSEARCH; i <= YSEARCH; i++) {
