@@ -33,7 +33,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCall
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        ItemStack itemstack = ItemTFMazeMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte)0, true, false, playerIn.posY);
+        ItemStack itemstack = ItemTFMazeMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte)0, true, false, playerIn.posY, this.mapOres);
         ItemStack itemstack1 = playerIn.getHeldItem(handIn);
         itemstack1.shrink(1);
 

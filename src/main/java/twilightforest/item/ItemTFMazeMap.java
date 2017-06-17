@@ -43,29 +43,15 @@ public class ItemTFMazeMap extends ItemMap
         this.mapOres = par2MapOres;
     }
 
-    // [VanillaCopy] super with own item and id, and y parameter
-    public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, double worldY)
+    // [VanillaCopy] super with own item and id, and y parameter, also whether we have an ore map or not
+    public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, double worldY, boolean mapOres)
     {
-        ItemStack itemstack = new ItemStack(TFItems.mazeMap, 1, world.getUniqueDataId(STR_ID));
+        ItemStack itemstack = new ItemStack(mapOres ? TFItems.oreMap : TFItems.mazeMap, 1, world.getUniqueDataId(STR_ID));
         String s = STR_ID + "_" + itemstack.getMetadata();
         TFMazeMapData mapdata = new TFMazeMapData(s);
         world.setData(s, mapdata);
         mapdata.scale = scale;
-
-        // TF - Center map exactly on player like in 1.7 and below, instead of snapping to grid
-        int step = 128 * (1 << mapdata.scale);
-        // need to fix center for feature offset
-        if (world.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor(worldX) >> 4, MathHelper.floor(worldZ) >> 4, world) == TFFeature.labyrinth) {
-            BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor(worldX) >> 4, MathHelper.floor(worldZ) >> 4, world);
-            mapdata.xCenter = mc.getX();
-            mapdata.zCenter = mc.getZ();
-            mapdata.yCenter = MathHelper.floor(worldY);
-        } else {
-            mapdata.xCenter = (int)(Math.round(worldX / step) * step) + 10; // mazes are offset slightly
-            mapdata.zCenter = (int)(Math.round(worldZ / step) * step) + 10; // mazes are offset slightly
-            mapdata.yCenter = MathHelper.floor(worldY);
-        }
-
+        mapdata.calculateMapCenter(world, worldX, worldY, worldZ, scale); // TF custom method here
         mapdata.dimension = world.provider.getDimension();
         mapdata.trackingPosition = trackingPosition;
         mapdata.unlimitedTracking = unlimitedTracking;
@@ -184,11 +170,13 @@ public class ItemTFMazeMap extends ItemMap
                                     BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
                                     IBlockState state = chunk.getBlockState(blockpos$mutableblockpos);
 
-                                    if (state.getBlock() == Blocks.STONE) {
+                                    multiset.add(state.getMapColor());
+
+                                    if (state.getBlock() == Blocks.STONE || state.getBlock() == Blocks.AIR) {
                                         for (int i = -YSEARCH; i <= YSEARCH; i++) {
                                             blockpos$mutableblockpos.setY(yCenter + i);
                                             IBlockState searchID = chunk.getBlockState(blockpos$mutableblockpos);
-                                            if (searchID != Blocks.STONE) {
+                                            if (searchID.getBlock() != Blocks.STONE && searchID.getBlock() != Blocks.AIR) {
                                                 state = searchID;
                                                 if (i > 0) {
                                                     brightness = 2;
@@ -205,26 +193,24 @@ public class ItemTFMazeMap extends ItemMap
                                     if (mapOres) {
                                         // recolor ores
                                         if (state.getBlock() == Blocks.COAL_ORE) {
-                                            multiset.add(MapColor.OBSIDIAN);
+                                            multiset.add(MapColor.BLACK, 1000);
                                         } else if (state.getBlock() == Blocks.GOLD_ORE) {
-                                            multiset.add(MapColor.GOLD);
+                                            multiset.add(MapColor.GOLD, 1000);
                                         } else if (state.getBlock() == Blocks.IRON_ORE) {
-                                            multiset.add(MapColor.IRON);
+                                            multiset.add(MapColor.IRON, 1000);
                                         } else if (state.getBlock() == Blocks.LAPIS_ORE) {
-                                            multiset.add(MapColor.LAPIS);
+                                            multiset.add(MapColor.LAPIS, 1000);
                                         } else if (state.getBlock() == Blocks.REDSTONE_ORE || state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
-                                            multiset.add(MapColor.RED);
+                                            multiset.add(MapColor.RED, 1000);
                                         } else if (state.getBlock() == Blocks.DIAMOND_ORE) {
-                                            multiset.add(MapColor.DIAMOND);
+                                            multiset.add(MapColor.DIAMOND, 1000);
                                         } else if (state.getBlock() == Blocks.EMERALD_ORE) {
-                                            multiset.add(MapColor.EMERALD);
+                                            multiset.add(MapColor.EMERALD, 1000);
                                         } else if (state.getBlock() != Blocks.AIR && state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
                                         {
                                             // any other ore, catchall
-                                            multiset.add(MapColor.PINK);
+                                            multiset.add(MapColor.PINK, 1000);
                                         }
-                                    } else {
-                                        multiset.add(state.getMapColor());
                                     }
                                 }
 
