@@ -27,6 +27,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFFeature;
 import twilightforest.TFPacketHandler;
 import twilightforest.TFMagicMapData;
+import twilightforest.TwilightForestMod;
+import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.network.PacketMagicMapFeatures;
 import twilightforest.network.PacketMapRewrap;
@@ -38,7 +40,7 @@ import javax.annotation.Nullable;
 
 public class ItemTFMagicMap extends ItemMap
 {
-    private static final String STR_ID = "magicmap";
+    private static final String STR_ID = "map";
 
     // [VanillaCopy] super with own id
     public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking)
@@ -135,106 +137,108 @@ public class ItemTFMagicMap extends ItemMap
                             int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
                             int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
                             Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
-                            Chunk chunk = world.getChunkFromBlockCoords(new BlockPos(worldX, 0, worldZ));
 
-                            if (!chunk.isEmpty())
+                            //TF: remove chunk loading and chunk empty check
+                            // absolutely do not try to load every chunk on this map
+
+                            int worldXRounded = worldX & 15;
+                            int worldZRounded = worldZ & 15;
+                            int numLiquid = 0;
+                            double d1 = 0.0D;
+
+                            if (world.provider.hasNoSky())
                             {
-                                int worldXRounded = worldX & 15;
-                                int worldZRounded = worldZ & 15;
-                                int numLiquid = 0;
-                                double d1 = 0.0D;
+                                int l3 = worldX + worldZ * 231871;
+                                l3 = l3 * l3 * 31287121 + l3 * 11;
 
-                                if (world.provider.hasNoSky())
+                                if ((l3 >> 20 & 1) == 0)
                                 {
-                                    int l3 = worldX + worldZ * 231871;
-                                    l3 = l3 * l3 * 31287121 + l3 * 11;
-
-                                    if ((l3 >> 20 & 1) == 0)
-                                    {
-                                        multiset.add(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT).getMapColor(), 10);
-                                    }
-                                    else
-                                    {
-                                        multiset.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE).getMapColor(), 100);
-                                    }
-
-                                    d1 = 100.0D;
+                                    multiset.add(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT).getMapColor(), 10);
                                 }
                                 else
                                 {
-                                    BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+                                    multiset.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE).getMapColor(), 100);
+                                }
 
-                                    for (int localX = 0; localX < blocksPerPixel; ++localX)
+                                d1 = 100.0D;
+                            }
+                            else
+                            {
+                                BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+
+                                for (int localX = 0; localX < blocksPerPixel; ++localX)
+                                {
+                                    for (int localZ = 0; localZ < blocksPerPixel; ++localZ)
                                     {
-                                        for (int localZ = 0; localZ < blocksPerPixel; ++localZ)
+                                        // TF - inside of this loop replaced with biome color checks
+                                        blockpos$mutableblockpos.setPos(localX + worldX, 0, localZ + worldZ);
+                                        Biome biome = world.getBiome(blockpos$mutableblockpos);
+                                        //TwilightForestMod.LOGGER.info("Checking biome for {}, {}, got {}", localX + worldX, localZ + worldZ, biome);
+
+                                        //Biome biome = chunk.getBiome(blockpos$mutableblockpos, world.getBiomeProvider());
+
+                                        // TODO: Biome.color field no longer exists so we no longer have a reliable color for every biome, punting with topBlock.getMapColor
+                                        // TODO: use the biomedictionary to make our own colors?
+                                        multiset.add(this.getMapColorPerBiome(biome), biome instanceof BiomeRiver || biome == TFBiomes.stream ? 3 : 1);
+
+                                        // add in TF features
+                                        if (world.getBiomeProvider() instanceof TFBiomeProvider)
                                         {
-                                            // TF - inside of this loop replaced with biome color checks
-                                            blockpos$mutableblockpos.setPos(localX + worldXRounded, 0, localZ + worldZRounded);
-                                            Biome biome = chunk.getBiome(blockpos$mutableblockpos, world.getBiomeProvider());
-                                            
-                                            // TODO: Biome.color field no longer exists so we no longer have a reliable color for every biome, punting with topBlock.getMapColor
-                                            // TODO: use the biomedictionary to make our own colors?
-                                            multiset.add(biome.topBlock.getMapColor(), biome instanceof BiomeRiver || biome == TFBiomes.stream ? 3 : 1);
+                                            TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
 
-                                            // add in TF features
-                                            if (world.getBiomeProvider() instanceof TFBiomeProvider)
+                                            if (TFFeature.isInFeatureChunk(world, worldXRounded + localX, worldZRounded + localZ) && zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels)
                                             {
-                                                TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
-
-                                                if (TFFeature.isInFeatureChunk(world, worldXRounded + localX, worldZRounded + localZ) && zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels)
-                                                {
-                                                    ((TFMagicMapData) data).addFeatureToMap(TFFeature.getNearestFeature((worldXRounded + localX) >> 4, (worldZRounded + localZ) >> 4, world), worldX, worldZ);
-                                                }
+                                                ((TFMagicMapData) data).addFeatureToMap(TFFeature.getNearestFeature((worldXRounded + localX) >> 4, (worldZRounded + localZ) >> 4, world), worldX, worldZ);
                                             }
                                         }
                                     }
                                 }
+                            }
 
-                                numLiquid = numLiquid / (blocksPerPixel * blocksPerPixel);
-                                double d2 = (d1 - d0) * 4.0D / (double)(blocksPerPixel + 4) + ((double)(xPixel + zPixel & 1) - 0.5D) * 0.4D;
-                                int brightness = 1;
+                            numLiquid = numLiquid / (blocksPerPixel * blocksPerPixel);
+                            double d2 = (d1 - d0) * 4.0D / (double)(blocksPerPixel + 4) + ((double)(xPixel + zPixel & 1) - 0.5D) * 0.4D;
+                            int brightness = 1;
 
-                                if (d2 > 0.6D)
+                            if (d2 > 0.6D)
+                            {
+                                brightness = 2;
+                            }
+
+                            if (d2 < -0.6D)
+                            {
+                                brightness = 0;
+                            }
+
+                            MapColor mapcolor = (MapColor) Iterables.getFirst(Multisets.<MapColor>copyHighestCountFirst(multiset), MapColor.AIR);
+
+                            if (mapcolor == MapColor.WATER)
+                            {
+                                d2 = (double)numLiquid * 0.1D + (double)(xPixel + zPixel & 1) * 0.2D;
+                                brightness = 1;
+
+                                if (d2 < 0.5D)
                                 {
                                     brightness = 2;
                                 }
 
-                                if (d2 < -0.6D)
+                                if (d2 > 0.9D)
                                 {
                                     brightness = 0;
                                 }
+                            }
 
-                                MapColor mapcolor = (MapColor) Iterables.getFirst(Multisets.<MapColor>copyHighestCountFirst(multiset), MapColor.AIR);
+                            d0 = d1;
 
-                                if (mapcolor == MapColor.WATER)
+                            if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0))
+                            {
+                                byte b0 = data.colors[xPixel + zPixel * 128];
+                                byte b1 = (byte)(mapcolor.colorIndex * 4 + brightness);
+
+                                if (b0 != b1)
                                 {
-                                    d2 = (double)numLiquid * 0.1D + (double)(xPixel + zPixel & 1) * 0.2D;
-                                    brightness = 1;
-
-                                    if (d2 < 0.5D)
-                                    {
-                                        brightness = 2;
-                                    }
-
-                                    if (d2 > 0.9D)
-                                    {
-                                        brightness = 0;
-                                    }
-                                }
-
-                                d0 = d1;
-
-                                if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0))
-                                {
-                                    byte b0 = data.colors[xPixel + zPixel * 128];
-                                    byte b1 = (byte)(mapcolor.colorIndex * 4 + brightness);
-
-                                    if (b0 != b1)
-                                    {
-                                        data.colors[xPixel + zPixel * 128] = b1;
-                                        data.updateMapData(xPixel, zPixel);
-                                        flag = true;
-                                    }
+                                    data.colors[xPixel + zPixel * 128] = b1;
+                                    data.updateMapData(xPixel, zPixel);
+                                    flag = true;
                                 }
                             }
                         }
@@ -242,6 +246,43 @@ public class ItemTFMagicMap extends ItemMap
                 }
             }
         }
+    }
+
+    private MapColor getMapColorPerBiome(Biome biome)
+    {
+        // this could use some sort of lookup map or something
+
+        if (biome == TFBiomes.twilightForest || biome == TFBiomes.denseTwilightForest) {
+            return MapColor.FOLIAGE;
+        } else if (biome == TFBiomes.tfLake || biome == TFBiomes.stream) {
+            return MapColor.WATER;
+        } else if (biome == TFBiomes.tfSwamp) {
+            return MapColor.DIAMOND;
+        } else if (biome == TFBiomes.fireSwamp) {
+            return MapColor.RED;
+        } else if (biome == TFBiomes.clearing || biome == TFBiomes.oakSavanna) {
+            return MapColor.GRASS;
+        } else if (biome == TFBiomes.highlands) {
+            return MapColor.STONE;
+        } else if (biome == TFBiomes.thornlands) {
+            return MapColor.BROWN;
+        } else if (biome == TFBiomes.highlandsCenter) {
+            return MapColor.GRAY;
+        } else if (biome == TFBiomes.fireflyForest) {
+            return MapColor.EMERALD;
+        } else if (biome == TFBiomes.fireflyForest) {
+            return MapColor.EMERALD;
+        } else if (biome == TFBiomes.darkForest) {
+            return MapColor.GREEN;
+        } else if (biome == TFBiomes.darkForestCenter) {
+            return MapColor.ADOBE;
+        } else if (biome == TFBiomes.snowy_forest) {
+            return MapColor.SNOW;
+        } else if (biome == TFBiomes.glacier) {
+            return MapColor.ICE;
+        }
+
+        return biome.topBlock.getMapColor();
     }
 
     @Override

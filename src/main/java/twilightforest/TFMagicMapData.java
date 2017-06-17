@@ -1,6 +1,7 @@
 package twilightforest;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
@@ -128,5 +129,14 @@ public class TFMagicMapData extends MapData
         }
 
         return storage;
+    }
+
+    @Override
+    public void calculateMapCenter(double x, double z, int mapScale)
+    {
+        super.calculateMapCenter(x, z, mapScale);
+        // magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
+        this.xCenter -= 1024;
+        this.zCenter -= 1024;
     }
 }
