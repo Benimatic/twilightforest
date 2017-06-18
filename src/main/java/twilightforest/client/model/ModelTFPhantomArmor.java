@@ -7,7 +7,7 @@ public class ModelTFPhantomArmor extends ModelTFKnightlyArmor {
 
     public ModelTFPhantomArmor(EntityEquipmentSlot part, float expand)
     {
-    	super(part, expand);
+    	super(expand);
 
     	this.righthorn1.rotateAngleY = -25F / (180F / (float)Math.PI);
         this.righthorn1.rotateAngleZ = 45F / (180F / (float)Math.PI);

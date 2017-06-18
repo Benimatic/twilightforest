@@ -3,8 +3,6 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelSilverfish;
-import net.minecraft.client.model.ModelSlime;
-import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
@@ -233,28 +231,28 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFHugeLilyPad(hugeLilyPadBlockRenderID));
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFCastleMagic(castleMagicBlockRenderID));
 */
-		knightlyArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFKnightlyArmor(EntityEquipmentSlot.HEAD, 0.5F));
-		knightlyArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFKnightlyArmor(EntityEquipmentSlot.CHEST, 1.0F));
-		knightlyArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFKnightlyArmor(EntityEquipmentSlot.LEGS, 0.5F));
-		knightlyArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFKnightlyArmor(EntityEquipmentSlot.FEET, 0.5F));
+		knightlyArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFKnightlyArmor(0.5F));
+		knightlyArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFKnightlyArmor(1.0F));
+		knightlyArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFKnightlyArmor(0.5F));
+		knightlyArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFKnightlyArmor(0.5F));
 
 		phantomArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F));
 		phantomArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFPhantomArmor(EntityEquipmentSlot.CHEST, 0.5F));
 
-		yetiArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFYetiArmor(EntityEquipmentSlot.HEAD, 0.6F));
-		yetiArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFYetiArmor(EntityEquipmentSlot.CHEST, 1.0F));
-		yetiArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFYetiArmor(EntityEquipmentSlot.LEGS, 0.4F));
-		yetiArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFYetiArmor(EntityEquipmentSlot.FEET, 0.55F));
+		yetiArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFYetiArmor(0.6F));
+		yetiArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFYetiArmor(1.0F));
+		yetiArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFYetiArmor(0.4F));
+		yetiArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFYetiArmor(0.55F));
 
-		arcticArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFArcticArmor(EntityEquipmentSlot.HEAD, 0.6F));
-		arcticArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFArcticArmor(EntityEquipmentSlot.CHEST, 1.0F));
-		arcticArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFArcticArmor(EntityEquipmentSlot.LEGS, 0.4F));
-		arcticArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFArcticArmor(EntityEquipmentSlot.FEET, 0.55F));
+		arcticArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFArcticArmor(0.6F));
+		arcticArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFArcticArmor(1.0F));
+		arcticArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFArcticArmor(0.4F));
+		arcticArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFArcticArmor(0.55F));
 
-		fieryArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFFieryArmor(EntityEquipmentSlot.HEAD, 0.5F));
-		fieryArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFFieryArmor(EntityEquipmentSlot.CHEST, 1.0F));
-		fieryArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFFieryArmor(EntityEquipmentSlot.LEGS, 0.5F));
-		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(EntityEquipmentSlot.FEET, 0.5F));
+		fieryArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFFieryArmor(1.0F));
+		fieryArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(0.5F));
 	}
 
 	@Override
