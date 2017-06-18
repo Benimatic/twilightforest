@@ -124,140 +124,55 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback
     {
         if (world.provider.getDimension() == data.dimension && viewer instanceof EntityPlayer)
         {
-            int blocksPerPixel = 1 << data.scale;
+            int biomesPerPixel = 4;
+            int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
             int centerX = data.xCenter;
             int centerZ = data.zCenter;
             int viewerX = MathHelper.floor(viewer.posX - (double)centerX) / blocksPerPixel + 64;
             int viewerZ = MathHelper.floor(viewer.posZ - (double)centerZ) / blocksPerPixel + 64;
-            // TF - bump radius 128 -> 512
             int viewRadiusPixels = 512 / blocksPerPixel;
 
-            if (world.provider.hasNoSky())
-            {
-                viewRadiusPixels /= 2;
-            }
+            // use the generation map, which is larger scale than the other biome map
+            int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
+            int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
+            Biome[] biomes = world.getBiomeProvider().getBiomesForGeneration((Biome[])null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
 
             MapData.MapInfo mapdata$mapinfo = data.getMapInfo((EntityPlayer)viewer);
-            ++mapdata$mapinfo.step;
-            boolean flag = false;
 
             for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel)
             {
-                if ((xPixel & 15) == (mapdata$mapinfo.step & 15) || flag)
+                for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel)
                 {
-                    flag = false;
-                    double d0 = 0.0D;
-
-                    for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel)
+                    if (xPixel >= 0 && zPixel >= 0 && xPixel < 128 && zPixel < 128)
                     {
-                        if (xPixel >= 0 && zPixel >= -1 && xPixel < 128 && zPixel < 128)
+                        int xPixelDist = xPixel - viewerX;
+                        int zPixelDist = zPixel - viewerZ;
+                        boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
+
+                        Biome biome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel];
+                        //TwilightForestMod.LOGGER.info("Retrieved biome {}", biome);
+
+                        // make streams more visible
+                        Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
+                        Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
+                        if (overBiome == TFBiomes.stream || downBiome == TFBiomes.stream) {
+                            biome = TFBiomes.stream;
+                        }
+
+                        MapColorBrightness colorBrightness = this.getMapColorPerBiome(biome);
+
+                        MapColor mapcolor = colorBrightness.color;
+                        int brightness = colorBrightness.brightness;
+
+                        if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0))
                         {
-                            int xPixelDist = xPixel - viewerX;
-                            int zPixelDist = zPixel - viewerZ;
-                            boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
-                            int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
-                            int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-                            Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
+                            byte orgPixel = data.colors[xPixel + zPixel * 128];
+                            byte ourPixel = (byte)(mapcolor.colorIndex * 4 + brightness);
 
-                            //TF: remove chunk loading and chunk empty check
-                            // absolutely do not try to load every chunk on this map
-
-                            int worldXRounded = worldX & 15;
-                            int worldZRounded = worldZ & 15;
-                            int numLiquid = 0;
-                            double d1 = 0.0D;
-                            int brightness = 1;
-
-                            if (world.provider.hasNoSky())
+                            if (orgPixel != ourPixel)
                             {
-                                int l3 = worldX + worldZ * 231871;
-                                l3 = l3 * l3 * 31287121 + l3 * 11;
-
-                                if ((l3 >> 20 & 1) == 0)
-                                {
-                                    multiset.add(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT).getMapColor(), 10);
-                                }
-                                else
-                                {
-                                    multiset.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE).getMapColor(), 100);
-                                }
-
-                                d1 = 100.0D;
-                            }
-                            else
-                            {
-                                BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-
-                                for (int localX = 0; localX < blocksPerPixel; ++localX)
-                                {
-                                    for (int localZ = 0; localZ < blocksPerPixel; ++localZ)
-                                    {
-                                        // TF - inside of this loop replaced with biome color checks
-                                        blockpos$mutableblockpos.setPos(localX + worldX, 0, localZ + worldZ);
-                                        Biome biome = world.getBiome(blockpos$mutableblockpos);
-
-                                        MapColorBrightness colorBrightness = this.getMapColorPerBiome(biome);
-                                        multiset.add(colorBrightness.color, biome instanceof BiomeRiver || biome == TFBiomes.stream ? 3 : 1);
-                                        brightness = colorBrightness.brightness;
-
-                                        // add in TF features
-                                        if (world.getBiomeProvider() instanceof TFBiomeProvider)
-                                        {
-                                            TFBiomeProvider tfManager  = (TFBiomeProvider) world.getBiomeProvider();
-
-                                            if (TFFeature.isInFeatureChunk(world, worldXRounded + localX, worldZRounded + localZ) && zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels)
-                                            {
-                                                ((TFMagicMapData) data).addFeatureToMap(TFFeature.getNearestFeature((worldXRounded + localX) >> 4, (worldZRounded + localZ) >> 4, world), worldX, worldZ);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            numLiquid = numLiquid / (blocksPerPixel * blocksPerPixel);
-                            double d2 = (d1 - d0) * 4.0D / (double)(blocksPerPixel + 4) + ((double)(xPixel + zPixel & 1) - 0.5D) * 0.4D;
-
-                            if (d2 > 0.6D)
-                            {
-                                brightness = 2;
-                            }
-
-                            if (d2 < -0.6D)
-                            {
-                                brightness = 0;
-                            }
-
-                            MapColor mapcolor = (MapColor) Iterables.getFirst(Multisets.<MapColor>copyHighestCountFirst(multiset), MapColor.AIR);
-
-                            if (mapcolor == MapColor.WATER)
-                            {
-                                d2 = (double)numLiquid * 0.1D + (double)(xPixel + zPixel & 1) * 0.2D;
-                                brightness = 1;
-
-                                if (d2 < 0.5D)
-                                {
-                                    brightness = 2;
-                                }
-
-                                if (d2 > 0.9D)
-                                {
-                                    brightness = 0;
-                                }
-                            }
-
-                            d0 = d1;
-
-                            if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0))
-                            {
-                                byte b0 = data.colors[xPixel + zPixel * 128];
-                                byte b1 = (byte)(mapcolor.colorIndex * 4 + brightness);
-
-                                if (b0 != b1)
-                                {
-                                    data.colors[xPixel + zPixel * 128] = b1;
-                                    data.updateMapData(xPixel, zPixel);
-                                    flag = true;
-                                }
+                                data.colors[xPixel + zPixel * 128] = ourPixel;
+                                data.updateMapData(xPixel, zPixel);
                             }
                         }
                     }
