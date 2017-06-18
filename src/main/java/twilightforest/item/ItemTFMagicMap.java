@@ -118,7 +118,6 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback
         return mapdata;
     }
 
-    // [VanillaCopy] of superclass, with sane variable names and noted changes
     @Override
     public void updateMapData(World world, Entity viewer, MapData data)
     {
@@ -137,8 +136,6 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback
             int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
             Biome[] biomes = world.getBiomeProvider().getBiomesForGeneration((Biome[])null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
 
-            MapData.MapInfo mapdata$mapinfo = data.getMapInfo((EntityPlayer)viewer);
-
             for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel)
             {
                 for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel)
@@ -150,7 +147,6 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback
                         boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
 
                         Biome biome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel];
-                        //TwilightForestMod.LOGGER.info("Retrieved biome {}", biome);
 
                         // make streams more visible
                         Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
