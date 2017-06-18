@@ -77,12 +77,15 @@ import twilightforest.tileentity.TileEntityTFFirefly;
 import twilightforest.tileentity.TileEntityTFMoonworm;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 public class TFClientProxy extends TFCommonProxy {
-	private ModelBiped[] knightlyArmorModel;
-	private ModelBiped[] phantomArmorModel;
-	private ModelBiped[] yetiArmorModel;
-	private ModelBiped[] arcticArmorModel;
-	private ModelBiped[] fieryArmorModel;
+	private final Map<EntityEquipmentSlot, ModelBiped> knightlyArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
+	private final Map<EntityEquipmentSlot, ModelBiped> phantomArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
+	private final Map<EntityEquipmentSlot, ModelBiped> yetiArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
+	private final Map<EntityEquipmentSlot, ModelBiped> arcticArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
+	private final Map<EntityEquipmentSlot, ModelBiped> fieryArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
 
 	private boolean isDangerOverlayShown;
 
@@ -230,37 +233,28 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFHugeLilyPad(hugeLilyPadBlockRenderID));
 		RenderingRegistry.registerBlockHandler(new RenderBlockTFCastleMagic(castleMagicBlockRenderID));
 */
-		// armor model
-		knightlyArmorModel = new ModelBiped[4];
-		knightlyArmorModel[0] = new ModelTFKnightlyArmor(0, 0.5F);
-		knightlyArmorModel[1] = new ModelTFKnightlyArmor(1, 1.0F);
-		knightlyArmorModel[2] = new ModelTFKnightlyArmor(2, 0.5F);
-		knightlyArmorModel[3] = new ModelTFKnightlyArmor(3, 0.5F);
+		knightlyArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFKnightlyArmor(EntityEquipmentSlot.HEAD, 0.5F));
+		knightlyArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFKnightlyArmor(EntityEquipmentSlot.CHEST, 1.0F));
+		knightlyArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFKnightlyArmor(EntityEquipmentSlot.LEGS, 0.5F));
+		knightlyArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFKnightlyArmor(EntityEquipmentSlot.FEET, 0.5F));
 
-		phantomArmorModel = new ModelBiped[2];
-		phantomArmorModel[0] = new ModelTFPhantomArmor(0, 0.5F);
-		phantomArmorModel[1] = new ModelTFPhantomArmor(1, 1.0F);
-		
-		yetiArmorModel = new ModelBiped[4];
-		yetiArmorModel[0] = new ModelTFYetiArmor(0, 0.6F);
-		yetiArmorModel[1] = new ModelTFYetiArmor(1, 1.0F);
-		yetiArmorModel[2] = new ModelTFYetiArmor(2, 0.4F);
-		yetiArmorModel[3] = new ModelTFYetiArmor(3, 0.55F);
+		phantomArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F));
+		phantomArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFPhantomArmor(EntityEquipmentSlot.CHEST, 0.5F));
 
-		arcticArmorModel = new ModelBiped[4];
-		arcticArmorModel[0] = new ModelTFArcticArmor(0, 0.6F);
-		arcticArmorModel[1] = new ModelTFArcticArmor(1, 1.0F);
-		arcticArmorModel[2] = new ModelTFArcticArmor(2, 0.4F);
-		arcticArmorModel[3] = new ModelTFArcticArmor(3, 0.55F);
+		yetiArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFYetiArmor(EntityEquipmentSlot.HEAD, 0.6F));
+		yetiArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFYetiArmor(EntityEquipmentSlot.CHEST, 1.0F));
+		yetiArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFYetiArmor(EntityEquipmentSlot.LEGS, 0.4F));
+		yetiArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFYetiArmor(EntityEquipmentSlot.FEET, 0.55F));
 
-		fieryArmorModel = new ModelBiped[4];
-		fieryArmorModel[0] = new ModelTFFieryArmor(0, 0.5F);
-		fieryArmorModel[1] = new ModelTFFieryArmor(1, 1.0F);
-		fieryArmorModel[2] = new ModelTFFieryArmor(2, 0.5F);
-		fieryArmorModel[3] = new ModelTFFieryArmor(3, 0.5F);
+		arcticArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFArcticArmor(EntityEquipmentSlot.HEAD, 0.6F));
+		arcticArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFArcticArmor(EntityEquipmentSlot.CHEST, 1.0F));
+		arcticArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFArcticArmor(EntityEquipmentSlot.LEGS, 0.4F));
+		arcticArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFArcticArmor(EntityEquipmentSlot.FEET, 0.55F));
 
-
-
+		fieryArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFFieryArmor(EntityEquipmentSlot.HEAD, 0.5F));
+		fieryArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFFieryArmor(EntityEquipmentSlot.CHEST, 1.0F));
+		fieryArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFFieryArmor(EntityEquipmentSlot.LEGS, 0.5F));
+		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(EntityEquipmentSlot.FEET, 0.5F));
 	}
 
 	@Override
@@ -316,28 +310,28 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public ModelBiped getKnightlyArmorModel(EntityEquipmentSlot armorSlot) {
-		return knightlyArmorModel[armorSlot.getIndex()];
+		return knightlyArmorModel.get(armorSlot);
 	}
 	
 	@Override
 	public ModelBiped getPhantomArmorModel(EntityEquipmentSlot armorSlot) {
-		return phantomArmorModel[armorSlot.getIndex()];
+		return phantomArmorModel.get(armorSlot);
 	}
 	
 	@Override
 	public ModelBiped getYetiArmorModel(EntityEquipmentSlot armorSlot) {
-		return yetiArmorModel[armorSlot.getIndex()];
+		return yetiArmorModel.get(armorSlot);
 	}
 
 	@Override
 	public ModelBiped getArcticArmorModel(EntityEquipmentSlot armorSlot) {
-		return arcticArmorModel[armorSlot.getIndex()];
+		return arcticArmorModel.get(armorSlot);
 	}
 	
 	
 	@Override
 	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
-		return this.fieryArmorModel[armorSlot.getIndex()];
+		return this.fieryArmorModel.get(armorSlot);
 	}
 
 	public boolean isDangerOverlayShown() {

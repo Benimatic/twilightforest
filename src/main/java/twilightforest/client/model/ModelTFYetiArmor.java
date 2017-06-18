@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumHand;
 
 public class ModelTFYetiArmor extends ModelBiped {
@@ -16,7 +17,7 @@ public class ModelTFYetiArmor extends ModelBiped {
 
 
 
-	public ModelTFYetiArmor(int part, float expand)
+	public ModelTFYetiArmor(EntityEquipmentSlot part, float expand)
     {
     	super(expand);
     	
@@ -82,7 +83,7 @@ public class ModelTFYetiArmor extends ModelBiped {
         
         switch (part)
         {
-        case 0: // helmet
+        case HEAD:
             this.bipedHead.showModel = true;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = false;
@@ -92,7 +93,7 @@ public class ModelTFYetiArmor extends ModelBiped {
             this.bipedRightLeg.showModel = false;
             this.bipedLeftLeg.showModel = false;
             break;
-        case 1: // chest
+        case CHEST:
             this.bipedHead.showModel = false;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = true;
@@ -102,7 +103,7 @@ public class ModelTFYetiArmor extends ModelBiped {
             this.bipedRightLeg.showModel = false;
             this.bipedLeftLeg.showModel = false;
             break;
-        case 2: // pants
+        case LEGS:
             this.bipedHead.showModel = false;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = false;
@@ -116,7 +117,7 @@ public class ModelTFYetiArmor extends ModelBiped {
             this.rightRuff.showModel = false;
             this.rightToe.showModel = false;
             break;
-        case 3: // boots
+        case FEET:
             this.bipedHead.showModel = false;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = false;
@@ -134,9 +135,6 @@ public class ModelTFYetiArmor extends ModelBiped {
         }
     }
     
-    /**
-     * Add a pair of horns
-     */
 	private void addPairHorns(float height, float zangle) {
 	    ModelRenderer horn1a;
 	    ModelRenderer horn1b;

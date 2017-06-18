@@ -1,9 +1,11 @@
 package twilightforest.client.model;
 
 
+import net.minecraft.inventory.EntityEquipmentSlot;
+
 public class ModelTFPhantomArmor extends ModelTFKnightlyArmor {
 
-    public ModelTFPhantomArmor(int part, float expand)
+    public ModelTFPhantomArmor(EntityEquipmentSlot part, float expand)
     {
     	super(part, expand);
 

@@ -4,17 +4,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 
 public class ModelTFFieryArmor extends ModelBiped {
 
-    public ModelTFFieryArmor(int part, float expand)
+    public ModelTFFieryArmor(EntityEquipmentSlot part, float expand)
     {
     	super(expand);
 
         
         switch (part)
         {
-        case 0: // helmet
+        case HEAD:
             this.bipedHead.showModel = true;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = false;
@@ -23,7 +24,7 @@ public class ModelTFFieryArmor extends ModelBiped {
             this.bipedRightLeg.showModel = false;
             this.bipedLeftLeg.showModel = false;
             break;
-        case 1: // chest
+        case CHEST:
             this.bipedHead.showModel = false;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = true;
@@ -32,7 +33,7 @@ public class ModelTFFieryArmor extends ModelBiped {
             this.bipedRightLeg.showModel = false;
             this.bipedLeftLeg.showModel = false;
             break;
-        case 2: // pants
+        case LEGS:
             this.bipedHead.showModel = false;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = true;
@@ -41,7 +42,7 @@ public class ModelTFFieryArmor extends ModelBiped {
             this.bipedRightLeg.showModel = true;
             this.bipedLeftLeg.showModel = true;
             break;
-        case 3: // boots
+        case FEET:
             this.bipedHead.showModel = false;
             this.bipedHeadwear.showModel = false;
             this.bipedBody.showModel = false;
