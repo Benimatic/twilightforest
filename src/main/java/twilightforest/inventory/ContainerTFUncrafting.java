@@ -28,6 +28,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import twilightforest.TFConfig;
@@ -627,7 +628,7 @@ public class ContainerTFUncrafting extends Container {
 	private ItemStack[] getIngredientsOre(ShapedOreRecipe shaped) {
     	try {
     		// ShapedOreRecipes can have either an ItemStack or an ArrayList of ItemStacks
-    		Object[] objects = ObfuscationReflectionHelper.getPrivateValue(ShapedOreRecipe.class, shaped, 3);
+    		Object[] objects = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, shaped, "input");
     		ItemStack[] items = new ItemStack[objects.length];
     		
     		for (int i = 0; i < objects.length; i++)

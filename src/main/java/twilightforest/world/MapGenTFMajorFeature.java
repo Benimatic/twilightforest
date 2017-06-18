@@ -6,14 +6,12 @@ import java.util.Iterator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.MapGenStructureData;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.StructureTFMajorFeatureStart;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
 
@@ -153,46 +151,25 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
 	}
 
-	/**
-	 * Mark the structure at the specified position as defeated
-	 * @return 
-	 */
-	@SuppressWarnings("unchecked")
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-
-		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
+		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
 				if (start instanceof StructureTFMajorFeatureStart) {
-					
 					StructureTFMajorFeatureStart featureStart =(StructureTFMajorFeatureStart)start;
-					
-					//System.out.println("The data says that the conquered flag is " + featureStart.isConquered);
-					
-					
 					featureStart.isConquered = flag;
-					
-					MapGenStructureData data = ObfuscationReflectionHelper.getPrivateValue(MapGenStructure.class, this, "field_143029_e");
-					
-			        data.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
-					//System.out.println("Writing data");
-					
-					data.setDirty(true);
-					
-					//System.out.println("Set the data as dirty");
+			        this.structureData.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
+					this.structureData.setDirty(true);
 				}
 			}
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public boolean isStructureConquered(BlockPos pos) {
-		
 		boolean conquered = false;
 		
-		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
+		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 				if (start instanceof StructureTFMajorFeatureStart) {
-					
 					conquered = ((StructureTFMajorFeatureStart)start).isConquered;
 				}
 			}
@@ -204,12 +181,11 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	/**
 	 * Check the lock at the specified lockIndex for the structure at the specified coords
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
 		
 		boolean locked = false;
 		
-		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
+		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 				if (start instanceof StructureTFMajorFeatureStart) {
 					
@@ -224,9 +200,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	/**
 	 * Do the specified x & z coordinates intersect the full structure?
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean isBlockInFullStructure(int mapX, int mapZ) {
-		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
+		for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
             	return true;
             }
@@ -237,10 +212,9 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	/**
 	 * Are the specified x & z coordinates close to a full structure?
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean isBlockNearFullStructure(int mapX, int mapZ, int range) {
         StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
-		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
+		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
             	return true;
             }
@@ -251,9 +225,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	/**
 	 * Get full structure bounding box at the specified x, z coordinates.
 	 */
-	@SuppressWarnings("unchecked")
 	public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
-		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
+		for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
             	return start.getBoundingBox();
             }
@@ -261,10 +234,9 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
         StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
-		for (StructureStart start : (Collection<StructureStart>)this.structureMap.values()) {
+		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
             	return start.getBoundingBox();
             }

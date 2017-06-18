@@ -340,18 +340,7 @@ public class BlockTFPortal extends BlockBreakable
 
 			if (entity != null)
 			{
-				// todo 1.9.4 factor out reflectionmappings
-				// TF - reflectively call copyDataFromOld
-				Method copyDataFromOld =
-						ReflectionHelper.findMethod(Entity.class, "copyDataFromOld", "func_180432_n", Entity.class);
-				try {
-					copyDataFromOld.invoke(entity, toTeleport);
-				} catch (IllegalAccessException | InvocationTargetException e) {
-					// Try to recover
-					NBTTagCompound cmp = toTeleport.writeToNBT(new NBTTagCompound());
-					cmp.removeTag("Dimension");
-					entity.readFromNBT(cmp);
-				}
+				entity.copyDataFromOld(toTeleport);
 
 				if (i == 1 && dimensionIn == 1)
 				{
