@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.MapColor;
@@ -37,10 +38,27 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 
 public class ItemTFMagicMap extends ItemMap
 {
     private static final String STR_ID = "map";
+    private static final HashMap<Biome, MapColorBrightness> BIOME_COLORS = new HashMap<>();
+
+    private static class MapColorBrightness {
+        public MapColor color;
+        public int brightness;
+
+        public MapColorBrightness (MapColor color, int brightness) {
+            this.color = color;
+            this.brightness = brightness;
+        }
+
+        public MapColorBrightness (MapColor color) {
+            this.color = color;
+            this.brightness = 1;
+        }
+    }
 
     // [VanillaCopy] super with own id
     public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking)
@@ -145,6 +163,7 @@ public class ItemTFMagicMap extends ItemMap
                             int worldZRounded = worldZ & 15;
                             int numLiquid = 0;
                             double d1 = 0.0D;
+                            int brightness = 1;
 
                             if (world.provider.hasNoSky())
                             {
@@ -173,13 +192,10 @@ public class ItemTFMagicMap extends ItemMap
                                         // TF - inside of this loop replaced with biome color checks
                                         blockpos$mutableblockpos.setPos(localX + worldX, 0, localZ + worldZ);
                                         Biome biome = world.getBiome(blockpos$mutableblockpos);
-                                        //TwilightForestMod.LOGGER.info("Checking biome for {}, {}, got {}", localX + worldX, localZ + worldZ, biome);
 
-                                        //Biome biome = chunk.getBiome(blockpos$mutableblockpos, world.getBiomeProvider());
-
-                                        // TODO: Biome.color field no longer exists so we no longer have a reliable color for every biome, punting with topBlock.getMapColor
-                                        // TODO: use the biomedictionary to make our own colors?
-                                        multiset.add(this.getMapColorPerBiome(biome), biome instanceof BiomeRiver || biome == TFBiomes.stream ? 3 : 1);
+                                        MapColorBrightness colorBrightness = this.getMapColorPerBiome(biome);
+                                        multiset.add(colorBrightness.color, biome instanceof BiomeRiver || biome == TFBiomes.stream ? 3 : 1);
+                                        brightness = colorBrightness.brightness;
 
                                         // add in TF features
                                         if (world.getBiomeProvider() instanceof TFBiomeProvider)
@@ -197,7 +213,6 @@ public class ItemTFMagicMap extends ItemMap
 
                             numLiquid = numLiquid / (blocksPerPixel * blocksPerPixel);
                             double d2 = (d1 - d0) * 4.0D / (double)(blocksPerPixel + 4) + ((double)(xPixel + zPixel & 1) - 0.5D) * 0.4D;
-                            int brightness = 1;
 
                             if (d2 > 0.6D)
                             {
@@ -248,41 +263,40 @@ public class ItemTFMagicMap extends ItemMap
         }
     }
 
-    private MapColor getMapColorPerBiome(Biome biome)
+    private MapColorBrightness getMapColorPerBiome(Biome biome)
     {
-        // this could use some sort of lookup map or something
-
-        if (biome == TFBiomes.twilightForest || biome == TFBiomes.denseTwilightForest) {
-            return MapColor.FOLIAGE;
-        } else if (biome == TFBiomes.tfLake || biome == TFBiomes.stream) {
-            return MapColor.WATER;
-        } else if (biome == TFBiomes.tfSwamp) {
-            return MapColor.DIAMOND;
-        } else if (biome == TFBiomes.fireSwamp) {
-            return MapColor.RED;
-        } else if (biome == TFBiomes.clearing || biome == TFBiomes.oakSavanna) {
-            return MapColor.GRASS;
-        } else if (biome == TFBiomes.highlands) {
-            return MapColor.STONE;
-        } else if (biome == TFBiomes.thornlands) {
-            return MapColor.BROWN;
-        } else if (biome == TFBiomes.highlandsCenter) {
-            return MapColor.GRAY;
-        } else if (biome == TFBiomes.fireflyForest) {
-            return MapColor.EMERALD;
-        } else if (biome == TFBiomes.fireflyForest) {
-            return MapColor.EMERALD;
-        } else if (biome == TFBiomes.darkForest) {
-            return MapColor.GREEN;
-        } else if (biome == TFBiomes.darkForestCenter) {
-            return MapColor.ADOBE;
-        } else if (biome == TFBiomes.snowy_forest) {
-            return MapColor.SNOW;
-        } else if (biome == TFBiomes.glacier) {
-            return MapColor.ICE;
+        if (BIOME_COLORS.isEmpty()) {
+            ItemTFMagicMap.setupBiomeColors();
         }
 
-        return biome.topBlock.getMapColor();
+        if (BIOME_COLORS.containsKey(biome)) {
+            return BIOME_COLORS.get(biome);
+        } else
+        {
+            return new MapColorBrightness(biome.topBlock.getMapColor());
+        }
+    }
+
+    private static void setupBiomeColors()
+    {
+        BIOME_COLORS.put(TFBiomes.twilightForest, new MapColorBrightness(MapColor.FOLIAGE, 1));
+        BIOME_COLORS.put(TFBiomes.denseTwilightForest, new MapColorBrightness(MapColor.FOLIAGE,0));
+        BIOME_COLORS.put(TFBiomes.tfLake, new MapColorBrightness(MapColor.WATER, 3));
+        BIOME_COLORS.put(TFBiomes.stream, new MapColorBrightness(MapColor.WATER, 1));
+        BIOME_COLORS.put(TFBiomes.tfSwamp, new MapColorBrightness(MapColor.DIAMOND, 3));
+        BIOME_COLORS.put(TFBiomes.fireSwamp, new MapColorBrightness(MapColor.NETHERRACK, 1));
+        BIOME_COLORS.put(TFBiomes.clearing, new MapColorBrightness(MapColor.GRASS, 2));
+        BIOME_COLORS.put(TFBiomes.oakSavanna, new MapColorBrightness(MapColor.GRASS, 0));
+        BIOME_COLORS.put(TFBiomes.highlands, new MapColorBrightness(MapColor.DIRT, 0));
+        BIOME_COLORS.put(TFBiomes.thornlands, new MapColorBrightness(MapColor.WOOD, 1));
+        BIOME_COLORS.put(TFBiomes.highlandsCenter, new MapColorBrightness(MapColor.SILVER, 2));
+        BIOME_COLORS.put(TFBiomes.fireflyForest, new MapColorBrightness(MapColor.EMERALD, 1));
+        BIOME_COLORS.put(TFBiomes.darkForest, new MapColorBrightness(MapColor.GREEN, 3));
+        BIOME_COLORS.put(TFBiomes.darkForestCenter, new MapColorBrightness(MapColor.ADOBE, 3));
+        BIOME_COLORS.put(TFBiomes.snowy_forest, new MapColorBrightness(MapColor.SNOW, 1));
+        BIOME_COLORS.put(TFBiomes.glacier, new MapColorBrightness(MapColor.ICE, 1));
+        BIOME_COLORS.put(TFBiomes.mushrooms, new MapColorBrightness(MapColor.ADOBE, 0));
+        BIOME_COLORS.put(TFBiomes.deepMushrooms, new MapColorBrightness(MapColor.PINK, 0));
     }
 
     @Override
