@@ -131,12 +131,15 @@ public class TFMagicMapData extends MapData
         return storage;
     }
 
+    // VanillaCopy of super, but adjust origin
     @Override
     public void calculateMapCenter(double x, double z, int mapScale)
     {
-        super.calculateMapCenter(x, z, mapScale);
         // magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
-        this.xCenter -= 1024;
-        this.zCenter -= 1024;
+        int mapSize = 128 * (1 << mapScale);
+        int roundX = (int)Math.round(x / mapSize);
+        int roundZ = (int)Math.round(z / mapSize);
+        this.xCenter = roundX * mapSize;
+        this.zCenter = roundZ * mapSize;
     }
 }
