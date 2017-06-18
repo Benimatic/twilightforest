@@ -25,6 +25,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeRiver;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
+import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFFeature;
@@ -170,10 +171,34 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback
                                 data.colors[xPixel + zPixel * 128] = ourPixel;
                                 data.updateMapData(xPixel, zPixel);
                             }
+
+                            // look for TF features
+                            int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
+                            int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
+                            if (TFFeature.isInFeatureChunk(world, worldX, worldZ)) {
+                                byte mapX = (byte)((worldX - centerX) / (float)blocksPerPixel * 2F);
+                                byte mapZ = (byte)((worldZ - centerZ) / (float)blocksPerPixel * 2F);
+                                MapDecoration.Type marker = this.getMapDecoFor(TFFeature.getFeatureAt(worldX, worldZ, world));
+                                data.mapDecorations.put("feature" + worldX + "," + worldZ, new MapDecoration(marker, mapX, mapZ, (byte)8));
+                                //TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+                            }
                         }
                     }
                 }
             }
+        }
+    }
+
+    private MapDecoration.Type getMapDecoFor(TFFeature featureAt)
+    {
+        if (featureAt == TFFeature.hill1 || featureAt == TFFeature.hill2 || featureAt == TFFeature.hill3) {
+            return MapDecoration.Type.TARGET_POINT;
+        } else if (featureAt == TFFeature.labyrinth || featureAt == TFFeature.trollCave || featureAt == TFFeature.yetiCave || featureAt == TFFeature.tfStronghold) {
+            return MapDecoration.Type.MONUMENT;
+        } else if (featureAt == TFFeature.nagaCourtyard) {
+            return MapDecoration.Type.TARGET_X;
+        } else {
+            return MapDecoration.Type.MANSION;
         }
     }
 
