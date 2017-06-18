@@ -45,7 +45,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slotNum, int amount) {
-		if (this.contents[slotNum] != null)
+		if (!this.contents[slotNum].isEmpty())
 		{
 			ItemStack takenStack;
 

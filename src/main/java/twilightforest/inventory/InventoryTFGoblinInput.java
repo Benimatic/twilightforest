@@ -8,8 +8,7 @@ import net.minecraft.util.text.TextComponentString;
 
 
 public class InventoryTFGoblinInput implements IInventory {
-	
-	private ItemStack[] stackInput = new ItemStack[] { ItemStack.EMPTY };
+	private ItemStack stackInput = ItemStack.EMPTY;
 	private ContainerTFUncrafting craftingContainer;
 
     public InventoryTFGoblinInput(ContainerTFUncrafting containerTFGoblinCrafting) {
@@ -24,13 +23,13 @@ public class InventoryTFGoblinInput implements IInventory {
 
     @Override
     public boolean isEmpty() {
-        return stackInput[0].isEmpty();
+        return stackInput.isEmpty();
     }
 
     @Override
 	public ItemStack getStackInSlot(int par1)
     {
-        return this.stackInput[par1];
+        return stackInput;
     }
 
     @Override
@@ -42,21 +41,20 @@ public class InventoryTFGoblinInput implements IInventory {
     @Override
 	public ItemStack decrStackSize(int slotNum, int amount)
     {
-    	
-        if (this.stackInput[slotNum] != null)
+        if (!this.stackInput.isEmpty())
         {
             ItemStack takenStack;
 
-            if (this.stackInput[slotNum].getCount() <= amount)
+            if (this.stackInput.getCount() <= amount)
             {
-                takenStack = this.stackInput[slotNum];
-                this.stackInput[slotNum] = null;
+                takenStack = this.stackInput;
+                this.stackInput = ItemStack.EMPTY;
                 this.craftingContainer.onCraftMatrixChanged(this);
                 return takenStack;
             }
             else
             {
-                takenStack = this.stackInput[slotNum].splitStack(amount);
+                takenStack = this.stackInput.splitStack(amount);
                 this.craftingContainer.onCraftMatrixChanged(this);
                 return takenStack;
             }
@@ -70,10 +68,10 @@ public class InventoryTFGoblinInput implements IInventory {
     @Override
 	public ItemStack removeStackFromSlot(int par1)
     {
-        if (this.stackInput[par1] != null)
+        if (!this.stackInput.isEmpty())
         {
-            ItemStack var2 = this.stackInput[par1];
-            this.stackInput[par1] = null;
+            ItemStack var2 = this.stackInput;
+            this.stackInput = ItemStack.EMPTY;
             return var2;
         }
         else
@@ -85,7 +83,7 @@ public class InventoryTFGoblinInput implements IInventory {
     @Override
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.stackInput[par1] = par2ItemStack;
+        this.stackInput = par2ItemStack;
         this.craftingContainer.onCraftMatrixChanged(this);
     }
 
@@ -135,7 +133,7 @@ public class InventoryTFGoblinInput implements IInventory {
 
     @Override
     public void clear() {
-        stackInput[0] = null;
+        stackInput = ItemStack.EMPTY;
     }
 
     @Override

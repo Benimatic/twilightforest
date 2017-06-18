@@ -1,6 +1,7 @@
 package twilightforest.inventory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import net.minecraft.enchantment.Enchantment;
@@ -32,8 +33,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class ContainerTFUncrafting extends Container {
     private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
@@ -190,7 +189,7 @@ public class ContainerTFUncrafting extends Container {
     			if (!this.assemblyMatrix.getStackInSlot(i).isEmpty()) {
     				this.combineMatrix.setInventorySlotContents(i, this.assemblyMatrix.getStackInSlot(i));
     			}
-    			else if (this.uncraftingMatrix.getStackInSlot(i) != null && this.uncraftingMatrix.getStackInSlot(i).getCount() > 0) {
+    			else if (!this.uncraftingMatrix.getStackInSlot(i).isEmpty() && this.uncraftingMatrix.getStackInSlot(i).getCount() > 0) {
     				this.combineMatrix.setInventorySlotContents(i, this.uncraftingMatrix.getStackInSlot(i));
     			}
     			else {
@@ -204,37 +203,25 @@ public class ContainerTFUncrafting extends Container {
     		if (!result.isEmpty() && isValidMatchForInput(input, result)) {
     			// copy the tag compound
     			// or should we only copy enchantments?
-    			NBTTagCompound inputTags = input.getTagCompound();
-    			if (inputTags != null)
+    			NBTTagCompound inputTags = null;
+    			if (input.getTagCompound() != null)
     			{
-    				inputTags = (NBTTagCompound) inputTags.copy();
+    				inputTags = input.getTagCompound().copy();
     			}
     			
     			// if the result has innate enchantments, add them on to our enchantment map
-    			Map<Enchantment, Integer> resultInnateEnchantments = null;
-    			if (result.isItemEnchanted())
-    			{
-    				resultInnateEnchantments = EnchantmentHelper.getEnchantments(result);
-    			}
+    			Map<Enchantment, Integer> resultInnateEnchantments = EnchantmentHelper.getEnchantments(result);
     			
     			// check if the input enchantments can even go onto the result item
-    			Map<Enchantment, Integer> inputEnchantments = null;
-    			if (input.isItemEnchanted())
-    			{
-    				inputEnchantments = EnchantmentHelper.getEnchantments(input);
-					inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(result));
-	    		}
+    			Map<Enchantment, Integer> inputEnchantments = EnchantmentHelper.getEnchantments(input);
+				inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(result));
     			
     			if (inputTags != null) {
     				// remove enchantments, copy tags, re-add filtered enchantments
     				inputTags.removeTag("ench");
-    				result.setTagCompound(inputTags.copy());
-    				if (inputEnchantments != null)
-    				{
-    					EnchantmentHelper.setEnchantments(inputEnchantments, result);
-    				}
-    			}
-
+    				result.setTagCompound(inputTags);
+					EnchantmentHelper.setEnchantments(inputEnchantments, result);
+				}
     			
     			this.tinkerResult.setInventorySlotContents(0, result);
 	    		this.uncraftingMatrix.uncraftingCost = 0;
@@ -247,23 +234,20 @@ public class ContainerTFUncrafting extends Container {
 	    		}
 	    		
 	    		// finally, add any innate enchantments back onto the result
-	    		if (resultInnateEnchantments != null && resultInnateEnchantments.size() > 0)
-	    		{
-	    			for (Enchantment ench : resultInnateEnchantments.keySet())
-	    			{
-	    				int level = resultInnateEnchantments.get(ench);
+	    		for (Enchantment ench : resultInnateEnchantments.keySet())
+				{
+					int level = resultInnateEnchantments.get(ench);
 
-	    				if (EnchantmentHelper.getEnchantmentLevel(ench, result) > level)
-	    				{
-	    					level = EnchantmentHelper.getEnchantmentLevel(ench, result);
-	    				}
-	    				
-	    				if (EnchantmentHelper.getEnchantmentLevel(ench, result) < level)
-	    				{
-	    					result.addEnchantment(ench, level);
-	    				}
-	    			}
-	    		}
+					if (EnchantmentHelper.getEnchantmentLevel(ench, result) > level)
+					{
+						level = EnchantmentHelper.getEnchantmentLevel(ench, result);
+					}
+
+					if (EnchantmentHelper.getEnchantmentLevel(ench, result) < level)
+					{
+						result.addEnchantment(ench, level);
+					}
+				}
     		}
     	}
     }
@@ -539,7 +523,7 @@ public class ContainerTFUncrafting extends Container {
             	// result or input goes to inventory or hotbar
                 if (!this.mergeItemStack(transferStack, 20, 56, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 transferSlot.onSlotChange(transferStack, copyItem);  // what does this do?
@@ -549,7 +533,7 @@ public class ContainerTFUncrafting extends Container {
             	// inventory goes to hotbar
                 if (!this.mergeItemStack(transferStack, 47, 56, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (slotNum >= 47 && slotNum < 56)
@@ -557,13 +541,13 @@ public class ContainerTFUncrafting extends Container {
             	// hotbar goes to inventory
                 if (!this.mergeItemStack(transferStack, 20, 47, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (!this.mergeItemStack(transferStack, 20, 56, false))
             {
             	// crafting area goes to inventory or hotbar
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (transferStack.getCount() == 0)
@@ -630,8 +614,9 @@ public class ContainerTFUncrafting extends Container {
     		// ShapedOreRecipes can have either an ItemStack or an ArrayList of ItemStacks
     		Object[] objects = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, shaped, "input");
     		ItemStack[] items = new ItemStack[objects.length];
-    		
-    		for (int i = 0; i < objects.length; i++)
+			Arrays.fill(items, ItemStack.EMPTY);
+
+			for (int i = 0; i < objects.length; i++)
     		{
     			if (objects[i] instanceof ItemStack)
     			{
