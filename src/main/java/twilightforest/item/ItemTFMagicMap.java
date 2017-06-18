@@ -288,7 +288,7 @@ public class ItemTFMagicMap extends ItemMap
         BIOME_COLORS.put(TFBiomes.clearing, new MapColorBrightness(MapColor.GRASS, 2));
         BIOME_COLORS.put(TFBiomes.oakSavanna, new MapColorBrightness(MapColor.GRASS, 0));
         BIOME_COLORS.put(TFBiomes.highlands, new MapColorBrightness(MapColor.DIRT, 0));
-        BIOME_COLORS.put(TFBiomes.thornlands, new MapColorBrightness(MapColor.WOOD, 1));
+        BIOME_COLORS.put(TFBiomes.thornlands, new MapColorBrightness(MapColor.WOOD, 3));
         BIOME_COLORS.put(TFBiomes.highlandsCenter, new MapColorBrightness(MapColor.SILVER, 2));
         BIOME_COLORS.put(TFBiomes.fireflyForest, new MapColorBrightness(MapColor.EMERALD, 1));
         BIOME_COLORS.put(TFBiomes.darkForest, new MapColorBrightness(MapColor.GREEN, 3));
@@ -297,7 +297,7 @@ public class ItemTFMagicMap extends ItemMap
         BIOME_COLORS.put(TFBiomes.glacier, new MapColorBrightness(MapColor.ICE, 1));
         BIOME_COLORS.put(TFBiomes.mushrooms, new MapColorBrightness(MapColor.ADOBE, 0));
         BIOME_COLORS.put(TFBiomes.deepMushrooms, new MapColorBrightness(MapColor.PINK, 0));
-        BIOME_COLORS.put(TFBiomes.enchantedForest, new MapColorBrightness(MapColor.LIME, 0));
+        BIOME_COLORS.put(TFBiomes.enchantedForest, new MapColorBrightness(MapColor.LIME, 2));
     }
 
     @Override
