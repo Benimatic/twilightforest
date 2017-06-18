@@ -297,6 +297,7 @@ public class ItemTFMagicMap extends ItemMap
         BIOME_COLORS.put(TFBiomes.glacier, new MapColorBrightness(MapColor.ICE, 1));
         BIOME_COLORS.put(TFBiomes.mushrooms, new MapColorBrightness(MapColor.ADOBE, 0));
         BIOME_COLORS.put(TFBiomes.deepMushrooms, new MapColorBrightness(MapColor.PINK, 0));
+        BIOME_COLORS.put(TFBiomes.enchantedForest, new MapColorBrightness(MapColor.LIME, 0));
     }
 
     @Override
