@@ -8,6 +8,7 @@ import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,15 +25,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
+import net.minecraftforge.client.model.ModelLoader;
 import twilightforest.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMapRewrap;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nullable;
 
-public class ItemTFMazeMap extends ItemMap
+public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback
 {
     private static final String STR_ID = "map";
 	private static final int YSEARCH = 3;
@@ -326,5 +329,11 @@ public class ItemTFMazeMap extends ItemMap
 	public String getItemStackDisplayName(ItemStack par1ItemStack)
 	{
 		return ("" + I18n.format(this.getUnlocalizedNameInefficiently(par1ItemStack) + ".name") + " #" + par1ItemStack.getItemDamage()).trim();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel() {
+        ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 }

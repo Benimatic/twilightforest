@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.MapColor;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +25,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeRiver;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFFeature;
 import twilightforest.TFPacketHandler;
@@ -31,6 +33,7 @@ import twilightforest.TFMagicMapData;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMagicMapFeatures;
 import twilightforest.network.PacketMapRewrap;
 import twilightforest.world.TFBiomeProvider;
@@ -40,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
-public class ItemTFMagicMap extends ItemMap
+public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback
 {
     private static final String STR_ID = "map";
     private static final HashMap<Biome, MapColorBrightness> BIOME_COLORS = new HashMap<>();
@@ -335,5 +338,11 @@ public class ItemTFMagicMap extends ItemMap
 	public String getItemStackDisplayName(ItemStack par1ItemStack)
 	{
 		return ("" + I18n.format(this.getUnlocalizedNameInefficiently(par1ItemStack) + ".name") + " #" + par1ItemStack.getItemDamage()).trim();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel() {
+        ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 }
