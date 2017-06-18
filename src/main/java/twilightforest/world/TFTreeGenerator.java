@@ -30,8 +30,8 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 	}
 
 	@Override
-	public final void setBlockAndNotifyAdequately(World world, BlockPos pos, IBlockState state) {
-		super.setBlockAndNotifyAdequately(world, pos, state);
+	public final void setBlockAndNotify(World world, BlockPos pos, IBlockState state) {
+		setBlockAndNotifyAdequately(world, pos, state);
 	}
 
 	/**

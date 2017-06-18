@@ -24,8 +24,8 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
     }
 
 	@Override
-	public final void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
-		super.setBlockAndNotifyAdequately(worldIn, pos, state);
+	public final void setBlockAndNotify(World worldIn, BlockPos pos, IBlockState state) {
+		setBlockAndNotifyAdequately(worldIn, pos, state);
 	}
 
 	/**
@@ -50,10 +50,9 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	 */
 	protected static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, IBlockState state)
 	{
-		BlockPos[] lineArray = getBresehnamArrayCoords(from, to);
-		for (BlockPos pixel : lineArray)
+		for (BlockPos pixel : getBresehnamArrayCoords(from, to))
 		{
-			generator.setBlockAndNotifyAdequately(world, pixel, state);
+			generator.setBlockAndNotify(world, pixel, state);
 		}
 	}
 
@@ -213,7 +212,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 
 		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock())
         {
-            generator.setBlockAndNotifyAdequately(world, pos, state);
+            generator.setBlockAndNotify(world, pos, state);
         }
 	}
 
@@ -293,14 +292,14 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, +dz), state);
-						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, +dy, -dz), state);
-						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, +dz), state);
-						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, +dy, -dz), state);
-						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, +dz), state);
-						generator.setBlockAndNotifyAdequately(world, pos.add(+dx, -dy, -dz), state);
-						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, +dz), state);
-						generator.setBlockAndNotifyAdequately(world, pos.add(-dx, -dy, -dz), state);
+						generator.setBlockAndNotify(world, pos.add(+dx, +dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(+dx, +dy, -dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, +dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, +dy, -dz), state);
+						generator.setBlockAndNotify(world, pos.add(+dx, -dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(+dx, -dy, -dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, -dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, -dy, -dz), state);
 					}
 				}
 			}
