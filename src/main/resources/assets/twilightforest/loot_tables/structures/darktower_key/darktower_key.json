@@ -1,6 +1,15 @@
 {
   "pools": [
     {
+      "name": "key",
+      "rolls": 1,
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:tower_key"
+      }]
+    },
+
+    {
       "name": "common",
       "rolls": 4,
       "entries": [{
@@ -24,15 +33,6 @@
       "entries": [{
         "type": "loot_table",
         "name": "twilightforest:structures/darktower_key/rare"
-      }]
-    },
-
-    {
-      "name": "key",
-      "rolls": 1,
-      "entries": [{
-        "type": "item",
-        "name": "twilightforest:tower_key"
       }]
     }
   ]
