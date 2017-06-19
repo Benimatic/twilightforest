@@ -37,6 +37,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
+import twilightforest.world.TFWorld;
 
 public class TFBiomeBase extends Biome  {
 	protected WorldGenBigMushroom bigMushroomGen;
@@ -140,7 +141,7 @@ public class TFBiomeBase extends Biome  {
     // Copy of super's generateBiomeTerrain, relevant edits noted.
     protected void genTwilightBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
     {
-        int i = 32; // TF - set sea level to 32
+        int i = TFWorld.SEALEVEL; // TF - set sea level to 31
         IBlockState iblockstate = this.topBlock;
         IBlockState iblockstate1 = this.fillerBlock;
         int j = -1;
