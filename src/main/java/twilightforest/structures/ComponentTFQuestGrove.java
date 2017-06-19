@@ -65,7 +65,7 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 		}
 		
 		// dispenser frame and button
-		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().withProperty(BlockButton.FACING, EnumFacing.WEST), 13, 5, 19, sbb);
+		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().withProperty(BlockButton.FACING, EnumFacing.SOUTH), 13, 5, 19, sbb);
 		
 		setBlockState(world, MOSSY_STONEBRICK, 12, 7, 20, sbb);
 		setBlockState(world, MOSSY_STONEBRICK, 13, 7, 20, sbb);
