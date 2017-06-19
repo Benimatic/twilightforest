@@ -310,12 +310,12 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// now a chandelier
 		decorateLichChandelier(world, floorLevel, sbb);
 		
-		// make paintings
-		decoratePaintings(world, rand, floorLevel, sbb);
-		
 		// and wall torches
 		decorateTorches(world, rand, floorLevel, sbb);
-		
+
+		// make paintings
+		decoratePaintings(world, rand, floorLevel, sbb);
+
 		// seems like we should have a spawner
 		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
 	}
@@ -481,31 +481,16 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	}
 
 	/**
-	 * Place up to 10 torches (with fence holders) on the wall, checking that they don't overlap any paintings or other torches
+	 * Place up to 5 torches (with fence holders) on the wall, checking that they don't overlap any paintings or other torches
 	 */
 	protected void generateTorchesOnWall(World world, Random rand,
 			int floorLevel, EnumFacing direction, StructureBoundingBox sbb) {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// offset to see where the fence should be
 			BlockPos.MutableBlockPos tCoords = new BlockPos.MutableBlockPos(wCoords);
-			//TODO: Verify this works ok, I think using EnumFacing simplifies this code
-			tCoords.move(direction);
-			/*if (direction == 0) {
-				tCoords.move(EnumFacing.SOUTH);
-			}
-			if (direction == 1) {
-				tCoords.move(EnumFacing.WEST);
-			}
-			if (direction == 2) {
-				tCoords.move(EnumFacing.NORTH);
-			}
-			if (direction == 3) {
-				tCoords.move(EnumFacing.EAST);
-			}*/
-
 
 			// is there a painting or another torch there?
 			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.getX(), tCoords.getY(), tCoords.getZ(), tCoords.getX() + 1.0, tCoords.getY() + 2.0, tCoords.getZ() + 1.0);
