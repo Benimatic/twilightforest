@@ -92,6 +92,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 				EntityTFYetiAlpha yeti = new EntityTFYetiAlpha(world);
 				yeti.setPosition(bx, by, bz);
 				yeti.setHomePosAndDistance(pos, 30);
+				yeti.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 				
 				world.spawnEntity(yeti);
 			}

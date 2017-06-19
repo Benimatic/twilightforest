@@ -122,6 +122,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 				EntityTFMinoshroom taur = new EntityTFMinoshroom(world);
 				taur.setPosition(bx, by, bz);
 				taur.setHomePosAndDistance(pos, 7);
+				taur.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 				
 				world.spawnEntity(taur);
 			}

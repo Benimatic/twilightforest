@@ -91,13 +91,15 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 			int bx = this.getXWithOffset(6, 6);
 			int by = this.getYWithOffset(0);
 			int bz = this.getZWithOffset(6, 6);
+			BlockPos pos = new BlockPos(bx, by, bz);
 
-			if (sbb.isVecInside(new BlockPos(bx, by, bz))) {
+			if (sbb.isVecInside(pos)) {
 				this.minerPlaced = true;
 				
 				EntityTFGiantMiner miner = new EntityTFGiantMiner(world);
 				miner.setPosition(bx, by, bz);
 				miner.enablePersistence();
+				miner.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 				
 				world.spawnEntity(miner);
 			}
@@ -106,13 +108,15 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 			int bx = this.getXWithOffset(9, 9);
 			int by = this.getYWithOffset(0);
 			int bz = this.getZWithOffset(9, 9);
+			BlockPos pos = new BlockPos(bx, by, bz);
 			
-			if (sbb.isVecInside(new BlockPos(bx, by, bz))) {
+			if (sbb.isVecInside(pos)) {
 				this.warriorPlaced = true;
 				
 				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(world);
 				warrior.setPosition(bx, by, bz);
 				warrior.enablePersistence();
+				warrior.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 				
 				world.spawnEntity(warrior);
 			}
