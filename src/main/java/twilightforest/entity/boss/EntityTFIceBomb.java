@@ -83,8 +83,6 @@ public class EntityTFIceBomb extends EntityThrowable {
     {
     	super.onUpdate();
     	
-        //this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ); // push out of block
-
     	if (this.hasHit)
     	{
 			this.motionX *= 0.1D;
@@ -95,6 +93,7 @@ public class EntityTFIceBomb extends EntityThrowable {
     		makeIceZone();
 
     		if (!world.isRemote && this.zoneTimer <= 0) {
+    			world.playEvent(2001, new BlockPos(this), Block.getStateId(Blocks.ICE.getDefaultState()));
     			setDead();
     		}
     	} else {
