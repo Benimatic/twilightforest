@@ -62,16 +62,6 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
         }
     }
 
-    // todo 1.10 verify
-    @Override
-    public void addDefaultFlowers() {
-	    addFlower(Blocks.YELLOW_FLOWER.getDefaultState(), 10);
-	    for (int i = 3; i <= 8; i++) {
-            BlockFlower.EnumFlowerType type = BlockFlower.EnumFlowerType.getType(BlockFlower.EnumFlowerColor.RED, i);
-            addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), type), 10);
-        }
-    }
-
     @Override
     public void decorate(World par1World, Random par2Random, BlockPos pos)
     {

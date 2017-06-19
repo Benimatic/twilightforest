@@ -151,13 +151,6 @@ public class TFBiomeHighlands extends TFBiomeBase {
     }
 
     @Override
-	public void addDefaultFlowers()
-    {
-    	addFlower(Blocks.YELLOW_FLOWER.getDefaultState(), 10);
-    	addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.OXEYE_DAISY), 10);
-    }
-    
-    @Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressGlacier;
 	}
