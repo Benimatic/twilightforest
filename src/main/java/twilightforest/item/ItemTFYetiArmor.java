@@ -37,9 +37,9 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
 		if (slot == EntityEquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
-		} else {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
+		} else {
+			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
 		}
 	}
 	
