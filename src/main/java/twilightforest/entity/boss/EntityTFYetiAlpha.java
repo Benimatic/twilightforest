@@ -14,6 +14,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,6 +31,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
@@ -48,6 +51,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti_alpha");
     private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
+	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
 
@@ -108,6 +112,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	}
 
     	if (!world.isRemote) {
+    	    bossInfo.setPercent(getHealth() / getMaxHealth());
+
             if (this.isCollided) {
                 this.collisionCounter++;
             }
@@ -385,6 +391,27 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 			}
 		}
 	}
+
+	@Override
+	public void setCustomNameTag(String name)
+    {
+        super.setCustomNameTag(name);
+        this.bossInfo.setName(this.getDisplayName());
+    }
+
+    @Override
+    public void addTrackingPlayer(EntityPlayerMP player)
+    {
+        super.addTrackingPlayer(player);
+        this.bossInfo.addPlayer(player);
+    }
+
+    @Override
+    public void removeTrackingPlayer(EntityPlayerMP player)
+    {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
+    }
 	
     @Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
