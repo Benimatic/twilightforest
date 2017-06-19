@@ -593,10 +593,6 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		setBlockStateRotated(world, myDeco.platformState, x, y + 1, z, rotation, sbb);
 
 		placeTreasureAtCurrentPosition(world, null, x, y + 2, z, this.isKeyTower() ? TFTreasure.darktower_key : TFTreasure.darktower_cache, sbb);
-		if (this.isKeyTower())
-		{
-			putItemInTreasure(world, x, y + 2, z, new ItemStack(TFItems.towerKey), sbb);
-		}
 	}
 
 	private void decorateSpawner(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y)
@@ -860,70 +856,6 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			}
 		}
 	}
-
-	/**
-	 * Find the treasure chest at the specified location and add the specified item to it, if it is not there already
-	 */
-	protected void putItemInTreasure(World world, int x, int y, int z, ItemStack itemToAdd, StructureBoundingBox sbb) 
-	{
-		final BlockPos offset = getBlockPosWithOffset(x, y, z);
-		if(sbb.isVecInside(offset))
-        {
-            TileEntity tileEntity = world.getTileEntity(offset);
-            if (tileEntity != null && tileEntity instanceof IInventory)
-            {
-            	IInventory inventory = (IInventory)tileEntity;
-            	
-            	// check to see if the item is there, also count empty slots
-            	boolean alreadyPresent = false;
-            	int emptySlots = 0;
-            	
-            	for (int i = 0; i < inventory.getSizeInventory(); i++)
-            	{
-            		ItemStack inSlot = inventory.getStackInSlot(i);
-            		
-            		if (inSlot == null)
-            		{
-            			emptySlots++;
-            		}
-            		else
-            		{
-            			if (ItemStack.areItemStacksEqual(inSlot, itemToAdd))
-            			{
-            				alreadyPresent = true;
-            				break; // may as we;;
-            			}
-            		}
-            	}
-            	
-            	// okay, add it?
-            	if (!alreadyPresent && emptySlots > 0)
-            	{
-            		int slotsUntilPlaced = world.rand.nextInt(emptySlots);
-                	for (int i = 0; i < inventory.getSizeInventory(); i++)
-                	{
-                		ItemStack inSlot = inventory.getStackInSlot(i);
-                		
-                		if (inSlot == null)
-                		{
-                			if (slotsUntilPlaced == 0)
-                			{
-                				inventory.setInventorySlotContents(i, itemToAdd);
-                				break;
-                			}
-                			else
-                			{
-                				slotsUntilPlaced--;
-                			}
-                		}
-
-                	}
-            	}
-            	
-            }
-        }
-	}
-
 
 	/**
 	 * Dark tower half floors
