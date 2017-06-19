@@ -58,20 +58,6 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	}
 
 	/**
-	 * Add on any other components we need.  In this case we add the maze below the hill
-	 */
-	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
-		
-//		// add a maze
-		ComponentTFHillMaze maze = new ComponentTFHillMaze(1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), boundingBox.minY - 20, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2), hillSize);
-		list.add(maze);
-		maze.buildComponent(this, list, random);
-		
-		
-	}
-
-	/**
 	 * Add in all the blocks we're adding.
 	 */
 	@Override

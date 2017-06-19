@@ -69,7 +69,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		// register one-off pieces here
         MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
 	    MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
-        MapGenStructureIO.registerStructureComponent(ComponentTFHillMaze.class, "TFHillMaze");
         MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
         MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
         MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
