@@ -20,6 +20,7 @@ import twilightforest.block.enums.PlantVariant;
 import twilightforest.world.TFGenLargeRainboak;
 import twilightforest.world.TFGenSmallRainboak;
 import twilightforest.world.TFGenTallGrass;
+import twilightforest.world.TFGenVines;
 import twilightforest.world.TFWorld;
 
 
@@ -118,17 +119,15 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
     @Override
     public void decorate(World world, Random rand, BlockPos pos)
     {
-        WorldGenVines worldgenvines = new WorldGenVines();
-
+        TFGenVines vines = new TFGenVines();
         BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(0, 0, 0);
-
         for (int i = 0; i < 20; i++)
         {
-            int x = pos.getX() + rand.nextInt(16) + 8;
-            int y = TFWorld.SEALEVEL;
-            int z = pos.getZ() + rand.nextInt(16) + 8;
-            mutPos.setPos(x, y, z);
-            worldgenvines.generate(world, rand, mutPos);
+            int rx = pos.getX() + rand.nextInt(16) + 8;
+            int ry = TFWorld.SEALEVEL + 128;
+            int rz = pos.getZ() + rand.nextInt(16) + 8;
+            mutPos.setPos(rx, ry, rz);
+            vines.generate(world, rand, mutPos);
         }
 
         // tall ferns
