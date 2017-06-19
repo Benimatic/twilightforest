@@ -2208,11 +2208,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 			
 			// initialize a painting object
-			EntityPainting painting = new EntityPainting(world, pCoords, direction);
-			painting.art = getPaintingOfSize(rand, minSize);
-			
-			// temporary function, make a real bounding box for the painting
-			
+			EnumArt art = getPaintingOfSize(rand, minSize);
+			EntityPainting painting = new EntityPainting(world, pCoords, direction, art.title);
+
 			// check if we can fit a painting there
 			if (checkPainting(world, painting, sbb)) {
 				// place the painting
@@ -2256,37 +2254,28 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		if (painting == null) {
 			return false;
 		}
-		
-		//TODO: this is a temporary workaround to fix the bad painting bounding boxes
-		//TODO: Check if this is still neccessary
+
 		AxisAlignedBB largerBox;
-		/*if (painting.facingDirection.hangingDirection == 0 || painting.hangingDirection == 2) {
-			largerBox = painting.boundingBox.expand(1, 1, 0.06);
-		}
-		else {
-			largerBox = painting.boundingBox.expand(0.06, 1, 1);
-		}
-		
-        if (world.getCollidingBoundingBoxes(painting, largerBox).size() > 0)
-        {
-            return false;
-        }*/
 
 		largerBox = painting.getEntityBoundingBox();
-        
-        List<Entity> collidingEntities = world.getEntitiesWithinAABBExcludingEntity(painting, largerBox);
 
-        for (Entity entityOnList : collidingEntities)
-        {
-            if (entityOnList instanceof EntityHanging)
-            {
-                return false;
-            }
-        }
+		if (!world.getCollisionBoxes(painting, largerBox).isEmpty())
+		{
+			return false;
+		} else
+		{
+			List<Entity> collidingEntities = world.getEntitiesWithinAABBExcludingEntity(painting, largerBox);
 
-        return true;
+			for (Entity entityOnList : collidingEntities)
+			{
+				if (entityOnList instanceof EntityHanging)
+				{
+					return false;
+				}
+			}
 
-
+			return true;
+		}
 	}
 
 	/**
