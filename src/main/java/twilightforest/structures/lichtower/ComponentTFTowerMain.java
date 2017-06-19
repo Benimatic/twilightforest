@@ -197,8 +197,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		makeStairs(world, rand, sbb);
 
 		// throw a bunch of opening markers in there
-
-		makeOpeningMarkers(world, rand, 100, sbb);
+		//makeOpeningMarkers(world, rand, 100, sbb);
 
 		// openings
 		makeOpenings(world, sbb);
@@ -237,14 +236,12 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			this.setCoordBaseMode(getStructureRelativeRotation(Rotation.CLOCKWISE_90));
 		}
 
-		BlockStoneSlab.EnumType floorVariant = rand.nextInt(2) == 0 ? BlockStoneSlab.EnumType.STONE : BlockStoneSlab.EnumType.WOOD;
-		int floorLevel = 0 + flight * 5;
-		
 		// place platform
-		IBlockState doubleStoneSlab = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, floorVariant);
+		int floorLevel = 0 + flight * 5;
+		IBlockState crossingfloor = rand.nextBoolean() ? Blocks.DOUBLE_STONE_SLAB.getDefaultState() : Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 		for (int dx = 6; dx <= 8; dx++) {
 			for (int dz = 4; dz <= 10; dz++) {
-				setBlockState(world, doubleStoneSlab, dx, floorLevel, dz, sbb);
+				setBlockState(world, crossingfloor, dx, floorLevel, dz, sbb);
 			}
 		}
 		
@@ -264,8 +261,8 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 
 		// we need 2 extra blocks and 2 extra fences to look good
-		setBlockState(world, doubleStoneSlab, 6, floorLevel - 1, 11, sbb);
-		setBlockState(world, doubleStoneSlab, 8, floorLevel - 1, 3, sbb);
+		setBlockState(world, crossingfloor, 6, floorLevel - 1, 11, sbb);
+		setBlockState(world, crossingfloor, 8, floorLevel - 1, 3, sbb);
 		
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 5, floorLevel, 11, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 9, floorLevel, 3, sbb);

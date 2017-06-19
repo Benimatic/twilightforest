@@ -530,7 +530,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		final IBlockState ladder = Blocks.LADDER.getDefaultState();
 		if (ladderUpDir != null ) {
 			// add ladder going up
-			final IBlockState ladderUp = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderUpDir).getOpposite());
+			final IBlockState ladderUp = ladder.withProperty(BlockLadder.FACING, ladderUpDir.rotate(EnumFacing.EAST));
 
 			int dx = getLadderX(ladderUpDir);
 			int dz = getLadderZ(ladderUpDir);
@@ -541,7 +541,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		
 		if (ladderDownDir != null) {
 			// add ladder going down
-			final IBlockState ladderDown = ladder.withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderDownDir).getOpposite());
+			final IBlockState ladderDown = ladder.withProperty(BlockLadder.FACING, ladderDownDir.rotate(EnumFacing.EAST));
 			int dx = getLadderX(ladderDownDir);
 			int dz = getLadderZ(ladderDownDir);
 			for (int dy = bottom - 1; dy < bottom + 2; dy++) {
@@ -746,10 +746,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 		// bottom decoration
 		final IBlockState stoneBrickStairs = Blocks.STONE_BRICK_STAIRS.getDefaultState();
-		setBlockState(world, stoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.WEST), cx + 0, bottom, cz - 1, sbb);
-		setBlockState(world, stoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), cx - 1, bottom, cz + 0, sbb);
+		setBlockState(world, stoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.NORTH), cx + 0, bottom, cz - 1, sbb);
+		setBlockState(world, stoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.WEST), cx - 1, bottom, cz + 0, sbb);
 		setBlockState(world, stoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.EAST), cx + 1, bottom, cz + 0, sbb);
-		setBlockState(world, stoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.NORTH), cx + 0, bottom, cz + 1, sbb);
+		setBlockState(world, stoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), cx + 0, bottom, cz + 1, sbb);
 		setBlockState(world, stoneBrick, cx + 0, bottom, cz + 0, sbb);
 
 		if (size > 5)
@@ -763,10 +763,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		final IBlockState topStoneBrickStairs = Blocks.STONE_BRICK_STAIRS.getDefaultState()
 				.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP);
 		// top decoration
-		setBlockState(world, topStoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.WEST), cx + 0, top - 1, cz - 1, sbb);
-		setBlockState(world, topStoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), cx - 1, top - 1, cz + 0, sbb);
+		setBlockState(world, topStoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.NORTH), cx + 0, top - 1, cz - 1, sbb);
+		setBlockState(world, topStoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.WEST), cx - 1, top - 1, cz + 0, sbb);
 		setBlockState(world, topStoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.EAST), cx + 1, top - 1, cz + 0, sbb);
-		setBlockState(world, topStoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.NORTH), cx + 0, top - 1, cz + 1, sbb);
+		setBlockState(world, topStoneBrickStairs.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), cx + 0, top - 1, cz + 1, sbb);
 		setBlockState(world, stoneBrick, cx + 0, top - 1, cz + 0, sbb);
 
 		if (size > 5)
@@ -859,16 +859,16 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		// chairs!
 		final IBlockState spruceStairs = Blocks.SPRUCE_STAIRS.getDefaultState();
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), size / 2 + 1, bottom, size / 2, sbb);
+			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.WEST), size / 2 + 1, bottom, size / 2, sbb);
 		}
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.WEST), size / 2, bottom, size / 2 + 1, sbb);
+			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.NORTH), size / 2, bottom, size / 2 + 1, sbb);
 		}
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.NORTH), size / 2 - 1, bottom, size / 2, sbb);
+			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.EAST), size / 2 - 1, bottom, size / 2, sbb);
 		}
 		if (rand.nextInt(3) == 0 && freeSpace > 1) {
-			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.EAST), size / 2, bottom, size / 2 - 1, sbb);
+			setBlockState(world, spruceStairs.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), size / 2, bottom, size / 2 - 1, sbb);
 		}
 	}
 
@@ -1168,14 +1168,14 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				}
 			}
 
-			Rotation ladderDir = Rotation.COUNTERCLOCKWISE_90;
+			Rotation ladderDir = Rotation.NONE;
 			Rotation downLadderDir = null;
 			
 			// place a ladder going up
 			//TODO: make this ladder connect better to the stairs
 			int dx = getLadderX(ladderDir);
 			int dz = getLadderZ(ladderDir);
-			final IBlockState defaultState = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, getStructureRelativeRotation(ladderDir));
+			final IBlockState defaultState = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, ladderDir.rotate(EnumFacing.EAST));
 			for (int dy = 1; dy < 3; dy++) {
 				setBlockState(world, defaultState, dx, base - dy, dz, sbb);
 			}
@@ -1441,10 +1441,10 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 				for (int y = top; y <= bottom; y++) {
 					setBlockState(world, mossyCobbleStone, moss.getX(), decoTop - y, moss.getZ(), sbb);
 					// surround it with vines
-					setBlockState(world, vineNorth, moss.getX() + 1, decoTop - y, moss.getZ() + 0, sbb);
-					setBlockState(world, vineSouth, moss.getX() - 1, decoTop - y, moss.getZ() + 0, sbb);
-					setBlockState(world, vineEast, moss.getX() + 0, decoTop - y, moss.getZ() + 1, sbb);
-					setBlockState(world, vineWest, moss.getX() + 0, decoTop - y, moss.getZ() - 1, sbb);
+					setBlockState(world, vineEast, moss.getX() + 1, decoTop - y, moss.getZ() + 0, sbb);
+					setBlockState(world, vineWest, moss.getX() - 1, decoTop - y, moss.getZ() + 0, sbb);
+					setBlockState(world, vineSouth, moss.getX() + 0, decoTop - y, moss.getZ() + 1, sbb);
+					setBlockState(world, vineNorth, moss.getX() + 0, decoTop - y, moss.getZ() - 1, sbb);
 				}		
 				mossList.add(moss);
 			}
@@ -2055,7 +2055,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		final IBlockState oakFence = Blocks.OAK_FENCE.getDefaultState();
 		final IBlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 		final IBlockState stoneSlab = Blocks.STONE_SLAB.getDefaultState();
-		final IBlockState doubleStoneSlab = Blocks.STONE_SLAB.getDefaultState();
+		final IBlockState doubleStoneSlab = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 
 		// foot of stairs
 		setBlockState(world, birchSlab, 1, 1, 9, sbb);
