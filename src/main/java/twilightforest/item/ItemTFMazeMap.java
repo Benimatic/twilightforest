@@ -326,9 +326,9 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback
     }
 
     @Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack)
+	public String getItemStackDisplayName(ItemStack stack)
 	{
-		return ("" + I18n.format(this.getUnlocalizedNameInefficiently(par1ItemStack) + ".name") + " #" + par1ItemStack.getItemDamage()).trim();
+        return ("" + net.minecraft.util.text.translation.I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim() + " #" + stack.getItemDamage());
     }
 
     @SideOnly(Side.CLIENT)
