@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 
 import static twilightforest.block.BlockTFNagastone.VARIANT;
@@ -320,10 +321,10 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 				switch (rand.nextInt(4))
 				{
 				case 0:
-					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true), x - 1, y + i, z + 0, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true), x - 1, y + i, z + 0, sbb);
 					break;
 				case 1:
-					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true), x + 1, y + i, z + 0, sbb);
+					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true), x + 1, y + i, z + 0, sbb);
 					break;
 				case 2:
 					setBlockState(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true), x + 0, y + i, z - 1, sbb);
@@ -338,16 +339,16 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 				switch (rand.nextInt(4))
 				{
 				case 0:
-					setBlockState(world, TFBlocks.firefly.getDefaultState(), x - 1, y + i, z + 0, sbb);
+					setBlockState(world, TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.WEST), x - 1, y + i, z + 0, sbb);
 					break;
 				case 1:
-					setBlockState(world, TFBlocks.firefly.getDefaultState(), x + 1, y + i, z + 0, sbb);
+					setBlockState(world, TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.EAST), x + 1, y + i, z + 0, sbb);
 					break;
 				case 2:
-					setBlockState(world, TFBlocks.firefly.getDefaultState(), x + 0, y + i, z + 1, sbb);
+					setBlockState(world, TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.NORTH), x + 0, y + i, z - 1, sbb);
 					break;
 				case 3:
-					setBlockState(world, TFBlocks.firefly.getDefaultState(), x + 0, y + i, z - 1, sbb);
+					setBlockState(world, TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.SOUTH), x + 0, y + i, z + 1, sbb);
 					break;
 				}
 			}

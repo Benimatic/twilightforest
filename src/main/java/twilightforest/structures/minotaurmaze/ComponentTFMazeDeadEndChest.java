@@ -32,8 +32,8 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 		// dais
 		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 2, 1, 4, sbb);
 		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 3, 1, 4, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.WEST, rotation, false), 2, 1, 3, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.WEST, rotation, false), 3, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.NORTH, rotation, false), 2, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.NORTH, rotation, false), 3, 1, 3, sbb);
 		
 		// chest
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 2, 2, 4, sbb);

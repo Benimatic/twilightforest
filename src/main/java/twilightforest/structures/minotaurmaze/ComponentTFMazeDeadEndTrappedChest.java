@@ -25,8 +25,8 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEndCh
 		super.addComponentParts(world, rand, sbb);
 		
 		// add tripwire hooks
-		this.setBlockState(world, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.EAST), 1, 1, 2, sbb);
-		this.setBlockState(world, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.WEST), 4, 1, 2, sbb);
+		this.setBlockState(world, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.WEST), 1, 1, 2, sbb);
+		this.setBlockState(world, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.EAST), 4, 1, 2, sbb);
 		
 		// add string
 		this.setBlockState(world, Blocks.TRIPWIRE.getDefaultState(), 2, 1, 2, sbb);
