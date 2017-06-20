@@ -496,7 +496,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	}
 
 	public EnumDyeColor getGlyphColour() {
-		return color;
+		if (color == null) {
+			TwilightForestMod.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
+			return EnumDyeColor.BLUE;
+		} else {
+			return color;
+		}
 	}
 
 	private void addFloors(World world, Random rand, StructureBoundingBox sbb) {
