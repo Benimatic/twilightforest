@@ -2209,7 +2209,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			
 			// initialize a painting object
 			EnumArt art = getPaintingOfSize(rand, minSize);
-			EntityPainting painting = new EntityPainting(world, pCoords, direction, art.title);
+			EntityPainting painting = new EntityPainting(world, pCoords, direction);
+			painting.art = art;
+			painting.setPosition(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
 			// check if we can fit a painting there
 			if (checkPainting(world, painting, sbb)) {
