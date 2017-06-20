@@ -66,14 +66,21 @@ public class BlockTFCastleDoor extends Block
 				.withProperty(ACTIVE, (meta & 8) != 0)
 				.withProperty(LOCK_INDEX, meta & 3);
 	}
-    
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return !this.isVanished;
-    }
-    
+
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state)
+	{
+		return !this.isVanished;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isFullCube(IBlockState state)
+	{
+		return !this.isVanished;
+	}
+
 	@Override
 	@Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
