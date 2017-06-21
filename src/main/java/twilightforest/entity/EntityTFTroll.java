@@ -97,9 +97,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 			} else {
 				this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
 			}
+			this.setCombatTask();
 		}
-
-		this.setCombatTask();
 	}
 
 	@Override
