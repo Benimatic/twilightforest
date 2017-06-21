@@ -566,15 +566,15 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		int cx = this.size > 9 ? 9 : 7;
 		int cz = this.size > 9 ? 4 : 3;
 
-		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.EAST, rotation, false), cx, y + 1, cz + 0, rotation, sbb);
-		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, false), cx, y + 1, cz + 1, rotation, sbb);
-		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), cx, y + 1, cz + 2, rotation, sbb);
+		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, false), cx, y + 1, cz + 0, rotation, sbb);
+		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), cx, y + 1, cz + 1, rotation, sbb);
+		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, false), cx, y + 1, cz + 2, rotation, sbb);
 
 		cx = this.size > 9 ? 5 : 3;
 
-		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.EAST, rotation, true), cx, y + 1, cz + 0, rotation, sbb);
+		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, true), cx, y + 1, cz + 0, rotation, sbb);
 		setBlockStateRotated(world, getSlabState(Blocks.WOODEN_SLAB.getDefaultState(), BlockPlanks.EnumType.SPRUCE, BlockSlab.EnumBlockHalf.TOP), cx, y + 1, cz + 1, rotation, sbb);
-		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, true), cx, y + 1, cz + 2, rotation, sbb);
+		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, true), cx, y + 1, cz + 2, rotation, sbb);
 	}
 
 	/**
