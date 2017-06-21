@@ -1,6 +1,8 @@
 package twilightforest;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
@@ -40,6 +42,7 @@ import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
@@ -69,7 +72,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod.EventBusSubscriber
 public class TFEventListener {
 	
-	private static HashMap<String, InventoryPlayer> playerKeepsMap = new HashMap<String, InventoryPlayer>();
+	private static Map<UUID, InventoryPlayer> playerKeepsMap = new HashMap<>();
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
@@ -362,10 +365,10 @@ public class TFEventListener {
 			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
 			
 			boolean charm1 = false;
-			boolean charm2 = TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfLife2, 1);
+			boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife2, 1);
 			if (!charm2)
 			{
-				charm1 = TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfLife1, 1);
+				charm1 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife1, 1);
 			}
 			
 			// do they have a charm of life?  OM NOM NOM!
@@ -441,74 +444,47 @@ public class TFEventListener {
 		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().world.getGameRules().getBoolean("keepInventory"))
 		{
 			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
-			
-			if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping3, 1))
-			{
-				TwilightForestMod.LOGGER.debug("Player died with charm of keeping III!  Keep it all!");
-				InventoryPlayer keepInventory = new InventoryPlayer(null);
-				
-				// armor and full inventory
-				keepAllArmor(player, keepInventory);
-				for (int i = 0; i < player.inventory.mainInventory.size(); i++)
-				{
-					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-				}
-				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping3));
+			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping3, 1);
+			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping2, 1);
+			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping1, 1);
 
-				playerKeepsMap.put(player.getName(), keepInventory);
-			}
-			else if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping2, 1))
-			{
-				TwilightForestMod.LOGGER.debug("Player died with charm of keeping II!  Keep armor and hotbar!");
-				InventoryPlayer keepInventory = new InventoryPlayer(null);
-				
-				keepAllArmor(player, keepInventory);
-				for (int i = 0; i < 9; i++)
-				{
-					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-				}
-				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping2));
+			InventoryPlayer keepInventory = new InventoryPlayer(null);
 
-				playerKeepsMap.put(player.getName(), keepInventory);
-			}
-			else if (TFItemStackUtils.consumeInventoryItem(player.inventory, TFItems.charmOfKeeping1, 1))
-			{
-				TwilightForestMod.LOGGER.debug("Player died with charm of keeping I!  Keep armor and current item!");
-				InventoryPlayer keepInventory = new InventoryPlayer(null);
-				
+			if (tier1) {
 				keepAllArmor(player, keepInventory);
 				if (!player.inventory.getCurrentItem().isEmpty())
 				{
 					keepInventory.mainInventory.set(player.inventory.currentItem, player.inventory.mainInventory.get(player.inventory.currentItem).copy());
 					player.inventory.mainInventory.set(player.inventory.currentItem, ItemStack.EMPTY);
 				}
-				keepInventory.setItemStack(new ItemStack(TFItems.charmOfKeeping1));
+			}
 
-				playerKeepsMap.put(player.getName(), keepInventory);
-			}
-			
-			// check for tower keys
-			if (player.inventory.hasItemStack(new ItemStack(TFItems.towerKey)))
-			{
-				InventoryPlayer keepInventory = playerKeepsMap.computeIfAbsent(player.getName(), k -> new InventoryPlayer(null));
-				// keep them all
-				for (int i = 0; i < player.inventory.mainInventory.size(); i++)
-				{
-					if (!player.inventory.mainInventory.get(i).isEmpty() && player.inventory.mainInventory.get(i).getItem() == TFItems.towerKey)
-					{
-						keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-						player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-					}
+			if (tier2) {
+				for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
-				playerKeepsMap.put(player.getName(), keepInventory);
 			}
-		}
-		
-		if (playerKeepsMap.size() > 1)
-		{
-			TwilightForestMod.LOGGER.warn("Keeping track of a lot of dead player inventories.  Has there been an apocalypse?");
+
+			if (tier3) {
+				for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+				}
+			}
+
+			// always keep tower keys
+			for (int i = 0; i < player.inventory.mainInventory.size(); i++)
+			{
+				if (!player.inventory.mainInventory.get(i).isEmpty() && player.inventory.mainInventory.get(i).getItem() == TFItems.towerKey)
+				{
+					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+				}
+			}
+
+
+			playerKeepsMap.put(player.getUniqueID(), keepInventory);
 		}
 	}
 
@@ -528,12 +504,11 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static  void onPlayerRespawn(PlayerRespawnEvent event) {
 		EntityPlayer player = event.player;
-		if (playerKeepsMap.containsKey(player.getName()))
+		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
+		if (keepInventory != null)
 		{
-			TwilightForestMod.LOGGER.debug("Player {} respawned and recieved items held in storage", player.getName());
-			
-			InventoryPlayer keepInventory = playerKeepsMap.get(player.getName());
-			
+			TwilightForestMod.LOGGER.debug("Player {} respawned and received items held in storage", player.getName());
+
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++)
 			{
 				if (!keepInventory.armorInventory.get(i).isEmpty())
@@ -561,8 +536,6 @@ public class TFEventListener {
 	
 				player.world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1.5F, 1.0F, true);
 			}
-
-			playerKeepsMap.remove(player.getName());
 		}
 	}
 
@@ -572,16 +545,13 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void onPlayerLogout(PlayerLoggedOutEvent event) { 
 		EntityPlayer player = event.player;
-		if (playerKeepsMap.containsKey(player.getName()))
-		{
+		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
+		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player %s but they logged out!  Items are being dropped.", player.getName());
-			InventoryPlayer keepInventory = playerKeepsMap.get(player.getName());
-			
+
 			// set player to the player logging out
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
-			
-			playerKeepsMap.remove(player.getName());
 		}
 	}
 	
