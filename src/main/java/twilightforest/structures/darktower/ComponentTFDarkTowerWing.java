@@ -615,23 +615,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 			case SOUTH:
 			case EAST:
 			case WEST:
-				EnumFacing newFacing = rotation.rotate(direction.getFacing());
-				switch (newFacing) {
-					case NORTH:
-						direction = BlockLever.EnumOrientation.NORTH;
-						break;
-					case SOUTH:
-						direction = BlockLever.EnumOrientation.SOUTH;
-						break;
-					case EAST:
-						direction = BlockLever.EnumOrientation.EAST;
-						break;
-					case WEST:
-						direction = BlockLever.EnumOrientation.WEST;
-						break;
-					default:
-						//WTF?
-				}
+				// ignore rotation, as this is handled deeper in the structure code
 				break;
 			case UP_X:
 				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
@@ -713,7 +697,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	private void decoratePuzzleChest(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y) {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
-		// pillar frame
+		// pillar frameframe
 		this.makePillarFrame(world, sbb, this.deco, rotation, x, y, z, true);
 
 		// reinforce with towerwood
