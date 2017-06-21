@@ -165,7 +165,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 		for (int sx = -5; sx <= 5; sx++)
 			for (int sy = -5; sy <= 5; sy++)
 				for (int sz = -5; sz <= 5; sz++)
-					if (world.getBlockState(pos.add(sx, sy, sz)) == TFBlocks.shield) {
+					if (world.getBlockState(pos.add(sx, sy, sz)).getBlock() == TFBlocks.shield) {
 						world.destroyBlock(pos.add(sx, sy, sz), false);
 					}
 	}
