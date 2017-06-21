@@ -19,9 +19,8 @@ public class ComponentTFFinalCastleEntranceSideTower extends ComponentTFFinalCas
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}

@@ -2179,7 +2179,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	/**
 	 * This is similar to EntityPainting.isOnValidSurface, except that it does not check for a solid wall behind the painting.
 	 */
-	@SuppressWarnings("unchecked")
 	protected boolean checkPainting(World world, EntityPainting painting, StructureBoundingBox sbb) {
 
 		if (painting == null) {

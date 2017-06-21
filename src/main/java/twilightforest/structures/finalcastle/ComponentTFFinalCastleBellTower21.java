@@ -32,9 +32,8 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		addOpening(0, 9, size / 2, Rotation.CLOCKWISE_180);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}

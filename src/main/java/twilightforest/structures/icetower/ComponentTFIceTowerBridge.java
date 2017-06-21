@@ -30,9 +30,6 @@ public class ComponentTFIceTowerBridge extends StructureTFComponent {
 
 	}
 
-	/**
-	 * Save to NBT
-	 */
 	@Override
 	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeStructureToNBT(par1NBTTagCompound);
@@ -40,24 +37,18 @@ public class ComponentTFIceTowerBridge extends StructureTFComponent {
 		par1NBTTagCompound.setInteger("bridgeLength", this.length);
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
 		this.length = par1NBTTagCompound.getInteger("bridgeLength");
 	}
 
-
-	@SuppressWarnings({"rawtypes"})
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}
 	}
-
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {

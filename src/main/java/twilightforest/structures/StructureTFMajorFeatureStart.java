@@ -75,7 +75,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	public StructureTFMajorFeatureStart() {
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	public StructureTFMajorFeatureStart(World world, Random rand, int chunkX, int chunkZ) {
 		StructureStrongholdPieces.prepareStructurePieces();
 		//TFStrongholdPieces.prepareStructurePieces();

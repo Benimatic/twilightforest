@@ -63,9 +63,8 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.openingTowards[3] = par1NBTTagCompound.getBoolean("openingTowards3");
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		// make 4 caves
 		if (this.getComponentType() < 3) {
 

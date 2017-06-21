@@ -20,9 +20,8 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		super(rand, i, x, y, z, 3, 2, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}

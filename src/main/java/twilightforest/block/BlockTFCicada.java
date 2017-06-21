@@ -26,7 +26,6 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(TFBlockProperties.FACING).build());
-		// todo fix up display transforms
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFCicada.class);
 	}

@@ -35,9 +35,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, EnumFacing.SOUTH);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}

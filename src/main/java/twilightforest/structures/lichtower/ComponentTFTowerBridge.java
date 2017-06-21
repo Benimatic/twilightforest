@@ -31,14 +31,9 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 		this.dHeight = pHeight;
 	}
 
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
-
-
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		int[] dest = new int[]{2, 1, 1};//getValidOpening(rand, 0);
-
 		makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], dSize, dHeight, Rotation.NONE);
 	}
 
