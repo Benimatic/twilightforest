@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -32,6 +33,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
@@ -63,7 +65,7 @@ public class EntityTFLich extends EntityMob {
 	private EntityTFLich masterLich;
 	private int attackCooldown;
 	private int prevPhase = -1;
-	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
 
 	public EntityTFLich(World world) {
 		super(world);
@@ -80,6 +82,12 @@ public class EntityTFLich extends EntityMob {
 
 		setShadowClone(true);
 		this.masterLich = otherLich;
+	}
+
+	@Override
+	public void setCustomNameTag(String name) {
+		super.setCustomNameTag(name);
+		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
@@ -712,6 +720,9 @@ public class EntityTFLich extends EntityMob {
 		setShadowClone(nbttagcompound.getBoolean("ShadowClone"));
 		setShieldStrength(nbttagcompound.getByte("ShieldStrength"));
 		setMinionsToSummon(nbttagcompound.getByte("MinionsToSummon"));
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
 	}
 
 	@Override

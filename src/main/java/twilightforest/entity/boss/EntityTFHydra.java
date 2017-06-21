@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
@@ -23,6 +24,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
@@ -65,7 +67,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	private EntityDragonPart leftLeg;
 	private EntityDragonPart rightLeg;
 	private EntityDragonPart tail;
-	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
 
 	public int ticksSinceDamaged = 0;
 
@@ -101,6 +103,12 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		this.experienceValue = 511;
 
 		setSpawnHeads(true);
+	}
+
+	@Override
+	public void setCustomNameTag(String name) {
+		super.setCustomNameTag(name);
+		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
@@ -242,6 +250,9 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		super.readEntityFromNBT(nbttagcompound);
 		setSpawnHeads(nbttagcompound.getBoolean("SpawnHeads"));
 		activateNumberOfHeads(nbttagcompound.getByte("NumHeads"));
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
 	}
 
 
