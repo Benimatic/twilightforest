@@ -7,10 +7,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import java.util.function.Predicate;
 
-public class TFItemStackUtils
-{
-	public static boolean consumeInventoryItem(EntityPlayer player, Predicate<ItemStack> matcher, int count)
-	{
+public class TFItemStackUtils {
+	public static boolean consumeInventoryItem(EntityPlayer player, Predicate<ItemStack> matcher, int count) {
 		boolean consumedSome = false;
 		IItemHandler inv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
