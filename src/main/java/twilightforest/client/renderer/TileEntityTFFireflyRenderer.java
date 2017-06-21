@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFFirefly;
 import twilightforest.tileentity.TileEntityTFFirefly;
@@ -72,7 +73,9 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 		GlStateManager.disableAlpha();
 		GlStateManager.disableLighting();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, tileentity != null ? tileentity.glowIntensity : 0);
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, 1);
 		fireflyModel.glow.render(0.0625f);
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableBlend();
 		GlStateManager.enableAlpha();
 		GlStateManager.enableLighting();
