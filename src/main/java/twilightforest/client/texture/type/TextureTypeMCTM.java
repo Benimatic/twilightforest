@@ -26,16 +26,6 @@ public class TextureTypeMCTM extends TextureTypeCTM {
 	}
 
 	@Override
-	public int getQuadsPerSide() {
-		return 4;
-	}
-
-	@Override
-	public int requiredTextures() {
-		return 2;
-	}
-
-	@Override
 	public ITextureContext getContextFromData(long data) {
 		return new TextureContextMCTM(data);
 	}
