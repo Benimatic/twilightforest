@@ -8,7 +8,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 
-// TODO this doesn't seem to render properly
 @SideOnly(Side.CLIENT)
 public class ParticleSnow extends Particle {
 	float initialParticleScale;
@@ -33,7 +32,7 @@ public class ParticleSnow extends Particle {
 		this.particleMaxAge = (int) ((float) this.particleMaxAge * par14);
 		this.canCollide = true;
 
-		this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(TwilightForestMod.ID, "snow_" + (rand.nextInt(4))).toString());
+		this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_" + (rand.nextInt(4))).toString());
 
 		this.onUpdate();
 	}
@@ -68,6 +67,6 @@ public class ParticleSnow extends Particle {
 
 	@Override
 	public int getFXLayer() {
-		return 2;
+		return 1;
 	}
 }

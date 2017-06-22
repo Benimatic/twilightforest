@@ -36,7 +36,7 @@ public class ParticleGhastTear extends Particle {
 
 	@Override
 	public int getFXLayer() {
-		return 2;
+		return 1;
 	}
 
 	@Override
