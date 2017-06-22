@@ -108,6 +108,5 @@ dependencies {
     //deobfCompile files('libs/Thaumcraft-1.7.10-4.2.3.5.jar')
 
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
-    //TODO switch over to CTM when present (not CTMLib) http://maven.tterrag.com/index.php?dir=team%2Fchisel
-    deobfCompile "team.chisel.ctm:CTM:${ctm_version}"
+    compile "team.chisel.ctm:CTM:MC1.11.2-${ctm_version}"
 }
