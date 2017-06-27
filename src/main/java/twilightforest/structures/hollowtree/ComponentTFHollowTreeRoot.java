@@ -67,12 +67,12 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 			IBlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
 
 			// three choices here
-			if (!block.isNormalCube() || block != Blocks.AIR && block.getMaterial() == Material.GRASS) {
+			if (!block.isNormalCube() || block.getBlock() != Blocks.AIR && block.getMaterial() == Material.GRASS) {
 
 				// air, other non-solid, or grass, make wood block
 				IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
-			} else if (block != Blocks.AIR && block.getMaterial() == Material.WOOD) {
+			} else if (block.getBlock() != Blocks.AIR && block.getMaterial() == Material.WOOD) {
 				// wood, do nothing
 			} else {
 				// solid, make root block

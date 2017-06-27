@@ -464,7 +464,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
 
-		if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb) != Blocks.AIR) {
+		if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb).getBlock() != Blocks.AIR) {
 			setBlockState(world, deco.accentState, dx, dy + 2, dz, sbb);
 		}
 	}
