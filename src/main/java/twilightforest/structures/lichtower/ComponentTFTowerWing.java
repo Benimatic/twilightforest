@@ -539,14 +539,14 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			}
 		}
 
-		// pick a decoration?
-		if (rand.nextInt(7) == 0 && ladderDownDir != null) {
+		// some of these go only on the bottom floor (ladderDownDir == null) and some go only on upper floors
+		if (rand.nextInt(7) == 0 && ladderDownDir == null) {
 			decorateWell(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
-		} else if (rand.nextInt(7) == 0 && ladderDownDir != null) {
+		} else if (rand.nextInt(7) == 0 && ladderDownDir == null) {
 			decorateSkeletonRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
-		} else if (rand.nextInt(6) == 0 && ladderDownDir != null) {
+		} else if (rand.nextInt(6) == 0 && ladderDownDir == null) {
 			decorateZombieRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
-		} else if (rand.nextInt(5) == 0 && ladderDownDir != null) {
+		} else if (rand.nextInt(5) == 0 && ladderDownDir == null) {
 			decorateCactusRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} else if (rand.nextInt(4) == 0 && ladderDownDir != null) {
 			decorateTreasureChest(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
