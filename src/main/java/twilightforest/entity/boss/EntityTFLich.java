@@ -359,6 +359,10 @@ public class EntityTFLich extends EntityMob {
 				super.attackEntityAsMob(targetedEntity);
 			}
 		}
+
+		// always watch our target
+		// TODO: make into AI task
+		this.getLookHelper().setLookPositionWithEntity(targetedEntity, 100F, 100F);
 	}
 
 	private void launchBoltAt() {
