@@ -551,7 +551,7 @@ public class EntityTFLich extends EntityMob {
 
 		if (dest != null) {
 			teleportToNoChecks(dest.xCoord, dest.yCoord, dest.zCoord);
-			faceEntity(entity, 100F, 100F);
+			this.getLookHelper().setLookPositionWithEntity(entity, 100F, 100F);
 			this.renderYawOffset = this.rotationYaw;
 
 			if (!this.getEntitySenses().canSee(entity)) {
@@ -579,9 +579,9 @@ public class EntityTFLich extends EntityMob {
 
 			boolean destClear = attemptTeleport(tx, ty, tz);
 			boolean canSeeTargetAtDest = canEntityBeSeen(targetEntity); // Don't use senses cache because we're in a temporary position
+			setPositionAndUpdate(origX, origY, origZ);
 
 			if (destClear && canSeeTargetAtDest) {
-				setPositionAndUpdate(origX, origY, origZ);
 				return new Vec3d(tx, ty, tz);
 			}
 		}
