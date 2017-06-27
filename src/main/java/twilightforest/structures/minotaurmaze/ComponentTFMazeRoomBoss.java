@@ -31,19 +31,19 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// doorways
-		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb) == Blocks.AIR) {
+		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
-		if (this.getBlockStateFromPos(world, 7, 1, 15, sbb) == Blocks.AIR) {
+		if (this.getBlockStateFromPos(world, 7, 1, 15, sbb).getBlock() == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
-		if (this.getBlockStateFromPos(world, 0, 1, 7, sbb) == Blocks.AIR) {
+		if (this.getBlockStateFromPos(world, 0, 1, 7, sbb).getBlock() == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
-		if (this.getBlockStateFromPos(world, 15, 1, 7, sbb) == Blocks.AIR) {
+		if (this.getBlockStateFromPos(world, 15, 1, 7, sbb).getBlock() == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
