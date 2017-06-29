@@ -351,7 +351,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				for (int i = newSegments; i < oldSegments; i++) {
 					if (bodySegments[i] != null) {
 						bodySegments[i].selfDestruct();
-						bodySegments[i] = null;
+						//bodySegments[i] = null;
 					}
 				}
 			} else {
@@ -400,7 +400,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		// update bodySegments parts
 		for (EntityTFNagaSegment segment : bodySegments) {
 			if (segment != null) {
-				segment.onUpdate();
+				this.world.updateEntityWithOptionalForce(segment, true);
 			}
 		}
 

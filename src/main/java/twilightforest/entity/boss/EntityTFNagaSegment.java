@@ -8,9 +8,11 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 import java.util.List;
 
@@ -74,6 +76,28 @@ public class EntityTFNagaSegment extends Entity {
 		}
 
 		collideWithOthers();
+
+		//TwilightForestMod.LOGGER.info("Updating naga segment {}", segment);
+
+		if (deathCounter > 0)
+		{
+			deathCounter--;
+			if (deathCounter <= 0)
+			{
+				for (int k = 0; k < 20; k++)
+				{
+					double d = rand.nextGaussian() * 0.02D;
+					double d1 = rand.nextGaussian() * 0.02D;
+					double d2 = rand.nextGaussian() * 0.02D;
+					EnumParticleTypes explosionType = rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_LARGE : EnumParticleTypes.EXPLOSION_NORMAL;
+
+					this.world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+				}
+
+				this.setDead();
+				this.world.removeEntityDangerously(this); // looks like we gotta live dangerously
+			}
+		}
 	}
 
 	private void collideWithOthers() {
@@ -142,6 +166,6 @@ public class EntityTFNagaSegment extends Entity {
 	}
 
 	public void selfDestruct() {
-		this.deathCounter = 30;
+		this.deathCounter = 10;
 	}
 }
