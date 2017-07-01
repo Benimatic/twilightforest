@@ -612,7 +612,7 @@ public class HydraHeadContainer {
 		setNeckPositon(hydraObj.posX + vector.xCoord, hydraObj.posY + vector.yCoord, hydraObj.posZ + vector.zCoord, hydraObj.renderYawOffset, 0);
 	}
 
-	private void setHeadPosition() {
+	protected void setHeadPosition() {
 		// set head positions
 		Vec3d vector;
 		double dx, dy, dz;

@@ -138,6 +138,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 				for (int i = 0; i < numHeads; i++) {
 					hc[i].headEntity = new EntityTFHydraHead(this, "head" + i, 3F, 3F);
 					hc[i].headEntity.setPosition(this.posX, this.posY, this.posZ);
+					hc[i].setHeadPosition();
 					world.spawnEntity(hc[i].headEntity);
 				}
 
