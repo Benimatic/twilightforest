@@ -188,7 +188,7 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.ADHERENT, twilightforest.entity.EntityTFAdherent.class, id++, 0x0a0000, 0x00008b);
 		TFEntities.registerEntity(TFEntityNames.ROVING_CUBE, twilightforest.entity.EntityTFRovingCube.class, id++, 0x0a0000, 0x00009b);
 
-		TFEntities.registerEntity(TFEntityNames.HYDRA_HEAD, twilightforest.entity.boss.EntityTFHydraHead.class, id++, 11, 3, false);
+		TFEntities.registerEntity(TFEntityNames.HYDRA_HEAD, twilightforest.entity.boss.EntityTFHydraHead.class, id++, 150, 3, false);
 
 		TFEntities.registerEntity(TFEntityNames.NATURE_BOLT, twilightforest.entity.EntityTFNatureBolt.class, id++, 150, 5, true);
 		TFEntities.registerEntity(TFEntityNames.LICH_BOLT, twilightforest.entity.boss.EntityTFLichBolt.class, id++, 150, 2, true);
