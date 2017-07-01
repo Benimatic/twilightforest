@@ -2,7 +2,9 @@ package twilightforest.tileentity;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
 public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
@@ -49,6 +51,8 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 	protected void initializeCreature(EntityLiving myCreature) {
 		if (myCreature instanceof EntityTFKnightPhantom) {
 			((EntityTFKnightPhantom) myCreature).setHomePosAndDistance(pos, 46);
+			((EntityLiving)myCreature).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(myCreature)), (IEntityLivingData)null);
+
 		}
 	}
 
