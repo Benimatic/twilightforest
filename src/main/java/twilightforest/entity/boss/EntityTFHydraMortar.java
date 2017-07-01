@@ -12,6 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 public class EntityTFHydraMortar extends EntityThrowable {
 	private static final int BURN_FACTOR = 5;
@@ -37,7 +38,13 @@ public class EntityTFHydraMortar extends EntityThrowable {
 		double pz = head.posZ + vector.zCoord * dist;
 
 		setLocationAndAngles(px, py, pz, 0, 0);
-		setHeadingFromThrower(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.75F, 1F);
+		// these are being set to extreme numbers when we get here, why?
+		head.motionX = 0;
+		head.motionY = 0;
+		head.motionZ = 0;
+		setHeadingFromThrower(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
+
+		TwilightForestMod.LOGGER.info("Launching mortar! Current head motion is {}, {}", head.motionX, head.motionZ);
 	}
 
 	@Override
