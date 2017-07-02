@@ -4,8 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -155,17 +157,16 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	 * @param height how far up the tree
 	 * @param angle  from 0 - 1 rotation around the tree
 	 */
-	private void addFirefly(World world, BlockPos pos, int height, double angle) {
+	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
-		final IBlockState firefly = TFBlocks.firefly.getDefaultState();
 		if (iAngle == 0) {
-			setBlockAndNotifyAdequately(world, pos.east().up(height), firefly);
+			setBlockAndNotifyAdequately(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.EAST));
 		} else if (iAngle == 1) {
-			setBlockAndNotifyAdequately(world, pos.west().up(height), firefly);
+			setBlockAndNotifyAdequately(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.WEST));
 		} else if (iAngle == 2) {
-			setBlockAndNotifyAdequately(world, pos.south().up(height), firefly);
+			setBlockAndNotifyAdequately(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.SOUTH));
 		} else if (iAngle == 3) {
-			setBlockAndNotifyAdequately(world, pos.north().up(height), firefly);
+			setBlockAndNotifyAdequately(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.NORTH));
 		}
 	}
 
