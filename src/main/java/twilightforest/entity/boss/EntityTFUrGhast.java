@@ -145,6 +145,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 				double z = pointsToVisit.get(currentPoint).getZ();
 				taskOwner.getMoveHelper().setMoveTo(x, y, z, 1.0F);
 				this.currentPoint++;
+
+				// we have reached cruising altitude, time to turn noClip off
+				taskOwner.noClip = false;
 			}
 		}
 
