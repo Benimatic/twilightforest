@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -613,5 +614,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		} else {
 			return new BlockPos(this);
 		}
+	}
+
+	// Don't attack (or even think about attacking) things while we're throwing a tantrum
+	@Override
+	protected boolean shouldAttack(EntityLivingBase living) {
+		return !this.isInTantrum();
 	}
 }

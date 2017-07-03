@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFGhastFindEntityNearestPlayer;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
@@ -186,14 +187,16 @@ public class EntityTFTowerGhast extends EntityGhast {
 				this.prevAttackTimer = attackTimer;
 				++this.attackTimer;
 
+				// TF face our target at all times
+				this.parentEntity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
+
 				if (this.attackTimer == 10) {
 					world.playEvent((EntityPlayer) null, 1015, new BlockPos(this.parentEntity), 0);
 				}
 
 				if (this.attackTimer == 20) {
 					if (this.parentEntity.shouldAttack(entitylivingbase)) {
-						// TF - face target and call custom method
-						this.parentEntity.faceEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
+						// TF - call custom method
 						this.parentEntity.spitFireball();
 						this.prevAttackTimer = attackTimer;
 					}
