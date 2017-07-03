@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.entity.ai.EntityAITFGhastFindEntityNearestPlayer;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
 import java.util.Random;
@@ -54,7 +55,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 		if (!(this instanceof EntityTFUrGhast)) this.tasks.addTask(5, new AIRandomFly(this));
 		this.tasks.addTask(7, new EntityGhast.AILookAround(this));
 		this.tasks.addTask(7, attackAI = new AIAttack(this));
-		this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
+		this.targetTasks.addTask(1, new EntityAITFGhastFindEntityNearestPlayer(this));
 	}
 
 	// [VanillaCopy] from EntityGhast but we use wanderFactor instead, we also stop moving when we have a target
