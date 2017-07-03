@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -290,12 +291,13 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		// start raining
 		int rainTime = 300 * 20;
 
-		WorldInfo worldInfo = world.getWorldInfo();
+		WorldInfo worldInfo = world.getMinecraftServer().worlds[0].getWorldInfo(); // grab the overworld to set weather properly
 
-		worldInfo.setRaining(true);
-		worldInfo.setThundering(true);
+		worldInfo.setCleanWeatherTime(0);
 		worldInfo.setRainTime(rainTime);
 		worldInfo.setThunderTime(rainTime);
+		worldInfo.setRaining(true);
+		worldInfo.setThundering(true);
 
 		spawnGhastsAtTraps();
 	}
