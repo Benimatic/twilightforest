@@ -331,7 +331,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		int rangeY = 8;
 
 		// lightning strike
-		this.world.addWeatherEffect(new EntityLightningBolt(world, x, y + 4, z, false));
+		this.world.addWeatherEffect(new EntityLightningBolt(world, x, y + 4, z, true));
 
 
 		for (int i = 0; i < tries; i++) {

@@ -11,6 +11,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 
 @SideOnly(Side.CLIENT)
 public class ParticleGhastTear extends Particle {
@@ -22,6 +23,7 @@ public class ParticleGhastTear extends Particle {
 		this.particleScale = 16.0F;
 
 		this.particleMaxAge = 20 + rand.nextInt(40);
+		this.canCollide = true;
 	}
 
 	public ParticleGhastTear(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Item par14Item) {
@@ -32,6 +34,9 @@ public class ParticleGhastTear extends Particle {
 		this.motionX += par8;
 		this.motionY += par10;
 		this.motionZ += par12;
+
+		//TwilightForestMod.LOGGER.info("creating tear particle {}, isremote {}", this, world.isRemote);
+
 	}
 
 	@Override
@@ -41,26 +46,23 @@ public class ParticleGhastTear extends Particle {
 
 	@Override
 	public void onUpdate() {
-		super.onUpdate();
-
 		if (this.onGround && rand.nextBoolean()) {
-			//world.playSoundEffect(this.posX, this.posY + 1D, this.posZ, "random.fizz", 2.0F, 2.0F);
-			//world.spawnParticle("lava", this.posX, this.posY, this.posZ, 0, 0, 0);
-			//world.playAuxSFXAtEntity(null, 2001, (int)this.posX, (int)this.posY + 1, (int)this.posZ, 0);
-			//this.world.playAuxSFXAtEntity((EntityPlayer)null, 2002, (int)this.posX, (int)this.posY, (int)this.posZ, 4037);
-
 			world.playSound(null, this.posX, this.posY + 1D, this.posZ, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 0.5F, 1.0F);
 
-			for (int var1 = 0; var1 < 50; ++var1) {
+			for (int var1 = 0; var1 < 20; ++var1) {
 				double gaussX = rand.nextGaussian() * 0.1D;
 				double gaussY = rand.nextGaussian() * 0.2D;
 				double gaussZ = rand.nextGaussian() * 0.1D;
 				Item popItem = Items.GHAST_TEAR;
 
+				//TwilightForestMod.LOGGER.info("tear impact {}, isremote {}", this, world.isRemote);
 
 				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
+				world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
+
 			}
 			this.setExpired();
 		}
+		super.onUpdate();
 	}
 }

@@ -88,7 +88,8 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		this.wanderFactor = 0.005F;
 		this.isMinion = true;
 
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isMinion ? 6 : 10);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6);
+		this.setHealth(6);
 	}
 
 	@Override
