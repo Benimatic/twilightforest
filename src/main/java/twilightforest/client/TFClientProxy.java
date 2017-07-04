@@ -245,6 +245,9 @@ public class TFClientProxy extends TFCommonProxy {
 		Minecraft mc = Minecraft.getMinecraft();
 		Entity entity = mc.getRenderViewEntity();
 
+		// ignore the passed-in world, since on SP we get the integrated server world, which is not really what we want
+		world = this.getClientWorld();
+
 		if (entity != null && mc.effectRenderer != null) {
 			int i = mc.gameSettings.particleSetting;
 
