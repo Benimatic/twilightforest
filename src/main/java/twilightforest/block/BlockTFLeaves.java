@@ -24,6 +24,7 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
@@ -116,7 +117,7 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 
 	@Override
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
-		return ImmutableList.of(); // todo 1.9
+		return NonNullList.withSize(1, new ItemStack(this, 1, world.getBlockState(pos).getValue(VARIANT).ordinal()));
 	}
 
 	@SideOnly(Side.CLIENT)
