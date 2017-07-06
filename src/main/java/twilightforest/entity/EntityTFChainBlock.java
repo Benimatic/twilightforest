@@ -17,6 +17,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import twilightforest.TwilightForestMod;
 import twilightforest.util.WorldUtil;
 
 
@@ -219,7 +220,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 			if (getThrower() == null) {
 				setDead();
 			} else {
-				float distToPlayer = this.getDistanceToEntity(this.getThrower());
+				double distToPlayer = this.getDistance(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
 				// return if far enough away
 				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
 					this.isReturning = true;
@@ -227,7 +228,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 				if (this.isReturning) {
 					// despawn if close enough
-					if (distToPlayer < 1F) {
+					if (distToPlayer < 2F) {
 						this.setDead();
 					}
 
