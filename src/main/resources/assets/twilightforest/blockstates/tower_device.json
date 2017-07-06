@@ -31,14 +31,14 @@
           "all3": "twilightforest:blocks/tower_device_level_2/towerdev_vanish_on_2"
         }
       },
-      "vanish_locked": {
+      "vanish_unlocked": {
         "textures": {
           "all": "twilightforest:blocks/towerdev_lock_off",
           "all2": "twilightforest:blocks/tower_device_level_1/towerdev_lock_off_1",
           "all3": "twilightforest:blocks/tower_device_level_2/towerdev_lock_off_2"
         }
       },
-      "vanish_unlocked": {
+      "vanish_locked": {
         "textures": {
           "all": "twilightforest:blocks/towerdev_lock_on",
           "all2": "twilightforest:blocks/tower_device_level_1/towerdev_lock_on_1",
