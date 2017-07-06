@@ -203,7 +203,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 				Vec3d handVec = this.attachedTo.getLookVec().rotateYaw(-0.4F);
 
 				double sx = this.attachedTo.posX + handVec.xCoord;
-				double sy = this.attachedTo.posY + handVec.yCoord - 0.6F;
+				double sy = this.attachedTo.posY + handVec.yCoord - 0.4F + this.attachedTo.getEyeHeight();
 				double sz = this.attachedTo.posZ + handVec.zCoord;
 
 				double ox = sx - this.posX;
