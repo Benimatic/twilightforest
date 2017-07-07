@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -20,18 +21,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.PlantVariant;
+import twilightforest.block.enums.SaplingVariant;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFPlant extends BlockBush implements IShearable {
+public class BlockTFPlant extends BlockBush implements IShearable, ModelRegisterCallback
+{
 	public static final PropertyEnum<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
 
 	protected BlockTFPlant() {
@@ -291,5 +296,15 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		for (int i = 0; i < PlantVariant.values().length; i++) {
+			String variant = "inventory_" + PlantVariant.values()[i].getName();
+			ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
+		}
 	}
 }
