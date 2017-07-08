@@ -11,7 +11,6 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFGenerator;
 
 import java.util.List;
@@ -26,6 +25,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	int height;
 	int groundLevel = -1;
 
+	enum BranchSize {SMALL, MEDIUM, LARGE, ROOT};
+
 	public ComponentTFHollowTreeTrunk() {
 		super();
 	}
@@ -37,7 +38,6 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		radius = rand.nextInt(4) + 1;
 
 		this.setCoordBaseMode(EnumFacing.SOUTH);
-
 
 		boundingBox = new StructureBoundingBox(x, y, z, (x + radius * 2) + 2, y + height, (z + radius * 2) + 2);
 	}
@@ -77,7 +77,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		// 3-5 couple branches on the way up...
 		int numBranches = rand.nextInt(3) + 3;
 		for (int i = 0; i <= numBranches; i++) {
-			int branchHeight = (int) (height * rand.nextDouble() * 0.9) + (height / 10);
+			int branchHeight = (int) (height * rand.nextDouble() * 0.5) + (height / 10);
 			double branchRotation = rand.nextDouble();
 
 			makeSmallBranch(list, rand, index + i + 1, branchHeight, 4, branchRotation, 0.35D, true);
@@ -88,11 +88,11 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 
 		// roots
 		// 3-5 roots at the bottom
-		buildBranchRing(list, rand, index, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false);
+		buildBranchRing(list, rand, index, 3, 2, 6, 0.75D, 0.1,3, 5, BranchSize.ROOT, false);
 
 
 		// several more taproots
-		buildBranchRing(list, rand, index, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false);
+		buildBranchRing(list, rand, index, 1, 2, 8, 0.9D, 0.1,3, 5, BranchSize.ROOT, false);
 
 	}
 
@@ -101,53 +101,65 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 */
 	protected void buildFullCrown(List<StructureComponent> list, Random rand, int index) {
 		int crownRadius = radius * 4 + 4;
-		int bvar = radius + 2;
+		int minBranches = radius + 3;
 
 		// okay, let's do 3-5 main branches starting at the bottom of the crown
-		index += buildBranchRing(list, rand, index, height - crownRadius, 0, crownRadius, 0, 0.35D, 0, bvar, bvar + 2, 2, true);
+		index += buildBranchRing(list, rand, index, height - crownRadius, 4, crownRadius, 0.35, 0.1, minBranches, minBranches + 2, BranchSize.LARGE, true);
 
 		// then, let's do 3-5 medium branches at the crown middle
-		index += buildBranchRing(list, rand, index, height - (crownRadius / 2), 0, crownRadius, 0, 0.28D, 0, bvar, bvar + 2, 1, true);
+		index += buildBranchRing(list, rand, index, height - (crownRadius / 2), 4, (int)(crownRadius * 0.8), 0.25,0.2, minBranches, minBranches + 2, BranchSize.MEDIUM, true);
 
-		// finally, let's do 2-4 main branches at the crown top
-		index += buildBranchRing(list, rand, index, height, 0, crownRadius, 0, 0.15D, 0, 2, 4, 2, true);
-
-		// and extra finally, let's do 3-6 medium branches going straight up
-		index += buildBranchRing(list, rand, index, height, 0, (crownRadius / 2), 0, 0.05D, 0, bvar, bvar + 2, 1, true);
+		// finally, let's do some medium branches going straight up
+		index += buildBranchRing(list, rand, index, height - 2, 2, (crownRadius / 2), 0.05, 0.2, minBranches, minBranches + 2, BranchSize.MEDIUM, true);
 	}
 
 	/**
 	 * Build a ring of branches around the tree
-	 * size 0 = small, 1 = med, 2 = large, 3 = root
 	 */
-	protected int buildBranchRing(List<StructureComponent> list, Random rand, int index, int branchHeight, int heightVar, int length, int lengthVar, double tilt, double tiltVar, int minBranches, int maxBranches, int size, boolean leafy) {
+	protected int buildBranchRing(List<StructureComponent> list, Random rand, int index, int branchHeight, int heightVar, int length, double tilt, double tiltVar, int minBranches, int maxBranches, BranchSize size, boolean leafy) {
 		//let's do this!
 		int numBranches = rand.nextInt(maxBranches - minBranches + 1) + minBranches;
-		double branchRotation = 1.0 / numBranches;
+		double rotationPerBranch = 1.0 / numBranches;
 		double branchOffset = rand.nextDouble();
+		double branchTilt = tilt + rand.nextDouble() * tiltVar;
 
-		for (int i = 0; i <= numBranches; i++) {
-			int dHeight;
-			if (heightVar > 0) {
-				dHeight = branchHeight - heightVar + rand.nextInt(2 * heightVar);
-			} else {
-				dHeight = branchHeight;
-			}
+		for (int i = 0; i < numBranches; i++) {
+			int dHeight = branchHeight - heightVar + (heightVar > 0 ? rand.nextInt(2 * heightVar) : 0);
+			double branchRotation = (i * rotationPerBranch) + branchOffset;
 
-			if (size == 2) {
-				makeLargeBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
-			} else if (size == 1) {
-				makeMedBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
-			} else if (size == 3) {
-				makeRoot(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt);
-			} else {
-				makeSmallBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
+			BlockPos pos = getBranchSrc(dHeight, branchRotation);
+			StructureTFTreeComponent branch = branchFor(index, pos, length, branchRotation, branchTilt, leafy, size);
+			if (!branchIntersectsDungeon(branch, list))
+			{
+				list.add(branch);
+				branch.buildComponent(this, list, rand);
+			} else if (size == BranchSize.LARGE || size == BranchSize.MEDIUM) {
+				// try at half length?
+				branch = branchFor(index, pos, length / 2, branchRotation, branchTilt, leafy, BranchSize.MEDIUM);
+				if (!branchIntersectsDungeon(branch, list))
+				{
+					list.add(branch);
+					branch.buildComponent(this, list, rand);
+				}
 			}
 		}
 
 		return numBranches;
 	}
 
+	public StructureTFTreeComponent branchFor(int index, BlockPos pos, int branchLength, double branchRotation, double branchAngle, boolean leafy, BranchSize size) {
+		switch(size) {
+			case LARGE:
+				return new ComponentTFHollowTreeLargeBranch(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
+			case SMALL:
+			default:
+				return new ComponentTFHollowTreeSmallBranch(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
+			case MEDIUM:
+				return new ComponentTFHollowTreeMedBranch(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
+			case ROOT:
+				return new ComponentTFHollowTreeRoot(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, false);
+		}
+	}
 
 	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
@@ -157,32 +169,6 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 			list.add(branch);
 			branch.buildComponent(this, list, rand);
 		}
-	}
-
-	public void makeMedBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
-		if (!branchIntersectsDungeon(branch, list))
-		{
-			list.add(branch);
-			branch.buildComponent(this, list, rand);
-		}
-	}
-
-	public void makeLargeBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeLargeBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
-		if (!branchIntersectsDungeon(branch, list)) {
-			list.add(branch);
-			branch.buildComponent(this, list, rand);
-		}
-	}
-
-	public void makeRoot(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
-		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		ComponentTFHollowTreeRoot branch = new ComponentTFHollowTreeRoot(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, false);
-		list.add(branch);
-		branch.buildComponent(this, list, rand);
 	}
 
 	/**

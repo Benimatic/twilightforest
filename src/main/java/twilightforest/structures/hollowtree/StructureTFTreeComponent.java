@@ -23,7 +23,7 @@ public abstract class StructureTFTreeComponent extends StructureTFComponent
 	/**
 	 * Checks a potential branch bounding box to see if it intersects a leaf dungeon
 	 */
-	protected boolean branchIntersectsDungeon(ComponentTFHollowTreeMedBranch branch, List<StructureComponent> list)
+	protected boolean branchIntersectsDungeon(StructureTFTreeComponent branch, List<StructureComponent> list)
 	{
 		for (StructureComponent component : list) {
 			if (component instanceof ComponentTFHollowTreeLeafDungeon && component.getBoundingBox().intersectsWith(branch.getBoundingBox())) {

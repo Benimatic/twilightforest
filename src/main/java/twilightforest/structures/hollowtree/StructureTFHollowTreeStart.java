@@ -27,39 +27,23 @@ public class StructureTFHollowTreeStart extends StructureStart {
 		updateBoundingBox();
 	}
 
-
 	/**
 	 * Do everything except leaves before we do leaves.
 	 */
 	public void generateStructure(World worldIn, Random rand, StructureBoundingBox sbb)
 	{
-		// first non-leaves
-		Iterator<StructureComponent> iterator = this.components.iterator();
-
-		while (iterator.hasNext())
-		{
-			StructureComponent sc = (StructureComponent)iterator.next();
-			if (sc.getBoundingBox().intersectsWith(sbb))
-			{
-				if (sc instanceof StructureTFTreeComponent) {
-					((StructureTFTreeComponent)sc).addComponentParts(worldIn, rand, sbb, false);
-				}
+		// first wood
+		for (StructureComponent sc : components) {
+			if (sc.getBoundingBox().intersectsWith(sbb) && sc instanceof StructureTFTreeComponent) {
+				((StructureTFTreeComponent)sc).addComponentParts(worldIn, rand, sbb, false);
 			}
 		}
 
 		// now leaves
-		iterator = this.components.iterator();
-
-		while (iterator.hasNext())
-		{
-			StructureComponent sc = (StructureComponent)iterator.next();
-			if (sc.getBoundingBox().intersectsWith(sbb))
-			{
-				if (sc instanceof StructureTFTreeComponent) {
-					((StructureTFTreeComponent)sc).addComponentParts(worldIn, rand, sbb, true);
-				}
+		for (StructureComponent sc : components) {
+			if (sc.getBoundingBox().intersectsWith(sbb) && sc instanceof StructureTFTreeComponent) {
+				((StructureTFTreeComponent)sc).addComponentParts(worldIn, rand, sbb, true);
 			}
 		}
-
 	}
 }
