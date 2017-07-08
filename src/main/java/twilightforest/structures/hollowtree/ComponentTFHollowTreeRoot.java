@@ -30,28 +30,32 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
+		if (!drawLeaves)
+		{
+			// offset bounding box to average ground level
+			if (this.groundLevel < 0)
+			{
+				int rootHeight = this.boundingBox.maxY - this.boundingBox.minY;
 
-		// offset bounding box to average ground level
-		if (this.groundLevel < 0) {
-			int rootHeight = this.boundingBox.maxY - this.boundingBox.minY;
+				this.groundLevel = this.getSampledDirtLevel(world, sbb);
 
-			this.groundLevel = this.getSampledDirtLevel(world, sbb);
+				if (this.groundLevel < 0)
+				{
+					return true;
+				}
 
-			if (this.groundLevel < 0) {
-				return true;
+				src = new BlockPos(src.getX(), groundLevel + 5, src.getZ());
+
+				//System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
 			}
 
-			src = new BlockPos(src.getX(), groundLevel + 5, src.getZ());
+			BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+			BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
-			//System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
+			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.root.getDefaultState());
+			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY() - 1, rSrc.getZ(), rDest.getX(), rDest.getY() - 1, rDest.getZ(), TFBlocks.root.getDefaultState());
 		}
-
-		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
-		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
-
-		drawRootLine(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.root.getDefaultState());
-		drawRootLine(world, sbb, rSrc.getX(), rSrc.getY() - 1, rSrc.getZ(), rDest.getX(), rDest.getY() - 1, rDest.getZ(), TFBlocks.root.getDefaultState());
 
 		return true;
 	}
