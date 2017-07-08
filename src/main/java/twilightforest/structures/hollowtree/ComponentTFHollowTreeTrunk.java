@@ -20,7 +20,7 @@ import java.util.Random;
 import static twilightforest.block.TFBlockProperties.FACING;
 
 
-public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
+public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 
 	int radius;
 	int height;
@@ -71,7 +71,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 * Add on the various bits and doo-dads we need to succeed
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random rand) {
+	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random rand) {
 		int index = getComponentType();
 
 		// 3-5 couple branches on the way up...
@@ -99,7 +99,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	/**
 	 * Build the crown of the tree
 	 */
-	protected void buildFullCrown(List list, Random rand, int index) {
+	protected void buildFullCrown(List<StructureComponent> list, Random rand, int index) {
 		int crownRadius = radius * 4 + 4;
 		int bvar = radius + 2;
 
@@ -120,7 +120,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 * Build a ring of branches around the tree
 	 * size 0 = small, 1 = med, 2 = large, 3 = root
 	 */
-	protected int buildBranchRing(List list, Random rand, int index, int branchHeight, int heightVar, int length, int lengthVar, double tilt, double tiltVar, int minBranches, int maxBranches, int size, boolean leafy) {
+	protected int buildBranchRing(List<StructureComponent> list, Random rand, int index, int branchHeight, int heightVar, int length, int lengthVar, double tilt, double tiltVar, int minBranches, int maxBranches, int size, boolean leafy) {
 		//let's do this!
 		int numBranches = rand.nextInt(maxBranches - minBranches + 1) + minBranches;
 		double branchRotation = 1.0 / numBranches;
@@ -149,29 +149,36 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	}
 
 
-	public void makeSmallBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
 		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
-		list.add(branch);
-		branch.buildComponent(this, list, rand);
+		if (!branchIntersectsDungeon(branch, list))
+		{
+			list.add(branch);
+			branch.buildComponent(this, list, rand);
+		}
 	}
 
-	public void makeMedBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeMedBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
 		ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
-		list.add(branch);
-		branch.buildComponent(this, list, rand);
+		if (!branchIntersectsDungeon(branch, list))
+		{
+			list.add(branch);
+			branch.buildComponent(this, list, rand);
+		}
 	}
 
-	public void makeLargeBranch(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeLargeBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
 		ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeLargeBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
-		list.add(branch);
-		branch.buildComponent(this, list, rand);
+		if (!branchIntersectsDungeon(branch, list)) {
+			list.add(branch);
+			branch.buildComponent(this, list, rand);
+		}
 	}
 
-
-	public void makeRoot(List list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
+	public void makeRoot(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
 		ComponentTFHollowTreeRoot branch = new ComponentTFHollowTreeRoot(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, false);
 		list.add(branch);
@@ -185,11 +192,18 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 		return TFGenerator.translate(new BlockPos(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1), radius, branchRotation, 0.5);
 	}
 
+
+	@Override
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
+	{
+		return this.addComponentParts(world, random, sbb, false);
+	}
+
 	/**
 	 * Generate the tree trunk
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
 
 		// offset bounding box to average ground level
 		if (this.groundLevel < 0) {
@@ -269,10 +283,12 @@ public class ComponentTFHollowTreeTrunk extends StructureTFComponent {
 	 * Add an insect if we can at the position specified
 	 */
 	private void addInsect(World world, IBlockState blockState, int posX, int posY, int posZ, StructureBoundingBox sbb) {
-		final BlockPos posWithOffset = getBlockPosWithOffset(posX, posY, posZ);
+		final BlockPos pos = getBlockPosWithOffset(posX, posY, posZ);
+		IBlockState whatsThere = world.getBlockState(pos);
 
-		if (sbb.isVecInside(posWithOffset) && blockState != null && blockState.getBlock().canPlaceBlockAt(world, posWithOffset)) {
-			world.setBlockState(posWithOffset, blockState, 2);
+		// don't overwrite wood or leaves
+		if (sbb.isVecInside(pos) && whatsThere == AIR && blockState.getBlock().canPlaceBlockAt(world, pos)) {
+			world.setBlockState(pos, blockState, 2);
 		}
 	}
 

@@ -9,7 +9,6 @@ public class TFHollowTreePieces {
 		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeMedBranch.class, "TFHTMB");
 		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeSmallBranch.class, "TFHTSB");
 		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeTrunk.class, "TFHTTr");
-		MapGenStructureIO.registerStructureComponent(ComponentTFLeafSphere.class, "TFHTLS");
 		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeRoot.class, "TFHTRo");
 		MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHTLSt");
 		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeLeafDungeon.class, "TFHTLD");
