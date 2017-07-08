@@ -4,11 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import twilightforest.block.BlockTFHedge;
 import twilightforest.block.BlockTFLog;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.HedgeVariant;
 import twilightforest.block.enums.WoodVariant;
@@ -64,6 +66,25 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 			return TFGenerator.isNearSolid(world, pos);
 		} else {
 			return blockID != Blocks.BEDROCK && blockID != Blocks.OBSIDIAN && blockID != TFBlocks.shield;
+		}
+	}
+
+	/**
+	 * Add a firefly at the specified height and angle.
+	 *
+	 * @param height how far up the tree
+	 * @param angle  from 0 - 1 rotation around the tree
+	 */
+	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
+		int iAngle = (int) (angle * 4.0);
+		if (iAngle == 0) {
+			setBlockAndNotifyAdequately(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.EAST));
+		} else if (iAngle == 1) {
+			setBlockAndNotifyAdequately(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.WEST));
+		} else if (iAngle == 2) {
+			setBlockAndNotifyAdequately(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.SOUTH));
+		} else if (iAngle == 3) {
+			setBlockAndNotifyAdequately(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.NORTH));
 		}
 	}
 }
