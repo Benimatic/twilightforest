@@ -14,6 +14,7 @@ import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
 
 import java.util.Random;
+import java.util.Vector;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest
@@ -25,6 +26,8 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 	protected int minHeight = 20;
 	protected int chanceAddFirstFive = 3;
 	protected int chanceAddSecondFive = 8;
+
+	private Vector<BlockPos> leaves = new Vector<BlockPos>(5);
 
 	public TFGenCanopyTree() {
 		this(false);
@@ -59,6 +62,8 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 			}
 		}
 
+		leaves.clear();
+
 		//okay build a tree!  Go up to the height
 		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);
 
@@ -67,6 +72,11 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		float offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++) {
 			buildBranch(world, pos, treeHeight - 10 + b, 9, 0.3 * b + offset, 0.2, false, random);
+		}
+
+		// add the actual leaves
+		for (BlockPos leafPos : leaves) {
+			addLeafBlob(world, leafPos);
 		}
 
 		// root bulb
@@ -85,6 +95,13 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 
 		return true;
+	}
+
+	private void addLeafBlob(World world, BlockPos leafPos)
+	{
+		TFGenerator.makeLeafCircle(this, world, leafPos.down(), 3, leafState, true);
+		TFGenerator.makeLeafCircle(this, world, leafPos, 4, leafState, true);
+		TFGenerator.makeLeafCircle(this, world, leafPos.up(), 2, leafState, true);
 	}
 
 	/**
@@ -110,9 +127,8 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 			setBlockAndNotifyAdequately(world, dest.south(), branchState);
 			setBlockAndNotifyAdequately(world, dest.north(), branchState);
 
-			TFGenerator.makeLeafCircle(this, world, dest.down(), 3, leafState, true);
-			TFGenerator.makeLeafCircle(this, world, dest, 4, leafState, true);
-			TFGenerator.makeLeafCircle(this, world, dest.up(), 2, leafState, true);
+			// save leaf position for later
+			this.leaves.add(dest);
 		}
 	}
 }

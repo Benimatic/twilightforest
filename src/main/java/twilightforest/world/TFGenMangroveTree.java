@@ -14,10 +14,13 @@ import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
 
 import java.util.Random;
+import java.util.Vector;
 
 public class TFGenMangroveTree extends TFTreeGenerator {
 
 	private boolean checkForWater;
+	private Vector<LeafBlob> leaves = new Vector<LeafBlob>(4);
+
 
 	public TFGenMangroveTree() {
 		this(false);
@@ -41,6 +44,8 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 			return false;
 		}
 
+		this.leaves.clear();
+
 		//okay build a trunk!  Start 5 squares off the ground and go up maybe 6-9 squares
 		buildBranch(world, random, pos, 5, 6 + random.nextInt(3), 0, 0, true);
 
@@ -49,6 +54,11 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		double offset = random.nextDouble();
 		for (int b = 0; b < numBranches; b++) {
 			buildBranch(world, random, pos, 7 + b, 6 + random.nextInt(2), 0.3 * b + offset, 0.25, false);
+		}
+
+		// add the actual leaves
+		for (LeafBlob blob : leaves) {
+			addLeafBlob(world, blob.pos, blob.size);
 		}
 
 		// make 3-5 roots
@@ -64,6 +74,13 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 
 
 		return true;
+	}
+
+	private void addLeafBlob(World world, BlockPos pos, int size)
+	{
+		TFGenerator.makeLeafCircle(this, world, pos.down(), size - 1, leafState, false);
+		TFGenerator.makeLeafCircle(this, world, pos, size, leafState, false);
+		TFGenerator.makeLeafCircle(this, world, pos.up(), size - 2, leafState, false);
 	}
 
 	/**
@@ -88,10 +105,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 				setBlockAndNotifyAdequately(world, dest.south(), branchState);
 				setBlockAndNotifyAdequately(world, dest.north(), branchState);
 			}
-			// leaves!
-			TFGenerator.makeLeafCircle(this, world, dest.down(), bSize - 1, leafState, false);
-			TFGenerator.makeLeafCircle(this, world, dest, bSize, leafState, false);
-			TFGenerator.makeLeafCircle(this, world, dest.up(), bSize - 2, leafState, false);
+			leaves.add(new LeafBlob(dest, bSize));
 		}
 	}
 
@@ -116,6 +130,16 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 					stillAboveGround = false;
 				}
 			}
+		}
+	}
+
+	private class LeafBlob {
+		BlockPos pos;
+		int size;
+
+		public LeafBlob(BlockPos pos, int size) {
+			this.pos = pos;
+			this.size = size;
 		}
 	}
 }
