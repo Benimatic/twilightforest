@@ -1,26 +1,24 @@
 package twilightforest.world;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
-import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
 
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 public class TFGenMangroveTree extends TFTreeGenerator {
 
 	private boolean checkForWater;
-	private Vector<LeafBlob> leaves = new Vector<LeafBlob>(4);
-
+	private List<LeafBlob> leaves = Lists.newArrayList();
 
 	public TFGenMangroveTree() {
 		this(false);
@@ -58,7 +56,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 
 		// add the actual leaves
 		for (LeafBlob blob : leaves) {
-			addLeafBlob(world, blob.pos, blob.size);
+			makeLeafBlob(world, blob.pos, blob.size);
 		}
 
 		// make 3-5 roots
@@ -76,7 +74,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		return true;
 	}
 
-	private void addLeafBlob(World world, BlockPos pos, int size)
+	private void makeLeafBlob(World world, BlockPos pos, int size)
 	{
 		TFGenerator.makeLeafCircle(this, world, pos.down(), size - 1, leafState, false);
 		TFGenerator.makeLeafCircle(this, world, pos, size, leafState, false);

@@ -1,5 +1,6 @@
 package twilightforest.world;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -8,12 +9,13 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
 public class TFGenCanopyOak extends TFGenCanopyTree {
 
-	private Vector<BlockPos> leaves = new Vector<BlockPos>(22);
+	private List<BlockPos> leaves = Lists.newArrayList();
 
 	public TFGenCanopyOak() {
 		this(false);
@@ -69,7 +71,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 		// add the actual leaves
 		for (BlockPos leafPos : leaves) {
-			addLeafBlob(world, leafPos);
+			makeLeafBlob(world, leafPos);
 		}
 
 		makeRoots(world, random, pos);
@@ -80,7 +82,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		return true;
 	}
 
-	private void addLeafBlob(World world, BlockPos leafPos)
+	private void makeLeafBlob(World world, BlockPos leafPos)
 	{
 		TFGenerator.drawLeafBlob(this, world, leafPos, 2, leafState);
 	}

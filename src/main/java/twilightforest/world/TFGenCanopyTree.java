@@ -1,20 +1,19 @@
 package twilightforest.world;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
-import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
 
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest
@@ -27,7 +26,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 	protected int chanceAddFirstFive = 3;
 	protected int chanceAddSecondFive = 8;
 
-	private Vector<BlockPos> leaves = new Vector<BlockPos>(5);
+	private List<BlockPos> leaves = Lists.newArrayList();
 
 	public TFGenCanopyTree() {
 		this(false);
@@ -76,7 +75,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 		// add the actual leaves
 		for (BlockPos leafPos : leaves) {
-			addLeafBlob(world, leafPos);
+			makeLeafBlob(world, leafPos);
 		}
 
 		// root bulb
@@ -97,7 +96,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		return true;
 	}
 
-	private void addLeafBlob(World world, BlockPos leafPos)
+	private void makeLeafBlob(World world, BlockPos leafPos)
 	{
 		TFGenerator.makeLeafCircle(this, world, leafPos.down(), 3, leafState, true);
 		TFGenerator.makeLeafCircle(this, world, leafPos, 4, leafState, true);
