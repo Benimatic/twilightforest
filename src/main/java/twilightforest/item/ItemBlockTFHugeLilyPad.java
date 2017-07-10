@@ -47,9 +47,7 @@ public class ItemBlockTFHugeLilyPad extends ItemColored {
 		} else {
 			if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
 				BlockPos blockpos = raytraceresult.getBlockPos();
-
-				// TF - snap to bigger grid
-				blockpos = new BlockPos((blockpos.getX() >> 1) << 1, blockpos.getY(), (blockpos.getZ() >> 1) << 1);
+				BlockPos blockpos1 = blockpos.up();
 
 				// TF - check the other 3 spots we touch as well
 				if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack)
@@ -59,19 +57,25 @@ public class ItemBlockTFHugeLilyPad extends ItemColored {
 					return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 				}
 
-				BlockPos blockpos1 = blockpos.up();
-				IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-				if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1)) {
+				// TF check 4 blocks here
+				IBlockState iblockstate = worldIn.getBlockState(blockpos);
+				IBlockState iblockstatee = worldIn.getBlockState(blockpos.east());
+				IBlockState iblockstatese = worldIn.getBlockState(blockpos.east().south());
+				IBlockState iblockstates = worldIn.getBlockState(blockpos.south());
+				if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0
+						&& iblockstatee.getMaterial() == Material.WATER && iblockstatee.getValue(BlockLiquid.LEVEL) == 0
+						&& iblockstatee.getMaterial() == Material.WATER && iblockstatee.getValue(BlockLiquid.LEVEL) == 0
+						&& iblockstatese.getMaterial() == Material.WATER && iblockstatee.getValue(BlockLiquid.LEVEL) == 0
+						&& iblockstates.getMaterial() == Material.WATER && iblockstatee.getValue(BlockLiquid.LEVEL) == 0
+						&& worldIn.isAirBlock(blockpos1) && worldIn.isAirBlock(blockpos1.east()) && worldIn.isAirBlock(blockpos1.east().south()) && worldIn.isAirBlock(blockpos1.south())) {
 					// TF - set 4 of them
-					// this seems like a difficult way to generate 2 pseudorandom bits
-					rand.setSeed((blockpos1.getX() * rand.nextLong()) ^ (blockpos1.getZ() * rand.nextLong()) ^ 8890919293L);
-					EnumFacing direction = EnumFacing.HORIZONTALS[rand.nextInt(4)];
+					EnumFacing direction = playerIn.getHorizontalFacing();
 
 					final IBlockState lilypad = TFBlocks.hugeLilyPad.getDefaultState().withProperty(FACING, direction);
-					worldIn.setBlockState(blockpos1, lilypad.withProperty(PIECE, NW), 11);
-					worldIn.setBlockState(blockpos1.east(), lilypad.withProperty(PIECE, NE), 11);
-					worldIn.setBlockState(blockpos1.east().south(), lilypad.withProperty(PIECE, SE), 11);
+					worldIn.setBlockState(blockpos1, lilypad.withProperty(PIECE, NW), 10);
+					worldIn.setBlockState(blockpos1.east(), lilypad.withProperty(PIECE, NE), 10);
+					worldIn.setBlockState(blockpos1.east().south(), lilypad.withProperty(PIECE, SE), 10);
 					worldIn.setBlockState(blockpos1.south(), lilypad.withProperty(PIECE, SW), 11);
 
 					if (!playerIn.capabilities.isCreativeMode) {

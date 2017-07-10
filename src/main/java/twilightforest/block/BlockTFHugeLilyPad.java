@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockLiquid;
@@ -21,6 +22,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.HugeLilypadPiece;
 import twilightforest.item.TFItems;
 
@@ -71,28 +73,21 @@ public class BlockTFHugeLilyPad extends BlockBush {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		if (!this.isSelfDestructing && !canBlockStay(world, pos, state)) {
-			this.setGiantBlockToAir(world, pos);
+		//TwilightForestMod.LOGGER.info("Destroying giant lilypad at {}, state {}", pos, state);
+
+		if (!this.isSelfDestructing) {
+			this.setGiantBlockToAir(world, pos, state);
 		}
 	}
 
-	private void setGiantBlockToAir(World world, BlockPos pos) {
-		// this flag is maybe not totally perfect
+	private void setGiantBlockToAir(World world, BlockPos pos, IBlockState state) {
+		// this flag is not threadsafe
 		this.isSelfDestructing = true;
 
-		int bx = pos.getX() & ~0b1;
-		int bz = pos.getZ() & ~0b1;
-
-		// this is the best loop over 3 items that I've ever programmed!
-		for (int dx = 0; dx < 2; dx++) {
-			for (int dz = 0; dz < 2; dz++) {
-				if (!(pos.getX() == bx + dx && pos.getZ() == bz + dz)) {
-					BlockPos dPos = new BlockPos(bx + dx, pos.getY(), bz + dz);
-					IBlockState state = world.getBlockState(dPos);
-					if (state.getBlock() == this) {
-						world.destroyBlock(dPos, false);
-					}
-				}
+		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
+			IBlockState stateThere = world.getBlockState(check);
+			if (stateThere.getBlock() == this) {
+				world.destroyBlock(check, false);
 			}
 		}
 
@@ -101,23 +96,50 @@ public class BlockTFHugeLilyPad extends BlockBush {
 
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-		int bx = pos.getX() & ~0b1;
-		int bz = pos.getZ() & ~0b1;
+		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
+			IBlockState dStateBelow = world.getBlockState(check.down());
 
-		for (int dx = 0; dx < 2; dx++) {
-			for (int dz = 0; dz < 2; dz++) {
-				BlockPos dPos = new BlockPos(bx + dx, pos.getY() - 1, bz + dz);
-				//IBlockState dState = world.getBlockState(dPos);
-				IBlockState dStateBelow = world.getBlockState(dPos);
+			if (!(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
+					|| dStateBelow.getValue(BlockLiquid.LEVEL) != 0) {
+				return false;
+			}
 
-				if (!(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
-						|| dStateBelow.getValue(BlockLiquid.LEVEL) != 0) {
-					return false;
-				}
+			if (world.getBlockState(check).getBlock() != this) {
+				//TwilightForestMod.LOGGER.info("giant lilypad cannot stay because we can't find all 4 pieces");
+				return false;
 			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get all 4 coordinates for all parts of this lily pad.
+	 */
+	public List<BlockPos> getAllMyBlocks(BlockPos pos, IBlockState state) {
+		List<BlockPos> pieces = Lists.newArrayListWithCapacity(4);
+		if (state.getBlock() == this) {
+			// find NW corner
+			BlockPos nwPos = pos;
+			switch (state.getValue(PIECE)) {
+				case NE:
+					nwPos = nwPos.west();
+					break;
+				case SE:
+					nwPos = nwPos.north().west();
+					break;
+				case SW:
+					nwPos = nwPos.north();
+					break;
+			}
+
+			pieces.add(nwPos);
+			pieces.add(nwPos.south());
+			pieces.add(nwPos.east());
+			pieces.add(nwPos.south().east());
+		}
+
+		return pieces;
 	}
 
 	// [VanillaCopy] of super without dropping
