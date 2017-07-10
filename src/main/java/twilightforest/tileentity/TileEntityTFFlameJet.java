@@ -26,6 +26,8 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 		this.nextVariant = variant;
 	}
 
+	public TileEntityTFFlameJet() {}
+
 	@Override
 	public void update() {
 		if (++counter > 60) {
