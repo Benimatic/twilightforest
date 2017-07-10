@@ -9,6 +9,7 @@ import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.world.TFWorld;
 
 import java.util.List;
 import java.util.Random;
@@ -47,12 +48,13 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
 				return true;
 			}
 
-			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 15 - 1, 0);
+			this.boundingBox.maxY = this.averageGroundLevel;
+			this.boundingBox.minY = TFWorld.SEALEVEL - 10;
 		}
 
 
-		this.fillWithBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
-		this.fillWithAir(world, sbb, 1, 0 - 10, 1, 4, 0 + 30, 4);
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSize(), 5, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
+		this.fillWithAir(world, sbb, 1, 0, 1, 4, this.boundingBox.getYSize(), 4);
 
 		//System.out.println("Drawing entrance");
 
