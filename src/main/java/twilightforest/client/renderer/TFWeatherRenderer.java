@@ -251,7 +251,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
 					// TF - check for our own biomes
-					if (biome instanceof TFBiomeBase) {
+					if (biome instanceof TFBiomeBase && entity instanceof EntityPlayer && !((TFBiomeBase)biome).doesPlayerHaveRequiredAchievement((EntityPlayer)entity)) {
 						int j2 = 0; // TF - extend through full height
 						int k2 = j - i1;
 						int l2 = j + i1;
