@@ -322,7 +322,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		/**
-		 * Charge the player.  Although the count is 4, we actually charge only 3 times.
+		 * Charge the player.  Although the count is 3, we actually charge only 2 times.
 		 */
 		private void doCharge() {
 			movementState = MovementState.CHARGE;
@@ -453,6 +453,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			MovementState currentState = ((EntityTFNaga) entity).movementAI.movementState;
 			if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
 				this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * 0.6F;
+			} else {
+				this.entity.moveStrafing *= 0.8F;
 			}
 
 			super.onUpdateMoveHelper();
