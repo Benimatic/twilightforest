@@ -332,6 +332,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		private void doIntimidate() {
 			movementState = MovementState.INTIMIDATE;
+			taskOwner.playSound(TFSounds.NAGA_RATTLE, taskOwner.getSoundVolume() * 4F, taskOwner.getSoundPitch());
+
 			stateCounter += 15 + taskOwner.rand.nextInt(10);
 			taskOwner.goSlow();
 		}
@@ -463,7 +465,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return rand.nextInt(3) != 0 ? TFSounds.NAGA_HISS : TFSounds.NAGA_RATTLE;
+		return TFSounds.NAGA_HISS;
 	}
 
 	@Override
