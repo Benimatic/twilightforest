@@ -115,6 +115,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		});
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
+
+		this.moveHelper = new NagaMoveHelper(this);
 	}
 
 	// Similar to EntityAIAttackMelee but simpler (no pathfinding)
@@ -442,43 +444,14 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		@Override
 		public void onUpdateMoveHelper() {
-			if (action == Action.MOVE_TO) {
-				// [VanillaCopy]? Like superclass. TODO recheck
-				this.action = EntityMoveHelper.Action.WAIT;
-				double d0 = this.posX - this.entity.posX;
-				double d1 = this.posZ - this.entity.posZ;
-				double d2 = this.posY - this.entity.posY;
-				double d3 = d0 * d0 + d2 * d2 + d1 * d1;
-
-				if (d3 < 2.500000277905201E-7D) {
-					this.entity.setMoveForward(0.0F);
-					return;
-				}
-
-				float f9 = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
-				this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f9, 30.0F); // TF - 90 -> 30
-				this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
-
-				// TF - old lines. todo are either still needed?
-				entity.setMoveForward(((EntityTFNaga) entity).getMoveSpeed());
-				entity.setAIMoveSpeed(0.5f);
-
-				// TF - slither!
-				if (d3 > 4 && ((EntityTFNaga) entity).movementAI.movementState != MovementState.CHARGE) {
-					this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * ((EntityTFNaga) this.entity).getMoveSpeed() * 0.6F;
-				}
-
-				if (d2 > (double) this.entity.stepHeight && d0 * d0 + d1 * d1 < (double) Math.max(1.0F, this.entity.width)) {
-					this.entity.getJumpHelper().setJumping();
-				}
-			} else {
-				super.onUpdateMoveHelper();
+			// TF - slither!
+			MovementState currentState = ((EntityTFNaga) entity).movementAI.movementState;
+			if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
+				this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * 0.6F;
 			}
-		}
-	}
 
-	private float getMoveSpeed() {
-		return 0.5F;
+			super.onUpdateMoveHelper();
+		}
 	}
 
 	@Override
@@ -608,7 +581,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	public boolean attackEntityAsMob(Entity toAttack) {
 		boolean result = super.attackEntityAsMob(toAttack);
 
-		if (result && getMoveSpeed() > 0.8) {
+		if (result) {
 			// charging, apply extra pushback
 			toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 1.0F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 1.0F);
 		}
