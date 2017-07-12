@@ -242,6 +242,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			switch (movementState) {
 				case INTIMIDATE: {
 					taskOwner.getNavigator().clearPathEntity();
+					taskOwner.getLookHelper().setLookPositionWithEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.faceEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.moveForward = 0.1f;
 					break;
