@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,6 +62,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private int ticksSinceDamaged = 0;
 
 	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
+
+	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, 0).setSaved(false);
+	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 1.25F, 0).setSaved(false);
+
 
 	public EntityTFNaga(World world) {
 		super(world);
@@ -321,7 +326,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		 */
 		private void doCharge() {
 			movementState = MovementState.CHARGE;
-			stateCounter = 4;
+			stateCounter = 3;
 			taskOwner.goFast();
 		}
 
@@ -506,29 +511,28 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 	}
 
-	// todo 1.10: these setAIMoveSpeeds likely should be attribute changes, only move helper should care about AIMoveSpeed
-
 	/**
 	 * Sets the naga to move slowly, such as when he is intimidating the player
 	 */
 	private void goSlow() {
-//		moveForward = 0f;
-		moveStrafing = 0;
-		this.setAIMoveSpeed(0.1f);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(slowSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
 	}
 
 	/**
 	 * Normal speed, like when he is circling
 	 */
 	private void goNormal() {
-		this.setAIMoveSpeed(0.6F);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
 	}
 
 	/**
 	 * Fast, like when he is charging
 	 */
 	private void goFast() {
-		this.setAIMoveSpeed(1.0F);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(fastSpeed);
 	}
 
 	@Override
