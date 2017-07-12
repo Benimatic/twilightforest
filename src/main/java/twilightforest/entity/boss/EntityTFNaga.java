@@ -583,7 +583,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		if (result) {
 			// charging, apply extra pushback
-			toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 1.0F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 1.0F);
+			toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 2.0F, 0.4F, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 2.0F);
+			this.applyEnchantments(this, toAttack);
 		}
 
 		return result;
