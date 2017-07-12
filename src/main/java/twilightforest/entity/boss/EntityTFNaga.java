@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.monster.EntityMob;
@@ -43,6 +44,7 @@ import twilightforest.block.enums.BossVariant;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -111,11 +113,16 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		this.tasks.addTask(2, new AIAttack(this));
 		this.tasks.addTask(3, new AISmash(this));
 		this.tasks.addTask(4, movementAI = new AIMovementPattern(this));
-		this.tasks.addTask(8, new EntityAIWander(this, 1) {
+		this.tasks.addTask(8, new EntityAIWander(this, 1, 1) {
 			@Override
 			public void startExecuting() {
 				EntityTFNaga.this.goNormal();
 				super.startExecuting();
+			}
+			@Override
+			protected Vec3d getPosition()
+			{
+				return RandomPositionGenerator.findRandomTarget(this.entity, 30, 7);
 			}
 		});
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
