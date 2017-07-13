@@ -115,10 +115,10 @@ public class EntityTFNagaSegment extends Entity {
 
 	}
 
+	// make public
 	@Override
-	public void setRotation(float par1, float par2) {
-		this.rotationYaw = MathHelper.wrapDegrees(par1 % 360.0F);
-		this.rotationPitch = par2 % 360.0F;
+	public void setRotation(float yaw, float pitch) {
+		super.setRotation(yaw, pitch);
 	}
 
 	@Override

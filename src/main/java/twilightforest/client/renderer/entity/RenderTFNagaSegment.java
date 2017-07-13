@@ -24,7 +24,17 @@ public class RenderTFNagaSegment extends Render<EntityTFNagaSegment> {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x, (float) y, (float) z);
 		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-		GlStateManager.rotate(entityYaw, 0.0F, 1.0F, 0.0F);
+
+		// I forget what this glitch is called, but let's fix it
+		float yawDiff = entity.rotationYaw - entity.prevRotationYaw;
+		if (yawDiff > 180) {
+			yawDiff -= 360;
+		} else if (yawDiff < -180) {
+			yawDiff += 360;
+		}
+		float yaw = entity.prevRotationYaw + yawDiff * partialTicks;
+
+		GlStateManager.rotate(yaw, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(entity.rotationPitch, 1.0F, 0.0F, 0.0F);
 		this.bindTexture(textureLoc);
 		this.model.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
