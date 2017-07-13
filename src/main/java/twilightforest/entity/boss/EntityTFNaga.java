@@ -527,8 +527,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	 * Sets the naga to move slowly, such as when he is intimidating the player
 	 */
 	private void goSlow() {
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(slowSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(slowSpeed);
 	}
 
 	/**
@@ -544,6 +545,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	 */
 	private void goFast() {
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(fastSpeed);
 	}
 
@@ -690,6 +692,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			double distance = (double) MathHelper.sqrt(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
 
 			if (i == 0) {
+				// tilt segment next to head up towards head
 				diff = diff.addVector(0, -0.15, 0);
 			}
 

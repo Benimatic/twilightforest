@@ -19,35 +19,16 @@ public class RenderTFNagaSegment extends Render<EntityTFNagaSegment> {
 		this.model = model;
 	}
 
-	/**
-	 * The render method used in RenderBoat that renders the boat model.
-	 */
-	public void renderMe(Entity par1Entity, double par2, double par4, double par6, float par8, float time) {
-		GlStateManager.pushMatrix();
-		GlStateManager.translate((float) par2, (float) par4, (float) par6);
-		GlStateManager.rotate(180 - MathHelper.wrapDegrees(par1Entity.rotationYaw), 0.0F, 1.0F, 0.0F);
-
-		// pitch
-		float pitch = par1Entity.rotationPitch;
-
-		GlStateManager.rotate(pitch, 1.0F, 0.0F, 0.0F);
-
-
-//        float f4 = 0.75F;
-//        GlStateManager.scale(f4, f4, f4);
-//        GlStateManager.scale(1.0F / f4, 1.0F / f4, 1.0F / f4);
-		//this.loadTexture(par1Entity.getTexture());
-		this.bindTexture(textureLoc);
-
-
-		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-		this.model.render(par1Entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		GlStateManager.popMatrix();
-	}
-
 	@Override
-	public void doRender(EntityTFNagaSegment par1Entity, double par2, double par4, double par6, float par8, float par9) {
-		this.renderMe(par1Entity, par2, par4, par6, par8, par9);
+	public void doRender(EntityTFNagaSegment entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate((float) x, (float) y, (float) z);
+		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+		GlStateManager.rotate(entityYaw, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(entity.rotationPitch, 1.0F, 0.0F, 0.0F);
+		this.bindTexture(textureLoc);
+		this.model.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		GlStateManager.popMatrix();
 	}
 
 	@Override
