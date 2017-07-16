@@ -284,7 +284,7 @@ public class TFClientProxy extends TFCommonProxy {
 						particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F);
 						break;
 					case HUGE_SMOKE:
-						particle = new ParticleSmokeScale(world, x, y, z, velX, velY, velZ, 8);
+						particle = new ParticleSmokeScale(world, x, y, z, velX, velY, velZ, 4.0F + world.rand.nextFloat());
 				}
 
 				if (particle != null) {
