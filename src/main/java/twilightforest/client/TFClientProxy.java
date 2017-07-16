@@ -18,17 +18,7 @@ import twilightforest.TFCommonProxy;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ColorHandler;
 import twilightforest.client.model.*;
-import twilightforest.client.particle.ParticleAnnihilate;
-import twilightforest.client.particle.ParticleGhastTear;
-import twilightforest.client.particle.ParticleGhastTrap;
-import twilightforest.client.particle.ParticleIceBeam;
-import twilightforest.client.particle.ParticleLargeFlame;
-import twilightforest.client.particle.ParticleLeafRune;
-import twilightforest.client.particle.ParticleProtection;
-import twilightforest.client.particle.ParticleSnow;
-import twilightforest.client.particle.ParticleSnowGuardian;
-import twilightforest.client.particle.ParticleSnowWarning;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TileEntityTFCicadaRenderer;
 import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
@@ -294,7 +284,7 @@ public class TFClientProxy extends TFCommonProxy {
 						particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F);
 						break;
 					case HUGE_SMOKE:
-						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x, y, z, velX, velY, velZ, 8);
+						particle = new ParticleSmokeScale(world, x, y, z, velX, velY, velZ, 8);
 				}
 
 				if (particle != null) {
