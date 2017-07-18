@@ -5,7 +5,8 @@
     "variant": {
       "normal": { "textures": { "all": "twilightforest:blocks/knightbrick" } },
       "mossy": { "textures": { "all": "twilightforest:blocks/knightbrick_mossy" } },
-      "cracked": { "textures": { "all": "twilightforest:blocks/knightbrick_cracked" } }
+      "cracked": { "textures": { "all": "twilightforest:blocks/knightbrick_cracked" } },
+      "floor": { "textures": { "all": "twilightforest:blocks/knightbrick_floor" } }
     }
   }
 }

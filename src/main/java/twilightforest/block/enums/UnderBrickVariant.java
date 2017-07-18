@@ -7,7 +7,8 @@ import java.util.Locale;
 public enum UnderBrickVariant implements IStringSerializable {
 	NORMAL,
 	MOSSY,
-	CRACKED;
+	CRACKED,
+	FLOOR;
 
 	@Override
 	public String getName() {
