@@ -15,6 +15,7 @@
     "inventory_root_strand": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/rootstrand"}}],
     "variant=mosspatch": [ {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/mosspatch",
         "textureu":"twilightforest:blocks/patch/moss_0",
         "texturen":"twilightforest:blocks/patch/moss_0_n",
         "textures":"twilightforest:blocks/patch/moss_0_s",
@@ -22,6 +23,7 @@
         "texturee":"twilightforest:blocks/patch/moss_0_e"
     } }, {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/mosspatch",
         "textureu":"twilightforest:blocks/patch/moss_1",
         "texturen":"twilightforest:blocks/patch/moss_1_n",
         "textures":"twilightforest:blocks/patch/moss_1_s",
@@ -29,6 +31,7 @@
         "texturee":"twilightforest:blocks/patch/moss_1_e"
       } }, {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/mosspatch",
         "textureu":"twilightforest:blocks/patch/moss_2",
         "texturen":"twilightforest:blocks/patch/moss_2_n",
         "textures":"twilightforest:blocks/patch/moss_2_s",
@@ -36,6 +39,7 @@
         "texturee":"twilightforest:blocks/patch/moss_2_e"
       } }, {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/mosspatch",
         "textureu":"twilightforest:blocks/patch/moss_3",
         "texturen":"twilightforest:blocks/patch/moss_3_n",
         "textures":"twilightforest:blocks/patch/moss_3_s",
@@ -46,6 +50,7 @@
     "variant=mayapple": [{ "model": "twilightforest:mayapple" }],
     "variant=cloverpatch": [ {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/cloverpatch",
         "textureu":"twilightforest:blocks/patch/clover_0",
         "texturen":"twilightforest:blocks/patch/clover_0_n",
         "textures":"twilightforest:blocks/patch/clover_0_s",
@@ -53,6 +58,7 @@
         "texturee":"twilightforest:blocks/patch/clover_0_e"
       } }, {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/cloverpatch",
         "textureu":"twilightforest:blocks/patch/clover_1",
         "texturen":"twilightforest:blocks/patch/clover_1_n",
         "textures":"twilightforest:blocks/patch/clover_1_s",
@@ -60,6 +66,7 @@
         "texturee":"twilightforest:blocks/patch/clover_1_e"
       } }, {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/cloverpatch",
         "textureu":"twilightforest:blocks/patch/clover_2",
         "texturen":"twilightforest:blocks/patch/clover_2_n",
         "textures":"twilightforest:blocks/patch/clover_2_s",
@@ -67,6 +74,7 @@
         "texturee":"twilightforest:blocks/patch/clover_2_e"
       } }, {
       "model": "twilightforest:util/flat_tex", "textures": {
+        "particle":"twilightforest:blocks/cloverpatch",
         "textureu":"twilightforest:blocks/patch/clover_3",
         "texturen":"twilightforest:blocks/patch/clover_3_n",
         "textures":"twilightforest:blocks/patch/clover_3_s",
