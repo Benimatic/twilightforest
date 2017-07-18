@@ -4,15 +4,15 @@
     "model": "cross"
   },
   "variants": {
-    "inventory_mosspatch": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/moss_0"}}],
-    "inventory_mayapple": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mayapple"}}],
-    "inventory_cloverpatch": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/clover_0"}}],
-    "inventory_fiddlehead": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/fiddlehead"}}],
-    "inventory_mushgloom": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mushgloom"}}],
+    "inventory_mosspatch":   [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/patch/moss"}}],
+    "inventory_mayapple":    [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/mayapple"}}],
+    "inventory_cloverpatch": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/patch/clover"}}],
+    "inventory_fiddlehead":  [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/fiddlehead"}}],
+    "inventory_mushgloom":   [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/mushgloom"}}],
     "inventory_forestgrass": [{ "model": "tall_grass" }],
-    "inventory_deadbush": [{ "model": "dead_bush" }],
-    "inventory_torchberry": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/torchberry"}}],
-    "inventory_root_strand": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/rootstrand"}}],
+    "inventory_deadbush":    [{ "model": "dead_bush" }],
+    "inventory_torchberry":  [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/torchberry"}}],
+    "inventory_root_strand": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/rootstrand"}}],
 
     "variant=mosspatch": [
       { "model": "twilightforest:util/flat_tex", "textures": { "textureu":"twilightforest:blocks/patch/moss_0", "textured":"twilightforest:blocks/patch/moss_0", "texturen":"twilightforest:blocks/patch/moss_0_n", "textures":"twilightforest:blocks/patch/moss_0_s", "texturew":"twilightforest:blocks/patch/moss_0_w", "texturee":"twilightforest:blocks/patch/moss_0_e" } },
