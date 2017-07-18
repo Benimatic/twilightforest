@@ -1,0 +1,10 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+      "type":"CTM_TF_WEST",
+      "layer":"CUTOUT",
+      "textures":[
+        "twilightforest:blocks/patch/clover_3_ctm"
+      ]
+  }
+} 

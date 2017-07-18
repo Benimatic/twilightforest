@@ -8,24 +8,22 @@ import net.minecraft.world.IBlockAccess;
 import team.chisel.ctm.api.texture.ITextureContext;
 import team.chisel.ctm.client.model.AbstractCTMBakedModel;
 import team.chisel.ctm.client.texture.ctx.TextureContextCTM;
+import team.chisel.ctm.client.texture.render.TextureCTM;
 import team.chisel.ctm.client.util.CTMLogic;
 
 import javax.annotation.Nonnull;
 
-public class TextureContextMCTM extends TextureContextCTM implements ITextureContext {
-	public TextureContextMCTM(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
-		super(state, world, pos);
-	}
+public class TextureContextCTMEast extends TextureContextCTM implements ITextureContext {
 
-	public TextureContextMCTM(long data) {
-		super(data);
+	public TextureContextCTMEast(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos, TextureCTM tex) {
+		super(state, world, pos, tex);
 	}
 
 	protected CTMLogic createCTM(@Nonnull IBlockState state) {
 		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 		if (model instanceof AbstractCTMBakedModel) {
-			return CTMLogicReversed.getInstance().ignoreStates(((AbstractCTMBakedModel) model).getModel().ignoreStates());
+			return CTMLogicEast.getInstance().ignoreStates(((AbstractCTMBakedModel) model).getModel().ignoreStates());
 		}
-		return CTMLogicReversed.getInstance();
+		return CTMLogicEast.getInstance();
 	}
 }

@@ -1,7 +1,7 @@
 {
   "ctm": {
     "ctm_version": 1,
-      "type":"MCTM",
+      "type":"CTM_TF_NORTH",
       "layer":"CUTOUT",
       "textures":[
         "twilightforest:blocks/patch/moss_0_ctm"

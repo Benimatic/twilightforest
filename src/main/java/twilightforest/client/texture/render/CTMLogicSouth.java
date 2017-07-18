@@ -14,13 +14,15 @@ import team.chisel.ctm.client.util.CTMLogic;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class CTMLogicReversed extends CTMLogic {
-	public static CTMLogicReversed getInstance() {
-		return new CTMLogicReversed();
+public class CTMLogicSouth extends CTMLogic {
+	public static CTMLogicSouth getInstance() {
+		return new CTMLogicSouth();
 	}
 
 	@Override
 	public boolean isConnected(IBlockAccess world, BlockPos current, BlockPos connection, EnumFacing dir, IBlockState state) {
-		return super.isConnected(world, current, current.add(current.subtract(connection)), dir, state);
+		BlockPos difference = current.subtract(connection);
+
+		return super.isConnected(world, current, current.add(new BlockPos(-difference.getX(), difference.getZ(), difference.getY())), dir, state);
 	}
 }

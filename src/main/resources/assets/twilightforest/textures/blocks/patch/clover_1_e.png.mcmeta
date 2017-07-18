@@ -1,10 +1,10 @@
 {
   "ctm": {
     "ctm_version": 1,
-      "type":"MCTM",
+      "type":"CTM_TF_EAST",
       "layer":"CUTOUT",
       "textures":[
-        "twilightforest:blocks/patch/moss_3_ctm"
+        "twilightforest:blocks/patch/clover_1_ctm"
       ]
   }
 } 
