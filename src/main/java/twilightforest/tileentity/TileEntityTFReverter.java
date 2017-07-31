@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFReverter extends TileEntity 
 {
@@ -23,6 +24,17 @@ public class TileEntityTFReverter extends TileEntity
 	
 	private Block[] blockData;
 	private byte[] metaData;
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 			
     /**
      * Determines if this TileEntity requires update calls.

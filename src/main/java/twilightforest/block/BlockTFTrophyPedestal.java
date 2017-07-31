@@ -27,6 +27,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
 public class BlockTFTrophyPedestal extends Block {
 	
@@ -360,7 +361,7 @@ public class BlockTFTrophyPedestal extends Block {
     @Override
 	public int tickRate(World world)
     {
-        return 10;
+        return 20;
     }
     
     /**

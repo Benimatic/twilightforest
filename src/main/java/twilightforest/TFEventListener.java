@@ -194,31 +194,32 @@ public class TFEventListener {
 		ItemStack itemStack = event.crafting;
 		EntityPlayer player = event.player;
 		boolean isTFdim = player.worldObj.provider.dimensionId == TwilightForestMod.dimensionID;
+		Item item = itemStack.getItem();
 		
 		// if the item is naga armor
-    	if ((itemStack.getItem() == TFItems.plateNaga || itemStack.getItem() == TFItems.legsNaga)) {
+    	if ((item == TFItems.plateNaga || item == TFItems.legsNaga)) {
     		// check if the player has made both armors
     		checkPlayerForNagaArmorer(player);
     	}
     	
     	// trigger achievements
     	if (isTFdim) {
-    	if (itemStack.getItem() == TFItems.magicMapFocus) {
+    	if (item == TFItems.magicMapFocus) {
     		player.triggerAchievement(TFAchievementPage.twilightMagicMapFocus);
     	}
-    	if (itemStack.getItem() == TFItems.emptyMagicMap) {
+    	if (item == TFItems.emptyMagicMap) {
     		player.triggerAchievement(TFAchievementPage.twilightMagicMap);
     	}
-    	if (itemStack.getItem() == TFItems.emptyMazeMap) {
+    	if (item == TFItems.emptyMazeMap) {
     		player.triggerAchievement(TFAchievementPage.twilightMazeMap);
     	}
-    	if (itemStack.getItem() == TFItems.emptyOreMap) {
+    	if (item == TFItems.emptyOreMap) {
     		player.triggerAchievement(TFAchievementPage.twilightOreMap);
     	}
     	}
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-    	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.planks) && itemStack.stackSize == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
+    	if (item == Item.getItemFromBlock(Blocks.planks) && itemStack.stackSize == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
     		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.planks, 64));
     		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.planks, 64));
     		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.planks, 64));

@@ -10,6 +10,7 @@ import net.minecraft.util.DamageSource;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFFlameJet extends TileEntity {
 	
@@ -23,6 +24,17 @@ public class TileEntityTFFlameJet extends TileEntity {
     public TileEntityTFFlameJet(int parNextMeta) {
 		this.nextMeta = parNextMeta;
 	}
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 
 	/**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count

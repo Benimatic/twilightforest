@@ -48,6 +48,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     private int chargePosZ;
 	
 	public enum Formation { HOVER, LARGE_CLOCKWISE, SMALL_CLOCKWISE, LARGE_ANTICLOCKWISE, SMALL_ANTICLOCKWISE, CHARGE_PLUSX, CHARGE_MINUSX, CHARGE_PLUSZ, CHARGE_MINUSZ, WAITING_FOR_LEADER, ATTACK_PLAYER_START,  ATTACK_PLAYER_ATTACK};
+    public static final Formation[] FVALUES = Formation.values();
 
 	public EntityTFKnightPhantom(World par1World) {
 		super(par1World);
@@ -700,7 +701,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
     private void switchToFormationByNumber(int formationNumber) {
 
-    	currentFormation = Formation.values()[formationNumber];
+    	currentFormation = FVALUES[formationNumber];
 
     	this.ticksProgress = 0;
     }

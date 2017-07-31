@@ -337,31 +337,31 @@ public class TFFeature {
     	
     	// glaciers have ice towers
     	if (biomeAt == TFBiomeBase.glacier) {
-    		if (hillRNG.nextInt(20) > 10) return iceTower;
+    		if (hillRNG.nextInt(41) > 10) return iceTower;
     		else return nothing;
     	}
     	
     	// lakes have quest islands
     	if (biomeAt == TFBiomeBase.tfLake) {
-    		if (hillRNG.nextInt(20) > 10) return questIsland;
+    		if (hillRNG.nextInt(41) > 10) return questIsland;
     		else return nothing;
     	}
     	
     	// enchanted forests have groves
     	if (biomeAt == TFBiomeBase.enchantedForest) {
-    		if (hillRNG.nextInt(20) > 10) return questGrove;
+    		if (hillRNG.nextInt(41) > 10) return questGrove;
     		else return nothing;
     	}
     	
     	// fire swamp has hydra lair
     	if (biomeAt == TFBiomeBase.fireSwamp) {
-    		if (hillRNG.nextInt(20) > 10) return hydraLair;
+    		if (hillRNG.nextInt(41) > 10) return hydraLair;
     		else return nothing;
     	}
     	
     	// temporary, clearing has maze ruins
     	if (biomeAt == TFBiomeBase.clearing || biomeAt == TFBiomeBase.oakSavanna) {
-    		if (hillRNG.nextInt(20) > 10) return labyrinth;
+    		if (hillRNG.nextInt(41) > 10) return labyrinth;
     		else return nothing;
     	}
     	
@@ -374,10 +374,10 @@ public class TFFeature {
     			//return druidGrove;
     			break;
     		case 1:
-    			if (hillRNG.nextInt(20) > 10) return darkTower;
+    			if (hillRNG.nextInt(41) > 10) return darkTower;
     			else return nothing;
     		case 2:
-    			if (hillRNG.nextInt(20) > 10) return tfStronghold;
+    			if (hillRNG.nextInt(41) > 10) return tfStronghold;
     			else return nothing;
     		}
     	}
@@ -385,18 +385,18 @@ public class TFFeature {
     	
     	// highlands center has castle
     	if (biomeAt == TFBiomeBase.highlandsCenter) {
-    		if (hillRNG.nextInt(20) > 10) return finalCastle;
+    		if (hillRNG.nextInt(41) > 10) return finalCastle;
     		else return nothing;
     	}
     	// highlands has trolls
     	if (biomeAt == TFBiomeBase.highlands) {
-    		if (hillRNG.nextInt(20) > 10) return trollCave;
+    		if (hillRNG.nextInt(41) > 10) return trollCave;
     		else return nothing;
     	}    	
 
     	// deep mushrooms has mushroom tower
     	if (biomeAt == TFBiomeBase.deepMushrooms) {
-    		if (hillRNG.nextInt(20) > 10) return mushroomTower;
+    		if (hillRNG.nextInt(41) > 10) return mushroomTower;
     		else return nothing;
     	}
 
@@ -425,14 +425,14 @@ public class TFFeature {
     		else return nothing;
     	case 11:
     	case 12:
-    		if (hillRNG.nextInt(3) > 1) return hedgeMaze;
+    		if (hillRNG.nextInt(4) > 2) return hedgeMaze;
     		else return nothing;
        	case 13:
-    		if (hillRNG.nextInt(3) > 1) return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
+    		if (hillRNG.nextInt(4) > 2) return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
     		else return nothing;
     	case 14:
     	case 15:
-    		if (hillRNG.nextInt(3) > 1) return lichTower;
+    		if (hillRNG.nextInt(4) > 2) return lichTower;
     		else return nothing;
     	case 16:
     	case 17:
@@ -454,14 +454,14 @@ public class TFFeature {
     		else return nothing;
     	case 27:
     	case 28:
-    		if (hillRNG.nextInt(3) > 1) return hedgeMaze;
+    		if (hillRNG.nextInt(4) > 2) return hedgeMaze;
     		else return nothing;
        	case 29:
-    		if (hillRNG.nextInt(3) > 1) return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
+    		if (hillRNG.nextInt(4) > 2) return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
     		else return nothing;
     	case 30:
     	case 31:
-    		if (hillRNG.nextInt(3) > 1) return lichTower;
+    		if (hillRNG.nextInt(4) > 2) return lichTower;
     		else return nothing;
     	}	
 	}
@@ -485,63 +485,63 @@ public class TFFeature {
     	
     	// glaciers have ice towers
     	if (biomeAt == TFBiomeBase.glacier) {
-    		if (hillRNG.nextInt(20) > 10) return iceTower;
+    		if (hillRNG.nextInt(41) > 10) return iceTower;
     		else return nothing;
     	}
     	// snow has yeti lair
     	if (biomeAt == TFBiomeBase.tfSnow) {
-    		if (hillRNG.nextInt(20) > 10) return yetiCave;
+    		if (hillRNG.nextInt(41) > 10) return yetiCave;
     		else return nothing;
     	}
     	
     	// lakes have quest islands
     	if (biomeAt == TFBiomeBase.tfLake) {
-    		if (hillRNG.nextInt(20) > 10) return questIsland;
+    		if (hillRNG.nextInt(41) > 10) return questIsland;
     		else return nothing;
     	}
     	
     	// enchanted forests have groves
     	if (biomeAt == TFBiomeBase.enchantedForest) {
-    		if (hillRNG.nextInt(20) > 10) return questGrove;
+    		if (hillRNG.nextInt(41) > 10) return questGrove;
     		else return nothing;
     	}
     	
     	// fire swamp has hydra lair
     	if (biomeAt == TFBiomeBase.fireSwamp) {
-    		if (hillRNG.nextInt(20) > 10) return hydraLair;
+    		if (hillRNG.nextInt(41) > 10) return hydraLair;
     		else return nothing;
     	}
     	// swamp has labyrinth
     	if (biomeAt == TFBiomeBase.tfSwamp) {
-    		if (hillRNG.nextInt(20) > 10) return labyrinth;
+    		if (hillRNG.nextInt(41) > 10) return labyrinth;
     		else return nothing;
     	}
     	
     	// dark forests have their own things
     	if (biomeAt == TFBiomeBase.darkForest)
     	{
-    		if (hillRNG.nextInt(20) > 10) return tfStronghold;
+    		if (hillRNG.nextInt(41) > 10) return tfStronghold;
     		else return nothing;
     	}
     	if (biomeAt == TFBiomeBase.darkForestCenter) {
-    		if (hillRNG.nextInt(20) > 10) return darkTower;
+    		if (hillRNG.nextInt(41) > 10) return darkTower;
     		else return nothing;
     	}
     	
     	// highlands center has castle
     	if (biomeAt == TFBiomeBase.highlandsCenter) {
-    		if (hillRNG.nextInt(20) > 10) return finalCastle;
+    		if (hillRNG.nextInt(41) > 10) return finalCastle;
     		else return nothing;
     	}
     	// highlands has trolls
     	if (biomeAt == TFBiomeBase.highlands) {
-    		if (hillRNG.nextInt(20) > 10) return trollCave;
+    		if (hillRNG.nextInt(41) > 10) return trollCave;
     		else return nothing;
     	}    	
     	
     	// deep mushrooms has mushroom tower
     	if (biomeAt == TFBiomeBase.deepMushrooms) {
-    		if (hillRNG.nextInt(20) > 10) return mushroomTower;
+    		if (hillRNG.nextInt(41) > 10) return mushroomTower;
     		else return nothing;
     	}
        	
@@ -582,15 +582,15 @@ public class TFFeature {
     		else return nothing;
     	case 10:
     	case 11:
-    		if (hillRNG.nextInt(3) > 1) return hedgeMaze;
+    		if (hillRNG.nextInt(4) > 2) return hedgeMaze;
     		else return nothing;
     	case 12:
        	case 13:
-    		if (hillRNG.nextInt(3) > 1) return nagaCourtyard;
+    		if (hillRNG.nextInt(4) > 2) return nagaCourtyard;
     		else return nothing;
     	case 14:
     	case 15:
-    		if (hillRNG.nextInt(3) > 1) return lichTower;
+    		if (hillRNG.nextInt(4) > 2) return lichTower;
     		else return nothing;
     	}	
 	}

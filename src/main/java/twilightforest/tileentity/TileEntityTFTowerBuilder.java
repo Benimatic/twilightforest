@@ -9,6 +9,7 @@ import net.minecraft.util.MathHelper;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFTowerBuilder extends TileEntity
 {
@@ -29,6 +30,17 @@ public class TileEntityTFTowerBuilder extends TileEntity
 	
 	protected Block blockBuiltID = TFBlocks.towerTranslucent;
 	protected int blockBuiltMeta = BlockTFTowerTranslucent.META_BUILT_INACTIVE;
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 
 	public TileEntityTFTowerBuilder()
 	{

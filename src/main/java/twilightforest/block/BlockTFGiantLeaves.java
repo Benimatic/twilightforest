@@ -6,6 +6,7 @@ import twilightforest.item.TFItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 
@@ -93,5 +94,11 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
         }
         
         return super.shouldSideBeRendered(world, x, y, z, side);
+    }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
     }
 }

@@ -12,12 +12,24 @@ import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.boss.EntityTFUrGhast;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFGhastTrapActive extends TileEntity {
 	
 	public int counter = 0;
 	
 	public Random rand = new org.bogdang.modifications.random.XSTR();
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 
 	
 	public boolean canUpdate()

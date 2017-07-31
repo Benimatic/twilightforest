@@ -50,6 +50,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 
 	public enum Phase { SUMMON, DROP, BEAM };
+    public static final Phase[] PVALUES = Phase.values();
 
 	public Entity[] iceArray;
 	
@@ -523,7 +524,7 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 
 	public Phase getCurrentPhase() {
-		return Phase.values()[this.getDataWatcher().getWatchableObjectByte(PHASE_FLAG)];
+		return PVALUES[this.getDataWatcher().getWatchableObjectByte(PHASE_FLAG)];
 	}
 
 

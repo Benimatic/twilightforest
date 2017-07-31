@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMiniGhast;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFCReactorActive extends TileEntity {
 	
@@ -15,6 +16,17 @@ public class TileEntityTFCReactorActive extends TileEntity {
 	
 	int secX, secY, secZ;
 	int terX, terY, terZ;
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 	
 	
     public TileEntityTFCReactorActive() {

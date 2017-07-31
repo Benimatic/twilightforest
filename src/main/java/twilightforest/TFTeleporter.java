@@ -401,9 +401,15 @@ public class TFTeleporter extends Teleporter
 	}
 	
 	public Block randNatureBlock(Random random) {
-		Block[] block = {Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower};
+		/*Block[] block = {Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower};
 		
-		return block[random.nextInt(block.length)];
+		return block[random.nextInt(block.length)];*/
+		int value = random.nextInt(5)+1;
+		if (value==1) return Blocks.brown_mushroom;
+		else if (value==2) return Blocks.red_mushroom;
+		else if (value==3) return Blocks.tallgrass;
+		else if (value==4) return Blocks.red_flower;
+		else return Blocks.yellow_flower;
 	}
 
 }

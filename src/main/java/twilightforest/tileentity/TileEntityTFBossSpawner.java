@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraft.util.AxisAlignedBB;
 
 
 public abstract class TileEntityTFBossSpawner extends TileEntity {
@@ -15,11 +16,22 @@ public abstract class TileEntityTFBossSpawner extends TileEntity {
     protected int counter;
 
     protected Entity displayCreature = null;
+    protected AxisAlignedBB aabb;
 
     
 	public TileEntityTFBossSpawner() {
 		;
 	}
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 	
 	/**
 	 * Is there a player in our detection range?

@@ -255,5 +255,11 @@ public class BlockTFTrophy extends BlockContainer
         ; // don't load anything
     }
 
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
+
 
 }

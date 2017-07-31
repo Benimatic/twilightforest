@@ -220,4 +220,10 @@ public class BlockTFLeaves extends BlockLeaves {
 	public String[] func_150125_e() {
 		return unlocalizedNameArray;
 	}
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
 }

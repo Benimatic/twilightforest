@@ -266,4 +266,10 @@ public abstract class BlockTFGiantBlock extends Block {
     {
         return 2;
     }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
 }

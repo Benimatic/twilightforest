@@ -162,4 +162,10 @@ public class BlockTFAuroraBrick extends Block {
     {
     	world.setBlockMetadataWithNotify(x, y, z, Math.abs(x + z) % 16, 2);
     }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
 }

@@ -525,4 +525,10 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         }
     
     }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
 }
