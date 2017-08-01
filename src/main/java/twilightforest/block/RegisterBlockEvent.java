@@ -75,6 +75,7 @@ public final class RegisterBlockEvent {
 		blocks.register("castle_door", (new BlockTFCastleDoor(false)).setUnlocalizedName("CastleDoor"));
 		blocks.register("castle_door_vanished", (new BlockTFCastleDoor(true)).setUnlocalizedName("CastleDoorVanished"));
 		blocks.register("castle_unlock", (new BlockTFCastleUnlock()).setUnlocalizedName("CastleUnlock"));
+		blocks.register("experiment_115", (new BlockTFExperiment115()).setUnlocalizedName("experiment115").setHardness(0.5F));
 	}
 
 	private static class BlockRegistryHelper {

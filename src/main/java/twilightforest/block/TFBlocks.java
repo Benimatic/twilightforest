@@ -134,4 +134,6 @@ public class TFBlocks {
 	public static Block castleDoorVanished;
 	@ObjectHolder("castle_unlock")
 	public static Block castleUnlock;
+	@ObjectHolder("experiment_115")
+	public static Block experiment_115;
 }
