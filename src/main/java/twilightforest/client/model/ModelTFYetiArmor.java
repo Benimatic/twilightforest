@@ -3,13 +3,21 @@ package twilightforest.client.model;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 
 public class ModelTFYetiArmor extends ModelBiped {
 
-	private ModelRenderer bipedLegBody;
+	private final EntityEquipmentSlot slot;
 
-	public ModelTFYetiArmor(float expand) {
+	private ModelRenderer bipedLegBody;
+	private ModelRenderer rightRuff;
+	private ModelRenderer leftRuff;
+	private ModelRenderer rightToe;
+	private ModelRenderer leftToe;
+
+	public ModelTFYetiArmor(EntityEquipmentSlot slot, float expand) {
 		super(expand);
+		this.slot = slot;
 
 		//bigger head
 		this.bipedHead = new ModelRenderer(this, 0, 0);
@@ -32,24 +40,24 @@ public class ModelTFYetiArmor extends ModelBiped {
 		this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, expand);
 		this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F + 0.0F, 0.0F);
 
-		ModelRenderer rightRuff = new ModelRenderer(this, 40, 22);
-		rightRuff.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
-		rightRuff.setRotationPoint(0.0F, 6.0F, 0.0F);
+		this.rightRuff = new ModelRenderer(this, 40, 22);
+		this.rightRuff.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
+		this.rightRuff.setRotationPoint(0.0F, 6.0F, 0.0F);
 		this.bipedRightLeg.addChild(rightRuff);
 
-		ModelRenderer leftRuff = new ModelRenderer(this, 40, 22);
-		leftRuff.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
-		leftRuff.setRotationPoint(0.0F, 6.0F, 0.0F);
+		this.leftRuff = new ModelRenderer(this, 40, 22);
+		this.leftRuff.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
+		this.leftRuff.setRotationPoint(0.0F, 6.0F, 0.0F);
 		this.bipedLeftLeg.addChild(leftRuff);
 
-		ModelRenderer rightToe = new ModelRenderer(this, 40, 17);
-		rightToe.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
-		rightToe.setRotationPoint(0.0F, 10.0F, -2.0F);
+		this.rightToe = new ModelRenderer(this, 40, 17);
+		this.rightToe.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
+		this.rightToe.setRotationPoint(0.0F, 10.0F, -2.0F);
 		this.bipedRightLeg.addChild(rightToe);
 
-		ModelRenderer leftToe = new ModelRenderer(this, 40, 17);
-		leftToe.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
-		leftToe.setRotationPoint(0.0F, 10.0F, -2.0F);
+		this.leftToe = new ModelRenderer(this, 40, 17);
+		this.leftToe.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
+		this.leftToe.setRotationPoint(0.0F, 10.0F, -2.0F);
 		this.bipedLeftLeg.addChild(leftToe);
 
 		// stuff for chest and legs
@@ -69,6 +77,7 @@ public class ModelTFYetiArmor extends ModelBiped {
 		this.bipedLeftArm.mirror = true;
 		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 10, 4, expand);
 		this.bipedLeftArm.setRotationPoint(5.0F, 2.0F + 0.0f, 0.0F);
+
 	}
 
 	private void addPairHorns(float height, float zangle) {
@@ -115,6 +124,56 @@ public class ModelTFYetiArmor extends ModelBiped {
 
 	@Override
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+		switch (slot) {
+			case HEAD:
+				this.bipedHead.showModel = true;
+				this.bipedHeadwear.showModel = false;
+				this.bipedBody.showModel = false;
+				this.bipedRightArm.showModel = false;
+				this.bipedLeftArm.showModel = false;
+				this.bipedLegBody.showModel = false;
+				this.bipedRightLeg.showModel = false;
+				this.bipedLeftLeg.showModel = false;
+				break;
+			case CHEST:
+				this.bipedHead.showModel = false;
+				this.bipedHeadwear.showModel = false;
+				this.bipedBody.showModel = true;
+				this.bipedRightArm.showModel = true;
+				this.bipedLeftArm.showModel = true;
+				this.bipedLegBody.showModel = false;
+				this.bipedRightLeg.showModel = false;
+				this.bipedLeftLeg.showModel = false;
+				break;
+			case LEGS:
+				this.bipedHead.showModel = false;
+				this.bipedHeadwear.showModel = false;
+				this.bipedBody.showModel = false;
+				this.bipedRightArm.showModel = false;
+				this.bipedLeftArm.showModel = false;
+				this.bipedLegBody.showModel = true;
+				this.bipedRightLeg.showModel = true;
+				this.bipedLeftLeg.showModel = true;
+				this.leftRuff.showModel = false;
+				this.leftToe.showModel = false;
+				this.rightRuff.showModel = false;
+				this.rightToe.showModel = false;
+				break;
+			case FEET:
+				this.bipedHead.showModel = false;
+				this.bipedHeadwear.showModel = false;
+				this.bipedBody.showModel = false;
+				this.bipedRightArm.showModel = false;
+				this.bipedLeftArm.showModel = false;
+				this.bipedLegBody.showModel = false;
+				this.bipedRightLeg.showModel = true;
+				this.bipedLeftLeg.showModel = true;
+				this.leftRuff.showModel = true;
+				this.leftToe.showModel = true;
+				this.rightRuff.showModel = true;
+				this.rightToe.showModel = true;
+				break;
+		}
 		super.render(par1Entity, par2, par3, par4, par5, par6, par7);
 		this.bipedLegBody.render(par7);
 	}
