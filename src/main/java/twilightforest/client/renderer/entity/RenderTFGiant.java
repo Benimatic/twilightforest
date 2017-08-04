@@ -11,6 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.EntityTFGiantMiner;
 
 public class RenderTFGiant extends RenderBiped<EntityTFGiantMiner> {
+
+	private boolean typeCache = false;
+
 	public RenderTFGiant(RenderManager manager) {
 		super(manager, new ModelPlayer(0, false), 0.625F);
 	}
@@ -18,13 +21,18 @@ public class RenderTFGiant extends RenderBiped<EntityTFGiantMiner> {
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTFGiantMiner entity) {
 		Minecraft mc = Minecraft.getMinecraft();
-
-		if (!(mc.getRenderViewEntity() instanceof AbstractClientPlayer)) {
-			return DefaultPlayerSkin.getDefaultSkinLegacy();
-		} else {
-			// todo might look wrong if player has alex skin, because we hardcode a steve model in constructor
-			return ((AbstractClientPlayer) mc.getRenderViewEntity()).getLocationSkin();
+		boolean type = false;
+		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkinLegacy();
+		if (mc.getRenderViewEntity() instanceof AbstractClientPlayer) {
+			AbstractClientPlayer client = ((AbstractClientPlayer) mc.getRenderViewEntity());
+			texture = client.getLocationSkin();
+			type = client.getSkinType().equals("slim");
 		}
+		if (type != typeCache) {
+			typeCache = type;
+			mainModel = new ModelPlayer(0, type);
+		}
+		return texture;
 	}
 
 	@Override
