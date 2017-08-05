@@ -206,8 +206,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST) {
-			treasureType.generateChest(world, pos);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
+			treasureType.generateChest(world, pos, trapped);
 		}
 	}
 
@@ -230,8 +230,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.CHEST) {
-			treasureType.generateChest(world, pos);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
+			treasureType.generateChest(world, pos, trapped);
 		}
 	}
 

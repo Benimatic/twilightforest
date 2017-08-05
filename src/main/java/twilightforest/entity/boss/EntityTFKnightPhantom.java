@@ -163,9 +163,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 	private void makeATreasure() {
 		if (this.hasHome()) {
-			TFTreasure.stronghold_boss.generateChest(world, getHomePosition().down());
+			TFTreasure.stronghold_boss.generateChest(world, getHomePosition().down(), false);
 		} else {
-			TFTreasure.stronghold_boss.generateChest(world, new BlockPos(this));
+			TFTreasure.stronghold_boss.generateChest(world, new BlockPos(this), false);
 		}
 	}
 

@@ -565,7 +565,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		if (this.deathTime == 20 && !world.isRemote) {
 			BlockPos chestCoords = this.findChestCoords();
-			TFTreasure.darktower_boss.generateChest(world, chestCoords);
+			TFTreasure.darktower_boss.generateChest(world, chestCoords, false);
 		}
 	}
 
