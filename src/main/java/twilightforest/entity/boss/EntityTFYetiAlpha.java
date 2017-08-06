@@ -66,14 +66,18 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(1, new EntityAITFYetiTired(this, 100));
-		this.tasks.addTask(2, new EntityAITFThrowRider(this, 1.0F));
-		this.tasks.addTask(3, new EntityAIStayNearHome(this, 2.0F));
-		this.tasks.addTask(4, new EntityAITFYetiRampage(this, 10, 180));
-
-		this.tasks.addTask(5, new EntityAIAttackRanged(this, 1.0D, 40, 40, 40.0F));
-		this.tasks.addTask(6, new EntityAIWander(this, 2.0F));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(8, new EntityAILookIdle(this));
+		this.tasks.addTask(2, new EntityAIStayNearHome(this, 2.0F));
+		this.tasks.addTask(3, new EntityAITFYetiRampage(this, 10, 180));
+		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 40, 40, 40.0F){
+			@Override
+			public boolean shouldExecute() {
+				return getRNG().nextInt(50) > 0 && super.shouldExecute(); // Give us a chance to move to the next AI
+			}
+		});
+		this.tasks.addTask(4, new EntityAITFThrowRider(this, 1.0D, false));
+		this.tasks.addTask(5, new EntityAIWander(this, 2.0F));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 	}
@@ -143,27 +147,6 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 		double pz = 3F * Math.sin(rotation);
 
 		TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
-	}
-
-	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
-		if (super.processInteract(player, hand)) {
-			return true;
-		} else if (!this.world.isRemote && !isBeingRidden() && !player.isRiding()) {
-			player.startRiding(this);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		if (this.getPassengers().isEmpty() && par1Entity.getRidingEntity() == null) {
-			par1Entity.startRiding(this);
-		}
-
-		return super.attackEntityAsMob(par1Entity);
 	}
 
 	@Override

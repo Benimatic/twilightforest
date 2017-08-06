@@ -41,11 +41,10 @@ public class EntityTFYeti extends EntityMob {
 	@Override
 	protected void initEntityAI() {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
-		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0F));
-		this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
-		this.tasks.addTask(3, new EntityAIWander(this, 1.0F));
-		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(4, new EntityAILookIdle(this));
+		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0D, false));
+		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
+		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(3, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 	}
@@ -84,15 +83,6 @@ public class EntityTFYeti extends EntityMob {
 			Vec3d riderPos = this.getRiderPosition(getPassengers().get(0));
 			this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
 		}
-	}
-
-	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		if (this.getPassengers().isEmpty() && !par1Entity.isRiding()) {
-			par1Entity.startRiding(this);
-		}
-
-		return super.attackEntityAsMob(par1Entity);
 	}
 
 	@Override
