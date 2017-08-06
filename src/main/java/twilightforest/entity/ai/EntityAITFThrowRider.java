@@ -78,7 +78,6 @@ public class EntityAITFThrowRider extends EntityAIAttackMelee {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		System.out.println(timeout);
 		return (throwTimer > 0 && !attacker.getPassengers().isEmpty()) || (timeout > 0 && super.shouldContinueExecuting() && attacker.getPassengers().isEmpty());
 	}
 
