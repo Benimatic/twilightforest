@@ -1,34 +1,34 @@
 package twilightforest.block;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockTFHugeWaterLily extends BlockBush {
+public class BlockTFHugeWaterLily extends BlockLilyPad implements ModelRegisterCallback {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9);
 
 	protected BlockTFHugeWaterLily() {
-		super(Material.PLANTS);
 		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
@@ -38,7 +38,7 @@ public class BlockTFHugeWaterLily extends BlockBush {
 		return AABB;
 	}
 
-	@Override
+	/*@Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
 		IBlockState down = world.getBlockState(pos.down());
 		Block b = down.getBlock();
@@ -48,7 +48,7 @@ public class BlockTFHugeWaterLily extends BlockBush {
 
 		return down.getMaterial() == Material.WATER
 				&& (levelProp == null || down.getValue(levelProp) == 0);
-	}
+	}*/
 
 	@Override
 	protected boolean canSustainBush(IBlockState state) {
@@ -59,5 +59,11 @@ public class BlockTFHugeWaterLily extends BlockBush {
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }

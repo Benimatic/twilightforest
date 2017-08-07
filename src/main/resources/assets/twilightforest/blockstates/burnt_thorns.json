@@ -1,6 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
+    "transform": "forge:default-block",
     "textures": {
       "end": "twilightforest:blocks/burnt_thorns_top",
       "side": "twilightforest:blocks/burnt_thorns_side",
