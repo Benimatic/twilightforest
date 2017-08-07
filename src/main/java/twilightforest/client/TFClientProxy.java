@@ -207,10 +207,10 @@ public class TFClientProxy extends TFCommonProxy {
 		phantomArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F));
 		phantomArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFPhantomArmor(EntityEquipmentSlot.CHEST, 0.5F));
 
-		yetiArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFYetiArmor(0.6F));
-		yetiArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFYetiArmor(1.0F));
-		yetiArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFYetiArmor(0.4F));
-		yetiArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFYetiArmor(0.55F));
+		yetiArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFYetiArmor(EntityEquipmentSlot.HEAD, 0.6F));
+		yetiArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFYetiArmor(EntityEquipmentSlot.CHEST, 1.0F));
+		yetiArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFYetiArmor(EntityEquipmentSlot.LEGS, 0.4F));
+		yetiArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFYetiArmor(EntityEquipmentSlot.FEET, 0.55F));
 
 		arcticArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFArcticArmor(0.6F));
 		arcticArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFArcticArmor(1.0F));
