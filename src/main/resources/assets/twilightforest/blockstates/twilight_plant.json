@@ -9,8 +9,8 @@
     "inventory_cloverpatch": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/patch/clover"}}],
     "inventory_fiddlehead":  [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/fiddlehead"}}],
     "inventory_mushgloom":   [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/mushgloom"}}],
-    "inventory_forestgrass": [{ "model": "tall_grass" }],
-    "inventory_deadbush":    [{ "model": "dead_bush" }],
+    "inventory_forestgrass": [{ "model": "twilightforest:util/item", "textures": { "layer0": "minecraft:blocks/tallgrass"}}],
+    "inventory_deadbush":    [{ "model": "twilightforest:util/item", "textures": { "layer0": "minecraft:blocks/deadbush"}}],
     "inventory_torchberry":  [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/torchberry"}}],
     "inventory_root_strand": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/rootstrand"}}],
     "variant=mosspatch": [ {

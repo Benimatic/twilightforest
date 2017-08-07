@@ -10,10 +10,11 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
 import java.util.List;
 
-public class ItemTFFierySword extends ItemSword {
+public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback {
 
 	public ItemTFFierySword(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);

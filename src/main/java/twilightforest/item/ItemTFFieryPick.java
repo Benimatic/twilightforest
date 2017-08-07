@@ -18,13 +18,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber
-public class ItemTFFieryPick extends ItemPickaxe {
+public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallback {
 
 	protected ItemTFFieryPick(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);

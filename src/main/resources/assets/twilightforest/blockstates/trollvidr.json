@@ -4,5 +4,8 @@
     "model": "minecraft:cross",
     "textures": { "cross": "twilightforest:blocks/troll_root" }
   },
-  "variants": { "normal": [{}] }
+  "variants": {
+    "inventory": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/troll_root"}}],
+    "normal": [{}]
+  }
 }
