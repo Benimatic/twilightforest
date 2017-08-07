@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -43,6 +44,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 		super(Material.PLANTS);
 		this.setTickRandomly(true);
 		this.setHardness(0.0F);
+		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
