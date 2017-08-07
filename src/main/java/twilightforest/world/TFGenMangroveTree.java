@@ -3,6 +3,7 @@ package twilightforest.world;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -33,6 +34,12 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
 		leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.MANGROVE).withProperty(BlockLeaves.CHECK_DECAY, false);
 		rootState = TFBlocks.root.getDefaultState();
+	}
+
+	@Override
+	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
+			super.setBlockAndNotifyAdequately(worldIn, pos, state);
 	}
 
 	@Override
@@ -74,8 +81,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		return true;
 	}
 
-	private void makeLeafBlob(World world, BlockPos pos, int size)
-	{
+	private void makeLeafBlob(World world, BlockPos pos, int size) {
 		TFGenerator.makeLeafCircle(this, world, pos.down(), size - 1, leafState, false);
 		TFGenerator.makeLeafCircle(this, world, pos, size, leafState, false);
 		TFGenerator.makeLeafCircle(this, world, pos.up(), size - 2, leafState, false);
