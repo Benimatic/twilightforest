@@ -20,8 +20,10 @@ public final class ColorHandler {
 
 	public static void init() {
 		BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(3, 256.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 2.0f), 1.0f, 1.0f), TFBlocks.auroraBlock);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(3, 256.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 2.0f), 1.0f, 1.0f), TFBlocks.auroraBlock);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
+
 			int normalColor = Minecraft.getMinecraft().getBlockColors().colorMultiplier(TFBlocks.auroraBlock.getDefaultState(), worldIn, pos, tintIndex);
 
 			int red = (normalColor >> 16) & 255;
@@ -33,6 +35,8 @@ public final class ColorHandler {
 			return Color.HSBtoRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
 		}, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.auroraDoubleSlab);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
+
 			if (worldIn == null || pos == null) {
 				return ColorizerFoliage.getFoliageColorBasic();
 			}
@@ -52,9 +56,11 @@ public final class ColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.darkleaves, TFBlocks.giantLeaves);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> state.getValue(BlockTFFireJet.VARIANT).hasGrassColor ? Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex) : 0xFFFFFF, TFBlocks.fireJet);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->  tintIndex > 15 ? 0xFFFFFF :state.getValue(BlockTFFireJet.VARIANT).hasGrassColor ? Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex) : 0xFFFFFF, TFBlocks.fireJet);
 		//blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x208030, TFBlocks.hugeLilyPad);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
+
 			if (worldIn == null || pos == null) {
 				switch (state.getValue(BlockTFMagicLog.VARIANT)) {
 					case TIME:
@@ -130,6 +136,8 @@ public final class ColorHandler {
 			}
 		}, TFBlocks.magicLeaves);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
+
 			if (worldIn == null || pos == null || state.getValue(BlockTFTowerWood.VARIANT) == TowerWoodVariant.ENCASED) {
 				return -1;
 			} else {
@@ -146,6 +154,8 @@ public final class ColorHandler {
 			}
 		}, TFBlocks.towerWood);
 		blockColors.registerBlockColorHandler((state, world, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
+
 			if (world == null || pos == null) {
 				switch (state.getValue(BlockTFLeaves.VARIANT)) {
 					case CANOPY:
@@ -207,6 +217,7 @@ public final class ColorHandler {
 			}
 		}, TFBlocks.leaves);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
 			// todo 1.9 wrong meta values?
 			// return (meta & 3) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((meta & 3) == 2 ? ColorizerFoliage.getFoliageColorBirch() : super.getRenderColor(meta));;
 			Leaves3Variant variant = state.getValue(BlockTFLeaves3.VARIANT);
@@ -214,11 +225,31 @@ public final class ColorHandler {
 					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
 					: -1;
 		}, TFBlocks.leaves3);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> state.getValue(BlockTFPlant.VARIANT).isGrassColored ? worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.plant);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isGrassColored ? worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.plant);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			int color = 0xFFFFFF;
+
+			if (tintIndex <= 15) {
+				switch (state.getValue(BlockTFCastleMagic.COLOR)) {
+					case PINK:
+						return 0xFF00FF;
+					case BLUE:
+						return 0x00FFFF;
+					case YELLOW:
+						return 0xFFFF00;
+					case PURPLE:
+						return 0x4B0082;
+					default:
+						return color;
+				}
+			}
+
+			return color;
+		}, TFBlocks.castleMagic);
 
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 		// Atomic: This is one place where getStateFromMeta is still commonly used
-		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.auroraDoubleSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plant);
+		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.auroraDoubleSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plant, TFBlocks.castleMagic);
 		// Honestly I'd say it makes sense in this context. -Drullkus
 	}
 
