@@ -1,26 +1,17 @@
 package twilightforest.block;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.block.enums.FireJetVariant;
-import twilightforest.block.enums.Leaves3Variant;
-import twilightforest.block.enums.LeavesVariant;
-import twilightforest.block.enums.MagicWoodVariant;
-import twilightforest.block.enums.PlantVariant;
-import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.block.enums.*;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 
 @SideOnly(Side.CLIENT)
@@ -28,18 +19,13 @@ public final class ColorHandler {
 
 	public static void init() {
 		BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> Color.HSBtoRGB(BlockTFAuroraBrick.rippleFractialNoise(3, 256.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 2.0f), 1.0f, 1.0f), TFBlocks.auroraBlock);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(3, 256.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 2.0f), 1.0f, 1.0f), TFBlocks.auroraBlock);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-			int red = 0;
-			int green = 0;
-			int blue = 0;
-
 			int normalColor = Minecraft.getMinecraft().getBlockColors().colorMultiplier(TFBlocks.auroraBlock.getDefaultState(), worldIn, pos, tintIndex);
-			;
 
-			red = (normalColor >> 16) & 255;
-			blue = normalColor & 255;
-			green = (normalColor >> 8) & 255;
+			int red = (normalColor >> 16) & 255;
+			int blue = normalColor & 255;
+			int green = (normalColor >> 8) & 255;
 
 			float[] hsb = Color.RGBtoHSB(red, blue, green, null);
 
@@ -89,7 +75,7 @@ public final class ColorHandler {
 				return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 			}
 		}, TFBlocks.fireJet);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x208030, TFBlocks.hugeLilyPad);
+		//blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x208030, TFBlocks.hugeLilyPad);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (worldIn == null || pos == null) {
 				switch (state.getValue(BlockTFMagicLog.VARIANT)) {
@@ -250,24 +236,12 @@ public final class ColorHandler {
 					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
 					: -1;
 		}, TFBlocks.leaves3);
-		blockColors.registerBlockColorHandler(new IBlockColor() {
-			@Override
-			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-				final PlantVariant value = state.getValue(BlockTFPlant.VARIANT);
-
-				return value.isGrassColored && worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : 0xFFFFFF;
-			}
-		}, TFBlocks.plant);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> state.getValue(BlockTFPlant.VARIANT).isGrassColored ? worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.plant);
 
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
-		itemColors.registerItemColorHandler(new IItemColor() {
-			@Override
-			//Atomic: This is one place where getStateFromMeta is still commonly used
-			@SuppressWarnings("deprecation")
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-				return Minecraft.getMinecraft().getBlockColors().colorMultiplier(TFBlocks.plant.getStateFromMeta(stack.getItemDamage()), null, null, tintIndex);
-			}
-		}, TFBlocks.plant);
+		// Atomic: This is one place where getStateFromMeta is still commonly used
+		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.auroraDoubleSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plant);
+		// Honestly I'd say it makes sense in this context. -Drullkus
 	}
 
 	private ColorHandler() {
