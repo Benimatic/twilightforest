@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
@@ -51,30 +52,7 @@ public final class ColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.darkleaves, TFBlocks.giantLeaves);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-			FireJetVariant variant = state.getValue(BlockTFFireJet.VARIANT);
-
-			if (worldIn == null || pos == null
-					|| variant == FireJetVariant.ENCASED_SMOKER_OFF || variant == FireJetVariant.ENCASED_SMOKER_ON
-					|| variant == FireJetVariant.ENCASED_JET_IDLE || variant == FireJetVariant.ENCASED_JET_POPPING || variant == FireJetVariant.ENCASED_JET_FLAME) {
-				return -1;
-			} else {
-				int red = 0;
-				int grn = 0;
-				int blu = 0;
-
-				for (int var8 = -1; var8 <= 1; ++var8) {
-					for (int var9 = -1; var9 <= 1; ++var9) {
-						int biomeColor = worldIn.getBiome(pos.add(var9, 0, var8)).getGrassColorAtPos(pos.add(var9, 0, var8));
-						red += (biomeColor & 16711680) >> 16;
-						grn += (biomeColor & 65280) >> 8;
-						blu += biomeColor & 255;
-					}
-				}
-
-				return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
-			}
-		}, TFBlocks.fireJet);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> state.getValue(BlockTFFireJet.VARIANT).hasGrassColor ? Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex) : 0xFFFFFF, TFBlocks.fireJet);
 		//blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x208030, TFBlocks.hugeLilyPad);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (worldIn == null || pos == null) {
