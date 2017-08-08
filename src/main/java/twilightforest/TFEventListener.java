@@ -85,7 +85,7 @@ public class TFEventListener {
 				|| item == TFItems.scepterZombie) {
 			// the player has picked up a scepter.  Check if they have them all in their inventory, and if so, achievement
 			//System.out.println("Player picked up a scepter");
-			checkPlayerForScepterMastery(event.getEntityPlayer());
+			checkPlayerForScepterMastery(event.getEntityPlayer(), item);
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressLich);
 		}
 
@@ -143,10 +143,11 @@ public class TFEventListener {
 	/**
 	 * Does the player have all three scepters somewhere in the inventory?
 	 */
-	private static void checkPlayerForScepterMastery(EntityPlayer player) {
-		boolean scepterTwilight = false;
-		boolean scepterLifeDrain = false;
-		boolean scepterZombie = false;
+	private static void checkPlayerForScepterMastery(EntityPlayer player, Item item) {
+		// Add the picked up item to the check as the event fires before the item gets placed into the inventory
+		boolean scepterTwilight = item == TFItems.scepterTwilight;
+		boolean scepterLifeDrain = item == TFItems.scepterLifeDrain;
+		boolean scepterZombie = item == TFItems.scepterZombie;
 
 		IInventory inv = player.inventory;
 
