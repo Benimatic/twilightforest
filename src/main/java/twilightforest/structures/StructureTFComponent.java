@@ -47,7 +47,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
 	protected void setDebugEntity(World world, int x, int y, int z, String s) {
-		final BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
+		//Uncomment this to spawn sheep with labels at a specific point for debugging purposes
+		/*final BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
 
 		final EntitySheep sheep = new EntitySheep(world);
 		sheep.setCustomNameTag(s);
@@ -58,7 +59,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 		sheep.setAlwaysRenderNameTag(true);
 		sheep.setSilent(true);
 		sheep.setNoGravity(true);
-		world.spawnEntity(sheep);
+		world.spawnEntity(sheep);*/
 
 	}
 
