@@ -36,27 +36,14 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 					random.nextInt(8) - random.nextInt(8)
 			);
 
-			//TODO: AtomicBlom: Ensure lilypads are generating correctly
-			//make x/z even?
-			dPos = new BlockPos(
-					dPos.getX() >> 1 << 1,
-					dPos.getY(),
-					dPos.getZ() >> 1 << 1
-			);
-
-			if (shouldPlacePadAt(world, dPos)) {
-				// this seems like a difficult way to generate 2 pseudorandom bits
-				rand.setSeed(8890919293L);
-				rand.setSeed((dPos.getX() * rand.nextLong()) ^ (dPos.getZ() * rand.nextLong()) ^ 8890919293L);
-				int orient = rand.nextInt(4);
-
-				final EnumFacing horizontal = EnumFacing.getHorizontal(orient);
+			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
+				final EnumFacing horizontal = EnumFacing.getHorizontal(rand.nextInt(4));
 				final IBlockState lilypad = TFBlocks.hugeLilyPad.getDefaultState().withProperty(FACING, horizontal);
 
-				world.setBlockState(pos, lilypad.withProperty(PIECE, NW), 2);
-				world.setBlockState(pos.east(), lilypad.withProperty(PIECE, NE), 2);
-				world.setBlockState(pos.east().south(), lilypad.withProperty(PIECE, SE), 2);
-				world.setBlockState(pos.south(), lilypad.withProperty(PIECE, SW), 2);
+				world.setBlockState(dPos, lilypad.withProperty(PIECE, NW), 2);
+				world.setBlockState(dPos.east(), lilypad.withProperty(PIECE, NE), 2);
+				world.setBlockState(dPos.east().south(), lilypad.withProperty(PIECE, SE), 2);
+				world.setBlockState(dPos.south(), lilypad.withProperty(PIECE, SW), 2);
 			}
 		}
 
@@ -66,8 +53,8 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 
 	private boolean shouldPlacePadAt(World world, BlockPos pos) {
 		return world.isAirBlock(pos) && world.getBlockState(pos.down()).getMaterial() == Material.WATER
-				&& world.isAirBlock(pos.east()) && world.getBlockState(pos.add(1, -1, 0)).getMaterial() == Material.WATER
-				&& world.isAirBlock(pos.south()) && world.getBlockState(pos.add(0, -1, 1)).getMaterial() == Material.WATER
-				&& world.isAirBlock(pos.east().south()) && world.getBlockState(pos.add(1, -1, 1)).getMaterial() == Material.WATER;
+				&& world.isAirBlock(pos.east()) && world.getBlockState(pos.east().down()).getMaterial() == Material.WATER
+				&& world.isAirBlock(pos.south()) && world.getBlockState(pos.south().down()).getMaterial() == Material.WATER
+				&& world.isAirBlock(pos.east().south()) && world.getBlockState(pos.east().south().down()).getMaterial() == Material.WATER;
 	}
 }

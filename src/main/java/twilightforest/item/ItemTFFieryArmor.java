@@ -15,10 +15,11 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 
 import java.util.List;
 
-public class ItemTFFieryArmor extends ItemArmor {
+public class ItemTFFieryArmor extends ItemArmor implements ModelRegisterCallback {
 
 	public ItemTFFieryArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, 0, armorType);

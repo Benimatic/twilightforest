@@ -62,19 +62,6 @@ public class EntityTFNagaSegment extends Entity {
 
 		++this.ticksExisted;
 
-		lastTickPosX = posX;
-		lastTickPosY = posY;
-		lastTickPosZ = posZ;
-
-		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
-		}
-		for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
-		}
-
 		collideWithOthers();
 
 		//TwilightForestMod.LOGGER.info("Updating naga segment {}", segment);
@@ -128,10 +115,10 @@ public class EntityTFNagaSegment extends Entity {
 
 	}
 
+	// make public
 	@Override
-	public void setRotation(float par1, float par2) {
-		this.rotationYaw = MathHelper.wrapDegrees(par1 % 360.0F);
-		this.rotationPitch = par2 % 360.0F;
+	public void setRotation(float yaw, float pitch) {
+		super.setRotation(yaw, pitch);
 	}
 
 	@Override

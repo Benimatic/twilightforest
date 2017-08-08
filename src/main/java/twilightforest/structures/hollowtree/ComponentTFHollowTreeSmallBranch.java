@@ -26,40 +26,26 @@ public class ComponentTFHollowTreeSmallBranch extends
 		super(i, sx, sy, sz, length, angle, tilt, leafy);
 	}
 
-	/**
-	 * Add a leaf ball to the end
-	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random rand) {
-//		int index = getComponentType();
-//		
-//		if (leafy) {
-//			int leafRad = rand.nextInt(2) + 1;
-//			ComponentTFLeafSphere leafBlob = new ComponentTFLeafSphere(index + 1, dest.posX, dest.posY, dest.posZ, leafRad);
-//	        list.add(leafBlob);
-//	        leafBlob.buildComponent(this, list, rand); // doesn't really need to be here for leaves.
-//		}
-
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
+	{
+		return this.addComponentParts(world, random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
-		IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
-
-		drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
-
-		// with leaves!
-		if (leafy) {
+		if (!drawLeaves)
+		{
+			IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
+		} else {
 			int leafRad = random.nextInt(2) + 1;
 			makeLeafBlob(world, sbb, rDest.getX(), rDest.getY(), rDest.getZ(), leafRad);
-
 		}
-
-
 		return true;
 	}
 

@@ -8,5 +8,8 @@
     },
     "uvlock": true
   },
-  "variants": { "normal": [{}] }
+  "variants": {
+    "inventory": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/ripe_torch_cluster"}}],
+    "normal": [{}]
+  }
 }

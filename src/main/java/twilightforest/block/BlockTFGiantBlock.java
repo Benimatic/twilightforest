@@ -3,12 +3,18 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public abstract class BlockTFGiantBlock extends Block {
+public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCallback {
 
 	private IBlockState baseState;
 	private boolean isSelfDestructing;
@@ -108,4 +114,9 @@ public abstract class BlockTFGiantBlock extends Block {
 		return new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
 	}
 
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+	}
 }

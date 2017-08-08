@@ -12,6 +12,8 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +44,7 @@ import twilightforest.block.enums.BossVariant;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -61,6 +64,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private int ticksSinceDamaged = 0;
 
 	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
+
+	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, 0).setSaved(false);
+	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 1.25F, 0).setSaved(false);
+
 
 	public EntityTFNaga(World world) {
 		super(world);
@@ -106,15 +113,22 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		this.tasks.addTask(2, new AIAttack(this));
 		this.tasks.addTask(3, new AISmash(this));
 		this.tasks.addTask(4, movementAI = new AIMovementPattern(this));
-		this.tasks.addTask(8, new EntityAIWander(this, 1) {
+		this.tasks.addTask(8, new EntityAIWander(this, 1, 1) {
 			@Override
 			public void startExecuting() {
 				EntityTFNaga.this.goNormal();
 				super.startExecuting();
 			}
+			@Override
+			protected Vec3d getPosition()
+			{
+				return RandomPositionGenerator.findRandomTarget(this.entity, 30, 7);
+			}
 		});
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
+
+		this.moveHelper = new NagaMoveHelper(this);
 	}
 
 	// Similar to EntityAIAttackMelee but simpler (no pathfinding)
@@ -235,6 +249,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			switch (movementState) {
 				case INTIMIDATE: {
 					taskOwner.getNavigator().clearPathEntity();
+					taskOwner.getLookHelper().setLookPositionWithEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.faceEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.moveForward = 0.1f;
 					break;
@@ -315,16 +330,18 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		/**
-		 * Charge the player.  Although the count is 4, we actually charge only 3 times.
+		 * Charge the player.  Although the count is 3, we actually charge only 2 times.
 		 */
 		private void doCharge() {
 			movementState = MovementState.CHARGE;
-			stateCounter = 4;
+			stateCounter = 3;
 			taskOwner.goFast();
 		}
 
 		private void doIntimidate() {
 			movementState = MovementState.INTIMIDATE;
+			taskOwner.playSound(TFSounds.NAGA_RATTLE, taskOwner.getSoundVolume() * 4F, taskOwner.getSoundPitch());
+
 			stateCounter += 15 + taskOwner.rand.nextInt(10);
 			taskOwner.goSlow();
 		}
@@ -442,48 +459,21 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		@Override
 		public void onUpdateMoveHelper() {
-			if (action == Action.MOVE_TO) {
-				// [VanillaCopy]? Like superclass. TODO recheck
-				this.action = EntityMoveHelper.Action.WAIT;
-				double d0 = this.posX - this.entity.posX;
-				double d1 = this.posZ - this.entity.posZ;
-				double d2 = this.posY - this.entity.posY;
-				double d3 = d0 * d0 + d2 * d2 + d1 * d1;
-
-				if (d3 < 2.500000277905201E-7D) {
-					this.entity.setMoveForward(0.0F);
-					return;
-				}
-
-				float f9 = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
-				this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f9, 30.0F); // TF - 90 -> 30
-				this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
-
-				// TF - old lines. todo are either still needed?
-				entity.setMoveForward(((EntityTFNaga) entity).getMoveSpeed());
-				entity.setAIMoveSpeed(0.5f);
-
-				// TF - slither!
-				if (d3 > 4 && ((EntityTFNaga) entity).movementAI.movementState != MovementState.CHARGE) {
-					this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * ((EntityTFNaga) this.entity).getMoveSpeed() * 0.6F;
-				}
-
-				if (d2 > (double) this.entity.stepHeight && d0 * d0 + d1 * d1 < (double) Math.max(1.0F, this.entity.width)) {
-					this.entity.getJumpHelper().setJumping();
-				}
+			// TF - slither!
+			MovementState currentState = ((EntityTFNaga) entity).movementAI.movementState;
+			if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
+				this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * 0.6F;
 			} else {
-				super.onUpdateMoveHelper();
+				this.entity.moveStrafing *= 0.8F;
 			}
-		}
-	}
 
-	private float getMoveSpeed() {
-		return 0.5F;
+			super.onUpdateMoveHelper();
+		}
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return rand.nextInt(3) != 0 ? TFSounds.NAGA_HISS : TFSounds.NAGA_RATTLE;
+		return TFSounds.NAGA_HISS;
 	}
 
 	@Override
@@ -533,29 +523,30 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 	}
 
-	// todo 1.10: these setAIMoveSpeeds likely should be attribute changes, only move helper should care about AIMoveSpeed
-
 	/**
 	 * Sets the naga to move slowly, such as when he is intimidating the player
 	 */
 	private void goSlow() {
-//		moveForward = 0f;
-		moveStrafing = 0;
-		this.setAIMoveSpeed(0.1f);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(slowSpeed);
 	}
 
 	/**
 	 * Normal speed, like when he is circling
 	 */
 	private void goNormal() {
-		this.setAIMoveSpeed(0.6F);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
 	}
 
 	/**
 	 * Fast, like when he is charging
 	 */
 	private void goFast() {
-		this.setAIMoveSpeed(1.0F);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(fastSpeed);
 	}
 
 	@Override
@@ -608,9 +599,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	public boolean attackEntityAsMob(Entity toAttack) {
 		boolean result = super.attackEntityAsMob(toAttack);
 
-		if (result && getMoveSpeed() > 0.8) {
+		if (result) {
 			// charging, apply extra pushback
-			toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 1.0F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 1.0F);
+			toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 2.0F, 0.4F, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 2.0F);
+			this.applyEnchantments(this, toAttack);
 		}
 
 		return result;
@@ -700,6 +692,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			double distance = (double) MathHelper.sqrt(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
 
 			if (i == 0) {
+				// tilt segment next to head up towards head
 				diff = diff.addVector(0, -0.15, 0);
 			}
 

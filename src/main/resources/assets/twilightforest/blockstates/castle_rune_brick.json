@@ -3,44 +3,44 @@
   "defaults": { "model": "twilightforest:util/cube_all_2_layer", "textures": { "all": "twilightforest:blocks/castleblock_brick" } },
   "variants": {
     "color=pink": [
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_0_pink" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_1_pink" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_2_pink" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_3_pink" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_4_pink" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_5_pink" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_6_pink" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_7_pink" } }
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_0" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_1" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_2" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_3" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_4" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_5" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_6" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_7" } }
     ],
     "color=blue": [
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_0_blue" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_1_blue" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_2_blue" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_3_blue" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_4_blue" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_5_blue" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_6_blue" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_7_blue" } }
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_0" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_1" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_2" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_3" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_4" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_5" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_6" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_7" } }
     ],
     "color=yellow": [
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_0_yellow" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_1_yellow" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_2_yellow" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_3_yellow" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_4_yellow" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_5_yellow" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_6_yellow" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_7_yellow" } }
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_0" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_1" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_2" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_3" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_4" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_5" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_6" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_7" } }
     ],
     "color=purple": [
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_0_purple" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_1_purple" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_2_purple" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_3_purple" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_4_purple" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_5_purple" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_6_purple" } },
-      { "textures": { "all2": "twilightforest:blocks/castlebrick_magic/castleblock_magic_7_purple" } }
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_0" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_1" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_2" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_3" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_4" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_5" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_6" } },
+      { "textures": { "all2": "twilightforest:blocks/castleblock_magic_7" } }
     ]
   }
 }

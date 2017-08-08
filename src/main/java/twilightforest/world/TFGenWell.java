@@ -89,7 +89,7 @@ public class TFGenWell extends TFGenerator {
 				setBlockAndNotifyAdequately(world, pos.add(3, dy, 1), Blocks.AIR.getDefaultState());
 
 				//TODO: unique treasure table that is themed for underwater well exploration
-				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1));
+				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1), false);
 
 				// set flag so we only get one chest
 				madeTreasure = true;

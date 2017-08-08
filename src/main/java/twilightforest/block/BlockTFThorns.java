@@ -120,6 +120,13 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 
 	@Override
 	@Deprecated
+	public boolean isFullCube(IBlockState state)
+	{
+		return false;
+	}
+
+	@Override
+	@Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		switch (state.getValue(AXIS)) {
 			case Y:

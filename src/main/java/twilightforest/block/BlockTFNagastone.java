@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -14,13 +15,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.NagastoneVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class BlockTFNagastone extends Block {
+public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	public static final PropertyEnum<NagastoneVariant> VARIANT = PropertyEnum.create("variant", NagastoneVariant.class);
 
 	public BlockTFNagastone() {
@@ -125,4 +131,12 @@ public class BlockTFNagastone extends Block {
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, VARIANT);
 	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(VARIANT, NagastoneVariant.EAST_HEAD));
+		ModelUtils.registerToState(this, 1, this.getDefaultState().withProperty(VARIANT, NagastoneVariant.AXIS_X));
+	}
+
 }

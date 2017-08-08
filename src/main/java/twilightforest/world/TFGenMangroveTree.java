@@ -1,23 +1,25 @@
 package twilightforest.world;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
-import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
 
+import java.util.List;
 import java.util.Random;
 
 public class TFGenMangroveTree extends TFTreeGenerator {
 
 	private boolean checkForWater;
+	private List<LeafBlob> leaves = Lists.newArrayList();
 
 	public TFGenMangroveTree() {
 		this(false);
@@ -35,11 +37,19 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	}
 
 	@Override
+	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
+			super.setBlockAndNotifyAdequately(worldIn, pos, state);
+	}
+
+	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
 		// we only start over water
 		if ((this.checkForWater && world.getBlockState(pos.down()).getBlock() != Blocks.WATER) || pos.getY() >= 128 - 18 - 1) {
 			return false;
 		}
+
+		this.leaves.clear();
 
 		//okay build a trunk!  Start 5 squares off the ground and go up maybe 6-9 squares
 		buildBranch(world, random, pos, 5, 6 + random.nextInt(3), 0, 0, true);
@@ -49,6 +59,11 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		double offset = random.nextDouble();
 		for (int b = 0; b < numBranches; b++) {
 			buildBranch(world, random, pos, 7 + b, 6 + random.nextInt(2), 0.3 * b + offset, 0.25, false);
+		}
+
+		// add the actual leaves
+		for (LeafBlob blob : leaves) {
+			makeLeafBlob(world, blob.pos, blob.size);
 		}
 
 		// make 3-5 roots
@@ -64,6 +79,12 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 
 
 		return true;
+	}
+
+	private void makeLeafBlob(World world, BlockPos pos, int size) {
+		TFGenerator.makeLeafCircle(this, world, pos.down(), size - 1, leafState, false);
+		TFGenerator.makeLeafCircle(this, world, pos, size, leafState, false);
+		TFGenerator.makeLeafCircle(this, world, pos.up(), size - 2, leafState, false);
 	}
 
 	/**
@@ -88,10 +109,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 				setBlockAndNotifyAdequately(world, dest.south(), branchState);
 				setBlockAndNotifyAdequately(world, dest.north(), branchState);
 			}
-			// leaves!
-			TFGenerator.makeLeafCircle(this, world, dest.down(), bSize - 1, leafState, false);
-			TFGenerator.makeLeafCircle(this, world, dest, bSize, leafState, false);
-			TFGenerator.makeLeafCircle(this, world, dest.up(), bSize - 2, leafState, false);
+			leaves.add(new LeafBlob(dest, bSize));
 		}
 	}
 
@@ -119,22 +137,13 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		}
 	}
 
-	/**
-	 * Add a firefly at the specified height and angle.
-	 *
-	 * @param height how far up the tree
-	 * @param angle  from 0 - 1 rotation around the tree
-	 */
-	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
-		int iAngle = (int) (angle * 4.0);
-		if (iAngle == 0) {
-			setBlockAndNotifyAdequately(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.EAST));
-		} else if (iAngle == 1) {
-			setBlockAndNotifyAdequately(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.WEST));
-		} else if (iAngle == 2) {
-			setBlockAndNotifyAdequately(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.SOUTH));
-		} else if (iAngle == 3) {
-			setBlockAndNotifyAdequately(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.NORTH));
+	private class LeafBlob {
+		BlockPos pos;
+		int size;
+
+		public LeafBlob(BlockPos pos, int size) {
+			this.pos = pos;
+			this.size = size;
 		}
 	}
 }

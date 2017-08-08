@@ -4,8 +4,9 @@ import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import twilightforest.client.ModelRegisterCallback;
 
-public class BlockTFHugeGloomBlock extends BlockHugeMushroom {
+public class BlockTFHugeGloomBlock extends BlockHugeMushroom implements ModelRegisterCallback {
 
 	public BlockTFHugeGloomBlock() {
 		super(Material.WOOD, MapColor.ADOBE, TFBlocks.plant); // todo 1.9 mapcolor and ensure plant is initialized

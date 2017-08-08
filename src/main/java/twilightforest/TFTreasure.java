@@ -89,8 +89,8 @@ public class TFTreasure {
 		LootTableList.register(lootTable);
 	}
 
-	public void generateChest(World world, BlockPos pos) {
-		world.setBlockState(pos, Blocks.CHEST.getDefaultState(), 2);
+	public void generateChest(World world, BlockPos pos, boolean trapped) {
+		world.setBlockState(pos, trapped ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState(), 2);
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof TileEntityChest) {
 			((TileEntityChest) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());

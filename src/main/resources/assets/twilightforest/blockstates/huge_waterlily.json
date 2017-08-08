@@ -4,5 +4,8 @@
     "model": "minecraft:cross",
     "textures": { "cross": "twilightforest:blocks/huge_waterlily" }
   },
-  "variants": { "normal": [{}] }
+  "variants": {
+    "inventory": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/huge_waterlily"}}],
+    "normal": [{}]
+  }
 }

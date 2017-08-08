@@ -5,8 +5,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -64,13 +66,15 @@ public class TFRecipes {
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterTwilight), new ItemStack(TFItems.scepterTwilight, 1, TFItems.scepterTwilight.getMaxDamage()), Items.ENDER_PEARL);
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterLifeDrain), new ItemStack(TFItems.scepterLifeDrain, 1, TFItems.scepterLifeDrain.getMaxDamage()), Items.FERMENTED_SPIDER_EYE);
 		// aah, why are there so many potions of strength
-		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.POTIONITEM, 1, 16281));
-		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.POTIONITEM, 1, 16313));
-		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.POTIONITEM, 1, 16345));
-		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.POTIONITEM, 1, 16377));
-		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.POTIONITEM, 1, 8201));
-		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.POTIONITEM, 1, 8265));
-		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.POTIONITEM, 1, 8233));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.LONG_STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.STRONG_STRENGTH));
+		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.scepterZombie), new ItemStack(TFItems.scepterZombie, 1, TFItems.scepterZombie.getMaxDamage()), new ItemStack(Items.ROTTEN_FLESH), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.LONG_STRENGTH));
 
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.magicMapFocus), TFItems.feather, TFItems.torchberries, Items.GLOWSTONE_DUST);
 		GameRegistry.addRecipe(new ItemStack(TFItems.emptyMagicMap), "###", "#X#", "###", '#', Items.PAPER, 'X', TFItems.magicMapFocus);

@@ -36,6 +36,13 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
+	public boolean isFullCube(IBlockState state)
+	{
+		return false;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;

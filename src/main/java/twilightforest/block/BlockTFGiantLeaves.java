@@ -30,17 +30,17 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		switch (side) {
 			case DOWN:
-				return (pos.getY() & 3) == 3;
-			case UP:
 				return (pos.getY() & 3) == 0;
+			case UP:
+				return (pos.getY() & 3) == 3;
 			case NORTH:
-				return (pos.getZ() & 3) == 3;
-			case SOUTH:
 				return (pos.getZ() & 3) == 0;
+			case SOUTH:
+				return (pos.getZ() & 3) == 3;
 			case WEST:
-				return (pos.getX() & 3) == 3;
-			case EAST:
 				return (pos.getX() & 3) == 0;
+			case EAST:
+				return (pos.getX() & 3) == 3;
 		}
 
 		return super.shouldSideBeRendered(state, world, pos, side);

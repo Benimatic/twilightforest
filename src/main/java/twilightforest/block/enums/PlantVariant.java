@@ -6,8 +6,8 @@ import java.util.Locale;
 
 public enum PlantVariant implements IStringSerializable {
 	MOSSPATCH(false),
-	MAYAPPLE(true),
-	CLOVERPATCH(true),
+	MAYAPPLE(false),
+	CLOVERPATCH(false),
 	FIDDLEHEAD(true),
 	MUSHGLOOM(false),
 	FORESTGRASS(true),

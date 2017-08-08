@@ -4,5 +4,8 @@
     "model": "minecraft:cross",
     "textures": { "cross": "twilightforest:blocks/unripe_torch_cluster" }
   },
-  "variants": { "normal": [{}] }
+  "variants": {
+    "inventory": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/unripe_torch_cluster"}}],
+    "normal": [{}]
+  }
 }

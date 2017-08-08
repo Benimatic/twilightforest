@@ -1,6 +1,7 @@
 {
   "forge_marker": 1,
   "variants": {
+    "inventory": [{ "model": "leaves", "textures": { "all": "minecraft:blocks/leaves_oak"}}],
     "normal": [{
       "model": "leaves",
       "textures": {

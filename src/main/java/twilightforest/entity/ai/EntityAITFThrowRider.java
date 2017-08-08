@@ -2,58 +2,83 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFPacketHandler;
 import twilightforest.network.PacketThrowPlayer;
 
-public class EntityAITFThrowRider extends EntityAIBase {
-	private final EntityCreature theEntityCreature;
-	private int throwTimer;
+public class EntityAITFThrowRider extends EntityAIAttackMelee {
 
-	public EntityAITFThrowRider(EntityCreature par1EntityCreature, float par2) {
-		this.theEntityCreature = par1EntityCreature;
-		this.setMutexBits(1);
+	private int throwTimer;
+	private int timeout;
+
+	public EntityAITFThrowRider(EntityCreature par1EntityCreature, double speedIn, boolean useLongMemory) {
+		super(par1EntityCreature, speedIn, useLongMemory);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (this.theEntityCreature.getPassengers().isEmpty() || this.theEntityCreature.getRNG().nextInt(5) > 0) {
-			return false;
-		} else {
-			return true;
-		}
+		return this.attacker.getPassengers().isEmpty() && super.shouldExecute();
 	}
 
 	@Override
 	public void startExecuting() {
-		Entity rider = this.theEntityCreature.getPassengers().get(0);
-		rider.dismountRidingEntity();
+		this.throwTimer = 10 + attacker.getRNG().nextInt(30); // Wait 0.5 to 2 seconds before we throw the target
+		timeout = 80 + attacker.getRNG().nextInt(40); // Lets only try to chase for around 4-6 seconds
+		super.startExecuting();
+	}
 
-		Vec3d throwVec = this.theEntityCreature.getLookVec().scale(2);
-		throwVec = new Vec3d(throwVec.xCoord, 0.9, throwVec.zCoord);
+	@Override
+	public void updateTask() {
+		timeout--;
+		if (!attacker.getPassengers().isEmpty())
+			throwTimer--;
+		else
+			super.updateTask();
+	}
 
-		rider.addVelocity(throwVec.xCoord, throwVec.yCoord, throwVec.zCoord);
+	// Vanilla Copy with edits
+	@Override
+	protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_) {
+		double d0 = this.getAttackReachSqr(p_190102_1_);
 
-		if (rider instanceof EntityPlayerMP) {
-			EntityPlayerMP player = (EntityPlayerMP) rider;
-
-			IMessage message = new PacketThrowPlayer((float) throwVec.xCoord, (float) throwVec.yCoord, (float) throwVec.zCoord);
-			TFPacketHandler.CHANNEL.sendTo(message, player);
+		if (p_190102_2_ <= d0 && this.attackTick <= 0) {
+			this.attackTick = 20;
+			this.attacker.swingArm(EnumHand.MAIN_HAND);
+			if (attacker.getPassengers().isEmpty() && p_190102_1_.getRidingEntity() == null) {
+				p_190102_1_.startRiding(attacker);
+			}
 		}
+	}
 
-		this.throwTimer = 0;
+	@Override
+	public void resetTask() {
+		if (!attacker.getPassengers().isEmpty()) {
+			Entity rider = attacker.getPassengers().get(0);
+			rider.dismountRidingEntity();
+
+			Vec3d throwVec = attacker.getLookVec().scale(2);
+			throwVec = new Vec3d(throwVec.xCoord, 0.9, throwVec.zCoord);
+
+			rider.addVelocity(throwVec.xCoord, throwVec.yCoord, throwVec.zCoord);
+
+			if (rider instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) rider;
+
+				IMessage message = new PacketThrowPlayer((float) throwVec.xCoord, (float) throwVec.yCoord, (float) throwVec.zCoord);
+				TFPacketHandler.CHANNEL.sendTo(message, player);
+			}
+		}
+		super.resetTask();
 	}
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		if (this.theEntityCreature.getPassengers().isEmpty()) {
-			this.throwTimer++;
-		}
-
-		return this.throwTimer <= 40;
+		return (throwTimer > 0 && !attacker.getPassengers().isEmpty()) || (timeout > 0 && super.shouldContinueExecuting() && attacker.getPassengers().isEmpty());
 	}
 
 }

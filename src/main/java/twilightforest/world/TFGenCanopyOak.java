@@ -1,5 +1,6 @@
 package twilightforest.world;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -8,9 +9,13 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
 
+import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 public class TFGenCanopyOak extends TFGenCanopyTree {
+
+	private List<BlockPos> leaves = Lists.newArrayList();
 
 	public TFGenCanopyOak() {
 		this(false);
@@ -46,6 +51,8 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 			}
 		}
 
+		this.leaves.clear();
+
 		//okay build a tree!  Go up to the height
 		buildTrunk(world, pos, treeHeight);
 
@@ -62,12 +69,22 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 			}
 		}
 
+		// add the actual leaves
+		for (BlockPos leafPos : leaves) {
+			makeLeafBlob(world, leafPos);
+		}
+
 		makeRoots(world, random, pos);
 		makeRoots(world, random, pos.east());
 		makeRoots(world, random, pos.south());
 		makeRoots(world, random, pos.east().south());
 
 		return true;
+	}
+
+	private void makeLeafBlob(World world, BlockPos leafPos)
+	{
+		TFGenerator.drawLeafBlob(this, world, leafPos, 2, leafState);
 	}
 
 	private void makeRoots(World world, Random random, BlockPos pos) {
@@ -94,8 +111,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 			this.setBlockAndNotifyAdequately(world, pos.add(1, dy, 1), treeState);
 		}
 
-		TFGenerator.drawLeafBlob(this, world, pos.up(treeHeight), 3, leafState);
-
+		this.leaves.add(pos.add(0, treeHeight, 0));
 	}
 
 	/**
@@ -123,18 +139,11 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 		TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
 
-		int blobSize = 2;// + treeRNG.nextInt(2);
-
-		TFGenerator.drawLeafBlob(this, world, dest, blobSize, leafState);
-
-//		makeLeafCircle(world, dest.posX, dest.posY - 1, dest.posZ, 3, leafBlock, leafMeta, true);	
-//		makeLeafCircle(world, dest.posX, dest.posY, dest.posZ, 4, leafBlock, leafMeta, true);	
-//		makeLeafCircle(world, dest.posX, dest.posY + 1, dest.posZ, 2, leafBlock, leafMeta, true);	
-
 		setBlockAndNotifyAdequately(world, dest.east(), branchState);
 		setBlockAndNotifyAdequately(world, dest.west(), branchState);
 		setBlockAndNotifyAdequately(world, dest.north(), branchState);
 		setBlockAndNotifyAdequately(world, dest.south(), branchState);
 
+		this.leaves.add(dest);
 	}
 }

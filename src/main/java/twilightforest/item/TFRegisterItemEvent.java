@@ -1,12 +1,14 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemMultiTexture;
-import net.minecraft.item.ItemSlab;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -18,10 +20,7 @@ import twilightforest.block.enums.ThornVariant;
 
 import static java.util.Arrays.stream;
 import static net.minecraft.init.MobEffects.REGENERATION;
-import static net.minecraft.inventory.EntityEquipmentSlot.CHEST;
-import static net.minecraft.inventory.EntityEquipmentSlot.FEET;
-import static net.minecraft.inventory.EntityEquipmentSlot.HEAD;
-import static net.minecraft.inventory.EntityEquipmentSlot.LEGS;
+import static net.minecraft.inventory.EntityEquipmentSlot.*;
 import static net.minecraft.item.Item.ToolMaterial.DIAMOND;
 import static twilightforest.item.TFItems.*;
 
@@ -103,7 +102,31 @@ public class TFRegisterItemEvent {
 		items.register("tower_key", new ItemTFTowerKey().setUnlocalizedName("towerKey"));
 		items.register("borer_essence", new ItemTF().setUnlocalizedName("borerEssence"));
 		items.register("carminite", new ItemTF().makeRare().setUnlocalizedName("carminite"));
-		items.register("experiment_115", (new ItemTFFood(4, 0.3F, false)).setUnlocalizedName("experiment115"));
+		items.register("experiment_115", (new ItemTFFood(4, 0.3F, false) {
+			@Override
+			public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+				IBlockState state = world.getBlockState(pos);
+				Block block = state.getBlock();
+
+				if ((!player.isCreative() && player.canEat(false)) || block == TFBlocks.experiment_115)
+					return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+
+				IBlockState e115 = TFBlocks.experiment_115.getDefaultState();
+
+				if (!block.isReplaceable(world, pos)) pos = pos.offset(facing);
+				ItemStack itemstack = player.getHeldItem(hand);
+
+				if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && world.mayPlace(e115.getBlock(), pos, false, facing, null)) {
+					if (!world.setBlockState(pos, e115, 11)) {
+						SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
+						world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+						itemstack.shrink(1);
+					}
+
+					return EnumActionResult.SUCCESS;
+				} else return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+			}
+		} ).setUnlocalizedName("experiment115"));
 		items.register("armor_shard", new ItemTF().setUnlocalizedName("armorShards"));
 		items.register("knightmetal_ingot", new ItemTF().setUnlocalizedName("knightMetal"));
 		items.register("armor_shard_cluster", new ItemTF().setUnlocalizedName("shardCluster"));

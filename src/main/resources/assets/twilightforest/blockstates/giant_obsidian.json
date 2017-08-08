@@ -1,6 +1,7 @@
 {
   "forge_marker": 1,
   "variants": {
+    "inventory": [{ "model": "cube_all", "textures": { "all": "minecraft:blocks/obsidian"}}],
     "normal": [{
       "model": "cube_all",
       "textures": {

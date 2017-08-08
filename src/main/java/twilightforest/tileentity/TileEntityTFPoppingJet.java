@@ -19,6 +19,8 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 		this.nextVariant = variant;
 	}
 
+	public TileEntityTFPoppingJet() {}
+
 	@Override
 	public void update() {
 		if (++counter >= 80) {
@@ -29,7 +31,10 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 			}
 		} else {
 			if (counter % 20 == 0) {
-				world.spawnParticle(EnumParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
+				for (int i = 0; i < 8; i++)
+				{
+					world.spawnParticle(EnumParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
+				}
 				world.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
 			}
 

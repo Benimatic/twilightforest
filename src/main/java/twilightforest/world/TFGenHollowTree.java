@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockVine;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
@@ -34,6 +35,18 @@ public class TFGenHollowTree extends TFGenerator {
 
 	public TFGenHollowTree(boolean par1) {
 		super(par1);
+	}
+
+	// Vanilla Copy from WorldGenAbstractTree
+	private boolean canGrowInto(Block blockType) {
+		Material material = blockType.getDefaultState().getMaterial();
+		return material == Material.AIR || material == Material.LEAVES || blockType == Blocks.GRASS || blockType == Blocks.DIRT || blockType == Blocks.LOG || blockType == Blocks.LOG2 || blockType == Blocks.SAPLING || blockType == Blocks.VINE;
+	}
+
+	@Override
+	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
+			super.setBlockAndNotifyAdequately(worldIn, pos, state);
 	}
 
 	@Override
@@ -456,7 +469,7 @@ public class TFGenHollowTree extends TFGenerator {
 
 	private void makeLeafDungeonChest(World world, Random random, BlockPos pos) {
 		pos = pos.offset(EnumFacing.HORIZONTALS[random.nextInt(4)]);
-		TFTreasure.tree_cache.generateChest(world, pos.down());
+		TFTreasure.tree_cache.generateChest(world, pos.down(), false);
 	}
 
 	/**
