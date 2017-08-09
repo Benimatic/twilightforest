@@ -1,20 +1,11 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -30,7 +21,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -41,7 +31,8 @@ import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSwarmSpider;
-import twilightforest.item.TFItems;
+import twilightforest.entity.ai.EntityAITFLichMinions;
+import twilightforest.entity.ai.EntityAITFLichShadows;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
@@ -64,7 +55,6 @@ public class EntityTFLich extends EntityMob {
 
 	private EntityTFLich masterLich;
 	private int attackCooldown;
-	private int prevPhase = -1;
 	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
 
 	public EntityTFLich(World world) {
@@ -84,6 +74,18 @@ public class EntityTFLich extends EntityMob {
 		this.masterLich = otherLich;
 	}
 
+	public EntityTFLich getMasterLich(){
+		return masterLich;
+	}
+
+	public int getAttackCooldown() {
+		return attackCooldown;
+	}
+
+	public void setAttackCooldown(int cooldown) {
+		attackCooldown = cooldown;
+	}
+
 	@Override
 	public void setCustomNameTag(String name) {
 		super.setCustomNameTag(name);
@@ -92,6 +94,21 @@ public class EntityTFLich extends EntityMob {
 
 	@Override
 	protected void initEntityAI() {
+		this.tasks.addTask(1, new EntityAITFLichShadows(this));
+		this.tasks.addTask(2, new EntityAITFLichMinions(this));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, true) {
+			@Override
+			public boolean shouldExecute() {
+				return getPhase() == 3 && super.shouldExecute();
+			}
+
+			@Override
+			public void startExecuting() {
+				super.startExecuting();
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
+			}
+		});
+
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
 	}
@@ -110,7 +127,7 @@ public class EntityTFLich extends EntityMob {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.800000011920929D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.45000001788139344D); // Same speed as an angry enderman
 	}
 
 	@Override
@@ -151,7 +168,7 @@ public class EntityTFLich extends EntityMob {
 	 * 2 - summoning minions
 	 * 3 - melee
 	 */
-	private int getPhase() {
+	public int getPhase() {
 		if (isShadowClone() || getShieldStrength() > 0) {
 			return 1;
 		} else if (getMinionsToSummon() > 0) {
@@ -194,10 +211,6 @@ public class EntityTFLich extends EntityMob {
 			}
 
 			world.spawnParticle(EnumParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
-		}
-
-		if (isShadowClone()) {
-			checkForMaster();
 		}
 
 		if (!world.isRemote) {
@@ -258,7 +271,6 @@ public class EntityTFLich extends EntityMob {
 		}
 	}
 
-	// TODO - split into tasks?
 	@Override
 	protected void updateAITasks() {
 		super.updateAITasks();
@@ -271,101 +283,17 @@ public class EntityTFLich extends EntityMob {
 			attackCooldown--;
 		}
 
-		if (getPhase() != prevPhase) {
-			prevPhase = getPhase();
-			switch (getPhase()) {
-				default:
-				case 1:
-					setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.scepterTwilight));
-					break;
-				case 2:
-					setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.scepterZombie));
-					break;
-				case 3:
-					setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
-			}
-		}
-
-		EntityLivingBase targetedEntity = getAttackTarget();
-		float dist = getDistanceToEntity(targetedEntity);
-
+		// TODO: AI task?
 		if (!isShadowClone() && attackCooldown % 15 == 0) {
 			popNearbyMob();
 		}
 
-		if (getPhase() == 1) {
-			if (attackCooldown == 60) {
-				teleportToSightOfEntity(targetedEntity);
-
-				if (!isShadowClone()) {
-					checkAndSpawnClones();
-				}
-			}
-
-			if (getEntitySenses().canSee(targetedEntity) && attackCooldown == 0 && dist < 20F) {
-				if (this.getNextAttackType() == 0) {
-					launchBoltAt();
-				} else {
-					launchBombAt();
-				}
-
-				if (rand.nextInt(3) > 0) {
-					this.setNextAttackType(0);
-				} else {
-					this.setNextAttackType(1);
-				}
-				attackCooldown = 100;
-			}
-		}
-		if (getPhase() == 2 && !isShadowClone()) {
-			despawnClones();
-
-			// spawn minions every so often
-			if (attackCooldown % 15 == 0) {
-				checkAndSpawnMinions();
-			}
-
-			if (attackCooldown == 0) {
-				if (dist < 2.0F) {
-					// melee attack
-					super.attackEntityAsMob(targetedEntity);
-					attackCooldown = 20;
-				} else if (dist < 20F && getEntitySenses().canSee(targetedEntity)) {
-					if (this.getNextAttackType() == 0) {
-						launchBoltAt();
-					} else {
-						launchBombAt();
-					}
-
-					if (rand.nextInt(2) > 0) {
-						this.setNextAttackType(0);
-					} else {
-						this.setNextAttackType(1);
-					}
-					attackCooldown = 60;
-				} else {
-					// if not, teleport around
-					teleportToSightOfEntity(targetedEntity);
-					attackCooldown = 20;
-
-				}
-			}
-
-		}
-		if (getPhase() == 3) {
-			// melee!
-			if (this.attackCooldown <= 0 && dist < 2.0F && targetedEntity.getEntityBoundingBox().maxY > this.getEntityBoundingBox().minY && targetedEntity.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
-				this.attackCooldown = 20;
-				super.attackEntityAsMob(targetedEntity);
-			}
-		}
-
 		// always watch our target
 		// TODO: make into AI task
-		this.getLookHelper().setLookPositionWithEntity(targetedEntity, 100F, 100F);
+		this.getLookHelper().setLookPositionWithEntity(getAttackTarget(), 100F, 100F);
 	}
 
-	private void launchBoltAt() {
+	public void launchBoltAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
 		double sy = posY + (height * 0.82);
@@ -384,7 +312,7 @@ public class EntityTFLich extends EntityMob {
 		world.spawnEntity(projectile);
 	}
 
-	private void launchBombAt() {
+	public void launchBombAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
 		double sy = posY + (height * 0.82);
@@ -421,20 +349,20 @@ public class EntityTFLich extends EntityMob {
 		}
 	}
 
-	private void checkAndSpawnClones() {
-		// if not, spawn one!
-		if (countMyClones() < EntityTFLich.MAX_SHADOW_CLONES) {
-			spawnShadowClone();
-		}
+	public boolean wantsNewClone(EntityTFLich clone) {
+		return clone.isShadowClone() && countMyClones() < EntityTFLich.MAX_SHADOW_CLONES;
 	}
 
-	private int countMyClones() {
+	public void setMaster(EntityTFLich lich) {
+		masterLich = lich;
+	}
+
+	public int countMyClones() {
 		// check if there are enough clones.  we check a 32x16x32 area
-		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 		int count = 0;
 
-		for (EntityTFLich nearbyLich : nearbyLiches) {
-			if (nearbyLich.isShadowClone() && nearbyLich.masterLich == this) {
+		for (EntityTFLich nearbyLich : getNearbyLiches()) {
+			if (nearbyLich.isShadowClone() && nearbyLich.getMasterLich() == this) {
 				count++;
 			}
 		}
@@ -442,112 +370,22 @@ public class EntityTFLich extends EntityMob {
 		return count;
 	}
 
-	private boolean wantsNewClone(EntityTFLich clone) {
-		return clone.isShadowClone() && countMyClones() < EntityTFLich.MAX_SHADOW_CLONES;
-	}
-
-	private void spawnShadowClone() {
-		EntityLivingBase targetedEntity = getAttackTarget();
-
-		// find a good spot
-		Vec3d cloneSpot = findVecInLOSOf(targetedEntity);
-
-		if (cloneSpot != null) {
-			// put a clone there
-			EntityTFLich newClone = new EntityTFLich(world, this);
-			newClone.setPosition(cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
-			world.spawnEntity(newClone);
-
-			newClone.setAttackTarget(targetedEntity);
-			newClone.attackCooldown = 60 + rand.nextInt(3) - rand.nextInt(3);
-
-			// make sparkles leading to it
-			makeTeleportTrail(posX, posY, posZ, cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
-		}
-	}
-
-	private void despawnClones() {
-		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(this.getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
-
-		for (EntityTFLich nearbyLich : nearbyLiches) {
-			if (nearbyLich.isShadowClone()) {
-				nearbyLich.isDead = true;
-			}
-		}
-	}
-
-	private void checkAndSpawnMinions() {
-		if (!world.isRemote && this.getMinionsToSummon() > 0) {
-			int minions = countMyMinions();
-
-			// if not, spawn one!
-			if (minions < EntityTFLich.MAX_ACTIVE_MINIONS) {
-				spawnMinionAt();
-				this.setMinionsToSummon(this.getMinionsToSummon() - 1);
-			}
-		}
-		// if there's no minions left to summon, we should move into phase 3 naturally
-	}
-
-	private int countMyMinions() {
-		return (int) world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D))
-				.stream()
-				.filter(m -> m.master == this)
-				.count();
-	}
-
-	private void spawnMinionAt() {
-		// find a good spot
-		EntityLivingBase targetedEntity = getAttackTarget();
-		Vec3d minionSpot = findVecInLOSOf(targetedEntity);
-
-		if (minionSpot != null) {
-			// put a clone there
-			EntityTFLichMinion minion = new EntityTFLichMinion(world, this);
-			minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
-			minion.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(minionSpot)), null);
-			world.spawnEntity(minion);
-
-			minion.setAttackTarget(targetedEntity);
-
-			minion.spawnExplosionParticle();
-			minion.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-
-			// make sparkles leading to it
-			makeBlackMagicTrail(posX, posY + this.getEyeHeight(), posZ, minionSpot.xCoord, minionSpot.yCoord + minion.height / 2.0, minionSpot.zCoord);
-		}
+	public List<EntityTFLich> getNearbyLiches() {
+		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
 	}
 
 	public boolean wantsNewMinion(EntityTFLichMinion minion) {
 		return countMyMinions() < EntityTFLich.MAX_ACTIVE_MINIONS;
 	}
 
-	private void checkForMaster() {
-		if (masterLich == null) {
-			findNewMaster();
-		}
-		if (!world.isRemote && (masterLich == null || masterLich.isDead)) {
-			this.setDead();
-		}
+	public int countMyMinions() {
+		return (int) world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D))
+				.stream()
+				.filter(m -> m.master == this)
+				.count();
 	}
 
-	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
-
-		for (EntityTFLich nearbyLich : nearbyLiches) {
-			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(this)) {
-				this.masterLich = nearbyLich;
-
-				// animate our new linkage!
-				makeTeleportTrail(posX, posY, posZ, nearbyLich.posX, nearbyLich.posY, nearbyLich.posZ);
-
-				setAttackTarget(masterLich.getAttackTarget());
-				break;
-			}
-		}
-	}
-
-	private void teleportToSightOfEntity(Entity entity) {
+	public void teleportToSightOfEntity(Entity entity) {
 		Vec3d dest = findVecInLOSOf(entity);
 		double srcX = posX;
 		double srcY = posY;
@@ -568,7 +406,7 @@ public class EntityTFLich extends EntityMob {
 	 * Returns coords that would be good to teleport to.
 	 * Returns null if we can't find anything
 	 */
-	private Vec3d findVecInLOSOf(Entity targetEntity) {
+	public Vec3d findVecInLOSOf(Entity targetEntity) {
 		if (targetEntity == null) return null;
 		double origX = posX;
 		double origY = posY;
@@ -578,7 +416,7 @@ public class EntityTFLich extends EntityMob {
 		for (int i = 0; i < tries; i++) {
 			// we abuse EntityLivingBase.attemptTeleport, which does all the collision/ground checking for us, then teleport back to our original spot
 			double tx = targetEntity.posX + rand.nextGaussian() * 16D;
-			double ty = targetEntity.posY + rand.nextGaussian() * 8D;
+			double ty = targetEntity.posY;
 			double tz = targetEntity.posZ + rand.nextGaussian() * 16D;
 
 			boolean destClear = attemptTeleport(tx, ty, tz);
@@ -613,7 +451,7 @@ public class EntityTFLich extends EntityMob {
 		this.isJumping = false;
 	}
 
-	protected void makeTeleportTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	public void makeTeleportTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
 		int particles = 128;
 		for (int i = 0; i < particles; i++) {
@@ -642,7 +480,7 @@ public class EntityTFLich extends EntityMob {
 		}
 	}
 
-	protected void makeBlackMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	public void makeBlackMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
 		int particles = 32;
 		for (int i = 0; i < particles; i++) {
