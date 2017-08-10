@@ -184,7 +184,7 @@ public class TFEventListener {
 		// if the item is naga armor
 		if ((itemStack.getItem() == TFItems.plateNaga || itemStack.getItem() == TFItems.legsNaga)) {
 			// check if the player has made both armors
-			checkPlayerForNagaArmorer(player);
+			checkPlayerForNagaArmorer(player, itemStack.getItem());
 		}
 
 		// trigger achievements
@@ -225,24 +225,25 @@ public class TFEventListener {
 	/**
 	 * Does the player have two naga armors?
 	 */
-	private static void checkPlayerForNagaArmorer(EntityPlayer player) {
-		boolean nagaScale = false;
-		boolean legsNaga = false;
+	private static void checkPlayerForNagaArmorer(EntityPlayer player, Item item) {
+		// Add the crafted item to the check as the event fires before the item gets placed into the inventory
+		boolean plateNaga = item == TFItems.plateNaga;
+		boolean legsNaga = item == TFItems.legsNaga;
 
 		IInventory inv = player.inventory;
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 
-			if (!stack.isEmpty() && stack.getItem() == TFItems.nagaScale) {
-				nagaScale = true;
+			if (!stack.isEmpty() && stack.getItem() == TFItems.plateNaga) {
+				plateNaga = true;
 			}
 			if (!stack.isEmpty() && stack.getItem() == TFItems.legsNaga) {
 				legsNaga = true;
 			}
 		}
 
-		if (nagaScale && legsNaga) {
+		if (plateNaga && legsNaga) {
 			player.addStat(TFAchievementPage.twilightNagaArmors);
 		}
 	}
