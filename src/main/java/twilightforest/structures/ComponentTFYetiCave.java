@@ -1,17 +1,18 @@
 package twilightforest.structures;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
 public class ComponentTFYetiCave extends ComponentTFHollowHill {
-
-	private boolean yetiPlaced;
 
 	public ComponentTFYetiCave() {
 		super();
@@ -74,24 +75,8 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 		}
 
 		// spawn alpha yeti
-		if (!yetiPlaced) {
-			int bx = this.getXWithOffset(this.radius, this.radius);
-			int by = this.getYWithOffset(0);
-			int bz = this.getZWithOffset(this.radius, this.radius);
-			BlockPos pos = new BlockPos(bx, by, bz);
-
-			if (sbb.isVecInside(pos)) {
-				yetiPlaced = true;
-
-				EntityTFYetiAlpha yeti = new EntityTFYetiAlpha(world);
-				yeti.setPosition(bx, by, bz);
-				yeti.setHomePosAndDistance(pos, 30);
-				yeti.onInitialSpawn(world.getDifficultyForLocation(pos), null);
-
-				world.spawnEntity(yeti);
-			}
-		}
-
+		final IBlockState yetiSpawner = TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI);
+		setBlockStateRotated(world, yetiSpawner, radius, 1, radius, Rotation.NONE, sbb);
 
 		return true;
 	}

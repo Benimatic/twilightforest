@@ -3,11 +3,14 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
-import twilightforest.entity.boss.EntityTFMinoshroom;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.BossVariant;
 
 import java.util.Random;
 
@@ -18,9 +21,6 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-
-	private boolean taurPlaced = false;
 
 
 	public ComponentTFMazeRoomBoss(int i, Random rand, int x, int y, int z) {
@@ -99,27 +99,9 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
-
 		// the moo-cen-mino-shrom-taur!
-		if (!taurPlaced) {
-			int bx = this.getXWithOffset(7, 7);
-			int by = this.getYWithOffset(1);
-			int bz = this.getZWithOffset(7, 7);
-
-			BlockPos pos = new BlockPos(bx, by, bz);
-
-			if (sbb.isVecInside(pos)) {
-				taurPlaced = true;
-
-				EntityTFMinoshroom taur = new EntityTFMinoshroom(world);
-				taur.setPosition(bx, by, bz);
-				taur.setHomePosAndDistance(pos, 7);
-				taur.onInitialSpawn(world.getDifficultyForLocation(pos), null);
-
-				world.spawnEntity(taur);
-			}
-		}
-
+		final IBlockState taurSpawner = TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
+		setBlockStateRotated(world, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
 
 		return true;
 	}

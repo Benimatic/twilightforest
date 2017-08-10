@@ -2,13 +2,7 @@ package twilightforest.block.enums;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.IStringSerializable;
-import twilightforest.tileentity.TileEntityTFBossSpawner;
-import twilightforest.tileentity.TileEntityTFHydraSpawner;
-import twilightforest.tileentity.TileEntityTFKnightPhantomsSpawner;
-import twilightforest.tileentity.TileEntityTFLichSpawner;
-import twilightforest.tileentity.TileEntityTFNagaSpawner;
-import twilightforest.tileentity.TileEntityTFSnowQueenSpawner;
-import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
+import twilightforest.tileentity.*;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -21,7 +15,9 @@ public enum BossVariant implements IStringSerializable {
 	HYDRA(true, TileEntityTFHydraSpawner.class),
 	UR_GHAST(true, TileEntityTFTowerBossSpawner.class),
 	KNIGHT_PHANTOM(false, TileEntityTFKnightPhantomsSpawner.class),
-	SNOW_QUEEN(true, TileEntityTFSnowQueenSpawner.class);
+	SNOW_QUEEN(true, TileEntityTFSnowQueenSpawner.class),
+	MINOSHROOM(false, TileEntityTFMinoshroomSpawner.class),
+	ALPHA_YETI(false, TileEntityTFAlphaYetiSpawner.class);
 
 	private final boolean hasTrophy;
 	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;

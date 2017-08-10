@@ -236,6 +236,8 @@ public class TwilightForestMod {
 		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, "knight_phantom_spawner");
 		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner.class, "snow_queen_spawner");
 		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "cinder_furnace");
+		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "minoshroom_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "alpha_yeti_spawner");
 	}
 
 	/**
