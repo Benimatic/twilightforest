@@ -1,9 +1,6 @@
 package twilightforest.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockVine;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
@@ -37,10 +34,10 @@ public class TFGenHollowTree extends TFGenerator {
 		super(par1);
 	}
 
-	// Vanilla Copy from WorldGenAbstractTree
+	// Vanilla Copy from WorldGenAbstractTree with edits
 	private boolean canGrowInto(Block blockType) {
 		Material material = blockType.getDefaultState().getMaterial();
-		return material == Material.AIR || material == Material.LEAVES || blockType == Blocks.GRASS || blockType == Blocks.DIRT || blockType == Blocks.LOG || blockType == Blocks.LOG2 || blockType == Blocks.SAPLING || blockType == Blocks.VINE;
+		return material == Material.AIR || material == Material.LEAVES || blockType instanceof IGrowable || blockType instanceof BlockDirt || blockType instanceof BlockLog || blockType instanceof BlockBush || blockType instanceof BlockVine;
 	}
 
 	@Override
