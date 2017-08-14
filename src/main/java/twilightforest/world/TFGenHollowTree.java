@@ -34,10 +34,9 @@ public class TFGenHollowTree extends TFGenerator {
 		super(par1);
 	}
 
-	// Vanilla Copy from WorldGenAbstractTree with edits
-	private boolean canGrowInto(Block blockType) {
+	public static boolean canGrowInto(Block blockType) {
 		Material material = blockType.getDefaultState().getMaterial();
-		return material == Material.AIR || material == Material.LEAVES || blockType instanceof IGrowable || blockType instanceof BlockDirt || blockType instanceof BlockLog || blockType instanceof BlockBush || blockType instanceof BlockVine;
+		return material == Material.AIR || material == Material.LEAVES || material == Material.WATER || material == Material.LAVA || blockType instanceof IGrowable || blockType instanceof BlockDirt || blockType instanceof BlockLog || blockType instanceof BlockBush || blockType instanceof BlockVine;
 	}
 
 	@Override

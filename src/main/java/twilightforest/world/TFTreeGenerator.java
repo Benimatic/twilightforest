@@ -36,6 +36,11 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 		setBlockAndNotifyAdequately(world, pos, state);
 	}
 
+	@Override
+	protected boolean canGrowInto(Block blockType) {
+		return TFGenHollowTree.canGrowInto(blockType);
+	}
+
 	/**
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
