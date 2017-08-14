@@ -11,6 +11,7 @@ import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.*;
 
 import java.awt.*;
@@ -227,24 +228,21 @@ public final class ColorHandler {
 		}, TFBlocks.leaves3);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isGrassColored ? worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.plant);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-			int color = 0xFFFFFF;
+			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (tintIndex <= 15) {
-				switch (state.getValue(BlockTFCastleMagic.COLOR)) {
-					case PINK:
-						return 0xFF00FF;
-					case BLUE:
-						return 0x00FFFF;
-					case YELLOW:
-						return 0xFFFF00;
-					case PURPLE:
-						return 0x4B0082;
-					default:
-						return color;
-				}
+			switch (state.getValue(BlockTFCastleMagic.COLOR)) {
+				case PINK:
+					return 0xFF00FF;
+				case BLUE:
+					return 0x00FFFF;
+				case YELLOW:
+					return 0xFFFF00;
+				case PURPLE:
+					return 0x4B0082;
+				default:
+					TwilightForestMod.LOGGER.info("Magic happened. Got " + state.getValue(BlockTFCastleMagic.COLOR).getName() + " for Castle Rune");
+					return state.getValue(BlockTFCastleMagic.COLOR).getMapColor().colorValue;
 			}
-
-			return color;
 		}, TFBlocks.castleMagic);
 
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
