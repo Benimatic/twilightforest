@@ -244,6 +244,22 @@ public final class ColorHandler {
 					return state.getValue(BlockTFCastleMagic.COLOR).getMapColor().colorValue;
 			}
 		}, TFBlocks.castleMagic);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
+
+			switch (state.getValue(BlockTFCastleDoor.LOCK_INDEX)) {
+				case 0: // YELLOW
+					return 0xFFFF00;
+				case 1: // PURPLE
+					return 0x4B0082;
+				case 2: // PINK
+					return 0xFF00FF;
+				case 3: // BLUE
+					return 0x00FFFF;
+				default:
+					return 0;
+			}
+		}, TFBlocks.castleDoor, TFBlocks.castleDoorVanished);
 
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 		// Atomic: This is one place where getStateFromMeta is still commonly used

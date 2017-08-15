@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -27,12 +28,17 @@ import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BlockTFCastleDoor extends Block {
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	public static final PropertyInteger LOCK_INDEX = PropertyInteger.create("lock_index", 0, 3);
 	private final boolean isVanished;
+
+	private static final AxisAlignedBB REAPPEARING_BB = new AxisAlignedBB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F);
 
 	public BlockTFCastleDoor(boolean isVanished) {
 		super(isVanished ? Material.GLASS : Material.ROCK);
@@ -79,8 +85,13 @@ public class BlockTFCastleDoor extends Block {
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
-		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, par1World, pos);
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, world, pos);
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return isVanished ? REAPPEARING_BB : super.getBoundingBox(state, world, pos);
 	}
 
 	@Override
@@ -94,7 +105,7 @@ public class BlockTFCastleDoor extends Block {
 			if (isBlockLocked(world, pos)) {
 				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1.0F, 0.3F);
 			} else {
-				changeToActiveBlock(world, pos);
+				changeToActiveBlock(world, pos, state);
 			}
 			return true;
 		} else {
@@ -102,21 +113,18 @@ public class BlockTFCastleDoor extends Block {
 		}
 	}
 
-	private static void changeToActiveBlock(World par1World, BlockPos pos) {
-		changeToBlockMeta(par1World, pos, true);
+	private static void changeToActiveBlock(World par1World, BlockPos pos, IBlockState originState) {
+		changeToBlockMeta(par1World, pos, true, originState);
 		playVanishSound(par1World, pos);
 
-		Block blockAt = par1World.getBlockState(pos).getBlock();
-		par1World.scheduleUpdate(pos, blockAt, 2 + par1World.rand.nextInt(5));
+		par1World.scheduleUpdate(pos, originState.getBlock(), 2 + par1World.rand.nextInt(5));
 	}
 
-	private static void changeToBlockMeta(World par1World, BlockPos pos, boolean active) {
-		IBlockState stateAt = par1World.getBlockState(pos);
-
-		if (stateAt.getBlock() == TFBlocks.castleDoor || stateAt.getBlock() == TFBlocks.castleDoorVanished) {
-			par1World.setBlockState(pos, stateAt.withProperty(ACTIVE, active), 3);
+	private static void changeToBlockMeta(World par1World, BlockPos pos, boolean active, IBlockState originState) {
+		if (originState.getBlock() instanceof BlockTFCastleDoor) {
+			par1World.setBlockState(pos, originState.withProperty(ACTIVE, active), 3);
 			par1World.markBlockRangeForRenderUpdate(pos, pos);
-			par1World.notifyNeighborsRespectDebug(pos, stateAt.getBlock(), false);
+			par1World.notifyNeighborsRespectDebug(pos, originState.getBlock(), false);
 		}
 	}
 
@@ -142,16 +150,16 @@ public class BlockTFCastleDoor extends Block {
 
 			if (this.isVanished) {
 				if (state.getValue(ACTIVE)) {
-					par1World.setBlockState(pos, TFBlocks.castleDoor.getDefaultState());
+					par1World.setBlockState(pos, TFBlocks.castleDoor.getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
 					playVanishSound(par1World, pos);
 				} else {
-					changeToActiveBlock(par1World, pos);
+					changeToActiveBlock(par1World, pos, state);
 				}
 			} else {
 
 				// if we have an active castle door, turn it into a vanished door block
 				if (state.getValue(ACTIVE)) {
-					par1World.setBlockState(pos, getOtherBlock(this).getDefaultState());
+					par1World.setBlockState(pos, getOtherBlock(this).getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
 					par1World.scheduleUpdate(pos, getOtherBlock(this), 80);
 
 					playReappearSound(par1World, pos);
@@ -196,7 +204,7 @@ public class BlockTFCastleDoor extends Block {
 		IBlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() == TFBlocks.castleDoor && !state.getValue(ACTIVE) && !isBlockLocked(world, pos)) {
-			changeToActiveBlock(world, pos);
+			changeToActiveBlock(world, pos, state);
 		}
 //    	if (block == TFBlocks.castleDoorVanished && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
 //    	{
@@ -260,6 +268,14 @@ public class BlockTFCastleDoor extends Block {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public BlockRenderLayer getBlockLayer() {
-		return isVanished ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.SOLID;
+		return isVanished ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
+	}
+
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	@Deprecated
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return (!(blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFCastleDoor)) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 }
