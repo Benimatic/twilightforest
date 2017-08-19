@@ -46,7 +46,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
 		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 0), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.WEST));
 		this.setBlockAndNotifyAdequately(world, pos, defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.CENTER));
-		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.EAST));
+		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, 0), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.EAST));
 		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
 		this.setBlockAndNotifyAdequately(world, pos.add(0, 0, 1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
 		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, 1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));

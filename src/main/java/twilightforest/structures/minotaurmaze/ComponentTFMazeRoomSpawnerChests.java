@@ -68,15 +68,15 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		final IBlockState defaultState = Blocks.OAK_STAIRS.getDefaultState();
 
 
-		setBlockState(world, getStairState(defaultState, EnumFacing.WEST, rotation, false), dx + 1, 1, dz + 0, sbb);
-		setBlockState(world, getStairState(defaultState, EnumFacing.SOUTH, rotation, false), dx + 0, 1, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, EnumFacing.NORTH, rotation, false), dx + 2, 1, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, EnumFacing.EAST, rotation, false), dx + 1, 1, dz + 2, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.NORTH, rotation, false), dx + 1, 1, dz + 0, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.WEST, rotation, false), dx + 0, 1, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.EAST, rotation, false), dx + 2, 1, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.SOUTH, rotation, false), dx + 1, 1, dz + 2, sbb);
 
-		setBlockState(world, getStairState(defaultState, EnumFacing.WEST, rotation, true), dx + 1, 4, dz + 0, sbb);
-		setBlockState(world, getStairState(defaultState, EnumFacing.SOUTH, rotation, true), dx + 0, 4, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, EnumFacing.NORTH, rotation, true), dx + 2, 4, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, EnumFacing.EAST, rotation, true), dx + 1, 4, dz + 2, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.NORTH, rotation, true), dx + 1, 4, dz + 0, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.WEST, rotation, true), dx + 0, 4, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.EAST, rotation, true), dx + 2, 4, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, EnumFacing.SOUTH, rotation, true), dx + 1, 4, dz + 2, sbb);
 
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 2, dz + 0, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 0, 2, dz + 1, sbb);

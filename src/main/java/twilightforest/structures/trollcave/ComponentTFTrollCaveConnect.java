@@ -232,52 +232,30 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), rotation);
 
-		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, BlockHugeMushroom.EnumType.WEST, rotation), rotation);
+		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, BlockHugeMushroom.EnumType.EAST), rotation);
 
-		final IBlockState northMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH, rotation);
+		final IBlockState northMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, northMushroom, size - (2 + d), y, z - width, rotation, sbb);
 		}
-		final IBlockState northWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH_WEST, rotation);
+		final IBlockState northWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH_EAST);
 		this.setBlockStateRotated(world, northWestMushroom, size - (depth + 1), y, z - width, rotation, sbb);
 
-		final IBlockState southMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH, rotation);
+		final IBlockState southMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, southMushroom, size - (2 + d), y, z + width, rotation, sbb);
 		}
-		final IBlockState southWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH_WEST, rotation);
+		final IBlockState southWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH_EAST);
 		this.setBlockStateRotated(world, southWestMushroom, size - (depth + 1), y, z + width, rotation, sbb);
 
 
 	}
 
-	private IBlockState getMushroomState(IBlockState mushroomBlockState, BlockHugeMushroom.EnumType defaultRotation, Rotation rotation) {
+	private IBlockState getMushroomState(IBlockState mushroomBlockState, BlockHugeMushroom.EnumType defaultRotation) {
 		if (mushroomBlockState.getPropertyKeys().contains(BlockHugeMushroom.VARIANT)) {
-			return rotateMushroom(mushroomBlockState.withProperty(BlockHugeMushroom.VARIANT, defaultRotation), rotation);
+			return mushroomBlockState.withProperty(BlockHugeMushroom.VARIANT, defaultRotation);
 		}
 		return mushroomBlockState;
-	}
-
-	private IBlockState rotateMushroom(IBlockState state, Rotation rotation) {
-		BlockHugeMushroom.EnumType[] rotationalStates = {
-				BlockHugeMushroom.EnumType.NORTH,
-				BlockHugeMushroom.EnumType.NORTH_EAST,
-				BlockHugeMushroom.EnumType.EAST,
-				BlockHugeMushroom.EnumType.SOUTH_EAST,
-				BlockHugeMushroom.EnumType.SOUTH,
-				BlockHugeMushroom.EnumType.SOUTH_WEST,
-				BlockHugeMushroom.EnumType.WEST,
-				BlockHugeMushroom.EnumType.NORTH_WEST,
-		};
-
-		int[] rotationMapping = {7, 0, 1, 6, -1, 2, 5, 4, 3, -1, -1, -1, -1, -1, -1, -1};
-		int rotationalStateIndex = state.getValue(BlockHugeMushroom.VARIANT).ordinal();
-		if (rotationMapping[rotationalStateIndex] == -1) {
-			return state;
-		}
-
-		rotationalStateIndex += rotation.ordinal() * 2;
-		return state.withProperty(BlockHugeMushroom.VARIANT, rotationalStates[rotationalStateIndex % rotationalStates.length]);
 	}
 
 	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
