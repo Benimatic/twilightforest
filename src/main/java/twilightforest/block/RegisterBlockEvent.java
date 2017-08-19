@@ -1,6 +1,9 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -67,6 +70,7 @@ public final class RegisterBlockEvent {
 		blocks.register("huge_waterlily", (new BlockTFHugeWaterLily()).setUnlocalizedName("HugeWaterLily"));
 		blocks.register("slider", (new BlockTFSlider()).setUnlocalizedName("Slider"));
 		blocks.register("castle_brick", (new BlockTFCastleBlock()).setUnlocalizedName("CastleBrick"));
+		blocks.register("castle_pillar", new BlockTFCastlePillar().setUnlocalizedName("CastlePillar"));
 		blocks.register("castle_rune_brick", (new BlockTFCastleMagic()).setUnlocalizedName("CastleMagic"));
 		blocks.register("force_field", (new BlockTFForceField()).setUnlocalizedName("ForceField"));
 		blocks.register("cinder_furnace", (new BlockTFCinderFurnace(false)).setUnlocalizedName("CinderFurnaceIdle"));
