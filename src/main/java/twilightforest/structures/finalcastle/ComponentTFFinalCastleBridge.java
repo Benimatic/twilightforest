@@ -1,10 +1,14 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.List;
@@ -34,8 +38,14 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponent {
 		// span
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, length, 1, 6, false, rand, deco.randomBlocks);
 		// rails
-		fillWithRandomizedBlocks(world, sbb, 0, 1, 0, length, 2, 0, false, rand, deco.randomBlocks);
-		fillWithRandomizedBlocks(world, sbb, 0, 1, 6, length, 2, 6, false, rand, deco.randomBlocks);
+		//fillWithRandomizedBlocks(world, sbb, 0, 1, 0, length, 2, 0, false, rand, deco.randomBlocks);
+		//fillWithRandomizedBlocks(world, sbb, 0, 1, 6, length, 2, 6, false, rand, deco.randomBlocks);
+		IBlockState castlePillar = TFBlocks.castlePillar.getDefaultState().withProperty(BlockLog.LOG_AXIS, (this.rotation == Rotation.NONE || this.rotation == Rotation.CLOCKWISE_180) ? BlockLog.EnumAxis.X : BlockLog.EnumAxis.Z);
+
+		fillWithBlocks(world, sbb, 0, 2, 0, length, 2, 0, castlePillar, castlePillar, false);
+		fillWithBlocks(world, sbb, 0, 2, 6, length, 2, 6, castlePillar, castlePillar, false);
+
+
 
 		// supports
 		int l3 = length / 3;
