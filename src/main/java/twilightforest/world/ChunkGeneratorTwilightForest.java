@@ -904,7 +904,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		Biome biome = world.getBiome(pos);
 
 		if (biome == null) {
-			return ImmutableList.of();
+			return null;
 		} else if (pos.getY() < TFWorld.SEALEVEL && creatureType == EnumCreatureType.MONSTER && biome instanceof TFBiomeBase) {
 			// cave monsters!
 			return ((TFBiomeBase) biome).getUndergroundSpawnableList();
