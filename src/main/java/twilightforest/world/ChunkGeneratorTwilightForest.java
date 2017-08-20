@@ -5,6 +5,7 @@
 package twilightforest.world;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -904,7 +905,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		Biome biome = world.getBiome(pos);
 
 		if (biome == null) {
-			return null;
+			return Lists.newArrayList();
 		} else if (pos.getY() < TFWorld.SEALEVEL && creatureType == EnumCreatureType.MONSTER && biome instanceof TFBiomeBase) {
 			// cave monsters!
 			return ((TFBiomeBase) biome).getUndergroundSpawnableList();

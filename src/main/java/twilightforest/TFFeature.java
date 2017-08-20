@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -590,7 +591,7 @@ public class TFFeature {
 		} else if (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE) {
 			return this.waterCreatureList;
 		} else {
-			return ImmutableList.of();
+			return Lists.newArrayList();
 		}
 	}
 
@@ -602,7 +603,7 @@ public class TFFeature {
 			if (index >= 0 && index < this.spawnableMonsterLists.size()) {
 				return this.spawnableMonsterLists.get(index);
 			} else {
-				return ImmutableList.of();
+				return Lists.newArrayList();
 			}
 		} else {
 			return getSpawnableList(par1EnumCreatureType);

@@ -1,6 +1,7 @@
 package twilightforest.biomes;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -29,6 +30,7 @@ import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.EntityTFMistWolf;
 import twilightforest.entity.EntityTFSkeletonDruid;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -100,7 +102,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType) {
 		// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
 		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : ImmutableList.<SpawnListEntry>of();
+			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : Lists.newArrayList();
 		} else {
 			return par1EnumCreatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
 		}
