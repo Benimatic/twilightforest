@@ -73,9 +73,19 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
         }
     }
 
-    //@SideOnly(Side.CLIENT)
-    //@Override
-    //public void registerModel() {
-    //    ModelUtils.registerToStateSingleVariant(this, VARIANT);
-    //}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel() {
+        CastlePillarVariant[] variantsList = CastlePillarVariant.values();
+
+        for (int i = 0; i < variantsList.length; i++) {
+            ModelUtils.registerToState(this, i*2, this.getDefaultState()
+                    .withProperty(AXIS, BlockLog.EnumAxis.Y)
+                    .withProperty(VARIANT, variantsList[i]));
+
+            ModelUtils.registerToState(this, (i*2)+1, this.getDefaultState()
+                    .withProperty(AXIS, BlockLog.EnumAxis.NONE)
+                    .withProperty(VARIANT, variantsList[i]));
+        }
+    }
 }
