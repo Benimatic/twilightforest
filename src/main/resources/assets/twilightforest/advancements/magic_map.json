@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:magic_map"
+    },
+    "title": {
+      "translate": "advancement.twilightMagicMap"
+    },
+    "description": {
+      "translate": "advancement.twilightMagicMap.desc"
+    }
+  },
+  "parent": "twilightforest:magic_map_focus",
+  "criteria": {
+    "map": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:magic_map"
+          }
+        ]
+      }
+    }
+  }
+}

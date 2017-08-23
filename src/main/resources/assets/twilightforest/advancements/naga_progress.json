@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:naga_scale"
+    },
+    "title": {
+      "translate": "advancement.twilightNagaProgress"
+    },
+    "description": {
+      "translate": "advancement.twilightNagaProgress.desc"
+    }
+  },
+  "parent": "twilightforest:naga_kill",
+  "criteria": {
+    "scale": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:naga_scale"
+          }
+        ]
+      }
+    }
+  }
+}

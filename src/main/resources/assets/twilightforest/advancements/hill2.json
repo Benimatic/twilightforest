@@ -17,9 +17,7 @@
       "conditions": {
         "entity": {
           "type": "twilightforest:redcap_sapper",
-          "location": {
-            "feature": "TFHill"
-          }
+          "__todo": "only grant in Hill2"
         }
       }
     }

@@ -17,9 +17,7 @@
       "conditions": {
         "entity": {
           "type": "twilightforest:wraith",
-          "location": {
-            "feature": "TFHill"
-          }
+          "__todo": "only grant in Hill3"
         }
       }
     }
