@@ -199,11 +199,11 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(par1, 1, FireJetVariant.SMOKER.ordinal()));
-		par3List.add(new ItemStack(par1, 1, FireJetVariant.JET_IDLE.ordinal()));
-		par3List.add(new ItemStack(par1, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
-		par3List.add(new ItemStack(par1, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
+	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(this, 1, FireJetVariant.SMOKER.ordinal()));
+		par3List.add(new ItemStack(this, 1, FireJetVariant.JET_IDLE.ordinal()));
+		par3List.add(new ItemStack(this, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
+		par3List.add(new ItemStack(this, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
 	}
 
 	@SideOnly(Side.CLIENT)

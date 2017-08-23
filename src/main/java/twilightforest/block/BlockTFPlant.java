@@ -262,7 +262,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> stackList) {
+	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> stackList) {
 		for (int i = 0; i < PlantVariant.values().length; i++) {
 			stackList.add(new ItemStack(this, 1, i));
 		}

@@ -74,15 +74,15 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.REAPPEARING_INACTIVE.ordinal()));
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_INACTIVE.ordinal()));
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_LOCKED.ordinal()));
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.VANISH_UNLOCKED.ordinal()));
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.BUILDER_INACTIVE.ordinal()));
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.ANTIBUILDER.ordinal()));
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.GHASTTRAP_INACTIVE.ordinal()));
-		par3List.add(new ItemStack(par1, 1, TowerDeviceVariant.REACTOR_INACTIVE.ordinal()));
+	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.REAPPEARING_INACTIVE.ordinal()));
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.VANISH_INACTIVE.ordinal()));
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.VANISH_LOCKED.ordinal()));
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.VANISH_UNLOCKED.ordinal()));
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.BUILDER_INACTIVE.ordinal()));
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.ANTIBUILDER.ordinal()));
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.GHASTTRAP_INACTIVE.ordinal()));
+		par3List.add(new ItemStack(this, 1, TowerDeviceVariant.REACTOR_INACTIVE.ordinal()));
 	}
 
 	@Override

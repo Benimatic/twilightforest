@@ -8,15 +8,15 @@ import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.RegistryDelegate;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ModelUtils {
-	private static final Map<RegistryDelegate<Block>, IStateMapper> stateMappers = ReflectionHelper.getPrivateValue(ModelLoader.class, null, "customStateMappers");
+	private static final Map<IRegistryDelegate<Block>, IStateMapper> stateMappers = ReflectionHelper.getPrivateValue(ModelLoader.class, null, "customStateMappers");
 	private static final IStateMapper defaultStateMapper = new DefaultStateMapper();
 
 	public static void registerToState(Block b, int itemMeta, IBlockState state) {

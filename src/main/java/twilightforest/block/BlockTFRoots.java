@@ -68,10 +68,9 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(par1, 1, 0));
-		par3List.add(new ItemStack(par1, 1, 1));
+	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(this, 1, 0));
+		par3List.add(new ItemStack(this, 1, 1));
 	}
 
 	@SideOnly(Side.CLIENT)

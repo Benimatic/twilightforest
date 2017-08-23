@@ -66,10 +66,10 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     }
 
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+    public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
         for (CastlePillarVariant variant : CastlePillarVariant.values()) {
-            par3List.add(new ItemStack(par1, 1, variant.ordinal()*2));
-            par3List.add(new ItemStack(par1, 1, (variant.ordinal()*2)+1));
+            par3List.add(new ItemStack(this, 1, variant.ordinal()*2));
+            par3List.add(new ItemStack(this, 1, (variant.ordinal()*2)+1));
         }
     }
 

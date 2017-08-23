@@ -255,12 +255,12 @@ public class BlockTFPortal extends BlockBreakable {
 			toTeleport.world.profiler.startSection("changeDimension");
 			MinecraftServer minecraftserver = toTeleport.getServer();
 			int i = toTeleport.dimension;
-			WorldServer worldserver = minecraftserver.worldServerForDimension(i);
-			WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionIn);
+			WorldServer worldserver = minecraftserver.getWorld(i);
+			WorldServer worldserver1 = minecraftserver.getWorld(dimensionIn);
 			toTeleport.dimension = dimensionIn;
 
 			if (i == 1 && dimensionIn == 1) {
-				worldserver1 = minecraftserver.worldServerForDimension(0);
+				worldserver1 = minecraftserver.getWorld(0);
 				toTeleport.dimension = 0;
 			}
 

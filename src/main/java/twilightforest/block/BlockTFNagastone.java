@@ -40,9 +40,9 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs creativeTabs, NonNullList<ItemStack> stackList) {
-		stackList.add(new ItemStack(item, 1, 0));
-		stackList.add(new ItemStack(item, 1, 1));
+	public void getSubBlocks(CreativeTabs creativeTabs, NonNullList<ItemStack> stackList) {
+		stackList.add(new ItemStack(this, 1, 0));
+		stackList.add(new ItemStack(this, 1, 1));
 	}
 
 	@Override
