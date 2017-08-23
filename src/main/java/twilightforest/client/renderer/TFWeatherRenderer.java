@@ -2,9 +2,9 @@ package twilightforest.client.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,8 +41,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 	private static final ResourceLocation locationBigrainPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "bigrain.png");
 	private static final ResourceLocation locationSparklesPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "sparkles.png");
 
-	private final float[] rainXCoords = new float[1024];
-	private final float[] rainYCoords = new float[1024];
+	private final float[] rainxs = new float[1024];
+	private final float[] rainys = new float[1024];
 	private final Random random = new Random();
 	private int rendererUpdateCount;
 	private StructureBoundingBox protectedBox;
@@ -53,8 +53,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 				float f = (float) (j - 16);
 				float f1 = (float) (i - 16);
 				float f2 = MathHelper.sqrt(f * f + f1 * f1);
-				this.rainXCoords[i << 5 | j] = -f1 / f2;
-				this.rainYCoords[i << 5 | j] = f / f2;
+				this.rainxs[i << 5 | j] = -f1 / f2;
+				this.rainys[i << 5 | j] = f / f2;
 			}
 		}
 	}
@@ -87,7 +87,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 			int j = MathHelper.floor(entity.posY);
 			int k = MathHelper.floor(entity.posZ);
 			Tessellator tessellator = Tessellator.getInstance();
-			VertexBuffer vertexbuffer = tessellator.getBuffer();
+			BufferBuilder vertexbuffer = tessellator.getBuffer();
 			GlStateManager.disableCull();
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.enableBlend();
@@ -112,8 +112,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 			for (int k1 = k - i1; k1 <= k + i1; ++k1) {
 				for (int l1 = i - i1; l1 <= i + i1; ++l1) {
 					int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
-					double d3 = (double) this.rainXCoords[i2] * 0.5D;
-					double d4 = (double) this.rainYCoords[i2] * 0.5D;
+					double d3 = (double) this.rainxs[i2] * 0.5D;
+					double d4 = (double) this.rainys[i2] * 0.5D;
 					blockpos$mutableblockpos.setPos(l1, 0, k1);
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
@@ -220,7 +220,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 			int j = MathHelper.floor(entity.posY);
 			int k = MathHelper.floor(entity.posZ);
 			Tessellator tessellator = Tessellator.getInstance();
-			VertexBuffer vertexbuffer = tessellator.getBuffer();
+			BufferBuilder vertexbuffer = tessellator.getBuffer();
 			GlStateManager.disableCull();
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.enableBlend();
@@ -245,8 +245,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 			for (int k1 = k - i1; k1 <= k + i1; ++k1) {
 				for (int l1 = i - i1; l1 <= i + i1; ++l1) {
 					int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
-					double d3 = (double) this.rainXCoords[i2] * 0.5D;
-					double d4 = (double) this.rainYCoords[i2] * 0.5D;
+					double d3 = (double) this.rainxs[i2] * 0.5D;
+					double d4 = (double) this.rainys[i2] * 0.5D;
 					blockpos$mutableblockpos.setPos(l1, 0, k1);
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
@@ -435,7 +435,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 			int j = MathHelper.floor(entity.posY);
 			int k = MathHelper.floor(entity.posZ);
 			Tessellator tessellator = Tessellator.getInstance();
-			VertexBuffer vertexbuffer = tessellator.getBuffer();
+			BufferBuilder vertexbuffer = tessellator.getBuffer();
 			GlStateManager.disableCull();
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.enableBlend();
@@ -460,8 +460,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 			for (int k1 = k - i1; k1 <= k + i1; ++k1) {
 				for (int l1 = i - i1; l1 <= i + i1; ++l1) {
 					int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
-					double d3 = (double) this.rainXCoords[i2] * 0.5D;
-					double d4 = (double) this.rainYCoords[i2] * 0.5D;
+					double d3 = (double) this.rainxs[i2] * 0.5D;
+					double d4 = (double) this.rainys[i2] * 0.5D;
 
 					// TF - replace biome check with box check
 					if (this.protectedBox != null && this.protectedBox.intersectsWith(l1, k1, l1, k1)) {

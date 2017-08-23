@@ -201,13 +201,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 //        if (this.getNumber() == 0)
 //        {
-//        	System.out.printf("Knight Phantom %d moving towards %f, %f, %f.  Is in formation %s, progress %d.\n", this.getNumber(), dest.xCoord, dest.yCoord, dest.zCoord, this.currentFormation, ticksProgress);
+//        	System.out.printf("Knight Phantom %d moving towards %f, %f, %f.  Is in formation %s, progress %d.\n", this.getNumber(), dest.x, dest.y, dest.z, this.currentFormation, ticksProgress);
 //        	System.out.printf("Knight Phantom %d at position %f, %f, %f.\n", this.getNumber(), this.posX, this.posY, this.posZ);
 //        }
 
-		double moveX = dest.xCoord - this.posX;
-		double moveY = dest.yCoord - this.posY;
-		double moveZ = dest.zCoord - this.posZ;
+		double moveX = dest.x - this.posX;
+		double moveY = dest.y - this.posY;
+		double moveZ = dest.z - this.posZ;
 
 		double factor = moveX * moveX + moveY * moveY + moveZ * moveZ;
 

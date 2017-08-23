@@ -392,7 +392,7 @@ public class EntityTFLich extends EntityMob {
 		double srcZ = posZ;
 
 		if (dest != null) {
-			teleportToNoChecks(dest.xCoord, dest.yCoord, dest.zCoord);
+			teleportToNoChecks(dest.x, dest.y, dest.z);
 			this.getLookHelper().setLookPositionWithEntity(entity, 100F, 100F);
 			this.renderYawOffset = this.rotationYaw;
 

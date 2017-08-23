@@ -38,9 +38,9 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 			this.entityTarget = attackTarget;
 			Vec3d avoidPos = findCirclePoint(entityObj, entityTarget, 5, lefty ? 1 : -1);
 
-			this.targetX = avoidPos.xCoord;
-			this.targetY = avoidPos.yCoord;
-			this.targetZ = avoidPos.zCoord;
+			this.targetX = avoidPos.x;
+			this.targetY = avoidPos.y;
+			this.targetZ = avoidPos.z;
 			return true;
 		}
 

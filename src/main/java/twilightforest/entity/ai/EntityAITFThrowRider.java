@@ -62,14 +62,14 @@ public class EntityAITFThrowRider extends EntityAIAttackMelee {
 			rider.dismountRidingEntity();
 
 			Vec3d throwVec = attacker.getLookVec().scale(2);
-			throwVec = new Vec3d(throwVec.xCoord, 0.9, throwVec.zCoord);
+			throwVec = new Vec3d(throwVec.x, 0.9, throwVec.z);
 
-			rider.addVelocity(throwVec.xCoord, throwVec.yCoord, throwVec.zCoord);
+			rider.addVelocity(throwVec.x, throwVec.y, throwVec.z);
 
 			if (rider instanceof EntityPlayerMP) {
 				EntityPlayerMP player = (EntityPlayerMP) rider;
 
-				IMessage message = new PacketThrowPlayer((float) throwVec.xCoord, (float) throwVec.yCoord, (float) throwVec.zCoord);
+				IMessage message = new PacketThrowPlayer((float) throwVec.x, (float) throwVec.y, (float) throwVec.z);
 				TFPacketHandler.CHANNEL.sendTo(message, player);
 			}
 		}

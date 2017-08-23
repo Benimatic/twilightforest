@@ -91,14 +91,14 @@ public class EntityAITFLichShadows extends EntityAIBase {
 		if (cloneSpot != null) {
 			// put a clone there
 			EntityTFLich newClone = new EntityTFLich(lich.world, lich);
-			newClone.setPosition(cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
+			newClone.setPosition(cloneSpot.x, cloneSpot.y, cloneSpot.z);
 			lich.world.spawnEntity(newClone);
 
 			newClone.setAttackTarget(targetedEntity);
 			newClone.setAttackCooldown(60 + lich.getRNG().nextInt(3) - lich.getRNG().nextInt(3));
 
 			// make sparkles leading to it
-			lich.makeTeleportTrail(lich.posX, lich.posY, lich.posZ, cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
+			lich.makeTeleportTrail(lich.posX, lich.posY, lich.posZ, cloneSpot.x, cloneSpot.y, cloneSpot.z);
 		}
 	}
 

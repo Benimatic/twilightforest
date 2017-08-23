@@ -163,7 +163,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	 * Draws a line
 	 */
 	protected void drawBresehnam(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, IBlockState blockState) {
-		BlockPos lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
+		BlockPos lineCoords[] = TFGenerator.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
 			this.setBlockState(world, blockState, coords.getX(), coords.getY(), coords.getZ(), sbb);

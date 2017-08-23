@@ -33,9 +33,9 @@ public class EntityTFHydraMortar extends EntityThrowable {
 		Vec3d vector = head.getLookVec();
 
 		double dist = 3.5;
-		double px = head.posX + vector.xCoord * dist;
-		double py = head.posY + 1 + vector.yCoord * dist;
-		double pz = head.posZ + vector.zCoord * dist;
+		double px = head.posX + vector.x * dist;
+		double py = head.posY + 1 + vector.y * dist;
+		double pz = head.posZ + vector.z * dist;
 
 		setLocationAndAngles(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
@@ -113,7 +113,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 			Vec3d vec3d = damagesource.getSourceOfDamage().getLookVec();
 			if (vec3d != null) {
 				// reflect faster and more accurately
-				this.setThrowableHeading(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.5F, 0.1F);  // reflect faster and more accurately
+				this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 				this.onGround = false;
 				this.fuse += 20;
 			}

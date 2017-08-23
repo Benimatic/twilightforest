@@ -66,7 +66,7 @@ public class EntityAITFFlockToSameKind extends EntityAIBase {
 		if (flockPosition == null) {
 			return false;
 		} else {
-			double distance = this.flockCreature.getDistanceSq(flockPosition.xCoord, flockPosition.yCoord, flockPosition.zCoord);
+			double distance = this.flockCreature.getDistanceSq(flockPosition.x, flockPosition.y, flockPosition.z);
 			return distance >= MIN_DIST && distance <= MAX_DIST;
 		}
 	}
@@ -94,7 +94,7 @@ public class EntityAITFFlockToSameKind extends EntityAIBase {
 	public void updateTask() {
 		if (--this.moveTimer <= 0) {
 			this.moveTimer = 10;
-			this.flockCreature.getNavigator().tryMoveToXYZ(flockPosition.xCoord, flockPosition.yCoord, flockPosition.zCoord, this.speed);
+			this.flockCreature.getNavigator().tryMoveToXYZ(flockPosition.x, flockPosition.y, flockPosition.z, this.speed);
 		}
 	}
 }

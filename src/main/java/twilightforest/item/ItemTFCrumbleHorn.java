@@ -69,7 +69,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		Vec3d lookVec = living.getLookVec().scale(range);
 		Vec3d destVec = srcVec.add(lookVec);
 
-		AxisAlignedBB crumbleBox = new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
+		AxisAlignedBB crumbleBox = new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 
 		return crumbleBlocksInAABB(world, living, crumbleBox);
 	}

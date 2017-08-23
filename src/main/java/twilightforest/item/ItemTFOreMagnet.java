@@ -124,7 +124,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		double range = 32.0D;
 		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
 		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
-		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 
 		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
@@ -132,7 +132,7 @@ public class ItemTFOreMagnet extends ItemTF {
 	public static int doMagnet(World world, BlockPos usePos, BlockPos destPos) {
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
-		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(usePos, destPos);
+		BlockPos[] lineArray = TFGenerator.getBresehnamArrays(usePos, destPos);
 
 		//System.out.println("Searching from " + useX + ", " + useY + ", " + useZ + " to " + destX + ", " + destY + ", " + destZ);
 

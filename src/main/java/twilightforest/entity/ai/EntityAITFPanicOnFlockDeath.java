@@ -46,9 +46,9 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
 			if (var1 == null) {
 				return false;
 			} else {
-				this.fleeX = var1.xCoord;
-				this.fleeY = var1.yCoord;
-				this.fleeZ = var1.zCoord;
+				this.fleeX = var1.x;
+				this.fleeY = var1.y;
+				this.fleeZ = var1.z;
 				return true;
 			}
 		}

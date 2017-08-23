@@ -64,7 +64,7 @@ public class TFGenWoodRoots extends TFGenerator {
 		}
 
 		// if both the start and the end are in stone, put a root there
-		BlockPos[] lineArray = getBresehnamArrayCoords(pos, dest);
+		BlockPos[] lineArray = getBresehnamArrays(pos, dest);
 		for (BlockPos coord : lineArray) {
 			this.placeRootBlock(world, coord, rootBlock);
 		}

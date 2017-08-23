@@ -42,9 +42,9 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 			if (avoidPos == null) {
 				return false;
 			} else {
-				this.xPosition = avoidPos.xCoord;
-				this.yPosition = avoidPos.yCoord;
-				this.zPosition = avoidPos.zCoord;
+				this.xPosition = avoidPos.x;
+				this.yPosition = avoidPos.y;
+				this.zPosition = avoidPos.z;
 				return true;
 			}
 		}

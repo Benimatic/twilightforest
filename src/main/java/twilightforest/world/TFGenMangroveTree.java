@@ -122,7 +122,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 
 		// only actually draw the root if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 1)) {
-			BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(src, dest);
+			BlockPos[] lineArray = TFGenerator.getBresehnamArrays(src, dest);
 			boolean stillAboveGround = true;
 			for (BlockPos coord : lineArray) {
 				if (stillAboveGround && TFGenerator.hasAirAround(world, coord)) {

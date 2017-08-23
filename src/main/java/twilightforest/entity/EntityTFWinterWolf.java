@@ -66,14 +66,14 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 			Vec3d look = this.getLookVec();
 
 			double dist = 0.5;
-			double px = this.posX + look.xCoord * dist;
-			double py = this.posY + 1.25 + look.yCoord * dist;
-			double pz = this.posZ + look.zCoord * dist;
+			double px = this.posX + look.x * dist;
+			double py = this.posY + 1.25 + look.y * dist;
+			double pz = this.posZ + look.z * dist;
 
 			for (int i = 0; i < 10; i++) {
-				double dx = look.xCoord;
-				double dy = look.yCoord;
-				double dz = look.zCoord;
+				double dx = look.x;
+				double dy = look.y;
+				double dz = look.z;
 
 				double spread = 5 + this.getRNG().nextDouble() * 2.5;
 				double velocity = 3.0 + this.getRNG().nextDouble() * 0.15;

@@ -14,7 +14,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -438,7 +438,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		double d = width * 4.0F;
 		Vec3d vec3d = hasPath() ? getNavigator().getPath().getPosition(this) : null;
 
-		while (vec3d != null && vec3d.squareDistanceTo(posX, vec3d.yCoord, posZ) < d * d) {
+		while (vec3d != null && vec3d.squareDistanceTo(posX, vec3d.y, posZ) < d * d) {
 			getNavigator().getPath().incrementPathIndex();
 
 			if (getNavigator().getPath().isFinished()) {
@@ -683,20 +683,20 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 			double f = 2.0D;
 
-			double destX = followX + f * diff.xCoord;
-			double destY = followY + f * diff.yCoord;
-			double destZ = followZ + f * diff.zCoord;
+			double destX = followX + f * diff.x;
+			double destY = followY + f * diff.y;
+			double destZ = followZ + f * diff.z;
 
 			bodySegments[i].setPosition(destX, destY, destZ);
 
-			double distance = (double) MathHelper.sqrt(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
+			double distance = (double) MathHelper.sqrt(diff.x * diff.x + diff.z * diff.z);
 
 			if (i == 0) {
 				// tilt segment next to head up towards head
 				diff = diff.addVector(0, -0.15, 0);
 			}
 
-			bodySegments[i].setRotation((float) (Math.atan2(diff.zCoord, diff.xCoord) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.yCoord, distance) * 180.0D / Math.PI));
+			bodySegments[i].setRotation((float) (Math.atan2(diff.z, diff.x) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.y, distance) * 180.0D / Math.PI));
 		}
 	}
 
@@ -758,7 +758,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public boolean attackEntityFromPart(EntityDragonPart entitydragonpart, DamageSource damagesource, float i) {
+	public boolean attackEntityFromPart(MultiPartEntityPart MultiPartEntityPart, DamageSource damagesource, float i) {
 		return false;
 	}
 

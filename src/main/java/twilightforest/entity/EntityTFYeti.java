@@ -81,7 +81,7 @@ public class EntityTFYeti extends EntityMob {
 
 			// push out of user in wall
 			Vec3d riderPos = this.getRiderPosition(getPassengers().get(0));
-			this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
+			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class EntityTFYeti extends EntityMob {
 	@Override
 	public void updatePassenger(Entity passenger) {
 		Vec3d riderPos = this.getRiderPosition(passenger);
-		passenger.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
+		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
 	}
 
 	/**

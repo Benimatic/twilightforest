@@ -68,9 +68,9 @@ public class EntitySeekerArrow extends EntityArrow {
 					targetVec = targetVec.scale(currentSpeed);
 
 					// adjust current heading
-					double dx = MathHelper.clamp(targetVec.xCoord, -2.0, 2.0);
-					double dy = MathHelper.clamp(targetVec.yCoord, -1.0, 1.0);
-					double dz = MathHelper.clamp(targetVec.zCoord, -2.0, 2.0);
+					double dx = MathHelper.clamp(targetVec.x, -2.0, 2.0);
+					double dy = MathHelper.clamp(targetVec.y, -1.0, 1.0);
+					double dz = MathHelper.clamp(targetVec.z, -2.0, 2.0);
 
 					this.motionX -= dx;
 					this.motionY -= dy;
@@ -96,10 +96,10 @@ public class EntitySeekerArrow extends EntityArrow {
 
 			// add two possible courses to our selection box
 			Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance).rotateYaw((float) (Math.PI / 6F));
-			targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord);
+			targetBB = targetBB.offset(courseVec.x, courseVec.y, courseVec.z);
 
 			courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance).rotateYaw(-(float) (Math.PI / 6F));
-			targetBB = targetBB.addCoord(courseVec.xCoord, courseVec.yCoord, courseVec.zCoord).expand(0, 3, 0);
+			targetBB = targetBB.offset(courseVec.x, courseVec.y, courseVec.z).expand(0, 3, 0);
 
 			double closestDot = 1;
 

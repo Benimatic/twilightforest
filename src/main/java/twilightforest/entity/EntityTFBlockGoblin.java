@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
@@ -12,7 +13,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -172,7 +172,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
 		// set block position
 		Vec3d blockPos = this.getChainPosition();
-		this.block.setPosition(blockPos.xCoord, blockPos.yCoord, blockPos.zCoord);
+		this.block.setPosition(blockPos.x, blockPos.y, blockPos.z);
 		this.block.rotationYaw = getChainAngle();
 
 		// interpolate chain position
@@ -180,9 +180,9 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		double sy = this.posY + this.height - 0.1;
 		double sz = this.posZ;
 
-		double ox = sx - blockPos.xCoord;
-		double oy = sy - blockPos.yCoord - (block.height / 3D);
-		double oz = sz - blockPos.zCoord;
+		double ox = sx - blockPos.x;
+		double oy = sy - blockPos.y - (block.height / 3D);
+		double oz = sz - blockPos.z;
 
 		this.chain1.setPosition(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
 		this.chain2.setPosition(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
@@ -257,7 +257,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public boolean attackEntityFromPart(EntityDragonPart entitydragonpart, DamageSource damagesource, float i) {
+	public boolean attackEntityFromPart(MultiPartEntityPart MultiPartEntityPart, DamageSource damagesource, float i) {
 		return false;
 	}
 

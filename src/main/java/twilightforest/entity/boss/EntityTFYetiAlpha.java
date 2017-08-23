@@ -168,7 +168,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	@Override
 	public void updatePassenger(Entity passenger) {
 		Vec3d riderPos = this.getRiderPosition();
-		passenger.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
+		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
 	}
 
 	@Override

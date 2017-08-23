@@ -48,7 +48,7 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 		BlockPos dest = TFGenerator.translate(pos.down(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
-		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(pos.down(), dest);
+		BlockPos[] lineArray = TFGenerator.getBresehnamArrays(pos.down(), dest);
 		for (BlockPos coord : lineArray) {
 			this.placeRootBlock(world, coord, rootState);
 		}

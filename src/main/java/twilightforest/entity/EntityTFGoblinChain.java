@@ -1,9 +1,9 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.MultiPartEntityPart;
 
-public class EntityTFGoblinChain extends EntityDragonPart {
+public class EntityTFGoblinChain extends MultiPartEntityPart {
 	public EntityTFGoblinChain(IEntityMultiPart goblin) {
 		super(goblin, "chain", 0.1F, 0.1F);
 	}

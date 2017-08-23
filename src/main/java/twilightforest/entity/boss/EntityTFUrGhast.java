@@ -440,17 +440,17 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		entityFireball.explosionPower = 1;
 		double shotSpawnDistance = 8.5D;
 		Vec3d lookVec = this.getLook(1.0F);
-		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
-		entityFireball.posY = this.posY + (double) (this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
-		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
+		entityFireball.posX = this.posX + lookVec.x * shotSpawnDistance;
+		entityFireball.posY = this.posY + (double) (this.height / 2.0F) + lookVec.y * shotSpawnDistance;
+		entityFireball.posZ = this.posZ + lookVec.z * shotSpawnDistance;
 		this.world.spawnEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
 			entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX + (rand.nextFloat() - rand.nextFloat()) * 8, offsetY, offsetZ + (rand.nextFloat() - rand.nextFloat()) * 8);
 			entityFireball.explosionPower = 1;
-			entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
-			entityFireball.posY = this.posY + (double) (this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
-			entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
+			entityFireball.posX = this.posX + lookVec.x * shotSpawnDistance;
+			entityFireball.posY = this.posY + (double) (this.height / 2.0F) + lookVec.y * shotSpawnDistance;
+			entityFireball.posZ = this.posZ + lookVec.z * shotSpawnDistance;
 			this.world.spawnEntity(entityFireball);
 		}
 

@@ -161,9 +161,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		Vec3d vector = this.getLookVec();
 
 		double dist = 1.25;
-		double px = this.posX + vector.xCoord * dist;
+		double px = this.posX + vector.x * dist;
 		double py = this.getEntityBoundingBox().minY - 0.75;
-		double pz = this.posZ + vector.zCoord * dist;
+		double pz = this.posZ + vector.z * dist;
 
 
 		for (int i = 0; i < 50; i++) {

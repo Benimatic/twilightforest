@@ -83,7 +83,7 @@ public class EntityTFPinchBeetle extends EntityMob {
 
 			// push out of user in wall
 			Vec3d riderPos = this.getRiderPosition();
-			this.pushOutOfBlocks(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
+			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class EntityTFPinchBeetle extends EntityMob {
 		if (!this.getPassengers().isEmpty()) {
 			Vec3d riderPos = this.getRiderPosition();
 
-			this.getPassengers().get(0).setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
+			this.getPassengers().get(0).setPosition(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 

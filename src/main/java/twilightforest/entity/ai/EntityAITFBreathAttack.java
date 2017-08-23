@@ -114,9 +114,9 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 		double range = 30.0D;
 		Vec3d srcVec = new Vec3d(this.entityHost.posX, this.entityHost.posY + 0.25, this.entityHost.posZ);
 		Vec3d lookVec = this.entityHost.getLook(1.0F);
-		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
+		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().addCoord(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range).expand(var9, var9, var9));
+		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).expand(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
@@ -146,10 +146,10 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	/**
 	 * Face the head towards a specific Vector
 	 */
-	public void faceVec(double xCoord, double yCoord, double zCoord, float yawConstraint, float pitchConstraint) {
-		double xOffset = xCoord - entityHost.posX;
-		double zOffset = zCoord - entityHost.posZ;
-		double yOffset = (entityHost.posY + 0.25) - yCoord;
+	public void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
+		double xOffset = x - entityHost.posX;
+		double zOffset = z - entityHost.posZ;
+		double yOffset = (entityHost.posY + 0.25) - y;
 
 		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;

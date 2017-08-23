@@ -1,10 +1,10 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 
-public class EntityTFSnowQueenIceShield extends EntityDragonPart {
+public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
 	public EntityTFSnowQueenIceShield(EntityTFSnowQueen goblin) {
 		super(goblin, "shield", 0.75F, 0.75F);
 	}

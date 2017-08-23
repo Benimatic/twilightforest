@@ -278,17 +278,17 @@ public class ModelTFHydra extends ModelBase {
 //        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 7*-16);
 //        vec.rotateAroundX((60 * 3.141593F) / 180F);
 //        vec.rotateAroundY((0 * 3.141593F) / 180F);
-//        head1.setRotationPoint((float)vec.xCoord, (float)vec.yCoord - 48, (float)vec.zCoord);
+//        head1.setRotationPoint((float)vec.x, (float)vec.y - 48, (float)vec.z);
 //		
 //        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 9*-16);
 //        vec.rotateAroundX((45 * 3.141593F) / 180F);
 //        vec.rotateAroundY((-60 * 3.141593F) / 180F);
-//        head2.setRotationPoint((float)vec.xCoord, (float)vec.yCoord - 48, (float)vec.zCoord);
+//        head2.setRotationPoint((float)vec.x, (float)vec.y - 48, (float)vec.z);
 //		
 //        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 9*-16);
 //        vec.rotateAroundX((-10 * 3.141593F) / 180F);
 //        vec.rotateAroundY((60 * 3.141593F) / 180F);
-//        head3.setRotationPoint((float)vec.xCoord, (float)vec.yCoord - 48, (float)vec.zCoord);
+//        head3.setRotationPoint((float)vec.x, (float)vec.y - 48, (float)vec.z);
 //		
 //        // rotate the heads
 //        if (hydra.head1 != null)

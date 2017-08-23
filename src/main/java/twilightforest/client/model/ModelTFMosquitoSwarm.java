@@ -90,7 +90,7 @@ public class ModelTFMosquitoSwarm extends ModelBase {
 
 			bug.addBox(bugX, bugY, bugZ, 1, 1, 1);
 
-			bug.setRotationPoint((float) vec.xCoord, (float) vec.yCoord, (float) vec.zCoord);
+			bug.setRotationPoint((float) vec.x, (float) vec.y, (float) vec.z);
 			bug.rotateAngleY = rotateY;
 			node.addChild(bug);
 		}

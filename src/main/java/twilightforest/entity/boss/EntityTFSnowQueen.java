@@ -12,7 +12,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -161,14 +161,14 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 			Vec3d look = this.getLookVec();
 
 			double dist = 0.5;
-			double px = this.posX + look.xCoord * dist;
-			double py = this.posY + 1.7F + look.yCoord * dist;
-			double pz = this.posZ + look.zCoord * dist;
+			double px = this.posX + look.x * dist;
+			double py = this.posY + 1.7F + look.y * dist;
+			double pz = this.posZ + look.z * dist;
 
 			for (int i = 0; i < 10; i++) {
-				double dx = look.xCoord;
-				double dy = 0;//look.yCoord;
-				double dz = look.zCoord;
+				double dx = look.x;
+				double dy = 0;//look.y;
+				double dz = look.z;
 
 				double spread = 2 + this.getRNG().nextDouble() * 2.5;
 				double velocity = 2.0 + this.getRNG().nextDouble() * 0.15;
@@ -203,7 +203,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 
 				//System.out.println("Got position for block " + i + " and it is" + blockPos);
 
-				this.iceArray[i].setPosition(blockPos.xCoord, blockPos.yCoord, blockPos.zCoord);
+				this.iceArray[i].setPosition(blockPos.x, blockPos.y, blockPos.z);
 				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			} else {
 				// last block beneath
@@ -337,7 +337,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public boolean attackEntityFromPart(EntityDragonPart entitydragonpart, DamageSource damagesource, float i) {
+	public boolean attackEntityFromPart(MultiPartEntityPart MultiPartEntityPart, DamageSource damagesource, float i) {
 		return false;
 	}
 

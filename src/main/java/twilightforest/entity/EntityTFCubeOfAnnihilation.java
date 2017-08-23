@@ -113,7 +113,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
-				List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+				List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 
 				if (list.contains(this.getThrower())) {
 					this.setDead();
@@ -123,11 +123,11 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 			}
 
 			// set motions
-			Vec3d velocity = new Vec3d(this.posX - destPoint.xCoord, (this.posY + this.height / 2F) - destPoint.yCoord, this.posZ - destPoint.zCoord);
+			Vec3d velocity = new Vec3d(this.posX - destPoint.x, (this.posY + this.height / 2F) - destPoint.y, this.posZ - destPoint.z);
 
-			this.motionX -= velocity.xCoord;
-			this.motionY -= velocity.yCoord;
-			this.motionZ -= velocity.zCoord;
+			this.motionX -= velocity.x;
+			this.motionY -= velocity.y;
+			this.motionZ -= velocity.z;
 
 			// normalize speed
 			float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);

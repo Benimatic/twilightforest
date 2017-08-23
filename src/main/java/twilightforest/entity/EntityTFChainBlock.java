@@ -5,7 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
@@ -189,7 +189,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 			// on the client, if we are not attached, assume we have just spawned, and attach to the player
 			if (!isAttached) {
-				for (EntityPlayer nearby : this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().addCoord(-this.motionX, -this.motionY, -this.motionZ).expand(2.0D, 2.0D, 2.0D))) {
+				for (EntityPlayer nearby : this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().offset(-this.motionX, -this.motionY, -this.motionZ).expand(2.0D, 2.0D, 2.0D))) {
 					// attach?  should we check for closest player?
 					this.attachedTo = nearby;
 				}
@@ -202,9 +202,9 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 				// interpolate chain position
 				Vec3d handVec = this.attachedTo.getLookVec().rotateYaw(-0.4F);
 
-				double sx = this.attachedTo.posX + handVec.xCoord;
-				double sy = this.attachedTo.posY + handVec.yCoord - 0.4F + this.attachedTo.getEyeHeight();
-				double sz = this.attachedTo.posZ + handVec.zCoord;
+				double sx = this.attachedTo.posX + handVec.x;
+				double sy = this.attachedTo.posY + handVec.y - 0.4F + this.attachedTo.getEyeHeight();
+				double sz = this.attachedTo.posZ + handVec.z;
 
 				double ox = sx - this.posX;
 				double oy = sy - this.posY - 0.25F;
@@ -238,9 +238,9 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
 
 					// separate the return velocity from the normal bouncy velocity
-					this.motionX = this.velX * (1.0 - age) + (back.xCoord * 2F * age);
-					this.motionY = this.velY * (1.0 - age) + (back.yCoord * 2F * age) - this.getGravityVelocity();
-					this.motionZ = this.velZ * (1.0 - age) + (back.zCoord * 2F * age);
+					this.motionX = this.velX * (1.0 - age) + (back.x * 2F * age);
+					this.motionY = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
+					this.motionZ = this.velZ * (1.0 - age) + (back.z * 2F * age);
 				}
 			}
 		}
@@ -253,7 +253,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 
 	@Override
-	public boolean attackEntityFromPart(EntityDragonPart p_70965_1_, DamageSource p_70965_2_, float p_70965_3_) {
+	public boolean attackEntityFromPart(MultiPartEntityPart p_70965_1_, DamageSource p_70965_2_, float p_70965_3_) {
 		return false;
 	}
 

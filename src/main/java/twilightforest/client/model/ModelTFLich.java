@@ -146,7 +146,7 @@ public class ModelTFLich extends ModelBiped {
 					vec = vec.rotateYaw(rotateY);
 					ModelRenderer shield = new ModelRenderer(this, 26, 40);
 					shield.addBox(0.5F, -6F, -6F, 1, 12, 12);
-					shield.setRotationPoint((float) vec.xCoord, (float) vec.yCoord, (float) vec.zCoord);
+					shield.setRotationPoint((float) vec.x, (float) vec.y, (float) vec.z);
 					shield.setTextureSize(64, 64);
 					shield.rotateAngleY = rotateY;
 					shieldBelt.addChild(shield);

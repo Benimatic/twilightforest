@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,14 +59,14 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	private static final DataParameter<Integer> DATA_BOSSHEALTH = EntityDataManager.createKey(EntityTFHydra.class, DataSerializers.VARINT);
 
 	private Entity partArray[];
-	public EntityDragonPart body;
+	public MultiPartEntityPart body;
 
 	public HydraHeadContainer[] hc;
 	public int numHeads = 7;
 
-	private EntityDragonPart leftLeg;
-	private EntityDragonPart rightLeg;
-	private EntityDragonPart tail;
+	private MultiPartEntityPart leftLeg;
+	private MultiPartEntityPart rightLeg;
+	private MultiPartEntityPart tail;
 	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
 
 	public int ticksSinceDamaged = 0;
@@ -76,7 +76,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 		partArray = (new Entity[]
 				{
-						body = new EntityDragonPart(this, "body", 4F, 4F), leftLeg = new EntityDragonPart(this, "leg", 2F, 3F), rightLeg = new EntityDragonPart(this, "leg", 2F, 3F), tail = new EntityDragonPart(this, "tail", 4F, 4F)
+						body = new MultiPartEntityPart(this, "body", 4F, 4F), leftLeg = new MultiPartEntityPart(this, "leg", 2F, 3F), rightLeg = new MultiPartEntityPart(this, "leg", 2F, 3F), tail = new MultiPartEntityPart(this, "tail", 4F, 4F)
 				});
 
 		// head array
@@ -589,7 +589,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public boolean attackEntityFromPart(EntityDragonPart dragonpart, DamageSource damagesource, float i) {
+	public boolean attackEntityFromPart(MultiPartEntityPart dragonpart, DamageSource damagesource, float i) {
 		return calculateRange(damagesource) <= 400 && super.attackEntityFrom(damagesource, Math.round(i / 8.0F));
 	}
 

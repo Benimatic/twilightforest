@@ -38,9 +38,9 @@ public class TFSkyRenderer extends IRenderHandler {
 
 		GlStateManager.disableTexture2D();
 		Vec3d vec3d = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
-		float f = (float) vec3d.xCoord;
-		float f1 = (float) vec3d.yCoord;
-		float f2 = (float) vec3d.zCoord;
+		float f = (float) vec3d.x;
+		float f1 = (float) vec3d.y;
+		float f2 = (float) vec3d.z;
 
 		if (pass != 2) {
 			float f3 = (f * 30.0F + f1 * 59.0F + f2 * 11.0F) / 100.0F;
@@ -116,7 +116,7 @@ public class TFSkyRenderer extends IRenderHandler {
 		GlStateManager.popMatrix();
 		GlStateManager.disableTexture2D();
 		GlStateManager.color(0.0F, 0.0F, 0.0F);
-		double d0 = mc.player.getPositionEyes(partialTicks).yCoord - world.getHorizon();
+		double d0 = mc.player.getPositionEyes(partialTicks).y - world.getHorizon();
 
 		if (d0 < 0.0D) {
 			GlStateManager.pushMatrix();

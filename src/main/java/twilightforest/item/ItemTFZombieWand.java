@@ -37,7 +37,7 @@ public class ItemTFZombieWand extends ItemTF {
 
 			if (mop != null && mop.hitVec != null) {
 				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
-				zombie.setPositionAndRotation(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord, 1.0F, 1.0F);
+				zombie.setPositionAndRotation(mop.hitVec.x, mop.hitVec.y, mop.hitVec.z, 1.0F, 1.0F);
 				zombie.setTamed(true);
 				zombie.setOwnerId(player.getUniqueID());
 				zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
@@ -60,7 +60,7 @@ public class ItemTFZombieWand extends ItemTF {
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, float range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
+		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
 	}
 

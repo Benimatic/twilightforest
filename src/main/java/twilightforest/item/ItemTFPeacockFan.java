@@ -61,7 +61,7 @@ public class ItemTFPeacockFan extends ItemTF {
 					world.spawnParticle(EnumParticleTypes.CLOUD, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
 							fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY),
 							fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ),
-							lookVec.xCoord, lookVec.yCoord, lookVec.zCoord);
+							lookVec.x, lookVec.y, lookVec.z);
 				}
 
 			}
@@ -100,9 +100,9 @@ public class ItemTFPeacockFan extends ItemTF {
 
 		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
 			if (entity.canBePushed() || entity instanceof EntityItem) {
-				entity.motionX = moveVec.xCoord;
-				entity.motionY = moveVec.yCoord;
-				entity.motionZ = moveVec.zCoord;
+				entity.motionX = moveVec.x;
+				entity.motionY = moveVec.y;
+				entity.motionZ = moveVec.z;
 			}
 		}
 
@@ -113,9 +113,9 @@ public class ItemTFPeacockFan extends ItemTF {
 		double radius = 2.0D;
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = player.getLookVec().scale(range);
-		Vec3d destVec = srcVec.addVector(lookVec.xCoord, lookVec.yCoord, lookVec.zCoord);
+		Vec3d destVec = srcVec.addVector(lookVec.x, lookVec.y, lookVec.z);
 
-		return new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
+		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}
 
 	private int fanBlocksInAABB(World world, EntityPlayer player, AxisAlignedBB box) {

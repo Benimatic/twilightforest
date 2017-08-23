@@ -84,7 +84,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
+		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
 	}
 }

@@ -89,7 +89,7 @@ public class EntityAITFLichMinions extends EntityAIBase {
 		if (minionSpot != null) {
 			// put a clone there
 			EntityTFLichMinion minion = new EntityTFLichMinion(lich.world, lich);
-			minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
+			minion.setPosition(minionSpot.x, minionSpot.y, minionSpot.z);
 			minion.onInitialSpawn(lich.world.getDifficultyForLocation(new BlockPos(minionSpot)), null);
 			lich.world.spawnEntity(minion);
 
@@ -99,7 +99,7 @@ public class EntityAITFLichMinions extends EntityAIBase {
 			minion.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, ((lich.getRNG().nextFloat() - lich.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 			// make sparkles leading to it
-			lich.makeBlackMagicTrail(lich.posX, lich.posY + lich.getEyeHeight(), lich.posZ, minionSpot.xCoord, minionSpot.yCoord + minion.height / 2.0, minionSpot.zCoord);
+			lich.makeBlackMagicTrail(lich.posX, lich.posY + lich.getEyeHeight(), lich.posZ, minionSpot.x, minionSpot.y + minion.height / 2.0, minionSpot.z);
 		}
 	}
 

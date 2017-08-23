@@ -112,9 +112,9 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 
 		// level 3 hills get 2 mid-air wraith spawners
 		if (hillSize == 3) {
-//			int[] dest = getEmptyCoordsInHill(hy + 10, 20);
+//			int[] dest = getEmptysInHill(hy + 10, 20);
 //			placeWraithSpawner(dest[0], hy + 10, dest[1]);
-//			dest = getEmptyCoordsInHill(hy + 10, 20);
+//			dest = getEmptysInHill(hy + 10, 20);
 //			placeWraithSpawner(dest[0], hy + 10, dest[1]);
 		}
 

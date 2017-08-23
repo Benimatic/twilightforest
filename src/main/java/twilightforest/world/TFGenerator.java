@@ -48,7 +48,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 */
 	protected static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, IBlockState state) {
-		for (BlockPos pixel : getBresehnamArrayCoords(from, to)) {
+		for (BlockPos pixel : getBresehnamArrays(from, to)) {
 			generator.setBlockAndNotify(world, pixel, state);
 		}
 	}
@@ -56,15 +56,15 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 */
-	public static BlockPos[] getBresehnamArrayCoords(BlockPos src, BlockPos dest) {
-		return getBresehnamArrayCoords(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
+	public static BlockPos[] getBresehnamArrays(BlockPos src, BlockPos dest) {
+		return getBresehnamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
 	}
 
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 * todo 1.9 lazify this into an iterable?
 	 */
-	public static BlockPos[] getBresehnamArrayCoords(int x1, int y1, int z1, int x2, int y2, int z2) {
+	public static BlockPos[] getBresehnamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
 		int i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 
 		BlockPos pixel = new BlockPos(x1, y1, z1);

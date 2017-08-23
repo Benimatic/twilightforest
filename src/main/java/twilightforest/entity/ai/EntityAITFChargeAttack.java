@@ -52,11 +52,11 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 				if (!canSeeTargetFromDest) {
 					return false;
 				} else {
-					chargeX = chargePos.xCoord;
-					chargeY = chargePos.yCoord;
-					chargeZ = chargePos.zCoord;
+					chargeX = chargePos.x;
+					chargeY = chargePos.y;
+					chargeZ = chargePos.z;
 
-					//System.out.println("Setting charge position to " + chargePos.xCoord + ", "  + chargePos.yCoord + ", " + chargePos.zCoord);
+					//System.out.println("Setting charge position to " + chargePos.x + ", "  + chargePos.y + ", " + chargePos.z);
 
 					return this.charger.getRNG().nextInt(FREQ) == 0;
 				}

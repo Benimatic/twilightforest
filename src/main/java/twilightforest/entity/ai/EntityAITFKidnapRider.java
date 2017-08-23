@@ -28,9 +28,9 @@ public class EntityAITFKidnapRider extends EntityAIBase {
 			if (var1 == null) {
 				return false;
 			} else {
-				this.randPosX = var1.xCoord;
-				this.randPosY = var1.yCoord;
-				this.randPosZ = var1.zCoord;
+				this.randPosX = var1.x;
+				this.randPosY = var1.y;
+				this.randPosZ = var1.z;
 				return true;
 			}
 		}

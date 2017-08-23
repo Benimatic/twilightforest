@@ -371,7 +371,7 @@ public class TFGenHollowTree extends TFGenerator {
 		BlockPos src = translate(pos.up(branchHeight), diameter, angle, 0.5);
 		BlockPos dest = translate(src, length, angle, tilt);
 
-		BlockPos[] lineArray = getBresehnamArrayCoords(src, dest);
+		BlockPos[] lineArray = getBresehnamArrays(src, dest);
 		boolean stillAboveGround = true;
 		for (BlockPos coord : lineArray) {
 			if (stillAboveGround && hasAirAround(world, coord)) {

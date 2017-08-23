@@ -141,9 +141,9 @@ public class EntityTFTowerGhast extends EntityGhast {
 			if (this.parentEntity.getDistanceSq(this.parentEntity.getHomePosition()) > 256.0D) {
 				Vec3d vecToHome = new Vec3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVector()).normalize();
 
-				double targetX = this.parentEntity.posX + vecToHome.xCoord * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetY = this.parentEntity.posY + vecToHome.yCoord * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetZ = this.parentEntity.posZ + vecToHome.zCoord * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetX = this.parentEntity.posX + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetY = this.parentEntity.posY + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetZ = this.parentEntity.posZ + vecToHome.z * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 
 				this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
 			} else {
@@ -289,15 +289,15 @@ public class EntityTFTowerGhast extends EntityGhast {
 
 	protected void spitFireball() {
 		Vec3d vec3d = this.getLook(1.0F);
-		double d2 = getAttackTarget().posX - (this.posX + vec3d.xCoord * 4.0D);
+		double d2 = getAttackTarget().posX - (this.posX + vec3d.x * 4.0D);
 		double d3 = getAttackTarget().getEntityBoundingBox().minY + (double) (getAttackTarget().height / 2.0F) - (0.5D + this.posY + (double) (this.height / 2.0F));
-		double d4 = getAttackTarget().posZ - (this.posZ + vec3d.zCoord * 4.0D);
+		double d4 = getAttackTarget().posZ - (this.posZ + vec3d.z * 4.0D);
 		world.playEvent((EntityPlayer) null, 1016, new BlockPos(this), 0);
 		EntityLargeFireball entitylargefireball = new EntityLargeFireball(world, this, d2, d3, d4);
 		entitylargefireball.explosionPower = this.getFireballStrength();
-		entitylargefireball.posX = this.posX + vec3d.xCoord * 4.0D;
+		entitylargefireball.posX = this.posX + vec3d.x * 4.0D;
 		entitylargefireball.posY = this.posY + (double) (this.height / 2.0F) + 0.5D;
-		entitylargefireball.posZ = this.posZ + vec3d.zCoord * 4.0D;
+		entitylargefireball.posZ = this.posZ + vec3d.z * 4.0D;
 		world.spawnEntity(entitylargefireball);
 
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
