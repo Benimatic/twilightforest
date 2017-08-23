@@ -1,0 +1,15 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:firefly_jar"
+    },
+    "title": {
+      "translate": "itemGroup.twilightforest"
+    },
+    "description": {
+      "translate": "twilightforest.desc"
+    },
+    "show_toast": false,
+    "announce_to_chat": false
+  }
+}

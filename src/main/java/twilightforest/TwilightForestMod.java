@@ -101,7 +101,7 @@ public class TwilightForestMod {
 		proxy.doOnLoadRegistration();
 
 		// dimension provider
-		dimType = DimensionType.register("Twilight Forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
+		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 	}
 
 	@EventHandler

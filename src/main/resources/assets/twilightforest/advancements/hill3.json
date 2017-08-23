@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:diamond_ore"
+    },
+    "title": {
+      "translate": "advancement.twilightHill3"
+    },
+    "description": {
+      "translate": "advancement.twilightHill3.desc"
+    }
+  },
+  "parent": "twilightforest:twilight_arrival",
+  "criteria": {
+    "wraith": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:wraith",
+          "location": {
+            "feature": "TFHill"
+          }
+        }
+      }
+    }
+  }
+}
