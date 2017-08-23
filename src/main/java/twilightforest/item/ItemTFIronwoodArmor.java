@@ -34,22 +34,24 @@ public class ItemTFIronwoodArmor extends ItemArmor implements ModelRegisterCallb
 	}
 
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		ItemStack istack = new ItemStack(par1, 1, 0);
-		switch (this.armorType) {
-			case HEAD:
-				istack.addEnchantment(Enchantments.AQUA_AFFINITY, 1);
-				break;
-			case CHEST:
-				istack.addEnchantment(Enchantments.PROTECTION, 1);
-				break;
-			case LEGS:
-				istack.addEnchantment(Enchantments.PROTECTION, 1);
-				break;
-			case FEET:
-				istack.addEnchantment(Enchantments.FEATHER_FALLING, 1);
-				break;
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			switch (this.armorType) {
+				case HEAD:
+					istack.addEnchantment(Enchantments.AQUA_AFFINITY, 1);
+					break;
+				case CHEST:
+					istack.addEnchantment(Enchantments.PROTECTION, 1);
+					break;
+				case LEGS:
+					istack.addEnchantment(Enchantments.PROTECTION, 1);
+					break;
+				case FEET:
+					istack.addEnchantment(Enchantments.FEATHER_FALLING, 1);
+					break;
+			}
+			list.add(istack);
 		}
-		par3List.add(istack);
 	}
 }

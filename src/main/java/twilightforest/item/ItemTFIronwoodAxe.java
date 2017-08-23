@@ -16,9 +16,11 @@ public class ItemTFIronwoodAxe extends ItemAxe implements ModelRegisterCallback 
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		ItemStack istack = new ItemStack(item);
-		istack.addEnchantment(Enchantments.FORTUNE, 1);
-		list.add(istack);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			istack.addEnchantment(Enchantments.FORTUNE, 1);
+			list.add(istack);
+		}
 	}
 }

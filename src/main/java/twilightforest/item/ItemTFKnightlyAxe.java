@@ -1,11 +1,13 @@
 package twilightforest.item;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
@@ -28,8 +30,8 @@ public class ItemTFKnightlyAxe extends ItemAxe implements ModelRegisterCallback 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltips, boolean advanced) {
-		super.addInformation(stack, player, tooltips, advanced);
+	public void addInformation(ItemStack stack, World world, List<String> tooltips, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltips, flags);
 		tooltips.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }

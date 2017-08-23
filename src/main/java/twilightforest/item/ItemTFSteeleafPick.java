@@ -16,9 +16,11 @@ public class ItemTFSteeleafPick extends ItemPickaxe implements ModelRegisterCall
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		ItemStack istack = new ItemStack(item);
-		istack.addEnchantment(Enchantments.FORTUNE, 2);
-		list.add(istack);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			istack.addEnchantment(Enchantments.FORTUNE, 2);
+			list.add(istack);
+		}
 	}
 }

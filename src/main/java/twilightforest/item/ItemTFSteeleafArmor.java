@@ -37,22 +37,24 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		ItemStack istack = new ItemStack(item);
-		switch (this.armorType) {
-			case HEAD:
-				istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
-				break;
-			case CHEST:
-				istack.addEnchantment(Enchantments.BLAST_PROTECTION, 2);
-				break;
-			case LEGS:
-				istack.addEnchantment(Enchantments.FIRE_PROTECTION, 2);
-				break;
-			case FEET:
-				istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
-				break;
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			switch (this.armorType) {
+				case HEAD:
+					istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
+					break;
+				case CHEST:
+					istack.addEnchantment(Enchantments.BLAST_PROTECTION, 2);
+					break;
+				case LEGS:
+					istack.addEnchantment(Enchantments.FIRE_PROTECTION, 2);
+					break;
+				case FEET:
+					istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
+					break;
+			}
+			list.add(istack);
 		}
-		list.add(istack);
 	}
 }

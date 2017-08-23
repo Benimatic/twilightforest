@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -79,8 +80,8 @@ public class ItemTFTwilightWand extends ItemTF {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add((par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()) + " charges left");
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+		tooltip.add((stack.getMaxDamage() - stack.getItemDamage()) + " charges left");
 	}
 }

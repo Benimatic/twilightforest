@@ -37,10 +37,12 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 	}
 
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		ItemStack istack = new ItemStack(par1, 1, 0);
-		//istack.addEnchantment(TFEnchantment.reactFire, 2);
-		par3List.add(istack);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			//istack.addEnchantment(TFEnchantment.reactFire, 2);
+			list.add(istack);
+		}
 	}
 
 	@SideOnly(Side.CLIENT)

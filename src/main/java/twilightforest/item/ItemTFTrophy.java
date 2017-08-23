@@ -34,10 +34,12 @@ public class ItemTFTrophy extends ItemTF {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		for (BossVariant v : BossVariant.values()) {
-			if (v.hasTrophy()) {
-				list.add(new ItemStack(item, 1, v.ordinal()));
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			for (BossVariant v : BossVariant.values()) {
+				if (v.hasTrophy()) {
+					list.add(new ItemStack(this, 1, v.ordinal()));
+				}
 			}
 		}
 	}

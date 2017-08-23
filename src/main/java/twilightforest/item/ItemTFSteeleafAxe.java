@@ -20,10 +20,11 @@ public class ItemTFSteeleafAxe extends ItemAxe implements ModelRegisterCallback 
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		ItemStack istack = new ItemStack(item);
-		istack.addEnchantment(Enchantments.EFFICIENCY, 2);
-		list.add(istack);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			istack.addEnchantment(Enchantments.EFFICIENCY, 2);
+			list.add(istack);
+		}
 	}
 }

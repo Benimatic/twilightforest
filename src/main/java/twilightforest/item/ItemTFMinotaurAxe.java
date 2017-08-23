@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,10 +34,12 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 	}
 
 	@Override
-	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		ItemStack istack = new ItemStack(item, 1, 0);
-		//istack.addEnchantment(Enchantments.EFFICIENCY, 2);
-		list.add(istack);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			//istack.addEnchantment(Enchantments.EFFICIENCY, 2);
+			list.add(istack);
+		}
 	}
 
 	@SubscribeEvent
@@ -63,8 +67,8 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
-		super.addInformation(stack, player, list, advanced);
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {
+		super.addInformation(stack, world, list, flags);
 		list.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }

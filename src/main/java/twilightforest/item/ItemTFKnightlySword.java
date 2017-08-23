@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,8 +58,8 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
-		super.addInformation(stack, player, list, advanced);
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {
+		super.addInformation(stack, world, list, flags);
 		list.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }

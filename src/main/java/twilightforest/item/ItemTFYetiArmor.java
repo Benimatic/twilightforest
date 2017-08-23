@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
@@ -43,21 +45,22 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-		ItemStack istack = new ItemStack(item);
-		switch (this.armorType) {
-			case HEAD:
-			case CHEST:
-			case LEGS:
-				istack.addEnchantment(Enchantments.PROTECTION, 2);
-				break;
-			case FEET:
-				istack.addEnchantment(Enchantments.PROTECTION, 2);
-				istack.addEnchantment(Enchantments.FEATHER_FALLING, 4);
-				break;
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			switch (this.armorType) {
+				case HEAD:
+				case CHEST:
+				case LEGS:
+					istack.addEnchantment(Enchantments.PROTECTION, 2);
+					break;
+				case FEET:
+					istack.addEnchantment(Enchantments.PROTECTION, 2);
+					istack.addEnchantment(Enchantments.FEATHER_FALLING, 4);
+					break;
+			}
+			list.add(istack);
 		}
-		list.add(istack);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -68,8 +71,8 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltips, boolean advanced) {
-		super.addInformation(stack, player, tooltips, advanced);
+	public void addInformation(ItemStack stack, World world, List<String> tooltips, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltips, flags);
 		tooltips.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
 }

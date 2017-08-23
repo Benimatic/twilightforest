@@ -1,9 +1,11 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,21 +31,21 @@ public class ItemBlockTFMeta extends ItemBlock {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
 
 		// add warning for [WIP] tag
-		if (par1ItemStack.getDisplayName().contains("[WIP]")) {
+		if (stack.getDisplayName().contains("[WIP]")) {
 			// TODO 1.10 localize these messages.
-			par3List.add("This block is a work in progress");
-			par3List.add("and may have bugs or unintended");
-			par3List.add("effects that may damage your world.");
-			par3List.add("Use with caution.");
+			tooltip.add("This block is a work in progress");
+			tooltip.add("and may have bugs or unintended");
+			tooltip.add("effects that may damage your world.");
+			tooltip.add("Use with caution.");
 		}
 		// add warning for [NYI] tag
-		if (par1ItemStack.getDisplayName().contains("[NYI]")) {
-			par3List.add("This block has effects");
-			par3List.add("that are not yet implemented.");
+		if (stack.getDisplayName().contains("[NYI]")) {
+			tooltip.add("This block has effects");
+			tooltip.add("that are not yet implemented.");
 		}
 	}
 }

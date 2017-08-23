@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
@@ -83,7 +84,8 @@ public class ItemTFZombieWand extends ItemTF {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
-		list.add((stack.getMaxDamage() - stack.getItemDamage()) + " charges left");
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {
+		super.addInformation(stack, world, list, flags);
+		list.add((stack.getMaxDamage() - stack.getItemDamage()) + " charges left"); // todo localize
 	}
 }
