@@ -249,7 +249,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.ENTITY_SHEEP_HURT;
 	}
 

@@ -31,7 +31,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.ENTITY_BAT_HURT;
 	}
 

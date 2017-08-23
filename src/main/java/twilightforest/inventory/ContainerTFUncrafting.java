@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -149,7 +150,7 @@ public class ContainerTFUncrafting extends Container {
 		if (par1IInventory == this.assemblyMatrix || par1IInventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
-				this.tinkerResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.assemblyMatrix, this.world));
+				this.tinkerResult.setInventorySlotContents(0, CraftingManager.findMatchingResult(this.assemblyMatrix, this.world));
 				this.uncraftingMatrix.recraftingCost = 0;
 			} else {
 //    			if (isMatrixEmpty(this.assemblyMatrix)) {
@@ -180,7 +181,7 @@ public class ContainerTFUncrafting extends Container {
 				}
 			}
 			// is there a result from this combined thing?
-			ItemStack result = CraftingManager.getInstance().findMatchingRecipe(this.combineMatrix, this.world);
+			ItemStack result = CraftingManager.findMatchingResult(this.combineMatrix, this.world);
 			ItemStack input = this.tinkerInput.getStackInSlot(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
@@ -239,7 +240,7 @@ public class ContainerTFUncrafting extends Container {
 	 */
 	private IRecipe getRecipeFor(ItemStack inputStack) {
 		if (!inputStack.isEmpty()) {
-			for (IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
+			for (IRecipe recipe : CraftingManager.REGISTRY) {
 				if ((recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe)
 						&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
 						&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
@@ -549,35 +550,17 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private ItemStack[] getIngredients(IRecipe recipe) {
-		if (recipe instanceof ShapedRecipes) {
-			return ((ShapedRecipes) recipe).recipeItems;
-		}
-		if (recipe instanceof ShapedOreRecipe) {
-			return getIngredientsOre((ShapedOreRecipe) recipe);
-		}
-		return null;
-	}
+		// todo 1.12 recheck
+		if (recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe) {
+			ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
-	private ItemStack[] getIngredientsOre(ShapedOreRecipe shaped) {
-		try {
-			// ShapedOreRecipes can have either an ItemStack or an ArrayList of ItemStacks
-			Object[] objects = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, shaped, "input");
-			ItemStack[] items = new ItemStack[objects.length];
-			Arrays.fill(items, ItemStack.EMPTY);
-
-			for (int i = 0; i < objects.length; i++) {
-				if (objects[i] instanceof ItemStack) {
-					items[i] = (ItemStack) objects[i];
-				}
-				if (objects[i] instanceof ArrayList && ((ArrayList<ItemStack>) objects[i]).size() > 0) {
-					items[i] = ((ArrayList<ItemStack>) objects[i]).get(0);
-				}
+			for (int i = 0; i < recipe.getIngredients().size(); i++) {
+				stacks[i] = recipe.getIngredients().get(i).getMatchingStacks()[0];
 			}
 
-			return items;
-		} catch (IllegalArgumentException | SecurityException e) {
-			e.printStackTrace();
+			return stacks;
 		}
+
 		return null;
 	}
 

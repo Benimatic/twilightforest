@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,11 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 		if (result) {
-			stack.attemptDamageItem(stack.getMaxDamage(), itemRand);
+			if (attacker instanceof EntityPlayerMP) {
+				stack.attemptDamageItem(stack.getMaxDamage(), itemRand, (EntityPlayerMP) attacker);
+			} else {
+				stack.attemptDamageItem(stack.getMaxDamage(), itemRand, null);
+			}
 		}
 
 		return result;

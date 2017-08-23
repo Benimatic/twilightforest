@@ -52,7 +52,7 @@ public class EntityTFHelmetCrab extends EntityMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.ENTITY_SPIDER_HURT;
 	}
 

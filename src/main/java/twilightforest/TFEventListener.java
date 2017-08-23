@@ -80,7 +80,7 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void pickupItem(EntityItemPickupEvent event) {
-		Item item = event.getItem().getEntityItem().getItem();
+		Item item = event.getItem().getItem().getItem();
 		if (item == TFItems.scepterTwilight || item == TFItems.scepterLifeDrain
 				|| item == TFItems.scepterZombie) {
 			// the player has picked up a scepter.  Check if they have them all in their inventory, and if so, achievement
@@ -94,19 +94,19 @@ public class TFEventListener {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressNaga);
 		}
 		// trophy gives kill achievement
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 2) {
+		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 2) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillHydra);
 		}
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 0) {
+		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 0) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillNaga);
 		}
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 1) {
+		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 1) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillLich);
 		}
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 3) {
+		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 3) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressUrghast);
 		}
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 5) {
+		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 5) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressGlacier);
 		}
 		// mazebreaker

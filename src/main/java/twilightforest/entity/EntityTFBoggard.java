@@ -57,7 +57,7 @@ public class EntityTFBoggard extends EntityMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.REDCAP_HURT;
 	}
 

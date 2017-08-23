@@ -79,7 +79,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.ICE_HURT;
 	}
 

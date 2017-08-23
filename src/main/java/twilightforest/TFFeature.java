@@ -514,11 +514,6 @@ public class TFFeature {
 
 	/**
 	 * If we're near a hollow hill, this returns relative block coordinates indicating the center of that hill relative to the current chunk block coordinate system.
-	 *
-	 * @param cx
-	 * @param cz
-	 * @param seed
-	 * @return
 	 */
 	public static int[] getNearestCenter(int cx, int cz, World world) {
 		for (int rad = 1; rad <= 3; rad++) {

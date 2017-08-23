@@ -44,7 +44,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
 	@Nullable
 	@Override
-	public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean findUnexplored) {
+	public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
 		// todo 1.11
 		return null;
 	}

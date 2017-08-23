@@ -20,7 +20,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
@@ -125,7 +125,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	}
 
 	@Override
-	public Chunk provideChunk(int cx, int cz) {
+	public Chunk generateChunk(int cx, int cz) {
 		rand.setSeed(cx * 0x4f9939f508L + cz * 0x1ef1565bd5L);
 		ChunkPrimer primer = new ChunkPrimer();
 		generateTerrain2(cx, cz, primer);
@@ -830,7 +830,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		hollowTreeGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
 
-		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.decorator.generateLakes) {
+		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.decorator.generateFalls) {
 			int i1 = worldPos.getX() + rand.nextInt(16) + 8;
 			int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
 			int i3 = worldPos.getZ() + rand.nextInt(16) + 8;
@@ -916,7 +916,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	@Nullable
 	@Override
-	public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
+	public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
 		// todo 1.10
 		return null;
 	}

@@ -382,7 +382,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playSound(getHurtSound(), this.getSoundVolume(), this.getSoundPitch());
+				this.playSound(getHurtSound(DamageSource source), this.getSoundVolume(), this.getSoundPitch());
 				this.nextTantrumCry = 20 + rand.nextInt(30);
 			}
 

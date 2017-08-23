@@ -28,10 +28,10 @@ public class RenderTFMistWolf extends RenderWolf {
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
 
-		float misty = par1EntityLiving.getBrightness(0F) * 3F + 0.25F;
+		float misty = par1EntityLiving.getBrightness() * 3F + 0.25F;
 		misty = Math.min(1F, misty);
 
-		float smoky = par1EntityLiving.getBrightness(0F) * 2F + 0.6F;
+		float smoky = par1EntityLiving.getBrightness() * 2F + 0.6F;
 
 		//System.out.println("Misty value is " + misty);
 

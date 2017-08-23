@@ -2,50 +2,81 @@ package twilightforest;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Mod.EventBusSubscriber
 public final class TFSounds {
 
-	// Call target to ensure loaded class
-	public static void init() {
+	public static final SoundEvent KOBOLD_DEATH = createEvent("mob.kobold.die");
+	public static final SoundEvent KOBOLD_AMBIENT = createEvent("mob.kobold.kobold");
+	public static final SoundEvent KOBOLD_HURT = createEvent("mob.kobold.hurt");
+	public static final SoundEvent CICADA = createEvent("mob.cicada");
+	public static final SoundEvent NAGA_HISS = createEvent("mob.naga.hiss");
+	public static final SoundEvent NAGA_HURT = createEvent("mob.naga.hurt");
+	public static final SoundEvent NAGA_RATTLE = createEvent("mob.naga.rattle");
+	public static final SoundEvent RAVEN_CAW = createEvent("mob.raven.caw");
+	public static final SoundEvent RAVEN_SQUAWK = createEvent("mob.raven.squawk");
+	public static final SoundEvent REDCAP_DEATH = createEvent("mob.redcap.die");
+	public static final SoundEvent REDCAP_AMBIENT = createEvent("mob.redcap.redcap");
+	public static final SoundEvent REDCAP_HURT = createEvent("mob.redcap.hurt");
+	public static final SoundEvent TINYBIRD_CHIRP = createEvent("mob.tinybird.chirp");
+	public static final SoundEvent TINYBIRD_HURT = createEvent("mob.tinybird.hurt");
+	public static final SoundEvent TINYBIRD_SONG = createEvent("mob.tinybird.song");
+	public static final SoundEvent URGHAST_TRAP_ACTIVE = createEvent("mob.urghast.trapactive");
+	public static final SoundEvent URGHAST_TRAP_ON = createEvent("mob.urghast.trapon");
+	public static final SoundEvent URGHAST_TRAP_SPINDOWN = createEvent("mob.urghast.trapspindown");
+	public static final SoundEvent URGHAST_TRAP_WARMUP = createEvent("mob.urghast.trapwarmup");
+	public static final SoundEvent WRAITH = createEvent("mob.wraith.wraith");
+	public static final SoundEvent HYDRA_HURT = createEvent("mob.hydra.hurt");
+	public static final SoundEvent HYDRA_DEATH = createEvent("mob.hydra.death");
+	public static final SoundEvent HYDRA_GROWL = createEvent("mob.hydra.growl");
+	public static final SoundEvent HYDRA_ROAR = createEvent("mob.hydra.roar");
+	public static final SoundEvent HYDRA_WARN = createEvent("mob.hydra.warn");
+	public static final SoundEvent MOSQUITO = createEvent("mob.mosquito.mosquito");
+	public static final SoundEvent ICE_AMBIENT = createEvent("mob.ice.noise");
+	public static final SoundEvent ICE_HURT = createEvent("mob.ice.hurt");
+	public static final SoundEvent ICE_DEATH = createEvent("mob.ice.death");
+	public static final SoundEvent SLIDER = createEvent("random.slider");
+
+	private static SoundEvent createEvent(String sound) {
+		ResourceLocation name = new ResourceLocation(TwilightForestMod.ID, sound);
+		return new SoundEvent(name);
 	}
 
-	public static final SoundEvent KOBOLD_DEATH = registerSound("mob.kobold.die");
-	public static final SoundEvent KOBOLD_AMBIENT = registerSound("mob.kobold.kobold");
-	public static final SoundEvent KOBOLD_HURT = registerSound("mob.kobold.hurt");
-	public static final SoundEvent CICADA = registerSound("mob.cicada");
-	public static final SoundEvent NAGA_HISS = registerSound("mob.naga.hiss");
-	public static final SoundEvent NAGA_HURT = registerSound("mob.naga.hurt");
-	public static final SoundEvent NAGA_RATTLE = registerSound("mob.naga.rattle");
-	public static final SoundEvent RAVEN_CAW = registerSound("mob.raven.caw");
-	public static final SoundEvent RAVEN_SQUAWK = registerSound("mob.raven.squawk");
-	public static final SoundEvent REDCAP_DEATH = registerSound("mob.redcap.die");
-	public static final SoundEvent REDCAP_AMBIENT = registerSound("mob.redcap.redcap");
-	public static final SoundEvent REDCAP_HURT = registerSound("mob.redcap.hurt");
-	public static final SoundEvent TINYBIRD_CHIRP = registerSound("mob.tinybird.chirp");
-	public static final SoundEvent TINYBIRD_HURT = registerSound("mob.tinybird.hurt");
-	public static final SoundEvent TINYBIRD_SONG = registerSound("mob.tinybird.song");
-	public static final SoundEvent URGHAST_TRAP_ACTIVE = registerSound("mob.urghast.trapactive");
-	public static final SoundEvent URGHAST_TRAP_ON = registerSound("mob.urghast.trapon");
-	public static final SoundEvent URGHAST_TRAP_SPINDOWN = registerSound("mob.urghast.trapspindown");
-	public static final SoundEvent URGHAST_TRAP_WARMUP = registerSound("mob.urghast.trapwarmup");
-	public static final SoundEvent WRAITH = registerSound("mob.wraith.wraith");
-	public static final SoundEvent HYDRA_HURT = registerSound("mob.hydra.hurt");
-	public static final SoundEvent HYDRA_DEATH = registerSound("mob.hydra.death");
-	public static final SoundEvent HYDRA_GROWL = registerSound("mob.hydra.growl");
-	public static final SoundEvent HYDRA_ROAR = registerSound("mob.hydra.roar");
-	public static final SoundEvent HYDRA_WARN = registerSound("mob.hydra.warn");
-	public static final SoundEvent MOSQUITO = registerSound("mob.mosquito.mosquito");
-	public static final SoundEvent ICE_AMBIENT = registerSound("mob.ice.noise");
-	public static final SoundEvent ICE_HURT = registerSound("mob.ice.hurt");
-	public static final SoundEvent ICE_DEATH = registerSound("mob.ice.death");
-	public static final SoundEvent SLIDER = registerSound("random.slider");
-
-	private static SoundEvent registerSound(String sound) {
-		ResourceLocation name = new ResourceLocation(TwilightForestMod.ID, sound);
-		SoundEvent evt = new SoundEvent(name);
-		GameRegistry.register(evt, name);
-		return evt;
+	@SubscribeEvent
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> evt) {
+		evt.getRegistry().register(KOBOLD_DEATH);
+		evt.getRegistry().register(KOBOLD_AMBIENT);
+		evt.getRegistry().register(KOBOLD_HURT);
+		evt.getRegistry().register(CICADA);
+		evt.getRegistry().register(NAGA_HISS);
+		evt.getRegistry().register(NAGA_HURT);
+		evt.getRegistry().register(NAGA_RATTLE);
+		evt.getRegistry().register(RAVEN_CAW);
+		evt.getRegistry().register(RAVEN_SQUAWK);
+		evt.getRegistry().register(REDCAP_DEATH);
+		evt.getRegistry().register(REDCAP_AMBIENT);
+		evt.getRegistry().register(REDCAP_HURT);
+		evt.getRegistry().register(TINYBIRD_CHIRP);
+		evt.getRegistry().register(TINYBIRD_HURT);
+		evt.getRegistry().register(TINYBIRD_SONG);
+		evt.getRegistry().register(URGHAST_TRAP_ACTIVE);
+		evt.getRegistry().register(URGHAST_TRAP_ON);
+		evt.getRegistry().register(URGHAST_TRAP_SPINDOWN);
+		evt.getRegistry().register(URGHAST_TRAP_WARMUP);
+		evt.getRegistry().register(WRAITH);
+		evt.getRegistry().register(HYDRA_DEATH);
+		evt.getRegistry().register(HYDRA_GROWL);
+		evt.getRegistry().register(HYDRA_HURT);
+		evt.getRegistry().register(HYDRA_ROAR);
+		evt.getRegistry().register(HYDRA_WARN);
+		evt.getRegistry().register(MOSQUITO);
+		evt.getRegistry().register(ICE_AMBIENT);
+		evt.getRegistry().register(ICE_DEATH);
+		evt.getRegistry().register(ICE_HURT);
+		evt.getRegistry().register(SLIDER);
 	}
 
 	private TFSounds() {

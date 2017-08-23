@@ -2,6 +2,7 @@ package twilightforest.client.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,7 +10,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
@@ -53,7 +53,7 @@ public class TFSkyRenderer extends IRenderHandler {
 
 		GlStateManager.color(f, f1, f2);
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		BufferBuilder vertexbuffer = tessellator.getBuffer();
 		GlStateManager.depthMask(false);
 		GlStateManager.enableFog();
 		GlStateManager.color(f, f1, f2);
@@ -182,7 +182,7 @@ public class TFSkyRenderer extends IRenderHandler {
 		vertexBufferFormat.addElement(new VertexFormatElement(0, VertexFormatElement.EnumType.FLOAT, VertexFormatElement.EnumUsage.POSITION, 3));
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		BufferBuilder vertexbuffer = tessellator.getBuffer();
 
 		if (this.starVBO != null) {
 			this.starVBO.deleteGlBuffers();
@@ -211,7 +211,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	}
 
 	// [VanillaCopy] of RenderGlobal.renderStars but with double the number of them
-	private void renderStars(VertexBuffer worldRendererIn) {
+	private void renderStars(BufferBuilder worldRendererIn) {
 		Random random = new Random(10842L);
 		worldRendererIn.begin(7, DefaultVertexFormats.POSITION);
 

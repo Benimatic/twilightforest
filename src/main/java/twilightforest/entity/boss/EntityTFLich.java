@@ -534,7 +534,7 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.ENTITY_BLAZE_HURT;
 	}
 

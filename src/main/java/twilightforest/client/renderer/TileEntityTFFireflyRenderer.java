@@ -23,7 +23,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 
 
 	@Override
-	public void renderTileEntityAt(@Nullable TileEntityTFFirefly tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
+	public void render(@Nullable TileEntityTFFirefly tileentity, double d, double d1, double d2, float partialTicks, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 		EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
 

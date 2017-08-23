@@ -9,6 +9,7 @@ import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -130,7 +131,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 							biome = TFBiomes.stream;
 						}
 
-						MapColorBrightness colorBrightness = this.getMapColorPerBiome(biome);
+						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
 
 						MapColor mapcolor = colorBrightness.color;
 						int brightness = colorBrightness.brightness;
@@ -173,7 +174,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 		}
 	}
 
-	private MapColorBrightness getMapColorPerBiome(Biome biome) {
+	private MapColorBrightness getMapColorPerBiome(World world, Biome biome) {
 		if (BIOME_COLORS.isEmpty()) {
 			ItemTFMagicMap.setupBiomeColors();
 		}
@@ -181,7 +182,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 		if (BIOME_COLORS.containsKey(biome)) {
 			return BIOME_COLORS.get(biome);
 		} else {
-			return new MapColorBrightness(biome.topBlock.getMapColor());
+			return new MapColorBrightness(biome.topBlock.getMapColor(world, BlockPos.ORIGIN));
 		}
 	}
 

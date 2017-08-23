@@ -52,7 +52,7 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.RAVEN_SQUAWK;
 	}
 

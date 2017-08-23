@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -132,7 +132,7 @@ public class TFTickHandler {
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
 
 			for (EntityItem entityItem : itemList) {
-				if (item == entityItem.getEntityItem().getItem() && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)) {
+				if (item == entityItem.getItem().getItem() && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)) {
 					Random rand = new Random();
 					for (int k = 0; k < 2; k++) {
 						double d = rand.nextGaussian() * 0.02D;

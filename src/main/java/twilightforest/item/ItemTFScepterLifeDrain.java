@@ -86,7 +86,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().expand((double) borderSize, (double) borderSize, (double) borderSize);
 				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
-				if (collisionBB.isVecInside(srcVec)) {
+				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
 						pointedEntity = possibleEntity;
 						hitDist = 0.0D;

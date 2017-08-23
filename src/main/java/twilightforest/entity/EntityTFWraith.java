@@ -241,7 +241,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
 		if (super.attackEntityFrom(damagesource, i)) {
-			Entity entity = damagesource.getEntity();
+			Entity entity = damagesource.getTrueSource();
 			if (getRidingEntity() == entity || getPassengers().contains(entity)) {
 				return true;
 			}
@@ -260,7 +260,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.WRAITH;
 	}
 
@@ -277,14 +277,14 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 			// are we in a level 3 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill3) {
 				// award level 3 hill cheevo
-				((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHill3);
+				((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHill3);
 			}
 		}
 	}

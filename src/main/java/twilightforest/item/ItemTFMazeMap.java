@@ -102,7 +102,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 			int viewerZ = MathHelper.floor(viewer.posZ - (double) centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
-			if (world.provider.hasNoSky()) {
+			if (world.provider.isNether()) {
 				viewRadiusPixels /= 2;
 			}
 
@@ -132,14 +132,14 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 								int numLiquid = 0;
 								double d1 = 0.0D;
 
-								if (world.provider.hasNoSky()) {
+								if (world.provider.isNether()) {
 									int l3 = worldX + worldZ * 231871;
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
 									if ((l3 >> 20 & 1) == 0) {
-										multiset.add(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT).getMapColor(), 10);
+										multiset.add(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT).getMapColor(world, BlockPos.ORIGIN), 10);
 									} else {
-										multiset.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE).getMapColor(), 100);
+										multiset.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE).getMapColor(world, BlockPos.ORIGIN), 100);
 									}
 
 									d1 = 100.0D;
@@ -150,7 +150,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 									BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
 									IBlockState state = chunk.getBlockState(blockpos$mutableblockpos);
 
-									multiset.add(state.getMapColor());
+									multiset.add(state.getMapColor(world, blockpos$mutableblockpos));
 
 									if (state.getBlock() == Blocks.STONE || state.getBlock() == Blocks.AIR) {
 										for (int i = -YSEARCH; i <= YSEARCH; i++) {

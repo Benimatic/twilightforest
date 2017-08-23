@@ -37,7 +37,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 
 	@Override
-	public void renderTileEntityAt(TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage) {
+	public void render(TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 

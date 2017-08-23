@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -36,7 +37,7 @@ public class LootFunctionEnchant extends LootFunction {
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		for (Map.Entry<Enchantment, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
-				Items.ENCHANTED_BOOK.addEnchantment(stack, new EnchantmentData(e.getKey(), e.getValue()));
+				ItemEnchantedBook.addEnchantment(stack, new EnchantmentData(e.getKey(), e.getValue()));
 			} else {
 				addEnchantment(stack, e.getKey(), e.getValue());
 			}
@@ -105,7 +106,7 @@ public class LootFunctionEnchant extends LootFunction {
 					short lvl = e.getValue().getAsShort();
 
 					for (Enchantment other : enchantments.keySet()) {
-						if (!ench.func_191560_c(other)) {
+						if (!ench.isCompatibleWith(other)) {
 							throw new JsonParseException(String.format("Enchantments %s and %s conflict", ench.getRegistryName(), other.getRegistryName()));
 						}
 					}

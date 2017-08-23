@@ -17,7 +17,7 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cicada-model.png");
 
 	@Override
-	public void renderTileEntityAt(@Nullable TileEntityTFCicada tileentity, double d, double d1, double d2, float partialTicks, int destroyStage) {
+	public void render(@Nullable TileEntityTFCicada tileentity, double d, double d1, double d2, float partialTicks, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 		EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
 

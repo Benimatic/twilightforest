@@ -70,7 +70,7 @@ public class EntityTFTowerTermite extends EntityMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.ENTITY_SILVERFISH_HURT;
 	}
 

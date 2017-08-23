@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class TFTeleporter extends Teleporter {
 	public static TFTeleporter getTeleporterForDim(MinecraftServer server, int dim) {
-		WorldServer ws = server.worldServerForDimension(dim);
+		WorldServer ws = server.getWorld(dim);
 
 		for (Teleporter t : ws.customTeleporters) {
 			if (t instanceof TFTeleporter) {

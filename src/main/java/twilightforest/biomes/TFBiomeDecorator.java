@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.gen.ChunkProviderSettings;
+import net.minecraft.world.gen.ChunkGeneratorSettings;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenLiquids;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -176,7 +176,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		}
 
 		// extra underground water sources
-		if (this.generateLakes) {
+		if (this.generateFalls) {
 			for (int i = 0; i < 50; ++i) {
 				int rx = pos.getX() + rand.nextInt(16) + 8;
 				int ry = rand.nextInt(24) + 4;
@@ -200,7 +200,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	public void decorateOnlyOres(World world, Random rand, BlockPos pos) {
 		this.chunkPos = pos;
 		if (this.chunkProviderSettings == null) {
-			this.chunkProviderSettings = ChunkProviderSettings.Factory.jsonToFactory(world.getWorldInfo().getGeneratorOptions()).build();
+			this.chunkProviderSettings = ChunkGeneratorSettings.Factory.jsonToFactory(world.getWorldInfo().getGeneratorOptions()).build();
 			this.chunkPos = pos;
 			this.dirtGen = new WorldGenMinable(Blocks.DIRT.getDefaultState(), this.chunkProviderSettings.dirtSize);
 			this.gravelOreGen = new WorldGenMinable(Blocks.GRAVEL.getDefaultState(), this.chunkProviderSettings.gravelSize);

@@ -46,9 +46,9 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 	public static void onAttack(LivingAttackEvent evt) {
 		EntityLivingBase target = evt.getEntityLiving();
 
-		if (!target.world.isRemote && evt.getSource().getSourceOfDamage() instanceof EntityLivingBase
-				&& evt.getSource().getSourceOfDamage().isSprinting()) {
-			ItemStack weapon = ((EntityLivingBase) evt.getSource().getSourceOfDamage()).getHeldItemMainhand();
+		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof EntityLivingBase
+				&& evt.getSource().getImmediateSource().isSprinting()) {
+			ItemStack weapon = ((EntityLivingBase) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
 			if (!weapon.isEmpty() && weapon.getItem() == TFItems.minotaurAxe) {
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_CHARGING_DAMAGE);

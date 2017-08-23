@@ -36,8 +36,8 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 	public static void onDamage(LivingAttackEvent evt) {
 		EntityLivingBase target = evt.getEntityLiving();
 
-		if (!target.world.isRemote && evt.getSource().getSourceOfDamage() instanceof EntityLivingBase) {
-			ItemStack weapon = ((EntityLivingBase) evt.getSource().getSourceOfDamage()).getHeldItemMainhand();
+		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof EntityLivingBase) {
+			ItemStack weapon = ((EntityLivingBase) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
 			if (target.getTotalArmorValue() > 0 && !weapon.isEmpty() && (weapon.getItem() == TFItems.knightlyAxe || weapon.getItem() == TFItems.knightlyPick || weapon.getItem() == TFItems.knightlySword)) {
 				// TODO scale bonus dmg with the amount of armor?

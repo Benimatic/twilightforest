@@ -10,7 +10,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -87,16 +87,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		// lie about this until the world is initialized
 		// otherwise the server will try to generate enough terrain for a spawn point and that's annoying
 		return world.getWorldInfo().isInitialized();
-	}
-
-	@Override
-	public String getWelcomeMessage() {
-		return "Entering the Twilight Forest";
-	}
-
-	@Override
-	public String getDepartMessage() {
-		return "Leaving the Twilight Forest";
 	}
 
 	@Override

@@ -6,7 +6,7 @@ package twilightforest.client.particle;
 
 
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -40,7 +40,7 @@ public class ParticleFirefly extends Particle {
 	}
 
 	@Override
-	public void renderParticle(VertexBuffer buffer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+	public void renderParticle(BufferBuilder buffer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 		float f6 = (float) this.particleTextureIndexX / 16.0F;
 		float f7 = f6 + 0.0624375F;
 		float f8 = (float) this.particleTextureIndexY / 16.0F;

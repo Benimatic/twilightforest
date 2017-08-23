@@ -16,7 +16,7 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
 	private final ModelTFMoonworm moonwormModel = new ModelTFMoonworm();
 
 	@Override
-	public void renderTileEntityAt(@Nullable TileEntityTFMoonworm tileentity, double d, double d1, double d2, float partialTime, int destroyStage) {
+	public void render(@Nullable TileEntityTFMoonworm tileentity, double d, double d1, double d2, float partialTime, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 		EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
 

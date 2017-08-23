@@ -55,7 +55,7 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.ENTITY_SPIDER_HURT;
 	}
 
