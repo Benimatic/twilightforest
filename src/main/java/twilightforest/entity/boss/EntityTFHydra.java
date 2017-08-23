@@ -639,7 +639,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private double calculateRange(DamageSource damagesource) {
-		return damagesource.getSourceOfDamage() != null ? getDistanceSqToEntity(damagesource.getSourceOfDamage()) : -1;
+		return damagesource.getTrueSource() != null ? getDistanceSqToEntity(damagesource.getTrueSource()) : -1;
 	}
 
 	@Override
@@ -703,9 +703,9 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightKillHydra);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightKillHydra);
 		}
 
 		// mark the lair as defeated

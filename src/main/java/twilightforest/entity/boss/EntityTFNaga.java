@@ -581,8 +581,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
 		// reject damage from outside of our home radius
-		if (damagesource.getSourceOfDamage() != null && !this.isEntityWithinHomeArea(damagesource.getSourceOfDamage())
-				|| damagesource.getEntity() != null && !this.isEntityWithinHomeArea(damagesource.getEntity())) {
+		if (damagesource.getTrueSource() != null && !this.isEntityWithinHomeArea(damagesource.getTrueSource())
+				|| damagesource.getImmediateSource() != null && !this.isEntityWithinHomeArea(damagesource.getImmediateSource())) {
 			return false;
 		}
 
@@ -731,9 +731,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getEntity() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getEntity()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getEntity()).addStat(TFAchievementPage.twilightKillNaga);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightKillNaga);
 		}
 
 		// mark the courtyard as defeated

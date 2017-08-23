@@ -134,19 +134,19 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getBrightnessForRender(float par1) {
+	public int getBrightnessForRender() {
 		if (isBreathing()) {
 			return 15728880;
 		} else {
-			return super.getBrightnessForRender(par1);
+			return super.getBrightnessForRender();
 		}
 	}
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 

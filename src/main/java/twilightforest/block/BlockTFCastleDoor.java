@@ -95,8 +95,8 @@ public class BlockTFCastleDoor extends Block {
 	}
 
 	@Override
-	public boolean blocksMovement(IBlockAccess par1IBlockAccess, BlockPos pos) {
-		return !this.isVanished;
+	public boolean isPassable(IBlockAccess par1IBlockAccess, BlockPos pos) {
+		return this.isVanished;
 	}
 
 	@Override

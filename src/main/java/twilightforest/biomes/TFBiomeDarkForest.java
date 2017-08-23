@@ -62,7 +62,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFKobold.class, 10, 4, 8));
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityWitch.class, 1, 1, 1));
 
-		this.decorator.generateLakes = false;
+		this.decorator.generateFalls = false;
 	}
 
 	@Override

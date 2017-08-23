@@ -91,8 +91,8 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 
@@ -116,4 +116,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 		this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.world.spawnEntity(snowball);
 	}
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {}
 }

@@ -277,7 +277,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
 		// fire aura
-		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getEntity() != null) {
+		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getTrueSource() != null) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.getSource());
 
@@ -285,13 +285,13 @@ public class TFEventListener {
 
 			if (fireLevel > 0 && player.getRNG().nextInt(25) < fireLevel) {
 				//System.out.println("Executing fire reaction.");
-				event.getSource().getEntity().setFire(fireLevel / 2);
+				event.getSource().getTrueSource().setFire(fireLevel / 2);
 			}
 		}
 
 		// chill aura
 		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob")
-				&& event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityLivingBase) {
+				&& event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.getSource());
 
@@ -299,14 +299,14 @@ public class TFEventListener {
 
 			if (chillLevel > 0) {
 				//System.out.println("Executing chill reaction.");
-				((EntityLivingBase) event.getSource().getEntity()).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, chillLevel * 5 + 5, chillLevel));
+				((EntityLivingBase) event.getSource().getTrueSource()).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, chillLevel * 5 + 5, chillLevel));
 
 			}
 		}
 
 		// triple bow strips hurtResistantTime
-		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
+		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 
 			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
 					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
@@ -316,8 +316,8 @@ public class TFEventListener {
 		}
 
 		// enderbow teleports
-		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
+		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 
 			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.enderBow ||
 					!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.enderBow) {
@@ -732,7 +732,7 @@ public class TFEventListener {
 //FIXME: AtomicBlom: Disabled for Structures
 /*
 		// area protection check
-		if (event.getEntityLiving() instanceof IMob && event.getSource().getEntity() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getEntity()).capabilities.isCreativeMode && event.getEntityLiving().world.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (event.getEntityLiving() instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getTrueSource()).capabilities.isCreativeMode && event.getEntityLiving().world.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
 			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().world.provider).getChunkProvider();
 
@@ -744,7 +744,7 @@ public class TFEventListener {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = ((TFBiomeProvider)event.getEntityLiving().world.provider.getBiomeProvider()).getFeatureAt(mx, mz, event.getEntityLiving().world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getEntity())) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getTrueSource())) {
 					event.setResult(Result.DENY);
 					event.setCanceled(true);
 					

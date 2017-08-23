@@ -233,9 +233,9 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightProgressGlacier);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightProgressGlacier);
 
 		}
 

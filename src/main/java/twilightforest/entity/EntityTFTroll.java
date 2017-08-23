@@ -203,6 +203,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 		}
 	}
 
+	@Override
+	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
+
 	// [VanillaCopy] super but hardcode swing progress to ignore potions
 	@Override
 	protected void updateArmSwingProgress() {

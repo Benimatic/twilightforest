@@ -134,12 +134,12 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float damageAmount) {
 		// check the angle of attack, if applicable
 		Entity attacker = null;
-		if (par1DamageSource.getSourceOfDamage() != null) {
-			attacker = par1DamageSource.getSourceOfDamage();
+		if (par1DamageSource.getTrueSource() != null) {
+			attacker = par1DamageSource.getTrueSource();
 		}
 
-		if (par1DamageSource.getEntity() != null) {
-			attacker = par1DamageSource.getEntity();
+		if (par1DamageSource.getTrueSource() != null) {
+			attacker = par1DamageSource.getTrueSource();
 		}
 
 		if (attacker != null) {

@@ -233,7 +233,7 @@ public class EntityTFLich extends EntityMob {
 		}
 
 		// ignore all bolts that are not reflected
-		if (src.getEntity() instanceof EntityTFLich) {
+		if (src.getTrueSource() instanceof EntityTFLich) {
 			return false;
 		}
 
@@ -247,8 +247,8 @@ public class EntityTFLich extends EntityMob {
 				}
 			} else {
 				playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				if (src.getEntity() instanceof EntityLivingBase) {
-					setRevengeTarget((EntityLivingBase) src.getEntity());
+				if (src.getTrueSource() instanceof EntityLivingBase) {
+					setRevengeTarget((EntityLivingBase) src.getTrueSource());
 				}
 			}
 
@@ -570,9 +570,9 @@ public class EntityTFLich extends EntityMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightKillLich);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightKillLich);
 
 		}
 

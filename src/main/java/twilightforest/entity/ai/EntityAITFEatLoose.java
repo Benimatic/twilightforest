@@ -37,8 +37,8 @@ public class EntityAITFEatLoose extends EntityAIBase {
 			List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().expand(2.0D, 2.0D, 2.0D));
 
 			for (EntityItem itemNearby : nearbyItems) {
-				EnumDyeColor color = EnumDyeColor.byMetadata(itemNearby.getEntityItem().getItemDamage());
-				if (itemNearby.getEntityItem().getItem() == temptID && !temptedQuestRam.isColorPresent(color) && itemNearby.isEntityAlive()) {
+				EnumDyeColor color = EnumDyeColor.byMetadata(itemNearby.getItem().getItemDamage());
+				if (itemNearby.getItem().getItem() == temptID && !temptedQuestRam.isColorPresent(color) && itemNearby.isEntityAlive()) {
 					this.temptingItem = itemNearby;
 					break;
 				}
@@ -70,7 +70,7 @@ public class EntityAITFEatLoose extends EntityAIBase {
 		this.temptedQuestRam.getLookHelper().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedQuestRam.getVerticalFaceSpeed());
 
 		if (this.temptedQuestRam.getDistanceSqToEntity(this.temptingItem) < 6.25D) {
-			EnumDyeColor color = EnumDyeColor.byMetadata(temptingItem.getEntityItem().getItemDamage());
+			EnumDyeColor color = EnumDyeColor.byMetadata(temptingItem.getItem().getItemDamage());
 			if (!temptedQuestRam.isColorPresent(color)) { // we did technically already check this, but why not check again
 				this.temptingItem.setDead();
 				this.temptedQuestRam.playLivingSound();

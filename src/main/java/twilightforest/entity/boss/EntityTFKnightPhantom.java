@@ -128,9 +128,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightProgressKnights);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightProgressKnights);
 		}
 
 		// mark the stronghold as defeated

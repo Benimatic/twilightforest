@@ -56,15 +56,15 @@ public class EntityTFLichBolt extends EntityThrowable {
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
 		super.attackEntityFrom(damagesource, i);
 
-		if (!this.world.isRemote && damagesource.getSourceOfDamage() != null) {
-			Vec3d vec3d = damagesource.getSourceOfDamage().getLookVec();
+		if (!this.world.isRemote && damagesource.getTrueSource() != null) {
+			Vec3d vec3d = damagesource.getTrueSource().getLookVec();
 			if (vec3d != null) {
 				// reflect faster and more accurately
 				this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 			}
 
-			if (damagesource.getEntity() instanceof EntityLivingBase) {
-				this.thrower = (EntityLivingBase) damagesource.getEntity();
+			if (damagesource.getImmediateSource() instanceof EntityLivingBase) {
+				this.thrower = (EntityLivingBase) damagesource.getImmediateSource();
 			}
 			return true;
 		} else {

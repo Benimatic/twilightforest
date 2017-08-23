@@ -26,7 +26,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
 		if (super.attackEntityAsMob(par1Entity)) {
-			float myBrightness = this.getBrightness(1.0F);
+			float myBrightness = this.getBrightness();
 			System.out.println(myBrightness);
 
 			if (par1Entity instanceof EntityLivingBase && myBrightness < 0.10F) {

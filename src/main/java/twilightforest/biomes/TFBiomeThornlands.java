@@ -35,7 +35,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
 		this.tfGenThorns = new TFGenThorns();
 
-		this.decorator.generateLakes = false;
+		this.decorator.generateFalls = false;
 	}
 
 	@Override

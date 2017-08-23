@@ -109,8 +109,8 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
 		super.attackEntityFrom(damagesource, i);
 
-		if (damagesource.getSourceOfDamage() != null && !this.world.isRemote) {
-			Vec3d vec3d = damagesource.getSourceOfDamage().getLookVec();
+		if (damagesource.getTrueSource() != null && !this.world.isRemote) {
+			Vec3d vec3d = damagesource.getTrueSource().getLookVec();
 			if (vec3d != null) {
 				// reflect faster and more accurately
 				this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
@@ -118,8 +118,8 @@ public class EntityTFHydraMortar extends EntityThrowable {
 				this.fuse += 20;
 			}
 
-			if (damagesource.getEntity() instanceof EntityLivingBase) {
-				this.thrower = (EntityLivingBase) damagesource.getEntity();
+			if (damagesource.getTrueSource() instanceof EntityLivingBase) {
+				this.thrower = (EntityLivingBase) damagesource.getTrueSource();
 			}
 			return true;
 		} else {

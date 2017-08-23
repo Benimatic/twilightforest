@@ -31,7 +31,7 @@ public class EntityTFLichMinion extends EntityZombie {
 		EntityLivingBase prevTarget = getAttackTarget();
 
 		if (super.attackEntityFrom(par1DamageSource, par2)) {
-			if (par1DamageSource.getEntity() instanceof EntityTFLich) {
+			if (par1DamageSource.getTrueSource() instanceof EntityTFLich) {
 				// return to previous target but speed up
 				setRevengeTarget(prevTarget);
 				addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 4));
@@ -77,8 +77,8 @@ public class EntityTFLichMinion extends EntityZombie {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 }

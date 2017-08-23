@@ -82,8 +82,8 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 
@@ -97,4 +97,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 		projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(projectile);
 	}
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
 }

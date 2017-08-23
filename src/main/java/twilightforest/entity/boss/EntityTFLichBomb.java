@@ -57,7 +57,7 @@ public class EntityTFLichBomb extends EntityThrowable {
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
 		super.attackEntityFrom(damagesource, i);
 
-		if (damagesource.getEntity() != null) {
+		if (damagesource.getImmediateSource() != null) {
 			explode();
 			return true;
 		} else {

@@ -20,6 +20,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
@@ -208,7 +209,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	public void animateAddColor(EnumDyeColor color, int iterations) {
-		int colorVal = color.getMapColor().colorValue;
+		int colorVal = color.getColorValue();
 		int red = colorVal >>> 16 & 0xFF;
 		int green = colorVal >>> 8 & 0xFF;
 		int blue = colorVal & 0xFF;

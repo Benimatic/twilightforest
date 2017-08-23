@@ -234,7 +234,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 			return false;
 		}
 
-		Entity attacker = par1DamageSource.getSourceOfDamage();
+		Entity attacker = par1DamageSource.getTrueSource();
 
 		if (attacker != null) {
 			double dx = this.posX - attacker.posX;
@@ -283,19 +283,19 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		// knock back slightly
 		EntityLiving toKnockback = (getRidingEntity() instanceof EntityLiving) ? (EntityLiving) getRidingEntity() : this;
 
-		if (par1DamageSource.getEntity() != null) {
-			double d0 = par1DamageSource.getEntity().posX - this.posX;
+		if (par1DamageSource.getTrueSource() != null) {
+			double d0 = par1DamageSource.getTrueSource().posX - this.posX;
 			double d1;
 
-			for (d1 = par1DamageSource.getEntity().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
+			for (d1 = par1DamageSource.getTrueSource().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
 				d0 = (Math.random() - Math.random()) * 0.01D;
 			}
 
-			toKnockback.knockBack(par1DamageSource.getEntity(), 0, d0 / 4D, d1 / 4D);
+			toKnockback.knockBack(par1DamageSource.getTrueSource(), 0, d0 / 4D, d1 / 4D);
 
 			// also set revenge target
-			if (par1DamageSource.getEntity() instanceof EntityLiving) {
-				this.setRevengeTarget((EntityLiving) par1DamageSource.getEntity());
+			if (par1DamageSource.getTrueSource() instanceof EntityLiving) {
+				this.setRevengeTarget((EntityLiving) par1DamageSource.getTrueSource());
 			}
 		}
 

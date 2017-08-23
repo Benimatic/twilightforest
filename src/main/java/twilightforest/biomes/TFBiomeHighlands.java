@@ -51,7 +51,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 
 		this.decorator.grassPerChunk = 7;
 		this.decorator.deadBushPerChunk = 1;
-		this.decorator.generateLakes = false; // actually underground water sources
+		this.decorator.generateFalls = false;
 
 		undergroundMonsterList.clear();
 		undergroundMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 10, 4, 4));

@@ -276,6 +276,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
+	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
+
+	@Override
 	public boolean canDespawn() {
 		return false;
 	}
@@ -322,9 +325,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightProgressYeti);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightProgressYeti);
 		}
 
 		// mark the lair as defeated

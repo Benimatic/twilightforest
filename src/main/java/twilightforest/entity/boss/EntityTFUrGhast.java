@@ -250,9 +250,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		float oldHealth = getHealth();
 
-		if ("fireball".equals(source.getDamageType()) && source.getEntity() instanceof EntityPlayer) {
+		if ("fireball".equals(source.getDamageType()) && source.getTrueSource() instanceof EntityPlayer) {
 			// 'hide' fireball attacks so that we don't take 1000 damage.
-			attackSuccessful = super.attackEntityFrom(DamageSource.causeThrownDamage(source.getSourceOfDamage(), source.getEntity()), damage);
+			attackSuccessful = super.attackEntityFrom(DamageSource.causeThrownDamage(source.getTrueSource(), source.getImmediateSource()), damage);
 		} else {
 			attackSuccessful = super.attackEntityFrom(source, damage);
 		}
@@ -382,7 +382,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playSound(getHurtSound(DamageSource source), this.getSoundVolume(), this.getSoundPitch());
+				this.playSound(getHurtSound(null), this.getSoundVolume(), this.getSoundPitch());
 				this.nextTantrumCry = 20 + rand.nextInt(30);
 			}
 
@@ -572,9 +572,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightProgressUrghast);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightProgressUrghast);
 
 		}
 

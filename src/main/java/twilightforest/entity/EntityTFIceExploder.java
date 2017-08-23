@@ -95,8 +95,8 @@ public class EntityTFIceExploder extends EntityMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class EntityTFIceExploder extends EntityMob {
 		// check if we should even explode this
 		if (block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0) {
 			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
-			int blockColor = state.getMapColor().colorValue;
+			int blockColor = state.getMapColor(world, pos).colorValue;
 
 			// do appropriate transformation
 			if (this.shouldTransformGlass(state, pos)) {
@@ -185,7 +185,7 @@ public class EntityTFIceExploder extends EntityMob {
 		int bestDifference = 1024;
 
 		for (EnumDyeColor color : EnumDyeColor.values()) {
-			int iColor = color.getMapColor().colorValue;
+			int iColor = color.getColorValue();
 
 			int iRed = (iColor >> 16) & 255;
 			int iGreen = (iColor >> 8) & 255;

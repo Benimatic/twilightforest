@@ -236,8 +236,8 @@ public class EntityTFTowerGhast extends EntityGhast {
 	@Override
 	public void onLivingUpdate() {
 		// age when in light, like mobs
-		if (getBrightness(1F) > 0.5F) {
-			this.entityAge += 2;
+		if (getBrightness() > 0.5F) {
+			this.idleTime += 2;
 		}
 
 		if (this.rand.nextBoolean()) {
@@ -331,7 +331,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 
 			if (nearFeature != TFFeature.darkTower) {
 				this.detachHome();
-				this.entityAge += 5;
+				this.idleTime += 5;
 			} else {
 				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
 				this.setHomePosAndDistance(cc.up(128), 64);

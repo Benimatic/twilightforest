@@ -19,7 +19,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 		((TFBiomeDecorator) decorator).hasCanopy = false;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
 
-		this.decorator.generateLakes = false;
+		this.decorator.generateFalls = false;
 
 		// custom creature list.
 		spawnableCreatureList.clear();

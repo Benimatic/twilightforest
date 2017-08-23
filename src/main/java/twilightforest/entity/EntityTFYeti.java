@@ -87,7 +87,7 @@ public class EntityTFYeti extends EntityMob {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (par1DamageSource.getEntity() != null) {
+		if (par1DamageSource.getTrueSource() != null) {
 			// become angry
 			this.setAngry(true);
 		}
@@ -166,8 +166,8 @@ public class EntityTFYeti extends EntityMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 

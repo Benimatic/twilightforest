@@ -241,7 +241,7 @@ public final class ColorHandler {
 					return 0x4B0082;
 				default:
 					TwilightForestMod.LOGGER.info("Magic happened. Got " + state.getValue(BlockTFCastleMagic.COLOR).getName() + " for Castle Rune");
-					return state.getValue(BlockTFCastleMagic.COLOR).getMapColor().colorValue;
+					return state.getValue(BlockTFCastleMagic.COLOR).getColorValue();
 			}
 		}, TFBlocks.castleMagic);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {

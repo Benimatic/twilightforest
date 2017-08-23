@@ -127,7 +127,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	}
 
 	@Override
-	public boolean blocksMovement(IBlockAccess world, BlockPos pos) {
+	public boolean isPassable(IBlockAccess world, BlockPos pos) {
 		switch (world.getBlockState(pos).getValue(VARIANT)) {
 			case REAPPEARING_INACTIVE:
 			case REAPPEARING_ACTIVE:
