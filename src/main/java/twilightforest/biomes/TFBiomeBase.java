@@ -1,10 +1,12 @@
 package twilightforest.biomes;
 
+import net.minecraft.advancements.Advancement;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -15,9 +17,7 @@ import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.StatisticsManager;
-import net.minecraft.stats.StatisticsManagerServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -33,6 +33,7 @@ import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -204,23 +205,22 @@ public class TFBiomeBase extends Biome {
 	 */
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
 
-		if (getRequiredAchievement() != null && player instanceof EntityPlayerMP && ((EntityPlayerMP) player).getStatFile() != null) {
-			StatisticsManagerServer stats = ((EntityPlayerMP) player).getStatFile();
+		if (getRequiredAchievement() != null && player instanceof EntityPlayerMP) {
+			Advancement adv = ((EntityPlayerMP) player).getServerWorld().getAdvancementManager().getAdvancement(getRequiredAchievement());
+			return adv != null && ((EntityPlayerMP) player).getAdvancements().getProgress(adv).isDone();
+		} else if (getRequiredAchievement() != null && player instanceof EntityPlayerSP) {
+			// todo 1.12 check side-safety here...
+			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
+			Advancement adv = manager.getAdvancementList().getAdvancement(getRequiredAchievement());
 
-			return stats.hasAchievementUnlocked(this.getRequiredAchievement());
-		} else if (getRequiredAchievement() != null && player instanceof EntityPlayerSP && ((EntityPlayerSP) player).getStatFileWriter() != null) {
-			StatisticsManager stats = ((EntityPlayerSP) player).getStatFileWriter();
-
-			return stats.hasAchievementUnlocked(this.getRequiredAchievement());
+			return adv != null && manager.advancementToProgress.get(adv).isDone();
 		} else {
 			return true;
 		}
 	}
 
-	/**
-	 * If there is a required achievement to be here, return it, otherwise return null
-	 */
-	protected Achievement getRequiredAchievement() {
+	@Nullable
+	protected ResourceLocation getRequiredAchievement() {
 		return null;
 	}
 

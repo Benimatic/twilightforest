@@ -1,8 +1,8 @@
 package twilightforest.biomes;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.stats.Achievement;
-import twilightforest.TFAchievementPage;
+import net.minecraft.util.ResourceLocation;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.DeadrockVariant;
@@ -32,7 +32,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 	}
 
 	@Override
-	protected Achievement getRequiredAchievement() {
-		return TFAchievementPage.twilightProgressGlacier;
+	protected ResourceLocation getRequiredAchievement() {
+		return new ResourceLocation(TwilightForestMod.ID, "progress_glacier");
 	}
 }

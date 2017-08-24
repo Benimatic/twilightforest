@@ -6,7 +6,7 @@ package twilightforest.biomes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -14,6 +14,7 @@ import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.TFGenPenguins;
 import twilightforest.world.TFWorld;
 
@@ -72,8 +73,8 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	}
 
 	@Override
-	protected Achievement getRequiredAchievement() {
-		return TFAchievementPage.twilightProgressUrghast;
+	protected ResourceLocation getRequiredAchievement() {
+		return new ResourceLocation(TwilightForestMod.ID, "progress_ur_ghast");
 	}
 
 	@Override

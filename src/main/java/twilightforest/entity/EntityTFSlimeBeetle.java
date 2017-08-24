@@ -103,4 +103,7 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 		projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(projectile);
 	}
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {}
 }

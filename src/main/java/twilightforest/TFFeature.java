@@ -2,6 +2,7 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -22,8 +23,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.StatisticsManagerServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -49,19 +49,19 @@ public class TFFeature {
 	public static final TFFeature hill3 = new TFFeature(3, 3, "Large Hollow Hill").enableDecorations().enableTerrainAlterations();
 	public static final TFFeature hedgeMaze = new TFFeature(4, 2, "Hedge Maze").enableTerrainAlterations();
 	public static final TFFeature nagaCourtyard = new TFFeature(5, 3, "Naga Courtyard").enableTerrainAlterations();
-	public static final TFFeature lichTower = new TFFeature(6, 1, "Lich Tower").setRequiredAchievement(TFAchievementPage.twilightKillNaga);
-	public static final TFFeature iceTower = new TFFeature(7, 2, "Ice Tower").setRequiredAchievement(TFAchievementPage.twilightProgressYeti);
+	public static final TFFeature lichTower = new TFFeature(6, 1, "Lich Tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "kill_naga"));
+	public static final TFFeature iceTower = new TFFeature(7, 2, "Ice Tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_yeti"));
 	public static final TFFeature questIsland = new TFFeature(8, 1, "Quest Island").disableStructure();
 	public static final TFFeature questGrove = new TFFeature(9, 1, "Quest Grove").enableTerrainAlterations();
 	public static final TFFeature druidGrove = new TFFeature(10, 1, "Druid Grove").disableStructure();
 	public static final TFFeature floatRuins = new TFFeature(11, 3, "Floating Ruins").disableStructure();
-	public static final TFFeature hydraLair = new TFFeature(12, 2, "Hydra Lair").setRequiredAchievement(TFAchievementPage.twilightProgressLabyrinth).enableTerrainAlterations();
-	public static final TFFeature labyrinth = new TFFeature(13, 3, "Labyrinth").enableDecorations().setRequiredAchievement(TFAchievementPage.twilightKillLich);
-	public static final TFFeature darkTower = new TFFeature(14, 1, "Dark Tower").setRequiredAchievement(TFAchievementPage.twilightProgressKnights);
-	public static final TFFeature tfStronghold = new TFFeature(15, 3, "Knight Stronghold").enableDecorations().setRequiredAchievement(TFAchievementPage.twilightProgressTrophyPedestal).disableProtectionAura();
+	public static final TFFeature hydraLair = new TFFeature(12, 2, "Hydra Lair").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth")).enableTerrainAlterations();
+	public static final TFFeature labyrinth = new TFFeature(13, 3, "Labyrinth").enableDecorations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "kill_lich"));
+	public static final TFFeature darkTower = new TFFeature(14, 1, "Dark Tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_knights"));
+	public static final TFFeature tfStronghold = new TFFeature(15, 3, "Knight Stronghold").enableDecorations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal")).disableProtectionAura();
 	public static final TFFeature worldTree = new TFFeature(16, 3, "World Tree").disableStructure();
-	public static final TFFeature yetiCave = new TFFeature(17, 2, "Yeti Lairs").enableDecorations().enableTerrainAlterations().setRequiredAchievement(TFAchievementPage.twilightProgressUrghast);
-	public static final TFFeature trollCave = new TFFeature(18, 3, "Troll Lairs").enableDecorations().enableTerrainAlterations().setRequiredAchievement(TFAchievementPage.twilightProgressGlacier).disableProtectionAura();
+	public static final TFFeature yetiCave = new TFFeature(17, 2, "Yeti Lairs").enableDecorations().enableTerrainAlterations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_ur_ghast"));
+	public static final TFFeature trollCave = new TFFeature(18, 3, "Troll Lairs").enableDecorations().enableTerrainAlterations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_glacier")).disableProtectionAura();
 	public static final TFFeature finalCastle = new TFFeature(19, 3, "Final Castle");
 	public static final TFFeature mushroomTower = new TFFeature(20, 2, "Mushroom Tower");
 
@@ -177,7 +177,7 @@ public class TFFeature {
 	private List<List<SpawnListEntry>> spawnableMonsterLists;
 	private List<SpawnListEntry> ambientCreatureList;
 	private List<SpawnListEntry> waterCreatureList;
-	private Achievement requiredAchievement = null;
+	private ResourceLocation requiredAchievement = null;
 	public boolean hasProtectionAura;
 
 	private long lastSpawnedHintMonsterTime;
@@ -605,7 +605,7 @@ public class TFFeature {
 		}
 	}
 
-	private TFFeature setRequiredAchievement(Achievement required) {
+	private TFFeature setRequiredAchievement(ResourceLocation required) {
 		this.requiredAchievement = required;
 
 		return this;
@@ -614,10 +614,9 @@ public class TFFeature {
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
 		if (this.requiredAchievement != null) {
 			// can we get the player's stats here at all?
-			if (player instanceof EntityPlayerMP && ((EntityPlayerMP) player).getStatFile() != null) {
-				StatisticsManagerServer stats = ((EntityPlayerMP) player).getStatFile();
-
-				return stats.hasAchievementUnlocked(this.requiredAchievement);
+			if (player instanceof EntityPlayerMP) {
+				Advancement adv = ((EntityPlayerMP) player).getServerWorld().getAdvancementManager().getAdvancement(requiredAchievement);
+				return adv != null && ((EntityPlayerMP) player).getAdvancements().getProgress(adv).isDone();
 			} else {
 				return false; // cannot get stats
 			}

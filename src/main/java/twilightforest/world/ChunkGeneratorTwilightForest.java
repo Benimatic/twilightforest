@@ -4,7 +4,6 @@
 
 package twilightforest.world;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -970,5 +969,10 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	public void recreateStructures(Chunk chunk, int var1, int var2) {
 		majorFeatureGenerator.generate(world, var1, var2, null);
 		hollowTreeGenerator.generate(world, var1, var2, null);
+	}
+
+	@Override
+	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+		return false; // todo 1.12
 	}
 }

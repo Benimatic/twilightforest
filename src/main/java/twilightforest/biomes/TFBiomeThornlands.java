@@ -3,11 +3,11 @@ package twilightforest.biomes;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.DeadrockVariant;
@@ -75,7 +75,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	}
 
 	@Override
-	protected Achievement getRequiredAchievement() {
-		return TFAchievementPage.twilightProgressGlacier;
+	protected ResourceLocation getRequiredAchievement() {
+		return new ResourceLocation(TwilightForestMod.ID, "progress_glacier");
 	}
 }

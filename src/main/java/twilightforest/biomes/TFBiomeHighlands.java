@@ -9,8 +9,8 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,8 +22,8 @@ import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.PlantVariant;
@@ -136,8 +136,8 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	}
 
 	@Override
-	protected Achievement getRequiredAchievement() {
-		return TFAchievementPage.twilightProgressGlacier;
+	protected ResourceLocation getRequiredAchievement() {
+		return new ResourceLocation(TwilightForestMod.ID, "progress_glacier");
 	}
 
 	@Override

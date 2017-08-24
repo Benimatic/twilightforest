@@ -1,6 +1,5 @@
 package twilightforest.biomes;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
@@ -14,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerFoliage;
@@ -23,17 +22,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKingSpider;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.EntityTFMistWolf;
 import twilightforest.entity.EntityTFSkeletonDruid;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 public class TFBiomeDarkForest extends TFBiomeBase {
 
@@ -114,8 +111,8 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	}
 
 	@Override
-	protected Achievement getRequiredAchievement() {
-		return TFAchievementPage.twilightProgressHydra;
+	protected ResourceLocation getRequiredAchievement() {
+		return new ResourceLocation(TwilightForestMod.ID, "progress_hydra");
 	}
 
 	@Override

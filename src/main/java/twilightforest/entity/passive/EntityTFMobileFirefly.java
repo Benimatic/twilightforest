@@ -134,7 +134,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getBrightnessForRender(float par1) {
+	public int getBrightnessForRender() {
 		return 15728880;
 	}
 

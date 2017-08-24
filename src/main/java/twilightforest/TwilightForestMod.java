@@ -3,7 +3,6 @@ package twilightforest;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
-import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -62,9 +61,6 @@ public class TwilightForestMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.doPreLoadRegistration();
-
-		// cheevos!
-		AchievementPage.registerAchievementPage(new TFAchievementPage());
 
 		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
