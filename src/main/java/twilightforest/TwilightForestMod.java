@@ -29,8 +29,8 @@ import twilightforest.world.WorldProviderTwilightForest;
 @Mod( modid = TwilightForestMod.ID,
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
-		acceptedMinecraftVersions = "[1.11]",
-		dependencies = "after:ctm@[MC1.11.2-0.2.2.11,)")
+		acceptedMinecraftVersions = "[1.12]",
+		dependencies = "after:ctm@[MC1.12-0.2.2.7,)")
 public class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
