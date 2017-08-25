@@ -56,7 +56,6 @@ public class EntitySeekerArrow extends EntityArrow {
 				courseVec = courseVec.normalize();
 
 				double dotProduct = courseVec.dotProduct(targetVec);
-				//System.out.println("target vec compared to course vec= " + dotProduct);
 
 				if (dotProduct < 0) {
 

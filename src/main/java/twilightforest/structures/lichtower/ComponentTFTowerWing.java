@@ -177,7 +177,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			addOpening(x, y, z, rotation);
 			return true;
 		} else {
-//			System.out.println("Planned wing intersects with " + intersect);
 			if (rand.nextInt(3) > 0) {
 				return makeBridge(list, rand, index, x, y, z, wingSize, wingHeight, rotation);
 			} else {
@@ -1169,7 +1168,6 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	 */
 	protected void decorateChandelier(World world, Random rand, int decoTop, StructureBoundingBox sbb) {
 		if (decoTop < 8 || size < 8) {
-			//System.out.println("Trying to put a chandelier in a size " + decoTop + " space.  FAIL!");
 			return;
 		}
 

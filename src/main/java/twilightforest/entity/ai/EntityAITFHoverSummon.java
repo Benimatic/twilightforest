@@ -48,8 +48,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 		} else if (this.attacker.getCurrentPhase() != Phase.SUMMON) {
 			return false;
 		} else {
-			//System.out.println("We can hover at target!");
-
 			return attacker.getEntitySenses().canSee(target);
 		}
 
@@ -66,14 +64,7 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 		} else if (this.seekTimer > this.maxSeekTime) {
 			return false;
 		} else {
-			// check visibility
-			boolean isVisible = this.canEntitySee(this.attacker, hoverPosX, hoverPosY, hoverPosZ);
-
-			if (!isVisible) {
-				//System.out.println("Hover spot is no longer visible");
-			}
-
-			return isVisible;
+			return this.canEntitySee(this.attacker, hoverPosX, hoverPosY, hoverPosZ);
 		}
 	}
 
@@ -98,8 +89,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 
 		// are we there yet?
 		if (this.attacker.getDistanceSq(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
-			//System.out.println("Successful hovering, making new spot");
-
 			this.checkAndSummon();
 
 			this.makeNewHoverSpot(target);
@@ -130,8 +119,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 			this.attacker.faceEntity(target, 30.0F, 30.0F);
 			this.attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
 		}
-
-		//System.out.println("Hovering!");
 	}
 
 
@@ -185,10 +172,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 	private void checkAndSummon() {
 		if (this.attacker.getSummonsRemaining() > 0 && this.attacker.countMyMinions() < MAX_MINIONS_AT_ONCE) {
 			this.attacker.summonMinionAt(this.attacker.getAttackTarget());
-
-			//System.out.println("Summoning minion");
-		} else {
-			//System.out.println("Summons full");
 		}
 	}
 }

@@ -387,11 +387,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	 */
 	public boolean attemptToBreakIn(int wx, int wy, int wz) {
 		if (!isValidBreakInPoint(wx, wy, wz)) {
-			//System.out.println("Break in failed because the point is invalid");
-
-			//System.out.printf("Break point is %d, %d, %d, bounding sides are %d-%d x %d-%d\n", wx, wy, wz, this.boundingBox.minX, this.boundingBox.maxX, this.boundingBox.minZ, this.boundingBox.maxZ);
-
-
 			return false;
 		} else {
 			int dx = this.getRelativeX(wx, wz);
@@ -399,8 +394,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			int dz = this.getRelativeZ(wx, wz);
 
 			addDoor(dx, dy, dz);
-
-			//System.out.printf("Break in success for component %s, at %d, %d, %d!  Facing is %d\n", this, dx, dy, dz, this.getCoordBaseMode());
 
 			return true;
 		}

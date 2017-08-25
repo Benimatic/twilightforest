@@ -23,8 +23,6 @@ public class RenderTFGoblinKnightUpper extends RenderTFBiped<EntityTFGoblinKnigh
 	 * Figure out what pitch the goblin should be at depending on where it's at on the the timer
 	 */
 	private float getPitchForAttack(float attackTime) {
-		//System.out.println("Getting attack pitch.  AttackTime is " + attackTime);
-
 		if (attackTime <= 10) {
 			// rock back
 			return attackTime * 3.0F;

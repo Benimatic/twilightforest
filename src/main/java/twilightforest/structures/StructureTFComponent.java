@@ -264,7 +264,6 @@ public abstract class StructureTFComponent extends StructureComponent {
 //			wing.buildComponent(this, list, rand);
 //			return true;
 //		} else {
-//			System.out.println("Planned wing intersects with " + intersect);
 //			return false;
 //		}
 //	}

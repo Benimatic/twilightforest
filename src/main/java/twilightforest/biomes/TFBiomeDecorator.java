@@ -98,9 +98,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
 			TFGenerator rf = randomFeature(randomGenerator);
-			if (rf.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)))) {
-//            	System.out.println(rf + " success at " + rx + ", " + ry + ", " + rz);
-			}
+			rf.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
 		}
 
 		if (this.hasCanopy) {

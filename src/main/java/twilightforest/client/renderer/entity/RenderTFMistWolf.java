@@ -33,10 +33,7 @@ public class RenderTFMistWolf extends RenderWolf {
 
 		float smoky = par1EntityLiving.getBrightness() * 2F + 0.6F;
 
-		//System.out.println("Misty value is " + misty);
-
 		GlStateManager.color(misty, misty, misty, smoky);
-
 	}
 
 	/**

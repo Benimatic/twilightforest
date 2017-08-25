@@ -200,8 +200,6 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 				// set block position
 				Vec3d blockPos = this.getIceShieldPosition(i);
 
-				//System.out.println("Got position for block " + i + " and it is" + blockPos);
-
 				this.iceArray[i].setPosition(blockPos.x, blockPos.y, blockPos.z);
 				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			} else {

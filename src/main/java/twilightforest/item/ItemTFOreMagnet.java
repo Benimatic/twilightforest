@@ -134,8 +134,6 @@ public class ItemTFOreMagnet extends ItemTF {
 		// get blocks in line from src to dest
 		BlockPos[] lineArray = TFGenerator.getBresehnamArrays(usePos, destPos);
 
-		//System.out.println("Searching from " + useX + ", " + useY + ", " + useZ + " to " + destX + ", " + destY + ", " + destZ);
-
 		// find some ore?
 		IBlockState foundState = Blocks.AIR.getDefaultState();
 		BlockPos foundPos = null;
@@ -158,15 +156,11 @@ public class ItemTFOreMagnet extends ItemTF {
 			}
 
 			if (searchState.getBlock() != Blocks.AIR && isOre(searchState)) {
-				//System.out.println("I found ore: " + searchID + " at " + coord.PosX + ", " + coord.PosY + ", " + coord.PosZ);
 				foundState = searchState;
 				foundPos = coord;
 				break;
 			}
 		}
-
-		//System.out.println("I found ground at " + baseX + ", " + baseY + ", " + baseZ);
-
 
 		if (basePos != null && foundState.getBlock() != Blocks.AIR) {
 			// find the whole vein

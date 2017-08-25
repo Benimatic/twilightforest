@@ -59,7 +59,6 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 			addOpening(x, y, z, rotation);
 			return true;
 		} else {
-			//System.out.println("Planned wing intersects with " + intersect);
 			return false;
 		}
 	}

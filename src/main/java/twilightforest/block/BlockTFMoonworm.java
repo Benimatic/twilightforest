@@ -49,9 +49,6 @@ public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCall
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
 		if (world.getLight(pos) < 12) {
-			//world.updateLightByType(EnumSkyBlock.Block, x, y, z);
-			//world.markBlockForUpdate(x, y, z); // do we need this now?
-			//System.out.println("Updating moonworm light value");
 			// do another update to check that we got it right
 			world.scheduleUpdate(pos, this, tickRate(world));
 		}

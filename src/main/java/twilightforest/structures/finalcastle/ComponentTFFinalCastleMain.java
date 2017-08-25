@@ -41,8 +41,8 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 		int cx = (x >> 8) << 8;
 		int cz = (z >> 8) << 8;
 
-		System.out.println("Making castle at " + x + ", " + z + ". center is " + cc.getX() + ", " + cc.getZ());
-		System.out.println("Natural center at " + cx + ", " + cz);
+		TwilightForestMod.LOGGER.info("Making castle at " + x + ", " + z + ". center is " + cc.getX() + ", " + cc.getZ());
+		TwilightForestMod.LOGGER.info("Natural center at " + cx + ", " + cz);
 
 		// decorator
 		if (this.deco == null) {
@@ -131,7 +131,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 		while (!complete && iterations < 15) {
 			iterations++;
 			// duplicate list
-			LinkedList before = new LinkedList<>(list);
+			List<StructureComponent> before = new LinkedList<>(list);
 
 			// build
 			BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
@@ -151,11 +151,11 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 			// check if we've successfully built the end tower
 			TwilightForestMod.LOGGER.info("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
 			if (this.isMazeComplete(list, type)) {
-				System.out.println("Tower maze color " + type + " complete!");
+				TwilightForestMod.LOGGER.info("Tower maze color " + type + " complete!");
 				complete = true;
 			} else {
 				// TODO: add limit on retrying, in case of infinite loop?
-				System.out.println("Tower maze color " + type + " INCOMPLETE, retrying!");
+				TwilightForestMod.LOGGER.info("Tower maze color " + type + " INCOMPLETE, retrying!");
 				list.clear();
 				list.addAll(before);
 				//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, color, dest);

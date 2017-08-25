@@ -647,10 +647,7 @@ public class TFFeature {
 					break;
 				}
 			}
-		} else {
-			//System.out.println("Can't spawn hint monster because of timer");
 		}
-
 	}
 
 	/**
@@ -680,9 +677,6 @@ public class TFFeature {
 			world.spawnEntity(hinty);
 			return true;
 		} else {
-			//System.out.println("Spawn point no go");
-			//System.out.println("Spawn point clear? " + isClearSpawn);
-			//System.out.println("Spawn point can see player? " + skel.canEntityBeSeen(player));
 			return false;
 		}
 	}

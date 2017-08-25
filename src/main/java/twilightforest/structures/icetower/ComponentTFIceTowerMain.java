@@ -74,7 +74,6 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 
 		if (myDoor.getX() == 0) {
 			int length = this.getBoundingBox().minX - towerBB.minX;
-			//System.out.println("Offset for door -x = " + length);
 			if (length >= 0) {
 				entranceDoor = entranceDoor.west(length);
 				makeEntranceBridge(list, rand, this.getComponentType() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);

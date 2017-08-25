@@ -56,8 +56,6 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 					chargeY = chargePos.y;
 					chargeZ = chargePos.z;
 
-					//System.out.println("Setting charge position to " + chargePos.x + ", "  + chargePos.y + ", " + chargePos.z);
-
 					return this.charger.getRNG().nextInt(FREQ) == 0;
 				}
 			}
@@ -86,7 +84,6 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 
 				this.charger.getNavigator().tryMoveToXYZ(chargeX, chargeY, chargeZ, this.speed);
 			} else {
-				//System.out.println("charging in " + windup);
 				this.charger.limbSwingAmount += 0.8;
 
 				if (this.charger instanceof ITFCharger) {
@@ -109,8 +106,6 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 
 	@Override
 	public void resetTask() {
-		//System.out.println("Resetting charge task, we're done");
-
 		this.windup = 0;
 		this.chargeTarget = null;
 		this.hasAttacked = false;
@@ -118,7 +113,6 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		if (this.charger instanceof ITFCharger) {
 			((ITFCharger) charger).setCharging(false);
 		}
-
 	}
 
 
@@ -137,9 +131,6 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		// figure out where we're headed from the target angle
 		double dx = MathHelper.cos(rangle) * (distance + overshoot);
 		double dz = MathHelper.sin(rangle) * (distance + overshoot);
-
-//        System.out.println("Charge position is " + (attacker.posX + dx) + ", " + (attacker.posZ + dz));
-//        System.out.println("Target position is " + target.posX + ", " + target.posZ);
 
 		// add that to the target entity's position, and we have our destination
 		return new Vec3d(attacker.posX + dx, target.posY, attacker.posZ + dz);

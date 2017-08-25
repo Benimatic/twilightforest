@@ -420,8 +420,6 @@ public class HydraHeadContainer {
 			if (this.nextState == NEXT_AUTOMATIC) {
 				myNext = State.NEXT_STATE.get(this.currentState);
 				if (myNext != currentState) {
-					//System.out.println("Automatically advancing head " + this.headNum + " to state " + myNext);
-
 					// when returning from a secondary attack, no attack cooldown
 					if (this.isSecondaryAttacking && myNext == HydraHeadContainer.State.ATTACK_COOLDOWN) {
 						this.isSecondaryAttacking = false;
@@ -431,7 +429,6 @@ public class HydraHeadContainer {
 			} else {
 				myNext = this.nextState;
 				this.nextState = NEXT_AUTOMATIC;
-				//System.out.println("Manually advancing head " + this.headNum + " to state " + myNext);
 			}
 
 			this.ticksNeeded = this.ticksProgress = myNext.duration;
@@ -463,8 +460,6 @@ public class HydraHeadContainer {
 			}
 
 			float yawOffOffset = MathHelper.wrapDegrees(headEntity.rotationYaw - hydraObj.renderYawOffset);
-
-			//System.out.println("biting head yaw = " +  yawOffOffset);
 
 			if (yawOffOffset > biteMaxYaw) {
 				headEntity.rotationYaw = hydraObj.renderYawOffset + biteMaxYaw;

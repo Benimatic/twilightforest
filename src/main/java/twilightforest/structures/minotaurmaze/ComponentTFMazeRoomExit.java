@@ -31,12 +31,6 @@ public class ComponentTFMazeRoomExit extends ComponentTFMazeRoom {
 		this.fillWithBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
 		this.fillWithAir(world, sbb, 6, -5, 6, 9, 4, 9);
 
-//		int var8 = this.getXWithOffset(0, 0);
-//		int var9 = this.getYWithOffset(0);
-//		int var10 = this.getZWithOffset(0, 0);
-
-		//System.out.println("Drawing exit at " + var8 + ", " + var9 + ", " + var10);
-
 		return true;
 	}
 

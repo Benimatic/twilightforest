@@ -291,7 +291,6 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 		for (StructureComponent component : list) {
 			if (component instanceof ComponentTFTrollCaveGarden && component.getBoundingBox().intersectsWith(largeBox)) {
-				//System.out.println("found intersecting garden");
 				return component;
 			}
 		}

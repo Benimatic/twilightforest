@@ -144,8 +144,6 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	@Override
 	public void enforceProgession(EntityPlayer player, World world) {
 		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
-			//System.out.println("Player " + player.getDisplayName() + " is in the swamp without the achievement");
-
 			PotionEffect currentHunger = player.getActivePotionEffect(MobEffects.HUNGER);
 
 			int hungerLevel = currentHunger != null ? currentHunger.getAmplifier() + 1 : 1;

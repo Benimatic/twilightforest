@@ -56,15 +56,6 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
 		this.fillWithBlocks(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSize(), 5, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
 		this.fillWithAir(world, sbb, 1, 0, 1, 4, this.boundingBox.getYSize(), 4);
 
-		//System.out.println("Drawing entrance");
-
-		int var8 = this.getXWithOffset(0, 0);
-		int var9 = this.getYWithOffset(0);
-		int var10 = this.getZWithOffset(0, 0);
-
-		//System.out.println("Drawing entrance at " + var8 + ", " + var9 + ", " + var10);
-
-
 		return true;
 	}
 

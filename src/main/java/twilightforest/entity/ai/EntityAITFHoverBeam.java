@@ -57,8 +57,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		} else if (this.attacker.getCurrentPhase() != Phase.BEAM) {
 			return false;
 		} else {
-			//System.out.println("We can hover at target!");
-
 			return true;//attacker.canEntityBeSeen(target);
 		}
 
@@ -156,8 +154,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 
 
 			this.attacker.addVelocity(velX, velY, velZ);
-			//System.out.println("Just set hover velocity, velY = " + velY + " result y = " + this.attacker.motionY);
-
 		}
 
 
@@ -169,8 +165,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 			this.attacker.faceEntity(target, tracking, tracking);
 			this.attacker.getLookHelper().setLookPositionWithEntity(target, tracking, tracking);
 		}
-
-		//System.out.println("Hovering!");
 	}
 
 	/**
@@ -227,10 +221,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
 				break;
 			}
-		}
-
-		if (tries == 99) {
-			//System.out.println("Found no spots, giving up");
 		}
 
 		this.hoverPosX = hx;

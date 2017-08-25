@@ -63,8 +63,6 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 						if (component instanceof StructureTFComponent) {
 							StructureTFComponent tfComponent = (StructureTFComponent) component;
 
-							//System.out.println("found a tfComponent at the specified coordinates.  It's a " + tfComponent + ", index = " + tfComponent.spawnListIndex);
-
 							if (tfComponent.spawnListIndex > highestFoundIndex) {
 								highestFoundIndex = tfComponent.spawnListIndex;
 							}

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandGameRule;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,6 +21,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -49,6 +51,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.EntityTFPinchBeetle;
@@ -57,6 +60,9 @@ import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
 import twilightforest.util.TFItemStackUtils;
+import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.HashMap;
@@ -133,10 +139,8 @@ public class TFEventListener {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.getSource());
 
-			//System.out.println("Detecting a fire reaction event.  Reaction level is " + fireLevel);
 
 			if (fireLevel > 0 && player.getRNG().nextInt(25) < fireLevel) {
-				//System.out.println("Executing fire reaction.");
 				event.getSource().getTrueSource().setFire(fireLevel / 2);
 			}
 		}
@@ -147,10 +151,7 @@ public class TFEventListener {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.getSource());
 
-			//System.out.println("Detecting a chill aura event.  Reaction level is " + chillLevel);
-
 			if (chillLevel > 0) {
-				//System.out.println("Executing chill reaction.");
 				((EntityLivingBase) event.getSource().getTrueSource()).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, chillLevel * 5 + 5, chillLevel));
 
 			}
@@ -162,7 +163,6 @@ public class TFEventListener {
 
 			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
 					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
-				//System.out.println("Triplebow Arrows!");
 				event.getEntityLiving().hurtResistantTime = 0;
 			}
 		}
@@ -190,9 +190,6 @@ public class TFEventListener {
 				// monsters are easy to move
 				event.getEntityLiving().setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
 				event.getEntityLiving().playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
-
-
-				//System.out.println("Enderbow Arrow!");
 			}
 		}
 
@@ -250,7 +247,6 @@ public class TFEventListener {
 		// reduce damage by armor
 		if (!source.isUnblockable()) {
 			int armor = 25 - living.getTotalArmorValue();
-			//System.out.println("Initial amount = " + amount + ", armor = " + armor + " so damage after armor is " + ((amount * armor) / 25F));
 			amount = (amount * armor) / 25F;
 		}
 
@@ -419,7 +415,6 @@ public class TFEventListener {
 				&& !event.getPlayer().getHeldItemMainhand().isEmpty()
 				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giantPick
 				&& event.getPlayer().getHeldItemMainhand().getItem().canHarvestBlock(event.getState(), event.getPlayer().getHeldItemMainhand())) {
-			//System.out.println("Breaking with giant pick!");
 
 			isBreakingWithGiantPick = true;
 
@@ -442,7 +437,6 @@ public class TFEventListener {
 			}
 
 			if (allCobble && !event.getPlayer().capabilities.isCreativeMode) {
-				//System.out.println("It's all cobble!");
 				shouldMakeGiantCobble = true;
 				amountOfCobbleToReplace = 64;
 			} else {
@@ -475,7 +469,7 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
-		if (event.getEntityPlayer().world.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
+		if (!event.getEntityPlayer().capabilities.isCreativeMode) {
 
 			World world = event.getEntityPlayer().world;
 			EntityPlayer player = event.getEntityPlayer();
@@ -525,15 +519,12 @@ public class TFEventListener {
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
 	private static boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
-//FIXME: AtomicBlom: Disabled for Structures
-/*
-		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && world.provider instanceof WorldProviderTwilightForest) {
-
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
+		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
+			ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
 			
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFBiomeProvider)world.provider.getBiomeProvider()).getFeatureAt(pos.getX(), pos.getZ(), world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAchievement(player) && chunkProvider.isBlockProtected(pos)) {
 					
@@ -548,11 +539,10 @@ public class TFEventListener {
 				}
 			}
 		}
-*/
 		return false;
 	}
 
-	private void sendAreaProtectionPacket(World world, BlockPos pos, StructureBoundingBox sbb) {
+	private static void sendAreaProtectionPacket(World world, BlockPos pos, StructureBoundingBox sbb) {
 		// send packet
 		IMessage message = new PacketAreaProtection(sbb, pos);
 
@@ -566,20 +556,16 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void livingAttack(LivingAttackEvent event) {
-//FIXME: AtomicBlom: Disabled for Structures
-/*
 		// area protection check
-		if (event.getEntityLiving() instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getTrueSource()).capabilities.isCreativeMode && event.getEntityLiving().world.provider instanceof WorldProviderTwilightForest && event.getEntityLiving().world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (event.getEntityLiving() instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayer && !((EntityPlayer)event.getSource().getTrueSource()).capabilities.isCreativeMode && TFWorld.getChunkGenerator(event.getEntityLiving().world) instanceof ChunkGeneratorTwilightForest && event.getEntityLiving().world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
-			ChunkGeneratorTwilightForest chunkProvider = ((WorldProviderTwilightForest)event.getEntityLiving().world.provider).getChunkProvider();
+			ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(event.getEntityLiving().getEntityWorld());
 
-			int mx = MathHelper.floor(event.getEntityLiving().posX);
-			int my = MathHelper.floor(event.getEntityLiving().posY);
-			int mz = MathHelper.floor(event.getEntityLiving().posZ);
+			BlockPos pos = new BlockPos(event.getEntityLiving());
 
-			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(mx, my, mz) && chunkProvider.isBlockProtected(mx, my, mz)) {
+			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos) && chunkProvider.isBlockProtected(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = ((TFBiomeProvider)event.getEntityLiving().world.provider.getBiomeProvider()).getFeatureAt(mx, mz, event.getEntityLiving().world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), event.getEntityLiving().world);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getTrueSource())) {
 					event.setResult(Result.DENY);
@@ -592,7 +578,6 @@ public class TFEventListener {
 				}
 			}
 		}
-*/
 	}
 
 	/**

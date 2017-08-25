@@ -100,8 +100,6 @@ public class EntityTFQuestRam extends EntityAnimal {
 				// set our home position to the center of the quest grove
 				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
 				this.setHomePosAndDistance(cc, 13);
-
-				//System.out.println("Set home area to " + cc.posX + ", " + cc.posY + ", " + cc.posZ);
 			}
 
 			if (countColorsSet() > 15 && !getRewarded()) {

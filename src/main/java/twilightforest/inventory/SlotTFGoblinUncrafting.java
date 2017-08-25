@@ -66,8 +66,6 @@ public class SlotTFGoblinUncrafting extends Slot {
 		// charge the player for this
 		if (this.uncraftingMatrix.uncraftingCost > 0) {
 			this.thePlayer.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
-
-			//System.out.println("Charging the player " + this.uncraftingMatrix.uncraftingCost + " experience for uncrafting");
 		}
 
 

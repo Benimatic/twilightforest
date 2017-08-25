@@ -35,8 +35,6 @@ public class SlotTFGoblinCraftResult extends SlotCrafting {
 			// charge the player before the stacks empty
 			if (this.uncraftingMatrix.recraftingCost > 0) {
 				this.thePlayer.addExperienceLevel(-this.uncraftingMatrix.recraftingCost);
-
-				//System.out.println("Charging the player " + this.uncraftingMatrix.recraftingCost + " experience for recrafting");
 			}
 
 			// if we are using a combined recipe, wipe the uncrafting matrix and decrement the input appropriately

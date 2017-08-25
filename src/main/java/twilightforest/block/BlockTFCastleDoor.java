@@ -146,8 +146,6 @@ public class BlockTFCastleDoor extends Block {
 	@Override // todo 1.10 recheck all of this
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {
 		if (!par1World.isRemote) {
-			//System.out.println("Update castle door");
-
 			if (this.isVanished) {
 				if (state.getValue(ACTIVE)) {
 					par1World.setBlockState(pos, TFBlocks.castleDoor.getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));

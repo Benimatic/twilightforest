@@ -87,7 +87,6 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 				int[] dest = getValidOpening(rand, dir);
 
 				if (this.getComponentType() == 4 && (parent instanceof ComponentTFIceTowerMain) && !((ComponentTFIceTowerMain) parent).hasBossWing) {
-					//System.out.println("Making boss tower");
 					boolean hasBoss = makeBossTowerWing(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], 15, 41, dir);
 					((ComponentTFIceTowerMain) parent).hasBossWing = hasBoss;
 				} else {
@@ -123,10 +122,6 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * Have we strayed more than range blocks away from the center?
 	 */
 	private boolean isOutOfRange(StructureComponent parent, int nx, int ny, int nz, int range) {
-
-//		System.out.println("x range is " + Math.abs(nx - parent.getBoundingBox().minX));
-//		System.out.println("z range is " + Math.abs(nz - parent.getBoundingBox().minZ));
-//		System.out.println("nz is " + nz + ", parent.minz is " + parent.getBoundingBox().minZ);
 		final StructureBoundingBox sbb = parent.getBoundingBox();
 		final int centerX = sbb.minX + (sbb.maxX - sbb.minX + 1) / 2;
 		final int centerZ = sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2;
@@ -142,8 +137,6 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
-
-		//System.out.println("Making tower, index = " + index + ", list.size() = " + list.size());
 
 		// stop if out of range
 		if (isOutOfRange((StructureComponent) list.get(0), dx[0], dx[1], dx[2], RANGE)) {
@@ -359,8 +352,6 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		for (BlockPos door : this.openings) {
 			if (exclusionBox.isVecInside(door)) {
 				isClear = false;
-
-				//System.out.println("Found door in exclusion box, door = " + door);
 			}
 		}
 

@@ -88,20 +88,8 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.fillWithAir(world, sbb, 12, 1, 1, 14, 4, 2);
 		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
 
-		int var8 = this.getXWithOffset(0, 0);
-		int var9 = this.getYWithOffset(0);
-		int var10 = this.getZWithOffset(0, 0);
-
-		//System.out.println("Drawing stronghold boss room at " + var8 + ", " + var9 + ", " + var10);
-
-
 		//spawner
 		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM), 13, 2, 13, sbb);
-
-
-		// out of order
-		//this.placeSignAtCurrentPosition(world, 13, 1, 5, "Boss Room", "Out of Order", sbb);
-
 
 		// doors
 		placeDoors(world, rand, sbb);

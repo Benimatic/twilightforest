@@ -149,7 +149,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			List<EntityTFKnightPhantom> nearbyKnights = getNearbyKnights();
 			if (nearbyKnights.size() <= 1) {
 				// 	make a treasure!'
-				//System.out.println("I think I'm the last one!");
 				this.makeATreasure();
 			}
 		}
@@ -390,15 +389,12 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 				this.switchToFormation(Formation.ATTACK_PLAYER_START);
 			}
 		} else if (this.currentFormation == Formation.WAITING_FOR_LEADER) {
-			//System.out.println("I am done waiting");
-
 			// try to find a nearby knight and do what they're doing
 			if (nearbyKnights.size() > 1) {
 				this.switchToFormation(nearbyKnights.get(1).currentFormation);
 				this.ticksProgress = nearbyKnights.get(1).ticksProgress;
 			} else {
 				this.switchToFormation(Formation.ATTACK_PLAYER_START);
-				//System.out.println("Can't find nearby knight, charging");
 			}
 		} else {
 
@@ -467,9 +463,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 		boolean iAmTheLowest = true;
 
-		//System.out.println("Checking " + nearbyKnights.size() + " knights to see if I'm the leader");
-
-
 		// find more knights
 
 		for (EntityTFKnightPhantom knight : nearbyKnights) {
@@ -499,26 +492,18 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	 */
 	private void makeARandomKnightCharge(List<EntityTFKnightPhantom> nearbyKnights) {
 		int randomNum = rand.nextInt(nearbyKnights.size());
-
 		nearbyKnights.get(randomNum).switchToFormation(Formation.ATTACK_PLAYER_START);
-
-		//System.out.println("Telling knight " + randomNum + " to charge");
 	}
 
 
 	private void broadcastMyFormation(List<EntityTFKnightPhantom> nearbyKnights) {
 		// find more knights
 
-		//System.out.println("Broadcasting to " + nearbyKnights.size() + " knights");
-
 		for (EntityTFKnightPhantom knight : nearbyKnights) {
 			if (!knight.isChargingAtPlayer()) {
-				//System.out.println("Telling knight " + knight + " to switch");
 				knight.switchToFormation(this.currentFormation);
 			}
 		}
-
-		//System.out.println("knight phantom broadcast switch to formation " + this.currentFormation);
 	}
 
 	public boolean isChargingAtPlayer() {
@@ -562,8 +547,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	public void switchToFormation(Formation formation) {
-		//System.out.println("Knight " + this.getNumber() + " now switching to formation " + formation);
-
 		this.currentFormation = formation;
 		this.ticksProgress = 0;
 
@@ -700,8 +683,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		double dDist = Math.sqrt(ox * ox + oz * oz);
 
 		if (dDist > distance) {
-//			System.out.println("Phantom hovering beyond normal bounds");
-
 			// normalize back to boundaries
 
 			dx = this.getHomePosition().getX() + (ox / dDist * distance);

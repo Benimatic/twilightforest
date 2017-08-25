@@ -59,6 +59,10 @@ public class TwilightForestMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		registerCreatures();
+		registerTileEntities();
+		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
+
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.doPreLoadRegistration();
 
@@ -67,39 +71,19 @@ public class TwilightForestMod {
 		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
 
 		// just call this so that we register structure IDs correctly
-//FIXME: AtomicBlom: Disabled for Structures
-
 		new StructureTFMajorFeatureStart();
-
 	}
 
 	@EventHandler
 	public void load(FMLInitializationEvent evt) {
-
 		TFItems.initRepairMaterials();
-
-		// creatures
-		registerCreatures();
-
-		// tile entities
-		registerTileEntities();
-
-		// GUI
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
-
-		// packets
 		TFPacketHandler.init();
-
-		// render and other client stuff
 		proxy.doOnLoadRegistration();
-
-		// dimension provider
-		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
-		// register dimension with Forge
 		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
 			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, TwilightForestMod.dimType);
 		} else {
@@ -108,7 +92,6 @@ public class TwilightForestMod {
 			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
 		}
 
-		// thaumcraft integration
 		if (Loader.isModLoaded("Thaumcraft")) {
 			//FIXME: Reenable this once Thaumcraft is available.
 			//registerThaumcraftIntegration();

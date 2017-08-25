@@ -89,9 +89,6 @@ public class EntityTFHydraPart extends EntityLiving {
 		}
 
 
-		//System.out.println("Updating " + this + " with angles " + rotationYawHead + ", " + rotationPitch);
-
-
 		this.rotationYawHead = this.rotationYaw;
 		this.prevRotationYawHead = this.prevRotationYaw;
 

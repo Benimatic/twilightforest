@@ -276,8 +276,6 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 			// find surface above the listed coords
 			for (dy = y; dy < y + 32; dy++) {
 				if (world.isAirBlock(pos)) {
-					//System.out.println("Found surface for generator.  It's " + dy);
-
 					break;
 				}
 			}

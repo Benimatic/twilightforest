@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
 
@@ -78,8 +79,6 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		// build towards
 		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
 
-		//System.out.println("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + direction + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
-
 		ComponentTFFinalCastleEntranceSideTower eTower = new ComponentTFFinalCastleEntranceSideTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
 
 		StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
@@ -105,7 +104,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 
 			return true;
 		} else {
-			System.out.println("side entrance tower blocked");
+			TwilightForestMod.LOGGER.info("side entrance tower blocked");
 			return false;
 		}
 

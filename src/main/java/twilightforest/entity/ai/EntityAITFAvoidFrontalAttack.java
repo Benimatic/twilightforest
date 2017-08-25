@@ -53,7 +53,6 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 
 	@Override
 	public void startExecuting() {
-		//System.out.println("avoid ai starting");
 		this.me.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
 	}
 
@@ -69,11 +68,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 			return false;
 		}
 
-		boolean shouldContinue = attackTarget.getDistanceToEntity(me) < maxDistance && attackTarget.getDistanceToEntity(me) > minDistance && isTargetLookingAtMe(attackTarget);
-
-		//System.out.println("ai evaluating should continue to " + shouldContinue);
-
-		return shouldContinue;
+		return attackTarget.getDistanceToEntity(me) < maxDistance && attackTarget.getDistanceToEntity(me) > minDistance && isTargetLookingAtMe(attackTarget);
 	}
 
 	@Override
@@ -121,8 +116,6 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 		float angle = (float) ((Math.atan2(dz, dx) * 180D) / 3.1415927410125732D) - 90F;
 
 		float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
-
-//    	System.out.println("Difference in angle of approach is " + difference);
 
 		return difference < 60 || difference > 300;
 	}

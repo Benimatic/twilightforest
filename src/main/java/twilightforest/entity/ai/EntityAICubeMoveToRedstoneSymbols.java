@@ -54,9 +54,6 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 			for (int z = -xzRange; z < xzRange; z++) {
 				for (int y = -yRange; y < yRange; y++) {
 					if (this.isRedstoneSymbol(curPos.add(x, y, z))) {
-
-						//System.out.println("Cube found symbol at " + x + ", " + y + ", " + z);
-
 						this.myCube.hasFoundSymbol = true;
 						this.myCube.symbolX = curPos.getX() + x;
 						this.myCube.symbolY = curPos.getY() + y;

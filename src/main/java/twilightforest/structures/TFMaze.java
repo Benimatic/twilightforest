@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
@@ -129,7 +130,7 @@ public class TFMaze {
 			return getRaw(sx * 2 + 1, sz * 2 + 0);
 		}
 
-		System.out.println("Wall check out of bounds; s = " + sx + ", " + sz + "; d = " + dx + ", " + dz);
+		TwilightForestMod.LOGGER.info("Wall check out of bounds; s = " + sx + ", " + sz + "; d = " + dx + ", " + dz);
 
 		return OUT_OF_BOUNDS;
 	}

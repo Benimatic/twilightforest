@@ -70,11 +70,8 @@ public class TFStrongholdPieces {
 
 	public void markBossRoomUsed() {
 		// let's assume the boss room is the last one on the list
-		//System.out.println("Removing " + pieceList.get(pieceList.size() - 1).pieceClass);
-
 		pieceList.remove(pieceList.size() - 1);
 	}
-
 
 	private boolean hasMoreLimitedPieces() {
 		boolean flag = false;

@@ -55,8 +55,6 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 		} else if (this.attacker.getCurrentPhase() != Phase.DROP) {
 			return false;
 		} else {
-			//System.out.println("We can hover at target!");
-
 			return true;//attacker.canEntityBeSeen(target);
 		}
 
@@ -74,7 +72,6 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 			return false;
 		} else if (this.attacker.getDistanceSq(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
 			// are we there yet?
-			//System.out.println("Successfully in position, beginning drop mode");
 			this.hoverTimer++;
 			return true;
 		} else if (this.dropTimer < this.maxDropTime) {
@@ -141,11 +138,8 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 				this.attacker.faceEntity(target, 30.0F, 30.0F);
 				this.attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
 			}
-
-			//System.out.println("Hovering!");
 		} else {
 			// drop!
-			//System.out.println("Dropping!");
 			this.dropTimer++;
 
 			if (this.attacker.posY > this.dropY) {

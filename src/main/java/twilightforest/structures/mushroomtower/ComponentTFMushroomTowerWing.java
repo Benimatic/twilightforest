@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -79,9 +80,9 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			boolean madeIt = makeMainBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size + 4, childHeight, Rotation.CLOCKWISE_180);
 
 			if (!madeIt) {
-				System.out.println("Did not make bridge back to new main");
+				TwilightForestMod.LOGGER.info("Did not make bridge back to new main");
 			} else {
-				System.out.println("Made bridge back to new main");
+				TwilightForestMod.LOGGER.info("Made bridge back to new main");
 			}
 		}
 
@@ -114,11 +115,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	 * Have we strayed more than range blocks away from the center?
 	 */
 	private boolean isOutOfRange(StructureComponent parent, int nx, int ny, int nz, int range) {
-
-//		System.out.println("x range is " + Math.abs(nx - parent.getBoundingBox().minX));
-//		System.out.println("z range is " + Math.abs(nz - parent.getBoundingBox().minZ));
-//		System.out.println("nz is " + nz + ", parent.minz is " + parent.getBoundingBox().minZ);
-
 		final StructureBoundingBox sbb = parent.getBoundingBox();
 		final int centerX = sbb.minX + (sbb.maxX - sbb.minX + 1) / 2;
 		final int centerZ = sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2;
@@ -178,9 +174,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 				ComponentTFTowerWing otherWing = (ComponentTFTowerWing) obj;
 
 				if (wingSize == otherWing.size && otherWing.getBoundingBox().intersectsWith(x - 3, z - 3, x + 3, z + 3)) {
-//					System.out.println("I found an intersecting thing : " + otherWing + ", size = " + wingSize + " direction = " + direction);
-//					System.out.println("x = " + x + ", z = " + z + " other.minX = " + otherWing.getBoundingBox().minX + " other.maxX = " + otherWing.getBoundingBox().maxX + " other.minZ = " + otherWing.getBoundingBox().minZ + " other.maxZ = " + otherWing.getBoundingBox().maxZ);
-
 					switch (direction) {
 						case SOUTH:
 							return new int[]{otherWing.getBoundingBox().minX, y, otherWing.getBoundingBox().minZ};
@@ -214,8 +207,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 				ComponentTFTowerWing otherWing = (ComponentTFTowerWing) obj;
 
 				if (size == otherWing.size && otherWing.getBoundingBox().intersectsWith(boxAbove)) {
-					//System.out.println("This tower (" + boundingBox + ") is not the highest, there is " + otherWing + " at " + otherWing.getBoundingBox());
-
 					return false;
 				}
 			}

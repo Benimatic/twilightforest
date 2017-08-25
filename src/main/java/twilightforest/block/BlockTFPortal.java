@@ -89,8 +89,6 @@ public class BlockTFPortal extends BlockBreakable {
 		world.setBlockState(pos.east(), TFBlocks.portal.getDefaultState(), 2);
 		world.setBlockState(pos.east().south(), TFBlocks.portal.getDefaultState(), 2);
 		world.setBlockState(pos.south(), TFBlocks.portal.getDefaultState(), 2);
-
-		//System.out.println("Transmuting water to portal");
 	}
 
 	/**

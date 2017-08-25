@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		if (!madeWing) {
 			int[] dx = offsetTowerCoords(dest[0], dest[1], dest[2], dSize, EnumFacing.SOUTH);
 
-			System.out.println("Making tower wing failed when bridge was already made.  Size = " + dSize + ", x = " + dx[0] + " z = " + dx[2]);
+			TwilightForestMod.LOGGER.info("Making tower wing failed when bridge was already made.  Size = " + dSize + ", x = " + dx[0] + " z = " + dx[2]);
 		}
 	}
 

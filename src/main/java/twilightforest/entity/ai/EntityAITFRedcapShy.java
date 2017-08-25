@@ -51,7 +51,6 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 	 */
 	@Override
 	public void startExecuting() {
-		//System.out.println("avoid ai starting");
 		this.entityObj.getNavigator().tryMoveToXYZ(this.targetX, this.targetY, this.targetZ, this.speed);
 	}
 

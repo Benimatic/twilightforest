@@ -28,8 +28,6 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 
 		// do we have enough height?
 		if (pos.getY() < 1 || pos.getY() + height + diameter > TFWorld.MAXHEIGHT) {
-			// System.out.println("Failed with hollow tree of height " +
-			// height);
 			return false;
 		}
 		// make a tree!

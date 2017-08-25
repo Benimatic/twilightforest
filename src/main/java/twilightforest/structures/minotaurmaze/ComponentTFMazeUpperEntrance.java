@@ -78,14 +78,6 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 
 		this.fillWithAir(world, sbb, 6, 0, 6, 9, 4, 9);
 
-
-//        int var8 = this.getXWithOffset(0, 0);
-//        int var9 = this.getYWithOffset(0);
-//        int var10 = this.getZWithOffset(0, 0);
-//
-//        System.out.println("Drawing entrance at " + var8 + ", " + var9 + ", " + var10);
-
-
 		return true;
 	}
 

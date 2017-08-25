@@ -502,7 +502,6 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				dy = targetY;
 			}
 
-//			System.out.println("Crumbling block at " + dx + ", " + dy + ", " + dz);
 			BlockPos pos = new BlockPos(dx, dy, dz);
 
 			if (!world.isAirBlock(pos)) {

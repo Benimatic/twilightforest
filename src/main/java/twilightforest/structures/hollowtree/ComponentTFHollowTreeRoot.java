@@ -46,8 +46,6 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 				}
 
 				src = new BlockPos(src.getX(), groundLevel + 5, src.getZ());
-
-				//System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
 			}
 
 			BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);

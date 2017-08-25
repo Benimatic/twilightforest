@@ -27,9 +27,6 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 			this.currentTimeOut--;
 		}
 
-		//System.out.println("Tantrum time out = " + this.tantrumTimeOut);
-
-
 		return this.currentTimeOut <= 0;
 	}
 
@@ -91,8 +88,6 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 		if (this.currentDuration < 40 && this.currentDuration % 10 == 0) {
 			this.yeti.makeNearbyBlockFall();
 		}
-
-		//System.out.println("Rampage!");
 
 	}
 

@@ -133,8 +133,6 @@ public class ContainerTFUncrafting extends Container {
 				this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 			} else {
-				//System.out.println("Could not find a recipe for input " + this.tinkerInput.getStackInSlot(0));
-
 				for (int i = 0; i < 9; i++) {
 					this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
 				}
@@ -314,22 +312,18 @@ public class ContainerTFUncrafting extends Container {
 			int cost = 0;
 
 			// add innate repair cost
-			//System.out.println("Innate repair cost is " + input.getRepairCost());
 			cost += input.getRepairCost();
 
 			// look at the input's enchantments and total them up
 			int enchantCost = countTotalEnchantmentCost(input);
-			//System.out.println("Enchantment cost is " + enchantCost);
 			cost += enchantCost;
 
 			// broken pieces cost
 			int damagedCost = (1 + countDamagedParts(input)) * EnchantmentHelper.getEnchantments(output).size();
-			//System.out.println("damagedCost is " + damagedCost);
 			cost += damagedCost;
 
 			// factor in enchantibility difference
 			int enchantabilityDifference = input.getItem().getItemEnchantability() - output.getItem().getItemEnchantability();
-			//System.out.println("enchantabilityDifference cost is " + enchantabilityDifference);
 			cost += enchantabilityDifference;
 
 			// minimum cost of 1 if we're even calling this part

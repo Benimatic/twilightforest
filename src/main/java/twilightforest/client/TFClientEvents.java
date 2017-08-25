@@ -39,7 +39,6 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void texStitch(TextureStitchEvent.Pre evt) {
-		System.out.println("texture stitch");
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_0"));
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_1"));
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_2"));
@@ -55,7 +54,6 @@ public class TFClientEvents {
 		boolean hasSlowness = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(SLOWNESS_POTION_MODIFIER);
 		boolean showParticles = event.getEntity().getDataManager().get(EntityLivingBase.HIDE_PARTICLES);
 		if (hasSlowness && showParticles) {
-			//System.out.println("Rendering slowed entity");
 			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
 	}

@@ -54,10 +54,8 @@ public class TFGenHollowTree extends TFGenerator {
 
 		// do we have enough height?
 		if (pos.getY() < 1 || pos.getY() + height + diameter > TFWorld.MAXHEIGHT) {
-//			System.out.println("Failed with hollow tree of height " + height);
 			return false;
 		}
-//		System.out.println("Succeeded with hollow tree of height " + height);
 
 //		// are we going to hit something?
 //		for (int dx = -diameter; dx <= diameter; dx++)
@@ -69,7 +67,6 @@ public class TFGenHollowTree extends TFGenerator {
 //					int whatsThere = world.getBlock(dx + x, dy + y, dz + z);
 //					if(whatsThere != 0 && whatsThere != Blocks.LEAVES)
 //					{
-//						System.out.println("Failed tree due to things at the base at height " + dy);
 //						return false;
 //					}
 //				}
@@ -82,7 +79,6 @@ public class TFGenHollowTree extends TFGenerator {
 				for (int dy = height - crownRadius; dy <= height + crownRadius; dy++) {
 					Block whatsThere = world.getBlockState(pos.add(dx, dy, dz)).getBlock();
 					if (whatsThere != Blocks.AIR && whatsThere != Blocks.LEAVES) {
-//						System.out.println("Failed tree due to things at the top");
 						return false;
 					}
 				}
@@ -297,8 +293,6 @@ public class TFGenHollowTree extends TFGenerator {
 	protected void makeMedBranch(World world, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy) {
 		BlockPos dest = translate(src, length, angle, tilt);
 
-		//System.out.println("making a branch at angle " + angle);
-
 		drawBresehnam(this, world, src, dest, branchState);
 
 		// with leaves!
@@ -349,7 +343,6 @@ public class TFGenHollowTree extends TFGenerator {
 
 		drawBresehnam(this, world, src, dest, branchState);
 
-		//System.out.println("making a branch at angle " + angle);
 		if (leafy) {
 			byte leafRad = (byte) (random.nextInt(2) + 1);
 			drawLeafBlob(this, world, dest, leafRad, leafState);

@@ -112,10 +112,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			for (StructureComponent com : getComponents()) {
 				com.getBoundingBox().offset(0, offY, 0);
 			}
-
-
-			//System.out.println("Making stronghold!");
-
 		}
 
 
@@ -220,8 +216,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			}
 
 			if (offY > 0) {
-				//System.out.println("Moving tower, offset is " + offY + " for biome " + biomeAt.biomeName);
-
 				boundingBox.offset(0, offY, 0);
 
 				for (StructureComponent com : getComponents()) {
@@ -238,8 +232,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //    {
 //        if (this.getComponents().getFirst() instanceof ComponentTFStrongholdEntrance)
 //        {
-//        	//System.out.println("We're generating a stronghold!");
-//        	
+//
 //			for (StructureComponent component : (LinkedList<StructureComponent>) getComponents())
 //			{
 //				
@@ -355,8 +348,6 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		par1NBTTagCompound.setBoolean("Conquered", this.isConquered);
 		par1NBTTagCompound.setInteger("FeatureID", this.feature.featureID);
 		par1NBTTagCompound.setByteArray("Locks", this.lockBytes);
-
-		//System.out.println("Saved structure for feature " + feature.name);
 	}
 
 	@Override
@@ -365,23 +356,21 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		this.isConquered = nbttagcompound.getBoolean("Conquered");
 		this.feature = TFFeature.featureList[nbttagcompound.getInteger("FeatureID")];
 		this.lockBytes = nbttagcompound.getByteArray("Locks");
-
-		//System.out.println("Loaded structure");
 	}
 
 	public boolean isLocked(int lockIndex) {
 		if (lockIndex < this.lockBytes.length) {
 
-			System.out.println("Checking locks for lockIndex " + lockIndex);
+			TwilightForestMod.LOGGER.info("Checking locks for lockIndex " + lockIndex);
 
 			for (int i = 0; i < this.lockBytes.length; i++) {
-				System.out.println("Lock " + i + " = " + this.lockBytes[i]);
+				TwilightForestMod.LOGGER.info("Lock " + i + " = " + this.lockBytes[i]);
 			}
 
 			return this.lockBytes[lockIndex] != 0;
 		} else {
 
-			System.out.println("Current lock index, " + lockIndex + " is beyond array bounds " + this.lockBytes.length);
+			TwilightForestMod.LOGGER.info("Current lock index, " + lockIndex + " is beyond array bounds " + this.lockBytes.length);
 
 
 			return false;

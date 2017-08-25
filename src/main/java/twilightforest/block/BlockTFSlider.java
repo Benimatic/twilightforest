@@ -131,8 +131,6 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 		int offset = world.getBlockState(pos).getValue(DELAY);
 		int update = TICK_TIME - ((int) (world.getWorldTime() - (offset * OFFSET_TIME)) % TICK_TIME);
 		world.scheduleUpdate(pos, this, update);
-
-		//System.out.println("The current world time is " + world.getWorldTime() + " so update scheduled for " + update + " ticks.");
 	}
 
 	@Override

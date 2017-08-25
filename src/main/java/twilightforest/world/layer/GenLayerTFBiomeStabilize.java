@@ -32,8 +32,6 @@ public class GenLayerTFBiomeStabilize extends GenLayer {
 				int centerX = ((dx + offX + 1) & 0xFFFFFFFC) - offX;
 				int centerZ = ((dz + offZ + 1) & 0xFFFFFFFC) - offZ;
 
-				//System.out.println("dx = " + dx + ", centerX = " + centerX + " dz = " + dz + ", centerZ = " + centerZ);
-
 //            	if (dx == centerX && dz == centerZ)
 //            	{
 //            		output[dx + dz * width] = input[centerX + 1 + (centerZ + 1) * nwidth];

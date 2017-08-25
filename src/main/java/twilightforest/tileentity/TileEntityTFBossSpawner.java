@@ -35,16 +35,9 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 				world.spawnParticle(EnumParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 			} else {
-				//System.out.println("Thinking about boss!");
-
-
 				if (world.getDifficulty() != EnumDifficulty.PEACEFUL) {
 					spawnMyBoss();
-
-					// destroy block
-					world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-
-					//System.out.println("Spawning boss!");
+					world.destroyBlock(pos, false);
 				}
 			}
 		}

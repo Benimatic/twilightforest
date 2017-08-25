@@ -85,8 +85,6 @@ public class ModelTFHydraHead extends ModelBase {
 
 	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity par7Entity) {
-		//System.out.println("Setting head rotation to " + f3 + ", " + f4);
-
 //		head.rotateAngleY = f3 / (180F / (float)Math.PI);
 //		head.rotateAngleX = f4 / (180F / (float)Math.PI);
 	}

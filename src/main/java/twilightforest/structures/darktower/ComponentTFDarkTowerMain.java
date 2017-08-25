@@ -193,16 +193,12 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 					if (wing.size == 9 && wing.getComponentType() == this.getComponentType())
 					{
-						//System.out.println("I found one of my small towers!  Its type is " + wing.getComponentType() + " and mine is " + this.getComponentType());
-
 						smallTowers++;
 
 						possibleKeyTowers.add(wing);
 					}
 				}
 			}
-
-			//System.out.println("I found " + smallTowers + " of my small towers total, with index " + this.getComponentType() + " .");
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -1329,11 +1325,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 				{
 					break;
 				}
-
-//    			if (i == 99)
-//    			{
-//    				System.out.println("Never generated " + treeGen);
-//    			}
 			}
 		}
 

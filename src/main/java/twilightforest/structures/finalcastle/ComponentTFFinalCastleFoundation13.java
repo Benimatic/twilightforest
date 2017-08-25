@@ -45,8 +45,6 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent {
 			if (this.groundLevel < 0) {
 				return true;
 			}
-
-			//System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
 		}
 
 		// how tall are we

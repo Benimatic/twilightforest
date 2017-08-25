@@ -66,8 +66,6 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 
 			maze.carveRoom1(rx, rz);
 
-			//System.out.println("Initially carving room " + rx + ", " + rz);
-
 			rcoords[i * 2] = rx;
 			rcoords[i * 2 + 1] = rz;
 		}
