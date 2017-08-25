@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:ironwood_raw"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:liveroot"
+    },
+    {
+      "item": "#INGOTIRON"
+    },
+    {
+      "item": "#NUGGETGOLD"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

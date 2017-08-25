@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "twilightforest:block_and_chain"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:knightmetal_ring"
+    },
+    {
+      "item": "#INGOTKNIGHTMETAL"
+    },
+    {
+      "item": "#INGOTKNIGHTMETAL"
+    },
+    {
+      "item": "#INGOTKNIGHTMETAL"
+    },
+    {
+      "item": "twilightforest:knightmetal_block"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

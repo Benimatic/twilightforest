@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "twilightforest:fire_jet",
+    "data": 6
+  },
+  "pattern": [
+    "ere",
+    "rjr",
+    "lll"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "r": {
+      "item": "#DUSTREDSTONE"
+    },
+    "e": {
+      "item": "twilightforest:tower_wood",
+      "data": 1
+    },
+    "j": {
+      "item": "twilightforest:fire_jet",
+      "data": 3
+    },
+    "l": {
+      "item": "minecraft:lava_bucket"
+    }
+  }
+}

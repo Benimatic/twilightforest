@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:ironwood_hoe"
+  },
+  "pattern": [
+    "##",
+    " X",
+    " X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTIRONWOOD"
+    },
+    "X": {
+      "item": "#STICKWOOD"
+    }
+  }
+}

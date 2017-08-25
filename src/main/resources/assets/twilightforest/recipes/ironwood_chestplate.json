@@ -1,0 +1,18 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:1s,id:0s}]}",
+    "item": "twilightforest:ironwood_chestplate",
+    "type": "minecraft:item_nbt"
+  },
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTIRONWOOD"
+    }
+  }
+}

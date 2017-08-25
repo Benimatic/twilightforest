@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:uncrafting_table"
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#WORKBENCH"
+    },
+    "X": {
+      "item": "twilightforest:maze_map_focus"
+    }
+  }
+}

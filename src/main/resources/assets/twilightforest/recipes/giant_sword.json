@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:giant_sword"
+  },
+  "pattern": [
+    "#",
+    "#",
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:giant_cobblestone"
+    },
+    "X": {
+      "item": "twilightforest:giant_log"
+    }
+  }
+}

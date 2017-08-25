@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:knightmetal_leggings"
+  },
+  "pattern": [
+    "###",
+    "# #",
+    "# #"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTKNIGHTMETAL"
+    }
+  }
+}

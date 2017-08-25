@@ -1,0 +1,21 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:1s,id:32s}]}",
+    "item": "twilightforest:ironwood_pickaxe",
+    "type": "minecraft:item_nbt"
+  },
+  "pattern": [
+    "###",
+    " X ",
+    " X "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTIRONWOOD"
+    },
+    "X": {
+      "item": "#STICKWOOD"
+    }
+  }
+}

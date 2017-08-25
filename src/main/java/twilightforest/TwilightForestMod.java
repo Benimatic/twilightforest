@@ -81,9 +81,6 @@ public class TwilightForestMod {
 		// creatures
 		registerCreatures();
 
-		// recipes
-		TFRecipes.registerRecipes();
-
 		// tile entities
 		registerTileEntities();
 

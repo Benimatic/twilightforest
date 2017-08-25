@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:knightmetal_sword"
+  },
+  "pattern": [
+    "#",
+    "#",
+    "X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTKNIGHTMETAL"
+    },
+    "X": {
+      "item": "#STICKWOOD"
+    }
+  }
+}

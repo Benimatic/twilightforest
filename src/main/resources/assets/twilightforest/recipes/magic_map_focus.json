@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:magic_map_focus"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:raven_feather"
+    },
+    {
+      "item": "twilightforest:torchberries"
+    },
+    {
+      "item": "#DUSTGLOWSTONE"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

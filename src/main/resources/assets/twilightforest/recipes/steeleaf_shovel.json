@@ -1,0 +1,21 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:2s,id:32s}]}",
+    "item": "twilightforest:steeleaf_shovel",
+    "type": "minecraft:item_nbt"
+  },
+  "pattern": [
+    "#",
+    "X",
+    "X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTSTEELEAF"
+    },
+    "X": {
+      "item": "#STICKWOOD"
+    }
+  }
+}
