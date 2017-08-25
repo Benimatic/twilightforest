@@ -1,10 +1,13 @@
 package twilightforest;
 
+import net.minecraft.advancements.Advancement;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -28,46 +31,6 @@ public class TFCommonProxy implements IGuiHandler {
 	 */
 	public void doOnLoadRegistration() {
 		;
-	}
-
-	public int getCritterBlockRenderID() {
-		return 0;
-	}
-
-	public int getPlantBlockRenderID() {
-		return 0;
-	}
-
-	public int getComplexBlockRenderID() {
-		return 0;
-	}
-
-	public int getNagastoneBlockRenderID() {
-		return 0;
-	}
-
-	public int getMagicLeavesBlockRenderID() {
-		return 0;
-	}
-
-	public int getPedestalBlockRenderID() {
-		return 0;
-	}
-
-	public int getThornsBlockRenderID() {
-		return 0;
-	}
-
-	public int getKnightmetalBlockRenderID() {
-		return 0;
-	}
-
-	public int getHugeLilyPadBlockRenderID() {
-		return 0;
-	}
-
-	public int getCastleMagicBlockRenderID() {
-		return 0;
 	}
 
 	public World getClientWorld() {
@@ -120,6 +83,14 @@ public class TFCommonProxy implements IGuiHandler {
 	}
 
 	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
+	}
+
+	public boolean doesPlayerHaveAdvancement(EntityPlayer player, ResourceLocation advId) {
+		if (player instanceof EntityPlayerMP) {
+			Advancement adv = ((EntityPlayerMP) player).getServerWorld().getAdvancementManager().getAdvancement(advId);
+			return adv != null && ((EntityPlayerMP) player).getAdvancements().getProgress(adv).isDone();
+		}
+		return false;
 	}
 
 }

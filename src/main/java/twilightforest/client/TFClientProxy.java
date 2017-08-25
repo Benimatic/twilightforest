@@ -1,14 +1,19 @@
 package twilightforest.client;
 
+import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelSilverfish;
+import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -186,19 +191,6 @@ public class TFClientProxy extends TFCommonProxy {
 		MinecraftForgeClient.registerItemRenderer(TFItems.fieryBoots, fieryRenderer);
 */
 
-		// block render ids
-//FIXME: AtomicBlom: These all need BlockState models.
-/*		RenderingRegistry.registerBlockHandler(new RenderBlockTFFireflyJar(blockComplexRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFPlants(plantRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFCritters(critterRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFNagastone(nagastoneRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFMagicLeaves(magicLeavesRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFPedestal(pedestalRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFThorns(thornsRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFKnightMetal(knightmetalBlockRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFHugeLilyPad(hugeLilyPadBlockRenderID));
-		RenderingRegistry.registerBlockHandler(new RenderBlockTFCastleMagic(castleMagicBlockRenderID));
-*/
 		knightlyArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFKnightlyArmor(0.5F));
 		knightlyArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFKnightlyArmor(1.0F));
 		knightlyArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFKnightlyArmor(0.5F));
@@ -346,6 +338,17 @@ public class TFClientProxy extends TFCommonProxy {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean doesPlayerHaveAdvancement(EntityPlayer player, ResourceLocation advId) {
+		if (player instanceof EntityPlayerSP) {
+			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
+			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
+			return adv != null && manager.advancementToProgress.get(adv).isDone();
+		}
+
+		return super.doesPlayerHaveAdvancement(player, advId);
 	}
 
 }

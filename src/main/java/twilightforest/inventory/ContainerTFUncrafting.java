@@ -435,7 +435,7 @@ public class ContainerTFUncrafting extends Container {
 		return ret;
 	}
 
-	@Override
+	// todo 1.12 evaluate if this logic needs to be moved elsewhere (method removed in 1.12)
 	protected void retrySlotClick(int slotNum, int mouseButton, boolean par3, EntityPlayer par4EntityPlayer) {
 		// if they are taking something out of the uncrafting matrix, bump the slot number back to the assembly matrix
 		// otherwise we lose the stuff in the uncrafting matrix when we shift-click to take multiple things

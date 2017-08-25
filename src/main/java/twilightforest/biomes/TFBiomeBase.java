@@ -29,6 +29,7 @@ import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenBirchTree;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 import twilightforest.world.TFWorld;
@@ -201,19 +202,10 @@ public class TFBiomeBase extends Biome {
 
 	/**
 	 * Does the player have the achievement needed to be in this biome?
-	 * Defaults to true for no achievement required biomes.
 	 */
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
-
-		if (getRequiredAchievement() != null && player instanceof EntityPlayerMP) {
-			Advancement adv = ((EntityPlayerMP) player).getServerWorld().getAdvancementManager().getAdvancement(getRequiredAchievement());
-			return adv != null && ((EntityPlayerMP) player).getAdvancements().getProgress(adv).isDone();
-		} else if (getRequiredAchievement() != null && player instanceof EntityPlayerSP) {
-			// todo 1.12 check side-safety here...
-			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
-			Advancement adv = manager.getAdvancementList().getAdvancement(getRequiredAchievement());
-
-			return adv != null && manager.advancementToProgress.get(adv).isDone();
+		if (getRequiredAchievement() != null) {
+			return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, getRequiredAchievement());
 		} else {
 			return true;
 		}

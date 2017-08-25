@@ -613,13 +613,7 @@ public class TFFeature {
 
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
 		if (this.requiredAchievement != null) {
-			// can we get the player's stats here at all?
-			if (player instanceof EntityPlayerMP) {
-				Advancement adv = ((EntityPlayerMP) player).getServerWorld().getAdvancementManager().getAdvancement(requiredAchievement);
-				return adv != null && ((EntityPlayerMP) player).getAdvancements().getProgress(adv).isDone();
-			} else {
-				return false; // cannot get stats
-			}
+			return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, requiredAchievement);
 		} else {
 			return true; // no required achievement
 		}
