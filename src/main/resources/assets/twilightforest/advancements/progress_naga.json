@@ -4,13 +4,13 @@
       "item": "twilightforest:naga_scale"
     },
     "title": {
-      "translate": "advancement.twilightNagaProgress"
+      "translate": "advancement.twilightProgressNaga"
     },
     "description": {
-      "translate": "advancement.twilightNagaProgress.desc"
+      "translate": "advancement.twilightProgressNaga.desc"
     }
   },
-  "parent": "twilightforest:naga_kill",
+  "parent": "twilightforest:kill_naga",
   "criteria": {
     "scale": {
       "trigger": "minecraft:inventory_changed",

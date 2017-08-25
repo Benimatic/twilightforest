@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:crumble_horn"
+    },
+    "title": {
+      "translate": "advancement.twilightQuestRam"
+    },
+    "description": {
+      "translate": "advancement.twilightQuestRam.desc"
+    }
+  },
+  "parent": "twilightforest:twilight_arrival",
+  "__comment": "This is triggered by code. In the future, it may become data-driven",
+  "criteria": {
+    "code_triggered": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

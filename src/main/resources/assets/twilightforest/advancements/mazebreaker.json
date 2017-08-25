@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:mazebreaker_pickaxe"
+    },
+    "title": {
+      "translate": "advancement.twilightMazebreaker"
+    },
+    "description": {
+      "translate": "advancement.twilightMazebreaker.desc"
+    }
+  },
+  "parent": "twilightforest:progress_lich",
+  "criteria": {
+    "pick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:mazebreaker_pickaxe"
+          }
+        ]
+      }
+    }
+  }
+}

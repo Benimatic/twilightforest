@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:naga_chestplate"
+    },
+    "title": {
+      "translate": "advancement.twilightNagaArmors"
+    },
+    "description": {
+      "translate": "advancement.twilightNagaArmors.desc"
+    }
+  },
+  "parent": "twilightforest:kill_naga",
+  "criteria": {
+    "armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:naga_chestplate"
+          },
+          {
+            "item": "twilightforest:naga_leggings"
+          }
+        ]
+      }
+    }
+  }
+}

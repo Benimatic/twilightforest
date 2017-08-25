@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:fiery_blood"
+    },
+    "title": {
+      "translate": "advancement.twilightProgressHydra"
+    },
+    "description": {
+      "translate": "advancement.twilightProgressHydra.desc"
+    }
+  },
+  "parent": "twilightforest:kill_hydra",
+  "criteria": {
+    "blood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_blood"
+          }
+        ]
+      }
+    }
+  }
+}

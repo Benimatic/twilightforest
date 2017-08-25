@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:phantom_helmet"
+    },
+    "title": {
+      "translate": "advancement.twilightProgressKnights"
+    },
+    "description": {
+      "translate": "advancement.twilightProgressKnights.desc"
+    }
+  },
+  "parent": "twilightforest:progress_trophy_pedestal",
+  "criteria": {
+    "knight": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:knight_phantom"
+        }
+      }
+    }
+  }
+}

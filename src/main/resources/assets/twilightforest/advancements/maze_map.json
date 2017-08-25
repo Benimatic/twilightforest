@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:maze_map"
+    },
+    "title": {
+      "translate": "advancement.twilightMazeMap"
+    },
+    "description": {
+      "translate": "advancement.twilightMazeMap.desc"
+    }
+  },
+  "parent": "twilightforest:progress_lich",
+  "criteria": {
+    "map": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:maze_map"
+          }
+        ]
+      }
+    }
+  }
+}

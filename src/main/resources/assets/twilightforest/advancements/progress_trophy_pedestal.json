@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:trophy_pedestal"
+    },
+    "title": {
+      "translate": "advancement.twilightProgressTrophyPedestal"
+    },
+    "description": {
+      "translate": "advancement.twilightProgressTrophyPedestal.desc"
+    }
+  },
+  "parent": "twilightforest:progress_hydra",
+  "__comment": "This is triggered by code. In the future, it may become data-driven",
+  "criteria": {
+    "code_triggered": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

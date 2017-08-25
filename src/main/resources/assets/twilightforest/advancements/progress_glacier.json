@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:trophy",
+      "data": 5
+    },
+    "title": {
+      "translate": "advancement.twilightProgressGlacier"
+    },
+    "description": {
+      "translate": "advancement.twilightProgressGlacier.desc"
+    }
+  },
+  "parent": "twilightforest:progress_yeti",
+  "criteria": {
+    "queen": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:snow_queen"
+        }
+      }
+    }
+  }
+}

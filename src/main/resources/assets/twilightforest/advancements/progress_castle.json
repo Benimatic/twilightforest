@@ -1,0 +1,19 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:stonebrick"
+    },
+    "title": {
+      "translate": "advancement.twilightProgressCastle"
+    },
+    "description": {
+      "translate": "advancement.twilightProgressCastle.desc"
+    }
+  },
+  "parent": "twilightforest:progress_thorns",
+  "criteria": {
+    "not_yet_implemented": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

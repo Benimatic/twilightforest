@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:trophy",
+      "data": 3
+    },
+    "title": {
+      "translate": "advancement.twilightProgressUrghast"
+    },
+    "description": {
+      "translate": "advancement.twilightProgressUrghast.desc"
+    }
+  },
+  "parent": "twilightforest:progress_knights",
+  "criteria": {
+    "ghast": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:ur_ghast"
+        }
+      }
+    }
+  }
+}

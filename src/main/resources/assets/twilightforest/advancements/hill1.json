@@ -12,6 +12,15 @@
   },
   "parent": "twilightforest:twilight_arrival",
   "criteria": {
+    "boggard": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:boggard",
+          "__todo": "only grant in Hill1"
+        }
+      }
+    },
     "redcap": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {

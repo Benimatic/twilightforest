@@ -1,0 +1,39 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:meef_stroganoff"
+    },
+    "title": {
+      "translate": "advancement.twilightProgressLabyrinth"
+    },
+    "description": {
+      "translate": "advancement.twilightProgressLabyrinth.desc"
+    }
+  },
+  "parent": "twilightforest:progress_lich",
+  "criteria": {
+    "meef": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:meef_stroganoff"
+          }
+        ]
+      }
+    },
+    "axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:minotaur_axe"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [ "meef", "axe" ]
+  ]
+}
