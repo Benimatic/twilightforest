@@ -42,7 +42,7 @@ public final class TFSounds {
 
 	private static SoundEvent createEvent(String sound) {
 		ResourceLocation name = new ResourceLocation(TwilightForestMod.ID, sound);
-		return new SoundEvent(name);
+		return new SoundEvent(name).setRegistryName(name);
 	}
 
 	@SubscribeEvent
