@@ -82,6 +82,7 @@ public class TFEntityNames {
 	public static final ResourceLocation CHAIN_BLOCK = prefix("chain_block");
 	public static final ResourceLocation CUBE_OF_ANNIHILATION = prefix("cube_of_annihilation");
 	public static final ResourceLocation SLIDER = prefix("slider");
+	public static final ResourceLocation BOGGARD = prefix("boggard");
 
 	private static ResourceLocation prefix(String path) {
 		return new ResourceLocation(TwilightForestMod.ID, path);

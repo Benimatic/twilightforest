@@ -208,6 +208,7 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.CHAIN_BLOCK, twilightforest.entity.EntityTFChainBlock.class, id++, 80, 1, true);
 		TFEntities.registerEntity(TFEntityNames.CUBE_OF_ANNIHILATION, twilightforest.entity.EntityTFCubeOfAnnihilation.class, id++, 80, 1, true);
 		TFEntities.registerEntity(TFEntityNames.SLIDER, twilightforest.entity.EntityTFSlideBlock.class, id++, 80, 1, true);
+		TFEntities.registerEntity(TFEntityNames.BOGGARD, twilightforest.entity.EntityTFBoggard.class, id++);
 	}
 
 
