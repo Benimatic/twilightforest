@@ -21,18 +21,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import twilightforest.TFConfig;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
@@ -555,7 +551,8 @@ public class ContainerTFUncrafting extends Container {
 			ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
 			for (int i = 0; i < recipe.getIngredients().size(); i++) {
-				stacks[i] = recipe.getIngredients().get(i).getMatchingStacks()[0];
+				ItemStack[] matchingStacks = recipe.getIngredients().get(i).getMatchingStacks();
+				stacks[i] = matchingStacks.length > 0 ? matchingStacks[0] : ItemStack.EMPTY;
 			}
 
 			return stacks;
