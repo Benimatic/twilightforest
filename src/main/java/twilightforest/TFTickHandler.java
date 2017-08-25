@@ -26,6 +26,7 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
+import twilightforest.util.PlayerHelper;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
@@ -143,7 +144,7 @@ public class TFTickHandler {
 					}
 
 					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem))) {
-						player.addStat(TFAchievementPage.twilightPortal);
+						PlayerHelper.grantAdvancement((EntityPlayerMP) player, new ResourceLocation(TwilightForestMod.ID, "twilight_portal"));
 					}
 				}
 			}

@@ -19,7 +19,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
@@ -77,14 +76,6 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

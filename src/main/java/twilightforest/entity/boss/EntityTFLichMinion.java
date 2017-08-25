@@ -2,13 +2,11 @@ package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 
 import java.util.List;
 
@@ -71,14 +69,6 @@ public class EntityTFLichMinion extends EntityZombie {
 				// quit looking
 				break;
 			}
-		}
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 }

@@ -25,7 +25,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -36,7 +35,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
@@ -325,10 +323,6 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightProgressYeti);
-		}
 
 		// mark the lair as defeated
 		if (!world.isRemote) {

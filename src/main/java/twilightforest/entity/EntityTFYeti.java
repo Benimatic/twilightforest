@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -21,7 +20,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.ai.EntityAITFThrowRider;
@@ -161,14 +159,6 @@ public class EntityTFYeti extends EntityMob {
 	@Override
 	public boolean canRiderInteract() {
 		return true;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

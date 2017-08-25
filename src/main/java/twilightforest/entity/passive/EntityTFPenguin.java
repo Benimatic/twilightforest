@@ -15,9 +15,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 
 
 public class EntityTFPenguin extends EntityTFBird {
@@ -48,14 +46,6 @@ public class EntityTFPenguin extends EntityTFBird {
 	@Override
 	public boolean isBreedingItem(ItemStack par1ItemStack) {
 		return par1ItemStack != null && par1ItemStack.getItem() == Items.FISH;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

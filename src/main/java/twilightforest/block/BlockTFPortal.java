@@ -12,10 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -25,10 +22,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.PlayerHelper;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -222,8 +219,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 					// send to twilight
 					if (playerMP.dimension != TFConfig.dimension.dimensionID) {
-						playerMP.addStat(TFAchievementPage.twilightPortal);
-						playerMP.addStat(TFAchievementPage.twilightArrival);
+						PlayerHelper.grantAdvancement(playerMP, new ResourceLocation(TwilightForestMod.ID, "twilight_portal"));
 						TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TFConfig.dimension.dimensionID);
 
 						playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TFConfig.dimension.dimensionID, TFTeleporter.getTeleporterForDim(playerMP.mcServer, TFConfig.dimension.dimensionID));

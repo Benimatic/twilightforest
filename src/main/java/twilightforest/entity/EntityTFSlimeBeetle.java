@@ -23,7 +23,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
@@ -67,14 +66,6 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 	@Override
 	protected void playStepSound(BlockPos pos, Block var4) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

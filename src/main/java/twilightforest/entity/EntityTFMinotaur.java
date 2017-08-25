@@ -26,7 +26,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
@@ -129,14 +128,6 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 }

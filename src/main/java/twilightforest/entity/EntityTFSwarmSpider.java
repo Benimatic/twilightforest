@@ -7,12 +7,15 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
+import twilightforest.util.PlayerHelper;
 
 
 public class EntityTFSwarmSpider extends EntitySpider {
@@ -138,16 +141,14 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+	public void onDeath(DamageSource source) {
+		super.onDeath(source);
+		if (source.getTrueSource() instanceof EntityPlayerMP) {
 			// are we in a hedge maze?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze) {
-				// award hedge maze cheevo
-				((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHedge);
+				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "swarm_spider");
 			}
 		}
 	}

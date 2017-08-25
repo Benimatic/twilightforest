@@ -75,138 +75,16 @@ public class TFEventListener {
 	private static int amountOfCobbleToReplace = 0;
 	private static long lastSpawnedHintMonsterTime;
 
-	/**
-	 * Check if the player picks up a lich scepter, and if so, check for the scepter mastery achievement
-	 */
-	@SubscribeEvent
-	public static void pickupItem(EntityItemPickupEvent event) {
-		Item item = event.getItem().getItem().getItem();
-		if (item == TFItems.scepterTwilight || item == TFItems.scepterLifeDrain
-				|| item == TFItems.scepterZombie) {
-			// the player has picked up a scepter.  Check if they have them all in their inventory, and if so, achievement
-			//System.out.println("Player picked up a scepter");
-			checkPlayerForScepterMastery(event.getEntityPlayer(), item);
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressLich);
-		}
-
-		// naga scale gives naga progress achievement
-		if (item == TFItems.nagaScale) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressNaga);
-		}
-		// trophy gives kill achievement
-		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 2) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillHydra);
-		}
-		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 0) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillNaga);
-		}
-		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 1) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillLich);
-		}
-		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 3) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressUrghast);
-		}
-		if (item == TFItems.trophy && event.getItem().getItem().getItemDamage() == 5) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressGlacier);
-		}
-		// mazebreaker
-		if (item == TFItems.mazebreakerPick) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightMazebreaker);
-		}
-		// meef stroganoff (or axe)
-		if (item == TFItems.meefStroganoff || item == TFItems.minotaurAxe) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressLabyrinth);
-		}
-		// fiery blood
-		if (item == TFItems.fieryBlood) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressHydra);
-		}
-		// phantom helm/plate
-		if (item == TFItems.phantomHelm || item == TFItems.phantomPlate) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressKnights);
-		}
-		// fiery tears
-		if (item == TFItems.fieryTears) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressUrghast);
-		}
-		// yeti items
-		if (item == TFItems.alphaFur || item == TFItems.yetiBoots || item == TFItems.yetiHelm
-				|| item == TFItems.yetiPlate || item == TFItems.yetiLegs) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressYeti);
-		}
-		// lamp of cinders
-		if (item == TFItems.lampOfCinders) {
-			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressTroll);
-		}
-	}
-
-	/**
-	 * Does the player have all three scepters somewhere in the inventory?
-	 */
-	private static void checkPlayerForScepterMastery(EntityPlayer player, Item item) {
-		// Add the picked up item to the check as the event fires before the item gets placed into the inventory
-		boolean scepterTwilight = item == TFItems.scepterTwilight;
-		boolean scepterLifeDrain = item == TFItems.scepterLifeDrain;
-		boolean scepterZombie = item == TFItems.scepterZombie;
-
-		IInventory inv = player.inventory;
-
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
-
-			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterTwilight) {
-				scepterTwilight = true;
-			}
-			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterLifeDrain) {
-				scepterLifeDrain = true;
-			}
-			if (!stack.isEmpty() && stack.getItem() == TFItems.scepterZombie) {
-				scepterZombie = true;
-			}
-		}
-
-		if (scepterTwilight && scepterLifeDrain && scepterZombie) {
-			player.addStat(TFAchievementPage.twilightLichScepters);
-		}
-	}
-
-	/**
-	 * Check if we've crafted something that there's an achievement for
-	 */
 	@SubscribeEvent
 	public static void onCrafting(ItemCraftedEvent event) {
-
-		//System.out.println("Getting item crafted event");
-
 		ItemStack itemStack = event.crafting;
 		EntityPlayer player = event.player;
-
-		// if the item is naga armor
-		if ((itemStack.getItem() == TFItems.plateNaga || itemStack.getItem() == TFItems.legsNaga)) {
-			// check if the player has made both armors
-			checkPlayerForNagaArmorer(player, itemStack.getItem());
-		}
-
-		// trigger achievements
-		if (itemStack.getItem() == TFItems.magicMapFocus) {
-			player.addStat(TFAchievementPage.twilightMagicMapFocus);
-		}
-		if (itemStack.getItem() == TFItems.emptyMagicMap) {
-			player.addStat(TFAchievementPage.twilightMagicMap);
-		}
-		if (itemStack.getItem() == TFItems.emptyMazeMap) {
-			player.addStat(TFAchievementPage.twilightMazeMap);
-		}
-		if (itemStack.getItem() == TFItems.emptyOreMap) {
-			player.addStat(TFAchievementPage.twilightOreMap);
-		}
 
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
 		if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.getCount() == 64 && doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
-
 		}
 	}
 
@@ -220,32 +98,6 @@ public class TFEventListener {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Does the player have two naga armors?
-	 */
-	private static void checkPlayerForNagaArmorer(EntityPlayer player, Item item) {
-		// Add the crafted item to the check as the event fires before the item gets placed into the inventory
-		boolean plateNaga = item == TFItems.plateNaga;
-		boolean legsNaga = item == TFItems.legsNaga;
-
-		IInventory inv = player.inventory;
-
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
-
-			if (!stack.isEmpty() && stack.getItem() == TFItems.plateNaga) {
-				plateNaga = true;
-			}
-			if (!stack.isEmpty() && stack.getItem() == TFItems.legsNaga) {
-				legsNaga = true;
-			}
-		}
-
-		if (plateNaga && legsNaga) {
-			player.addStat(TFAchievementPage.twilightNagaArmors);
-		}
 	}
 
 	/**
@@ -618,21 +470,6 @@ public class TFEventListener {
 
 			isBreakingWithGiantPick = false;
 
-		}
-	}
-
-	/**
-	 * Check if the player is trying to right block a block in a structure that's considered protected
-	 * Also check for fiery set achievement
-	 */
-	@SubscribeEvent
-	public static void onPlayerInteract(PlayerInteractEvent event) {
-		ItemStack currentItem = event.getEntityPlayer().inventory.getCurrentItem();
-		if (!currentItem.isEmpty() && (currentItem.getItem() == TFItems.fierySword || currentItem.getItem() == TFItems.fieryPick)) {
-			// are they also wearing the armor
-			if (checkPlayerForFieryArmor(event.getEntityPlayer())) {
-				event.getEntityPlayer().addStat(TFAchievementPage.twilightFierySet);
-			}
 		}
 	}
 

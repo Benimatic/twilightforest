@@ -19,7 +19,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFlockToSameKind;
@@ -101,14 +100,6 @@ public class EntityTFKobold extends EntityMob {
 			}
 		}
 
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

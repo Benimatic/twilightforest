@@ -24,7 +24,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
@@ -139,14 +138,6 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker {
 			return 15728880;
 		} else {
 			return super.getBrightnessForRender();
-		}
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 

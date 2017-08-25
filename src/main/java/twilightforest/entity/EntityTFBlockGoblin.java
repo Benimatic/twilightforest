@@ -26,7 +26,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
@@ -99,14 +98,6 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	/**

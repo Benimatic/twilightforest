@@ -1,7 +1,6 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,7 +24,6 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.TwilightForestMod;
@@ -572,11 +570,6 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightProgressUrghast);
-
-		}
 
 		// mark the tower as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {

@@ -18,7 +18,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
 public class EntityTFPinchBeetle extends EntityMob {
@@ -84,14 +83,6 @@ public class EntityTFPinchBeetle extends EntityMob {
 			// push out of user in wall
 			Vec3d riderPos = this.getRiderPosition();
 			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
-		}
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 

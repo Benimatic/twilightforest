@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
@@ -20,21 +21,17 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
 import twilightforest.item.TFItems;
-
-import java.util.List;
+import twilightforest.util.PlayerHelper;
 
 
 public class EntityTFQuestRam extends EntityAnimal {
@@ -132,11 +129,9 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	private void rewardNearbyPlayers(World world, double posX, double posY, double posZ) {
-		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D));
-
-		for (EntityPlayer player : nearbyPlayers) {
-			player.addStat(TFAchievementPage.twilightQuestRam);
+		ResourceLocation advId = new ResourceLocation(TwilightForestMod.ID, "quest_ram");
+		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D))) {
+			PlayerHelper.grantAdvancement(player, advId);
 		}
 	}
 

@@ -18,10 +18,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 
 
 public class EntityTFBunny extends EntityCreature implements IAnimals {
@@ -110,11 +108,4 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		return this.world.getLightBrightness(pos) - 0.5F;
 	}
 
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
-	}
 }

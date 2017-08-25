@@ -123,7 +123,6 @@ public class TwilightForestMod {
 	@EventHandler
 	public void startServer(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandTFFeature());
-		event.registerServerCommand(new CommandTFProgress());
 	}
 
 	private void registerCreatures() {

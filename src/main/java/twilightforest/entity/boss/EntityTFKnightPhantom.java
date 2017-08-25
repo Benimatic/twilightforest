@@ -29,7 +29,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TFTreasure;
@@ -128,10 +127,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightProgressKnights);
-		}
 
 		// mark the stronghold as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {

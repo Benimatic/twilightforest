@@ -34,7 +34,6 @@ import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -44,7 +43,6 @@ import twilightforest.block.enums.BossVariant;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -731,11 +729,6 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightKillNaga);
-		}
-
 		// mark the courtyard as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
 			int dx = MathHelper.floor(this.posX);

@@ -12,7 +12,6 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.FireJetVariant;

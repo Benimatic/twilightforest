@@ -3,19 +3,16 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFSkeletonDruid extends EntitySkeleton {
@@ -56,14 +53,6 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

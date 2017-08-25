@@ -2,10 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 
 
 public class EntityTFBoar extends EntityPig {
@@ -23,14 +20,6 @@ public class EntityTFBoar extends EntityPig {
 	@Override
 	public EntityPig createChild(EntityAgeable entityanimal) {
 		return new EntityTFBoar(world);
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 }

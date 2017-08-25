@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
@@ -86,14 +85,6 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.ICE_DEATH;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

@@ -21,7 +21,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -90,14 +89,6 @@ public class EntityTFIceExploder extends EntityMob {
 	@Override
 	public float getEyeHeight() {
 		return this.height * 0.6F;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

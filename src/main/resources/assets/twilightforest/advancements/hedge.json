@@ -11,27 +11,16 @@
     }
   },
   "parent": "twilightforest:twilight_arrival",
+  "__comment": "These are triggered by code in order to test for a Hedge nearby. In the future, these may become data-driven",
   "criteria": {
-    "hedge": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "twilightforest:hedge_spider",
-          "__todo": "only grant in hedge maze"
-        }
-      }
+    "hedge_spider": {
+      "trigger": "minecraft:impossible"
     },
-    "swarm": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "twilightforest:swarm_spider",
-          "__todo": "only grant in hedge maze"
-        }
-      }
+    "swarm_spider": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
-    [ "hedge", "swarm" ]
+    [ "hedge_spider", "swarm_spider" ]
   ]
 }

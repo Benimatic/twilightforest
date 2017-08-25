@@ -3,12 +3,9 @@ package twilightforest.entity.passive;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -51,14 +48,6 @@ public class EntityTFBighorn extends EntitySheep {
 			babySheep.setFleeceColor(otherParent.getFleeceColor());
 		}
 		return babySheep;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 }

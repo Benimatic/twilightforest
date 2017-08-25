@@ -15,7 +15,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
@@ -75,12 +74,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 
 		if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage(par1ItemStack)) {
 			doBurnEffect(world, living);
-
-			// trigger achievement
-			if (living instanceof EntityPlayer)
-				((EntityPlayer) living).addStat(TFAchievementPage.twilightProgressTroll);
 		}
-
 	}
 
 	private void doBurnEffect(World world, EntityLivingBase living) {

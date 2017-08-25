@@ -11,15 +11,10 @@
     }
   },
   "parent": "twilightforest:twilight_arrival",
+  "__comment": "This is triggered by code in order to test for a Hill nearby. In the future, it may become data-driven",
   "criteria": {
     "wraith": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "twilightforest:wraith",
-          "__todo": "only grant in Hill3"
-        }
-      }
+      "trigger": "minecraft:impossible"
     }
   }
 }

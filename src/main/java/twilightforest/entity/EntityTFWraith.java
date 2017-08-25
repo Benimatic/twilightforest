@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -21,10 +22,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.PlayerHelper;
 
 import java.util.Random;
 
@@ -275,16 +276,14 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
+	public void onDeath(DamageSource source) {
+		super.onDeath(source);
+		if (source.getTrueSource() instanceof EntityPlayerMP) {
 			// are we in a level 3 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill3) {
-				// award level 3 hill cheevo
-				((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHill3);
+				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill3"), "wraith");
 			}
 		}
 	}

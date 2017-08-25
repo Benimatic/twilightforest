@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.TFGenPenguins;

@@ -23,7 +23,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFBirdFly;
 
@@ -127,14 +126,6 @@ public class EntityTFTinyBird extends EntityTFBird {
 		}
 		// default to just prefering lighter areas
 		return this.world.getLightBrightness(pos) - 0.5F;
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
-		}
 	}
 
 	@Override

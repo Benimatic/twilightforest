@@ -28,7 +28,7 @@ public class TFRecipes {
 	//AtomicBlom: I'm not sure why getMaxDamage is deprecated, since it seems to be actively used?
 	@SuppressWarnings("deprecation")
 	public static void registerRecipes() {
-
+/*
 		// ore dictionary
 		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.log, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.magicLog, 1, OreDictionary.WILDCARD_VALUE));
@@ -189,7 +189,7 @@ public class TFRecipes {
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.chainBlock), TFItems.knightmetalRing, TFItems.knightMetal, TFItems.knightMetal, TFItems.knightMetal, TFBlocks.knightmetalStorage);
 
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.knightMetal, 9), new ItemStack(TFBlocks.knightmetalStorage));
-		GameRegistry.addRecipe(new ItemStack(TFBlocks.knightmetalStorage), "###", "###", "###", '#', TFItems.knightMetal);
+		GameRegistry.addRecipe(new ItemStack(TFBlocks.knightmetalStorage), "###", "###", "###", '#', TFItems.knightMetal);*/
 
 	}
 
@@ -204,7 +204,7 @@ public class TFRecipes {
 
 		Object[] ingredients = new Object[inputs.length - i];
 		System.arraycopy(inputs, i, ingredients, 0, ingredients.length);
-		GameRegistry.addRecipe(result, ingredients);
+		// GameRegistry.addRecipe(result, ingredients);
 	}
 
 }

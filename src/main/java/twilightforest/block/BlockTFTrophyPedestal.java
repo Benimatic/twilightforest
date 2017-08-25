@@ -9,25 +9,25 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
+import twilightforest.util.PlayerHelper;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -146,8 +146,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private boolean isPlayerEligible(EntityPlayer player) {
-		return ((player instanceof EntityPlayerMP) && ((EntityPlayerMP) player).getStatFile().hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement)) ||
-				((player instanceof EntityPlayerSP) && ((EntityPlayerSP) player).getStatFileWriter().hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement));
+		return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, new ResourceLocation(TwilightForestMod.ID, "progress_hydra"));
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, IBlockState state) {
@@ -157,8 +156,9 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private void rewardNearbyPlayers(World world, BlockPos pos) {
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).expand(16.0D, 16.0D, 16.0D)))
-			player.addStat(TFAchievementPage.twilightProgressTrophyPedestal);
+		ResourceLocation adv = new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal");
+		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).expand(16.0D, 16.0D, 16.0D)))
+			PlayerHelper.grantAdvancement(player, adv);
 	}
 
 	private void removeNearbyShields(World world, BlockPos pos) {

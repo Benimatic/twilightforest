@@ -7,14 +7,12 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 
 
@@ -49,14 +47,6 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		super.onUpdate();
 		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			setDead();
-		}
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 

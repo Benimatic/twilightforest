@@ -23,14 +23,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.EntityTFIceBomb;
@@ -154,14 +152,6 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripeTrollBer && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
 			this.world.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
 			world.playEvent(2004, pos, 0);
-		}
-	}
-
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer) par1DamageSource.getTrueSource()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 
