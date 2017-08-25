@@ -125,7 +125,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 	}
 
 	private void hitNearbyEntities() {
-		List<EntityLivingBase> nearby = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(3, 2, 3));
+		List<EntityLivingBase> nearby = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(3, 2, 3));
 
 		for (EntityLivingBase entity : nearby) {
 			if (entity != this.getThrower()) {

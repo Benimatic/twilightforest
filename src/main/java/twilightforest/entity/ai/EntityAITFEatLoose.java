@@ -34,7 +34,7 @@ public class EntityAITFEatLoose extends EntityAIBase {
 		} else {
 			this.temptingItem = null;
 
-			List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().expand(2.0D, 2.0D, 2.0D));
+			List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().grow(2.0D, 2.0D, 2.0D));
 
 			for (EntityItem itemNearby : nearbyItems) {
 				EnumDyeColor color = EnumDyeColor.byMetadata(itemNearby.getItem().getItemDamage());

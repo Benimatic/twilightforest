@@ -116,13 +116,13 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 		Vec3d lookVec = this.entityHost.getLook(1.0F);
 		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).expand(var9, var9, var9));
+		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().expand((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
 				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {

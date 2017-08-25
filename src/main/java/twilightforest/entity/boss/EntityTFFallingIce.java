@@ -51,7 +51,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 				}
 			}
 
-			destroyIceInAABB(this.getEntityBoundingBox().expand(0.5, 0, 0.5));
+			destroyIceInAABB(this.getEntityBoundingBox().grow(0.5, 0, 0.5));
 		} else {
 			makeTrail();
 		}

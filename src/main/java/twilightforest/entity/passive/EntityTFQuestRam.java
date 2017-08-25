@@ -130,7 +130,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 	private void rewardNearbyPlayers(World world, double posX, double posY, double posZ) {
 		ResourceLocation advId = new ResourceLocation(TwilightForestMod.ID, "quest_ram");
-		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D))) {
+		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(16.0D, 16.0D, 16.0D))) {
 			PlayerHelper.grantAdvancement(player, advId);
 		}
 	}

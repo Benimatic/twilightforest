@@ -112,7 +112,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 		double range = 4.0; // do we need to get this with a better method than hardcoding it?
 
 		// find players within harvest range
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).expand(range, range, range));
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(range, range, range));
 
 		// are they swinging?
 		for (EntityPlayer player : nearbyPlayers) {

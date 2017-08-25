@@ -671,7 +671,7 @@ public class HydraHeadContainer {
 		}
 		if (headEntity.getState() == State.BITING) {
 			// damage nearby things
-			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().expand(0.0, 1.0, 0.0));
+			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().grow(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
 				if (nearby instanceof EntityLivingBase && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra) && !(nearby instanceof MultiPartEntityPart)) {
@@ -713,13 +713,13 @@ public class HydraHeadContainer {
 		Vec3d lookVec = headEntity.getLook(1.0F);
 		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).expand(var9, var9, var9));
+		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().expand((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
 				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
@@ -752,7 +752,7 @@ public class HydraHeadContainer {
 	 * Search for nearby heads with the string as their name
 	 */
 	private EntityTFHydraHead findNearbyHead(String string) {
-		List<EntityTFHydraHead> nearbyHeads = hydraObj.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).expand(16.0D, 16.0D, 16.0D));
+		List<EntityTFHydraHead> nearbyHeads = hydraObj.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).grow(16.0D, 16.0D, 16.0D));
 
 		for (EntityTFHydraHead nearbyHead : nearbyHeads) {
 			if (nearbyHead.getPartName().equals(string)) {

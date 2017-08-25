@@ -26,7 +26,7 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 	@Override
 	public void update() {
 		// check to see if there are any dying mini ghasts within our scan range
-		AxisAlignedBB aabb = new AxisAlignedBB(pos, pos.add(1, 1, 1)).expand(10D, 16D, 10D);
+		AxisAlignedBB aabb = new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(10D, 16D, 10D);
 
 		List<EntityTFMiniGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityTFMiniGhast.class, aabb);
 

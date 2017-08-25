@@ -31,7 +31,7 @@ public class EntityAITFFlockToSameKind extends EntityAIBase {
 			return false;
 		}
 
-		List<EntityLiving> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
+		List<EntityLiving> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
 
 		int flocknum = 0;
 		double flockX = 0;

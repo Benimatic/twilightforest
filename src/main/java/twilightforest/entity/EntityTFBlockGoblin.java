@@ -190,7 +190,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	 * Check if the block is colliding with any nearby entities
 	 */
 	protected void applyBlockCollisions(Entity collider) {
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 		for (Entity entity : list) {
 			if (entity.canBePushed()) {

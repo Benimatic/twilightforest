@@ -96,7 +96,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 
 		DamageSource src = new EntityDamageSourceIndirect("onFire", this, getThrower()).setFireDamage().setProjectile();
 
-		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D))) {
+		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1.0D, 1.0D, 1.0D))) {
 			if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.isImmuneToFire()) {
 				nearby.setFire(BURN_FACTOR);
 			}

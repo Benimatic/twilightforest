@@ -19,7 +19,7 @@ public class EntityAITFFlockTarget extends EntityAITarget {
 
 	@Override
 	public boolean shouldExecute() {
-		List<EntityLivingBase> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().expand(16.0D, 4.0D, 16.0D));
+		List<EntityLivingBase> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
 		List<EntityLivingBase> targetList = new ArrayList<EntityLivingBase>();
 
 		for (EntityLivingBase flocker : flockList) {

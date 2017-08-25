@@ -130,7 +130,7 @@ public class TFTickHandler {
 				item = Items.DIAMOND;
 			}
 
-			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
+			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
 
 			for (EntityItem entityItem : itemList) {
 				if (item == entityItem.getItem().getItem() && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)) {

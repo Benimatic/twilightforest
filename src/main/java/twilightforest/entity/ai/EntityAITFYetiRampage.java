@@ -75,7 +75,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 			this.yeti.motionY = 0.4F;
 		}
 
-		this.yeti.destroyBlocksInAABB(this.yeti.getEntityBoundingBox().expand(1, 2, 1).offset(0, 2, 0));
+		this.yeti.destroyBlocksInAABB(this.yeti.getEntityBoundingBox().grow(1, 2, 1).offset(0, 2, 0));
 
 		// regular falling blocks
 		if (this.currentDuration % 20 == 0) {

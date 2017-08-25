@@ -250,7 +250,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	private void applyShieldCollisions(Entity collider) {
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().expand(-0.2F, -0.2F, -0.2F));
+		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().grow(-0.2F, -0.2F, -0.2F));
 
 		for (Entity collided : list) {
 			if (collided.canBePushed()) {
@@ -411,7 +411,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	public int countMyMinions() {
-		return world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D)).size();
+		return world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D)).size();
 	}
 
 	public void incrementSuccessfulDrops() {

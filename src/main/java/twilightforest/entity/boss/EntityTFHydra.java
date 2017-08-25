@@ -512,7 +512,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private EntityLivingBase findSecondaryTarget(double range) {
-		return this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(range, range, range))
+		return this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).grow(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
 				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))

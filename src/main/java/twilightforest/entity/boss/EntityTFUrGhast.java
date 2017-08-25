@@ -359,7 +359,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		this.detachHome();
 
 		// despawn mini ghasts that are in our AABB
-		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.getEntityBoundingBox().expand(1, 1, 1))) {
+		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.getEntityBoundingBox().grow(1, 1, 1))) {
 			ghast.spawnExplosionParticle();
 			ghast.setDead();
 			this.heal(2);
@@ -392,7 +392,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	private void doTantrumDamageEffects() {
 		// harm player below
-		AxisAlignedBB below = this.getEntityBoundingBox().offset(0, -16, 0).expand(0, 16, 0);
+		AxisAlignedBB below = this.getEntityBoundingBox().offset(0, -16, 0).grow(0, 16, 0);
 
 		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, below)) {
 			if (world.canSeeSky(new BlockPos(player))) {
@@ -413,7 +413,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		int trapsWithEnoughGhasts = 0;
 
 		for (BlockPos trap : this.trapLocations) {
-			AxisAlignedBB aabb = new AxisAlignedBB(trap, trap.add(1, 1, 1)).expand(8D, 16D, 8D);
+			AxisAlignedBB aabb = new AxisAlignedBB(trap, trap.add(1, 1, 1)).grow(8D, 16D, 8D);
 
 			List<EntityTFMiniGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityTFMiniGhast.class, aabb);
 

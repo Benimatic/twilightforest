@@ -59,7 +59,7 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 
 		if (!world.isRemote) {
 			// trap nearby ghasts
-			AxisAlignedBB aabb = new AxisAlignedBB(pos.up(16), pos.up(16).add(1, 1, 1)).expand(6D, 16D, 6D);
+			AxisAlignedBB aabb = new AxisAlignedBB(pos.up(16), pos.up(16).add(1, 1, 1)).grow(6D, 16D, 6D);
 
 			List<EntityGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityGhast.class, aabb);
 

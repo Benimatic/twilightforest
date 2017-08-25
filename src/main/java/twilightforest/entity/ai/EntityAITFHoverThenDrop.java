@@ -149,7 +149,7 @@ public class EntityAITFHoverThenDrop extends EntityAIBase {
 			this.dropTimer++;
 
 			if (this.attacker.posY > this.dropY) {
-				this.attacker.destroyBlocksInAABB(this.attacker.getEntityBoundingBox().expand(1, 0.5F, 1));
+				this.attacker.destroyBlocksInAABB(this.attacker.getEntityBoundingBox().grow(1, 0.5F, 1));
 			}
 		}
 	}

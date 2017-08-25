@@ -313,7 +313,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	private void hitNearbyEntities() {
-		for (EntityLivingBase entity : this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(5, 0, 5))) {
+		for (EntityLivingBase entity : this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(5, 0, 5))) {
 			if (entity != this && entity.attackEntityFrom(DamageSource.causeMobDamage(this), 5F)) {
 				entity.motionY += 0.4;
 			}

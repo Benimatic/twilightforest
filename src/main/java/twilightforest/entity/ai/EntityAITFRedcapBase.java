@@ -47,7 +47,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase {
 	}
 
 	public boolean isLitTNTNearby(int range) {
-		AxisAlignedBB expandedBox = entityObj.getEntityBoundingBox().expand(range, range, range);
+		AxisAlignedBB expandedBox = entityObj.getEntityBoundingBox().grow(range, range, range);
 		return !entityObj.world.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
 	}
 

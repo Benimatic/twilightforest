@@ -59,7 +59,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 		}
 
 		if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
-			this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F));
+			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
 		}
 	}
 
@@ -113,7 +113,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
-				List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+				List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
 
 				if (list.contains(this.getThrower())) {
 					this.setDead();
@@ -147,7 +147,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 			}
 
 			// demolish some blocks
-			this.affectBlocksInAABB(this.getEntityBoundingBox().expand(0.2F, 0.2F, 0.2F));
+			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
 		}
 	}
 

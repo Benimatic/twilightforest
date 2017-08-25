@@ -54,7 +54,7 @@ public class EntityTFLichMinion extends EntityZombie {
 	}
 
 	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D));
 
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion(this)) {

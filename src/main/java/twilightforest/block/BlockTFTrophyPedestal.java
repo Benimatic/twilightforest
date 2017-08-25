@@ -133,12 +133,12 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).expand(16.0D, 16.0D, 16.0D)))
+		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
 			if (!isPlayerEligible(player)) player.sendMessage(new TextComponentString("You are unworthy."));
 	}
 
 	private boolean areNearbyPlayersEligible(World world, BlockPos pos) {
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).expand(16.0D, 16.0D, 16.0D)))
+		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
 			if (isPlayerEligible(player))
 				return true;
 
@@ -157,7 +157,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	private void rewardNearbyPlayers(World world, BlockPos pos) {
 		ResourceLocation adv = new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal");
-		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).expand(16.0D, 16.0D, 16.0D)))
+		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
 			PlayerHelper.grantAdvancement(player, adv);
 	}
 

@@ -99,7 +99,7 @@ public class EntitySeekerArrow extends EntityArrow {
 			targetBB = targetBB.offset(courseVec.x, courseVec.y, courseVec.z);
 
 			courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance).rotateYaw(-(float) (Math.PI / 6F));
-			targetBB = targetBB.offset(courseVec.x, courseVec.y, courseVec.z).expand(0, 3, 0);
+			targetBB = targetBB.offset(courseVec.x, courseVec.y, courseVec.z).grow(0, 3, 0);
 
 			double closestDot = 1;
 

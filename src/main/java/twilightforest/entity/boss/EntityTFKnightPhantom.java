@@ -419,7 +419,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 
 	private List<EntityTFKnightPhantom> getNearbyKnights() {
-		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).expand(32.0D, 8.0D, 32.0D));
+		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).grow(32.0D, 8.0D, 32.0D));
 	}
 
 	/**

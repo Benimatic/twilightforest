@@ -331,7 +331,7 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	private void popNearbyMob() {
-		List<EntityLiving> nearbyMobs = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
+		List<EntityLiving> nearbyMobs = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
 
 		for (EntityLiving mob : nearbyMobs) {
 			if (getEntitySenses().canSee(mob)) {
@@ -370,7 +370,7 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	public List<EntityTFLich> getNearbyLiches() {
-		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D));
 	}
 
 	public boolean wantsNewMinion(EntityTFLichMinion minion) {
@@ -378,7 +378,7 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	public int countMyMinions() {
-		return (int) world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D))
+		return (int) world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D))
 				.stream()
 				.filter(m -> m.master == this)
 				.count();
