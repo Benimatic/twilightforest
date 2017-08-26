@@ -277,21 +277,19 @@ public class TFEventListener {
 
 			if (tier1) {
 				keepAllArmor(player, keepInventory);
-				if (!player.inventory.getCurrentItem().isEmpty()) {
+				if (!tier2 && !player.inventory.getCurrentItem().isEmpty()) {
 					keepInventory.mainInventory.set(player.inventory.currentItem, player.inventory.mainInventory.get(player.inventory.currentItem).copy());
 					player.inventory.mainInventory.set(player.inventory.currentItem, ItemStack.EMPTY);
 				}
 			}
 
-			if (tier2) {
+			if (tier3) {
 				for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
-			}
-
-			if (tier3) {
-				for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+			} else if (tier2) {
+				for (int i = 0; i < 9; i++) {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
