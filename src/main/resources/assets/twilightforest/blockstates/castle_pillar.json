@@ -1,7 +1,8 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "twilightforest:util/cube_column_rotationally_correct"
+    "model": "twilightforest:util/cube_column_rotationally_correct",
+    "textures": { "particle": "#side" }
   },
   "variants": {
     "axis": {
