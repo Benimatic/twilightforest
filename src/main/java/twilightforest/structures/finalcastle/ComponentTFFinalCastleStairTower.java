@@ -87,13 +87,13 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 		// door, second floor
 		this.fillWithBlocks(world, sbb, 1, 18, 0, 2, 20, 0, castleDoor, AIR, false);
 
-		IBlockState stairState = getStairState(deco.stairState, EnumFacing.NORTH, rotation, false);
+		IBlockState stairState = getStairState(deco.stairState, EnumFacing.SOUTH, rotation, false);
 
 		// second floor landing
 		this.fillWithBlocks(world, sbb, 1, 17, 1, 3, 17, 3, deco.blockState, deco.blockState, false);
-		this.fillWithBlocks(world, sbb, 1, 17, 4, 2, 17, 4, deco.stairState, deco.stairState, false);
+		this.fillWithBlocks(world, sbb, 1, 17, 4, 2, 17, 4, stairState, stairState, false);
 		this.fillWithBlocks(world, sbb, 1, 16, 4, 2, 16, 4, deco.blockState, deco.blockState, false);
-		this.fillWithBlocks(world, sbb, 1, 16, 5, 2, 16, 5, deco.stairState, deco.stairState, false);
+		this.fillWithBlocks(world, sbb, 1, 16, 5, 2, 16, 5, stairState, stairState, false);
 		this.fillWithBlocks(world, sbb, 1, 15, 5, 2, 15, 5, deco.blockState, deco.blockState, false);
 
 		// door, roof
