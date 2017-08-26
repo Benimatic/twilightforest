@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:iron_ore"
+      "item": "minecraft:iron_boots"
     },
     "title": {
       "translate": "advancement.twilightHill1"

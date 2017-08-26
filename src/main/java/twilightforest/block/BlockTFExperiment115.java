@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -10,6 +11,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -88,10 +90,12 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
             if (bitesTaken > 0 && stack.getItem() == TFItems.experiment115) {
                 worldIn.setBlockState(pos, state.withProperty(NOMS, bitesTaken - 1));
                 if (!player.isCreative()) stack.shrink(1);
+                if (player instanceof EntityPlayerMP) CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
                 return true;
             } else if (((!state.getValue(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
                 worldIn.setBlockState(pos, state.withProperty(REGENERATE,true));
                 if (!player.isCreative()) stack.shrink(1);
+                if (player instanceof EntityPlayerMP) CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
                 return true;
             }
         }
