@@ -10,7 +10,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -87,5 +86,10 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
                     .withProperty(AXIS, BlockLog.EnumAxis.NONE)
                     .withProperty(VARIANT, variantsList[i]));
         }
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return state.getValue(VARIANT).ordinal() << 1 | (state.getValue(AXIS) == BlockLog.EnumAxis.NONE ? 1 : 0);
     }
 }
