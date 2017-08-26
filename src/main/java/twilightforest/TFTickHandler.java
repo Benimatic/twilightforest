@@ -144,7 +144,8 @@ public class TFTickHandler {
 					}
 
 					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem))) {
-						PlayerHelper.grantAdvancement((EntityPlayerMP) player, new ResourceLocation(TwilightForestMod.ID, "twilight_portal"));
+						//FIXME add actual trigger for json data-driven based achievement grant
+						PlayerHelper.grantAdvancement((EntityPlayerMP) player, new ResourceLocation(TwilightForestMod.ID, "root"));
 					}
 				}
 			}

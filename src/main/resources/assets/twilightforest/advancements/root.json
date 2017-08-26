@@ -7,15 +7,15 @@
       "translate": "itemGroup.twilightForest"
     },
     "description": {
-      "translate": "twilightforest.desc"
+      "translate": "advancement.twilightforest.desc"
     },
     "background": "twilightforest:textures/blocks/mazestone_brick.png",
     "show_toast": false,
     "announce_to_chat": false
   },
   "criteria": {
-    "immediate": {
-      "trigger": "minecraft:tick"
+    "code_triggered": {
+      "trigger": "minecraft:impossible"
     }
   }
 }

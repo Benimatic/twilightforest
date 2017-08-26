@@ -10,7 +10,7 @@
       "translate": "advancement.twilightArrival.desc"
     }
   },
-  "parent": "twilightforest:twilight_portal",
+  "parent": "twilightforest:root",
   "criteria": {
     "in_tf": {
       "trigger": "minecraft:location",

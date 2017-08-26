@@ -10,7 +10,7 @@
       "translate": "advancement.twilightHill2.desc"
     }
   },
-  "parent": "twilightforest:twilight_arrival",
+  "parent": "twilightforest:hill1",
   "__comment": "This is triggered by code in order to test for a Hill nearby. In the future, it may become data-driven",
   "criteria": {
     "redcap_sapper": {
