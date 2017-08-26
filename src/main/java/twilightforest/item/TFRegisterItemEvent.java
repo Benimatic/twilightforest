@@ -176,6 +176,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.log);
 		items.registerSubItemBlock(TFBlocks.root);
 		items.registerSubItemBlock(TFBlocks.leaves);
+		items.register("twilight_portal", new ItemTF().setUnlocalizedName("TFPortal"));
 		items.registerBlock(TFBlocks.firefly);
 		items.registerBlock(TFBlocks.cicada);
 		items.registerSubItemBlock(TFBlocks.mazestone);
