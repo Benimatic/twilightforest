@@ -40,7 +40,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 	@Override
 	public int tickRate(World par1World) {
-		return 1;
+		return 20;
 	}
 
 	@Override
