@@ -75,7 +75,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		Vec3d lookVec = living.getLook(1.0F);
 		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 1.0F;
-		List<Entity> possibleList = world.getEntitiesWithinAABBExcludingEntity(living, living.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
+		List<Entity> possibleList = world.getEntitiesWithinAABBExcludingEntity(living, living.getEntityBoundingBox().expand(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
