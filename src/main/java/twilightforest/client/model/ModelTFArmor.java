@@ -6,10 +6,9 @@ import net.minecraft.entity.item.EntityArmorStand;
 
 public class ModelTFArmor extends ModelBiped {
 
-	public ModelTFArmor(float modelSize)
-    {
-        super(modelSize, 0.0F, 64, 32);
-    }
+	public ModelTFArmor(float modelSize) {
+		super(modelSize, 0.0F, 64, 32);
+	}
 
 	@Override
 	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
