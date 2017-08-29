@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.enchantment.EnchantmentHelper;
