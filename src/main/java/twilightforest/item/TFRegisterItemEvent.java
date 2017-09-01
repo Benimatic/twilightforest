@@ -1,16 +1,9 @@
 package twilightforest.item;
 
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -150,7 +143,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.log);
 		items.registerSubItemBlock(TFBlocks.root);
 		items.registerSubItemBlock(TFBlocks.leaves);
-		items.register("twilight_portal", new ItemTF().setUnlocalizedName("TFPortal"));
+		//items.register("twilight_portal", new ItemTF().setUnlocalizedName("TFPortal").setCreativeTab(null));
 		items.registerBlock(TFBlocks.firefly);
 		items.registerBlock(TFBlocks.cicada);
 		items.registerSubItemBlock(TFBlocks.mazestone);
@@ -206,6 +199,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.cinderLog);
 		items.registerSubItemBlock(TFBlocks.castleDoor);
 		items.registerSubItemBlock(TFBlocks.castleDoorVanished);
+		items.registerSubItemBlock(TFBlocks.miniature_structure);
 
 	}
 

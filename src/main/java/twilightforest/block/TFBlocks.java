@@ -138,4 +138,6 @@ public class TFBlocks {
 	public static Block castleUnlock;
 	@ObjectHolder("experiment_115")
 	public static Block experiment_115;
+	@ObjectHolder("miniature_structure")
+	public static Block miniature_structure;
 }

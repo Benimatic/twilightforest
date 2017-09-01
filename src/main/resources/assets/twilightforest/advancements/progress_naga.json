@@ -1,7 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:trophy"
+      "item": "twilightforest:miniature_structure",
+      "data": 5
     },
     "title": {
       "translate": "advancement.twilightKillNaga"

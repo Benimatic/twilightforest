@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:twilight_portal"
+      "item": "twilightforest:miniature_structure"
     },
     "title": {
       "translate": "itemGroup.twilightForest"
