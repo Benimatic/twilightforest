@@ -55,7 +55,7 @@
       },
       {
         "type": "item",
-        "entryName": "speed 2 extended",
+        "entryName": "speed 2",
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",
