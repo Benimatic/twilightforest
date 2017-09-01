@@ -5,10 +5,10 @@
   },
   "variants": {
     "variant": {
-      "time": { "textures":{ "all":"twilightforest:blocks/time_leaves" } },
-      "trans":{ "textures":{ "all":"twilightforest:blocks/trans_leaves" } },
-      "mine": { "textures":{ "all":"twilightforest:blocks/time_leaves" } },
-      "sort": { "textures":{ "all":"twilightforest:blocks/sort_leaves" } }
+      "time":  { "textures": { "all": "twilightforest:blocks/time_leaves"  } },
+      "trans": { "textures": { "all": "twilightforest:blocks/trans_leaves" } },
+      "mine":  { "textures": { "all": "twilightforest:blocks/time_leaves"  } },
+      "sort":  { "textures": { "all": "twilightforest:blocks/sort_leaves"  } }
     }
   }
 }

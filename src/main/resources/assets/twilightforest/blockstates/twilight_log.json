@@ -11,10 +11,10 @@
       "none": { "model": "cube_all", "textures": { "all": "#side" } }
     },
     "variant": {
-      "oak": { "textures":{ "end":"twilightforest:blocks/oak_top", "side":"twilightforest:blocks/oak_side" } },
-      "canopy":{ "textures":{ "end":"twilightforest:blocks/canopy_top", "side":"twilightforest:blocks/canopy_side" } },
-      "mangrove": { "textures":{ "end":"twilightforest:blocks/mangrove_top", "side":"twilightforest:blocks/mangrove_side" } },
-      "dark": { "textures":{ "end":"twilightforest:blocks/darkwood_top", "side":"twilightforest:blocks/darkwood_side" } }
+      "oak":      { "textures": { "end":"twilightforest:blocks/oak_top"     , "side":"twilightforest:blocks/oak_side"      } },
+      "canopy":   { "textures": { "end":"twilightforest:blocks/canopy_top"  , "side":"twilightforest:blocks/canopy_side"   } },
+      "mangrove": { "textures": { "end":"twilightforest:blocks/mangrove_top", "side":"twilightforest:blocks/mangrove_side" } },
+      "dark":     { "textures": { "end":"twilightforest:blocks/darkwood_top", "side":"twilightforest:blocks/darkwood_side" } }
     }
   }
 }

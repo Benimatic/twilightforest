@@ -4,7 +4,7 @@
     "model": "twilightforest:slider",
     "textures": {
       "side": "twilightforest:blocks/slider_v",
-      "end": "twilightforest:blocks/slider_top"
+      "end":  "twilightforest:blocks/slider_top"
     }
   },
   "variants": {

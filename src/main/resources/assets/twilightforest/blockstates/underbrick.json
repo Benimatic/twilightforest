@@ -3,10 +3,10 @@
   "defaults": { "model": "cube_all" },
   "variants": {
     "variant": {
-      "normal": { "textures": { "all": "twilightforest:blocks/knightbrick" } },
-      "mossy": { "textures": { "all": "twilightforest:blocks/knightbrick_mossy" } },
+      "normal":  { "textures": { "all": "twilightforest:blocks/knightbrick"         } },
+      "mossy":   { "textures": { "all": "twilightforest:blocks/knightbrick_mossy"   } },
       "cracked": { "textures": { "all": "twilightforest:blocks/knightbrick_cracked" } },
-      "floor": { "textures": { "all": "twilightforest:blocks/knightbrick_floor" } }
+      "floor":   { "textures": { "all": "twilightforest:blocks/knightbrick_floor"   } }
     }
   }
 }

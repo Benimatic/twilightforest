@@ -5,8 +5,8 @@
   },
   "variants": {
     "variant": {
-      "root": { "textures": { "all": "twilightforest:blocks/rootblock" } },
-      "liveroot": { "textures": { "all": "twilightforest:blocks/oreroots" } }
+      "root":     { "textures": { "all": "twilightforest:blocks/rootblock" } },
+      "liveroot": { "textures": { "all": "twilightforest:blocks/oreroots"  } }
     }
   }
 }

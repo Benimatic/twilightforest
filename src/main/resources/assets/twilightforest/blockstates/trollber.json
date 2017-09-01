@@ -3,8 +3,8 @@
   "defaults": {
     "model": "twilightforest:util/cross_2_layer",
     "textures": {
-      "cross":"twilightforest:blocks/ripe_torch_cluster",
-      "cross2":"twilightforest:blocks/ripe_torch_cluster_glow"
+      "cross":  "twilightforest:blocks/ripe_torch_cluster",
+      "cross2": "twilightforest:blocks/ripe_torch_cluster_glow"
     },
     "uvlock": true
   },

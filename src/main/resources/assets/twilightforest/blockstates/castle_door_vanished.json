@@ -3,8 +3,8 @@
   "defaults": { "model": "twilightforest:castle_door" },
   "variants": { "lock_index": { "0": {}, "1": {}, "2": {}, "3": {} },
     "active": {
-      "true": { "textures": { "all": "twilightforest:blocks/castle_door_vanished_active" } },
-      "false": { "textures": { "all": "twilightforest:blocks/castle_door_vanished" } }
+      "true":  { "textures": { "all": "twilightforest:blocks/castle_door_vanished_active" } },
+      "false": { "textures": { "all": "twilightforest:blocks/castle_door_vanished"        } }
     }
   }
 }

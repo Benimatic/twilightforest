@@ -9,10 +9,5 @@
     },
     "uvlock": true
   },
-  "variants": {
-    "half": {
-      "bottom": {},
-      "top": { "x": 180 }
-    }
-  }
+  "variants": { "half": { "bottom": {}, "top": { "x": 180 } } }
 }

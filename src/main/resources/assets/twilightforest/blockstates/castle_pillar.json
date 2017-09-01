@@ -13,13 +13,13 @@
     },
     "variant": {
       "encased": { "textures": {
-        "end":  "twilightforest:blocks/castle_pillar_encased_end",
+        "end":  "twilightforest:blocks/castle_pillar_encased_end" ,
         "side": "twilightforest:blocks/castle_pillar_encased_side",
         "all":  "twilightforest:blocks/castle_pillar_encased_end"
       } },
       "bold": { "textures": {
-        "end":  "twilightforest:blocks/castle_pillar_bold_end",
-        "side": "twilightforest:blocks/castle_pillar_bold_side",
+        "end":  "twilightforest:blocks/castle_pillar_bold_end"  ,
+        "side": "twilightforest:blocks/castle_pillar_bold_side" ,
         "all":  "twilightforest:blocks/castle_pillar_bold_tiles"
       } }
     }
