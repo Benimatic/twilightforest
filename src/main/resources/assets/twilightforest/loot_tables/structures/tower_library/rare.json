@@ -59,7 +59,7 @@
         "name": "minecraft:potion",
         "functions": [{
           "function": "set_nbt",
-          "tag": "{CustomPotionEffects: [{Id: 1, Amplifier: 1, Duration: 4800}]}"
+          "tag": "{Potion: \"minecraft:strong_swiftness\"}"
         }]
       }
     ]
