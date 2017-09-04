@@ -407,7 +407,7 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void breakBlock(BreakEvent event) {
-		if (!event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.getPos()) && isBlockProtectedFromBreaking(event.getWorld(), event.getPos())) {
+		if (!event.getWorld().isRemote && !event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.getPos()) && isBlockProtectedFromBreaking(event.getWorld(), event.getPos())) {
 			event.setCanceled(true);
 		} else if (!isBreakingWithGiantPick
 				&& !event.getPlayer().getHeldItemMainhand().isEmpty()
