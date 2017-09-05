@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.EntityTFGiantMiner;
@@ -16,6 +17,7 @@ public class RenderTFGiant extends RenderBiped<EntityTFGiantMiner> {
 
 	public RenderTFGiant(RenderManager manager) {
 		super(manager, new ModelPlayer(0, false), 0.625F);
+		this.addLayer(new LayerBipedArmor(this));
 	}
 
 	@Override
