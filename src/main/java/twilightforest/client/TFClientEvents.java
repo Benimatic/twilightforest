@@ -37,6 +37,15 @@ public class TFClientEvents {
 	private static final AttributeModifier SLOWNESS_POTION_MODIFIER =
 			new AttributeModifier(UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890"), "doesntmatter", 0, 0);
 
+	@SubscribeEvent
+	public static void texStitch(TextureStitchEvent.Pre evt) {
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_1"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_2"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
+	}
+
 	/**
 	 * Do ice effect on slowed monsters
 	 */
