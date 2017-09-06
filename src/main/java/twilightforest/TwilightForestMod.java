@@ -80,6 +80,7 @@ public class TwilightForestMod {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		TFPacketHandler.init();
 		proxy.doOnLoadRegistration();
+		TFAdvancements.init();
 	}
 
 	@EventHandler
