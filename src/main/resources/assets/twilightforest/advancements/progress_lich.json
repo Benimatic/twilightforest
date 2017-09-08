@@ -23,7 +23,7 @@
       }
     },
     "kill_naga": {
-      "trigger": "twilightforest:progression",
+      "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_naga"
       }

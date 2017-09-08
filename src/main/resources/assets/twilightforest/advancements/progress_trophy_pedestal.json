@@ -18,7 +18,7 @@
       "trigger": "minecraft:impossible"
     },
     "kill_hydra": {
-      "trigger": "twilightforest:progression",
+      "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_hydra"
       }

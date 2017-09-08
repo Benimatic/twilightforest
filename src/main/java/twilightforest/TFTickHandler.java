@@ -65,9 +65,9 @@ public class TFTickHandler {
 		}
 
 		// check for advancement get. Tick offset by 1 because above uses tick interval 0
-		if (world.getWorldTime() % 20 == 1) {
-			TwilightForestMod.LOGGER.info("testing TF progression");
-			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger(player);
+		if (event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 1
+				&& player instanceof EntityPlayerMP) {
+			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so

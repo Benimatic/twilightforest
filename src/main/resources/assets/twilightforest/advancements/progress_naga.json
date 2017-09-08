@@ -33,7 +33,7 @@
       }
     },
     "kill_mob": {
-      "trigger": "twilightforest:progression",
+      "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:twilight_hunter"
       }

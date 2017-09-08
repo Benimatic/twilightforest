@@ -22,7 +22,7 @@
       }
     },
     "kill_lich": {
-      "trigger": "twilightforest:progression",
+      "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_lich"
       }

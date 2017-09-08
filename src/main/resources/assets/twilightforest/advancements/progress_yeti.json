@@ -22,7 +22,7 @@
       }
     },
     "previous_progression": {
-      "trigger": "twilightforest:progression",
+      "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_ur_ghast"
       }
