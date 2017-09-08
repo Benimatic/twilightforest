@@ -16,6 +16,12 @@
   "criteria": {
     "code_triggered": {
       "trigger": "minecraft:impossible"
+    },
+    "kill_hydra": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:progress_hydra"
+      }
     }
   }
 }

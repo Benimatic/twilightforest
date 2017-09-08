@@ -64,6 +64,12 @@ public class TFTickHandler {
 			checkBiomeForProgression(player, world);
 		}
 
+		// check for advancement get. Tick offset by 1 because above uses tick interval 0
+		if (world.getWorldTime() % 20 == 1) {
+			TwilightForestMod.LOGGER.info("testing TF progression");
+			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger(player);
+		}
+
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			if (world.provider instanceof WorldProviderTwilightForest) {

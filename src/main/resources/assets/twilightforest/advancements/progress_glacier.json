@@ -21,6 +21,12 @@
           "type": "twilightforest:snow_queen"
         }
       }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:progress_yeti"
+      }
     }
   }
 }

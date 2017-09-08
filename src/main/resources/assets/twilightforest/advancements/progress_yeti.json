@@ -20,6 +20,12 @@
           "type": "twilightforest:yeti_alpha"
         }
       }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:progress_ur_ghast"
+      }
     }
   }
 }

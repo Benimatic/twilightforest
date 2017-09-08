@@ -15,6 +15,12 @@
   "criteria": {
     "not_yet_implemented": {
       "trigger": "minecraft:impossible"
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:progress_troll"
+      }
     }
   }
 }

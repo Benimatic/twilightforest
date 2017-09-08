@@ -21,6 +21,12 @@
           "type": "twilightforest:hydra"
         }
       }
+    },
+    "stroganoff": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:progress_labyrinth"
+      }
     }
   }
 }

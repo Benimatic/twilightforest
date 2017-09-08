@@ -31,6 +31,12 @@
           }
         ]
       }
+    },
+    "kill_mob": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:twilight_hunter"
+      }
     }
   }
 }

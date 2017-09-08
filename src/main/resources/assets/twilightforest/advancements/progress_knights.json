@@ -20,6 +20,12 @@
           "type": "twilightforest:knight_phantom"
         }
       }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:progress_trophy_pedestal"
+      }
     }
   }
 }

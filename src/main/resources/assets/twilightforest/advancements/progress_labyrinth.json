@@ -20,6 +20,12 @@
           "item": "twilightforest:meef_stroganoff"
         }
       }
+    },
+    "kill_lich": {
+      "trigger": "twilightforest:progression",
+      "conditions": {
+        "advancement": "twilightforest:progress_lich"
+      }
     }
   }
 }
