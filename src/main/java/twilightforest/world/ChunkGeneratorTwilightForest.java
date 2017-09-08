@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -916,7 +917,11 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Nullable
 	@Override
 	public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
-		// todo 1.10
+		if(structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()))
+			return hollowTreeGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
+		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
+		if (feature != null)
+			return TFFeature.findNearestFeaturePosBySpacing(worldIn, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
 		return null;
 	}
 
@@ -973,6 +978,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	@Override
 	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
-		return false; // todo 1.12
+		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : TFFeature.getFeatureByName(new ResourceLocation(structureName)) != null;
 	}
 }
