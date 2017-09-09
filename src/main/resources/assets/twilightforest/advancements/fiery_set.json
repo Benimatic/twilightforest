@@ -77,5 +77,8 @@
   "requirements": [
     [ "sword", "pick" ],
     [ "head", "chest", "legs", "feet" ]
-  ]
+  ],
+  "rewards": {
+    "experience": 75
+  }
 }

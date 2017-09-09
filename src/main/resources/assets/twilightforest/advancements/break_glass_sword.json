@@ -23,5 +23,9 @@
                 "durability": -1
             }
         }
+    },
+    "rewards": {
+        "experience": 42,
+        "loot": [ "twilightforest:structures/basement/basement" ]
     }
 }

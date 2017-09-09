@@ -15,5 +15,8 @@
     "quest_ram_complete": {
       "trigger": "twilightforest:complete_quest_ram"
     }
+  },
+  "rewards": {
+    "experience": 100
   }
 }

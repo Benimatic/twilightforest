@@ -30,5 +30,8 @@
         ]
       }
     }
+  },
+  "rewards": {
+    "experience": 100
   }
 }

@@ -85,5 +85,8 @@
     [ "hydra_chop" ],
     [ "maze_wafer" ],
     [ "experiment_115" ]
-  ]
+  ],
+  "rewards": {
+    "experience": 75
+  }
 }
