@@ -4,10 +4,10 @@
       "item": "twilightforest:magic_map"
     },
     "title": {
-      "translate": "advancement.twilightMagicMap"
+      "translate": "advancement.twilight_magic_map"
     },
     "description": {
-      "translate": "advancement.twilightMagicMap.desc"
+      "translate": "advancement.twilight_magic_map.desc"
     }
   },
   "parent": "twilightforest:magic_map_focus",

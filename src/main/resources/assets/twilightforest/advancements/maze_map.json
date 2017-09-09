@@ -4,10 +4,10 @@
       "item": "twilightforest:maze_map"
     },
     "title": {
-      "translate": "advancement.twilightMazeMap"
+      "translate": "advancement.twilight_maze_map"
     },
     "description": {
-      "translate": "advancement.twilightMazeMap.desc"
+      "translate": "advancement.twilight_maze_map.desc"
     }
   },
   "parent": "twilightforest:magic_map",

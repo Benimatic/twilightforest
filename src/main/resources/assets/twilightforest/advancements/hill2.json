@@ -4,10 +4,10 @@
       "item": "twilightforest:ironwood_pickaxe"
     },
     "title": {
-      "translate": "advancement.twilightHill2"
+      "translate": "advancement.twilight_hill2"
     },
     "description": {
-      "translate": "advancement.twilightHill2.desc"
+      "translate": "advancement.twilight_hill2.desc"
     }
   },
   "parent": "twilightforest:hill1",

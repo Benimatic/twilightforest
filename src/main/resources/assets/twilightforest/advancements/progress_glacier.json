@@ -5,10 +5,10 @@
       "data": 5
     },
     "title": {
-      "translate": "advancement.twilightProgressGlacier"
+      "translate": "advancement.twilight_progress_glacier"
     },
     "description": {
-      "translate": "advancement.twilightProgressGlacier.desc"
+      "translate": "advancement.twilight_progress_glacier.desc"
     },
     "frame": "goal"
   },

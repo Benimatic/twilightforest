@@ -4,10 +4,10 @@
       "item": "twilightforest:zombie_scepter"
     },
     "title": {
-      "translate": "advancement.twilightLichScepters"
+      "translate": "advancement.twilight_lich_scepters"
     },
     "description": {
-      "translate": "advancement.twilightLichScepters.desc"
+      "translate": "advancement.twilight_lich_scepters.desc"
     },
     "frame": "challenge",
     "hidden": true

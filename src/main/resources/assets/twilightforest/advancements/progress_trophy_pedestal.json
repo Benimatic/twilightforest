@@ -4,10 +4,10 @@
       "item": "twilightforest:trophy_pedestal"
     },
     "title": {
-      "translate": "advancement.twilightProgressTrophyPedestal"
+      "translate": "advancement.twilight_progress_trophy_pedestal"
     },
     "description": {
-      "translate": "advancement.twilightProgressTrophyPedestal.desc"
+      "translate": "advancement.twilight_progress_trophy_pedestal.desc"
     },
     "frame": "goal"
   },

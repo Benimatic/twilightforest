@@ -4,10 +4,10 @@
       "item": "minecraft:iron_boots"
     },
     "title": {
-      "translate": "advancement.twilightHill1"
+      "translate": "advancement.twilight_hill1"
     },
     "description": {
-      "translate": "advancement.twilightHill1.desc"
+      "translate": "advancement.twilight_hill1.desc"
     }
   },
   "parent": "twilightforest:root",

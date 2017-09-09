@@ -5,10 +5,10 @@
       "data": 1
     },
     "title": {
-      "translate": "advancement.twilightKillLich"
+      "translate": "advancement.twilight_kill_lich"
     },
     "description": {
-      "translate": "advancement.twilightKillLich.desc"
+      "translate": "advancement.twilight_kill_lich.desc"
     },
     "frame": "goal"
   },

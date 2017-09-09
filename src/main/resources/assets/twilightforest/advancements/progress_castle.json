@@ -5,10 +5,10 @@
       "data": 3
     },
     "title": {
-      "translate": "advancement.twilightProgressCastle"
+      "translate": "advancement.twilight_progress_castle"
     },
     "description": {
-      "translate": "advancement.twilightProgressCastle.desc"
+      "translate": "advancement.twilight_progress_castle.desc"
     },
     "frame": "goal"
   },

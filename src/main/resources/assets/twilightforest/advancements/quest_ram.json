@@ -4,10 +4,10 @@
       "item": "twilightforest:crumble_horn"
     },
     "title": {
-      "translate": "advancement.twilightQuestRam"
+      "translate": "advancement.twilight_quest_ram"
     },
     "description": {
-      "translate": "advancement.twilightQuestRam.desc"
+      "translate": "advancement.twilight_quest_ram.desc"
     }
   },
   "parent": "twilightforest:root",

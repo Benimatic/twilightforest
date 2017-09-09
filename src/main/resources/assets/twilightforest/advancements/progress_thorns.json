@@ -4,10 +4,10 @@
       "item": "twilightforest:thorns"
     },
     "title": {
-      "translate": "advancement.twilightProgressThorns"
+      "translate": "advancement.twilight_progress_thorns"
     },
     "description": {
-      "translate": "advancement.twilightProgressThorns.desc"
+      "translate": "advancement.twilight_progress_thorns.desc"
     },
     "frame": "goal"
   },

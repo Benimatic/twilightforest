@@ -4,10 +4,10 @@
       "item": "twilightforest:naga_chestplate"
     },
     "title": {
-      "translate": "advancement.twilightNagaArmors"
+      "translate": "advancement.twilight_naga_armors"
     },
     "description": {
-      "translate": "advancement.twilightNagaArmors.desc"
+      "translate": "advancement.twilight_naga_armors.desc"
     },
     "frame": "challenge"
   },

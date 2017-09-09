@@ -4,10 +4,10 @@
       "item": "minecraft:glowstone_dust"
     },
     "title": {
-      "translate": "advancement.twilightHill3"
+      "translate": "advancement.twilight_hill3"
     },
     "description": {
-      "translate": "advancement.twilightHill3.desc"
+      "translate": "advancement.twilight_hill3.desc"
     }
   },
   "parent": "twilightforest:hill2",

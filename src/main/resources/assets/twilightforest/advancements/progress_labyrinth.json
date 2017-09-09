@@ -4,10 +4,10 @@
       "item": "twilightforest:meef_stroganoff"
     },
     "title": {
-      "translate": "advancement.twilightProgressLabyrinth"
+      "translate": "advancement.twilight_progress_labyrinth"
     },
     "description": {
-      "translate": "advancement.twilightProgressLabyrinth.desc"
+      "translate": "advancement.twilight_progress_labyrinth.desc"
     },
     "frame": "goal"
   },

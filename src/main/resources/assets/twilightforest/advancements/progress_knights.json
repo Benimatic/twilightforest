@@ -4,10 +4,10 @@
       "item": "twilightforest:phantom_helmet"
     },
     "title": {
-      "translate": "advancement.twilightProgressKnights"
+      "translate": "advancement.twilight_progress_knights"
     },
     "description": {
-      "translate": "advancement.twilightProgressKnights.desc"
+      "translate": "advancement.twilight_progress_knights.desc"
     },
     "frame": "goal"
   },

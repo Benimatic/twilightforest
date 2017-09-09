@@ -4,10 +4,10 @@
       "item": "twilightforest:magic_map_focus"
     },
     "title": {
-      "translate": "advancement.twilightMagicMapFocus"
+      "translate": "advancement.twilight_magic_map_focus"
     },
     "description": {
-      "translate": "advancement.twilightMagicMapFocus.desc"
+      "translate": "advancement.twilight_magic_map_focus.desc"
     }
   },
   "parent": "twilightforest:twilight_hunter",

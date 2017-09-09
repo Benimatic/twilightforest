@@ -4,10 +4,10 @@
       "item": "twilightforest:raven_feather"
     },
     "title": {
-      "translate": "advancement.twilightHunter"
+      "translate": "advancement.twilight_hunter"
     },
     "description": {
-      "translate": "advancement.twilightHunter.desc"
+      "translate": "advancement.twilight_hunter.desc"
     }
   },
   "parent": "twilightforest:root",

@@ -5,10 +5,10 @@
       "data": 2
     },
     "title": {
-      "translate": "advancement.twilightKillHydra"
+      "translate": "advancement.twilight_kill_hydra"
     },
     "description": {
-      "translate": "advancement.twilightKillHydra.desc"
+      "translate": "advancement.twilight_kill_hydra.desc"
     },
     "frame": "goal"
   },

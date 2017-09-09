@@ -4,10 +4,10 @@
       "item": "twilightforest:hedge"
     },
     "title": {
-      "translate": "advancement.twilightHedge"
+      "translate": "advancement.twilight_hedge"
     },
     "description": {
-      "translate": "advancement.twilightHedge.desc"
+      "translate": "advancement.twilight_hedge.desc"
     }
   },
   "parent": "twilightforest:root",
