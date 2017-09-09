@@ -18,6 +18,13 @@
       "conditions": {
         "dimension": "twilight_forest"
       }
+    },
+    "make_portal": {
+      "trigger": "twilightforest:make_tf_portal"
     }
-  }
+  },
+  "requirements": [[
+    "in_tf",
+    "make_portal"
+  ]]
 }

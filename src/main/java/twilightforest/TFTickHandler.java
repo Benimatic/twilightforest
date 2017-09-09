@@ -132,9 +132,7 @@ public class TFTickHandler {
 		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions)) {
 			Item item = Item.REGISTRY.getObject(new ResourceLocation(TFConfig.portalCreationItem));
-			if (item == null) {
-				item = Items.DIAMOND;
-			}
+			if (item == null) item = Items.DIAMOND;
 
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
 
@@ -149,11 +147,8 @@ public class TFTickHandler {
 						world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 					}
 
-					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem))) {
-						//FIXME add actual trigger for json data-driven based achievement grant
-						//PlayerHelper.grantAdvancement((EntityPlayerMP) player, new ResourceLocation(TwilightForestMod.ID, "root"));
-						TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP)player);
-					}
+					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem)))
+						TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
 				}
 			}
 		}
