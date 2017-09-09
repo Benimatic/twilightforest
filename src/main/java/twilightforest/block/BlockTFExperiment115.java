@@ -115,7 +115,10 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
             int i = state.getValue(NOMS);
 
             if (i < 7) world.setBlockState(pos, state.withProperty(NOMS, i + 1), 3);
-            else world.setBlockToAir(pos);
+            else       world.setBlockToAir(pos);
+
+            if (player instanceof EntityPlayerMP)
+                CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, new ItemStack(TFItems.experiment115, 8 - i));
 
             return true;
         }
