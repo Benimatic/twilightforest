@@ -64,8 +64,6 @@ public class TFTickHandler {
 			checkBiomeForProgression(player, world);
 		}
 
-		System.out.println(world.getWorldTime());
-
 		// check for advancement get.
 		if (event.phase == TickEvent.Phase.END && world.getWorldTime() % 50 == 0
 				&& player instanceof EntityPlayerMP) {

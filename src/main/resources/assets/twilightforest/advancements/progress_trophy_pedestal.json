@@ -12,10 +12,9 @@
     "frame": "goal"
   },
   "parent": "twilightforest:progress_hydra",
-  "__comment": "This is triggered by code. In the future, it may become data-driven",
   "criteria": {
-    "code_triggered": {
-      "trigger": "minecraft:impossible"
+    "trophy_pedestal": {
+      "trigger": "twilightforest:placed_on_trophy_pedestal"
     },
     "kill_hydra": {
       "trigger": "twilightforest:has_advancement",

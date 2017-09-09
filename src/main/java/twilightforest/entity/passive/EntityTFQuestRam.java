@@ -26,6 +26,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TFAdvancements;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFEatLoose;
@@ -127,9 +128,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	private void rewardNearbyPlayers(World world, double posX, double posY, double posZ) {
-		ResourceLocation advId = new ResourceLocation(TwilightForestMod.ID, "quest_ram");
 		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(16.0D, 16.0D, 16.0D))) {
-			PlayerHelper.grantAdvancement(player, advId);
+			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
 		}
 	}
 

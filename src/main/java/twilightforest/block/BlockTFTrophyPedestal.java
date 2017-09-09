@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import twilightforest.TFAdvancements;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.client.ModelRegisterCallback;
@@ -156,9 +157,8 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private void rewardNearbyPlayers(World world, BlockPos pos) {
-		ResourceLocation adv = new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal");
 		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
-			PlayerHelper.grantAdvancement(player, adv);
+			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
 	}
 
 	private void removeNearbyShields(World world, BlockPos pos) {
