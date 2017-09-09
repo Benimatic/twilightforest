@@ -46,7 +46,7 @@ public class TFTickHandler {
 		if (!TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
 			// skip non admin players when the option is on
 			if (TFConfig.adminOnlyPortals) {
-				if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null) {
+				if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getPermissionLevel(player.getGameProfile()) != 0) {
 					// reduce range to 4.0 when the option is on
 					checkForPortalCreation(player, world, 4.0F);
 				}
@@ -64,8 +64,10 @@ public class TFTickHandler {
 			checkBiomeForProgression(player, world);
 		}
 
-		// check for advancement get. Tick offset by 1 because above uses tick interval 0
-		if (event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 1
+		System.out.println(world.getWorldTime());
+
+		// check for advancement get.
+		if (event.phase == TickEvent.Phase.END && world.getWorldTime() % 50 == 0
 				&& player instanceof EntityPlayerMP) {
 			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
 		}
