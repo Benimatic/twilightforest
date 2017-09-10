@@ -1,0 +1,13 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+    "type":"ctm",
+    "layer":"TRANSLUCENT",
+    "textures":[
+      "twilightforest:blocks/forcefield_tint_ct"
+    ],
+    "extra": {
+      "light": 15
+    }
+  }
+}

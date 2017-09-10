@@ -7,11 +7,15 @@
       "to":   [ 7, 9, 7 ],
       "shade": false,
       "faces": {
-        "up":    { "texture": "#particle", "tintindex": 0                      },
-        "down":  { "texture": "#particle", "tintindex": 0                      },
+        "up":    { "texture": "#particle", "tintindex": 1                      },
+        "down":  { "texture": "#particle", "tintindex": 1                      },
         "north": { "texture": "#particle", "tintindex": 0, "cullface": "north" },
         "west":  { "texture": "#particle", "tintindex": 0, "cullface": "west"  }
       }
     }
-  ]
+  ],
+  "ctm_version": 1,
+  "ctm_overrides": { "1": {
+    "proxy": "twilightforest:blocks/forcefield_tint"
+  } }
 }
