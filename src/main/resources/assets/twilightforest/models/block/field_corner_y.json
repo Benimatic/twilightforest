@@ -1,16 +1,16 @@
 {
   "ambientocclusion": false,
-  "textures": { "particle": "twilightforest:blocks/forcefield_purple" },
+  "textures": { "particle": "twilightforest:blocks/forcefield_white" },
   "elements": [
     {
       "from": [ 7,  9, 0 ],
       "to":   [ 9, 16, 7 ],
       "shade": false,
       "faces": {
-        "up":    { "texture": "#particle", "cullface": "up"    },
-        "north": { "texture": "#particle", "cullface": "north" },
-        "west":  { "texture": "#particle"                      },
-        "east":  { "texture": "#particle"                      }
+        "up":    { "texture": "#particle", "tintindex": 0, "cullface": "up"    },
+        "north": { "texture": "#particle", "tintindex": 0, "cullface": "north" },
+        "west":  { "texture": "#particle", "tintindex": 0                      },
+        "east":  { "texture": "#particle", "tintindex": 0                      }
       }
     }
   ]

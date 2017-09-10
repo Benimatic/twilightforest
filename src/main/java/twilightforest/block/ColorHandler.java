@@ -263,9 +263,29 @@ public final class ColorHandler {
 			}
 		}, TFBlocks.castleDoor, TFBlocks.castleDoorVanished);
 
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if (tintIndex > 15) return 0xFFFFFF;
+
+			switch (state.getValue(BlockTFForceField.COLOR)) {
+				case PURPLE:
+					return 0x5C1074;
+				case PINK:
+					return 0xFA057E;
+				case ORANGE:
+					return 0xFF5B02;
+				case GREEN:
+					return 0x89E701;
+				case BLUE:
+					return 0x0DDEFF;
+				default:
+					TwilightForestMod.LOGGER.info("Magic happened. Got " + state.getValue(BlockTFForceField.COLOR).getName() + " for Forcefield");
+					return state.getValue(BlockTFForceField.COLOR).getColorValue();
+			}
+		}, TFBlocks.forceField);
+
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 		// Atomic: This is one place where getStateFromMeta is still commonly used
-		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plant, TFBlocks.castleMagic, TFBlocks.castleDoor, TFBlocks.castleDoorVanished, TFBlocks.miniature_structure);
+		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plant, TFBlocks.castleMagic, TFBlocks.castleDoor, TFBlocks.castleDoorVanished, TFBlocks.miniature_structure, TFBlocks.forceField);
 		// Honestly I'd say it makes sense in this context. -Drullkus
 	}
 

@@ -1,13 +1,13 @@
 {
   "ambientocclusion": false,
-  "textures": { "particle": "twilightforest:blocks/forcefield_purple" },
+  "textures": { "particle": "twilightforest:blocks/forcefield_white" },
   "elements": [
     {
       "from": [ 7, 9, 7 ],
       "to": [ 9, 16, 9 ],
       "shade": false,
       "faces": {
-        "north": { "texture": "#particle" }
+        "north": { "texture": "#particle", "tintindex": 0 }
       }
     }
   ]
