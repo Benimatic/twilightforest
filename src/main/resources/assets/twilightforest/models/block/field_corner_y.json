@@ -1,0 +1,17 @@
+{
+  "ambientocclusion": false,
+  "textures": { "particle": "twilightforest:blocks/forcefield_purple" },
+  "elements": [
+    {
+      "from": [ 7,  9, 0 ],
+      "to":   [ 9, 16, 7 ],
+      "shade": false,
+      "faces": {
+        "up":    { "texture": "#particle", "cullface": "up"    },
+        "north": { "texture": "#particle", "cullface": "north" },
+        "west":  { "texture": "#particle"                      },
+        "east":  { "texture": "#particle"                      }
+      }
+    }
+  ]
+}
