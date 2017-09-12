@@ -1,17 +1,17 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -32,9 +32,12 @@ import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCallback {
 
 	public static final PropertyEnum<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
@@ -47,9 +50,6 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	public static final PropertyBool[] DIRECTIONS = new PropertyBool[]{ NORTH, SOUTH, WEST, EAST };
 
 	private static final float THORN_DAMAGE = 4.0F;
-	private static final AxisAlignedBB Y_BB = new AxisAlignedBB(0.1875, 0, 0.1875, 0.8125, 1F, 0.8125);
-	private static final AxisAlignedBB X_BB = new AxisAlignedBB(0, 0.1875, 0.1875, 1F, 0.8125, 0.8125);
-	private static final AxisAlignedBB Z_BB = new AxisAlignedBB(0.1875, 0.1875, 0, 0.8125, 0.8125, 1F);
 
 	protected BlockTFThorns() {
 		super(Material.WOOD);
@@ -62,7 +62,6 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 			this.setDefaultState(blockState.getBaseState()
 					.withProperty(AXIS, EnumFacing.Axis.Y)
 					.withProperty(VARIANT, ThornVariant.BROWN)
-					//.withProperty(DOWN, false).withProperty(UP, false)
 					.withProperty(NORTH, false).withProperty(SOUTH, false)
 					.withProperty(WEST, false).withProperty(EAST, false));
 	}
@@ -133,10 +132,6 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 				axis == EnumFacing.Axis.Z ? 16 :  3,
 				axis == EnumFacing.Axis.Z ?  0 : 13));
 
-		boolean[] faces = new boolean[6];
-		for (EnumFacing facing : EnumFacing.VALUES)
-			faces[facing.ordinal()] = facing.getAxis() == axis || state.getValue(getPropertyFromFacingWithAxis(facing, axis));
-
 		for (EnumFacing facing : EnumFacing.VALUES) {
 			if (facing.getAxis() != axis && state.getValue(getPropertyFromFacingWithAxis(facing, axis))) {
 				addCollisionBoxToList(pos, aabb, list, BlockTFForceField.makeQuickAABB(
@@ -182,6 +177,16 @@ public class BlockTFThorns extends BlockRotatedPillar implements ModelRegisterCa
 	@Override
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
+	}
+
+	@Override
+	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+		IBlockState state = world.getBlockState(pos);
+
+		if (state.getBlock() instanceof BlockTFThorns && state.getValue(AXIS) == EnumFacing.Axis.Y)
+			onEntityCollidedWithBlock(world, pos, state, entity);
+
+		super.onEntityWalk(world, pos, entity);
 	}
 
 	@Override
