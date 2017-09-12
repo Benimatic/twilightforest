@@ -123,7 +123,7 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build());
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 

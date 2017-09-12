@@ -7,7 +7,9 @@
       "twilightforest:blocks/forcefield_tint_ct"
     ],
     "extra": {
-      "light": 15
+      "light": 15,
+      "connect_inside": true,
+      "ignore_states":  true
     }
   }
 }

@@ -4,11 +4,13 @@ import com.google.common.collect.ImmutableList;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumDyeColor;
@@ -98,21 +100,22 @@ public class BlockTFForceField extends Block implements ModelRegisterCallback {
 				facing1 == EnumFacing.NORTH || facing2 == EnumFacing.NORTH ?  0 : 9);
 	}
 
-	private static AxisAlignedBB makeQuickAABB(int x1, int x2, int y1, int y2, int z1, int z2) {
+	static AxisAlignedBB makeQuickAABB(int x1, int x2, int y1, int y2, int z1, int z2) {
 		return new AxisAlignedBB(
-				((double)x1)/16.0d,((double)y1)/16.0d,
-				((double)z1)/16.0d,((double)x2)/16.0d,
-				((double)y2)/16.0d,((double)z2)/16.0d);
+				x1/16.0d, y1/16.0d,
+				z1/16.0d, x2/16.0d,
+				y2/16.0d, z2/16.0d);
 	}
 
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		state = this.getActualState(state, world, pos);
 
 		return makeQuickAABB(
-				state.getValue(WEST)  ?  0 : 7,
-				state.getValue(EAST)  ? 16 : 9,
-				state.getValue(DOWN)  ?  0 : 7,
-				state.getValue(UP)    ? 16 : 9,
+				state.getValue(WEST ) ?  0 : 7,
+				state.getValue(EAST ) ? 16 : 9,
+				state.getValue(DOWN ) ?  0 : 7,
+				state.getValue(UP   ) ? 16 : 9,
 				state.getValue(NORTH) ?  0 : 7,
 				state.getValue(SOUTH) ? 16 : 9);
 	}
@@ -170,22 +173,25 @@ public class BlockTFForceField extends Block implements ModelRegisterCallback {
 
 	// TODO add special CTM stuff, Should leverage EDGES format for its obscurity check on edges of corner panes. Fudge around with shouldSideBeRendered when ctm is installed too perhaps
 
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
+		ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), "inventory");
 		for (int i = 0; i < VALID_COLORS.size(); i++) {
-			ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), "inventory");
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
 		}
+
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(blockState.getProperties().toArray(new IProperty[blockState.getProperties().size()])).build());
 	}
 
 	private enum PairHelper {
-		UP(EnumFacing.UP, BlockTFForceField.UP),
-		DOWN(EnumFacing.DOWN, BlockTFForceField.DOWN),
+		UP   (EnumFacing.UP,    BlockTFForceField.UP),
+		DOWN (EnumFacing.DOWN,  BlockTFForceField.DOWN),
 		NORTH(EnumFacing.NORTH, BlockTFForceField.NORTH),
-		EAST(EnumFacing.EAST, BlockTFForceField.EAST),
+		EAST (EnumFacing.EAST,  BlockTFForceField.EAST),
 		SOUTH(EnumFacing.SOUTH, BlockTFForceField.SOUTH),
-		WEST(EnumFacing.WEST, BlockTFForceField.WEST);
+		WEST (EnumFacing.WEST,  BlockTFForceField.WEST);
 
 		final EnumFacing facing;
 		final PropertyBool property;
@@ -193,17 +199,6 @@ public class BlockTFForceField extends Block implements ModelRegisterCallback {
 		PairHelper(EnumFacing facing, PropertyBool property) {
 			this.facing = facing;
 			this.property = property;
-		}
-
-		PropertyBool getPropertyFromFacing(EnumFacing facing) {
-			switch (facing) {
-				case DOWN:  return BlockTFForceField.DOWN;
-				case NORTH: return BlockTFForceField.NORTH;
-				case SOUTH: return BlockTFForceField.SOUTH;
-				case WEST:  return BlockTFForceField.WEST;
-				case EAST:  return BlockTFForceField.EAST;
-				default:    return BlockTFForceField.UP;
-			}
 		}
 	}
 }
