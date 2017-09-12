@@ -34,7 +34,7 @@ import twilightforest.network.PacketMapRewrap;
 import javax.annotation.Nullable;
 
 public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
-	private static final String STR_ID = "map";
+	private static final String STR_ID = "mazemap";
 	private static final int YSEARCH = 3;
 	protected boolean mapOres;
 

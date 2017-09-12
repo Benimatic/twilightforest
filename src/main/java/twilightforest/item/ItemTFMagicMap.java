@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
-	private static final String STR_ID = "map";
+	private static final String STR_ID = "magicmap";
 	private static final HashMap<Biome, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	private static class MapColorBrightness {
