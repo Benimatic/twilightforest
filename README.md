@@ -9,7 +9,7 @@ Releases will be available on [CurseForge](https://minecraft.curseforge.com/proj
 Alternatively, grab your experimental builds from our [Discord](https://discord.gg/HAZGh8J). See the #faq channel for more details.
 
 ## Community
-We have a [Discord channel](https://discord.gg/q8Y6dgv)!
+We have a [Discord channel](https://discord.gg/6v3z26B)!
 
 ## YourKit
 ![](https://www.yourkit.com/images/yklogo.png)
