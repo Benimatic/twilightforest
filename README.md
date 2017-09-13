@@ -6,7 +6,7 @@ This is the home of the Twilight Forest mod for Minecraft 1.11 and beyond.
 ## Downloads
 Releases will be available on [CurseForge](https://minecraft.curseforge.com/projects/the-twilight-forest) when ready.
 
-Alternatively, grab your experimental builds from our [Discord](https://discord.gg/HAZGh8J). See the #faq channel for more details.
+Alternatively, grab your experimental builds from our [Discord](https://discord.gg/6v3z26B). See the #faq channel for more details.
 
 ## Community
 We have a [Discord channel](https://discord.gg/6v3z26B)!
