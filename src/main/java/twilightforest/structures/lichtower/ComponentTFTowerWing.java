@@ -1325,18 +1325,18 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		for (int y = highestOpening + 3; y < decoTop - 1; y++) {
 			for (int x = 1; x < size - 1; x++) {
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, vineEast, x, y, 1, sbb);
+					setBlockState(world, vineSouth, x, y, 1, sbb);
 				}
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, vineWest, x, y, size - 2, sbb);
+					setBlockState(world, vineNorth, x, y, size - 2, sbb);
 				}
 			}
 			for (int z = 1; z < size - 1; z++) {
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, vineNorth, 1, y, z, sbb);
+					setBlockState(world, vineEast, 1, y, z, sbb);
 				}
 				if (rand.nextInt(3) == 0) {
-					setBlockState(world, vineSouth, size - 2, y, z, sbb);
+					setBlockState(world, vineWest, size - 2, y, z, sbb);
 				}
 			}
 		}
