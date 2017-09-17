@@ -217,6 +217,8 @@ public class BlockTFPortal extends BlockBreakable {
 
 					// send to twilight
 					if (playerMP.dimension != TFConfig.dimension.dimensionID) {
+						if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(playerMP, TFConfig.dimension.dimensionID)) return;
+
 						//PlayerHelper.grantAdvancement(playerMP, new ResourceLocation(TwilightForestMod.ID, "twilight_portal"));
 						TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TFConfig.dimension.dimensionID);
 
@@ -225,6 +227,8 @@ public class BlockTFPortal extends BlockBreakable {
 						// set respawn point for TF dimension to near the arrival portal
 						playerMP.setSpawnChunk(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
 					} else {
+						if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(playerMP, 0)) return;
+
 						playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, 0, TFTeleporter.getTeleporterForDim(playerMP.mcServer, 0));
 					}
 				}
