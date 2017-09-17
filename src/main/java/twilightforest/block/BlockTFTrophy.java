@@ -25,8 +25,10 @@ import java.util.List;
 
 public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 	private static final AxisAlignedBB HYDRA_Y_BB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
-	private static final AxisAlignedBB HYDRA_X_BB = new AxisAlignedBB(0.0F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
-	private static final AxisAlignedBB HYDRA_Z_BB = new AxisAlignedBB(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 1.0F);
+	private static final AxisAlignedBB HYDRA_EAST_BB = new AxisAlignedBB(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
+	private static final AxisAlignedBB HYDRA_WEST_BB = new AxisAlignedBB(0.5F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
+	private static final AxisAlignedBB HYDRA_SOUTH_BB = new AxisAlignedBB(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 0.5F);
+	private static final AxisAlignedBB HYDRA_NORTH_BB = new AxisAlignedBB(0.25F, 0.25F, 0.5F, 0.75F, 0.75F, 1.0F);
 	private static final AxisAlignedBB URGHAST_BB = new AxisAlignedBB(0.25F, 0.5F, 0.25F, 0.75F, 1F, 0.75F);
 
 	public BlockTFTrophy() {
@@ -50,11 +52,13 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 				default:
 					return HYDRA_Y_BB;
 				case NORTH:
+					return HYDRA_NORTH_BB;
 				case SOUTH:
-					return HYDRA_Z_BB;
+					return HYDRA_SOUTH_BB;
 				case WEST:
+					return HYDRA_WEST_BB;
 				case EAST:
-					return HYDRA_X_BB;
+					return HYDRA_EAST_BB;
 			}
 		} else if (trophy != null && trophy.getSkullType() == 3) {
 			return URGHAST_BB;
