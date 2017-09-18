@@ -44,6 +44,6 @@ public class TFConfig {
 	@Config.Comment("Name of item used to create the Twilight Forest Portal")
 	public static String portalCreationItem = "minecraft:diamond";
 
-	@Config.Comment("Meta of item used to create the Twilight Forest Portal")
-	public static int portalCreationMeta = 0;
+	@Config.Comment("Meta of item used to create the Twilight Forest Portal, -1 for any metadata")
+	public static int portalCreationMeta = -1;
 }

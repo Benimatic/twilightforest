@@ -136,16 +136,19 @@ public class TFTickHandler {
 	private static void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
 		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions)) {
+			Item item = Item.REGISTRY.getObject(new ResourceLocation(TFConfig.portalCreationItem));
+			int metadata = TFConfig.portalCreationMeta;
+			if (item == null) {
+				item = Items.DIAMOND;
+				metadata = -1;
+			}
 
-			Item toUse = ForgeRegistries.ITEMS.getValue(new ResourceLocation(TFConfig.portalCreationItem));
-			ItemStack stack = new ItemStack(toUse != null ? toUse : Items.DIAMOND, 1, TFConfig.portalCreationMeta);
+			final List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
 
-			if(stack.isEmpty()) stack = new ItemStack(Items.DIAMOND);
-
-			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
-
-			for (EntityItem entityItem : itemList) {
-				if (ItemStack.areItemsEqual(stack, entityItem.getItem()) && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)) {
+			for (final EntityItem entityItem : itemList) {
+				if (item == entityItem.getItem().getItem()
+						&& world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)
+						&& (metadata == -1 || entityItem.getItem().getMetadata() == metadata)) {
 					Random rand = new Random();
 					for (int k = 0; k < 2; k++) {
 						double d = rand.nextGaussian() * 0.02D;
