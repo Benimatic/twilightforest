@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
@@ -136,16 +137,15 @@ public class TFTickHandler {
 		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions)) {
 
-			Item itemCheck = Item.REGISTRY.getObject(new ResourceLocation(TFConfig.portalCreationItem));
+			Item toUse = ForgeRegistries.ITEMS.getValue(new ResourceLocation(TFConfig.portalCreationItem));
+			ItemStack stack = new ItemStack(toUse != null ? toUse : Items.DIAMOND, 1, TFConfig.portalCreationMeta);
 
-			ItemStack stack = TFConfig.portalCreationNBT.isEmpty()
-					? new ItemStack(itemCheck != null ? itemCheck : Items.DIAMOND, TFConfig.portalCreationMeta)
-					: doStackNBT(new ItemStack(itemCheck != null ? itemCheck : Items.DIAMOND, TFConfig.portalCreationMeta), TFConfig.portalCreationNBT);
+			if(stack.isEmpty()) stack = new ItemStack(Items.DIAMOND);
 
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
 
 			for (EntityItem entityItem : itemList) {
-				if (stack.equals(entityItem.getItem()) && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)) {
+				if (ItemStack.areItemsEqual(stack, entityItem.getItem()) && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)) {
 					Random rand = new Random();
 					for (int k = 0; k < 2; k++) {
 						double d = rand.nextGaussian() * 0.02D;
@@ -160,15 +160,6 @@ public class TFTickHandler {
 				}
 			}
 		}
-	}
-
-	private static ItemStack doStackNBT(ItemStack stack, String nbtString) {
-		try {
-			stack.setTagCompound(JsonToNBT.getTagFromJson(nbtString));
-		} catch (NBTException exception) {
-			TwilightForestMod.LOGGER.error(exception.getMessage());
-		}
-		return stack;
 	}
 
 	/**

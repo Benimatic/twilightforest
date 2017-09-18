@@ -46,7 +46,4 @@ public class TFConfig {
 
 	@Config.Comment("Meta of item used to create the Twilight Forest Portal")
 	public static int portalCreationMeta = 0;
-
-	@Config.Comment("Custom NBT Data of item used to create the Twilight Forest Portal. NBT Syntax is same as if you do in the give command")
-	public static String portalCreationNBT = "";
 }
