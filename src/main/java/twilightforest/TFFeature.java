@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.Lists;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -15,6 +16,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -27,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.MapGenBase;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
 import twilightforest.world.TFBiomeProvider;
@@ -47,14 +50,14 @@ public class TFFeature {
 	public static final TFFeature hill3 = new TFFeature(3, 3, "large_hollow_hill").enableDecorations().enableTerrainAlterations();
 	public static final TFFeature hedgeMaze = new TFFeature(4, 2, "hedge_maze").enableTerrainAlterations();
 	public static final TFFeature nagaCourtyard = new TFFeature(5, 3, "naga_courtyard").enableTerrainAlterations();
-	public static final TFFeature lichTower = new TFFeature(6, 1, "lich_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "kill_naga"));
+	public static final TFFeature lichTower = new TFFeature(6, 1, "lich_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_naga"));
 	public static final TFFeature iceTower = new TFFeature(7, 2, "ice_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_yeti"));
 	public static final TFFeature questIsland = new TFFeature(8, 1, "quest_island").disableStructure();
 	public static final TFFeature questGrove = new TFFeature(9, 1, "quest_grove").enableTerrainAlterations();
 	public static final TFFeature druidGrove = new TFFeature(10, 1, "druid_grove").disableStructure();
 	public static final TFFeature floatRuins = new TFFeature(11, 3, "floating_ruins").disableStructure();
 	public static final TFFeature hydraLair = new TFFeature(12, 2, "hydra_lair").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth")).enableTerrainAlterations();
-	public static final TFFeature labyrinth = new TFFeature(13, 3, "labyrinth").enableDecorations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "kill_lich"));
+	public static final TFFeature labyrinth = new TFFeature(13, 3, "labyrinth").enableDecorations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_lich"));
 	public static final TFFeature darkTower = new TFFeature(14, 1, "dark_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_knights"));
 	public static final TFFeature tfStronghold = new TFFeature(15, 3, "knight_stronghold").enableDecorations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal")).disableProtectionAura();
 	public static final TFFeature worldTree = new TFFeature(16, 3, "world_tree").disableStructure();
@@ -769,6 +772,8 @@ public class TFFeature {
 		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
 
 		NBTTagList bookPages = new NBTTagList();
+
+		//TODO: Lang if possible?
 
 		if (this == TFFeature.lichTower) {
 
