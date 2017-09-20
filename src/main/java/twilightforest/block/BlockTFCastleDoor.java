@@ -90,6 +90,7 @@ public class BlockTFCastleDoor extends Block {
 	}
 
 	@Override
+	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return isVanished ? REAPPEARING_BB : super.getBoundingBox(state, world, pos);
 	}
@@ -224,6 +225,7 @@ public class BlockTFCastleDoor extends Block {
 
 
 	// [VanillaCopy] BlockRedStoneOre.spawnParticles with own rand
+	@SuppressWarnings("unused")
 	private void sparkle(World worldIn, BlockPos pos, Random rand) {
 		Random random = rand;
 		double d0 = 0.0625D;

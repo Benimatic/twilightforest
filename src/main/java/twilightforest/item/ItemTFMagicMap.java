@@ -237,11 +237,6 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 		}
 	}
 
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		return ("" + net.minecraft.util.text.translation.I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim() + " #" + stack.getItemDamage());
-	}
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {

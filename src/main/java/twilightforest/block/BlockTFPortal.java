@@ -247,6 +247,7 @@ public class BlockTFPortal extends BlockBreakable {
 	 * `this` -> `toTeleport`
 	 * return value Entity -> void
 	 */
+	@SuppressWarnings("unused")
 	private void changeDimension(Entity toTeleport, int dimensionIn) {
 		if (!toTeleport.world.isRemote && !toTeleport.isDead) {
 			if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(toTeleport, dimensionIn)) return;

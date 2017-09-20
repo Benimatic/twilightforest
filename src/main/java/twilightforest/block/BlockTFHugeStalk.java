@@ -28,6 +28,7 @@ public class BlockTFHugeStalk extends Block implements ModelRegisterCallback {
 	}
 
 	// [VanillaCopy] BlockLog
+	@SuppressWarnings("unused")
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		int i = 4;

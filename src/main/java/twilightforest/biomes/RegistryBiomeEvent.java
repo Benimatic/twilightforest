@@ -235,7 +235,6 @@ public final class RegistryBiomeEvent {
 		);
 	}
 
-	@SuppressWarnings("ClassHasNoToStringMethod")
 	private static class BiomeRegistry {
 
 		private final IForgeRegistry<Biome> registry;
