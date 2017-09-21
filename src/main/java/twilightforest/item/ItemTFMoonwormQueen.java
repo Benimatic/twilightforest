@@ -37,8 +37,8 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "alt"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
 			@Override
-			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
-				if (entityIn != null) {
+			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				if (entityIn != null && !stack.isEmpty() && stack.getItem() == TFItems.moonwormQueen) {
 					int useTime = stack.getMaxItemUseDuration() - entityIn.getItemInUseCount();
 					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0) {
 						return 1;
