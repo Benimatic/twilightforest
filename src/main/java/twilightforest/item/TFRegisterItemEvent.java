@@ -193,6 +193,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.slider);
 		items.registerSubItemBlock(TFBlocks.castleBlock);
 		items.registerSubItemBlock(TFBlocks.castlePillar);
+		items.registerSubItemBlock(TFBlocks.castleStairs);
 		items.registerSubItemBlock(TFBlocks.castleMagic);
 		items.registerSubItemBlock(TFBlocks.forceField);
 		items.registerBlock(TFBlocks.cinderFurnace);

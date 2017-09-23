@@ -118,6 +118,8 @@ public class TFBlocks {
 	public static Block slider;
 	@ObjectHolder("castle_brick")
 	public static Block castleBlock;
+	@ObjectHolder("castle_stairs")
+	public static Block castleStairs;
 	@ObjectHolder("castle_pillar")
 	public static Block castlePillar;
 	@ObjectHolder("castle_rune_brick")
