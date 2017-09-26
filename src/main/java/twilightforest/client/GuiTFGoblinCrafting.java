@@ -57,7 +57,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 			Slot uncrafting = tfContainer.getSlot(2 + i);
 			Slot assembly = tfContainer.getSlot(11 + i);
 
-			if (uncrafting.getStack() != null) {
+			if (!uncrafting.getStack().isEmpty()) {
 				drawSlotAsBackground(uncrafting, assembly);
 			}
 		}
