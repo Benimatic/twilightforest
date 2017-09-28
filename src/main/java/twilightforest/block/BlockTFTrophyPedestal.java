@@ -19,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.TFAdvancements;
@@ -135,7 +135,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
 		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
-			if (!isPlayerEligible(player)) player.sendMessage(new TextComponentString("You are unworthy."));
+			if (!isPlayerEligible(player)) player.sendMessage(new TextComponentTranslation("twilightforest:trophyPedestal.ineligible"));
 	}
 
 	private boolean areNearbyPlayersEligible(World world, BlockPos pos) {
