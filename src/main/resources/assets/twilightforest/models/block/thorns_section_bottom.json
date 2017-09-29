@@ -5,6 +5,13 @@
   },
   "elements": [
     {
+      "from": [ 0, 0, 0 ],
+      "to": [ 0, 16, 16 ],
+      "faces": {
+        "west": { "texture": "#end", "cullface": "west" }
+      }
+    },
+    {
       "from": [ 0, 0, 3 ],
       "to": [ 3, 16, 13 ],
       "faces": {
