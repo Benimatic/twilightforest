@@ -42,7 +42,6 @@ public class EntityTFLoyalZombie extends EntityTameable {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
 		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
 		this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
