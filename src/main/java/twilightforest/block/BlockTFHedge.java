@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -34,12 +35,12 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	public static final PropertyEnum<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
 	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
 
-	public int damageDone;
+	private final int damageDone;
 
 	protected BlockTFHedge() {
 		super(Material.CACTUS);
-
 		this.damageDone = 3;
+		this.setSoundType(SoundType.PLANT);
 		this.setHardness(2F);
 		this.setResistance(10F);
 		this.setCreativeTab(TFItems.creativeTab);

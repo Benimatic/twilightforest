@@ -4,6 +4,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -48,6 +49,7 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 
 	protected BlockTFSapling() {
 		this.setCreativeTab(TFItems.creativeTab);
+		this.setSoundType(SoundType.PLANT);
 		this.setDefaultState(blockState.getBaseState()
 				.withProperty(TF_TYPE, SaplingVariant.OAK));
 	}
