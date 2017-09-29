@@ -226,7 +226,7 @@ public class EntityTFLich extends EntityMob {
 			teleportToSightOfEntity(getAttackTarget());
 		}
 
-		if (isShadowClone()) {
+		if (isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
 			playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			return false;
 		}
@@ -237,7 +237,7 @@ public class EntityTFLich extends EntityMob {
 		}
 
 		// if our shield is up, ignore any damage that can be blocked.
-		if (getShieldStrength() > 0) {
+		if (src != DamageSource.OUT_OF_WORLD && getShieldStrength() > 0) {
 			if (src.isMagicDamage() && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
 				if (getShieldStrength() > 0) {

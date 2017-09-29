@@ -642,8 +642,8 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		return false;
+	public boolean attackEntityFrom(DamageSource src, float damage) {
+		return src == DamageSource.OUT_OF_WORLD && super.attackEntityFrom(src, damage);
 	}
 
 	/**

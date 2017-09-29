@@ -107,8 +107,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float par2) {
-		return source != DamageSource.IN_WALL && super.attackEntityFrom(source, par2);
+	public boolean isEntityInvulnerable(DamageSource src) {
+		return src == DamageSource.IN_WALL || super.isEntityInvulnerable(src);
 	}
 
 	@Override

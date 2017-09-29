@@ -204,20 +204,19 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
+	public boolean isEntityInvulnerable(DamageSource src) {
+		return src == DamageSource.IN_WALL || super.isEntityInvulnerable(src);
+	}
+
+	@Override
 	public boolean attackEntityFrom(DamageSource source, float damage) {
-		// ignore suffocation
-		if (source == DamageSource.IN_WALL) {
-			return false;
-		}
-
-		boolean attackSuccessful = false;
-
 		// in tantrum mode take only 1/4 damage
 		if (this.isInTantrum()) {
 			damage /= 4;
 		}
 
 		float oldHealth = getHealth();
+		boolean attackSuccessful;
 
 		if ("fireball".equals(source.getDamageType()) && source.getTrueSource() instanceof EntityPlayer) {
 			// 'hide' fireball attacks so that we don't take 1000 damage.
