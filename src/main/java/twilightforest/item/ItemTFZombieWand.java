@@ -30,8 +30,6 @@ public class ItemTFZombieWand extends ItemTF {
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
-		player.setActiveHand(hand);
-
 		if (!world.isRemote) {
 			// what block is the player pointing at?
 			RayTraceResult mop = getPlayerPointVec(world, player, 20.0F);
@@ -63,18 +61,6 @@ public class ItemTFZombieWand extends ItemTF {
 		Vec3d look = player.getLook(1.0F);
 		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
-	}
-
-
-	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-		return 30;
-	}
-
-	@Nonnull
-	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-		return EnumAction.BOW;
 	}
 
 	@Nonnull

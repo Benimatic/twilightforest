@@ -29,48 +29,20 @@ public class ItemTFTwilightWand extends ItemTF {
 	@SuppressWarnings("deprecation")
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.getHeldItem(hand).getItemDamage() < this.getMaxDamage()) {
-			player.setActiveHand(hand);
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.getItemDamage() == stack.getMaxDamage()) {
+			return ActionResult.newResult(EnumActionResult.FAIL, player.getHeldItem(hand));
 		} else {
-			player.resetActiveHand();
-		}
-
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-	}
-
-	//Atomic: Not sure why getMaxDamage was deprecated since it's actively used?
-	@SuppressWarnings("deprecation")
-	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
-
-		if (stack.getItemDamage() >= this.getMaxDamage()) {
-			living.resetActiveHand();
-			return;
-		}
-
-		if (count % 6 == 0) {
-			World world = living.world;
-
-			living.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
 			if (!world.isRemote) {
-				world.spawnEntity(new EntityTFTwilightWandBolt(world, living));
-
-				stack.damageItem(1, living);
+				world.spawnEntity(new EntityTFTwilightWandBolt(world, player));
+				stack.damageItem(1, player);
 			}
+
+			return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 		}
-
-
-	}
-
-	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-		return 72000;
-	}
-
-	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-		return EnumAction.BOW;
 	}
 
 	@Override
