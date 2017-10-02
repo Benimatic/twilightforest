@@ -80,12 +80,6 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 		par3List.add(new ItemStack(this, 1, 1));
 		par3List.add(new ItemStack(this, 1, 2));
 		par3List.add(new ItemStack(this, 1, 3));
-
-	}
-
-	@Override
-	public int quantityDropped(Random par1Random) {
-		return par1Random.nextInt(40) == 0 ? 1 : 0;
 	}
 
 	@Override
@@ -105,19 +99,8 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int par7) {
-		if (!par1World.isRemote) {
-			byte chance = 40;
-
-			if (state.getValue(BlockTFLeaves.VARIANT) == LeavesVariant.MANGROVE) {
-				chance = 20;
-			}
-
-			if (par1World.rand.nextInt(chance) == 0) {
-				Item item = this.getItemDropped(state, par1World.rand, par7);
-				spawnAsEntity(par1World, pos, new ItemStack(item, 1, damageDropped(state)));
-			}
-		}
+	public int getSaplingDropChance(IBlockState state) {
+		return state.getValue(VARIANT) == LeavesVariant.MANGROVE ? 20 : 40;
 	}
 
 	@Override
