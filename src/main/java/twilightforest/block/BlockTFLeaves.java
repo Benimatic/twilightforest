@@ -8,11 +8,13 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -95,6 +97,11 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	public int damageDropped(IBlockState state) {
 		LeavesVariant leafType = state.getValue(VARIANT);
 		return leafType == LeavesVariant.RAINBOAK ? 9 : leafType.ordinal();
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(this, 1, world.getBlockState(pos).getValue(VARIANT).ordinal());
 	}
 
 	@Override
