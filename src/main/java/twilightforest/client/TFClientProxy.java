@@ -165,31 +165,6 @@ public class TFClientProxy extends TFCommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFMoonworm.class, new TileEntityTFMoonwormRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophy.class, new TileEntityTFTrophyRenderer());
 
-//FIXME: AtomicBlom: These all need to be rewritten from scratch.
-/*
-		// map item renderer
-		MinecraftForgeClient.registerItemRenderer(TFItems.magicMap, new TFMagicMapRenderer(mc.gameSettings, mc.getTextureManager()));
-		TFMazeMapRenderer mazeRenderer = new TFMazeMapRenderer(mc.gameSettings, mc.getTextureManager());
-		MinecraftForgeClient.registerItemRenderer(TFItems.mazeMap, mazeRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.oreMap, mazeRenderer);
-		
-		TFGiantBlockRenderer giantBlockRenderer = new TFGiantBlockRenderer(mc.gameSettings, mc.getTextureManager());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TFBlocks.giantLeaves), giantBlockRenderer);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TFBlocks.giantCobble), giantBlockRenderer);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TFBlocks.giantLog), giantBlockRenderer);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TFBlocks.giantObsidian), giantBlockRenderer);
-
-		// fiery item render
-		TFFieryItemRenderer fieryRenderer = new TFFieryItemRenderer(mc.gameSettings, mc.getTextureManager());
-		MinecraftForgeClient.registerItemRenderer(TFItems.fieryPick, fieryRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.fierySword, fieryRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.fieryIngot, fieryRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.fieryHelm, fieryRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.fieryPlate, fieryRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.fieryLegs, fieryRenderer);
-		MinecraftForgeClient.registerItemRenderer(TFItems.fieryBoots, fieryRenderer);
-*/
-
 		knightlyArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFKnightlyArmor(0.5F));
 		knightlyArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFKnightlyArmor(1.0F));
 		knightlyArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFKnightlyArmor(0.5F));
