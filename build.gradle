@@ -104,9 +104,6 @@ repositories {
 }
 
 dependencies {   
-    //Disabled until I can speak with azanor
-    //deobfCompile files('libs/Thaumcraft-1.7.10-4.2.3.5.jar')
-
-    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    deobfCompile "mezz.jei:jei_1.12.1:${jei_version}"
     compile "team.chisel.ctm:CTM:MC1.12-${ctm_version}"
 }
