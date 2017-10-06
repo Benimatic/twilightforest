@@ -130,10 +130,10 @@ public class TFMagicMapData extends MapData {
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-			bufferbuilder.pos(-1.0D, 1.0D, 0.001F).tex((double) f1, (double) f2).endVertex();
-			bufferbuilder.pos(1.0D, 1.0D, 0.001F).tex((double) f3, (double) f2).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, 0.001F).tex((double) f3, (double) f4).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, 0.001F).tex((double) f1, (double) f4).endVertex();
+			bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex((double) f1, (double) f2).endVertex();
+			bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex((double) f3, (double) f2).endVertex();
+			bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex((double) f3, (double) f4).endVertex();
+			bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex((double) f1, (double) f4).endVertex();
 			tessellator.draw();
 			GlStateManager.popMatrix();
 			return true;
