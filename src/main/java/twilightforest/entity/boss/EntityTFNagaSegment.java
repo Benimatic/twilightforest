@@ -33,11 +33,6 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	public void onUpdate() {
 		super.onUpdate();
 
-		if (this.naga.isDead) {
-			this.setDead();
-			return;
-		}
-
 		++this.ticksExisted;
 
 		if (!isInvisible())

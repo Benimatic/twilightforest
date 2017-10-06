@@ -622,6 +622,16 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
+	public void setDead() {
+		super.setDead();
+		for (EntityTFNagaSegment seg : bodySegments) {
+			// must use this instead of setDead
+			// since multiparts are not added to the world tick list which is what checks isDead
+			this.world.removeEntityDangerously(seg);
+		}
+	}
+
+	@Override
 	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
 		if (this.getMaximumHomeDistance() == -1) {
 			return true;
