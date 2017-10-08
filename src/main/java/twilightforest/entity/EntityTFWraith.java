@@ -238,6 +238,17 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 		return flag;
 	}
 
+	private void despawnIfPeaceful() {
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
+			setDead();
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		despawnIfPeaceful();
+	}
+
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
 		if (super.attackEntityFrom(damagesource, i)) {
