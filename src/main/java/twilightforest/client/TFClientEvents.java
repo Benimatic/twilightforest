@@ -131,6 +131,8 @@ public class TFClientEvents {
 			}
 
 		}
+
+		BugModelAnimationHelper.animate();
 	}
 
 }
