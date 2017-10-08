@@ -234,7 +234,7 @@ public class TFEventListener {
 
 		// Smashing!
 		Item item = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
-		if (((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
+		if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
 			BlockTFCritter poorBug = (BlockTFCritter)((ItemBlock) item).getBlock();
 
 			if (poorBug == TFBlocks.firefly)
