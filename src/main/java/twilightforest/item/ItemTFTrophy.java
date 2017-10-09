@@ -115,9 +115,11 @@ public class ItemTFTrophy extends ItemTF {
 	@Override
 	public void registerModel() {
 		for (int i = 0; i < BossVariant.values().length; i++) {
-			String variant = "inventory_" + BossVariant.values()[i].getName();
-			ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
-			ModelLoader.setCustomModelResourceLocation(this, i, mrl);
+			if (BossVariant.values()[i].hasTrophy()) {
+				String variant = "inventory_" + BossVariant.values()[i].getName();
+				ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
+				ModelLoader.setCustomModelResourceLocation(this, i, mrl);
+			}
 		}
 	}
 }
