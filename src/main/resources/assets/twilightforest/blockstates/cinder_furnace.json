@@ -3,9 +3,9 @@
   "defaults": {
     "model": "orientable",
     "textures": {
-      "side": "twilightforest:blocks/furnace_side",
-      "top": "twilightforest:blocks/furnace_top",
-      "front": "twilightforest:blocks/furnace_front_off"
+      "side":  "blocks/furnace_side",
+      "top":   "blocks/furnace_top",
+      "front": "blocks/furnace_front_off"
     },
     "uvlock": true
   },
