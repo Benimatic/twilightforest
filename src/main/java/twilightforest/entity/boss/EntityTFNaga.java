@@ -51,7 +51,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private static final int LEASH_X = 46;
 	private static final int LEASH_Y = 7;
 	private static final int LEASH_Z = 46;
-	private static final double DEFAULT_SPEED = 0.75;
+	private static final double DEFAULT_SPEED = 0.3;
 
 	private int currentSegmentCount = 0; // not including head
 	private final float healthPerSegment;
@@ -62,7 +62,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
 
 	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, 0).setSaved(false);
-	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 1.25F, 0).setSaved(false);
+	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, 0).setSaved(false);
 
 
 	public EntityTFNaga(World world) {
@@ -143,7 +143,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			return target != null
 					&& target.getEntityBoundingBox().maxY > taskOwner.getEntityBoundingBox().minY - 2.5
 					&& target.getEntityBoundingBox().minY < taskOwner.getEntityBoundingBox().maxY + 2.5
-					&& taskOwner.getDistanceSqToEntity(target) <= 16.0D
+					&& taskOwner.getDistanceSqToEntity(target) <= 4.0D
 					&& taskOwner.getEntitySenses().canSee(target);
 
 		}
@@ -348,7 +348,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(DEFAULT_SPEED);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
 	}
 
