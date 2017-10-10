@@ -77,10 +77,11 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
-			SoundEvent sound = TFSounds.NAGA_RATTLE;
+			SoundEvent sound = null;
 			float volume = 1.0F;
 			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
 				case NAGA:
+					sound = TFSounds.NAGA_RATTLE;
 					volume = 1.25F;
 					break;
 				case LICH:
@@ -96,8 +97,16 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 				case SNOW_QUEEN:
 					sound = TFSounds.ICE_AMBIENT;
 					break;
+				case KNIGHT_PHANTOM:
+					sound = TFSounds.WRAITH;
+					break;
+				case MINOSHROOM:
+					sound = SoundEvents.ENTITY_COW_AMBIENT;
+					volume = 0.5F;
+					break;
 			}
-			worldIn.playSound(playerIn, pos, sound, SoundCategory.BLOCKS, volume, 16.0F);
+			if (sound != null)
+				worldIn.playSound(playerIn, pos, sound, SoundCategory.BLOCKS, volume, 16.0F);
 		}
 		return true;
 	}
