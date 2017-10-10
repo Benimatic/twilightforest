@@ -1,20 +1,37 @@
 package twilightforest.client.renderer;
 
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
-import twilightforest.client.model.ModelTFHydraHead;
-import twilightforest.client.model.ModelTFLich;
-import twilightforest.client.model.ModelTFNaga;
-import twilightforest.client.model.ModelTFSnowQueen;
-import twilightforest.client.model.ModelTFTowerBoss;
+import twilightforest.client.TFClientEvents;
+import twilightforest.client.model.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.vecmath.Matrix4f;
+import java.util.Collections;
+import java.util.List;
 
 public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEntityTFTrophy> {
+
+	// https://github.com/creatubbles/ctb-mcmod/blob/52585c9526ab8199dd88687c3942c100b62dbc96/src/main/java/com/creatubbles/ctbmod/client/render/RenderPaintingItem.java
+	// :thonk:
+
+	public static class DummyTile extends TileEntityTFTrophy {}
 
 	private ModelTFHydraHead hydraHeadModel;
 	private static final ResourceLocation textureLocHydra = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
@@ -35,20 +52,111 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		snowQueenModel = new ModelTFSnowQueen();
 	}
 
+	@MethodsReturnNonnullByDefault
+	@ParametersAreNonnullByDefault
+	public class BakedModel implements IBakedModel {
+		private class Overrides extends ItemOverrideList {
+			public Overrides() {
+				super(Collections.EMPTY_LIST);
+			}
+
+			@Override
+			public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+				TileEntityTFTrophyRenderer.this.stack = stack;
+				return BakedModel.this;
+			}
+		}
+
+		@Override
+		public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+			return Collections.EMPTY_LIST;
+		}
+
+		@Override
+		public boolean isAmbientOcclusion() {
+			return true;
+		}
+
+		@Override
+		public boolean isGui3d() {
+			return true;
+		}
+
+		@Override
+		public boolean isBuiltInRenderer() {
+			return true;
+		}
+
+		@Override
+		public TextureAtlasSprite getParticleTexture() {
+			return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/soul_sand");
+		}
+
+		@Override
+		public ItemOverrideList getOverrides() {
+			return new Overrides();
+		}
+
+		@Override
+		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
+			TileEntityTFTrophyRenderer.this.transform = cameraTransformType;
+			return Pair.of(this, null);
+		}
+	}
+
+	public final BakedModel baked = new BakedModel();
+
+	private ItemStack stack;
+	private ItemCameraTransforms.TransformType transform;
+	private IBakedModel model;
 
 	@Override
-	public void render(TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
+	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
+		if (model == null) {
+			model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy", "inventory"));
+		}
+
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 
-		int meta = trophy.getBlockMetadata() & 7;
+		if (trophy == null) {
+			if (transform == ItemCameraTransforms.TransformType.GUI) {
+				GlStateManager.disableLighting();
+				GlStateManager.translate(0.5F, 0.5F, -1.5F);
+				IBakedModel bakedModel = ForgeHooksClient.handleCameraTransforms(model, transform, transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND);
+				Minecraft.getMinecraft().getRenderItem().renderItem(stack, bakedModel);
+				GlStateManager.enableLighting();
+				GlStateManager.translate(-0.5F, 0.0F, 1.5F);
+				GlStateManager.rotate(30, 1F, 0F, 0F);
+			}
 
-		float rotation = (float) (trophy.getSkullRotation() * 360) / 16.0F;
+			if (transform == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND
+					|| transform == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
+				GlStateManager.scale(0.5F, 0.5F, 0.5F);
+				GlStateManager.rotate(45, 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate(45, 0.0F, 1.0F, 0.0F);
+				GlStateManager.translate(0.40625F, 1.171875F, 0.0F);
+			}
+
+			if (transform == ItemCameraTransforms.TransformType.GROUND) {
+				GlStateManager.translate(0.25F, 0.3F, 0.25F);
+				GlStateManager.scale(0.5F, 0.5F, 0.5F);
+			}
+
+			if (transform == ItemCameraTransforms.TransformType.HEAD) {
+				GlStateManager.scale(2.0F, 2.0F, 2.0F);
+				GlStateManager.translate(-0.25F, 0.0F, -0.25F);
+			}
+		}
+
+		//int meta = trophy != null ? trophy.getBlockMetadata() & 7 : stack.getMetadata() & 7;
+
+		float rotation = trophy != null ? (float) (trophy.getSkullRotation() * 360) / 16.0F : 0.0F;
 		boolean onGround = true;
 
 		// wall mounted?
-		if (meta != 1) {
-			switch (meta) {
+		if (trophy != null && trophy.getBlockMetadata() != 1) {
+			switch (trophy.getBlockMetadata() & 7) {
 				case 2:
 					onGround = false;
 					break;
@@ -65,15 +173,17 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 					onGround = false;
 					rotation = 90.0F;
 			}
+		} else if (trophy == null && transform == ItemCameraTransforms.TransformType.GUI) {
+			rotation = TFClientEvents.rotationTicker;
 		}
-
 
 		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-
-		switch (BossVariant.values()[trophy.getSkullType()]) {
+		switch (trophy != null ? BossVariant.values()[trophy.getSkullType()] : BossVariant.values()[stack.getMetadata() % BossVariant.values().length]) {
 			case HYDRA:
-				renderHydraHead(rotation, onGround);
+				if (trophy == null)
+					GlStateManager.translate(0.0F, -0.25F, transform == ItemCameraTransforms.TransformType.HEAD ? -0.125F : 0.0F);
+				renderHydraHead(rotation, onGround && trophy != null);
 				break;
 			case NAGA:
 				renderNagaHead(rotation, onGround);
@@ -82,6 +192,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 				renderLichHead(rotation, onGround);
 				break;
 			case UR_GHAST:
+				if (trophy == null) GlStateManager.translate(0.0F, -0.5F, 0.0F);
 				renderUrGhastHead(trophy, rotation, onGround, partialTime);
 				break;
 			case SNOW_QUEEN:
@@ -116,7 +227,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		hydraHeadModel.openMouthForTrophy(onGround ? 0F : 0.25F);
 
 		// render the hydra head
-		hydraHeadModel.render((Entity) null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
+		hydraHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
 	}
 
 
@@ -138,7 +249,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		GlStateManager.translate(0, onGround ? 1F : -0F, onGround ? 0F : 1F);
 
 		// render the naga head
-		nagaHeadModel.render((Entity) null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
+		nagaHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
 	}
 
 
@@ -182,7 +293,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		GlStateManager.translate(0, onGround ? 1F : 1F, onGround ? 0F : 0F);
 
 		// render the naga head
-		urGhastModel.render((Entity) null, 0.0F, 0, trophy.ticksExisted + partialTime, 0, 0.0F, 0.0625F);
+		urGhastModel.render(null, 0.0F, 0, trophy != null ? trophy.ticksExisted + partialTime : TFClientEvents.sineTicker + partialTime, 0, 0.0F, 0.0625F);
 	}
 
 	private void renderSnowQueenHead(float rotation, boolean onGround) {
