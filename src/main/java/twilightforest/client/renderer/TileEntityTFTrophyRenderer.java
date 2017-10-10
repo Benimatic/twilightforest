@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -44,6 +45,12 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private static final ResourceLocation textureLocUrGhast = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss.png");
 	private ModelTFSnowQueen snowQueenModel;
 	private static final ResourceLocation textureLocSnowQueen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "snowqueen.png");
+	private ModelTFMinoshroom minoshroomModel;
+	private static final ResourceLocation textureLocMinoshroom = new ResourceLocation(TwilightForestMod.MODEL_DIR + "minoshroomtaur.png");
+	private ModelTFKnightPhantom2 knightPhantomModel;
+	private static final ResourceLocation textureLocKnightPhantom = new ResourceLocation(TwilightForestMod.MODEL_DIR + "phantomskeleton.png");
+	private ModelTFPhantomArmor knightPhantomArmorModel;
+	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
 
 	public TileEntityTFTrophyRenderer() {
 		hydraHeadModel = new ModelTFHydraHead();
@@ -51,6 +58,9 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		lichModel = new ModelTFLich();
 		urGhastModel = new ModelTFTowerBoss();
 		snowQueenModel = new ModelTFSnowQueen();
+		minoshroomModel = new ModelTFMinoshroom();
+		knightPhantomModel = new ModelTFKnightPhantom2();
+		knightPhantomArmorModel = new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F);
 	}
 
 	@MethodsReturnNonnullByDefault
@@ -111,10 +121,18 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private ItemCameraTransforms.TransformType transform;
 	private IBakedModel model;
 
+	protected String getModelRSL() {
+		return TwilightForestMod.ID + ":trophy";
+	}
+
 	@Override
 	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
 		if (model == null) {
-			model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy", "inventory"));
+			ModelManager modelManager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager();
+			model = modelManager.getModel(new ModelResourceLocation(this.getModelRSL(), "inventory"));
+
+			//if (!BossVariant.values()[stack.getMetadata() % BossVariant.values().length].usesGoldBackground())
+			//	model = modelManager.getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory_minor"));
 		}
 
 		GlStateManager.pushMatrix();
@@ -199,6 +217,12 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 			case SNOW_QUEEN:
 				renderSnowQueenHead(rotation, onGround);
 				break;
+			case MINOSHROOM:
+				renderMinoshroomHead(rotation, onGround);
+				break;
+			case KNIGHT_PHANTOM:
+				renderKnightPhantomHead(rotation, onGround);
+				break;
 			default:
 				break;
 		}
@@ -211,7 +235,6 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	 * Render a hydra head
 	 */
 	private void renderHydraHead(float rotation, boolean onGround) {
-
 		GlStateManager.scale(0.25f, 0.25f, 0.25f);
 
 		this.bindTexture(textureLocHydra);
@@ -231,11 +254,8 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		hydraHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
 	}
 
-
 	private void renderNagaHead(float rotation, boolean onGround) {
-
 		GlStateManager.translate(0, -0.125F, 0);
-
 
 		GlStateManager.scale(0.25f, 0.25f, 0.25f);
 
@@ -255,9 +275,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 
 	private void renderLichHead(float rotation, boolean onGround) {
-
 		GlStateManager.translate(0, 1, 0);
-
 
 		//GlStateManager.scale(0.5f, 0.5f, 0.5f);
 
@@ -278,7 +296,6 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 
 	private void renderUrGhastHead(TileEntityTFTrophy trophy, float rotation, boolean onGround, float partialTime) {
-
 		GlStateManager.translate(0, 1, 0);
 
 		GlStateManager.scale(0.5f, 0.5f, 0.5f);
@@ -298,9 +315,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	}
 
 	private void renderSnowQueenHead(float rotation, boolean onGround) {
-
 		GlStateManager.translate(0, 1, 0);
-
 
 		//GlStateManager.scale(0.5f, 0.5f, 0.5f);
 
@@ -319,4 +334,45 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		snowQueenModel.bipedHeadwear.render(0.0625F);
 	}
 
+	private void renderMinoshroomHead(float rotation, boolean onGround) {
+		GlStateManager.translate(0, 1, 0);
+
+		//GlStateManager.scale(0.5f, 0.5f, 0.5f);
+
+		this.bindTexture(textureLocMinoshroom);
+
+		GlStateManager.scale(1f, -1f, -1f);
+
+		// we seem to be getting a 180 degree rotation here
+		GlStateManager.rotate(rotation, 0F, 1F, 0F);
+		GlStateManager.rotate(180F, 0F, 1F, 0F);
+
+		GlStateManager.translate(0, onGround ? 1.875F : 1.625F, onGround ? 0.5625F : 0.8125F);
+
+		// render the naga head
+		minoshroomModel.bipedHead.render(0.0625F);
+	}
+
+	private void renderKnightPhantomHead(float rotation, boolean onGround) {
+		GlStateManager.translate(0, 1, 0);
+
+		GlStateManager.scale(1f, -1f, -1f);
+
+		// we seem to be getting a 180 degree rotation here
+		GlStateManager.rotate(rotation, 0F, 1F, 0F);
+		GlStateManager.rotate(180F, 0F, 1F, 0F);
+
+		GlStateManager.translate(0, onGround ? 1.5F : 1.25F, onGround ? 0.0F : 0.25F);
+
+		GlStateManager.scale(0.9375F, 0.9375F, 0.9375F);
+
+		// render the naga head
+		this.bindTexture(textureLocKnightPhantomArmor);
+		knightPhantomArmorModel.bipedHead.render(0.0625F);
+
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
+
+		this.bindTexture(textureLocKnightPhantom);
+		knightPhantomModel.bipedHead.render(0.0625F);
+	}
 }

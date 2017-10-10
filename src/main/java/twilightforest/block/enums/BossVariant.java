@@ -27,13 +27,13 @@ public enum BossVariant implements IStringSerializable {
 	MINOSHROOM(false, TileEntityTFMinoshroomSpawner.class),
 	ALPHA_YETI(false, TileEntityTFAlphaYetiSpawner.class);
 
-	private final boolean hasTrophy;
+	private final boolean usesGoldBackground;
 	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;
 
 	public static final BossVariant[] VARIANTS = values();
 
 	BossVariant(boolean isNotMiniBoss, Class<? extends TileEntityTFBossSpawner> spawnerClass) {
-		this.hasTrophy = isNotMiniBoss;
+		this.usesGoldBackground = isNotMiniBoss;
 		this.spawnerClass = spawnerClass;
 	}
 
@@ -42,8 +42,8 @@ public enum BossVariant implements IStringSerializable {
 		return name().toLowerCase(Locale.ROOT);
 	}
 
-	public boolean hasTrophy() {
-		return hasTrophy;
+	public boolean usesGoldBackground() {
+		return usesGoldBackground;
 	}
 
 	public Class<? extends TileEntityTFBossSpawner> getSpawnerClass() {

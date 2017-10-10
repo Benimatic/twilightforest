@@ -45,7 +45,7 @@ public class ItemTFTrophy extends ItemTF {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tab)) {
 			for (BossVariant v : BossVariant.values()) {
-				if (v.hasTrophy()) {
+				if (v != BossVariant.ALPHA_YETI) {
 					list.add(new ItemStack(this, 1, v.ordinal()));
 				}
 			}
@@ -137,18 +137,22 @@ public class ItemTFTrophy extends ItemTF {
 	@Override
 	public void registerModel() {
 		for (int i = 0; i < BossVariant.values().length; i++)
-			if (BossVariant.values()[i].hasTrophy())
+			if (BossVariant.values()[i] != BossVariant.ALPHA_YETI)
 				ModelLoader.setCustomModelResourceLocation(this, i, new ModelResourceLocation(TwilightForestMod.ID + ":trophy_tesr", "inventory"));
 
 		TileEntityTFTrophyRenderer tesr = new TileEntityTFTrophyRenderer();
+		//TileEntityTFTrophyRenderer tesrMinor = new TileEntityTFTrophyRenderer() { @Override protected String getModelRSL() { return TwilightForestMod.ID + ":trophy_minor"; } };
+
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophyRenderer.DummyTile.class, tesr);
 		dummyModel = tesr.baked;
 
 		for (int i = 0; i < BossVariant.values().length; i++)
-			if (BossVariant.values()[i].hasTrophy())
+			if (BossVariant.values()[i] != BossVariant.ALPHA_YETI)
 				ForgeHooksClient.registerTESRItemStack(this, i, TileEntityTFTrophyRenderer.DummyTile.class);
 
-		ModelBakery.registerItemVariants(this, new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy"), "inventory"));
+		ModelBakery.registerItemVariants(this,
+				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy"), "inventory"),
+				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_minor"), "inventory"));
 	}
 
 	@SideOnly(Side.CLIENT)
