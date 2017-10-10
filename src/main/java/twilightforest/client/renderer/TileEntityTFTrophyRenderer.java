@@ -121,25 +121,25 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private ItemCameraTransforms.TransformType transform;
 	private IBakedModel model;
 
-	protected String getModelRSL() {
-		return TwilightForestMod.ID + ":trophy";
-	}
+	private IBakedModel trophyGold;
+	private IBakedModel trophyIron;
 
 	@Override
 	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
-		if (model == null) {
-			ModelManager modelManager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager();
-			model = modelManager.getModel(new ModelResourceLocation(this.getModelRSL(), "inventory"));
-
-			//if (!BossVariant.values()[stack.getMetadata() % BossVariant.values().length].usesGoldBackground())
-			//	model = modelManager.getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory_minor"));
-		}
+		//if (model == null && trophy == null) {
+		//	model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy", "inventory"));
+		//}
 
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 
 		if (trophy == null) {
 			if (transform == ItemCameraTransforms.TransformType.GUI) {
+				if (!BossVariant.values()[stack.getMetadata() % BossVariant.values().length].usesGoldBackground())
+					model = trophyIron != null ? trophyIron : (trophyIron = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory")));
+				else
+					model = trophyGold != null ? trophyGold : (trophyGold = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy", "inventory")));
+
 				GlStateManager.disableLighting();
 				GlStateManager.translate(0.5F, 0.5F, -1.5F);
 				IBakedModel bakedModel = ForgeHooksClient.handleCameraTransforms(model, transform, transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND);
