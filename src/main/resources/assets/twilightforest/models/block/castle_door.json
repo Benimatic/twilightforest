@@ -16,8 +16,8 @@
         "east":  { "texture": "#all", "tintindex": 16 }
       }
     }, {
-      "from": [ -0.02, -0.02, -0.02 ],
-      "to": [ 16.02, 16.02, 16.02 ],
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
       "shade": false,
       "faces": {
         "down":  { "texture": "#all2", "cullface": "down" , "tintindex": 0 },
