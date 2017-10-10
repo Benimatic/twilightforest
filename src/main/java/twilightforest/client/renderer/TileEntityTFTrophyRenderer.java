@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.apache.commons.lang3.tuple.Pair;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.client.TFClientEvents;
@@ -173,7 +174,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 					onGround = false;
 					rotation = 90.0F;
 			}
-		} else if (trophy == null && transform == ItemCameraTransforms.TransformType.GUI) {
+		} else if (TFConfig.rotateTrophyHeadsGui && trophy == null && transform == ItemCameraTransforms.TransformType.GUI) {
 			rotation = TFClientEvents.rotationTicker;
 		}
 
