@@ -2,7 +2,15 @@ package twilightforest.block.enums;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.IStringSerializable;
-import twilightforest.tileentity.*;
+import twilightforest.tileentity.TileEntityTFAlphaYetiSpawner;
+import twilightforest.tileentity.TileEntityTFBossSpawner;
+import twilightforest.tileentity.TileEntityTFHydraSpawner;
+import twilightforest.tileentity.TileEntityTFKnightPhantomsSpawner;
+import twilightforest.tileentity.TileEntityTFLichSpawner;
+import twilightforest.tileentity.TileEntityTFMinoshroomSpawner;
+import twilightforest.tileentity.TileEntityTFNagaSpawner;
+import twilightforest.tileentity.TileEntityTFSnowQueenSpawner;
+import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -22,6 +30,8 @@ public enum BossVariant implements IStringSerializable {
 	private final boolean hasTrophy;
 	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;
 
+	public static final BossVariant[] VARIANTS = values();
+
 	BossVariant(boolean isNotMiniBoss, Class<? extends TileEntityTFBossSpawner> spawnerClass) {
 		this.hasTrophy = isNotMiniBoss;
 		this.spawnerClass = spawnerClass;
@@ -38,5 +48,9 @@ public enum BossVariant implements IStringSerializable {
 
 	public Class<? extends TileEntityTFBossSpawner> getSpawnerClass() {
 		return spawnerClass;
+	}
+
+	public static BossVariant getVariant(int id) {
+		return id >= 0 && id < VARIANTS.length ? VARIANTS[id] : NAGA;
 	}
 }
