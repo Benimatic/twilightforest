@@ -45,6 +45,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		super(isVanished ? Material.GLASS : Material.ROCK);
 
 		this.setBlockUnbreakable();
+		this.setResistance(Float.MAX_VALUE);
 
 		this.isVanished = isVanished;
 		this.lightOpacity = isVanished ? 0 : 255;
