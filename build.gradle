@@ -37,7 +37,7 @@ idea {
 ///////////////////////////////////////////////////
 // ForgeGradle
 ///////////////////////////////////////////////////
-version = (hasProperty("CIRevision") ? config.mod_version + "." + CIRevision : config.mod_version)
+version = (hasProperty("CIRevision") ? CIRevision : config.mod_version)
 group = config.group_name
 archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
 sourceCompatibility = JavaVersion.VERSION_1_8
