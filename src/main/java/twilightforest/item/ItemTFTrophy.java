@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -15,6 +16,7 @@ import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -32,8 +34,12 @@ import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Locale;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemTFTrophy extends ItemTF {
 	public ItemTFTrophy() {
 		this.setCreativeTab(TFItems.creativeTab);
@@ -50,6 +56,11 @@ public class ItemTFTrophy extends ItemTF {
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), I18n.translateToLocal("entity.twilightforest." + BossVariant.values()[stack.getMetadata() % BossVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
 	}
 
 	@Nonnull
@@ -116,8 +127,8 @@ public class ItemTFTrophy extends ItemTF {
 	@Nonnull
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		int meta = MathHelper.clamp(stack.getItemDamage(), 0, BossVariant.values().length);
-		return super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
+		//int meta = MathHelper.clamp(stack.getItemDamage(), 0, BossVariant.values().length);
+		return "item.tf_trophy.name"; //super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
 	}
 
 	@Override
