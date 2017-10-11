@@ -203,10 +203,10 @@ public class TFFeature {
 	 */
 	public static TFFeature getFeatureByName(String name) {
 		for (TFFeature feature : featureList) {
-			if (feature.name.equalsIgnoreCase(name))
+			if (feature != null && feature.name.equalsIgnoreCase(name))
 				return feature;
 		}
-		return null;
+		return nothing;
 	}
 
 	/**
@@ -215,7 +215,15 @@ public class TFFeature {
 	public static TFFeature getFeatureByName(ResourceLocation name) {
 		if (name.getResourceDomain().equalsIgnoreCase(TwilightForestMod.ID))
 			return getFeatureByName(name.getResourcePath());
-		return null;
+		return nothing;
+	}
+
+	public static TFFeature getFeatureByID(int id){
+		for (TFFeature feature : featureList) {
+			if (feature != null && feature.featureID == id)
+				return feature;
+		}
+		return nothing;
 	}
 
 	public static int getFeatureID(int mapX, int mapZ, World world) {

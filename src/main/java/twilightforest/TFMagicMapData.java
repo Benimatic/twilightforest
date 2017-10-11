@@ -117,25 +117,27 @@ public class TFMagicMapData extends MapData {
 		@Override
 		@SideOnly(Side.CLIENT)
 		public boolean render(int idx) {
-			Minecraft.getMinecraft().renderEngine.bindTexture(MAP_ICONS);
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-			GlStateManager.rotate((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
-			GlStateManager.scale(4.0F, 4.0F, 3.0F);
-			GlStateManager.translate(-0.125F, 0.125F, 0.0F);
-			float f1 = (float) (featureId % 8) / 8.0F;
-			float f2 = (float) (featureId / 8) / 8.0F;
-			float f3 = (float) (featureId % 8 + 1) / 8.0F;
-			float f4 = (float) (featureId / 8 + 1) / 8.0F;
-			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder bufferbuilder = tessellator.getBuffer();
-			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-			bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex((double) f1, (double) f2).endVertex();
-			bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex((double) f3, (double) f2).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex((double) f3, (double) f4).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex((double) f1, (double) f4).endVertex();
-			tessellator.draw();
-			GlStateManager.popMatrix();
+			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
+				Minecraft.getMinecraft().renderEngine.bindTexture(MAP_ICONS);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
+				GlStateManager.rotate((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.scale(4.0F, 4.0F, 3.0F);
+				GlStateManager.translate(-0.125F, 0.125F, 0.0F);
+				float f1 = (float) (featureId % 8) / 8.0F;
+				float f2 = (float) (featureId / 8) / 8.0F;
+				float f3 = (float) (featureId % 8 + 1) / 8.0F;
+				float f4 = (float) (featureId / 8 + 1) / 8.0F;
+				Tessellator tessellator = Tessellator.getInstance();
+				BufferBuilder bufferbuilder = tessellator.getBuffer();
+				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+				bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex((double) f1, (double) f2).endVertex();
+				bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex((double) f3, (double) f2).endVertex();
+				bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex((double) f3, (double) f4).endVertex();
+				bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex((double) f1, (double) f4).endVertex();
+				tessellator.draw();
+				GlStateManager.popMatrix();
+			}
 			return true;
 		}
 	}
