@@ -59,7 +59,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private AIMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 
-	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
 
 	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, 0).setSaved(false);
 	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, 0).setSaved(false);

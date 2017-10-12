@@ -54,7 +54,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	private float damageUntilNextPhase = 45; // how much damage can we take before we toggle tantrum mode
 	private boolean noTrapMode; // are there no traps nearby?  just float around
-	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 
 	public EntityTFUrGhast(World par1World) {
 		super(par1World);
