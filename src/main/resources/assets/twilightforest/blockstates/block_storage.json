@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all"
+  },
+  "variants": {
+    "variant=ironwood":  [{ "model": "twilightforest:ironwood_block" }],
+    "variant=fiery":     [{
+      "model": "twilightforest:util/cube_all_2_layer",
+      "textures": {
+        "all": "twilightforest:blocks/fiery_pattern",
+        "all2": "twilightforest:blocks/fiery_block_inner"
+      }
+    }],
+    "variant=steelleaf": [{ "textures": { "all": "twilightforest:blocks/ironwood_block" } }],
+    "variant=artic_fur": [{ "textures": { "all": "twilightforest:blocks/ironwood_block" } }],
+    "variant=carminite": [{ "textures": { "all": "twilightforest:blocks/ironwood_block" } }]
+  }
+}
