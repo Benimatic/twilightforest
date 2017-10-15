@@ -8,7 +8,7 @@ public enum CompressedVariant implements IStringSerializable {
     IRONWOOD,
     FIERY,
     STEELLEAF,
-    ARTIC_FUR,
+    ARCTIC_FUR,
     CARMINITE;
 
     @Override

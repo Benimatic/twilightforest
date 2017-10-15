@@ -30,6 +30,9 @@ public class TFRecipes {
 		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.shardCluster));
 		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightMetal));
 
+		OreDictionary.registerOre("carminite", new ItemStack(TFItems.carminite));
+		OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arcticFur));
+
 		// recipe sorter
 		// RecipeSorter.register(TwilightForestMod.ID + ":mapcloning", TFMapCloningRecipe.class, SHAPELESS, "after:minecraft:shapeless");
 

@@ -245,6 +245,11 @@ tile.ForceField.1.name=Pink Force Field
 tile.ForceField.2.name=Orange Force Field
 tile.ForceField.3.name=Green Force Field
 tile.ForceField.4.name=Blue Force Field
+tile.BlockOfStorage.0.name=Block of Ironwood
+tile.BlockOfStorage.1.name=Block of Fiery Metal
+tile.BlockOfStorage.2.name=Block of Steeleaf
+tile.BlockOfStorage.3.name=Block of Arctic Fur
+tile.BlockOfStorage.4.name=Block of Carminite
 
 item.nagaScale.name=Naga Scale
 item.plateNaga.name=Naga Scale Tunic
