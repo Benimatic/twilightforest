@@ -588,11 +588,13 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private void destroyBlocksInAABB(AxisAlignedBB box) {
-		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			IBlockState state = world.getBlockState(pos);
-			if (!state.getBlock().isAir(state, world, pos) && state.getBlock() != Blocks.OBSIDIAN
-					&& state.getBlock() != Blocks.END_STONE && state.getBlock() != Blocks.BEDROCK) {
-				world.destroyBlock(pos, false);
+		if (world.getGameRules().getBoolean("mobGriefing")) {
+			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+				IBlockState state = world.getBlockState(pos);
+				if (!state.getBlock().isAir(state, world, pos) && state.getBlock() != Blocks.OBSIDIAN
+						&& state.getBlock() != Blocks.END_STONE && state.getBlock() != Blocks.BEDROCK) {
+					world.destroyBlock(pos, false);
+				}
 			}
 		}
 	}
