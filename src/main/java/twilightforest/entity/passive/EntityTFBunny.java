@@ -14,12 +14,15 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 
 public class EntityTFBunny extends EntityCreature implements IAnimals {
 
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bunny");
 	private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
 
 	public EntityTFBunny(World par1World) {
@@ -69,6 +72,11 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
 		this.setBunnyType(par1NBTTagCompound.getInteger("BunnyType"));
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 
 	public int getBunnyType() {
