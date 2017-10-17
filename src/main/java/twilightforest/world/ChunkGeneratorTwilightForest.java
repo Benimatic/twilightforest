@@ -910,7 +910,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		if(structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()))
 			return hollowTreeGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		if (feature != null)
+		if (feature != null && feature != TFFeature.nothing)
 			return TFFeature.findNearestFeaturePosBySpacing(worldIn, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
 		return null;
 	}
@@ -968,6 +968,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	@Override
 	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
-		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : TFFeature.getFeatureByName(new ResourceLocation(structureName)) != null;
+		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
+		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : feature != null && feature != TFFeature.nothing;
 	}
 }
