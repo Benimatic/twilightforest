@@ -149,7 +149,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 				GlStateManager.enableLighting();
 				GlStateManager.translate(-0.5F, 0.0F, 1.5F);
 
-				//if (variant == BossVariant.QUESTING_RAM)
+				//if (variant == BossVariant.QUEST_RAM)
 				//	GlStateManager.translate(0.0F,0.0625F,0.0F);
 
 				GlStateManager.rotate(30, 1F, 0F, 0F);
@@ -169,7 +169,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 			}
 
 			if (transform == ItemCameraTransforms.TransformType.HEAD) {
-				if (BossVariant.values()[stack.getMetadata() % BossVariant.values().length] == BossVariant.QUESTING_RAM) {
+				if (BossVariant.values()[stack.getMetadata() % BossVariant.values().length] == BossVariant.QUEST_RAM) {
 					GlStateManager.scale(3F, 3F, 3F);
 					GlStateManager.translate(-0.33F, -0.13F, -0.33F);
 				} else {
@@ -234,7 +234,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 			case KNIGHT_PHANTOM:
 				renderKnightPhantomHead(rotation, onGround);
 				break;
-			case QUESTING_RAM:
+			case QUEST_RAM:
 				renderQuestRamHead(rotation, onGround);
 				break;
 			default:

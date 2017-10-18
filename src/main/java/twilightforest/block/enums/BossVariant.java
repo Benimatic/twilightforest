@@ -27,7 +27,7 @@ public enum BossVariant implements IStringSerializable {
 	SNOW_QUEEN    (true , TrophyType.GOLD    , TileEntityTFSnowQueenSpawner.class),
 	MINOSHROOM    (false, TrophyType.IRON    , TileEntityTFMinoshroomSpawner.class),
 	ALPHA_YETI    (false, TrophyType.IRON    , TileEntityTFAlphaYetiSpawner.class),
-	QUESTING_RAM  (false, TrophyType.IRONWOOD, null);
+	QUEST_RAM     (false, TrophyType.IRONWOOD, null);
 
 	private final boolean isMajorBoss;
 	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;
