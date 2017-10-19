@@ -237,8 +237,7 @@ public class TFEventListener {
 			effect2.offset = (float) Math.PI;
 			living.world.spawnEntity(effect2);
 
-			// sound
-			// living.world.setEntityState(living, (byte) 35);
+			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
 		}
 	}
 
