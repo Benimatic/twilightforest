@@ -187,51 +187,6 @@ public class TFEventListener {
 			}
 		}
 
-		// charm of life?
-		if (event.getEntityLiving() instanceof EntityPlayer && willEntityDie(event)) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-
-			boolean charm1 = false;
-			boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife2, 1);
-			if (!charm2) {
-				charm1 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife1, 1);
-			}
-
-			// do they have a charm of life?  OM NOM NOM!
-			if (charm2 || charm1) {
-				//player.sendMessage("Charm of Life saves you!!!");
-
-				// cancel damage
-				event.setResult(Result.DENY);
-				event.setCanceled(true);
-				event.setAmount(0);
-
-				if (charm1) {
-					player.setHealth(8);
-					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0));
-				}
-
-				if (charm2) {
-					player.setHealth((float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
-
-					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 600, 3));
-					player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 600, 0));
-					player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 600, 0));
-				}
-
-				// spawn effect thingers
-				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.world, player, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
-				player.world.spawnEntity(effect);
-
-				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(player.world, player, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
-				effect2.offset = (float) Math.PI;
-				player.world.spawnEntity(effect2);
-
-				// sound
-				player.world.setEntityState(player, (byte) 35);
-			}
-		}
-
 		// Smashing!
 		Item item = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
 		if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
@@ -248,34 +203,47 @@ public class TFEventListener {
 		}
 	}
 
-	// TODO modernize the calculations
-	private static boolean willEntityDie(LivingHurtEvent event) {
-		float amount = event.getAmount();
-		DamageSource source = event.getSource();
-		EntityLivingBase living = event.getEntityLiving();
-		// reduce damage by armor
-		if (!source.isUnblockable()) {
-			int armor = 25 - living.getTotalArmorValue();
-			amount = (amount * armor) / 25F;
+	@SubscribeEvent
+	public static void charmOfLife(LivingDeathEvent evt) {
+		EntityLivingBase living = evt.getEntityLiving();
+
+		boolean charm1 = false;
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife2, 1);
+		if (!charm2) {
+			charm1 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife1, 1);
 		}
 
-		// maybe also potions?
-		if (living.isPotionActive(MobEffects.RESISTANCE)) {
-			int resistance = 25 - (living.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier() + 1) * 5;
-			amount = amount * resistance / 25F;
-		}
-		//System.out.printf("I think the player is going to take %f damage and they have %f health.\n", Math.ceil(amount), living.getHealth());
+		if (charm2 || charm1) {
+			evt.setCanceled(true);
 
-		return Math.ceil(amount) >= Math.floor(living.getHealth());
+			if (charm1) {
+				living.setHealth(8);
+				living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0));
+			}
+
+			if (charm2) {
+				living.setHealth((float) living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
+
+				living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 600, 3));
+				living.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 600, 0));
+				living.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 600, 0));
+			}
+
+			// spawn effect thingers
+			EntityTFCharmEffect effect = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
+			living.world.spawnEntity(effect);
+
+			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
+			effect2.offset = (float) Math.PI;
+			living.world.spawnEntity(effect2);
+
+			// sound
+			living.world.setEntityState(living, (byte) 35);
+		}
 	}
 
-	/**
-	 * If a player dies with a charm of keeping, consume the charm and then keep track of what items we need to keep
-	 * <p>
-	 * Also keep tower keys
-	 */
 	@SubscribeEvent
-	public static void livingDies(LivingDeathEvent event) {
+	public static void charmOfKeeping(LivingDeathEvent event) {
 		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().world.getGameRules().getBoolean("keepInventory")) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping3, 1);
