@@ -238,7 +238,7 @@ public class TFEventListener {
 			living.world.spawnEntity(effect2);
 
 			// sound
-			living.world.setEntityState(living, (byte) 35);
+			// living.world.setEntityState(living, (byte) 35);
 		}
 	}
 
