@@ -969,6 +969,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Override
 	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : feature != null && feature != TFFeature.nothing;
+		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : feature != null && feature != TFFeature.nothing && TFFeature.isInFeatureChunk(worldIn, pos.getX(), pos.getZ()) && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), worldIn) == feature;
 	}
 }
