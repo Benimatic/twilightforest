@@ -128,9 +128,11 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		
 		// fire aura
-		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getTrueSource() != null) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+		if (living instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getTrueSource() != null) {
+			EntityPlayer player = (EntityPlayer) living;
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.getSource());
 
 
@@ -140,9 +142,9 @@ public class TFEventListener {
 		}
 
 		// chill aura
-		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob")
+		if (living instanceof EntityPlayer && event.getSource().damageType.equals("mob")
 				&& event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+			EntityPlayer player = (EntityPlayer) living;
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.getSource());
 
 			if (chillLevel > 0) {
@@ -157,7 +159,7 @@ public class TFEventListener {
 
 			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
 					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
-				event.getEntityLiving().hurtResistantTime = 0;
+				living.hurtResistantTime = 0;
 			}
 		}
 
@@ -175,31 +177,33 @@ public class TFEventListener {
 				float sourcePitch = player.rotationPitch;
 
 				// this is the only method that will move the player properly
-				player.rotationYaw = event.getEntityLiving().rotationYaw;
-				player.rotationPitch = event.getEntityLiving().rotationPitch;
-				player.setPositionAndUpdate(event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ);
+				player.rotationYaw = living.rotationYaw;
+				player.rotationPitch = living.rotationPitch;
+				player.setPositionAndUpdate(living.posX, living.posY, living.posZ);
 				player.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
 
 
 				// monsters are easy to move
-				event.getEntityLiving().setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
-				event.getEntityLiving().playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
+				living.setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
+				living.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
 			}
 		}
 
 		// Smashing!
-		Item item = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
+		Item item = living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
 		if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
 			BlockTFCritter poorBug = (BlockTFCritter)((ItemBlock) item).getBlock();
 
 			if (poorBug == TFBlocks.firefly)
-				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GLOWSTONE_DUST));
+				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GLOWSTONE_DUST));
 
 			if (poorBug == TFBlocks.cicada)
-				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 8));
+				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 8));
 
 			if (poorBug == TFBlocks.moonworm)
-				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 10));
+				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 10));
+
+			living.world.playSound(null, living.posX, living.posY, living.posZ, poorBug.getSoundType().getBreakSound(), living.getSoundCategory(), 1, 1);
 		}
 	}
 
