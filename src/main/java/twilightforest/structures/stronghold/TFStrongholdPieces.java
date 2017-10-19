@@ -3,6 +3,7 @@ package twilightforest.structures.stronghold;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 
 import java.lang.reflect.InvocationTargetException;
@@ -125,7 +126,7 @@ public class TFStrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(index, facing, x, y, z);
+		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponent ? ((StructureTFComponent)parent).getFeatureType() : TFFeature.nothing, index, facing, x, y, z);
 
 		if (StructureComponent.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;

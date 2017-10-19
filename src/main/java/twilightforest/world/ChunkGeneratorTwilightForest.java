@@ -923,7 +923,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return this.majorFeatureGenerator.isStructureLocked(pos, lockIndex);
 	}
 
-
 	public boolean isBlockInStructureBB(BlockPos pos) {
 		return this.majorFeatureGenerator.isInsideStructure(pos);
 	}
@@ -940,7 +939,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return this.majorFeatureGenerator.isStructureConquered(pos);
 	}
 
-
 	public boolean isBlockInFullStructure(int x, int z) {
 		return this.majorFeatureGenerator.isBlockInFullStructure(x, z);
 	}
@@ -953,12 +951,13 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return this.majorFeatureGenerator.getFullSBBAt(mapX, mapZ);
 	}
 
-
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
 		return this.majorFeatureGenerator.getFullSBBNear(mapX, mapZ, range);
-
 	}
 
+	public TFFeature getFeatureAt(BlockPos pos) {
+		return majorFeatureGenerator.getFeatureAt(pos);
+	}
 
 	@Override
 	public void recreateStructures(Chunk chunk, int var1, int var2) {
@@ -969,6 +968,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Override
 	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : feature != null && feature != TFFeature.nothing && TFFeature.isInFeatureChunk(worldIn, pos.getX(), pos.getZ()) && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), worldIn) == feature;
+		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : feature != null && feature != TFFeature.nothing && getFeatureAt(pos) == feature;
 	}
 }
