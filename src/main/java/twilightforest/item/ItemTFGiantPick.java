@@ -18,11 +18,11 @@ import java.util.List;
 
 public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallback {
 
-	protected ItemTFGiantPick(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	protected ItemTFGiantPick(Item.ToolMaterial material) {
+		super(material);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.damageVsEntity = 4 + par2EnumToolMaterial.getDamageVsEntity();
-
+		this.damageVsEntity = 8 + material.getDamageVsEntity();
+		this.attackSpeed = -3.5F;
 	}
 
 	@Override
