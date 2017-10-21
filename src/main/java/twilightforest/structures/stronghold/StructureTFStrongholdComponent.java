@@ -126,7 +126,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 		TFStrongholdPieces pieceList = ((ComponentTFStrongholdEntrance) entrance).lowerPieces;
 
-		StructureComponent nextComponent = pieceList.getNextComponent(entrance, list, random, index, nFacing, nx, ny, nz);
+		StructureComponent nextComponent = pieceList.getNextComponent(entrance, list, random, getFeatureType(), index, nFacing, nx, ny, nz);
 
 		// is it clear?
 		if (nextComponent != null) {
