@@ -123,9 +123,11 @@ public class TFClientEvents {
 		Minecraft mc = Minecraft.getMinecraft();
 		World world = mc.world;
 
-		Entity riding = mc.player.getRidingEntity();
-		if (riding instanceof EntityTFPinchBeetle || riding instanceof EntityTFYeti || riding instanceof EntityTFYetiAlpha) {
-			mc.ingameGUI.setOverlayMessage("", false);
+		if (mc.player != null) {
+			Entity riding = mc.player.getRidingEntity();
+			if (riding instanceof EntityTFPinchBeetle || riding instanceof EntityTFYeti || riding instanceof EntityTFYetiAlpha) {
+				mc.ingameGUI.setOverlayMessage("", false);
+			}
 		}
 
 		((BlockLeaves) TFBlocks.leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
