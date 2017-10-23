@@ -74,6 +74,38 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	public Material getMaterial(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			default:
+			case FIERY:
+				return super.getMaterial(state);
+			case IRONWOOD:
+				return Material.WOOD;
+			case STEELLEAF:
+				return Material.LEAVES;
+			case ARCTIC_FUR:
+				return Material.CLOTH;
+			case CARMINITE:
+				return Material.CLAY;
+		}
+	}
+
+	@Override
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+		switch (blockState.getValue(VARIANT)) {
+			default:
+			case FIERY:
+			case IRONWOOD:
+			case STEELLEAF:
+				super.getBlockHardness(blockState, worldIn, pos);
+			case ARCTIC_FUR:
+				return 0.8F;
+			case CARMINITE:
+				return 0.0F;
+		}
+	}
+
+	@Override
     public int damageDropped(IBlockState state) {
         return getMetaFromState(state);
     }
