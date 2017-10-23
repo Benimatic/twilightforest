@@ -8,14 +8,19 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.CompressedVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 public class BlockTFCompressed extends Block implements ModelRegisterCallback {
     public static final PropertyEnum<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
@@ -51,7 +56,24 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
         }
     }
 
-    @Override
+	@Override
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+		switch (state.getValue(VARIANT)) {
+			default:
+			case FIERY:
+				return SoundType.METAL;
+			case IRONWOOD:
+				return SoundType.WOOD;
+			case STEELLEAF:
+				return SoundType.PLANT;
+			case ARCTIC_FUR:
+				return SoundType.CLOTH;
+			case CARMINITE:
+				return SoundType.SLIME;
+		}
+	}
+
+	@Override
     public int damageDropped(IBlockState state) {
         return getMetaFromState(state);
     }
