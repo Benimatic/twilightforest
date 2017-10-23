@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.CompressedVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
+import twilightforest.item.TFItems;
 
 public class BlockTFCompressed extends Block implements ModelRegisterCallback {
     public static final PropertyEnum<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
@@ -25,6 +26,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
         this.setResistance(10.0F);
         this.setSoundType(SoundType.METAL);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, CompressedVariant.IRONWOOD));
+		this.setCreativeTab(TFItems.creativeTab);
     }
 
     @Override
