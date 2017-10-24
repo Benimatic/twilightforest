@@ -443,7 +443,6 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.enableAlpha();
-		GlStateManager.disableBlend();
 		GlStateManager.enableLighting();
 	}
 }
