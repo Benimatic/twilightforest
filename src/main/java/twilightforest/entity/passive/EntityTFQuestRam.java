@@ -25,7 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAdvancements;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.entity.ai.EntityAITFEatLoose;
