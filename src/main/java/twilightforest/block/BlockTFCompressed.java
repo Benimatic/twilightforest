@@ -8,8 +8,11 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -121,4 +124,34 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
     public void registerModel() {
         ModelUtils.registerToStateSingleVariant(this, VARIANT);
     }
+
+    @Override
+	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
+		if ((!entityIn.isImmuneToFire())
+				&& entityIn instanceof EntityLivingBase
+				&& (!EnchantmentHelper.hasFrostWalkerEnchantment((EntityLivingBase)entityIn))
+				&& worldIn.getBlockState(pos).getValue(VARIANT) == CompressedVariant.FIERY) {
+			entityIn.attackEntityFrom(DamageSource.HOT_FLOOR, 1.0F);
+		}
+
+		super.onEntityWalk(worldIn, pos, entityIn);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return state.getValue(VARIANT) == CompressedVariant.FIERY ? 15728880 : super.getPackedLightmapCoords(state, source, pos);
+	}
+
+	@Override
+	public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
+		switch(worldIn.getBlockState(pos).getValue(VARIANT)) {
+			case STEELLEAF:
+				entityIn.fall(fallDistance, 0.75F);
+				break;
+			case ARCTIC_FUR:
+				entityIn.fall(fallDistance, 0.1F);
+				break;
+		}
+	}
 }
