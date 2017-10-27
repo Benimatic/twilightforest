@@ -12,7 +12,9 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -153,5 +155,16 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 				entityIn.fall(fallDistance, 0.1F);
 				break;
 		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean isFireSource(World world, BlockPos pos, EnumFacing face) {
+		return CompressedVariant.FIERY == world.getBlockState(pos).getValue(VARIANT);
 	}
 }
