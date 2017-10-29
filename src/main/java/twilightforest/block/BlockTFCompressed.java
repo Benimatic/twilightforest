@@ -167,4 +167,13 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	public boolean isFireSource(World world, BlockPos pos, EnumFacing face) {
 		return CompressedVariant.FIERY == world.getBlockState(pos).getValue(VARIANT);
 	}
+
+	@Deprecated
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		if (blockState.getValue(VARIANT) == CompressedVariant.FIERY) {
+			IBlockState state = blockAccess.getBlockState(pos.offset(side));
+			return state.getBlock() != this || state.getValue(VARIANT) != CompressedVariant.FIERY;
+		} else return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
 }
