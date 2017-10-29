@@ -766,59 +766,77 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Override
 	public void populate(int chunkX, int chunkZ) {
 		BlockFalling.fallInstantly = true;
-		BlockPos worldPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
+		int i = chunkX * 16;
+		int j = chunkZ * 16;
+		BlockPos blockpos = new BlockPos(i, 0, j);
+		Biome biome = this.world.getBiome(blockpos.add(16, 0, 16));
+		this.rand.setSeed(this.world.getSeed());
+		long k = this.rand.nextLong() / 2L * 2L + 1L;
+		long l = this.rand.nextLong() / 2L * 2L + 1L;
+		this.rand.setSeed((long)chunkX * k + (long)chunkZ * l ^ this.world.getSeed());
+		boolean flag = false;
+		ChunkPos chunkpos = new ChunkPos(chunkX, chunkZ);
 
-		Biome biomeGen = world.getBiome(worldPos);
-
-		rand.setSeed(world.getSeed());
-		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
-		long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-		rand.setSeed(chunkX * l1 + chunkZ * l2 ^ world.getSeed());
+		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, chunkX, chunkZ, flag);
 
 		boolean disableFeatures = false;
 
-		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
+		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, chunkpos);
 		disableFeatures |= !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
 
-		hollowTreeGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
+		hollowTreeGenerator.generateStructure(world, rand, chunkpos);
 
-		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.decorator.generateFalls) {
-			int i1 = worldPos.getX() + rand.nextInt(16) + 8;
+		if (!disableFeatures && rand.nextInt(4) == 0 && biome.decorator.generateFalls) {
+			int i1 = blockpos.getX() + rand.nextInt(16) + 8;
 			int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
-			int i3 = worldPos.getZ() + rand.nextInt(16) + 8;
+			int i3 = blockpos.getZ() + rand.nextInt(16) + 8;
 			(new WorldGenLakes(Blocks.WATER)).generate(world, rand, new BlockPos(i1, i2, i3));
 		}
 
 		if (!disableFeatures && rand.nextInt(32) == 0) // reduced from 8
 		{
-			int j1 = worldPos.getX() + rand.nextInt(16) + 8;
+			int j1 = blockpos.getX() + rand.nextInt(16) + 8;
 			int j2 = rand.nextInt(rand.nextInt(TFWorld.CHUNKHEIGHT - 8) + 8);
-			int j3 = worldPos.getZ() + rand.nextInt(16) + 8;
+			int j3 = blockpos.getZ() + rand.nextInt(16) + 8;
 			if (j2 < TFWorld.SEALEVEL || rand.nextInt(10) == 0) {
 				(new WorldGenLakes(Blocks.LAVA)).generate(world, rand, new BlockPos(j1, j2, j3));
 			}
 		}
 		for (int k1 = 0; k1 < 8; k1++) {
-			int k2 = worldPos.getX() + rand.nextInt(16) + 8;
+			int k2 = blockpos.getX() + rand.nextInt(16) + 8;
 			int k3 = rand.nextInt(TFWorld.CHUNKHEIGHT);
-			int l3 = worldPos.getZ() + rand.nextInt(16) + 8;
+			int l3 = blockpos.getZ() + rand.nextInt(16) + 8;
 			(new WorldGenDungeons()).generate(world, rand, new BlockPos(k2, k3, l3));
 		}
 
-		biomeGen.decorate(world, rand, worldPos);
-		WorldEntitySpawner.performWorldGenSpawning(world, biomeGen, worldPos.getX() + 8, worldPos.getZ() + 8, 16, 16, rand);
-		worldPos = worldPos.add(8, 0, 8);
-		for (int i2 = 0; i2 < 16; i2++) {
-			for (int j3 = 0; j3 < 16; j3++) {
-				BlockPos j4 = world.getPrecipitationHeight(worldPos.add(i2, 0, j3));
-				if (world.canBlockFreezeWater(j4.down())) {
-					world.setBlockState(j4.down(), Blocks.ICE.getDefaultState(), 2);
-				}
-				if (world.canSnowAt(j4, true)) {
-					world.setBlockState(j4, Blocks.SNOW_LAYER.getDefaultState(), 2);
+		biome.decorate(this.world, this.rand, new BlockPos(i, 0, j));
+		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS))
+			WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.rand);
+		blockpos = blockpos.add(8, 0, 8);
+
+		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE))
+		{
+			for (int k2 = 0; k2 < 16; ++k2)
+			{
+				for (int j3 = 0; j3 < 16; ++j3)
+				{
+					BlockPos blockpos1 = this.world.getPrecipitationHeight(blockpos.add(k2, 0, j3));
+					BlockPos blockpos2 = blockpos1.down();
+
+					if (this.world.canBlockFreezeWater(blockpos2))
+					{
+						this.world.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 2);
+					}
+
+					if (this.world.canSnowAt(blockpos1, true))
+					{
+						this.world.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 2);
+					}
 				}
 			}
-		}
+		}//Forge: End ICE
+
+		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, chunkX, chunkZ, flag);
 
 		BlockFalling.fallInstantly = false;
 	}
