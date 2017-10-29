@@ -26,6 +26,11 @@
           "type": "item",
           "name": "minecraft:book",
           "weight": 5
+        },
+        {
+          "type": "loot_table",
+          "name": "twilightforest:enchanted_book/books",
+          "weight": 1
         }
       ]
     },
