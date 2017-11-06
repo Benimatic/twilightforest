@@ -521,21 +521,9 @@ public class ContainerTFUncrafting extends Container {
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
 
-		if (!this.world.isRemote) {
-			// drop items in assembly grid
-			for (int i = 0; i < 9; ++i) {
-				ItemStack assemblyStack = this.assemblyMatrix.removeStackFromSlot(i);
-
-				if (!assemblyStack.isEmpty()) {
-					player.dropItem(assemblyStack, false);
-				}
-			}
-
-			// drop input
-			ItemStack inputStack = this.tinkerInput.removeStackFromSlot(0);
-			if (!inputStack.isEmpty()) {
-				player.dropItem(inputStack, false);
-			}
+		if (!player.world.isRemote) {
+			clearContainer(player, world, assemblyMatrix);
+			clearContainer(player, world, tinkerInput);
 		}
 	}
 
