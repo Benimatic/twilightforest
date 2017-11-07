@@ -33,8 +33,8 @@ public class LoadingScreenListener {
                 guiLoading = new GuiTwilightForestLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
 
             if(lastDimension == TFConfig.dimension.dimensionID && client.player.dimension != TFConfig.dimension.dimensionID)
-                guiLoading.setLeaving(false);
-            else guiLoading.setLeaving(true);
+                guiLoading.setEntering(false);
+            else guiLoading.setEntering(true);
 
             if(client.player.dimension == TFConfig.dimension.dimensionID
                     || lastDimension == TFConfig.dimension.dimensionID)

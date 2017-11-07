@@ -10,6 +10,8 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class TFConfig {
 
 	public static class Dimension {
 		@Config.RequiresMcRestart
-		@Config.Comment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.")
+		@Config.Comment("What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.")
 		public int dimensionID = 7;
 
 		@Config.RequiresWorldRestart
@@ -35,23 +37,23 @@ public class TFConfig {
 		@Config.RangeDouble(min = 0)
 		public float canopyCoverage = 1.7F;
 
-		@Config.Comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree.  Higher numbers reduce the number of trees, increasing performance.")
+		@Config.Comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.")
 		public int twilightOakChance = 48;
 	}
 
-	@Config.Comment("Make cicadas silent  for those having sound library problems, or otherwise finding them annoying")
+	@Config.Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying")
 	public static boolean silentCicadas = false;
 
-	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0.  May be considered an exploit.")
+	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.")
 	public static boolean allowPortalsInOtherDimensions = false;
 
-	@Config.Comment("Allow portals only for admins (ops).  This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
+	@Config.Comment("Allow portals only for admins (ops). This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
 	public static boolean adminOnlyPortals = false;
 
-	@Config.Comment("Disable Twilight Forest portal creation entirely.  Provided for server operators looking to restrict action to the dimension.")
+	@Config.Comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.")
 	public static boolean disablePortalCreation = false;
 
-	@Config.Comment("Disable the uncrafting function of the uncrafting table.  Provided as an option when interaction with other mods produces exploitable recipes.")
+	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;
 
 	@Config.Comment("Name of item used to create the Twilight Forest Portal")
@@ -65,6 +67,31 @@ public class TFConfig {
 
 	@Config.Comment("Rotate trophy heads in gui model. Has close to no performance impact at all. For those who don't like fun.")
 	public static boolean rotateTrophyHeadsGui = true;
+
+	@SideOnly(Side.CLIENT)
+	@Config.Comment("Client only: Controls for the bouncy wobbly icon on Loading screen")
+	public static final LoadingIcon loadingIcon = new LoadingIcon();
+
+	@SideOnly(Side.CLIENT)
+	public static class LoadingIcon {
+		@Config.Comment("Wobble the Loading icon. Has close to no performance impact at all. For those who don't like fun.")
+		public boolean enable = true;
+		@Config.Comment("Frequency of Wobble and Bounce")
+		@Config.RangeDouble(min = 0F)
+		public float frequency = 4.5F;
+		@Config.Comment("Scale of Whole Thing")
+		@Config.RangeDouble(min = 0F)
+		public float scale = 3F;
+		@Config.Comment("How much the thing bounces")
+		@Config.RangeDouble(min = 0F)
+		public float scaleDeviation = 5F;
+		@Config.Comment("How far the thing wobbles")
+		@Config.RangeDouble(min = 0F, max = 360F)
+		public float tiltRange = 11.25F;
+		@Config.Comment("Pushback value to re-center the wobble")
+		@Config.RangeDouble(min = 0F, max = 360F)
+		public float tiltConstant = 22.5F;
+	}
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {

@@ -14,18 +14,22 @@ import net.minecraft.network.play.client.CPacketKeepAlive;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 import java.io.IOException;
 import java.util.Random;
 
+@SideOnly(Side.CLIENT)
 public class GuiTwilightForestLoading extends GuiScreen {
 
     private Minecraft client = FMLClientHandler.instance().getClient();
     private final NetHandlerPlayClient connection;
     private int progress;
-    private boolean isLeaving;
+    private boolean isEntering;
     private boolean contentNeedsAssignment = false;
     private long lastWorldUpdateTick = 0L;
     private Random random = new Random();
@@ -67,8 +71,8 @@ public class GuiTwilightForestLoading extends GuiScreen {
         this.connection = clientPlayHandler;
     }
 
-    void setLeaving(boolean isLeaving) {
-        this.isLeaving = isLeaving;
+    void setEntering(boolean isEntering) {
+        this.isEntering = isEntering;
     }
 
     @Override
@@ -115,7 +119,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
         drawBouncingWobblyItem(partialTicks, resolution.getScaledWidth(), resolution.getScaledHeight());
 
-        String loadTitle = I18n.translateToLocal(TwilightForestMod.ID + ".loading.title." + (isLeaving ? "leave" : "enter"));
+        String loadTitle = I18n.translateToLocal(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
         GlStateManager.pushMatrix();
         GlStateManager.translate(
                 ((resolution.getScaledWidth()) / 2) - (fontRenderer.getStringWidth(loadTitle) / 4),
@@ -163,24 +167,20 @@ public class GuiTwilightForestLoading extends GuiScreen {
         tessellator.draw();
     }
 
-    private static final float FREQUENCY = 4.5F;
-    private static final float SCALE_DEVIATION = 5F;
-    private static final float SCALE_CONSTANT = (((SCALE_DEVIATION - 1F) / SCALE_DEVIATION) + 1F)* 2F;
-    private static final float TILT_RANGE = 11.25F;
-    private static final float TILT_CONSTANT = (TILT_RANGE * 2F);
-
     private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
-        float sineTicker = (TFClientEvents.sineTicker + partialTicks) * FREQUENCY;
+        float sineTicker = (TFClientEvents.sineTicker + partialTicks) * TFConfig.loadingIcon.frequency;
         GlStateManager.pushMatrix();
 
         // Shove it!
-        GlStateManager.translate(width - (width / 7.5), height - (height / 10), 0); // Bottom right Corner
+        GlStateManager.translate(width - ((width/30) * TFConfig.loadingIcon.scale), height - (height / 10), 0); // Bottom right Corner
 
-        // Wobble it!
-        GlStateManager.rotate((float) Math.sin(sineTicker / TILT_RANGE) * TILT_CONSTANT, 0, 0, 1);
+        if (TFConfig.loadingIcon.enable) {
+            // Wobble it!
+            GlStateManager.rotate((float) Math.sin(sineTicker / TFConfig.loadingIcon.tiltRange) * TFConfig.loadingIcon.tiltConstant, 0, 0, 1);
 
-        // Bounce it!
-        GlStateManager.scale(4F, (Math.sin((sineTicker + 180F) / (TILT_RANGE / 2)) / SCALE_DEVIATION) + SCALE_CONSTANT, 1F);
+            // Bounce it!
+            GlStateManager.scale(TFConfig.loadingIcon.scale, ((Math.sin(((sineTicker + 180F) / TFConfig.loadingIcon.tiltRange) * 2F) / TFConfig.loadingIcon.scaleDeviation) + 2F) * (TFConfig.loadingIcon.scale / 2), 1F);
+        }
 
         // Shift it!
         GlStateManager.translate(-8, -16.5, 0);
