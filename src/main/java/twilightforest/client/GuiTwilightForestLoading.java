@@ -101,16 +101,16 @@ public class GuiTwilightForestLoading extends GuiScreen {
             this.contentNeedsAssignment = false;
         }
 
-        /*if (mc.world != null) {
+        if (mc.world != null && TFConfig.loadingIcon.cycleLoadingScreenFrequency != 0) {
             if (lastWorldUpdateTick != mc.world.getTotalWorldTime() % 240000) {
 
                 lastWorldUpdateTick = mc.world.getTotalWorldTime() % 240000;
 
-                if (lastWorldUpdateTick % 30 == 0) {
+                if (lastWorldUpdateTick % TFConfig.loadingIcon.cycleLoadingScreenFrequency == 0) {
                     assignContent();
                 }
             }
-        }//*/
+        }
 
         FontRenderer fontRenderer = mc.fontRenderer;
         ScaledResolution resolution = new ScaledResolution(client);

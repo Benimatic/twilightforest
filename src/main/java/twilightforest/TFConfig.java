@@ -76,6 +76,9 @@ public class TFConfig {
 	public static class LoadingIcon {
 		@Config.Comment("Wobble the Loading icon. Has close to no performance impact at all. For those who don't like fun.")
 		public boolean enable = true;
+		@Config.Comment("How many ticks between each loading screen change. Set to 0 to not cycle at all.")
+		@Config.RangeInt(min = 0)
+		public int cycleLoadingScreenFrequency = 0;
 		@Config.Comment("Frequency of Wobble and Bounce")
 		@Config.RangeDouble(min = 0F)
 		public float frequency = 4.5F;
