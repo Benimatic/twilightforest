@@ -10,8 +10,6 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -68,11 +66,9 @@ public class TFConfig {
 	@Config.Comment("Rotate trophy heads in gui model. Has close to no performance impact at all. For those who don't like fun.")
 	public static boolean rotateTrophyHeadsGui = true;
 
-	@SideOnly(Side.CLIENT)
 	@Config.Comment("Client only: Controls for the bouncy wobbly icon on Loading screen")
 	public static final LoadingIcon loadingIcon = new LoadingIcon();
 
-	@SideOnly(Side.CLIENT)
 	public static class LoadingIcon {
 		@Config.Comment("Wobble the Loading icon. Has close to no performance impact at all. For those who don't like fun.")
 		public boolean enable = true;
