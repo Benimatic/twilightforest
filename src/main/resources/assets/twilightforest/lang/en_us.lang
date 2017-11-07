@@ -478,6 +478,13 @@ entity.twilightforest.ice_crystal.name=Ice Crystal
 entity.twilightforest.apocalypse_cube.name=Apocolypse Cube [NYI]
 entity.twilightforest.adherent.name=Adherent [NYI]
 
+twilightforest.misc.wip0=This block is a work in progress and may have bugs or unintended effects that may damage your world.
+twilightforest.misc.wip1=Use with caution.
+twilightforest.misc.nyi=This block has effects that are not yet implemented.
+
+twilightforest.loading.title.enter=Whisking you off to the Twilight Forest...
+twilightforest.loading.title.leave=Whisking you from the Twilight Forest...
+
 twilightforest.book.lichtower.1=\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse
 twilightforest.book.lichtower.2=is boiling off into the surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...
 twilightforest.book.lichtower.3=\u00A78[[Many entries later]]\u00A70\n\nA breakthrough!  In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the
@@ -512,6 +519,3 @@ twilightforest.book.trollcave.3=magician. Such a person would likely hide themse
 twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
 
-twilightforest.misc.wip0=This block is a work in progress and may have bugs or unintended effects that may damage your world.
-twilightforest.misc.wip1=Use with caution.
-twilightforest.misc.nyi=This block has effects that are not yet implemented.

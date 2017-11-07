@@ -15,6 +15,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -30,17 +31,7 @@ import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
-import twilightforest.entity.passive.EntityTFBighorn;
-import twilightforest.entity.passive.EntityTFBoar;
-import twilightforest.entity.passive.EntityTFBunny;
-import twilightforest.entity.passive.EntityTFDeer;
-import twilightforest.entity.passive.EntityTFMobileFirefly;
-import twilightforest.entity.passive.EntityTFPenguin;
-import twilightforest.entity.passive.EntityTFQuestRam;
-import twilightforest.entity.passive.EntityTFRaven;
-import twilightforest.entity.passive.EntityTFSquirrel;
-import twilightforest.entity.passive.EntityTFTinyBird;
-import twilightforest.entity.passive.EntityTFTinyFirefly;
+import twilightforest.entity.passive.*;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCicada;
 import twilightforest.tileentity.TileEntityTFFirefly;
@@ -155,6 +146,8 @@ public class TFClientProxy extends TFCommonProxy {
 	@Override
 	public void doOnLoadRegistration() {
 		ColorHandler.init();
+
+		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 
 		// tile entities
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFFirefly.class, new TileEntityTFFireflyRenderer());
