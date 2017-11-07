@@ -19,9 +19,11 @@ public class TFConfig {
 	public static final Dimension dimension = new Dimension();
 
 	public static class Dimension {
+		@Config.RequiresMcRestart
 		@Config.Comment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.")
 		public int dimensionID = 7;
 
+		@Config.RequiresWorldRestart
 		@Config.Comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
 		public String twilightForestSeed = "";
 	}
