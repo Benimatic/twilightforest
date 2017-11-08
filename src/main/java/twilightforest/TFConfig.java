@@ -138,7 +138,6 @@ public class TFConfig {
 			List<ItemStack> iconList = Lists.newArrayList();
 
 			for (String s : loadingIconStacks) {
-				System.out.println("loading " + s);
 				String[] data = s.split(":");
 
 				Item item = Item.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
