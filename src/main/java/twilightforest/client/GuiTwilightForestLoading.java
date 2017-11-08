@@ -276,16 +276,16 @@ public class GuiTwilightForestLoading extends GuiScreen {
                 tessellator.draw();
 
                 buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                float bottomTrapezoid = scale*2;
+                float bottomTrapezoid = scale*3;
                 float topTrapezoid = scale;
 
                 // BOTTOM HALF
                 buffer.pos    ( 0F, bottomTrapezoid, 0F )
-                        .tex  ( -0F, 1F )
+                        .tex  ( -1F, 1F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
                 buffer.pos    ( width, bottomTrapezoid, 0F )
-                        .tex  ( (width / scale), 1F )
+                        .tex  ( (width / scale)+1F, 1F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
                 // TOP HALF
