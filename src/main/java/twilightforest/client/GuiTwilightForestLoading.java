@@ -117,7 +117,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
         float f = 32.0F;
         random.setSeed(seed);
 
-        background = Backgrounds.LABYRINTH;
+        background = Backgrounds.DARKTOWER;
 
         for (float x = f; x < width + f; x+=f ) {
             for (float y = f; y < height + f; y+=f ) {
@@ -176,6 +176,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
     public enum Backgrounds {
         LABYRINTH(new ResourceLocation[]{
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"     ),
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"     ),
                 //new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_mossy.png"     ),
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_cracked.png"   )
@@ -241,11 +242,107 @@ public class GuiTwilightForestLoading extends GuiScreen {
         }),
         DARKTOWER(new ResourceLocation[]{
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"    ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"    ),
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_mossy.png"     ),
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_cracked.png"   ),
                 //new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_infested.png"  ),
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_alt.png"       )
-        }),
+        }){
+            private final ResourceLocation towerwoodEncased = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_encased.png");
+
+            @Override
+            void postRenderBackground(float width, float height, float scale) {
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder buffer = tessellator.getBuffer();
+                Minecraft.getMinecraft().getTextureManager().bindTexture(towerwoodEncased);
+
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos    ( 0F, scale, 0F )
+                        .tex  ( 0F, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( width, scale, 0F )
+                        .tex  ( width / scale, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( width, 0F, 0F )
+                        .tex  ( width / scale, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( 0F, 0F, 0F )
+                        .tex  ( 0F, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                tessellator.draw();
+
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                float bottomTrapezoid = scale*3;
+                float topTrapezoid = scale;
+
+                // BOTTOM HALF
+                buffer.pos    ( 0F, bottomTrapezoid, 0F )
+                        .tex  ( -1F, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( width, bottomTrapezoid, 0F )
+                        .tex  ( (width / scale)+1F, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                // TOP HALF
+                buffer.pos    ( width, topTrapezoid, 0F )
+                        .tex  ( width / scale, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( 0F, topTrapezoid, 0F )
+                        .tex  ( 0F, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                tessellator.draw();
+
+                /*
+                // BOTTOM HALF
+                buffer.pos    ( 0F, bottomTrapezoid, 0F )
+                        .tex  ( 0F, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( width, bottomTrapezoid, 0F )
+                        .tex  ( 1F, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                // TOP HALF
+                buffer.pos    ( width+3, topTrapezoid, 0F )
+                        .tex  ( 0.9F, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( 0F, topTrapezoid, 0F )
+                        .tex  ( 0.1F, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                tessellator.draw();
+                */
+
+                float bottomUpper = height - scale;
+
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos    ( 0F, height, 0F )
+                        .tex  ( 0F, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( width, height, 0F )
+                        .tex  ( width / scale, 1F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( width, bottomUpper, 0F )
+                        .tex  ( width / scale, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                buffer.pos    ( 0F, bottomUpper, 0F )
+                        .tex  ( 0F, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                tessellator.draw();
+            }
+        },
         FINALCASTLE(new ResourceLocation[]{
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"   ),
                 //new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
