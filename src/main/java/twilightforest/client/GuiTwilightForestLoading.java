@@ -7,6 +7,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
 
 import java.io.IOException;
 import java.util.Random;
@@ -32,40 +32,10 @@ public class GuiTwilightForestLoading extends GuiScreen {
     private boolean isEntering;
     private boolean contentNeedsAssignment = false;
     private long lastWorldUpdateTick = 0L;
-    private Random random = new Random();
-    private ResourceLocation background;
+    private long seed;
+    private static Random random = new Random();
+    private Backgrounds background;
     private ItemStack item;
-
-    private final static ResourceLocation[] BACKGROUNDS = {
-            new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"),
-            new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"),
-            new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick.png"),
-            new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png")
-    };
-
-    private final static ItemStack[] ITEM_STACKS = {
-            new ItemStack(TFItems.experiment115),
-            new ItemStack(TFItems.magicMap),
-            new ItemStack(TFItems.charmOfKeeping3),
-            new ItemStack(TFItems.charmOfLife2),
-            new ItemStack(TFItems.phantomHelm),
-            new ItemStack(TFItems.lampOfCinders),
-            new ItemStack(TFItems.carminite),
-            new ItemStack(TFItems.chainBlock),
-            new ItemStack(TFItems.yetiHelm),
-            new ItemStack(TFItems.oreMagnet),
-            new ItemStack(TFItems.hydraChop),
-            new ItemStack(TFItems.fierySword),
-            new ItemStack(TFItems.steeleafIngot),
-            new ItemStack(TFItems.magicBeans),
-            new ItemStack(TFItems.ironwoodRaw),
-            new ItemStack(TFItems.nagaScale),
-            new ItemStack(TFItems.experiment115, 1, 2)/*,
-            new ItemStack(TFItems.miniture_structure),
-            new ItemStack(TFItems.miniture_structure, 1, 6),
-            new ItemStack(Item.getItemFromBlock(TFBlocks.knightmetalStorage)),
-            new ItemStack(Item.getItemFromBlock(TFBlocks.towerDevice), 1, 10)*/
-    };
 
     GuiTwilightForestLoading(NetHandlerPlayClient clientPlayHandler) {
         this.connection = clientPlayHandler;
@@ -101,12 +71,12 @@ public class GuiTwilightForestLoading extends GuiScreen {
             this.contentNeedsAssignment = false;
         }
 
-        if (mc.world != null && TFConfig.loadingIcon.cycleLoadingScreenFrequency != 0) {
+        if (mc.world != null && TFConfig.loadingScreen.cycleLoadingScreenFrequency != 0) {
             if (lastWorldUpdateTick != mc.world.getTotalWorldTime() % 240000) {
 
                 lastWorldUpdateTick = mc.world.getTotalWorldTime() % 240000;
 
-                if (lastWorldUpdateTick % TFConfig.loadingIcon.cycleLoadingScreenFrequency == 0) {
+                if (lastWorldUpdateTick % TFConfig.loadingScreen.cycleLoadingScreenFrequency == 0) {
                     assignContent();
                 }
             }
@@ -133,63 +103,167 @@ public class GuiTwilightForestLoading extends GuiScreen {
     }
 
     private void assignContent() {
-        background = BACKGROUNDS[random.nextInt(BACKGROUNDS.length)];
-        item = ITEM_STACKS[random.nextInt(ITEM_STACKS.length)];
+        background = Backgrounds.values()[random.nextInt(Backgrounds.values().length)];
+        item = TFConfig.loadingScreen.getLoadingScreenIcons().get(random.nextInt(TFConfig.loadingScreen.getLoadingScreenIcons().size()));
+        seed = random.nextLong();
     }
 
     private void drawBackground(float width, float height) {
-        // todo randomize
         GlStateManager.disableLighting();
         GlStateManager.disableFog();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
-        Minecraft.getMinecraft().getTextureManager().bindTexture(background);
         GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
         float f = 32.0F;
-        buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+        random.setSeed(seed);
 
-        buffer.pos(0, height, 0)
-                .tex(0, height / f)
-                .color(0.5f, 0.5f, 0.5f, 1f)
-                .endVertex();
-        buffer.pos(width, height, 0)
-                .tex(width / f, height / f)
-                .color(0.5f, 0.5f, 0.5f, 1f)
-                .endVertex();
-        buffer.pos(width, 0, 0)
-                .tex(width / f, 0)
-                .color(0.5f, 0.5f, 0.5f, 1f)
-                .endVertex();
-        buffer.pos(0, 0, 0)
-                .tex(0, 0)
-                .color(0.5f, 0.5f, 0.5f, 1f)
-                .endVertex();
-        tessellator.draw();
+        background = Backgrounds.LABYRINTH;
+
+        for (float x = f; x < width + f; x+=f ) {
+            for (float y = f; y < height + f; y+=f ) {
+                Minecraft.getMinecraft().getTextureManager().bindTexture(background.getBackgroundMaterials()[random.nextInt(background.getBackgroundMaterials().length)]);
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos    (x-f, y, 0)
+                        .tex  (0, 1)
+                        .color(0.5f, 0.5f, 0.5f, 1f)
+                        .endVertex();
+                buffer.pos    ( x, y, 0)
+                        .tex  ( 1, 1)
+                        .color(0.5f, 0.5f, 0.5f, 1f)
+                        .endVertex();
+                buffer.pos    ( x, y-f, 0)
+                        .tex  ( 1, 0)
+                        .color(0.5f, 0.5f, 0.5f, 1f)
+                        .endVertex();
+                buffer.pos    (x-f, y-f, 0)
+                        .tex  (0, 0)
+                        .color(0.5f, 0.5f, 0.5f, 1f)
+                        .endVertex();
+                tessellator.draw();
+            }
+        }
+
+        background.postRenderBackground(width, height, f);
     }
 
     private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
-        float sineTicker = (TFClientEvents.sineTicker + partialTicks) * TFConfig.loadingIcon.frequency;
+        float sineTicker = (TFClientEvents.sineTicker + partialTicks) * TFConfig.loadingScreen.frequency;
         GlStateManager.pushMatrix();
 
         // Shove it!
-        GlStateManager.translate(width - ((width/30) * TFConfig.loadingIcon.scale), height - (height / 10), 0); // Bottom right Corner
+        GlStateManager.translate(width - ((width/30) * TFConfig.loadingScreen.scale), height - (height / 10), 0); // Bottom right Corner
 
-        if (TFConfig.loadingIcon.enable) {
+        if (TFConfig.loadingScreen.enable) {
             // Wobble it!
-            GlStateManager.rotate((float) Math.sin(sineTicker / TFConfig.loadingIcon.tiltRange) * TFConfig.loadingIcon.tiltConstant, 0, 0, 1);
+            GlStateManager.rotate((float) Math.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0, 0, 1);
 
             // Bounce it!
-            GlStateManager.scale(TFConfig.loadingIcon.scale, ((Math.sin(((sineTicker + 180F) / TFConfig.loadingIcon.tiltRange) * 2F) / TFConfig.loadingIcon.scaleDeviation) + 2F) * (TFConfig.loadingIcon.scale / 2), 1F);
+            GlStateManager.scale(TFConfig.loadingScreen.scale, ((Math.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), 1F);
         }
 
         // Shift it!
         GlStateManager.translate(-8, -16.5, 0);
 
+        RenderHelper.enableGUIStandardItemLighting();
         // Draw it!
         mc.getRenderItem().renderItemAndEffectIntoGUI(item, 0, 0);
+        RenderHelper.disableStandardItemLighting();
 
         // Pop it!
         GlStateManager.popMatrix();
         // Bop it!
+    }
+
+    public enum Backgrounds {
+        LABYRINTH(new ResourceLocation[]{
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"     ),
+                //new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_mossy.png"     ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_cracked.png"   )
+        }){
+            private final ResourceLocation mazestoneDecor = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_decorative.png");
+
+            @Override
+            void postRenderBackground(float width, float height, float scale) {
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder buffer = tessellator.getBuffer();
+                Minecraft.getMinecraft().getTextureManager().bindTexture(mazestoneDecor);
+
+                for (float x = scale; x < width + scale; x+=scale ) {
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                    buffer.pos    (x-scale, 24F, 0F)
+                            .tex  (0F, 0.75F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    buffer.pos    ( x, 24F, 0F)
+                            .tex  ( 1F, 0.75F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    buffer.pos    ( x, 8F, 0F)
+                            .tex  ( 1F, 0.25F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    buffer.pos    (x-scale, 8F, 0)
+                            .tex  (0F, 0.25F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    tessellator.draw();
+                }
+
+                float halfScale = scale/2F;
+                float bottomGrid = height - (height % halfScale);
+
+                for (float x = scale; x < width + scale; x+=scale ) {
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                    buffer.pos    (x-scale, bottomGrid, 0F)
+                            .tex  (0F, 0.75F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    buffer.pos    ( x, bottomGrid, 0F)
+                            .tex  ( 1F, 0.75F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    buffer.pos    ( x, bottomGrid-halfScale, 0F)
+                            .tex  ( 1F, 0.25F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    buffer.pos    (x-scale, bottomGrid-halfScale, 0F)
+                            .tex  (0F, 0.25F)
+                            .color(0.5F, 0.5F, 0.5F, 1F)
+                            .endVertex();
+                    tessellator.draw();
+                }
+            }
+        },
+        STRONGHOLD(new ResourceLocation[]{
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick.png"         ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick_mossy.png"   ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick_cracked.png" )
+        }),
+        DARKTOWER(new ResourceLocation[]{
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"    ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_mossy.png"     ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_cracked.png"   ),
+                //new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_infested.png"  ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_alt.png"       )
+        }),
+        FINALCASTLE(new ResourceLocation[]{
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"   ),
+                //new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_cracked.png" ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_faded.png"   )
+        });
+
+        private final ResourceLocation[] backgroundMaterials;
+
+        Backgrounds(ResourceLocation[] backgroundMaterials) {
+            this.backgroundMaterials = backgroundMaterials;
+        }
+
+        ResourceLocation[] getBackgroundMaterials() {
+            return backgroundMaterials;
+        }
+
+        void postRenderBackground(float width, float height, float scale) {
+        }
     }
 }

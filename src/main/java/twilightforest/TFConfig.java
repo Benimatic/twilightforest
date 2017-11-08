@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -16,90 +18,155 @@ import java.util.List;
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
+	private final static String config = TwilightForestMod.ID + ".config.";
+
+	@Config.LangKey(config + "dimension")
 	public static final Dimension dimension = new Dimension();
 
 	public static class Dimension {
+		@Config.LangKey(config + "dimension_id")
 		@Config.RequiresMcRestart
-		@Config.Comment("What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.")
 		public int dimensionID = 7;
 
+		@Config.LangKey(config + "dimension_seed")
 		@Config.RequiresWorldRestart
-		@Config.Comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
 		public String twilightForestSeed = "";
 	}
 
+	@Config.LangKey(config + "tree_tweaks")
 	public static final Performance performance = new Performance();
 
 	public static class Performance {
-		@Config.Comment("Amount of canopy coverage.  Lower numbers improve chunk generation speed at the cost of a thinner forest.")
+		@Config.LangKey(config + "canopy_coverage")
 		@Config.RangeDouble(min = 0)
 		public float canopyCoverage = 1.7F;
 
-		@Config.Comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.")
+		@Config.LangKey(config + "twilight_oaks")
+		@Config.RangeInt(min = 0)
 		public int twilightOakChance = 48;
 	}
 
-	@Config.Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying")
+	@Config.LangKey(config + "silent_cicadas")
 	public static boolean silentCicadas = false;
 
-	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.")
+	@Config.LangKey(config + "portals_in_other_dimensions")
 	public static boolean allowPortalsInOtherDimensions = false;
 
-	@Config.Comment("Allow portals only for admins (ops). This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
+	@Config.LangKey(config + "admin_portals")
 	public static boolean adminOnlyPortals = false;
 
-	@Config.Comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.")
+	@Config.LangKey(config + "portals")
 	public static boolean disablePortalCreation = false;
 
-	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
-	public static boolean disableUncrafting = false;
-
-	@Config.Comment("Name of item used to create the Twilight Forest Portal")
+	@Config.LangKey(config + "portal_creator")
 	public static String portalCreationItem = "minecraft:diamond";
 
-	@Config.Comment("Meta of item used to create the Twilight Forest Portal, -1 for any metadata")
+	@Config.LangKey(config + "portal_creator_meta")
+	@Config.RangeInt(min = -1)
 	public static int portalCreationMeta = -1;
 
-	@Config.Comment("Anti-Builder blacklist. (domain:block:meta) meta is optional")
+	@Config.LangKey(config + "uncrafting")
+	public static boolean disableUncrafting = false;
+
+	@Config.LangKey(config + "antibuilder_blacklist")
 	public static String[] antibuilderBlacklist = {"minecraft:bedrock", "tombmanygraves:grave_block"};
 
-	@Config.Comment("Rotate trophy heads in gui model. Has close to no performance impact at all. For those who don't like fun.")
+	@Config.LangKey(config + "animate_trophyitem")
 	public static boolean rotateTrophyHeadsGui = true;
 
-	@Config.Comment("Client only: Controls for the bouncy wobbly icon on Loading screen")
-	public static final LoadingIcon loadingIcon = new LoadingIcon();
+	@Config.LangKey(config + "loading_screen")
+	public static final TFConfig.loadingScreen loadingScreen = new loadingScreen();
 
-	public static class LoadingIcon {
-		@Config.Comment("Wobble the Loading icon. Has close to no performance impact at all. For those who don't like fun.")
+	public static class loadingScreen {
+		@Config.LangKey(config + "loading_icon_enable")
 		public boolean enable = true;
-		@Config.Comment("How many ticks between each loading screen change. Set to 0 to not cycle at all.")
+
+		@Config.LangKey(config + "loading_screen_swap_frequency")
 		@Config.RangeInt(min = 0)
 		public int cycleLoadingScreenFrequency = 0;
-		@Config.Comment("Frequency of Wobble and Bounce")
+
+		@Config.LangKey(config + "loading_icon_wobble_bounce_frequency")
 		@Config.RangeDouble(min = 0F)
 		public float frequency = 4.5F;
-		@Config.Comment("Scale of Whole Thing")
+
+		@Config.LangKey(config + "loading_icon_scale")
 		@Config.RangeDouble(min = 0F)
 		public float scale = 3F;
-		@Config.Comment("How much the thing bounces")
+
+		@Config.LangKey(config + "loading_icon_bounciness")
 		@Config.RangeDouble(min = 0F)
 		public float scaleDeviation = 5F;
-		@Config.Comment("How far the thing wobbles")
+
+		@Config.LangKey(config + "loading_icon_tilting")
 		@Config.RangeDouble(min = 0F, max = 360F)
 		public float tiltRange = 11.25F;
-		@Config.Comment("Pushback value to re-center the wobble")
+
+		@Config.LangKey(config + "loading_icon_tilt_pushback")
 		@Config.RangeDouble(min = 0F, max = 360F)
 		public float tiltConstant = 22.5F;
+
+		@Config.LangKey(config + "loading_icon_stacks")
+		public String[] loadingIconStacks = {
+				"twilightforest:experiment_115",
+				"twilightforest:magic_map",
+				"twilightforest:charm_of_life_2",
+				"twilightforest:charm_of_keeping_3",
+				"twilightforest:phantom_helmet",
+				"twilightforest:lamp_of_cinders",
+				"twilightforest:carminite",
+				"twilightforest:block_and_chain",
+				"twilightforest:yeti_helmet",
+				"twilightforest:hydra_chop",
+				"twilightforest:magic_beans",
+				"twilightforest:ironwood_raw",
+				"twilightforest:naga_scale",
+				"twilightforest:experiment_115:2",
+				"twilightforest:miniature_structure",
+				"twilightforest:miniature_structure:6",
+				"twilightforest:knightmetal_block",
+				"twilightforest:tower_device:10"
+		};
+
+		private List<ItemStack> loadingScreenIcons;
+
+		public List<ItemStack> getLoadingScreenIcons() {
+			if (loadingScreenIcons == null || loadingScreenIcons.isEmpty()) loadLoadingScreenIcons();
+			return loadingScreenIcons;
+		}
+
+		void loadLoadingScreenIcons() {
+			List<ItemStack> iconList = Lists.newArrayList();
+
+			for (String s : loadingIconStacks) {
+				System.out.println("loading " + s);
+				String[] data = s.split(":");
+
+				Item item = Item.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
+				int meta;
+
+				if (item == null) continue;
+				try                 { meta = Integer.parseInt(data[2]); }
+				catch (Exception e) { meta = 0;                         }
+
+				iconList.add(new ItemStack(item, 1, meta));
+			}
+
+			loadingScreenIcons = iconList;
+		}
 	}
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
+
+			loadAntiBuilderBlacklist();
+
+			loadingScreen.loadLoadingScreenIcons();
 		}
 	}
 
-	public static List<IBlockState> getAntiBuilderBlacklist() {
+	private static void loadAntiBuilderBlacklist() {
 		List<IBlockState> blacklist = Lists.newArrayList();
 		for (String s : antibuilderBlacklist) {
 			String[] data = s.split(":");
@@ -118,6 +185,13 @@ public class TFConfig {
 				blacklist.add(block.getStateFromMeta(meta));
 			}
 		}
-		return blacklist;
+
+		antibuilderStateBlacklist = blacklist;
+	}
+
+	private static List<IBlockState> antibuilderStateBlacklist;
+
+	public static List<IBlockState> getAntiBuilderBlacklist() {
+		return antibuilderStateBlacklist;
 	}
 }
