@@ -13,30 +13,30 @@ import twilightforest.TFConfig;
 
 @SideOnly(Side.CLIENT)
 public class LoadingScreenListener {
-    private final Minecraft client = FMLClientHandler.instance().getClient();
-    private int lastDimension = 0;
+	private final Minecraft client = FMLClientHandler.instance().getClient();
+	private int lastDimension = 0;
 
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent evt) {
-        if(evt.phase.equals(TickEvent.Phase.END) && evt.player == client.player)
-            lastDimension = evt.player.dimension;
-    }
+	@SubscribeEvent
+	public void onPlayerTick(TickEvent.PlayerTickEvent evt) {
+		if (evt.phase.equals(TickEvent.Phase.END) && evt.player == client.player)
+			lastDimension = evt.player.dimension;
+	}
 
-    @SubscribeEvent
-    public void onOpenGui(GuiOpenEvent event) {
-        if(event.getGui() instanceof GuiDownloadTerrain
-                && FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient
-                && client.player != null) {
+	@SubscribeEvent
+	public void onOpenGui(GuiOpenEvent event) {
+		if (event.getGui() instanceof GuiDownloadTerrain
+				&& FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient
+				&& client.player != null) {
 
-            GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
+			GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
 
-            if(lastDimension == TFConfig.dimension.dimensionID && client.player.dimension != TFConfig.dimension.dimensionID)
-                guiLoading.setEntering(false);
-            else guiLoading.setEntering(true);
+			if (lastDimension == TFConfig.dimension.dimensionID && client.player.dimension != TFConfig.dimension.dimensionID)
+				guiLoading.setEntering(false);
+			else guiLoading.setEntering(true);
 
-            if(client.player.dimension == TFConfig.dimension.dimensionID
-                    || lastDimension == TFConfig.dimension.dimensionID)
-                event.setGui(guiLoading);
-        }
-    }
+			if (client.player.dimension == TFConfig.dimension.dimensionID
+					|| lastDimension == TFConfig.dimension.dimensionID)
+				event.setGui(guiLoading);
+		}
+	}
 }
