@@ -87,7 +87,7 @@ public class TFConfig {
 
 		@Config.LangKey(config + "loading_icon_wobble_bounce_frequency")
 		@Config.RangeDouble(min = 0F)
-		public float frequency = 4.5F;
+		public float frequency = 5F;
 
 		@Config.LangKey(config + "loading_icon_scale")
 		@Config.RangeDouble(min = 0F)

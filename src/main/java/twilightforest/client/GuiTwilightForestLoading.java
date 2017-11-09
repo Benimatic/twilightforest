@@ -5,10 +5,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketKeepAlive;
@@ -34,8 +31,9 @@ public class GuiTwilightForestLoading extends GuiScreen {
     private long lastWorldUpdateTick = 0L;
     private long seed;
     private static Random random = new Random();
-    private Backgrounds background;
+    private BackgroundThemes backgroundTheme;
     private ItemStack item;
+    private static final float backgroundScale = 32.0F;
 
     GuiTwilightForestLoading(NetHandlerPlayClient clientPlayHandler) {
         this.connection = clientPlayHandler;
@@ -103,47 +101,18 @@ public class GuiTwilightForestLoading extends GuiScreen {
     }
 
     private void assignContent() {
-        background = Backgrounds.values()[random.nextInt(Backgrounds.values().length)];
+        backgroundTheme = BackgroundThemes.values()[random.nextInt(BackgroundThemes.values().length)];
         item = TFConfig.loadingScreen.getLoadingScreenIcons().get(random.nextInt(TFConfig.loadingScreen.getLoadingScreenIcons().size()));
         seed = random.nextLong();
     }
 
     private void drawBackground(float width, float height) {
-        GlStateManager.disableLighting();
-        GlStateManager.disableFog();
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
-        float f = 32.0F;
         random.setSeed(seed);
 
-        background = Backgrounds.DARKTOWER;
+        backgroundTheme = BackgroundThemes.FINALCASTLE;
 
-        for (float x = f; x < width + f; x+=f ) {
-            for (float y = f; y < height + f; y+=f ) {
-                Minecraft.getMinecraft().getTextureManager().bindTexture(background.getBackgroundMaterials()[random.nextInt(background.getBackgroundMaterials().length)]);
-                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                buffer.pos    (x-f, y, 0)
-                        .tex  (0, 1)
-                        .color(0.5f, 0.5f, 0.5f, 1f)
-                        .endVertex();
-                buffer.pos    ( x, y, 0)
-                        .tex  ( 1, 1)
-                        .color(0.5f, 0.5f, 0.5f, 1f)
-                        .endVertex();
-                buffer.pos    ( x, y-f, 0)
-                        .tex  ( 1, 0)
-                        .color(0.5f, 0.5f, 0.5f, 1f)
-                        .endVertex();
-                buffer.pos    (x-f, y-f, 0)
-                        .tex  (0, 0)
-                        .color(0.5f, 0.5f, 0.5f, 1f)
-                        .endVertex();
-                tessellator.draw();
-            }
-        }
-
-        background.postRenderBackground(width, height, f);
+        backgroundTheme.renderBackground(width, height);
+        backgroundTheme.postRenderBackground(width, height);
     }
 
     private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
@@ -165,6 +134,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
         GlStateManager.translate(-8, -16.5, 0);
 
         RenderHelper.enableGUIStandardItemLighting();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
         // Draw it!
         mc.getRenderItem().renderItemAndEffectIntoGUI(item, 0, 0);
         RenderHelper.disableStandardItemLighting();
@@ -174,7 +144,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
         // Bop it!
     }
 
-    public enum Backgrounds {
+    public enum BackgroundThemes {
         LABYRINTH(new ResourceLocation[]{
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"     ),
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"     ),
@@ -184,55 +154,51 @@ public class GuiTwilightForestLoading extends GuiScreen {
             private final ResourceLocation mazestoneDecor = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_decorative.png");
 
             @Override
-            void postRenderBackground(float width, float height, float scale) {
+            void postRenderBackground(float width, float height) {
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder buffer = tessellator.getBuffer();
                 Minecraft.getMinecraft().getTextureManager().bindTexture(mazestoneDecor);
 
-                for (float x = scale; x < width + scale; x+=scale ) {
-                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                    buffer.pos    (x-scale, 24F, 0F)
-                            .tex  (0F, 0.75F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    buffer.pos    ( x, 24F, 0F)
-                            .tex  ( 1F, 0.75F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    buffer.pos    ( x, 8F, 0F)
-                            .tex  ( 1F, 0.25F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    buffer.pos    (x-scale, 8F, 0)
-                            .tex  (0F, 0.25F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    tessellator.draw();
-                }
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos    ( 0, 24F, 0F)
+                        .tex  ( 0F, 0.75F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                buffer.pos    ( width, 24F, 0F)
+                        .tex  ( width/ backgroundScale, 0.75F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                buffer.pos    ( width, 8F, 0F)
+                        .tex  ( width/ backgroundScale, 0.25F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                buffer.pos    ( 0, 8F, 0)
+                        .tex  ( 0F, 0.25F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                tessellator.draw();
 
-                float halfScale = scale/2F;
+                float halfScale = backgroundScale /2F;
                 float bottomGrid = height - (height % halfScale);
 
-                for (float x = scale; x < width + scale; x+=scale ) {
-                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                    buffer.pos    (x-scale, bottomGrid, 0F)
-                            .tex  (0F, 0.75F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    buffer.pos    ( x, bottomGrid, 0F)
-                            .tex  ( 1F, 0.75F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    buffer.pos    ( x, bottomGrid-halfScale, 0F)
-                            .tex  ( 1F, 0.25F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    buffer.pos    (x-scale, bottomGrid-halfScale, 0F)
-                            .tex  (0F, 0.25F)
-                            .color(0.5F, 0.5F, 0.5F, 1F)
-                            .endVertex();
-                    tessellator.draw();
-                }
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos    ( 0, bottomGrid, 0F)
+                        .tex  ( 0F, 0.75F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                buffer.pos    ( width, bottomGrid, 0F)
+                        .tex  ( width/ backgroundScale, 0.75F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                buffer.pos    ( width, bottomGrid-halfScale, 0F)
+                        .tex  ( width/ backgroundScale, 0.25F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                buffer.pos    ( 0, bottomGrid-halfScale, 0)
+                        .tex  ( 0F, 0.25F)
+                        .color( 0.5F, 0.5F, 0.5F, 1F)
+                        .endVertex();
+                tessellator.draw();
             }
         },
         STRONGHOLD(new ResourceLocation[]{
@@ -250,95 +216,142 @@ public class GuiTwilightForestLoading extends GuiScreen {
         }){
             private final ResourceLocation towerwoodEncased = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_encased.png");
 
+            private final float stretch = 0.985F;
+            private final float offset = 0.4F;
+            private final float depth = 1.15F;
+
             @Override
-            void postRenderBackground(float width, float height, float scale) {
+            void renderBackground(float width, float height) {
+                final float headerDepthHeight = (backgroundScale/stretch) * depth;
+                final float footerDepthHeight = height-headerDepthHeight;
+
+                GlStateManager.disableLighting();
+                GlStateManager.disableFog();
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder buffer = tessellator.getBuffer();
+                GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
+
+                for (float x = backgroundScale; x < width + backgroundScale; x+= backgroundScale) {
+                    for (float y = backgroundScale + headerDepthHeight; y < footerDepthHeight + backgroundScale; y+= backgroundScale) {
+                        Minecraft.getMinecraft().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+                        buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                        buffer.pos    ( x- backgroundScale, y, 0)
+                                .tex  ( 0, 1)
+                                .color( 0.5f, 0.5f, 0.5f, 1f)
+                                .endVertex();
+                        buffer.pos    ( x, y, 0)
+                                .tex  ( 1, 1)
+                                .color(0.5f, 0.5f, 0.5f, 1f)
+                                .endVertex();
+                        buffer.pos    ( x, y- backgroundScale, 0)
+                                .tex  ( 1, 0)
+                                .color( 0.5f, 0.5f, 0.5f, 1f)
+                                .endVertex();
+                        buffer.pos    ( x- backgroundScale, y- backgroundScale, 0)
+                                .tex  ( 0, 0)
+                                .color( 0.5f, 0.5f, 0.5f, 1f)
+                                .endVertex();
+                        tessellator.draw();
+                    }
+                }
+            }
+
+            @Override
+            void postRenderBackground(float width, float height) {
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder buffer = tessellator.getBuffer();
                 Minecraft.getMinecraft().getTextureManager().bindTexture(towerwoodEncased);
 
+                final float textureHeaderXMin = stretch*offset;
+                final float textureHeaderXMax = ((width/backgroundScale)*stretch)+offset;
+
+                final float headerBottom = backgroundScale/stretch;
+                final float headerDepthHeight = headerBottom * depth;
+
+                final float footerTop = height-headerBottom;
+                final float footerDepthHeight = height-headerDepthHeight;
+
                 buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                buffer.pos    ( 0F, scale, 0F )
-                        .tex  ( 0F, 1F )
+                // BOTTOM VERTEXES
+                buffer.pos    ( 0F, headerBottom, 0F )
+                        .tex  ( textureHeaderXMin, 1F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
-                buffer.pos    ( width, scale, 0F )
-                        .tex  ( width / scale, 1F )
+                buffer.pos    ( width, headerBottom, 0F )
+                        .tex  ( textureHeaderXMax, 1F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
+                // TOP VERTEXES
                 buffer.pos    ( width, 0F, 0F )
-                        .tex  ( width / scale, 0F )
+                        .tex  ( textureHeaderXMax, 0F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
                 buffer.pos    ( 0F, 0F, 0F )
-                        .tex  ( 0F, 0F )
+                        .tex  ( textureHeaderXMin, 0F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
                 tessellator.draw();
 
                 buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                float bottomTrapezoid = scale*3;
-                float topTrapezoid = scale;
-
-                // BOTTOM HALF
-                buffer.pos    ( 0F, bottomTrapezoid, 0F )
-                        .tex  ( -1F, 1F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
-                        .endVertex();
-                buffer.pos    ( width, bottomTrapezoid, 0F )
-                        .tex  ( (width / scale)+1F, 1F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
-                        .endVertex();
-                // TOP HALF
-                buffer.pos    ( width, topTrapezoid, 0F )
-                        .tex  ( width / scale, 0F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
-                        .endVertex();
-                buffer.pos    ( 0F, topTrapezoid, 0F )
-                        .tex  ( 0F, 0F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
-                        .endVertex();
-                tessellator.draw();
-
-                /*
-                // BOTTOM HALF
-                buffer.pos    ( 0F, bottomTrapezoid, 0F )
+                // BOTTOM VERTEXES
+                buffer.pos    ( 0F, headerDepthHeight, 0F )
                         .tex  ( 0F, 1F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .color( 0.25F, 0.25F, 0.25F, 1F )
                         .endVertex();
-                buffer.pos    ( width, bottomTrapezoid, 0F )
-                        .tex  ( 1F, 1F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                buffer.pos    ( width, headerDepthHeight, 0F )
+                        .tex  ( (width/backgroundScale), 1F )
+                        .color( 0.25F, 0.25F, 0.25F, 1F )
                         .endVertex();
-                // TOP HALF
-                buffer.pos    ( width+3, topTrapezoid, 0F )
-                        .tex  ( 0.9F, 0F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                // TOP VERTEXES
+                buffer.pos    ( width, headerBottom, 0F )
+                        .tex  ( textureHeaderXMax, 0F )
+                        .color( 0.25F, 0.25F, 0.25F, 1F )
                         .endVertex();
-                buffer.pos    ( 0F, topTrapezoid, 0F )
-                        .tex  ( 0.1F, 0F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                buffer.pos    ( 0F, headerBottom, 0F )
+                        .tex  ( textureHeaderXMin, 0F )
+                        .color( 0.25F, 0.25F, 0.25F, 1F )
                         .endVertex();
                 tessellator.draw();
-                */
-
-                float bottomUpper = height - scale;
 
                 buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                // BOTTOM VERTEXES
                 buffer.pos    ( 0F, height, 0F )
-                        .tex  ( 0F, 1F )
+                        .tex  ( textureHeaderXMin, 1F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
                 buffer.pos    ( width, height, 0F )
-                        .tex  ( width / scale, 1F )
+                        .tex  ( textureHeaderXMax, 1F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
-                buffer.pos    ( width, bottomUpper, 0F )
-                        .tex  ( width / scale, 0F )
+                // TOP VERTEXES
+                buffer.pos    ( width, footerTop, 0F )
+                        .tex  ( textureHeaderXMax, 0F )
                         .color( 0.5F, 0.5F, 0.5F, 1F )
                         .endVertex();
-                buffer.pos    ( 0F, bottomUpper, 0F )
+                buffer.pos    ( 0F, footerTop, 0F )
+                        .tex  ( textureHeaderXMin, 0F )
+                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .endVertex();
+                tessellator.draw();
+
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                // BOTTOM VERTEXES
+                buffer.pos    ( 0F, footerTop, 0F )
+                        .tex  ( textureHeaderXMin, 1F )
+                        .color( 0.75F, 0.75F, 0.75F, 1F )
+                        .endVertex();
+                buffer.pos    ( width, footerTop, 0F )
+                        .tex  ( textureHeaderXMax, 1F )
+                        .color( 0.75F, 0.75F, 0.75F, 1F )
+                        .endVertex();
+                // TOP VERTEXES
+                buffer.pos    ( width, footerDepthHeight, 0F )
+                        .tex  ( width/backgroundScale, 0F )
+                        .color( 0.75F, 0.75F, 0.75F, 1F )
+                        .endVertex();
+                buffer.pos    ( 0F, footerDepthHeight, 0F )
                         .tex  ( 0F, 0F )
-                        .color( 0.5F, 0.5F, 0.5F, 1F )
+                        .color( 0.75F, 0.75F, 0.75F, 1F )
                         .endVertex();
                 tessellator.draw();
             }
@@ -352,7 +365,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
         private final ResourceLocation[] backgroundMaterials;
 
-        Backgrounds(ResourceLocation[] backgroundMaterials) {
+        BackgroundThemes(ResourceLocation[] backgroundMaterials) {
             this.backgroundMaterials = backgroundMaterials;
         }
 
@@ -360,7 +373,39 @@ public class GuiTwilightForestLoading extends GuiScreen {
             return backgroundMaterials;
         }
 
-        void postRenderBackground(float width, float height, float scale) {
+        void renderBackground(float width, float height) {
+            GlStateManager.disableLighting();
+            GlStateManager.disableFog();
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder buffer = tessellator.getBuffer();
+            GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
+
+            for (float x = backgroundScale; x < width + backgroundScale; x+= backgroundScale) {
+                for (float y = backgroundScale; y < height + backgroundScale; y+= backgroundScale) {
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                    buffer.pos    ( x- backgroundScale, y, 0)
+                            .tex  ( 0, 1)
+                            .color( 0.5f, 0.5f, 0.5f, 1f)
+                            .endVertex();
+                    buffer.pos    ( x, y, 0)
+                            .tex  ( 1, 1)
+                            .color( 0.5f, 0.5f, 0.5f, 1f)
+                            .endVertex();
+                    buffer.pos    ( x, y- backgroundScale, 0)
+                            .tex  ( 1, 0)
+                            .color( 0.5f, 0.5f, 0.5f, 1f)
+                            .endVertex();
+                    buffer.pos    ( x- backgroundScale, y- backgroundScale, 0)
+                            .tex  ( 0, 0)
+                            .color( 0.5f, 0.5f, 0.5f, 1f)
+                            .endVertex();
+                    tessellator.draw();
+                }
+            }
+        }
+
+        void postRenderBackground(float width, float height) {
         }
     }
 }
