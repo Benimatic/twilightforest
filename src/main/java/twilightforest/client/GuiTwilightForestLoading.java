@@ -109,8 +109,6 @@ public class GuiTwilightForestLoading extends GuiScreen {
     private void drawBackground(float width, float height) {
         random.setSeed(seed);
 
-        backgroundTheme = BackgroundThemes.FINALCASTLE;
-
         backgroundTheme.renderBackground(width, height);
         backgroundTheme.postRenderBackground(width, height);
     }
@@ -358,10 +356,85 @@ public class GuiTwilightForestLoading extends GuiScreen {
         },
         FINALCASTLE(new ResourceLocation[]{
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"   ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"   ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"   ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"   ),
+                new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"   ),
                 //new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_cracked.png" ),
                 new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_faded.png"   )
-        });
+        }){
+            private final ResourceLocation[] magic = new ResourceLocation[]{
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_0.png" ),
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_1.png" ),
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_2.png" ),
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_3.png" ),
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_4.png" ),
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_5.png" ),
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_6.png" ),
+                    new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_7.png" )
+            };
+
+            private final int[] colors = new int[]{ 0xFF00FF, 0x00FFFF, 0xFFFF00, 0x4B0082};
+
+            @Override
+            void postRenderBackground(float width, float height) {
+                GlStateManager.disableLighting();
+                GlStateManager.disableFog();
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder buffer = tessellator.getBuffer();
+
+                int color = this.colors[random.nextInt(this.colors.length)];
+
+                int r = color >> 16 & 255;
+                int g = color >> 8 & 255;
+                int b = color & 255;
+
+                for (float x = backgroundScale; x < width + backgroundScale; x+= backgroundScale) {
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                    buffer.pos    ( x - backgroundScale, backgroundScale + (backgroundScale/2), 0)
+                            .tex  ( 0, 1)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    buffer.pos    ( x, backgroundScale + (backgroundScale/2), 0)
+                            .tex  ( 1, 1)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    buffer.pos    ( x, backgroundScale/2, 0)
+                            .tex  ( 1, 0)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    buffer.pos    ( x - backgroundScale, backgroundScale/2, 0)
+                            .tex  ( 0, 0)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    tessellator.draw();
+                }
+
+                for (float x = backgroundScale; x < width + backgroundScale; x+= backgroundScale) {
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
+                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                    buffer.pos    ( x - backgroundScale, height - (backgroundScale/2), 0)
+                            .tex  ( 0, 1)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    buffer.pos    ( x, height - (backgroundScale/2), 0)
+                            .tex  ( 1, 1)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    buffer.pos    ( x, height - backgroundScale - (backgroundScale/2), 0)
+                            .tex  ( 1, 0)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    buffer.pos    ( x - backgroundScale, height - backgroundScale - (backgroundScale/2), 0)
+                            .tex  ( 0, 0)
+                            .color( r, g, b, 255)
+                            .endVertex();
+                    tessellator.draw();
+                }
+            }
+        };
 
         private final ResourceLocation[] backgroundMaterials;
 
