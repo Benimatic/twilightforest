@@ -13,13 +13,12 @@ import twilightforest.TFConfig;
 
 @SideOnly(Side.CLIENT)
 public class LoadingScreenListener {
-    private Minecraft client = FMLClientHandler.instance().getClient();
-    private GuiTwilightForestLoading guiLoading;
+    private final Minecraft client = FMLClientHandler.instance().getClient();
     private int lastDimension = 0;
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent evt) {
-        if(evt.phase.equals(TickEvent.Phase.END))
+        if(evt.phase.equals(TickEvent.Phase.END) && evt.player == client.player)
             lastDimension = evt.player.dimension;
     }
 
@@ -29,8 +28,7 @@ public class LoadingScreenListener {
                 && FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient
                 && client.player != null) {
 
-            if(guiLoading == null)
-                guiLoading = new GuiTwilightForestLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
+            GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
 
             if(lastDimension == TFConfig.dimension.dimensionID && client.player.dimension != TFConfig.dimension.dimensionID)
                 guiLoading.setEntering(false);
