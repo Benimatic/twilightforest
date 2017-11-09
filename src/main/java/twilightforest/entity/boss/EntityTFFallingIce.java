@@ -19,7 +19,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 	private static final int HANG_TIME = 100;
 
 	public EntityTFFallingIce(World par1World) {
-		super(par1World);
+		super(par1World, 0, 0, 0, Blocks.PACKED_ICE.getDefaultState()); // set falling tile on client to prevent crash
 		this.setSize(2.98F, 2.98F);
 	}
 
