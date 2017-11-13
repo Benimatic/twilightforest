@@ -176,10 +176,10 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.trollSteinn);
 		items.registerBlock(TFBlocks.wispyCloud);
 		items.registerBlock(TFBlocks.fluffyCloud);
-		items.registerBlock(TFBlocks.giantCobble);
-		items.registerBlock(TFBlocks.giantLog);
-		items.registerBlock(TFBlocks.giantLeaves);
-		items.registerBlock(TFBlocks.giantObsidian);
+		items.register(new ItemTFGiantBlock(TFBlocks.giantCobble));
+		items.register(new ItemTFGiantBlock(TFBlocks.giantLog));
+		items.register(new ItemTFGiantBlock(TFBlocks.giantLeaves));
+		items.register(new ItemTFGiantBlock(TFBlocks.giantObsidian));
 		items.registerBlock(TFBlocks.uberousSoil);
 		items.registerBlock(TFBlocks.hugeStalk);
 		items.registerBlock(TFBlocks.hugeGloomBlock);
