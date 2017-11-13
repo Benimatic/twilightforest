@@ -21,7 +21,7 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 	public TFGenLargeWinter(boolean par1) {
 		super(par1);
 		treeState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
-		branchState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		branchState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
 		leafState = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE);
 		rootState = TFBlocks.root.getDefaultState();
 	}
