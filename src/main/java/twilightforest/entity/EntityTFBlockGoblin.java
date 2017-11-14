@@ -81,6 +81,11 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
+	public float getEyeHeight() {
+		return this.height * 0.78F;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.REDCAP_AMBIENT;
 	}

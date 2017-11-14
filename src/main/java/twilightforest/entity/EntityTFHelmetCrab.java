@@ -51,6 +51,11 @@ public class EntityTFHelmetCrab extends EntityMob {
 	}
 
 	@Override
+	public float getEyeHeight() {
+		return this.height * 0.4F;
+	}
+
+	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.ENTITY_SPIDER_HURT;
 	}

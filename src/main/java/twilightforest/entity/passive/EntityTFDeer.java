@@ -34,6 +34,10 @@ public class EntityTFDeer extends EntityCow {
 		this.setPosition(x, y, z);
 	}
 
+	@Override
+	public float getEyeHeight() {
+		return this.height * 0.7F;
+	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {

@@ -148,7 +148,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker {
 
 	@Override
 	public float getEyeHeight() {
-		return 0.25F;
+		return this.height * 0.6F;
 	}
 
 	@Override

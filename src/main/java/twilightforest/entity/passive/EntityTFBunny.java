@@ -88,6 +88,11 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 	}
 
 	@Override
+	public float getEyeHeight() {
+		return this.height * 0.4F;
+	}
+
+	@Override
 	public float getRenderSizeModifier() {
 		return 0.3F;
 	}
