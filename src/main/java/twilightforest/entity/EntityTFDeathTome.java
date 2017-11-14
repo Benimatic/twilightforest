@@ -14,15 +14,19 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome");
+	public static final ResourceLocation HURT_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome_hurt");
 
 	public EntityTFDeathTome(World par1World) {
 		super(par1World);
@@ -58,14 +62,21 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (par1DamageSource.isFireDamage()) {
-			par2 *= 2;
+	public boolean attackEntityFrom(DamageSource src, float damage) {
+		if (src.isFireDamage()) {
+			damage *= 2;
 		}
 
-		if (super.attackEntityFrom(par1DamageSource, par2)) {
-			if (this.rand.nextInt(2) == 0) {
-				dropItemWithOffset(Items.PAPER, 1, 1.0F);
+		if (super.attackEntityFrom(src, damage)) {
+			if (!world.isRemote) {
+				LootContext ctx = new LootContext.Builder((WorldServer) world)
+						.withDamageSource(src)
+						.withLootedEntity(this)
+						.build();
+
+				for (ItemStack stack : world.getLootTableManager().getLootTableFromLocation(HURT_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
+					entityDropItem(stack, 1.0F);
+				}
 			}
 			return true;
 		} else {

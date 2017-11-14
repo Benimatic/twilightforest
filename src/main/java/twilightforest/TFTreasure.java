@@ -48,6 +48,7 @@ public class TFTreasure {
 		LootTableList.register(EntityTFBlockGoblin.LOOT_TABLE);
 		LootTableList.register(EntityTFBunny.LOOT_TABLE);
 		LootTableList.register(EntityTFDeathTome.LOOT_TABLE);
+		LootTableList.register(EntityTFDeathTome.HURT_LOOT_TABLE);
 		LootTableList.register(EntityTFDeer.LOOT_TABLE);
 		LootTableList.register(EntityTFFireBeetle.LOOT_TABLE);
 		LootTableList.register(EntityTFGiantMiner.LOOT_TABLE);
