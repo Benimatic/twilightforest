@@ -208,10 +208,16 @@ public class TFEventListener {
 		}
 	}
 
-	@SubscribeEvent
-	public static void charmOfLife(LivingDeathEvent evt) {
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void charms(LivingDeathEvent evt) {
 		EntityLivingBase living = evt.getEntityLiving();
+		if(charmOfLife(living))
+			evt.setCanceled(true);
+		else
+			charmOfKeeping(living);
+	}
 
+	private static boolean charmOfLife(EntityLivingBase living) {
 		boolean charm1 = false;
 		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife2, 1);
 		if (!charm2) {
@@ -219,7 +225,6 @@ public class TFEventListener {
 		}
 
 		if (charm2 || charm1) {
-			evt.setCanceled(true);
 
 			if (charm1) {
 				living.setHealth(8);
@@ -243,13 +248,14 @@ public class TFEventListener {
 			living.world.spawnEntity(effect2);
 
 			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
+			return true;
 		}
+		return false;
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void charmOfKeeping(LivingDeathEvent event) {
-		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().world.getGameRules().getBoolean("keepInventory")) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+	private static void charmOfKeeping(EntityLivingBase living) {
+		if (living instanceof EntityPlayer && !living.world.getGameRules().getBoolean("keepInventory")) {
+			EntityPlayer player = (EntityPlayer) living;
 			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping3, 1);
 			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping2, 1);
 			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping1, 1);
