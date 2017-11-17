@@ -4,9 +4,10 @@
   },
   "group": "twilightforest:fiery_ingot",
   "ingredients": [
-    {
-      "item": "twilightforest:fiery_tears"
-    },
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
     {
       "item": "#INGOTIRON"
     }
