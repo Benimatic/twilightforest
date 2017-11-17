@@ -7,10 +7,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
@@ -19,6 +21,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.CompressedVariant;
@@ -27,6 +30,8 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockTFCompressed extends Block implements ModelRegisterCallback {
     public static final PropertyEnum<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
@@ -124,7 +129,14 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        ModelUtils.registerToStateSingleVariant(this, VARIANT);
+		List<CompressedVariant> variants = new ArrayList<>(VARIANT.getAllowedValues());
+
+		for (int i = 0; i < variants.size(); i++)
+			if (i != CompressedVariant.FIERY.ordinal())
+				ModelUtils.registerToState(this, i, this.getDefaultState().withProperty(VARIANT, variants.get(i)));
+
+		ModelResourceLocation mrl = new ModelResourceLocation(this.getRegistryName(), "inventory_fiery");
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), CompressedVariant.FIERY.ordinal(), mrl);
     }
 
     @Override
@@ -137,12 +149,6 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 		}
 
 		super.onEntityWalk(worldIn, pos, entityIn);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return state.getValue(VARIANT) == CompressedVariant.FIERY ? 15728880 : super.getPackedLightmapCoords(state, source, pos);
 	}
 
 	@Override
