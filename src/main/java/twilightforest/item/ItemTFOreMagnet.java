@@ -155,7 +155,7 @@ public class ItemTFOreMagnet extends ItemTF {
 				}
 			}
 
-			if (searchState.getBlock() != Blocks.AIR && isOre(searchState)) {
+			if (searchState.getBlock() != Blocks.AIR && isOre(searchState) && (world.getTileEntity(coord) == null)) {
 				foundState = searchState;
 				foundPos = coord;
 				break;
