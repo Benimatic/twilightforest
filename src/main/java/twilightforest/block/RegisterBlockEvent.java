@@ -21,7 +21,7 @@ public final class RegisterBlockEvent {
 		blocks.register("twilight_portal", (new BlockTFPortal()).setUnlocalizedName("TFPortal"));
 		blocks.register("maze_stone", (new BlockTFMazestone()).setUnlocalizedName("TFMazestone"));
 		blocks.register("hedge", (new BlockTFHedge()).setUnlocalizedName("TFHedge"));
-		blocks.register("boss_spawner", (new BlockTFBossSpawner()).setUnlocalizedName("TFBossSpawner"));
+		blocks.register("boss_spawner", (new BlockTFBossSpawner()).setUnlocalizedName("TFBossSpawner").setBlockUnbreakable());
 		blocks.register("firefly_jar", (new BlockTFFireflyJar()).setUnlocalizedName("TFFireflyJar"));
 		blocks.register("twilight_plant", (new BlockTFPlant()).setUnlocalizedName("TFPlant"));
 		blocks.register("uncrafting_table", (new BlockTFUncraftingTable()).setUnlocalizedName("TFUncraftingTable"));
