@@ -116,6 +116,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
 		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * TFConfig.loadingScreen.frequency;
+		float sineTicker2 = (TFClientEvents.sineTicker + 314 + partialTicks) * TFConfig.loadingScreen.frequency;
 		GlStateManager.pushMatrix();
 
 		// Shove it!
@@ -126,7 +127,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 			GlStateManager.rotate((float) Math.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0, 0, 1);
 
 			// Bounce it!
-			GlStateManager.scale(TFConfig.loadingScreen.scale, ((Math.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), 1F);
+			GlStateManager.scale(((Math.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), ((Math.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), 1F);
 		}
 
 		// Shift it!
