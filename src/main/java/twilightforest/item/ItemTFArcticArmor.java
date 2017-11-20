@@ -94,20 +94,22 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 		String string = "";//type == 0 ? "" : ("" + type);
 		NBTTagCompound stackTagCompound = stack.getTagCompound();
 
+		int color = 0xBDCFD9;
+
 		if (stackTagCompound != null) {
 			NBTTagCompound displayCompound = stackTagCompound.getCompoundTag("display");
 
 			if (displayCompound.hasKey("color" + string, 3))
-				return displayCompound.getInteger("color" + string);
+				color = displayCompound.getInteger("color" + string);
 		}
 
 		switch (type) {
 			//case 0:
 				//return stack.getItem() != TFItems.arcticHelm ? 0x793828 : 0xFFFFFF;
-			case 1:
-				return 0xBDCFD9;
-			default:
+			case 0:
 				return 0xFFFFFF;
+			default:
+				return color;
 		}
 	}
 
