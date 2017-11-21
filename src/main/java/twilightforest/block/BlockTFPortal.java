@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -29,7 +30,9 @@ import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class BlockTFPortal extends BlockBreakable {
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
@@ -58,7 +61,7 @@ public class BlockTFPortal extends BlockBreakable {
 		return false;
 	}
 
-	public boolean tryToCreatePortal(World world, BlockPos pos) {
+	public boolean tryToCreatePortal(World world, BlockPos pos, EntityItem activationItem) {
 		IBlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() == Blocks.WATER) {
@@ -68,6 +71,7 @@ public class BlockTFPortal extends BlockBreakable {
 			PassableNumber number = new PassableNumber(64);
 
 			if (recursivelyValidatePortal(world, pos, blocksChecked, number) && number.getNumber() > 3) {
+				activationItem.getItem().shrink(1);
 				world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), false));
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet())
