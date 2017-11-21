@@ -32,7 +32,7 @@ import twilightforest.TwilightForestMod;
 import java.util.*;
 
 public class BlockTFPortal extends BlockBreakable {
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
 
 	public BlockTFPortal() {
 		super(Material.PORTAL, false);
@@ -65,7 +65,9 @@ public class BlockTFPortal extends BlockBreakable {
 			HashMap<BlockPos, Boolean> blocksChecked = new HashMap<>();
 			blocksChecked.put(pos, true);
 
-			if (recursivelyValidatePortal(world, pos, blocksChecked, new PassableNumber(50))) {
+			PassableNumber number = new PassableNumber(64);
+
+			if (recursivelyValidatePortal(world, pos, blocksChecked, number) && number.getNumber() > 3) {
 				world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), false));
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet())
@@ -90,7 +92,7 @@ public class BlockTFPortal extends BlockBreakable {
 			if (!blocksChecked.containsKey(positionCheck)) {
 				IBlockState state = world.getBlockState(positionCheck);
 
-				if (state.getBlock() == Blocks.WATER && world.getBlockState(positionCheck.down()).getMaterial().isSolid()) {
+				if (state == Blocks.WATER.getDefaultState() && world.getBlockState(positionCheck.down()).getMaterial().isSolid()) {
 					blocksChecked.put(positionCheck, true);
 
 					isPoolProbablyEnclosed = isPoolProbablyEnclosed && recursivelyValidatePortal(world, positionCheck, blocksChecked, waterLimit);
@@ -141,12 +143,12 @@ public class BlockTFPortal extends BlockBreakable {
 
 			IBlockState neighboringState = world.getBlockState(pos.offset(facing));
 
-			good = isGrassOrDirt(neighboringState) || neighboringState.getBlock() == Blocks.WATER;
+			good = isGrassOrDirt(neighboringState) || neighboringState.getBlock() == TFBlocks.portal;
 		}
 
 		if (!good) {
 			world.playEvent(2001, pos, Block.getStateId(state));
-			world.setBlockState(pos, Blocks.WATER.getDefaultState());
+			world.setBlockState(pos, Blocks.WATER.getDefaultState(), 0b11);
 		}
 	}
 
@@ -281,6 +283,7 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
+	// TODO Eeeh... Let's look at changing this too alongside a new model.
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
