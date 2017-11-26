@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:spiral_quarter",
+    "uvlock": true
+  },
+  "variants": {
+    "diagonal": {
+      "bottom_left":  { "x": 270, "y": 90 },
+      "bottom_right": { "x": 180, "y": 90 },
+      "top_left":     {           "y": 90 },
+      "top_right":    { "x":  90, "y": 90 }
+    }
+  }
+}

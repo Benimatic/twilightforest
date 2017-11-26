@@ -1,0 +1,49 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "all": "twilightforest:blocks/stone_spiral_large",
+    "border": "blocks/stonebrick_carved",
+    "particle": "twilightforest:blocks/stone_spiral_large"
+  },
+  "elements": [
+    {
+      "//": "Top part",
+      "from": [ 0, 13, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "up":    {                          "texture": "#border" },
+        "down":  {                          "texture": "#border" },
+        "north": {                          "texture": "#border" },
+        "south": {                          "texture": "#border" },
+        "west":  { "uv": [ 8, 0, 16, 1.5 ], "texture": "#all"    },
+        "east":  { "uv": [ 0, 0,  8, 1.5 ], "texture": "#all"    }
+      }
+    },
+    {
+      "//": "Side part",
+      "from": [ 0, 0,  13 ],
+      "to": [ 16, 13, 16 ],
+      "faces": {
+        "up":    {                            "texture": "#border" },
+        "down":  {                            "texture": "#border" },
+        "north": {                            "texture": "#border" },
+        "south": {                            "texture": "#border" },
+        "west":  { "uv": [ 0, 1.5,  1.5, 8 ], "texture": "#all"    },
+        "east":  { "uv": [ 0, 1.5,  1.5, 8 ], "texture": "#all"    }
+      }
+    },
+    {
+      "//": "Side part 2",
+      "from": [ 0.5, 0,  10 ],
+      "to": [ 15.5, 13, 13 ],
+      "faces": {
+        "up":    { "texture": "#border" },
+        "down":  { "texture": "#border" },
+        "north": { "texture": "#border" },
+        "south": { "texture": "#border" },
+        "west":  { "texture": "#all"    },
+        "east":  { "texture": "#all"    }
+      }
+    }
+  ]
+}
