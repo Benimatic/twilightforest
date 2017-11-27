@@ -3,7 +3,7 @@
   "textures": {
     "all": "twilightforest:blocks/stone_spiral_large",
     "border": "blocks/stonebrick_carved",
-    "particle": "twilightforest:blocks/stone_spiral_large"
+    "particle": "blocks/stonebrick_carved"
   },
   "elements": [
     {
