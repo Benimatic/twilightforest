@@ -803,4 +803,9 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		return this.world;
 	}
 
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
+
 }
