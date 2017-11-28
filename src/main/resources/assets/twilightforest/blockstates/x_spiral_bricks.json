@@ -2,7 +2,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "inner": "twilightforest:blocks/spiral_shadow_x",
+      "shadow_y": "twilightforest:blocks/spiral_shadow_x",
+      "shadow_z": "twilightforest:blocks/spiral_shadow_x",
       "inner_a": "twilightforest:blocks/spiral_inner_down",
       "inner_b": "twilightforest:blocks/spiral_inner_up"
     },
