@@ -24,8 +24,6 @@ import java.util.Random;
 public class GuiTwilightForestLoading extends GuiScreen {
 
 	private Minecraft client = FMLClientHandler.instance().getClient();
-	private final NetHandlerPlayClient connection;
-	private int progress;
 	private boolean isEntering;
 	private boolean contentNeedsAssignment = false;
 	private long lastWorldUpdateTick = 0L;
@@ -35,8 +33,8 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	private ItemStack item;
 	private static final float backgroundScale = 32.0F;
 
-	GuiTwilightForestLoading(NetHandlerPlayClient clientPlayHandler) {
-		this.connection = clientPlayHandler;
+	GuiTwilightForestLoading() {
+
 	}
 
 	void setEntering(boolean isEntering) {
@@ -47,11 +45,6 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	public void initGui() {
 		this.buttonList.clear();
 		this.assignContent();
-	}
-
-	@Override
-	public void updateScreen() {
-		if (++this.progress % 10 == 0) this.connection.sendPacket(new CPacketKeepAlive());
 	}
 
 	@Override
