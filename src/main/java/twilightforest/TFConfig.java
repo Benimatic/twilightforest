@@ -184,6 +184,7 @@ public class TFConfig {
 					try {
 						meta = Integer.parseInt(data[2]);
 					} catch (NumberFormatException e) {
+						TwilightForestMod.LOGGER.warn("Had a slight hiccup processing \"" + s + "\" as part of the antibuilder blacklist.");
 						meta = 0;
 					}
 				}
@@ -197,6 +198,7 @@ public class TFConfig {
 	private static List<IBlockState> antibuilderStateBlacklist;
 
 	public static List<IBlockState> getAntiBuilderBlacklist() {
+		if (antibuilderStateBlacklist == null || antibuilderStateBlacklist.isEmpty()) loadAntiBuilderBlacklist();
 		return antibuilderStateBlacklist;
 	}
 }

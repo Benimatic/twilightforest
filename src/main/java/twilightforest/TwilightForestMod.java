@@ -213,7 +213,7 @@ public class TwilightForestMod {
 		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "flame_jet");
 		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "moonworm");
 		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "tower_builder");
-		GameRegistry.registerTileEntity(TileEntityTFReverter.class, "tower_reverter");
+		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "tower_reverter");
 		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "trophy");
 		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner.class, "tower_boss_spawner");
 		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive.class, "ghast_trap_inactive");
