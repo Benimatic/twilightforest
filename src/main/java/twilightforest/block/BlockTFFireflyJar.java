@@ -11,7 +11,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.passive.EntityTFTinyFirefly;
 import twilightforest.item.TFItems;
 
@@ -68,18 +70,16 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
-		double dy = pos.getY() - 0.1F + ((rand.nextFloat() - rand.nextFloat()) * 0.4F);
-		double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
+		double dx = pos.getX()  + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
+		double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
+		double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-		EntityTFTinyFirefly tinyfly = new EntityTFTinyFirefly(world, dx, dy, dz);
-		world.addWeatherEffect(tinyfly);
+		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
 
-		dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
-		dy = pos.getY() - 0.1F + ((rand.nextFloat() - rand.nextFloat()) * 0.4F);
+		/*dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
+		dy = pos.getY() + 0.4F + 0;//((rand.nextFloat() - rand.nextFloat()) * 0.4F);
 		dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
 
-		tinyfly = new EntityTFTinyFirefly(world, dx, dy, dz);
-		world.addWeatherEffect(tinyfly);
+		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);*/
 	}
 }
