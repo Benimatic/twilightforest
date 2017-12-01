@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -16,15 +17,20 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 
 import java.util.Locale;
 
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     public static final PropertyEnum<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
-    public static final PropertyEnum<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create( "axis", EnumFacing.Axis.class, pred -> pred != EnumFacing.Axis.Y);
+    public static final PropertyEnum<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 
     public BlockTFSpiralBrick() {
         super(Material.ROCK, MapColor.STONE);
+        this.setHardness(1.5F);
+        this.setResistance(10.0F);
+        this.setSoundType(SoundType.STONE);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DIAGONAL, Diagonals.TOP_RIGHT).withProperty(AXIS_FACING, EnumFacing.Axis.X));
     }
 
     @Override
@@ -34,12 +40,12 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(DIAGONAL).ordinal() << 1 | (state.getValue(AXIS_FACING) == EnumFacing.Axis.X ? 0 : 1);
+        return (state.getValue(AXIS_FACING).ordinal() << 2) | (state.getValue(DIAGONAL).ordinal());
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(DIAGONAL, Diagonals.values()[(meta & 0b0110) >> 1]).withProperty(AXIS_FACING, (meta & 0b0001) == 0 ? EnumFacing.Axis.X : EnumFacing.Axis.Z);
+        return this.getDefaultState().withProperty(DIAGONAL, Diagonals.values()[meta & 0b0011]).withProperty(AXIS_FACING, EnumFacing.Axis.values()[(meta & 0b1100) >> 2]);
     }
 
     @Override
@@ -51,7 +57,22 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         // should determine which quarter of the spiral the player shall place.
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
                 .withProperty(AXIS_FACING, playerFacing.getAxis())
-                .withProperty(DIAGONAL, Diagonals.getDiagonalFromPlacement(facing, playerFacing, playerFacing.getAxis() == EnumFacing.Axis.X ? hitZ : hitX, hitY));
+                .withProperty(DIAGONAL, getDiagonalFromPlacement(facing, playerFacing, playerFacing.getAxis() == EnumFacing.Axis.X ? hitZ : hitX, hitY));
+    }
+
+    private static Diagonals getDiagonalFromPlacement(EnumFacing blockFace, EnumFacing playerHorizontalFace, float hitXorZ, float hitY) {
+        float correctedHitXorZ = (playerHorizontalFace.getAxis() == EnumFacing.Axis.X) /* ^ (playerHorizontalFace.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)*/
+                ? hitXorZ : (hitXorZ - 1F) * (-1F);
+
+        if (blockFace.getAxis() == EnumFacing.Axis.Y)
+            return getDiagonalFromDirectionals(correctedHitXorZ < 0.5F, blockFace == EnumFacing.UP);
+        else
+            return getDiagonalFromDirectionals(correctedHitXorZ < 0.5F, hitY < 0.5F);
+    }
+
+    private static Diagonals getDiagonalFromDirectionals(boolean isRight, boolean isBottom) {
+        if (isRight) return isBottom ? Diagonals.BOTTOM_RIGHT : Diagonals.TOP_RIGHT;
+        else return isBottom ? Diagonals.BOTTOM_LEFT : Diagonals.TOP_LEFT;
     }
 
     private enum Diagonals implements IStringSerializable {
@@ -64,26 +85,12 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         public String getName() {
             return name().toLowerCase(Locale.ROOT);
         }
-
-        private static Diagonals getDiagonalFromPlacement(EnumFacing blockFace, EnumFacing playerHorizontalFace, float hitXorZ, float hitY) {
-            float correctedHitXorZ = (playerHorizontalFace.getAxis() == EnumFacing.Axis.X) /* ^ (playerHorizontalFace.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)*/
-                            ? hitXorZ : (hitXorZ - 1F) * (-1F);
-
-            if (blockFace.getAxis() == EnumFacing.Axis.Y)
-                return getDiagonalFromDirectionals(correctedHitXorZ < 0.5F, blockFace == EnumFacing.UP);
-            else
-                return getDiagonalFromDirectionals(correctedHitXorZ < 0.5F, hitY < 0.5F);
-        }
-
-        private static Diagonals getDiagonalFromDirectionals(boolean isRight, boolean isBottom) {
-            if (isRight) return isBottom ? BOTTOM_RIGHT : TOP_RIGHT;
-            else return isBottom ? BOTTOM_LEFT : TOP_LEFT;
-        }
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
         ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build());
+        ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(DIAGONAL, Diagonals.BOTTOM_LEFT));
     }
 }
