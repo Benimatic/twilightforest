@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.passive.EntityTFTinyFirefly;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
@@ -39,8 +38,7 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
@@ -70,16 +68,16 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		double dx = pos.getX()  + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
+		double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 		double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
 		double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
 		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
 
-		/*dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
-		dy = pos.getY() + 0.4F + 0;//((rand.nextFloat() - rand.nextFloat()) * 0.4F);
-		dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.3F + 0.5F);
+		dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
+		dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
+		dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);*/
+		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
 	}
 }
