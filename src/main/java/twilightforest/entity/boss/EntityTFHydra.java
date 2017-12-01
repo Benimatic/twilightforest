@@ -141,6 +141,39 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		}
 	}
 
+	// [Vanilla Copy] from EntityLivingBase. Hydra doesn't like the one from EntityLiving for whatever reason
+	protected float updateDistance(float p_110146_1_, float p_110146_2_)
+	{
+		float f = MathHelper.wrapDegrees(p_110146_1_ - this.renderYawOffset);
+		this.renderYawOffset += f * 0.3F;
+		float f1 = MathHelper.wrapDegrees(this.rotationYaw - this.renderYawOffset);
+		boolean flag = f1 < -90.0F || f1 >= 90.0F;
+
+		if (f1 < -75.0F)
+		{
+			f1 = -75.0F;
+		}
+
+		if (f1 >= 75.0F)
+		{
+			f1 = 75.0F;
+		}
+
+		this.renderYawOffset = this.rotationYaw - f1;
+
+		if (f1 * f1 > 2500.0F)
+		{
+			this.renderYawOffset += f1 * 0.2F;
+		}
+
+		if (flag)
+		{
+			p_110146_2_ *= -1.0F;
+		}
+
+		return p_110146_2_;
+	}
+
 	@Override
 	public void onLivingUpdate() {
 		if (hc[0].headEntity == null || hc[1].headEntity == null || hc[2].headEntity == null) {
@@ -306,7 +339,6 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 		if (getAttackTarget() != null) {
 			faceEntity(getAttackTarget(), 10F, getVerticalFaceSpeed());
-			renderYawOffset = rotationYaw;
 
 			// have any heads not currently attacking switch to the primary target
 			for (int i = 0; i < numHeads; i++) {
