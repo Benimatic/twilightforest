@@ -17,7 +17,7 @@ import twilightforest.world.TFGenerator;
 
 import java.util.Random;
 
-public class DruidHut extends TFGenerator {
+public class GenDruidHut extends TFGenerator {
     private static final ResourceLocation STRUCTURE = new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut");
 
     public boolean generate(World world, Random rand, BlockPos pos) {
