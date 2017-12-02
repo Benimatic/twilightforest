@@ -49,7 +49,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isRemote) {
-			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player);
+			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player, hand);
 			world.spawnEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 
