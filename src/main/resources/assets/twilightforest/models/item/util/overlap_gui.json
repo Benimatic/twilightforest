@@ -39,13 +39,5 @@
       "rotation": [ 0, 180, 0 ],
       "scale": [ 2, 2, 1 ]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "twilightforest:thrown": 1
-      },
-      "model": "twilightforest:item/cube_talisman"
-    }
-  ]
+  }
 }
