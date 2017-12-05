@@ -60,40 +60,21 @@ public class GenDruidHut extends TFGenerator {
 
     private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos actualPos, BlockPos size) {
         final int originLevel = actualPos.getY();
-        //final int threshold = originLevel - 10;
 
         for (int x = 0; x < size.getX(); x++) {
             for (int z = 0; z < size.getZ(); z++) {
                 IBlockState state = world.getBlockState(new BlockPos(actualPos.getX() + x, originLevel, actualPos.getZ() + z));
 
-                if (isBlockNotOk(state)) {
-                    //world.setBlockState(new BlockPos(actualPos.add(x, 100, z)), Blocks.REDSTONE_BLOCK.getDefaultState());
-                    return false;
-                }
+                if (isBlockNotOk(state)) return false;
 
                 if (!isBlockOk(state)) {
                     for (int y = originLevel - 1; y >= 0; y--) {
-                        BlockPos posAt = new BlockPos(actualPos.getX()+x, y, actualPos.getZ()+z);
-                        IBlockState stateAt = world.getBlockState(posAt);
+                        IBlockState stateAt = world.getBlockState(new BlockPos(actualPos.getX()+x, y, actualPos.getZ()+z));
 
-                        if (isBlockNotOk(stateAt)) {
-                            //world.setBlockState(posAt, Blocks.REDSTONE_BLOCK.getDefaultState());
-                            return false;
-                        }
-
-                        //world.setBlockState(posAt.up(100), stateAt, 0b10);
+                        if (isBlockNotOk(stateAt)) return false;
 
                         if (isBlockOk(stateAt)) {
-                            //if (y < threshold) {
-                            //    if (y < actualPos.getY()) {
-                            //        actualPos.setY(threshold);
-                            //    }
-                            //    break;
-                            //}
-
-                            if (y < actualPos.getY()) {
-                                actualPos.setY(y);
-                            }
+                            if (y < actualPos.getY()) actualPos.setY(y);
                             break;
                         }
                     }
