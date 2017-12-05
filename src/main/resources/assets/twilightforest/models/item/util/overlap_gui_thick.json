@@ -7,8 +7,8 @@
       "scale":[ 2, 2, 2 ]
     },
     "ground": {
-      "translation": [ 0, 0, 0 ],
-      "scale": [ 2, 2, 2 ]
+      "translation": [ 0, 2, 0 ],
+      "scale": [ 1, 1, 1 ]
     },
     "head": {
       "rotation": [ 0, 0, 0 ],
@@ -34,6 +34,10 @@
       "rotation": [ 0, 90, -25 ],
       "translation": [ 1.13, 3.2, 1.13 ],
       "scale": [ 1.36, 1.36, 1.36 ]
+    },
+    "fixed": {
+      "rotation": [ 0, 180, 0 ],
+      "scale": [ 2, 2, 2 ]
     }
   },
   "overrides": [
