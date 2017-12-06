@@ -42,8 +42,10 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 		int flowerCycles = rand.nextInt(3) - 1;
-		// Flower forest
-		((BiomeForest) Biomes.MUTATED_FOREST).addDoublePlants(world, rand, pos, flowerCycles);
+		// Handle mods not staying in the class hierarchy when replacing vanilla
+		if (Biomes.MUTATED_FOREST instanceof BiomeForest) {
+			((BiomeForest) Biomes.MUTATED_FOREST).addDoublePlants(world, rand, pos, flowerCycles);
+		}
 
 		super.decorate(world, rand, pos);
 
