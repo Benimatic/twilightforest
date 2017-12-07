@@ -44,7 +44,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	private float getCloudHeight(World world) {
 		if (world.provider instanceof WorldProviderTwilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client
-			return world.provider.getCloudHeight();
+			return ((WorldProviderTwilightForest) world.provider).getCloudHeight(); // This cast is actually needed for some reason, else this will toss a Method Not Found on dedicated servers.
 		} else {
 			// otherwise, world.provider.getCloudHeight() is client only. guess 128
 			return 128;
