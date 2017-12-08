@@ -4,7 +4,7 @@ import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
-public enum StructureVariants implements IStringSerializable {
+public enum StructureVariant implements IStringSerializable {
     TWILIGHT_PORTAL,
     HEDGE_MAZE,
     HOLLOW_HILL,
