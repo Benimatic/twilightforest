@@ -9,6 +9,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
+import twilightforest.enums.Diagonals;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                 int yBB = boundingBox.minY + 1;
                 int zBB = boundingBox.minZ + (y * 12) + offset;
 
-                switch (maze[x][y]) { // These are inconsistent because I was stupid with the structures I saved to .nbt
+                switch (maze[x][y] & 0b1111) { // These are inconsistent because I was stupid with the structures I saved to .nbt
                     case 0b0010:    // FACE SOUTH
                         rotation++; // rotate 270
                     case 0b0001:    // FACE EAST
@@ -230,9 +231,20 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             }
         }
 
-        for (int i = 0; i < cornerClippings.length; i++) {
-            cornerClippings[i][0] = random.nextInt(maximumClipping);
-            cornerClippings[i][1] = random.nextInt(maximumClipping);
+        for (Diagonals diagonals : Diagonals.values()) {
+            cornerClippings[diagonals.ordinal()][0] = random.nextInt(maximumClipping);
+            cornerClippings[diagonals.ordinal()][1] = random.nextInt(maximumClipping);
+
+            //maze[diagonals.operationY.convert(cornerClippings[diagonals.ordinal()][0], heightInCellCount)];
+
+            for (int y = 0; y < cornerClippings[diagonals.ordinal()][0]; y++) {
+                for (int x = 0; x < cornerClippings[diagonals.ordinal()][1]; x++) {
+                    maze
+                            [diagonals.operationX.convert(cornerClippings[diagonals.ordinal()][1], widthInCellCount)]
+                            [diagonals.operationY.convert(cornerClippings[diagonals.ordinal()][0], heightInCellCount)]
+                            |= 0b10000;
+                }
+            }
         }
 
         StringBuilder chartX = new StringBuilder();
@@ -243,10 +255,10 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             StringBuilder debugY = new StringBuilder("\n");
 
             for (int j = 0; j < widthInCellCount-1; j++) {
-                int value = maze[j][i] & 0b1111;
+                int value = maze[j][i];
 
-                chartY.append(getStringFromFacings(value));
-                debugY.append(value > 0b111 ? " " : value > 0b11 ? " 0" : value > 0b1 ? " 00" : " 000").append(Integer.toBinaryString(value));
+                chartY.append(getStringFromFacings(value & 0b1111));
+                debugY.append(value > 0b1111 ? " " : value > 0b111 ? " 0" : value > 0b11 ? " 00" : value > 0b1 ? " 000" : " 0000").append(Integer.toBinaryString(value));
             }
 
             chartX.append(chartY);
@@ -318,7 +330,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             return (this.BYTE & directions) == this.BYTE;
         }
 
-        protected boolean hasOpposite(int directions) {
+        protected boolean unpackAndTestOpposite(int directions) {
             return (this.OPPOSITE & directions) == this.OPPOSITE;
         }
 

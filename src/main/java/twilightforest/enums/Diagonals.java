@@ -10,8 +10,8 @@ public enum Diagonals implements IStringSerializable {
     BOTTOM_LEFT ((x, rX) -> x     , (y, rY) -> rY - y),
     TOP_LEFT    ((x, rX) -> x     , (y, rY) -> y     );
 
-    private final Inversion operationX;
-    private final Inversion operationY;
+    public final Inversion operationX;
+    public final Inversion operationY;
 
     Diagonals(Inversion operationX,Inversion operationY) {
         this.operationX = operationX;
@@ -23,7 +23,7 @@ public enum Diagonals implements IStringSerializable {
         return name().toLowerCase(Locale.ROOT);
     }
 
-    private interface Inversion {
+    public interface Inversion {
         int convert(int numberIn, int range);
     }
 }
