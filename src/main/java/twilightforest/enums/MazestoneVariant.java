@@ -1,15 +1,18 @@
-package twilightforest.block.enums;
+package twilightforest.enums;
 
 import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
-public enum TowerWoodVariant implements IStringSerializable {
+public enum MazestoneVariant implements IStringSerializable {
 	PLAIN,
-	ENCASED,
+	BRICK,
+	CHISELED,
+	DECORATIVE,
 	CRACKED,
 	MOSSY,
-	INFESTED;
+	MOSAIC,
+	BORDER;
 
 	@Override
 	public String getName() {

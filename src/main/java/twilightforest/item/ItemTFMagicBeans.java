@@ -11,7 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves3;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.Leaves3Variant;
+import twilightforest.enums.Leaves3Variant;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nonnull;

@@ -10,7 +10,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -18,8 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
-
-import java.util.Locale;
+import twilightforest.enums.Diagonals;
 
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     public static final PropertyEnum<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
@@ -73,18 +71,6 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     private static Diagonals getDiagonalFromDirectionals(boolean isRight, boolean isBottom) {
         if (isRight) return isBottom ? Diagonals.BOTTOM_RIGHT : Diagonals.TOP_RIGHT;
         else return isBottom ? Diagonals.BOTTOM_LEFT : Diagonals.TOP_LEFT;
-    }
-
-    private enum Diagonals implements IStringSerializable {
-        TOP_RIGHT,
-        BOTTOM_RIGHT,
-        BOTTOM_LEFT,
-        TOP_LEFT;
-
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ROOT);
-        }
     }
 
     @SideOnly(Side.CLIENT)

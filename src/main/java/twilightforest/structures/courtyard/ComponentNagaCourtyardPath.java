@@ -15,17 +15,18 @@ import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardIntersection extends StructureTFComponent {
-    private static final ResourceLocation WALL_CROSS = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_intersection");
+public class ComponentNagaCourtyardPath extends StructureTFComponent {
+    private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
 
-    public ComponentNagaCourtyardIntersection() {
+    public ComponentNagaCourtyardPath() {
         super();
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardIntersection(TFFeature feature, int i, int x, int y, int z) {
+    public ComponentNagaCourtyardPath(TFFeature feature, int i, int x, int y, int z) {
         super(feature, i);
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);
+        this.rotation = rotation;
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y, z + 5);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class ComponentNagaCourtyardIntersection extends StructureTFComponent {
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.getBoundingBox());
 
-        Template template = templateManager.getTemplate(server, WALL_CROSS);
+        Template template = templateManager.getTemplate(server, PATH);
         template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
 
         return true;

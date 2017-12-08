@@ -12,5 +12,6 @@ public class NagaCourtyardPieces {
         MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardIntersection.class, "TFNCIs");
         MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardPadder.class, "TFNCPd");
         MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardTerrace.class, "TFNCTr");
+        MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardPath.class, "TFNCPa");
     }
 }

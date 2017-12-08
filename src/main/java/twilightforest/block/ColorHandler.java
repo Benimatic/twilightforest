@@ -13,10 +13,10 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.enums.Leaves3Variant;
-import twilightforest.block.enums.LeavesVariant;
-import twilightforest.block.enums.MagicWoodVariant;
-import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.enums.Leaves3Variant;
+import twilightforest.enums.LeavesVariant;
+import twilightforest.enums.MagicWoodVariant;
+import twilightforest.enums.TowerWoodVariant;
 import twilightforest.item.ItemTFArcticArmor;
 import twilightforest.item.TFItems;
 

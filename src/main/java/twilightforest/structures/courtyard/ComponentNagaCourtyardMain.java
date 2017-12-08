@@ -1,6 +1,5 @@
 package twilightforest.structures.courtyard;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -13,7 +12,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 
 	// that gives us a 95 x 95 area to work with
-	static int RADIUS = 46;
+	static int RADIUS = 62;
 	static int DIAMETER = 2 * RADIUS + 1;
 
 	public ComponentNagaCourtyardMain() {
@@ -21,7 +20,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	}
 
 	public ComponentNagaCourtyardMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, rand, i, 7, 7);
+		super(feature, rand, i, 11, 11);
 
 		this.setCoordBaseMode(EnumFacing.NORTH);
 
@@ -32,7 +31,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		//TwilightForestMod.LOGGER.info("" + widthInCellCount + " " + heightInCellCount);
 
-		int width = widthInCellCount-1;
+		/*int width = widthInCellCount-1;
 		int height = heightInCellCount-1;
 
 		for (int x = 0; x < width; x++) {
@@ -40,7 +39,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 				int value = maze[width-x-1][height-y-1] & 0b1111;
 
 				for (WallFacing facing : WallFacing.values()) {
-					if (facing.has(value)) {
+					if (facing.unpackAndTest(value)) {
 						for (int i = 1; i < 6; i++) {
 							setBlockState(world,
 									Blocks.WOOL.getStateFromMeta(value),
@@ -60,6 +59,11 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 						sbb);
 			}
 		}//*/
+
+		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), 0, 10, 0, sbb);
+		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), 0, 10, DIAMETER, sbb);
+		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), DIAMETER, 10, 0, sbb);
+		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), DIAMETER, 10, DIAMETER, sbb);
 
 		// naga spawner seems important
 		setBlockState(world, TFBlocks.bossSpawner.getDefaultState(), RADIUS + 1, 2, RADIUS + 1, sbb);

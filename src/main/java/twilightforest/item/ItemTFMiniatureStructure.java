@@ -3,7 +3,7 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
-import twilightforest.block.enums.StructureVariants;
+import twilightforest.enums.StructureVariants;
 
 import java.util.Locale;
 

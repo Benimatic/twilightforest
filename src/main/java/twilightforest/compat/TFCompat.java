@@ -8,7 +8,7 @@ import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.*;
+import twilightforest.enums.*;
 
 /*@Optional.InterfaceList({
         @Optional.Interface(iface = "team.chisel.api.ChiselAPIProps", modid = "chisel"),
@@ -210,13 +210,13 @@ public enum TFCompat {
             if (Loader.isModLoaded(compat.name().toLowerCase())) {
                 try {
                     compat.init();
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.name().toLowerCase() + "");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " unpackAndTest loaded compatibility for mod " + compat.name().toLowerCase() + "");
                 } catch (Exception e) {
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.name().toLowerCase() + " compatibility!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             } else {
-                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.name().toLowerCase() + "");
+                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " unpackAndTest skipped compatibility for mod " + compat.name().toLowerCase() + "");
             }
         }
     }

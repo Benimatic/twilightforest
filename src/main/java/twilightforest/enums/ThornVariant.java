@@ -1,14 +1,12 @@
-package twilightforest.block.enums;
+package twilightforest.enums;
 
 import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
-public enum WoodVariant implements IStringSerializable {
-	OAK,
-	CANOPY,
-	MANGROVE,
-	DARK;
+public enum ThornVariant implements IStringSerializable {
+	BROWN,
+	GREEN;
 
 	@Override
 	public String getName() {

@@ -16,8 +16,9 @@ import java.util.Random;
 
 public abstract class StructureMazeGenerator extends StructureTFComponent {
     protected int[][] maze;
-    int widthInCellCount;
-    int heightInCellCount;
+    private int[][] cornerClipping = new int[4][2];
+    private int widthInCellCount;
+    private int heightInCellCount;
 
     StructureMazeGenerator() {
         super();
@@ -28,14 +29,14 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         this.widthInCellCount = widthInCellCount;
         this.heightInCellCount = heightInCellCount;
         this.maze = new int[widthInCellCount-1][heightInCellCount-1];
-        generateMaze(this.maze, rand, this.widthInCellCount, this.heightInCellCount);
+        generateMaze(this.maze, this.cornerClipping, rand, this.widthInCellCount, this.heightInCellCount, 3);
     }
 
     // Actually assemble maze
     @Override
     public void buildComponent(StructureComponent structureComponent, List<StructureComponent> list, Random random) {
         super.buildComponent(structureComponent, list, random);
-        final int offset = 13;
+        final int offset = 5;
 
         for (int x = 0; x < widthInCellCount-1; x++) {
             for (int y = 0; y < heightInCellCount-1; y++) {
@@ -105,7 +106,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                         structure = new ComponentNagaCourtyardIntersection(getFeatureType(), maze[x][y], xBB, yBB, zBB);
                         break;
                     default:
-                        structure = new ComponentNagaCourtyardTerrace(getFeatureType(), maze[x][y], xBB, yBB-1, zBB);
+                        structure = new ComponentNagaCourtyardTerrace(getFeatureType(), maze[x][y], xBB-6, yBB-3, zBB-6);
                         break;
                 }
 
@@ -115,38 +116,67 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                 xBB = boundingBox.minX + (x * 12) + offset;
                 zBB = boundingBox.minZ + (y * 12) + offset;
 
-                if (x > 0 && WallFacing.WEST.has(maze[x][y])) {
+                boolean hasNoTerrace = maze[x][y] != 0;
+                boolean westHasNoTerraceOrIsSafe = (x > 0 && maze[x-1][y] != 0);
+                boolean northHasNoTerraceOrIsSafe = (y > 0 && maze[x][y-1] != 0);
+
+                if (hasNoTerrace) {
+                    ComponentNagaCourtyardPath path = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 1, yBB - 1, zBB - 1);
+                    list.add(path);
+                    path.buildComponent(structureComponent, list, random);
+                }
+
+                if (x > 0 && WallFacing.WEST.unpackAndTest(maze[x][y])) {
                     ComponentNagaCourtyardPadder padding = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB - 1, yBB, zBB, Rotation.NONE);
                     list.add(padding);
-                    structure.buildComponent(structureComponent, list, random);
+                    padding.buildComponent(structureComponent, list, random);
 
                     ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB - 7, yBB, zBB, Rotation.NONE);
                     list.add(padding2);
-                    structure.buildComponent(structureComponent, list, random);
+                    padding2.buildComponent(structureComponent, list, random);
 
                     ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB - 6, yBB, zBB, Rotation.NONE);
                     list.add(structureLine);
                     structureLine.buildComponent(structureComponent, list, random);
                 }
 
-                if (y > 0 && WallFacing.NORTH.has(maze[x][y])) {
+                if (y > 0 && WallFacing.NORTH.unpackAndTest(maze[x][y])) {
                     ComponentNagaCourtyardPadder padding = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB - 1, Rotation.CLOCKWISE_90);
                     list.add(padding);
-                    structure.buildComponent(structureComponent, list, random);
+                    padding.buildComponent(structureComponent, list, random);
 
                     ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB - 7, Rotation.CLOCKWISE_90);
                     list.add(padding2);
-                    structure.buildComponent(structureComponent, list, random);
+                    padding2.buildComponent(structureComponent, list, random);
 
                     ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB - 6, Rotation.CLOCKWISE_90);
                     list.add(structureLine);
                     structureLine.buildComponent(structureComponent, list, random);
-                }//*/
+                }
+
+                if (hasNoTerrace && westHasNoTerraceOrIsSafe) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB - 1);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
+
+                if (hasNoTerrace && northHasNoTerraceOrIsSafe) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 1, yBB - 1, zBB - 7);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
+
+                if (hasNoTerrace && westHasNoTerraceOrIsSafe && northHasNoTerraceOrIsSafe
+                        && (x > 0 && y > 0 && maze[x-1][y-1] != 0)) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB - 7);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
             }
         }
     }
 
-    private static void generateMaze(int[][] maze, Random random, int widthInCellCount, int heightInCellCount) {
+    private static void generateMaze(int[][] maze, int[][] cornerClippings, Random random, int widthInCellCount, int heightInCellCount, int maximumClipping) {
         // Trying to keep this optimized for speed I guess
 
         // Generates a connection map for the walls. It modifies the two-dimensional int array, inserting packed ints.
@@ -168,7 +198,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                 // Did we pick west and will we not get an AOOBE accessing array
                 if (rotations[x][y] == WallFacing.WEST && x > 0) {
                     // If neighbor does not connect to west, connect it to east
-                    if (!rotations[x][y].has(maze[x-1][y])) maze[x-1][y] |= rotations[x][y].OPPOSITE;
+                    if (!rotations[x][y].unpackAndTest(maze[x-1][y])) maze[x-1][y] |= rotations[x][y].OPPOSITE;
                     else { // else we cut the connection
                         // remove connection for the maze part we're looking at
                         maze[x][y] &= rotations[x][y].INVERTED;
@@ -177,27 +207,32 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     }
                 }
                 if (rotations[x][y] == WallFacing.NORTH && y > 0 ) {
-                    if (!rotations[x][y].has(maze[x][y-1])) maze[x][y-1] |= rotations[x][y].OPPOSITE;
+                    if (!rotations[x][y].unpackAndTest(maze[x][y-1])) maze[x][y-1] |= rotations[x][y].OPPOSITE;
                     else {
                         maze[x][y] &= rotations[x][y].INVERTED;
                         maze[x][y-1] &= rotations[x][y-1].INVERTED_OPPOSITE;
                     }
                 }
                 if (rotations[x][y] == WallFacing.EAST && x < widthInCellCount-2 ) {
-                    if (!rotations[x][y].has(maze[x+1][y])) maze[x+1][y] |= rotations[x][y].OPPOSITE;
+                    if (!rotations[x][y].unpackAndTest(maze[x+1][y])) maze[x+1][y] |= rotations[x][y].OPPOSITE;
                     else {
                         maze[x][y] &= rotations[x][y].INVERTED;
                         maze[x+1][y] &= rotations[x+1][y].INVERTED_OPPOSITE;
                     }
                 }
                 if (rotations[x][y] == WallFacing.SOUTH && y < heightInCellCount-2 ) {
-                    if (!rotations[x][y].has(maze[x][y+1])) maze[x][y+1] |= rotations[x][y].OPPOSITE;
+                    if (!rotations[x][y].unpackAndTest(maze[x][y+1])) maze[x][y+1] |= rotations[x][y].OPPOSITE;
                     else {
                         maze[x][y] &= rotations[x][y].INVERTED;
                         maze[x][y+1] &= rotations[x][y+1].INVERTED_OPPOSITE;
                     }
                 }
             }
+        }
+
+        for (int i = 0; i < cornerClippings.length; i++) {
+            cornerClippings[i][0] = random.nextInt(maximumClipping);
+            cornerClippings[i][1] = random.nextInt(maximumClipping);
         }
 
         StringBuilder chartX = new StringBuilder();
@@ -279,7 +314,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             this.enumFacing = enumFacing;
         }
 
-        protected boolean has(int directions) {
+        protected boolean unpackAndTest(int directions) {
             return (this.BYTE & directions) == this.BYTE;
         }
 

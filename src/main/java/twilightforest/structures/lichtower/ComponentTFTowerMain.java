@@ -17,7 +17,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.BossVariant;
+import twilightforest.enums.BossVariant;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;

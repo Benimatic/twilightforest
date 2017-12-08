@@ -15,7 +15,7 @@ import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
-import static twilightforest.block.enums.TowerDeviceVariant.GHASTTRAP_INACTIVE;
+import static twilightforest.enums.TowerDeviceVariant.GHASTTRAP_INACTIVE;
 
 public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 

@@ -8,7 +8,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFThorns;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.ThornVariant;
+import twilightforest.enums.ThornVariant;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
 

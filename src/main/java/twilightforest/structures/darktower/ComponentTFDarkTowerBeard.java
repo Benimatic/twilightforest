@@ -8,7 +8,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.enums.TowerWoodVariant;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 

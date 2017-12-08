@@ -1,14 +1,12 @@
-package twilightforest.block.enums;
+package twilightforest.enums;
 
 import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
-public enum MagicWoodVariant implements IStringSerializable {
-	TIME,
-	TRANS,
-	MINE,
-	SORT;
+public enum HedgeVariant implements IStringSerializable {
+	HEDGE,
+	DARKWOOD_LEAVES;
 
 	@Override
 	public String getName() {

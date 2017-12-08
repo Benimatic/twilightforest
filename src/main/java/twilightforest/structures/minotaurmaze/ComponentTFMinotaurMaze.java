@@ -10,7 +10,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.MazestoneVariant;
+import twilightforest.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.TFMaze;
 

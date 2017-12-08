@@ -1,13 +1,12 @@
-package twilightforest.block.enums;
+package twilightforest.enums;
 
 import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
-public enum DeadrockVariant implements IStringSerializable {
-	SURFACE,
-	CRACKED,
-	SOLID;
+public enum RootVariant implements IStringSerializable {
+	ROOT,
+	LIVEROOT;
 
 	@Override
 	public String getName() {

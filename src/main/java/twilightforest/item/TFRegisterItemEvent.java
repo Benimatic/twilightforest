@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.DeadrockVariant;
-import twilightforest.block.enums.ThornVariant;
+import twilightforest.enums.DeadrockVariant;
+import twilightforest.enums.ThornVariant;
 
 import static java.util.Arrays.stream;
 import static net.minecraft.init.MobEffects.REGENERATION;

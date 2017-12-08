@@ -19,11 +19,12 @@ import java.util.Random;
 public class ComponentNagaCourtyardLine extends StructureTFComponent {
     private static final ResourceLocation WALL_LINE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line");
 
-    ComponentNagaCourtyardLine() {
+    public ComponentNagaCourtyardLine() {
         super();
     }
 
-    ComponentNagaCourtyardLine(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    @SuppressWarnings("WeakerAccess")
+    public ComponentNagaCourtyardLine(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(feature, i);
         this.rotation = rotation;
         this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);

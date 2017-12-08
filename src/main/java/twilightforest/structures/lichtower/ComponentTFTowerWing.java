@@ -1415,14 +1415,14 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 
 	/**
-	 * Returns true if this tower has only one exit.
+	 * Returns true if this tower unpackAndTest only one exit.
 	 */
 	public boolean isDeadEnd() {
 		return openings.size() == 1;
 	}
 
 	/**
-	 * Returns true if this tower has four exits.
+	 * Returns true if this tower unpackAndTest four exits.
 	 */
 	public boolean hasExitsOnAllWalls() {
 		int exits = 0;
@@ -1434,7 +1434,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	}
 
 	/**
-	 * Returns true if this tower has stairs
+	 * Returns true if this tower unpackAndTest stairs
 	 */
 	public boolean hasStairs() {
 		return highestOpening > 1;

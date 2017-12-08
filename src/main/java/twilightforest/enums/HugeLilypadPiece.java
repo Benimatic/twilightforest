@@ -1,12 +1,14 @@
-package twilightforest.block.enums;
+package twilightforest.enums;
 
 import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
-public enum RootVariant implements IStringSerializable {
-	ROOT,
-	LIVEROOT;
+public enum HugeLilypadPiece implements IStringSerializable {
+	NW,
+	NE,
+	SE,
+	SW;
 
 	@Override
 	public String getName() {

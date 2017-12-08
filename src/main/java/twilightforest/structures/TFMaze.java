@@ -8,7 +8,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.MazestoneVariant;
+import twilightforest.enums.MazestoneVariant;
 import twilightforest.world.TFGenCanopyTree;
 
 import java.util.Random;

@@ -1,4 +1,4 @@
-package twilightforest.block.enums;
+package twilightforest.enums;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.IStringSerializable;

@@ -16,15 +16,16 @@ import twilightforest.structures.StructureTFComponent;
 import java.util.Random;
 
 public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
-    private static final ResourceLocation TERRACE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hydra_statue");
+    private static final ResourceLocation TERRACE = new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_fire");
 
-    ComponentNagaCourtyardTerrace() {
+    public ComponentNagaCourtyardTerrace() {
         super();
     }
 
-    ComponentNagaCourtyardTerrace(TFFeature feature, int i, int x, int y, int z) {
+    @SuppressWarnings("WeakerAccess")
+    public ComponentNagaCourtyardTerrace(TFFeature feature, int i, int x, int y, int z) {
         super(feature, i);
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 17, y + 6, z + 17);
     }
 
     @Override

@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package twilightforest.block.enums;
+package twilightforest.enums;
 
 import mcp.MethodsReturnNonnullByDefault;
 

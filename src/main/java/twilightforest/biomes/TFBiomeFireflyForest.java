@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenPumpkin;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.PlantVariant;
+import twilightforest.enums.PlantVariant;
 import twilightforest.world.TFGenHangingLamps;
 import twilightforest.world.TFGenLampposts;
 import twilightforest.world.TFGenTallGrass;
