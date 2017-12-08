@@ -385,7 +385,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		// add the hollow part. Also turn water into stone below that
 		int hollow = hillHeight - 4 - nearFeature.size;
 
-		// hydra lair unpackAndTest a piece missing
+		// hydra lair has a piece missing
 		if (nearFeature == TFFeature.hydraLair) {
 			int mx = dx + 16;
 			int mz = dz + 16;

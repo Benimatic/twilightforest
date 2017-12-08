@@ -39,7 +39,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 				int value = maze[width-x-1][height-y-1] & 0b1111;
 
 				for (WallFacing facing : WallFacing.values()) {
-					if (facing.unpackAndTest(value)) {
+					if (facing.has(value)) {
 						for (int i = 1; i < 6; i++) {
 							setBlockState(world,
 									Blocks.WOOL.getStateFromMeta(value),

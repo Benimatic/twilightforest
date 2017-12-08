@@ -351,7 +351,7 @@ public class TFFeature {
 		if (biomeAt == TFBiomes.glacier) {
 			return iceTower;
 		}
-		// snow unpackAndTest yeti lair
+		// snow has yeti lair
 		if (biomeAt == TFBiomes.snowy_forest) {
 			return yetiCave;
 		}
@@ -366,11 +366,11 @@ public class TFFeature {
 			return questGrove;
 		}
 
-		// fire swamp unpackAndTest hydra lair
+		// fire swamp has hydra lair
 		if (biomeAt == TFBiomes.fireSwamp) {
 			return hydraLair;
 		}
-		// swamp unpackAndTest labyrinth
+		// swamp has labyrinth
 		if (biomeAt == TFBiomes.tfSwamp) {
 			return labyrinth;
 		}
@@ -383,16 +383,16 @@ public class TFFeature {
 			return darkTower;
 		}
 
-		// highlands center unpackAndTest castle
+		// highlands center has castle
 		if (biomeAt == TFBiomes.highlandsCenter) {
 			return finalCastle;
 		}
-		// highlands unpackAndTest trolls
+		// highlands has trolls
 		if (biomeAt == TFBiomes.highlands) {
 			return trollCave;
 		}
 
-		// deep mushrooms unpackAndTest mushroom tower
+		// deep mushrooms has mushroom tower
 		if (biomeAt == TFBiomes.deepMushrooms) {
 			return mushroomTower;
 		}
