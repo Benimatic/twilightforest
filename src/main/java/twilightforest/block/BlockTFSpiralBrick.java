@@ -19,6 +19,8 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.enums.Diagonals;
 
+import javax.annotation.Nullable;
+
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     public static final PropertyEnum<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
     public static final PropertyEnum<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
@@ -78,5 +80,35 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     public void registerModel() {
         ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build());
         ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(DIAGONAL, Diagonals.BOTTOM_LEFT));
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing facing) {
+        IBlockState state = world.getBlockState(pos);
+
+        if (facing.getAxis() == state.getValue(AXIS_FACING)) {
+            state = state.cycleProperty(DIAGONAL);
+        } else {
+            switch (facing.getAxis()) {
+                case X:
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.Y ? EnumFacing.Axis.Z : EnumFacing.Axis.Y);
+                    break;
+                case Y:
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.X ? EnumFacing.Axis.Z : EnumFacing.Axis.X);
+                    break;
+                case Z:
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.Y ? EnumFacing.Axis.X : EnumFacing.Axis.Y);
+                    break;
+            }
+        }
+
+        world.setBlockState(pos, state);
+        return true;
+    }
+
+    @Override
+    @Nullable
+    public EnumFacing[] getValidRotations(World world, BlockPos pos) {
+        return EnumFacing.values();
     }
 }
