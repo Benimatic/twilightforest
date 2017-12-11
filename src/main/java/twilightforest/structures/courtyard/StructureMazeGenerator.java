@@ -37,10 +37,12 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     @Override
     public void buildComponent(StructureComponent structureComponent, List<StructureComponent> list, Random random) {
         super.buildComponent(structureComponent, list, random);
-        final int offset = 5;
+        final int offset = 6;
 
         for (int x = 0; x < widthInCellCount-1; x++) {
             for (int y = 0; y < heightInCellCount-1; y++) {
+                if ((maze[x][y] & 0b10000) == 0b10000) continue;
+
                 StructureTFComponent structure;
 
                 int rotation = 0;
@@ -117,9 +119,17 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                 xBB = boundingBox.minX + (x * 12) + offset;
                 zBB = boundingBox.minZ + (y * 12) + offset;
 
-                boolean hasNoTerrace = maze[x][y] != 0;
-                boolean westHasNoTerraceOrIsSafe = (x > 0 && maze[x-1][y] != 0);
-                boolean northHasNoTerraceOrIsSafe = (y > 0 && maze[x][y-1] != 0);
+                boolean hasNoTerrace = (maze[x][y] & 0b1111) != 0;
+
+                boolean westHasNoTerraceOrIsSafe  = x == 0 || (maze[x-1][y] & 0b1111) != 0 || (maze[x-1][y] & 0b10000) == 0b10000;
+                boolean northHasNoTerraceOrIsSafe = y == 0 || (maze[x][y-1] & 0b1111) != 0 || (maze[x][y-1] & 0b10000) == 0b10000;
+                boolean eastHasNoTerraceOrIsSafe  = x == widthInCellCount -2 || (maze[x+1][y] & 0b10000) == 0b10000;
+                boolean southHasNoTerraceOrIsSafe = y == heightInCellCount-2 || (maze[x][y+1] & 0b10000) == 0b10000;
+
+                boolean westNorthHasNoTerraceOrIsSafe = (x == 0 || y == 0 || maze[x - 1][y - 1] != 0);
+                boolean westSouthHasNoTerraceOrIsSafe = (x == 0 || y >= heightInCellCount-2 || maze[x - 1][y + 1] != 0);
+                boolean eastNorthHasNoTerraceOrIsSafe = (x >= widthInCellCount -2 || y == 0 || maze[x + 1][y - 1] != 0);
+                boolean eastSouthHasNoTerraceOrIsSafe = (x >= widthInCellCount -2 || y >= heightInCellCount-2 || maze[x + 1][y + 1] != 0);
 
                 if (hasNoTerrace) {
                     ComponentNagaCourtyardPath path = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 1, yBB - 1, zBB - 1);
@@ -127,7 +137,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     path.buildComponent(structureComponent, list, random);
                 }
 
-                if (x > 0 && WallFacing.WEST.unpackAndTest(maze[x][y])) {
+                if (WallFacing.WEST.unpackAndTest(maze[x][y])) {
                     ComponentNagaCourtyardPadder padding = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB - 1, yBB, zBB, Rotation.NONE);
                     list.add(padding);
                     padding.buildComponent(structureComponent, list, random);
@@ -141,7 +151,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     structureLine.buildComponent(structureComponent, list, random);
                 }
 
-                if (y > 0 && WallFacing.NORTH.unpackAndTest(maze[x][y])) {
+                if (WallFacing.NORTH.unpackAndTest(maze[x][y])) {
                     ComponentNagaCourtyardPadder padding = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB - 1, Rotation.CLOCKWISE_90);
                     list.add(padding);
                     padding.buildComponent(structureComponent, list, random);
@@ -155,6 +165,36 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     structureLine.buildComponent(structureComponent, list, random);
                 }
 
+                if ((x >= widthInCellCount - 2 || (maze[x+1][y] & 0b10000) == 0b10000) && WallFacing.EAST.unpackAndTest(maze[x][y])) {
+                    ComponentNagaCourtyardPadder padding = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 5, yBB, zBB, Rotation.NONE);
+                    list.add(padding);
+                    padding.buildComponent(structureComponent, list, random);
+
+                    ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 11, yBB, zBB, Rotation.NONE);
+                    list.add(padding2);
+                    padding2.buildComponent(structureComponent, list, random);
+
+                    ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB + 6, yBB, zBB, Rotation.NONE);
+                    list.add(structureLine);
+                    structureLine.buildComponent(structureComponent, list, random);
+                }
+
+                if ((y >= heightInCellCount - 2 || (maze[x][y+1] & 0b10000) == 0b10000) && WallFacing.SOUTH.unpackAndTest(maze[x][y])) {
+                    ComponentNagaCourtyardPadder padding = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB + 5, Rotation.CLOCKWISE_90);
+                    list.add(padding);
+                    padding.buildComponent(structureComponent, list, random);
+
+                    ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB + 11, Rotation.CLOCKWISE_90);
+                    list.add(padding2);
+                    padding2.buildComponent(structureComponent, list, random);
+
+                    ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB + 6, Rotation.CLOCKWISE_90);
+                    list.add(structureLine);
+                    structureLine.buildComponent(structureComponent, list, random);
+                }
+
+                // Paths - cardinal
+
                 if (hasNoTerrace && westHasNoTerraceOrIsSafe) {
                     ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB - 1);
                     list.add(path2);
@@ -167,9 +207,40 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     path2.buildComponent(structureComponent, list, random);
                 }
 
-                if (hasNoTerrace && westHasNoTerraceOrIsSafe && northHasNoTerraceOrIsSafe
-                        && (x > 0 && y > 0 && maze[x-1][y-1] != 0)) {
+                if (hasNoTerrace && eastHasNoTerraceOrIsSafe) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB + 5, yBB - 1, zBB - 1);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
+
+                if (hasNoTerrace && southHasNoTerraceOrIsSafe) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 1, yBB - 1, zBB + 5);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
+
+                // Paths - Diagonal
+
+                if (hasNoTerrace && westHasNoTerraceOrIsSafe && northHasNoTerraceOrIsSafe && westNorthHasNoTerraceOrIsSafe) {
                     ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB - 7);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
+
+                if (hasNoTerrace && westHasNoTerraceOrIsSafe && southHasNoTerraceOrIsSafe && westSouthHasNoTerraceOrIsSafe) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB + 5);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
+
+                if (hasNoTerrace && eastHasNoTerraceOrIsSafe && northHasNoTerraceOrIsSafe && eastNorthHasNoTerraceOrIsSafe) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB + 5, yBB - 1, zBB - 7);
+                    list.add(path2);
+                    path2.buildComponent(structureComponent, list, random);
+                }
+
+                if (hasNoTerrace && eastHasNoTerraceOrIsSafe && southHasNoTerraceOrIsSafe && eastSouthHasNoTerraceOrIsSafe) {
+                    ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB + 5, yBB - 1, zBB + 5);
                     list.add(path2);
                     path2.buildComponent(structureComponent, list, random);
                 }
@@ -194,7 +265,81 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             }
         }
 
-        for (int x = 0; x < widthInCellCount-1; x++) {
+
+
+        StringBuilder chartX2 = new StringBuilder();
+
+        for (int i = 0; i < heightInCellCount-1; i++) {
+            StringBuilder chartY2 = new StringBuilder("\n");
+
+            for (int j = 0; j < widthInCellCount-1; j++) {
+                int value = maze[j][i];
+
+                if ((value & 0b10000) != 0b10000) chartY2.append(getStringFromFacings(value & 0b1111));
+                else chartY2.append("   ");
+            }
+
+            chartX2.append(chartY2);
+        }
+
+        System.out.println(chartX2);
+
+        final int[][] mazeLocal = maze.clone();
+
+        for (int y = 0; y < heightInCellCount-1; y++) {
+            for (int x = 0; x < widthInCellCount-1; x++) {
+                // Did we pick west and will we not get an AIOOBException accessing array
+                if (rotations[x][y] == WallFacing.WEST && x > 0) {
+                    // If neighbor does not connect to west, connect it to east
+                    if (!rotations[x][y].unpackAndTest(maze[x-1][y])) maze[x-1][y] |= rotations[x][y].OPPOSITE;
+                    else { // else we cut the connection
+                        // remove connection for the maze part we're looking at
+                        maze[x][y] &= rotations[x][y].INVERTED;
+                        // remove connection for the adjacent maze part
+                        maze[x-1][y] &= rotations[x-1][y].INVERTED_OPPOSITE;
+                    }
+                }
+                if (rotations[x][y] == WallFacing.NORTH && y > 0 ) {
+                    if (!rotations[x][y].unpackAndTest(maze[x][y-1])) maze[x][y-1] |= rotations[x][y].OPPOSITE;
+                    else {
+                        maze[x][y] &= rotations[x][y].INVERTED;
+                        maze[x][y-1] &= rotations[x][y-1].INVERTED_OPPOSITE;
+                    }
+                }
+                if (rotations[x][y] == WallFacing.EAST && x < widthInCellCount-2 ) {
+                    if (!rotations[x][y].unpackAndTest(maze[x+1][y])) maze[x+1][y] |= rotations[x][y].OPPOSITE;
+                    else {
+                        maze[x][y] &= rotations[x][y].INVERTED;
+                        maze[x+1][y] &= rotations[x+1][y].INVERTED_OPPOSITE;
+                    }
+                }
+                if (rotations[x][y] == WallFacing.SOUTH && y < heightInCellCount-2 ) {
+                    if (!rotations[x][y].unpackAndTest(maze[x][y+1])) maze[x][y+1] |= rotations[x][y].OPPOSITE;
+                    else {
+                        maze[x][y] &= rotations[x][y].INVERTED;
+                        maze[x][y+1] &= rotations[x][y+1].INVERTED_OPPOSITE;
+                    }
+                }
+            }
+        }//*/
+
+        for (int x = 1; x < widthInCellCount-1; x++) {
+            for (int y = 1; y < heightInCellCount-1; y++) {
+                if (mazeLocal[x][y] == 0) {
+                    if (mazeLocal[x-1][y] == 0) {
+                        maze[x][y]   |= WallFacing.WEST.BYTE;
+                        maze[x-1][y] |= WallFacing.WEST.OPPOSITE;
+                    }
+
+                    if (mazeLocal[x][y-1] == 0) {
+                        maze[x][y]   |= WallFacing.NORTH.BYTE;
+                        maze[x][y-1] |= WallFacing.NORTH.OPPOSITE;
+                    }
+                }
+            }
+        }
+
+        /*for (int x = 0; x < widthInCellCount-1; x++) {
             for (int y = 0; y < heightInCellCount-1; y++) {
                 // Did we pick west and will we not get an AOOBE accessing array
                 if (rotations[x][y] == WallFacing.WEST && x > 0) {
@@ -229,19 +374,19 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     }
                 }
             }
-        }
+        }*/
 
         for (Diagonals diagonals : Diagonals.values()) {
-            cornerClippings[diagonals.ordinal()][0] = random.nextInt(maximumClipping);
-            cornerClippings[diagonals.ordinal()][1] = random.nextInt(maximumClipping);
+            cornerClippings[diagonals.ordinal()][0] = random.nextInt(maximumClipping)+1;
+            cornerClippings[diagonals.ordinal()][1] = random.nextInt(maximumClipping)+1;
 
             //maze[diagonals.operationY.convert(cornerClippings[diagonals.ordinal()][0], heightInCellCount)];
 
             for (int y = 0; y < cornerClippings[diagonals.ordinal()][0]; y++) {
                 for (int x = 0; x < cornerClippings[diagonals.ordinal()][1]; x++) {
                     maze
-                            [diagonals.operationX.convert(cornerClippings[diagonals.ordinal()][1], widthInCellCount)]
-                            [diagonals.operationY.convert(cornerClippings[diagonals.ordinal()][0], heightInCellCount)]
+                            [diagonals.operationX.convert(x, widthInCellCount-2)]
+                            [diagonals.operationY.convert(y, heightInCellCount-2)]
                             |= 0b10000;
                 }
             }
@@ -257,8 +402,11 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             for (int j = 0; j < widthInCellCount-1; j++) {
                 int value = maze[j][i];
 
-                chartY.append(getStringFromFacings(value & 0b1111));
-                debugY.append(value > 0b1111 ? " " : value > 0b111 ? " 0" : value > 0b11 ? " 00" : value > 0b1 ? " 000" : " 0000").append(Integer.toBinaryString(value));
+                if ((value & 0b10000) != 0b10000) chartY.append(getStringFromFacings(value & 0b1111));
+                else chartY.append("   ");
+
+                debugY.append(value >= 0b10000 ? "      " : value > 0b111 ? " 0" : value > 0b11 ? " 00" : value > 0b1 ? " 000" : " 0000");
+                if ((value & 0b10000) != 0b10000) debugY.append(Integer.toBinaryString(value));
             }
 
             chartX.append(chartY);

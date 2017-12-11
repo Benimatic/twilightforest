@@ -13,7 +13,7 @@ public enum Diagonals implements IStringSerializable {
     public final Inversion operationX;
     public final Inversion operationY;
 
-    Diagonals(Inversion operationX,Inversion operationY) {
+    Diagonals(Inversion operationX, Inversion operationY) {
         this.operationX = operationX;
         this.operationY = operationY;
     }
