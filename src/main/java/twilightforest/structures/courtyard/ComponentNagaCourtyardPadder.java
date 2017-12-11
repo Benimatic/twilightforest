@@ -19,6 +19,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardPadder extends StructureTFComponent {
     private static final ResourceLocation WALL_PADDING = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_between");
 
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardPadder() {
         super();
     }

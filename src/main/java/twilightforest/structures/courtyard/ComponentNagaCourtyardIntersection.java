@@ -18,6 +18,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardIntersection extends StructureTFComponent {
     private static final ResourceLocation WALL_CROSS = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_intersection");
 
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardIntersection() {
         super();
     }

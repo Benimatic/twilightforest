@@ -16,19 +16,19 @@ import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardCorner extends StructureTFComponent {
-    private static final ResourceLocation WALL_ELBOW   = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner");
+public class ComponentNagaCourtyardWallPadder extends StructureTFComponent {
+    private static final ResourceLocation WALL_PADDING = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardCorner() {
+    public ComponentNagaCourtyardWallPadder() {
         super();
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardCorner(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public ComponentNagaCourtyardWallPadder(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(feature, i);
         this.rotation = rotation;
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x, y + 11, z + 3);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ComponentNagaCourtyardCorner extends StructureTFComponent {
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.getBoundingBox());
 
-        Template template = templateManager.getTemplate(server, WALL_ELBOW);
+        Template template = templateManager.getTemplate(server, WALL_PADDING);
         template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
 
         return true;

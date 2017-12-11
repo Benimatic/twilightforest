@@ -17,7 +17,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardPath extends StructureTFComponent {
     private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardPath() {
         super();
     }

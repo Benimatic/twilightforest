@@ -142,9 +142,11 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     list.add(padding);
                     padding.buildComponent(structureComponent, list, random);
 
-                    ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB - 7, yBB, zBB, Rotation.NONE);
-                    list.add(padding2);
-                    padding2.buildComponent(structureComponent, list, random);
+                    if (x > 0 && (maze[x-1][y] & 0b10000) != 0b10000) {
+                        ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB - 7, yBB, zBB, Rotation.NONE);
+                        list.add(padding2);
+                        padding2.buildComponent(structureComponent, list, random);
+                    }
 
                     ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB - 6, yBB, zBB, Rotation.NONE);
                     list.add(structureLine);
@@ -156,9 +158,11 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     list.add(padding);
                     padding.buildComponent(structureComponent, list, random);
 
-                    ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB - 7, Rotation.CLOCKWISE_90);
-                    list.add(padding2);
-                    padding2.buildComponent(structureComponent, list, random);
+                    if (y > 0 && (maze[x][y-1] & 0b10000) != 0b10000) {
+                        ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB - 7, Rotation.CLOCKWISE_90);
+                        list.add(padding2);
+                        padding2.buildComponent(structureComponent, list, random);
+                    }
 
                     ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB - 6, Rotation.CLOCKWISE_90);
                     list.add(structureLine);
@@ -170,9 +174,9 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     list.add(padding);
                     padding.buildComponent(structureComponent, list, random);
 
-                    ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 11, yBB, zBB, Rotation.NONE);
-                    list.add(padding2);
-                    padding2.buildComponent(structureComponent, list, random);
+                    //ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 11, yBB, zBB, Rotation.NONE);
+                    //list.add(padding2);
+                    //padding2.buildComponent(structureComponent, list, random);
 
                     ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB + 6, yBB, zBB, Rotation.NONE);
                     list.add(structureLine);
@@ -184,9 +188,9 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     list.add(padding);
                     padding.buildComponent(structureComponent, list, random);
 
-                    ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB + 11, Rotation.CLOCKWISE_90);
-                    list.add(padding2);
-                    padding2.buildComponent(structureComponent, list, random);
+                    //ComponentNagaCourtyardPadder padding2 = new ComponentNagaCourtyardPadder(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB + 11, Rotation.CLOCKWISE_90);
+                    //list.add(padding2);
+                    //padding2.buildComponent(structureComponent, list, random);
 
                     ComponentNagaCourtyardLine structureLine = new ComponentNagaCourtyardLine(getFeatureType(), maze[x][y], xBB + 4, yBB, zBB + 6, Rotation.CLOCKWISE_90);
                     list.add(structureLine);
@@ -245,6 +249,34 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     path2.buildComponent(structureComponent, list, random);
                 }
             }
+        }
+
+        // Top / North
+        for (int i = cornerClipping[3][1]; i < (widthInCellCount-1) - cornerClipping[0][1]; i ++) {
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.minZ - 3, Rotation.NONE);
+            list.add(wall);
+            wall.buildComponent(structureComponent, list, random);
+        }
+
+        // Bottom / South
+        for (int i = cornerClipping[2][1]; i < (widthInCellCount-1) - cornerClipping[1][1]; i ++) {
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.maxZ + 1, Rotation.NONE);
+            list.add(wall);
+            wall.buildComponent(structureComponent, list, random);
+        }
+
+        // Left / West
+        for (int i = cornerClipping[3][0]; i < (heightInCellCount-1) - cornerClipping[2][0]; i ++) {
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX - 1, boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            list.add(wall);
+            wall.buildComponent(structureComponent, list, random);
+        }
+
+        // Right / East
+        for (int i = cornerClipping[0][0]; i < (heightInCellCount-1) - cornerClipping[1][0]; i ++) {
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.maxX + 3, boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            list.add(wall);
+            wall.buildComponent(structureComponent, list, random);
         }
     }
 

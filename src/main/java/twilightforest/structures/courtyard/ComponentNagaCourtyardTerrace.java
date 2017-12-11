@@ -18,6 +18,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
     private static final ResourceLocation TERRACE = new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_fire");
 
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardTerrace() {
         super();
     }

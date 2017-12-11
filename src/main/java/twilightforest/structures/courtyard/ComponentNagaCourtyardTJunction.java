@@ -19,6 +19,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardTJunction extends StructureTFComponent {
     private static final ResourceLocation WALL_TSHAPE  = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t");
 
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardTJunction() {
         super();
     }

@@ -19,6 +19,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardCap extends StructureTFComponent {
     private static final ResourceLocation WALL_CAP = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end");
 
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardCap() {
         super();
     }

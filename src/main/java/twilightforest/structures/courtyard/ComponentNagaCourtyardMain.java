@@ -1,6 +1,7 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -15,6 +16,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	static int RADIUS = 62;
 	static int DIAMETER = 2 * RADIUS + 1;
 
+	@SuppressWarnings("unused")
 	public ComponentNagaCourtyardMain() {
 		super();
 	}
@@ -60,10 +62,10 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 			}
 		}//*/
 
-		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), 0, 10, 0, sbb);
-		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), 0, 10, DIAMETER, sbb);
-		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), DIAMETER, 10, 0, sbb);
-		setBlockState(world, TFBlocks.castleMagic.getDefaultState(), DIAMETER, 10, DIAMETER, sbb);
+		world.setBlockState(new BlockPos(boundingBox.minX , boundingBox.minY + 10, boundingBox.minZ), TFBlocks.castleMagic.getDefaultState());
+		world.setBlockState(new BlockPos(boundingBox.maxX , boundingBox.minY + 10, boundingBox.minZ), TFBlocks.castleMagic.getDefaultState());
+		world.setBlockState(new BlockPos(boundingBox.minX , boundingBox.minY + 10, boundingBox.maxZ), TFBlocks.castleMagic.getDefaultState());
+		world.setBlockState(new BlockPos(boundingBox.maxX , boundingBox.minY + 10, boundingBox.maxZ), TFBlocks.castleMagic.getDefaultState());
 
 		// naga spawner seems important
 		setBlockState(world, TFBlocks.bossSpawner.getDefaultState(), RADIUS + 1, 2, RADIUS + 1, sbb);
