@@ -16,19 +16,19 @@ import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
-    private static final ResourceLocation TERRACE = new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_fire");
+public class ComponentNagaCourtyardWallCorner extends StructureTFComponent {
+    private static final ResourceLocation WALL_CORNER = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_corner");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardTerrace() {
+    public ComponentNagaCourtyardWallCorner() {
         super();
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardTerrace(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public ComponentNagaCourtyardWallCorner(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(feature, i);
         this.rotation = rotation;
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 17, y + 6, z + 17);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 8, z + 5);
     }
 
     @Override
@@ -43,8 +43,10 @@ public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.getBoundingBox());
 
-        Template template = templateManager.getTemplate(server, TERRACE);
+        Template template = templateManager.getTemplate(server, WALL_CORNER);
         template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
+
+        worldIn.setBlockState(pos.up(10), Blocks.DIAMOND_ORE.getDefaultState());
 
         return true;
     }

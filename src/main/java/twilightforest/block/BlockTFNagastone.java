@@ -10,7 +10,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -136,4 +138,13 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 		ModelUtils.registerToState(this, 1, this.getDefaultState().withProperty(VARIANT, NagastoneVariant.AXIS_X));
 	}
 
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rotation) {
+		return state.withProperty(VARIANT, NagastoneVariant.rotate(state.getValue(VARIANT), rotation));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
+		return state.withProperty(VARIANT, NagastoneVariant.mirror(state.getValue(VARIANT), mirror));
+	}
 }

@@ -203,6 +203,8 @@ public class TFRegisterItemEvent {
 		items.register(new ItemTFCompressed(TFBlocks.block_storage));
 		//items.registerBlock(TFBlocks.lapis_block);
 		items.registerBlock(TFBlocks.spiral_bricks);
+		items.registerBlock(TFBlocks.etched_nagastone);
+		items.registerBlock(TFBlocks.nagastone_pillar);
 	}
 
 	private static class ItemRegistryHelper {

@@ -110,7 +110,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                         structure = new ComponentNagaCourtyardIntersection(getFeatureType(), maze[x][y], xBB, yBB, zBB);
                         break;
                     default:
-                        structure = new ComponentNagaCourtyardTerrace(getFeatureType(), maze[x][y], xBB-6, yBB-3, zBB-6);
+                        structure = new ComponentNagaCourtyardTerrace(getFeatureType(), maze[x][y], xBB-6, yBB-3, zBB-6, Rotation.NONE);
                         break;
                 }
 
@@ -258,175 +258,309 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 
         // Top / North
         for (int i = 0; i < cornerClipping[3][1] - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.minZ - 3 + (cornerClipping[3][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY, boundingBox.minZ - 3 + (cornerClipping[3][0] * 12), Rotation.NONE);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY + 1, boundingBox.minZ - 3 + (cornerClipping[3][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY, boundingBox.minZ - 3 + (cornerClipping[3][0] * 12), Rotation.NONE);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding1 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[3][1] - 1, boundingBox.minX + ((cornerClipping[3][1] - 1) * 12) + offset - 4, boundingBox.minY + 1, boundingBox.minZ - 3 + (cornerClipping[3][0] * 12), Rotation.NONE);
+        ComponentNagaCourtyardWallPadder padding1 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[3][1] - 1, boundingBox.minX + ((cornerClipping[3][1] - 1) * 12) + offset - 4, boundingBox.minY, boundingBox.minZ - 3 + (cornerClipping[3][0] * 12), Rotation.NONE);
         list.add(padding1);
         padding1.buildComponent(structureComponent, list, random);
 
         for (int i = cornerClipping[3][1]; i < (widthInCellCount-1) - cornerClipping[0][1]; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.minZ - 3, Rotation.NONE);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY, boundingBox.minZ - 3, Rotation.NONE);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY + 1, boundingBox.minZ - 3, Rotation.NONE);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY, boundingBox.minZ - 3, Rotation.NONE);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding2 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (widthInCellCount-1) - cornerClipping[0][1], boundingBox.minX + (((widthInCellCount-1) - cornerClipping[0][1]) * 12) + offset - 4, boundingBox.minY + 1, boundingBox.minZ - 3, Rotation.NONE);
+        ComponentNagaCourtyardWallPadder padding2 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (widthInCellCount-1) - cornerClipping[0][1], boundingBox.minX + (((widthInCellCount-1) - cornerClipping[0][1]) * 12) + offset - 4, boundingBox.minY, boundingBox.minZ - 3, Rotation.NONE);
         list.add(padding2);
         padding2.buildComponent(structureComponent, list, random);
 
         for (int i = widthInCellCount - cornerClipping[0][1]; i < widthInCellCount - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.minZ - 3 + (cornerClipping[0][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY, boundingBox.minZ - 3 + (cornerClipping[0][0] * 12), Rotation.NONE);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY + 1, boundingBox.minZ - 3 + (cornerClipping[0][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY, boundingBox.minZ - 3 + (cornerClipping[0][0] * 12), Rotation.NONE);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding3 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (widthInCellCount - 1), boundingBox.minX + ((widthInCellCount - 1) * 12) + offset - 4, boundingBox.minY + 1, boundingBox.minZ - 3 + (cornerClipping[0][0] * 12), Rotation.NONE);
+        ComponentNagaCourtyardWallPadder padding3 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (widthInCellCount - 1), boundingBox.minX + ((widthInCellCount - 1) * 12) + offset - 4, boundingBox.minY, boundingBox.minZ - 3 + (cornerClipping[0][0] * 12), Rotation.NONE);
         list.add(padding3);
         padding3.buildComponent(structureComponent, list, random);
 
         // Bottom / South
         for (int i = 0; i < cornerClipping[2][1] - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.maxZ + 1 - (cornerClipping[2][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY, boundingBox.maxZ + 1 - (cornerClipping[2][0] * 12), Rotation.NONE);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY + 1, boundingBox.maxZ + 1 - (cornerClipping[2][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY, boundingBox.maxZ + 1 - (cornerClipping[2][0] * 12), Rotation.NONE);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding4 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[2][1] - 1, boundingBox.minX + ((cornerClipping[2][1] - 1) * 12) + offset - 4, boundingBox.minY + 1, boundingBox.maxZ + 1 - (cornerClipping[2][0] * 12), Rotation.NONE);
+        ComponentNagaCourtyardWallPadder padding4 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[2][1] - 1, boundingBox.minX + ((cornerClipping[2][1] - 1) * 12) + offset - 4, boundingBox.minY, boundingBox.maxZ + 1 - (cornerClipping[2][0] * 12), Rotation.NONE);
         list.add(padding4);
         padding4.buildComponent(structureComponent, list, random);
 
         for (int i = cornerClipping[2][1]; i < (widthInCellCount-1) - cornerClipping[1][1]; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.maxZ + 1, Rotation.NONE);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY, boundingBox.maxZ + 1, Rotation.NONE);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY + 1, boundingBox.maxZ + 1, Rotation.NONE);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY, boundingBox.maxZ + 1, Rotation.NONE);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding5 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (widthInCellCount-1) - cornerClipping[1][1], boundingBox.minX + (((widthInCellCount-1) - cornerClipping[1][1]) * 12) + offset - 4, boundingBox.minY + 1, boundingBox.maxZ + 1, Rotation.NONE);
+        ComponentNagaCourtyardWallPadder padding5 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (widthInCellCount-1) - cornerClipping[1][1], boundingBox.minX + (((widthInCellCount-1) - cornerClipping[1][1]) * 12) + offset - 4, boundingBox.minY, boundingBox.maxZ + 1, Rotation.NONE);
         list.add(padding5);
         padding5.buildComponent(structureComponent, list, random);
 
         for (int i = widthInCellCount - cornerClipping[1][1]; i < widthInCellCount - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY + 1, boundingBox.maxZ + 1 - (cornerClipping[1][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 3, boundingBox.minY, boundingBox.maxZ + 1 - (cornerClipping[1][0] * 12), Rotation.NONE);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY + 1, boundingBox.maxZ + 1 - (cornerClipping[1][0] * 12), Rotation.NONE);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX + (i * 12) + offset - 4, boundingBox.minY, boundingBox.maxZ + 1 - (cornerClipping[1][0] * 12), Rotation.NONE);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding6 = new ComponentNagaCourtyardWallPadder(getFeatureType(), widthInCellCount - 1, boundingBox.minX + ((widthInCellCount - 1) * 12) + offset - 4, boundingBox.minY + 1, boundingBox.maxZ + 1 - (cornerClipping[1][0] * 12), Rotation.NONE);
+        ComponentNagaCourtyardWallPadder padding6 = new ComponentNagaCourtyardWallPadder(getFeatureType(), widthInCellCount - 1, boundingBox.minX + ((widthInCellCount - 1) * 12) + offset - 4, boundingBox.minY, boundingBox.maxZ + 1 - (cornerClipping[1][0] * 12), Rotation.NONE);
         list.add(padding6);
         padding6.buildComponent(structureComponent, list, random);
 
         // Left / West
         for (int i = 0; i < cornerClipping[3][0] - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[3][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[3][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[3][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[3][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding7 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[3][0] - 1, boundingBox.minX - 1 + (cornerClipping[3][1] * 12), boundingBox.minY + 1, boundingBox.minZ + ((cornerClipping[3][0] - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        ComponentNagaCourtyardWallPadder padding7 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[3][0] - 1, boundingBox.minX - 1 + (cornerClipping[3][1] * 12), boundingBox.minY, boundingBox.minZ + ((cornerClipping[3][0] - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
         list.add(padding7);
         padding7.buildComponent(structureComponent, list, random);
 
         for (int i = cornerClipping[3][0]; i < (heightInCellCount-1) - cornerClipping[2][0]; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX - 1, boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX - 1, boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX - 1, boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX - 1, boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding8 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (heightInCellCount-1) - cornerClipping[2][0], boundingBox.minX - 1, boundingBox.minY + 1, boundingBox.minZ + (((heightInCellCount-1) - cornerClipping[2][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        ComponentNagaCourtyardWallPadder padding8 = new ComponentNagaCourtyardWallPadder(getFeatureType(), (heightInCellCount-1) - cornerClipping[2][0], boundingBox.minX - 1, boundingBox.minY, boundingBox.minZ + (((heightInCellCount-1) - cornerClipping[2][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90);
         list.add(padding8);
         padding8.buildComponent(structureComponent, list, random);
 
         for (int i = heightInCellCount - cornerClipping[2][0]; i < heightInCellCount - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[2][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[2][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[2][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.minX - 1 + (cornerClipping[2][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding9 = new ComponentNagaCourtyardWallPadder(getFeatureType(), heightInCellCount - 1, boundingBox.minX - 1 + (cornerClipping[2][1] * 12), boundingBox.minY + 1, boundingBox.minZ + ((heightInCellCount - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        ComponentNagaCourtyardWallPadder padding9 = new ComponentNagaCourtyardWallPadder(getFeatureType(), heightInCellCount - 1, boundingBox.minX - 1 + (cornerClipping[2][1] * 12), boundingBox.minY, boundingBox.minZ + ((heightInCellCount - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
         list.add(padding9);
         padding9.buildComponent(structureComponent, list, random);
 
         // Right / East
         for (int i = 0; i < cornerClipping[0][0] - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[0][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[0][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[0][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[0][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding10 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[0][0] - 1, boundingBox.maxX + 3 - (cornerClipping[0][1] * 12), boundingBox.minY + 1, boundingBox.minZ + ((cornerClipping[0][0] - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        ComponentNagaCourtyardWallPadder padding10 = new ComponentNagaCourtyardWallPadder(getFeatureType(), cornerClipping[0][0] - 1, boundingBox.maxX + 3 - (cornerClipping[0][1] * 12), boundingBox.minY, boundingBox.minZ + ((cornerClipping[0][0] - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
         list.add(padding10);
         padding10.buildComponent(structureComponent, list, random);
 
         for (int i = cornerClipping[0][0]; i < (heightInCellCount-1) - cornerClipping[1][0]; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.maxX + 3, boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.maxX + 3, boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.maxX + 3, boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.maxX + 3, boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding11 = new ComponentNagaCourtyardWallPadder(getFeatureType(), ((heightInCellCount-1) - cornerClipping[1][0]), boundingBox.maxX + 3, boundingBox.minY + 1, boundingBox.minZ + (((heightInCellCount-1) - cornerClipping[1][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        ComponentNagaCourtyardWallPadder padding11 = new ComponentNagaCourtyardWallPadder(getFeatureType(), ((heightInCellCount-1) - cornerClipping[1][0]), boundingBox.maxX + 3, boundingBox.minY, boundingBox.minZ + (((heightInCellCount-1) - cornerClipping[1][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90);
         list.add(padding11);
         padding11.buildComponent(structureComponent, list, random);
 
         for (int i = heightInCellCount - cornerClipping[1][0]; i < heightInCellCount - 1; i++) {
-            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[1][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWall wall = new ComponentNagaCourtyardWall(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[1][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
             list.add(wall);
             wall.buildComponent(structureComponent, list, random);
 
-            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[1][1] * 12), boundingBox.minY + 1, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            ComponentNagaCourtyardWallPadder padding = new ComponentNagaCourtyardWallPadder(getFeatureType(), i, boundingBox.maxX + 3 - (cornerClipping[1][1] * 12), boundingBox.minY, boundingBox.minZ + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
             list.add(padding);
             padding.buildComponent(structureComponent, list, random);
         }
 
-        ComponentNagaCourtyardWallPadder padding12 = new ComponentNagaCourtyardWallPadder(getFeatureType(), heightInCellCount - 1, boundingBox.maxX + 3 - (cornerClipping[1][1] * 12), boundingBox.minY + 1, boundingBox.minZ + ((heightInCellCount - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        ComponentNagaCourtyardWallPadder padding12 = new ComponentNagaCourtyardWallPadder(getFeatureType(), heightInCellCount - 1, boundingBox.maxX + 3 - (cornerClipping[1][1] * 12), boundingBox.minY, boundingBox.minZ + ((heightInCellCount - 1) * 12) + offset - 4, Rotation.CLOCKWISE_90);
         list.add(padding12);
         padding12.buildComponent(structureComponent, list, random);
+
+        // WALL CORNER
+
+        /*Rotation[] rotations = Rotation.values();
+        final int rotationCorrection = 5;
+        final int xWallOffset = 0;
+        final int zWallOffset = 0;
+
+        for (Diagonals diagonal : Diagonals.values()) {
+            Rotation rotation = rotations[diagonal.ordinal() % rotations.length];
+            int xCorrection = (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.COUNTERCLOCKWISE_90 ? rotationCorrection : 0);
+            int zCorrection = (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.CLOCKWISE_90        ? rotationCorrection : 0);
+
+            int xEdge = (diagonal.isLeft() ? boundingBox.minX - xCorrection - xWallOffset : boundingBox.maxX - xCorrection + xWallOffset );
+            int zEdge = (diagonal.isTop()  ? boundingBox.minZ - zCorrection - zWallOffset : boundingBox.maxZ - zCorrection + zWallOffset );
+
+            int xOffset = (diagonal.operationX.convert(cornerClipping[diagonal.ordinal()][1], widthInCellCount  - 1) * 12) + boundingBox.minX - xCorrection + xWallOffset;
+            int zOffset = (diagonal.operationY.convert(cornerClipping[diagonal.ordinal()][0], heightInCellCount - 1) * 12) + boundingBox.minZ - zCorrection + zWallOffset;
+
+            ComponentNagaCourtyardWallCorner wallCorner1 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0, xOffset, boundingBox.minY+1, zEdge, rotation);
+            list.add(wallCorner1);
+            wallCorner1.buildComponent(structureComponent, list, random);
+
+            ComponentNagaCourtyardWallCorner wallCorner2 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0, xEdge, boundingBox.minY+1, zOffset, rotation);
+            list.add(wallCorner2);
+            wallCorner2.buildComponent(structureComponent, list, random);
+
+            Rotation rotation2 = rotations[(diagonal.ordinal() + 2) % rotations.length];
+            int xCorrection2 = rotation2 == Rotation.CLOCKWISE_180 || rotation2 == Rotation.COUNTERCLOCKWISE_90 ? rotationCorrection : 0;
+            int zCorrection2 = rotation2 == Rotation.CLOCKWISE_180 || rotation2 == Rotation.CLOCKWISE_90        ? rotationCorrection : 0;
+
+            int xOffset2 = (diagonal.operationX.convert(cornerClipping[diagonal.ordinal()][1], widthInCellCount  - 1) * 12) + boundingBox.minX - xCorrection2 + xWallOffset;
+            int zOffset2 = (diagonal.operationY.convert(cornerClipping[diagonal.ordinal()][0], heightInCellCount - 1) * 12) + boundingBox.minZ - zCorrection2 + zWallOffset;
+
+            ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0, xOffset2, boundingBox.minY+1, zOffset2, rotation2);
+            list.add(wallCorner3);
+            wallCorner3.buildComponent(structureComponent, list, random);
+        }*/
+
+        ComponentNagaCourtyardWallCorner wallCorner1 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12) + 3,
+                boundingBox.minY+1,
+                boundingBox.minZ - 3,
+                Rotation.NONE);
+        list.add(wallCorner1);
+        wallCorner1.buildComponent(structureComponent, list, random);
+
+        ComponentNagaCourtyardWallCorner wallCorner2 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.maxX - 1,
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12) - 3,
+                Rotation.NONE);
+        list.add(wallCorner2);
+        wallCorner2.buildComponent(structureComponent, list, random);
+
+        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
+                Rotation.CLOCKWISE_180);
+        list.add(wallCorner3);
+        wallCorner3.buildComponent(structureComponent, list, random);*/
+
+        ComponentNagaCourtyardWallCorner wallCorner4 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.BOTTOM_RIGHT.operationX.convert(cornerClipping[1][1], widthInCellCount  - 1) * 12) + 7,
+                boundingBox.minY+1,
+                boundingBox.maxZ - 1,
+                Rotation.CLOCKWISE_90);
+        list.add(wallCorner4);
+        wallCorner4.buildComponent(structureComponent, list, random);
+
+        ComponentNagaCourtyardWallCorner wallCorner5 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.maxX + 3,
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.BOTTOM_RIGHT.operationY.convert(cornerClipping[1][0], heightInCellCount - 1) * 12) + 3,
+                Rotation.CLOCKWISE_90);
+        list.add(wallCorner5);
+        wallCorner5.buildComponent(structureComponent, list, random);
+
+        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
+                Rotation.CLOCKWISE_180);
+        list.add(wallCorner3);
+        wallCorner3.buildComponent(structureComponent, list, random);*/
+
+        ComponentNagaCourtyardWallCorner wallCorner7 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.BOTTOM_LEFT.operationX.convert(cornerClipping[2][1], widthInCellCount  - 1) * 12) + 1,
+                boundingBox.minY+1,
+                boundingBox.maxZ + 3,
+                Rotation.CLOCKWISE_180);
+        list.add(wallCorner7);
+        wallCorner7.buildComponent(structureComponent, list, random);
+
+        ComponentNagaCourtyardWallCorner wallCorner8 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + 1,
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.BOTTOM_LEFT.operationY.convert(cornerClipping[2][0], heightInCellCount - 1) * 12) + 7,
+                Rotation.CLOCKWISE_180);
+        list.add(wallCorner8);
+        wallCorner8.buildComponent(structureComponent, list, random);
+
+        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
+                Rotation.CLOCKWISE_180);
+        list.add(wallCorner3);
+        wallCorner3.buildComponent(structureComponent, list, random);*/
+
+        ComponentNagaCourtyardWallCorner wallCorner10 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_LEFT.operationX.convert(cornerClipping[3][1], widthInCellCount  - 1) * 12) - 3,
+                boundingBox.minY+1,
+                boundingBox.minZ + 1,
+                Rotation.COUNTERCLOCKWISE_90);
+        list.add(wallCorner10);
+        wallCorner10.buildComponent(structureComponent, list, random);
+
+        ComponentNagaCourtyardWallCorner wallCorner11 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX - 3,
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.TOP_LEFT.operationY.convert(cornerClipping[3][0], heightInCellCount - 1) * 12) + 1,
+                Rotation.COUNTERCLOCKWISE_90);
+        list.add(wallCorner11);
+        wallCorner11.buildComponent(structureComponent, list, random);
+
+        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
+                boundingBox.minY+1,
+                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
+                Rotation.CLOCKWISE_180);
+        list.add(wallCorner3);
+        wallCorner3.buildComponent(structureComponent, list, random);*/
     }
 
     private static void generateMaze(int[][] maze, int[][] cornerClippings, Random random, int widthInCellCount, int heightInCellCount, @SuppressWarnings("SameParameterValue") int maximumClipping) {

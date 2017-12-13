@@ -3,6 +3,8 @@ package twilightforest.enums;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -34,6 +36,49 @@ public enum NagastoneVariant implements IStringSerializable {
 
 	public static boolean isHead(NagastoneVariant variant) {
 		return variant.ordinal() < 4;
+	}
+
+	public static NagastoneVariant rotate(NagastoneVariant variant, Rotation rotation) {
+		if (!isHead(variant)) return variant;
+
+		NagastoneVariant[] variants = {NORTH_HEAD, EAST_HEAD, SOUTH_HEAD, WEST_HEAD};
+
+		return variants[(variant.ordinal() + rotation.ordinal()) % 4];
+	}
+
+	public static NagastoneVariant mirror(NagastoneVariant variant, Mirror mirror) {
+		if (!isHead(variant)) return variant;
+
+		switch (mirror) {
+			case LEFT_RIGHT:
+				switch (variant) {
+					case NORTH_HEAD:
+						return NORTH_HEAD;
+					case SOUTH_HEAD:
+						return SOUTH_HEAD;
+					case WEST_HEAD:
+						return EAST_HEAD;
+					case EAST_HEAD:
+						return WEST_HEAD;
+					default:
+						return variant;
+				}
+			case FRONT_BACK:
+				switch (variant) {
+					case NORTH_HEAD:
+						return SOUTH_HEAD;
+					case SOUTH_HEAD:
+						return NORTH_HEAD;
+					case WEST_HEAD:
+						return WEST_HEAD;
+					case EAST_HEAD:
+						return EAST_HEAD;
+					default:
+						return variant;
+				}
+			default:
+				return variant;
+		}
 	}
 
 	public static NagastoneVariant getHeadFromFacing(EnumFacing facing) {
