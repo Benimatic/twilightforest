@@ -466,9 +466,11 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             wallCorner3.buildComponent(structureComponent, list, random);
         }*/
 
+        // TOP RIGHT WALL CORNERS
+
         ComponentNagaCourtyardWallCorner wallCorner1 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12) + 3,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.minZ - 3,
                 Rotation.NONE);
         list.add(wallCorner1);
@@ -476,23 +478,25 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 
         ComponentNagaCourtyardWallCorner wallCorner2 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.maxX - 1,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12) - 3,
                 Rotation.NONE);
         list.add(wallCorner2);
         wallCorner2.buildComponent(structureComponent, list, random);
 
-        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
-                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
-                boundingBox.minY+1,
-                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
-                Rotation.CLOCKWISE_180);
+        ComponentNagaCourtyardWallCornerAlt wallCorner3 = new ComponentNagaCourtyardWallCornerAlt(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12) + 5,
+                boundingBox.minY,
+                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12) - 9,
+                Rotation.NONE);
         list.add(wallCorner3);
-        wallCorner3.buildComponent(structureComponent, list, random);*/
+        wallCorner3.buildComponent(structureComponent, list, random);
+
+        // BOTTOM RIGHT WALL CORNERS
 
         ComponentNagaCourtyardWallCorner wallCorner4 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.minX + (Diagonals.BOTTOM_RIGHT.operationX.convert(cornerClipping[1][1], widthInCellCount  - 1) * 12) + 7,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.maxZ - 1,
                 Rotation.CLOCKWISE_90);
         list.add(wallCorner4);
@@ -500,23 +504,25 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 
         ComponentNagaCourtyardWallCorner wallCorner5 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.maxX + 3,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.minZ + (Diagonals.BOTTOM_RIGHT.operationY.convert(cornerClipping[1][0], heightInCellCount - 1) * 12) + 3,
                 Rotation.CLOCKWISE_90);
         list.add(wallCorner5);
         wallCorner5.buildComponent(structureComponent, list, random);
 
-        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
-                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
-                boundingBox.minY+1,
-                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
-                Rotation.CLOCKWISE_180);
-        list.add(wallCorner3);
-        wallCorner3.buildComponent(structureComponent, list, random);*/
+        ComponentNagaCourtyardWallCornerAlt wallCorner6 = new ComponentNagaCourtyardWallCornerAlt(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.BOTTOM_RIGHT.operationX.convert(cornerClipping[1][1], widthInCellCount  - 1) * 12) + 13,
+                boundingBox.minY,
+                boundingBox.minZ + (Diagonals.BOTTOM_RIGHT.operationY.convert(cornerClipping[1][0], heightInCellCount - 1) * 12) + 5,
+                Rotation.CLOCKWISE_90);
+        list.add(wallCorner6);
+        wallCorner6.buildComponent(structureComponent, list, random);
+
+        // BOTTOM LEFT WALL CORNERS
 
         ComponentNagaCourtyardWallCorner wallCorner7 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.minX + (Diagonals.BOTTOM_LEFT.operationX.convert(cornerClipping[2][1], widthInCellCount  - 1) * 12) + 1,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.maxZ + 3,
                 Rotation.CLOCKWISE_180);
         list.add(wallCorner7);
@@ -524,23 +530,25 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 
         ComponentNagaCourtyardWallCorner wallCorner8 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.minX + 1,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.minZ + (Diagonals.BOTTOM_LEFT.operationY.convert(cornerClipping[2][0], heightInCellCount - 1) * 12) + 7,
                 Rotation.CLOCKWISE_180);
         list.add(wallCorner8);
         wallCorner8.buildComponent(structureComponent, list, random);
 
-        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
-                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
-                boundingBox.minY+1,
-                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
+        ComponentNagaCourtyardWallCornerAlt wallCorner9 = new ComponentNagaCourtyardWallCornerAlt(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.BOTTOM_LEFT.operationX.convert(cornerClipping[2][1], widthInCellCount  - 1) * 12) - 1,
+                boundingBox.minY,
+                boundingBox.minZ + (Diagonals.BOTTOM_LEFT.operationY.convert(cornerClipping[2][0], heightInCellCount - 1) * 12) + 13,
                 Rotation.CLOCKWISE_180);
-        list.add(wallCorner3);
-        wallCorner3.buildComponent(structureComponent, list, random);*/
+        list.add(wallCorner9);
+        wallCorner9.buildComponent(structureComponent, list, random);
+
+        // TOP LEFT WALL CORNERS
 
         ComponentNagaCourtyardWallCorner wallCorner10 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.minX + (Diagonals.TOP_LEFT.operationX.convert(cornerClipping[3][1], widthInCellCount  - 1) * 12) - 3,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.minZ + 1,
                 Rotation.COUNTERCLOCKWISE_90);
         list.add(wallCorner10);
@@ -548,19 +556,19 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 
         ComponentNagaCourtyardWallCorner wallCorner11 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
                 boundingBox.minX - 3,
-                boundingBox.minY+1,
+                boundingBox.minY,
                 boundingBox.minZ + (Diagonals.TOP_LEFT.operationY.convert(cornerClipping[3][0], heightInCellCount - 1) * 12) + 1,
                 Rotation.COUNTERCLOCKWISE_90);
         list.add(wallCorner11);
         wallCorner11.buildComponent(structureComponent, list, random);
 
-        /*ComponentNagaCourtyardWallCorner wallCorner3 = new ComponentNagaCourtyardWallCorner(getFeatureType(), 0,
-                boundingBox.minX + (Diagonals.TOP_RIGHT.operationX.convert(cornerClipping[0][1], widthInCellCount  - 1) * 12),
-                boundingBox.minY+1,
-                boundingBox.minZ + (Diagonals.TOP_RIGHT.operationY.convert(cornerClipping[0][0], heightInCellCount - 1) * 12),
-                Rotation.CLOCKWISE_180);
-        list.add(wallCorner3);
-        wallCorner3.buildComponent(structureComponent, list, random);*/
+        ComponentNagaCourtyardWallCornerAlt wallCorner12 = new ComponentNagaCourtyardWallCornerAlt(getFeatureType(), 0,
+                boundingBox.minX + (Diagonals.TOP_LEFT.operationX.convert(cornerClipping[3][1], widthInCellCount  - 1) * 12) - 9,
+                boundingBox.minY,
+                boundingBox.minZ + (Diagonals.TOP_LEFT.operationY.convert(cornerClipping[3][0], heightInCellCount - 1) * 12) - 1,
+                Rotation.COUNTERCLOCKWISE_90);
+        list.add(wallCorner12);
+        wallCorner12.buildComponent(structureComponent, list, random);
     }
 
     private static void generateMaze(int[][] maze, int[][] cornerClippings, Random random, int widthInCellCount, int heightInCellCount, @SuppressWarnings("SameParameterValue") int maximumClipping) {

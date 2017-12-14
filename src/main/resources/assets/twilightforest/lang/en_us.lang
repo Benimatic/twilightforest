@@ -274,6 +274,8 @@ tile.CinderLog.0.name=Cinder Log [NYI]
 tile.MiniatureStructure=Miniature %s [NYI]
 tile.SpiralBricks.name=Spiral Stone Bricks [WIP]
 tile.BlockOfLapisTF.name=Block Of Lapis [NYI]
+tile.EtchedNagastone.name=Etched Nagastone
+tile.NagastonePillar.name=Nagastone Pillar
 
 structure.twilight_portal.name=Twilight Portal
 structure.hedge_maze.name=Hedge Maze
