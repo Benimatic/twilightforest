@@ -17,11 +17,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
+import twilightforest.item.TFItems;
 
-public class BlockTFEtchedNagastone extends BlockDirectional implements ModelRegisterCallback {
-    protected BlockTFEtchedNagastone() {
+public class BlockTFNagastoneEtched extends BlockDirectional implements ModelRegisterCallback {
+    protected BlockTFNagastoneEtched() {
         super(Material.ROCK);
         this.setSoundType(SoundType.STONE);
+        this.setCreativeTab(TFItems.creativeTab);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN));
     }
 

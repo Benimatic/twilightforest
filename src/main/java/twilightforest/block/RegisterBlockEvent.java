@@ -83,8 +83,10 @@ public final class RegisterBlockEvent {
 		blocks.register("block_storage", new BlockTFCompressed().setUnlocalizedName("BlockOfStorage"));
 		blocks.register("lapis_block", new BlockTFLapisBlock().setUnlocalizedName("BlockOfLapisTF"));
 		blocks.register("spiral_bricks", new BlockTFSpiralBrick().setUnlocalizedName("SpiralBricks"));
-		blocks.register("etched_nagastone", new BlockTFEtchedNagastone().setUnlocalizedName("EtchedNagastone").setHardness(1.5F).setResistance(10.0F));
+		Block etchedNagastone = new BlockTFNagastoneEtched().setUnlocalizedName("EtchedNagastone").setHardness(1.5F).setResistance(10.0F);
+		blocks.register("etched_nagastone", etchedNagastone);
 		blocks.register("nagastone_pillar", new BlockTFNagastonePillar().setUnlocalizedName("NagastonePillar").setHardness(1.5F).setResistance(10.0F));
+		blocks.register("nagastone_stairs", new BlockTFNagastoneStairs(etchedNagastone.getDefaultState()).setUnlocalizedName("NagastoneStairs").setHardness(1.5F).setResistance(10.0F));
 	}
 
 	private static class BlockRegistryHelper {

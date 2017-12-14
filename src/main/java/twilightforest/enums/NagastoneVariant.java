@@ -41,9 +41,45 @@ public enum NagastoneVariant implements IStringSerializable {
 	public static NagastoneVariant rotate(NagastoneVariant variant, Rotation rotation) {
 		if (!isHead(variant)) return variant;
 
-		NagastoneVariant[] variants = {NORTH_HEAD, EAST_HEAD, SOUTH_HEAD, WEST_HEAD};
+		switch (rotation) {
+			case NONE:
+				return variant;
+			case CLOCKWISE_90:
+				switch (variant) {
+					case NORTH_HEAD:
+						return EAST_HEAD;
+					case SOUTH_HEAD:
+						return WEST_HEAD;
+					case WEST_HEAD:
+						return NORTH_HEAD;
+					case EAST_HEAD:
+						return SOUTH_HEAD;
+				}
+			case CLOCKWISE_180:
+				switch (variant) {
+					case NORTH_HEAD:
+						return SOUTH_HEAD;
+					case SOUTH_HEAD:
+						return NORTH_HEAD;
+					case WEST_HEAD:
+						return EAST_HEAD;
+					case EAST_HEAD:
+						return WEST_HEAD;
+				}
+			case COUNTERCLOCKWISE_90:
+				switch (variant) {
+					case NORTH_HEAD:
+						return WEST_HEAD;
+					case SOUTH_HEAD:
+						return EAST_HEAD;
+					case WEST_HEAD:
+						return SOUTH_HEAD;
+					case EAST_HEAD:
+						return NORTH_HEAD;
+				}
+		}
 
-		return variants[(variant.ordinal() + rotation.ordinal()) % 4];
+		return variant;
 	}
 
 	public static NagastoneVariant mirror(NagastoneVariant variant, Mirror mirror) {

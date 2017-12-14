@@ -205,6 +205,7 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.spiral_bricks);
 		items.registerBlock(TFBlocks.etched_nagastone);
 		items.registerBlock(TFBlocks.nagastone_pillar);
+		items.registerSubItemBlock(TFBlocks.nagastone_stairs);
 	}
 
 	private static class ItemRegistryHelper {

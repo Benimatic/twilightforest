@@ -46,8 +46,6 @@ public class ComponentNagaCourtyardWallCornerAlt extends StructureTFComponent {
         Template template = templateManager.getTemplate(server, WALL_CORNER);
         template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
 
-        worldIn.setBlockState(pos.up(10), Blocks.DIAMOND_ORE.getDefaultState());
-
         return true;
     }
 }

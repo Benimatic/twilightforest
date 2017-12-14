@@ -152,4 +152,6 @@ public class TFBlocks {
 	public static Block etched_nagastone;
 	@ObjectHolder("nagastone_pillar")
 	public static Block nagastone_pillar;
+	@ObjectHolder("nagastone_stairs")
+	public static Block nagastone_stairs;
 }
