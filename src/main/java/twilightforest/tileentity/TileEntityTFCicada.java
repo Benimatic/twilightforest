@@ -2,6 +2,7 @@ package twilightforest.tileentity;
 
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 
@@ -15,47 +16,49 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
 	private boolean singing;
 	private int singDelay;
 
+	private static final boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
+
 	@Override
 	public void update() {
-		super.update();
+		if (isClient) {
+			if (yawDelay > 0) {
+				yawDelay--;
+			} else {
+				if (currentYaw == 0 && desiredYaw == 0) {
+					// make it rotate!
+					yawDelay = 200 + world.rand.nextInt(200);
+					desiredYaw = world.rand.nextInt(15) - world.rand.nextInt(15);
+				}
 
-		if (yawDelay > 0) {
-			yawDelay--;
-		} else {
-			if (currentYaw == 0 && desiredYaw == 0) {
-				// make it rotate!
-				yawDelay = 200 + world.rand.nextInt(200);
-				desiredYaw = world.rand.nextInt(15) - world.rand.nextInt(15);
+				if (currentYaw < desiredYaw) {
+					currentYaw++;
+				}
+				if (currentYaw > desiredYaw) {
+					currentYaw--;
+				}
+				if (currentYaw == desiredYaw) {
+					desiredYaw = 0;
+				}
 			}
 
-			if (currentYaw < desiredYaw) {
-				currentYaw++;
-			}
-			if (currentYaw > desiredYaw) {
-				currentYaw--;
-			}
-			if (currentYaw == desiredYaw) {
-				desiredYaw = 0;
-			}
-		}
-
-		if (singDelay > 0) {
-			singDelay--;
-		} else {
-			if (singing && singDuration == 0) {
-				playSong();
-			}
-			if (singing && singDuration >= 100) {
-				singing = false;
-				singDuration = 0;
-			}
-			if (singing && singDuration < 100) {
-				singDuration++;
-				doSingAnimation();
-			}
-			if (!singing && singDuration <= 0) {
-				singing = true;
-				singDelay = 100 + world.rand.nextInt(100);
+			if (singDelay > 0) {
+				singDelay--;
+			} else {
+				if (singing && singDuration == 0) {
+					playSong();
+				}
+				if (singing && singDuration >= 100) {
+					singing = false;
+					singDuration = 0;
+				}
+				if (singing && singDuration < 100) {
+					singDuration++;
+					doSingAnimation();
+				}
+				if (!singing && singDuration <= 0) {
+					singing = true;
+					singDelay = 100 + world.rand.nextInt(100);
+				}
 			}
 		}
 	}

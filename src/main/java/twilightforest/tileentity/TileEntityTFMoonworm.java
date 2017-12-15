@@ -1,10 +1,14 @@
 package twilightforest.tileentity;
 
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
+
 public class TileEntityTFMoonworm extends TileEntityTFCritter {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
+
+	private static final boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 
 	public TileEntityTFMoonworm() {
 		currentYaw = -1;
@@ -14,29 +18,29 @@ public class TileEntityTFMoonworm extends TileEntityTFCritter {
 
 	@Override
 	public void update() {
-		super.update();
-
-		if (currentYaw == -1) {
-			currentYaw = world.rand.nextInt(4) * 90;
-		}
-
-		if (yawDelay > 0) {
-			yawDelay--;
-		} else {
-			if (desiredYaw == 0) {
-				// make it rotate!
-				yawDelay = 200 + world.rand.nextInt(200);
-				desiredYaw = world.rand.nextInt(4) * 90;
+		if (isClient) {
+			if (currentYaw == -1) {
+				currentYaw = world.rand.nextInt(4) * 90;
 			}
 
-			currentYaw++;
+			if (yawDelay > 0) {
+				yawDelay--;
+			} else {
+				if (desiredYaw == 0) {
+					// make it rotate!
+					yawDelay = 200 + world.rand.nextInt(200);
+					desiredYaw = world.rand.nextInt(4) * 90;
+				}
 
-			if (currentYaw > 360) {
-				currentYaw = 0;
-			}
+				currentYaw++;
 
-			if (currentYaw == desiredYaw) {
-				desiredYaw = 0;
+				if (currentYaw > 360) {
+					currentYaw = 0;
+				}
+
+				if (currentYaw == desiredYaw) {
+					desiredYaw = 0;
+				}
 			}
 		}
 	}
