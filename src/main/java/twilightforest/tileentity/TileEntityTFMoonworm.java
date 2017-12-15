@@ -1,14 +1,10 @@
 package twilightforest.tileentity;
 
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
-
 public class TileEntityTFMoonworm extends TileEntityTFCritter {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
-
-	private static final boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 
 	public TileEntityTFMoonworm() {
 		currentYaw = -1;

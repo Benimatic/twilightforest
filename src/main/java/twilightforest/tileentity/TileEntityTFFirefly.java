@@ -1,6 +1,5 @@
 package twilightforest.tileentity;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
@@ -12,8 +11,6 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
 	public float glowIntensity;
 	private boolean glowing;
 	private int glowDelay;
-
-	private static final boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 
 	@Override
 	public void update() {

@@ -2,7 +2,6 @@ package twilightforest.tileentity;
 
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 
@@ -15,8 +14,6 @@ public class TileEntityTFCicada extends TileEntityTFCritter {
 	private int singDuration;
 	private boolean singing;
 	private int singDelay;
-
-	private static final boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 
 	@Override
 	public void update() {
