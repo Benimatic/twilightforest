@@ -19,7 +19,9 @@ public enum TFCompat {
     CHISEL {
         @Override
         public void init() {
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.spiral_bricks, 1, 0));
+            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.spiral_bricks));
+            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.etched_nagastone));
+            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar));
 
             for (MazestoneVariant variant : MazestoneVariant.values())
                 addBlockToCarvingGroup("mazestone", new ItemStack(TFBlocks.mazestone, 1, variant.ordinal()));
@@ -32,9 +34,6 @@ public enum TFCompat {
 
             for (DeadrockVariant variant : DeadrockVariant.values())
                 addBlockToCarvingGroup("deadrock", new ItemStack(TFBlocks.deadrock, 1, variant.ordinal()));
-
-            for (CastleBrickVariant variant : CastleBrickVariant.values())
-                addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castleBlock, 1, variant.ordinal()));
 
             for (CastleBrickVariant variant : CastleBrickVariant.values())
                 addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castleBlock, 1, variant.ordinal()));
@@ -53,6 +52,12 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     }, // TODO Forestry
+    JEI {
+        @Override
+        protected void init() {
+
+        }
+    },
     THAUMCRAFT {
         // Use the thaumcraft API to register our things with aspects and biomes with values
         // TODO: Reenable once Thaumcraft API is available
