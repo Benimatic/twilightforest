@@ -3,6 +3,7 @@ package twilightforest.compat;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
@@ -10,10 +11,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.*;
 
-/*@Optional.InterfaceList({
+@Optional.InterfaceList({
         @Optional.Interface(iface = "team.chisel.api.ChiselAPIProps", modid = "chisel"),
         @Optional.Interface(iface = "team.chisel.api.IMC", modid = "chisel")
-})*/
+})
 public enum TFCompat {
     CHISEL {
         @Override
