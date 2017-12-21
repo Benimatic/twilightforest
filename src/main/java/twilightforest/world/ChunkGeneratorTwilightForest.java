@@ -7,6 +7,7 @@ package twilightforest.world;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -26,6 +27,7 @@ import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomes;
@@ -635,6 +637,8 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	}
 
 	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome biomes[]) {
+		IBlockState ice = TFConfig.performance.glacierPackedIce ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
+
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Biome biome = biomes[x & 15 | (z & 15) << 4];
@@ -655,7 +659,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					int gTop = topLevel + gHeight + 1;
 
 					for (int y = topLevel + 1; y <= gTop && y < 128; y++) {
-						primer.setBlockState(x, y, z, Blocks.ICE.getDefaultState());
+						primer.setBlockState(x, y, z, ice);
 					}
 				}
 			}

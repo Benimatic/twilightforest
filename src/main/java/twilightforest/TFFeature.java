@@ -339,13 +339,12 @@ public class TFFeature {
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
 
-		// get random value
-		Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
-		int randnum = hillRNG.nextInt(16);
-
-		if (chunkZ > -1000) {
+		/*
+		// Remove above block comment start marker to enable debug
+		// noinspection ConstantConditions
+		if (true) {
 			return nagaCourtyard;
-		}
+		}//*/
 
 		// glaciers have ice towers
 		if (biomeAt == TFBiomes.glacier) {
@@ -409,6 +408,10 @@ public class TFFeature {
 		if ((regionOffsetX == 5 && regionOffsetZ == 4) || (regionOffsetX == 3 && regionOffsetZ == 4)) {
 			return nagaCourtyard;
 		}
+
+		// get random value
+		Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
+		int randnum = hillRNG.nextInt(16);
 
 		// okay, well that takes care of most special cases
 		switch (randnum) {

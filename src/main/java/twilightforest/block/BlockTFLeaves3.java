@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFConfig;
 import twilightforest.enums.Leaves3Variant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -36,13 +37,24 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	public static final PropertyEnum<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
 
 	protected BlockTFLeaves3() {
-		setCreativeTab(TFItems.creativeTab);
-		setDefaultState(
+		this.setCreativeTab(TFItems.creativeTab);
+		this.setLightOpacity(1);
+		this.setDefaultState(
 				blockState.getBaseState()
 						.withProperty(CHECK_DECAY, true)
 						.withProperty(DECAYABLE, true)
 						.withProperty(VARIANT, Leaves3Variant.THORN)
 		);
+	}
+
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TFConfig.performance.leavesLightOpacity;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return TFConfig.performance.leavesFullCube;
 	}
 
 	// [VanillaCopy] BlockLeavesNew.getMetaFromState - could subclass, but different VARIANT property
