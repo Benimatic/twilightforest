@@ -19,24 +19,22 @@ import java.util.Locale;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public enum BossVariant implements IStringSerializable {
-	NAGA          (true , TrophyType.GOLD    , TileEntityTFNagaSpawner.class),
-	LICH          (true , TrophyType.GOLD    , TileEntityTFLichSpawner.class),
-	HYDRA         (true , TrophyType.GOLD    , TileEntityTFHydraSpawner.class),
-	UR_GHAST      (true , TrophyType.GOLD    , TileEntityTFTowerBossSpawner.class),
-	KNIGHT_PHANTOM(false, TrophyType.IRON    , TileEntityTFKnightPhantomsSpawner.class),
-	SNOW_QUEEN    (true , TrophyType.GOLD    , TileEntityTFSnowQueenSpawner.class),
-	MINOSHROOM    (false, TrophyType.IRON    , TileEntityTFMinoshroomSpawner.class),
-	ALPHA_YETI    (false, TrophyType.IRON    , TileEntityTFAlphaYetiSpawner.class),
-	QUEST_RAM     (false, TrophyType.IRONWOOD, null);
+	NAGA          (TrophyType.GOLD    , TileEntityTFNagaSpawner.class),
+	LICH          (TrophyType.GOLD    , TileEntityTFLichSpawner.class),
+	HYDRA         (TrophyType.GOLD    , TileEntityTFHydraSpawner.class),
+	UR_GHAST      (TrophyType.GOLD    , TileEntityTFTowerBossSpawner.class),
+	KNIGHT_PHANTOM(TrophyType.IRON    , TileEntityTFKnightPhantomsSpawner.class),
+	SNOW_QUEEN    (TrophyType.GOLD    , TileEntityTFSnowQueenSpawner.class),
+	MINOSHROOM    (TrophyType.IRON    , TileEntityTFMinoshroomSpawner.class),
+	ALPHA_YETI    (TrophyType.IRON    , TileEntityTFAlphaYetiSpawner.class),
+	QUEST_RAM     (TrophyType.IRONWOOD, null);
 
-	private final boolean isMajorBoss;
 	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;
 	private final TrophyType trophyType;
 
 	public static final BossVariant[] VARIANTS = values();
 
-	BossVariant(boolean isMajorBoss, TrophyType trophyType, @Nullable Class<? extends TileEntityTFBossSpawner> spawnerClass) {
-		this.isMajorBoss = isMajorBoss;
+	BossVariant(TrophyType trophyType, @Nullable Class<? extends TileEntityTFBossSpawner> spawnerClass) {
 		this.spawnerClass = spawnerClass;
 		this.trophyType = trophyType;
 	}
@@ -48,10 +46,6 @@ public enum BossVariant implements IStringSerializable {
 
 	public TrophyType getTrophyType() {
 		return this.trophyType;
-	}
-
-	public boolean usesGoldBackground() {
-		return isMajorBoss;
 	}
 
 	@Nullable
