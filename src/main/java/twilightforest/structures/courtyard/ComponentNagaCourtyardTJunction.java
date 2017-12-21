@@ -17,7 +17,8 @@ import twilightforest.structures.StructureTFComponent;
 import java.util.Random;
 
 public class ComponentNagaCourtyardTJunction extends StructureTFComponent {
-    private static final ResourceLocation WALL_TSHAPE  = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t");
+    private static final ResourceLocation HEDGE_TSHAPE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t");
+    private static final ResourceLocation HEDGE_TSHAPE_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t_big");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardTJunction() {
@@ -43,8 +44,11 @@ public class ComponentNagaCourtyardTJunction extends StructureTFComponent {
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.getBoundingBox());
 
-        Template template = templateManager.getTemplate(server, WALL_TSHAPE);
+        Template template = templateManager.getTemplate(server, HEDGE_TSHAPE);
         template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
+
+        Template templateBig = templateManager.getTemplate(server, HEDGE_TSHAPE_BIG);
+        templateBig.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_INTEGRITY));
 
         return true;
     }

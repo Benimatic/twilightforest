@@ -16,6 +16,11 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	static int RADIUS = 62;
 	static int DIAMETER = 2 * RADIUS + 1;
 
+	static final float HEDGE_INTEGRITY = 0.5f;
+
+	static final float WALL_DECAY = 0.3f;
+	static final float WALL_INTEGRITY = 0.9f;
+
 	@SuppressWarnings("unused")
 	public ComponentNagaCourtyardMain() {
 		super();

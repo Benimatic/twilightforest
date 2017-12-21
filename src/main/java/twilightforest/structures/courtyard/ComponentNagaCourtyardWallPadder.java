@@ -18,6 +18,7 @@ import java.util.Random;
 
 public class ComponentNagaCourtyardWallPadder extends StructureTFComponent {
     private static final ResourceLocation WALL_PADDING = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding");
+    private static final ResourceLocation WALL_PADDING_DECAYED = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding_decayed");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardWallPadder() {
@@ -44,7 +45,10 @@ public class ComponentNagaCourtyardWallPadder extends StructureTFComponent {
                 .setBoundingBox(this.getBoundingBox());
 
         Template template = templateManager.getTemplate(server, WALL_PADDING);
-        template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
+        template.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_INTEGRITY));
+
+        Template templateBig = templateManager.getTemplate(server, WALL_PADDING);
+        templateBig.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY));
 
         return true;
     }

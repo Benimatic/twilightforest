@@ -18,6 +18,7 @@ import java.util.Random;
 
 public class ComponentNagaCourtyardWallCornerAlt extends StructureTFComponent {
     private static final ResourceLocation WALL_CORNER = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_corner_inner");
+    private static final ResourceLocation WALL_CORNER_DECAYED = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_corner_inner_decayed");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardWallCornerAlt() {
@@ -44,7 +45,10 @@ public class ComponentNagaCourtyardWallCornerAlt extends StructureTFComponent {
                 .setBoundingBox(this.getBoundingBox());
 
         Template template = templateManager.getTemplate(server, WALL_CORNER);
-        template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
+        template.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_INTEGRITY));
+
+        Template templateBig = templateManager.getTemplate(server, WALL_CORNER_DECAYED);
+        templateBig.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY));
 
         return true;
     }
