@@ -1,4 +1,4 @@
-package twilightforest.item;
+package twilightforest.item.recipe;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;

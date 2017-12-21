@@ -1,10 +1,11 @@
-package twilightforest.item;
+package twilightforest.item.recipe;
 
 import com.google.common.collect.Lists;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipesArmorDyes;
 import net.minecraft.world.World;
+import twilightforest.item.ItemTFArcticArmor;
 
 import java.util.List;
 

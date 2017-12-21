@@ -1,4 +1,4 @@
-package twilightforest.item;
+package twilightforest.item.recipe;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.item.TFItems;
 
 @Mod.EventBusSubscriber
 public class TFRecipes {
