@@ -28,7 +28,7 @@ public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
     public ComponentNagaCourtyardTerrace(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(feature, i);
         this.rotation = rotation;
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 17, y + 6, z + 17);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 16, y + 7, z + 16);
     }
 
     @Override
@@ -41,10 +41,10 @@ public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
         PlacementSettings placementSettings = new PlacementSettings()
                 .setRotation(this.rotation)
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
-                .setBoundingBox(this.getBoundingBox());
+                .setBoundingBox(structureBoundingBoxIn);
 
         Template template = templateManager.getTemplate(server, TERRACE);
-        template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
+        template.addBlocksToWorld(worldIn, pos, placementSettings);
 
         return true;
     }

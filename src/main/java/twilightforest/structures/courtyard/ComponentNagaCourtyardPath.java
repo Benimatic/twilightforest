@@ -40,7 +40,7 @@ public class ComponentNagaCourtyardPath extends StructureTFComponent {
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardPath(TFFeature feature, int i, int x, int y, int z) {
         super(feature, i);
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y, z + 5);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 4, y, z + 4);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ComponentNagaCourtyardPath extends StructureTFComponent {
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
 
         PlacementSettings placementSettings = new PlacementSettings()
-                .setBoundingBox(this.getBoundingBox());
+                .setBoundingBox(structureBoundingBoxIn);
 
         Template template = templateManager.getTemplate(server, PATH);
         template.addBlocksToWorld(worldIn, pos, COURTYARD_PATH_PROCESSOR, placementSettings, 2);

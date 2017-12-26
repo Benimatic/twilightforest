@@ -12,6 +12,7 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.structures.MossyCobbleTemplateProcessor;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
@@ -29,11 +30,11 @@ public class ComponentNagaCourtyardWall extends StructureTFComponent {
     public ComponentNagaCourtyardWall(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(feature, i);
         this.rotation = rotation;
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 11, y + 8, z + 3);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 10, y + 7, z + 10);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
+    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox structureBoundingBoxIn) {
         BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
 
         MinecraftServer server = worldIn.getMinecraftServer();
@@ -42,13 +43,15 @@ public class ComponentNagaCourtyardWall extends StructureTFComponent {
         PlacementSettings placementSettings = new PlacementSettings()
                 .setRotation(this.rotation)
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
-                .setBoundingBox(this.getBoundingBox());
+                .setBoundingBox(structureBoundingBoxIn);
 
         Template template = templateManager.getTemplate(server, WALL);
-        template.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_INTEGRITY));
+        template.addBlocksToWorld(worldIn, pos, new CourtyardWallTemplateProcessor(pos, placementSettings), placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_INTEGRITY), 2);
 
-        Template templateBig = templateManager.getTemplate(server, WALL_DECAYED);
-        templateBig.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY));
+        Template temDecay = templateManager.getTemplate(server, WALL_DECAYED);
+        temDecay.addBlocksToWorld(worldIn, pos, new MossyCobbleTemplateProcessor(pos, placementSettings), placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY), 2);
+
+        this.setDebugCorners(worldIn);
 
         return true;
     }

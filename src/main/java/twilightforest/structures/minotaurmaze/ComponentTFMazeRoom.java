@@ -9,12 +9,12 @@ import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.MazestoneVariant;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFMazeRoom extends StructureTFComponent {
+public class ComponentTFMazeRoom extends StructureTFComponentOld {
 
 	public ComponentTFMazeRoom() {
 		super();

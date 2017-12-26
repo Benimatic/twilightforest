@@ -9,7 +9,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
@@ -31,8 +31,8 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
 		// we should have a door where we started

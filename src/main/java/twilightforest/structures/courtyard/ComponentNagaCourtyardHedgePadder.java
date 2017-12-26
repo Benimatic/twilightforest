@@ -16,24 +16,24 @@ import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardPadder extends StructureTFComponent {
-    private static final ResourceLocation HEDGE_PADDING = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_between");
-    private static final ResourceLocation HEDGE_PADDING_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_between_big");
+public class ComponentNagaCourtyardHedgePadder extends StructureTFComponent {
+    private static final ResourceLocation HEDGE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_between");
+    private static final ResourceLocation HEDGE_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_between_big");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardPadder() {
+    public ComponentNagaCourtyardHedgePadder() {
         super();
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardPadder(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public ComponentNagaCourtyardHedgePadder(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(feature, i);
         this.rotation = rotation;
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 4, y + 4, z + 4);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
+    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox structureBoundingBoxIn) {
         BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
 
         MinecraftServer server = worldIn.getMinecraftServer();
@@ -42,13 +42,13 @@ public class ComponentNagaCourtyardPadder extends StructureTFComponent {
         PlacementSettings placementSettings = new PlacementSettings()
                 .setRotation(this.rotation)
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
-                .setBoundingBox(this.getBoundingBox());
+                .setBoundingBox(structureBoundingBoxIn);
 
-        Template template = templateManager.getTemplate(server, HEDGE_PADDING);
-        template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
+        Template template = templateManager.getTemplate(server, HEDGE);
+        template.addBlocksToWorld(worldIn, pos, new CourtyardStairsTemplateProcessor(pos, placementSettings), placementSettings, 2);
 
-        Template templateBig = templateManager.getTemplate(server, HEDGE_PADDING_BIG);
-        templateBig.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_INTEGRITY));
+        Template templateBig = templateManager.getTemplate(server, HEDGE_BIG);
+        templateBig.addBlocksToWorld(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
 
         return true;
     }

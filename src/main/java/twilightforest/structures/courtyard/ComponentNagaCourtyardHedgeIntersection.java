@@ -15,23 +15,23 @@ import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardIntersection extends StructureTFComponent {
-    private static final ResourceLocation HEDGE_CROSS = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_intersection_big");
-    private static final ResourceLocation HEDGE_CROSS_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner_big");
+public class ComponentNagaCourtyardHedgeIntersection extends StructureTFComponent {
+    private static final ResourceLocation HEDGE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_intersection_big");
+    private static final ResourceLocation HEDGE_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner_big");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardIntersection() {
+    public ComponentNagaCourtyardHedgeIntersection() {
         super();
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardIntersection(TFFeature feature, int i, int x, int y, int z) {
+    public ComponentNagaCourtyardHedgeIntersection(TFFeature feature, int i, int x, int y, int z) {
         super(feature, i);
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x + 4, y + 4, z + 4);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
+    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox structureBoundingBoxIn) {
         BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
 
         MinecraftServer server = worldIn.getMinecraftServer();
@@ -39,13 +39,15 @@ public class ComponentNagaCourtyardIntersection extends StructureTFComponent {
 
         PlacementSettings placementSettings = new PlacementSettings()
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
-                .setBoundingBox(this.getBoundingBox());
+                .setBoundingBox(structureBoundingBoxIn);
 
-        Template template = templateManager.getTemplate(server, HEDGE_CROSS);
-        template.addBlocksToWorldChunk(worldIn, pos, placementSettings);
+        Template template = templateManager.getTemplate(server, HEDGE);
+        template.addBlocksToWorld(worldIn, pos, new CourtyardStairsTemplateProcessor(pos, placementSettings), placementSettings, 2);
 
-        Template templateBig = templateManager.getTemplate(server, HEDGE_CROSS_BIG);
-        templateBig.addBlocksToWorldChunk(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_INTEGRITY));
+        Template templateBig = templateManager.getTemplate(server, HEDGE_BIG);
+        templateBig.addBlocksToWorld(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
+
+        this.setDebugCorners(worldIn);
 
         return true;
     }
