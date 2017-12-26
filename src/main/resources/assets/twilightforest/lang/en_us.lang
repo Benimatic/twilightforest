@@ -276,6 +276,16 @@ tile.SpiralBricks.name=Spiral Stone Bricks [WIP]
 tile.BlockOfLapisTF.name=Block Of Lapis [NYI]
 tile.EtchedNagastone.name=Etched Nagastone
 tile.NagastonePillar.name=Nagastone Pillar
+tile.NagastoneStairs.0.name=Nagastone Stairs (Left)
+tile.NagastoneStairs.8.name=Nagastone Stairs (Right)
+tile.EtchedNagastoneMossy.name=Mossy Etched Nagastone
+tile.NagastonePillarMossy.name=Mossy Nagastone Pillar
+tile.NagastoneStairsMossy.0.name=Mossy Nagastone Stairs (Left)
+tile.NagastoneStairsMossy.8.name=Mossy Nagastone Stairs (Right)
+tile.EtchedNagastoneWeathered.name=Ruined Etched Nagastone
+tile.NagastonePillarWeathered.name=Ruined Nagastone Pillar
+tile.NagastoneStairsWeathered.0.name=Weathered Nagastone Stairs (Left)
+tile.NagastoneStairsWeathered.8.name=Weathered Nagastone Stairs (Right)
 
 structure.twilight_portal.name=Twilight Portal
 structure.hedge_maze.name=Hedge Maze

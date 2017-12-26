@@ -7,6 +7,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
@@ -64,8 +65,8 @@ public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegister
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelUtils.registerToState(this, 0, getDefaultState());
-		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(DIRECTION, LeftRight.RIGHT));
+		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
+		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.SOUTH).withProperty(DIRECTION, LeftRight.RIGHT));
 	}
 
 	private enum LeftRight implements IStringSerializable {
