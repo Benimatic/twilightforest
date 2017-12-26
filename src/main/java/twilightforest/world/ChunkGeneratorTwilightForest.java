@@ -4,7 +4,6 @@
 
 package twilightforest.world;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
@@ -51,19 +50,19 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	private NoiseGeneratorOctaves mainPerlinNoise;
 	private NoiseGeneratorPerlin surfaceNoise;
 	private NoiseGeneratorOctaves noiseGen4;
-	public NoiseGeneratorOctaves scaleNoise;
-	public NoiseGeneratorOctaves depthNoise;
-	public NoiseGeneratorOctaves forestNoise;
+	//private NoiseGeneratorOctaves scaleNoise;
+	private NoiseGeneratorOctaves depthNoise;
+	//private NoiseGeneratorOctaves forestNoise;
 	private final World world;
 	private WorldType terrainType;
 	private final double[] heightMap;
 	private final float[] biomeWeights;
 	private double[] depthBuffer = new double[256];
 	private Biome biomesForGeneration[];
-	double[] mainNoiseRegion;
-	double[] minLimitRegion;
-	double[] maxLimitRegion;
-	double[] depthRegion;
+	private double[] mainNoiseRegion;
+	private double[] minLimitRegion;
+	private double[] maxLimitRegion;
+	private double[] depthRegion;
 
 	private final TFGenCaves caveGenerator = new TFGenCaves();
 	private final TFGenRavine ravineGenerator = new TFGenRavine();
@@ -79,9 +78,9 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		this.mainPerlinNoise = new NoiseGeneratorOctaves(this.rand, 8);
 		this.surfaceNoise = new NoiseGeneratorPerlin(this.rand, 4);
 		this.noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
-		this.scaleNoise = new NoiseGeneratorOctaves(rand, 10);
+		//this.scaleNoise = new NoiseGeneratorOctaves(rand, 10);
 		this.depthNoise = new NoiseGeneratorOctaves(rand, 16);
-		this.forestNoise = new NoiseGeneratorOctaves(rand, 8);
+		//this.forestNoise = new NoiseGeneratorOctaves(rand, 8);
 		this.heightMap = new double[825];
 		this.biomeWeights = new float[25];
 
@@ -111,8 +110,8 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		replaceBiomeBlocks(cx, cz, primer, biomesForGeneration);
 		caveGenerator.generate(world, cx, cz, primer);
 		ravineGenerator.generate(world, cx, cz, primer);
-		majorFeatureGenerator.generate(world, cx, cz, null);
-		hollowTreeGenerator.generate(world, cx, cz, null);
+		majorFeatureGenerator.generate(world, cx, cz, primer);
+		hollowTreeGenerator.generate(world, cx, cz, primer);
 
 		Chunk chunk = new Chunk(world, primer, cx, cz);
 
@@ -423,7 +422,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		int newGround;
 		float squishfactor = 0;
 		int mazeheight = TFWorld.SEALEVEL + 1;
-		int FEATUREBOUNDRY = (nearFeature.size * 2 + 1) * 8 - 8;
+		final int FEATUREBOUNDRY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATUREBOUNDRY) {
 			squishfactor = (-dx - FEATUREBOUNDRY) / 8.0f;
@@ -446,10 +445,8 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 			for (int y = 0; y <= 127; y++) {
 				Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-				if (currentTerrain == Blocks.STONE) {
-					// we're still in ground
-					continue;
-				} else {
+				// we're still in ground
+				if (currentTerrain != Blocks.STONE) {
 					if (newGround == -1) {
 						// we found the lowest chunk of earth
 						oldGround = y;
@@ -783,10 +780,8 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, chunkX, chunkZ, flag);
 
-		boolean disableFeatures = false;
-
-		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, chunkpos);
-		disableFeatures |= !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
+		boolean disableFeatures = this.majorFeatureGenerator.generateStructure(world, rand, chunkpos)
+				|| !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
 
 		hollowTreeGenerator.generateStructure(world, rand, chunkpos);
 
@@ -878,9 +873,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		Biome biome = world.getBiome(pos);
 
-		if (biome == null) {
-			return Lists.newArrayList();
-		} else if (pos.getY() < TFWorld.SEALEVEL && creatureType == EnumCreatureType.MONSTER && biome instanceof TFBiomeBase) {
+		if (pos.getY() < TFWorld.SEALEVEL && creatureType == EnumCreatureType.MONSTER && biome instanceof TFBiomeBase) {
 			// cave monsters!
 			return ((TFBiomeBase) biome).getUndergroundSpawnableList();
 		} else {
@@ -894,7 +887,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		if(structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()))
 			return hollowTreeGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		if (feature != null && feature != TFFeature.nothing)
+		if (feature != TFFeature.nothing)
 			return TFFeature.findNearestFeaturePosBySpacing(worldIn, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
 		return null;
 	}
