@@ -148,16 +148,8 @@ public final class ColorHandler {
 			if (worldIn == null || pos == null || state.getValue(BlockTFTowerWood.VARIANT) == TowerWoodVariant.ENCASED) {
 				return -1;
 			} else {
-				// stripes!
-				int value = pos.getX() * 31 + pos.getY() * 15 + pos.getZ() * 33;
-				if ((value & 256) != 0) {
-					value = 255 - (value & 255);
-				}
-				value &= 255;
-				value = value >> 1;
-				value |= 128;
-
-				return value << 16 | value << 8 | value;
+				float f = BlockTFAuroraBrick.rippleFractialNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
+				return Color.HSBtoRGB(0.1f, 1f - f, (f + 2f) / 3f);
 			}
 		}, TFBlocks.towerWood);
 		blockColors.registerBlockColorHandler((state, world, pos, tintIndex) -> {
