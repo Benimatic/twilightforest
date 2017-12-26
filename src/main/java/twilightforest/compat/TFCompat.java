@@ -22,6 +22,10 @@ public enum TFCompat {
             addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.spiral_bricks));
             addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.etched_nagastone));
             addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar));
+            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.etched_nagastone_mossy));
+            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar_mossy));
+            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.etched_nagastone_weathered));
+            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar_weathered));
 
             for (MazestoneVariant variant : MazestoneVariant.values())
                 addBlockToCarvingGroup("mazestone", new ItemStack(TFBlocks.mazestone, 1, variant.ordinal()));

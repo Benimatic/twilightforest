@@ -206,6 +206,12 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.etched_nagastone);
 		items.registerBlock(TFBlocks.nagastone_pillar);
 		items.registerSubItemBlock(TFBlocks.nagastone_stairs);
+		items.registerBlock(TFBlocks.etched_nagastone_mossy);
+		items.registerBlock(TFBlocks.nagastone_pillar_mossy);
+		items.registerSubItemBlock(TFBlocks.nagastone_stairs_mossy);
+		items.registerBlock(TFBlocks.etched_nagastone_weathered);
+		items.registerBlock(TFBlocks.nagastone_pillar_weathered);
+		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
 	}
 
 	private static class ItemRegistryHelper {
