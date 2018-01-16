@@ -173,6 +173,7 @@ public class BlockTFPortal extends BlockBreakable {
 		if (!entity.isRiding() && entity.getPassengers().isEmpty() && entity.timeUntilPortal <= 0) {
 			if (entity instanceof EntityPlayerMP) {
 				EntityPlayerMP playerMP = (EntityPlayerMP) entity;
+				playerMP.invulnerableDimensionChange = true;
 
 				if (playerMP.timeUntilPortal > 0) {
 					// do not switch dimensions if the player has any time on this thinger
