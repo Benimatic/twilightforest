@@ -26,7 +26,7 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
             IBlockState state = blockInfo.blockState;
             Block block = state.getBlock();
 
-            if (block == Blocks.STONEBRICK)
+            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
                 return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
 
             if (state == Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.STONE))

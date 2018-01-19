@@ -13,10 +13,11 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentTemplate;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
+public class ComponentNagaCourtyardTerrace extends StructureTFComponentTemplate {
     private static final ResourceLocation TERRACE = new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_fire");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
@@ -26,25 +27,24 @@ public class ComponentNagaCourtyardTerrace extends StructureTFComponent {
 
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerrace(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(feature, i);
-        this.rotation = rotation;
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 16, y + 7, z + 16);
+        super(feature, i, x, y, z, rotation);
     }
 
     @Override
     public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
-        BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
-
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
+
+        TEMPLATE = templateManager.getTemplate(server, TERRACE);
+
+        this.setBoundingBoxFromTemplate();
 
         PlacementSettings placementSettings = new PlacementSettings()
                 .setRotation(this.rotation)
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
-                .setBoundingBox(structureBoundingBoxIn);
+                .setBoundingBox(this.boundingBox);
 
-        Template template = templateManager.getTemplate(server, TERRACE);
-        template.addBlocksToWorld(worldIn, pos, placementSettings);
+        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, placementSettings);
 
         return true;
     }
