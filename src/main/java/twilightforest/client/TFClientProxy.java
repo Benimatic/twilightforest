@@ -19,6 +19,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ColorHandler;
@@ -33,9 +34,7 @@ import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.passive.*;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.TileEntityTFCicada;
-import twilightforest.tileentity.TileEntityTFFirefly;
-import twilightforest.tileentity.TileEntityTFMoonworm;
+import twilightforest.tileentity.critters.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
 import java.util.EnumMap;
@@ -150,12 +149,12 @@ public class TFClientProxy extends TFCommonProxy {
 		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 
 		// tile entities
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFFirefly.class, new TileEntityTFFireflyRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFCicada.class, new TileEntityTFCicadaRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFFireflyTicking.class, new TileEntityTFFireflyRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFCicadaTicking.class, new TileEntityTFCicadaRenderer());
 //		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFNagaSpawner.class, new TileEntityMobSpawnerRenderer());
 //		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFLichSpawner.class, new TileEntityMobSpawnerRenderer());
 //		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFMoonworm.class, new TileEntityTFMoonwormRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFMoonwormTicking.class, new TileEntityTFMoonwormRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophy.class, new TileEntityTFTrophyRenderer());
 
 		knightlyArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFKnightlyArmor(0.5F));
@@ -321,4 +320,25 @@ public class TFClientProxy extends TFCommonProxy {
 		return super.doesPlayerHaveAdvancement(player, advId);
 	}
 
+	@Override
+	public TileEntityTFCicada getNewCicadaTE() {
+		return new TileEntityTFCicadaTicking();
+	}
+
+	@Override
+	public TileEntityTFFirefly getNewFireflyTE() {
+		return new TileEntityTFFireflyTicking();
+	}
+
+	@Override
+	public TileEntityTFMoonworm getNewMoonwormTE() {
+		return new TileEntityTFMoonwormTicking();
+	}
+
+	@Override
+	public void registerCritterTileEntities() {
+		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "firefly");
+		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "cicada");
+		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "moonworm");
+	}
 }

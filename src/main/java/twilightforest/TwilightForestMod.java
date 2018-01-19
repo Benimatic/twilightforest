@@ -18,11 +18,15 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.client.TFClientProxy;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
+import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
+import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
+import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -204,15 +208,14 @@ public class TwilightForestMod {
 
 
 	private void registerTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "cicada");
+		proxy.registerCritterTileEntities();
+
 		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner.class, "naga_spawner");
 		GameRegistry.registerTileEntity(TileEntityTFLichSpawner.class, "lich_spawner");
 		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner.class, "hydra_spawner");
 		GameRegistry.registerTileEntity(TileEntityTFSmoker.class, "smoker");
 		GameRegistry.registerTileEntity(TileEntityTFPoppingJet.class, "popping_jet");
 		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "flame_jet");
-		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "moonworm");
 		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "tower_builder");
 		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "tower_reverter");
 		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "trophy");
