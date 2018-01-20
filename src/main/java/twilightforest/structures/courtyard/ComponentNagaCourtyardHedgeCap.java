@@ -40,28 +40,28 @@ public class ComponentNagaCourtyardHedgeCap extends StructureTFComponentTemplate
 
         TEMPLATE = templateManager.getTemplate(server, HEDGE);
 
-        this.setTemplatePositionFromRotation();
-        this.setBoundingBoxFromTemplate();
+        BlockPos posForSetting = this.getModifiedTemplatePositionFromRotation();
+        this.setBoundingBoxFromTemplate(posForSetting);
 
         PlacementSettings placementSettings = new PlacementSettings()
                 .setRotation(this.rotation)
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.boundingBox);
 
-        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, new CourtyardStairsTemplateProcessor(templatePosition, placementSettings), placementSettings, 2);
+        TEMPLATE.addBlocksToWorld(worldIn, posForSetting, new CourtyardStairsTemplateProcessor(posForSetting, placementSettings), placementSettings, 2);
 
         Template templateBig = templateManager.getTemplate(server, HEDGE_BIG);
-        templateBig.addBlocksToWorld(worldIn, templatePosition, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
+        templateBig.addBlocksToWorld(worldIn, posForSetting, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
 
-        this.setDebugCorners(worldIn);
+        //this.setDebugCorners(worldIn);
 
-        this.setDebugEntity(worldIn, templatePosition, this.getClass().getName() + " : " + this.componentType);
+        //this.setDebugEntity(worldIn, templatePosition, this.getClass().getName() + " : " + this.componentType);
 
-        System.out.println("\n" + this.componentType + " at " + this.templatePosition + ":\n");
+        //System.out.println("\n" + this.componentType + " at " + this.templatePosition + ":\n");
 
-        for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
-            System.out.println(stackTraceElement);
-        }
+        //for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
+        //    System.out.println(stackTraceElement);
+        //}
 
         return true;
     }

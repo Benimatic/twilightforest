@@ -34,6 +34,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     }
 
     // Actually assemble maze
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void buildComponent(StructureComponent structureComponent, List<StructureComponent> list, Random random) {
         super.buildComponent(structureComponent, list, random);
@@ -231,7 +232,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     ComponentNagaCourtyardPath path2 = new ComponentNagaCourtyardPath(getFeatureType(), maze[x][y], xBB + 5, yBB - 1, zBB + 5);
                     list.add(path2);
                     path2.buildComponent(structureComponent, list, random);
-                }
+                }//*/
             }
         }
 

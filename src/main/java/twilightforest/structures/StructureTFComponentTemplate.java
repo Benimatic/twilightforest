@@ -53,6 +53,93 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.templatePosition = new BlockPos(tagCompound.getInteger("TPX"), tagCompound.getInteger("TPY"), tagCompound.getInteger("TPZ"));
     }
 
+    protected final BlockPos getModifiedTemplatePositionFromRotation() {
+        Rotation rotation = this.placeSettings.getRotation();
+        BlockPos size = this.TEMPLATE.transformedSize(rotation);
+        BlockPos toReturn = new BlockPos(this.templatePosition.getX(), this.templatePosition.getY(), this.templatePosition.getZ());
+
+        if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.CLOCKWISE_180)
+            toReturn = toReturn.east(size.getZ()-1);
+
+        if (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.COUNTERCLOCKWISE_90)
+            toReturn = toReturn.south(size.getX()-1);
+
+        return toReturn;
+    }
+
+    protected final void setBoundingBoxFromTemplate(BlockPos pos) {
+        Rotation rotation = this.placeSettings.getRotation();
+        BlockPos size = this.TEMPLATE.transformedSize(rotation);
+        Mirror mirror = this.placeSettings.getMirror();
+        this.boundingBox = new StructureBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
+
+        switch (rotation)
+        {
+            case NONE:
+            default:
+                break;
+            case CLOCKWISE_90:
+                this.boundingBox.offset(-size.getX(), 0, 0);
+                break;
+            case COUNTERCLOCKWISE_90:
+                this.boundingBox.offset(0, 0, -size.getZ());
+                break;
+            case CLOCKWISE_180:
+                this.boundingBox.offset(-size.getX(), 0, -size.getZ());
+        }
+
+        switch (mirror)
+        {
+            case NONE:
+            default:
+                break;
+            case FRONT_BACK:
+                BlockPos blockpos2 = BlockPos.ORIGIN;
+
+                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
+                {
+                    if (rotation == Rotation.CLOCKWISE_180)
+                    {
+                        blockpos2 = blockpos2.offset(EnumFacing.EAST, size.getX());
+                    }
+                    else
+                    {
+                        blockpos2 = blockpos2.offset(EnumFacing.WEST, size.getX());
+                    }
+                }
+                else
+                {
+                    blockpos2 = blockpos2.offset(rotation.rotate(EnumFacing.WEST), size.getZ());
+                }
+
+                this.boundingBox.offset(blockpos2.getX(), 0, blockpos2.getZ());
+                break;
+            case LEFT_RIGHT:
+                BlockPos blockpos1 = BlockPos.ORIGIN;
+
+                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
+                {
+                    if (rotation == Rotation.CLOCKWISE_180)
+                    {
+                        blockpos1 = blockpos1.offset(EnumFacing.SOUTH, size.getZ());
+                    }
+                    else
+                    {
+                        blockpos1 = blockpos1.offset(EnumFacing.NORTH, size.getZ());
+                    }
+                }
+                else
+                {
+                    blockpos1 = blockpos1.offset(rotation.rotate(EnumFacing.NORTH), size.getX());
+                }
+
+                this.boundingBox.offset(blockpos1.getX(), 0, blockpos1.getZ());
+        }
+
+        this.boundingBox.offset(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    @Deprecated
     protected final void setTemplatePositionFromRotation() {
         Rotation rotation = this.placeSettings.getRotation();
         BlockPos size = this.TEMPLATE.transformedSize(rotation);
@@ -64,6 +151,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
             this.templatePosition = this.templatePosition.south(size.getX()-1);
     }
 
+    @Deprecated
     protected final void setBoundingBoxFromTemplate() {
         Rotation rotation = this.placeSettings.getRotation();
         BlockPos size = this.TEMPLATE.transformedSize(rotation);
