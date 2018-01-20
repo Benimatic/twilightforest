@@ -84,7 +84,7 @@ public class ComponentNagaCourtyardTerrace extends StructureTFComponentTemplate 
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.boundingBox);
 
-        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, COURTYARD_TERRACE_PROCESSOR, placementSettings, 2);
+        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, new CourtyardTerraceTemplateProcessor(templatePosition, placementSettings), placementSettings, 2);
 
         return true;
     }

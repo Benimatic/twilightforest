@@ -23,17 +23,6 @@ import java.util.Random;
 public class ComponentNagaCourtyardPath extends StructureTFComponentTemplate {
     private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
 
-    private static final ITemplateProcessor COURTYARD_PATH_PROCESSOR = ((worldIn, pos, blockInfo) -> {
-        if (blockInfo.blockState.getBlock() == Blocks.GRASS) {
-            IBlockState state = worldIn.getBlockState(pos);
-            Block block = state.getBlock();
-            if (block == Blocks.STONEBRICK || block == Blocks.COBBLESTONE)
-                return new Template.BlockInfo(pos, state, null);
-        }
-
-        return blockInfo;
-    });
-
     @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardPath() {
         super();
@@ -56,7 +45,7 @@ public class ComponentNagaCourtyardPath extends StructureTFComponentTemplate {
         PlacementSettings placementSettings = new PlacementSettings()
                 .setBoundingBox(this.boundingBox);
 
-        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, COURTYARD_PATH_PROCESSOR, placementSettings, 2);
+        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, new CourtyardWallTemplateProcessor(templatePosition, placementSettings), placementSettings, 2);
 
         return true;
     }

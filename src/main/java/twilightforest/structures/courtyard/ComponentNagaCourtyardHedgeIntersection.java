@@ -17,7 +17,6 @@ import twilightforest.structures.StructureTFComponentTemplate;
 
 import java.util.Random;
 
-@Deprecated
 public class ComponentNagaCourtyardHedgeIntersection extends StructureTFComponentTemplate {
     private static final ResourceLocation HEDGE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_intersection_big");
     private static final ResourceLocation HEDGE_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner_big");
@@ -34,8 +33,6 @@ public class ComponentNagaCourtyardHedgeIntersection extends StructureTFComponen
 
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox structureBoundingBoxIn) {
-        //BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
-
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
 
