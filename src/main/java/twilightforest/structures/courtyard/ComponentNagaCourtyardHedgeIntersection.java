@@ -34,26 +34,26 @@ public class ComponentNagaCourtyardHedgeIntersection extends StructureTFComponen
 
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox structureBoundingBoxIn) {
-        BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
+        //BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
 
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
 
         TEMPLATE = templateManager.getTemplate(server, HEDGE);
 
-        this.setTemplatePositionFromRotation();
-        this.setBoundingBoxFromTemplate();
+        BlockPos posForSetting = this.getModifiedTemplatePositionFromRotation();
+        this.setBoundingBoxFromTemplate(posForSetting);
 
         PlacementSettings placementSettings = new PlacementSettings()
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.boundingBox);
 
-        TEMPLATE.addBlocksToWorld(worldIn, pos, new CourtyardStairsTemplateProcessor(pos, placementSettings), placementSettings, 2);
+        TEMPLATE.addBlocksToWorld(worldIn, posForSetting, new CourtyardStairsTemplateProcessor(posForSetting, placementSettings), placementSettings, 2);
 
         Template templateBig = templateManager.getTemplate(server, HEDGE_BIG);
-        templateBig.addBlocksToWorld(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
+        templateBig.addBlocksToWorld(worldIn, posForSetting, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
 
-        this.setDebugCorners(worldIn);
+        //this.setDebugCorners(worldIn);
 
         return true;
     }

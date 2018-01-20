@@ -51,9 +51,9 @@ public class ComponentNagaCourtyardWallCornerAlt extends StructureTFComponentTem
         Template temDecay = templateManager.getTemplate(server, WALL_DECAYED);
         temDecay.addBlocksToWorld(worldIn, templatePosition, new MossyCobbleTemplateProcessor(templatePosition, placementSettings), placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY), 2);
 
-        this.setDebugCorners(worldIn);
+        //this.setDebugCorners(worldIn);
 
-        this.setDebugEntity(worldIn, templatePosition, this.getClass().getName() + " : " + this.rotation);
+        //this.setDebugEntity(worldIn, templatePosition, this.getClass().getName() + " : " + this.rotation);
 
         return true;
     }

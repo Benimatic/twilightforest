@@ -38,17 +38,18 @@ public class ComponentNagaCourtyardHedgePadder extends StructureTFComponentTempl
 
         TEMPLATE = templateManager.getTemplate(server, HEDGE);
 
-        this.setBoundingBoxFromTemplate();
+        BlockPos pos = this.getModifiedTemplatePositionFromRotation();
+        this.setBoundingBoxFromTemplate(pos);
 
         PlacementSettings placementSettings = new PlacementSettings()
                 .setRotation(this.rotation)
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
                 .setBoundingBox(this.boundingBox);
 
-        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, new CourtyardStairsTemplateProcessor(templatePosition, placementSettings), placementSettings, 2);
+        TEMPLATE.addBlocksToWorld(worldIn, pos, new CourtyardStairsTemplateProcessor(pos, placementSettings), placementSettings, 2);
 
         Template templateBig = templateManager.getTemplate(server, HEDGE_BIG);
-        templateBig.addBlocksToWorld(worldIn, templatePosition, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
+        templateBig.addBlocksToWorld(worldIn, pos, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
 
         return true;
     }
