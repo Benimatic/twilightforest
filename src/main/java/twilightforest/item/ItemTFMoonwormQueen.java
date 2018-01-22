@@ -38,7 +38,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
-				if (entityIn != null && entityIn.getActiveItemStack().getItem() == TFItems.moonwormQueen) {
+				if (entityIn != null && entityIn.getActiveItemStack() == stack) {
 					int useTime = stack.getMaxItemUseDuration() - entityIn.getItemInUseCount();
 					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0) {
 						return 1;
