@@ -35,41 +35,8 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		//TwilightForestMod.LOGGER.info("" + widthInCellCount + " " + heightInCellCount);
-
-		/*int width = widthInCellCount-1;
-		int height = heightInCellCount-1;
-
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				int value = maze[width-x-1][height-y-1] & 0b1111;
-
-				for (WallFacing facing : WallFacing.values()) {
-					if (facing.has(value)) {
-						for (int i = 1; i < 6; i++) {
-							setBlockState(world,
-									Blocks.WOOL.getStateFromMeta(value),
-									(x * 12)+17 + (facing.getEnumFacing().getFrontOffsetX() * -i),
-									6,
-									(y * 12)+17 + (facing.getEnumFacing().getFrontOffsetZ() * -i),
-									sbb);
-						}
-					}
-				}
-
-				setBlockState(world,
-						Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(value),
-						(x * 12)+17,
-						6,
-						(y * 12)+17,
-						sbb);
-			}
-		}//*/
-
-		//this.setDebugCorners(world);
-
 		// naga spawner seems important
-		setBlockState(world, TFBlocks.bossSpawner.getDefaultState(), RADIUS + 1, 2, RADIUS + 1, sbb);
+		setBlockState(world, TFBlocks.bossSpawner.getDefaultState(), RADIUS, 2, RADIUS, sbb);
 
 		return true;
 	}

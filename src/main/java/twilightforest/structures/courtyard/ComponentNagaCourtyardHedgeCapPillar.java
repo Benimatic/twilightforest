@@ -16,17 +16,17 @@ import twilightforest.structures.StructureTFComponentTemplate;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardHedgeCap extends StructureTFComponentTemplate {
-    private static final ResourceLocation HEDGE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end");
-    private static final ResourceLocation HEDGE_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_big");
+public class ComponentNagaCourtyardHedgeCapPillar extends StructureTFComponentTemplate {
+    private static final ResourceLocation HEDGE = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar");
+    private static final ResourceLocation HEDGE_BIG = new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar_big");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardHedgeCap() {
+    public ComponentNagaCourtyardHedgeCapPillar() {
         super();
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardHedgeCap(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public ComponentNagaCourtyardHedgeCapPillar(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(feature, i, x, y, z, rotation);
     }
 

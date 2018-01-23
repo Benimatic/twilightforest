@@ -65,7 +65,11 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                     case 0b0100:    // FACE WEST
                         final Rotation rotationCap = rotations[rotation];
 
-                        structure = new ComponentNagaCourtyardHedgeCap(getFeatureType(), (x * widthInCellCount) + y, xBB, yBB, zBB, rotationCap);
+                        if (random.nextBoolean())
+                            structure = new ComponentNagaCourtyardHedgeCap(getFeatureType(), (x * widthInCellCount) + y, xBB, yBB, zBB, rotationCap);
+                        else
+                            structure = new ComponentNagaCourtyardHedgeCapPillar(getFeatureType(), (x * widthInCellCount) + y, xBB, yBB, zBB, rotationCap);
+
                         break;
                     case 0b1001:    // NORTH EAST
                         rotation++;
@@ -100,7 +104,12 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                         structure = new ComponentNagaCourtyardHedgeIntersection(getFeatureType(), maze[x][y], xBB, yBB, zBB);
                         break;
                     default:
-                        structure = new ComponentNagaCourtyardTerrace(getFeatureType(), maze[x][y], xBB-6, yBB-3, zBB-6, Rotation.NONE);
+                        if (random.nextBoolean())
+                            structure = new ComponentNagaCourtyardTerraceBrazier(getFeatureType(), maze[x][y], xBB-6, yBB-3, zBB-6, Rotation.NONE);
+                        else {
+                            structure = new ComponentNagaCourtyardTerraceDuct(getFeatureType(), maze[x][y], xBB - 6, yBB - 3, zBB - 6, rotations[random.nextInt(rotations.length)]);
+                        }
+
                         break;
                 }
 
