@@ -34,10 +34,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
 	private static final StructureTFStrongholdStones strongholdStones = new StructureTFStrongholdStones();
 
-	public StructureTFDecorator deco = null;
-	public int spawnListIndex = 0;
-	private TFFeature feature = TFFeature.nothing;
-
 	public StructureTFComponentOld() {
 	}
 
