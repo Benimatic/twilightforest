@@ -9,7 +9,7 @@ advancement.twilight_magic_map_focus.desc=用乌鸦毛、萤石粉、火炬浆�
 
 advancement.twilight_hunter=森林之静
 advancement.twilight_hunter.desc=猎杀一些暮色的野生动物。
-advancement.twilight_kill_naga=娜迦猎人
+advancement.twilight_kill_naga=是时候整理鳞片了
 advancement.twilight_kill_naga.desc=猎杀森林角落里的娜迦，取得可以帮你突破巫妖塔魔法壁垒的娜迦鳞片。
 advancement.twilight_kill_lich=巫妖猎人
 advancement.twilight_kill_lich.desc=击败塔顶的巫妖，取得可以驱散沼泽毒蚊群的巫妖权杖。
@@ -40,7 +40,10 @@ advancement.twilight_dining=永恒黄昏之宴
 advancement.twilight_dining.desc=品尝所有只能在暮色森林找到的食物。
 
 advancement.twilight_ghast_trap=高塔里的奇怪装置
-advancement.twilight_ghast_trap.desc=又让暮色恶魂跑了！怎么办？找暮色恶魂终结者！
+advancement.twilight_ghast_trap.desc=以高塔幽灵为祭品，激活恶魂陷阱，把暮色恶魂拉下来！
+
+advancement.twilight_arctic_dyed=追赶潮流
+advancement.twilight_arctic_dyed.desc=给全套极地套装染色。
 
 advancement.twilight_naga_armors=娜迦装备锻造师
 advancement.twilight_naga_armors.desc=合成娜迦鳞胸甲和护腿。
@@ -77,7 +80,7 @@ advancement.twilight_progress_troll=让烈焰燃烧得更猛烈些吧！
 advancement.twilight_progress_troll.desc=在巨魔洞穴中找到余烬之灯，用它来焚烧掉荆棘之墙。
 advancement.twilight_progress_thorns=穿越荆棘
 advancement.twilight_progress_thorns.desc=穿越荆棘之地，打开通往城堡的大门。
-advancement.twilight_progress_castle=这就是… 城堡吗…
+advancement.twilight_progress_castle=这就是，城堡吗……
 advancement.twilight_progress_castle.desc=这城堡里究竟有什么？！
 
 twilightforest.trophyPedestal.ineligible=你还不够格。
@@ -202,7 +205,7 @@ tile.TFAuroraBrick.name=极光方块
 tile.TFUnderBrick.0.name=地下砖
 tile.TFUnderBrick.1.name=青苔地下砖
 tile.TFUnderBrick.2.name=碎裂地下砖
-tile.TFUnderBrick.2.name=抛光地下砖
+tile.TFUnderBrick.3.name=抛光地下砖
 tile.TFThorns.brown.name=荆棘
 tile.TFThorns.green.name=翠绿荆棘
 tile.TFBurntThorns.name=烧焦荆棘
@@ -227,7 +230,7 @@ tile.HugeStalk.name=巨大的茎
 tile.HugeGloomBlock.name=巨型荧光蘑菇
 tile.TrollVidr.name=巨魔藤蔓
 tile.UnripeTrollBer.name=没熟的巨魔莓
-tile.TrollBer.name=巨魔莓
+#tile.TrollBer.name=巨魔莓
 tile.TrollBer.name=巨魔莓
 tile.KnightmetalBlock.name=骑士金属块
 tile.HugeLilyPad.name=巨型睡莲
@@ -266,9 +269,23 @@ tile.BlockOfStorage.1.name=炽热金属块
 tile.BlockOfStorage.2.name=钢叶块
 tile.BlockOfStorage.3.name=极地毛皮块
 tile.BlockOfStorage.4.name=砷铅铁块
-tile.CinderFurnaceIdle.name=余烬熔炉【未实装】
-tile.CinderLog.0.name=余烬原木【未实装】
-tile.MiniatureStructure=微缩模型：%s【未实装】
+tile.CinderFurnaceIdle.name=余烬熔炉【未实现】
+tile.CinderLog.0.name=余烬原木【未实现】
+tile.MiniatureStructure=微缩模型：%s【未实现】
+tile.SpiralBricks.name=螺旋石砖【开发中】
+tile.BlockOfLapisTF.name=青金石块【未实现】
+tile.EtchedNagastone.name=蚀刻娜迦石
+tile.NagastonePillar.name=娜迦石柱
+tile.NagastoneStairs.0.name=娜迦石楼梯（左）
+tile.NagastoneStairs.8.name=娜迦石楼梯（右）
+tile.EtchedNagastoneMossy.name=蚀刻娜迦苔石
+tile.NagastonePillarMossy.name=娜迦苔石柱
+tile.NagastoneStairsMossy.0.name=娜迦苔石楼梯（左）
+tile.NagastoneStairsMossy.8.name=娜迦苔石楼梯（右）
+tile.EtchedNagastoneWeathered.name=风化的蚀刻娜迦石
+tile.NagastonePillarWeathered.name=风化的娜迦石柱
+tile.NagastoneStairsWeathered.0.name=风化的娜迦石楼梯（左）
+tile.NagastoneStairsWeathered.8.name=风化的娜迦石楼梯（右）
 
 structure.twilight_portal.name=暮色森林传送门
 structure.hedge_maze.name=树篱迷宫
@@ -292,7 +309,7 @@ item.legsNaga.name=娜迦护腿
 item.scepterTwilight.name=黄昏权杖
 item.scepterLifeDrain.name=吸血权杖
 item.scepterZombie.name=僵尸权杖
-item.oreMeter.name=矿石感应仪【未实装】
+item.oreMeter.name=矿石感应仪【未实现】
 item.magicMap.name=魔法地图
 item.mazeMap.name=迷宫地图
 item.oreMap.name=迷宫 / 矿石地图
@@ -417,6 +434,8 @@ item.yetiPlate.tooltip=冰冻攻击者
 item.yetiLegs.tooltip=冰冻攻击者
 item.yetiBoots.tooltip=冰冻攻击者
 
+item.arctic_armor.tooltip=能像皮革盔甲一样染色
+
 entity.twilightforest.wild_boar.name=野猪
 entity.twilightforest.bighorn_sheep.name=大角山羊
 entity.twilightforest.deer.name=野鹿
@@ -438,7 +457,7 @@ entity.twilightforest.bunny.name=兔子
 entity.twilightforest.raven.name=乌鸦
 entity.twilightforest.quest_ram.name=谜题羊
 entity.twilightforest.kobold.name=哥布林
-entity.twilightforest.boggard.name=博加德【未实装】
+entity.twilightforest.boggard.name=博加德【未实现】
 entity.twilightforest.lich_minion.name=巫妖的仆从
 entity.twilightforest.loyal_zombie.name=忠诚的僵尸
 entity.twilightforest.mosquito_swarm.name=蚊群
@@ -475,8 +494,76 @@ entity.twilightforest.troll.name=洞穴巨魔
 entity.twilightforest.giant_miner.name=巨人矿工
 entity.twilightforest.armored_giant.name=武装巨人
 entity.twilightforest.ice_crystal.name=冰晶
-entity.twilightforest.apocalypse_cube.name=天启立方【未实装】
-entity.twilightforest.adherent.name=信徒【未实装】
+entity.twilightforest.apocalypse_cube.name=天启立方【未实现】
+entity.twilightforest.adherent.name=信徒【未实现】
+
+twilightforest.misc.wip0=这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。
+twilightforest.misc.wip1=测试时时刻保持注意。
+twilightforest.misc.nyi=这个方块的部分特性尚未完成。
+
+twilightforest.loading.title.enter=正在前往暮色森林……
+twilightforest.loading.title.leave=正在离开暮色森林……
+
+#Config
+twilightforest.config.dimension=维度设定
+twilightforest.config.dimension.tooltip=这些设定只有在重启后才会生效。
+twilightforest.config.dimension_id=维度 ID
+twilightforest.config.dimension_id.tooltip=暮色森林的维度 ID。如果遇到暮色森林和其他 Mod 因此冲突，可在此修改。
+twilightforest.config.dimension_seed=生成种子
+twilightforest.config.dimension_seed.tooltip=设定后会使用给定种子来生成暮色森林维度；默认情况下使用和主世界的地图种子。
+
+twilightforest.config.tree_tweaks=性能
+twilightforest.config.tree_tweaks.tooltip=这些选项可用于牺牲各种特性以换取更好的性能。
+twilightforest.config.canopy_coverage=树冠覆盖范围
+twilightforest.config.canopy_coverage.tooltip=树冠覆盖的区域的大小。该项数值越小，森林会越稀薄，但区块生成速度会因此加快。
+twilightforest.config.twilight_oaks=暮色橡树生成概率
+twilightforest.config.twilight_oaks.tooltip=暮色森林维度的每一个区块中生成暮色橡树的概率。该项数值越大，生成概率就越小，性能也会因此提升。
+twilightforest.config.leaves_light_opacity=暮色树叶不透明度
+twilightforest.config.leaves_light_opacity.tooltip=若树叶不是全方块，此选项可控制树叶阻挡光线的程度。
+twilightforest.config.leaves_full_cube=暮色树叶是否为全方块
+twilightforest.config.leaves_full_cube.tooltip=将此项设定为 false 后，暮色森林的树叶将不再是“全方块”（full cubes）。这意味着这些树叶会像玻璃一样令光穿过。在某些时候可降低光照计算的复杂度。
+twilightforest.config.glacer_packed_ice=冰川由浮冰组成
+twilightforest.config.glacer_packed_ice.tooltip=启用后，暮色冰川将全部由浮冰组成，其不透光的性质可帮助降低冰川附近的光照计算量。
+
+twilightforest.config.silent_cicadas=禁止蝉鸣
+twilightforest.config.silent_cicadas.tooltip=若声音库出现问题，或者只是觉得蝉很吵，可考虑启用此项。
+
+twilightforest.config.portals_in_other_dimensions=非主世界建造暮色传送门
+twilightforest.config.portals_in_other_dimensions.tooltip=允许在主世界之外的维度建造暮色森林传送门，某些情况下可视作作弊。
+twilightforest.config.admin_portals=仅管理员可使用暮色传送门
+twilightforest.config.admin_portals.tooltip=传送门将只向管理员开放。开启后可大幅降低本 Mod 搜索有效传送门位置的范围。
+twilightforest.config.portals=禁用暮色传送门
+twilightforest.config.portals.tooltip=完全禁用暮色森林传送门；本选项适用于需要严格限制的服务器管理员。
+twilightforest.config.portal_creator=传送门建造工具
+twilightforest.config.portal_creator.tooltip=建造暮色传送门时使用的物品的注册 ID。
+twilightforest.config.portal_creator_meta=传送门建造工具附加值
+twilightforest.config.portal_creator_meta.tooltip=建造暮色传送门时使用的物品的附加值，设定成 -1 代表允许任何附加值。
+
+twilightforest.config.uncrafting=禁用拆解台的拆解功能
+twilightforest.config.uncrafting.tooltip=禁用拆解台的拆解功能，可用于防止利用某些合成刷物品。
+
+twilightforest.config.antibuilder_blacklist=反建器黑名单
+twilightforest.config.antibuilder_blacklist.tooltip=反建器黑名单。格式：domain:block:meta；其中 meta 为可选项。
+
+twilightforest.config.animate_trophyitem=战利品头颅旋转
+twilightforest.config.animate_trophyitem.tooltip=启用后，战利品中的头颅会旋转。对性能没有影响。为不苟言笑的人准备的选项。
+
+twilightforest.config.loading_screen=加载界面
+twilightforest.config.loading_screen.tooltip=客户端专有选项，用于控制进入暮色森林时的加载界面。
+twilightforest.config.loading_icon_enable=启用加载图标动画
+twilightforest.config.loading_icon_enable.tooltip=让加载图标动起来。对性能没有影响。为不苟言笑的人准备的选项。
+twilightforest.config.loading_screen_swap_frequency=加载界面切换
+twilightforest.config.loading_screen_swap_frequency.tooltip=界面切换之间的时间间隔，设定为 0 将使其不会切换。
+twilightforest.config.loading_icon_wobble_bounce_frequency=图标动画速度
+twilightforest.config.loading_icon_wobble_bounce_frequency.tooltip=弹跳和晃动的频率。
+twilightforest.config.loading_icon_scale=图标缩放
+twilightforest.config.loading_icon_scale.tooltip=整个弹跳的图标的尺寸。
+twilightforest.config.loading_icon_bounciness=图标弹跳幅度
+twilightforest.config.loading_icon_bounciness.tooltip=地图加载过程中，图标弹跳的幅度。
+twilightforest.config.loading_icon_tilting=图标晃动幅度
+twilightforest.config.loading_icon_tilting.tooltip=地图加载过程中，图标晃动的幅度。
+twilightforest.config.loading_icon_tilt_pushback=图标倾斜度偏移
+twilightforest.config.loading_icon_tilt_pushback.tooltip=重新令图标居中所使用的后移量。
 
 twilightforest.book.lichtower.1=§8[[被野兽啃坏的探险家笔记]]§0\n\n我开始了对这塔周围奇怪气场的测试。塔身的每一块砖都受一种强力魔咒的保护，这么强大的力量我还是头一次见到。这魔咒甚至还能覆盖塔周围的区域。
 twilightforest.book.lichtower.2=换做是在我的故乡，我有很多对付此类魔法的方法，但是我在这里没多少补给。让我来深入研究一下……
@@ -511,7 +598,3 @@ twilightforest.book.trollcave.2=这符咒一定和剧毒风暴有什么关系。
 twilightforest.book.trollcave.3=这名法师应该藏身于某个遥远的环境恶劣的地方。\n\n按照我的分析，我应该能在冰川的某个地方找到这样的一个人，也许是在某种要塞里……
 twilightforest.book.unknown.1=§8[[一本看上去被传抄了无数遍的书]]§0\n\n我的学识实在不足以解释这建筑周围的力场是怎么回事，我只能说这是一种强力魔法。如果这魔咒和之前的魔咒的原理一样，那么我应该在别的地方寻找答案。
 twilightforest.book.unknown.2=也许我还有什么事情没有做，抑或我还没击败什么怪物。我想是时候掉头回去了。当然，我会回来看看看有没有新进展的。
-
-twilightforest.misc.wip0=这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。
-twilightforest.misc.wip1=测试时时刻保持注意。
-twilightforest.misc.nyi=这个方块的部分特性尚未完成。
