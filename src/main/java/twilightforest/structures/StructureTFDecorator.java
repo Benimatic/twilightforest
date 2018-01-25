@@ -16,12 +16,12 @@ import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;
 public class StructureTFDecorator {
 	public IBlockState blockState = Blocks.STONE.getDefaultState();
 	public IBlockState accentState = Blocks.COBBLESTONE.getDefaultState();
-	public IBlockState stairState = null;
-	public IBlockState fenceState = null;
-	public IBlockState pillarState = null;
-	public IBlockState platformState = null;
-	public IBlockState floorState = null;
-	public IBlockState roofState = null;
+	public IBlockState stairState = Blocks.STONE_STAIRS.getDefaultState();
+	public IBlockState fenceState = Blocks.OAK_FENCE.getDefaultState();
+	public IBlockState pillarState = Blocks.STONEBRICK.getDefaultState();
+	public IBlockState platformState = Blocks.STONE_SLAB.getDefaultState();
+	public IBlockState floorState = Blocks.STONEBRICK.getDefaultState();
+	public IBlockState roofState = Blocks.STONEBRICK.getDefaultState();
 
 	public StructureComponent.BlockSelector randomBlocks = new StructureTFStrongholdStones();
 
