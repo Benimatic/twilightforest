@@ -35,7 +35,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 import java.util.List;
 import java.util.Random;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
 	@SubscribeEvent
 	public static void playerTick(PlayerTickEvent event) {

@@ -19,7 +19,7 @@ import static net.minecraft.inventory.EntityEquipmentSlot.*;
 import static net.minecraft.item.Item.ToolMaterial.DIAMOND;
 import static twilightforest.item.TFItems.*;
 
-@Mod.EventBusSubscriber()
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFRegisterItemEvent {
 
 	@SubscribeEvent

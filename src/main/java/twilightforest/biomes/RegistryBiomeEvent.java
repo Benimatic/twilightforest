@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class RegistryBiomeEvent {
 	@SuppressWarnings("OverlyCoupledMethod")
 	@SubscribeEvent

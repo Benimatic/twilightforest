@@ -7,10 +7,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
-@SideOnly(Side.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class TFRegisterItemRenderingEvent {
 	@SubscribeEvent
 	public static void onModelRegistryReady(ModelRegistryEvent event) {
@@ -25,7 +25,5 @@ public class TFRegisterItemRenderingEvent {
 				((ModelRegisterCallback) i).registerModel();
 			}
 		}
-
-		// Straggler
 	}
 }

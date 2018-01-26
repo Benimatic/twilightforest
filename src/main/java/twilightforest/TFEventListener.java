@@ -68,7 +68,7 @@ import java.util.UUID;
 /**
  * So much of the mod logic in this one class
  */
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFEventListener {
 
 	private static Map<UUID, InventoryPlayer> playerKeepsMap = new HashMap<>();

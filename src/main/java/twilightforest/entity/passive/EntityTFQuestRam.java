@@ -18,7 +18,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -144,11 +143,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		checkAndAnimateColors();
-	}
 
-	private void checkAndAnimateColors() {
-		if (countColorsSet() > 15 && !getRewarded()) {
+		if (world.isRemote && countColorsSet() > 15 && !getRewarded()) {
 			animateAddColor(EnumDyeColor.byMetadata(this.rand.nextInt(16)), 5);
 		}
 	}
@@ -206,15 +202,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	public int countColorsSet() {
-		int count = 0;
-
-		for (EnumDyeColor color : EnumDyeColor.values()) {
-			if (isColorPresent(color)) {
-				count++;
-			}
-		}
-
-		return count;
+		return Integer.bitCount(getColorFlags());
 	}
 
 	@Override

@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemTFTrophy extends ItemTF {

@@ -31,7 +31,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 import java.util.Random;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class TFClientEvents {
 
 	private static final Random random = new Random();
