@@ -171,6 +171,7 @@ public class TFConfig {
 				"twilightforest:borer_essence"
 		};
 
+		@Config.Ignore
 		private List<ItemStack> loadingScreenIcons;
 
 		public List<ItemStack> getLoadingScreenIcons() {
@@ -233,6 +234,7 @@ public class TFConfig {
 		antibuilderStateBlacklist = blacklist;
 	}
 
+	@Config.Ignore
 	private static List<IBlockState> antibuilderStateBlacklist;
 
 	public static List<IBlockState> getAntiBuilderBlacklist() {

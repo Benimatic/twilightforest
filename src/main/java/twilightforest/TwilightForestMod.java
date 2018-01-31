@@ -34,11 +34,10 @@ import twilightforest.world.WorldProviderTwilightForest;
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12-0.2.3.9,);required-after:forge@[14.23.0.2599,)",
+		dependencies = "after:ctm@[MC1.12-0.2.3.12,);required-after:forge@[14.23.0.2607,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {
-
 	public static final String ID = "twilightforest";
 	public static final String VERSION = "@VERSION@";
 

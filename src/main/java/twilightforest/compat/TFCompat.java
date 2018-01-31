@@ -16,7 +16,7 @@ import twilightforest.enums.*;
         @Optional.Interface(iface = "team.chisel.api.IMC", modid = "chisel")
 })
 public enum TFCompat {
-    CHISEL {
+    CHISEL("Chisel") {
         @Override
         public void init() {
             addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.spiral_bricks));
@@ -56,10 +56,13 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     }, // TODO Forestry
-    JEI {
+    JEI("Just Enough Items") {
 
-    }, // TODO TCon
-    THAUMCRAFT {
+    },
+    TCONSTRUCT("Tinkers' Construct") {
+
+    },
+    THAUMCRAFT("Thaumcraft") {
         // Use the thaumcraft API to register our things with aspects and biomes with values
         // TODO: Reenable once Thaumcraft API is available. Soooon™
         @Override
@@ -214,21 +217,27 @@ public enum TFCompat {
     protected void postInit() {}
     private boolean isActivated = false;
 
+    private final String modName;
+
+    TFCompat(String modName) {
+        this.modName = modName;
+    }
+
     public static void initCompat() {
         for (TFCompat compat : TFCompat.values()) {
             if (Loader.isModLoaded(compat.name().toLowerCase())) {
                 try {
                     compat.init();
                     compat.isActivated = true;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.name().toLowerCase() + "");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + "");
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.name().toLowerCase() + " compatibility!");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             } else {
                 compat.isActivated = false;
-                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.name().toLowerCase() + "");
+                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.modName + "");
             }
         }
     }
@@ -239,7 +248,7 @@ public enum TFCompat {
                 try {
                     compat.postInit();
                 } catch (Exception e) {
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.name().toLowerCase() + " compatibility in postInit!");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in postInit!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }
