@@ -37,9 +37,10 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
 	protected static boolean shouldDebug() {
-		return true;
+		return false;
 	}
 
+	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugCorners(World world) {
 		if (rotation == null) rotation = Rotation.NONE;
 
@@ -52,7 +53,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 		}
 	}
 
-	@SuppressWarnings("SameParameterValue")
+	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugEntity(World world, int x, int y, int z, String s) {
 		if (shouldDebug()) {
 			final BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
@@ -70,7 +71,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 		}
 	}
 
-	@SuppressWarnings("SameParameterValue")
+	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugEntity(World world, BlockPos blockpos, String s) {
 		if (shouldDebug()) {
 			//final BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
