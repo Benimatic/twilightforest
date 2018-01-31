@@ -6,7 +6,12 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.materials.*;
+import slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats;
+import slimeknights.tconstruct.library.materials.BowMaterialStats;
+import slimeknights.tconstruct.library.materials.ExtraMaterialStats;
+import slimeknights.tconstruct.library.materials.HandleMaterialStats;
+import slimeknights.tconstruct.library.materials.HeadMaterialStats;
+import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
@@ -17,7 +22,15 @@ import twilightforest.item.TFItems;
 
 @Optional.InterfaceList({
         @Optional.Interface(iface = "team.chisel.api.ChiselAPIProps", modid = "chisel"),
-        @Optional.Interface(iface = "team.chisel.api.IMC", modid = "chisel")
+        @Optional.Interface(iface = "team.chisel.api.IMC", modid = "chisel"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.TinkerRegistry", modid = "tconstruct"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats", modid = "tconstruct"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.BowMaterialStats", modid = "tconstruct"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.ExtraMaterialStats", modid = "tconstruct"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.HandleMaterialStats", modid = "tconstruct"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.HeadMaterialStats", modid = "tconstruct"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.Material", modid = "tconstruct"),
+        @Optional.Interface(iface = "slimeknights.tconstruct.library.utils.HarvestLevels", modid = "tconstruct")
 })
 public enum TFCompat {
     CHISEL("Chisel") {
