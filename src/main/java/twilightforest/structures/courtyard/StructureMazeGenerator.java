@@ -139,23 +139,6 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             maze[halfWayPointX + facing.xOffset][halfWayPointY + facing.zOffset] &= facing.INVERTED_OPPOSITE;
 
         maze[halfWayPointX][halfWayPointY] = 0b10000;
-
-        StringBuilder chartX = new StringBuilder();
-
-        for (int i = 0; i < heightInCellCount-1; i++) {
-            StringBuilder chartY = new StringBuilder("\n");
-
-            for (int j = 0; j < widthInCellCount-1; j++) {
-                int value = maze[j][i];
-
-                if ((value & 0b10000) != 0b10000) chartY.append(getStringFromFacings(value & 0b1111));
-                else chartY.append("   ");
-            }
-
-            chartX.append(chartY);
-        }
-
-        System.out.println(chartX);
     }
 
     @SuppressWarnings("ConstantConditions")
