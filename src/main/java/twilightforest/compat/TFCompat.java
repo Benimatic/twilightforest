@@ -57,16 +57,13 @@ public enum TFCompat {
         }
     }, // TODO Forestry
     JEI {
-        @Override
-        protected void init() {
 
-        }
-    },
+    }, // TODO TCon
     THAUMCRAFT {
         // Use the thaumcraft API to register our things with aspects and biomes with values
-        // TODO: Reenable once Thaumcraft API is available
+        // TODO: Reenable once Thaumcraft API is available. Soooon™
         @Override
-        protected void init() {
+        protected void postInit() {
             /*try {
 
                 // items
@@ -213,20 +210,38 @@ public enum TFCompat {
         }//*/
     };
 
-    protected abstract void init();
+    protected void init() {}
+    protected void postInit() {}
+    private boolean isActivated = false;
 
     public static void initCompat() {
         for (TFCompat compat : TFCompat.values()) {
             if (Loader.isModLoaded(compat.name().toLowerCase())) {
                 try {
                     compat.init();
+                    compat.isActivated = true;
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.name().toLowerCase() + "");
                 } catch (Exception e) {
+                    compat.isActivated = false;
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.name().toLowerCase() + " compatibility!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             } else {
+                compat.isActivated = false;
                 TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.name().toLowerCase() + "");
+            }
+        }
+    }
+
+    public static void postInitCompat() {
+        for (TFCompat compat : TFCompat.values()) {
+            if (compat.isActivated) {
+                try {
+                    compat.postInit();
+                } catch (Exception e) {
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.name().toLowerCase() + " compatibility in postInit!");
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
             }
         }
     }

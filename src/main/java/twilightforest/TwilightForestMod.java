@@ -92,7 +92,7 @@ public class TwilightForestMod {
 		try {
 			TFCompat.initCompat();
 		} catch (Exception e) {
-			TwilightForestMod.LOGGER.info(ID + " had an error loading compatibility!");
+			TwilightForestMod.LOGGER.info(ID + " had an error loading init compatibility!");
 			TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 		}
 	}
@@ -107,11 +107,11 @@ public class TwilightForestMod {
 			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
 		}
 
-		if (Loader.isModLoaded("Thaumcraft")) {
-			//FIXME: Reenable this once Thaumcraft is available.
-			//registerThaumcraftIntegration();
-		} else {
-			TwilightForestMod.LOGGER.info("Did not find Thaumcraft, did not load ThaumcraftApi integration.");
+		try {
+			TFCompat.postInitCompat();
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.info(ID + " had an error loading postInit compatibility!");
+			TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 		}
 	}
 
