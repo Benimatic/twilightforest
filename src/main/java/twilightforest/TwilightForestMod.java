@@ -78,6 +78,13 @@ public class TwilightForestMod {
 
 		// just call this so that we register structure IDs correctly
 		new StructureTFMajorFeatureStart();
+
+		try {
+			TFCompat.preInitCompat();
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.info(ID + " had an error loading preInit compatibility!");
+			TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+		}
 	}
 
 	@EventHandler

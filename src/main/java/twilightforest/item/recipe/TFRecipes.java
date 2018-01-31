@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.enums.CompressedVariant;
 import twilightforest.item.TFItems;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -22,14 +23,18 @@ public class TFRecipes {
 		OreDictionary.registerOre("treeSapling", new ItemStack(TFBlocks.sapling, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.leaves, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.magicLeaves, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.leaves3, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.darkleaves, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre("plankWood", new ItemStack(TFBlocks.towerWood, 1, OreDictionary.WILDCARD_VALUE));
 
 		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fieryIngot));
+		OreDictionary.registerOre("blockFiery", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.FIERY.ordinal()));
 		OreDictionary.registerOre("oreIronwood", new ItemStack(TFItems.ironwoodRaw));
 		OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwoodIngot));
 		OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleafIngot));
 		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.shardCluster));
 		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightMetal));
+		OreDictionary.registerOre("blockKnightmetal", new ItemStack(TFBlocks.knightmetalStorage));
 
 		OreDictionary.registerOre("carminite", new ItemStack(TFItems.carminite));
 		OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arcticFur));

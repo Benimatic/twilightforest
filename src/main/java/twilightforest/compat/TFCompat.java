@@ -5,11 +5,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.library.materials.*;
+import slimeknights.tconstruct.library.utils.HarvestLevels;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.*;
+import twilightforest.item.TFItems;
 
 @Optional.InterfaceList({
         @Optional.Interface(iface = "team.chisel.api.ChiselAPIProps", modid = "chisel"),
@@ -59,8 +63,57 @@ public enum TFCompat {
     JEI("Just Enough Items") {
 
     },
+    @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
+        public final Material nagascale   = new Material("nagascale"  , 0x32_5D_25);
+        public final Material fierymetal  = new Material("fierymetal" , 0xFD_D4_5D);
+        public final Material knightmetal = new Material("knightmetal", 0xC4_E6_AE);
 
+        @Override
+        protected void preInit() {
+            TinkerRegistry.addMaterialStats(nagascale,
+                    new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
+                    new HandleMaterialStats(1.5f, 256),
+                    new ExtraMaterialStats(256),
+                    new BowMaterialStats(1f, 1.125f, 2),
+                    new ArrowShaftMaterialStats(1.2f, 2));
+            TinkerRegistry.integrate(nagascale).preInit();
+
+            TinkerRegistry.addMaterialStats(fierymetal,
+                    new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
+                    new HandleMaterialStats(1.5f, 256),
+                    new ExtraMaterialStats(256),
+                    new BowMaterialStats(1f, 1.125f, 2),
+                    new ArrowShaftMaterialStats(1.2f, 2));
+            TinkerRegistry.integrate(fierymetal).toolforge().preInit();
+
+            TinkerRegistry.addMaterialStats(knightmetal,
+                    new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
+                    new HandleMaterialStats(1.5f, 256),
+                    new ExtraMaterialStats(256),
+                    new BowMaterialStats(1f, 1.125f, 2),
+                    new ArrowShaftMaterialStats(1.2f, 2));
+            TinkerRegistry.integrate(knightmetal).preInit();
+        }
+
+        @Override
+        protected void init() {
+            nagascale.setCraftable(true);
+
+            nagascale.addItem(TFItems.nagaScale);
+            nagascale.setRepresentativeItem(TFItems.nagaScale);
+            nagascale.setVisible();
+
+            fierymetal.addItemIngot("Fiery");
+            fierymetal.setRepresentativeItem(TFItems.fieryIngot);
+            fierymetal.setVisible();
+
+            knightmetal.addItemIngot("Knightmetal");
+            knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
+            knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
+            knightmetal.setRepresentativeItem(TFItems.knightMetal);
+            knightmetal.setVisible();
+        }
     },
     THAUMCRAFT("Thaumcraft") {
         // Use the thaumcraft API to register our things with aspects and biomes with values
@@ -213,23 +266,25 @@ public enum TFCompat {
         }//*/
     };
 
+    protected void preInit() {}
     protected void init() {}
     protected void postInit() {}
-    private boolean isActivated = false;
 
-    private final String modName;
+    final private String modName;
+
+    private boolean isActivated = false;
 
     TFCompat(String modName) {
         this.modName = modName;
     }
 
-    public static void initCompat() {
+    public static void preInitCompat() {
         for (TFCompat compat : TFCompat.values()) {
             if (Loader.isModLoaded(compat.name().toLowerCase())) {
                 try {
-                    compat.init();
+                    compat.preInit();
                     compat.isActivated = true;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + "");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + ".");
                 } catch (Exception e) {
                     compat.isActivated = false;
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility!");
@@ -237,7 +292,21 @@ public enum TFCompat {
                 }
             } else {
                 compat.isActivated = false;
-                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.modName + "");
+                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.modName + ".");
+            }
+        }
+    }
+
+    public static void initCompat() {
+        for (TFCompat compat : TFCompat.values()) {
+            if (compat.isActivated) {
+                try {
+                    compat.postInit();
+                } catch (Exception e) {
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in init!");
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
             }
         }
     }
@@ -248,6 +317,7 @@ public enum TFCompat {
                 try {
                     compat.postInit();
                 } catch (Exception e) {
+                    compat.isActivated = false;
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in postInit!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
