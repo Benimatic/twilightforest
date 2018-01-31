@@ -36,7 +36,7 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
             if (state.getBlock() == Blocks.DOUBLE_STONE_SLAB && state.getValue(BlockDoubleStoneSlab.VARIANT) == BlockStoneSlab.EnumType.SAND) {
                 IBlockState stateCheck = worldIn.getBlockState(pos);
                 if (stateCheck == SMOOTHBRICK_SLAB_STATE)
-                    state = SMOOTHBRICK_SLAB_STATE;
+                    return new Template.BlockInfo(pos, SMOOTHBRICK_SLAB_STATE, null);
                 else if (stateCheck.getMaterial() == Material.AIR)
                     return null;
                 else

@@ -48,7 +48,7 @@ public class TFFeature {
 	public static final TFFeature hill2 = new TFFeature(2, 2, "medium_hollow_hill").enableDecorations().enableTerrainAlterations();
 	public static final TFFeature hill3 = new TFFeature(3, 3, "large_hollow_hill").enableDecorations().enableTerrainAlterations();
 	public static final TFFeature hedgeMaze = new TFFeature(4, 2, "hedge_maze").enableTerrainAlterations();
-	public static final TFFeature nagaCourtyard = new TFFeature(5, 4, "naga_courtyard").enableTerrainAlterations();
+	public static final TFFeature nagaCourtyard = new TFFeature(5, 3, "naga_courtyard").enableTerrainAlterations();
 	public static final TFFeature lichTower = new TFFeature(6, 1, "lich_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_naga"));
 	public static final TFFeature iceTower = new TFFeature(7, 2, "ice_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_yeti"));
 	public static final TFFeature questIsland = new TFFeature(8, 1, "quest_island").disableStructure();
