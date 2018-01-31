@@ -1,5 +1,6 @@
 package twilightforest.structures;
 
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +14,6 @@ import net.minecraft.world.gen.structure.StructureStrongholdPieces;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
@@ -314,7 +314,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 
 							if (notIntersecting) {
-								world.setBlockState(pos, TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, calculateShieldFacing(shieldBox, x, y, z)), 2);
+								world.setBlockState(pos, TFBlocks.shield.getDefaultState().withProperty(BlockDirectional.FACING, calculateShieldFacing(shieldBox, x, y, z)), 2);
 							}
 
 						}

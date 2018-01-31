@@ -71,7 +71,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		}
 	}
 
-	public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, EnumFacing dir) {
+	public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable EnumFacing dir) {
 		switch (dir) {
 			default:
 				return new StructureBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);

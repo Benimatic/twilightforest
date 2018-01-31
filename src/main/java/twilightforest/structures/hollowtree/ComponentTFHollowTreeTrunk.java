@@ -1,5 +1,6 @@
 package twilightforest.structures.hollowtree;
 
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -13,12 +14,9 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerator;
-import twilightforest.world.TFWorld;
 
 import java.util.List;
 import java.util.Random;
-
-import static twilightforest.block.TFBlockProperties.FACING;
 
 
 public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
@@ -264,7 +262,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		}
 
 		final IBlockState block = (random.nextBoolean() ? TFBlocks.firefly : TFBlocks.cicada).getDefaultState();
-		addInsect(world, block.withProperty(FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
+		addInsect(world, block.withProperty(BlockDirectional.FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
 	}
 
 	/**

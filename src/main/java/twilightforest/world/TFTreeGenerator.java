@@ -1,6 +1,7 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,7 +11,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import twilightforest.block.BlockTFHedge;
 import twilightforest.block.BlockTFLog;
-import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.HedgeVariant;
 import twilightforest.enums.WoodVariant;
@@ -88,13 +88,13 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
 		if (iAngle == 0) {
-			setIfEmpty(world, pos.add(1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.EAST));
+			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.EAST));
 		} else if (iAngle == 1) {
-			setIfEmpty(world, pos.add(-1, height, 0), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.WEST));
+			setIfEmpty(world, pos.add(-1, height,  0), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.WEST));
 		} else if (iAngle == 2) {
-			setIfEmpty(world, pos.add(0, height, 1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.SOUTH));
+			setIfEmpty(world, pos.add( 0, height,  1), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.SOUTH));
 		} else if (iAngle == 3) {
-			setIfEmpty(world, pos.add(0, height, -1), TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.NORTH));
+			setIfEmpty(world, pos.add( 0, height, -1), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.NORTH));
 		}
 	}
 
