@@ -1,0 +1,8 @@
+{
+  "type": "inverse_multicolor",
+  "parameters": {
+    "bright": "e6ecec",
+    "mid":    "c3dcdc",
+    "dark":   "0469db"
+  }
+}
