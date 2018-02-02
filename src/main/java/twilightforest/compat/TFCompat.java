@@ -16,6 +16,7 @@ import slimeknights.tconstruct.library.materials.HandleMaterialStats;
 import slimeknights.tconstruct.library.materials.HeadMaterialStats;
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
+import slimeknights.tconstruct.tools.TinkerTraits;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
@@ -129,6 +130,8 @@ public enum TFCompat {
             //fierymetal.addItemIngot("Fiery");
             fierymetal.setRepresentativeItem(TFItems.fieryIngot);
             fierymetal.setVisible();
+            fierymetal.addTrait(TinkerTraits.autosmelt);
+            fierymetal.addTrait(TinkerTraits.flammable);
 
             //knightmetal.addItemIngot("Knightmetal");
             //knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
