@@ -48,7 +48,7 @@ public class TFConfig {
 		public float canopyCoverage = 1.7F;
 
 		@Config.LangKey(config + "twilight_oaks")
-		@Config.RangeInt(min = 0)
+		@Config.RangeInt(min = 1)
 		@Config.Comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.")
 		public int twilightOakChance = 48;
 

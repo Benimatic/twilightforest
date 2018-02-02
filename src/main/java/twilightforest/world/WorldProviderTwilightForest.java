@@ -83,6 +83,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	/**
 	 * This seems to be a function checking whether we have an ocean.
 	 */
+	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean isSkyColored() {
 		return false;
