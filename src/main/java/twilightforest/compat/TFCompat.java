@@ -25,16 +25,17 @@ import twilightforest.enums.*;
 import twilightforest.item.TFItems;
 
 @Optional.InterfaceList({
-        @Optional.Interface(iface = "team.chisel.api.ChiselAPIProps", modid = "chisel"),
-        @Optional.Interface(iface = "team.chisel.api.IMC", modid = "chisel"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.TinkerRegistry", modid = "tconstruct"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats", modid = "tconstruct"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.BowMaterialStats", modid = "tconstruct"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.ExtraMaterialStats", modid = "tconstruct"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.HandleMaterialStats", modid = "tconstruct"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.HeadMaterialStats", modid = "tconstruct"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.materials.Material", modid = "tconstruct"),
-        @Optional.Interface(iface = "slimeknights.tconstruct.library.utils.HarvestLevels", modid = "tconstruct")
+        @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
+        @Optional.Interface(modid = "chisel", iface = "team.chisel.api.IMC"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.TinkerRegistry"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.BowMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.ExtraMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.HandleMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.HeadMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.Material"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.utils.HarvestLevels")
 })
 public enum TFCompat {
     CHISEL("Chisel") {
@@ -119,19 +120,19 @@ public enum TFCompat {
 
         @Override
         protected void init() {
-            nagascale.setCraftable(true);
+            //nagascale.setCraftable(true);
 
-            nagascale.addItem(TFItems.nagaScale);
+            //nagascale.addItem(TFItems.nagaScale);
             nagascale.setRepresentativeItem(TFItems.nagaScale);
             nagascale.setVisible();
 
-            fierymetal.addItemIngot("Fiery");
+            //fierymetal.addItemIngot("Fiery");
             fierymetal.setRepresentativeItem(TFItems.fieryIngot);
             fierymetal.setVisible();
 
-            knightmetal.addItemIngot("Knightmetal");
-            knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
-            knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
+            //knightmetal.addItemIngot("Knightmetal");
+            //knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
+            //knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
             knightmetal.setRepresentativeItem(TFItems.knightMetal);
             knightmetal.setVisible();
         }

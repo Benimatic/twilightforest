@@ -42,7 +42,7 @@ public class GradientMappedTexture extends AbstractColoredTexture {
             bTo = RenderUtil.blue (gradientMap[i].color);
         } else {
             for (int i = 0; i < gradientMap.length - 1; i++) {
-                if (gray == gradientMap[i].node ) {
+                if (gray == gradientMap[i].node) {
                     rTo = RenderUtil.red  (gradientMap[i].color);
                     gTo = RenderUtil.green(gradientMap[i].color);
                     bTo = RenderUtil.blue (gradientMap[i].color);
