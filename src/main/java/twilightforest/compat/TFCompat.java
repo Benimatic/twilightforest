@@ -2,10 +2,13 @@ package twilightforest.compat;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.relauncher.Side;
 import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader;
 import slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats;
 import slimeknights.tconstruct.library.materials.BowMaterialStats;
 import slimeknights.tconstruct.library.materials.ExtraMaterialStats;
@@ -17,6 +20,7 @@ import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.tcon.GradientMapInfoDeserializer;
 import twilightforest.enums.*;
 import twilightforest.item.TFItems;
 
@@ -107,6 +111,10 @@ public enum TFCompat {
                     new BowMaterialStats(1f, 1.125f, 2),
                     new ArrowShaftMaterialStats(1.2f, 2));
             TinkerRegistry.integrate(knightmetal).preInit();
+
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+                MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
+            }
         }
 
         @Override
