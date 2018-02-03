@@ -66,6 +66,11 @@ public class TwilightForestMod {
 	@SuppressWarnings("unused")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		if (Loader.isModLoaded("sponge"))
+			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
+					"Open the `config/sponge/global.conf` file, and set the `max-bounding-box-size` to `6000` or higher, or `0`.\n" +
+					"Sponge's default maximum bounding box is too low for the Hydra. Have fun!");
+
 		registerCreatures();
 		registerTileEntities();
 		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
