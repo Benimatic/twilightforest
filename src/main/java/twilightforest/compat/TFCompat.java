@@ -98,9 +98,6 @@ public enum TFCompat {
             final Material knightmetal = new Material("knightmetal", 0xC4_E6_AE);
 
             TinkerRegistry.addMaterialStats(nagascale,
-                    new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
-                    new HandleMaterialStats(1.5f, 256),
-                    new ExtraMaterialStats(256),
                     new BowMaterialStats(1f, 1.125f, 2),
                     new ArrowShaftMaterialStats(1.2f, 2));
             TinkerRegistry.integrate(nagascale).preInit();
@@ -116,9 +113,7 @@ public enum TFCompat {
             TinkerRegistry.addMaterialStats(knightmetal,
                     new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
                     new HandleMaterialStats(1.5f, 256),
-                    new ExtraMaterialStats(256),
-                    new BowMaterialStats(1f, 1.125f, 2),
-                    new ArrowShaftMaterialStats(1.2f, 2));
+                    new ExtraMaterialStats(256));
             TinkerRegistry.integrate(knightmetal).preInit();
 
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {

@@ -66,8 +66,13 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 
         final int[][] mazeLocal = maze.clone();
 
+        int halfWayPointX = (widthInCellCount / 2) - 1;
+        int halfWayPointY = (heightInCellCount / 2) - 1;
+
         for (int y = 0; y < heightInCellCount-1; y++) {
             for (int x = 0; x < widthInCellCount-1; x++) {
+                if (x == halfWayPointX && y == halfWayPointY) continue;
+
                 // Did we pick west and will we not get an AIOOBException accessing array
                 if (rotations[x][y] == WallFacing.WEST && x > 0) {
                     // If neighbor does not connect to west, connect it to east
@@ -107,8 +112,13 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             }
         }//*/
 
-        for (int x = 1; x < widthInCellCount-1; x++) {
-            for (int y = 1; y < heightInCellCount-1; y++) {
+        for (WallFacing facing : WallFacing.values())
+            maze[halfWayPointX + facing.xOffset][halfWayPointY + facing.zOffset] &= facing.INVERTED_OPPOSITE;
+
+        maze[halfWayPointX][halfWayPointY] = 0b10000;
+
+        for (int x = 1; x < maze.length; x++) {
+            for (int y = 1; y < maze[x].length; y++) {
                 if (mazeLocal[x][y] == 0) {
                     if (mazeLocal[x-1][y] == 0) {
                         maze[x][y]   |= WallFacing.WEST.BYTE;
@@ -131,14 +141,6 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
                 for (int x = 0; x < cornerClippings[diagonals.ordinal()][1]; x++)
                     maze[diagonals.operationX.convert(x, widthInCellCount - 2)][diagonals.operationY.convert(y, heightInCellCount - 2)] |= 0b10000;
         }
-
-        int halfWayPointX = (widthInCellCount / 2) - 1;
-        int halfWayPointY = (heightInCellCount / 2) - 1;
-
-        for (WallFacing facing : WallFacing.values())
-            maze[halfWayPointX + facing.xOffset][halfWayPointY + facing.zOffset] &= facing.INVERTED_OPPOSITE;
-
-        maze[halfWayPointX][halfWayPointY] = 0b10000;
     }
 
     @SuppressWarnings("ConstantConditions")
