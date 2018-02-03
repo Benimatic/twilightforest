@@ -37,7 +37,8 @@ import twilightforest.item.TFItems;
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.HeadMaterialStats"),
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.Material"),
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.utils.HarvestLevels"),
-        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.tools.TinkerTraits")
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.tools.TinkerTraits"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.traits.ITrait")
 })
 public enum TFCompat {
     CHISEL("Chisel") {
@@ -85,12 +86,17 @@ public enum TFCompat {
     },
     @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
-        public final Material nagascale   = new Material("nagascale"  , 0x32_5D_25);
-        public final Material fierymetal  = new Material("fierymetal" , 0xFD_D4_5D);
-        public final Material knightmetal = new Material("knightmetal", 0xC4_E6_AE);
+        public Object nagascale;
+        public Object fierymetal;
+        public Object knightmetal;
 
+        @Optional.Method(modid = "tconstruct")
         @Override
         protected void preInit() {
+            final Material nagascale   = new Material("nagascale"  , 0x32_5D_25);
+            final Material fierymetal  = new Material("fierymetal" , 0xFD_D4_5D);
+            final Material knightmetal = new Material("knightmetal", 0xC4_E6_AE);
+
             TinkerRegistry.addMaterialStats(nagascale,
                     new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
                     new HandleMaterialStats(1.5f, 256),
@@ -118,10 +124,19 @@ public enum TFCompat {
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
                 MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
             }
+
+            this.nagascale = nagascale;
+            this.fierymetal = fierymetal;
+            this.knightmetal = knightmetal;
         }
 
+        @Optional.Method(modid = "tconstruct")
         @Override
         protected void init() {
+            Material nagascale = (Material) this.nagascale;
+            Material fierymetal = (Material) this.fierymetal;
+            Material knightmetal = (Material) this.knightmetal;
+
             //nagascale.setCraftable(true);
 
             //nagascale.addItem(TFItems.nagaScale);
