@@ -50,12 +50,12 @@ public class TwilightForestMod {
 	public static final int GUI_ID_UNCRAFTING = 1;
 	public static final int GUI_ID_FURNACE = 2;
 
-
 	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
+	private static boolean compat = true;
 
 	@Instance(ID)
 	public static TwilightForestMod instance;
@@ -63,6 +63,7 @@ public class TwilightForestMod {
 	@SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
 	public static TFCommonProxy proxy;
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		registerCreatures();
@@ -79,14 +80,20 @@ public class TwilightForestMod {
 		// just call this so that we register structure IDs correctly
 		new StructureTFMajorFeatureStart();
 
-		try {
-			TFCompat.preInitCompat();
-		} catch (Exception e) {
-			TwilightForestMod.LOGGER.info(ID + " had an error loading preInit compatibility!");
-			TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+		compat = TFConfig.doCompat;
+
+		if (compat) {
+			try {
+				TFCompat.preInitCompat();
+			} catch (Exception e) {
+				compat = false;
+				TwilightForestMod.LOGGER.info(ID + " had an error loading preInit compatibility!");
+				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+			}
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void load(FMLInitializationEvent evt) {
 		TFItems.initRepairMaterials();
@@ -95,14 +102,18 @@ public class TwilightForestMod {
 		proxy.doOnLoadRegistration();
 		TFAdvancements.init();
 
-		try {
-			TFCompat.initCompat();
-		} catch (Exception e) {
-			TwilightForestMod.LOGGER.info(ID + " had an error loading init compatibility!");
-			TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+		if (compat) {
+			try {
+				TFCompat.initCompat();
+			} catch (Exception e) {
+				compat = false;
+				TwilightForestMod.LOGGER.info(ID + " had an error loading init compatibility!");
+				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+			}
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
@@ -113,14 +124,17 @@ public class TwilightForestMod {
 			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
 		}
 
-		try {
-			TFCompat.postInitCompat();
-		} catch (Exception e) {
-			TwilightForestMod.LOGGER.info(ID + " had an error loading postInit compatibility!");
-			TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+		if (compat) {
+			try {
+				TFCompat.postInitCompat();
+			} catch (Exception e) {
+				TwilightForestMod.LOGGER.info(ID + " had an error loading postInit compatibility!");
+				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+			}
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void startServer(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandTFFeature());

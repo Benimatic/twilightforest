@@ -125,16 +125,16 @@ public enum TFCompat {
                 MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
             }
 
-            this.nagascale = nagascale;
-            this.fierymetal = fierymetal;
+            this.nagascale   = nagascale;
+            this.fierymetal  = fierymetal;
             this.knightmetal = knightmetal;
         }
 
         @Optional.Method(modid = "tconstruct")
         @Override
         protected void init() {
-            Material nagascale = (Material) this.nagascale;
-            Material fierymetal = (Material) this.fierymetal;
+            Material nagascale   = (Material) this.nagascale;
+            Material fierymetal  = (Material) this.fierymetal;
             Material knightmetal = (Material) this.knightmetal;
 
             //nagascale.setCraftable(true);

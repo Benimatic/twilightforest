@@ -512,6 +512,9 @@ twilightforest.config.dimension_id.tooltip=What ID number to assign to the Twili
 twilightforest.config.dimension_seed=Dimension Seed
 twilightforest.config.dimension_seed.tooltip=If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.
 
+twilightforest.config.compat=Compatibility
+twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
+
 twilightforest.config.tree_tweaks=Performance Tweaks
 twilightforest.config.tree_tweaks.tooltip=Lets you sacrifice various things to improve world performance.
 twilightforest.config.canopy_coverage=Canopy Coverage

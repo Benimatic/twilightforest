@@ -19,6 +19,7 @@ import java.util.List;
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
+	@Config.Ignore
 	private final static String config = TwilightForestMod.ID + ".config.";
 
 	@Config.LangKey(config + "dimension")
@@ -36,6 +37,10 @@ public class TFConfig {
 		@Config.Comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
 		public String twilightForestSeed = "";
 	}
+
+	@Config.LangKey(config + "compat")
+	@Config.Comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
+	public static boolean doCompat = true;
 
 	@Config.LangKey(config + "tree_tweaks")
 	@Config.Comment("Lets you sacrifice various things to improve world performance.")
