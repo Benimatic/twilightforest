@@ -15,6 +15,10 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class PacketStructureProtection implements IMessage {
 	private StructureBoundingBox sbb;
 
+	@SuppressWarnings("unused")
+	public PacketStructureProtection() {
+	}
+
 	public PacketStructureProtection(StructureBoundingBox sbb) {
 		this.sbb = sbb;
 	}
