@@ -112,24 +112,10 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	public boolean getCanSpawnHere() {
 		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-		if (blockpos.getY() >= this.world.getSeaLevel()) {
-			return false;
-		} else {
-			int i = this.world.getLightFromNeighbors(blockpos);
-			int j = 4;
-
-			// TF - no halloween spawn buff
-			/*if (this.isDateAroundHalloween(this.world.getCurrentDate()))
-            {
-                j = 7;
-            }
-            else*/
-			if (this.rand.nextBoolean()) {
-				return false;
-			}
-
-			return i > this.rand.nextInt(j) ? false : super.getCanSpawnHere();
-		}
+		return blockpos.getY() < this.world.getSeaLevel()
+				&& !this.rand.nextBoolean()
+				&& this.world.getLightFromNeighbors(blockpos) <= this.rand.nextInt(4)
+				&& super.getCanSpawnHere();
 	}
 
 	@Override
