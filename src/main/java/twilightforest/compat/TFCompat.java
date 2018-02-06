@@ -9,13 +9,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.relauncher.Side;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader;
-import slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats;
-import slimeknights.tconstruct.library.materials.BowMaterialStats;
-import slimeknights.tconstruct.library.materials.ExtraMaterialStats;
-import slimeknights.tconstruct.library.materials.FletchingMaterialStats;
-import slimeknights.tconstruct.library.materials.HandleMaterialStats;
-import slimeknights.tconstruct.library.materials.HeadMaterialStats;
-import slimeknights.tconstruct.library.materials.Material;
+import slimeknights.tconstruct.library.materials.*;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.tools.TinkerTraits;
 import team.chisel.api.ChiselAPIProps;
@@ -91,18 +85,14 @@ public enum TFCompat {
         @Optional.Method(modid = "tconstruct")
         @Override
         protected void preInit() {
-            TConObjects.nagascale    = new Material("nagascale"    , 0x32_5D_25);
-            TConObjects.fierymetal   = new Material("fierymetal"   , 0xFD_D4_5D);
-            TConObjects.knightmetal  = new Material("knightmetal"  , 0xC4_E6_AE);
-            TConObjects.ravenFeather = new Material("raven_feather", 0x47_4C_52);
-
             TinkerRegistry.addMaterialStats(TConObjects.nagascale,
+                    new HeadMaterialStats(460, 8.9f, 4.3f, HarvestLevels.IRON),
                     new BowMaterialStats(0.6f, 2f, 0),
                     new ArrowShaftMaterialStats(1.4f, 20));
             TinkerRegistry.integrate(TConObjects.nagascale).preInit();
 
             TinkerRegistry.addMaterialStats(TConObjects.fierymetal,
-                    new HeadMaterialStats(720, 8f, 8.5f, HarvestLevels.DIAMOND),
+                    new HeadMaterialStats(720, 8f, 8.5f, HarvestLevels.OBSIDIAN),
                     new HandleMaterialStats(0.7f, 400),
                     new ExtraMaterialStats(200),
                     new BowMaterialStats(1f, 0.9f, 2),
@@ -119,38 +109,47 @@ public enum TFCompat {
                     new FletchingMaterialStats(0.95f, 1.15f));
             TinkerRegistry.integrate(TConObjects.ravenFeather).preInit();
 
-            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
                 MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
-            }
         }
 
         @Optional.Method(modid = "tconstruct")
         @Override
         protected void init() {
-            TConObjects.nagascale.setVisible();
-            TConObjects.nagascale.setCraftable(true);
-            TConObjects.nagascale.addItem(TFItems.nagaScale);
-            TConObjects.nagascale.setRepresentativeItem(TFItems.nagaScale);
-            TConObjects.nagascale.addTrait(TConObjects.precipitate);
+            TConObjects.nagascale.addItem(TFItems.nagaScale, 1, Material.VALUE_Ingot);
+            TConObjects.nagascale
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TConObjects.precipitate)
+                    .setCraftable(true)
+                    .setCastable(false)
+                    .setRepresentativeItem(TFItems.nagaScale);
 
-            TConObjects.fierymetal.setVisible();
-            TConObjects.fierymetal.setCastable(true);
-            TConObjects.fierymetal.addItemIngot("Fiery");
-            TConObjects.fierymetal.setRepresentativeItem(TFItems.fieryIngot);
-            TConObjects.fierymetal.addTrait(TinkerTraits.autosmelt);
-            TConObjects.fierymetal.addTrait(TinkerTraits.flammable);
+            TConObjects.fierymetal.addCommonItems("Fiery");
+            TConObjects.fierymetal
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TinkerTraits.autosmelt, MaterialTypes.HEAD)
+                    .addTrait(TinkerTraits.superheat, MaterialTypes.HEAD)
+                    .addTrait(TinkerTraits.flammable)
+                    .setCraftable(false)
+                    .setCastable(true)
+                    .setRepresentativeItem(TFItems.fieryIngot);
 
-            TConObjects.knightmetal.setVisible();
-            TConObjects.knightmetal.setCastable(true);
-            TConObjects.knightmetal.addItemIngot("Knightmetal");
+            TConObjects.knightmetal.addCommonItems("Knightmetal");
             TConObjects.knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
             TConObjects.knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
-            TConObjects.knightmetal.setRepresentativeItem(TFItems.knightMetal);
+            TConObjects.knightmetal
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TConObjects.valiant)
+                    .setCraftable(false)
+                    .setCastable(true)
+                    .setRepresentativeItem(TFItems.knightMetal);
 
-            TConObjects.ravenFeather.setVisible();
-            TConObjects.ravenFeather.setCraftable(true);
-            TConObjects.ravenFeather.addItem(TFItems.feather);
-            TConObjects.ravenFeather.setRepresentativeItem(TFItems.feather);
+            TConObjects.ravenFeather.addItem(TFItems.feather, 1, Material.VALUE_Ingot);
+            TConObjects.ravenFeather
+                    .addTrait(TConObjects.twilit)
+                    .setCraftable(true)
+                    .setCastable(false)
+                    .setRepresentativeItem(TFItems.feather);
         }
     },
     THAUMCRAFT("Thaumcraft") {
@@ -339,7 +338,7 @@ public enum TFCompat {
         for (TFCompat compat : TFCompat.values()) {
             if (compat.isActivated) {
                 try {
-                    compat.postInit();
+                    compat.init();
                 } catch (Exception e) {
                     compat.isActivated = false;
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in init!");

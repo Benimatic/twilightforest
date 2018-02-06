@@ -602,7 +602,16 @@ twilightforest.book.trollcave.3=magician. Such a person would likely hide themse
 twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
 
-material.nagascale.name=Naga Scale [NYI]
-material.fierymetal.name=Fiery [NYI]
-material.knightmetal.name=Knightmetal [NYI]
-material.raven_feather.name=Raven's [NYI]
+material.nagascale.name=Naga Scale
+material.fierymetal.name=Fiery
+material.knightmetal.name=Knightmetal
+material.raven_feather.name=Raven's Feather
+
+modifier.twilit.name=Twilit
+modifier.twilit.desc=§oThe Twilight Forest's illuminating blessing.§r\nSpeedier in the Twilight Forest.\nMore damage outside the Twilight Forest.
+modifier.twilit.extra.speed=Mining Speed in Twilight Forest: +%s
+modifier.twilit.extra.damage=Damage outside the Twilight Forest: +%s
+modifier.precipitate.name=Precipitate
+modifier.precipitate.desc=§oThe last standing escape plan.§r\nThe less health you have, the speedier it is!
+modifier.stalwart.name=Stalwart
+modifier.stalwart.desc=§oSomething.§r\nDefinitely something here.

@@ -3,20 +3,35 @@ package twilightforest.compat.tcon;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import slimeknights.tconstruct.library.traits.AbstractTrait;
+import slimeknights.tconstruct.library.entity.EntityProjectileBase;
+import slimeknights.tconstruct.library.traits.AbstractProjectileTrait;
 
-public class TraitPrecipitate extends AbstractTrait {
-    @SuppressWarnings("WeakerAccess")
+import javax.annotation.Nullable;
+
+public class TraitPrecipitate extends AbstractProjectileTrait {
     public TraitPrecipitate() {
         super("precipitate", TextFormatting.DARK_GREEN);
     }
 
     @Override
     public void miningSpeed(ItemStack tool, PlayerEvent.BreakSpeed event) {
-        EntityLivingBase entity = event.getEntityLiving();
-        float maxHealth = entity.getMaxHealth();
+        event.setNewSpeed(event.getNewSpeed() + (getBonusPercentage(event.getEntityLiving()) * event.getOriginalSpeed()));
+    }
 
-        event.setNewSpeed(event.getNewSpeed() + ( ((maxHealth - entity.getHealth()) / maxHealth) * event.getOriginalSpeed() ) );
+    @Override
+    public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable EntityLivingBase shooter) {
+        float bonus = getBonusPercentage(shooter);
+
+        projectileBase.motionX += (projectileBase.motionX * bonus);
+        projectileBase.motionY += (projectileBase.motionY * bonus);
+        projectileBase.motionZ += (projectileBase.motionZ * bonus);
+    }
+
+    private float getBonusPercentage(EntityLivingBase entity) {
+        if (entity == null) return 1.0f;
+        float maxHealth = entity.getMaxHealth();
+        return (maxHealth - entity.getHealth()) / maxHealth;
     }
 }
