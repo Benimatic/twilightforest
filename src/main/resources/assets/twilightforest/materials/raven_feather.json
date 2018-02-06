@@ -1,0 +1,24 @@
+{
+  "type": "gradient_map_colors",
+  "suffix": "feather",
+  "parameters": {
+    "gradient_map" : [
+      {
+        "node"  : "1.0",
+        "color" : "7f848a"
+      },
+      {
+        "node"  : "0.83",
+        "color" : "474c52"
+      },
+      {
+        "node"  : "0.58",
+        "color" : "303842"
+      },
+      {
+        "node"  : "0.4",
+        "color" : "141c26"
+      }
+    ]
+  }
+}

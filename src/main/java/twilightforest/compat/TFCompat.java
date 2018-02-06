@@ -12,6 +12,7 @@ import slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader;
 import slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats;
 import slimeknights.tconstruct.library.materials.BowMaterialStats;
 import slimeknights.tconstruct.library.materials.ExtraMaterialStats;
+import slimeknights.tconstruct.library.materials.FletchingMaterialStats;
 import slimeknights.tconstruct.library.materials.HandleMaterialStats;
 import slimeknights.tconstruct.library.materials.HeadMaterialStats;
 import slimeknights.tconstruct.library.materials.Material;
@@ -35,6 +36,7 @@ import twilightforest.item.TFItems;
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.ExtraMaterialStats"),
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.HandleMaterialStats"),
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.HeadMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.FletchingMaterialStats"),
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.Material"),
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.utils.HarvestLevels"),
         @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.tools.TinkerTraits"),
@@ -86,69 +88,69 @@ public enum TFCompat {
     },
     @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
-        public Object nagascale;
-        public Object fierymetal;
-        public Object knightmetal;
-
         @Optional.Method(modid = "tconstruct")
         @Override
         protected void preInit() {
-            final Material nagascale   = new Material("nagascale"  , 0x32_5D_25);
-            final Material fierymetal  = new Material("fierymetal" , 0xFD_D4_5D);
-            final Material knightmetal = new Material("knightmetal", 0xC4_E6_AE);
+            TConObjects.nagascale    = new Material("nagascale"    , 0x32_5D_25);
+            TConObjects.fierymetal   = new Material("fierymetal"   , 0xFD_D4_5D);
+            TConObjects.knightmetal  = new Material("knightmetal"  , 0xC4_E6_AE);
+            TConObjects.ravenFeather = new Material("raven_feather", 0x47_4C_52);
 
-            TinkerRegistry.addMaterialStats(nagascale,
-                    new BowMaterialStats(1f, 1.125f, 2),
-                    new ArrowShaftMaterialStats(1.2f, 2));
-            TinkerRegistry.integrate(nagascale).preInit();
+            TinkerRegistry.addMaterialStats(TConObjects.nagascale,
+                    new BowMaterialStats(0.6f, 2f, 0),
+                    new ArrowShaftMaterialStats(1.4f, 20));
+            TinkerRegistry.integrate(TConObjects.nagascale).preInit();
 
-            TinkerRegistry.addMaterialStats(fierymetal,
-                    new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
-                    new HandleMaterialStats(1.5f, 256),
-                    new ExtraMaterialStats(256),
-                    new BowMaterialStats(1f, 1.125f, 2),
-                    new ArrowShaftMaterialStats(1.2f, 2));
-            TinkerRegistry.integrate(fierymetal).toolforge().preInit();
+            TinkerRegistry.addMaterialStats(TConObjects.fierymetal,
+                    new HeadMaterialStats(720, 8f, 8.5f, HarvestLevels.DIAMOND),
+                    new HandleMaterialStats(0.7f, 400),
+                    new ExtraMaterialStats(200),
+                    new BowMaterialStats(1f, 0.9f, 2),
+                    new ArrowShaftMaterialStats(0.8f, 0));
+            TinkerRegistry.integrate(TConObjects.fierymetal).toolforge().preInit();
 
-            TinkerRegistry.addMaterialStats(knightmetal,
-                    new HeadMaterialStats(512, 8.00f, 3.00f, HarvestLevels.DIAMOND),
-                    new HandleMaterialStats(1.5f, 256),
-                    new ExtraMaterialStats(256));
-            TinkerRegistry.integrate(knightmetal).preInit();
+            TinkerRegistry.addMaterialStats(TConObjects.knightmetal,
+                    new HeadMaterialStats(1200, 8f, 7f, HarvestLevels.COBALT),
+                    new HandleMaterialStats(1.5f, 100),
+                    new ExtraMaterialStats(550));
+            TinkerRegistry.integrate(TConObjects.knightmetal).preInit();
+
+            TinkerRegistry.addMaterialStats(TConObjects.ravenFeather,
+                    new FletchingMaterialStats(0.95f, 1.15f));
+            TinkerRegistry.integrate(TConObjects.ravenFeather).preInit();
 
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
                 MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
             }
-
-            this.nagascale   = nagascale;
-            this.fierymetal  = fierymetal;
-            this.knightmetal = knightmetal;
         }
 
         @Optional.Method(modid = "tconstruct")
         @Override
         protected void init() {
-            Material nagascale   = (Material) this.nagascale;
-            Material fierymetal  = (Material) this.fierymetal;
-            Material knightmetal = (Material) this.knightmetal;
+            TConObjects.nagascale.setVisible();
+            TConObjects.nagascale.setCraftable(true);
+            TConObjects.nagascale.addItem(TFItems.nagaScale);
+            TConObjects.nagascale.setRepresentativeItem(TFItems.nagaScale);
+            TConObjects.nagascale.addTrait(TConObjects.precipitate);
 
-            //nagascale.setCraftable(true);
+            TConObjects.fierymetal.setVisible();
+            TConObjects.fierymetal.setCastable(true);
+            TConObjects.fierymetal.addItemIngot("Fiery");
+            TConObjects.fierymetal.setRepresentativeItem(TFItems.fieryIngot);
+            TConObjects.fierymetal.addTrait(TinkerTraits.autosmelt);
+            TConObjects.fierymetal.addTrait(TinkerTraits.flammable);
 
-            //nagascale.addItem(TFItems.nagaScale);
-            nagascale.setRepresentativeItem(TFItems.nagaScale);
-            nagascale.setVisible();
+            TConObjects.knightmetal.setVisible();
+            TConObjects.knightmetal.setCastable(true);
+            TConObjects.knightmetal.addItemIngot("Knightmetal");
+            TConObjects.knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
+            TConObjects.knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
+            TConObjects.knightmetal.setRepresentativeItem(TFItems.knightMetal);
 
-            //fierymetal.addItemIngot("Fiery");
-            fierymetal.setRepresentativeItem(TFItems.fieryIngot);
-            fierymetal.setVisible();
-            fierymetal.addTrait(TinkerTraits.autosmelt);
-            fierymetal.addTrait(TinkerTraits.flammable);
-
-            //knightmetal.addItemIngot("Knightmetal");
-            //knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
-            //knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
-            knightmetal.setRepresentativeItem(TFItems.knightMetal);
-            knightmetal.setVisible();
+            TConObjects.ravenFeather.setVisible();
+            TConObjects.ravenFeather.setCraftable(true);
+            TConObjects.ravenFeather.addItem(TFItems.feather);
+            TConObjects.ravenFeather.setRepresentativeItem(TFItems.feather);
         }
     },
     THAUMCRAFT("Thaumcraft") {
