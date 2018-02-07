@@ -96,6 +96,10 @@ public class TFConfig {
 	@Config.Comment("Meta of item used to create the Twilight Forest Portal. -1 for any metadata.")
 	public static int portalCreationMeta = -1;
 
+	@Config.LangKey(config + "portal_lighting")
+	@Config.Comment("Set this true if you want the lightning that zaps the portal to be visual only without setting things on fire. For those who don't like fun.")
+	public static boolean portalLightning = false;
+
 	@Config.LangKey(config + "uncrafting")
 	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;
