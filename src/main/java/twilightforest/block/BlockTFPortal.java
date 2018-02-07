@@ -32,6 +32,7 @@ import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -91,7 +92,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 		if (fake) {
 			double range = 3.0D;
-			List<Entity> list = world.getEntitiesWithinAABB(Entity::class.java, new AxisAlignedBB(pos).grow(range));
+			List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos).grow(range));
 
 			for (Entity victim : list) {
 				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {

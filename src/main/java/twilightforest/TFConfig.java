@@ -97,7 +97,7 @@ public class TFConfig {
 	public static int portalCreationMeta = -1;
 
 	@Config.LangKey(config + "portal_lighting")
-	@Config.Comment("Set this true if you want the lightning that zaps the portal to be visual only without setting things on fire. For those who don't like fun.")
+	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
 	public static boolean portalLightning = false;
 
 	@Config.LangKey(config + "uncrafting")
