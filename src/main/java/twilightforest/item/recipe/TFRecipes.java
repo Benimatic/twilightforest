@@ -29,9 +29,13 @@ public class TFRecipes {
 
 		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fieryIngot));
 		OreDictionary.registerOre("blockFiery", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.FIERY.ordinal()));
+
 		OreDictionary.registerOre("oreIronwood", new ItemStack(TFItems.ironwoodRaw));
 		OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwoodIngot));
+
 		OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleafIngot));
+		OreDictionary.registerOre("blockSteeleaf", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.STEELLEAF.ordinal()));
+
 		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.shardCluster));
 		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightMetal));
 		OreDictionary.registerOre("blockKnightmetal", new ItemStack(TFBlocks.knightmetalStorage));

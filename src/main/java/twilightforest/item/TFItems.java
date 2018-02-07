@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -251,6 +252,8 @@ public class TFItems {
 	public static final Item miniture_structure;
 	@GameRegistry.ObjectHolder("castle_door")
 	public static final Item castleDoor;
+	@GameRegistry.ObjectHolder("block_storage")
+	public static final Item block_storage;
 
 	public static CreativeTabTwilightForest creativeTab = new CreativeTabTwilightForest("twilightForest");
 
@@ -385,5 +388,6 @@ public class TFItems {
 		cubeOfAnnihilation = null;
 		miniture_structure = null;
 		castleDoor = null;
+		block_storage = null;
 	}
 }

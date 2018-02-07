@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.relauncher.Side;
+import slimeknights.tconstruct.library.MaterialIntegration;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader;
 import slimeknights.tconstruct.library.materials.*;
@@ -91,19 +92,28 @@ public enum TFCompat {
                     new ArrowShaftMaterialStats(1.4f, 20));
             TinkerRegistry.integrate(TConObjects.nagascale).preInit();
 
+            TinkerRegistry.addMaterialStats(TConObjects.steeleaf,
+                    new HeadMaterialStats(720, 8f, 8.5f, HarvestLevels.DIAMOND),
+                    new HandleMaterialStats(0.7f, 400),
+                    new ExtraMaterialStats(200),
+                    new BowMaterialStats(1f, 0.9f, 2),
+                    new ArrowShaftMaterialStats(0.8f, 0),
+                    new FletchingMaterialStats(0.95f, 1.15f));
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.steeleaf, null, "Steeleaf")).toolforge().preInit();
+
             TinkerRegistry.addMaterialStats(TConObjects.fierymetal,
                     new HeadMaterialStats(720, 8f, 8.5f, HarvestLevels.OBSIDIAN),
                     new HandleMaterialStats(0.7f, 400),
                     new ExtraMaterialStats(200),
                     new BowMaterialStats(1f, 0.9f, 2),
                     new ArrowShaftMaterialStats(0.8f, 0));
-            TinkerRegistry.integrate(TConObjects.fierymetal).toolforge().preInit();
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.fierymetal, null, "Fiery")).toolforge().preInit();
 
             TinkerRegistry.addMaterialStats(TConObjects.knightmetal,
                     new HeadMaterialStats(1200, 8f, 7f, HarvestLevels.COBALT),
                     new HandleMaterialStats(1.5f, 100),
                     new ExtraMaterialStats(550));
-            TinkerRegistry.integrate(TConObjects.knightmetal).preInit();
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.knightmetal, null, "Knightmetal")).preInit();
 
             TinkerRegistry.addMaterialStats(TConObjects.ravenFeather,
                     new FletchingMaterialStats(0.95f, 1.15f));
@@ -120,9 +130,15 @@ public enum TFCompat {
             TConObjects.nagascale
                     .addTrait(TConObjects.twilit)
                     .addTrait(TConObjects.precipitate)
-                    .setCraftable(true)
-                    .setCastable(false)
+                    .setCraftable(true).setCastable(false)
                     .setRepresentativeItem(TFItems.nagaScale);
+
+            TConObjects.steeleaf.addCommonItems("Steeleaf");
+            TConObjects.steeleaf
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TConObjects.synergy)
+                    .setCraftable(true).setCastable(false)
+                    .setRepresentativeItem(TFItems.steeleafIngot);
 
             TConObjects.fierymetal.addCommonItems("Fiery");
             TConObjects.fierymetal
@@ -130,8 +146,7 @@ public enum TFCompat {
                     .addTrait(TinkerTraits.autosmelt, MaterialTypes.HEAD)
                     .addTrait(TinkerTraits.superheat, MaterialTypes.HEAD)
                     .addTrait(TinkerTraits.flammable)
-                    .setCraftable(false)
-                    .setCastable(true)
+                    .setCraftable(false).setCastable(true)
                     .setRepresentativeItem(TFItems.fieryIngot);
 
             TConObjects.knightmetal.addCommonItems("Knightmetal");
@@ -140,15 +155,13 @@ public enum TFCompat {
             TConObjects.knightmetal
                     .addTrait(TConObjects.twilit)
                     .addTrait(TConObjects.valiant)
-                    .setCraftable(false)
-                    .setCastable(true)
+                    .setCraftable(false).setCastable(true)
                     .setRepresentativeItem(TFItems.knightMetal);
 
             TConObjects.ravenFeather.addItem(TFItems.feather, 1, Material.VALUE_Ingot);
             TConObjects.ravenFeather
                     .addTrait(TConObjects.twilit)
-                    .setCraftable(true)
-                    .setCastable(false)
+                    .setCraftable(true).setCastable(false)
                     .setRepresentativeItem(TFItems.feather);
         }
     },

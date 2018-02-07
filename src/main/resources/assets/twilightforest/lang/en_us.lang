@@ -603,6 +603,7 @@ twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copi
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
 
 material.nagascale.name=Naga Scale
+material.steeleaf.name=Steeleaf
 material.fierymetal.name=Fiery
 material.knightmetal.name=Knightmetal
 material.raven_feather.name=Raven's Feather
@@ -613,5 +614,7 @@ modifier.twilit.extra.speed=Mining Speed in Twilight Forest: +%s
 modifier.twilit.extra.damage=Damage outside the Twilight Forest: +%s
 modifier.precipitate.name=Precipitate
 modifier.precipitate.desc=§oThe last standing escape plan.§r\nThe less health you have, the speedier it is!
+modifier.synergy.name=Synergy
+modifier.stalwart.desc=§oSomething.§r\nWill repair itself if you have Steeleaves in your hotbar.
 modifier.stalwart.name=Stalwart
 modifier.stalwart.desc=§oSomething.§r\nDefinitely something here.
