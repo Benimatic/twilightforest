@@ -12,6 +12,6 @@ public class CreativeTabTwilightForest extends CreativeTabs {
 
 	@Override
 	public ItemStack getTabIconItem() {
-		return new ItemStack(TFBlocks.fireflyJar);
+		return new ItemStack(TFBlocks.miniature_structure);
 	}
 }
