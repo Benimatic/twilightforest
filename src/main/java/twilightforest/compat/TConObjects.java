@@ -2,10 +2,7 @@ package twilightforest.compat;
 
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
-import twilightforest.compat.tcon.TraitPrecipitate;
-import twilightforest.compat.tcon.TraitSynergy;
-import twilightforest.compat.tcon.TraitTwilit;
-import twilightforest.compat.tcon.TraitStalwart;
+import twilightforest.compat.tcon.*;
 
 @SuppressWarnings("WeakerAccess")
 public class TConObjects {
@@ -19,4 +16,5 @@ public class TConObjects {
     public static final AbstractTrait precipitate = new TraitPrecipitate();
     public static final AbstractTrait valiant     = new TraitStalwart();
     public static final AbstractTrait synergy     = new TraitSynergy();
+    public static final AbstractTrait veiled = new TraitVeiled();
 }

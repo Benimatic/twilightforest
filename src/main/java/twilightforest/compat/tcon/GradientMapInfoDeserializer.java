@@ -8,6 +8,8 @@ public class GradientMapInfoDeserializer extends AbstractRenderInfoDeserializer 
     @SuppressWarnings("WeakerAccess")
     @SerializedName("gradient_map")
     protected SerializedGradientNode[] serializedGradientMap;
+    @SerializedName("min_max_texture")
+    protected boolean shouldStretchMinimumMaximum;
 
     @Override
     public MaterialRenderInfo getMaterialRenderInfo() {
@@ -31,7 +33,7 @@ public class GradientMapInfoDeserializer extends AbstractRenderInfoDeserializer 
             gradientMap[i].color = fromHex(serializedGradientMap[i].color);
         }
 
-        return new GradientMapInfo(gradientMap);
+        return new GradientMapInfo(shouldStretchMinimumMaximum, gradientMap);
     }
 
     @SuppressWarnings("unused")

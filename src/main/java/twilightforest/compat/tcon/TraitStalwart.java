@@ -1,7 +1,9 @@
 package twilightforest.compat.tcon;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.TextFormatting;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 
@@ -12,11 +14,7 @@ public class TraitStalwart extends AbstractTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-
-    }
-
-    @Override
-    public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
-
+        if (random.nextInt(10) == 0)
+            player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 60, isCritical ? 0 : 2));
     }
 }

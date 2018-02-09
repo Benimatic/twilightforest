@@ -8,10 +8,41 @@ import static net.minecraft.util.math.MathHelper.sqrt;
 
 public class GradientMappedTexture extends AbstractColoredTexture {
     private GradientMapInfoDeserializer.GradientNode[] gradientMap;
+    private boolean shouldStretchMinimumMaximum;
+    private int minimumColor;
+    private int maximumColor;
 
-    GradientMappedTexture(ResourceLocation baseTextureLocation, String spriteName, GradientMapInfoDeserializer.GradientNode[] gradientMap) {
+    GradientMappedTexture(ResourceLocation baseTextureLocation, String spriteName, boolean shouldStretchMinimumMaximum, GradientMapInfoDeserializer.GradientNode[] gradientMap) {
         super(baseTextureLocation, spriteName);
+        this.shouldStretchMinimumMaximum = shouldStretchMinimumMaximum;
         this.gradientMap = gradientMap;
+    }
+
+    @Override
+    protected void preProcess(int[] data) {
+        if (shouldStretchMinimumMaximum) {
+            this.minimumColor = 255;
+            this.maximumColor = 0;
+
+            for (int pixel : data) {
+                if (RenderUtil.alpha(pixel) == 0) continue;
+
+                minimumColor = Math.min(minimumColor, getPerceptualBrightness(pixel));
+                maximumColor = Math.max(maximumColor, getPerceptualBrightness(pixel));
+            }
+
+            if (minimumColor > maximumColor) {
+                int accumulator = minimumColor;
+                minimumColor = maximumColor;
+                maximumColor = accumulator;
+            }
+
+            this.minimumColor = RenderUtil.compose(minimumColor, minimumColor, minimumColor, 255);
+            this.maximumColor = RenderUtil.compose(maximumColor, maximumColor, maximumColor, 255);
+        } else {
+            this.minimumColor = 0x00_00_00_FF;
+            this.maximumColor = 0xFF_FF_FF_FF;
+        }
     }
 
     @Override

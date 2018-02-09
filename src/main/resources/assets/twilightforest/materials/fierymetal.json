@@ -1,6 +1,7 @@
 {
   "type": "gradient_map_colors",
   "parameters": {
+    "min_max_texture": false,
     "gradient_map" : [
       {
         "node"  : "1.0",

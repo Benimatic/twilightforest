@@ -2,6 +2,7 @@
   "type": "gradient_map_colors",
   "suffix": "feather",
   "parameters": {
+    "min_max_texture": false,
     "gradient_map" : [
       {
         "node"  : "1.0",

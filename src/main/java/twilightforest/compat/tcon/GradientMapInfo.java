@@ -7,13 +7,15 @@ import slimeknights.tconstruct.library.client.MaterialRenderInfo;
 public class GradientMapInfo extends MaterialRenderInfo.AbstractMaterialRenderInfo {
 
     private GradientMapInfoDeserializer.GradientNode[] gradientMap;
+    private boolean shouldStretchMinimumMaximum;
 
-    public GradientMapInfo(GradientMapInfoDeserializer.GradientNode... gradientMap) {
+    public GradientMapInfo(boolean shouldStretchMinimumMaximum, GradientMapInfoDeserializer.GradientNode... gradientMap) {
         this.gradientMap = gradientMap;
+        this.shouldStretchMinimumMaximum = shouldStretchMinimumMaximum;
     }
 
     @Override
     public TextureAtlasSprite getTexture(ResourceLocation baseTexture, String location) {
-        return new GradientMappedTexture(baseTexture, location, gradientMap);
+        return new GradientMappedTexture(baseTexture, location, shouldStretchMinimumMaximum, gradientMap);
     }
 }
