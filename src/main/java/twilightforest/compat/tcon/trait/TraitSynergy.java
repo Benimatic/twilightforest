@@ -1,4 +1,4 @@
-package twilightforest.compat.tcon;
+package twilightforest.compat.tcon.trait;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

@@ -2,7 +2,7 @@ package twilightforest.compat;
 
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
-import twilightforest.compat.tcon.*;
+import twilightforest.compat.tcon.trait.*;
 
 @SuppressWarnings("WeakerAccess")
 public class TConObjects {

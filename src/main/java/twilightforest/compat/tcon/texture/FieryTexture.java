@@ -14,29 +14,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-/*
-From boni:
-
-well, you have frame data in the texture
-
-you need to plop in more than one.
-my default code only adds one
-
-https://github.com/SlimeKnights/TinkersConstruct/blob/1.12/src/main/java/slimeknights/tconstruct/library/client/texture/AbstractColoredTexture.java#L63-L67
-
-there is the call that you get in my stuff. it's then added to the framedata
-you need multiple frames for animation.
-and the metadata for it
-no idea on the metadat, i use already existing blocktextures/ with animations for a reason ;P
- */
+// This code contains some copied stuff from AbstractColoredTexture and ExtraUtilityTexture from TCon. Thanks, boni and RWTema! ~ Drullkus
 
 public class FieryTexture extends GradientMappedTexture {
     private final ResourceLocation textureIn;
 
-    //private HashSet<IntPair> blanks = new HashSet<>();
-
-    boolean[] translucent;
-    boolean[] edge;
+    private boolean[] translucent;
+    private boolean[] edge;
 
     private static final GradientMapInfoDeserializer.GradientNode[] outlineColors = {
             new GradientMapInfoDeserializer.GradientNode(0f,    0xFF_FF_FF_FF),
@@ -60,41 +44,6 @@ public class FieryTexture extends GradientMappedTexture {
             new GradientMapInfoDeserializer.GradientNode(0.9f, 0xFF_5d_26_03)
     };
 
-    //TODO cross-class optimization
-    //private static HashMap<TextureAtlasSprite, TextureCache> textureCache = new HashMap<>();
-
-    //private static class TextureCache {
-    //    private float minimumValue;
-    //    private float maximumValue;
-    //    ArrayList<IntPair> blanks;
-    //}
-
-    /*private static class IntPair {
-        private final int i1, i2;
-
-        private IntPair(int i1, int i2) {
-            this.i1 = i1;
-            this.i2 = i2;
-        }
-
-        @Override
-        public boolean equals(Object in) {
-            if (this == in) return true;
-
-            if (in instanceof IntPair) {
-                IntPair intPair = (IntPair) in;
-                return intPair.i1 == this.i1 && intPair.i2 == i2;
-            }
-
-            return false;
-        }
-
-        @Override
-        public int hashCode() {
-            return i1 * 31 + i2;
-        }
-    }//*/
-
     FieryTexture(ResourceLocation textureIn, String spriteName) {
         super(textureIn, spriteName, true, innerColors);
 
@@ -109,17 +58,14 @@ public class FieryTexture extends GradientMappedTexture {
 
         TextureAtlasSprite baseTexture = textureGetter.apply(textureIn);
         if(baseTexture == null || baseTexture.getFrameCount() <= 0) {
-            this.width = 1; // needed so we don't crash
+            this.width = 1;
             this.height = 1;
             // failure
             return false;
         }
 
-        // copy data from base texture - we have the same properties/sizes as the base
-
         this.copyFrom(baseTexture);
-        // todo: do this for every frame for animated textures and remove the old animation classes
-        // get the base texture to work on - aka copy the texture data into this texture
+
         int[][] data;
         int[][] dataSecondFrame;
         int[][] original = baseTexture.getFrameTextureData(0);
@@ -161,41 +107,6 @@ public class FieryTexture extends GradientMappedTexture {
 
     @Override
     protected void preProcess(final int[] data) {
-        //
-
-        /*
-        Start by scanning sides for empty pixels. Should be in order like this.
-        0 -> 0  3
-                |
-        2       V
-        A       3
-        |
-        2  1 <- 1
-         */
-
-        /*
-        int dataCap = data.length - 1; // Dang data caps, grrrr!
-
-        if (width == height) {
-            for (int i = 0; i < width - 1; i++) {
-                if (data[i] == 0)               blanks.add(new IntPair(i, 0));
-                if (data[1 + dataCap - i] == 0) blanks.add(new IntPair(1 + dataCap - i, 0));
-
-                if (data[(i + 1) * height] == 0)       blanks.add(new IntPair(0, (i * width) + 1));
-                if (data[dataCap - (i * height)] == 0) blanks.add(new IntPair(0, dataCap - (i * width)));
-            }
-        } else {
-            for (int x = 0; x < width - 1; x++) {
-                if (data[x] == 0)               blanks.add(new IntPair(x, 0));
-                if (data[1 + dataCap - x] == 0) blanks.add(new IntPair(1 + dataCap - x, 0));
-            }
-
-            for (int y = 0; y < height - 1; y++) {
-                if (data[(y + 1) * height] == 0)       blanks.add(new IntPair(0, (y * width) + 1));
-                if (data[dataCap - (y * height)] == 0) blanks.add(new IntPair(0, dataCap - (y * width)));
-            }
-        }//*/
-
         edge = new boolean[width * height];
         translucent = new boolean[width * height];
         int c;
@@ -237,7 +148,7 @@ public class FieryTexture extends GradientMappedTexture {
                 minimumValue = Math.min(minimumValue, getPerceptualBrightness(pixel));
                 maximumValue = Math.max(maximumValue, getPerceptualBrightness(pixel));
             }
-        }//*/
+        }
 
         if (minimumValue > maximumValue) {
             this.minimumValue = maximumValue / 255f;
