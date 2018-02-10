@@ -103,7 +103,7 @@ public enum TFCompat {
             TinkerRegistry.integrate(new MaterialIntegration(TConObjects.steeleaf, null, "Steeleaf")).toolforge().preInit();
 
             TinkerRegistry.addMaterialStats(TConObjects.fierymetal,
-                    new HeadMaterialStats(720, 8f, 8.5f, HarvestLevels.OBSIDIAN),
+                    new HeadMaterialStats(720, 8f, 7.6f, HarvestLevels.OBSIDIAN),
                     new HandleMaterialStats(0.7f, 400),
                     new ExtraMaterialStats(200),
                     new BowMaterialStats(1f, 0.9f, 2),

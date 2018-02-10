@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import slimeknights.tconstruct.library.client.MaterialRenderInfo;
 import slimeknights.tconstruct.library.client.material.deserializers.AbstractRenderInfoDeserializer;
 
+@SuppressWarnings("WeakerAccess")
 public class GradientMapInfoDeserializer extends AbstractRenderInfoDeserializer {
     @SuppressWarnings("WeakerAccess")
     @SerializedName("gradient_map")

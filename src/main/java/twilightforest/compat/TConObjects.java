@@ -16,5 +16,5 @@ public class TConObjects {
     public static final AbstractTrait precipitate = new TraitPrecipitate();
     public static final AbstractTrait valiant     = new TraitStalwart();
     public static final AbstractTrait synergy     = new TraitSynergy();
-    public static final AbstractTrait veiled = new TraitVeiled();
+    public static final AbstractTrait veiled      = new TraitVeiled();
 }

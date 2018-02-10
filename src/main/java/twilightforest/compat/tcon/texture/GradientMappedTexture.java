@@ -6,6 +6,7 @@ import slimeknights.tconstruct.library.client.texture.AbstractColoredTexture;
 
 import static net.minecraft.util.math.MathHelper.sqrt;
 
+@SuppressWarnings("WeakerAccess")
 public class GradientMappedTexture extends AbstractColoredTexture {
     protected GradientMapInfoDeserializer.GradientNode[] gradientMap;
     protected boolean shouldStretchMinimumMaximum;
