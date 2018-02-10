@@ -17,8 +17,8 @@ import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.compat.tcon.FieryInfoDeserializer;
-import twilightforest.compat.tcon.GradientMapInfoDeserializer;
+import twilightforest.compat.tcon.texture.FieryInfoDeserializer;
+import twilightforest.compat.tcon.texture.GradientMapInfoDeserializer;
 import twilightforest.enums.*;
 import twilightforest.item.TFItems;
 
@@ -122,7 +122,7 @@ public enum TFCompat {
 
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
                 MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
-                //MaterialRenderInfoLoader.addRenderInfo("fierymetal", FieryInfoDeserializer.class);
+                MaterialRenderInfoLoader.addRenderInfo("fierymetal", FieryInfoDeserializer.class);
             }
         }
 

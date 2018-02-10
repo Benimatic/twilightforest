@@ -1,4 +1,4 @@
-package twilightforest.compat.tcon;
+package twilightforest.compat.tcon.texture;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;

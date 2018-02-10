@@ -1,4 +1,4 @@
-package twilightforest.compat.tcon;
+package twilightforest.compat.tcon.texture;
 
 import net.minecraft.util.ResourceLocation;
 import slimeknights.tconstruct.library.client.RenderUtil;
@@ -7,10 +7,10 @@ import slimeknights.tconstruct.library.client.texture.AbstractColoredTexture;
 import static net.minecraft.util.math.MathHelper.sqrt;
 
 public class GradientMappedTexture extends AbstractColoredTexture {
-    private GradientMapInfoDeserializer.GradientNode[] gradientMap;
-    private boolean shouldStretchMinimumMaximum;
-    private float minimumValue;
-    private float maximumValue;
+    protected GradientMapInfoDeserializer.GradientNode[] gradientMap;
+    protected boolean shouldStretchMinimumMaximum;
+    protected float minimumValue;
+    protected float maximumValue;
 
     GradientMappedTexture(ResourceLocation baseTextureLocation, String spriteName, boolean shouldStretchMinimumMaximum, GradientMapInfoDeserializer.GradientNode[] gradientMap) {
         super(baseTextureLocation, spriteName);
@@ -19,7 +19,7 @@ public class GradientMappedTexture extends AbstractColoredTexture {
     }
 
     @Override
-    protected void preProcess(int[] data) {
+    protected void preProcess(final int[] data) {
         if (shouldStretchMinimumMaximum) {
             int minimumValue = 255;
             int maximumValue = 0;
@@ -85,7 +85,47 @@ public class GradientMappedTexture extends AbstractColoredTexture {
         return RenderUtil.compose(rTo, gTo, bTo, a);
     }
 
-    private static int getColorFromBetweenNodes(float placement, int color1, int color2, int alpha) {
+    static int getGradient(int pixel, GradientMapInfoDeserializer.GradientNode[] gradientMap) {
+        int a = RenderUtil.alpha(pixel);
+        if(a == 0) {
+            return pixel;
+        }
+
+        int rFrom = RenderUtil.red  (pixel);
+        int gFrom = RenderUtil.green(pixel);
+        int bFrom = RenderUtil.blue (pixel);
+
+        int rTo = 0, gTo = 0, bTo = 0;
+
+        // average it
+        float gray = getBalancedValue((rFrom + gFrom + bFrom) / (3.0f * 255.0f), 0f, 1f);
+
+        if (gray <= gradientMap[0].node) {
+            rTo = RenderUtil.red  (gradientMap[0].color);
+            gTo = RenderUtil.green(gradientMap[0].color);
+            bTo = RenderUtil.blue (gradientMap[0].color);
+        } else if (gray >= gradientMap[gradientMap.length-1].node) {
+            int i = gradientMap[gradientMap.length-1].color;
+
+            rTo = RenderUtil.red  (i);
+            gTo = RenderUtil.green(i);
+            bTo = RenderUtil.blue (i);
+        } else {
+            for (int i = 0; i < gradientMap.length - 1; i++) {
+                if (gray == gradientMap[i].node) {
+                    rTo = RenderUtil.red  (gradientMap[i].color);
+                    gTo = RenderUtil.green(gradientMap[i].color);
+                    bTo = RenderUtil.blue (gradientMap[i].color);
+                } else if (gray >= gradientMap[i].node && gray <= gradientMap[i+1].node) {
+                    return getColorFromBetweenNodes(getBalancedValue(gray, gradientMap[i].node, gradientMap[i+1].node), gradientMap[i].color, gradientMap[i+1].color, a);
+                }
+            }
+        }
+
+        return RenderUtil.compose(rTo, gTo, bTo, a);
+    }
+
+    protected static int getColorFromBetweenNodes(float placement, int color1, int color2, int alpha) {
         int r1 = RenderUtil.red  (color1);
         int g1 = RenderUtil.green(color1);
         int b1 = RenderUtil.blue (color1);
@@ -99,11 +139,11 @@ public class GradientMappedTexture extends AbstractColoredTexture {
                 pickIntInBetween(placement, b1, b2), alpha);
     }
 
-    private static int pickIntInBetween(float placement, float v1, float v2) {
+    protected static int pickIntInBetween(float placement, float v1, float v2) {
         return (int) sqrt(((v1 * v1) * (1.0f - placement)) + ((v2 * v2) * placement));
     }
 
-    private float getModifiedValue(float valueIn) {
+    protected final float getModifiedValue(float valueIn) {
         if (shouldStretchMinimumMaximum)
             //return (valueIn * (maximumValue - minimumValue)) + minimumValue;
             return (valueIn - minimumValue) / (maximumValue - minimumValue);
@@ -111,7 +151,7 @@ public class GradientMappedTexture extends AbstractColoredTexture {
             return valueIn;
     }
 
-    private static float getBalancedValue(float valueIn, float minimumValue, float maximumValue) {
+    protected static float getBalancedValue(float valueIn, float minimumValue, float maximumValue) {
         return (valueIn - minimumValue) / (maximumValue - minimumValue);
     }
 }
