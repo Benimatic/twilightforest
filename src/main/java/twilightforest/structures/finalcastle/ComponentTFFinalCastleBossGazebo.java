@@ -1,7 +1,12 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.BlockStandingSign;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -18,6 +23,7 @@ import java.util.Random;
 
 public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 
+	@SuppressWarnings("unused")
 	public ComponentTFFinalCastleBossGazebo() {
 	}
 
@@ -48,8 +54,13 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 		// roof
 		this.fillWithBlocks(world, sbb, 0, 11, 0, 20, 11, 20, deco.fenceState, deco.fenceState, false);
 
-		this.placeSignAtCurrentPosition(world, 10, 0, 10, "Final Boss Here", "You win!", sbb);
+		//this.placeSignAtCurrentPosition(world, 10, 0, 10, sbb, "Final Boss Here", "You win!", "discord.gg/6v3z26B");
 
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "Final Boss Here", true, 0.3f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "You win!", true, 0.0f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "You can join the Twilight Forest Discord server to follow",true, -1.0f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "the latest updates on this castle and other content at:",true, -1.3f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, -1.6f);
 
 		return true;
 	}
