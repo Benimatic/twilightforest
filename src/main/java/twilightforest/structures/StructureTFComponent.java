@@ -66,17 +66,15 @@ public abstract class StructureTFComponent extends StructureComponent {
 			final BlockPos pos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
 
 			if (sbb.isVecInside(pos)) {
-				final EntityArmorStand sheep = new EntityArmorStand(world);
-				sheep.setCustomNameTag(s);
-				//sheep.setNoAI(true);
-				sheep.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
-				sheep.setEntityInvulnerable(true);
-				sheep.setInvisible(true);
-				sheep.setAlwaysRenderNameTag(true);
-				sheep.setSilent(true);
-				sheep.setNoGravity(true);
-				world.spawnEntity(sheep);
-				//sheep.setInvisible(true);
+				final EntityArmorStand armorStand = new EntityArmorStand(world);
+				armorStand.setCustomNameTag(s);
+				armorStand.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
+				armorStand.setEntityInvulnerable(true);
+				armorStand.setInvisible(true);
+				armorStand.setAlwaysRenderNameTag(true);
+				armorStand.setSilent(true);
+				armorStand.setNoGravity(true);
+				world.spawnEntity(armorStand);
 			}
 		}
 	}
