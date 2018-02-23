@@ -23,7 +23,7 @@ public class TFConfig {
 	private final static String config = TwilightForestMod.ID + ".config.";
 
 	@Config.LangKey(config + "dimension")
-	@Config.Comment("You won't be able to change these settings without a relaunch.")
+	@Config.Comment("Settings that are not reversible without consequences.")
 	public static Dimension dimension = new Dimension();
 
 	public static class Dimension {
@@ -36,6 +36,10 @@ public class TFConfig {
 		@Config.RequiresWorldRestart
 		@Config.Comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
 		public String twilightForestSeed = "";
+
+		@Config.LangKey(config + "spawn_in_tf")
+		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
+		public boolean newPlayersSpawnInTF = false;
 	}
 
 	@Config.LangKey(config + "compat")
@@ -99,6 +103,10 @@ public class TFConfig {
 	@Config.LangKey(config + "portal_lighting")
 	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
 	public static boolean portalLightning = false;
+
+	@Config.LangKey(config + "portal_return")
+	@Config.Comment("If false, the return portal will require the activation item.")
+	public static boolean shouldReturnPortalBeUsable = true;
 
 	@Config.LangKey(config + "uncrafting")
 	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")

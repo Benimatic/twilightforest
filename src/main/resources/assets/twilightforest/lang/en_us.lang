@@ -511,6 +511,8 @@ twilightforest.config.dimension_id=Dimension ID
 twilightforest.config.dimension_id.tooltip=What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.
 twilightforest.config.dimension_seed=Dimension Seed
 twilightforest.config.dimension_seed.tooltip=If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.
+twilightforest.config.spawn_in_tf=Dimension Seed
+twilightforest.config.spawn_in_tf.tooltip=If true, players spawning for the first time will spawn in the Twilight Forest.
 
 twilightforest.config.compat=Compatibility
 twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
@@ -543,6 +545,8 @@ twilightforest.config.portal_creator_meta=Portal Creation Item's Meta
 twilightforest.config.portal_creator_meta.tooltip=Meta of item used to create the Twilight Forest Portal. -1 for any metadata.
 twilightforest.config.portal_lighting=Portal Creation Lightning Fire
 twilightforest.config.portal_lighting.tooltip=Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.
+twilightforest.config.portal_return=Should Portals generate as a two-way portal
+twilightforest.config.portal_return.tooltip=If false, the return portal will require the activation item.
 
 twilightforest.config.uncrafting=Disable Uncrafting in Uncrafting Table
 twilightforest.config.uncrafting.tooltip=Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.
