@@ -5,7 +5,7 @@
   "ingredients": [
     {
       "item": "twilightforest:twilight_scepter",
-      "data": 99
+      "data": 32767
     },
     {
       "item": "#ENDERPEARL"
