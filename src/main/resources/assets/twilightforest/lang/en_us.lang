@@ -78,9 +78,9 @@ advancement.twilight_progress_glacier=Clear Skies
 advancement.twilight_progress_glacier.desc=Defeat the Snow Queen atop the Aurora Palace, clearing away the acid rain from the highlands.
 advancement.twilight_progress_troll=I Wish For More Burning
 advancement.twilight_progress_troll.desc=Find the Lamp of Cinders in the troll caves, and you can burn away the thorn barriers.
-advancement.twilight_progress_thorns=Past the Thorns
+advancement.twilight_progress_thorns=Past the Thorns [NYI]
 advancement.twilight_progress_thorns.desc=Make it past the thornlands, and unlock the door of the castle.
-advancement.twilight_progress_castle=So Castle Very Wow
+advancement.twilight_progress_castle=So Castle Very Wow [NYI]
 advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 
 twilightforest.trophyPedestal.ineligible=You are unworthy.
