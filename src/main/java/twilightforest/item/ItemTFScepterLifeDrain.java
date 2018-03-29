@@ -42,7 +42,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
 		player.setActiveHand(hand);
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 	}
 
 	/**
