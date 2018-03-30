@@ -140,4 +140,19 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
 		return 30;
 	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
+	}
 }
