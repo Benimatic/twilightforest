@@ -142,17 +142,7 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	}
 
 	@Override
-	protected boolean canSilkHarvest() {
-		return false;
-	}
-
-	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-		return false;
-	}
-
-	@Override
-	public int damageDropped(IBlockState state) {
-		return state.getValue(VARIANT).ordinal();
+	public ItemStack getSilkTouchDrop(IBlockState state) {
+		return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
 	}
 }
