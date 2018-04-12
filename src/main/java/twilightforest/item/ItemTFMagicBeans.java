@@ -41,6 +41,7 @@ public class ItemTFMagicBeans extends ItemTF {
 		}
 	}
 
+	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
 		if (world.provider instanceof WorldProviderTwilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client

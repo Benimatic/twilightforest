@@ -1,9 +1,11 @@
 package twilightforest;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
@@ -96,6 +98,7 @@ public class TFTickHandler {
 		}
 	}
 
+	@SuppressWarnings({"UnusedReturnValue", "ConstantConditions"})
 	private static boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
 		IChunkGenerator uncheckedChunkProvider = TFWorld.getChunkGenerator(world);
 		if (!(uncheckedChunkProvider instanceof ChunkGeneratorTwilightForest)) return false;
@@ -141,8 +144,9 @@ public class TFTickHandler {
 			final List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
 
 			for (final EntityItem entityItem : itemList) {
+				IBlockState state = world.getBlockState(entityItem.getPosition());
 				if (item == entityItem.getItem().getItem()
-						&& world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)
+						&& (state.getBlock() == Blocks.WATER || state == TFBlocks.portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true))
 						&& (metadata == -1 || entityItem.getItem().getMetadata() == metadata)) {
 					Random rand = new Random();
 					for (int k = 0; k < 2; k++) {
@@ -153,7 +157,7 @@ public class TFTickHandler {
 						world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 					}
 
-					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem), entityItem)) {
+					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
 						TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
 						return;
 					}

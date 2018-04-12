@@ -3,6 +3,8 @@ package twilightforest.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
+import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -21,19 +23,17 @@ public class PacketStructureProtectionClear implements IMessage {
 	}
 
 	public static class Handler implements IMessageHandler<PacketStructureProtectionClear, IMessage> {
-
 		@Override
 		public IMessage onMessage(PacketStructureProtectionClear message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
-				public void run() {
-					World world = Minecraft.getMinecraft().world;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				WorldProvider provider = Minecraft.getMinecraft().world.provider;
 
-					// add weather box if needed
-					if (world.provider instanceof WorldProviderTwilightForest) {
-						TFWeatherRenderer weatherRenderer = (TFWeatherRenderer) world.provider.getWeatherRenderer();
+				// add weather box if needed
+				if (provider instanceof WorldProviderTwilightForest) {
+					IRenderHandler weatherRenderer = provider.getWeatherRenderer();
 
-						weatherRenderer.setProtectedBox(null);
+					if (weatherRenderer instanceof TFWeatherRenderer) {
+						((TFWeatherRenderer) weatherRenderer).setProtectedBox(null);
 					}
 				}
 			});

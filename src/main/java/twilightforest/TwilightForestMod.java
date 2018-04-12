@@ -34,11 +34,10 @@ import twilightforest.world.WorldProviderTwilightForest;
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12-0.2.3.9,);required-after:forge@[14.23.0.2599,)",
+		dependencies = "after:ctm@[MC1.12-0.2.3.12,);required-after:forge@[14.23.1.2607,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {
-
 	public static final String ID = "twilightforest";
 	public static final String VERSION = "@VERSION@";
 
@@ -51,12 +50,12 @@ public class TwilightForestMod {
 	public static final int GUI_ID_UNCRAFTING = 1;
 	public static final int GUI_ID_FURNACE = 2;
 
-
 	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
+	private static boolean compat = true;
 
 	@Instance(ID)
 	public static TwilightForestMod instance;
@@ -64,8 +63,14 @@ public class TwilightForestMod {
 	@SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
 	public static TFCommonProxy proxy;
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		if (Loader.isModLoaded("sponge"))
+			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
+					"Open the `config/sponge/global.conf` file, and set the `max-bounding-box-size` to `6000` or higher, or `0`.\n" +
+					"Sponge's default maximum bounding box is too low for the Hydra. Have fun!");
+
 		registerCreatures();
 		registerTileEntities();
 		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
@@ -79,8 +84,21 @@ public class TwilightForestMod {
 
 		// just call this so that we register structure IDs correctly
 		new StructureTFMajorFeatureStart();
+
+		compat = TFConfig.doCompat;
+
+		if (compat) {
+			try {
+				TFCompat.preInitCompat();
+			} catch (Exception e) {
+				compat = false;
+				TwilightForestMod.LOGGER.info(ID + " had an error loading preInit compatibility!");
+				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+			}
+		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void load(FMLInitializationEvent evt) {
 		TFItems.initRepairMaterials();
@@ -89,14 +107,18 @@ public class TwilightForestMod {
 		proxy.doOnLoadRegistration();
 		TFAdvancements.init();
 
-		try {
-			TFCompat.initCompat();
-		} catch (Exception e) {
-			TwilightForestMod.LOGGER.info(ID + " had an error loading compatibility!");
-			TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+		if (compat) {
+			try {
+				TFCompat.initCompat();
+			} catch (Exception e) {
+				compat = false;
+				TwilightForestMod.LOGGER.info(ID + " had an error loading init compatibility!");
+				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+			}
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
@@ -107,14 +129,17 @@ public class TwilightForestMod {
 			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
 		}
 
-		if (Loader.isModLoaded("Thaumcraft")) {
-			//FIXME: Reenable this once Thaumcraft is available.
-			//registerThaumcraftIntegration();
-		} else {
-			TwilightForestMod.LOGGER.info("Did not find Thaumcraft, did not load ThaumcraftApi integration.");
+		if (compat) {
+			try {
+				TFCompat.postInitCompat();
+			} catch (Exception e) {
+				TwilightForestMod.LOGGER.info(ID + " had an error loading postInit compatibility!");
+				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+			}
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void startServer(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandTFFeature());

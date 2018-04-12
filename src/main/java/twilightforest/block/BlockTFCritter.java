@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -36,7 +37,7 @@ public abstract class BlockTFCritter extends Block {
 		this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setSoundType(SoundType.SLIME);
-		this.setDefaultState(blockState.getBaseState().withProperty(TFBlockProperties.FACING, EnumFacing.UP));
+		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 	}
 
 	public float getWidth() {
@@ -45,25 +46,25 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, TFBlockProperties.FACING);
+		return new BlockStateContainer(this, BlockDirectional.FACING);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(TFBlockProperties.FACING).getIndex();
+		return state.getValue(BlockDirectional.FACING).getIndex();
 	}
 
 	@Nonnull
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
 	}
 
 	@Override
 	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		switch (state.getValue(TFBlockProperties.FACING)) {
+		switch (state.getValue(BlockDirectional.FACING)) {
 			case DOWN:
 				return DOWN_BB;
 			case UP:
@@ -110,7 +111,7 @@ public abstract class BlockTFCritter extends Block {
 		IBlockState state = getDefaultState();
 
 		if (canPlaceAt(world, pos.offset(sideHit.getOpposite()))) {
-			state = state.withProperty(TFBlockProperties.FACING, sideHit);
+			state = state.withProperty(BlockDirectional.FACING, sideHit);
 		}
 
 		return state;
@@ -122,7 +123,7 @@ public abstract class BlockTFCritter extends Block {
 	}
 
 	protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state) {
-		EnumFacing facing = state.getValue(TFBlockProperties.FACING);
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
 			world.destroyBlock(pos, true);
 			return false;

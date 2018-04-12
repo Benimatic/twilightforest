@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,23 +27,23 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 		this.setResistance(6000000.0F);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(TFBlockProperties.FACING, EnumFacing.DOWN));
+		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
 	}
 
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, TFBlockProperties.FACING);
+		return new BlockStateContainer(this, BlockDirectional.FACING);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(TFBlockProperties.FACING).getIndex();
+		return state.getValue(BlockDirectional.FACING).getIndex();
 	}
 
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 		RayTraceResult mop = getPlayerPointVec(world, player, 6.0);
 
 		EnumFacing hitFace = mop != null ? mop.sideHit : null;
-		EnumFacing blockFace = state.getValue(TFBlockProperties.FACING);
+		EnumFacing blockFace = state.getValue(BlockDirectional.FACING);
 
 		//System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
 
@@ -86,5 +87,20 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 		Vec3d look = player.getLook(1.0F);
 		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
+	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return 0;
 	}
 }

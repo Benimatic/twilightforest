@@ -19,10 +19,11 @@ import java.util.List;
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
+	@Config.Ignore
 	private final static String config = TwilightForestMod.ID + ".config.";
 
 	@Config.LangKey(config + "dimension")
-	@Config.Comment("You won't be able to change these settings without a relaunch.")
+	@Config.Comment("Settings that are not reversible without consequences.")
 	public static Dimension dimension = new Dimension();
 
 	public static class Dimension {
@@ -35,7 +36,15 @@ public class TFConfig {
 		@Config.RequiresWorldRestart
 		@Config.Comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
 		public String twilightForestSeed = "";
+
+		@Config.LangKey(config + "spawn_in_tf")
+		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
+		public boolean newPlayersSpawnInTF = false;
 	}
+
+	@Config.LangKey(config + "compat")
+	@Config.Comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
+	public static boolean doCompat = true;
 
 	@Config.LangKey(config + "tree_tweaks")
 	@Config.Comment("Lets you sacrifice various things to improve world performance.")
@@ -48,7 +57,7 @@ public class TFConfig {
 		public float canopyCoverage = 1.7F;
 
 		@Config.LangKey(config + "twilight_oaks")
-		@Config.RangeInt(min = 0)
+		@Config.RangeInt(min = 1)
 		@Config.Comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.")
 		public int twilightOakChance = 48;
 
@@ -90,6 +99,14 @@ public class TFConfig {
 	@Config.RangeInt(min = -1)
 	@Config.Comment("Meta of item used to create the Twilight Forest Portal. -1 for any metadata.")
 	public static int portalCreationMeta = -1;
+
+	@Config.LangKey(config + "portal_lighting")
+	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
+	public static boolean portalLightning = false;
+
+	@Config.LangKey(config + "portal_return")
+	@Config.Comment("If false, the return portal will require the activation item.")
+	public static boolean shouldReturnPortalBeUsable = true;
 
 	@Config.LangKey(config + "uncrafting")
 	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
@@ -171,6 +188,7 @@ public class TFConfig {
 				"twilightforest:borer_essence"
 		};
 
+		@Config.Ignore
 		private List<ItemStack> loadingScreenIcons;
 
 		public List<ItemStack> getLoadingScreenIcons() {
@@ -233,6 +251,7 @@ public class TFConfig {
 		antibuilderStateBlacklist = blacklist;
 	}
 
+	@Config.Ignore
 	private static List<IBlockState> antibuilderStateBlacklist;
 
 	public static List<IBlockState> getAntiBuilderBlacklist() {

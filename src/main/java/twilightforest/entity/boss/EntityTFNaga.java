@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -173,26 +175,28 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		@Override
 		public boolean shouldExecute() {
-			return taskOwner.world.getGameRules().getBoolean("mobGriefing") && taskOwner.getAttackTarget() != null && taskOwner.isCollidedHorizontally;
+			return taskOwner.world.getGameRules().getBoolean("mobGriefing") /*&& taskOwner.getAttackTarget() != null*/ && taskOwner.isCollidedHorizontally;
 		}
 
 		@Override
 		public void startExecuting() {
 			// NAGA SMASH!
-			AxisAlignedBB bb = taskOwner.getEntityBoundingBox();
-			int minx = MathHelper.floor(bb.minX - 0.5D);
-			int miny = MathHelper.floor(bb.minY + 1.01D);
-			int minz = MathHelper.floor(bb.minZ - 0.5D);
-			int maxx = MathHelper.floor(bb.maxX + 0.5D);
-			int maxy = MathHelper.floor(bb.maxY + 0.001D);
-			int maxz = MathHelper.floor(bb.maxZ + 0.5D);
-			if (taskOwner.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
-				for (int dx = minx; dx <= maxx; dx++) {
-					for (int dy = miny; dy <= maxy; dy++) {
-						for (int dz = minz; dz <= maxz; dz++) {
-							BlockPos pos = new BlockPos(dx, dy, dz);
-							if (taskOwner.getWorld().getBlockState(pos).getBlockHardness(taskOwner.getWorld(), pos) >= 0)
-								taskOwner.getWorld().destroyBlock(pos, true);
+			if (!taskOwner.getWorld().isRemote) {
+				AxisAlignedBB bb = taskOwner.getEntityBoundingBox();
+				int minx = MathHelper.floor(bb.minX - 0.75D);
+				int miny = MathHelper.floor(bb.minY + 1.01D);
+				int minz = MathHelper.floor(bb.minZ - 0.75D);
+				int maxx = MathHelper.floor(bb.maxX + 0.75D);
+				int maxy = MathHelper.floor(bb.maxY + 0.0D);
+				int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+				if (taskOwner.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
+					for (int dx = minx; dx <= maxx; dx++) {
+						for (int dy = miny; dy <= maxy; dy++) {
+							for (int dz = minz; dz <= maxz; dz++) {
+								BlockPos pos = new BlockPos(dx, dy, dz);
+								if (taskOwner.getWorld().getBlockState(pos).getBlockHardness(taskOwner.getWorld(), pos) >= 0)
+									taskOwner.getWorld().destroyBlock(pos, true);
+							}
 						}
 					}
 				}
@@ -338,6 +342,33 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 			stateCounter += 15 + taskOwner.rand.nextInt(10);
 			taskOwner.goSlow();
+		}
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+
+		if (!world.isRemote && this.world.getGameRules().getBoolean("mobGriefing")) {
+			AxisAlignedBB bb = this.getEntityBoundingBox();
+			int minx = MathHelper.floor(bb.minX - 0.75D);
+			int miny = MathHelper.floor(bb.minY + 1.01D);
+			int minz = MathHelper.floor(bb.minZ - 0.75D);
+			int maxx = MathHelper.floor(bb.maxX + 0.75D);
+			int maxy = MathHelper.floor(bb.maxY + 0.0D);
+			int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+			if (this.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
+				for (int dx = minx; dx <= maxx; dx++) {
+					for (int dy = miny; dy <= maxy; dy++) {
+						for (int dz = minz; dz <= maxz; dz++) {
+							BlockPos pos = new BlockPos(dx, dy, dz);
+							IBlockState state = this.getWorld().getBlockState(pos);
+							if (state.getMaterial() == Material.LEAVES && state.getBlockHardness(this.getWorld(), pos) >= 0)
+								this.getWorld().destroyBlock(pos, true);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -506,8 +537,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			}
 
 			BlockPos pos = new BlockPos(dx, dy, dz);
+			IBlockState state = world.getBlockState(pos);
 
-			if (!world.isAirBlock(pos)) {
+			if (state.getBlockHardness(world, pos) >= 0.0F && !state.getBlock().isAir(state, world, pos)) {
 				// todo limit what can be broken
 				world.destroyBlock(pos, true);
 
@@ -587,7 +619,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (super.attackEntityFrom(damagesource, i)) {
+		if (damagesource != DamageSource.FALL && super.attackEntityFrom(damagesource, i)) {
 			this.ticksSinceDamaged = 0;
 			return true;
 		} else {

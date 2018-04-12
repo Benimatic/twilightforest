@@ -78,9 +78,9 @@ advancement.twilight_progress_glacier=Clear Skies
 advancement.twilight_progress_glacier.desc=Defeat the Snow Queen atop the Aurora Palace, clearing away the acid rain from the highlands.
 advancement.twilight_progress_troll=I Wish For More Burning
 advancement.twilight_progress_troll.desc=Find the Lamp of Cinders in the troll caves, and you can burn away the thorn barriers.
-advancement.twilight_progress_thorns=Past the Thorns
+advancement.twilight_progress_thorns=Past the Thorns [NYI]
 advancement.twilight_progress_thorns.desc=Make it past the thornlands, and unlock the door of the castle.
-advancement.twilight_progress_castle=So Castle Very Wow
+advancement.twilight_progress_castle=So Castle Very Wow [NYI]
 advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 
 twilightforest.trophyPedestal.ineligible=You are unworthy.
@@ -511,6 +511,11 @@ twilightforest.config.dimension_id=Dimension ID
 twilightforest.config.dimension_id.tooltip=What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.
 twilightforest.config.dimension_seed=Dimension Seed
 twilightforest.config.dimension_seed.tooltip=If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.
+twilightforest.config.spawn_in_tf=Dimension Seed
+twilightforest.config.spawn_in_tf.tooltip=If true, players spawning for the first time will spawn in the Twilight Forest.
+
+twilightforest.config.compat=Compatibility
+twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
 
 twilightforest.config.tree_tweaks=Performance Tweaks
 twilightforest.config.tree_tweaks.tooltip=Lets you sacrifice various things to improve world performance.
@@ -538,6 +543,10 @@ twilightforest.config.portal_creator=Portal Creation Item
 twilightforest.config.portal_creator.tooltip=Registry String ID of item used to create the Twilight Forest Portal.
 twilightforest.config.portal_creator_meta=Portal Creation Item's Meta
 twilightforest.config.portal_creator_meta.tooltip=Meta of item used to create the Twilight Forest Portal. -1 for any metadata.
+twilightforest.config.portal_lighting=Portal Creation Lightning Fire
+twilightforest.config.portal_lighting.tooltip=Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.
+twilightforest.config.portal_return=Should Portals generate as a two-way portal
+twilightforest.config.portal_return.tooltip=If false, the return portal will require the activation item.
 
 twilightforest.config.uncrafting=Disable Uncrafting in Uncrafting Table
 twilightforest.config.uncrafting.tooltip=Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.
@@ -599,3 +608,25 @@ twilightforest.book.trollcave.3=magician. Such a person would likely hide themse
 twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
 
+fluid.fierymetal=Molten Fiery
+fluid.knightmetal=Molten Knightmetal
+fluid.fiery_essence=Fiery Essence
+
+material.nagascale.name=Naga Scale
+material.steeleaf.name=Steeleaf
+material.fierymetal.name=Fiery
+material.knightmetal.name=Knightmetal
+material.raven_feather.name=Raven's Feather
+
+modifier.twilit.name=Twilit
+modifier.twilit.desc=§oThe Twilight Forest's illuminating blessing.§r\nSpeedier in the Twilight Forest.\nMore damage outside the Twilight Forest.
+modifier.twilit.extra.speed=Mining Speed in Twilight Forest: +%s
+modifier.twilit.extra.damage=Damage outside the Twilight Forest: +%s
+modifier.precipitate.name=Precipitate
+modifier.precipitate.desc=§oThe last standing escape plan.§r\nThe less health you have, the speedier it is!
+modifier.synergy.name=Synergy
+modifier.synergy.desc=§oLook ma, no moss!§r\nWill repair itself if you have Steeleaves in your hotbar.
+modifier.stalwart.name=Stalwart
+modifier.stalwart.desc=§oThe Brave and Bold.§r\nHitting an entity can make you feel emboldened.
+modifier.veiled.name=Veiled
+modifier.veiled.desc=§oLike a Specter!§r\nProjectile will be invisible.

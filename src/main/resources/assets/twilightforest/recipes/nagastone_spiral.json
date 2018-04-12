@@ -1,0 +1,49 @@
+{
+  "result": {
+    "item": "twilightforest:spiral_bricks",
+    "data": 0,
+    "count": 8
+  },
+  "pattern": [
+    "BSS",
+    "BSS",
+    "BBB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": [
+      {
+        "item": "minecraft:stonebrick",
+        "data": 0
+      },
+      {
+        "item": "minecraft:stonebrick",
+        "data": 1
+      },
+      {
+        "item": "minecraft:stonebrick",
+        "data": 2
+      },
+      {
+        "item": "minecraft:stonebrick",
+        "data": 3
+      },
+      {
+        "item": "#STONE"
+      },
+      {
+        "item": "#STONEBRICK"
+      }
+    ],
+    "S": [
+      {
+        "item": "minecraft:stone_slab",
+        "data": 0
+      },
+      {
+        "item": "minecraft:stone_slab",
+        "data": 5
+      }
+    ]
+  }
+}

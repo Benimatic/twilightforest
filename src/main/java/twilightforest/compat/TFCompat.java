@@ -2,21 +2,46 @@ package twilightforest.compat;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.relauncher.Side;
+import slimeknights.tconstruct.library.MaterialIntegration;
+import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader;
+import slimeknights.tconstruct.library.materials.*;
+import slimeknights.tconstruct.library.utils.HarvestLevels;
+import slimeknights.tconstruct.tools.TinkerTraits;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.tcon.texture.FieryInfoDeserializer;
+import twilightforest.compat.tcon.texture.GradientMapInfoDeserializer;
 import twilightforest.enums.*;
+import twilightforest.item.TFItems;
 
 @Optional.InterfaceList({
-        @Optional.Interface(iface = "team.chisel.api.ChiselAPIProps", modid = "chisel"),
-        @Optional.Interface(iface = "team.chisel.api.IMC", modid = "chisel")
+        @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
+        @Optional.Interface(modid = "chisel", iface = "team.chisel.api.IMC"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.TinkerRegistry"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.BowMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.ExtraMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.HandleMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.HeadMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.FletchingMaterialStats"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.materials.Material"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.utils.HarvestLevels"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.tools.TinkerTraits"),
+        @Optional.Interface(modid = "tconstruct", iface = "slimeknights.tconstruct.library.traits.ITrait")
 })
 public enum TFCompat {
-    CHISEL {
+    CHISEL("Chisel") {
         @Override
         public void init() {
             addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.spiral_bricks));
@@ -56,17 +81,101 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     }, // TODO Forestry
-    JEI {
+    JEI("Just Enough Items") {
+
+    },
+    @SuppressWarnings("WeakerAccess")
+    TCONSTRUCT("Tinkers' Construct") {
+        @Optional.Method(modid = "tconstruct")
+        @Override
+        protected void preInit() {
+            TinkerRegistry.addMaterialStats(TConObjects.nagascale,
+                    new HeadMaterialStats(460, 8.9f, 4.3f, HarvestLevels.IRON),
+                    new BowMaterialStats(0.6f, 2f, 0),
+                    new ArrowShaftMaterialStats(1.4f, 20));
+            TinkerRegistry.integrate(TConObjects.nagascale).preInit();
+
+            TinkerRegistry.addMaterialStats(TConObjects.steeleaf,
+                    new HeadMaterialStats(180, 8f, 7f, HarvestLevels.DIAMOND),
+                    new HandleMaterialStats(0.8f, 100),
+                    new ExtraMaterialStats(100),
+                    new BowMaterialStats(1.4f, 1.8f, 4),
+                    new ArrowShaftMaterialStats(0.6f, 10),
+                    new FletchingMaterialStats(1f, 0.8f));
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.steeleaf, null, "Steeleaf")).toolforge().preInit();
+
+            TinkerRegistry.addMaterialStats(TConObjects.fierymetal,
+                    new HeadMaterialStats(720, 8f, 7.6f, HarvestLevels.OBSIDIAN),
+                    new HandleMaterialStats(0.7f, 400),
+                    new ExtraMaterialStats(200),
+                    new BowMaterialStats(1f, 0.9f, 2),
+                    new ArrowShaftMaterialStats(0.8f, 0));
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.fierymetal, RegisterBlockEvent.moltenFiery, "Fiery")).toolforge().preInit();
+
+            TinkerRegistry.addMaterialStats(TConObjects.knightmetal,
+                    new HeadMaterialStats(1200, 8f, 7f, HarvestLevels.COBALT),
+                    new HandleMaterialStats(1.5f, 100),
+                    new ExtraMaterialStats(550));
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.knightmetal, RegisterBlockEvent.moltenKnightmetal, "Knightmetal")).preInit();
+
+            TinkerRegistry.addMaterialStats(TConObjects.ravenFeather,
+                    new FletchingMaterialStats(0.95f, 1.15f));
+            TinkerRegistry.integrate(TConObjects.ravenFeather).preInit();
+
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+                MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
+                MaterialRenderInfoLoader.addRenderInfo("fierymetal", FieryInfoDeserializer.class);
+            }
+        }
+
+        @Optional.Method(modid = "tconstruct")
         @Override
         protected void init() {
+            TConObjects.nagascale.addItem(TFItems.nagaScale, 1, Material.VALUE_Ingot);
+            TConObjects.nagascale
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TConObjects.precipitate)
+                    .setCraftable(true).setCastable(false)
+                    .setRepresentativeItem(TFItems.nagaScale);
 
+            TConObjects.steeleaf.addCommonItems("Steeleaf");
+            TConObjects.steeleaf
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TConObjects.synergy)
+                    .setCraftable(true).setCastable(false)
+                    .setRepresentativeItem(TFItems.steeleafIngot);
+
+            TConObjects.fierymetal.addCommonItems("Fiery");
+            TConObjects.fierymetal
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TinkerTraits.autosmelt, MaterialTypes.HEAD)
+                    .addTrait(TinkerTraits.superheat, MaterialTypes.HEAD)
+                    .addTrait(TinkerTraits.flammable)
+                    .setCraftable(false).setCastable(true)
+                    .setRepresentativeItem(TFItems.fieryIngot);
+
+            TConObjects.knightmetal.addCommonItems("Knightmetal");
+            TConObjects.knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
+            TConObjects.knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
+            TConObjects.knightmetal
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TConObjects.valiant)
+                    .setCraftable(false).setCastable(true)
+                    .setRepresentativeItem(TFItems.knightMetal);
+
+            TConObjects.ravenFeather.addItem(TFItems.feather, 1, Material.VALUE_Ingot);
+            TConObjects.ravenFeather
+                    .addTrait(TConObjects.twilit)
+                    .addTrait(TConObjects.veiled)
+                    .setCraftable(true).setCastable(false)
+                    .setRepresentativeItem(TFItems.feather);
         }
     },
-    THAUMCRAFT {
+    THAUMCRAFT("Thaumcraft") {
         // Use the thaumcraft API to register our things with aspects and biomes with values
-        // TODO: Reenable once Thaumcraft API is available
+        // TODO: Reenable once Thaumcraft API is available. Soooon™
         @Override
-        protected void init() {
+        protected void postInit() {
             /*try {
 
                 // items
@@ -213,20 +322,61 @@ public enum TFCompat {
         }//*/
     };
 
-    protected abstract void init();
+    protected void preInit() {}
+    protected void init() {}
+    protected void postInit() {}
 
-    public static void initCompat() {
+    final private String modName;
+
+    private boolean isActivated = false;
+
+    TFCompat(String modName) {
+        this.modName = modName;
+    }
+
+    public static void preInitCompat() {
         for (TFCompat compat : TFCompat.values()) {
             if (Loader.isModLoaded(compat.name().toLowerCase())) {
                 try {
-                    compat.init();
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.name().toLowerCase() + "");
+                    compat.preInit();
+                    compat.isActivated = true;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + ".");
                 } catch (Exception e) {
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.name().toLowerCase() + " compatibility!");
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             } else {
-                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.name().toLowerCase() + "");
+                compat.isActivated = false;
+                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.modName + ".");
+            }
+        }
+    }
+
+    public static void initCompat() {
+        for (TFCompat compat : TFCompat.values()) {
+            if (compat.isActivated) {
+                try {
+                    compat.init();
+                } catch (Exception e) {
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in init!");
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
+            }
+        }
+    }
+
+    public static void postInitCompat() {
+        for (TFCompat compat : TFCompat.values()) {
+            if (compat.isActivated) {
+                try {
+                    compat.postInit();
+                } catch (Exception e) {
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in postInit!");
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
             }
         }
     }

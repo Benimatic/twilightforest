@@ -40,6 +40,8 @@ public final class TFSounds {
 	public static final SoundEvent ICE_DEATH = createEvent("mob.ice.death");
 	public static final SoundEvent SLIDER = createEvent("random.slider");
 
+	public static final SoundEvent MUSIC = createEvent("music.bg");
+
 	private static SoundEvent createEvent(String sound) {
 		ResourceLocation name = new ResourceLocation(TwilightForestMod.ID, sound);
 		return new SoundEvent(name).setRegistryName(name);
@@ -77,6 +79,8 @@ public final class TFSounds {
 		evt.getRegistry().register(ICE_DEATH);
 		evt.getRegistry().register(ICE_HURT);
 		evt.getRegistry().register(SLIDER);
+
+		evt.getRegistry().register(MUSIC);
 	}
 
 	private TFSounds() {

@@ -3,6 +3,7 @@
  */
 package twilightforest.world;
 
+import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -17,8 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.client.TFClientProxy;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
+
+import javax.annotation.Nullable;
 
 
 /**
@@ -27,6 +31,13 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 public class WorldProviderTwilightForest extends WorldProviderSurface {
 	public WorldProviderTwilightForest() {
 		setDimension(TFConfig.dimension.dimensionID);
+	}
+
+	@Nullable
+	@Override
+	@SideOnly(Side.CLIENT)
+	public MusicTicker.MusicType getMusicType() {
+		return TFClientProxy.TFMUSICTYPE;
 	}
 
 	@Override
@@ -72,6 +83,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	/**
 	 * This seems to be a function checking whether we have an ocean.
 	 */
+	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean isSkyColored() {
 		return false;

@@ -19,8 +19,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
@@ -40,6 +40,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -48,6 +49,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFCritter;
 import twilightforest.block.BlockTFGiantBlock;
+import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.enchantment.TFEnchantment;
@@ -264,6 +266,7 @@ public class TFEventListener {
 
 			if (tier1) {
 				keepAllArmor(player, keepInventory);
+				keepOffHand(player, keepInventory);
 				if (!tier2 && !player.inventory.getCurrentItem().isEmpty()) {
 					keepInventory.mainInventory.set(player.inventory.currentItem, player.inventory.mainInventory.get(player.inventory.currentItem).copy());
 					player.inventory.mainInventory.set(player.inventory.currentItem, ItemStack.EMPTY);
@@ -305,6 +308,13 @@ public class TFEventListener {
 		}
 	}
 
+	private static void keepOffHand(EntityPlayer player, InventoryPlayer keepInventory) {
+		for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
+			keepInventory.offHandInventory.set(i, player.inventory.offHandInventory.get(i).copy());
+			player.inventory.offHandInventory.set(i, ItemStack.EMPTY);
+		}
+	}
+
 	/**
 	 * Maybe we kept some stuff for the player!
 	 */
@@ -316,13 +326,35 @@ public class TFEventListener {
 			TwilightForestMod.LOGGER.debug("Player {} respawned and received items held in storage", player.getName());
 
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
-				if (!keepInventory.armorInventory.get(i).isEmpty()) {
-					player.inventory.armorInventory.set(i, keepInventory.armorInventory.get(i));
+				ItemStack kept = keepInventory.armorInventory.get(i);
+				if (!kept.isEmpty()) {
+					ItemStack existing = player.inventory.armorInventory.set(i, kept);
+					if (!existing.isEmpty()) {
+						player.dropItem(existing, false);
+					}
+				}
+			}
+			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
+				ItemStack kept = keepInventory.offHandInventory.get(i);
+				if (!kept.isEmpty()) {
+					ItemStack existing = player.inventory.offHandInventory.set(i, kept);
+					if (!existing.isEmpty()) {
+						player.dropItem(existing, false);
+					}
+				}
+			}
+			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
+				if (!keepInventory.offHandInventory.get(i).isEmpty()) {
+					player.inventory.offHandInventory.set(i, keepInventory.offHandInventory.get(i));
 				}
 			}
 			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-				if (!keepInventory.mainInventory.get(i).isEmpty()) {
-					player.inventory.mainInventory.set(i, keepInventory.mainInventory.get(i));
+				ItemStack kept = keepInventory.mainInventory.get(i);
+				if (!kept.isEmpty()) {
+					ItemStack existing = player.inventory.mainInventory.set(i, kept);
+					if (!existing.isEmpty()) {
+						player.dropItem(existing, false);
+					}
 				}
 			}
 
@@ -600,4 +632,19 @@ public class TFEventListener {
 		}
 	}
 
+	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
+
+	@SubscribeEvent
+	public static void banishNewbieToTwilightZone(PlayerEvent.PlayerLoggedInEvent event) {
+		NBTTagCompound tagCompound = event.player.getEntityData();
+		NBTTagCompound playerData = tagCompound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+
+		// getBoolean returns false, if false or didn't exist
+		boolean shouldBanishPlayer = TFConfig.dimension.newPlayersSpawnInTF && !playerData.getBoolean(NBT_TAG_TWILIGHT);
+
+		playerData.setBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
+		tagCompound.setTag(EntityPlayer.PERSISTED_NBT_TAG, playerData); // commit
+
+		if (shouldBanishPlayer) BlockTFPortal.attemptSendPlayer(event.player, true); // See ya hate to be ya
+	}
 }

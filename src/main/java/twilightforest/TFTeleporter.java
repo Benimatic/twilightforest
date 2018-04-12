@@ -15,8 +15,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import twilightforest.biomes.TFBiomeBase;
+import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class TFTeleporter extends Teleporter {
@@ -74,6 +76,7 @@ public class TFTeleporter extends Teleporter {
 		}
 	}
 
+	@Nullable
 	private BlockPos findSafeCoords(int range, BlockPos pos, Entity par1Entity) {
 		for (int i = 0; i < 25; i++) {
 			BlockPos dPos = new BlockPos(
@@ -114,10 +117,10 @@ public class TFTeleporter extends Teleporter {
 		long l = ChunkPos.asLong(j, k);
 
 		if (this.destinationCoordinateCache.containsKey(l)) {
-			Teleporter.PortalPosition teleporter$portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache.get(l);
+			Teleporter.PortalPosition portalPosition = this.destinationCoordinateCache.get(l);
 			d0 = 0.0D;
-			blockpos = teleporter$portalposition;
-			teleporter$portalposition.lastUpdateTime = this.world.getTotalWorldTime();
+			blockpos = portalPosition;
+			portalPosition.lastUpdateTime = this.world.getTotalWorldTime();
 			flag = false;
 		} else {
 			BlockPos blockpos3 = new BlockPos(entityIn);
@@ -196,23 +199,24 @@ public class TFTeleporter extends Teleporter {
 	@Override
 	public boolean makePortal(Entity entity) {
 		BlockPos spot = findPortalCoords(entity, true);
+		String name = entity.getCustomNameTag();
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found ideal portal spot");
+			TwilightForestMod.LOGGER.debug("Found ideal portal spot for " + name);
 			makePortalAt(world, spot);
 			return true;
 		} else {
-			TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one");
+			TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for " + name);
 			spot = findPortalCoords(entity, false);
 			if (spot != null) {
-				TwilightForestMod.LOGGER.debug("Found okay portal spot");
+				TwilightForestMod.LOGGER.debug("Found okay portal spot for " + name);
 				makePortalAt(world, spot);
 				return true;
 			}
 		}
 
-		// well I don't think we can actally just return false and fail here
-		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one");
+		// well I don't think we can actually just return false and fail here
+		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for " + name);
 
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
@@ -222,6 +226,7 @@ public class TFTeleporter extends Teleporter {
 		return false;
 	}
 
+	@Nullable
 	private BlockPos findPortalCoords(Entity entity, boolean ideal) {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
@@ -296,7 +301,6 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private void makePortalAt(World world, BlockPos pos) {
-
 		if (pos.getY() < 30) {
 			pos = new BlockPos(pos.getX(), 30, pos.getZ());
 		}
@@ -333,10 +337,12 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.east().south().down(), Blocks.DIRT.getDefaultState());
 
 		// portal in it
-		world.setBlockState(pos, TFBlocks.portal.getDefaultState(), 2);
-		world.setBlockState(pos.east(), TFBlocks.portal.getDefaultState(), 2);
-		world.setBlockState(pos.south(), TFBlocks.portal.getDefaultState(), 2);
-		world.setBlockState(pos.east().south(), TFBlocks.portal.getDefaultState(), 2);
+		IBlockState portal = TFBlocks.portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
+
+		world.setBlockState(pos, portal, 2);
+		world.setBlockState(pos.east(), portal, 2);
+		world.setBlockState(pos.south(), portal, 2);
+		world.setBlockState(pos.east().south(), portal, 2);
 
 		// meh, let's just make a bunch of air over it for 4 squares
 		for (int dx = -1; dx <= 2; dx++) {

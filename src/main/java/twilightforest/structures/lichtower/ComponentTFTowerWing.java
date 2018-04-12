@@ -1178,7 +1178,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		final IBlockState oakFence = Blocks.OAK_FENCE.getDefaultState();
 
-		setDebugEntity(world, cx, cy, cz, "TowerWing.decorateChandelier");
+		//setDebugEntity(world, cx, cy, cz, sbb, "TowerWing.decorateChandelier");
 		surroundBlockCardinal(world, oakFence, cx, cy, cz, sbb);
 		surroundBlockCardinal(world, oakFence, cx, cy + 1, cz, sbb);
 

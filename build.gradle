@@ -108,4 +108,6 @@ dependencies {
     compile "team.chisel.ctm:CTM:MC1.12-${ctm_version}"
     compile "team.chisel:Chisel:MC${chisel_version}:api"
     runtime "team.chisel:Chisel:MC${chisel_version}"
+    compile "slimeknights:TConstruct:$minecraft_version-$tcon_version:deobf"
+    compile "slimeknights.mantle:Mantle:1.12-$mantle_version:deobf"
 }

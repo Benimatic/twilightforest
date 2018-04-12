@@ -71,7 +71,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		}
 	}
 
-	public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, EnumFacing dir) {
+	public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable EnumFacing dir) {
 		switch (dir) {
 			default:
 				return new StructureBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
@@ -219,6 +219,25 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			if (teSign != null) {
 				teSign.signText[1] = new TextComponentString(string0);
 				teSign.signText[2] = new TextComponentString(string1);
+			}
+		}
+	}
+
+	protected void placeSignAtCurrentPosition(World world, int x, int y, int z, StructureBoundingBox sbb, String... text) {
+		int dx = getXWithOffset(x, z);
+		int dy = getYWithOffset(y);
+		int dz = getZWithOffset(x, z);
+		BlockPos pos = new BlockPos(dx, dy, dz);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.STANDING_SIGN) {
+			world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().withProperty(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
+
+			TileEntitySign teSign = (TileEntitySign) world.getTileEntity(pos);
+			if (teSign != null) {
+				int min = Math.min(text.length, teSign.signText.length);
+
+				for (int i = 0; i < min; i++) {
+					teSign.signText[i] = new TextComponentString(text[i]);
+				}
 			}
 		}
 	}

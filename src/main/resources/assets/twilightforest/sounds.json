@@ -28,5 +28,10 @@
   "mob.ice.noise": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/noise0", "twilightforest:mob/ice/noise1" ] },
   "mob.ice.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/hurt0", "twilightforest:mob/ice/hurt1" ] },
   "mob.ice.death": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/death0", "twilightforest:mob/ice/death1" ] },
-  "random.slider": { "category": "block", "sounds": [ "twilightforest:random/creakgo2" ] }
+  "random.slider": { "category": "block", "sounds": [ "twilightforest:random/creakgo2" ] },
+  "music.bg": { "category": "music", "sounds": [
+	{ "name": "twilightforest:music/superstitious", "stream": true, "weight": 3 },
+	{ "name": "twilightforest:music/steps", "stream": true, "weight": 3 },
+	{ "name": "music.game", "stream": true, "weight": 1, "type": "event" }
+  ] }
 }

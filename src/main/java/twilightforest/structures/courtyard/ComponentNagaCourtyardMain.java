@@ -10,9 +10,8 @@ import twilightforest.structures.StructureTFComponentOld;
 import java.util.Random;
 
 public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
-
-	// that gives us a 95 x 95 area to work with
-	static int RADIUS = 62;
+	static int ROW_OF_CELLS = 8;
+	static int RADIUS = (int) ((((ROW_OF_CELLS - 2) / 2.0F) * 12.0F) + 8);
 	static int DIAMETER = 2 * RADIUS + 1;
 
 	static final float HEDGE_FLOOF = 0.5f;
@@ -26,11 +25,11 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	}
 
 	public ComponentNagaCourtyardMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, rand, i, 11, 11);
+		super(feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS);
 
 		this.setCoordBaseMode(EnumFacing.NORTH);
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.NORTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getCoordBaseMode());
 	}
 
 	@Override
