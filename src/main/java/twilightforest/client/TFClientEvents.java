@@ -73,18 +73,15 @@ public class TFClientEvents {
 
 	// Slowness potion uses an attribute modifier with specific UUID
 	// We can detect whether an entity has slowness from the client by looking for this UUID
-	private static final AttributeModifier SLOWNESS_POTION_MODIFIER =
-			new AttributeModifier(UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890"), "doesntmatter", 0, 0);
+	private static final AttributeModifier FROSTED_POTION_MODIFIER =
+			new AttributeModifier(UUID.fromString("CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9"), "doesntmatter", 0, 0);
 
 	/**
 	 * Do ice effect on slowed monsters
-	 * TODO make this more sane, maybe add new potion effect "Frosted" or something like that
 	 */
 	@SubscribeEvent
 	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
-		boolean hasSlowness = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(SLOWNESS_POTION_MODIFIER);
-		boolean showParticles = event.getEntity().getDataManager().get(EntityLivingBase.HIDE_PARTICLES);
-		if (hasSlowness && showParticles) {
+		if (event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(FROSTED_POTION_MODIFIER)) {
 			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
 	}
