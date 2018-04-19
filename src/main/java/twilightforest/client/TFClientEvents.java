@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
@@ -48,19 +49,13 @@ public class TFClientEvents {
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
 
-		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_still"), moltenFieryStill));
-		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_flow"), moltenFieryFlow));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_still"), moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_flow"), moltenKnightmetalFlow, true, KNIGHTMETAL_GRADIENT_MAP));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_still"), essenceFieryStill, true, FIERY_ESSENCE_GRADIENT_MAP));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_flow"), essenceFieryFlow, true, FIERY_ESSENCE_GRADIENT_MAP));
+		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_still"), RegisterBlockEvent.moltenFieryStill));
+		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_flow"), RegisterBlockEvent.moltenFieryFlow));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_still"), RegisterBlockEvent.moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_flow"), RegisterBlockEvent.moltenKnightmetalFlow, true, KNIGHTMETAL_GRADIENT_MAP));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_still"), RegisterBlockEvent.essenceFieryStill, true, FIERY_ESSENCE_GRADIENT_MAP));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_flow"), RegisterBlockEvent.essenceFieryFlow, true, FIERY_ESSENCE_GRADIENT_MAP));
 	}
-
-	public static final ResourceLocation moltenFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_fiery_still");
-	public static final ResourceLocation moltenFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_fiery_flow");
-
-	public static final ResourceLocation moltenKnightmetalStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_knightmetal_still");
-	public static final ResourceLocation moltenKnightmetalFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_knightmetal_flow");
 
 	public static final GradientNode[] KNIGHTMETAL_GRADIENT_MAP = {
 			new GradientNode(0.0f , 0xFF_33_32_32),
@@ -70,9 +65,6 @@ public class TFClientEvents {
 			new GradientNode(0.6f , 0xFF_C4_D6_AE),
 			new GradientNode(1.0f , 0xFF_E7_FC_CD)
 	};
-
-	public static final ResourceLocation essenceFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/fluid_fiery_still");
-	public static final ResourceLocation essenceFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/fluid_fiery_flow");
 
 	public static final GradientNode[] FIERY_ESSENCE_GRADIENT_MAP = {
 			new GradientNode(0.2f, 0xFF_3D_17_17),
