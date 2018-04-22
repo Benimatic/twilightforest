@@ -132,8 +132,8 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMoonwormShot.class, RenderTFMoonwormShot::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFCharmEffect.class, m -> new RenderTFCharm(m, Minecraft.getMinecraft().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBomb.class, m -> new RenderSnowball<>(m, Items.MAGMA_CREAM, Minecraft.getMinecraft().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownAxe.class, m -> new RenderTFThrownAxe(m, TFItems.knightlyAxe));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownPick.class, m -> new RenderTFThrownAxe(m, TFItems.knightlyPick));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownAxe.class, m -> new RenderTFThrownAxe(m, TFItems.knightmetal_axe));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownPick.class, m -> new RenderTFThrownAxe(m, TFItems.knightmetal_pickaxe));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFFallingIce.class, RenderTFFallingIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceBomb.class, RenderTFThrownIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new RenderSnowball<>(m, Items.SNOWBALL, Minecraft.getMinecraft().getRenderItem()));

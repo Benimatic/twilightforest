@@ -69,19 +69,19 @@ public class TConstruct {
     }
 
     static void init() {
-        TConstruct.nagascale.addItem(TFItems.nagaScale, 1, Material.VALUE_Ingot);
+        TConstruct.nagascale.addItem(TFItems.naga_scale, 1, Material.VALUE_Ingot);
         TConstruct.nagascale
                 .addTrait(TConstruct.twilit)
                 .addTrait(TConstruct.precipitate)
                 .setCraftable(true).setCastable(false)
-                .setRepresentativeItem(TFItems.nagaScale);
+                .setRepresentativeItem(TFItems.naga_scale);
 
         TConstruct.steeleaf.addCommonItems("Steeleaf");
         TConstruct.steeleaf
                 .addTrait(TConstruct.twilit)
                 .addTrait(TConstruct.synergy)
                 .setCraftable(true).setCastable(false)
-                .setRepresentativeItem(TFItems.steeleafIngot);
+                .setRepresentativeItem(TFItems.steeleaf_ingot);
 
         TConstruct.fierymetal.addCommonItems("Fiery");
         TConstruct.fierymetal
@@ -90,22 +90,22 @@ public class TConstruct {
                 .addTrait(TinkerTraits.superheat, MaterialTypes.HEAD)
                 .addTrait(TinkerTraits.flammable)
                 .setCraftable(false).setCastable(true)
-                .setRepresentativeItem(TFItems.fieryIngot);
+                .setRepresentativeItem(TFItems.fiery_ingot);
 
         TConstruct.knightmetal.addCommonItems("Knightmetal");
-        TConstruct.knightmetal.addItem(TFItems.armorShard, 1, Material.VALUE_Nugget);
+        TConstruct.knightmetal.addItem(TFItems.armor_shard, 1, Material.VALUE_Nugget);
         TConstruct.knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
         TConstruct.knightmetal
                 .addTrait(TConstruct.twilit)
                 .addTrait(TConstruct.valiant)
                 .setCraftable(false).setCastable(true)
-                .setRepresentativeItem(TFItems.knightMetal);
+                .setRepresentativeItem(TFItems.knightmetal_ingot);
 
-        TConstruct.ravenFeather.addItem(TFItems.feather, 1, Material.VALUE_Ingot);
+        TConstruct.ravenFeather.addItem(TFItems.raven_feather, 1, Material.VALUE_Ingot);
         TConstruct.ravenFeather
                 .addTrait(TConstruct.twilit)
                 .addTrait(TConstruct.veiled)
                 .setCraftable(true).setCastable(false)
-                .setRepresentativeItem(TFItems.feather);
+                .setRepresentativeItem(TFItems.raven_feather);
     }
 }
