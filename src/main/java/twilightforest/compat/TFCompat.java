@@ -99,7 +99,7 @@ public enum TFCompat {
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + ".");
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility!");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             } else {
@@ -116,7 +116,7 @@ public enum TFCompat {
                     compat.init();
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in init!");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in init!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }
@@ -130,7 +130,7 @@ public enum TFCompat {
                     compat.postInit();
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had an error loading " + compat.modName + " compatibility in postInit!");
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in postInit!");
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }

@@ -218,9 +218,9 @@ public class Thaumcraft {
                     .add(Aspect.DESIRE, 40)
                     .add(Aspect.EXCHANGE, 40));
 
-            TwilightForestMod.LOGGER.info("[TwilightForest] Loaded ThaumcraftApi integration.");
+            //TwilightForestMod.LOGGER.info("Loaded ThaumcraftApi integration.");
         } catch (Exception e) {
-            TwilightForestMod.LOGGER.warn("[TwilightForest] Had an %s error while trying to register with ThaumcraftApi.", e.getLocalizedMessage());
+            //TwilightForestMod.LOGGER.warn("Had an %s error while trying to register with ThaumcraftApi.", e.getLocalizedMessage());
             // whatever.
         }
     }
