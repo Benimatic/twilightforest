@@ -7,7 +7,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 public class Thaumcraft {
