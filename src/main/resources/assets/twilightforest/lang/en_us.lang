@@ -513,7 +513,7 @@ twilightforest.config.dimension_id=Dimension ID
 twilightforest.config.dimension_id.tooltip=What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.
 twilightforest.config.dimension_seed=Dimension Seed
 twilightforest.config.dimension_seed.tooltip=If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.
-twilightforest.config.spawn_in_tf=Dimension Seed
+twilightforest.config.spawn_in_tf=New Players Spawn in Twilight Forest
 twilightforest.config.spawn_in_tf.tooltip=If true, players spawning for the first time will spawn in the Twilight Forest.
 
 twilightforest.config.compat=Compatibility
