@@ -77,7 +77,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
             }
         }
 
-		world.scheduleUpdate(pos, this, 1);
+		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
