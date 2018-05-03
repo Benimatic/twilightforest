@@ -70,6 +70,11 @@ public enum TFCompat {
         protected void init() {
             TConstruct.init();
         }
+
+        @Override
+        protected void postInit() {
+            TConstruct.postInit();
+        }
     },
     THAUMCRAFT("Thaumcraft") {
         @Override
