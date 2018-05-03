@@ -44,6 +44,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
 	private static final AxisAlignedBB AABB_ITEM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.4F, 1.0F);
+	private static final int PORTAL_SIZE_LIMIT = 64;
 
 	public BlockTFPortal() {
 		super(Material.PORTAL, false);
@@ -99,9 +100,9 @@ public class BlockTFPortal extends BlockBreakable {
 			HashMap<BlockPos, Boolean> blocksChecked = new HashMap<>();
 			blocksChecked.put(pos, true);
 
-			MutableInt number = new MutableInt(64);
+			MutableInt size = new MutableInt(0);
 
-			if (recursivelyValidatePortal(world, pos, blocksChecked, number, state) && number.getInt() > 3) {
+			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.get() > 3) {
 				activationItem.getItem().shrink(1);
 				causeLightning(world, pos, TFConfig.portalLightning);
 
@@ -134,10 +135,10 @@ public class BlockTFPortal extends BlockBreakable {
 	private static boolean recursivelyValidatePortal(World world, BlockPos pos, HashMap<BlockPos, Boolean> blocksChecked, MutableInt waterLimit, IBlockState requiredBlockFor) {
 		boolean isPoolProbablyEnclosed = true;
 
-		waterLimit.decrement();
-		if (waterLimit.getInt() < 0) return false;
+		waterLimit.increment();
+		if (waterLimit.get() > PORTAL_SIZE_LIMIT) return false;
 
-		for (int i = 0; i < EnumFacing.HORIZONTALS.length && waterLimit.getInt() >= 0; i++) {
+		for (int i = 0; i < EnumFacing.HORIZONTALS.length && waterLimit.get() <= PORTAL_SIZE_LIMIT; i++) {
 			BlockPos positionCheck = pos.offset(EnumFacing.HORIZONTALS[i]);
 
 			if (!blocksChecked.containsKey(positionCheck)) {
@@ -163,12 +164,12 @@ public class BlockTFPortal extends BlockBreakable {
 			this.anInt = anInt;
 		}
 
-		int getInt() {
+		int get() {
 			return anInt;
 		}
 
-		void decrement() {
-			this.anInt = this.anInt - 1;
+		void increment() {
+			this.anInt++;
 		}
 	}
 
