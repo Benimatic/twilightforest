@@ -1,11 +1,18 @@
 package twilightforest.compat;
 
+import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
+import baubles.api.IBauble;
+import baubles.api.cap.BaublesCapabilities;
 import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import twilightforest.TwilightForestMod;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
@@ -44,10 +51,6 @@ public class Baubles {
     public static void respawnBaubles(EntityPlayer player, ItemStack[] arrayIn) {
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
 
-        TwilightForestMod.LOGGER.info(baubles);
-        TwilightForestMod.LOGGER.info(baubles.getSlots());
-        TwilightForestMod.LOGGER.info(arrayIn.length);
-
         if (arrayIn.length == baubles.getSlots()) {
             for (int i = 0; i < baubles.getSlots() && i < arrayIn.length; i++)
                 baubles.setStackInSlot(i, arrayIn[i]);
@@ -66,5 +69,19 @@ public class Baubles {
 
     public static int getSlotAmount(EntityPlayer player) {
         return BaublesApi.getBaublesHandler(player).getSlots();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final class BasicBaubleProvider implements ICapabilityProvider {
+        @Override
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+            return capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE;
+        }
+
+        @Nullable
+        @Override
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+            return capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE ? (T) (IBauble) itemStack -> BaubleType.TRINKET : null;
+        }
     }
 }

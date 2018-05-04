@@ -283,23 +283,11 @@ public class TFEventListener {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
-
-                if (TFCompat.BAUBLES.isActivated()) {
-                    ItemStack[] items = new ItemStack[Baubles.getSlotAmount(player)];
-                    Baubles.keepBaubles(player, items);
-                    playerKeepsMapBaubles.put(playerUUID, items);
-                }
 			} else if (tier2) {
 				for (int i = 0; i < 9; i++) {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
-
-                if (TFCompat.BAUBLES.isActivated()) {
-                    ItemStack[] items = new ItemStack[Baubles.getSlotAmount(player)];
-                    Baubles.keepBaubles(player, items);
-                    playerKeepsMapBaubles.put(playerUUID, items);
-                }
 			}
 
 			// always keep tower keys
@@ -309,6 +297,12 @@ public class TFEventListener {
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
 			}
+
+            if (TFCompat.BAUBLES.isActivated()) {
+                ItemStack[] items = new ItemStack[Baubles.getSlotAmount(player)];
+                Baubles.keepBaubles(player, items);
+                playerKeepsMapBaubles.put(playerUUID, items);
+            }
 
 			playerKeepsMap.put(playerUUID, keepInventory);
 		}
