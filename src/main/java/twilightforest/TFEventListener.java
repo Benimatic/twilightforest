@@ -46,12 +46,15 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFCritter;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.compat.Baubles;
+import twilightforest.compat.TFCompat;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.EntityTFPinchBeetle;
@@ -64,9 +67,7 @@ import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * So much of the mod logic in this one class
@@ -75,6 +76,7 @@ import java.util.UUID;
 public class TFEventListener {
 
 	private static Map<UUID, InventoryPlayer> playerKeepsMap = new HashMap<>();
+	private static Map<UUID, ItemStack[]> playerKeepsMapBaubles = new HashMap<>();
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
@@ -265,6 +267,8 @@ public class TFEventListener {
 
 			InventoryPlayer keepInventory = new InventoryPlayer(null);
 
+            UUID playerUUID = player.getUniqueID();
+
 			if (tier1) {
 				keepAllArmor(player, keepInventory);
 				keepOffHand(player, keepInventory);
@@ -279,11 +283,23 @@ public class TFEventListener {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
+
+                if (TFCompat.BAUBLES.isActivated()) {
+                    ItemStack[] items = new ItemStack[Baubles.getSlotAmount(player)];
+                    Baubles.keepBaubles(player, items);
+                    playerKeepsMapBaubles.put(playerUUID, items);
+                }
 			} else if (tier2) {
 				for (int i = 0; i < 9; i++) {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
+
+                if (TFCompat.BAUBLES.isActivated()) {
+                    ItemStack[] items = new ItemStack[Baubles.getSlotAmount(player)];
+                    Baubles.keepBaubles(player, items);
+                    playerKeepsMapBaubles.put(playerUUID, items);
+                }
 			}
 
 			// always keep tower keys
@@ -294,8 +310,7 @@ public class TFEventListener {
 				}
 			}
 
-
-			playerKeepsMap.put(player.getUniqueID(), keepInventory);
+			playerKeepsMap.put(playerUUID, keepInventory);
 		}
 	}
 
@@ -371,6 +386,14 @@ public class TFEventListener {
 				player.world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1.5F, 1.0F, true);
 			}
 		}
+
+        if (TFCompat.BAUBLES.isActivated()) {
+		    if (keepInventory == null)
+                TwilightForestMod.LOGGER.debug("Player {} respawned and received baubles held in storage", player.getName());
+
+            ItemStack[] baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
+            if (baubles != null) Baubles.respawnBaubles(player, baubles);
+        }
 	}
 
 	/**
@@ -381,12 +404,24 @@ public class TFEventListener {
 		EntityPlayer player = event.player;
 		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player %s but they logged out!  Items are being dropped.", player.getName());
+			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
 
 			// set player to the player logging out
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
+
+        if (TFCompat.BAUBLES.isActivated()) {
+		    if (keepInventory == null)
+                TwilightForestMod.LOGGER.warn("Mod was keeping bauble items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
+
+            ItemStack[] baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
+
+            if (baubles != null)
+                for (ItemStack itemStack : baubles)
+                    if (!itemStack.isEmpty())
+                        player.dropItem(itemStack, true, false);
+        }
 	}
 
 	/**

@@ -16,6 +16,7 @@ import twilightforest.enums.*;
         @Optional.Interface(modid = "chisel", iface = "team.chisel.api.IMC")
 })
 public enum TFCompat {
+    BAUBLES("Baubles") {},
     CHISEL("Chisel") {
         @Override
         public void init() {
@@ -56,9 +57,7 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     }, // TODO Forestry
-    JEI("Just Enough Items") {
-
-    },
+    JEI("Just Enough Items") {},
     @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
         @Override
@@ -90,6 +89,10 @@ public enum TFCompat {
     final private String modName;
 
     private boolean isActivated = false;
+
+    public boolean isActivated() {
+        return isActivated;
+    }
 
     TFCompat(String modName) {
         this.modName = modName;

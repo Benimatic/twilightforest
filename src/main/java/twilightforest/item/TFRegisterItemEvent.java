@@ -89,11 +89,11 @@ public class TFRegisterItemEvent {
 		items.register("crumble_horn", (new ItemTFCrumbleHorn()).setUnlocalizedName("crumbleHorn"));
 		items.register("peacock_fan", (new ItemTFPeacockFan()).setUnlocalizedName("peacockFan"));
 		items.register("moonworm_queen", (new ItemTFMoonwormQueen()).setUnlocalizedName("moonwormQueen"));
-		items.register("charm_of_life_1", new ItemTF().setUnlocalizedName("charmOfLife1"));
-		items.register("charm_of_life_2", new ItemTF().setUnlocalizedName("charmOfLife2"));
-		items.register("charm_of_keeping_1", new ItemTF().setUnlocalizedName("charmOfKeeping1"));
-		items.register("charm_of_keeping_2", new ItemTF().setUnlocalizedName("charmOfKeeping2"));
-		items.register("charm_of_keeping_3", new ItemTF().setUnlocalizedName("charmOfKeeping3"));
+		items.register("charm_of_life_1", new ItemCharmBaubleable().setUnlocalizedName("charmOfLife1"));
+		items.register("charm_of_life_2", new ItemCharmBaubleable().setUnlocalizedName("charmOfLife2"));
+		items.register("charm_of_keeping_1", new ItemCharmBaubleable().setUnlocalizedName("charmOfKeeping1"));
+		items.register("charm_of_keeping_2", new ItemCharmBaubleable().setUnlocalizedName("charmOfKeeping2"));
+		items.register("charm_of_keeping_3", new ItemCharmBaubleable().setUnlocalizedName("charmOfKeeping3"));
 		items.register("tower_key", new ItemTFTowerKey().setUnlocalizedName("towerKey"));
 		items.register("borer_essence", new ItemTF().setUnlocalizedName("borerEssence"));
 		items.register("carminite", new ItemTF().makeRare().setUnlocalizedName("carminite"));
