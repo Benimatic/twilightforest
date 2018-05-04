@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -106,6 +107,18 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 			return REAPPEARING_BB;
 		} else {
 			return FULL_BLOCK_AABB;
+		}
+	}
+
+	@Override
+	@Deprecated
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		TowerTranslucentVariant variant = state.getValue(VARIANT);
+
+		if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE || variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
+			return BlockFaceShape.UNDEFINED;
+		} else {
+			return super.getBlockFaceShape(worldIn, state, pos, face);
 		}
 	}
 
