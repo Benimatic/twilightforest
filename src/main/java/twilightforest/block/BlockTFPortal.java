@@ -5,6 +5,7 @@ import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -89,8 +90,15 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	@Deprecated
+	public boolean isFullCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	@Deprecated
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 	public boolean tryToCreatePortal(World world, BlockPos pos, EntityItem activationItem) {
