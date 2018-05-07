@@ -7,12 +7,398 @@ import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class Thaumcraft {
     // Use the thaumcraft API to register our things with aspects and biomes with values
     static void init() {
         try {
+            registerTCObjectTag(TFBlocks.twilight_log, new int[]{0, 1}, new AspectList()
+                    .add(Aspect.PLANT, 20));
+
+            registerTCObjectTag(TFBlocks.twilight_log, 2, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.WATER, 5));
+
+            registerTCObjectTag(TFBlocks.twilight_log, 3, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.DARKNESS, 5));
+
+            registerTCObjectTag(TFBlocks.root, 0, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.EARTH, 10));
+
+            registerTCObjectTag(TFBlocks.root, 1, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.EARTH, 10)
+                    .add(Aspect.LIFE, 10));
+
+            registerTCObjectTag(TFBlocks.twilight_leaves, -1, new AspectList()
+                    .add(Aspect.PLANT, 5));
+
+            registerTCObjectTag(TFBlocks.firefly, -1, new AspectList()
+                    .add(Aspect.LIGHT, 5)
+                    .add(Aspect.LIFE, 2));
+
+            registerTCObjectTag(TFBlocks.cicada, -1, new AspectList()
+                    .add(Aspect.SENSES, 6)
+                    .add(Aspect.LIFE, 2));
+
+            registerTCObjectTag(TFBlocks.maze_stone, 0, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.TRAP, 1));
+
+            registerTCObjectTag(TFBlocks.maze_stone, 1, new AspectList()
+                    .add(Aspect.EARTH, 3)
+                    .add(Aspect.TRAP, 1));
+
+            registerTCObjectTag(TFBlocks.maze_stone, new int[]{2, 3, 6, 7}, new AspectList()
+                    .add(Aspect.EARTH, 3)
+                    .add(Aspect.TRAP, 1)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.maze_stone, 4, new AspectList()
+                    .add(Aspect.EARTH, 3)
+                    .add(Aspect.TRAP, 1)
+                    .add(Aspect.ENTROPY, 1));
+
+            registerTCObjectTag(TFBlocks.maze_stone, 5, new AspectList()
+                    .add(Aspect.EARTH, 3)
+                    .add(Aspect.TRAP, 1)
+                    .add(Aspect.PLANT, 1));
+
+            registerTCObjectTag(TFBlocks.hedge, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.AVERSION, 2));
+
+            registerTCObjectTag(TFBlocks.firefly_jar, -1, new AspectList()
+                    .add(Aspect.CRYSTAL, 35)
+                    .add(Aspect.LIGHT, 20)
+                    .add(Aspect.SENSES, 10));
+
+            registerTCObjectTag(TFBlocks.twilight_plant, 0, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.WATER, 2));
+
+            registerTCObjectTag(TFBlocks.twilight_plant, new int[]{1, 2, 3, 5}, new AspectList()
+                    .add(Aspect.PLANT, 5));
+
+            registerTCObjectTag(TFBlocks.twilight_plant, 4, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.LIGHT, 5)
+                    .add(Aspect.AIR, 5));
+
+            registerTCObjectTag(TFBlocks.fire_jet, 0, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.AIR,16));
+
+            registerTCObjectTag(TFBlocks.fire_jet, 3, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.FIRE, 16));
+
+            registerTCObjectTag(TFBlocks.fire_jet, 1, new AspectList()
+                    .add(Aspect.PLANT, 33)
+                    .add(Aspect.AIR, 16)
+                    .add(Aspect.ENERGY, 30)
+                    .add(Aspect.MECHANISM, 20));
+
+            registerTCObjectTag(TFBlocks.fire_jet, 6, new AspectList()
+                    .add(Aspect.PLANT, 16)
+                    .add(Aspect.FIRE, 46)
+                    .add(Aspect.ENERGY, 22)
+                    .add(Aspect.MECHANISM, 20));
+
+            registerTCObjectTag(TFBlocks.naga_stone, -1, new AspectList()
+                    .add(Aspect.EARTH, 3)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.twilight_sapling, 5, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.LIFE, 5)
+                    .add(Aspect.AURA, 40));
+
+            registerTCObjectTag(TFBlocks.twilight_sapling, 6, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.LIFE, 5)
+                    .add(Aspect.EXCHANGE, 40));
+
+            registerTCObjectTag(TFBlocks.twilight_sapling, 7, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.LIFE, 5)
+                    .add(Aspect.DESIRE, 40));
+
+            registerTCObjectTag(TFBlocks.twilight_sapling, 8, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.LIFE, 5)
+                    .add(Aspect.ORDER, 40));
+
+            registerTCObjectTag(TFBlocks.moonworm, -1, new AspectList()
+                    .add(Aspect.LIGHT, 5)
+                    .add(Aspect.LIFE, 2));
+
+            registerTCObjectTag(TFBlocks.magic_log, 0, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.AURA, 3));
+
+            registerTCObjectTag(TFBlocks.magic_log, 1, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.EXCHANGE, 3));
+
+            registerTCObjectTag(TFBlocks.magic_log, 2, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.DESIRE, 3));
+
+            registerTCObjectTag(TFBlocks.magic_log, 3, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.ORDER, 3));
+
+            registerTCObjectTag(TFBlocks.magic_leaves, 0, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.AURA, 1));
+
+            registerTCObjectTag(TFBlocks.magic_leaves, 1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.EXCHANGE, 1));
+
+            registerTCObjectTag(TFBlocks.magic_leaves, 2, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.DESIRE, 1));
+
+            registerTCObjectTag(TFBlocks.magic_leaves, 3, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.magic_log_core, 0, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.AURA, 55));
+
+            registerTCObjectTag(TFBlocks.magic_log_core, 1, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.EXCHANGE, 55));
+
+            registerTCObjectTag(TFBlocks.magic_log_core, 2, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.DESIRE, 55));
+
+            registerTCObjectTag(TFBlocks.magic_log_core, 3, new AspectList()
+                    .add(Aspect.PLANT, 20)
+                    .add(Aspect.ORDER, 55));
+
+            registerTCObjectTag(TFBlocks.tower_wood, 2, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.ENTROPY, 3));
+
+            registerTCObjectTag(TFBlocks.tower_wood, 3, new AspectList()
+                    .add(Aspect.PLANT, 18));
+
+            registerTCObjectTag(TFBlocks.tower_wood, 4, new AspectList()
+                    .add(Aspect.PLANT, 15)
+                    .add(Aspect.ENTROPY, 3)
+                    .add(Aspect.BEAST, 5));
+
+            registerTCObjectTag(TFBlocks.stronghold_shield, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.PROTECT, 5));
+
+            registerTCObjectTag(TFBlocks.trophy_pedestal, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.MECHANISM, 35));
+
+            registerTCObjectTag(TFBlocks.aurora_block, -1, new AspectList()
+                    .add(Aspect.COLD, 6)
+                    .add(Aspect.AURA, 1));
+
+            registerTCObjectTag(TFBlocks.underbrick, new int[]{0, 3}, new AspectList()
+                    .add(Aspect.EARTH, 3));
+
+            registerTCObjectTag(TFBlocks.underbrick, 1, new AspectList()
+                    .add(Aspect.EARTH, 3)
+                    .add(Aspect.PLANT, 1));
+
+            registerTCObjectTag(TFBlocks.underbrick, 2, new AspectList()
+                    .add(Aspect.EARTH, 3)
+                    .add(Aspect.ENTROPY, 1));
+
+            registerTCObjectTag(TFBlocks.thorns, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.AVERSION, 4));
+
+            registerTCObjectTag(TFBlocks.burnt_thorns, -1, new AspectList()
+                    .add(Aspect.ENTROPY, 5));
+
+            registerTCObjectTag(TFBlocks.twilight_leaves_3, -1, new AspectList()
+                    .add(Aspect.PLANT, 5));
+
+            registerTCObjectTag(TFBlocks.deadrock, new int[]{0, 2}, new AspectList()
+                    .add(Aspect.EARTH, 1)
+                    .add(Aspect.VOID, 1));
+
+            registerTCObjectTag(TFBlocks.deadrock, 1, new AspectList()
+                    .add(Aspect.EARTH, 1)
+                    .add(Aspect.VOID, 1)
+                    .add(Aspect.ENTROPY, 1));
+
+            registerTCObjectTag(TFBlocks.dark_leaves, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.DARKNESS, 1));
+
+            registerTCObjectTag(TFBlocks.aurora_pillar, -1, new AspectList()
+                    .add(Aspect.COLD, 6)
+                    .add(Aspect.ORDER, 2)
+                    .add(Aspect.AURA, 1));
+
+            registerTCObjectTag(TFBlocks.aurora_slab, -1, new AspectList()
+                    .add(Aspect.COLD, 3)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.trollsteinn, -1, new AspectList()
+                    .add(Aspect.EARTH, 5));
+
+            registerTCObjectTag(TFBlocks.wispy_cloud, -1, new AspectList()
+                    .add(Aspect.AIR, 20)
+                    .add(Aspect.FLIGHT, 5));
+
+            registerTCObjectTag(TFBlocks.fluffy_cloud, -1, new AspectList()
+                    .add(Aspect.AIR, 20)
+                    .add(Aspect.FLIGHT, 5));
+
+            registerTCObjectTag(TFBlocks.giant_cobblestone, -1, new AspectList()
+                    .add(Aspect.EARTH, 320)
+                    .add(Aspect.ENTROPY, 64));
+
+            registerTCObjectTag(TFBlocks.giant_log, -1, new AspectList()
+                    .add(Aspect.PLANT, 1280));
+
+            registerTCObjectTag(TFBlocks.giant_leaves, -1, new AspectList()
+                    .add(Aspect.PLANT, 320));
+
+            registerTCObjectTag(TFBlocks.giant_obsidian, -1, new AspectList()
+                    .add(Aspect.EARTH, 320)
+                    .add(Aspect.FIRE, 320)
+                    .add(Aspect.DARKNESS, 320));
+
+            registerTCObjectTag(TFBlocks.uberous_soil, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.PLANT, 2)
+                    .add(Aspect.LIFE, 15));
+
+            registerTCObjectTag(TFBlocks.huge_stalk, -1, new AspectList()
+                    .add(Aspect.PLANT, 25));
+
+            registerTCObjectTag(TFBlocks.huge_mushgloom, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.LIGHT, 5)
+                    .add(Aspect.AIR, 5));
+
+            registerTCObjectTag(TFBlocks.trollvidr, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.DARKNESS, 3));
+
+            registerTCObjectTag(TFBlocks.unripe_trollber, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.DARKNESS, 6));
+
+            registerTCObjectTag(TFBlocks.trollber, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.LIGHT, 25)
+                    .add(Aspect.DARKNESS, 1));
+
+            registerTCObjectTag(TFBlocks.knightmetal_block, -1, new AspectList()
+                    .add(Aspect.METAL, 121)
+                    .add(Aspect.CRAFT, 40)
+                    .add(Aspect.AVERSION, 6));
+
+            registerTCObjectTag(TFBlocks.huge_lilypad, -1, new AspectList()
+                    .add(Aspect.PLANT, 25)
+                    .add(Aspect.WATER, 5));
+
+            registerTCObjectTag(TFBlocks.huge_waterlily, -1, new AspectList()
+                    .add(Aspect.PLANT, 10)
+                    .add(Aspect.WATER, 2));
+
+            registerTCObjectTag(TFBlocks.castle_brick, new int[]{0, 1, 3, 5}, new AspectList()
+                    .add(Aspect.ORDER, 5)
+                    .add(Aspect.MECHANISM, 1));
+
+            registerTCObjectTag(TFBlocks.castle_brick, 2, new AspectList()
+                    .add(Aspect.ORDER, 5)
+                    .add(Aspect.MECHANISM, 1)
+                    .add(Aspect.ENTROPY, 1));
+
+            registerTCObjectTag(TFBlocks.castle_brick, 4, new AspectList()
+                    .add(Aspect.ORDER, 5)
+                    .add(Aspect.MECHANISM, 1)
+                    .add(Aspect.PLANT, 1));
+
+            registerTCObjectTag(TFBlocks.castle_pillar, -1, new AspectList()
+                    .add(Aspect.ORDER, 5)
+                    .add(Aspect.MECHANISM, 1));
+
+            registerTCObjectTag(TFBlocks.castle_stairs, -1, new AspectList()
+                    .add(Aspect.ORDER, 5)
+                    .add(Aspect.MECHANISM, 1));
+
+            registerTCObjectTag(TFBlocks.castle_rune_brick, -1, new AspectList()
+                    .add(Aspect.ORDER, 5)
+                    .add(Aspect.MECHANISM, 1)
+                    .add(Aspect.AURA, 3));
+
+            registerTCObjectTag(TFBlocks.force_field, -1, new AspectList()
+                    .add(Aspect.AURA, 40));
+
+            registerTCObjectTag(TFBlocks.cinder_log, -1, new AspectList()
+                    .add(Aspect.FIRE, 4)
+                    .add(Aspect.ENTROPY, 12));
+
+            registerTCObjectTag(TFBlocks.castle_door, -1, new AspectList()
+                    .add(Aspect.AURA, 20)
+                    .add(Aspect.MECHANISM, 10)
+                    .add(Aspect.TRAP, 5));
+
+            registerTCObjectTag(TFBlocks.spiral_bricks, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.etched_nagastone, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.nagastone_stairs, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.nagastone_pillar, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ORDER, 1));
+
+            registerTCObjectTag(TFBlocks.etched_nagastone_mossy, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ORDER, 1)
+                    .add(Aspect.PLANT, 1));
+
+            registerTCObjectTag(TFBlocks.nagastone_stairs_mossy, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ORDER, 1)
+                    .add(Aspect.PLANT, 1));
+
+            registerTCObjectTag(TFBlocks.nagastone_pillar_mossy, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ORDER, 1)
+                    .add(Aspect.PLANT, 1));
+
+            registerTCObjectTag(TFBlocks.etched_nagastone_weathered, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ENTROPY, 1));
+
+            registerTCObjectTag(TFBlocks.nagastone_stairs_weathered, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ENTROPY, 1));
+
+            registerTCObjectTag(TFBlocks.nagastone_pillar_weathered, -1, new AspectList()
+                    .add(Aspect.EARTH, 5)
+                    .add(Aspect.ENTROPY, 1));
+
             registerTCObjectTag(TFItems.naga_scale, -1, new AspectList()
                     .add(Aspect.PROTECT, 5)
                     .add(Aspect.BEAST, 4)
@@ -375,9 +761,21 @@ public class Thaumcraft {
         ThaumcraftApi.registerObjectTag(new ItemStack(block, 1, meta), list);
     }
 
+    // Register blocks with Thaumcraft aspects
+    private static void registerTCObjectTag(Block block, int[] metas, AspectList list) {
+        for (int meta : metas)
+            registerTCObjectTag(block, meta, list);
+    }
+
     // Register an item with Thaumcraft aspects
     private static void registerTCObjectTag(Item item, int meta, AspectList list) {
         if (meta == -1) meta = OreDictionary.WILDCARD_VALUE;
         ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), list);
+    }
+
+    // Register item swith Thaumcraft aspects
+    private static void registerTCObjectTag(Item item, int[] metas, AspectList list) {
+        for (int meta : metas)
+            registerTCObjectTag(item, meta, list);
     }
 }
