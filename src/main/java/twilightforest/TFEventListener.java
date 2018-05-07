@@ -46,7 +46,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFCritter;
 import twilightforest.block.BlockTFGiantBlock;
@@ -558,7 +557,7 @@ public class TFEventListener {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAchievement(player) && chunkProvider.isBlockProtected(pos)) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkProvider.isBlockProtected(pos)) {
 					
 					// send protection packet
 					StructureBoundingBox sbb = chunkProvider.getSBBAt(pos);
@@ -599,7 +598,7 @@ public class TFEventListener {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), event.getEntityLiving().world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getTrueSource())) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements((EntityPlayer) event.getSource().getTrueSource())) {
 					event.setResult(Result.DENY);
 					event.setCanceled(true);
 					
