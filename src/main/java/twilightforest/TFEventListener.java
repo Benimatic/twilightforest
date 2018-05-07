@@ -97,7 +97,7 @@ public class TFEventListener {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 
-			if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(TFBlocks.giantLog)) {
+			if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(TFBlocks.giant_log)) {
 				return true;
 			}
 		}
@@ -116,7 +116,7 @@ public class TFEventListener {
 			if (event.getDrops().get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
 				event.getDrops().remove(0);
 				if (amountOfCobbleToReplace == 64) {
-					event.getDrops().add(new ItemStack(TFBlocks.giantCobble));
+					event.getDrops().add(new ItemStack(TFBlocks.giant_cobblestone));
 				}
 
 				amountOfCobbleToReplace--;
@@ -532,7 +532,7 @@ public class TFEventListener {
 	private static boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
 
-		if (block == TFBlocks.towerDevice || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
+		if (block == TFBlocks.tower_device || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
 				|| block == Blocks.STONE_BUTTON || block == Blocks.WOODEN_BUTTON || block == Blocks.LEVER) {
 			return true;
 		} else {

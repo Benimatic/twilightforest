@@ -20,9 +20,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFPacketHandler;
-import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.enums.MagicWoodVariant;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketChangeBiome;
@@ -47,7 +45,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
-		return Item.getItemFromBlock(TFBlocks.magicLog);
+		return Item.getItemFromBlock(TFBlocks.magic_log);
 	}
 
 	@Override

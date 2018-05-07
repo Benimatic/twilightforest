@@ -156,7 +156,7 @@ public class BlockTFPortal extends BlockBreakable {
 					blocksChecked.put(positionCheck, true);
 
 					isPoolProbablyEnclosed = isPoolProbablyEnclosed && recursivelyValidatePortal(world, positionCheck, blocksChecked, waterLimit, requiredBlockFor);
-				} else if ((isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) || state.getBlock() == TFBlocks.uberousSoil) {
+				} else if ((isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) || state.getBlock() == TFBlocks.uberous_soil) {
 					blocksChecked.put(positionCheck, false);
 				} else return false;
 			}

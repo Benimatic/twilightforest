@@ -163,7 +163,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		if (!par1World.isRemote) {
 			if (this.isVanished) {
 				if (state.getValue(ACTIVE)) {
-					par1World.setBlockState(pos, TFBlocks.castleDoor.getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
+					par1World.setBlockState(pos, TFBlocks.castle_door.getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
 					playVanishSound(par1World, pos);
 				} else {
 					changeToActiveBlock(par1World, pos, state);
@@ -212,7 +212,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	private static Block getOtherBlock(Block block) {
-		return block == TFBlocks.castleDoor ? TFBlocks.castleDoorVanished : TFBlocks.castleDoor;
+		return block == TFBlocks.castle_door ? TFBlocks.castle_door_vanished : TFBlocks.castle_door;
 	}
 
 	/**
@@ -221,10 +221,10 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	public static void checkAndActivateCastleDoor(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if (state.getBlock() == TFBlocks.castleDoor && !state.getValue(ACTIVE) && !isBlockLocked(world, pos)) {
+		if (state.getBlock() == TFBlocks.castle_door && !state.getValue(ACTIVE) && !isBlockLocked(world, pos)) {
 			changeToActiveBlock(world, pos, state);
 		}
-//    	if (block == TFBlocks.castleDoorVanished && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
+//    	if (block == TFBlocks.castle_door_vanished && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
 //    	{
 //    		changeToActiveBlock(world, x, y, z, meta);
 //    	}
@@ -300,7 +300,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		if (this == TFBlocks.castleDoor)
+		if (this == TFBlocks.castle_door)
 			for (int i = 0; i < LOCK_INDEX.getAllowedValues().size(); i++) {
 				par3List.add(new ItemStack(this, 1, i));
 			}

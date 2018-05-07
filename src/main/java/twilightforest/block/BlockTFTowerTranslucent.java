@@ -169,7 +169,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 				}
 			}
 			if (variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
-				par1World.setBlockState(pos, TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
+				par1World.setBlockState(pos, TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
 				par1World.notifyNeighborsRespectDebug(pos, this, false);
 				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
 				//par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
