@@ -1,104 +1,68 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
+public class RenderTFThrownAxe extends Render<Entity> {
+	private final ItemStack myItem;
 
-public class RenderTFThrownAxe extends RenderItem {
-	
-	Item myItem;
-
-	public RenderTFThrownAxe(Item knightlyAxe) {
-		this.myItem = knightlyAxe;
+	public RenderTFThrownAxe(RenderManager manager, Item knightlyAxe) {
+		super(manager);
+		this.myItem = new ItemStack(knightlyAxe);
 	}
 
 	@Override
 	public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9) {
 
-        GL11.glPushMatrix();
-        //GL11.glScalef(1.25F, 1.25F, 1.25F);
-        
-        float spin = (entity.ticksExisted + par9) * -10F + 90F;
-		
-        this.doRenderItem(null, par2, par4, par6, par8, spin);
-        
-        GL11.glPopMatrix();
+		GlStateManager.pushMatrix();
 
-	}
-	
-    /**
-     * Renders the item
-     */
-	public void doRenderItem(EntityItem par1EntityItem, double x, double y, double z, float rotation, float spin)
-	{
-		GL11.glPushMatrix();
+		float spin = (entity.ticksExisted + par9) * -10F + 90F;
 
-		GL11.glTranslatef((float)x, (float)y, (float)z);
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
+		GlStateManager.translate((float) par2, (float) par4, (float) par6);
+		GlStateManager.enableRescaleNormal();
 
 		// size up
-		GL11.glScalef(1.25F, 1.25F, 1.25F);
+		GlStateManager.scale(1.25F, 1.25F, 1.25F);
 
-		IIcon icon1 = this.myItem.getIconFromDamage(0);
+		this.renderDroppedItem(par8, spin);
 
-		this.renderDroppedItem(icon1, rotation, spin);
-
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
 	}
 
+	// todo recheck transformations
+	private void renderDroppedItem(float rotation, float spin) {
+		GlStateManager.pushMatrix();
 
-    private void renderDroppedItem(IIcon par2Icon, float rotation, float spin)
-    {
-    	Tessellator tessellator = Tessellator.instance;
+		float f9 = 0.5F;
+		float f10 = 0.25F;
 
-    	float f9 = 0.5F;
-    	float f10 = 0.25F;
+		GlStateManager.rotate(rotation + 270f, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(spin, 0.0F, 0.0F, 1.0F);
 
-    	GL11.glPushMatrix();
+		float f12 = 0.0625F;
+		float f11 = 0.021875F;
 
-    	GL11.glRotatef(rotation + 270f, 0.0F, 1.0F, 0.0F);
-    	GL11.glRotatef(spin, 0.0F, 0.0F, 1.0F);
+		GlStateManager.translate(-f9, -f10, -(f12 + f11));
+		GlStateManager.translate(0f, 0f, f12 + f11);
 
-    	float f12 = 0.0625F;
-    	float f11 = 0.021875F;
+		Minecraft.getMinecraft().getRenderItem().renderItem(myItem, ItemCameraTransforms.TransformType.GROUND);
 
-
-    	GL11.glTranslatef(-f9, -f10, -(f12 + f11));
-
-    	GL11.glTranslatef(0f, 0f, f12 + f11);
-
-    	this.bindTexture(TextureMap.locationItemsTexture);
-
-    	//GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	ItemRenderer.renderItemIn2D(tessellator, par2Icon.getMaxU(), par2Icon.getMinV(), par2Icon.getMinU(), par2Icon.getMaxV(), par2Icon.getIconWidth(), par2Icon.getIconHeight(), f12);
-
-
-    	GL11.glPopMatrix();
-    }
+		GlStateManager.popMatrix();
+	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.renderManager.renderEngine.getResourceLocation(this.myItem.getSpriteNumber());
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
-
-	
-    /**
-     * Items should have a bob effect
-     * @return
-     */
-    public boolean shouldBob()
-    {
-       return false;
-    }
 }

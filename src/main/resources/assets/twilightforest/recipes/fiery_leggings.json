@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:fiery_leggings"
+  },
+  "group": "fiery_armor",
+  "pattern": [
+    "###",
+    "# #",
+    "# #"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTFIERY"
+    }
+  }
+}

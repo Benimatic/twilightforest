@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:mazebreaker_pickaxe"
+    },
+    "title": {
+      "translate": "advancement.twilight_mazebreaker"
+    },
+    "description": {
+      "translate": "advancement.twilight_mazebreaker.desc"
+    },
+    "frame": "challenge"
+  },
+  "parent": "twilightforest:progress_labyrinth",
+  "criteria": {
+    "pick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:mazebreaker_pickaxe"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 50
+  }
+}

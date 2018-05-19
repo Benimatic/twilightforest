@@ -1,0 +1,357 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:raven_feather"
+    },
+    "title": {
+      "translate": "advancement.twilight_hunter"
+    },
+    "description": {
+      "translate": "advancement.twilight_hunter.desc"
+    }
+  },
+  "parent": "twilightforest:root",
+  "criteria": {
+    "adherent": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:adherent"
+        }
+      }
+    },
+    "blockchain_goblin": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:blockchain_goblin"
+        }
+      }
+    },
+    "boggard": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:boggard"
+        }
+      }
+    },
+    "death_tome": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:death_tome"
+        }
+      }
+    },
+    "fire_beetle": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:fire_beetle"
+        }
+      }
+    },
+    "hedge_spider": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:hedge_spider"
+        }
+      }
+    },
+    "helmet_crab": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:helmet_crab"
+        }
+      }
+    },
+    "hostile_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:hostile_wolf"
+        }
+      }
+    },
+    "stable_ice_core": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:stable_ice_core"
+        }
+      }
+    },
+    "unstable_ice_core": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:unstable_ice_core"
+        }
+      }
+    },
+    "kobold": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:kobold"
+        }
+      }
+    },
+    "minotaur": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:minotaur"
+        }
+      }
+    },
+    "mosquito_swarm": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:mosquito_swarm"
+        }
+      }
+    },
+    "pinch_beetle": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:pinch_beetle"
+        }
+      }
+    },
+    "redcap": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:redcap"
+        }
+      }
+    },
+    "redcap_sapper": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:redcap_sapper"
+        }
+      }
+    },
+    "skeleton_druid": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:skeleton_druid"
+        }
+      }
+    },
+    "slime_beetle": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:slime_beetle"
+        }
+      }
+    },
+    "swarm_spider": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:swarm_spider"
+        }
+      }
+    },
+    "troll": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:troll"
+        }
+      }
+    },
+    "wraith": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:wraith"
+        }
+      }
+    },
+    "yeti": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:yeti"
+        }
+      }
+    },
+
+    "hydra": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:hydra"
+        }
+      }
+    },
+    "knight_phantom": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:knight_phantom"
+        }
+      }
+    },
+    "lich": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:lich"
+        }
+      }
+    },
+    "lich_minion": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:lich_minion"
+        }
+      }
+    },
+    "naga": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:naga"
+        }
+      }
+    },
+    "snow_queen": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:snow_queen"
+        }
+      }
+    },
+    "ur_ghast": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:ur_ghast"
+        }
+      }
+    },
+    "yeti_alpha": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:yeti_alpha"
+        }
+      }
+    },
+
+    "bighorn_sheep": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:bighorn_sheep"
+        }
+      }
+    },
+    "wild_boar": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:wild_boar"
+        }
+      }
+    },
+    "bunny": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:bunny"
+        }
+      }
+    },
+    "deer": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:deer"
+        }
+      }
+    },
+    "penguin": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:penguin"
+        }
+      }
+    },
+    "squirrel": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:squirrel"
+        }
+      }
+    },
+    "tiny_bird": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:tiny_bird"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "adherent",
+      "blockchain_goblin",
+      "boggard",
+      "death_tome",
+      "fire_beetle",
+      "hedge_spider",
+      "helmet_crab",
+      "hostile_wolf",
+      "stable_ice_core",
+      "unstable_ice_core",
+      "kobold",
+      "minotaur",
+      "mosquito_swarm",
+      "pinch_beetle",
+      "redcap",
+      "redcap_sapper",
+      "skeleton_druid",
+      "slime_beetle",
+      "swarm_spider",
+      "troll",
+      "wraith",
+      "yeti",
+
+      "hydra",
+      "knight_phantom",
+      "lich",
+      "lich_minion",
+      "naga",
+      "snow_queen",
+      "ur_ghast",
+      "yeti_alpha",
+
+      "bighorn_sheep",
+      "wild_boar",
+      "bunny",
+      "deer",
+      "penguin",
+      "squirrel",
+      "tiny_bird"
+    ]
+  ]
+}

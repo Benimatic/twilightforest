@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "twilightforest:tower_device",
+    "data": 0,
+    "count": 2
+  },
+  "pattern": [
+    "ere",
+    "rcr",
+    "ere"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "r": {
+      "item": "#DUSTREDSTONE"
+    },
+    "c": {
+      "item": "twilightforest:carminite"
+    },
+    "e": {
+      "item": "twilightforest:tower_wood",
+      "data": 1
+    }
+  }
+}

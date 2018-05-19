@@ -1,367 +1,319 @@
 package twilightforest.block;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
-import java.util.Random;
-
-import twilightforest.TFGenericPacketHandler;
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
-import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.WorldProviderTwilightForest;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPane;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFPacketHandler;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
+import twilightforest.item.TFItems;
+import twilightforest.network.PacketAnnihilateBlock;
+import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.TFWorld;
 
-public class BlockTFCastleDoor extends Block
-{
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Random;
 
-    private IIcon activeIcon;
-	private boolean isVanished;
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
+	public static final PropertyBool ACTIVE = PropertyBool.create("active");
+	public static final PropertyInteger LOCK_INDEX = PropertyInteger.create("lock_index", 0, 3);
+	private final boolean isVanished;
 
-	public BlockTFCastleDoor(boolean isVanished)
-    {
-        super(isVanished ? Material.glass : Material.rock);
-        
-        this.isVanished = isVanished;
-        this.lightOpacity = isVanished ? 0 : 255;
+	private static final AxisAlignedBB REAPPEARING_BB = new AxisAlignedBB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F);
 
-        this.setCreativeTab(TFItems.creativeTab);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register)
-    {
-    	//TODO: this is the opposite of object oriented.
-    	
-    	if (this.isVanished) {
-    		this.blockIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door_vanished");
-    		this.activeIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door_vanished_active");
-    	} else {
-    		this.blockIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door");
-    		this.activeIcon = register.registerIcon(TwilightForestMod.ID + ":castle_door_active");
-    	}
-    }
-    
+	public BlockTFCastleDoor(boolean isVanished) {
+		super(isVanished ? Material.GLASS : Material.ROCK);
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        int meta = world.getBlockMetadata(x, y, z);
+		//this.setBlockUnbreakable();
+		//this.setResistance(Float.MAX_VALUE);
 
-        if (isMetaActive(meta)) {
-        	return this.activeIcon;
-        } else {
-        	return this.blockIcon;
-        }
-    }
-    
-    
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return !this.isVanished;
-    }
-    
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
+		this.setHardness(100F);
+		this.setResistance(35F);
+
+		this.isVanished = isVanished;
+		this.lightOpacity = isVanished ? 0 : 255;
+
+		this.setCreativeTab(TFItems.creativeTab);
+		this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
+	}
+
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
-	{
-		if (this.isVanished)
-		{
-			return null;
-		}
-		else
-		{
-			this.setBlockBoundsBasedOnState(par1World, x, y, z);
-			return super.getCollisionBoundingBoxFromPool(par1World, x, y, z);
-		}
-	}
-	
-    @Override
-	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
-    {
-    	return !this.isVanished;
-    }
-
-    
-    /**
-     * Called upon block activation (right click on the block.)
-     */
-    @Override
-	public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-    {
-        int meta = par1World.getBlockMetadata(x, y, z);
-
-        if (!isMetaActive(meta))
-        {
-        	if (isBlockLocked(par1World, x, y, z))
-        	{
-        		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 1.0F, 0.3F);
-        	}
-        	else
-        	{
-        		changeToActiveBlock(par1World, x, y, z, meta);
-        	}
-            return true;
-        }
-        else 
-        {
-        	return false;
-        }
-    }
-
-
-	/**
-	 * Change this block to be active
-	 */
-    public static void changeToActiveBlock(World par1World, int x, int y, int z, int meta) 
-	{
-		changeToBlockMeta(par1World, x, y, z, meta | 8);
-		playVanishSound(par1World, x, y, z);
-
-		Block blockAt = par1World.getBlock(x, y, z);
-		par1World.scheduleBlockUpdate(x, y, z, blockAt, 2 + par1World.rand.nextInt(5));
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, ACTIVE, LOCK_INDEX);
 	}
 
-
-	/**
-     * Change this block into an different device block
-     */
-	private static void changeToBlockMeta(World par1World, int x, int y, int z, int meta) 
-	{
-		Block blockAt = par1World.getBlock(x, y, z);
-		
-		if (blockAt == TFBlocks.castleDoor || blockAt == TFBlocks.castleDoorVanished)
-		{
-			par1World.setBlock(x, y, z, blockAt, meta, 3);
-			par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-			par1World.notifyBlocksOfNeighborChange(x, y, z, blockAt);
-		}
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int meta = state.getValue(LOCK_INDEX);
+		meta |= state.getValue(ACTIVE) ? 8 : 0;
+		return meta;
 	}
-    
-    
-	public static boolean isBlockLocked(World par1World, int x, int y, int z) {
-		// check if we are in a structure, and if that structure says that we are locked
-		
-		int meta = par1World.getBlockMetadata(x, y, z);
-		
-		if (!par1World.isRemote && par1World.provider instanceof WorldProviderTwilightForest) {
-			ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)par1World.provider).getChunkProvider();
 
-			return chunkProvider.isStructureLocked(x, y, z, meta);
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+
+		return getDefaultState()
+				.withProperty(ACTIVE, (meta & 8) != 0)
+				.withProperty(LOCK_INDEX, meta & 3);
+	}
+
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return !this.isVanished;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isFullCube(IBlockState state) {
+		return !this.isVanished;
+	}
+
+	@Override
+	@Deprecated
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return isVanished ? BlockFaceShape.UNDEFINED : super.getBlockFaceShape(worldIn, state, pos, face);
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, world, pos);
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return isVanished ? REAPPEARING_BB : super.getBoundingBox(state, world, pos);
+	}
+
+	@Override
+	public boolean isPassable(IBlockAccess par1IBlockAccess, BlockPos pos) {
+		return this.isVanished;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (!state.getValue(ACTIVE)) {
+			if (isBlockLocked(world, pos)) {
+				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1.0F, 0.3F);
+			} else {
+				changeToActiveBlock(world, pos, state);
+			}
+			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean isMetaActive(int meta) {
-		return (meta & 8) != 0;
-	}
-    
-	  
-    /**
-     * How many world ticks before ticking
-     */
-    public int tickRate()
-    {
-        return 5;
-    }
-    
+	private static void changeToActiveBlock(World par1World, BlockPos pos, IBlockState originState) {
+		changeToBlockMeta(par1World, pos, true, originState);
+		playVanishSound(par1World, pos);
 
-    /**
-     * The type of render function that is called for this block
-     */
-    @Override
-	public int getRenderType()
-    {
-    	return TwilightForestMod.proxy.getCastleMagicBlockRenderID();
-    }
-    
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    @Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
-    {
-    	if (!par1World.isRemote)
-    	{
-    		//System.out.println("Update castle door");
-    		
-    		int meta = par1World.getBlockMetadata(x, y, z);
-    		
-    		if (this.isVanished) {
-    			if (isMetaActive(meta)) {
-                	par1World.setBlock(x, y, z, TFBlocks.castleDoor, meta & 7, 3);
-                    par1World.notifyBlocksOfNeighborChange(x, y, z, this);
-                    playVanishSound(par1World, x, y, z);
-
-                    //par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-    			} else {
-                	changeToActiveBlock(par1World, x, y, z, meta);
-    			}
-    		} else {
-
-    			// if we have an active castle door, turn it into a vanished door block
-    			if (isMetaActive(meta))
-    			{
-    				par1World.setBlock(x, y, z, getOtherBlock(this), meta & 7, 3);
-    				par1World.scheduleBlockUpdate(x, y, z, getOtherBlock(this), 80);
-
-    				par1World.notifyBlocksOfNeighborChange(x, y, z, this);
-    				playReappearSound(par1World, x, y, z);
-    				par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-    				
-            		this.sendAnnihilateBlockPacket(par1World, x, y, z);
-
-
-    				// activate all adjacent inactive doors
-    				checkAndActivateCastleDoor(par1World, x - 1, y, z);
-    				checkAndActivateCastleDoor(par1World, x + 1, y, z);
-    				checkAndActivateCastleDoor(par1World, x, y + 1, z);
-    				checkAndActivateCastleDoor(par1World, x, y - 1, z);
-    				checkAndActivateCastleDoor(par1World, x, y, z + 1);
-    				checkAndActivateCastleDoor(par1World, x, y, z - 1);
-
-    			}
-    			
-    			// inactive solid door blocks we don't care about updates
-    		}
-
-    	}
-    }
-    
-	private void sendAnnihilateBlockPacket(World world, int x, int y, int z) {
-		// send packet
-		FMLProxyPacket message = TFGenericPacketHandler.makeAnnihilateBlockPacket(x, y, z);
-
-		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 64);
-		
-		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
+		par1World.scheduleUpdate(pos, originState.getBlock(), 2 + par1World.rand.nextInt(5));
 	}
 
-	private static void playVanishSound(World par1World, int x, int y, int z) {
-		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.fizz", 0.125f, par1World.rand.nextFloat() * 0.25F + 1.75F);
-//		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.2F, par1World.rand.nextFloat() * 2F);
+	private static void changeToBlockMeta(World par1World, BlockPos pos, boolean active, IBlockState originState) {
+		if (originState.getBlock() instanceof BlockTFCastleDoor) {
+			par1World.setBlockState(pos, originState.withProperty(ACTIVE, active), 3);
+			par1World.markBlockRangeForRenderUpdate(pos, pos);
+			par1World.notifyNeighborsRespectDebug(pos, originState.getBlock(), false);
+		}
 	}
 
-	private static void playReappearSound(World par1World, int x, int y, int z) {
-		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.fizz", 0.125f, par1World.rand.nextFloat() * 0.25F + 1.25F);
-//		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "note.harp", 0.2F, par1World.rand.nextFloat() * 2F);
+	private static boolean isBlockLocked(World par1World, BlockPos pos) {
+		// check if we are in a structure, and if that structure says that we are locked
+		if (!par1World.isRemote && TFWorld.getChunkGenerator(par1World) instanceof ChunkGeneratorTwilightForest) {
+			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(par1World);
+			return generator.isStructureLocked(pos, par1World.getBlockState(pos).getValue(LOCK_INDEX));
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int tickRate(World world) {
+		return 5;
+	}
+
+	@Override // todo 1.10 recheck all of this
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {
+		if (!par1World.isRemote) {
+			if (this.isVanished) {
+				if (state.getValue(ACTIVE)) {
+					par1World.setBlockState(pos, TFBlocks.castle_door.getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
+					playVanishSound(par1World, pos);
+				} else {
+					changeToActiveBlock(par1World, pos, state);
+				}
+			} else {
+
+				// if we have an active castle door, turn it into a vanished door block
+				if (state.getValue(ACTIVE)) {
+					par1World.setBlockState(pos, getOtherBlock(this).getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
+					par1World.scheduleUpdate(pos, getOtherBlock(this), 80);
+
+					playReappearSound(par1World, pos);
+
+					this.sendAnnihilateBlockPacket(par1World, pos);
+
+
+					// activate all adjacent inactive doors
+					for (EnumFacing e : EnumFacing.VALUES) {
+						checkAndActivateCastleDoor(par1World, pos.offset(e));
+					}
+				}
+
+				// inactive solid door blocks we don't care about updates
+			}
+
+		}
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
+
+	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
+		IMessage message = new PacketAnnihilateBlock(pos);
+		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
+		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
+	}
+
+	private static void playVanishSound(World par1World, BlockPos pos) {
+		par1World.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, par1World.rand.nextFloat() * 0.25F + 1.75F);
+	}
+
+	private static void playReappearSound(World par1World, BlockPos pos) {
+		par1World.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, par1World.rand.nextFloat() * 0.25F + 1.25F);
 	}
 
 	private static Block getOtherBlock(Block block) {
-		return block == TFBlocks.castleDoor ? TFBlocks.castleDoorVanished : TFBlocks.castleDoor;
+		return block == TFBlocks.castle_door ? TFBlocks.castle_door_vanished : TFBlocks.castle_door;
 	}
 
-    /**
-     * If the targeted block is a vanishing block, activate it
-     */
-    public static void checkAndActivateCastleDoor(World world, int x, int y, int z) {
-    	Block block = world.getBlock(x, y, z);
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	if (block == TFBlocks.castleDoor && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
-    	{
-    		changeToActiveBlock(world, x, y, z, meta);
-    	}
-//    	if (block == TFBlocks.castleDoorVanished && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
+	/**
+	 * If the targeted block is a vanishing block, activate it
+	 */
+	public static void checkAndActivateCastleDoor(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+
+		if (state.getBlock() == TFBlocks.castle_door && !state.getValue(ACTIVE) && !isBlockLocked(world, pos)) {
+			changeToActiveBlock(world, pos, state);
+		}
+//    	if (block == TFBlocks.castle_door_vanished && !isMetaActive(meta) && !isBlockLocked(world, x, y, z))
 //    	{
 //    		changeToActiveBlock(world, x, y, z, meta);
 //    	}
 	}
-    
-    
+
+
 	@Override
 	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random) {
+		if (state.getValue(ACTIVE)) ;
+		{
+			for (int i = 0; i < 1; ++i) {
+				//this.sparkle(par1World, x, y, z, par5Random);
+			}
+		}
+	}
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
-    {
-    	int meta = par1World.getBlockMetadata(x, y, z);
 
-    	if (isMetaActive(meta));
-    	{
-    		for (int i = 0; i < 1; ++i) {
-    			//this.sparkle(par1World, x, y, z, par5Random);
-    		}
-    	}
-    }
-	
+	// [VanillaCopy] BlockRedStoneOre.spawnParticles with own rand
+	@SuppressWarnings("unused")
+	private void sparkle(World worldIn, BlockPos pos, Random rand) {
+		Random random = rand;
+		double d0 = 0.0625D;
 
-    /**
-     * Shine bright like a DIAMOND! (or actually, sparkle like redstone ore)
-     */
-    public void sparkle(World world, int x, int y, int z, Random rand)
-    {
-        double offset = 0.0625D;
+		for (int i = 0; i < 6; ++i) {
+			double d1 = (double) ((float) pos.getX() + random.nextFloat());
+			double d2 = (double) ((float) pos.getY() + random.nextFloat());
+			double d3 = (double) ((float) pos.getZ() + random.nextFloat());
 
-        for (int side = 0; side < 6; ++side)
-        {
-            double rx = x + rand.nextFloat();
-            double ry = y + rand.nextFloat();
-            double rz = z + rand.nextFloat();
+			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube()) {
+				d2 = (double) pos.getY() + 0.0625D + 1.0D;
+			}
 
-            if (side == 0 && !world.getBlock(x, y + 1, z).isOpaqueCube())
-            {
-                ry = y + 1 + offset;
-            }
+			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube()) {
+				d2 = (double) pos.getY() - 0.0625D;
+			}
 
-            if (side == 1 && !world.getBlock(x, y - 1, z).isOpaqueCube())
-            {
-                ry = y + 0 - offset;
-            }
+			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube()) {
+				d3 = (double) pos.getZ() + 0.0625D + 1.0D;
+			}
 
-            if (side == 2 && !world.getBlock(x, y, z + 1).isOpaqueCube())
-            {
-                rz = z + 1 + offset;
-            }
+			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube()) {
+				d3 = (double) pos.getZ() - 0.0625D;
+			}
 
-            if (side == 3 && !world.getBlock(x, y, z - 1).isOpaqueCube())
-            {
-                rz = z + 0 - offset;
-            }
+			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube()) {
+				d1 = (double) pos.getX() + 0.0625D + 1.0D;
+			}
 
-            if (side == 4 && !world.getBlock(x + 1, y, z).isOpaqueCube())
-            {
-                rx = x + 1 + offset;
-            }
+			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube()) {
+				d1 = (double) pos.getX() - 0.0625D;
+			}
 
-            if (side == 5 && !world.getBlock(x - 1, y, z).isOpaqueCube())
-            {
-                rx = x + 0 - offset;
-            }
+			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
+				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D, new int[0]);
+			}
+		}
+	}
 
-            if (rx < x || rx > x + 1 || ry < 0.0D || ry > y + 1 || rz < z || rz > z + 1)
-            {
-                world.spawnParticle("reddust", rx, ry, rz, 0.0D, 0.0D, 0.0D);
-            }
-        }
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return isVanished ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
+	}
 
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	@Deprecated
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return (!(blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFCastleDoor)) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		if (this == TFBlocks.castle_door)
+			for (int i = 0; i < LOCK_INDEX.getAllowedValues().size(); i++) {
+				par3List.add(new ItemStack(this, 1, i));
+			}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, LOCK_INDEX);
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(TFItems.castle_door, 1, state.getValue(LOCK_INDEX));
+	}
 }

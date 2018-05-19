@@ -1,0 +1,47 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:trophy",
+      "data": 5
+    },
+    "title": {
+      "translate": "advancement.twilight_progress_glacier"
+    },
+    "description": {
+      "translate": "advancement.twilight_progress_glacier.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:progress_yeti",
+  "criteria": {
+    "queen": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:snow_queen"
+        }
+      }
+    },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:trophy",
+            "data": 5
+          }
+        ]
+      }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_yeti"
+      }
+    }
+  },
+  "requirements": [
+    [ "queen", "trophy" ],
+    [ "previous_progression" ]
+  ]
+}

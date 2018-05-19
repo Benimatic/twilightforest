@@ -1,50 +1,48 @@
 package twilightforest.structures.trollcave;
 
-import java.util.Random;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import twilightforest.structures.StructureTFComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
+import twilightforest.structures.StructureTFComponentOld;
 
-public class ComponentTFTrollCloud extends StructureTFComponent {
+import java.util.Random;
+
+public class ComponentTFTrollCloud extends StructureTFComponentOld {
 
 	private int size;
 	private int height;
 
-	public ComponentTFTrollCloud() { }
-	
-	public ComponentTFTrollCloud(int index, int x, int y, int z) {
-		super(index);
-		this.setCoordBaseMode(0);
+	public ComponentTFTrollCloud() {
+	}
+
+	public ComponentTFTrollCloud(TFFeature feature, int index, int x, int y, int z) {
+		super(feature, index);
+		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		this.size = 40;
 		this.height = 20;
-		
+
 		int radius = this.size / 2;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, 0);
-	}
-	
-	/**
-	 * Save to NBT
-	 */
-	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setInteger("size", this.size);
-        par1NBTTagCompound.setInteger("height", this.height);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
-        this.size = par1NBTTagCompound.getInteger("size");
-        this.height = par1NBTTagCompound.getInteger("height");
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
+
+		tagCompound.setInteger("size", this.size);
+		tagCompound.setInteger("height", this.height);
+	}
+
+	@Override
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.size = tagCompound.getInteger("size");
+		this.height = tagCompound.getInteger("height");
 	}
 
 	@Override
@@ -54,10 +52,10 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 		return true;
 	}
 
-    protected void placeCloud(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		this.fillWithMetadataBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.stained_glass, 0, Blocks.stained_glass, 0, false); 
-		this.fillWithMetadataBlocks(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.quartz_block, 0, Blocks.quartz_block, 0, false); 
-		
+	protected void placeCloud(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+		this.fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.STAINED_GLASS.getDefaultState(), Blocks.STAINED_GLASS.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.QUARTZ_BLOCK.getDefaultState(), Blocks.QUARTZ_BLOCK.getDefaultState(), false);
+
 	}
 
 }

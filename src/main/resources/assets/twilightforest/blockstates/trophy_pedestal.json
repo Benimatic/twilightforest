@@ -1,0 +1,33 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:util/pedestal",
+    "textures": {
+      "particle": "blocks/stone_slab_top"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": { "y": 180 },
+      "west":  { "y": 270 },
+      "east":  { "y": 90 }
+    },
+    "latent": {
+      "true": { "textures": {
+        "end"  : "twilightforest:blocks/pedestal_top_active",
+        "north": "twilightforest:blocks/pedestal_naga_active",
+        "south": "twilightforest:blocks/pedestal_urghast_active",
+        "west" : "twilightforest:blocks/pedestal_lich_active",
+        "east" : "twilightforest:blocks/pedestal_hydra_active"
+      } },
+      "false": { "textures": {
+        "end": "twilightforest:blocks/pedestal_top",
+        "north": "twilightforest:blocks/pedestal_naga",
+        "south": "twilightforest:blocks/pedestal_urghast",
+        "west" : "twilightforest:blocks/pedestal_lich",
+        "east" : "twilightforest:blocks/pedestal_hydra"
+      } }
+    }
+  }
+}

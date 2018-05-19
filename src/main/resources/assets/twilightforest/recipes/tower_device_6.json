@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "twilightforest:tower_device",
+    "data": 6
+  },
+  "pattern": [
+    "ece",
+    "cdc",
+    "ece"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "c": {
+      "item": "twilightforest:carminite"
+    },
+    "d": {
+      "item": "minecraft:dispenser"
+    },
+    "e": {
+      "item": "twilightforest:tower_wood",
+      "data": 1
+    }
+  }
+}

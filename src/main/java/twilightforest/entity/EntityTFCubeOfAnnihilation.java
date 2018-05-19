@@ -1,264 +1,182 @@
 package twilightforest.entity;
 
-import java.util.List;
-
-import twilightforest.TFGenericPacketHandler;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.item.ItemTFChainBlock;
-import twilightforest.item.ItemTFCubeOfAnnihilation;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import twilightforest.TFPacketHandler;
+import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.TFBlocks;
+import twilightforest.item.TFItems;
+import twilightforest.network.PacketAnnihilateBlock;
+import twilightforest.util.WorldUtil;
+
+import java.util.List;
 
 
-public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
-	
-	boolean hasHitObstacle = false;
+public class EntityTFCubeOfAnnihilation extends EntityThrowable {
+
+	private boolean hasHitObstacle = false;
 
 	public EntityTFCubeOfAnnihilation(World par1World) {
 		super(par1World);
-		
-		this.setSize(1.1F, 1F);
-		this.isImmuneToFire = true;
-
-	}
-
-	
-	public EntityTFCubeOfAnnihilation(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
 	}
 
-
-	public EntityTFCubeOfAnnihilation(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
-		
+	public EntityTFCubeOfAnnihilation(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
+		this.setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
-
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0F;
-    }
-
-
+	protected float getGravityVelocity() {
+		return 0F;
+	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition mop) {
+	protected void onImpact(RayTraceResult mop) {
+		if (world.isRemote)
+			return;
+
 		// only hit living things
-        if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase)
-        {
-            if (mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10))
-            {
-                this.ticksExisted += 60;
-            }
-        }
-        
-        if (!this.worldObj.isAirBlock(mop.blockX, mop.blockY, mop.blockZ)) {
+		if (mop.entityHit instanceof EntityLivingBase && mop.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
+			this.ticksExisted += 60;
+		}
 
-        	// demolish some blocks
-        	if (!this.worldObj.isRemote) {
-        		this.affectBlocksInAABB(this.boundingBox.expand(0.2F, 0.2F, 0.2F), this.getThrower());
-        	}
-
-        }
-
+		if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
+			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
+		}
 	}
-	
-	
-	/**
-     * Do our ball and chain effect on blocks we hit.  Harvest/destroy/whatevs
-	 * @param entity 
-     */
-    private boolean affectBlocksInAABB(AxisAlignedBB par1AxisAlignedBB, EntityLivingBase entity) {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-    	
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
-        boolean hitBlock = false;
-        for (int dx = minX; dx <= maxX; ++dx) {
-            for (int dy = minY; dy <= maxY; ++dy) {
-                for (int dz = minZ; dz <= maxZ; ++dz) {
-                	Block block = this.worldObj.getBlock(dx, dy, dz);
-                	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
 
-                	if (block != Blocks.air) {
-                		if (canAnnihilate(dx, dy, dz, block, currentMeta)) {
-                			this.worldObj.setBlockToAir(dx, dy, dz);
+	private DamageSource getDamageSource() {
+		EntityLivingBase thrower = this.getThrower();
+		if (thrower instanceof EntityPlayer) {
+			return DamageSource.causePlayerDamage((EntityPlayer) thrower);
+		} else if (thrower != null) {
+			return DamageSource.causeMobDamage(thrower);
+		} else {
+			return DamageSource.causeThrownDamage(this, null);
+		}
+	}
 
-                    		this.worldObj.playSoundAtEntity(this, "random.fizz", 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
-                    		
-                    		this.sendAnnihilateBlockPacket(worldObj, dx, dy, dz);
+	private void affectBlocksInAABB(AxisAlignedBB box) {
+		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+			IBlockState state = world.getBlockState(pos);
+			if (!state.getBlock().isAir(state, world, pos)) {
+				if (canAnnihilate(pos, state)) {
+					this.world.setBlockToAir(pos);
+					this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
+					this.sendAnnihilateBlockPacket(world, pos);
+				} else {
+					this.hasHitObstacle = true;
+				}
+			}
+		}
+	}
 
-                		} else {
-                			// return if we hit an obstacle
-                			this.hasHitObstacle = true;
-                		}
-            			hitBlock = true;
-                	}
-                }
-            }
-        }
-
-        return hitBlock;
-    }
-
-
-	private boolean canAnnihilate(int dx, int dy, int dz, Block block, int meta) {
+	private boolean canAnnihilate(BlockPos pos, IBlockState state) {
 		// whitelist many castle blocks
-		if (block == TFBlocks.deadrock || block == TFBlocks.castleBlock || (block == TFBlocks.castleMagic && meta != 3) || block == TFBlocks.forceField || block == TFBlocks.thorns) {
+		Block block = state.getBlock();
+		if (block == TFBlocks.deadrock || block == TFBlocks.castle_brick || (block == TFBlocks.castle_rune_brick && state.getValue(BlockTFCastleMagic.COLOR) != EnumDyeColor.PURPLE) || block == TFBlocks.force_field || block == TFBlocks.thorns) {
 			return true;
 		}
-		
-		return block.getExplosionResistance(this) < 8F && block.getBlockHardness(worldObj, dx, dy, dz) >= 0;
+
+		return block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
 
-    
 
-	private void sendAnnihilateBlockPacket(World world, int x, int y, int z) {
+	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
 		// send packet
-		FMLProxyPacket message = TFGenericPacketHandler.makeAnnihilateBlockPacket(x, y, z);
+		IMessage message = new PacketAnnihilateBlock(pos);
 
-		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 64);
-		
-		TwilightForestMod.genericChannel.sendToAllAround(message, targetPoint);
+		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
+
+		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
 	}
-	
-	/**
-	 * Skip most of the living update things
-	 */
-    @Override
-    public void onUpdate() {
-    	super.onUpdate();
 
-    	// all server side
-    	if (!this.worldObj.isRemote) {
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
 
-    		if (this.getThrower() == null) {
-    			this.setDead();
-    			return;
-    		}
+		if (!this.world.isRemote) {
+			if (this.getThrower() == null) {
+				this.setDead();
+				return;
+			}
 
-    		if (this.isReturning()) {
-    			// if we are returning, and are near enough to the player, then we are done
-    			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+			// always head towards either the point or towards the player
+			Vec3d destPoint = new Vec3d(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
 
-    			if (list.contains(this.getThrower()) && !this.worldObj.isRemote) {
-    				//System.out.println("we have returned");
-            		if (this.getThrower() instanceof EntityPlayer) {
-            			ItemTFCubeOfAnnihilation.setCubeAsReturned((EntityPlayer)this.getThrower());
-            		}
-    				this.setDead();
-    			}
-    		}
+			if (this.isReturning()) {
+				// if we are returning, and are near enough to the player, then we are done
+				List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
 
+				if (list.contains(this.getThrower())) {
+					this.setDead();
+				}
+			} else {
+				destPoint = destPoint.add(getThrower().getLookVec().scale(16F));
+			}
 
+			// set motions
+			Vec3d velocity = new Vec3d(this.posX - destPoint.x, (this.posY + this.height / 2F) - destPoint.y, this.posZ - destPoint.z);
 
-    		// always head towards either the point or towards the player
-			Vec3 destPoint = Vec3.createVectorHelper(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
+			this.motionX -= velocity.x;
+			this.motionY -= velocity.y;
+			this.motionZ -= velocity.z;
 
-    		if (!this.isReturning()) {
-    			Vec3 look = this.getThrower().getLookVec();
-    			
-    			
-    			
-    			float dist = 16F;
-    			
-    			look.xCoord *= dist;
-    			look.yCoord *= dist;
-    			look.zCoord *= dist;
-    			
-    			destPoint.xCoord += look.xCoord;
-    			destPoint.yCoord += look.yCoord;
-    			destPoint.zCoord += look.zCoord;
-    		}
-    		
-    		//System.out.println("Dest point = " + destPoint);
-    		
-    		
-    		// set motions
-    		Vec3 velocity = Vec3.createVectorHelper(this.posX - destPoint.xCoord, (this.posY + this.height / 2F) - destPoint.yCoord, this.posZ - destPoint.zCoord);
-    		
-    		this.motionX -= velocity.xCoord;
-    		this.motionY -= velocity.yCoord;
-    		this.motionZ -= velocity.zCoord;
-    		
-    		// normalize speed
-    		float currentSpeed = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-    		
-    		float maxSpeed = 0.5F;
-    		
-    		
-    		if (currentSpeed > maxSpeed) {
-	    		this.motionX /= currentSpeed / maxSpeed;
-	    		this.motionY /= currentSpeed / maxSpeed;
-	    		this.motionZ /= currentSpeed / maxSpeed;
-    		} else {
-    			float slow = 0.5F;
-	    		this.motionX *= slow;
-	    		this.motionY *= slow;
-	    		this.motionZ *= slow;    		
-	    	}
-    		
-    		
-        	// demolish some blocks
-        	this.affectBlocksInAABB(this.boundingBox.expand(0.2F, 0.2F, 0.2F), this.getThrower());
+			// normalize speed
+			float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 
-    	}
+			float maxSpeed = 0.5F;
 
 
-        
+			if (currentSpeed > maxSpeed) {
+				this.motionX /= currentSpeed / maxSpeed;
+				this.motionY /= currentSpeed / maxSpeed;
+				this.motionZ /= currentSpeed / maxSpeed;
+			} else {
+				float slow = 0.5F;
+				this.motionX *= slow;
+				this.motionY *= slow;
+				this.motionZ *= slow;
+			}
 
-    }
-    
-    public boolean isReturning() {
-    	if (this.hasHitObstacle || this.getThrower() == null || !(this.getThrower() instanceof EntityPlayer)) {
-    		return true;
-    	} else {
-    		EntityPlayer player = (EntityPlayer) this.getThrower();
-    		
-    		return !player.isUsingItem();
-    	}
-    }
+			// demolish some blocks
+			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
+		}
+	}
 
-	
+	@Override
+	public void setDead() {
+		super.setDead();
+		EntityLivingBase thrower = this.getThrower();
+		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation) {
+			thrower.resetActiveHand();
+		}
+	}
 
-    /**
-     * Velocity
-     */
-    protected float func_70182_d()
-    {
-        return 1.5F;
-    }
-
-    
+	private boolean isReturning() {
+		if (this.hasHitObstacle || this.getThrower() == null || !(this.getThrower() instanceof EntityPlayer)) {
+			return true;
+		} else {
+			EntityPlayer player = (EntityPlayer) this.getThrower();
+			return !player.isHandActive();
+		}
+	}
 }

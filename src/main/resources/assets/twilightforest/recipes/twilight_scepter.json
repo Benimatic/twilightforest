@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "twilightforest:twilight_scepter"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:twilight_scepter",
+      "data": 32767
+    },
+    {
+      "item": "#ENDERPEARL"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

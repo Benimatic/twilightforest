@@ -1,65 +1,40 @@
 package twilightforest.block;
 
+import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.item.TFItems;
+
 import java.util.Random;
 
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.BlockBreakable;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-
-public class BlockTFWispyCloud extends BlockBreakable  {
+public class BlockTFWispyCloud extends BlockBreakable implements ModelRegisterCallback {
 
 	protected BlockTFWispyCloud() {
-		super("", Material.craftedSnow, false);
-		this.setStepSound(soundTypeCloth);
+		super(new Material(MapColor.SNOW), false);
+		this.setSoundType(SoundType.CLOTH);
 		this.setCreativeTab(TFItems.creativeTab);
-
 		this.setHardness(0.3F);
-        this.setBlockTextureName(TwilightForestMod.ID + ":wispy_cloud");
-
 	}
 
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_)
-    {
-        this.blockIcon = p_149651_1_.registerIcon(this.getTextureName());
-    }
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
+	}
 
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
-    @SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
-    {
-        return 1;
-    }
-    
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return true;
+	}
 
-    /**
-     * Return true if a player with Silk Touch can harvest this block directly, and not its normal drops.
-     */
-    protected boolean canSilkHarvest()
-    {
-        return true;
-    }
-	
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    public int quantityDropped(Random p_149745_1_)
-    {
-        return 0;
-    }
-    
-
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
+	@Override
+	public int quantityDropped(Random p_149745_1_) {
+		return 0;
+	}
 }

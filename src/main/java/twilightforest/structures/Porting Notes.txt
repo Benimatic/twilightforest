@@ -1,0 +1,10 @@
+Structure Directions
+0   SOUTH
+1   WEST
+2   NORTH
+3   EAST
+
+Slab Metadata
+
+Stair Metadata
+

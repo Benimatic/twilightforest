@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:iron_boots"
+    },
+    "title": {
+      "translate": "advancement.twilight_hill1"
+    },
+    "description": {
+      "translate": "advancement.twilight_hill1.desc"
+    }
+  },
+  "parent": "twilightforest:root",
+  "__comment": "These are triggered by code in order to test for a Hill nearby. In the future, these may become data-driven",
+  "criteria": {
+    "boggard": {
+      "trigger": "minecraft:impossible"
+    },
+    "redcap": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [ "boggard", "redcap" ]
+  ]
+}

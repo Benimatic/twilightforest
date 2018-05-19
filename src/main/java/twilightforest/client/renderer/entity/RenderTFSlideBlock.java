@@ -1,82 +1,113 @@
 package twilightforest.client.renderer.entity;
 
-import org.lwjgl.opengl.GL11;
-
-import twilightforest.block.BlockTFSlider;
-import twilightforest.entity.EntityTFSlideBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAnvil;
-import net.minecraft.block.BlockDragonEgg;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.entity.EntityTFSlideBlock;
 
-public class RenderTFSlideBlock extends Render {
-	
-    private final RenderBlocks renderBlocks = new RenderBlocks();
-    
-    public RenderTFSlideBlock() {
-    }
+public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-	@Override
-	public void doRender(Entity entity, double x, double y, double z, float p_76986_8_, float time) {
-		
-		EntityTFSlideBlock sliderEntity = (EntityTFSlideBlock)entity;
-		
-        World world = entity.worldObj;
-        Block block = sliderEntity.getBlock();
-        int meta = sliderEntity.getMeta();
-        
-        int bx = MathHelper.floor_double(entity.posX);
-        int by = MathHelper.floor_double(entity.posY);
-        int bz = MathHelper.floor_double(entity.posZ);
-
-        if (block != null && block != world.getBlock(bx, by, bz))
-        {
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float)x, (float)y + 0.5F, (float)z);
-            
-            // spin
-            if ((meta & 12) == 0) {
-            	GL11.glRotatef((entity.ticksExisted + time) * 60F, 0, 1, 0);
-            } else if ((meta & 12) == 4) {
-            	GL11.glRotatef((entity.ticksExisted + time) * 60F, 1, 0, 0);
-            } else if ((meta & 12) == 8) {
-            	GL11.glRotatef((entity.ticksExisted + time) * 60F, 0, 0, 1);
-            }
-            
-            this.bindEntityTexture(entity);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            Tessellator tessellator;
-
-            ((BlockTFSlider) block).setBlockBoundsBasedOnMeta(meta);
-            
-            this.renderBlocks.setRenderBoundsFromBlock(block);
-            this.renderBlocks.renderBlockSandFalling(block, world, bx, by, bz, meta);
-
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glPopMatrix();
-        }
-
+	public RenderTFSlideBlock(RenderManager manager) {
+		super(manager);
+		shadowSize = 0.0f;
 	}
 
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
+	// [VanillaCopy] RenderFallingBlock, with spin
 	@Override
-	protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
-		return TextureMap.locationBlocksTexture;
+	public void doRender(EntityTFSlideBlock entity, double x, double y, double z, float yaw, float partialTicks) {
+
+		if (entity.getBlockState() != null) {
+			IBlockState iblockstate = entity.getBlockState();
+
+			if (iblockstate.getRenderType() == EnumBlockRenderType.MODEL) {
+				World world = entity.world;
+
+				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE) {
+					this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+					GlStateManager.pushMatrix();
+					GlStateManager.disableLighting();
+					Tessellator tessellator = Tessellator.getInstance();
+					BufferBuilder vertexbuffer = tessellator.getBuffer();
+
+					if (this.renderOutlines) {
+						GlStateManager.enableColorMaterial();
+						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+					}
+
+					vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
+					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
+					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
+					/*// spin FIXME
+					if (iblockstate.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Y) {
+						GlStateManager.rotate((entity.ticksExisted + partialTicks) * 60F, 0, 1, 0);
+					} else if (iblockstate.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.X) {
+						GlStateManager.rotate((entity.ticksExisted + partialTicks) * 60F, 1, 0, 0);
+					} else if (iblockstate.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Z) {
+						GlStateManager.rotate((entity.ticksExisted + partialTicks) * 60F, 0, 0, 1);
+					}*/
+					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, vertexbuffer, false, 0);
+					tessellator.draw();
+
+					if (this.renderOutlines) {
+						GlStateManager.disableOutlineMode();
+						GlStateManager.disableColorMaterial();
+					}
+
+					GlStateManager.enableLighting();
+					GlStateManager.popMatrix();
+					super.doRender(entity, x, y, z, yaw, partialTicks);
+				}
+			}
+		}
+
+
+        /*World world = sliderEntity.world;
+		IBlockState block = sliderEntity.getBlockState();
+
+        BlockPos pos = new BlockPos(sliderEntity);
+
+        if (block != null && block.getBlock() != world.getBlockState(pos).getBlock())
+        {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
+
+            // spin
+            if (block.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Y) {
+            	GlStateManager.rotate((sliderEntity.ticksExisted + time) * 60F, 0, 1, 0);
+            } else if (block.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.X) {
+            	GlStateManager.rotate((sliderEntity.ticksExisted + time) * 60F, 1, 0, 0);
+            } else if (block.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Z) {
+            	GlStateManager.rotate((sliderEntity.ticksExisted + time) * 60F, 0, 0, 1);
+            }
+
+            this.bindEntityTexture(sliderEntity);
+            GlStateManager.disableLighting();
+
+            Tessellator.getInstance().getBuffer().begin(7, DefaultVertexFormats.BLOCK);
+            BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+            blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(block), block, pos, Tessellator.getInstance().getBuffer(), false, MathHelper.getPositionRandom(pos));
+            Tessellator.getInstance().draw();
+
+            GlStateManager.enableLighting();
+            GlStateManager.popMatrix();
+        }*/
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFSlideBlock p_110775_1_) {
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 
 }

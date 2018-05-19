@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:armor_shard_cluster"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:armor_shard"
+    }
+  }
+}

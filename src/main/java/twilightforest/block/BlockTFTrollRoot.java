@@ -1,142 +1,108 @@
 package twilightforest.block;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.IShearable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.item.TFItems;
 
-public class BlockTFTrollRoot extends Block implements IShearable {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class BlockTFTrollRoot extends Block implements IShearable, ModelRegisterCallback {
 
 	protected BlockTFTrollRoot() {
-		super(Material.plants);
-        this.setTickRandomly(true);
+		super(Material.PLANTS);
+		this.setTickRandomly(true);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setStepSound(soundTypeGrass);
-		
-        this.setBlockTextureName(TwilightForestMod.ID + ":troll_root");
-
+		this.setSoundType(SoundType.PLANT);
 	}
 
 	@Override
-	public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z) {
+	public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune) {
-        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        ret.add(new ItemStack(this));
-        return ret;
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+		List<ItemStack> ret = new ArrayList<ItemStack>();
+		ret.add(new ItemStack(this));
+		return ret;
 	}
 
-	
-	
-	/**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
-    @Override
-	public boolean canBlockStay(World world, int x, int y, int z) {
-    	return canPlaceRootBelow(world, x, y + 1, z);
-    }
-    
-    public static boolean canPlaceRootBelow(World world, int x, int y, int z) {
-    	Block blockAbove = world.getBlock(x, y, z);
-    	
-    	return blockAbove.getMaterial() == Material.rock || blockAbove == TFBlocks.trollVidr || blockAbove == TFBlocks.trollBer || blockAbove == TFBlocks.unripeTrollBer;    
-    }
-    
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return super.canPlaceBlockAt(world, x, y, z) && this.canBlockStay(world, x, y, z);
-    }
-    
-    
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z) {
-    	return null;
-    }
-    
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    @Override
-	public boolean isOpaqueCube() {
-        return false;
-    }
-
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock() {
-        return false;
-    }
-	
-    /**
-     * The type of render function that is called for this block
-     */
-	@Override
-	public int getRenderType() {
-        return 1;
+	private boolean canBlockStay(World world, BlockPos pos) {
+		return canPlaceRootBelow(world, pos.up());
 	}
-	
-    /**
-     * Ticks the block if it's been scheduled
-     */
+
+	public static boolean canPlaceRootBelow(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		Block blockAbove = state.getBlock();
+
+		return state.getMaterial() == Material.ROCK || blockAbove == TFBlocks.trollvidr || blockAbove == TFBlocks.trollber || blockAbove == TFBlocks.unripe_trollber;
+	}
+
 	@Override
-    public void updateTick(World world, int x, int y, int z, Random rand) {
-        this.checkAndDropBlock(world, x, y, z);
-    }
-	
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor Block
-     */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        this.checkAndDropBlock(world, x, y, z);
-    }
-    
-    /**
-     * checks if the block can stay, if not drop as item
-     */
-    protected void checkAndDropBlock(World world, int x, int y, int z) {
-        if (!this.canBlockStay(world, x, y, z)) {
-            this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-        	world.setBlockToAir(x, y, z);
-        }
-    }
-    
-    /**
-     * Metadata and fortune sensitive version, this replaces the old (int meta, Random rand)
-     * version in 1.1.
-     *
-     * @param meta Blocks Metadata
-     * @param fortune Current item fortune level
-     * @param random Random number generator
-     * @return The number of items to drop
-     */
-    public int quantityDropped(int meta, int fortune, Random random) {
-        return 0;
-    }
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		return super.canPlaceBlockAt(world, pos) && this.canBlockStay(world, pos);
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
+		return NULL_AABB;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		this.checkAndDropBlock(world, pos);
+	}
+
+	@Override
+	@Deprecated
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		this.checkAndDropBlock(world, pos);
+	}
+
+	private void checkAndDropBlock(World world, BlockPos pos) {
+		if (!this.canBlockStay(world, pos)) {
+			world.destroyBlock(pos, true);
+		}
+	}
+
+	@Override
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		return 0;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+	}
 }

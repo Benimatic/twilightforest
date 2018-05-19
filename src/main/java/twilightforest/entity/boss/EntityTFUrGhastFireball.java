@@ -1,34 +1,30 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityTFUrGhastFireball extends EntityLargeFireball {
 
-	public EntityTFUrGhastFireball(World worldObj, EntityTFUrGhast entityTFTowerBoss, double x, double y, double z) 
-	{
-		super(worldObj, entityTFTowerBoss, x, y, z);
+	public EntityTFUrGhastFireball(World world, EntityTFUrGhast entityTFTowerBoss, double x, double y, double z) {
+		super(world, entityTFTowerBoss, x, y, z);
 	}
 
-	
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
-    protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
-    {
-        if (!this.worldObj.isRemote && !(par1MovingObjectPosition.entityHit instanceof EntityFireball))
-        {
-            if (par1MovingObjectPosition.entityHit != null)
-            {
-                par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16);
-            }
+	// [VanillaCopy] super, edits noted
+	@Override
+	protected void onImpact(RayTraceResult result) {
+		if (!this.world.isRemote && !(result.entityHit instanceof EntityFireball)) // TF - don't collide with other fireballs
+		{
+			if (result.entityHit != null) {
+				result.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16.0F); // TF - up damage by 10
+				this.applyEnchantments(this.shootingEntity, result.entityHit);
+			}
 
-            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, (float)this.field_92057_e, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
-            this.setDead();
-        }
-    }
+			boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
+			this.world.newExplosion(null, this.posX, this.posY, this.posZ, (float) this.explosionPower, flag, flag);
+			this.setDead();
+		}
+	}
 }

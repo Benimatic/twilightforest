@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:stick"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:twilight_plant",
+      "data": 8
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

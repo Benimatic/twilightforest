@@ -1,12 +1,13 @@
 package twilightforest.world;
 
-import java.util.Random;
-
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.entity.TFCreatures;
+import twilightforest.entity.EntityTFSkeletonDruid;
+
+import java.util.Random;
 
 
 public class TFGenWitchHut extends TFGenerator {
@@ -14,178 +15,171 @@ public class TFGenWitchHut extends TFGenerator {
 	/**
 	 * Make a cute witch's hut
 	 */
-	public boolean generate(World world, Random rand, int x, int y, int z)
-	{
-		return generateTinyHut(world, rand, x, y, z);
+	@Override
+	public boolean generate(World world, Random rand, BlockPos pos) {
+		return generateTinyHut(world, rand, pos);
 	}
-	
+
 	/**
 	 * Make the smallest size hut
 	 */
-	public boolean generateTinyHut(World world, Random rand, int x, int y, int z)
-	{
-		if (!isAreaSuitable(world, rand, x, y, z, 5, 7, 6))
-		{
+	public boolean generateTinyHut(World world, Random rand, BlockPos pos) {
+		if (!isAreaSuitable(world, rand, pos, 5, 7, 6)) {
 			return false;
 		}
-		
+
 		// walls!
-		
-		setBlock(world, x + 1, y + 0, z + 1, randStone(rand, 1));
-		setBlock(world, x + 2, y + 0, z + 1, randStone(rand, 1));
-		setBlock(world, x + 3, y + 0, z + 1, randStone(rand, 1));
-		setBlock(world, x + 5, y + 0, z + 1, randStone(rand, 1));
-		setBlock(world, x + 0, y + 0, z + 2, Blocks.brick_block);
-		setBlock(world, x + 1, y + 0, z + 2, Blocks.brick_block);
-		setBlock(world, x + 5, y + 0, z + 2, randStone(rand, 1));
-		setBlock(world, x + 0, y + 0, z + 3, Blocks.brick_block);
-		setBlock(world, x + 5, y + 0, z + 3, randStone(rand, 1));
-		setBlock(world, x + 0, y + 0, z + 4, Blocks.brick_block);
-		setBlock(world, x + 1, y + 0, z + 4, Blocks.brick_block);
-		setBlock(world, x + 5, y + 0, z + 4, randStone(rand, 1));
-		setBlock(world, x + 1, y + 0, z + 5, randStone(rand, 1));
-		setBlock(world, x + 2, y + 0, z + 5, randStone(rand, 1));
-		setBlock(world, x + 3, y + 0, z + 5, randStone(rand, 1));
-		setBlock(world, x + 5, y + 0, z + 5, randStone(rand, 1));
 
-		setBlock(world, x + 1, y + 1, z + 1, randStone(rand, 2));
-		setBlock(world, x + 3, y + 1, z + 1, randStone(rand, 2));
-		setBlock(world, x + 5, y + 1, z + 1, randStone(rand, 2));
-		setBlock(world, x + 0, y + 1, z + 2, Blocks.brick_block);
-		setBlock(world, x + 1, y + 1, z + 2, Blocks.brick_block);
-		setBlock(world, x + 5, y + 1, z + 2, randStone(rand, 2));
-		setBlock(world, x + 0, y + 1, z + 3, Blocks.brick_block);
-		setBlock(world, x + 0, y + 1, z + 4, Blocks.brick_block);
-		setBlock(world, x + 1, y + 1, z + 4, Blocks.brick_block);
-		setBlock(world, x + 5, y + 1, z + 4, randStone(rand, 2));
-		setBlock(world, x + 1, y + 1, z + 5, randStone(rand, 2));
-		setBlock(world, x + 3, y + 1, z + 5, randStone(rand, 2));
-		setBlock(world, x + 5, y + 1, z + 5, randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(1, 0, 1), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(2, 0, 1), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(3, 0, 1), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(5, 0, 1), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(0, 0, 2), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 0, 2), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 0, 2), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(0, 0, 3), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 0, 3), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(0, 0, 4), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 0, 4), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 0, 4), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(1, 0, 5), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(2, 0, 5), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(3, 0, 5), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(5, 0, 5), randStone(rand, 1));
 
-		setBlock(world, x + 1, y + 2, z + 1, randStone(rand, 3));
-		setBlock(world, x + 2, y + 2, z + 1, randStone(rand, 3));
-		setBlock(world, x + 3, y + 2, z + 1, randStone(rand, 3));
-		setBlock(world, x + 4, y + 2, z + 1, randStone(rand, 3));
-		setBlock(world, x + 5, y + 2, z + 1, randStone(rand, 3));
-		setBlock(world, x + 0, y + 2, z + 2, Blocks.brick_block);
-		setBlock(world, x + 1, y + 2, z + 2, Blocks.brick_block);
-		setBlock(world, x + 5, y + 2, z + 2, randStone(rand, 3));
-		setBlock(world, x + 0, y + 2, z + 3, Blocks.brick_block);
-		setBlock(world, x + 5, y + 2, z + 3, randStone(rand, 3));
-		setBlock(world, x + 0, y + 2, z + 4, Blocks.brick_block);
-		setBlock(world, x + 1, y + 2, z + 4, Blocks.brick_block);
-		setBlock(world, x + 5, y + 2, z + 4, randStone(rand, 1));
-		setBlock(world, x + 1, y + 2, z + 5, randStone(rand, 3));
-		setBlock(world, x + 2, y + 2, z + 5, randStone(rand, 3));
-		setBlock(world, x + 3, y + 2, z + 5, randStone(rand, 3));
-		setBlock(world, x + 4, y + 2, z + 5, randStone(rand, 3));
-		setBlock(world, x + 5, y + 2, z + 5, randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(1, 1, 1), randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(3, 1, 1), randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(5, 1, 1), randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(0, 1, 2), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 1, 2), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 1, 2), randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(0, 1, 3), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(0, 1, 4), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 1, 4), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 1, 4), randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(1, 1, 5), randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(3, 1, 5), randStone(rand, 2));
+		setBlockAndNotifyAdequately(world, pos.add(5, 1, 5), randStone(rand, 2));
 
-		setBlock(world, x + 0, y + 3, z + 2, Blocks.brick_block);
-		setBlock(world, x + 0, y + 3, z + 3, Blocks.brick_block);
-		setBlock(world, x + 0, y + 3, z + 4, Blocks.brick_block);
-		setBlock(world, x + 2, y + 3, z + 1, randStone(rand, 4));
-		setBlock(world, x + 3, y + 3, z + 1, randStone(rand, 4));
-		setBlock(world, x + 4, y + 3, z + 1, randStone(rand, 4));
-		setBlock(world, x + 2, y + 3, z + 5, randStone(rand, 4));
-		setBlock(world, x + 3, y + 3, z + 5, randStone(rand, 4));
-		setBlock(world, x + 4, y + 3, z + 5, randStone(rand, 4));
+		setBlockAndNotifyAdequately(world, pos.add(1, 2, 1), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(2, 2, 1), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(3, 2, 1), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(4, 2, 1), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(5, 2, 1), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(0, 2, 2), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 2, 2), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 2, 2), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(0, 2, 3), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 2, 3), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(0, 2, 4), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 2, 4), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 2, 4), randStone(rand, 1));
+		setBlockAndNotifyAdequately(world, pos.add(1, 2, 5), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(2, 2, 5), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(3, 2, 5), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(4, 2, 5), randStone(rand, 3));
+		setBlockAndNotifyAdequately(world, pos.add(5, 2, 5), randStone(rand, 3));
 
-		setBlock(world, x + 0, y + 4, z + 3, Blocks.brick_block);
-		setBlock(world, x + 3, y + 4, z + 1, randStone(rand, 5));
-		setBlock(world, x + 3, y + 4, z + 5, randStone(rand, 5));
+		setBlockAndNotifyAdequately(world, pos.add(0, 3, 2), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(0, 3, 3), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(0, 3, 4), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 3, 1), randStone(rand, 4));
+		setBlockAndNotifyAdequately(world, pos.add(3, 3, 1), randStone(rand, 4));
+		setBlockAndNotifyAdequately(world, pos.add(4, 3, 1), randStone(rand, 4));
+		setBlockAndNotifyAdequately(world, pos.add(2, 3, 5), randStone(rand, 4));
+		setBlockAndNotifyAdequately(world, pos.add(3, 3, 5), randStone(rand, 4));
+		setBlockAndNotifyAdequately(world, pos.add(4, 3, 5), randStone(rand, 4));
 
-		setBlock(world, x + 0, y + 5, z + 3, Blocks.brick_block);
+		setBlockAndNotifyAdequately(world, pos.add(0, 4, 3), Blocks.BRICK_BLOCK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 4, 1), randStone(rand, 5));
+		setBlockAndNotifyAdequately(world, pos.add(3, 4, 5), randStone(rand, 5));
 
-		setBlock(world, x + 0, y + 6, z + 3, Blocks.brick_block);
+		setBlockAndNotifyAdequately(world, pos.add(0, 5, 3), Blocks.BRICK_BLOCK.getDefaultState());
+
+		setBlockAndNotifyAdequately(world, pos.add(0, 6, 3), Blocks.BRICK_BLOCK.getDefaultState());
 
 		// roof!
-		setBlockAndMetadata(world, x + 0, y + 2, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 0, y + 2, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 0, y + 2, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 0, y + 2, z + 6, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 6, y + 2, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 6, y + 2, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 6, y + 2, z + 2, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 6, y + 2, z + 3, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 6, y + 2, z + 4, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 6, y + 2, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 6, y + 2, z + 6, Blocks.double_stone_slab, 2);
-		
-		setBlockAndMetadata(world, x + 1, y + 3, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 2, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 4, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 1, y + 3, z + 6, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 3, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 3, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 3, z + 2, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 3, z + 3, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 3, z + 4, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 3, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 3, z + 6, Blocks.double_stone_slab, 2);
-		
-		setBlockAndMetadata(world, x + 1, y + 4, z + 0, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 4, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 4, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 4, z + 2, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 4, z + 3, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 4, z + 4, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 4, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 4, z + 6, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 1, y + 4, z + 6, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 4, z + 0, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 4, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 4, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 4, z + 2, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 4, z + 3, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 4, z + 4, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 4, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 4, z + 6, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 5, y + 4, z + 6, Blocks.stone_slab, 2);
+		setBlockAndNotifyAdequately(world, pos.add(0, 2, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(0, 2, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(0, 2, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(0, 2, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(6, 2, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(6, 2, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(6, 2, 2), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(6, 2, 3), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(6, 2, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(6, 2, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(6, 2, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 
-		setBlockAndMetadata(world, x + 2, y + 5, z + 0, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 5, z + 1, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 5, z + 0, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 5, z + 1, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 5, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 5, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 5, z + 2, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 5, z + 3, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 5, z + 4, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 5, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 5, z + 6, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 5, z + 5, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 2, y + 5, z + 6, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 5, z + 5, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 4, y + 5, z + 6, Blocks.stone_slab, 2);
+		setBlockAndNotifyAdequately(world, pos.add(1, 3, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 3, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 3, 2), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 3, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 3, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 3, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 3, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 3, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 3, 2), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 3, 3), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 3, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 3, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 3, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 
-		setBlockAndMetadata(world, x + 3, y + 6, z + 0, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 6, z + 1, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 6, z + 2, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 6, z + 4, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 6, z + 5, Blocks.double_stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 6, z + 6, Blocks.double_stone_slab, 2);
+		setBlockAndNotifyAdequately(world, pos.add(1, 4, 0), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 4, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 4, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 4, 2), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 4, 3), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 4, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 4, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 4, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 4, 6), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 4, 0), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 4, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 4, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 4, 2), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 4, 3), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 4, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 4, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 4, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(5, 4, 6), Blocks.WOODEN_SLAB.getDefaultState());
 
-		setBlockAndMetadata(world, x + 3, y + 7, z + 0, Blocks.stone_slab, 2);
-		setBlockAndMetadata(world, x + 3, y + 7, z + 6, Blocks.stone_slab, 2);
+		setBlockAndNotifyAdequately(world, pos.add(2, 5, 0), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 5, 1), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 5, 0), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 5, 1), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 5, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 5, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 5, 2), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 5, 3), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 5, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 5, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 5, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 5, 5), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(2, 5, 6), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 5, 5), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(4, 5, 6), Blocks.WOODEN_SLAB.getDefaultState());
+
+		setBlockAndNotifyAdequately(world, pos.add(3, 6, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 6, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 6, 2), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 6, 4), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 6, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 6, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
+
+		setBlockAndNotifyAdequately(world, pos.add(3, 7, 0), Blocks.WOODEN_SLAB.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(3, 7, 6), Blocks.WOODEN_SLAB.getDefaultState());
 
 		// fire in chimney!
-		setBlock(world, x + 1, y - 1, z + 3, Blocks.netherrack);
-		setBlock(world, x + 1, y + 0, z + 3, Blocks.fire); // oh god the roof!
-		
+		setBlockAndNotifyAdequately(world, pos.add(1, -1, 3), Blocks.NETHERRACK.getDefaultState());
+		setBlockAndNotifyAdequately(world, pos.add(1, 0, 3), Blocks.FIRE.getDefaultState()); // oh god the roof!
+
 		// skeleton spawner!
-        world.setBlock(x + 3, y + 1, z + 3, Blocks.mob_spawner, 0, 2);
-        TileEntityMobSpawner ms = (TileEntityMobSpawner)world.getTileEntity(x + 3, y + 1, z + 3);
-        MobSpawnerBaseLogic spawnerLogic = ms.func_145881_a();
-        if (spawnerLogic != null) {
-        	spawnerLogic.setEntityName(TFCreatures.getSpawnerNameFor("Skeleton Druid"));
-        }
+		world.setBlockState(pos.add(3, 1, 3), Blocks.MOB_SPAWNER.getDefaultState(), 2);
+		TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(pos.add(3, 1, 3));
+		ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));
 
-
-		
 		return true;
 	}
-	
+
 }

@@ -1,81 +1,59 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFRedcapPlantTNT;
 import twilightforest.item.TFItems;
+import twilightforest.util.PlayerHelper;
 
 public class EntityTFRedcapSapper extends EntityTFRedcap {
-	
 
 	public EntityTFRedcapSapper(World world) {
 		super(world);
-
-		this.tasks.addTask(4, new EntityAITFRedcapPlantTNT(this)); // plant TNT
-		
-        //texture = TwilightForestMod.MODEL_DIR + "redcapsapper.png";
-        
-        this.setTntLeft(3);
-
-        this.setCurrentItemOrArmor(1, new ItemStack(TFItems.ironwoodBoots));
-        this.setCurrentItemOrArmor(0, new ItemStack(TFItems.ironwoodPick, 1));
-	}
-	
-	/**
-	 * Set monster attributes
-	 */
-	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-    }
-
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
-    @Override
-	public int getTotalArmorValue()
-    {
-        int var1 = super.getTotalArmorValue() + 2;
-
-        if (var1 > 20)
-        {
-            var1 = 20;
-        }
-
-        return var1;
-    }
-    
-	
-	@Override
-	public ItemStack getPick()
-	{
-		return new ItemStack(TFItems.ironwoodPick);
+		this.heldPick = new ItemStack(TFItems.ironwood_pickaxe);
+		this.heldTNT.setCount(3);
 	}
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(TFItems.ironwood_boots));
+		return data;
+	}
+
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		this.tasks.addTask(4, new EntityAITFRedcapPlantTNT(this));
+	}
+
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	}
+
+	@Override
+	public void onDeath(DamageSource source) {
+		super.onDeath(source);
+		if (source.getTrueSource() instanceof EntityPlayerMP) {
 			// are we in a level 2 hill?
-			int chunkX = MathHelper.floor_double(posX) >> 4;
-			int chunkZ = MathHelper.floor_double(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hill2) {
-				// award level 2 hill cheevo
-				((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHill2);
+			int chunkX = MathHelper.floor(posX) >> 4;
+			int chunkZ = MathHelper.floor(posZ) >> 4;
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill2) {
+				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill2"), "redcap_sapper");
 			}
-
 		}
 	}
 }

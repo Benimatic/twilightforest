@@ -1,154 +1,144 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityTippedArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public abstract class ItemTFBowBase extends ItemBow {
+import javax.annotation.Nullable;
 
-	private IIcon[] iconArray;
+public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCallback {
 
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon(this.getIconString() + "_standby");
-		this.iconArray = new IIcon[bowPullIconNameArray.length];
-
-		for (int i = 0; i < this.iconArray.length; ++i)
-		{
-			this.iconArray[i] = par1IconRegister.registerIcon(this.getIconString() + "_" + bowPullIconNameArray[i]);
-		}
+	public ItemTFBowBase() {
+		// [VanillaCopy] superclass constructor, because the vanilla one checks == instead of instanceof ItemBow
+		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				if (entityIn == null) {
+					return 0.0F;
+				} else {
+					ItemStack itemstack = entityIn.getActiveItemStack();
+					return !itemstack.isEmpty() && itemstack.getItem() instanceof ItemTFBowBase ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+				}
+			}
+		});
 	}
 
-	/**
-	 * used to cycle through icons based on their used duration, i.e. for the bow
-	 */
-	@SideOnly(Side.CLIENT)
-	public IIcon getItemIconForUseDuration(int par1) {
-		return this.iconArray[par1];
-	}
+	// [VanillaCopy] of super, edits noted
+	@SuppressWarnings("unused")
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if (entityLiving instanceof EntityPlayer) {
+			EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+			ItemStack itemstack = this.findAmmo(entityplayer);
 
-	/**
-	 * Player, Render pass, and item usage sensitive version of getIconIndex.
-	 *
-	 * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
-	 * @param renderPass The pass to get the icon for, 0 is default.
-	 * @param player The player holding the item
-	 * @param usingItem The item the player is actively using. Can be null if not using anything.
-	 * @param useRemaining The ticks remaining for the active item.
-	 * @return The icon index
-	 */
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-		if (usingItem != null) {
-			int j = usingItem.getMaxItemUseDuration() - useRemaining;
+			int i = this.getMaxItemUseDuration(stack) - timeLeft;
+			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, !itemstack.isEmpty() || flag);
+			if (i < 0) return;
 
-			if (j >= 18)
-			{
-				return this.getItemIconForUseDuration(2);
-			}
+			if (!itemstack.isEmpty() || flag) {
+				if (itemstack.isEmpty()) {
+					itemstack = new ItemStack(Items.ARROW);
+				}
 
-			if (j > 13)
-			{
-				return this.getItemIconForUseDuration(1);
-			}
+				float f = getArrowVelocity(i);
 
-			if (j > 0)
-			{
-				return this.getItemIconForUseDuration(0);
-			}
-		}
+				if ((double) f >= 0.1D) {
+					boolean flag1 = entityplayer.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow ? ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer) : false);
 
-		return getIcon(stack, renderPass);
-	}
+					if (!worldIn.isRemote) {
+						ItemArrow itemarrow = (ItemArrow) ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
+						EntityArrow entityarrow = getArrow(worldIn, itemstack, entityplayer); // TF: use own entity creator
+						entityarrow.setAim(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
-	/**
-	 * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-	 */
-	public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityPlayer, int itemInUseCount) {
-		int charge = this.getMaxItemUseDuration(itemstack) - itemInUseCount;
+						if (f == 1.0F) {
+							entityarrow.setIsCritical(true);
+						}
 
-		ArrowLooseEvent event = new ArrowLooseEvent(entityPlayer, itemstack, charge);
-		MinecraftForge.EVENT_BUS.post(event);
-		if (event.isCanceled())
-		{
-			return;
-		}
-		charge = event.charge;
+						int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
 
-		boolean isNoPickup = entityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, itemstack) > 0;
+						if (j > 0) {
+							entityarrow.setDamage(entityarrow.getDamage() + (double) j * 0.5D + 0.5D);
+						}
 
-		if (isNoPickup || entityPlayer.inventory.hasItem(Items.arrow))
-		{
-			float velocity = (float)charge / 20.0F;
-			velocity = (velocity * velocity + velocity * 2.0F) / 3.0F;
+						int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
 
-			if ((double)velocity < 0.1D)
-			{
-				return;
-			}
+						if (k > 0) {
+							entityarrow.setKnockbackStrength(k);
+						}
 
-			if (velocity > 1.0F)
-			{
-				velocity = 1.0F;
-			}
+						if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
+							entityarrow.setFire(100);
+						}
 
-			EntityArrow entityarrow = getArrow(world, entityPlayer, velocity * 2.0F);
+						stack.damageItem(1, entityplayer);
 
-			if (velocity == 1.0F)
-			{
-				entityarrow.setIsCritical(true);
-			}
+						if (flag1) {
+							entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+						}
 
-			int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, itemstack);
+						worldIn.spawnEntity(entityarrow);
+					}
 
-			if (powerLevel > 0)
-			{
-				entityarrow.setDamage(entityarrow.getDamage() + (double)powerLevel * 0.5D + 0.5D);
-			}
+					worldIn.playSound((EntityPlayer) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-			int punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, itemstack);
+					if (!flag1) {
+						itemstack.shrink(1);
 
-			if (punchLevel > 0)
-			{
-				entityarrow.setKnockbackStrength(punchLevel);
-			}
+						if (itemstack.isEmpty()) {
+							entityplayer.inventory.deleteStack(itemstack);
+						}
+					}
 
-			if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, itemstack) > 0)
-			{
-				entityarrow.setFire(100);
-			}
-
-			itemstack.damageItem(1, entityPlayer);
-			world.playSoundAtEntity(entityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
-
-			if (isNoPickup)
-			{
-				entityarrow.canBePickedUp = 2;
-			}
-			else
-			{
-				entityPlayer.inventory.consumeInventoryItem(Items.arrow);
-			}
-
-			if (!world.isRemote)
-			{
-				world.spawnEntityInWorld(entityarrow);
+					entityplayer.addStat(StatList.getObjectUseStats(this));
+				}
 			}
 		}
 	}
 
-	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer, float velocity) {
-		return new EntityArrow(world, entityPlayer, velocity);
+	// [VanillaCopy] super.findAmmo, no changes
+	protected ItemStack findAmmo(EntityPlayer player) {
+		if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) {
+			return player.getHeldItem(EnumHand.OFF_HAND);
+		} else if (this.isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) {
+			return player.getHeldItem(EnumHand.MAIN_HAND);
+		} else {
+			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+				ItemStack itemstack = player.inventory.getStackInSlot(i);
+
+				if (this.isArrow(itemstack)) {
+					return itemstack;
+				}
+			}
+
+			return ItemStack.EMPTY;
+		}
+	}
+
+	protected EntityArrow getArrow(World world, ItemStack stack, EntityPlayer entityPlayer) {
+		if (stack.getItem() instanceof ItemArrow) {
+			return ((ItemArrow) stack.getItem()).createArrow(world, stack, entityPlayer);
+		} else {
+			return new EntityTippedArrow(world, entityPlayer);
+		}
 	}
 
 }

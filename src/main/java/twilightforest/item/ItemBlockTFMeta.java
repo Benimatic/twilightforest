@@ -1,74 +1,55 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemBlockTFMeta extends ItemBlock {
-
-	private final Block myBlock;
-
+	private boolean appendNumber = true;
 
 	public ItemBlockTFMeta(Block block) {
 		super(block);
-        setHasSubtypes(true);
-        setMaxDamage(0);
-        
-        this.myBlock = block;
+		setHasSubtypes(true);
 	}
 
-    @Override
-    public int getMetadata(int i)
-    {
-        return i;
-    }
-    
+	public ItemBlockTFMeta setAppend(boolean doAppend) {
+		this.appendNumber = doAppend;
+		return this;
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemstack)
-    {
-    	int meta = itemstack.getItemDamage();
-    	return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
-    }
+	@Override
+	public int getMetadata(int i) {
+		return i;
+	}
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
-    @Override
-    public IIcon getIconFromDamage(int par1)
-    {
-        return this.myBlock.getIcon(2, par1);
-    }
+	@Override
+	public String getUnlocalizedName(ItemStack itemstack) {
+		if (appendNumber) {
+			int meta = itemstack.getItemDamage();
+			return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
+		} else return super.getUnlocalizedName();
+	}
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
-	{
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+
 		// add warning for [WIP] tag
-		if (par1ItemStack.getDisplayName().contains("[WIP]"))
-		{
-			par3List.add("This block is a work in progress");
-			par3List.add("and may have bugs or unintended");
-			par3List.add("effects that may damage your world.");
-			par3List.add("Use with caution.");
-		}		
+		if (stack.getDisplayName().contains("[WIP]")) {
+			tooltip.add(I18n.format("twilightforest.misc.wip0"));
+			tooltip.add(I18n.format("twilightforest.misc.wip1"));
+		}
 		// add warning for [NYI] tag
-		if (par1ItemStack.getDisplayName().contains("[NYI]"))
-		{
-			par3List.add("This block has effects");
-			par3List.add("that are not yet implemented.");
+		if (stack.getDisplayName().contains("[NYI]")) {
+			tooltip.add(I18n.format("twilightforest.misc.nyi"));
 		}
 	}
 }

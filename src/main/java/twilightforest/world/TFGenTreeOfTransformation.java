@@ -1,31 +1,28 @@
 package twilightforest.world;
 
+import net.minecraft.block.BlockLog;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import twilightforest.block.BlockTFMagicLog;
+import twilightforest.block.TFBlocks;
+import twilightforest.enums.MagicWoodVariant;
+
 import java.util.Random;
 
-import net.minecraft.world.World;
-import twilightforest.block.BlockTFMagicLogSpecial;
-import twilightforest.block.TFBlocks;
 
+public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 
-public class TFGenTreeOfTransformation extends TFGenCanopyTree 
-{
-
-	public TFGenTreeOfTransformation() 
-	{
+	public TFGenTreeOfTransformation() {
 		this(false);
 	}
 
-
-	public TFGenTreeOfTransformation(boolean notify) 
-	{
+	public TFGenTreeOfTransformation(boolean notify) {
 		super(notify);
-		
-		this.treeBlock = TFBlocks.magicLog;
-		this.treeMeta = 1;
-		this.branchMeta = treeMeta | 12;
-		this.leafBlock = TFBlocks.magicLeaves;
-		this.leafMeta = 1;	
-		
+
+		this.treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
+		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
+
 		this.minHeight = 11;
 		this.chanceAddFirstFive = Integer.MAX_VALUE;
 		this.chanceAddSecondFive = Integer.MAX_VALUE;
@@ -33,18 +30,15 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree
 
 
 	@Override
-	public boolean generate(World world, Random random, int x, int y, int z) {
-		if(super.generate(world, random, x, y, z))
-		{
+	public boolean generate(World world, Random random, BlockPos pos) {
+		if (super.generate(world, random, pos)) {
 			// heart of transformation
-			setBlockAndMetadata(world, x, y + 3, z, TFBlocks.magicLogSpecial, BlockTFMagicLogSpecial.META_TRANS);
+			setBlockAndNotifyAdequately(world, pos.up(3), TFBlocks.magic_log_core.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS));
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
 
-	
+
 }

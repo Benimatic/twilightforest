@@ -1,57 +1,55 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
+
+import java.util.Random;
 
 public class ComponentTFMazeCorridorShrooms extends ComponentTFMazeCorridor {
 
 	public ComponentTFMazeCorridorShrooms() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeCorridorShrooms(int i, int x, int y, int z, int rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeCorridorShrooms(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+		super(feature, i, x, y, z, rotation);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
 		// mycelium & mushrooms
-		for (int x = 1; x < 5; x++)
-		{
-			for (int z = 0; z < 5; z++)
-			{
-				if (rand.nextInt(2) > 0)
-				{
-					this.placeBlockAtCurrentPosition(world, Blocks.mycelium, 0, x, 0, z, sbb);
+		for (int x = 1; x < 5; x++) {
+			for (int z = 0; z < 5; z++) {
+				if (rand.nextInt(2) > 0) {
+					this.setBlockState(world, Blocks.MYCELIUM.getDefaultState(), x, 0, z, sbb);
 				}
-				if (rand.nextInt(2) > 0)
-				{
-					this.placeBlockAtCurrentPosition(world, rand.nextBoolean() ? Blocks.red_mushroom : Blocks.brown_mushroom, 0, x, 1, z, sbb);
+				if (rand.nextInt(2) > 0) {
+					this.setBlockState(world, rand.nextBoolean() ? Blocks.RED_MUSHROOM.getDefaultState() : Blocks.BROWN_MUSHROOM.getDefaultState(), x, 1, z, sbb);
 				}
 			}
 		}
-		
+
 		// brackets?
-		Block mushType = rand.nextBoolean() ? Blocks.red_mushroom_block : Blocks.brown_mushroom_block;
+		IBlockState mushType = (rand.nextBoolean() ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 		int mushY = rand.nextInt(4) + 1;
 		int mushZ = rand.nextInt(4) + 1;
-		this.placeBlockAtCurrentPosition(world, mushType, 15, 1, mushY - 1, mushZ, sbb);
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, mushZ, 1, mushY, mushZ, mushType, 10, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 1, mushY, mushZ - 1, 2, mushY, mushZ + 1, mushType, 14, Blocks.air, 0, false);
+		this.setBlockState(world, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM), 1, mushY - 1, mushZ, sbb);
+		this.fillWithBlocks(world, sbb, 1, 1, mushZ, 1, mushY, mushZ, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, mushY, mushZ - 1, 2, mushY, mushZ + 1, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE), AIR, false);
 
-		mushType = mushType == Blocks.brown_mushroom_block ? Blocks.red_mushroom_block : Blocks.brown_mushroom_block;
+		mushType = (mushType == Blocks.BROWN_MUSHROOM_BLOCK ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 		mushY = rand.nextInt(4) + 1;
 		mushZ = rand.nextInt(4) + 1;
-		this.fillWithMetadataBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType, 10, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 3, mushY, mushZ - 1, 4, mushY, mushZ + 1, mushType, 14, Blocks.air, 0, false);
+		this.fillWithBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, mushY, mushZ - 1, 4, mushY, mushZ + 1, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE), AIR, false);
 
-		
+
 		return true;
 	}
 }

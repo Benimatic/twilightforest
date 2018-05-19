@@ -1,9 +1,12 @@
 package twilightforest.inventory;
 
-import twilightforest.TwilightForestMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import twilightforest.TFConfig;
+
+import java.util.Arrays;
 
 
 public class InventoryTFGoblinUncrafting implements IInventory {
@@ -15,14 +18,23 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 
 	public InventoryTFGoblinUncrafting(ContainerTFUncrafting containerTFGoblinCrafting) {
-		// TODO Auto-generated constructor stub
+		Arrays.fill(contents, ItemStack.EMPTY);
 	}
-
-
 
 	@Override
 	public int getSizeInventory() {
 		return 9;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		for (ItemStack s : contents) {
+			if (!s.isEmpty()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override
@@ -32,51 +44,33 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slotNum, int amount) {
-		if (this.contents[slotNum] != null)
-		{
+		if (!this.contents[slotNum].isEmpty()) {
 			ItemStack takenStack;
 
-			if (this.contents[slotNum].stackSize <= amount)
-			{
+			if (this.contents[slotNum].getCount() <= amount) {
 				takenStack = this.contents[slotNum];
-				this.contents[slotNum] = null;
+				this.contents[slotNum] = ItemStack.EMPTY;
 
 				//this.eventHandler.onCraftMatrixChanged(this);
 				return takenStack;
-			}
-			else
-			{
+			} else {
 				takenStack = this.contents[slotNum].splitStack(amount);
-
-				//System.out.println("Stack size in slot " + slotNum + " is now " + this.contents[slotNum].stackSize);
-
-				if (this.contents[slotNum].stackSize == 0)
-				{
-					this.contents[slotNum] = null;
-				}
-
-				//this.eventHandler.onCraftMatrixChanged(this);
 				return takenStack;
 			}
-		}
-		else
-		{
-			return null;
+		} else {
+			return ItemStack.EMPTY;
 		}
 
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
-		if (this.contents[par1] != null)
-		{
+	public ItemStack removeStackFromSlot(int par1) {
+		if (!this.contents[par1].isEmpty()) {
 			ItemStack var2 = this.contents[par1];
-			this.contents[par1] = null;
+			this.contents[par1] = ItemStack.EMPTY;
 			return var2;
-		}
-		else
-		{
-			return null;
+		} else {
+			return ItemStack.EMPTY;
 		}
 	}
 
@@ -84,17 +78,15 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
 		this.contents[par1] = par2ItemStack;
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
+		if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit()) {
+			par2ItemStack.setCount(this.getInventoryStackLimit());
 		}
 
 		this.markDirty();
 	}
 
 	@Override
-	public String getInventoryName() {
-		// TODO Auto-generated method stub
+	public String getName() {
 		return "twilightforest.goblincrafting";
 	}
 
@@ -104,31 +96,55 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public void markDirty() { }
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1) {
-		return !TwilightForestMod.disableUncrafting;
+	public void markDirty() {
 	}
 
 	@Override
-	public void openInventory() { }
+	public boolean isUsableByPlayer(EntityPlayer var1) {
+		return !TFConfig.disableUncrafting;
+	}
 
 	@Override
-	public void closeInventory() { }
-
-    /**
-     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
-     */
-	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
-    {
-        return false;
-    }
+	public void openInventory(EntityPlayer player) {
+	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public void closeInventory(EntityPlayer player) {
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
 		return false;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		Arrays.fill(contents, ItemStack.EMPTY);
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return null;
 	}
 
 }

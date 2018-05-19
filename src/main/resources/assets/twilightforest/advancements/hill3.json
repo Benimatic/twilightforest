@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "title": {
+      "translate": "advancement.twilight_hill3"
+    },
+    "description": {
+      "translate": "advancement.twilight_hill3.desc"
+    }
+  },
+  "parent": "twilightforest:hill2",
+  "__comment": "This is triggered by code in order to test for a Hill nearby. In the future, it may become data-driven",
+  "criteria": {
+    "wraith": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

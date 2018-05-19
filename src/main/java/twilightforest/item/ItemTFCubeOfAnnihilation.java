@@ -1,192 +1,109 @@
 package twilightforest.item;
 
-import java.util.HashMap;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFChainBlock;
-import twilightforest.entity.EntityTFCubeOfAnnihilation;
-import twilightforest.entity.EntityTFTwilightWandBolt;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFCubeOfAnnihilation;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class ItemTFCubeOfAnnihilation extends ItemTF {
-	
-	private IIcon annihilateIcon;
+	private static final String THROWN_UUID_KEY = "cubeEntity";
 
-
-	private HashMap<ItemStack, Entity> launchedCubesMap = new HashMap<ItemStack, Entity>();
-	
 	protected ItemTFCubeOfAnnihilation() {
-		super();
-        this.maxStackSize = 1;
+		this.maxStackSize = 1;
 		this.setCreativeTab(TFItems.creativeTab);
-
-	}
-	
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-	{
-		return false;
+		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				return getThrownUuid(stack) != null ? 1 : 0;
+			}
+		});
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World worldObj, EntityPlayer player) {
-		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+	public void onUpdate(ItemStack stack, World world, Entity holder, int slot, boolean isSelected) {
+		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Most");
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Least");
+		}
+	}
 
-		if (!worldObj.isRemote && !this.hasLaunchedCube(stack)) {
-			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(worldObj, player);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 
-			worldObj.spawnEntityInWorld(launchedCube);
-			
-			this.setLaunchedCube(stack, launchedCube);
-			setCubeAsThrown(stack);
+		if (getThrownUuid(stack) != null)
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
+
+		if (!world.isRemote) {
+			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(world, player);
+			world.spawnEntity(launchedCube);
+			setThrownEntity(stack, launchedCube);
 		}
 
-
-		return stack;
+		player.setActiveHand(hand);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
-	
-	/**
-	 * Set this item as having been thrown
-	 * @param stack
-	 */
-	public static void setCubeAsThrown(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
+
+	@Nullable
+	private static UUID getThrownUuid(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasUniqueId(THROWN_UUID_KEY)) {
+			return stack.getTagCompound().getUniqueId(THROWN_UUID_KEY);
+		}
+
+		return null;
+	}
+
+	@Nullable
+	private static EntityTFCubeOfAnnihilation getThrownEntity(World world, ItemStack stack) {
+		if (world instanceof WorldServer) {
+			UUID id = getThrownUuid(stack);
+			if (id != null) {
+				Entity e = ((WorldServer) world).getEntityFromUuid(id);
+				if (e instanceof EntityTFCubeOfAnnihilation) {
+					return (EntityTFCubeOfAnnihilation) e;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private static void setThrownEntity(ItemStack stack, EntityTFCubeOfAnnihilation cube) {
+		if (!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		stack.getTagCompound().setBoolean("thrown", true);
+		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}
 
-	/**
-	 * Set the cube for this item as returned to the player
-	 * @param stack
-	 */
-	public static void setCubeAsReturned(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		stack.getTagCompound().setBoolean("thrown", false);
-	}
-	
-
-	/**
-	 * Method for the client to determine if the cube has been thrown or not.  Not as accurate as server method due to lag, etc.
-	 * @param stack
-	 */
-	public static boolean doesTalismanHaveCube(ItemStack stack) {
-		if (stack.getTagCompound() == null) {
-			return true;
-		} else {
-			return !stack.getTagCompound().getBoolean("thrown");
-		}
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 72000;
 	}
 
-	
-	/**
-	 * Set the cube belonging to the player as returned
-	 * @param player
-	 */
-	public static void setCubeAsReturned(EntityPlayer player) {
-		if (player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == TFItems.cubeOfAnnihilation) {
-			setCubeAsReturned(player.getCurrentEquippedItem());
-		}
-	}
-	
-	/**
-	 * Player, Render pass, and item usage sensitive version of getIconIndex.
-	 *
-	 * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
-	 * @param renderPass The pass to get the icon for, 0 is default.
-	 * @param player The player holding the item
-	 * @param usingItem The item the player is actively using. Can be null if not using anything.
-	 * @param useRemaining The ticks remaining for the active item.
-	 * @return The icon index
-	 */
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-		
-		if (this.doesTalismanHaveCube(stack)) {
-			return this.itemIcon;
-		} else {
-			return TFItems.cubeTalisman.getIconIndex(stack);
-		}
+	@Override
+	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+		return EnumAction.BLOCK;
 	}
 
-	public boolean hasLaunchedCube(ItemStack stack) {
-		Entity cube = this.launchedCubesMap.get(stack);
-		
-		return cube != null && !cube.isDead;
+	@Override
+	public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker) {
+		return true;
 	}
-	
-	public void setLaunchedCube(ItemStack stack, EntityTFCubeOfAnnihilation launchedCube) {
-		this.launchedCubesMap.put(stack, launchedCube);
-	}
-
-	/**
-	 * Called each tick while using an item.
-	 * @param stack The Item being used
-	 * @param player The Player using the item
-     * @param count The amount of time in tick the item has been used for continuously
-     */
-    @Override
-	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-//		if (stack.getItemDamage() >= this.getMaxDamage()) {
-//			// do not use
-//			player.stopUsingItem();
-//			return;
-//		}
-    	
-
-
-	}
-
-	/**
-     * How long it takes to use or consume an item
-     */
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
-    
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.block;
-    }
-
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-        this.annihilateIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":annihilate_particle");
-    }
-    
-    public IIcon getAnnihilateIcon() {
-    	return this.annihilateIcon;
-    }
-    
 }

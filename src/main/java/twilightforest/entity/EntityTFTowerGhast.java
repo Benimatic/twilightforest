@@ -2,540 +2,380 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
+import twilightforest.entity.boss.EntityTFUrGhast;
 
-public class EntityTFTowerGhast extends EntityGhast
-{
+import java.util.Random;
 
-	private static final int AGGRO_STATUS = 16;
-	protected EntityLivingBase targetedEntity;
-	protected boolean isAggressive;
-	protected int aggroCooldown;
-	protected int explosionPower;
-	protected int aggroCounter;
-	
-	protected float aggroRange;
-	protected float stareRange;
-	
+public class EntityTFTowerGhast extends EntityGhast {
+	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
+	private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> ATTACK_TIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> ATTACK_PREVTIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
+
+	private AIAttack attackAI;
 	protected float wanderFactor;
-	
-	protected int inTrapCounter;
-
-    private ChunkCoordinates homePosition = new ChunkCoordinates(0, 0, 0);
-    /** If -1 there is no maximum distance */
-    private float maximumHomeDistance = -1.0F;
+	private int inTrapCounter;
 
 	public EntityTFTowerGhast(World par1World) {
 		super(par1World);
-        //this.texture = TwilightForestMod.MODEL_DIR + "towerghast.png";
-        
-        this.setSize(4.0F, 6.0F);
+		this.setSize(4.0F, 6.0F);
 
-        this.aggroRange = 64.0F;
-    	this.stareRange = 32.0F;
-
-    	this.wanderFactor = 16.0F;
-    	
-    	this.inTrapCounter = 0;
+		this.wanderFactor = 16.0F;
+		this.inTrapCounter = 0;
 	}
-//	
-//    public int getMaxHealth()
-//    {
-//        return 30;
-//    }
-    
-	/**
-	 * Set monster attributes
-	 */
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-    }
-
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
-    protected float getSoundVolume()
-    {
-        return 0.5F;
-    }
-    
-    /**
-     * Get number of ticks, at least during which the living entity will be silent.
-     */
-    public int getTalkInterval()
-    {
-        return 160;
-    }
-
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
-    public int getMaxSpawnedInChunk()
-    {
-        return 8;
-    }
-    
-    @Override
-	public void onUpdate() 
-    {
-		super.onUpdate();
-        //byte aggroStatus = this.dataWatcher.getWatchableObjectByte(AGGRO_STATUS);
-
-//        switch (aggroStatus)
-//        {
-//        case 0:
-//        default:
-//        	this.texture = TwilightForestMod.MODEL_DIR + "towerghast.png";
-//        	break;
-//        case 1:
-//        	this.texture = TwilightForestMod.MODEL_DIR + "towerghast_openeyes.png";
-//        	break;
-//        case 2:
-//        	this.texture = TwilightForestMod.MODEL_DIR + "towerghast_fire.png";
-//        	break;
-//        }
+	protected void entityInit() {
+		super.entityInit();
+		this.dataManager.register(ATTACK_STATUS, (byte) 0);
+		this.dataManager.register(ATTACK_TIMER, (byte) 0);
+		this.dataManager.register(ATTACK_PREVTIMER, (byte) 0);
 	}
-    
-    public int getAttackStatus() {
-    	return this.dataWatcher.getWatchableObjectByte(AGGRO_STATUS);
-    }
 
-	/**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    public void onLivingUpdate()
-    {
-    	// age when in light, like mobs
-        float var1 = this.getBrightness(1.0F);
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(5, new AIHomedFly(this));
+		if (!(this instanceof EntityTFUrGhast)) this.tasks.addTask(5, new AIRandomFly(this));
+		this.tasks.addTask(7, new EntityGhast.AILookAround(this));
+		this.tasks.addTask(7, attackAI = new AIAttack(this));
+		this.targetTasks.addTask(1, new EntityAITFFindEntityNearestPlayer(this));
+	}
 
-        if (var1 > 0.5F)
-        {
-            this.entityAge += 2;
-        }
-        
-        if (this.rand.nextBoolean())
-        {
-            this.worldObj.spawnParticle("reddust", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
-        }
+	// [VanillaCopy] from EntityGhast but we use wanderFactor instead, we also stop moving when we have a target
+	public static class AIRandomFly extends EntityAIBase {
+		private final EntityTFTowerGhast parentEntity;
 
-        super.onLivingUpdate();
-    }
-    
-    /**
-     * Altered Ghast AI
-     */
-    protected void updateEntityActionState()
-    {
-        if (!this.worldObj.isRemote && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
-        {
-            this.setDead();
-        }
+		public AIRandomFly(EntityTFTowerGhast ghast) {
+			this.parentEntity = ghast;
+			this.setMutexBits(1);
+		}
 
-        this.despawnEntity();
-        
-        // tower home
-        checkForTowerHome();
-        
-        // check if in trap
-        if (this.inTrapCounter > 0)
-        {
-        	this.inTrapCounter--;
-        	this.targetedEntity = null;
-        	return; // do nothing if in trap;
-        }
-        
-        this.prevAttackCounter = this.attackCounter;
-        
-        // target
-        if (this.targetedEntity != null && this.targetedEntity.isDead)
-        {
-            this.targetedEntity = null;
-        }
+		@Override
+		public boolean shouldExecute() {
+			EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
+			if (!entitymovehelper.isUpdating()) {
+				return parentEntity.getAttackTarget() == null;
+			} else {
+				double d0 = entitymovehelper.getX() - this.parentEntity.posX;
+				double d1 = entitymovehelper.getY() - this.parentEntity.posY;
+				double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+				return parentEntity.getAttackTarget() == null && (d3 < 1.0D || d3 > 3600.0D);
+			}
+		}
 
-        if (this.targetedEntity == null)
-        {
-            this.targetedEntity = findPlayerInRange();
-        }
-        else if (!this.isAggressive && this.targetedEntity instanceof EntityPlayer)
-        {
-        	checkToIncreaseAggro((EntityPlayer) this.targetedEntity);
-        }
-        
-        // check if we are at our waypoint target
-        double offsetX = this.waypointX - this.posX;
-        double offsetY = this.waypointY - this.posY;
-        double offsetZ = this.waypointZ - this.posZ;
-        double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
+		@Override
+		public boolean shouldContinueExecuting() {
+			return false;
+		}
 
-        if ((distanceDesired < 1.0D || distanceDesired > 3600.0D) && this.wanderFactor > 0)
-        {
-            this.waypointX = this.posX + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-            this.waypointY = this.posY + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-            this.waypointZ = this.posZ + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-        }
-        
-        
-        
-        // move?
-        if (this.targetedEntity == null && this.wanderFactor > 0)
-        {
-        	if (this.courseChangeCooldown-- <= 0)
-        	{
-        		this.courseChangeCooldown += this.rand.nextInt(20) + 20;
-        		distanceDesired = (double)MathHelper.sqrt_double(distanceDesired);
-        		
-        	    if (!this.isWithinHomeDistance(MathHelper.floor_double(waypointX), MathHelper.floor_double(waypointY), MathHelper.floor_double(waypointZ)))
-        	    {
-        	    	// change waypoint to be more towards home
-        	        ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
-        	    	
-        	        Vec3 homeVector = Vec3.createVectorHelper(cc.posX - this.posX, cc.posY + 128 - this.posY, cc.posZ - this.posZ);
-        	        homeVector = homeVector.normalize();
-        	        
-        	    	this.waypointX = this.posX + homeVector.xCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        	    	this.waypointY = this.posY + homeVector.yCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        	    	this.waypointZ = this.posZ + homeVector.zCoord * 16.0F + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        	    	
-        	    	//System.out.println("Setting tower ghast on a course towards home: " + this.waypointX + ", " + this.waypointY + ", " + this.waypointZ);
-        	    } 
-        		
-        		
-        		if (this.isCourseTraversable(this.waypointX, this.waypointY, this.waypointZ, distanceDesired))
-        		{
-        			this.motionX += offsetX / distanceDesired * 0.1D;
-        			this.motionY += offsetY / distanceDesired * 0.1D;
-        			this.motionZ += offsetZ / distanceDesired * 0.1D;
-        		}
-        		else
-        		{
-        			this.waypointX = this.posX;
-        			this.waypointY = this.posY;
-        			this.waypointZ = this.posZ;
-        		}
-        	}
-        }
-        else
-        {
-        	this.motionX *= 0.75;
-        	this.motionY *= 0.75;
-        	this.motionZ *= 0.75;
-        }
+		@Override
+		public void startExecuting() {
+			Random random = this.parentEntity.getRNG();
+			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+		}
+	}
 
-        // check if our target is still within range
-		double targetRange = (this.aggroCounter > 0 || this.isAggressive) ? aggroRange : stareRange;
+	// [VanillaCopy]-ish mixture of EntityGhast.AIFly and EntityAIStayNearHome
+	public static class AIHomedFly extends EntityAIBase {
+		private final EntityTFTowerGhast parentEntity;
 
-        if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < targetRange * targetRange && this.canEntityBeSeen(this.targetedEntity))
-        {
-            // turn towards target
-        	this.faceEntity(this.targetedEntity, 10F, this.getVerticalFaceSpeed());
-        	
-        	// attack if aggressive
-            if (this.isAggressive)
-            {
-                if (this.attackCounter == 10)
-                {
-                    this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-                }
+		AIHomedFly(EntityTFTowerGhast ghast) {
+			this.parentEntity = ghast;
+			setMutexBits(1);
+		}
 
-                ++this.attackCounter;
+		// From AIFly, but with extra condition from AIStayNearHome
+		@Override
+		public boolean shouldExecute() {
+			EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
 
-                if (this.attackCounter == 20)
-                {
-                	spitFireball();
-            		this.attackCounter = -40;
-                }
-            }
-         }
-        else
-        {
-        	// ignore player, move normally
-            this.isAggressive = false;
-        	this.targetedEntity = null;
-        	this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
-        	
-        	// changing the pitch with movement looks goofy and un-ghast-like
-        	//double dist = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ *  this.motionZ);
-        	this.rotationPitch = 0;//(float) (-((Math.atan2(this.motionY, dist) * 180D) / Math.PI));;
+			if (!entitymovehelper.isUpdating()) {
+				return !this.parentEntity.isWithinHomeDistanceCurrentPosition();
+			} else {
+				double d0 = entitymovehelper.getX() - this.parentEntity.posX;
+				double d1 = entitymovehelper.getY() - this.parentEntity.posY;
+				double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+				return (d3 < 1.0D || d3 > 3600.0D)
+						&& !this.parentEntity.isWithinHomeDistanceCurrentPosition();
+			}
+		}
 
-        }
+		// From AIFly
+		@Override
+		public boolean shouldContinueExecuting() {
+			return false;
+		}
 
-        if (this.attackCounter > 0 && !this.isAggressive)
-        {
-            --this.attackCounter;
-        }
+		// From AIStayNearHome but use move helper instead of PathNavigate
+		@Override
+		public void startExecuting() {
+			Random random = this.parentEntity.getRNG();
+			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 
-        // set aggro status
-        byte currentAggroStatus = this.dataWatcher.getWatchableObjectByte(AGGRO_STATUS);
-        byte newAggroStatus = (byte)(this.attackCounter > 10 ? 2 : (this.aggroCounter > 0 || this.isAggressive) ? 1 : 0);
+			if (this.parentEntity.getDistanceSq(this.parentEntity.getHomePosition()) > 256.0D) {
+				Vec3d vecToHome = new Vec3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVector()).normalize();
 
-        if (currentAggroStatus != newAggroStatus)
-        {
-        	this.dataWatcher.updateObject(AGGRO_STATUS, Byte.valueOf(newAggroStatus));
-        }
-    }
-    
-	
+				double targetX = this.parentEntity.posX + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetY = this.parentEntity.posY + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetZ = this.parentEntity.posZ + vecToHome.z * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+
+				this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
+			} else {
+				this.parentEntity.getMoveHelper().setMoveTo(this.parentEntity.getHomePosition().getX() + 0.5D, this.parentEntity.getHomePosition().getY(), this.parentEntity.getHomePosition().getZ() + 0.5D, 1.0D);
+			}
+		}
+	}
+
+	// [VanillaCopy] EntityGhast.AIFireballAttack, edits noted
+	public static class AIAttack extends EntityAIBase {
+		private final EntityTFTowerGhast parentEntity;
+		public int attackTimer;
+		public int prevAttackTimer; // TF - add for renderer
+
+		public AIAttack(EntityTFTowerGhast ghast) {
+			this.parentEntity = ghast;
+		}
+
+		@Override
+		public boolean shouldExecute() {
+			return this.parentEntity.getAttackTarget() != null && parentEntity.shouldAttack(parentEntity.getAttackTarget());
+		}
+
+		@Override
+		public void startExecuting() {
+			this.attackTimer = this.prevAttackTimer = 0;
+		}
+
+		@Override
+		public void resetTask() {
+			this.parentEntity.setAttacking(false);
+		}
+
+		@Override
+		public void updateTask() {
+			EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+
+			if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < 4096.0D && this.parentEntity.getEntitySenses().canSee(entitylivingbase)) {
+				World world = this.parentEntity.world;
+				this.prevAttackTimer = attackTimer;
+				++this.attackTimer;
+
+				// TF face our target at all times
+				this.parentEntity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
+
+				if (this.attackTimer == 10) {
+					parentEntity.playSound(SoundEvents.ENTITY_GHAST_WARN, 10.0F, parentEntity.getSoundPitch());
+				}
+
+				if (this.attackTimer == 20) {
+					if (this.parentEntity.shouldAttack(entitylivingbase)) {
+						// TF - call custom method
+						parentEntity.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 10.0F, parentEntity.getSoundPitch());
+						this.parentEntity.spitFireball();
+						this.prevAttackTimer = attackTimer;
+					}
+					this.attackTimer = -40;
+				}
+			} else if (this.attackTimer > 0) {
+				this.prevAttackTimer = attackTimer;
+				--this.attackTimer;
+			}
+
+			this.parentEntity.setAttacking(this.attackTimer > 10);
+		}
+	}
+
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+	}
+
+	@Override
+	protected float getSoundVolume() {
+		return 0.5F;
+	}
+
+	@Override
+	public int getTalkInterval() {
+		return 160;
+	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 8;
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		// age when in light, like mobs
+		if (getBrightness() > 0.5F) {
+			this.idleTime += 2;
+		}
+
+		if (this.rand.nextBoolean()) {
+			this.world.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0, 0, 0);
+		}
+
+		super.onLivingUpdate();
+	}
+
+	@Override
+	protected void updateAITasks() {
+		findHome();
+
+		if (this.inTrapCounter > 0) {
+			this.inTrapCounter--;
+			setAttackTarget(null);
+		}
+
+		int status = getAttackTarget() != null && shouldAttack(getAttackTarget()) ? 1 : 0;
+
+		dataManager.set(ATTACK_STATUS, (byte) status);
+		dataManager.set(ATTACK_TIMER, (byte) attackAI.attackTimer);
+		dataManager.set(ATTACK_PREVTIMER, (byte) attackAI.prevAttackTimer);
+	}
+
+	public int getAttackStatus() {
+		return dataManager.get(ATTACK_STATUS);
+	}
+
+	public int getAttackTimer() {
+		return dataManager.get(ATTACK_TIMER);
+	}
+
+	public int getPrevAttackTimer() {
+		return dataManager.get(ATTACK_PREVTIMER);
+	}
+
+	protected boolean shouldAttack(EntityLivingBase living) {
+		return true;
+	}
+
 	/**
 	 * Something is deeply wrong with the calculations based off of this value, so let's set it high enough that it's ignored.
 	 */
 	@Override
-    public int getVerticalFaceSpeed()
-    {
-        return 500;
-    }
+	public int getVerticalFaceSpeed() {
+		return 500;
+	}
 
-    /**
-     * Spit a fireball
-     */
 	protected void spitFireball() {
-		double offsetX = this.targetedEntity.posX - this.posX;
-		double offsetY = this.targetedEntity.boundingBox.minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
-		double offsetZ = this.targetedEntity.posZ - this.posZ;
-		
-		// fireball sound effect
-		this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-		
-		
-		EntityLargeFireball entityFireball = new EntityLargeFireball(this.worldObj, this, offsetX, offsetY, offsetZ);
-		//var17.field_92012_e = this.explosionPower;
-		double shotSpawnDistance = 0.5D;
-		Vec3 lookVec = this.getLook(1.0F);
-		entityFireball.posX = this.posX + lookVec.xCoord * shotSpawnDistance;
-		entityFireball.posY = this.posY + (double)(this.height / 2.0F) + lookVec.yCoord * shotSpawnDistance;
-		entityFireball.posZ = this.posZ + lookVec.zCoord * shotSpawnDistance;
-		this.worldObj.spawnEntityInWorld(entityFireball);
-		
+		Vec3d vec3d = this.getLook(1.0F);
+		double d2 = getAttackTarget().posX - (this.posX + vec3d.x * 4.0D);
+		double d3 = getAttackTarget().getEntityBoundingBox().minY + (double) (getAttackTarget().height / 2.0F) - (0.5D + this.posY + (double) (this.height / 2.0F));
+		double d4 = getAttackTarget().posZ - (this.posZ + vec3d.z * 4.0D);
+		EntityLargeFireball entitylargefireball = new EntityLargeFireball(world, this, d2, d3, d4);
+		entitylargefireball.explosionPower = this.getFireballStrength();
+		entitylargefireball.posX = this.posX + vec3d.x * 4.0D;
+		entitylargefireball.posY = this.posY + (double) (this.height / 2.0F) + 0.5D;
+		entitylargefireball.posZ = this.posZ + vec3d.z * 4.0D;
+		world.spawnEntity(entitylargefireball);
+
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
-		if (rand.nextInt(6) == 0)
-		{
-			this.isAggressive = false;
+		if (rand.nextInt(6) == 0) {
+			setAttackTarget(null);
 		}
 	}
-    
-    /**
-     * Find a player in our aggro range.  If we feel the need to become aggressive towards that 
-     * player, or it is within our stare range, return
-     * 
-     * @return
-     */
-    protected EntityLivingBase findPlayerInRange() {
-    	EntityPlayer closest = this.worldObj.getClosestVulnerablePlayerToEntity(this, aggroRange);
-    	
-    	if (closest != null)
-    	{
-    		float range = this.getDistanceToEntity(closest);
-    		if (range < this.stareRange || this.shouldAttackPlayer(closest))
-    		{
-    			return closest;
-    		}
-    	}
-    	return null;
+
+	@Override
+	public boolean getCanSpawnHere() {
+		return this.world.checkNoEntityCollision(getEntityBoundingBox())
+				&& this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+				&& !this.world.containsAnyLiquid(getEntityBoundingBox())
+				&& this.world.getDifficulty() != EnumDifficulty.PEACEFUL
+				&& this.isValidLightLevel();
 	}
 
-    /**
-     * Check if we should become aggressive towards the player.
-     * 
-     * @param par1EntityPlayer
-     */
-    protected void checkToIncreaseAggro(EntityPlayer par1EntityPlayer)
-    {
-    	if (this.shouldAttackPlayer(par1EntityPlayer))
-    	{
-    		if (this.aggroCounter == 0)
-    		{
-    			this.worldObj.playSoundAtEntity(this, "mob.ghast.moan", 1.0F, 1.0F);
-    		}
+	/**
+	 * Checks to make sure the light is not too bright where the mob is spawning
+	 */
+	protected boolean isValidLightLevel() {
+		return true;
+	}
 
-    		if (this.aggroCounter++ >= 20)
-    		{
-    			this.aggroCounter = 0;
-    			this.isAggressive = true;
-    		}
-    	}
-    	else
-    	{
-     		this.aggroCounter = 0;
-    	}    
-    }
+	private void findHome() {
+		if (!this.hasHome()) {
+			int chunkX = MathHelper.floor(this.posX) >> 4;
+			int chunkZ = MathHelper.floor(this.posZ) >> 4;
 
+			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.world);
 
-    
-    /**
-     * Checks to see if this tower ghast should be attacking this player.  
-     * Tower ghasts attack if the block above the player is not Tower wood
-     */
-    protected boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer)
-    {
-    	int dx = MathHelper.floor_double(par1EntityPlayer.posX);
-    	int dy = MathHelper.floor_double(par1EntityPlayer.posY);
-    	int dz = MathHelper.floor_double(par1EntityPlayer.posZ);
-    	
-        return worldObj.canBlockSeeTheSky(dx, dy, dz) && par1EntityPlayer.canEntityBeSeen(this);
-    }
+			if (nearFeature != TFFeature.darkTower) {
+				this.detachHome();
+				this.idleTime += 5;
+			} else {
+				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
+				this.setHomePosAndDistance(cc.up(128), 64);
+			}
+		}
+	}
 
+	public void setInTrap() {
+		this.inTrapCounter = 10;
+	}
 
+	// [VanillaCopy] Home fields and methods from EntityCreature, changes noted
+	private BlockPos homePosition = BlockPos.ORIGIN;
+	private float maximumHomeDistance = -1.0F;
 
-    /**
-     * True if the ghast has an unobstructed line of travel to the waypoint.
-     */
-    protected boolean isCourseTraversable(double par1, double par3, double par5, double par7)
-    {
-        double var9 = (this.waypointX - this.posX) / par7;
-        double var11 = (this.waypointY - this.posY) / par7;
-        double var13 = (this.waypointZ - this.posZ) / par7;
-        AxisAlignedBB var15 = this.boundingBox.copy();
+	public boolean isWithinHomeDistanceCurrentPosition() {
+		return this.isWithinHomeDistanceFromPosition(new BlockPos(this));
+	}
 
-        for (int var16 = 1; (double)var16 < par7; ++var16)
-        {
-            var15.offset(var9, var11, var13);
+	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
+		// TF - restrict valid y levels
+		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
+		return this.maximumHomeDistance == -1.0F
+				? true
+				: pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distanceSq(pos) < (double) (this.maximumHomeDistance * this.maximumHomeDistance);
+	}
 
-            if (!this.worldObj.getCollidingBoundingBoxes(this, var15).isEmpty())
-            {
-                return false;
-            }
-        }
+	public void setHomePosAndDistance(BlockPos pos, int distance) {
+		this.homePosition = pos;
+		this.maximumHomeDistance = (float) distance;
+	}
 
-        return true;
-    }
-    
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
-    {
-    	boolean wasAttacked = super.attackEntityFrom(par1DamageSource, par2);
-    	
-        if (wasAttacked && par1DamageSource.getSourceOfDamage() instanceof EntityLivingBase)
-        {
-        	this.targetedEntity = (EntityLivingBase)par1DamageSource.getSourceOfDamage();
-        	
-        	this.isAggressive = true;
-        			
-            return true;
-        }
-        else
-        {
-        	return wasAttacked;
-        }
-    }
-    
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
-    public boolean getCanSpawnHere()
-    {
-        return this.worldObj.checkNoEntityCollision(this.boundingBox) 
-        		&& this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() 
-        		&& !this.worldObj.isAnyLiquid(this.boundingBox) 
-        		&& this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL
-        		&& this.isValidLightLevel();
-    }
-    
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
-    protected boolean isValidLightLevel()
-    {
-        return true;
-    }
+	public BlockPos getHomePosition() {
+		return this.homePosition;
+	}
 
-    /**
-     * Check for our tower home and if we find it, set it
-     */
-    protected void checkForTowerHome() 
-    {
-    	if (!this.hasHome())
-    	{
-    		// check if we're near a dark forest tower and if so, set that as home
-    		int chunkX = MathHelper.floor_double(this.posX) >> 4;
-    		int chunkZ = MathHelper.floor_double(this.posZ) >> 4;
+	public float getMaximumHomeDistance() {
+		return this.maximumHomeDistance;
+	}
 
-    		TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.worldObj);
+	public void detachHome() {
+		this.maximumHomeDistance = -1.0F;
+	}
 
-    		if (nearFeature != TFFeature.darkTower)
-    		{
-    			this.detachHome();
-
-    			this.entityAge += 5;
-
-    			//System.out.println("Tower ghast is lost");
-
-    		}
-    		else
-    		{
-    			// set our home position to the center of the tower
-    			ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
-    			this.setHomeArea(cc.posX, cc.posY + 128, cc.posZ, 64);
-
-//                System.out.println("Ghast is at  " + this.posX + ", " + this.posY + ", " + this.posZ);
-//    			System.out.println("Set home area to " + cc.posX + ", " + (cc.posY + 128) + ", " + cc.posZ);
-    		}	
-    	}
-    }
-    
-    /**
-     * Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
-     */
-    public boolean isWithinHomeDistance(int x, int y, int z)
-    {
-    	if (this.getMaximumHomeDistance() == -1.0F)
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		ChunkCoordinates home = this.getHomePosition();
-    		
-//    		System.out.println("Checking home for " + x + ", " + y + ", " + z + " and home is " + home.posX + ", " + home.posY + ", " + home.posZ);
-//    		System.out.println("home.getDistanceSquared(x, home.posY, z) =  "  + home.getDistanceSquared(x, home.posY, z) + " compared to " + (this.getMaximumHomeDistance() * this.getMaximumHomeDistance()));
-    		
-    		return y > 64 && y < 210 && home.getDistanceSquared(x, home.posY, z) < this.getMaximumHomeDistance() * this.getMaximumHomeDistance();
-    	}
-    }
-    
-    public void setInTrap()
-    {
-    	this.inTrapCounter = 10;
-    }
-    
-    public void setHomeArea(int par1, int par2, int par3, int par4)
-    {
-        this.homePosition.set(par1, par2, par3);
-        this.maximumHomeDistance = (float)par4;
-    }
-
-    public ChunkCoordinates getHomePosition()
-    {
-        return this.homePosition;
-    }
-
-    public float getMaximumHomeDistance()
-    {
-        return this.maximumHomeDistance;
-    }
-
-    public void detachHome()
-    {
-        this.maximumHomeDistance = -1.0F;
-    }
-
-    public boolean hasHome()
-    {
-        return this.maximumHomeDistance != -1.0F;
-    }
+	public boolean hasHome() {
+		return this.maximumHomeDistance != -1.0F;
+	}
+	// End copy
 }
 

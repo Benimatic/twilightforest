@@ -1,32 +1,23 @@
 package twilightforest.structures.icetower;
 
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFDecorator;
 
 public class StructureDecoratorIceTower extends StructureTFDecorator {
 
-	public StructureDecoratorIceTower() 
-	{
-		this.blockID = TFBlocks.auroraBlock;
-		this.blockMeta = 0;
-		
-		this.accentID = Blocks.planks;
-		this.accentMeta = 2;
-		
-		this.fenceID = Blocks.fence;
-		
-		this.stairID = Blocks.birch_stairs;
-		
-		this.pillarID = TFBlocks.auroraPillar;
-		this.pillarMeta = 0;
-		
-		this.platformID = Blocks.wooden_slab;
-		this.platformMeta = 2;
-
-		this.floorID = Blocks.planks;
-		this.floorMeta = 2;
-
+	public StructureDecoratorIceTower() {
+		this.blockState = TFBlocks.aurora_block.getDefaultState();
+		this.accentState = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
+		this.stairState = Blocks.BIRCH_STAIRS.getDefaultState();
+		this.pillarState = TFBlocks.aurora_pillar.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y);
+		this.platformState = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH);
+		this.floorState = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 		this.randomBlocks = new StructureTFAuroraBricks();
 	}
 

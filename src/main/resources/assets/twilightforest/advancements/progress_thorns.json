@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:thorns"
+    },
+    "title": {
+      "translate": "advancement.twilight_progress_thorns"
+    },
+    "description": {
+      "translate": "advancement.twilight_progress_thorns.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:progress_troll",
+  "criteria": {
+    "not_yet_implemented": {
+      "trigger": "minecraft:impossible"
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_troll"
+      }
+    }
+  }
+}

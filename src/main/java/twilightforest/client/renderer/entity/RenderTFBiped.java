@@ -2,32 +2,26 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFBiped extends RenderBiped {
-
+public class RenderTFBiped<T extends EntityLiving> extends RenderBiped<T> {
 	private final ResourceLocation textureLoc;
 
-	public RenderTFBiped(ModelBiped modelBiped, float scale, String textureName) {
-		super(modelBiped, scale);
-		
-		if (textureName.startsWith("textures"))
-		{
+	public RenderTFBiped(RenderManager manager, ModelBiped modelBiped, float scale, String textureName) {
+		super(manager, modelBiped, scale);
+
+		if (textureName.startsWith("textures")) {
 			textureLoc = new ResourceLocation(textureName);
-		}
-		else
-		{
+		} else {
 			textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + textureName);
 		}
 	}
 
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(T par1Entity) {
+		return textureLoc;
+	}
 }

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:trophy",
+      "data": 4
+    },
+    "title": {
+      "translate": "advancement.twilight_progress_knights"
+    },
+    "description": {
+      "translate": "advancement.twilight_progress_knights.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:progress_trophy_pedestal",
+  "criteria": {
+    "knight": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:knight_phantom"
+        }
+      }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_trophy_pedestal"
+      }
+    }
+  }
+}

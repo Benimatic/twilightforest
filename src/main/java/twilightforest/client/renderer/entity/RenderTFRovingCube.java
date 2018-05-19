@@ -1,76 +1,50 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFCubeOfAnnihilation;
-import twilightforest.client.model.ModelTFHydraMortar;
-import twilightforest.entity.EntityTFBlockGoblin;
-import twilightforest.entity.EntityTFChainBlock;
+import twilightforest.client.model.entity.ModelTFCubeOfAnnihilation;
+import twilightforest.entity.EntityTFRovingCube;
 
-public class RenderTFRovingCube extends Render {
+public class RenderTFRovingCube extends Render<EntityTFRovingCube> {
+	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cubeofannihilation.png");
+	private final ModelBase model = new ModelTFCubeOfAnnihilation();
 
-	private ModelBase model;
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cubeofannihilation.png");
-
-	public RenderTFRovingCube() {
-        this.model = new ModelTFCubeOfAnnihilation();
+	public RenderTFRovingCube(RenderManager manager) {
+		super(manager);
 	}
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void renderSpikeBlock(Entity entity, double x, double y, double z, float par8, float time)
-    {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float)x, (float)y, (float)z);
+	@Override
+	public void doRender(EntityTFRovingCube par1Entity, double par2, double par4, double par6, float par8, float par9) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(par2, par4, par6);
 
-        this.bindEntityTexture(entity);
+		this.bindEntityTexture(par1Entity);
 
-        GL11.glScalef(2.0F, 2.0F, 2.0F);
-        
-        // rotate
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float(((float)x + (float)z + entity.ticksExisted + time) * 11F), 0, 1, 0);
-        
+		GlStateManager.scale(2.0F, 2.0F, 2.0F);
 
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        
-        GL11.glTranslatef(0F, 0.75F, 0F);
-        this.model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, time, 0.0625F / 2F);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_BLEND);
+		GlStateManager.rotate(MathHelper.wrapDegrees(((float) par2 + (float) par6 + ((Entity) par1Entity).ticksExisted + par9) * 11F), 0, 1, 0);
 
-        
-        GL11.glPopMatrix();
-    }
+		GlStateManager.disableLighting();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-         this.renderSpikeBlock(par1Entity, par2, par4, par6, par8, par9);
+		GlStateManager.translate(0F, 0.75F, 0F);
+		this.model.render(par1Entity, 0.0F, 0.0F, 0.0F, 0.0F, par9, 0.0625F / 2F);
+		GlStateManager.enableLighting();
+		GlStateManager.disableBlend();
 
-    }
+		GlStateManager.popMatrix();
+	}
 
-    
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFRovingCube par1Entity) {
+		return textureLoc;
+	}
 }

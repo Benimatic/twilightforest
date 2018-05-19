@@ -1,10 +1,11 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -13,254 +14,234 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Facing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.item.TFItems;
+import twilightforest.enums.TowerWoodVariant;
 
-public class EntityTFTowerTermite extends EntityMob 
-{
+import java.util.Random;
 
-	private int allySummonCooldown;
+public class EntityTFTowerTermite extends EntityMob {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_termite");
+	private AISummonSilverfish summonSilverfish;
 
 	public EntityTFTowerTermite(World par1World) {
 		super(par1World);
-		
-        //this.texture = TwilightForestMod.MODEL_DIR + "towertermite.png";
-        this.setSize(0.3F, 0.7F);
-        //this.moveSpeed = 0.27F;
-        
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(4, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		this.setSize(0.3F, 0.7F);
 	}
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-	
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.27D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D); // attack damage
-    }
+	protected void initEntityAI() {
+		this.tasks.addTask(1, new EntityAISwimming(this));
+		this.tasks.addTask(2, this.summonSilverfish = new AISummonSilverfish(this));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
+		this.tasks.addTask(4, new AIHideInStone(this));
+		this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(6, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	}
 
-    /**
-     * returns if this entity triggers Blocks.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.27D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
+	}
 
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
-    protected Entity findPlayerToAttack()
-    {
-        double var1 = 8.0D;
-        return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
-    }
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-    protected String getLivingSound()
-    {
-        return "mob.silverfish.say";
-    }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.ENTITY_SILVERFISH_AMBIENT;
+	}
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    protected String getHurtSound()
-    {
-        return "mob.silverfish.hit";
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_SILVERFISH_HURT;
+	}
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    protected String getDeathSound()
-    {
-        return "mob.silverfish.kill";
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_SILVERFISH_DEATH;
+	}
 
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-        if (this.isEntityInvulnerable())
-        {
-            return false;
-        }
-        else
-        {
-            if (this.allySummonCooldown <= 0 && (par1DamageSource instanceof EntityDamageSource || par1DamageSource == DamageSource.magic))
-            {
-                this.allySummonCooldown = 20;
-            }
+	// [VanillaCopy] EntitySilverfish.attackEntityFrom
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (this.isEntityInvulnerable(source)) {
+			return false;
+		} else {
+			if ((source instanceof EntityDamageSource || source == DamageSource.MAGIC) && this.summonSilverfish != null) {
+				this.summonSilverfish.notifyHurt();
+			}
 
-            return super.attackEntityFrom(par1DamageSource, par2);
-        }
-    }
-    
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
-        
-        // if we are summoning allies, do that
-        if (this.allySummonCooldown > 0)
-        {
-            --this.allySummonCooldown;
-
-            if (this.allySummonCooldown == 0)
-            {
-                tryToSummonAllies();
-            }
-        }
-
-        
-        // if we have no target, burrow
-        if (this.getAttackTarget() == null && this.getNavigator().noPath())
-        {
-            tryToBurrow();
-        }
-
-    }
-
-    /**
-     * Check nearby blocks.  If they are infested blocks, pop them!
-     */
-	protected void tryToSummonAllies() {
-		int sx = MathHelper.floor_double(this.posX);
-		int sy = MathHelper.floor_double(this.posY);
-		int sz = MathHelper.floor_double(this.posZ);
-		boolean stopSummoning = false;
-
-		for (int dy = 0; !stopSummoning && dy <= 5 && dy >= -5; dy = dy <= 0 ? 1 - dy : 0 - dy)
-		{
-		    for (int dx = 0; !stopSummoning && dx <= 10 && dx >= -10; dx = dx <= 0 ? 1 - dx : 0 - dx)
-		    {
-		        for (int dz = 0; !stopSummoning && dz <= 10 && dz >= -10; dz = dz <= 0 ? 1 - dz : 0 - dz)
-		        {
-		            Block blockID = this.worldObj.getBlock(sx + dx, sy + dy, sz + dz);
-		            int blockMeta = this.worldObj.getBlockMetadata(sx + dx, sy + dy, sz + dz);
-		            
-					if (blockID == TFBlocks.towerWood && blockMeta == BlockTFTowerWood.META_INFESTED)
-		            {
-		                this.worldObj.playAuxSFX(2001, sx + dx, sy + dy, sz + dz, Block.getIdFromBlock(blockID) + (blockMeta << 12));
-		                this.worldObj.setBlock(sx + dx, sy + dy, sz + dz, Blocks.air, 0, 3);
-		                TFBlocks.towerWood.onBlockDestroyedByPlayer(this.worldObj, sx + dx, sy + dy, sz + dz, BlockTFTowerWood.META_INFESTED);
-
-		                if (this.rand.nextBoolean())
-		                {
-		                    stopSummoning = true;
-		                    break;
-		                }
-		            }
-		        }
-		    }
+			return super.attackEntityFrom(source, amount);
 		}
 	}
 
-    /**
-     * Look at a random nearby block.  Is it the proper tower wood?  If so, burrow.
-     */
-	protected void tryToBurrow() {
-		int x = MathHelper.floor_double(this.posX);
-		int y = MathHelper.floor_double(this.posY + 0.5D);
-		int z = MathHelper.floor_double(this.posZ);
-		int randomFacing = this.rand.nextInt(6);
-		
-		x += Facing.offsetsXForSide[randomFacing];
-		y += Facing.offsetsYForSide[randomFacing];
-		z += Facing.offsetsZForSide[randomFacing];
-		
-		Block blockIDNearby = this.worldObj.getBlock(x, y, z);
-		int blockMetaNearby = this.worldObj.getBlockMetadata(x, y, z);
+	@Override
+	protected void playStepSound(BlockPos pos, Block par4) {
+		this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
+	}
 
-		if (canBurrowIn(blockIDNearby, blockMetaNearby))
-		{
-		    this.worldObj.setBlock(x, y, z, TFBlocks.towerWood, BlockTFTowerWood.META_INFESTED, 3);
-		    this.spawnExplosionParticle();
-		    this.setDead();
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
+	@Override
+	public void onUpdate() {
+		this.renderYawOffset = this.rotationYaw;
+		super.onUpdate();
+	}
+
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		return EnumCreatureAttribute.ARTHROPOD;
+	}
+
+	// [VanillaCopy] EntitySilverfish$AIHideInStone. Changes noted
+	private static class AIHideInStone extends EntityAIWander {
+		private final EntityTFTowerTermite silverfish; // TF - type change
+		private EnumFacing facing;
+		private boolean doMerge;
+
+		public AIHideInStone(EntityTFTowerTermite silverfishIn) {
+			super(silverfishIn, 1.0D, 10);
+			this.silverfish = silverfishIn;
+			this.setMutexBits(1);
+		}
+
+		/**
+		 * Returns whether the EntityAIBase should begin execution.
+		 */
+		public boolean shouldExecute() {
+			if (!this.silverfish.world.getGameRules().getBoolean("mobGriefing")) {
+				return false;
+			} else if (this.silverfish.getAttackTarget() != null) {
+				return false;
+			} else if (!this.silverfish.getNavigator().noPath()) {
+				return false;
+			} else {
+				Random random = this.silverfish.getRNG();
+
+				if (random.nextInt(10) == 0) {
+					this.facing = EnumFacing.random(random);
+					BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
+					IBlockState iblockstate = this.silverfish.world.getBlockState(blockpos);
+
+					if (iblockstate == TFBlocks.tower_wood.getDefaultState()) // TF - Change block check
+					{
+						this.doMerge = true;
+						return true;
+					}
+				}
+
+				this.doMerge = false;
+				return super.shouldExecute();
+			}
+		}
+
+		/**
+		 * Returns whether an in-progress EntityAIBase should continue executing
+		 */
+		public boolean shouldContinueExecuting() {
+			return this.doMerge ? false : super.shouldContinueExecuting();
+		}
+
+		/**
+		 * Execute a one shot task or start executing a continuous task
+		 */
+		public void startExecuting() {
+			if (!this.doMerge) {
+				super.startExecuting();
+			} else {
+				World world = this.silverfish.world;
+				BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
+				IBlockState iblockstate = world.getBlockState(blockpos);
+
+				if (iblockstate == TFBlocks.tower_wood.getDefaultState()) // TF - Change block check
+				{
+					// TF - Change block type
+					world.setBlockState(blockpos, TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED), 3);
+					this.silverfish.spawnExplosionParticle();
+					this.silverfish.setDead();
+				}
+			}
 		}
 	}
 
-	/**
-	 * @return true if we can burrow in the specified block
-	 */
-    protected boolean canBurrowIn(Block blockIDNearby, int blockMetaNearby) 
-    {
-		return blockIDNearby == TFBlocks.towerWood && blockMetaNearby == 0;
+	// [VanillaCopy] of EntitySilverfish$AISummonSilverfish. Changes noted
+	private static class AISummonSilverfish extends EntityAIBase {
+		private EntityTFTowerTermite silverfish; // TF - type change
+		private int lookForFriends;
+
+		public AISummonSilverfish(EntityTFTowerTermite silverfishIn) {
+			this.silverfish = silverfishIn;
+		}
+
+		public void notifyHurt() {
+			if (this.lookForFriends == 0) {
+				this.lookForFriends = 20;
+			}
+		}
+
+		/**
+		 * Returns whether the EntityAIBase should begin execution.
+		 */
+		public boolean shouldExecute() {
+			return this.lookForFriends > 0;
+		}
+
+		/**
+		 * Updates the task
+		 */
+		public void updateTask() {
+			--this.lookForFriends;
+
+			if (this.lookForFriends <= 0) {
+				World world = this.silverfish.world;
+				Random random = this.silverfish.getRNG();
+				BlockPos blockpos = new BlockPos(this.silverfish);
+
+				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : 0 - i) {
+					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : 0 - j) {
+						for (int k = 0; k <= 10 && k >= -10; k = k <= 0 ? 1 - k : 0 - k) {
+							BlockPos blockpos1 = blockpos.add(j, i, k);
+							IBlockState iblockstate = world.getBlockState(blockpos1);
+
+							if (iblockstate == TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED)) // TF - Change block check
+							{
+								if (world.getGameRules().getBoolean("mobGriefing")) {
+									world.destroyBlock(blockpos1, true);
+								} else {
+									// TF - reset to normal tower wood
+									world.setBlockState(blockpos1, TFBlocks.tower_wood.getDefaultState(), 3);
+								}
+
+								if (random.nextBoolean()) {
+									return;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
-
-	/**
-	 * @return true if the nearby block is infested
-	 */
-    protected boolean isInfestedBlock(Block blockIDNearby, int blockMetaNearby) 
-    {
-		return blockIDNearby == TFBlocks.towerWood && blockMetaNearby == BlockTFTowerWood.META_INFESTED;
-	}
-
-	/**
-     * Plays step sound at given x, y, z for the entity
-     */
-    protected void func_145780_a(int par1, int par2, int par3, Block par4)
-    {
-        this.playSound("mob.silverfish.step", 0.15F, 1.0F);
-    }
-
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
-    protected Item getDropItem()
-    {
-        return TFItems.borerEssence;
-    }
-
-    /**
-     * Called to update the entity's position/logic.
-     */
-    public void onUpdate()
-    {
-        this.renderYawOffset = this.rotationYaw;
-        super.onUpdate();
-    }
-
-
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
-    }
 
 }

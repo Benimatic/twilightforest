@@ -1,52 +1,46 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Enchantments;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFNagaArmor extends ItemArmor {
+public class ItemTFNagaArmor extends ItemArmor implements ModelRegisterCallback {
 
-	public ItemTFNagaArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int par3, int par4) {
-		super(par2EnumArmorMaterial, par3, par4);
+	public ItemTFNagaArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot) {
+		super(material, 0, slot);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot, String layer) {
-		
-		
-        if(itemstack.getItem() == TFItems.plateNaga)
-        {
-                return TwilightForestMod.ARMOR_DIR + "naga_scale_1.png";
-        }
-        if(itemstack.getItem() == TFItems.legsNaga)
-        {
-                return TwilightForestMod.ARMOR_DIR + "naga_scale_2.png";
-        }
-        return TwilightForestMod.ARMOR_DIR + "naga_scale_1.png";
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
+		if (slot == EntityEquipmentSlot.LEGS) {
+			return TwilightForestMod.ARMOR_DIR + "naga_scale_2.png";
+		} else {
+			return TwilightForestMod.ARMOR_DIR + "naga_scale_1.png";
+		}
 	}
 
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with naga scale
-        return par2ItemStack.getItem() == TFItems.nagaScale ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-    
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tab)) {
+			ItemStack istack = new ItemStack(this);
+			switch (this.armorType) {
+				case CHEST:
+					istack.addEnchantment(Enchantments.FIRE_PROTECTION, 3);
+					break;
+				case LEGS:
+					istack.addEnchantment(Enchantments.PROTECTION, 3);
+					break;
+				default:
+					break;
+			}
+			list.add(istack);
+		}
+	}
 }

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:maze_map"
+    },
+    "title": {
+      "translate": "advancement.twilight_maze_map"
+    },
+    "description": {
+      "translate": "advancement.twilight_maze_map.desc"
+    }
+  },
+  "parent": "twilightforest:magic_map",
+  "criteria": {
+    "map": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:maze_map"
+          }
+        ]
+      }
+    }
+  }
+}

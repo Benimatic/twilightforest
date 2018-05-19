@@ -1,231 +1,159 @@
 package twilightforest.entity.boss;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSwarmSpider;
-import twilightforest.item.TFItems;
-import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.entity.ai.EntityAITFLichMinions;
+import twilightforest.entity.ai.EntityAITFLichShadows;
+import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.TFWorld;
 
+import java.util.List;
+import java.util.Set;
 
+public class EntityTFLich extends EntityMob {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/lich");
+	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(EntitySkeleton.class, EntityZombie.class, EntityEnderman.class, EntitySpider.class, EntityCreeper.class, EntityTFSwarmSpider.class);
+	private static final DataParameter<Boolean> DATA_ISCLONE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Byte> DATA_SHIELDSTRENGTH = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> DATA_MINIONSLEFT = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> DATA_ATTACKTYPE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
 
-
-public class EntityTFLich extends EntityMob implements IBossDisplayData {
-	
-
-	private static final int DATA_ISCLONE = 21;
-	private static final int DATA_SHIELDSTRENGTH = 17;
-	private static final int DATA_MINIONSLEFT = 18;
-	private static final int DATA_BOSSHEALTH = 19;
-	private static final int DATA_ATTACKTYPE = 20;
-
-	EntityTFLich masterLich;
-
-	private static final ItemStack heldItems[] = {new ItemStack(TFItems.scepterTwilight, 1), new ItemStack(TFItems.scepterZombie, 1), new ItemStack(Items.golden_sword, 1)};
 	public static final int MAX_SHADOW_CLONES = 2;
 	public static final int INITIAL_SHIELD_STRENGTH = 5;
 	public static final int MAX_ACTIVE_MINIONS = 3;
 	public static final int INITIAL_MINIONS_TO_SUMMON = 9;
 	public static final int MAX_HEALTH = 100;
 
-	
-	/**
-	 * Make a new master lich.
-	 */
+	private EntityTFLich masterLich;
+	private int attackCooldown;
+	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6);
+
 	public EntityTFLich(World world) {
 		super(world);
 		setSize(1.1F, 2.5F);
-        //texture = TwilightForestMod.MODEL_DIR + "twilightlich64.png";
-//        this.yOffset = .25F;
-        
-        setShadowClone(false);
-        this.masterLich = null;
-        this.isImmuneToFire = true;
-        setShieldStrength(INITIAL_SHIELD_STRENGTH);
-        setMinionsToSummon(INITIAL_MINIONS_TO_SUMMON);
 
-        this.experienceValue = 217;
-
+		setShadowClone(false);
+		this.masterLich = null;
+		this.isImmuneToFire = true;
+		this.experienceValue = 217;
 	}
-	
-    public EntityTFLich(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
 
-	/**
-	 * Make a lich shadow clone
-	 */
 	public EntityTFLich(World world, EntityTFLich otherLich) {
 		this(world);
-		
+
 		setShadowClone(true);
 		this.masterLich = otherLich;
 	}
 
+	public EntityTFLich getMasterLich(){
+		return masterLich;
+	}
+
+	public int getAttackCooldown() {
+		return attackCooldown;
+	}
+
+	public void setAttackCooldown(int cooldown) {
+		attackCooldown = cooldown;
+	}
+
 	@Override
-	protected void entityInit()
-	{
+	public void setCustomNameTag(String name) {
+		super.setCustomNameTag(name);
+		this.bossInfo.setName(this.getDisplayName());
+	}
+
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAITFLichShadows(this));
+		this.tasks.addTask(2, new EntityAITFLichMinions(this));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, true) {
+			@Override
+			public boolean shouldExecute() {
+				return getPhase() == 3 && super.shouldExecute();
+			}
+
+			@Override
+			public void startExecuting() {
+				super.startExecuting();
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
+			}
+		});
+
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
+	}
+
+	@Override
+	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(DATA_ISCLONE, Byte.valueOf((byte)0));
-		this.dataWatcher.addObject(DATA_SHIELDSTRENGTH, Byte.valueOf((byte)0));
-		this.dataWatcher.addObject(DATA_MINIONSLEFT, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BOSSHEALTH, new Integer(EntityTFLich.MAX_HEALTH));
-		this.dataWatcher.addObject(DATA_ATTACKTYPE, Byte.valueOf((byte)0));
+		dataManager.register(DATA_ISCLONE, false);
+		dataManager.register(DATA_SHIELDSTRENGTH, (byte) INITIAL_SHIELD_STRENGTH);
+		dataManager.register(DATA_MINIONSLEFT, (byte) INITIAL_MINIONS_TO_SUMMON);
+		dataManager.register(DATA_ATTACKTYPE, (byte) 0);
 	}
 
-
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.800000011920929D); // movement speed
-    }
-	
-	
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.45000001788139344D); // Same speed as an angry enderman
+	}
+
 	@Override
-    public ItemStack getHeldItem()
-    {
-        return heldItems[getPhase() - 1];
-    }
-	
+	public void addTrackingPlayer(EntityPlayerMP player) {
+		super.addTrackingPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
+
 	@Override
-	protected void dropFewItems(boolean par1, int par2) {
-		dropScepter();
-		
-        int totalDrops = this.rand.nextInt(3 + par2) + 2;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            dropGoldThing();
-        }
-
-        totalDrops = this.rand.nextInt(4 + par2) + 1;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(Items.ender_pearl, 1);
-        }
-
-        // bones
-        totalDrops = this.rand.nextInt(5 + par2) + 5;
-        for (int i = 0; i < totalDrops; ++i)
-        {
-            this.dropItem(Items.bone, 1);
-        }
-        
-        // trophy
-        this.entityDropItem(new ItemStack(TFItems.trophy, 1, 2), 0);
+	public void removeTrackingPlayer(EntityPlayerMP player) {
+		super.removeTrackingPlayer(player);
+		this.bossInfo.removePlayer(player);
 	}
 
-	private void dropScepter() {
-		int scepterType = rand.nextInt(3);
-		if (scepterType == 0) {
-			this.entityDropItem(new ItemStack(TFItems.scepterZombie), 0);
-		}
-		else if (scepterType == 1) {
-			this.entityDropItem(new ItemStack(TFItems.scepterLifeDrain), 0);
-		}
-		else {
-			this.entityDropItem(new ItemStack(TFItems.scepterTwilight), 0);
-		}
+	@Override
+	public void setInWeb() {
 	}
 
-	private void dropGoldThing() {
-		ItemStack goldThing;
-		int thingType = rand.nextInt(5);
-		if (thingType == 0) {
-			goldThing = new ItemStack(Items.golden_sword);
-		}
-		else if (thingType == 1) {
-			goldThing = new ItemStack(Items.golden_helmet);
-		}
-		else if (thingType == 2) {
-			goldThing = new ItemStack(Items.golden_chestplate);
-		}
-		else if (thingType == 3) {
-			goldThing = new ItemStack(Items.golden_leggings);
-		}
-		else {
-			goldThing = new ItemStack(Items.golden_boots);
-		}
-		// enchant!
-		EnchantmentHelper.addRandomEnchantment(rand, goldThing, 10 + rand.nextInt(30));
-		this.entityDropItem(goldThing, 0);
+	@Override
+	protected boolean canDespawn() {
+		return false;
 	}
 
-	/**
-     * Sets the Entity inside a web block.
-     * We are immune to webs.
-     */
-    @Override
-    public void setInWeb() {
-    	// nope!
-    }
-
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
-    @Override
-	protected boolean canDespawn()
-    {
-        return false;
-    }
-
-    
-    /**
-     * Do not get slowed by lava.
-     */
-    @Override
-    public boolean handleLavaMovement()
-    {
-        return false;
-    }
-    
-    /**
-     * Do not get slowed by water.
-     */
-    @Override
-    public boolean isInWater()
-    {
-    	return false;
-    }
-     
 	/**
 	 * What phase of the fight are we on?
-	 * 
+	 * <p>
 	 * 1 - reflecting bolts, shield up
 	 * 2 - summoning minions
 	 * 3 - melee
@@ -233,855 +161,446 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	public int getPhase() {
 		if (isShadowClone() || getShieldStrength() > 0) {
 			return 1;
-		}
-		else if (getMinionsToSummon() > 0) {
+		} else if (getMinionsToSummon() > 0) {
 			return 2;
-		}
-		else {
+		} else {
 			return 3;
 		}
 	}
 
-    /**
-     * For now we'll just add some cute particles.
-     */
-    @Override
+	@Override
 	public void onLivingUpdate() {
-        // determine the hand position
-        float angle = ((renderYawOffset * 3.141593F) / 180F);
-        
-        double dx = posX + (MathHelper.cos(angle) * 0.65);
-        double dy = posY + (height * 0.94);
-        double dz = posZ + (MathHelper.sin(angle) * 0.65);
+		// determine the hand position
+		float angle = ((renderYawOffset * 3.141593F) / 180F);
 
-    	
-    	// add particles!
-    	
-    	// how many particles do we want to add?!
-    	int factor = (80 - attackTime) / 10;
-    	int particles = factor > 0 ? rand.nextInt(factor) : 1;
-    	
-    	
-        for (int j1 = 0; j1 < particles; j1++)
-        {
-        	float sparkle = 1.0F - (attackTime + 1.0F) / 60.0F;
-        	sparkle *= sparkle;
-        	
-            float red = 0.37F * sparkle;
-            float grn = 0.99F * sparkle;
-            float blu = 0.89F * sparkle;
-            
-            // change color for fireball
-        	if (this.getNextAttackType() != 0)
-        	{
-                red = 0.99F * sparkle;
-                grn = 0.47F * sparkle;
-                blu = 0.00F * sparkle;
-        	}
-            
-            worldObj.spawnParticle("mobSpell", dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
-        }
-        
-		if (isShadowClone()) {
-			// clones despawn if they have strayed from the master
-			checkForMaster();
+		double dx = posX + (MathHelper.cos(angle) * 0.65);
+		double dy = posY + (height * 0.94);
+		double dz = posZ + (MathHelper.sin(angle) * 0.65);
+
+
+		// add particles!
+
+		// how many particles do we want to add?!
+		int factor = (80 - attackCooldown) / 10;
+		int particles = factor > 0 ? rand.nextInt(factor) : 1;
+
+
+		for (int j1 = 0; j1 < particles; j1++) {
+			float sparkle = 1.0F - (attackCooldown + 1.0F) / 60.0F;
+			sparkle *= sparkle;
+
+			float red = 0.37F * sparkle;
+			float grn = 0.99F * sparkle;
+			float blu = 0.89F * sparkle;
+
+			// change color for fireball
+			if (this.getNextAttackType() != 0) {
+				red = 0.99F * sparkle;
+				grn = 0.47F * sparkle;
+				blu = 0.00F * sparkle;
+			}
+
+			world.spawnParticle(EnumParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
 		}
-		
-		// update health
-        if (!this.worldObj.isRemote)
-        {
-            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
-        }
-		
-        super.onLivingUpdate();
-    }
-    
-    
-    /**
-     * Called when we get attacked.
-     * 
-     * Never switch targets to any lich.
-     * 
-     * TODO maybe we could compare masters to make teams or something.
-     */
-    @Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float damage) {
-    	// if we're in a wall, teleport for gosh sakes
-    	if (par1DamageSource.getDamageType() == "inWall" && entityToAttack != null) {
-    		teleportToSightOfEntity(entityToAttack);
-    	}
-    	
-    	if (isShadowClone()) {
-    		this.worldObj.playSoundAtEntity(this, "random.fizz", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-    		return false;
-    	}
-    	
-		Entity prevTarget = this.entityToAttack;
-		
-//		System.out.println("Damage source is " + par1DamageSource);
-//		System.out.println("Damage type is " + par1DamageSource.getDamageType());
-//		System.out.println("Damage source source is " + par1DamageSource.getSourceOfDamage());
 
-		// ignore all bolts that are not reflected
-		if (par1DamageSource.getEntity() instanceof EntityTFLich) {
+		if (this.getPhase() == 3)
+			world.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY,
+				this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+				this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height),
+				this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+				this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D);
+
+		if (!world.isRemote) {
+			if (this.getPhase() == 1) {
+				bossInfo.setPercent((float) (getShieldStrength() + 1) / (float) (INITIAL_SHIELD_STRENGTH + 1));
+			} else {
+				bossInfo.setOverlay(BossInfo.Overlay.PROGRESS);
+				bossInfo.setPercent(getHealth() / getMaxHealth());
+				if (this.getPhase() == 2)
+					bossInfo.setColor(BossInfo.Color.PURPLE);
+				else
+					bossInfo.setColor(BossInfo.Color.RED);
+			}
+		}
+
+		super.onLivingUpdate();
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource src, float damage) {
+		// if we're in a wall, teleport for gosh sakes
+		if ("inWall".equals(src.getDamageType()) && getAttackTarget() != null) {
+			teleportToSightOfEntity(getAttackTarget());
+		}
+
+		if (isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
+			playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			return false;
 		}
-		
+
+		// ignore all bolts that are not reflected
+		if (src.getTrueSource() instanceof EntityTFLich) {
+			return false;
+		}
+
 		// if our shield is up, ignore any damage that can be blocked.
-		if (getShieldStrength() > 0)
-		{
-			if (par1DamageSource.isUnblockable() && damage > 2) 
-			{
+		if (src != DamageSource.OUT_OF_WORLD && getShieldStrength() > 0) {
+			if (src.isMagicDamage() && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
 				if (getShieldStrength() > 0) {
 					setShieldStrength(getShieldStrength() - 1);
-					this.worldObj.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+					playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				}
+			} else {
+				playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				if (src.getTrueSource() instanceof EntityLivingBase) {
+					setRevengeTarget((EntityLivingBase) src.getTrueSource());
 				}
 			}
-			else
-			{
-				this.worldObj.playSoundAtEntity(this, "random.break", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				// HACK for creative mode: but get annoyed at what's causing it.
-				if (par1DamageSource.getEntity() instanceof EntityPlayer) 
-				{
-					this.entityToAttack = par1DamageSource.getEntity();
-				}
-			}
-			
+
 			return false;
 		}
 
-		// never attack another lich?
-		//TODO: this could better check who is actually attacking against the masterLich variable thing
-		if (super.attackEntityFrom(par1DamageSource, damage)) 
-		{
-			if (entityToAttack instanceof EntityTFLich) {
-				this.entityToAttack = prevTarget;
+		if (super.attackEntityFrom(src, damage)) {
+			// Prevent AIHurtByTarget from targeting our own companions
+			if (getRevengeTarget() instanceof EntityTFLich && ((EntityTFLich) getRevengeTarget()).masterLich == this.masterLich) {
+				setRevengeTarget(null);
 			}
-			
-			// if we were attacked successfully during phase 1 or 2, teleport
-			// during phase 3, 1 in 4 chance of teleport
-			if (this.getPhase() < 3 || rand.nextInt(4) == 0)
-			{
-				this.teleportToSightOfEntity(this.entityToAttack);
+
+			if (this.getPhase() < 3 || rand.nextInt(4) == 0) {
+				this.teleportToSightOfEntity(getAttackTarget());
 			}
-			
+
 			return true;
-		}
-		else 
-		{
+		} else {
 			return false;
 		}
 	}
-    
-//    /**
-//     * Another method to stop the shadow clones from being attacked
-//     */
-//	@Override
-//	public boolean canAttackWithItem() {
-//		if (isShadowClone()) {
-//			return false;
-//		}
-//		else {
-//			return super.canAttackWithItem();
-//		}
-//	}
 
+	@Override
+	protected void updateAITasks() {
+		super.updateAITasks();
 
-	/**
-     * Attack!
-     */
-    @Override
-    protected void attackEntity(Entity targetedEntity, float f)
-    {
-    	if (!isShadowClone() && attackTime % 15 == 0) {
-    		popNearbyMob();
-    	}
-    	
-    	if (getPhase() == 1) {
-	    	if (attackTime == 60 && !worldObj.isRemote) {
-	
-	    		teleportToSightOfEntity(targetedEntity);
-	    		
-	    		if (!isShadowClone()) {
-		    		// if we are the master, check for clones
-		    		checkAndSpawnClones(targetedEntity);
-	    		}
-	    	}
-	    	
-	    	if(canEntityBeSeen(targetedEntity) && attackTime == 0 && f < 20F)
-	    	{
-    			if (this.getNextAttackType() == 0)
-    			{
-    				// if not, and we can see the target, launch a bolt
-    				launchBoltAt(targetedEntity);
-    			}
-    			else
-    			{
-    				launchBombAt(targetedEntity);
-    			}
-    			
-    			// decide next attack type
-    			if (rand.nextInt(3) > 0) 
-    			{
-    				this.setNextAttackType(0);
-    			}
-    			else
-    			{
-    				this.setNextAttackType(1);
-    			}
-    			attackTime = 100;
-	    		
-	    	}
-	    	// do not chase the player
-    		hasAttacked = true;
-    	}
-    	if (getPhase() == 2 && !isShadowClone()) {
-    		despawnClones();
-    		
-    		// spawn minions every so often
-    		if (attackTime % 15 == 0) {
-    			// spawn minion
-    			checkAndSpawnMinions(targetedEntity);
-    		}
-    		
-    		if (attackTime == 0) {
-	    		// if we're in melee, attack
-	    		if (f < 2.0F) {
-	    			// melee attack
-	    			this.attackEntityAsMob(targetedEntity);
-	    			attackTime = 20;
-	    		}
-	    		else if (f < 20F && canEntityBeSeen(targetedEntity)) {
-	    			// if not, and we can see the target, launch a bolt
-	    			if (this.getNextAttackType() == 0)
-	    			{
-	    				// if not, and we can see the target, launch a bolt
-	    				launchBoltAt(targetedEntity);
-	    			}
-	    			else
-	    			{
-	    				launchBombAt(targetedEntity);
-	    			}
-	    			
-	    			// decide next attack type
-	    			if (rand.nextInt(2) > 0) 
-	    			{
-	    				this.setNextAttackType(0);
-	    			}
-	    			else
-	    			{
-	    				this.setNextAttackType(1);
-	    			}
-		    		attackTime = 60;
-	    		}
-	    		else {
-	    			// if not, teleport around
-	    			teleportToSightOfEntity(targetedEntity);
-	    			attackTime = 20;
-	    			
-	    		}
-    		}
-    		// do not chase
-    		hasAttacked = true;
-	    		
-    	}
-    	if (getPhase() == 3) {
-    		// melee!
-            if (this.attackTime <= 0 && f < 2.0F && targetedEntity.boundingBox.maxY > this.boundingBox.minY && targetedEntity.boundingBox.minY < this.boundingBox.maxY)
-            {
-                this.attackTime = 20;
-                this.attackEntityAsMob(targetedEntity);
-                hasAttacked = true;
-            }
-    	}
-    	
-    	
-    }
+		if (getAttackTarget() == null) {
+			return;
+		}
 
-	/**
-     * Fires a lich bolt at the target
-     * @param targetedEntity
-     */
-	protected void launchBoltAt(Entity targetedEntity) {
+		if (attackCooldown > 0) {
+			attackCooldown--;
+		}
+
+		// TODO: AI task?
+		if (!isShadowClone() && attackCooldown % 15 == 0) {
+			popNearbyMob();
+		}
+
+		// always watch our target
+		// TODO: make into AI task
+		this.getLookHelper().setLookPositionWithEntity(getAttackTarget(), 100F, 100F);
+	}
+
+	public void launchBoltAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
 		double sy = posY + (height * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
-		
-		double tx = targetedEntity.posX - sx;
-		double ty = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
-		double tz = targetedEntity.posZ - sz;
-		
-		worldObj.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		EntityTFLichBolt projectile = new EntityTFLichBolt(worldObj, this);
-		projectile.setThrowableHeading(tx, ty, tz, projectile.func_70182_d(), 1.0F);
-		
-		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 
-		worldObj.spawnEntityInWorld(projectile);
+		double tx = getAttackTarget().posX - sx;
+		double ty = (getAttackTarget().getEntityBoundingBox().minY + (double) (getAttackTarget().height / 2.0F)) - (posY + height / 2.0F);
+		double tz = getAttackTarget().posZ - sz;
+
+		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+
+		EntityTFLichBolt projectile = new EntityTFLichBolt(world, this);
+		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
+		projectile.setThrowableHeading(tx, ty, tz, 0.5F, 1.0F);
+
+		world.spawnEntity(projectile);
 	}
 
-	/**
-     * Fires a lich bomb at the target
-     * @param targetedEntity
-     */
-	protected void launchBombAt(Entity targetedEntity) {
+	public void launchBombAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
 		double sy = posY + (height * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
-		
-		double tx = targetedEntity.posX - sx;
-		double ty = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
-		double tz = targetedEntity.posZ - sz;
-		
-		worldObj.playSoundAtEntity(this, "mob.ghast.fireball", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		EntityTFLichBomb projectile = new EntityTFLichBomb(worldObj, this);
-		projectile.setThrowableHeading(tx, ty, tz, projectile.func_40077_c(), 1.0F);
-		
+
+		double tx = getAttackTarget().posX - sx;
+		double ty = (getAttackTarget().getEntityBoundingBox().minY + (double) (getAttackTarget().height / 2.0F)) - (posY + height / 2.0F);
+		double tz = getAttackTarget().posZ - sz;
+
+		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+
+		EntityTFLichBomb projectile = new EntityTFLichBomb(world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-		
-		worldObj.spawnEntityInWorld(projectile);
+		projectile.setThrowableHeading(tx, ty, tz, 0.35F, 1.0F);
+
+		world.spawnEntity(projectile);
 	}
 
-    /**
-     * Check the surrounding area for weaker monsters, and if we find any, magically destroy them.
-     */
-    @SuppressWarnings("unchecked")
-	protected void popNearbyMob() {
-		List<Entity> nearbyMobs = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+	private void popNearbyMob() {
+		List<EntityLiving> nearbyMobs = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
 
-		for (Entity entity : nearbyMobs) {
-			if (entity instanceof EntityLiving && canPop(entity) && canEntityBeSeen(entity)) {
-				EntityLiving mob = (EntityLiving)entity;
-
-				if (!worldObj.isRemote) {
-					mob.setDead();
-
-					mob.spawnExplosionParticle();
-
-					// play death sound
-//					worldObj.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-				}
+		for (EntityLiving mob : nearbyMobs) {
+			if (getEntitySenses().canSee(mob)) {
+				mob.spawnExplosionParticle();
+				mob.setDead();
+				// play death sound
+//					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
 				// make trail so it's clear that we did it
 				makeRedMagicTrail(mob.posX, mob.posY + mob.height / 2.0, mob.posZ, this.posX, this.posY + this.height / 2.0, this.posZ);
 
-				// one per cycle, please
 				break;
 			}
 		}
-		
-		
-	}
-	
-	/**
-	 * Can we pop the nearby thing?
-	 */
-	@SuppressWarnings("rawtypes")
-	protected boolean canPop(Entity nearby) {
-		Class[] poppable = {EntitySkeleton.class, EntityZombie.class, EntityEnderman.class, EntitySpider.class, EntityCreeper.class, EntityTFSwarmSpider.class};
-		
-		for (Class pop : poppable) {
-			if (nearby.getClass() == pop) {
-				return true;
-			}
-		}
-		return false;
 	}
 
-	/**
-     * Look and see if there are enough clones in the surrounding area.  If there are not, spawn one.
-     * @param targetedEntity 
-     */
-    protected void checkAndSpawnClones(Entity targetedEntity) {
-    	// if not, spawn one!
-    	if (countMyClones() < EntityTFLich.MAX_SHADOW_CLONES) {
-    		spawnShadowClone(targetedEntity);
-    	}
-	}
-    
-	@SuppressWarnings("unchecked")
-	protected int countMyClones() {
-    	// check if there are enough clones.  we check a 32x16x32 area
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
-		int count = 0;
-
-		for (EntityTFLich nearbyLich : nearbyLiches) {
-			if (nearbyLich.isShadowClone() && nearbyLich.masterLich == this) {
-				count++;
-			}
-		}
-		
-		return count;
-	}
-	
 	public boolean wantsNewClone(EntityTFLich clone) {
 		return clone.isShadowClone() && countMyClones() < EntityTFLich.MAX_SHADOW_CLONES;
 	}
 
-
-	protected void spawnShadowClone(Entity targetedEntity) {
-//		System.out.println("Lich is making a shadow clone!");
-		
-		
-		// find a good spot
-		Vec3 cloneSpot = findVecInLOSOf(targetedEntity);
-		
-		// put a clone there
-		EntityTFLich newClone = new EntityTFLich(worldObj, this);
-		newClone.setPosition(cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
-		worldObj.spawnEntityInWorld(newClone);
-		
-		newClone.entityToAttack = targetedEntity;
-		newClone.attackTime = 60 + rand.nextInt(3) - rand.nextInt(3);
-		
-		// make sparkles leading to it
-		makeTeleportTrail(posX, posY, posZ, cloneSpot.xCoord, cloneSpot.yCoord, cloneSpot.zCoord);
-	}
-	
-	/**
-	 * Despawn neaby clones
-	 */
-	@SuppressWarnings("unchecked")
-	protected void despawnClones() {
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(this.getClass(), AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
-		
-		for (EntityTFLich nearbyLich : nearbyLiches) {
-			if (nearbyLich.isShadowClone()) {
-				nearbyLich.isDead = true;
-			}
-		}
+	public void setMaster(EntityTFLich lich) {
+		masterLich = lich;
 	}
 
-
-
-	protected void checkAndSpawnMinions(Entity targetedEntity) {
-		if (!worldObj.isRemote && this.getMinionsToSummon() > 0) {
-			int minions = countMyMinions();
-			
-	    	// if not, spawn one!
-	    	if (minions < EntityTFLich.MAX_ACTIVE_MINIONS) {
-	    		spawnMinionAt((EntityLivingBase)targetedEntity);
-	    		this.setMinionsToSummon(this.getMinionsToSummon() - 1);
-	    	}
-		}
-		// if there's no minions left to summon, we should move into phase 3 naturally
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected int countMyMinions() {
-    	// check if there are enough clones.  we check a 32x16x32 area
-		List<EntityTFLichMinion> nearbyMinons = worldObj.getEntitiesWithinAABB(EntityTFLichMinion.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
+	public int countMyClones() {
+		// check if there are enough clones.  we check a 32x16x32 area
 		int count = 0;
-		
-		for (EntityTFLichMinion nearbyMinon : nearbyMinons) {
-			if (nearbyMinon.master == this) {
+
+		for (EntityTFLich nearbyLich : getNearbyLiches()) {
+			if (nearbyLich.isShadowClone() && nearbyLich.getMasterLich() == this) {
 				count++;
 			}
 		}
-		
+
 		return count;
 	}
 
-	protected void spawnMinionAt(EntityLivingBase targetedEntity) {
-		
-		// find a good spot
-		Vec3 minionSpot = findVecInLOSOf(targetedEntity);
-		
-		// put a clone there
-		EntityTFLichMinion minion = new EntityTFLichMinion(worldObj, this);
-		minion.setPosition(minionSpot.xCoord, minionSpot.yCoord, minionSpot.zCoord);
-		//minion.initCreature();
-		worldObj.spawnEntityInWorld(minion);
-		
-		minion.setAttackTarget(targetedEntity);
-		
-		minion.spawnExplosionParticle();
-		this.worldObj.playSoundAtEntity(minion, "random.pop", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-		
-		// make sparkles leading to it
-		makeBlackMagicTrail(posX, posY + this.getEyeHeight(), posZ, minionSpot.xCoord, minionSpot.yCoord + minion.height / 2.0, minionSpot.zCoord);
+	public List<EntityTFLich> getNearbyLiches() {
+		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D));
 	}
-	
+
 	public boolean wantsNewMinion(EntityTFLichMinion minion) {
 		return countMyMinions() < EntityTFLich.MAX_ACTIVE_MINIONS;
 	}
 
+	public int countMyMinions() {
+		return (int) world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D))
+				.stream()
+				.filter(m -> m.master == this)
+				.count();
+	}
+
+	public void teleportToSightOfEntity(Entity entity) {
+		Vec3d dest = findVecInLOSOf(entity);
+		double srcX = posX;
+		double srcY = posY;
+		double srcZ = posZ;
+
+		if (dest != null) {
+			teleportToNoChecks(dest.x, dest.y, dest.z);
+			this.getLookHelper().setLookPositionWithEntity(entity, 100F, 100F);
+			this.renderYawOffset = this.rotationYaw;
+
+			if (!this.getEntitySenses().canSee(entity)) {
+				teleportToNoChecks(srcX, srcY, srcZ);
+			}
+		}
+	}
+
 	/**
-	 * A method on the clones that despawns this clone if we are too far from the master
+	 * Returns coords that would be good to teleport to.
+	 * Returns null if we can't find anything
 	 */
-	protected void checkForMaster() {
-		if (masterLich == null) {
-			findNewMaster();
-		}
-		if (!worldObj.isRemote) {
-			if (masterLich == null || masterLich.isDead) {
-				this.isDead = true;
+	public Vec3d findVecInLOSOf(Entity targetEntity) {
+		if (targetEntity == null) return null;
+		double origX = posX;
+		double origY = posY;
+		double origZ = posZ;
+
+		int tries = 100;
+		for (int i = 0; i < tries; i++) {
+			// we abuse EntityLivingBase.attemptTeleport, which does all the collision/ground checking for us, then teleport back to our original spot
+			double tx = targetEntity.posX + rand.nextGaussian() * 16D;
+			double ty = targetEntity.posY;
+			double tz = targetEntity.posZ + rand.nextGaussian() * 16D;
+
+			boolean destClear = attemptTeleport(tx, ty, tz);
+			boolean canSeeTargetAtDest = canEntityBeSeen(targetEntity); // Don't use senses cache because we're in a temporary position
+			setPositionAndUpdate(origX, origY, origZ);
+
+			if (destClear && canSeeTargetAtDest) {
+				return new Vec3d(tx, ty, tz);
 			}
-			else {
-				//double distance = (this.posX - masterLich.posX) * (this.posX - masterLich.posX) + (this.posY - masterLich.posY) * (this.posY - masterLich.posY) + (this.posZ - masterLich.posZ) * (this.posZ - masterLich.posZ);
-//				System.out.println("Clone says that distance from master is " + distance);
-			}
 		}
+
+		return null;
 	}
 
 	/**
-	 * Find a new master for this clone
+	 * Does not check that the teleport destination is valid, we just go there
 	 */
-	@SuppressWarnings("unchecked")
-	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = worldObj.getEntitiesWithinAABB(EntityTFLich.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(32.0D, 16.0D, 32.0D));
-		
-		for (EntityTFLich nearbyLich : nearbyLiches) {
-			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(this)) {
-				this.masterLich = nearbyLich;
-				
-				// animate our new linkage!
-				makeTeleportTrail(posX, posY, posZ, nearbyLich.posX, nearbyLich.posY, nearbyLich.posZ);
-				// become angry at our masters target
-				setAttackTarget(masterLich.getAttackTarget());
-				
-				// quit looking
-				break;
-			}
+	private void teleportToNoChecks(double destX, double destY, double destZ) {
+		// save original position
+		double srcX = posX;
+		double srcY = posY;
+		double srcZ = posZ;
+
+		// change position
+		setPositionAndUpdate(destX, destY, destZ);
+
+		makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
+		this.world.playSound(null, srcX, srcY, srcZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
+		this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
+
+		// sometimes we need to do this
+		this.isJumping = false;
+	}
+
+	public void makeTeleportTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+		// make particle trail
+		int particles = 128;
+		for (int i = 0; i < particles; i++) {
+			double trailFactor = i / (particles - 1.0D);
+			float f = (rand.nextFloat() - 0.5F) * 0.2F;
+			float f1 = (rand.nextFloat() - 0.5F) * 0.2F;
+			float f2 = (rand.nextFloat() - 0.5F) * 0.2F;
+			double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
+			double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * height;
+			double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
+			world.spawnParticle(EnumParticleTypes.SPELL, tx, ty, tz, f, f1, f2);
 		}
 	}
 
-    
-    /**
-     * Teleports to within line of sight of (but not necessarily in view of) the target
-     */
-    protected void teleportToSightOfEntity(Entity entity)
-    {
-    	Vec3 dest = findVecInLOSOf(entity);
-    	double srcX = posX;
-    	double srcY = posY;
-    	double srcZ = posZ;
-        
-        if (dest != null) {
-        	teleportToNoChecks(dest.xCoord, dest.yCoord, dest.zCoord);
-            faceEntity(entity, 100F, 100F);
-            this.renderYawOffset = this.rotationYaw;
-            
-            if (!this.canEntityBeSeen(entity)) {
-            	// um teleport mishap, return to start
-//            	System.out.println("Teleport fail!!!");
-            	teleportToNoChecks(srcX, srcY, srcZ);
-            	
-            }
-        }
-    }
-    
-    /**
-     * Returns coords that would be good to teleport to.
-     * 
-     * Returns null if we can't find anything
-     */
-    protected Vec3 findVecInLOSOf(Entity targetEntity) 
-    {
-    	// for some reason we occasionally get null here
-    	if (targetEntity == null)
-    	{
-    		return null;
-    	}
-    	
-        double tx = 0, ty = 0, tz = 0;
-        int tries = 100;
-        for (int i = 0; i < tries; i++) {
-        	tx = targetEntity.posX + rand.nextGaussian() * 16D;
-        	ty = targetEntity.posY + rand.nextGaussian() * 8D;
-        	tz = targetEntity.posZ + rand.nextGaussian() * 16D;
-        	
-        	// put the y on something solid
-        	boolean groundFlag = false;
-        	// we need to get the integer coordinates for this calculation
-        	int bx = MathHelper.floor_double(tx);
-        	int by = MathHelper.floor_double(ty);
-        	int bz = MathHelper.floor_double(tz);
-        	while (!groundFlag && ty > 0) 
-        	{
-                Block whatsThere = worldObj.getBlock(bx, by - 1, bz);
-                if (whatsThere == Blocks.air || !whatsThere.getMaterial().isSolid())
-                {
-                    ty--;
-                    by--;
-                }
-                else
-                {
-                	groundFlag = true;
-                }
-        	}
-        	
-        	// did we not find anything at all to stand on?
-        	if (by == 0) {
-//        		System.out.println("teleport find failed to find a block to stand on");
-        		continue;
-        	}
-        	
-        	// 
-        	if (!canEntitySee(targetEntity, tx, ty, tz)) {
-//        		System.out.println("teleport find failed because of lack of LOS");
-//        		System.out.println("ty = " + ty);
-        		continue;
-        	}
-        	
-        	// check that we're not colliding and not in liquid
-        	float halfWidth = this.width / 2.0F;
-        	AxisAlignedBB destBox = AxisAlignedBB.getBoundingBox(tx - halfWidth, ty - yOffset + ySize, tz - halfWidth, tx + halfWidth, ty - yOffset + ySize + height, tz + halfWidth);
-        	if (worldObj.getCollidingBoundingBoxes(this, destBox).size() > 0)
-            {
-//        		System.out.println("teleport find failed because of collision");
-        		continue;
-            }
-        	
-        	if (worldObj.isAnyLiquid(destBox)) {
-//        		System.out.println("teleport find failed because of liquid at destination");
-        		continue;
-        	}
-        	
-        	// if we made it this far, we win!
-        	break;
-        }
-        
-        if (tries == 99) {
-        	return null;
-        }
-        
-//        System.out.println("I think we found a good destination at " + tx + ", " + ty + ", " + tz);
-//        System.out.println("canEntitySee = " + canEntitySee(targetEntity, tx, ty, tz));
-        return Vec3.createVectorHelper(tx, ty, tz);
-    }
-    
-    /**
-     * Can the specified entity see the specified location?
-     */
-    protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-        return worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ), Vec3.createVectorHelper(dx, dy, dz)) == null;
-
-    }
-
-    /**
-     * Does not check that the teleport destination is valid, we just go there
-     */
-    protected boolean teleportToNoChecks(double destX, double destY, double destZ)
-    {
-    	// save original position
-    	double srcX = posX;
-    	double srcY = posY;
-    	double srcZ = posZ;
-
-    	// change position
-    	setPosition(destX, destY, destZ);
-	
-    	makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-
-    	worldObj.playSoundEffect(srcX, srcY, srcZ, "mob.endermen.portal", 1.0F, 1.0F);
-    	worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
-    	
-    	// sometimes we need to do this
-    	this.isJumping = false;
-    	
-    	return true;
-    }
-
-    /**
-     * Make a trail of particles from one point to another
-     */
-    protected void makeTeleportTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
-		// make particle trail
-    	int particles = 128;
-    	for (int i = 0; i < particles; i++)
-    	{
-    		double trailFactor = i / (particles - 1.0D);
-    		float f = (rand.nextFloat() - 0.5F) * 0.2F;
-    		float f1 = (rand.nextFloat() - 0.5F) * 0.2F;
-    		float f2 = (rand.nextFloat() - 0.5F) * 0.2F;
-    		double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
-    		double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * height;
-    		double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
-    		worldObj.spawnParticle("spell", tx, ty, tz, f, f1, f2);
-    	}
+	private void makeRedMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+		int particles = 32;
+		for (int i = 0; i < particles; i++) {
+			double trailFactor = i / (particles - 1.0D);
+			float f = 1.0F;
+			float f1 = 0.5F;
+			float f2 = 0.5F;
+			double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
+			double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
+			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
+			world.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+		}
 	}
 
-    /**
-     * Make a trail of particles from one point to another
-     */
-    protected void makeRedMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	public void makeBlackMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
-    	int particles = 32;
-    	for (int i = 0; i < particles; i++)
-    	{
-    		double trailFactor = i / (particles - 1.0D);
-    		float f = 1.0F;
-    		float f1 = 0.5F;
-    		float f2 = 0.5F;
-    		double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
-    		double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
-    		double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-    		worldObj.spawnParticle("mobSpell", tx, ty, tz, f, f1, f2);
-    	}
+		int particles = 32;
+		for (int i = 0; i < particles; i++) {
+			double trailFactor = i / (particles - 1.0D);
+			float f = 0.2F;
+			float f1 = 0.2F;
+			float f2 = 0.2F;
+			double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
+			double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
+			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
+			world.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+		}
 	}
 
-    /**
-     * Make a trail of particles from one point to another
-     */
-    protected void makeBlackMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
-		// make particle trail
-    	int particles = 32;
-    	for (int i = 0; i < particles; i++)
-    	{
-    		double trailFactor = i / (particles - 1.0D);
-    		float f = 0.2F;
-    		float f1 = 0.2F;
-    		float f2 = 0.2F;
-    		double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
-    		double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
-    		double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-    		worldObj.spawnParticle("mobSpell", tx, ty, tz, f, f1, f2);
-    	}
+	public boolean isShadowClone() {
+		return dataManager.get(DATA_ISCLONE);
 	}
 
-    /**
-     * @return Is this lich a shadow clone or the real one?
-     */
-    public boolean isShadowClone()
-    {
-        return (this.dataWatcher.getWatchableObjectByte(DATA_ISCLONE) & 2) != 0;
-    }
+	public void setShadowClone(boolean par1) {
+		bossInfo.setVisible(!par1);
+		dataManager.set(DATA_ISCLONE, par1);
+	}
 
-    /**
-     * sets Is this lich a shadow clone or the real one?
-     */
-    public void setShadowClone(boolean par1)
-    {
-        byte var2 = this.dataWatcher.getWatchableObjectByte(DATA_ISCLONE);
-
-        if (par1)
-        {
-            this.dataWatcher.updateObject(DATA_ISCLONE, Byte.valueOf((byte)(var2 | 2)));
-        }
-        else
-        {
-            this.dataWatcher.updateObject(DATA_ISCLONE, Byte.valueOf((byte)(var2 & -3)));
-        }
-    }
-    
-    public byte getShieldStrength() {
-		return this.dataWatcher.getWatchableObjectByte(DATA_SHIELDSTRENGTH);
+	public byte getShieldStrength() {
+		return dataManager.get(DATA_SHIELDSTRENGTH);
 	}
 
 	public void setShieldStrength(int shieldStrength) {
-		this.dataWatcher.updateObject(DATA_SHIELDSTRENGTH, Byte.valueOf((byte) shieldStrength));
+		dataManager.set(DATA_SHIELDSTRENGTH, (byte) shieldStrength);
 	}
 
 	public byte getMinionsToSummon() {
-		return this.dataWatcher.getWatchableObjectByte(DATA_MINIONSLEFT);
+		return dataManager.get(DATA_MINIONSLEFT);
 	}
 
 	public void setMinionsToSummon(int minionsToSummon) {
-		this.dataWatcher.updateObject(DATA_MINIONSLEFT, Byte.valueOf((byte) minionsToSummon));
+		dataManager.set(DATA_MINIONSLEFT, (byte) minionsToSummon);
 	}
 
 	public byte getNextAttackType() {
-		return this.dataWatcher.getWatchableObjectByte(DATA_ATTACKTYPE);
+		return dataManager.get(DATA_ATTACKTYPE);
 	}
 
 	public void setNextAttackType(int attackType) {
-		this.dataWatcher.updateObject(DATA_ATTACKTYPE, Byte.valueOf((byte) attackType));
+		dataManager.set(DATA_ATTACKTYPE, (byte) attackType);
 	}
 
-	/**
-     * Returns the sound this mob makes while it's alive.
-     */
-    @Override
-	protected String getLivingSound()
-    {
-        return "mob.blaze.breathe";
-    }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.ENTITY_BLAZE_AMBIENT;
+	}
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    @Override
-	protected String getHurtSound()
-    {
-        return "mob.blaze.hit";
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_BLAZE_HURT;
+	}
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    @Override
-	protected String getDeathSound()
-    {
-        return "mob.blaze.death";
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_BLAZE_DEATH;
+	}
 
-    
-    @Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeEntityToNBT(nbttagcompound);
-        nbttagcompound.setBoolean("ShadowClone", isShadowClone());
-        nbttagcompound.setByte("ShieldStrength", getShieldStrength());
-        nbttagcompound.setByte("MinionsToSummon", getMinionsToSummon());
-    }
+	@Override
+	public ResourceLocation getLootTable() {
+		return !isShadowClone() ? LOOT_TABLE : null;
+	}
 
-    @Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readEntityFromNBT(nbttagcompound);
-        setShadowClone(nbttagcompound.getBoolean("ShadowClone"));
-        setShieldStrength(nbttagcompound.getByte("ShieldStrength"));
-        setMinionsToSummon(nbttagcompound.getByte("MinionsToSummon"));
-    }
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+		super.writeEntityToNBT(nbttagcompound);
+		nbttagcompound.setBoolean("ShadowClone", isShadowClone());
+		nbttagcompound.setByte("ShieldStrength", getShieldStrength());
+		nbttagcompound.setByte("MinionsToSummon", getMinionsToSummon());
+	}
 
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+		super.readEntityFromNBT(nbttagcompound);
+		setShadowClone(nbttagcompound.getBoolean("ShadowClone"));
+		setShieldStrength(nbttagcompound.getByte("ShieldStrength"));
+		setMinionsToSummon(nbttagcompound.getByte("MinionsToSummon"));
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
+	}
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightKillLich);
-			
-		}
 
 		// mark the tower as defeated
-		if (!worldObj.isRemote && !this.isShadowClone()) {
-			int dx = MathHelper.floor_double(this.posX);
-			int dy = MathHelper.floor_double(this.posY);
-			int dz = MathHelper.floor_double(this.posZ);
-			
-			if (worldObj.provider instanceof WorldProviderTwilightForest){
-				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+		if (!world.isRemote && !this.isShadowClone()) {
+			int dx = MathHelper.floor(this.posX);
+			int dy = MathHelper.floor(this.posY);
+			int dz = MathHelper.floor(this.posZ);
+
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
+				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.lichTower) {
-					chunkProvider.setStructureConquered(dx, dy, dz, true);
+					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}
 		}
 	}
 
-//	@Override
-//	public int getBossHealth() {
-//        return this.dataWatcher.getWatchableObjectInt(EntityTFLich.DATA_BOSSHEALTH);
-//	}
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		return EnumCreatureAttribute.UNDEAD;
+	}
 
-    
-
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
-    @Override
-	public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.UNDEAD;
-    }
-    
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

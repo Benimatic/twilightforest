@@ -1,173 +1,106 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTFShield extends Block 
-{
+import java.util.Random;
 
-	public static IIcon sprSide;
-	private IIcon sprInside;
-	private IIcon sprOutside;
-	
-    public BlockTFShield()
-    {
-        super(Material.rock);
-        this.setBlockUnbreakable();
-        //this.setResistance(2000.0F);
-        this.setResistance(6000000.0F);
-        this.setStepSound(Block.soundTypeMetal);
+public class BlockTFShield extends Block implements ModelRegisterCallback {
+
+	public BlockTFShield() {
+		super(Material.ROCK);
+		this.setBlockUnbreakable();
+		this.setResistance(6000000.0F);
+		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
-    }
-    
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	if (side == meta)
-    	{
-    		return sprInside;
-    	}
-    	else
-    	{
-    		return sprOutside;
-    	}
-    }
-    
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-    	this.sprInside = par1IconRegister.registerIcon(TwilightForestMod.ID + ":shield_inside");
-    	this.sprOutside = par1IconRegister.registerIcon(TwilightForestMod.ID + ":shield_outside");
-    }
-    
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
-    
-
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
-    @Override
-	public int getRenderBlockPass()
-    {
-        return 0;
-    }
-    
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return true;
-    }
-    
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return true;
-    }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
-	public int damageDropped(int meta) {
-    	return 0;
+		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
 	}
-    
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    @Override
-	public int quantityDropped(Random par1Random)
-    {
-        return 0;
-    }
-    
-    /**
-     * Called when the block is placed in the world.
-     */
-    @Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack)
-    {
-        int l = BlockPistonBase.determineOrientation(par1World, par2, par3, par4, par5EntityLiving);
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
-    }
-    
-    /**
-     * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
-     * EntityPlayer.
-     */
-    @Override
-	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z)
-    {
-        // why can't we just pass the side to this method?  This is annoying and failure-prone
-        MovingObjectPosition mop = getPlayerPointVec(world, player, 6.0);
-    	
-        int facing = mop != null ? mop.sideHit : -1;
-        int meta = world.getBlockMetadata(x, y, z);
-        
-        //System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
-        
-        if (facing == meta)
-        {
-        	return player.getBreakSpeed(Blocks.stone, false, 0, x, y, z) / 1.5F / 100F;
-        }
-        else
-        {
-        	return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
-        }
-    }
-    
+
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, BlockDirectional.FACING);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(BlockDirectional.FACING).getIndex();
+	}
+
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
+	}
+
+	@Override
+	public int quantityDropped(Random par1Random) {
+		return 0;
+	}
+
+	@Override
+	@Deprecated
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
+	}
+
+	@Override
+	@Deprecated
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
+		// why can't we just pass the side to this method?  This is annoying and failure-prone
+		RayTraceResult mop = getPlayerPointVec(world, player, 6.0);
+
+		EnumFacing hitFace = mop != null ? mop.sideHit : null;
+		EnumFacing blockFace = state.getValue(BlockDirectional.FACING);
+
+		//System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
+
+		if (hitFace == blockFace) {
+			return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos) / 1.5F / 100F;
+		} else {
+			return super.getPlayerRelativeBlockHardness(state, player, world, pos);
+		}
+	}
+
 	/**
 	 * What block is the player pointing at?
-	 * 
+	 * <p>
 	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 * 
+	 *
 	 * @return
 	 */
-	private MovingObjectPosition getPlayerPointVec(World worldObj, EntityPlayer player, double range) {
-        Vec3 position = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 look = player.getLook(1.0F);
-        Vec3 dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
-        return worldObj.rayTraceBlocks(position, dest);
+	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
+		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d look = player.getLook(1.0F);
+		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
+		return world.rayTraceBlocks(position, dest);
+	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return 0;
 	}
 }

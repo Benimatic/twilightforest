@@ -1,14 +1,22 @@
 package twilightforest.item;
 
-import twilightforest.block.TFBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import twilightforest.block.TFBlocks;
 
 public class ItemBlockTFHugeWaterLily extends ItemBlock {
 
@@ -16,57 +24,49 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 		super(block);
 	}
 
-	/**
-	 * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-	 * 
-	 * Copied from ItemWaterlily
-	 */
-	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_)
-	{
-		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(p_77659_2_, p_77659_3_, true);
+	// [VanillaCopy] ItemLilyPad.onItemRightClick, edits noted
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
 
-        if (movingobjectposition == null)
-        {
-            return p_77659_1_;
-        }
-        else
-        {
-            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-            {
-                int i = movingobjectposition.blockX;
-                int j = movingobjectposition.blockY;
-                int k = movingobjectposition.blockZ;
+		if (raytraceresult == null) {
+			return new ActionResult<>(EnumActionResult.PASS, itemstack);
+		} else {
+			if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
+				BlockPos blockpos = raytraceresult.getBlockPos();
 
-                if (!p_77659_2_.canMineBlock(p_77659_3_, i, j, k))
-                {
-                    return p_77659_1_;
-                }
+				if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack)) {
+					return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+				}
 
-                if (!p_77659_3_.canPlayerEdit(i, j, k, movingobjectposition.sideHit, p_77659_1_))
-                {
-                    return p_77659_1_;
-                }
+				BlockPos blockpos1 = blockpos.up();
+				IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (p_77659_2_.getBlock(i, j, k).getMaterial() == Material.water && p_77659_2_.getBlockMetadata(i, j, k) == 0 && p_77659_2_.isAirBlock(i, j + 1, k))
-                {
-                    // special case for handling block placement with water lilies
-                    net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(p_77659_2_, i, j + 1, k);
-                    p_77659_2_.setBlock(i, j + 1, k, TFBlocks.hugeWaterLily);
-                    if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(p_77659_3_, blocksnapshot, net.minecraftforge.common.util.ForgeDirection.UP).isCanceled()) 
-                    {
-                        blocksnapshot.restore(true, false);
-                        return p_77659_1_;
-                    }
+				if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1)) {
+					// special case for handling block placement with water lilies
+					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
+					worldIn.setBlockState(blockpos1, TFBlocks.huge_waterlily.getDefaultState()); // TF - our block
+					if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(playerIn, blocksnapshot, net.minecraft.util.EnumFacing.UP, hand).isCanceled()) {
+						blocksnapshot.restore(true, false);
+						return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+					}
 
-                    if (!p_77659_3_.capabilities.isCreativeMode)
-                    {
-                        --p_77659_1_.stackSize;
-                    }
-                }
-            }
+					// TF - our block
+					worldIn.setBlockState(blockpos1, TFBlocks.huge_waterlily.getDefaultState(), 11);
 
-            return p_77659_1_;
-        }
-    }
+					if (!playerIn.capabilities.isCreativeMode) {
+						itemstack.shrink(1);
+					}
+
+					playerIn.addStat(StatList.getObjectUseStats(this));
+					worldIn.playSound(playerIn, blockpos, SoundEvents.BLOCK_WATERLILY_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+				}
+			}
+
+			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+		}
+	}
 
 }

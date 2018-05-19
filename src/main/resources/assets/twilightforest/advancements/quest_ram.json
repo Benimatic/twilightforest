@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:trophy",
+      "data": 8
+    },
+    "title": {
+      "translate": "advancement.twilight_quest_ram"
+    },
+    "description": {
+      "translate": "advancement.twilight_quest_ram.desc"
+    }
+  },
+  "parent": "twilightforest:root",
+  "criteria": {
+    "quest_ram_complete": {
+      "trigger": "twilightforest:complete_quest_ram"
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

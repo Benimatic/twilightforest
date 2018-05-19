@@ -1,351 +1,214 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeavesBase;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.enums.HedgeVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTFHedge extends BlockLeavesBase {
-	
-	public int damageDone; 
+import java.util.List;
+import java.util.Random;
 
-	public static IIcon sprHedge;
-	public static IIcon sprDarkwoodLeaves;
+public class BlockTFHedge extends Block implements ModelRegisterCallback {
+	public static final PropertyEnum<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
+	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
+
+	private final int damageDone;
 
 	protected BlockTFHedge() {
-		super(Material.cactus, false);
+		super(Material.CACTUS);
 		this.damageDone = 3;
+		this.setSoundType(SoundType.PLANT);
 		this.setHardness(2F);
 		this.setResistance(10F);
-		this.setStepSound(Block.soundTypeGrass);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	switch (meta) {
-    	case 0:
-    		float f = 0.0625F;
-        	return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1 - f, z + 1);
-    	default :
-    	case 1 :
-    		return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
-    	}
-    	
-    }
-    
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    @Override
-	public boolean isOpaqueCube()
-    {
-        return true;
-    }
 
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
-    @Override
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
-        return !this.field_150121_P && i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
-    }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
-	public int damageDropped(int meta) {
-    	if (meta == 2) {
-    		// temporary workaround
-    		meta = 0;
-    	}
-
-    	if (meta == 1) {
-    		// darkwood sapling for darkwood leaves
-    		return 3;
-    	}
-
-		return meta;
-	}
-    
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	switch (meta) {
-    	case 1:
-    		return BlockTFHedge.sprDarkwoodLeaves;
-    	default :
-    	case 0 :
-    		return BlockTFHedge.sprHedge;
-    	}
-    }
-
-    @Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-    {
-    	int meta = world.getBlockMetadata(x, y, z);
-
-    	if (meta == 2) {
-    		// temporary workaround
-    		meta = 0;
-    	}
-
-    	if (meta == 0 && shouldDamage(entity)) {
-    		entity.attackEntityFrom(DamageSource.cactus, damageDone);
-    	}
-    }
-
-    @Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity entity)
-    {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	if (meta == 2) {
-    		// temporary workaround
-    		meta = 0;
-    	}
-
-    	if (meta == 0 && shouldDamage(entity)) {
-    		entity.attackEntityFrom(DamageSource.cactus, damageDone);
-    	}
-    }
-
-    @Override
-	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer entityplayer)
-    {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	if (meta == 2) {
-    		// temporary workaround
-    		meta = 0;
-    	}
-
-    	if (meta == 0 && !world.isRemote) {
-    		world.scheduleBlockUpdate(x, y, z, this, 10);
-    	}
-    }
-    
-    /**
-     * Called when the player destroys a block with an item that can harvest it. (i, j, k) are the coordinates of the
-     * block and l is the block's subtype/damage.
-     */
-    @Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, int i, int j, int k, int meta)
-    {
-    	super.harvestBlock(world, entityplayer, i, j, k, meta);
-    	if (meta == 2) {
-    		// temporary workaround
-    		meta = 0;
-    	}
-    	if (meta == 0) {
-    		entityplayer.attackEntityFrom(DamageSource.cactus, damageDone);
-    	}
-    }
-    
-    
-    /**
-     * This should be called 5 ticks after we've received a click event from a player.
-     * If we see player nearby swinging at a hedge block, prick them
-     */
-    @SuppressWarnings("unchecked")
 	@Override
-    public void updateTick(World world, int x, int y, int z, Random random)
-    {
-    	double range = 4.0; // do we need to get this with a better method than hardcoding it?
+	@Deprecated
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
 
-    	// find players within harvest range
-    	List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(range, range, range));
+	@Override
+	@Deprecated
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
+			return HEDGE_BB;
+		} else {
+			return FULL_BLOCK_AABB;
+		}
+	}
 
-    	// are they swinging?
-    	for (EntityPlayer player : nearbyPlayers) {
-    		if (player.isSwingInProgress) {
-     			// are they pointing at this block?
-    			MovingObjectPosition mop = getPlayerPointVec(world, player, range);
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return true;
+	}
 
-    			if (mop != null && world.getBlock(mop.blockX, mop.blockY, mop.blockZ) == this) {
-    				// prick them!  prick them hard!
-    				player.attackEntityFrom(DamageSource.cactus, damageDone);
+	@Override
+	public int damageDropped(IBlockState state) {
+		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
+			// Darkwood sapling
+			return 3;
+		} else {
+			return getMetaFromState(state);
+		}
+	}
 
-    				// trigger this again!
-    				world.scheduleBlockUpdate(x, y, z, this, 10);
-    			}
-    		}
-    	}
-    }
+	@Override
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (state.getValue(VARIANT) == HedgeVariant.HEDGE && shouldDamage(entity)) {
+			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
+		}
+	}
 
-	
+	@Override
+	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+		if (world.getBlockState(pos).getValue(VARIANT) == HedgeVariant.HEDGE && shouldDamage(entity)) {
+			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
+		}
+	}
+
+	@Override
+	public void onBlockClicked(World world, BlockPos pos, EntityPlayer entityplayer) {
+		if (!world.isRemote && world.getBlockState(pos).getValue(VARIANT) == HedgeVariant.HEDGE) {
+			world.scheduleUpdate(pos, this, 10);
+		}
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+		super.harvestBlock(world, entityplayer, pos, state, te, stack);
+		if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
+			entityplayer.attackEntityFrom(DamageSource.CACTUS, damageDone);
+		}
+	}
+
+
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+		double range = 4.0; // do we need to get this with a better method than hardcoding it?
+
+		// find players within harvest range
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(range, range, range));
+
+		// are they swinging?
+		for (EntityPlayer player : nearbyPlayers) {
+			if (player.isSwingInProgress) {
+				// are they pointing at this block?
+				RayTraceResult mop = getPlayerPointVec(world, player, range);
+
+				if (mop != null && mop.getBlockPos() != null
+						&& world.getBlockState(mop.getBlockPos()).getBlock() == this) {
+					// prick them!  prick them hard!
+					player.attackEntityFrom(DamageSource.CACTUS, damageDone);
+
+					// trigger this again!
+					world.scheduleUpdate(pos, this, 10);
+				}
+			}
+		}
+	}
+
+
 	/**
-	 * What block is the player pointing the wand at?
-	 * 
-	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 * 
-	 * @return
+	 * [VanillaCopy] Exact copy of Entity.rayTrace
+	 * todo 1.9 update it
 	 */
-	private MovingObjectPosition getPlayerPointVec(World worldObj, EntityPlayer player, double range) {
-        Vec3 position = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 look = player.getLook(1.0F);
-        Vec3 dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
-        return worldObj.rayTraceBlocks(position, dest);
-	}
-	
-//	/**
-//	 * Is the player swinging, server version.  Ugggh.  Okay, this sucks and we don't really need it
-//	 */
-//	private boolean isPlayerSwinging(EntityPlayer player) {
-//		if (player instanceof EntityPlayerMP) {
-//			ItemInWorldManager iiwm = ((EntityPlayerMP)player).itemInWorldManager;
-//			// curblockDamage > initialDamage
-//			return ((Integer)ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, 9)).intValue() > ((Integer)ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, 5)).intValue();
-//			
-////			for (int i = 0; i < ItemInWorldManager.class.getDeclaredFields().length; i++) {
-////				// if we find a boolean in here, just assume that's it for the time being
-////				if (ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, i) instanceof Boolean) {
-////					return ((Boolean)ModLoader.getPrivateValue(ItemInWorldManager.class, iiwm, i)).booleanValue();
-////				}
-////			}
-//		}
-//		// we didn't find it
-//		return false;
-//	}
-
-    
-    private boolean shouldDamage(Entity entity) {
-    	return !(entity instanceof EntitySpider) && !(entity instanceof EntityItem) && !entity.doesEntityNotTriggerPressurePlate();
-    }
-    
-    /**
-     * Chance that fire will spread and consume this block.
-     * 300 being a 100% chance, 0, being a 0% chance.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number ranging from 0 to 300 relating used to determine if the block will be consumed by fire
-     */
-    @Override
-	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-    	int metadata = world.getBlockMetadata(x, y, z);
-		return metadata == 1 ? 1 : 0;
+	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
+		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d look = player.getLook(1.0F);
+		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
+		return world.rayTraceBlocks(position, dest);
 	}
 
-    /**
-     * Called when fire is updating on a neighbor block.
-     * The higher the number returned, the faster fire will spread around this block.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number that is used to determine the speed of fire growth around the block
-     */
+	private boolean shouldDamage(Entity entity) {
+		return !(entity instanceof EntitySpider) && !(entity instanceof EntityItem) && !entity.doesEntityNotTriggerPressurePlate();
+	}
+
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing side) {
+		IBlockState state = world.getBlockState(pos);
+		return state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES ? 1 : 0;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return 0;
 	}
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    @Override
-	public int quantityDropped(Random par1Random)
-    {
-    	return par1Random.nextInt(40) == 0 ? 1 : 0;
-    }
+	@Override
+	public int quantityDropped(Random par1Random) {
+		return par1Random.nextInt(40) == 0 ? 1 : 0;
+	}
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
-    @Override
-	public Item getItemDropped(int meta, Random par2Random, int par3)
-    {
-    	if (meta == 1)
-    	{
-    		return Item.getItemFromBlock(TFBlocks.sapling);
-    	}
-    	else
-    	{
-    		return null;
-    	}
-    }
+	@Override
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
+			return Item.getItemFromBlock(TFBlocks.twilight_sapling);
+		} else {
+			return null;
+		}
+	}
 
-    /**
-     * Called when a user uses the creative pick block button on this block
-     *
-     * @param target The full target the player is looking at
-     * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
-     */
-    @Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
-        return new ItemStack(this, 1, world.getBlockMetadata(x, y, z));
-    }
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(this, 1, getMetaFromState(state));
+	}
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
-    @Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int meta, float par6, int fortune)
-    {
-    	if (!par1World.isRemote && meta == 1)
-    	{
-    		if (par1World.rand.nextInt(40) == 0)
-    		{
-    			Item var9 = this.getItemDropped(meta, par1World.rand, fortune);
-    			this.dropBlockAsItem(par1World, par2, par3, par4, new ItemStack(var9, 1, this.damageDropped(meta)));
-    		}
-    	}
-    }
-    
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-    	BlockTFHedge.sprHedge = par1IconRegister.registerIcon(TwilightForestMod.ID + ":hedge");
-    	BlockTFHedge.sprDarkwoodLeaves = par1IconRegister.registerIcon(TwilightForestMod.ID + ":darkwood_leaves");
-    }
+	@Override
+	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int fortune) {
+		if (!par1World.isRemote && state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
+			if (par1World.rand.nextInt(40) == 0) {
+				this.dropBlockAsItem(par1World, pos, state, fortune);
+			}
+		}
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
+	}
+
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(VARIANT, HedgeVariant.values()[meta % HedgeVariant.values().length]);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
 
 }
 

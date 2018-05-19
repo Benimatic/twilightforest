@@ -1,387 +1,170 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatFileWriter;
-import net.minecraft.stats.StatisticsFile;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTFTrophyPedestal extends Block {
-	
-	private IIcon sprTopActive;
-	private IIcon sprTop;
-	private IIcon sprBottom;
-	private IIcon sprNagaActive;
-	private IIcon sprNaga;
-	private IIcon sprLichActive;
-	private IIcon sprLich;
-	private IIcon sprHydraActive;
-	private IIcon sprHydra;
-	private IIcon sprUrghastActive;
-	private IIcon sprUrghast;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallback {
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyBool LATENT = PropertyBool.create("latent");
+
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
 
 	public BlockTFTrophyPedestal() {
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(2.0F);
 		this.setResistance(2000.0F);
-        this.setStepSound(Block.soundTypeStone);
-		
+		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-	
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	
-    	if (side == 1)
-    	{
-    		return meta > 7 ? sprTopActive : sprTop;
-    	}
-    	else if (side >= 2 && side <= 5)
-    	{
-    		// determine rotated side to show
-        	int rotate = meta & 3;
-        	int rotatedSide = ((side - 2) + rotate) % 4;
-        	
-        	switch (rotatedSide)
-        	{
-        	case 0:
-        		return meta > 7 ? sprNagaActive : sprNaga;
-        	case 1:
-        		return meta > 7 ? sprLichActive : sprLich;
-        	case 2:
-        		return meta > 7 ? sprHydraActive : sprHydra;
-        	case 3:
-        		return meta > 7 ? sprUrghastActive : sprUrghast;
-        	}
-        	
-    	}
-//    	if (side == 2)
-//    	{
-//    		return meta > 7 ? sprNagaActive : sprNaga;
-//    	}
-//    	if (side == 3)
-//    	{
-//    		return meta > 7 ? sprLichActive : sprLich;
-//    	}
-//    	if (side == 4)
-//    	{
-//    		return meta > 7 ? sprHydraActive : sprHydra;
-//    	}
-//    	if (side == 5)
-//    	{
-//    		return meta > 7 ? sprUrghastActive : sprUrghast;
-//    	}
-    	
-    	return sprTop;
-    }
-    
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-    	this.sprTopActive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_top_active");
-    	this.sprTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_top");
-    	this.sprBottom = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_top");
-    	this.sprNagaActive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_naga_active");
-    	this.sprNaga = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_naga");
-    	this.sprLichActive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_lich_active");
-    	this.sprLich = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_lich");
-    	this.sprHydraActive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_hydra_active");
-    	this.sprHydra = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_hydra");
-    	this.sprUrghastActive = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_urghast_active");
-    	this.sprUrghast = par1IconRegister.registerIcon(TwilightForestMod.ID + ":pedestal_urghast");
-    }
-    
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 15));
-    }
-    
-    
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
-    @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-    	this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
-    }
-    
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-
-	/**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    @Override
-	public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    
-    /**
-     * The type of render function that is called for this block
-     */
-    @Override
-	public int getRenderType()
-    {
-    	return TwilightForestMod.proxy.getPedestalBlockRenderID();
-    }
-
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
-    @Override
-	@SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        return true;
-    }
-    
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
-    @Override
-	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block myBlockID)
-    {
-        int meta = par1World.getBlockMetadata(x, y, z);
-
-        if (!par1World.isRemote && meta > 0)
-        {
-        	// something has changed, is there a trophy on top of us?
-        	if (isTrophyOnTop(par1World, x, y, z))
-        	{
-        		par1World.scheduleBlockUpdate(x, y, z, this, 1);
-        	}
-        }
-        
-    }
-    
-    /**
-     * Called when the block is placed in the world.
-     */
-    @Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-    {
-        int facing = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        
-        int latent = par6ItemStack.getItemDamage() & 8;
-
-        if (facing == 0)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | latent, 2);
-        }
-
-        if (facing == 1)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | latent, 2);
-        }
-
-        if (facing == 2)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | latent, 2);
-        }
-
-        if (facing == 3)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | latent, 2);
-        }
-    }
-    
-    /**
-     * Just checks if there is a trophy above the position indicated.  Perhaps in the future we can accept different kinds of trophies.
-     */
-    private boolean isTrophyOnTop(World world, int x, int y, int z) {
-		return world.getBlock(x, y + 1, z) == TFBlocks.trophy;
+		this.setDefaultState(getDefaultState().withProperty(LATENT, true).withProperty(FACING, EnumFacing.NORTH));
 	}
 
-	/**
-     * Ticks the block if it's been scheduled
-     */
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random par5Random)
-    {
-		if (!world.isRemote) {
-			int meta = world.getBlockMetadata(x, y, z);
-
-			if (this.isTrophyOnTop(world, x, y, z)) {
-				// is the pedestal still "latent"?
-				if (meta > 7) {
-					// check enforced progression
-					if (world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-						if (this.areNearbyPlayersEligible(world, x, y, z)) {
-							doPedestalEffect(world, x, y, z, meta);
-						}
-						// warn players whether it works or not
-						warnIneligiblePlayers(world, x, y, z);
-					} else {
-						// just do it if enforced progression is turned off
-						doPedestalEffect(world, x, y, z, meta);
-					}
-				}
-
-				rewardNearbyPlayers(world, x, y, z);
-			}
-    	}
-    }
-
-	private void warnIneligiblePlayers(World world, int x, int y, int z) {
-		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
-		
-		for (EntityPlayer player : nearbyPlayers) {
-			if (!isPlayerEligible(player)) {
-				player.addChatMessage(new ChatComponentText("You are unworthy."));
-			}
-		}
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING, LATENT);
 	}
 
-	private boolean areNearbyPlayersEligible(World world, int x, int y, int z) {
-		boolean isEligible = false;
-		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
-		
-		for (EntityPlayer player : nearbyPlayers) {
-			isEligible |= isPlayerEligible(player);
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int meta = state.getValue(FACING).getHorizontalIndex();
+		if (state.getValue(LATENT)) {
+			meta |= 1 << 2;
 		}
-		
-		return isEligible;
+		return meta;
 	}
 
-	private boolean isPlayerEligible(EntityPlayer player) {
-		if (player instanceof EntityPlayerMP && ((EntityPlayerMP)player).func_147099_x() != null) {
-			StatisticsFile stats = ((EntityPlayerMP)player).func_147099_x();
-			
-			return stats.hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement);
-		} else if (player instanceof EntityClientPlayerMP && ((EntityClientPlayerMP)player).getStatFileWriter() != null) {
-			StatFileWriter stats = ((EntityClientPlayerMP)player).getStatFileWriter();
-			
-			return stats.hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement);
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		IBlockState ret = getDefaultState();
+		ret = ret.withProperty(FACING, EnumFacing.getHorizontal(meta & 0b11));
+		if ((meta & 0b100) > 0) {
+			ret = ret.withProperty(LATENT, true);
 		}
-		// uh, not a player?
+		return ret;
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return AABB;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	private void doPedestalEffect(World world, int x, int y, int z, int meta) {
-		// if we're a latent pedestal, change to a non-latent!
-			// remove shield blocks
-			removeNearbyShields(world, x, y, z);
-
-			// change this block meta to be non-latent
-			world.setBlockMetadataWithNotify(x, y, z, meta & 7, 2);
-
-			// sound
-			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "mob.zombie.infect", 4.0F, 0.1F);
-	}
-
-    @SuppressWarnings("unchecked")
-	private void rewardNearbyPlayers(World world, int x, int y, int z) {
-		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0D, 16.0D, 16.0D));
-		
-		for (EntityPlayer player : nearbyPlayers) {
-			player.triggerAchievement(TFAchievementPage.twilightProgressTrophyPedestal);
-		}
-	}
-
-    /**
-     * Remove shield blocks near the specified coordinates
-     */
-	protected void removeNearbyShields(World world, int x, int y, int z) {
-		for (int sx = -5; sx <= 5; sx++)
-		{
-			for (int sy = -5; sy <= 5; sy++)
-			{
-				for (int sz = -5; sz <= 5; sz++)
-				{
-		    		Block blockAt = world.getBlock(x + sx, y + sy, z + sz);
-		    		int metaAt = world.getBlockMetadata(x + sx, y + sy, z + sz);
-		    		
-		    		if (blockAt == TFBlocks.shield && metaAt == 15)
-		    		{
-		    			world.setBlock(x + sx, y + sy, z + sz, Blocks.air, 0, 2);
-		    			
-		    			// effect
-		    			world.playAuxSFX(2001, x + sx, y + sy, z + sz, Block.getIdFromBlock(blockAt) + (metaAt << 12));
-		    		}
+	@Override
+	@Deprecated
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if (!world.isRemote && state.getValue(LATENT)) {
+			if (isTrophyOnTop(world, pos)) {
+				if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+					if (this.areNearbyPlayersEligible(world, pos))
+						doPedestalEffect(world, pos, state);
+					warnIneligiblePlayers(world, pos);
+				} else {
+					doPedestalEffect(world, pos, state);
 				}
+
+				rewardNearbyPlayers(world, pos);
 			}
 		}
 	}
 
-	
-    /**
-     * How many world ticks before ticking
-     */
-    @Override
-	public int tickRate(World world)
-    {
-        return 10;
-    }
-    
-    /**
-     * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
-     * EntityPlayer.
-     */
-    @Override
-	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer, World world, int x, int y, int z)
-    {
-    	// not breakable if meta > 0
-		int meta = world.getBlockMetadata(x, y, z);
-    	
-        if (meta > 0)
-        {
-        	return -1;
-        }
-        else
-        {
-        	return super.getPlayerRelativeBlockHardness(par1EntityPlayer, world, x, y, z);
-        }
-    }
+	private boolean isTrophyOnTop(World world, BlockPos pos) {
+		return world.getBlockState(pos.up()).getBlock() == TFBlocks.trophy;
+	}
 
+	private void warnIneligiblePlayers(World world, BlockPos pos) {
+		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
+			if (!isPlayerEligible(player)) player.sendMessage(new TextComponentTranslation(TwilightForestMod.ID + ".trophy_pedestal.ineligible"));
+	}
 
+	private boolean areNearbyPlayersEligible(World world, BlockPos pos) {
+		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
+			if (isPlayerEligible(player))
+				return true;
+
+		return false;
+	}
+
+	private boolean isPlayerEligible(EntityPlayer player) {
+		return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, new ResourceLocation(TwilightForestMod.ID, "progress_lich"));
+	}
+
+	private void doPedestalEffect(World world, BlockPos pos, IBlockState state) {
+		world.setBlockState(pos, state.withProperty(LATENT, false));
+		removeNearbyShields(world, pos);
+		world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_INFECT, SoundCategory.BLOCKS, 4.0F, 0.1F);
+	}
+
+	private void rewardNearbyPlayers(World world, BlockPos pos) {
+		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
+			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
+	}
+
+	private void removeNearbyShields(World world, BlockPos pos) {
+		for (int sx = -5; sx <= 5; sx++)
+			for (int sy = -5; sy <= 5; sy++)
+				for (int sz = -5; sz <= 5; sz++)
+					if (world.getBlockState(pos.add(sx, sy, sz)).getBlock() == TFBlocks.stronghold_shield) {
+						world.destroyBlock(pos.add(sx, sy, sz), false);
+					}
+	}
+
+	@Override
+	@Deprecated
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
+
+	// todo ambiguous in 1.7, what was this supposed to be?
+	@Override
+	@Deprecated
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
+		return state.getValue(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
+	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return 0;
+	}
 }

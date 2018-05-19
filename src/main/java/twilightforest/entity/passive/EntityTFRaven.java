@@ -7,120 +7,74 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityTFRavenLookHelper;
-import twilightforest.item.TFItems;
 
 
 public class EntityTFRaven extends EntityTFTinyBird {
-	
-	EntityTFRavenLookHelper ravenLook = new EntityTFRavenLookHelper(this);
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/raven");
 
-    public EntityTFRaven(World par1World) {
+	public EntityTFRaven(World par1World) {
 		super(par1World);
-		//texture = TwilightForestMod.MODEL_DIR + "raven.png";
-		
-        this.setSize(0.3F, 0.7F);
-		
+		this.setSize(0.3F, 0.7F);
+
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
-		
-		// bird AI
-        this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
-        this.tasks.addTask(2, new EntityAITempt(this, 0.85F, Items.wheat_seeds, true));
-//        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityPlayer.class, 2.0F, 0.23F, 0.4F));
-//        this.tasks.addTask(4, new EntityAITFBirdFly(this, 0.25F));
-        this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
- 	}
-	
-	/**
-	 * Set monster attributes
-	 */
-	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000001192092896D);
-    }
-    
-    /**
-     * We have our own getLookHelper
-     */
-    @Override
-	protected void updateAITasks() {
-		super.updateAITasks();
-		this.ravenLook.onUpdateLook();
 	}
 
-    /**
-     * We have our own getLookHelper
-     */
 	@Override
-	public EntityLookHelper getLookHelper()
-    {
-        return this.ravenLook;
-    }
-	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-	@Override
-    protected String getLivingSound()
-    {
-        return TwilightForestMod.ID + ":mob.raven.caw";
-    }
- 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-	@Override
-    protected String getHurtSound()
-    {
-        return TwilightForestMod.ID + ":mob.raven.squawk";
-    }
+	protected void initEntityAI() {
+		this.setPathPriority(PathNodeType.WATER, -1.0F);
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
+		this.tasks.addTask(2, new EntityAITempt(this, 0.85F, Items.WHEAT_SEEDS, true));
+		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
+	}
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
 	@Override
-    protected String getDeathSound()
-    {
-        return TwilightForestMod.ID + ":mob.raven.squawk";
-    }
-	
-	/**
-	 * Returns the item ID for the item the mob drops on death.
-	 */
-    @Override
-	protected Item getDropItem()
-    {
-        return TFItems.feather;
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
+	}
 
-	/**
-	 * Actually only used for the shadow
-	 */
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.RAVEN_CAW;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.RAVEN_SQUAWK;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.RAVEN_SQUAWK;
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
 	@Override
 	public float getRenderSizeModifier() {
-		 return 0.3F;
+		return 0.3F;
 	}
 
-
-    /**
-     * Return true if the bird is spooked
-     */
+	@Override
 	public boolean isSpooked() {
 		return this.hurtTime > 0;
 	}
-    
+
 }

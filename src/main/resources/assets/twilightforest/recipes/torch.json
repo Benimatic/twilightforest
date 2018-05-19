@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "minecraft:torch",
+    "count": 5
+  },
+  "pattern": [
+    "B",
+    "S"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "twilightforest:torchberries"
+    },
+    "S": {
+      "item": "#STICKWOOD"
+    }
+  }
+}

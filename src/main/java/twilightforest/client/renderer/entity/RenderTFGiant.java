@@ -1,43 +1,45 @@
 package twilightforest.client.renderer.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelPlayer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.util.ResourceLocation;
+import twilightforest.entity.EntityTFGiantMiner;
 
-public class RenderTFGiant extends RenderBiped {
+public class RenderTFGiant extends RenderBiped<EntityTFGiantMiner> {
 
-	private ResourceLocation textureLoc;
+	private boolean typeCache = false;
 
-	public RenderTFGiant() {
-		super(new ModelBiped(), 0.625F);
-		
-		this.textureLoc = new ResourceLocation("textures/entity/steve.png");
+	public RenderTFGiant(RenderManager manager) {
+		super(manager, new ModelPlayer(0, false), 1.8F);
+		this.addLayer(new LayerBipedArmor(this));
 	}
 
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-    	if (Minecraft.getMinecraft().thePlayer.getLocationSkin() != null) {
-    		return Minecraft.getMinecraft().thePlayer.getLocationSkin();
-    	} else {
-    		return textureLoc;
-    	}
-    }
-    
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-    	float scale = 4.0F;
-        GL11.glScalef(scale, scale, scale);
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFGiantMiner entity) {
+		Minecraft mc = Minecraft.getMinecraft();
+		boolean type = false;
+		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkinLegacy();
+		if (mc.getRenderViewEntity() instanceof AbstractClientPlayer) {
+			AbstractClientPlayer client = ((AbstractClientPlayer) mc.getRenderViewEntity());
+			texture = client.getLocationSkin();
+			type = client.getSkinType().equals("slim");
+		}
+		if (type != typeCache) {
+			typeCache = type;
+			mainModel = new ModelPlayer(0, type);
+		}
+		return texture;
+	}
+
+	@Override
+	protected void preRenderCallback(EntityTFGiantMiner entity, float partialTicks) {
+		float scale = 4.0F;
+		GlStateManager.scale(scale, scale, scale);
+	}
 }

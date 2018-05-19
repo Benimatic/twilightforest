@@ -1,71 +1,48 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFSlimeBeetle;
+import twilightforest.client.model.entity.ModelTFSlimeBeetle;
+import twilightforest.entity.EntityTFSlimeBeetle;
 
-public class RenderTFSlimeBeetle extends RenderLiving {
-	
-	ModelBase renderModel;
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "slimebeetle.png");
+public class RenderTFSlimeBeetle extends RenderLiving<EntityTFSlimeBeetle> {
+	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "slimebeetle.png");
 
-	public RenderTFSlimeBeetle(ModelBase par1ModelBase, float par2) {
-		super(par1ModelBase, par2);
-		
-		renderModel = new ModelTFSlimeBeetle(true);
+	public RenderTFSlimeBeetle(RenderManager manager, ModelBase par1ModelBase, float shadowSize) {
+		super(manager, par1ModelBase, shadowSize);
+		addLayer(new LayerInner());
 	}
 
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFSlimeBeetle par1Entity) {
+		return textureLoc;
+	}
 
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-    {
-        return this.shouldSlimeRenderPass((EntityLivingBase)par1EntityLiving, par2, par3);
-    }
+	class LayerInner implements LayerRenderer<EntityTFSlimeBeetle> {
+		private final ModelBase innerModel = new ModelTFSlimeBeetle(true);
 
+		@Override
+		public void doRenderLayer(EntityTFSlimeBeetle entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+			if (!entitylivingbaseIn.isInvisible()) {
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.enableNormalize();
+				GlStateManager.enableBlend();
+				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+				this.innerModel.setModelAttributes(RenderTFSlimeBeetle.this.getMainModel());
+				this.innerModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				GlStateManager.disableBlend();
+				GlStateManager.disableNormalize();
+			}
+		}
 
-    /**
-     * Determines whether Slime Render should pass or not.
-     */
-    protected int shouldSlimeRenderPass(EntityLivingBase par1EntitySlime, int par2, float par3)
-    {
-        if (par1EntitySlime.isInvisible())
-        {
-            return 0;
-        }
-        else if (par2 == 0)
-        {
-            this.setRenderPassModel(this.renderModel);
-            GL11.glEnable(GL11.GL_NORMALIZE);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            return 1;
-        }
-        else
-        {
-            if (par2 == 1)
-            {
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            }
-
-            return -1;
-        }
-    }
-    
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+		@Override
+		public boolean shouldCombineTextures() {
+			return true;
+		}
+	}
 }

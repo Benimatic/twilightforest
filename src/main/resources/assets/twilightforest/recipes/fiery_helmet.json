@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:fiery_helmet"
+  },
+  "group": "fiery_armor",
+  "pattern": [
+    "###",
+    "# #"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTFIERY"
+    }
+  }
+}

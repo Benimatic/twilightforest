@@ -3,85 +3,65 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFThrownAxe extends EntityThrowable  {
+public class EntityTFThrownAxe extends EntityThrowable {
 
 	private static final float PROJECTILE_DAMAGE = 6;
 
 	public EntityTFThrownAxe(World par1World, EntityLivingBase par2EntityLivingBase) {
 		super(par1World, par2EntityLivingBase);
-        this.setSize(0.5F, 0.5F);
+		this.setSize(0.5F, 0.5F);
 	}
 
 	public EntityTFThrownAxe(World par1World) {
 		super(par1World);
-        this.setSize(0.5F, 0.5F);
+		this.setSize(0.5F, 0.5F);
 	}
 
-
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void handleStatusUpdate(byte id) {
+		if (id == 3) {
+			for (int i = 0; i < 8; ++i) {
+				this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+			}
+		} else {
+			super.handleStatusUpdate(id);
+		}
+	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
-		boolean passThru = false;
-
-		if (par1MovingObjectPosition.entityHit != null)
-		{
-			if (par1MovingObjectPosition.entityHit instanceof EntityTFKnightPhantom)
-			{
-				passThru = true;
-			}
-
-	    	// if we're not set to pass, damage what we hit
-			if (!passThru)
-			{
-				par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), PROJECTILE_DAMAGE);
-			}
+	protected void onImpact(RayTraceResult result) {
+		if (result.entityHit instanceof EntityTFKnightPhantom) {
+			return;
 		}
 
-		for (int i = 0; i < 8; ++i)
-		{
-			this.worldObj.spawnParticle("largesmoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-		}
-		
-		if (!passThru && !this.worldObj.isRemote)
-		{
-			this.setDead();
+		if (!world.isRemote) {
+			if (result.entityHit != null) {
+				result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), PROJECTILE_DAMAGE);
+			}
+			world.setEntityState(this, (byte) 3);
+			setDead();
 		}
 	}
-	
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
-    @Override
-	public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-    
-    /**
-     * We need to set this so that the player can attack and reflect the bolt
-     */
-    @Override
-	public float getCollisionBorderSize()
-    {
-        return 1.0F;
-    }
 
-    /**
-     * Projectile speed
-     */
-    protected float func_70182_d()
-    {
-        return 0.1F;
-    }
-    
-    /**
-     * Gets the amount of gravity to apply to the thrown entity with each tick.
-     */
-    protected float getGravityVelocity()
-    {
-        return 0.001F;
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
+	@Override
+	public float getCollisionBorderSize() {
+		return 1.0F;
+	}
+
+	@Override
+	protected float getGravityVelocity() {
+		return 0.001F;
+	}
 }

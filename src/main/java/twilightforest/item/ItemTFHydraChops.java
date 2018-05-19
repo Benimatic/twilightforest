@@ -1,24 +1,24 @@
 package twilightforest.item;
 
-import twilightforest.TFAchievementPage;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import twilightforest.advancements.TFAdvancements;
 
 public class ItemTFHydraChops extends ItemTFFood {
 
-	public ItemTFHydraChops(int par2, float par3, boolean par4) {
-		super(par2, par3, par4);
+	public ItemTFHydraChops(int amount, float saturation) {
+		super(amount, saturation, true);
 	}
 
-	
-    public ItemStack onEaten(ItemStack itemStack, World world, EntityPlayer player) {
-    	// if the player is at zero food, achievements
-        if (player.getFoodStats().getFoodLevel() <= 0) {
-        	player.triggerAchievement(TFAchievementPage.twilightHydraChop);
-        }
-        // then normal effects
-        return super.onEaten(itemStack, world, player);
-    }
+	@Override
+	public ItemStack onItemUseFinish(ItemStack itemStack, World world, EntityLivingBase living) {
+		// if the player is at zero food, achievements
+		if (living instanceof EntityPlayerMP && ((EntityPlayerMP) living).getFoodStats().getFoodLevel() <= 0) {
+			TFAdvancements.CONSUME_HYDRA_CHOP.trigger((EntityPlayerMP) living);
+		}
+		// then normal effects
+		return super.onItemUseFinish(itemStack, world, living);
+	}
 }

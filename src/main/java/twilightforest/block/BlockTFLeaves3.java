@@ -1,129 +1,148 @@
 package twilightforest.block;
 
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFConfig;
+import twilightforest.enums.Leaves3Variant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
+import twilightforest.item.TFItems;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import twilightforest.item.TFItems;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback {
 
-public class BlockTFLeaves3 extends BlockLeaves {
-	
-    public static final String[] names = new String[] {"thorn", "beanstalk"};
+	public static final PropertyEnum<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
 
 	protected BlockTFLeaves3() {
-		super();
-		this.setStepSound(Block.soundTypeGrass);
 		this.setCreativeTab(TFItems.creativeTab);
+		this.setLightOpacity(1);
+		this.setDefaultState(
+				blockState.getBaseState()
+						.withProperty(CHECK_DECAY, true)
+						.withProperty(DECAYABLE, true)
+						.withProperty(VARIANT, Leaves3Variant.THORN)
+		);
 	}
 
-    public String[] func_150125_e()
-    {
-        return names;
-    }
-    
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int meta)
-    {
-        return (meta & 3) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((meta & 3) == 2 ? ColorizerFoliage.getFoliageColorBirch() : super.getRenderColor(meta));
-    }
-
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, int x, int y, int z)
-    {
-        int meta = world.getBlockMetadata(x, y, z);
-        return (meta & 3) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((meta & 3) == 2 ? ColorizerFoliage.getFoliageColorBirch() : super.colorMultiplier(world, x, y, z));
-    }
-
-
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    public int damageDropped(int p_149692_1_)
-    {
-        return super.damageDropped(p_149692_1_) + 4;
-    }
-    
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return Blocks.leaves.isOpaqueCube();
-    }
-
-    /**
-     * Get the block's damage value (for use with pick block).
-     */
-    public int getDamageValue(World world, int x, int y, int z)
-    {
-        return world.getBlockMetadata(x, y, z) & 3;
-    }
-    
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    public int quantityDropped(Random rand)
-    {
-        return 0;
-    }
-    
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
-    @Override
-    public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int side)
-    {
-    	return Blocks.leaves.shouldSideBeRendered(iblockaccess, i, j, k, side);
-    }
-    
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
-    @Override
-	public Item getItemDropped(int par1, Random par2Random, int par3)
-    {
-    	return TFItems.magicBeans;
-    }
-    
-    @Override
-    public IIcon getIcon(int i, int j)
-    {
-        return Blocks.leaves.getIcon(i, 0 & 3);
-    }
-    
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-    	for (int i = 0; i < names.length; i++) {
-            par3List.add(new ItemStack(par1, 1, i));
-    	}
-    }
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TFConfig.performance.leavesLightOpacity;
+	}
 
 	@Override
-	public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
+	public boolean isFullCube(IBlockState state) {
+		return TFConfig.performance.leavesFullCube;
+	}
+
+	// [VanillaCopy] BlockLeavesNew.getMetaFromState - could subclass, but different VARIANT property
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i |= state.getValue(VARIANT).ordinal();
+
+		if (!state.getValue(DECAYABLE)) {
+			i |= 4;
+		}
+
+		if (state.getValue(CHECK_DECAY)) {
+			i |= 8;
+		}
+
+		return i;
+	}
+
+	// [VanillaCopy] BlockLeavesNew.getStateFromMeta - could subclass, but different VARIANT property
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		int variant = meta & 3;
+		final Leaves3Variant[] values = Leaves3Variant.values();
+
+		return getDefaultState()
+				.withProperty(VARIANT, values[variant % values.length])
+				.withProperty(DECAYABLE, (meta & 4) == 0)
+				.withProperty(CHECK_DECAY, (meta & 8) > 0);
+	}
+
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE, VARIANT);
+	}
+
+	@Override
+	public BlockPlanks.EnumType getWoodType(int meta) {
+		return BlockPlanks.EnumType.OAK;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(this, 1, world.getBlockState(pos).getValue(VARIANT).ordinal());
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+		return TFItems.magic_beans;
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		for (int i = 0; i < Leaves3Variant.values().length; i++) {
+			par3List.add(new ItemStack(this, 1, i));
+		}
+	}
+
+	@Override
+	public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return true;
 	}
-	
-	
+
+	@Override
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+		return NonNullList.withSize(1, new ItemStack(this, 1, world.getBlockState(pos).getValue(VARIANT).ordinal()));
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
+
+	@Override
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 60;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 30;
+	}
+
+	@Override
+	public ItemStack getSilkTouchDrop(IBlockState state) {
+		return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
+	}
 }

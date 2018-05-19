@@ -1,397 +1,237 @@
 package twilightforest.entity.passive;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import twilightforest.TwilightForestMod;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
-import twilightforest.item.TFItems;
 
 
 public class EntityTFQuestRam extends EntityAnimal {
-	
-    private int randomTickDivider;
+	public static final ResourceLocation REWARD_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/questing_ram_rewards");
+	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
+	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
 
+	private int randomTickDivider;
 
 	public EntityTFQuestRam(World par1World) {
 		super(par1World);
-		//this.texture = TwilightForestMod.MODEL_DIR + "questram.png";
 		this.setSize(1.25F, 2.9F);
 		this.randomTickDivider = 0;
-		
-
-        this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
-        this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Item.getItemFromBlock(Blocks.wool), false));
-        this.tasks.addTask(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.wool)));
-        this.tasks.addTask(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.wool)));
-        this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
-//        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
 	}
 
 	@Override
-	public EntityAnimal createChild(EntityAgeable entityanimal)
-	{
+	protected void initEntityAI() {
+		this.setPathPriority(PathNodeType.WATER, -1.0F);
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
+		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL), false));
+		this.tasks.addTask(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.WOOL)));
+		this.tasks.addTask(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL)));
+		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
+		this.tasks.addTask(6, new EntityAILookIdle(this));
+	}
+
+	@Override
+	public EntityAnimal createChild(EntityAgeable entityanimal) {
 		return null;
 	}
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(70.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-    }
-	
-    @Override
-	protected void entityInit()
-    {
-        super.entityInit();
-        this.dataWatcher.addObject(16, Integer.valueOf(0));
-        this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
-    }
-
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	public boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
-    @Override
-	protected boolean canDespawn()
-    {
-        return false;
-    }
-    
-    
-    /**
-     * main AI tick function, replaces updateEntityActionState
-     */
-    @Override
-	protected void updateAITick()
-    {
-        if (--this.randomTickDivider <= 0)
-        {
-            this.randomTickDivider = 70 + this.rand.nextInt(50);
-            
-            // check if we're near a quest grove and if so, set that as home
-            int chunkX = MathHelper.floor_double(this.posX) / 16;
-            int chunkZ = MathHelper.floor_double(this.posZ) / 16;
-            
-            TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.worldObj);
-
-            if (nearFeature != TFFeature.questGrove)
-            {
-                this.detachHome();
-            }
-            else
-            {
-            	// set our home position to the center of the quest grove
-                ChunkCoordinates cc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ), worldObj);
-                this.setHomeArea(cc.posX, cc.posY, cc.posZ, 13);
-                
-                //System.out.println("Set home area to " + cc.posX + ", " + cc.posY + ", " + cc.posZ);
-            }
-            
-            // do we need to reward the player?
-            if (countColorsSet() > 15 && !getRewarded()) {
-            	rewardQuest();
-            	setRewarded(true);
-            }
-            
-        }
-
-        super.updateAITick();
-    }
-    
-    /**
-     * Pay out!
-     */
-    private void rewardQuest() {
-    	func_145778_a(Item.getItemFromBlock(Blocks.diamond_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.iron_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.emerald_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.gold_block), 1, 1.0F);
-    	func_145778_a(Item.getItemFromBlock(Blocks.lapis_block), 1, 1.0F);
-    	func_145778_a(TFItems.crumbleHorn, 1, 1.0F);
-    	
-    	rewardNearbyPlayers(this.worldObj, this.posX, this.posY, this.posZ);
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
 	}
 
-    /**
-     * Give achievement to nearby players
-     */
-    @SuppressWarnings("unchecked")
-	private void rewardNearbyPlayers(World world, double posX, double posY, double posZ) {
-		// scan for players nearby to give the achievement
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(16.0D, 16.0D, 16.0D));
-		
-		for (EntityPlayer player : nearbyPlayers) {
-			player.triggerAchievement(TFAchievementPage.twilightQuestRam);
-		}
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(DATA_COLOR, 0);
+		dataManager.register(DATA_REWARDED, false);
 	}
-    
-	/**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-        ItemStack currentItem = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (currentItem != null && currentItem.getItem() == Item.getItemFromBlock(Blocks.wool) && !isColorPresent(currentItem.getItemDamage()))
-        {
-//            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Items.bucketMilk));
-        	this.setColorPresent(currentItem.getItemDamage());
-        	this.animateAddColor(currentItem.getItemDamage(), 50);
-        	
-            if (!par1EntityPlayer.capabilities.isCreativeMode)
-            {
-                --currentItem.stackSize;
+	@Override
+	protected boolean canDespawn() {
+		return false;
+	}
 
-                if (currentItem.stackSize <= 0)
-                {
-                    par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
-                }
-            }
-        	
-        	//par1EntityPlayer.addChatMessage("Successfully used color " + currentItem.getItemDamage());
-        	//par1EntityPlayer.addChatMessage("Color flags are now " + Integer.toBinaryString(this.getColorFlags()));
-            return true;
-        }
-        else
-        {
-            return super.interact(par1EntityPlayer);
-        }
-    }
-    
-	
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-	public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
+	@Override
+	protected void updateAITasks() {
+		if (--this.randomTickDivider <= 0) {
+			this.randomTickDivider = 70 + this.rand.nextInt(50);
 
-//        for (int var1 = 0; var1 < 2; ++var1)
-//        {
-//            this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextDouble());
-//        }
-    	checkAndAnimateColors();
-    }
-    
+			// check if we're near a quest grove and if so, set that as home
+			int chunkX = MathHelper.floor(this.posX) / 16;
+			int chunkZ = MathHelper.floor(this.posZ) / 16;
 
-    /**
-     * Called every tick.  If we have got all the colors and have not paid out the reward yet, do a colorful animation.
-     */
-    public void checkAndAnimateColors() {
-		if (countColorsSet() > 15 && !getRewarded()) {
-			animateAddColor(this.rand.nextInt(16), 5);
+			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.world);
+
+			if (nearFeature != TFFeature.questGrove) {
+				this.detachHome();
+			} else {
+				// set our home position to the center of the quest grove
+				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
+				this.setHomePosAndDistance(cc, 13);
+			}
+
+			if (countColorsSet() > 15 && !getRewarded()) {
+				rewardQuest();
+				setRewarded(true);
+			}
+
 		}
+
+		super.updateAITasks();
 	}
 
 	/**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    @Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("ColorFlags", this.getColorFlags());
-        par1NBTTagCompound.setBoolean("Rewarded", this.getRewarded());
-    }
+	 * Pay out!
+	 */
+	private void rewardQuest() {
+		LootContext ctx = new LootContext.Builder((WorldServer) world).withLootedEntity(this).build();
+		for (ItemStack s : world.getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
+			entityDropItem(s, 1.0F);
+		}
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readEntityFromNBT(par1NBTTagCompound);
-        this.setColorFlags(par1NBTTagCompound.getInteger("ColorFlags"));
-        this.setRewarded(par1NBTTagCompound.getBoolean("Rewarded"));
-    }
-    
-    /**
-     * Returns an int representing which of the 16 colors this ram currently has
-     */
-    public int getColorFlags()
-    {
-        return this.dataWatcher.getWatchableObjectInt(16);
-    }
+		for (EntityPlayerMP player : this.world.getEntitiesWithinAABB(EntityPlayerMP.class, getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
+			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
+		}
+	}
 
-    /**
-     * Sets the color flags int
-     */
-    public void setColorFlags(int par1)
-    {
-    	this.dataWatcher.updateObject(16, Integer.valueOf(par1));
-    }
+	@Override
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
+		ItemStack currentItem = player.getHeldItem(hand);
 
-    /**
-     * @param color
-     * @return true if the specified color is marked present
-     */
-    public boolean isColorPresent(int color) {
-    	int flags = this.getColorFlags();
-    	
-    	return (flags & (int)Math.pow(2, color)) > 0;
-    }
-    
-    public void setColorPresent(int color) {
-    	int flags = this.getColorFlags();
-    	
-//    	System.out.println("Setting color flag for color " + color);
-//    	System.out.println("Color int is " + flags);
-//    	System.out.println("ORing that with " + Math.pow(2, color) + " which is " + Integer.toBinaryString((int) Math.pow(2, color)));
-    	
-    	setColorFlags(flags | (int)Math.pow(2, color));
-    }
-    
-    /**
-     * Have we paid out the reward yet?
-     */
-    public boolean getRewarded()
-    {
-        return this.dataWatcher.getWatchableObjectByte(17) != (byte)0;
-    }
+		if (!currentItem.isEmpty() && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage()))) {
+			this.setColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage()));
+			this.animateAddColor(EnumDyeColor.byMetadata(currentItem.getItemDamage()), 50);
 
-    /**
-     * Sets whether we have paid the quest reward yet
-     */
-    public void setRewarded(boolean par1)
-    {
-    	this.dataWatcher.updateObject(17, par1 ? Byte.valueOf((byte)1) : Byte.valueOf((byte)0));
-    }
+			if (!player.capabilities.isCreativeMode) {
+				currentItem.shrink(1);
+			}
 
+			return true;
+		} else {
+			return super.processInteract(player, hand);
+		}
+	}
 
-    
-    /**
-     * Do a little animation for when we successfully add a new color
-     * @param color
-     */
-    public void animateAddColor(int color, int iterations) {
-    	//EntitySheep.fleeceColorTable[i][0]
-    	
-    	for (int i = 0; i < iterations; i++) {
-          this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, EntitySheep.fleeceColorTable[color][0], EntitySheep.fleeceColorTable[color][1], EntitySheep.fleeceColorTable[color][2]);
-    	}
-    	
-    	//TODO: it would be nice to play a custom sound
-    	playLivingSound();
-    }
-    
-    /**
-     * 
-     * @return how many colors are present currently
-     */
-    public int countColorsSet() {
-    	int count = 0;
-    	
-    	for (int i = 0; i < 16; i++) {
-    		if (isColorPresent(i)) {
-    			count++;
-    		}
-    	}
-    	
-    	return count;
-    }
-    
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
 
+		if (world.isRemote && countColorsSet() > 15 && !getRewarded()) {
+			animateAddColor(EnumDyeColor.byMetadata(this.rand.nextInt(16)), 5);
+		}
+	}
 
-    
-    /**
-     * Plays living's sound at its position
-     */
-    @Override
-	public void playLivingSound()
-    {
-        this.worldObj.playSoundAtEntity(this, "mob.sheep.say", this.getSoundVolume(), this.getSoundPitch());
-    }
-    
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
-    @Override
-	protected float getSoundVolume()
-    {
-        return 5.0F;
-    }
-    
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
-    @Override
-	protected float getSoundPitch()
-    {
-        return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.7F;
-    }
+	@Override
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeEntityToNBT(par1NBTTagCompound);
+		par1NBTTagCompound.setInteger("ColorFlags", this.getColorFlags());
+		par1NBTTagCompound.setBoolean("Rewarded", this.getRewarded());
+	}
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-    protected String getLivingSound()
-    {
-        return "mob.sheep.say";
-    }
+	@Override
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readEntityFromNBT(par1NBTTagCompound);
+		this.setColorFlags(par1NBTTagCompound.getInteger("ColorFlags"));
+		this.setRewarded(par1NBTTagCompound.getBoolean("Rewarded"));
+	}
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    protected String getHurtSound()
-    {
-        return "mob.sheep.say";
-    }
+	public int getColorFlags() {
+		return dataManager.get(DATA_COLOR);
+	}
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    protected String getDeathSound()
-    {
-        return "mob.sheep.say";
-    }
+	public void setColorFlags(int par1) {
+		dataManager.set(DATA_COLOR, par1);
+	}
 
-    protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_)
-    {
-        this.playSound("mob.sheep.step", 0.15F, 1.0F);
-    }
+	public boolean isColorPresent(EnumDyeColor color) {
+		return (getColorFlags() & (1 << color.getMetadata())) > 0;
+	}
 
-    public float getMaximumHomeDistance()
-    {
-        return this.func_110174_bM();
-    }
+	public void setColorPresent(EnumDyeColor color) {
+		setColorFlags(getColorFlags() | (1 << color.getMetadata()));
+	}
+
+	public boolean getRewarded() {
+		return dataManager.get(DATA_REWARDED);
+	}
+
+	public void setRewarded(boolean par1) {
+		dataManager.set(DATA_REWARDED, par1);
+	}
+
+	public void animateAddColor(EnumDyeColor color, int iterations) {
+		float[] colorVal = color.getColorComponentValues();
+		int red = (int) (colorVal[0] * 255F);
+		int green = (int) (colorVal[1] * 255F);
+		int blue = (int) (colorVal[2] * 255F);
+
+		for (int i = 0; i < iterations; i++) {
+			this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
+		}
+
+		//TODO: it would be nice to play a custom sound
+		playLivingSound();
+	}
+
+	public int countColorsSet() {
+		return Integer.bitCount(getColorFlags());
+	}
+
+	@Override
+	protected float getSoundVolume() {
+		return 5.0F;
+	}
+
+	@Override
+	protected float getSoundPitch() {
+		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.7F;
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.ENTITY_SHEEP_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_SHEEP_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_SHEEP_DEATH;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, Block p_145780_4_) {
+		this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+	}
 }

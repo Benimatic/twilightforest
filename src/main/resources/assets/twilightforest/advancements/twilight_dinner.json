@@ -1,0 +1,92 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:bowl"
+    },
+    "title": {
+      "translate": "advancement.twilight_dining"
+    },
+    "description": {
+      "translate": "advancement.twilight_dining.desc"
+    },
+    "frame": "challenge"
+  },
+  "parent": "twilightforest:root",
+  "criteria": {
+    "raw_venison": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:raw_venison"
+        }
+      }
+    },
+    "cooked_venison": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:cooked_venison"
+        }
+      }
+    },
+    "raw_meef": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:raw_meef"
+        }
+      }
+    },
+    "cooked_meef": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:cooked_meef"
+        }
+      }
+    },
+    "meef_stroganoff": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:meef_stroganoff"
+        }
+      }
+    },
+    "hydra_chop": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:hydra_chop"
+        }
+      }
+    },
+    "maze_wafer": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:maze_wafer"
+        }
+      }
+    },
+    "experiment_115": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:experiment_115"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [ "raw_venison", "cooked_venison" ],
+    [ "raw_meef", "cooked_meef" ],
+    [ "meef_stroganoff" ],
+    [ "hydra_chop" ],
+    [ "maze_wafer" ],
+    [ "experiment_115" ]
+  ],
+  "rewards": {
+    "experience": 75
+  }
+}

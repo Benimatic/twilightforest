@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:ore_map"
+    },
+    "title": {
+      "translate": "advancement.twilight_ore_map"
+    },
+    "description": {
+      "translate": "advancement.twilight_ore_map.desc"
+    },
+    "frame": "challenge",
+    "hidden": true
+  },
+  "parent": "twilightforest:maze_map",
+  "criteria": {
+    "map": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:ore_map"
+          }
+        ]
+      }
+    }
+  }
+}
