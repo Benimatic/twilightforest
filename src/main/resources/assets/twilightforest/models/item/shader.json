@@ -1,0 +1,8 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "twilightforest:items/lunchbox_flat_0",
+    "layer1": "twilightforest:items/lunchbox_flat_1",
+    "layer2": "twilightforest:items/lunchbox_flat_2"
+  }
+}

@@ -675,3 +675,26 @@ modifier.stalwart.name=Stalwart
 modifier.stalwart.desc=§oThe Brave and Bold.§r\nHitting an entity can make you feel emboldened.
 modifier.veiled.name=Veiled
 modifier.veiled.desc=§oLike a Specter!§r\nProjectile will be invisible.
+
+# Immersive Engineering
+item.tfEngineeringShader=Shader: %s
+twilightforest.shader.twilight=Twilight Forest
+
+twilightforest.shader.snakestone=Snakestone
+twilightforest.shader.naga=Naga
+twilightforest.shader.lich=Lich
+
+twilightforest.shader.mazestone=Mazestone
+twilightforest.shader.minoshroom=Minoshroom
+twilightforest.shader.hydra=Hydra
+
+twilightforest.shader.underbrick=Underbrick
+twilightforest.shader.knight_phantom=Knight Phantom
+twilightforest.shader.towerwood=Towerwood
+twilightforest.shader.ur-ghast=Ur-Ghast
+
+twilightforest.shader.alpha_yeti=Alpha Yeti
+twilightforest.shader.auroralized=Auroralized
+twilightforest.shader.snow_queen=Snow Queen
+
+twilightforest.shader.final_castle=Final Castle

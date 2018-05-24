@@ -10,6 +10,7 @@ import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.*;
+import twilightforest.item.TFRegisterItemEvent;
 
 @Optional.InterfaceList({
         @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
@@ -57,6 +58,11 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     }, // TODO Forestry
+    IMMERSIVEENGINEERING("Immersive Engineering") {
+        protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
+            items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+        }
+    },
     JEI("Just Enough Items") {},
     @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
@@ -86,6 +92,8 @@ public enum TFCompat {
     protected void init() {}
     protected void postInit() {}
 
+    protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {}
+
     final private String modName;
 
     private boolean isActivated = false;
@@ -113,6 +121,20 @@ public enum TFCompat {
             } else {
                 compat.isActivated = false;
                 TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.modName + ".");
+            }
+        }
+    }
+
+    public static void initCompatItems(TFRegisterItemEvent.ItemRegistryHelper items) {
+        for (TFCompat compat : TFCompat.values()) {
+            if (compat.isActivated) {
+                try {
+                    compat.initItems(items);
+                } catch (Exception e) {
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in initializing items!");
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
             }
         }
     }
