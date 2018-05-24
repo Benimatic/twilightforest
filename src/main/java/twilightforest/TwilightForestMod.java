@@ -1,9 +1,12 @@
 package twilightforest;
 
+import net.minecraft.item.EnumRarity;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -53,6 +56,8 @@ public class TwilightForestMod {
 	public static int backupdimensionID = -777;
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
+
+	private static final EnumRarity rarity = EnumHelper.addRarity("TWILIGHT", TextFormatting.DARK_GREEN, "Twilight");
 
 	private static boolean compat = true;
 
@@ -231,7 +236,6 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, id++);
 	}
 
-
 	private void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
@@ -253,5 +257,9 @@ public class TwilightForestMod {
 		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "cinder_furnace");
 		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "minoshroom_spawner");
 		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "alpha_yeti_spawner");
+	}
+
+	public static EnumRarity getRarity() {
+		return rarity != null ? rarity : EnumRarity.EPIC;
 	}
 }
