@@ -171,6 +171,8 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
+		if (event.phase != TickEvent.Phase.END) return;
+		time++;
 
 		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 0.5F;
 		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 0.5F;
@@ -178,6 +180,7 @@ public class TFClientEvents {
 		BugModelAnimationHelper.animate();
 	}
 
+	public static int time = 0;
 	public static float rotationTicker = 0;
 	public static float sineTicker = 0;
 	public static final float SINE_TICKER_BOUND = (float) (Math.PI * 200.0F) - 1.0F;

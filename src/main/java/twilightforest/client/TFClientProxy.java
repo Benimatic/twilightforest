@@ -35,6 +35,7 @@ import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
 import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 import twilightforest.client.renderer.entity.*;
+import twilightforest.client.shader.ShaderHelper;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
@@ -58,7 +59,7 @@ public class TFClientProxy extends TFCommonProxy {
 	public static MusicTicker.MusicType TFMUSICTYPE;
 
 	@Override
-	public void doPreLoadRegistration() {
+	public void preInit() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBoar.class, m -> new RenderTFBoar(m, new ModelTFBoar()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBighorn.class, m -> new RenderTFBighorn(m, new ModelTFBighorn(), new ModelTFBighornFur(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFDeer.class, m -> new RenderTFDeer(m, new ModelTFDeer(), 0.7F));
@@ -152,7 +153,7 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 
 	@Override
-	public void doOnLoadRegistration() {
+	public void init() {
 		ColorHandler.init();
 
 		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
@@ -190,6 +191,8 @@ public class TFClientProxy extends TFCommonProxy {
 		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(0.5F));
 
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 3600);
+
+		ShaderHelper.initShaders();
 	}
 
 	@Override

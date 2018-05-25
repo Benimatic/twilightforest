@@ -80,7 +80,7 @@ public class TwilightForestMod {
 		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 
 		// sounds on client, and whatever else needs to be registered pre-load
-		proxy.doPreLoadRegistration();
+		proxy.preInit();
 
 		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
@@ -104,11 +104,11 @@ public class TwilightForestMod {
 
 	@SuppressWarnings("unused")
 	@EventHandler
-	public void load(FMLInitializationEvent evt) {
+	public void init(FMLInitializationEvent evt) {
 		TFItems.initRepairMaterials();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		TFPacketHandler.init();
-		proxy.doOnLoadRegistration();
+		proxy.init();
 		TFAdvancements.init();
 
 		if (compat) {

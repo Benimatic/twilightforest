@@ -1,17 +1,22 @@
 package twilightforest.compat;
 
-import blusunrize.immersiveengineering.api.shader.IShaderItem;
-import blusunrize.immersiveengineering.api.shader.ShaderCase;
-import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
+import blusunrize.immersiveengineering.api.shader.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import org.lwjgl.opengl.ARBShaderObjects;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.TFClientEvents;
+import twilightforest.client.shader.ShaderCallback;
+import twilightforest.client.shader.ShaderHelper;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nonnull;
@@ -131,5 +136,71 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
                 ShaderRegistry.registerShader("Final Castle", "0", TwilightForestMod.getRarity(), 0xFF_ECEAE6, 0xFF_00_FF_FF, 0xFF_C8_BB_BC, 0xFF_FF_FF_FF, null, 0xFF_FF_FF_FF, false, true).setInfo("Twilight Forest", "Final Castle", "finalcastle")
         );
+
+        // ShaderCase Overrides
+        ShaderRegistry.registerShaderCase("Twilight", new TwilightShaderCase(
+                new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_0.png"), 0xFF_00_AA_00),
+                new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_1_0.png"), 0xFF_4C_64_5B),
+                new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_uncoloured.png"), 0xffffffff)
+        ), TwilightForestMod.getRarity());
     }
+
+    private static class TwilightShaderCase extends ShaderCaseMinecart {
+        private static final ResourceLocation starsTexture = new ResourceLocation("textures/entity/end_portal.png");
+        private final ShaderCallback shaderCallback;
+
+        public TwilightShaderCase(ShaderLayer... layers) {
+            super(layers);
+
+            // TEMA: this is the shader callback where the uniforms are set for this particular shader.
+            // it's called each frame when the shader is bound. Probably the most expensive part of the whole thing.
+            // you might be able to even call this once per frame instead of once per draw, pointing call at the program instead of passing this in useShader.
+            shaderCallback = new ShaderCallback() {
+                @Override
+                public void call(int shader) {
+                    Minecraft mc = Minecraft.getMinecraft();
+
+                    int x = ARBShaderObjects.glGetUniformLocationARB(shader, "yaw");
+                    ARBShaderObjects.glUniform1fARB(x, (float)((mc.player.rotationYaw * 2 * Math.PI) / 360.0));
+
+                    int z = ARBShaderObjects.glGetUniformLocationARB(shader, "pitch");
+                    ARBShaderObjects.glUniform1fARB(z, - (float)((mc.player.rotationPitch * 2 * Math.PI) / 360.0));
+                }
+            };
+        }
+
+        @Override
+        public void modifyRender(ItemStack shader, ItemStack item, String modelPart, int pass, boolean preRender, boolean inventory) {
+            super.modifyRender(shader, item, modelPart, pass, preRender, inventory);
+
+            if (pass != 0) return;
+
+            if (preRender) {
+                // Uncomment to enable fast reloading
+                // if ((TFClientEvents.time & 0xFFFF) == 0) ShaderHelper.twilightSkyShader = ShaderHelper.createProgram("starfield.vert", "twilight_sky.frag");
+
+                /*
+                   TODO check out net.minecraft.client.shader.ShaderGroup # render
+                   For reference, see:
+                       net.minecraft.client.renderer.RenderGlobal # makeEntityOutlineShader
+                       net.minecraft.client.renderer.RenderGlobal # renderEntities at line 705
+
+                       minecraft:shaders/post/outline.json
+                       minecraft:shaders/program/outline.json
+                       minecraft:shaders/program/blit.json
+
+                       Need references & documentation on the json files
+                       .vsh = vertex shader file
+                       .fsh = fragment shader file
+                 */
+
+                Minecraft.getMinecraft().renderEngine.bindTexture(starsTexture);
+                ShaderHelper.useShader(ShaderHelper.twilightSkyShader, shaderCallback);
+            } else {
+                ShaderHelper.releaseShader();
+            }
+        }
+    }
+
+    //private static void applyShader()
 }
