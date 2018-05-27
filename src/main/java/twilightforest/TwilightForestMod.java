@@ -39,6 +39,7 @@ import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Mod( modid = TwilightForestMod.ID,
 		name = "The Twilight Forest",
@@ -133,7 +134,7 @@ public class TwilightForestMod {
 		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(ID, DATA_FIXER_VERSION);
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new IFixableData() {
 			// array only needs to cover legacy tile entity ids, no need to add future tile entity ids to list.
-			private final HashMap<String, String> tileEntityNames;
+			private final Map<String, String> tileEntityNames;
 
 			{
 				ImmutableMap.Builder<String, String> nameMap = ImmutableMap.builder();
@@ -176,7 +177,7 @@ public class TwilightForestMod {
 						.put(          "minoshroom_spawner"      , "twilightforest:minoshroom_spawner"      )
 						.put(          "alpha_yeti_spawner"      , "twilightforest:alpha_yeti_spawner"      );
 
-				tileEntityNames = new HashMap<>(nameMap.build());
+				tileEntityNames = nameMap.build();
 			}
 
 			@Override
