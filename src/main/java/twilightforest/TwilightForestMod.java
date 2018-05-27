@@ -1,12 +1,21 @@
 package twilightforest;
 
 import net.minecraft.item.EnumRarity;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.util.datafix.IFixType;
+import net.minecraft.util.datafix.IFixableData;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.CompoundDataFixer;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.common.util.ModFixs;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -48,6 +57,7 @@ public class TwilightForestMod {
 	public static final String ENVRIO_DIR = "twilightforest:textures/environment/";
 	public static final String ARMOR_DIR = "twilightforest:textures/armor/";
 	public static final String ENFORCED_PROGRESSION_RULE = "tfEnforcedProgression";
+	public static final int DATA_FIXER_VERSION = 1;
 
 	public static final int GUI_ID_UNCRAFTING = 1;
 	public static final int GUI_ID_FURNACE = 2;
@@ -120,6 +130,34 @@ public class TwilightForestMod {
 				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 			}
 		}
+
+		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(ID, DATA_FIXER_VERSION);
+		fixes.registerFix(FixTypes.BLOCK_ENTITY, new IFixableData() {
+			// array only needs to cover legacy tile entity ids, no need to add future tile entity ids to list.
+			private final String[] teNames = { "naga_spawner", "lich_spawner", "hydra_spawner", "smoker", "popping_jet", "flame_jet", "tower_builder", "tower_reverter", "trophy", "tower_boss_spawner", "ghast_trap_inactive", "ghast_trap_active", "carminite_reactor_active", "knight_phantom_spawner", "snow_queen_spawner", "cinder_furnace", "minoshroom_spawner", "alpha_yeti_spawner" };
+			private final String resourceLocationPrefix = TwilightForestMod.ID + ":";
+
+			@Override
+			public int getFixVersion() {
+				return 1;
+			}
+
+			@Override
+			public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+				ResourceLocation tileEntityLocation = new ResourceLocation(compound.getString("id"));
+
+				if ("minecraft".equals(tileEntityLocation.getResourceDomain())) {
+					for (String string : teNames) {
+						if (string.equals(tileEntityLocation.getResourcePath())) {
+							compound.setString("id", resourceLocationPrefix + string);
+							break;
+						}
+					}
+				}
+
+				return compound;
+			}
+		});//*/
 	}
 
 	@SuppressWarnings("unused")
@@ -239,24 +277,24 @@ public class TwilightForestMod {
 	private void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
-		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner.class, "naga_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFLichSpawner.class, "lich_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner.class, "hydra_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSmoker.class, "smoker");
-		GameRegistry.registerTileEntity(TileEntityTFPoppingJet.class, "popping_jet");
-		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "flame_jet");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "tower_builder");
-		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "tower_reverter");
-		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "trophy");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner.class, "tower_boss_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive.class, "ghast_trap_inactive");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive.class, "ghast_trap_active");
-		GameRegistry.registerTileEntity(TileEntityTFCReactorActive.class, "carminite_reactor_active");
-		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, "knight_phantom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner.class, "snow_queen_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "cinder_furnace");
-		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "minoshroom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "alpha_yeti_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner.class, "twilightforest:naga_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFLichSpawner.class, "twilightforest:lich_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner.class, "twilightforest:hydra_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFSmoker.class, "twilightforest:smoker");
+		GameRegistry.registerTileEntity(TileEntityTFPoppingJet.class, "twilightforest:popping_jet");
+		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "twilightforest:flame_jet");
+		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "twilightforest:tower_builder");
+		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "twilightforest:tower_reverter");
+		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "twilightforest:trophy");
+		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner.class, "twilightforest:tower_boss_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive.class, "twilightforest:ghast_trap_inactive");
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive.class, "twilightforest:ghast_trap_active");
+		GameRegistry.registerTileEntity(TileEntityTFCReactorActive.class, "twilightforest:carminite_reactor_active");
+		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, "twilightforest:knight_phantom_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner.class, "twilightforest:snow_queen_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "twilightforest:cinder_furnace");
+		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "twilightforest:minoshroom_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "twilightforest:alpha_yeti_spawner"); //*/
 	}
 
 	public static EnumRarity getRarity() {
