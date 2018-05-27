@@ -174,8 +174,8 @@ public class TFClientEvents {
 		if (event.phase != TickEvent.Phase.END) return;
 		time++;
 
-		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 0.5F;
-		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 0.5F;
+		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 1.0F;
+		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 1.0F;
 
 		BugModelAnimationHelper.animate();
 	}
