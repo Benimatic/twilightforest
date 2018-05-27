@@ -1,8 +1,10 @@
 package twilightforest.compat;
 
-import blusunrize.immersiveengineering.api.shader.*;
+import blusunrize.immersiveengineering.api.shader.IShaderItem;
+import blusunrize.immersiveengineering.api.shader.ShaderCase;
+import blusunrize.immersiveengineering.api.shader.ShaderCaseMinecart;
+import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -14,7 +16,6 @@ import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.opengl.ARBShaderObjects;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.TFClientEvents;
 import twilightforest.client.shader.ShaderCallback;
 import twilightforest.client.shader.ShaderHelper;
 import twilightforest.item.TFItems;
@@ -94,22 +95,20 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for (ShaderRegistry.ShaderRegistryEntry entry : SHADERS) {
-            NBTTagCompound compound = new NBTTagCompound();
+        if (tab == TFItems.creativeTab) {
+            for (ShaderRegistry.ShaderRegistryEntry entry : SHADERS) {
+                NBTTagCompound compound = new NBTTagCompound();
 
-            compound.setString(TAG_SHADER, entry.getName());
+                compound.setString(TAG_SHADER, entry.getName());
 
-            ItemStack stack = new ItemStack(this, 1, 0);
-
-            stack.setTagCompound(compound);
-
-            items.add(stack);
+                items.add(new ItemStack(this, 1, 0, compound));
+            }
         }
     }
 
     static {
         if (TwilightForestMod.getRarity() != EnumRarity.EPIC)
-            ShaderRegistry.rarityWeightMap.put(TwilightForestMod.getRarity(), 1);
+            ShaderRegistry.rarityWeightMap.put(TwilightForestMod.getRarity(), 0);
 
         SHADERS = Arrays.asList( // MAIN COLOR, MINOR COLOR (EDGES), SECONDARY COLOR (GRIP, etc)
                 ShaderRegistry.registerShader("Twilight", "0", TwilightForestMod.getRarity(), 0xFF_00_AA_00, 0xFF_28_25_3F, 0xFF_4C_64_5B, 0xFF_FF_FF_FF, null, 0xFF_FF_FF_FF, false, true).setInfo("Twilight Forest", "Twilight Forest", "twilightforest"),
@@ -201,6 +200,4 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
             }
         }
     }
-
-    //private static void applyShader()
 }

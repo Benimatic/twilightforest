@@ -1,18 +1,16 @@
 package twilightforest;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.FixTypes;
-import net.minecraft.util.datafix.IFixType;
 import net.minecraft.util.datafix.IFixableData;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.CompoundDataFixer;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -40,6 +38,8 @@ import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
 import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
+
+import java.util.Set;
 
 @Mod( modid = TwilightForestMod.ID,
 		name = "The Twilight Forest",
@@ -134,7 +134,7 @@ public class TwilightForestMod {
 		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(ID, DATA_FIXER_VERSION);
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new IFixableData() {
 			// array only needs to cover legacy tile entity ids, no need to add future tile entity ids to list.
-			private final String[] teNames = { "naga_spawner", "lich_spawner", "hydra_spawner", "smoker", "popping_jet", "flame_jet", "tower_builder", "tower_reverter", "trophy", "tower_boss_spawner", "ghast_trap_inactive", "ghast_trap_active", "carminite_reactor_active", "knight_phantom_spawner", "snow_queen_spawner", "cinder_furnace", "minoshroom_spawner", "alpha_yeti_spawner" };
+			private final Set<String> tileEntityNames = ImmutableSet.of("naga_spawner", "lich_spawner", "hydra_spawner", "smoker", "popping_jet", "flame_jet", "tower_builder", "tower_reverter", "trophy", "tower_boss_spawner", "ghast_trap_inactive", "ghast_trap_active", "carminite_reactor_active", "knight_phantom_spawner", "snow_queen_spawner", "cinder_furnace", "minoshroom_spawner", "alpha_yeti_spawner");
 			private final String resourceLocationPrefix = TwilightForestMod.ID + ":";
 
 			@Override
@@ -147,7 +147,7 @@ public class TwilightForestMod {
 				ResourceLocation tileEntityLocation = new ResourceLocation(compound.getString("id"));
 
 				if ("minecraft".equals(tileEntityLocation.getResourceDomain())) {
-					for (String string : teNames) {
+					for (String string : tileEntityNames) {
 						if (string.equals(tileEntityLocation.getResourcePath())) {
 							compound.setString("id", resourceLocationPrefix + string);
 							break;
