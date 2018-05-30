@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -19,7 +20,9 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class TFTeleporter extends Teleporter {
 	public static TFTeleporter getTeleporterForDim(MinecraftServer server, int dim) {
@@ -156,39 +159,45 @@ public class TFTeleporter extends Teleporter {
 			}
 
 			// TF - replace with our own placement logic
-			double portalX = blockpos.getX() + 0.5D;
-			double portalY = blockpos.getY() + 0.5D;
-			double portalZ = blockpos.getZ() + 0.5D;
-			if (isBlockPortal(world, blockpos.west())) {
-				portalX -= 0.5D;
-			}
-			if (isBlockPortal(world, blockpos.east())) {
-				portalX += 0.5D;
-			}
-			if (isBlockPortal(world, blockpos.north())) {
-				portalZ -= 0.5D;
-			}
-			if (isBlockPortal(world, blockpos.south())) {
-				portalZ += 0.5D;
-			}
-			int xOffset = 0;
-			int zOffset = 0;
-			while (xOffset == zOffset && xOffset == 0) {
-				xOffset = random.nextInt(3) - random.nextInt(3);
-				zOffset = random.nextInt(3) - random.nextInt(3);
-			}
+			BlockPos[] portalBorder = getBoundaryPositions(blockpos).toArray(new BlockPos[0]);
+			BlockPos borderPos = portalBorder[random.nextInt(portalBorder.length)];
+
+			double portalX = borderPos.getX() + 0.5;
+			double portalY = borderPos.getY() + 1.0;
+			double portalZ = borderPos.getZ() + 0.5;
 
 			entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
 
 			if (entityIn instanceof EntityPlayerMP) {
-				((EntityPlayerMP) entityIn).connection.setPlayerLocation(portalX + xOffset, portalY + 1, portalZ + zOffset, entityIn.rotationYaw, entityIn.rotationPitch);
+				((EntityPlayerMP) entityIn).connection.setPlayerLocation(portalX, portalY, portalZ, entityIn.rotationYaw, entityIn.rotationPitch);
 			} else {
-				entityIn.setLocationAndAngles(portalX + xOffset, portalY + 1, portalZ + zOffset, entityIn.rotationYaw, entityIn.rotationPitch);
+				entityIn.setLocationAndAngles(portalX, portalY, portalZ, entityIn.rotationYaw, entityIn.rotationPitch);
 			}
 
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	// from the start point, builds a set of all directly adjacent non-portal blocks
+	private Set<BlockPos> getBoundaryPositions(BlockPos start) {
+		Set<BlockPos> result = new HashSet<>(), checked = new HashSet<>();
+		checked.add(start);
+		checkAdjacent(start, checked, result);
+		return result;
+	}
+
+	private void checkAdjacent(BlockPos pos, Set<BlockPos> checked, Set<BlockPos> result) {
+		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+			BlockPos offset = pos.offset(facing);
+			if (isBlockPortal(world, offset)) {
+				if (checked.add(offset)) {
+					checkAdjacent(offset, checked, result);
+				}
+			} else {
+				result.add(offset);
+			}
 		}
 	}
 
