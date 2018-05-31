@@ -1,5 +1,6 @@
 package twilightforest.compat;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
@@ -9,6 +10,7 @@ import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
 
@@ -61,6 +63,26 @@ public enum TFCompat {
     IMMERSIVEENGINEERING("Immersive Engineering") {
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
             items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+        }
+
+        @Override
+        protected void init() {
+            excludeFromShaderBags(EntityTFNaga.class);
+
+            excludeFromShaderBags(EntityTFLich.class);
+
+            excludeFromShaderBags(EntityTFMinoshroom.class);
+            excludeFromShaderBags(EntityTFHydra.class);
+
+            excludeFromShaderBags(EntityTFKnightPhantom.class);
+            excludeFromShaderBags(EntityTFUrGhast.class);
+
+            excludeFromShaderBags(EntityTFYetiAlpha.class);
+            excludeFromShaderBags(EntityTFSnowQueen.class);
+        }
+
+        private void excludeFromShaderBags(Class<? extends Entity> entityClass) {
+            FMLInterModComms.sendMessage("immersiveengineering", "shaderbag_exclude", entityClass.getName());
         }
     },
     JEI("Just Enough Items") {},
