@@ -114,6 +114,7 @@ commands.tffeature.structure.outside=You are not in the structure for that featu
 commands.tffeature.structure.required=You are not in a structure
 commands.tffeature.structure.conquer.status=Structure conquer flag: %s
 commands.tffeature.structure.conquer.update=Structure conquer flag was %s, changing to %s
+commands.tffeature.locate.usage=/tffeature locate <feature>
 
 # Blocks
 tile.TFLog.0.name=Twilight Oak Wood
