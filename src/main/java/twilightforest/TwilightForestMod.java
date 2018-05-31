@@ -94,7 +94,9 @@ public class TwilightForestMod {
 
 		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
+		LootFunctionManager.registerFunction(new LootFunctionModItemSwap.Serializer());
 		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
+		LootConditionManager.registerCondition(new LootConditionModExists.Serializer());
 
 		// just call this so that we register structure IDs correctly
 		new StructureTFMajorFeatureStart();
@@ -131,69 +133,7 @@ public class TwilightForestMod {
 			}
 		}
 
-		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(ID, DATA_FIXER_VERSION);
-		fixes.registerFix(FixTypes.BLOCK_ENTITY, new IFixableData() {
-			// array only needs to cover legacy tile entity ids, no need to add future tile entity ids to list.
-			private final Map<String, String> tileEntityNames;
-
-			{
-				ImmutableMap.Builder<String, String> nameMap = ImmutableMap.builder();
-
-				nameMap
-						.put("minecraft:naga_spawner"            , "twilightforest:naga_spawner"            )
-						.put("minecraft:lich_spawner"            , "twilightforest:lich_spawner"            )
-						.put("minecraft:hydra_spawner"           , "twilightforest:hydra_spawner"           )
-						.put("minecraft:smoker"                  , "twilightforest:smoker"                  )
-						.put("minecraft:popping_jet"             , "twilightforest:popping_jet"             )
-						.put("minecraft:flame_jet"               , "twilightforest:flame_jet"               )
-						.put("minecraft:tower_builder"           , "twilightforest:tower_builder"           )
-						.put("minecraft:tower_reverter"          , "twilightforest:tower_reverter"          )
-						.put("minecraft:trophy"                  , "twilightforest:trophy"                  )
-						.put("minecraft:tower_boss_spawner"      , "twilightforest:tower_boss_spawner"      )
-						.put("minecraft:ghast_trap_inactive"     , "twilightforest:ghast_trap_inactive"     )
-						.put("minecraft:ghast_trap_active"       , "twilightforest:ghast_trap_active"       )
-						.put("minecraft:carminite_reactor_active", "twilightforest:carminite_reactor_active")
-						.put("minecraft:knight_phantom_spawner"  , "twilightforest:knight_phantom_spawner"  )
-						.put("minecraft:snow_queen_spawner"      , "twilightforest:snow_queen_spawner"      )
-						.put("minecraft:cinder_furnace"          , "twilightforest:cinder_furnace"          )
-						.put("minecraft:minoshroom_spawner"      , "twilightforest:minoshroom_spawner"      )
-						.put("minecraft:alpha_yeti_spawner"      , "twilightforest:alpha_yeti_spawner"      )
-						.put(          "naga_spawner"            , "twilightforest:naga_spawner"            )
-						.put(          "lich_spawner"            , "twilightforest:lich_spawner"            )
-						.put(          "hydra_spawner"           , "twilightforest:hydra_spawner"           )
-						.put(          "smoker"                  , "twilightforest:smoker"                  )
-						.put(          "popping_jet"             , "twilightforest:popping_jet"             )
-						.put(          "flame_jet"               , "twilightforest:flame_jet"               )
-						.put(          "tower_builder"           , "twilightforest:tower_builder"           )
-						.put(          "tower_reverter"          , "twilightforest:tower_reverter"          )
-						.put(          "trophy"                  , "twilightforest:trophy"                  )
-						.put(          "tower_boss_spawner"      , "twilightforest:tower_boss_spawner"      )
-						.put(          "ghast_trap_inactive"     , "twilightforest:ghast_trap_inactive"     )
-						.put(          "ghast_trap_active"       , "twilightforest:ghast_trap_active"       )
-						.put(          "carminite_reactor_active", "twilightforest:carminite_reactor_active")
-						.put(          "knight_phantom_spawner"  , "twilightforest:knight_phantom_spawner"  )
-						.put(          "snow_queen_spawner"      , "twilightforest:snow_queen_spawner"      )
-						.put(          "cinder_furnace"          , "twilightforest:cinder_furnace"          )
-						.put(          "minoshroom_spawner"      , "twilightforest:minoshroom_spawner"      )
-						.put(          "alpha_yeti_spawner"      , "twilightforest:alpha_yeti_spawner"      );
-
-				tileEntityNames = nameMap.build();
-			}
-
-			@Override
-			public int getFixVersion() {
-				return 1;
-			}
-
-			@Override
-			public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
-				String tileEntityLocation = compound.getString("id");
-
-				compound.setString("id", tileEntityNames.getOrDefault(tileEntityLocation, tileEntityLocation));
-
-				return compound;
-			}
-		});
+		TFDataFixers.init();
 	}
 
 	@SuppressWarnings("unused")
