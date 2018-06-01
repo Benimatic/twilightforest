@@ -284,7 +284,8 @@ public class TFTeleporter extends Teleporter {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = -1; potentialY < 3; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && world.getBlockState(tPos).getMaterial() != Material.GRASS || potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable()) {
+					if (potentialY == -1 && world.getBlockState(tPos).getMaterial() != Material.GRASS
+							|| potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable()) {
 						return false;
 					}
 				}
@@ -300,7 +301,8 @@ public class TFTeleporter extends Teleporter {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = -1; potentialY < 3; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && !world.getBlockState(tPos).getMaterial().isSolid() || potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable()) {
+					if (potentialY == -1 && !world.getBlockState(tPos).getMaterial().isSolid() && !world.getBlockState(tPos).getMaterial().isReplaceable()
+							|| potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable()) {
 						return false;
 					}
 				}
