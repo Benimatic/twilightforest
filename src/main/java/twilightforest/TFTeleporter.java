@@ -146,6 +146,8 @@ public class TFTeleporter extends Teleporter {
 							if (d0 < 0.0D || d1 < d0) {
 								d0 = d1;
 								blockpos = blockpos1;
+								// TF - restrict search radius to new distance
+								i = MathHelper.ceil(MathHelper.sqrt(d1));
 							}
 						}
 					}
@@ -294,8 +296,9 @@ public class TFTeleporter extends Teleporter {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = -1; potentialY < 3; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && world.getBlockState(tPos).getMaterial() != Material.GRASS
-							|| potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable()) {
+					Material material = world.getBlockState(tPos).getMaterial();
+					if (potentialY == -1 && material != Material.GRASS
+							|| potentialY >= 0 && !material.isReplaceable()) {
 						return false;
 					}
 				}
@@ -311,8 +314,9 @@ public class TFTeleporter extends Teleporter {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = -1; potentialY < 3; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && !world.getBlockState(tPos).getMaterial().isSolid() && !world.getBlockState(tPos).getMaterial().isReplaceable()
-							|| potentialY >= 0 && !world.getBlockState(tPos).getMaterial().isReplaceable()) {
+                    Material material = world.getBlockState(tPos).getMaterial();
+					if (potentialY == -1 && !material.isSolid() && !material.isLiquid()
+							|| potentialY >= 0 && !material.isReplaceable()) {
 						return false;
 					}
 				}
