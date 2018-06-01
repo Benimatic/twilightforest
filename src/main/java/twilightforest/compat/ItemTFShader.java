@@ -4,6 +4,8 @@ import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.shader.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.ARBShaderObjects;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.TFClientProxy;
 import twilightforest.client.shader.ShaderCallback;
 import twilightforest.client.shader.ShaderHelper;
 import twilightforest.item.TFItems;
@@ -165,6 +168,8 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
         ShaderRegistry.registerShaderCase("Twilight", new TwilightShaderCase(
                 new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_0.png"), 0xFF_00_AA_00),
                 new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_1_0.png"), 0xFF_4C_64_5B),
+                new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_1_5.png"), 0xFF_4C_64_5B),
+                new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_1_4.png"), 0xFF_00_AA_00),
                 new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_uncoloured.png"), 0xffffffff)
         ), rarity);
     }
@@ -202,21 +207,6 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
             if (preRender) {
                 // Uncomment to enable fast reloading
                 // if ((TFClientEvents.time & 0xFFFF) == 0) ShaderHelper.twilightSkyShader = ShaderHelper.createProgram("starfield.vert", "twilight_sky.frag");
-
-                /*
-                   TODO check out net.minecraft.client.shader.ShaderGroup # render
-                   For reference, see:
-                       net.minecraft.client.renderer.RenderGlobal # makeEntityOutlineShader
-                       net.minecraft.client.renderer.RenderGlobal # renderEntities at line 705
-
-                       minecraft:shaders/post/outline.json
-                       minecraft:shaders/program/outline.json
-                       minecraft:shaders/program/blit.json
-
-                       Need references & documentation on the json files
-                       .vsh = vertex shader file
-                       .fsh = fragment shader file
-                 */
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(starsTexture);
                 ShaderHelper.useShader(ShaderHelper.twilightSkyShader, shaderCallback);
