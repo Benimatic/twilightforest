@@ -132,7 +132,7 @@ public class TFTeleporter extends Teleporter {
 				BlockPos blockpos2;
 
 				for (int j1 = -i; j1 <= i; ++j1) {
-					for (BlockPos blockpos1 = blockpos3.add(i1, this.world.getActualHeight() - 1 - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
+					for (BlockPos blockpos1 = blockpos3.add(i1, getScanHeight(blockpos3) - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
 						blockpos2 = blockpos1.down();
 
 						// TF - use our portal block
@@ -178,6 +178,16 @@ public class TFTeleporter extends Teleporter {
 		} else {
 			return false;
 		}
+	}
+
+	private int getScanHeight(BlockPos pos) {
+		return getScanHeight(pos.getX(), pos.getZ());
+	}
+
+	private int getScanHeight(int x, int z) {
+		int worldHeight = world.getActualHeight() - 1;
+		int chunkHeight = world.getChunkFromChunkCoords(x >> 4, z >> 4).getTopFilledSegment() + 15;
+		return Math.min(worldHeight, chunkHeight);
 	}
 
 	// from the start point, builds a set of all directly adjacent non-portal blocks
@@ -253,7 +263,7 @@ public class TFTeleporter extends Teleporter {
 			for (int rz = entityZ - range; rz <= entityZ + range; rz++) {
 				double zWeight = (rz + 0.5D) - entity.posZ;
 
-				for (int ry = 128 - 1; ry >= 0; ry--) {
+				for (int ry = getScanHeight(rx, rz); ry >= 0; ry--) {
 					BlockPos pos = new BlockPos(rx, ry, rz);
 
 					if (!world.isAirBlock(pos)) {
