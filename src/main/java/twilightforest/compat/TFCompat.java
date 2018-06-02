@@ -63,6 +63,8 @@ public enum TFCompat {
     IMMERSIVEENGINEERING("Immersive Engineering") {
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
             items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+
+            new IEShaderRegister(); // Calling to initialize it all
         }
 
         @Override

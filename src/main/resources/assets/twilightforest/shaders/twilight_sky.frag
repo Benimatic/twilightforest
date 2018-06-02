@@ -9,12 +9,22 @@ uniform int time;
 
 uniform float yaw;
 uniform float pitch;
+uniform ivec2 resolution;
 
 varying vec3 position;
 
+float interpolate(float v1, float v2, float placement) {
+    placement = clamp(placement, 0.0, 1.0);
+    return sqrt(((v1 * v1) * (1.0 - placement)) + ((v2 * v2) * placement));
+}
+
+vec4 interpolate(vec4 v1, vec4 v2, float placement) {
+    placement = clamp(placement, 0.0, 1.0);
+    return sqrt(((v1 * v1) * (1.0 - placement)) + ((v2 * v2) * placement));
+}
+
 mat4 rotationMatrix(vec3 axis, float angle)
 {
-
     axis = normalize(axis);
     float s = sin(angle);
     float c = cos(angle);
@@ -27,8 +37,21 @@ mat4 rotationMatrix(vec3 axis, float angle)
 }
 
 void main() {
+    float fixedPitch = (pitch/3.2) + 0.5;
+    float fixedY = gl_FragCoord.y / (resolution.y / 2.0);
+
     // background colour
-    vec4 col = vec4( 40.0F / 255.0F, 37.0F / 255.0F, 63.0F / 255.0F, 1 );
+    vec4 sky = vec4( 40.0 / 255.0, 37.0 / 255.0, 63.0 / 255.0, 1.0 );
+    // fog color
+    vec4 fog = vec4( 0.39905882, 0.53, 0.46164703, 1.0 );
+
+    //vec4 col = interpolate(fog, sky, (pitch/3.2) + 0.5);
+
+    //vec4 col = interpolate(fog, sky, interpolate((gl_FragCoord.y / (height/2.0)), fixedPitch, 0.25));
+
+    float fogHeight = ((fixedPitch - 0.5) * 18) + ((fixedY - 0.9) * 4);
+
+    vec4 col = interpolate(fog, sky, fogHeight);
 
     // get ray from camera to fragment
     vec4 dir = normalize(vec4( -position, 0));
