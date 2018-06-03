@@ -183,5 +183,6 @@ public class TFClientEvents {
 	public static int time = 0;
 	public static float rotationTicker = 0;
 	public static float sineTicker = 0;
-	public static final float SINE_TICKER_BOUND = (float) (Math.PI * 200.0F) - 1.0F;
+	public static final float PI = (float) Math.PI;
+	public static final float SINE_TICKER_BOUND = PI * 200.0F - 1.0F;
 }
