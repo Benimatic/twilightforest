@@ -132,6 +132,13 @@ public class TFTeleporter extends Teleporter {
 				BlockPos blockpos2;
 
 				for (int j1 = -i; j1 <= i; ++j1) {
+
+					// TF - skip chunks that aren't generated
+					ChunkPos chunkPos = new ChunkPos(blockpos3.add(i1, 0, j1));
+					if (!this.world.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
+						continue;
+					}
+
 					for (BlockPos blockpos1 = blockpos3.add(i1, getScanHeight(blockpos3) - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
 						blockpos2 = blockpos1.down();
 
