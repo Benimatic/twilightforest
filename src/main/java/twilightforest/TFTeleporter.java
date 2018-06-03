@@ -142,6 +142,11 @@ public class TFTeleporter extends Teleporter {
 					for (BlockPos blockpos1 = blockpos3.add(i1, getScanHeight(blockpos3) - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
 						blockpos2 = blockpos1.down();
 
+						// TF - don't lookup state if inner condition would fail
+						if (d0 >= 0.0D && blockpos1.distanceSq(blockpos3) >= d0) {
+							continue;
+						}
+
 						// TF - use our portal block
 						if (this.world.getBlockState(blockpos1).getBlock() == TFBlocks.portal) {
 							for (blockpos2 = blockpos1.down(); this.world.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down()) {
