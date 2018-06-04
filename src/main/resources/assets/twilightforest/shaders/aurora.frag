@@ -28,7 +28,7 @@ vec3 hsv2rgb(vec3 c)
 
 void main() {
     float fixedPitch = (pitch/3.2) + 0.5;
-    float fixedY = gl_FragCoord.y / (height / 2.0);
+    float fixedY = gl_FragCoord.y / (resolution.y / 2.0);
 
     // background colour
     vec4 sky = vec4( 40.0 / 255.0, 37.0 / 255.0, 63.0 / 255.0, 1.0 );
