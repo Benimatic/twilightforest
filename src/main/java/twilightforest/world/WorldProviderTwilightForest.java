@@ -143,11 +143,15 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	 */
 	@Override
 	public long getSeed() {
-		if (TFConfig.dimension.twilightForestSeed == null || TFConfig.dimension.twilightForestSeed.length() == 0) {
-			return super.getSeed();
-		} else {
-			return TFConfig.dimension.twilightForestSeed.hashCode();
+		String seed = TFConfig.dimension.twilightForestSeed;
+		if (seed != null && !seed.isEmpty()) {
+			try {
+				return Long.parseLong(seed);
+			} catch (NumberFormatException e) {
+				return seed.hashCode();
+			}
 		}
+		return super.getSeed();
 	}
 
 	@Override
