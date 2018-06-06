@@ -3,6 +3,6 @@
   "defaults": { "textures": { "all": "minecraft:blocks/leaves_oak" } },
   "variants": {
     "inventory": [{ "model": "cube_all" }],
-    "normal": [{ "model": "twilightforest:giant_block" }]
+    "normal": [{ "model": "twilightforest:util/giant_block" }]
   }
 }
