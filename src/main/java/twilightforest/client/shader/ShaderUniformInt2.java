@@ -8,6 +8,7 @@ public class ShaderUniformInt2 extends ShaderUniform {
     private final IntSupplier supplier0;
     private final IntSupplier supplier1;
 
+    @SuppressWarnings("WeakerAccess")
     public ShaderUniformInt2(String name, IntSupplier supplier0, IntSupplier supplier1) {
         super(name);
         this.supplier0 = supplier0;

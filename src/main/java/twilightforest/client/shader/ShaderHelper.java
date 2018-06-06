@@ -17,6 +17,8 @@ import java.util.function.IntConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
@@ -26,7 +28,8 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientEvents;
 
-@SuppressWarnings("ALL")
+import javax.annotation.Nullable;
+
 public final class ShaderHelper {
     private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
 
@@ -34,42 +37,59 @@ public final class ShaderHelper {
     private static final int FRAG = ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
     private static final String PREFIX = "/assets/twilightforest/shaders/";
 
-    public static int enderPortalShader = 0;
-    public static int twilightSkyShader = 0;
-    public static int auroraShader = 0;
-    public static int bloomShader = 0;
+    @SuppressWarnings("WeakerAccess")
+    public static int enderPortalShader, twilightSkyShader, auroraShader, bloomShader;
 
-    public static Framebuffer BLOOM_FB;
-
+    @SuppressWarnings("WeakerAccess")
     public static final ShaderUniformInt TIME = new ShaderUniformInt("time", () -> TFClientEvents.time);
+    @SuppressWarnings("WeakerAccess")
     public static final ShaderUniformFloat YAW = new ShaderUniformFloat("yaw", () -> (MINECRAFT.player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
+    @SuppressWarnings("WeakerAccess")
     public static final ShaderUniformFloat PITCH = new ShaderUniformFloat("pitch", () -> -(MINECRAFT.player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
+    @SuppressWarnings("WeakerAccess")
     public static final ShaderUniformInt2 HEIGHT = new ShaderUniformInt2("resolution", () -> MINECRAFT.displayWidth, () -> MINECRAFT.displayHeight);
 
     public static final ShaderUniform[] COMMON_UNIFORMS = { TIME, YAW, PITCH, HEIGHT };
+    public static Framebuffer bloomFbo;
 
     public static void initShaders() {
-        if(!useShaders())
-            return;
+        IResourceManager iManager;
 
-        BLOOM_FB = new Framebuffer(MINECRAFT.displayWidth, MINECRAFT.displayHeight, true);
-        BLOOM_FB.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
+        if ((iManager = MINECRAFT.getResourceManager()) instanceof SimpleReloadableResourceManager) {
+            ((SimpleReloadableResourceManager) iManager).registerReloadListener(manager -> {
+                deleteShader(enderPortalShader);
+                deleteShader(twilightSkyShader);
+                deleteShader(auroraShader);
+                deleteShader(bloomShader);
 
+                initShaderList();
+            });
+        }
+
+        bloomFbo = new Framebuffer(MINECRAFT.displayWidth, MINECRAFT.displayHeight, true);
+    }
+
+    private static void deleteShader(int id) {
+        if (id != 0) ARBShaderObjects.glDeleteObjectARB(id);
+    }
+
+    private static void initShaderList() {
         enderPortalShader = createProgram("standard.vert", "ender.frag");
         twilightSkyShader = createProgram("standard.vert", "twilight_sky.frag");
         auroraShader      = createProgram("standard.vert", "aurora.frag");
         bloomShader       = createProgram("standard.vert", "bloom.frag");
     }
 
-    public static void useShader(int shader, IntConsumer callback) {
+    public static void useShader(int shader, @Nullable IntConsumer callback) {
         if(!useShaders())
             return;
 
         ARBShaderObjects.glUseProgramObjectARB(shader);
 
-        if(shader != 0) callback.accept(shader);
+        if(shader != 0 && callback != null) callback.accept(shader);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static void useShader(int shader) {
         useShader(shader, null);
     }
@@ -78,6 +98,7 @@ public final class ShaderHelper {
         useShader(0);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static boolean useShaders() {
         // TEMA: here's where you'd stick in any config option for enabling/disabling the shaders... don't know how it would interact with the shader mod, etc.
 
@@ -89,24 +110,16 @@ public final class ShaderHelper {
     // http://lwjgl.org/wiki/index.php?title=GLSL_Shaders_with_LWJGL
 
     public static int createProgram(String vert, String frag) {
-        int program = 0;
+        int program = ARBShaderObjects.glCreateProgramObjectARB();
 
-        program = ARBShaderObjects.glCreateProgramObjectARB();
         if(program == 0)
             return 0;
 
-        int vertId = 0;
-        if(vert != null)
-            vertId = createShader(PREFIX + vert, VERT);
-        if(vert != null)
-            ARBShaderObjects.glAttachObjectARB(program, vertId);
+        int vertId = createShader(PREFIX + vert, VERT);
+        ARBShaderObjects.glAttachObjectARB(program, vertId);
 
-
-        int fragId = 0;
-        if(frag != null)
-            fragId = createShader(PREFIX + frag, FRAG);
-        if(frag != null)
-            ARBShaderObjects.glAttachObjectARB(program, fragId);
+        int fragId = createShader(PREFIX + frag, FRAG);
+        ARBShaderObjects.glAttachObjectARB(program, fragId);
 
         ARBShaderObjects.glLinkProgramARB(program);
         if(ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
@@ -162,7 +175,7 @@ public final class ShaderHelper {
         try {
             reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 
-            Exception innerExc= null;
+            Exception innerExc = null;
             try {
                 String line;
                 while((line = reader.readLine()) != null)
@@ -173,9 +186,7 @@ public final class ShaderHelper {
                 try {
                     reader.close();
                 } catch(Exception exc) {
-                    if(innerExc == null)
-                        innerExc = exc;
-                    else exc.printStackTrace();
+                    innerExc = exc;
                 }
             }
 

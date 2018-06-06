@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 public class ShaderUniformInt extends ShaderUniform {
     private final IntSupplier supplier;
 
+    @SuppressWarnings("WeakerAccess")
     public ShaderUniformInt(String name, IntSupplier supplier) {
         super(name);
         this.supplier = supplier;

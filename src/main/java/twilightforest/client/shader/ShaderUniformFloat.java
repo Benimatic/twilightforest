@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 public class ShaderUniformFloat extends ShaderUniform {
     private final Supplier<Float> supplier;
 
+    @SuppressWarnings("WeakerAccess")
     public ShaderUniformFloat(String name, Supplier<Float> supplier) {
         super(name);
         this.supplier = supplier;

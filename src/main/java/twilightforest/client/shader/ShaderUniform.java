@@ -1,11 +1,9 @@
 package twilightforest.client.shader;
 
-/**
- * Created by Drullkus on 6/2/18.
- */
 public abstract class ShaderUniform {
     protected final String name;
 
+    @SuppressWarnings("WeakerAccess")
     public ShaderUniform(String name) {
         this.name = name;
     }
