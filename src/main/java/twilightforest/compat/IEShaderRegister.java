@@ -7,18 +7,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ScreenShotHelper;
-import net.minecraft.util.text.TextComponentString;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL33;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.TFClientEvents;
 import twilightforest.client.shader.ShaderHelper;
 import twilightforest.client.shader.ShaderUniform;
 
-import java.io.File;
 import java.util.List;
 import java.util.function.IntConsumer;
 
@@ -26,7 +20,6 @@ public class IEShaderRegister {
     static final List<ShaderRegistry.ShaderRegistryEntry> SHADERS;
 
     private static final ResourceLocation TEXTURE_STARS = new ResourceLocation("textures/entity/end_portal.png");
-    private static int lastTime;
 
     private static final TriConsumer<IntConsumer, Boolean, Float> preShader = (shaderCallback, pre, partialTick) -> {
         if (pre) GlStateManager.scale(1.005f, 1.005f, 1.005f);
@@ -34,23 +27,10 @@ public class IEShaderRegister {
 
     private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
 
-    private static final TriConsumer<IntConsumer, Boolean, Float> renderShader = (shaderCallback, pre, partialTick) -> {
+    private static final TriConsumer<IntConsumer, Boolean, Float> TWILIGHT_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
         if (pre) {
-            // Uncomment to enable reloading
-            //if (!MINECRAFT.isGamePaused() && (TFClientEvents.time % 64) == 0 && lastTime != TFClientEvents.time) {
-            //    MINECRAFT.ingameGUI.getChatGUI().printChatMessage(new TextComponentString("Reloading shader! " + TFClientEvents.time));
-            //    ShaderHelper.bloomShader = ShaderHelper.createProgram("standard.vert", "bloom.frag");
-
-            //    lastTime = TFClientEvents.time;
-            //}
-
-            //ShaderHelper.bloomFbo.bindFramebuffer(false);
-
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glDepthFunc(GL11.GL_EQUAL);
-
-            //GL30.glBindFragDataLocation(ShaderHelper.bloomShader, 0, "fragOut");
-            //GL30.glBindFragDataLocation(ShaderHelper.bloomShader, 1, "brightOut");
 
             ShaderHelper.useShader(ShaderHelper.twilightSkyShader, shaderCallback);
             MINECRAFT.getTextureManager().bindTexture(TEXTURE_STARS);
@@ -61,15 +41,7 @@ public class IEShaderRegister {
             GL11.glDepthFunc(GL11.GL_LEQUAL);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-            //MINECRAFT.getFramebuffer().bindFramebuffer(false);
-
             GlStateManager.scale(1/1.005f, 1/1.005f, 1/1.005f);
-
-            //if (!MINECRAFT.isGamePaused() && (TFClientEvents.time % 64) == 1 && lastTime != TFClientEvents.time) {
-            //    MINECRAFT.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(new File(MINECRAFT.mcDataDir, "tf_testing"), String.valueOf((TFClientEvents.time % 64)/64), MINECRAFT.displayWidth, MINECRAFT.displayHeight, ShaderHelper.bloomFbo));
-
-            //    lastTime = TFClientEvents.time;
-            //}
         }
     };
 
@@ -109,9 +81,9 @@ public class IEShaderRegister {
         ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseMinecart(
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_0.png"  ), 0xFF_00_AA_00),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_0.png"), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_5.png"), 0xFF_4C_64_5B),
+                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_5.png"), 0xFF_28_25_3F),
                 new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_4.png"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_4.png"), 0xFF_FF_FF_FF, renderShader, ShaderHelper.COMMON_UNIFORMS),
+                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_4.png"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_uncoloured.png"), 0xFF_FF_FF_FF)
         ), rarity);
 
@@ -121,7 +93,7 @@ public class IEShaderRegister {
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_0"   ), 0xFF_FF_FF_FF),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_28_25_3F),
                 new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_FF_FF_FF, renderShader, ShaderHelper.COMMON_UNIFORMS),
+                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_uncoloured"), 0xFF_FF_FF_FF)
         ), rarity);
 
@@ -130,7 +102,7 @@ public class IEShaderRegister {
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_0"  ), 0xFF_00_AA_00),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_28_25_3F),
                 new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_FF_FF_FF, renderShader, ShaderHelper.COMMON_UNIFORMS),
+                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_uncoloured"), 0xFF_FF_FF_FF)
         ), rarity);
 
@@ -139,7 +111,7 @@ public class IEShaderRegister {
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_0"  ), 0xFF_00_AA_00),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_28_25_3F),
                 new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_FF_FF_FF, renderShader, ShaderHelper.COMMON_UNIFORMS),
+                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_uncoloured"), 0xFF_FF_FF_FF),
                 new ShaderCase.ShaderLayer( null, 0xFF_FF_FF_FF)
         ), rarity);
@@ -149,7 +121,7 @@ public class IEShaderRegister {
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_0"  ), 0xFF_00_AA_00),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_28_25_3F),
                 new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_FF_FF_FF, renderShader, ShaderHelper.COMMON_UNIFORMS),
+                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_uncoloured"), 0xFF_FF_FF_FF)
         ), rarity);
 
@@ -157,7 +129,7 @@ public class IEShaderRegister {
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_0"  ), 0xFF_4C_64_5B),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_0"  ), 0xFF_00_AA_00),
                 new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/shield_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/shield_1_4"), 0xFF_FF_FF_FF, renderShader, ShaderHelper.COMMON_UNIFORMS),
+                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/shield_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_uncoloured"), 0xFF_FF_FF_FF)
         ), rarity);
 
@@ -165,7 +137,7 @@ public class IEShaderRegister {
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_0"  ), 0xFF_4C_64_5B),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_0"  ), 0xFF_00_AA_00),
                 new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_1_4"), 0xFF_FF_FF_FF, renderShader, ShaderHelper.COMMON_UNIFORMS),
+                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
                 new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_uncoloured"), 0xFF_FF_FF_FF)
         ), rarity);
     }

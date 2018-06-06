@@ -49,7 +49,10 @@ public final class ShaderHelper {
     @SuppressWarnings("WeakerAccess")
     public static final ShaderUniformInt2 HEIGHT = new ShaderUniformInt2("resolution", () -> MINECRAFT.displayWidth, () -> MINECRAFT.displayHeight);
 
-    public static final ShaderUniform[] COMMON_UNIFORMS = { TIME, YAW, PITCH, HEIGHT };
+    public static final ShaderUniform[] ENDER_UNIFORMS = { TIME, YAW, PITCH };
+    @SuppressWarnings("unused")
+    public static final ShaderUniform[] ALL_UNIFORMS = { TIME, YAW, PITCH, HEIGHT };
+    @SuppressWarnings("WeakerAccess")
     public static Framebuffer bloomFbo;
 
     public static void initShaders() {
@@ -109,7 +112,8 @@ public final class ShaderHelper {
     // Most of the code taken from the LWJGL wiki
     // http://lwjgl.org/wiki/index.php?title=GLSL_Shaders_with_LWJGL
 
-    public static int createProgram(String vert, String frag) {
+    @SuppressWarnings("SameParameterValue")
+    private static int createProgram(String vert, String frag) {
         int program = ARBShaderObjects.glCreateProgramObjectARB();
 
         if(program == 0)

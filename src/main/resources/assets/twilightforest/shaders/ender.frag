@@ -9,12 +9,10 @@ uniform int time;
 
 uniform float yaw;
 uniform float pitch;
-uniform ivec2 resolution;
 
 varying vec3 position;
 
-mat4 rotationMatrix(vec3 axis, float angle)
-{
+mat4 rotationMatrix(vec3 axis, float angle) {
 
     axis = normalize(axis);
     float s = sin(angle);
