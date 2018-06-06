@@ -634,31 +634,35 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		}
 	}
 
-	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome biomes[]) {
-		IBlockState ice = TFConfig.performance.glacierPackedIce ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
+	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] biomes) {
+
+		IBlockState glacierBase = Blocks.GRAVEL.getDefaultState();
+		IBlockState glacierMain = TFConfig.performance.glacierPackedIce ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
+		IBlockState glacierTop = Blocks.ICE.getDefaultState();
 
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Biome biome = biomes[x & 15 | (z & 15) << 4];
 				if (biome == TFBiomes.glacier) {
 					// find the (current) top block
-					int topLevel = -1;
+					int gBase = -1;
 					for (int y = 127; y >= 0; y--) {
 						Block currentBlock = primer.getBlockState(x, y, z).getBlock();
 						if (currentBlock == Blocks.STONE) {
-							topLevel = y;
-							primer.setBlockState(x, y, z, Blocks.GRAVEL.getDefaultState());
+							gBase = y + 1;
+							primer.setBlockState(x, y, z, glacierBase);
 							break;
 						}
 					}
 
 					// raise the glacier from that top block
 					int gHeight = 32;
-					int gTop = topLevel + gHeight + 1;
+					int gTop = Math.min(gBase + gHeight, 127);
 
-					for (int y = topLevel + 1; y <= gTop && y < 128; y++) {
-						primer.setBlockState(x, y, z, ice);
+					for (int y = gBase; y < gTop; y++) {
+						primer.setBlockState(x, y, z, glacierMain);
 					}
+					primer.setBlockState(x, gTop, z, glacierTop);
 				}
 			}
 		}
