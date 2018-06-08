@@ -40,7 +40,6 @@ import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
-import twilightforest.item.TFItems;
 import twilightforest.tileentity.critters.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
@@ -138,8 +137,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMoonwormShot.class, RenderTFMoonwormShot::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFCharmEffect.class, m -> new RenderTFCharm(m, Minecraft.getMinecraft().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBomb.class, m -> new RenderSnowball<>(m, Items.MAGMA_CREAM, Minecraft.getMinecraft().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownAxe.class, m -> new RenderTFThrownAxe(m, TFItems.knightmetal_axe));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownPick.class, m -> new RenderTFThrownAxe(m, TFItems.knightmetal_pickaxe));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownWep.class, RenderTFThrownWep::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFFallingIce.class, RenderTFFallingIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceBomb.class, RenderTFThrownIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new RenderSnowball<>(m, Items.SNOWBALL, Minecraft.getMinecraft().getRenderItem()));

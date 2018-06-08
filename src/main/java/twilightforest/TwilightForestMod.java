@@ -1,18 +1,12 @@
 package twilightforest;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.datafix.FixTypes;
-import net.minecraft.util.datafix.IFixableData;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.common.util.ModFixs;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -37,9 +31,6 @@ import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
 import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Mod( modid = TwilightForestMod.ID,
 		name = "The Twilight Forest",
@@ -237,8 +228,7 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.MOONWORM_SHOT, EntityTFMoonwormShot.class, id++, 150, 3, true);
 		TFEntities.registerEntity(TFEntityNames.SLIME_BLOB, EntityTFSlimeProjectile.class, id++, 150, 3, true);
 		TFEntities.registerEntity(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.THROWN_AXE, EntityTFThrownAxe.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.THROWN_PICK, EntityTFThrownPick.class, id++, 80, 3, true);
+		TFEntities.registerEntity(TFEntityNames.THROWN_WEP, EntityTFThrownWep.class, id++, 80, 3, true);
 		TFEntities.registerEntity(TFEntityNames.FALLING_ICE, EntityTFFallingIce.class, id++, 80, 3, true);
 		TFEntities.registerEntity(TFEntityNames.THROWN_ICE, EntityTFIceBomb.class, id++, 80, 2, true);
 		TFEntities.registerEntity(TFEntityNames.SEEKER_ARROW, EntitySeekerArrow.class, id++, 150, 1, true);

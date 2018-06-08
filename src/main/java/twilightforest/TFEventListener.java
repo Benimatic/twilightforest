@@ -769,8 +769,7 @@ public class TFEventListener {
 				|| projectile instanceof EntityTFTwilightWandBolt
 				|| projectile instanceof EntityTFLichBolt
 				|| projectile instanceof EntityTFLichBomb
-				|| projectile instanceof EntityTFThrownAxe
-				|| projectile instanceof EntityTFThrownPick
+				|| projectile instanceof EntityTFThrownWep
 				|| projectile instanceof EntityTFIceBomb
 				|| projectile instanceof EntityTFIceSnowball
 				|| projectile instanceof EntityTFSlimeProjectile
