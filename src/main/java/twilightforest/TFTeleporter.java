@@ -286,12 +286,11 @@ public class TFTeleporter extends Teleporter {
 
 					while (pos.getY() > 0 && world.isAirBlock(pos.down())) pos = pos.down();
 
-					if (ideal ? isIdealPortal(pos) : isOkayPortal(pos)) {
-						double yWeight = (pos.getY() + 0.5D) - entity.posY * yFactor;
-						double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
+					double yWeight = (pos.getY() + 0.5D) - entity.posY * yFactor;
+					double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
 
-
-						if (spotWeight < 0.0D || rPosWeight < spotWeight) {
+					if (spotWeight < 0.0D || rPosWeight < spotWeight) {
+						if (ideal ? isIdealPortal(pos) : isOkayPortal(pos)) {
 							spotWeight = rPosWeight;
 							spot = pos;
 						}
@@ -314,9 +313,7 @@ public class TFTeleporter extends Teleporter {
 						return false;
 					}
 				}
-
 			}
-
 		}
 		return true;
 	}
@@ -338,40 +335,42 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private void makePortalAt(World world, BlockPos pos) {
+
 		if (pos.getY() < 30) {
 			pos = new BlockPos(pos.getX(), 30, pos.getZ());
-		}
-
-		if (pos.getY() > 128 - 10) {
+		} else if (pos.getY() > 128 - 10) {
 			pos = new BlockPos(pos.getX(), 128 - 10, pos.getZ());
 		}
 
 		// sink the portal 1 into the ground
 		pos = pos.down();
 
-
 		// grass all around it
-		world.setBlockState(pos.west().north(), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.north(), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.east().north(), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.east(2).north(), Blocks.GRASS.getDefaultState());
+		IBlockState grass = Blocks.GRASS.getDefaultState();
 
-		world.setBlockState(pos.west(), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.east(2), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.west().north(), grass);
+		world.setBlockState(pos.north(), grass);
+		world.setBlockState(pos.east().north(), grass);
+		world.setBlockState(pos.east(2).north(), grass);
 
-		world.setBlockState(pos.west().south(), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.east(2).south(), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.west(), grass);
+		world.setBlockState(pos.east(2), grass);
 
-		world.setBlockState(pos.west().south(2), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.south(2), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.east().south(2), Blocks.GRASS.getDefaultState());
-		world.setBlockState(pos.east(2).south(2), Blocks.GRASS.getDefaultState());
+		world.setBlockState(pos.west().south(), grass);
+		world.setBlockState(pos.east(2).south(), grass);
+
+		world.setBlockState(pos.west().south(2), grass);
+		world.setBlockState(pos.south(2), grass);
+		world.setBlockState(pos.east().south(2), grass);
+		world.setBlockState(pos.east(2).south(2), grass);
 
 		// dirt under it
-		world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState());
-		world.setBlockState(pos.east().down(), Blocks.DIRT.getDefaultState());
-		world.setBlockState(pos.south().down(), Blocks.DIRT.getDefaultState());
-		world.setBlockState(pos.east().south().down(), Blocks.DIRT.getDefaultState());
+		IBlockState dirt = Blocks.DIRT.getDefaultState();
+
+		world.setBlockState(pos.down(), dirt);
+		world.setBlockState(pos.east().down(), dirt);
+		world.setBlockState(pos.south().down(), dirt);
+		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
 		IBlockState portal = TFBlocks.portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
