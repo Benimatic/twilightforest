@@ -61,6 +61,7 @@ public enum TFCompat {
         }
     }, // TODO Forestry
     IMMERSIVEENGINEERING("Immersive Engineering") {
+        @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
             items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
 
@@ -130,6 +131,20 @@ public enum TFCompat {
         this.modName = modName;
     }
 
+    public static void initCompatItems(TFRegisterItemEvent.ItemRegistryHelper items) {
+        for (TFCompat compat : TFCompat.values()) {
+            if (compat.isActivated) {
+                try {
+                    compat.initItems(items);
+                } catch (Exception e) {
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in initializing items!");
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
+            }
+        }
+    }
+
     public static void preInitCompat() {
         for (TFCompat compat : TFCompat.values()) {
             if (Loader.isModLoaded(compat.name().toLowerCase())) {
@@ -145,20 +160,6 @@ public enum TFCompat {
             } else {
                 compat.isActivated = false;
                 TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.modName + ".");
-            }
-        }
-    }
-
-    public static void initCompatItems(TFRegisterItemEvent.ItemRegistryHelper items) {
-        for (TFCompat compat : TFCompat.values()) {
-            if (compat.isActivated) {
-                try {
-                    compat.initItems(items);
-                } catch (Exception e) {
-                    compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in initializing items!");
-                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
-                }
             }
         }
     }

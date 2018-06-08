@@ -4,12 +4,18 @@ import blusunrize.immersiveengineering.api.shader.*;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.lwjgl.opengl.ARBMultitexture;
+import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.TFClientEvents;
 import twilightforest.client.shader.ShaderHelper;
 import twilightforest.client.shader.ShaderUniform;
 
@@ -17,33 +23,40 @@ import java.util.List;
 import java.util.function.IntConsumer;
 
 public class IEShaderRegister {
-    static final List<ShaderRegistry.ShaderRegistryEntry> SHADERS;
+    // Layer Constants
+    private static final ShaderCase.ShaderLayer nullLayer = new ShaderCase.ShaderLayer( null, 0xFF_FF_FF_FF);
+    private static final ShaderCase.ShaderLayer uncoloredRevolverLayer  = new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_uncoloured"          ), 0xFF_FF_FF_FF);
+    private static final ShaderCase.ShaderLayer uncoloredChemthrowLayer = new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_uncoloured"           ), 0xFF_FF_FF_FF);
+    private static final ShaderCase.ShaderLayer uncoloredDrillLayer     = new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_uncoloured"          ), 0xFF_FF_FF_FF);
+    private static final ShaderCase.ShaderLayer uncoloredRailgunLayer   = new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_uncoloured"               ), 0xFF_FF_FF_FF);
+    private static final ShaderCase.ShaderLayer uncoloredShieldLayer    = new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_uncoloured"                ), 0xFF_FF_FF_FF);
+    private static final ShaderCase.ShaderLayer uncoloredMinecartLayer  = new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_uncoloured.png"), 0xFF_FF_FF_FF);
+    private static final ShaderCase.ShaderLayer uncoloredBalloonLayer   = new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_uncoloured"              ), 0xFF_FF_FF_FF);
+
+    // Shader Constants
+    private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
 
     private static final ResourceLocation TEXTURE_STARS = new ResourceLocation("textures/entity/end_portal.png");
 
-    private static final TriConsumer<IntConsumer, Boolean, Float> preShader = (shaderCallback, pre, partialTick) -> {
-        if (pre) GlStateManager.scale(1.005f, 1.005f, 1.005f);
-    };
-
-    private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
-
     private static final TriConsumer<IntConsumer, Boolean, Float> TWILIGHT_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
         if (pre) {
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            GL11.glDepthFunc(GL11.GL_EQUAL);
-
             ShaderHelper.useShader(ShaderHelper.twilightSkyShader, shaderCallback);
+
+            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+            MINECRAFT.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+            OpenGlHelper.setActiveTexture(OpenGlHelper.GL_TEXTURE2);
             MINECRAFT.getTextureManager().bindTexture(TEXTURE_STARS);
         } else {
-            MINECRAFT.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             ShaderHelper.releaseShader();
 
-            GL11.glDepthFunc(GL11.GL_LEQUAL);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-
-            GlStateManager.scale(1/1.005f, 1/1.005f, 1/1.005f);
+            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+            MINECRAFT.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         }
     };
+
+    // Registering
+    static final List<ShaderRegistry.ShaderRegistryEntry> SHADERS;
 
     static {
         EnumRarity rarity = TwilightForestMod.getRarity();
@@ -78,76 +91,47 @@ public class IEShaderRegister {
         );
 
         // ShaderCase Overrides
-        ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseMinecart(
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_0.png"  ), 0xFF_00_AA_00),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_0.png"), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_5.png"), 0xFF_28_25_3F),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_4.png"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_4.png"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering:textures/models/shaders/minecart_uncoloured.png"), 0xFF_FF_FF_FF)
-        ), rarity);
 
-        ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseRevolver(
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_grip"), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_0"   ), 0xFF_00_AA_00),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_0"   ), 0xFF_FF_FF_FF),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_28_25_3F),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_uncoloured"), 0xFF_FF_FF_FF)
-        ), rarity);
+        registerShaderCaseRevolver("Twilight", 0xFF_00_AA_00, 0xFF_4C_64_5B, 0xFF_FF_FF_FF, rarity,
+                new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_28_25_3F),
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_4" ), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.STAR_UNIFORMS)
+        );
 
-        ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseChemthrower(
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_0"  ), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_0"  ), 0xFF_00_AA_00),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_28_25_3F),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_uncoloured"), 0xFF_FF_FF_FF)
-        ), rarity);
+        registerShaderCaseChemthrower("Twilight", 0xFF_00_AA_00, 0xFF_4C_64_5B, rarity,
+                new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_28_25_3F),
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.STAR_UNIFORMS)
+        );
 
-        ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseDrill(
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_0"  ), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_0"  ), 0xFF_00_AA_00),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_28_25_3F),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_uncoloured"), 0xFF_FF_FF_FF),
-                new ShaderCase.ShaderLayer( null, 0xFF_FF_FF_FF)
-        ), rarity);
+        registerShaderCaseDrill("Twilight", 0xFF_00_AA_00, 0xFF_4C_64_5B, rarity,
+                new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_28_25_3F),
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.STAR_UNIFORMS)
+        );
 
-        ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseRailgun(
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_0"  ), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_0"  ), 0xFF_00_AA_00),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_28_25_3F),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_uncoloured"), 0xFF_FF_FF_FF)
-        ), rarity);
+        registerShaderCaseRailgun("Twilight", 0xFF_00_AA_00, 0xFF_4C_64_5B, rarity,
+                new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_28_25_3F),
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.STAR_UNIFORMS)
+        );
 
-        ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseShield(
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_0"  ), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_0"  ), 0xFF_00_AA_00),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/shield_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "items/shaders/shield_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_uncoloured"), 0xFF_FF_FF_FF)
-        ), rarity);
+        registerShaderCaseShield("Twilight", 0xFF_00_AA_00, 0xFF_4C_64_5B, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.STAR_UNIFORMS)
+        );
 
-        ShaderRegistry.registerShaderCase("Twilight", new ShaderCaseBalloon(
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_0"  ), 0xFF_4C_64_5B),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_0"  ), 0xFF_00_AA_00),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_1_4"), 0xFF_00_AA_00, preShader),
-                new ShaderShaderLayer     ( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.ENDER_UNIFORMS),
-                new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_uncoloured"), 0xFF_FF_FF_FF)
-        ), rarity);
+        registerShaderCaseMinecart("Twilight", 0xFF_00_AA_00, 0xFF_4C_64_5B, rarity,
+                new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_5.png"), 0xFF_28_25_3F),
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_4.png"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.STAR_UNIFORMS)
+        );
+
+        registerShaderCaseBalloon("Twilight", 0xFF_00_AA_00, 0xFF_4C_64_5B, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_1_4"), 0xFF_FF_FF_FF, TWILIGHT_TRICONSUMER, ShaderHelper.STAR_UNIFORMS)
+        );
     }
 
     // Shaderizing!
-    private static class ShaderShaderLayer extends ShaderCase.DynamicShaderLayer {
+    private static class ShaderConsumerShaderLayer extends ShaderCase.DynamicShaderLayer {
         private final TriConsumer<IntConsumer, Boolean, Float> render;
         private final IntConsumer shaderCallback;
 
-        ShaderShaderLayer(ResourceLocation texture, int colour, TriConsumer<IntConsumer, Boolean, Float> render, ShaderUniform... shaderParams) {
+        ShaderConsumerShaderLayer(ResourceLocation texture, int colour, TriConsumer<IntConsumer, Boolean, Float> render, ShaderUniform... shaderParams) {
             super(texture, colour);
             this.render = render;
 
@@ -158,5 +142,115 @@ public class IEShaderRegister {
         public void modifyRender(boolean pre, float partialTick) {
             this.render.accept(shaderCallback, pre, partialTick);
         }
+    }
+
+    private static void registerWithShaders(String name, String type, int mainColor, int secondaryColor, int gripColor, int bladeColor, EnumRarity rarity, TriConsumer<IntConsumer, Boolean, Float> render, ShaderUniform... shaderParams) {
+        registerShaderCaseRevolver( name, mainColor, gripColor, bladeColor, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_1_" + type ), 0xFF_FF_FF_FF, render, shaderParams)
+        );
+
+        registerShaderCaseChemthrower( name, mainColor, gripColor, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_1_" + type ), 0xFF_FF_FF_FF, render, shaderParams)
+        );
+
+        registerShaderCaseDrill( name, mainColor, gripColor, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_1_" + type ), 0xFF_FF_FF_FF, render, shaderParams)
+        );
+
+        registerShaderCaseRailgun( name, mainColor, gripColor, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/railgun_1_" + type ), 0xFF_FF_FF_FF, render, shaderParams)
+        );
+
+        registerShaderCaseShield( name, mainColor, gripColor, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "items/shaders/shield_1_" + type ), 0xFF_FF_FF_FF, render, shaderParams)
+        );
+
+        registerShaderCaseMinecart( name, mainColor, gripColor, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_" + type + ".png"), 0xFF_FF_FF_FF, render, shaderParams)
+        );
+
+        registerShaderCaseBalloon( name, mainColor, gripColor, rarity,
+                new ShaderConsumerShaderLayer( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_1_" + type ), 0xFF_FF_FF_FF, render, shaderParams)
+        );
+    }
+
+    // Shader Case Registration helpers
+
+    @SuppressWarnings("UnusedReturnValue")
+    private static ShaderCaseRevolver registerShaderCaseRevolver(String name, int mainColor, int gripColor, int bladeColor, EnumRarity rarity, ShaderCase.ShaderLayer... additionalLayers) {
+        ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
+
+        return ShaderRegistry.registerShaderCase(name, new ShaderCaseRevolver(
+                shaderLayerBuilder.add(
+                        new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_grip"), gripColor),
+                        new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_0"   ), mainColor),
+                        new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_0"   ), bladeColor)
+                ).add(additionalLayers).add(uncoloredRevolverLayer).build()), rarity);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    private static ShaderCaseChemthrower registerShaderCaseChemthrower(String name, int mainColor, int gripColor, EnumRarity rarity, ShaderCase.ShaderLayer... additionalLayers) {
+        ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
+
+        return ShaderRegistry.registerShaderCase(name, new ShaderCaseChemthrower(
+                shaderLayerBuilder.add(
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_0"  ), gripColor),
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_0"  ), mainColor)
+                ).add(additionalLayers).add(uncoloredChemthrowLayer).build()), rarity);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    private static ShaderCaseDrill registerShaderCaseDrill(String name, int mainColor, int gripColor, EnumRarity rarity, ShaderCase.ShaderLayer... additionalLayers) {
+        ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
+
+        return ShaderRegistry.registerShaderCase(name, new ShaderCaseDrill(
+                shaderLayerBuilder.add(
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_0"  ), gripColor),
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_0"  ), mainColor)
+                ).add(additionalLayers).add(uncoloredDrillLayer).add(nullLayer).build()), rarity);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    private static ShaderCaseRailgun registerShaderCaseRailgun(String name, int mainColor, int gripColor, EnumRarity rarity, ShaderCase.ShaderLayer... additionalLayers) {
+        ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
+
+        return ShaderRegistry.registerShaderCase(name, new ShaderCaseRailgun(
+                shaderLayerBuilder.add(
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_0"  ), gripColor),
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/railgun_0"  ), mainColor)
+                ).add(uncoloredRailgunLayer).build()), rarity);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    private static ShaderCaseShield registerShaderCaseShield(String name, int mainColor, int gripColor, EnumRarity rarity, ShaderCase.ShaderLayer... additionalLayers) {
+        ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
+
+        return ShaderRegistry.registerShaderCase(name, new ShaderCaseShield(
+                shaderLayerBuilder.add(
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/shield_0"  ), gripColor),
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "items/shaders/shield_0"  ), mainColor)
+                ).add(additionalLayers).add(uncoloredShieldLayer).build()), rarity);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    private static ShaderCaseMinecart registerShaderCaseMinecart(String name, int bodyColor, int secondaryColor, EnumRarity rarity, ShaderCase.ShaderLayer... additionalLayers) {
+        ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
+
+        return ShaderRegistry.registerShaderCase(name, new ShaderCaseMinecart(
+                shaderLayerBuilder.add(
+                        new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_0.png"   ), bodyColor),
+                        new ShaderCase.ShaderLayer( new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_1_0.png" ), secondaryColor)
+                ).add(additionalLayers).add(uncoloredMinecartLayer).build()), rarity);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    private static ShaderCaseBalloon registerShaderCaseBalloon(String name, int mainColor, int gripColor, EnumRarity rarity, ShaderCase.ShaderLayer... additionalLayers) {
+        ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
+
+        return ShaderRegistry.registerShaderCase(name, new ShaderCaseBalloon(
+                shaderLayerBuilder.add(
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_0" ), gripColor),
+                        new ShaderCase.ShaderLayer   ( new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_0" ), mainColor)
+                ).add(additionalLayers).add(uncoloredBalloonLayer).build()), rarity);
     }
 }

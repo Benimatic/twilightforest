@@ -4,7 +4,9 @@
 
 // Modifed version of ender.frag
 
-uniform sampler2D texture;
+uniform sampler2D zero; // Main minecraft atlas
+uniform sampler2D one;  // Stars
+
 uniform int time;
 
 uniform float yaw;
@@ -12,6 +14,8 @@ uniform float pitch;
 uniform ivec2 resolution;
 
 varying vec3 position;
+
+varying vec2 texCoord0;
 
 vec4 interpolate(vec4 v1, vec4 v2, float placement) {
     placement = clamp(placement, 0.0, 1.0);
@@ -83,7 +87,7 @@ void main() {
 		vec2 tex = vec2( u * scale, (v + time * 0.00006) * scale * 0.6 );
 
 		// sample the texture
-		vec4 tcol = texture2D(texture, tex);
+		vec4 tcol = texture2D(one, tex);
 
 		// set the alpha, blending out at the bunched ends
 		float a = tcol.r == 1 ? 1 : 0; // * (0.05 + (1.0/mult) * 0.65) * (1-smoothstep(0.15, 0.48, abs(v-0.5)));
@@ -92,5 +96,7 @@ void main() {
 		col = col*(1-a) + vec4(1)*a;
 	}
 
-    gl_FragColor = col;
+	vec4 texIn = texture2D(zero, vec2(texCoord0));
+
+    gl_FragColor = vec4(col.xyz, texIn.a);
 }

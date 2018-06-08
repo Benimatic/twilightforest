@@ -12,6 +12,6 @@ uniform ivec2 resolution;
 
 varying vec3 position;
 void main() {
-    fragColorOut = vec4(1, 0.5, 0, 1);
-    brightColorOut = vec4(0, 0.5, 1, 1);
+    //fragColorOut = vec4(1, 0.5, 0, 1);
+    //brightColorOut = vec4(0, 0.5, 1, 1);
 }
