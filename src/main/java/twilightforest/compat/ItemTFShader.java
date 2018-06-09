@@ -114,7 +114,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (tab == TFItems.creativeTab) {
-            for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.SHADERS) {
+            for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
                 NBTTagCompound compound = new NBTTagCompound();
 
                 ItemStack stack = new ItemStack(this, 1, 0);

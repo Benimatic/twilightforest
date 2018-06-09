@@ -4,14 +4,19 @@
 
 // Modifed version of ender.frag
 
-uniform sampler2D texture;
-uniform int time;
+uniform sampler2D zero; // Main minecraft atlas
+uniform sampler2D two;  // Stars
+
+uniform float time;
 
 uniform float yaw;
 uniform float pitch;
 uniform ivec2 resolution;
 
 varying vec3 position;
+varying vec3 worldPos;
+
+varying vec2 texCoord0;
 
 vec4 interpolate(vec4 v1, vec4 v2, float placement) {
     placement = clamp(placement, 0.0, 1.0);
@@ -28,6 +33,12 @@ mat4 rotationMatrix(vec3 axis, float angle){
                 oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
                 oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
                 0.0,                                0.0,                                0.0,                                1.0);
+}
+
+float roundEither(float valueIn) {
+    float valueOut = valueIn + 0.5;
+
+    return valueOut - mod(valueOut, 1.0);
 }
 
 void main() {
@@ -83,7 +94,7 @@ void main() {
 		vec2 tex = vec2( u * scale, (v + time * 0.00006) * scale * 0.6 );
 
 		// sample the texture
-		vec4 tcol = texture2D(texture, tex);
+		vec4 tcol = texture2D(two, tex);
 
 		// set the alpha, blending out at the bunched ends
 		float a = tcol.r == 1 ? 1 : 0; // * (0.05 + (1.0/mult) * 0.65) * (1-smoothstep(0.15, 0.48, abs(v-0.5)));
@@ -92,5 +103,5 @@ void main() {
 		col = col*(1-a) + vec4(1)*a;
 	}
 
-    gl_FragColor = col;
+    gl_FragColor = vec4(col.xyz, texture2D(zero, vec2(texCoord0)).a * 2.0-1);//roundEither(texture2D(zero, vec2(texCoord0)).a * 2.0-1));
 }

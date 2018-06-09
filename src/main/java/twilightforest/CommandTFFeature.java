@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -10,6 +11,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import twilightforest.client.shader.ShaderHelper;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
@@ -216,7 +219,16 @@ public class CommandTFFeature extends CommandBase {
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				changeStructureActivity(sender, false);
 			}
-		};
+		};/*, RELOADSHADERS {
+			@Override
+			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+				// Reload our shaders without reloading all of the game resources
+				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+					TwilightForestMod.LOGGER.info("Reloaded");
+					ShaderHelper.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
+				}
+			}
+		};//*/
 
 		private final static String[] ACTION_LIST;
 		//private final static String actionListInOneLine;

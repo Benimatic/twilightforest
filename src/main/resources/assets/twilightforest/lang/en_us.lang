@@ -127,6 +127,7 @@ tile.TFLeaves.2.name=Mangrove Leaves
 tile.TFLeaves.3.name=Rainbow Oak Leaves
 tile.TFFirefly.name=Firefly
 tile.TFCicada.name=Cicada
+tile.TFCicada.desc=What if this could be launched at someone with a Railgun...?
 item.TFPortal.name=Twilight Forest Portal
 tile.TFPortal.name=Twilight Forest Portal
 tile.TFMazestone.0.name=Mazestone

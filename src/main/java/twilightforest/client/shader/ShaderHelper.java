@@ -17,12 +17,11 @@ import java.util.function.IntConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 
+import net.minecraft.client.renderer.texture.PngSizeInfo;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
-import org.lwjgl.opengl.ARBFragmentShader;
-import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.ARBVertexShader;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientEvents;
@@ -32,6 +31,8 @@ import javax.annotation.Nullable;
 public final class ShaderHelper {
     private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
 
+    private static IResourceManagerReloadListener shaderReloadListener;
+
     private static final int VERT = ARBVertexShader.GL_VERTEX_SHADER_ARB;
     private static final int FRAG = ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
     private static final String PREFIX = "/assets/twilightforest/shaders/";
@@ -40,7 +41,7 @@ public final class ShaderHelper {
     public static int enderPortalShader, twilightSkyShader, auroraShader, bloomShader;
 
     @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformInt TIME = new ShaderUniformInt("time", () -> TFClientEvents.time);
+    public static final ShaderUniformFloat TIME = new ShaderUniformFloat("time", () -> TFClientEvents.time + MINECRAFT.getRenderPartialTicks());
     @SuppressWarnings("WeakerAccess")
     public static final ShaderUniformFloat YAW = new ShaderUniformFloat("yaw", () -> (MINECRAFT.player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
     @SuppressWarnings("WeakerAccess")
@@ -50,9 +51,12 @@ public final class ShaderHelper {
     @SuppressWarnings("WeakerAccess")
     public static final ShaderUniformInt ZERO = new ShaderUniformInt("zero", () -> 0);
     @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformInt TWO = new ShaderUniformInt("one", () -> 2);
+    public static final ShaderUniformInt ONE = new ShaderUniformInt("one", () -> 1);
+    @SuppressWarnings("WeakerAccess")
+    public static final ShaderUniformInt TWO = new ShaderUniformInt("two", () -> 2);
 
-    public static final ShaderUniform[] STAR_UNIFORMS = { TIME, YAW, PITCH, RESOLUTION, ZERO, TWO};
+    public static final ShaderUniform[] STAR_UNIFORMS   = { TIME, YAW, PITCH, RESOLUTION, ZERO, TWO };
+    public static final ShaderUniform[] AURORA_UNIFORMS = { TIME, ZERO, ONE };
 
     //@SuppressWarnings("WeakerAccess")
     //public static Framebuffer bloomFbo;
@@ -61,17 +65,21 @@ public final class ShaderHelper {
         IResourceManager iManager;
 
         if ((iManager = MINECRAFT.getResourceManager()) instanceof SimpleReloadableResourceManager) {
-            ((SimpleReloadableResourceManager) iManager).registerReloadListener(manager -> {
-                deleteShader(enderPortalShader);
+            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager -> {
+                //deleteShader(enderPortalShader);
                 deleteShader(twilightSkyShader);
                 deleteShader(auroraShader);
-                deleteShader(bloomShader);
+                //deleteShader(bloomShader);
 
                 initShaderList();
-            });
+            }));
         }
 
         //bloomFbo = new Framebuffer(MINECRAFT.displayWidth, MINECRAFT.displayHeight, true);
+    }
+
+    public static IResourceManagerReloadListener getShaderReloadListener() {
+        return shaderReloadListener;
     }
 
     private static void deleteShader(int id) {
@@ -81,7 +89,7 @@ public final class ShaderHelper {
     private static void initShaderList() {
         //enderPortalShader      = createProgram("standard.vert", "ender.frag");
         twilightSkyShader      = createProgram("standard_texcoord.vert", "twilight_sky.frag");
-        //auroraShader           = createProgram("standard.vert", "aurora.frag");
+        auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
 
