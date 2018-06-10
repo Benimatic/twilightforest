@@ -38,7 +38,7 @@ public final class ShaderHelper {
     private static final String PREFIX = "/assets/twilightforest/shaders/";
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public static int enderPortalShader, twilightSkyShader, auroraShader, bloomShader;
+    public static int enderPortalShader, twilightSkyShader, fireflyShader, auroraShader, bloomShader;
 
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + MINECRAFT.getRenderPartialTicks());
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (MINECRAFT.player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
@@ -61,6 +61,7 @@ public final class ShaderHelper {
             ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager -> {
                 //deleteShader(enderPortalShader);
                 deleteShader(twilightSkyShader);
+                deleteShader(fireflyShader);
                 deleteShader(auroraShader);
                 //deleteShader(bloomShader);
 
@@ -82,6 +83,7 @@ public final class ShaderHelper {
     private static void initShaderList() {
         //enderPortalShader      = createProgram("standard.vert", "ender.frag");
         twilightSkyShader      = createProgram("standard_texcoord.vert", "twilight_sky.frag");
+        fireflyShader          = createProgram("standard_texcoord2.vert", "firefly.frag");
         auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
@@ -127,14 +129,14 @@ public final class ShaderHelper {
 
         ARBShaderObjects.glLinkProgramARB(program);
         if(ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
-            TwilightForestMod.LOGGER.error("Failed to create shader! " + vert + " " + frag);
+            TwilightForestMod.LOGGER.error("Failed to create shader! 1 " + vert + " " + frag);
             TwilightForestMod.LOGGER.error(getLogInfo(program));
             return 0;
         }
 
         ARBShaderObjects.glValidateProgramARB(program);
         if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
-            TwilightForestMod.LOGGER.error("Failed to create shader! " + vert + " " + frag);
+            TwilightForestMod.LOGGER.error("Failed to create shader! 2 " + vert + " " + frag);
             TwilightForestMod.LOGGER.error(getLogInfo(program));
             return 0;
         }
@@ -154,7 +156,7 @@ public final class ShaderHelper {
             ARBShaderObjects.glCompileShaderARB(shader);
 
             if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
-                TwilightForestMod.LOGGER.error("Failed to create shader! " + filename);
+                TwilightForestMod.LOGGER.error("Failed to create shader! 3 " + filename);
                 throw new RuntimeException("Error creating shader: " + getLogInfo(shader));
             }
 
