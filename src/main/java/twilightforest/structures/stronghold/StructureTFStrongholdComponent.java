@@ -554,5 +554,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 	}
 
+	public interface Factory<T extends StructureTFStrongholdComponent> {
 
+		T newInstance(TFFeature feature, int i, EnumFacing facing, int x, int y, int z);
+	}
 }
