@@ -67,6 +67,16 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
         }
     }
 
+	@SideOnly(Side.CLIENT)
+	public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return state.getValue(VARIANT) == CompressedVariant.FIERY ? 15728880 : super.getPackedLightmapCoords(state, source, pos);
+	}
+
+	@Override
+	public boolean getUseNeighborBrightness(IBlockState state) {
+		return state.getValue(VARIANT) == CompressedVariant.FIERY || super.getUseNeighborBrightness(state);
+	}
+
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
 		switch (state.getValue(VARIANT)) {
