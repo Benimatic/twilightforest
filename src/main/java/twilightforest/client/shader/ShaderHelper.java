@@ -37,26 +37,19 @@ public final class ShaderHelper {
     private static final int FRAG = ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
     private static final String PREFIX = "/assets/twilightforest/shaders/";
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public static int enderPortalShader, twilightSkyShader, auroraShader, bloomShader;
 
-    @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformFloat TIME = new ShaderUniformFloat("time", () -> TFClientEvents.time + MINECRAFT.getRenderPartialTicks());
-    @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformFloat YAW = new ShaderUniformFloat("yaw", () -> (MINECRAFT.player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
-    @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformFloat PITCH = new ShaderUniformFloat("pitch", () -> -(MINECRAFT.player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
-    @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformInt2 RESOLUTION = new ShaderUniformInt2("resolution", () -> MINECRAFT.displayWidth, () -> MINECRAFT.displayHeight);
-    @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformInt ZERO = new ShaderUniformInt("zero", () -> 0);
-    @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformInt ONE = new ShaderUniformInt("one", () -> 1);
-    @SuppressWarnings("WeakerAccess")
-    public static final ShaderUniformInt TWO = new ShaderUniformInt("two", () -> 2);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + MINECRAFT.getRenderPartialTicks());
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (MINECRAFT.player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat PITCH      = new ShaderUniformFloat("pitch"     , () -> -(MINECRAFT.player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt2  RESOLUTION = new ShaderUniformInt2 ("resolution", () -> MINECRAFT.displayWidth, () -> MINECRAFT.displayHeight);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   ZERO       = new ShaderUniformInt  ("zero"      , () -> 0);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   ONE        = new ShaderUniformInt  ("one"       , () -> 1);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   TWO        = new ShaderUniformInt  ("two"       , () -> 2);
 
-    public static final ShaderUniform[] STAR_UNIFORMS   = { TIME, YAW, PITCH, RESOLUTION, ZERO, TWO };
-    public static final ShaderUniform[] AURORA_UNIFORMS = { TIME, ZERO, ONE };
+    public static final ShaderUniform[] STAR_UNIFORMS = { TIME, YAW, PITCH, RESOLUTION, ZERO, TWO };
+    public static final ShaderUniform[] TIME_UNIFORM  = { TIME };
 
     //@SuppressWarnings("WeakerAccess")
     //public static Framebuffer bloomFbo;
