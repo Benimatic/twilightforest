@@ -68,14 +68,14 @@ public class TFClientEvents {
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));
 
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_grip" ), IEShaderRegister.processedRevolverGripLayer, true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_0"    ), IEShaderRegister.processedRevolverLayer    , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/chemthrower_0"     ), IEShaderRegister.processedChemthrowLayer   , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/drill_diesel_0"    ), IEShaderRegister.processedDrillLayer       , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/railgun_0"         ), IEShaderRegister.processedRailgunLayer     , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/shield_0"          ), IEShaderRegister.processedShieldLayer      , true, EASY_GRAYSCALING_MAP));
-		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), IEShaderRegister.processedMinecartLayer    , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), IEShaderRegister.processedBalloonLayer     , true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_grip" ), IEShaderRegister.PROCESSED_REVOLVER_GRIP_LAYER, true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_0"    ), IEShaderRegister.PROCESSED_REVOLVER_LAYER     , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/chemthrower_0"     ), IEShaderRegister.PROCESSED_CHEMTHROW_LAYER    , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/drill_diesel_0"    ), IEShaderRegister.PROCESSED_DRILL_LAYER        , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/railgun_0"         ), IEShaderRegister.PROCESSED_RAILGUN_LAYER      , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/shield_0"          ), IEShaderRegister.PROCESSED_SHIELD_LAYER       , true, EASY_GRAYSCALING_MAP ));
+		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), IEShaderRegister.PROCESSED_MINECART_LAYER     , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), IEShaderRegister.PROCESSED_BALLOON_LAYER      , true, EASY_GRAYSCALING_MAP ));
 		}
 	}
 
@@ -95,6 +95,7 @@ public class TFClientEvents {
 
 	public static final GradientNode[] EASY_GRAYSCALING_MAP = {
 			new GradientNode(0.0f, 0xFF_80_80_80),
+			new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
 			new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};
 
@@ -209,7 +210,7 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void shouldReloadShader(ClientChatEvent event) {
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient() && Minecraft.getMinecraft().isSingleplayer() && event.getOriginalMessage().toLowerCase(Locale.ROOT).equals("TFReload")) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient() && Minecraft.getMinecraft().isSingleplayer() && event.getOriginalMessage().toLowerCase(Locale.ROOT).equals("tfreload")) {
 			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString( "Reloading Twilight Forest Shaders!" ));
 			ShaderHelper.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
 			IEShaderRegister.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
