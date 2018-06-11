@@ -15,9 +15,11 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.IChunkGenerator;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.ChunkGeneratorTwilightForest;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -44,25 +46,25 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	@Override
-	public void placeInPortal(Entity par1Entity, float facing) {
-		if (!this.placeInExistingPortal(par1Entity, facing)) {
+	public void placeInPortal(Entity entity, float facing) {
+		if (!this.placeInExistingPortal(entity, facing)) {
 			// if we're in enforced progression mode, check the biomes for safety
-			if (par1Entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-				BlockPos pos = new BlockPos(par1Entity);
-				if (!isSafeBiomeAt(pos, par1Entity)) {
+			if (entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+				BlockPos pos = new BlockPos(entity);
+				if (!isSafe(pos, entity)) {
 					TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
 
-					BlockPos safeCoords = findSafeCoords(200, pos, par1Entity);
+					BlockPos safeCoords = findSafeCoords(200, pos, entity);
 
 					if (safeCoords != null) {
-						par1Entity.setLocationAndAngles(safeCoords.getX(), par1Entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+						entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
 
 						TwilightForestMod.LOGGER.debug("Safely rerouted!");
 					} else {
 						TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
-						safeCoords = findSafeCoords(400, pos, par1Entity);
+						safeCoords = findSafeCoords(400, pos, entity);
 						if (safeCoords != null) {
-							par1Entity.setLocationAndAngles(safeCoords.getX(), par1Entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+							entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
 
 							TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
 						} else {
@@ -74,13 +76,13 @@ public class TFTeleporter extends Teleporter {
 			}
 
 
-			this.makePortal(par1Entity);
-			this.placeInExistingPortal(par1Entity, facing);
+			this.makePortal(entity);
+			this.placeInExistingPortal(entity, facing);
 		}
 	}
 
 	@Nullable
-	private BlockPos findSafeCoords(int range, BlockPos pos, Entity par1Entity) {
+	private BlockPos findSafeCoords(int range, BlockPos pos, Entity entity) {
 		for (int i = 0; i < 25; i++) {
 			BlockPos dPos = new BlockPos(
 					pos.getX() + random.nextInt(range) - random.nextInt(range),
@@ -88,19 +90,34 @@ public class TFTeleporter extends Teleporter {
 					pos.getZ() + random.nextInt(range) - random.nextInt(range)
 			);
 
-			if (isSafeBiomeAt(dPos, par1Entity)) {
+			if (isSafe(dPos, entity)) {
 				return dPos;
 			}
 		}
 		return null;
 	}
 
-	private boolean isSafeBiomeAt(BlockPos pos, Entity par1Entity) {
-		Biome biomeAt = world.getBiome(pos);
+	private boolean isSafe(BlockPos pos, Entity entity) {
+		return checkBiome(pos, entity) && checkStructure(pos);
+	}
 
-		if (biomeAt instanceof TFBiomeBase && par1Entity instanceof EntityPlayerMP) {
-			TFBiomeBase tfBiome = (TFBiomeBase) biomeAt;
-			EntityPlayerMP player = (EntityPlayerMP) par1Entity;
+	private boolean checkStructure(BlockPos pos) {
+		IChunkGenerator generator = world.getChunkProvider().chunkGenerator;
+		if (generator instanceof ChunkGeneratorTwilightForest) {
+			if (!world.isBlockLoaded(pos)) {
+				generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4);
+			}
+			return !((ChunkGeneratorTwilightForest) generator).isBlockInFullStructure(pos.getX(), pos.getZ());
+		}
+		return true;
+	}
+
+	private boolean checkBiome(BlockPos pos, Entity entity) {
+		Biome biome = world.getBiome(pos);
+
+		if (biome instanceof TFBiomeBase && entity instanceof EntityPlayerMP) {
+			TFBiomeBase tfBiome = (TFBiomeBase) biome;
+			EntityPlayerMP player = (EntityPlayerMP) entity;
 
 			return tfBiome.doesPlayerHaveRequiredAchievement(player);
 		} else {
@@ -110,11 +127,11 @@ public class TFTeleporter extends Teleporter {
 
 	// [VanillaCopy] copy of super, edits noted
 	@Override
-	public boolean placeInExistingPortal(Entity entityIn, float rotationYaw) {
+	public boolean placeInExistingPortal(Entity entity, float rotationYaw) {
 		int i = 200; // TF - scan radius up to 200, and also un-inline this variable back into below
 		double d0 = -1.0D;
-		int j = MathHelper.floor(entityIn.posX);
-		int k = MathHelper.floor(entityIn.posZ);
+		int j = MathHelper.floor(entity.posX);
+		int k = MathHelper.floor(entity.posZ);
 		boolean flag = true;
 		BlockPos blockpos = BlockPos.ORIGIN;
 		long l = ChunkPos.asLong(j, k);
@@ -126,7 +143,7 @@ public class TFTeleporter extends Teleporter {
 			portalPosition.lastUpdateTime = this.world.getTotalWorldTime();
 			flag = false;
 		} else {
-			BlockPos blockpos3 = new BlockPos(entityIn);
+			BlockPos blockpos3 = new BlockPos(entity);
 
 			for (int i1 = -i; i1 <= i; ++i1) {
 				BlockPos blockpos2;
@@ -180,12 +197,12 @@ public class TFTeleporter extends Teleporter {
 			double portalY = borderPos.getY() + 1.0;
 			double portalZ = borderPos.getZ() + 0.5;
 
-			entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
+			entity.motionX = entity.motionY = entity.motionZ = 0.0D;
 
-			if (entityIn instanceof EntityPlayerMP) {
-				((EntityPlayerMP) entityIn).connection.setPlayerLocation(portalX, portalY, portalZ, entityIn.rotationYaw, entityIn.rotationPitch);
+			if (entity instanceof EntityPlayerMP) {
+				((EntityPlayerMP) entity).connection.setPlayerLocation(portalX, portalY, portalZ, entity.rotationYaw, entity.rotationPitch);
 			} else {
-				entityIn.setLocationAndAngles(portalX, portalY, portalZ, entityIn.rotationYaw, entityIn.rotationPitch);
+				entity.setLocationAndAngles(portalX, portalY, portalZ, entity.rotationYaw, entity.rotationPitch);
 			}
 
 			return true;
@@ -232,24 +249,24 @@ public class TFTeleporter extends Teleporter {
 	@Override
 	public boolean makePortal(Entity entity) {
 		BlockPos spot = findPortalCoords(entity, true);
-		String name = entity.getCustomNameTag();
+		String name = entity.getName();
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found ideal portal spot for " + name);
+			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
 			makePortalAt(world, spot);
 			return true;
 		} else {
-			TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for " + name);
+			TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for {}", name);
 			spot = findPortalCoords(entity, false);
 			if (spot != null) {
-				TwilightForestMod.LOGGER.debug("Found okay portal spot for " + name);
+				TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
 				makePortalAt(world, spot);
 				return true;
 			}
 		}
 
 		// well I don't think we can actually just return false and fail here
-		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for " + name);
+		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for {}", name);
 
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
