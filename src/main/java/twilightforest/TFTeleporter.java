@@ -51,7 +51,7 @@ public class TFTeleporter extends Teleporter {
 			// if we're in enforced progression mode, check the biomes for safety
 			if (entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 				BlockPos pos = new BlockPos(entity);
-				if (!isSafe(pos, entity)) {
+				if (!isSafeAround(pos, entity)) {
 					TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
 
 					BlockPos safeCoords = findSafeCoords(200, pos, entity);
@@ -74,8 +74,6 @@ public class TFTeleporter extends Teleporter {
 				}
 
 			}
-
-
 			this.makePortal(entity);
 			this.placeInExistingPortal(entity, facing);
 		}
@@ -90,11 +88,26 @@ public class TFTeleporter extends Teleporter {
 					pos.getZ() + random.nextInt(range) - random.nextInt(range)
 			);
 
-			if (isSafe(dPos, entity)) {
+			if (isSafeAround(dPos, entity)) {
 				return dPos;
 			}
 		}
 		return null;
+	}
+
+	private boolean isSafeAround(BlockPos pos, Entity entity) {
+
+		if (!isSafe(pos, entity)) {
+			return false;
+		}
+
+		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+			if (!isSafe(pos.offset(facing, 16), entity)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private boolean isSafe(BlockPos pos, Entity entity) {
@@ -114,15 +127,12 @@ public class TFTeleporter extends Teleporter {
 
 	private boolean checkBiome(BlockPos pos, Entity entity) {
 		Biome biome = world.getBiome(pos);
-
 		if (biome instanceof TFBiomeBase && entity instanceof EntityPlayerMP) {
 			TFBiomeBase tfBiome = (TFBiomeBase) biome;
 			EntityPlayerMP player = (EntityPlayerMP) entity;
-
 			return tfBiome.doesPlayerHaveRequiredAchievement(player);
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	// [VanillaCopy] copy of super, edits noted
