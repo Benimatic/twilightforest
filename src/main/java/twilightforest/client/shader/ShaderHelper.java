@@ -38,7 +38,13 @@ public final class ShaderHelper {
     private static final String PREFIX = "/assets/twilightforest/shaders/";
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public static int enderPortalShader, twilightSkyShader, fireflyShader, auroraShader, bloomShader;
+    public static int
+            enderPortalShader,
+            twilightSkyShader,
+            fireflyShader,
+            auroraShader,
+            spiralShader,
+            bloomShader;
 
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + MINECRAFT.getRenderPartialTicks());
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (MINECRAFT.player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
@@ -63,6 +69,7 @@ public final class ShaderHelper {
                 deleteShader(twilightSkyShader);
                 deleteShader(fireflyShader);
                 deleteShader(auroraShader);
+                deleteShader(spiralShader);
                 //deleteShader(bloomShader);
 
                 initShaderList();
@@ -82,9 +89,10 @@ public final class ShaderHelper {
 
     private static void initShaderList() {
         //enderPortalShader      = createProgram("standard.vert", "ender.frag");
-        twilightSkyShader      = createProgram("standard_texcoord.vert", "twilight_sky.frag");
-        fireflyShader          = createProgram("standard_texcoord2.vert", "firefly.frag");
-        auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
+        twilightSkyShader      = createProgram("standard_texcoord.vert"        , "twilight_sky.frag");
+        fireflyShader          = createProgram("standard_texcoord2.vert"       , "firefly.frag");
+        auroraShader           = createProgram("standard_texcoord2.vert"       , "aurora.frag");
+        spiralShader           = createProgram("standard_texcoord_normals.vert", "spiral.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
 
