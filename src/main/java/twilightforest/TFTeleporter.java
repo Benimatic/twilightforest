@@ -258,6 +258,10 @@ public class TFTeleporter extends Teleporter {
 
 	@Override
 	public boolean makePortal(Entity entity) {
+
+		// ensure area is populated first
+		loadSurroundingArea(entity);
+
 		BlockPos spot = findPortalCoords(entity, true);
 		String name = entity.getName();
 
@@ -265,14 +269,15 @@ public class TFTeleporter extends Teleporter {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
 			makePortalAt(world, spot);
 			return true;
-		} else {
-			TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for {}", name);
-			spot = findPortalCoords(entity, false);
-			if (spot != null) {
-				TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
-				makePortalAt(world, spot);
-				return true;
-			}
+		}
+
+		TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for {}", name);
+		spot = findPortalCoords(entity, false);
+
+		if (spot != null) {
+			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
+			makePortalAt(world, spot);
+			return true;
 		}
 
 		// well I don't think we can actually just return false and fail here
@@ -286,6 +291,18 @@ public class TFTeleporter extends Teleporter {
 		return false;
 	}
 
+	private void loadSurroundingArea(Entity entity) {
+
+		int x = MathHelper.floor(entity.posX) >> 4;
+		int z = MathHelper.floor(entity.posZ) >> 4;
+
+		for (int dx = -2; dx <= 2; dx++) {
+			for (int dz = -2; dz <= 2; dz++) {
+				world.getChunkFromChunkCoords(x + dx, z + dz);
+			}
+		}
+	}
+
 	@Nullable
 	private BlockPos findPortalCoords(Entity entity, boolean ideal) {
 		// adjust the portal height based on what world we're traveling to
@@ -295,10 +312,9 @@ public class TFTeleporter extends Teleporter {
 		int entityZ = MathHelper.floor(entity.posZ);
 
 		double spotWeight = -1D;
-
 		BlockPos spot = null;
 
-		byte range = 16;
+		int range = 16;
 		for (int rx = entityX - range; rx <= entityX + range; rx++) {
 			double xWeight = (rx + 0.5D) - entity.posX;
 			for (int rz = entityZ - range; rz <= entityZ + range; rz++) {
