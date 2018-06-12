@@ -89,10 +89,10 @@ public final class ShaderHelper {
 
     private static void initShaderList() {
         //enderPortalShader      = createProgram("standard.vert", "ender.frag");
-        twilightSkyShader      = createProgram("standard_texcoord.vert"        , "twilight_sky.frag");
-        fireflyShader          = createProgram("standard_texcoord2.vert"       , "firefly.frag");
-        auroraShader           = createProgram("standard_texcoord2.vert"       , "aurora.frag");
-        spiralShader           = createProgram("standard_texcoord_normals.vert", "spiral.frag");
+        twilightSkyShader      = createProgram("standard_texcoord.vert" , "twilight_sky.frag");
+        fireflyShader          = createProgram("standard_texcoord2.vert", "firefly.frag");
+        auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
+        spiralShader           = createProgram("standard_texcoord.vert" , "spiral.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
 
