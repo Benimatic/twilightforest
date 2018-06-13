@@ -2,6 +2,7 @@ package twilightforest.structures;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -11,6 +12,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
@@ -118,10 +120,11 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 			}
 		}
 
-
 		if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain) {
 			moveToAvgGroundLevel(world, x, z);
 		}
+
+		setupComponents(world);
 	}
 
 	/**
@@ -226,6 +229,18 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 				for (StructureComponent com : getComponents()) {
 					com.getBoundingBox().offset(0, offY, 0);
 				}
+			}
+		}
+	}
+
+	private void setupComponents(World world) {
+
+		TemplateManager templateManager = world.getSaveHandler().getStructureTemplateManager();
+		MinecraftServer server = world.getMinecraftServer();
+
+		for (StructureComponent component : components) {
+			if (component instanceof StructureTFComponentTemplate) {
+				((StructureTFComponentTemplate) component).setup(templateManager, server);
 			}
 		}
 	}

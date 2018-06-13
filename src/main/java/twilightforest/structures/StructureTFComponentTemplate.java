@@ -2,6 +2,7 @@ package twilightforest.structures;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -13,14 +14,13 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 
 /**
-
- Copied a few things from net.minecraft.world.gen.structure.StructureComponentTemplate.java
-
+ * Copied a few things from {@link net.minecraft.world.gen.structure.StructureComponentTemplate}
  */
-
 public abstract class StructureTFComponentTemplate extends StructureTFComponent {
+
     protected PlacementSettings placeSettings = new PlacementSettings().setReplacedBlock(Blocks.STRUCTURE_VOID);
     protected BlockPos templatePosition = BlockPos.ORIGIN;
+    protected BlockPos rotatedPosition;
     protected Template TEMPLATE;
 
     public StructureTFComponentTemplate() {
@@ -39,6 +39,14 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.boundingBox = new StructureBoundingBox(x, y, z, x, y, z);
     }
 
+    public final void setup(TemplateManager templateManager, MinecraftServer server) {
+        loadTemplates(templateManager, server);
+        setModifiedTemplatePositionFromRotation();
+        setBoundingBoxFromTemplate(rotatedPosition);
+    }
+
+    protected abstract void loadTemplates(TemplateManager templateManager, MinecraftServer server);
+
     @Override
     protected void writeStructureToNBT(NBTTagCompound tagCompound) {
         super.writeStructureToNBT(tagCompound);
@@ -53,18 +61,20 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.templatePosition = new BlockPos(tagCompound.getInteger("TPX"), tagCompound.getInteger("TPY"), tagCompound.getInteger("TPZ"));
     }
 
-    protected final BlockPos getModifiedTemplatePositionFromRotation() {
+    protected final void setModifiedTemplatePositionFromRotation() {
+
         Rotation rotation = this.placeSettings.getRotation();
         BlockPos size = this.TEMPLATE.transformedSize(rotation);
-        BlockPos toReturn = new BlockPos(this.templatePosition.getX(), this.templatePosition.getY(), this.templatePosition.getZ());
 
-        if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.CLOCKWISE_180)
-            toReturn = toReturn.east(size.getZ()-1);
+        rotatedPosition = new BlockPos(this.templatePosition);
 
-        if (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.COUNTERCLOCKWISE_90)
-            toReturn = toReturn.south(size.getX()-1);
+        if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.CLOCKWISE_180) {
+            rotatedPosition = rotatedPosition.east(size.getZ() - 1);
+        }
 
-        return toReturn;
+        if (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.COUNTERCLOCKWISE_90) {
+            rotatedPosition = rotatedPosition.south(size.getX() - 1);
+        }
     }
 
     protected final void setBoundingBoxFromTemplate(BlockPos pos) {
