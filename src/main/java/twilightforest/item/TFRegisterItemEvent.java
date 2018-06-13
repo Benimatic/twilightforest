@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
@@ -10,9 +11,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.compat.TFCompat;
 import twilightforest.enums.DeadrockVariant;
 import twilightforest.enums.ThornVariant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Arrays.stream;
 import static net.minecraft.init.MobEffects.REGENERATION;
@@ -220,12 +225,20 @@ public class TFRegisterItemEvent {
 	public static class ItemRegistryHelper {
 		private final IForgeRegistry<Item> registry;
 
+		private static List<ModelRegisterCallback> itemModels = new ArrayList<>();
+
+		public static List<ModelRegisterCallback> getItemModels() {
+			return ImmutableList.copyOf(itemModels);
+		}
+
 		ItemRegistryHelper(IForgeRegistry<Item> registry) {
 			this.registry = registry;
 		}
 
 		public void register(String registryName, Item item) {
 			item.setRegistryName(TwilightForestMod.ID, registryName);
+			if (item instanceof ModelRegisterCallback)
+				itemModels.add((ModelRegisterCallback) item);
 			registry.register(item);
 		}
 

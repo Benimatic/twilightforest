@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
@@ -10,6 +11,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class RegisterBlockEvent {
@@ -106,8 +111,14 @@ public final class RegisterBlockEvent {
 		registerFluidBlock("fiery_essence", blocks, essenceFiery);
 	}
 
+	public static List<ModelRegisterCallback> getBlockModels() {
+		return ImmutableList.copyOf(BlockRegistryHelper.blockModels);
+	}
+
 	private static class BlockRegistryHelper {
 		private final IForgeRegistry<Block> registry;
+
+		private static List<ModelRegisterCallback> blockModels = new ArrayList<>();
 
 		BlockRegistryHelper(IForgeRegistry<Block> registry) {
 			this.registry = registry;
@@ -115,6 +126,8 @@ public final class RegisterBlockEvent {
 
 		private void register(String registryName, Block block) {
 			block.setRegistryName(TwilightForestMod.ID, registryName);
+			if (block instanceof ModelRegisterCallback)
+				blockModels.add((ModelRegisterCallback) block);
 			registry.register(block);
 		}
 	}
