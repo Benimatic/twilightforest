@@ -92,7 +92,7 @@ public final class ShaderHelper {
         twilightSkyShader      = createProgram("standard_texcoord.vert" , "twilight_sky.frag");
         fireflyShader          = createProgram("standard_texcoord2.vert", "firefly.frag");
         auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
-        spiralShader           = createProgram("standard_texcoord.vert" , "spiral.frag");
+        spiralShader           = createProgram("camera_fixed.vert"      , "spiral.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
 

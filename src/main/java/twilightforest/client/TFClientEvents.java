@@ -208,15 +208,6 @@ public class TFClientEvents {
 		BugModelAnimationHelper.animate();
 	}
 
-	@SubscribeEvent
-	public static void shouldReloadShader(ClientChatEvent event) {
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient() && Minecraft.getMinecraft().isSingleplayer() && event.getOriginalMessage().toLowerCase(Locale.ROOT).equals("tfreload")) {
-			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString( "Reloading Twilight Forest Shaders!" ));
-			ShaderHelper.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
-			IEShaderRegister.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
-		}
-	}
-
 	public static int time = 0;
 	public static float rotationTicker = 0;
 	public static float sineTicker = 0;

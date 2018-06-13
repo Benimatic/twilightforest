@@ -692,8 +692,8 @@ modifier.veiled.name=Veiled
 modifier.veiled.desc=§oLike a Specter!§r\nProjectile will be invisible.
 
 # Immersive Engineering
-item.tfEngineeringShader=Shader: %s
-twilightforest.shader.twilight=Twilight Forest
+item.tfEngineeringShader=Shader: %s [WIP]
+twilightforest.shader.twilight=Twilight
 
 twilightforest.shader.snakestone=Snakestone
 twilightforest.shader.naga=Naga

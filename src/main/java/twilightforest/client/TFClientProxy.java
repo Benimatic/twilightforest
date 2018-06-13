@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -9,18 +10,25 @@ import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
@@ -40,10 +48,11 @@ import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
-import twilightforest.tileentity.critters.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
+import twilightforest.tileentity.critters.*;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 public class TFClientProxy extends TFCommonProxy {
@@ -191,6 +200,27 @@ public class TFClientProxy extends TFCommonProxy {
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 3600);
 
 		ShaderHelper.initShaders();
+
+		ClientCommandHandler.instance.registerCommand(new CommandBase() {
+			@Override
+			public String getName() {
+				return "tfreload";
+			}
+
+			@Override
+			public String getUsage(ICommandSender sender) {
+				return "commands.tffeature.reload";
+			}
+
+			@Override
+			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
+					twilightforest.client.shader.ShaderHelper.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+					twilightforest.compat.IEShaderRegister.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+				}
+			}
+		});
 	}
 
 	@Override
