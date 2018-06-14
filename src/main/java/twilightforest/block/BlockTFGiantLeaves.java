@@ -25,7 +25,7 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 	}
 
 	@Override
-	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightOpacity(IBlockState state) {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 

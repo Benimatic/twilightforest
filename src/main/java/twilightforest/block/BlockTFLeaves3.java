@@ -48,7 +48,7 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	}
 
 	@Override
-	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightOpacity(IBlockState state) {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
