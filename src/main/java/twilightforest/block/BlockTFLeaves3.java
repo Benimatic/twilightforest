@@ -52,11 +52,6 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return TFConfig.performance.leavesFullCube;
-	}
-
 	// [VanillaCopy] BlockLeavesNew.getMetaFromState - could subclass, but different VARIANT property
 	@Override
 	public int getMetaFromState(IBlockState state) {

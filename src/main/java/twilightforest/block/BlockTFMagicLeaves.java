@@ -48,11 +48,6 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
-		return TFConfig.performance.leavesFullCube;
-	}
-
-	@Override
 	public BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, BlockTFMagicLog.VARIANT, CHECK_DECAY, DECAYABLE);
 	}
