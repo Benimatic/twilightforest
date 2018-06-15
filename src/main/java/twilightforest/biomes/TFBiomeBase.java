@@ -2,7 +2,6 @@ package twilightforest.biomes;
 
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTallGrass;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -30,9 +29,7 @@ import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 import twilightforest.world.TFWorld;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -128,6 +125,7 @@ public class TFBiomeBase extends Biome {
 		int i = TFWorld.SEALEVEL; // TF - set sea level to 31
 		IBlockState iblockstate = this.topBlock;
 		IBlockState iblockstate1 = this.fillerBlock;
+		IBlockState stoneReplacement = getStoneReplacementState(); // TF - Replace stone
 		int j = -1;
 		int k = (int) (noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
 		int l = x & 15;
@@ -140,12 +138,13 @@ public class TFBiomeBase extends Biome {
 			} else {
 				IBlockState iblockstate2 = chunkPrimerIn.getBlockState(i1, j1, l);
 
-				if (iblockstate2.getMaterial() == Material.AIR) {
+				// TF - use block check for air
+				if (iblockstate2.getBlock() == Blocks.AIR) {
 					// j = -1; TF - commented out? todo 1.9
 				} else if (iblockstate2.getBlock() == Blocks.STONE) {
 					// TF - Replace stone
-					if (getStoneReplacementState() != null) {
-						chunkPrimerIn.setBlockState(i1, j1, l, getStoneReplacementState());
+					if (stoneReplacement != null) {
+						chunkPrimerIn.setBlockState(i1, j1, l, stoneReplacement);
 					}
 
 					if (j == -1) {
@@ -157,7 +156,8 @@ public class TFBiomeBase extends Biome {
 							iblockstate1 = this.fillerBlock;
 						}
 
-						if (j1 < i && (iblockstate == null || iblockstate.getMaterial() == Material.AIR)) {
+						// TF - use block check for air
+						if (j1 < i && (iblockstate == null || iblockstate.getBlock() == Blocks.AIR)) {
 							if (this.getFloatTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F) {
 								iblockstate = ICE;
 							} else {
