@@ -379,8 +379,8 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "twilightforest:firefly");
+		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "twilightforest:cicada");
+		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "twilightforest:moonworm");
 	}
 }
