@@ -372,7 +372,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		boolean foundGroundLevel = false;
 
 		// raise the hill
-		for (int y = 0; y < TFWorld.CHUNKHEIGHT; y++) {
+		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT; y++) {
 			Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
 			if (currentTerrain != Blocks.STONE && !foundGroundLevel) {
 				// we found the top of the stone layer
@@ -401,20 +401,24 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 			hollow = 0;
 		}
 
-		for (int y = 0; y < TFWorld.CHUNKHEIGHT; y++) {
+		// hollow out the hollow parts
+		int hollowFloor = TFWorld.SEALEVEL - 3 - (hollow / 8);
+		if (nearFeature == TFFeature.hydraLair) {
+			// different floor
+			hollowFloor = TFWorld.SEALEVEL;
+		}
+
+		if (hillHeight > 0) {
 			// put a base on hills that go over open space or water
-			if (hillHeight > 0 && y < TFWorld.SEALEVEL && primer.getBlockState(x, y, z).getBlock() != Blocks.STONE) {
-				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
+			for (int y = 0; y < TFWorld.SEALEVEL; y++) {
+				if (primer.getBlockState(x, y, z).getBlock() != Blocks.STONE) {
+					primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
+				}
 			}
-			// hollow out the hollow parts
-			int hollowFloor = TFWorld.SEALEVEL - 3 - (hollow / 8);
-			if (nearFeature == TFFeature.hydraLair) {
-				// different floor
-				hollowFloor = TFWorld.SEALEVEL;
-			}
-			if (y > hollowFloor && y < hollowFloor + hollow) {
-				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-			}
+		}
+
+		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
+			primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
 		}
 	}
 
