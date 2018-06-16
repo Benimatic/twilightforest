@@ -159,63 +159,6 @@ public class IEShaderRegister {
         }
     }
 
-    /*// Register with Immersive Engineering Textures
-    @Deprecated
-    @SafeVarargs
-    private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesEngineerTopped(String name, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>[] providers, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... extraProviders) {
-        ShaderRegistry.registerShader_Item(name, rarity, gripColor, bodyColor, colorSecondary);
-
-        registerShaderCaseRevolver   ( name, gripColor, bodyColor, colorBlade, rarity, provideFromProviders( "immersiveengineering:revolvers/shaders/revolver_"      , overlayType          , colorSecondary, providers ), provideFromProviders( "immersiveengineering:revolvers/shaders/revolver_"      , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseChemthrower( name, gripColor, bodyColor,             rarity, provideFromProviders( "immersiveengineering:items/shaders/chemthrower_"       , overlayType          , colorSecondary, providers ), provideFromProviders( "immersiveengineering:items/shaders/chemthrower_"       , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseDrill      ( name, gripColor, bodyColor, colorBlade, rarity, provideFromProviders( "immersiveengineering:items/shaders/drill_diesel_"      , overlayType          , colorSecondary, providers ), provideFromProviders( "immersiveengineering:items/shaders/drill_diesel_"      , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseRailgun    ( name, gripColor, bodyColor,             rarity, provideFromProviders( "immersiveengineering:items/shaders/railgun_"           , overlayType          , colorSecondary, providers ), provideFromProviders( "immersiveengineering:items/shaders/railgun_"           , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseShield     ( name, gripColor, bodyColor,             rarity, provideFromProviders( "immersiveengineering:items/shaders/shield_"            , overlayType          , colorSecondary, providers ), provideFromProviders( "immersiveengineering:items/shaders/shield_"            , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseMinecart   ( name, gripColor, bodyColor,             rarity, provideFromProviders( "immersiveengineering:textures/models/shaders/minecart_", overlayType + ".png" , colorSecondary, providers ), provideFromProviders( "immersiveengineering:textures/models/shaders/minecart_", overlayType + ".png" , colorSecondary, extraProviders ));
-        registerShaderCaseBalloon    ( name, gripColor, bodyColor,             rarity, provideFromProviders( "immersiveengineering:blocks/shaders/balloon_"          , overlayType          , colorSecondary, providers ), provideFromProviders( "immersiveengineering:blocks/shaders/balloon_"          , overlayType          , colorSecondary, extraProviders ));
-
-        // Since shaders won't occur in a way we'd like them to, we should register any additional variants ourselves if we know of any
-        for(ShaderRegistry.IShaderRegistryMethod method : ShaderRegistry.shaderRegistrationMethods)
-            method.apply(name, overlayType, rarity, gripColor, bodyColor, colorSecondary, colorBlade, null, 0);
-
-        return ShaderRegistry.shaderRegistry.get(name).setCrateLoot(false).setBagLoot(true).setInLowerBags(false).setReplicationCost(new IngredientStack(new ItemStack(TFItems.ore_meter)));
-    }
-
-    // Register with Twilight Forest Textures
-    @Deprecated
-    @SafeVarargs
-    private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesEngineer(String name, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... providers) {
-        return registerShaderCasesEngineerTopped(name, overlayType, rarity, bodyColor, colorSecondary, gripColor, colorBlade, providers);
-    }
-
-    // Register with Twilight Forest Textures
-    @Deprecated
-    @SafeVarargs
-    private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesTwilightTopped(String name, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>[] providers, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... extraProviders) {
-        ShaderRegistry.registerShader_Item(name, rarity, gripColor, bodyColor, colorSecondary);
-
-        registerShaderCaseRevolver   ( name, gripColor, bodyColor, colorBlade, rarity, provideFromProviders( "twilightforest:items/immersiveengineering/revolver_"   , overlayType          , colorSecondary, providers ), provideFromProviders( "twilightforest:items/immersiveengineering/revolver_"   , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseChemthrower( name, gripColor, bodyColor,             rarity, provideFromProviders( "twilightforest:items/immersiveengineering/chemthrower_", overlayType          , colorSecondary, providers ), provideFromProviders( "twilightforest:items/immersiveengineering/chemthrower_", overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseDrill      ( name, gripColor, bodyColor, colorBlade, rarity, provideFromProviders( "twilightforest:items/immersiveengineering/drill_"      , overlayType          , colorSecondary, providers ), provideFromProviders( "twilightforest:items/immersiveengineering/drill_"      , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseRailgun    ( name, gripColor, bodyColor,             rarity, provideFromProviders( "twilightforest:items/immersiveengineering/railgun_"    , overlayType          , colorSecondary, providers ), provideFromProviders( "twilightforest:items/immersiveengineering/railgun_"    , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseShield     ( name, gripColor, bodyColor,             rarity, provideFromProviders( "twilightforest:items/immersiveengineering/shield_"     , overlayType          , colorSecondary, providers ), provideFromProviders( "twilightforest:items/immersiveengineering/shield_"     , overlayType          , colorSecondary, extraProviders ));
-        registerShaderCaseMinecart   ( name, gripColor, bodyColor,             rarity, provideFromProviders( "twilightforest:models/immersiveengineering/minecart_"  , overlayType + ".png" , colorSecondary, providers ), provideFromProviders( "twilightforest:models/immersiveengineering/minecart_"  , overlayType + ".png" , colorSecondary, extraProviders ));
-        registerShaderCaseBalloon    ( name, gripColor, bodyColor,             rarity, provideFromProviders( "twilightforest:blocks/immersiveengineering/balloon_"   , overlayType          , colorSecondary, providers ), provideFromProviders( "twilightforest:blocks/immersiveengineering/balloon_"   , overlayType          , colorSecondary, extraProviders ));
-
-        // Since shaders won't occur in a way we'd like them to, we should register any additional variants ourselves if we know of any
-        for(ShaderRegistry.IShaderRegistryMethod method : ShaderRegistry.shaderRegistrationMethods)
-            method.apply(name, overlayType, rarity, gripColor, bodyColor, colorSecondary, colorBlade, null, 0);
-
-        return ShaderRegistry.shaderRegistry.get(name).setCrateLoot(false).setBagLoot(true).setInLowerBags(false).setReplicationCost(new IngredientStack(new ItemStack(TFItems.ore_meter)));
-    }
-
-    // Register with Twilight Forest Textures
-    @Deprecated
-    @SafeVarargs
-    private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesTwilight(String name, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... providers) {
-        return registerShaderCasesTwilightTopped(name, overlayType, rarity, bodyColor, colorSecondary, gripColor, colorBlade, providers);
-    }//*/
-
-    // Register with Twilight Forest Textures
     @SafeVarargs
     private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesTopped(String name, ModType mod, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>[] providers, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... extraProviders) {
         ShaderRegistry.registerShader_Item(name, rarity, gripColor, bodyColor, colorSecondary);
@@ -235,28 +178,10 @@ public class IEShaderRegister {
         return ShaderRegistry.shaderRegistry.get(name).setCrateLoot(false).setBagLoot(true).setInLowerBags(false).setReplicationCost(new IngredientStack(new ItemStack(TFItems.ore_meter)));
     }
 
-    // Register with Twilight Forest Textures
     @SafeVarargs
     private static ShaderRegistry.ShaderRegistryEntry registerShaderCases(String name, ModType type, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... providers) {
         return registerShaderCasesTopped(name, type, overlayType, rarity, bodyColor, colorSecondary, gripColor, colorBlade, providers);
     }
-
-    // Shader Case Registration helpers
-    //@Deprecated
-    //@FunctionalInterface
-    //private interface ShaderLayerProvider<T extends ShaderCase.ShaderLayer> {
-    //    T get(String resourceLocation, String suffix, int color);
-    //}
-
-    //@Deprecated
-    //private static ShaderCase.ShaderLayer[] provideFromProviders(String resourceLocation, String suffix, int color, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>[] layerProviders) {
-    //    ShaderCase.ShaderLayer[] array = new ShaderCase.ShaderLayer[layerProviders.length];
-
-    //    for (int i = 0; i < layerProviders.length; i++)
-    //        array[i] = layerProviders[i].get( resourceLocation, suffix, color );
-
-    //    return array;
-    //}
 
     // Shader Case Registration helpers
     @FunctionalInterface
