@@ -31,7 +31,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
@@ -537,13 +537,13 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		super.onDeath(par1DamageSource);
 
 		// mark the tower as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 			BlockPos chestCoords = this.findChestCoords();
 			int dx = chestCoords.getX();
 			int dy = chestCoords.getY();
 			int dz = chestCoords.getZ();
 
-			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 			if (nearbyFeature == TFFeature.darkTower) {

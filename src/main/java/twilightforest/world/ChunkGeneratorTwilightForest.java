@@ -1,15 +1,9 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package twilightforest.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -17,49 +11,32 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
-import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
-import twilightforest.biomes.TFBiomeBase;
-import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
 
-// Referenced classes of package net.minecraft.src:
-//            IChunkProvider, MapGenCaves, MapGenStronghold, MapGenVillage, 
-//            MapGenMineshaft, MapGenRavine, NoiseGeneratorOctaves, World, 
-//            WorldChunkManager, Block, Biome, Chunk,
-//            MapGenBase, MathHelper, BlockSand, WorldGenLakes, 
-//            WorldGenDungeons, SpawnerAnimals, IProgressUpdate
-// todo 1.10 doc out all the vanilla copying
-public class ChunkGeneratorTwilightForest implements IChunkGenerator {
-	private final Random rand;
-	private NoiseGeneratorOctaves minLimitPerlinNoise;
-	private NoiseGeneratorOctaves maxLimitPerlinNoise;
-	private NoiseGeneratorOctaves mainPerlinNoise;
-	private NoiseGeneratorPerlin surfaceNoise;
-	private NoiseGeneratorOctaves noiseGen4;
-	//private NoiseGeneratorOctaves scaleNoise;
-	private NoiseGeneratorOctaves depthNoise;
-	//private NoiseGeneratorOctaves forestNoise;
-	private final World world;
-	private WorldType terrainType;
+// TODO: doc out all the vanilla copying
+public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
+
+	private final NoiseGeneratorOctaves minLimitPerlinNoise;
+	private final NoiseGeneratorOctaves maxLimitPerlinNoise;
+	private final NoiseGeneratorOctaves mainPerlinNoise;
+	private final NoiseGeneratorOctaves noiseGen4;
+	//private final NoiseGeneratorOctaves scaleNoise;
+	private final NoiseGeneratorOctaves depthNoise;
+	//private final NoiseGeneratorOctaves forestNoise;
+
 	private final double[] heightMap;
 	private final float[] biomeWeights;
-	private double[] depthBuffer = new double[256];
-	private Biome biomesForGeneration[];
+
 	private double[] mainNoiseRegion;
 	private double[] minLimitRegion;
 	private double[] maxLimitRegion;
@@ -67,17 +44,13 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	private final TFGenCaves caveGenerator = new TFGenCaves();
 	private final TFGenRavine ravineGenerator = new TFGenRavine();
-	private final MapGenTFMajorFeature majorFeatureGenerator = new MapGenTFMajorFeature();
 	private final MapGenTFHollowTree hollowTreeGenerator = new MapGenTFHollowTree();
 
-	public ChunkGeneratorTwilightForest(World world, long l, boolean flag) {
-		this.world = world;
-		this.terrainType = world.getWorldInfo().getTerrainType();
-		this.rand = new Random(l);
+	public ChunkGeneratorTwilightForest(World world, long seed, boolean enableFeatures) {
+		super(world, seed, enableFeatures);
 		this.minLimitPerlinNoise = new NoiseGeneratorOctaves(this.rand, 16);
 		this.maxLimitPerlinNoise = new NoiseGeneratorOctaves(this.rand, 16);
 		this.mainPerlinNoise = new NoiseGeneratorOctaves(this.rand, 8);
-		this.surfaceNoise = new NoiseGeneratorPerlin(this.rand, 4);
 		this.noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
 		//this.scaleNoise = new NoiseGeneratorOctaves(rand, 10);
 		this.depthNoise = new NoiseGeneratorOctaves(rand, 16);
@@ -114,17 +87,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		majorFeatureGenerator.generate(world, cx, cz, primer);
 		hollowTreeGenerator.generate(world, cx, cz, primer);
 
-		Chunk chunk = new Chunk(world, primer, cx, cz);
-
-		// load in biomes, to prevent striping?!
-		byte[] chunkBiomes = chunk.getBiomeArray();
-		for (int i = 0; i < chunkBiomes.length; ++i) {
-			chunkBiomes[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
-		}
-
-		chunk.generateSkylightMap();
-
-		return chunk;
+		return makeChunk(cx, cz, primer);
 	}
 
 	public void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer) {
@@ -300,338 +263,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 						primer.setBlockState(x, y, z, primer.getBlockState(x, y * 2 + 1, z));
 					} else {
 						primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-					}
-				}
-			}
-		}
-	}
-
-	// [VanillaCopy] Exact, ChunkGeneratorOverworld.replaceBiomeBlocks
-	public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
-	{
-		if (!net.minecraftforge.event.ForgeEventFactory.onReplaceBiomeBlocks(this, x, z, primer, this.world)) return;
-		double d0 = 0.03125D;
-		this.depthBuffer = this.surfaceNoise.getRegion(this.depthBuffer, (double)(x * 16), (double)(z * 16), 16, 16, 0.0625D, 0.0625D, 1.0D);
-
-		for (int i = 0; i < 16; ++i)
-		{
-			for (int j = 0; j < 16; ++j)
-			{
-				Biome biome = biomesIn[j + i * 16];
-				biome.genTerrainBlocks(this.world, this.rand, primer, x * 16 + i, z * 16 + j, this.depthBuffer[j + i * 16]);
-			}
-		}
-	}
-
-	/**
-	 * Raises up and hollows out the hollow hills.
-	 */
-	private void deformTerrainForFeature(int cx, int cz, ChunkPrimer primer) {
-		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world);
-		if (!nearFeature.isTerrainAltered) {
-			return;
-		}
-
-		int[] nearCenter = TFFeature.getNearestCenter(cx, cz, world);
-
-		int hx = nearCenter[0];
-		int hz = nearCenter[1];
-
-		if (nearFeature == TFFeature.trollCave) {
-			// troll cloud, more like
-			deformTerrainForTrollCloud2(primer, nearFeature, cx, cz, hx, hz);
-		}
-
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
-				int dx = x - hx;
-				int dz = z - hz;
-
-				if (nearFeature == TFFeature.hill1 || nearFeature == TFFeature.hill2 || nearFeature == TFFeature.hill3 || nearFeature == TFFeature.hydraLair) {
-					// hollow hills
-					int hdiam = ((nearFeature.size * 2 + 1) * 16);
-					int dist = (int) Math.sqrt(dx * dx + dz * dz);
-					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * ((float) hdiam / 3F));
-
-					raiseHills(primer, nearFeature, hdiam, x, z, dx, dz, hheight);
-				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
-					// hedge mazes, naga arena
-					flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.yetiCave) {
-					// yeti lairs are square
-					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
-				}
-			}
-		}
-
-		// done!
-	}
-
-	private void raiseHills(ChunkPrimer primer, TFFeature nearFeature, int hdiam, int x, int z, int dx, int dz, int hillHeight) {
-		int newGround = -1;
-		boolean foundGroundLevel = false;
-
-		// raise the hill
-		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT; y++) {
-			Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-			if (currentTerrain != Blocks.STONE && !foundGroundLevel) {
-				// we found the top of the stone layer
-				newGround = y + hillHeight;
-
-				foundGroundLevel = true;
-			}
-			if (foundGroundLevel && y <= newGround) {
-				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
-			}
-		}
-		// add the hollow part. Also turn water into stone below that
-		int hollow = hillHeight - 4 - nearFeature.size;
-
-		// hydra lair has a piece missing
-		if (nearFeature == TFFeature.hydraLair) {
-			int mx = dx + 16;
-			int mz = dz + 16;
-			int mdist = (int) Math.sqrt(mx * mx + mz * mz);
-			int mheight = (int) (Math.cos(mdist / (hdiam / 1.5) * Math.PI) * (hdiam / 1.5));
-
-			hollow = Math.max(mheight - 4, hollow);
-		}
-
-		if (hollow < 0) {
-			hollow = 0;
-		}
-
-		// hollow out the hollow parts
-		int hollowFloor = TFWorld.SEALEVEL - 3 - (hollow / 8);
-		if (nearFeature == TFFeature.hydraLair) {
-			// different floor
-			hollowFloor = TFWorld.SEALEVEL;
-		}
-
-		if (hillHeight > 0) {
-			// put a base on hills that go over open space or water
-			for (int y = 0; y < TFWorld.SEALEVEL; y++) {
-				if (primer.getBlockState(x, y, z).getBlock() != Blocks.STONE) {
-					primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
-				}
-			}
-		}
-
-		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
-			primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-		}
-	}
-
-	private void flattenTerrainForFeature(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int oldGround;
-		int newGround;
-		float squishfactor = 0;
-		int mazeheight = TFWorld.SEALEVEL + 1;
-		final int FEATUREBOUNDRY = (nearFeature.size * 2 + 1) * 8 - 8;
-
-		if (dx <= -FEATUREBOUNDRY) {
-			squishfactor = (-dx - FEATUREBOUNDRY) / 8.0f;
-		}
-
-		if (dx >= FEATUREBOUNDRY) {
-			squishfactor = (dx - FEATUREBOUNDRY) / 8.0f;
-		}
-		if (dz <= -FEATUREBOUNDRY) {
-			squishfactor = Math.max(squishfactor, (-dz - FEATUREBOUNDRY) / 8.0f);
-		}
-
-		if (dz >= FEATUREBOUNDRY) {
-			squishfactor = Math.max(squishfactor, (dz - FEATUREBOUNDRY) / 8.0f);
-		}
-
-		if (squishfactor > 0) {
-			// blend the old terrain height to arena height
-			newGround = -1;
-
-			for (int y = 0; y <= 127; y++) {
-				Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-				// we're still in ground
-				if (currentTerrain != Blocks.STONE) {
-					if (newGround == -1) {
-						// we found the lowest chunk of earth
-						oldGround = y;
-						mazeheight += ((oldGround - mazeheight) * squishfactor);
-
-						newGround = oldGround;
-					}
-				}
-			}
-		}
-
-		// sets the groundlevel to the mazeheight
-		for (int y = 0; y <= 127; y++) {
-			Block b = primer.getBlockState(x, y, z).getBlock();
-			if (y < mazeheight && (b == Blocks.AIR || b == Blocks.WATER)) {
-				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
-			}
-			if (y >= mazeheight && b != Blocks.WATER) {
-				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-			}
-		}
-	}
-
-	private void deformTerrainForYetiLair(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int oldGround;
-		int newGround;
-		float squishfactor = 0;
-		int topHeight = TFWorld.SEALEVEL + 24;
-		int outerBoundry = (nearFeature.size * 2 + 1) * 8 - 8;
-
-		// outer boundry
-		if (dx <= -outerBoundry) {
-			squishfactor = (-dx - outerBoundry) / 8.0f;
-		}
-
-		if (dx >= outerBoundry) {
-			squishfactor = (dx - outerBoundry) / 8.0f;
-		}
-		if (dz <= -outerBoundry) {
-			squishfactor = Math.max(squishfactor, (-dz - outerBoundry) / 8.0f);
-		}
-
-		if (dz >= outerBoundry) {
-			squishfactor = Math.max(squishfactor, (dz - outerBoundry) / 8.0f);
-		}
-
-		// inner boundry 
-		int caveBoundry = (nearFeature.size * 2) * 8 - 8;
-		int hollowCeiling = TFWorld.SEALEVEL + 16;
-
-		int offset = Math.min(Math.abs(dx), Math.abs(dz));
-		hollowCeiling = (TFWorld.SEALEVEL + 40) - (offset * 4);
-
-		// center square cave
-		if (dx >= -caveBoundry && dz >= -caveBoundry && dx <= caveBoundry && dz <= caveBoundry) {
-			hollowCeiling = TFWorld.SEALEVEL + 16;
-		}
-
-		// slope ceiling slightly
-		hollowCeiling -= (offset / 6);
-
-		// max out ceiling 8 blocks from roof
-		hollowCeiling = Math.min(hollowCeiling, TFWorld.SEALEVEL + 16);
-
-		// floor, also with slight slope
-		int hollowFloor = TFWorld.SEALEVEL - 1 + (offset / 6);
-
-		if (squishfactor > 0) {
-			// blend the old terrain height to arena height
-			newGround = -1;
-
-			for (int y = 0; y <= 127; y++) {
-				Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-				if (currentTerrain == Blocks.STONE) {
-					// we're still in ground
-					continue;
-				} else {
-					if (newGround == -1) {
-						// we found the lowest chunk of earth
-						oldGround = y;
-						topHeight += ((oldGround - topHeight) * squishfactor);
-
-						hollowFloor += ((oldGround - hollowFloor) * squishfactor);
-
-						newGround = oldGround;
-					}
-				}
-			}
-		}
-
-		// carve the cave into the stone
-		for (int y = 0; y <= 127; y++) {
-			Block b = primer.getBlockState(x, y, z).getBlock();
-
-			// add stone
-			if (y < topHeight && (b == Blocks.AIR || b == Blocks.WATER)) {
-				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
-			}
-
-			// hollow out inside
-			if (y > hollowFloor && y < hollowCeiling) {
-				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-			}
-
-			// ice floor
-			if (y == hollowFloor && y < hollowCeiling && y < TFWorld.SEALEVEL + 3) {
-				primer.setBlockState(x, y, z, Blocks.PACKED_ICE.getDefaultState());
-			}
-		}
-	}
-
-	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
-		for (int bx = 0; bx < 4; bx++) {
-			for (int bz = 0; bz < 4; bz++) {
-				int dx = (bx * 4) - hx - 2;
-				int dz = (bz * 4) - hz - 2;
-
-				// generate several centers for other clouds
-				int regionX = (cx + 8) >> 4;
-				int regionZ = (cz + 8) >> 4;
-
-				long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
-				seed = seed * seed * 42317861L + seed * 7L;
-
-				int num0 = (int) (seed >> 12 & 3L);
-				int num1 = (int) (seed >> 15 & 3L);
-				int num2 = (int) (seed >> 18 & 3L);
-				int num3 = (int) (seed >> 21 & 3L);
-				int num4 = (int) (seed >> 9 & 3L);
-				int num5 = (int) (seed >> 6 & 3L);
-				int num6 = (int) (seed >> 3 & 3L);
-				int num7 = (int) (seed >> 0 & 3L);
-
-				int dx2 = dx + (num0 * 5) - (num1 * 4);
-				int dz2 = dz + (num2 * 4) - (num3 * 5);
-				int dx3 = dx + (num4 * 5) - (num5 * 4);
-				int dz3 = dz + (num6 * 4) - (num7 * 5);
-
-				// take the minimum distance to any center
-				double dist0 = Math.sqrt(dx * dx + dz * dz) / 4.0;
-				double dist2 = Math.sqrt(dx2 * dx2 + dz2 * dz2) / 3.5;
-				double dist3 = Math.sqrt(dx3 * dx3 + dz3 * dz3) / 4.5;
-
-				double dist = Math.min(dist0, Math.min(dist2, dist3));
-
-				float pr = world.rand.nextFloat();
-				double cv = (dist - 7F) - (pr * 3.0F);
-
-				// randomize depth and height
-				int y = 166;
-				int depth = 4;
-
-				if (pr < 0.1F) {
-					y++;
-				}
-				if (pr > 0.6F) {
-					depth++;
-				}
-				if (pr > 0.9F) {
-					depth++;
-				}
-
-				// generate cloud
-				for (int sx = 0; sx < 4; sx++) {
-					for (int sz = 0; sz < 4; sz++) {
-						int lx = bx * 4 + sx;
-						int lz = bz * 4 + sz;
-
-						if (dist < 7 || cv < 0.05F) {
-
-							primer.setBlockState(lx, y, lz, TFBlocks.wispy_cloud.getDefaultState());
-							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffy_cloud.getDefaultState());
-							}
-							primer.setBlockState(lx, y - depth, lz, TFBlocks.wispy_cloud.getDefaultState());
-						} else if (dist < 8 || cv < 1F) {
-							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffy_cloud.getDefaultState());
-							}
-						}
 					}
 				}
 			}
@@ -851,118 +482,26 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		BlockFalling.fallInstantly = false;
 	}
 
-	private boolean allowSurfaceLakes(Biome biome) {
-		if (biome.decorator instanceof TFBiomeDecorator) {
-			return !((TFBiomeDecorator) biome.decorator).hasCanopy;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean generateStructures(Chunk chunkIn, int x, int z) {
-		return false;
-	}
-
-	/**
-	 * Returns a list of creatures of the specified type that can spawn at the
-	 * given location.
-	 * <p>
-	 * Twilight Forest varient! First check features, then only if we're not in
-	 * a feature, check the biome.
-	 */
-	@Override
-	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
-		// are the specified coordinates precicely in a feature?
-		TFFeature nearestFeature = TFFeature.getFeatureForRegion(pos.getX() >> 4, pos.getZ() >> 4, world);
-
-
-		if (nearestFeature != TFFeature.nothing) {
-			// if the feature is already conquered, no spawns
-			if (this.isStructureConquered(pos)) {
-				return null;
-			}
-
-			// check the precise coords.
-			int spawnListIndex = this.majorFeatureGenerator.getSpawnListIndexAt(pos);
-			if (spawnListIndex >= 0) {
-				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
-			}
-		}
-
-		Biome biome = world.getBiome(pos);
-
-		if (pos.getY() < TFWorld.SEALEVEL && creatureType == EnumCreatureType.MONSTER && biome instanceof TFBiomeBase) {
-			// cave monsters!
-			return ((TFBiomeBase) biome).getUndergroundSpawnableList();
-		} else {
-			return biome.getSpawnableList(creatureType);
-		}
-	}
-
 	@Nullable
 	@Override
-	public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
-		if(structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()))
-			return hollowTreeGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
-		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		if (feature != TFFeature.nothing)
-			return TFFeature.findNearestFeaturePosBySpacing(worldIn, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
-		return null;
-	}
-
-	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
-	}
-
-	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-		return this.majorFeatureGenerator.isStructureLocked(pos, lockIndex);
-	}
-
-	public boolean isBlockInStructureBB(BlockPos pos) {
-		return this.majorFeatureGenerator.isInsideStructure(pos);
-	}
-
-	public StructureBoundingBox getSBBAt(BlockPos pos) {
-		return this.majorFeatureGenerator.getSBBAt(pos);
-	}
-
-	public boolean isBlockProtected(BlockPos pos) {
-		return this.majorFeatureGenerator.isBlockProtectedAt(pos);
-	}
-
-	public boolean isStructureConquered(BlockPos pos) {
-		return this.majorFeatureGenerator.isStructureConquered(pos);
-	}
-
-	public boolean isBlockInFullStructure(int x, int z) {
-		return this.majorFeatureGenerator.isBlockInFullStructure(x, z);
-	}
-
-	public boolean isBlockNearFullStructure(int x, int z, int range) {
-		return this.majorFeatureGenerator.isBlockNearFullStructure(x, z, range);
-	}
-
-	public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
-		return this.majorFeatureGenerator.getFullSBBAt(mapX, mapZ);
-	}
-
-	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		return this.majorFeatureGenerator.getFullSBBNear(mapX, mapZ, range);
-	}
-
-	public TFFeature getFeatureAt(BlockPos pos) {
-		return majorFeatureGenerator.getFeatureAt(pos);
+	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position, boolean findUnexplored) {
+		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
+			return hollowTreeGenerator.getNearestStructurePos(world, position, findUnexplored);
+		}
+		return super.getNearestStructurePos(world, structureName, position, findUnexplored);
 	}
 
 	@Override
-	public void recreateStructures(Chunk chunk, int var1, int var2) {
-		majorFeatureGenerator.generate(world, var1, var2, null);
-		hollowTreeGenerator.generate(world, var1, var2, null);
+	public void recreateStructures(Chunk chunk, int x, int z) {
+		super.recreateStructures(chunk, x, z);
+		hollowTreeGenerator.generate(world, x, z, null);
 	}
 
 	@Override
-	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
-		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : feature != null && feature != TFFeature.nothing && getFeatureAt(pos) == feature;
+	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
+		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
+			return hollowTreeGenerator.isInsideStructure(pos);
+		}
+		return super.isInsideStructure(world, structureName, pos);
 	}
 }
