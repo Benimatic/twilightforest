@@ -50,7 +50,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	private final MapGenTFHollowTree hollowTreeGenerator = new MapGenTFHollowTree();
 
 	public ChunkGeneratorTwilightForest(World world, long seed, boolean enableFeatures) {
-		super(world, seed, enableFeatures);
+		super(world, seed, enableFeatures, true);
 		this.minLimitPerlinNoise = new NoiseGeneratorOctaves(this.rand, 16);
 		this.maxLimitPerlinNoise = new NoiseGeneratorOctaves(this.rand, 16);
 		this.mainPerlinNoise = new NoiseGeneratorOctaves(this.rand, 8);
@@ -71,7 +71,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 	@Override
 	public Chunk generateChunk(int x, int z) {
-		rand.setSeed(x * 0x4f9939f508L + z * 0x1ef1565bd5L);
+		rand.setSeed(getSeed(x, z));
 		ChunkPrimer primer = new ChunkPrimer();
 		setBlocksInChunk(x, z, primer);
 

@@ -39,11 +39,18 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 	protected final MapGenTFMajorFeature majorFeatureGenerator = new MapGenTFMajorFeature();
 
-	public ChunkGeneratorTFBase(World world, long seed, boolean enableFeatures) {
+	private final boolean shouldGenerateBedrock;
+
+	protected static long getSeed(int x, int z) {
+		return x * 0x4f9939f508L + z * 0x1ef1565bd5L;
+	}
+
+	public ChunkGeneratorTFBase(World world, long seed, boolean enableFeatures, boolean shouldGenerateBedrock) {
 		this.world = world;
 		this.terrainType = world.getWorldInfo().getTerrainType();
 		this.rand = new Random(seed);
 		this.surfaceNoise = new NoiseGeneratorPerlin(this.rand, 4);
+		this.shouldGenerateBedrock = shouldGenerateBedrock;
 	}
 
 	protected final Chunk makeChunk(int x, int z, ChunkPrimer primer) {
@@ -398,6 +405,10 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 			return !((TFBiomeDecorator) biome.decorator).hasCanopy;
 		}
 		return true;
+	}
+
+	public final boolean shouldGenerateBedrock() {
+		return shouldGenerateBedrock;
 	}
 
 	@Override
