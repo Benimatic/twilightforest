@@ -17,7 +17,6 @@ import java.util.function.IntConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 
-import net.minecraft.client.renderer.texture.PngSizeInfo;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
@@ -43,7 +42,8 @@ public final class ShaderHelper {
             twilightSkyShader,
             fireflyShader,
             auroraShader,
-            spiralShader,
+            carminiteShader,
+            towerDeviceShader,
             bloomShader;
 
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + MINECRAFT.getRenderPartialTicks());
@@ -69,7 +69,8 @@ public final class ShaderHelper {
                 deleteShader(twilightSkyShader);
                 deleteShader(fireflyShader);
                 deleteShader(auroraShader);
-                deleteShader(spiralShader);
+                deleteShader(carminiteShader);
+                deleteShader(towerDeviceShader);
                 //deleteShader(bloomShader);
 
                 initShaderList();
@@ -92,7 +93,8 @@ public final class ShaderHelper {
         twilightSkyShader      = createProgram("standard_texcoord.vert" , "twilight_sky.frag");
         fireflyShader          = createProgram("standard_texcoord2.vert", "firefly.frag");
         auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
-        spiralShader           = createProgram("camera_fixed.vert"      , "spiral.frag");
+        carminiteShader        = createProgram("camera_fixed.vert"      , "spiral.frag");
+        towerDeviceShader      = createProgram("standard_texcoord2.vert", "pulsing.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
 
