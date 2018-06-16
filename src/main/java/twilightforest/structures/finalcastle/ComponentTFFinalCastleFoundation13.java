@@ -77,22 +77,19 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 	 * Find what y level the local deadrock is.  Just check the center of the chunk we're given
 	 */
 	protected int getDeadrockLevel(World world, StructureBoundingBox sbb) {
-		int groundLevel = 256;
+
+		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
 		for (int y = 150; y > 0; y--) // is 150 a good place to start? :)
 		{
-			final Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
-
-			int cx = center.getX();
-			int cz = center.getZ();
-
-			Block block = world.getBlockState(new BlockPos(cx, y, cz)).getBlock();
+			pos.setY(y);
+			Block block = world.getBlockState(pos).getBlock();
 			if (block == TFBlocks.deadrock) {
-				groundLevel = y;
-				break;
+				return y;
 			}
 		}
 
-		return groundLevel;
+		return 0;
 	}
 }

@@ -19,6 +19,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
+import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -546,9 +547,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * Find what y level the dirt/grass/stone is.  Just check the center of the chunk we're given
 	 */
 	protected int getSampledDirtLevel(World world, StructureBoundingBox sbb) {
-		int dirtLevel = 256;
 
-		Vec3i center = new BlockPos(sbb.minX + (sbb.maxX - sbb.minX + 1) / 2, sbb.minY + (sbb.maxY - sbb.minY + 1) / 2, sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2);
+		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
 		for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)
@@ -556,12 +556,11 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			pos.setY(y);
 			Material material = world.getBlockState(pos).getMaterial();
 			if (material == Material.GROUND || material == Material.ROCK || material == Material.GRASS) {
-				dirtLevel = y;
-				break;
+				return y;
 			}
 		}
 
-		return dirtLevel;
+		return -1;
 	}
 
 	/**
