@@ -14,6 +14,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomeDecorator;
@@ -63,7 +64,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	// [VanillaCopy] Exact, ChunkGeneratorOverworld.replaceBiomeBlocks
 	public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
 	{
-		if (!net.minecraftforge.event.ForgeEventFactory.onReplaceBiomeBlocks(this, x, z, primer, this.world)) return;
+		if (!ForgeEventFactory.onReplaceBiomeBlocks(this, x, z, primer, this.world)) return;
 		double d0 = 0.03125D;
 		this.depthBuffer = this.surfaceNoise.getRegion(this.depthBuffer, (double)(x * 16), (double)(z * 16), 16, 16, 0.0625D, 0.0625D, 1.0D);
 
@@ -179,26 +180,26 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	private void flattenTerrainForFeature(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 		int oldGround;
 		int newGround;
-		float squishfactor = 0;
-		int mazeheight = TFWorld.SEALEVEL + 1;
-		final int FEATUREBOUNDRY = (nearFeature.size * 2 + 1) * 8 - 8;
+		float squishFactor = 0;
+		int mazeHeight = TFWorld.SEALEVEL + 1;
+		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
-		if (dx <= -FEATUREBOUNDRY) {
-			squishfactor = (-dx - FEATUREBOUNDRY) / 8.0f;
+		if (dx <= -FEATURE_BOUNDARY) {
+			squishFactor = (-dx - FEATURE_BOUNDARY) / 8.0f;
 		}
 
-		if (dx >= FEATUREBOUNDRY) {
-			squishfactor = (dx - FEATUREBOUNDRY) / 8.0f;
+		if (dx >= FEATURE_BOUNDARY) {
+			squishFactor = (dx - FEATURE_BOUNDARY) / 8.0f;
 		}
-		if (dz <= -FEATUREBOUNDRY) {
-			squishfactor = Math.max(squishfactor, (-dz - FEATUREBOUNDRY) / 8.0f);
-		}
-
-		if (dz >= FEATUREBOUNDRY) {
-			squishfactor = Math.max(squishfactor, (dz - FEATUREBOUNDRY) / 8.0f);
+		if (dz <= -FEATURE_BOUNDARY) {
+			squishFactor = Math.max(squishFactor, (-dz - FEATURE_BOUNDARY) / 8.0f);
 		}
 
-		if (squishfactor > 0) {
+		if (dz >= FEATURE_BOUNDARY) {
+			squishFactor = Math.max(squishFactor, (dz - FEATURE_BOUNDARY) / 8.0f);
+		}
+
+		if (squishFactor > 0) {
 			// blend the old terrain height to arena height
 			newGround = -1;
 
@@ -209,7 +210,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 					if (newGround == -1) {
 						// we found the lowest chunk of earth
 						oldGround = y;
-						mazeheight += ((oldGround - mazeheight) * squishfactor);
+						mazeHeight += ((oldGround - mazeHeight) * squishFactor);
 
 						newGround = oldGround;
 					}
@@ -220,10 +221,10 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// sets the ground level to the maze height
 		for (int y = 0; y <= 127; y++) {
 			Block b = primer.getBlockState(x, y, z).getBlock();
-			if (y < mazeheight && (b == Blocks.AIR || b == Blocks.WATER)) {
+			if (y < mazeHeight && (b == Blocks.AIR || b == Blocks.WATER)) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
-			if (y >= mazeheight && b != Blocks.WATER) {
+			if (y >= mazeHeight && b != Blocks.WATER) {
 				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
 			}
 		}
@@ -232,35 +233,35 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	private void deformTerrainForYetiLair(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 		int oldGround;
 		int newGround;
-		float squishfactor = 0;
+		float squishFactor = 0;
 		int topHeight = TFWorld.SEALEVEL + 24;
-		int outerBoundry = (nearFeature.size * 2 + 1) * 8 - 8;
+		int outerBoundary = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		// outer boundary
-		if (dx <= -outerBoundry) {
-			squishfactor = (-dx - outerBoundry) / 8.0f;
+		if (dx <= -outerBoundary) {
+			squishFactor = (-dx - outerBoundary) / 8.0f;
 		}
 
-		if (dx >= outerBoundry) {
-			squishfactor = (dx - outerBoundry) / 8.0f;
+		if (dx >= outerBoundary) {
+			squishFactor = (dx - outerBoundary) / 8.0f;
 		}
-		if (dz <= -outerBoundry) {
-			squishfactor = Math.max(squishfactor, (-dz - outerBoundry) / 8.0f);
+		if (dz <= -outerBoundary) {
+			squishFactor = Math.max(squishFactor, (-dz - outerBoundary) / 8.0f);
 		}
 
-		if (dz >= outerBoundry) {
-			squishfactor = Math.max(squishfactor, (dz - outerBoundry) / 8.0f);
+		if (dz >= outerBoundary) {
+			squishFactor = Math.max(squishFactor, (dz - outerBoundary) / 8.0f);
 		}
 
 		// inner boundary
-		int caveBoundry = (nearFeature.size * 2) * 8 - 8;
+		int caveBoundary = (nearFeature.size * 2) * 8 - 8;
 		int hollowCeiling = TFWorld.SEALEVEL + 16;
 
 		int offset = Math.min(Math.abs(dx), Math.abs(dz));
 		hollowCeiling = (TFWorld.SEALEVEL + 40) - (offset * 4);
 
 		// center square cave
-		if (dx >= -caveBoundry && dz >= -caveBoundry && dx <= caveBoundry && dz <= caveBoundry) {
+		if (dx >= -caveBoundary && dz >= -caveBoundary && dx <= caveBoundary && dz <= caveBoundary) {
 			hollowCeiling = TFWorld.SEALEVEL + 16;
 		}
 
@@ -273,7 +274,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// floor, also with slight slope
 		int hollowFloor = TFWorld.SEALEVEL - 1 + (offset / 6);
 
-		if (squishfactor > 0) {
+		if (squishFactor > 0) {
 			// blend the old terrain height to arena height
 			newGround = -1;
 
@@ -286,9 +287,9 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 					if (newGround == -1) {
 						// we found the lowest chunk of earth
 						oldGround = y;
-						topHeight += ((oldGround - topHeight) * squishfactor);
+						topHeight += ((oldGround - topHeight) * squishFactor);
 
-						hollowFloor += ((oldGround - hollowFloor) * squishfactor);
+						hollowFloor += ((oldGround - hollowFloor) * squishFactor);
 
 						newGround = oldGround;
 					}

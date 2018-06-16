@@ -16,6 +16,9 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
@@ -67,33 +70,33 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	public Chunk generateChunk(int cx, int cz) {
-		rand.setSeed(cx * 0x4f9939f508L + cz * 0x1ef1565bd5L);
+	public Chunk generateChunk(int x, int z) {
+		rand.setSeed(x * 0x4f9939f508L + z * 0x1ef1565bd5L);
 		ChunkPrimer primer = new ChunkPrimer();
-		setBlocksInChunk(cx, cz, primer);
+		setBlocksInChunk(x, z, primer);
 
 		squishTerrain(primer);
 
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
-		addDarkForestCanopy2(cx, cz, primer);
+		addDarkForestCanopy2(x, z, primer);
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
-		this.biomesForGeneration = world.getBiomeProvider().getBiomes(biomesForGeneration, cx * 16, cz * 16, 16, 16);
-		addGlaciers(cx, cz, primer, biomesForGeneration);
-		deformTerrainForFeature(cx, cz, primer);
-		replaceBiomeBlocks(cx, cz, primer, biomesForGeneration);
-		caveGenerator.generate(world, cx, cz, primer);
-		ravineGenerator.generate(world, cx, cz, primer);
-		majorFeatureGenerator.generate(world, cx, cz, primer);
-		hollowTreeGenerator.generate(world, cx, cz, primer);
+		this.biomesForGeneration = world.getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
+		addGlaciers(x, z, primer, biomesForGeneration);
+		deformTerrainForFeature(x, z, primer);
+		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
+		caveGenerator.generate(world, x, z, primer);
+		ravineGenerator.generate(world, x, z, primer);
+		majorFeatureGenerator.generate(world, x, z, primer);
+		hollowTreeGenerator.generate(world, x, z, primer);
 
-		return makeChunk(cx, cz, primer);
+		return makeChunk(x, z, primer);
 	}
 
-	public void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer) {
+	public void setBlocksInChunk(int x, int z, ChunkPrimer primer) {
 		byte seaLevel = 63;
-		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
-		this.generateHeightmap(chunkX * 4, 0, chunkZ * 4);
+		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
+		this.generateHeightmap(x * 4, 0, z * 4);
 
 		for (int k = 0; k < 4; ++k) {
 			int l = k * 5;
@@ -165,13 +168,13 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				float totalHeight = 0.0F;
 				float totalFactor = 0.0F;
 				byte two = 2;
-				Biome biomegenbase = this.biomesForGeneration[ax + 2 + (az + 2) * 10];
+				Biome biome = this.biomesForGeneration[ax + 2 + (az + 2) * 10];
 
 				for (int ox = -two; ox <= two; ++ox) {
 					for (int oz = -two; oz <= two; ++oz) {
-						Biome biomegenbase1 = this.biomesForGeneration[ax + ox + 2 + (az + oz + 2) * 10];
-						float rootHeight = biomegenbase1.getBaseHeight();
-						float heightVariation = biomegenbase1.getHeightVariation();
+						Biome biome1 = this.biomesForGeneration[ax + ox + 2 + (az + oz + 2) * 10];
+						float rootHeight = biome1.getBaseHeight();
+						float heightVariation = biome1.getHeightVariation();
 
 						if (this.terrainType == WorldType.AMPLIFIED && rootHeight > 0.0F) {
 							rootHeight = 1.0F + rootHeight * 2.0F;
@@ -180,7 +183,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 						float heightFactor = this.biomeWeights[ox + 2 + (oz + 2) * 5] / (rootHeight + 2.0F);
 
-						if (biomegenbase1.getBaseHeight() > biomegenbase.getBaseHeight()) {
+						if (biome1.getBaseHeight() > biome.getBaseHeight()) {
 							heightFactor /= 2.0F;
 						}
 
@@ -324,7 +327,6 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 			}
 		}
 
-
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 
@@ -365,7 +367,6 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 				boolean generateForest = thickness > 1;
 
-
 				if (generateForest) {
 					double d = 0.03125D;
 					depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
@@ -405,79 +406,86 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	public void populate(int chunkX, int chunkZ) {
+	public void populate(int x, int z) {
+
 		BlockFalling.fallInstantly = true;
-		int i = chunkX * 16;
-		int j = chunkZ * 16;
+
+		int i = x * 16;
+		int j = z * 16;
 		BlockPos blockpos = new BlockPos(i, 0, j);
 		Biome biome = this.world.getBiome(blockpos.add(16, 0, 16));
 		this.rand.setSeed(this.world.getSeed());
 		long k = this.rand.nextLong() / 2L * 2L + 1L;
 		long l = this.rand.nextLong() / 2L * 2L + 1L;
-		this.rand.setSeed((long)chunkX * k + (long)chunkZ * l ^ this.world.getSeed());
+		this.rand.setSeed((long)x * k + (long)z * l ^ this.world.getSeed());
 		boolean flag = false;
-		ChunkPos chunkpos = new ChunkPos(chunkX, chunkZ);
+		ChunkPos chunkpos = new ChunkPos(x, z);
 
-		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, chunkX, chunkZ, flag);
+		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
 		boolean disableFeatures = this.majorFeatureGenerator.generateStructure(world, rand, chunkpos)
-				|| !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
+				|| !TFFeature.getNearestFeature(x, z, world).areChunkDecorationsEnabled;
 
 		hollowTreeGenerator.generateStructure(world, rand, chunkpos);
 
 		if (!disableFeatures && rand.nextInt(4) == 0) {
-			int i1 = blockpos.getX() + rand.nextInt(16) + 8;
-			int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
-			int i3 = blockpos.getZ() + rand.nextInt(16) + 8;
-			if (i2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome)) {
-				(new WorldGenLakes(Blocks.WATER)).generate(world, rand, new BlockPos(i1, i2, i3));
+			if (TerrainGen.populate(this, this.world, this.rand, x, x, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
+				int i1 = blockpos.getX() + rand.nextInt(16) + 8;
+				int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
+				int i3 = blockpos.getZ() + rand.nextInt(16) + 8;
+				if (i2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome)) {
+					(new WorldGenLakes(Blocks.WATER)).generate(world, rand, new BlockPos(i1, i2, i3));
+				}
 			}
 		}
 
-		if (!disableFeatures && rand.nextInt(32) == 0) // reduced from 8
-		{
-			int j1 = blockpos.getX() + rand.nextInt(16) + 8;
-			int j2 = rand.nextInt(rand.nextInt(TFWorld.CHUNKHEIGHT - 8) + 8);
-			int j3 = blockpos.getZ() + rand.nextInt(16) + 8;
-			if (j2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome) && rand.nextInt(10) == 0) {
-				(new WorldGenLakes(Blocks.LAVA)).generate(world, rand, new BlockPos(j1, j2, j3));
+		if (!disableFeatures && rand.nextInt(32) == 0) { // reduced from 8
+			if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.LAVA)) {
+				int j1 = blockpos.getX() + rand.nextInt(16) + 8;
+				int j2 = rand.nextInt(rand.nextInt(TFWorld.CHUNKHEIGHT - 8) + 8);
+				int j3 = blockpos.getZ() + rand.nextInt(16) + 8;
+				if (j2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome) && rand.nextInt(10) == 0) {
+					(new WorldGenLakes(Blocks.LAVA)).generate(world, rand, new BlockPos(j1, j2, j3));
+				}
 			}
 		}
-		for (int k1 = 0; k1 < 8; k1++) {
-			int k2 = blockpos.getX() + rand.nextInt(16) + 8;
-			int k3 = rand.nextInt(TFWorld.CHUNKHEIGHT);
-			int l3 = blockpos.getZ() + rand.nextInt(16) + 8;
-			(new WorldGenDungeons()).generate(world, rand, new BlockPos(k2, k3, l3));
+
+		if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.DUNGEON)) {
+			for (int k1 = 0; k1 < 8; k1++) {
+				int k2 = blockpos.getX() + rand.nextInt(16) + 8;
+				int k3 = rand.nextInt(TFWorld.CHUNKHEIGHT);
+				int l3 = blockpos.getZ() + rand.nextInt(16) + 8;
+				(new WorldGenDungeons()).generate(world, rand, new BlockPos(k2, k3, l3));
+			}
 		}
 
 		biome.decorate(this.world, this.rand, new BlockPos(i, 0, j));
-		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS))
+
+		if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
 			WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.rand);
+		}
+
 		blockpos = blockpos.add(8, 0, 8);
 
-		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE))
-		{
-			for (int k2 = 0; k2 < 16; ++k2)
-			{
-				for (int j3 = 0; j3 < 16; ++j3)
-				{
+		if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.ICE)) {
+			for (int k2 = 0; k2 < 16; ++k2) {
+				for (int j3 = 0; j3 < 16; ++j3) {
+
 					BlockPos blockpos1 = this.world.getPrecipitationHeight(blockpos.add(k2, 0, j3));
 					BlockPos blockpos2 = blockpos1.down();
 
-					if (this.world.canBlockFreezeWater(blockpos2))
-					{
+					if (this.world.canBlockFreezeWater(blockpos2)) {
 						this.world.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 2);
 					}
 
-					if (this.world.canSnowAt(blockpos1, true))
-					{
+					if (this.world.canSnowAt(blockpos1, true)) {
 						this.world.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 2);
 					}
 				}
 			}
 		}//Forge: End ICE
 
-		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, chunkX, chunkZ, flag);
+		ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, flag);
 
 		BlockFalling.fallInstantly = false;
 	}
