@@ -1,4 +1,4 @@
-package twilightforest.compat;
+package twilightforest.compat.ie;
 
 import blusunrize.immersiveengineering.api.crafting.IngredientStack;
 import blusunrize.immersiveengineering.api.shader.*;
@@ -9,17 +9,13 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.util.TriConsumer;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.shader.ShaderHelper;
 import twilightforest.client.shader.ShaderUniform;
 import twilightforest.item.TFItems;
 
-import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.IntConsumer;
 
 public class IEShaderRegister {
@@ -115,12 +111,12 @@ public class IEShaderRegister {
 
                 registerShaderCases      ( "Underbrick"          , ModType.TWILIGHTFOREST      , "scales"   , RARITY, 0xFF_85_68_45, 0xFF_76_7F_76, 0xFF_61_4D_33, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                          ).setInfo("Twilight Forest", "Underbrick"               , "underbrick"         ),
                 registerShaderCases      ( "Knight Phantom"      , ModType.IMMERSIVEENGINEERING, "1_0"      , RARITY, 0xCC_40_6D_05, 0xFF_36_35_34, 0xFF_7A_5C_49, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                          ).setInfo("Twilight Forest", "Knight Phantom Minibosses", "knight_phantom"     ),
-                registerShaderCases      ( "Towerwood"           , ModType.IMMERSIVEENGINEERING, "1_0"      , RARITY, 0xFF_A6_65_3A, 0xFF_F5_DA_93, 0xFF_83_5A_35, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                          ).setInfo("Twilight Forest", "Towerwood Planks"         , "towerwood"          ),
+                registerShaderCasesTopped( "Towerwood"           , ModType.IMMERSIVEENGINEERING, "1_0"      , RARITY, 0xFF_A6_65_3A, 0xFF_F5_DA_93, 0xFF_83_5A_35, 0xFF_FF_FF_FF, new ShaderLayerProvider<?>[]{ LAYER_PROVIDER }                                                                                                                                           , TOWER_DEVICE_SHADER_PROVIDER ).setInfo("Twilight Forest", "Towerwood Planks"         , "towerwood"          ),
                 registerShaderCasesTopped( "Carminite"           , ModType.TWILIGHTFOREST      , "carminite", RARITY, 0xFF_72_00_00, 0xFF_FF_00_00, 0xFF_FF_00_00, 0xFF_FF_00_00, new ShaderLayerProvider<?>[]{ (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTexPrefix(t) + s), 0xFFFFFFFF, CARMINITE_TRICONSUMER, ShaderHelper.STAR_UNIFORMS ) }, TOWER_DEVICE_SHADER_PROVIDER ).setInfo("Twilight Forest", "Carminite"                , "carminite"          ),
                 registerShaderCases      ( "Ur-Ghast"            , ModType.IMMERSIVEENGINEERING, "1_2"      , RARITY, 0xFF_F9_F9_F9, 0xFF_9A_37_37, 0xFF_56_56_56, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                          ).setInfo("Twilight Forest", "Ur-Ghast"                 , "ur-ghast"           ),
 
                 registerShaderCases      ( "Alpha Yeti"          , ModType.IMMERSIVEENGINEERING, "1_0"      , RARITY, 0xFF_FC_FC_FC, 0xFF_4A_80_CE, 0xFF_25_3F_66, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                          ).setInfo("Twilight Forest", "Alpha Yeti"               , "alpha_yeti"         ),
-                registerShaderCases      ( "Auroralized"         , ModType.IMMERSIVEENGINEERING, "1_5"      , RARITY, 0xFF_00_FF_FF, 0xFF_00_FF_00, 0xFF_00_00_FF, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTexPrefix(t) + s), 0xFFFFFFFF, AURORA_TRICONSUMER   , ShaderHelper.TIME_UNIFORM  )                                                               ).setInfo("Twilight Forest", "Aurora Palace"            , "aurora"             ),
+                registerShaderCases      ( "Auroralized"         , ModType.IMMERSIVEENGINEERING, "1_5"      , RARITY, 0xFF_00_FF_FF, 0xFF_00_FF_00, 0xFF_00_00_FF, 0xFF_FF_FF_FF,                 (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTexPrefix(t) + s), 0xFFFFFFFF, AURORA_TRICONSUMER   , ShaderHelper.TIME_UNIFORM  )                                               ).setInfo("Twilight Forest", "Aurora Palace"            , "aurora"             ),
                 registerShaderCases      ( "Snow Queen"          , ModType.IMMERSIVEENGINEERING, "1_0"      , RARITY, 0xFF_DC_FB_FF, 0xFF_C3_9C_00, 0xFF_03_05_89, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                          ).setInfo("Twilight Forest", "Snow Queen"               , "snow_queen"         ),
 
                 registerShaderCases      ( "Ironwood"            , ModType.IMMERSIVEENGINEERING, "1_0"      , RARITY, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                          ).setInfo("Twilight Forest", "Ironwood"                 , "ironwood"           ),
@@ -210,7 +206,7 @@ public class IEShaderRegister {
     private static ShaderCaseChemthrower registerShaderCaseChemthrower(String name, int gripColor, int bodyColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
-        return ShaderRegistry.registerShaderCase(name, new ShaderCaseChemthrower(
+        return ShaderRegistry.registerShaderCase(name, new TFShaderCaseChemthrower( 3 + additionalLayers.length,
                 shaderLayerBuilder.add(
                         new ShaderCase.ShaderLayer(PROCESSED_CHEMTHROW_LAYER, gripColor),
                         new ShaderCase.ShaderLayer(PROCESSED_CHEMTHROW_LAYER, bodyColor)
@@ -221,19 +217,18 @@ public class IEShaderRegister {
     private static ShaderCaseDrill registerShaderCaseDrill(String name, int gripColor, int bodyColor, int bladeColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
-        return ShaderRegistry.registerShaderCase(name, new ShaderCaseDrill(
+        return ShaderRegistry.registerShaderCase(name, new TFShaderCaseDrill( 3 + additionalLayers.length,
                 shaderLayerBuilder.add(
                         new ShaderCase.ShaderLayer(PROCESSED_DRILL_LAYER, gripColor),
                         new ShaderCase.ShaderLayer(PROCESSED_DRILL_LAYER, bodyColor)
-                ).add(additionalLayers).add(UNCOLORED_DRILL_LAYER).add(topLayers).add(NULL_LAYER).build()), rarity)
-                .addHeadLayers(new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering", "items/drill_iron"), bladeColor));
+                ).add(additionalLayers).add(UNCOLORED_DRILL_LAYER).add(topLayers).add(NULL_LAYER).build()), rarity).addHeadLayers(new ShaderCase.ShaderLayer(new ResourceLocation("immersiveengineering", "items/drill_iron"), bladeColor));
     }
 
     @SuppressWarnings("UnusedReturnValue")
     private static ShaderCaseRailgun registerShaderCaseRailgun(String name, int gripColor, int bodyColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
-        return ShaderRegistry.registerShaderCase(name, new ShaderCaseRailgun(
+        return ShaderRegistry.registerShaderCase(name, new TFShaderCaseRailgun( 3 + additionalLayers.length,
                 shaderLayerBuilder.add(
                         new ShaderCase.ShaderLayer(PROCESSED_RAILGUN_LAYER, gripColor),
                         new ShaderCase.ShaderLayer(PROCESSED_RAILGUN_LAYER, bodyColor)
@@ -244,7 +239,7 @@ public class IEShaderRegister {
     private static ShaderCaseShield registerShaderCaseShield(String name, int gripColor, int bodyColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
-        return ShaderRegistry.registerShaderCase(name, new ShaderCaseShield(
+        return ShaderRegistry.registerShaderCase(name, new TFShaderCaseShield( 3 + additionalLayers.length,
                 shaderLayerBuilder.add(
                         new ShaderCase.ShaderLayer(PROCESSED_SHIELD_LAYER, gripColor),
                         new ShaderCase.ShaderLayer(PROCESSED_SHIELD_LAYER, bodyColor)

@@ -1,5 +1,7 @@
 #version 120
 
+#define M_PI 3.1415926535897932384626433832795
+
 uniform sampler2D zero;
 uniform float time;
 
@@ -12,15 +14,6 @@ varying vec3 worldPos;
 
 void main() {
     vec4 tex = texture2D(zero, vec2(texCoord0));
-    float timing = mod(length(worldPos.xyz) * 4 - time/50, 1);
 
-    if (timing <= 0.25) {
-        gl_FragColor = vec4( 0.392, 0, 0, tex.a );
-    } else if (timing <= 0.40) {
-        gl_FragColor = vec4( 0.615, 0, 0, tex.a );
-    } else if (timing <= 0.85) {
-        gl_FragColor = vec4( 0.729, 0, 0, tex.a );
-    } else {
-        gl_FragColor = vec4( 0.615, 0, 0, tex.a );
-    }
+    gl_FragColor = vec4( clamp( sin( length( worldPos.xyz * scale ) * 100 - time/3 ) * 0.339 + 0.592, 0.392, 0.729) * tex.r, 0, 0, tex.a );
 }

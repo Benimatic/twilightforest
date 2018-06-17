@@ -1,4 +1,4 @@
-package twilightforest.compat;
+package twilightforest.compat.ie;
 
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.shader.IShaderItem;

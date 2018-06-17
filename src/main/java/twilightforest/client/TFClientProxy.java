@@ -217,7 +217,7 @@ public class TFClientProxy extends TFCommonProxy {
 					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
 					twilightforest.client.shader.ShaderHelper.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
 					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
-						twilightforest.compat.IEShaderRegister.initShaders();
+						twilightforest.compat.ie.IEShaderRegister.initShaders();
 				}
 			}
 		});
