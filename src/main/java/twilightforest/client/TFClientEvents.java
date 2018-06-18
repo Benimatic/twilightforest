@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
@@ -93,6 +95,20 @@ public class TFClientEvents {
 			new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
 			new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};
+
+	/**
+	 * Stop the game from rendering the mount health for unfriendly creatures
+	 */
+	@SubscribeEvent
+	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
+		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
+			if (TFEventListener.isRidingUnfriendly(Minecraft.getMinecraft().player)) {
+				event.setCanceled(true);
+				return false;
+			}
+		}
+		return true;
+	}
 
 	// Slowness potion uses an attribute modifier with specific UUID
 	// We can detect whether an entity has slowness from the client by looking for this UUID

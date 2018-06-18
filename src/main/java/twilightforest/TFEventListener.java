@@ -2,7 +2,6 @@ package twilightforest;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandGameRule;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,7 +32,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -53,8 +51,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFCritter;
 import twilightforest.block.BlockTFGiantBlock;
@@ -435,23 +431,6 @@ public class TFEventListener {
 	}
 
 	/**
-	 * Stop the game from rendering the mount health for unfriendly creatures
-	 */
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
-			if (isRidingUnfriendly(Minecraft.getMinecraft().player)) {
-				event.setCanceled(true);
-				return false;
-
-			}
-		}
-		return true;
-	}
-
-
-	/**
 	 * Stop the player from sneaking while riding an unfriendly creature
 	 */
 	@SubscribeEvent
@@ -462,7 +441,7 @@ public class TFEventListener {
 		return true;
 	}
 
-	private static boolean isRidingUnfriendly(EntityLivingBase entity) {
+	public static boolean isRidingUnfriendly(EntityLivingBase entity) {
 		return entity.isRiding() && (entity.getRidingEntity() instanceof EntityTFPinchBeetle || entity.getRidingEntity() instanceof EntityTFYeti);
 	}
 
