@@ -445,12 +445,14 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 		}
 
 		if (!this.validTreeLocation()) {
+			this.world = null;
 			return false;
 		} else {
 			this.generateLeafNodeList();
 			this.generateLeaves();
 			this.generateTrunk();
 			this.generateLeafNodeBases();
+			this.world = null;
 			return true;
 		}
 	}
