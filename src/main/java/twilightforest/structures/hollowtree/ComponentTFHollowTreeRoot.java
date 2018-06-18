@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerator;
+import twilightforest.world.feature.TFGenerator;
 
 import java.util.Random;
 import java.util.function.Predicate;

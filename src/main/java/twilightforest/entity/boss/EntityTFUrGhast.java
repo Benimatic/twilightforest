@@ -22,7 +22,7 @@ import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;

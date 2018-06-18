@@ -28,6 +28,7 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;

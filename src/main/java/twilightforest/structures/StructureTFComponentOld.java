@@ -17,7 +17,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;

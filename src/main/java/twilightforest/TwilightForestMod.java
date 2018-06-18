@@ -3,8 +3,6 @@ package twilightforest;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.storage.loot.conditions.LootConditionManager;
-import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
@@ -27,6 +25,8 @@ import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
 import twilightforest.item.TFItems;
+import twilightforest.loot.TFTreasure;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
 import twilightforest.util.TFEntityNames;
@@ -84,10 +84,6 @@ public class TwilightForestMod {
 		proxy.preInit();
 
 		TFTreasure.init();
-		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
-		LootFunctionManager.registerFunction(new LootFunctionModItemSwap.Serializer());
-		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
-		LootConditionManager.registerCondition(new LootConditionModExists.Serializer());
 
 		// just call this so that we register structure IDs correctly
 		new StructureTFMajorFeatureStart();

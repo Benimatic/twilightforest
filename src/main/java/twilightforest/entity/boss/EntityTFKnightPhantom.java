@@ -32,7 +32,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
