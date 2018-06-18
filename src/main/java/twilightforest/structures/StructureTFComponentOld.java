@@ -1,7 +1,6 @@
 package twilightforest.structures;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,6 +24,7 @@ import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 @Deprecated
 public abstract class StructureTFComponentOld extends StructureTFComponent {
@@ -544,23 +544,21 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	/**
-	 * Find what y level the dirt/grass/stone is.  Just check the center of the chunk we're given
+	 * Find what y-level the ground is. Just check the center of the chunk we're given.
 	 */
-	protected int getSampledDirtLevel(World world, StructureBoundingBox sbb) {
+	protected int findGroundLevel(World world, StructureBoundingBox sbb, int start, Predicate<IBlockState> predicate) {
 
 		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
-		for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)
-		{
+		for (int y = start; y > 0; y--) {
 			pos.setY(y);
-			Material material = world.getBlockState(pos).getMaterial();
-			if (material == Material.GROUND || material == Material.ROCK || material == Material.GRASS) {
+			if (predicate.test(world.getBlockState(pos))) {
 				return y;
 			}
 		}
 
-		return -1;
+		return 0;
 	}
 
 	/**
