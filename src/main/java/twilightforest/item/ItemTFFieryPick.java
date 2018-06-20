@@ -30,8 +30,8 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallback {
 
-	protected ItemTFFieryPick(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	protected ItemTFFieryPick(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
@@ -75,16 +75,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 						event.getHarvester().world.spawnEntity(new EntityXPOrb(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
 					}
 
-					for (int var1 = 0; var1 < 5; ++var1) {
-						double rx = itemRand.nextGaussian() * 0.02D;
-						double ry = itemRand.nextGaussian() * 0.02D;
-						double rz = itemRand.nextGaussian() * 0.02D;
-						double magnitude = 20.0;
-						WorldServer ws = ((WorldServer) event.getWorld());
-						ws.spawnParticle(EnumParticleTypes.FLAME, event.getPos().getX() + 0.5 + (rx * magnitude), event.getPos().getY() + 0.5 + (ry * magnitude), event.getPos().getZ() + 0.5 + (rz * magnitude),
-								5, 0, 0, 0,
-								0.02);
-					}
+					spawnParticles((WorldServer) event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
 				}
 			}
 
@@ -98,20 +89,22 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.isImmuneToFire()) {
-			for (int var1 = 0; var1 < 5; ++var1) {
-				double rx = itemRand.nextGaussian() * 0.02D;
-				double ry = itemRand.nextGaussian() * 0.02D;
-				double rz = itemRand.nextGaussian() * 0.02D;
-				double magnitude = 20.0;
-				WorldServer ws = ((WorldServer) target.world);
-				ws.spawnParticle(EnumParticleTypes.FLAME, target.posX + 0.5 + (rx * magnitude), target.posY + 0.5 + (ry * magnitude), target.posZ + 0.5 + (rz * magnitude),
-						5, 0, 0, 0,
-						0.02);
-			}
+			spawnParticles((WorldServer) target.world, target.posX, target.posY, target.posZ);
 			target.setFire(15);
 		}
 
 		return result;
+	}
+
+	private static void spawnParticles(WorldServer world, double x, double y, double z) {
+		for (int i = 0; i < 5; ++i) {
+			double rx = itemRand.nextGaussian() * 0.02D;
+			double ry = itemRand.nextGaussian() * 0.02D;
+			double rz = itemRand.nextGaussian() * 0.02D;
+			final double magnitude = 20.0;
+			world.spawnParticle(EnumParticleTypes.FLAME, x + 0.5 + (rx * magnitude), y + 0.5 + (ry * magnitude), z + 0.5 + (rz * magnitude),
+					5, 0, 0, 0, 0.02);
+		}
 	}
 
 	@Override
