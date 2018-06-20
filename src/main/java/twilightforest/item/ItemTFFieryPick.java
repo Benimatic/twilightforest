@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.util.TFItemStackUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -39,17 +40,21 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 		if (event.getHarvester() != null && !event.getHarvester().getHeldItemMainhand().isEmpty()
 				&& event.getHarvester().inventory.getCurrentItem().getItem() == TFItems.fiery_pickaxe
 				&& ForgeHooks.canHarvestBlock(event.getState().getBlock(), event.getHarvester(), event.getWorld(), event.getPos())) {
+
 			List<ItemStack> removeThese = new ArrayList<ItemStack>();
 			List<ItemStack> addThese = new ArrayList<ItemStack>();
 
 			for (ItemStack input : event.getDrops()) {
 				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
 				if (!result.isEmpty()) {
-					addThese.add(new ItemStack(result.getItem(), input.getCount(), result.getItemDamage()));
+
+					int combinedCount = input.getCount() * result.getCount();
+
+					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount, result.getItemDamage())));
 					removeThese.add(input);
 
 					// [VanillaCopy] SlotFurnaceOutput.onCrafting
-					int i = result.getCount();
+					int i = combinedCount;
 					float f = FurnaceRecipes.instance().getSmeltingExperience(result);
 
 					if (f == 0.0F) {
