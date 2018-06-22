@@ -40,6 +40,11 @@ public class TFConfig {
 		@Config.LangKey(config + "spawn_in_tf")
 		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
 		public boolean newPlayersSpawnInTF = false;
+
+		@Config.LangKey(config + "skylight_forest")
+		@Config.RequiresWorldRestart
+		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
+		public boolean skylightForest = false;
 	}
 
 	@Config.LangKey(config + "compat")
