@@ -549,6 +549,8 @@ twilightforest.config.dimension_seed=Dimension Seed
 twilightforest.config.dimension_seed.tooltip=If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.
 twilightforest.config.spawn_in_tf=New Players Spawn in Twilight Forest
 twilightforest.config.spawn_in_tf.tooltip=If true, players spawning for the first time will spawn in the Twilight Forest.
+twilightforest.config.skylight_forest=Skylight Forest [WIP]
+twilightforest.config.skylight_forest.tooltip=If true, Twilight Forest will generate as a void except for Major Structures.
 
 twilightforest.config.compat=Compatibility
 twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
