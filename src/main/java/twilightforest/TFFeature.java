@@ -39,31 +39,30 @@ import java.util.List;
 import java.util.Random;
 
 
-public class TFFeature {
+public enum TFFeature {
+	nothing      ( 0, "no_feature"        ) { { this.enableDecorations().disableStructure(); } },
+	hill1        ( 1, "small_hollow_hill" ) { { this.enableDecorations().enableTerrainAlterations(); } },
+	hill2        ( 2, "medium_hollow_hill") { { this.enableDecorations().enableTerrainAlterations(); } },
+	hill3        ( 3, "large_hollow_hill" ) { { this.enableDecorations().enableTerrainAlterations(); } },
+	hedgeMaze    ( 2, "hedge_maze"        ) { { this.enableTerrainAlterations(); } },
+	nagaCourtyard( 3, "naga_courtyard"    ) { { this.enableTerrainAlterations(); } },
+	lichTower    ( 1, "lich_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_naga"           )),
+	iceTower     ( 2, "ice_tower"         , new ResourceLocation(TwilightForestMod.ID, "progress_yeti"           )),
+	questIsland  ( 1, "quest_island"      ) { { this.disableStructure(); } },
+	questGrove   ( 1, "quest_grove"       ) { { this.enableTerrainAlterations(); } },
+	druidGrove   ( 1, "druid_grove"       ) { { this.disableStructure(); } },
+	floatRuins   ( 3, "floating_ruins"    ) { { this.disableStructure(); } },
+	hydraLair    ( 2, "hydra_lair"        , new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth"      )) { { this.enableTerrainAlterations(); } },
+	labyrinth    ( 3, "labyrinth"         , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )) { { this.enableDecorations(); } },
+	darkTower    ( 1, "dark_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_knights"        )),
+	tfStronghold ( 3, "knight_stronghold" , new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal")) { { this.enableDecorations().disableProtectionAura(); } },
+	worldTree    ( 3, "world_tree"        ) { { this.disableStructure(); } },
+	yetiCave     ( 2, "yeti_lairs"        , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )) { { this.enableDecorations().enableTerrainAlterations(); } },
+	trollCave    ( 3, "troll_lairs"       , new ResourceLocation(TwilightForestMod.ID, "progress_merge"          )) { { this.enableDecorations().enableTerrainAlterations().disableProtectionAura(); } },
+	finalCastle  ( 3, "final_castle"      , new ResourceLocation(TwilightForestMod.ID, "progress_troll"          )),
+	mushroomTower( 2, "mushroom_tower"    );
 
-	public static final TFFeature[] featureList = new TFFeature[256];
-
-	public static final TFFeature nothing       = new TFFeature( 0, 0, "no_feature"        ).enableDecorations().disableStructure();
-	public static final TFFeature hill1         = new TFFeature( 1, 1, "small_hollow_hill" ).enableDecorations().enableTerrainAlterations();
-	public static final TFFeature hill2         = new TFFeature( 2, 2, "medium_hollow_hill").enableDecorations().enableTerrainAlterations();
-	public static final TFFeature hill3         = new TFFeature( 3, 3, "large_hollow_hill" ).enableDecorations().enableTerrainAlterations();
-	public static final TFFeature hedgeMaze     = new TFFeature( 4, 2, "hedge_maze"        ).enableTerrainAlterations();
-	public static final TFFeature nagaCourtyard = new TFFeature( 5, 3, "naga_courtyard"    ).enableTerrainAlterations();
-	public static final TFFeature lichTower     = new TFFeature( 6, 1, "lich_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_naga"           ));
-	public static final TFFeature iceTower      = new TFFeature( 7, 2, "ice_tower"         , new ResourceLocation(TwilightForestMod.ID, "progress_yeti"           ));
-	public static final TFFeature questIsland   = new TFFeature( 8, 1, "quest_island"      ).disableStructure();
-	public static final TFFeature questGrove    = new TFFeature( 9, 1, "quest_grove"       ).enableTerrainAlterations();
-	public static final TFFeature druidGrove    = new TFFeature(10, 1, "druid_grove"       ).disableStructure();
-	public static final TFFeature floatRuins    = new TFFeature(11, 3, "floating_ruins"    ).disableStructure();
-	public static final TFFeature hydraLair     = new TFFeature(12, 2, "hydra_lair"        , new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth"      )).enableTerrainAlterations();
-	public static final TFFeature labyrinth     = new TFFeature(13, 3, "labyrinth"         , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )).enableDecorations();
-	public static final TFFeature darkTower     = new TFFeature(14, 1, "dark_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_knights"        ));
-	public static final TFFeature tfStronghold  = new TFFeature(15, 3, "knight_stronghold" , new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal")).enableDecorations().disableProtectionAura();
-	public static final TFFeature worldTree     = new TFFeature(16, 3, "world_tree"        ).disableStructure();
-	public static final TFFeature yetiCave      = new TFFeature(17, 2, "yeti_lairs"        , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )).enableDecorations().enableTerrainAlterations();
-	public static final TFFeature trollCave     = new TFFeature(18, 3, "troll_lairs"       , new ResourceLocation(TwilightForestMod.ID, "progress_merge"          )).enableDecorations().enableTerrainAlterations().disableProtectionAura();
-	public static final TFFeature finalCastle   = new TFFeature(19, 3, "final_castle"      , new ResourceLocation(TwilightForestMod.ID, "progress_troll"          ));
-	public static final TFFeature mushroomTower = new TFFeature(20, 2, "mushroom_tower"    );
+	//public static final TFFeature[] featureList = new TFFeature[256];
 
 	static {
 		// spawn lists!
@@ -165,10 +164,9 @@ public class TFFeature {
 
 		// forge
 		finalCastle.addMonster(3, EntityBlaze.class, 10, 1, 1);
-
 	}
 
-	public int featureID;
+	//public int featureID;
 	public int size;
 	public String name;
 	public boolean areChunkDecorationsEnabled;
@@ -182,11 +180,13 @@ public class TFFeature {
 
 	private long lastSpawnedHintMonsterTime;
 
-	private static int maxSize;
+	private static class NoU {
+		private static int maxSize;
+	}
 
-	public TFFeature(int parID, int parSize, String parName, ResourceLocation... requiredAdvancements) {
-		this.featureID = parID;
-		TFFeature.featureList[parID] = this;
+	TFFeature(int parSize, String parName, ResourceLocation... requiredAdvancements) {
+		//this.featureID = parID;
+		//TFFeature.featureList[parID] = this;
 		this.size = parSize;
 		this.name = parName;
 		this.areChunkDecorationsEnabled = false;
@@ -199,20 +199,20 @@ public class TFFeature {
 
 		ambientCreatureList.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
 
-		maxSize = Math.max(maxSize, parSize);
+		NoU.maxSize = Math.max(NoU.maxSize, parSize);
 
 		this.requiredAdvancements = requiredAdvancements;
 	}
 
 	public static int getMaxSize() {
-		return maxSize;
+		return NoU.maxSize;
 	}
 
 	/**
 	 * doesn't require modid
 	 */
 	public static TFFeature getFeatureByName(String name) {
-		for (TFFeature feature : featureList) {
+		for (TFFeature feature : TFFeature.values()) {
 			if (feature != null && feature.name.equalsIgnoreCase(name))
 				return feature;
 		}
@@ -229,15 +229,15 @@ public class TFFeature {
 	}
 
 	public static TFFeature getFeatureByID(int id){
-		for (TFFeature feature : featureList) {
-			if (feature != null && feature.featureID == id)
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != null && feature.ordinal() == id)
 				return feature;
 		}
 		return nothing;
 	}
 
 	public static int getFeatureID(int mapX, int mapZ, World world) {
-		return getFeatureAt(mapX, mapZ, world).featureID;
+		return getFeatureAt(mapX, mapZ, world).ordinal();
 	}
 
 	public static TFFeature getFeatureAt(int mapX, int mapZ, World world) {
@@ -443,10 +443,10 @@ public class TFFeature {
 		}
 	}
 
-	/**
+	/* FIXME is this actually used?
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
-	 */
+	 *
 	public static TFFeature generateFeaturePreset5x5(int chunkX, int chunkZ, World world) {
 		int cf = 16;
 
@@ -459,26 +459,26 @@ public class TFFeature {
 
 
 		int[][] map = {
-				{0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 19, 18, 8, 15, 14, 0},
-				{0, 0, 18, 18, 2, 3, 15, 0},
-				{0, 0, 4, 4, 5, 16, 9, 0},
-				{0, 0, 13, 6, 1, 2, 17, 0},
-				{0, 0, 12, 13, 3, 17, 7, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0}};
+				{ 0, 0,  0,  0, 0,  0,  0, 0 },
+				{ 0, 0,  0,  0, 0,  0,  0, 0 },
+				{ 0, 0, 19, 18, 8, 15, 14, 0 },
+				{ 0, 0, 18, 18, 2,  3, 15, 0 },
+				{ 0, 0,  4,  4, 5, 16,  9, 0 },
+				{ 0, 0, 13,  6, 1,  2, 17, 0 },
+				{ 0, 0, 12, 13, 3, 17,  7, 0 },
+				{ 0, 0,  0,  0, 0,  0,  0, 0 }};
 
 		if (mx >= 0 && mx < 8 && mz >= 0 && mz < 8) {
 			return TFFeature.featureList[map[mz][mx]];
 		} else {
 			return TFFeature.nothing;
 		}
-	}
+	}*/
 
-	/**
+	/* FIXME is this actually used?
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
-	 */
+	 *
 	public static TFFeature generateFeaturePreset6x6(int chunkX, int chunkZ, World world) {
 		int cf = 16;
 
@@ -491,27 +491,27 @@ public class TFFeature {
 
 
 		int[][] map = {
-				{0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 19, 19, 18, 15, 0, 0, 0},
-				{0, 18, 18, 18, 0, 14, 0, 0},
-				{0, 0, 4, 1, 2, 3, 15, 0},
-				{0, 4, 1, 5, 16, 9, 17, 0},
-				{0, 0, 13, 2, 3, 17, 17, 0},
-				{0, 0, 12, 13, 6, 17, 7, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0}};
+				{ 0,  0,  0,  0,  0,  0,  0, 0 },
+				{ 0, 19, 19, 18, 15,  0,  0, 0 },
+				{ 0, 18, 18, 18,  0, 14,  0, 0 },
+				{ 0,  0,  4,  1,  2,  3, 15, 0 },
+				{ 0,  4,  1,  5, 16,  9, 17, 0 },
+				{ 0,  0, 13,  2,  3, 17, 17, 0 },
+				{ 0,  0, 12, 13,  6, 17,  7, 0 },
+				{ 0,  0,  0,  0,  0,  0,  0, 0 }};
 
 		if (mx >= 0 && mx < 8 && mz >= 0 && mz < 8) {
 			return TFFeature.featureList[map[mz][mx]];
 		} else {
 			return TFFeature.nothing;
 		}
-	}
+	} */
 
 	/**
 	 * @return The feature nearest to the specified chunk coordinates
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, World world) {
-		for (int rad = 1; rad <= maxSize; rad++) {
+		for (int rad = 1; rad <= NoU.maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					TFFeature directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
@@ -621,7 +621,7 @@ public class TFFeature {
 	 * If we're near a hollow hill, this returns relative block coordinates indicating the center of that hill relative to the current chunk block coordinate system.
 	 */
 	public static int[] getNearestCenter(int cx, int cz, World world) {
-		for (int rad = 1; rad <= maxSize; rad++) {
+		for (int rad = 1; rad <= NoU.maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					if (getFeatureDirectlyAt(x + cx, z + cz, world).size == rad) {

@@ -1,4 +1,4 @@
-package twilightforest.structures;
+package twilightforest.structures.start;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +17,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
+import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
@@ -45,17 +46,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
-public class StructureTFMajorFeatureStart extends StructureStart {
-
-	public static int NUM_LOCKS = 4;
-
+// Big ball of dough, let's roll it out into smaller pieces
+@SuppressWarnings("ALL")
+@Deprecated
+public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStart {
 	public TFFeature feature;
-	public boolean isConquered;
-	public byte[] lockBytes = new byte[NUM_LOCKS];
 
 	static {
-		MapGenStructureIO.registerStructure(StructureTFMajorFeatureStart.class, "TFFeature");
+		MapGenStructureIO.registerStructure(StructureTFMajorFeatureStartCluster.class, "TFFeature");
 		MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
 
 		TFFinalCastlePieces.registerFinalCastlePieces();
@@ -78,10 +76,10 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 	}
 
-	public StructureTFMajorFeatureStart() {
+	public StructureTFMajorFeatureStartCluster() {
 	}
 
-	public StructureTFMajorFeatureStart(World world, Random rand, int chunkX, int chunkZ) {
+	public StructureTFMajorFeatureStartCluster(World world, Random rand, int chunkX, int chunkZ) {
 		StructureStrongholdPieces.prepareStructurePieces();
 		//TFStrongholdPieces.prepareStructurePieces();
 
@@ -365,17 +363,13 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("Conquered", this.isConquered);
 		par1NBTTagCompound.setInteger("FeatureID", this.feature.featureID);
-		par1NBTTagCompound.setByteArray("Locks", this.lockBytes);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		this.isConquered = nbttagcompound.getBoolean("Conquered");
 		this.feature = TFFeature.featureList[nbttagcompound.getInteger("FeatureID")];
-		this.lockBytes = nbttagcompound.getByteArray("Locks");
 	}
 
 	public boolean isLocked(int lockIndex) {

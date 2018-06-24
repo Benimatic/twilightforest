@@ -8,7 +8,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
-import twilightforest.structures.StructureTFMajorFeatureStart;
+import twilightforest.structures.start.StructureTFMajorFeatureStartCluster;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 		this.rand.setSeed(chunkXr1 ^ chunkZr2 ^ world.getSeed());
 		this.rand.nextInt();
 
-		return new StructureTFMajorFeatureStart(world, rand, chunkX, chunkZ);
+		return new StructureTFMajorFeatureStartCluster(world, rand, chunkX, chunkZ);
 	}
 
 	@Override
@@ -141,8 +141,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
 		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
-				if (start instanceof StructureTFMajorFeatureStart) {
-					StructureTFMajorFeatureStart featureStart = (StructureTFMajorFeatureStart) start;
+				if (start instanceof StructureTFMajorFeatureStartCluster) {
+					StructureTFMajorFeatureStartCluster featureStart = (StructureTFMajorFeatureStartCluster) start;
 					featureStart.isConquered = flag;
 					this.structureData.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
 					this.structureData.setDirty(true);
@@ -156,8 +156,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
 		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
-				if (start instanceof StructureTFMajorFeatureStart) {
-					conquered = ((StructureTFMajorFeatureStart) start).isConquered;
+				if (start instanceof StructureTFMajorFeatureStartCluster) {
+					conquered = ((StructureTFMajorFeatureStartCluster) start).isConquered;
 				}
 			}
 		}
@@ -174,9 +174,9 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
 		for (StructureStart start : this.structureMap.values()) {
 			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
-				if (start instanceof StructureTFMajorFeatureStart) {
+				if (start instanceof StructureTFMajorFeatureStartCluster) {
 
-					locked = ((StructureTFMajorFeatureStart) start).isLocked(lockIndex);
+					locked = ((StructureTFMajorFeatureStartCluster) start).isLocked(lockIndex);
 				}
 			}
 		}
@@ -229,6 +229,5 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 			}
 		}
 		return null;
-
 	}
 }
