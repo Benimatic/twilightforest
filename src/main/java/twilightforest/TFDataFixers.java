@@ -110,9 +110,9 @@ public class TFDataFixers {
         public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
             int featureID = compound.getInteger("FeatureID");
 
-            if (featureID >= TFFeature.featureList.length - 1) return compound;
+            if (featureID >= TFFeature.values().length - 1) return compound;
 
-            TFFeature feature = TFFeature.featureList[featureID];
+            TFFeature feature = TFFeature.values()[featureID];
 
             //if (!compound.getString("id").isEmpty() && featureID != 0) compound.setString("id", );
 

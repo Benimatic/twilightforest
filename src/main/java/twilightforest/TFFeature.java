@@ -410,7 +410,7 @@ public enum TFFeature {
 		if (this.spawnableMonsterLists.size() > listIndex) {
 			monsterList = this.spawnableMonsterLists.get(listIndex);
 		} else {
-			monsterList = new ArrayList<SpawnListEntry>();
+			monsterList = new ArrayList<>();
 			this.spawnableMonsterLists.add(listIndex, monsterList);
 		}
 
@@ -555,70 +555,6 @@ public enum TFFeature {
 				return LICH_TOWER;
 		}
 	}
-
-	/* FIXME is this actually used?
-	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
-	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
-	 *
-	public static TFFeature generateFeaturePreset5x5(int chunkX, int chunkZ, World world) {
-		int cf = 16;
-
-		if (chunkX % cf != 0 || chunkZ % cf != 0) {
-			return TFFeature.NOTHING;
-		}
-
-		int mx = (chunkX / cf) + 4;
-		int mz = (chunkZ / cf) + 4;
-
-
-		int[][] map = {
-				{ 0, 0,  0,  0, 0,  0,  0, 0 },
-				{ 0, 0,  0,  0, 0,  0,  0, 0 },
-				{ 0, 0, 19, 18, 8, 15, 14, 0 },
-				{ 0, 0, 18, 18, 2,  3, 15, 0 },
-				{ 0, 0,  4,  4, 5, 16,  9, 0 },
-				{ 0, 0, 13,  6, 1,  2, 17, 0 },
-				{ 0, 0, 12, 13, 3, 17,  7, 0 },
-				{ 0, 0,  0,  0, 0,  0,  0, 0 }};
-
-		if (mx >= 0 && mx < 8 && mz >= 0 && mz < 8) {
-			return TFFeature.featureList[map[mz][mx]];
-		} else {
-			return TFFeature.NOTHING;
-		}
-	}*/
-
-	/* FIXME is this actually used?
-	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
-	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
-	 *
-	public static TFFeature generateFeaturePreset6x6(int chunkX, int chunkZ, World world) {
-		int cf = 16;
-
-		if (chunkX % cf != 0 || chunkZ % cf != 0) {
-			return TFFeature.NOTHING;
-		}
-
-		int mx = (chunkX / cf) + 3;
-		int mz = (chunkZ / cf) + 3;
-
-
-		int[][] map = {
-				{ 0,  0,  0,  0,  0,  0,  0, 0 },
-				{ 0, 19, 19, 18, 15,  0,  0, 0 },
-				{ 0, 18, 18, 18,  0, 14,  0, 0 },
-				{ 0,  0,  4,  1,  2,  3, 15, 0 },
-				{ 0,  4,  1,  5, 16,  9, 17, 0 },
-				{ 0,  0, 13,  2,  3, 17, 17, 0 },
-				{ 0,  0, 12, 13,  6, 17,  7, 0 },
-				{ 0,  0,  0,  0,  0,  0,  0, 0 }};
-
-		if (mx >= 0 && mx < 8 && mz >= 0 && mz < 8) {
-			return TFFeature.featureList[map[mz][mx]];
-		} else {
-			return TFFeature.NOTHING;
-		}
-	} */
 
 	/**
 	 * @return The feature nearest to the specified chunk coordinates

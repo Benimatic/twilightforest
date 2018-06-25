@@ -362,13 +362,13 @@ public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStar
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("FeatureID", this.feature.featureID);
+		par1NBTTagCompound.setInteger("FeatureID", this.feature.ordinal());
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		this.feature = TFFeature.featureList[nbttagcompound.getInteger("FeatureID")];
+		this.feature = TFFeature.values()[nbttagcompound.getInteger("FeatureID")];
 	}
 
 	public boolean isLocked(int lockIndex) {
