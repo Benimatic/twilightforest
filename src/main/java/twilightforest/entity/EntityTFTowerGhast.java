@@ -326,7 +326,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 
 			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.world);
 
-			if (nearFeature != TFFeature.darkTower) {
+			if (nearFeature != TFFeature.DARK_TOWER) {
 				this.detachHome();
 				this.idleTime += 5;
 			} else {

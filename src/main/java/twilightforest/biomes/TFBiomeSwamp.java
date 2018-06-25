@@ -153,7 +153,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {
-				TFFeature.labyrinth.trySpawnHintMonster(world, player);
+				TFFeature.LABYRINTH.trySpawnHintMonster(world, player);
 			}
 		}
 	}

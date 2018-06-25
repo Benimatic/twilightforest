@@ -787,7 +787,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-			if (nearbyFeature == TFFeature.nagaCourtyard) {
+			if (nearbyFeature == TFFeature.NAGA_COURTYARD) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}

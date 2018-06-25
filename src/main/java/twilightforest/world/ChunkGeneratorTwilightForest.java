@@ -349,7 +349,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 				// make sure we're not too close to the tower
 				TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world);
-				if (nearFeature == TFFeature.darkTower) {
+				if (nearFeature == TFFeature.DARK_TOWER) {
 					// check for closeness
 					int[] nearCenter = TFFeature.getNearestCenter(chunkX, chunkZ, world);
 					int hx = nearCenter[0];

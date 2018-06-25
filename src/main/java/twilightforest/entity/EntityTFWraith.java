@@ -297,7 +297,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			// are we in a level 3 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill3) {
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.LARGE_HILL) {
 				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill3"), "wraith");
 			}
 		}

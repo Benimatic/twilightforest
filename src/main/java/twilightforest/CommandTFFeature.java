@@ -166,22 +166,22 @@ public class CommandTFFeature extends CommandBase {
 		},
 		LOCATE {
 			private final String[] STRUCTURE_LIST = {
-					TFFeature.hill1.name,
-					TFFeature.hill2.name,
-					TFFeature.hill3.name,
-					TFFeature.hedgeMaze.name,
-					TFFeature.nagaCourtyard.name,
-					TFFeature.lichTower.name,
-					TFFeature.iceTower.name,
-					TFFeature.questGrove.name,
-					TFFeature.hydraLair.name,
-					TFFeature.labyrinth.name,
-					TFFeature.darkTower.name,
-					TFFeature.tfStronghold.name,
-					TFFeature.yetiCave.name,
-					TFFeature.trollCave.name,
-					TFFeature.finalCastle.name,
-					TFFeature.mushroomTower.name
+					TFFeature.SMALL_HILL.name,
+					TFFeature.MEDIUM_HILL.name,
+					TFFeature.LARGE_HILL.name,
+					TFFeature.HEDGE_MAZE.name,
+					TFFeature.NAGA_COURTYARD.name,
+					TFFeature.LICH_TOWER.name,
+					TFFeature.ICE_TOWER.name,
+					TFFeature.QUEST_GROVE.name,
+					TFFeature.HYDRA_LAIR.name,
+					TFFeature.LABYRINTH.name,
+					TFFeature.DARK_TOWER.name,
+					TFFeature.KNIGHT_STRONGHOLD.name,
+					TFFeature.YETI_CAVE.name,
+					TFFeature.TROLL_CAVE.name,
+					TFFeature.FINAL_CASTLE.name,
+					TFFeature.MUSHROOM_TOWER.name
 			};
 
 			@Override

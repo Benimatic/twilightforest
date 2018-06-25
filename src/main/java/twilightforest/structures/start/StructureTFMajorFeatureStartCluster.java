@@ -10,7 +10,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -136,64 +135,64 @@ public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStar
 			return new ComponentNagaCourtyardMain(feature, world, rand, 0, x, y, z);
 		}//*/
 
-		if (feature == TFFeature.nagaCourtyard) {
+		if (feature == TFFeature.NAGA_COURTYARD) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
 			return new ComponentNagaCourtyardMain(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.hedgeMaze) {
+		if (feature == TFFeature.HEDGE_MAZE) {
 			TwilightForestMod.LOGGER.info("Hedge Maze @ {} {} {}", x, y, z);
 			return new ComponentTFHedgeMaze(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.hill1) {
+		if (feature == TFFeature.SMALL_HILL) {
 			TwilightForestMod.LOGGER.info("Hill 1 @ {} {} {}", x, y, z);
 			return new ComponentTFHollowHill(feature, world, rand, 0, 1, x, y, z);
 		}
-		if (feature == TFFeature.hill2) {
+		if (feature == TFFeature.MEDIUM_HILL) {
 			TwilightForestMod.LOGGER.info("Hill 2 @ {} {} {}", x, y, z);
 			return new ComponentTFHollowHill(feature, world, rand, 0, 2, x, y, z);
 		}
-		if (feature == TFFeature.hill3) {
+		if (feature == TFFeature.LARGE_HILL) {
 			TwilightForestMod.LOGGER.info("Hill 3 @ {} {} {}", x, y, z);
 			return new ComponentTFHollowHill(feature, world, rand, 0, 3, x, y, z);
 		}
-		if (feature == TFFeature.questGrove) {
+		if (feature == TFFeature.QUEST_GROVE) {
 			TwilightForestMod.LOGGER.info("Quest Grove @ {} {} {}", x, y, z);
 			return new ComponentTFQuestGrove(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.hydraLair) {
+		if (feature == TFFeature.HYDRA_LAIR) {
 			TwilightForestMod.LOGGER.info("Hydra Lair @ {} {} {}", x, y, z);
 			return new ComponentTFHydraLair(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.yetiCave) {
+		if (feature == TFFeature.YETI_CAVE) {
 			TwilightForestMod.LOGGER.info("Yeti Cave @ {} {} {}", x, y, z);
 			return new ComponentTFYetiCave(feature, world, rand, 0, x, y, z);
 		}
 
-		if (feature == TFFeature.lichTower) {
+		if (feature == TFFeature.LICH_TOWER) {
 			TwilightForestMod.LOGGER.info("Lich Tower @ {} {} {}", x, y, z);
 			return new ComponentTFTowerMain(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.trollCave) {
+		if (feature == TFFeature.TROLL_CAVE) {
 			TwilightForestMod.LOGGER.info("Troll Cave @ {} {} {}", x, y, z);
 			return new ComponentTFTrollCaveMain(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.iceTower) {
+		if (feature == TFFeature.ICE_TOWER) {
 			TwilightForestMod.LOGGER.info("Ice Tower @ {} {} {}", x, y, z);
 			return new ComponentTFIceTowerMain(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.darkTower) {
+		if (feature == TFFeature.DARK_TOWER) {
 			return new ComponentTFDarkTowerMain(feature, world, rand, 0, x, y - 1, z);
 		}
-		if (feature == TFFeature.labyrinth) {
+		if (feature == TFFeature.LABYRINTH) {
 			return new ComponentTFMazeRuins(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.mushroomTower) {
+		if (feature == TFFeature.MUSHROOM_TOWER) {
 			return new ComponentTFMushroomTowerMain(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.tfStronghold) {
+		if (feature == TFFeature.KNIGHT_STRONGHOLD) {
 			return new ComponentTFStrongholdEntrance(feature, world, rand, 0, x, y, z);
 		}
-		if (feature == TFFeature.finalCastle) {
+		if (feature == TFFeature.FINAL_CASTLE) {
 			return new ComponentTFFinalCastleMain(feature, world, rand, 0, x, y, z);
 		}
 

@@ -104,7 +104,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 					if (component.getBoundingBox().isVecInside(pos))
 						if (component instanceof StructureTFComponent)
 							return ((StructureTFComponent) component).getFeatureType();
-		return TFFeature.nothing;
+		return TFFeature.NOTHING;
 	}
 
 	/**

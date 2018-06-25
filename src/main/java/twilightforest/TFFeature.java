@@ -38,132 +38,247 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
+ */
 
 public enum TFFeature {
-	nothing      ( 0, "no_feature"        ) { { this.enableDecorations().disableStructure(); } },
-	hill1        ( 1, "small_hollow_hill" ) { { this.enableDecorations().enableTerrainAlterations(); } },
-	hill2        ( 2, "medium_hollow_hill") { { this.enableDecorations().enableTerrainAlterations(); } },
-	hill3        ( 3, "large_hollow_hill" ) { { this.enableDecorations().enableTerrainAlterations(); } },
-	hedgeMaze    ( 2, "hedge_maze"        ) { { this.enableTerrainAlterations(); } },
-	nagaCourtyard( 3, "naga_courtyard"    ) { { this.enableTerrainAlterations(); } },
-	lichTower    ( 1, "lich_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_naga"           )),
-	iceTower     ( 2, "ice_tower"         , new ResourceLocation(TwilightForestMod.ID, "progress_yeti"           )),
-	questIsland  ( 1, "quest_island"      ) { { this.disableStructure(); } },
-	questGrove   ( 1, "quest_grove"       ) { { this.enableTerrainAlterations(); } },
-	druidGrove   ( 1, "druid_grove"       ) { { this.disableStructure(); } },
-	floatRuins   ( 3, "floating_ruins"    ) { { this.disableStructure(); } },
-	hydraLair    ( 2, "hydra_lair"        , new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth"      )) { { this.enableTerrainAlterations(); } },
-	labyrinth    ( 3, "labyrinth"         , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )) { { this.enableDecorations(); } },
-	darkTower    ( 1, "dark_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_knights"        )),
-	tfStronghold ( 3, "knight_stronghold" , new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal")) { { this.enableDecorations().disableProtectionAura(); } },
-	worldTree    ( 3, "world_tree"        ) { { this.disableStructure(); } },
-	yetiCave     ( 2, "yeti_lairs"        , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )) { { this.enableDecorations().enableTerrainAlterations(); } },
-	trollCave    ( 3, "troll_lairs"       , new ResourceLocation(TwilightForestMod.ID, "progress_merge"          )) { { this.enableDecorations().enableTerrainAlterations().disableProtectionAura(); } },
-	finalCastle  ( 3, "final_castle"      , new ResourceLocation(TwilightForestMod.ID, "progress_troll"          )),
-	mushroomTower( 2, "mushroom_tower"    );
+	NOTHING        ( 0, "no_feature"                                                               ) { { this.enableDecorations().disableStructure();         } },
+	SMALL_HILL     ( 1, "small_hollow_hill"                                                        ) { { this.enableDecorations().enableTerrainAlterations(); } },
+	MEDIUM_HILL    ( 2, "medium_hollow_hill"                                                       ) { { this.enableDecorations().enableTerrainAlterations(); } },
+	LARGE_HILL     ( 3, "large_hollow_hill"                                                        ) { { this.enableDecorations().enableTerrainAlterations(); } },
+	HEDGE_MAZE     ( 2, "hedge_maze"                                                               ) { { this.enableTerrainAlterations();                     } },
+	NAGA_COURTYARD ( 3, "naga_courtyard"                                                           ) { { this.enableTerrainAlterations();                     } },
+	LICH_TOWER     ( 1, "lich_tower", new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.3"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.4"))));
 
-	//public static final TFFeature[] featureList = new TFFeature[256];
+			book.setTagInfo("pages", bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title", new NBTTagString("Notes on a Pointy Tower"));
+		}
+	},
+	ICE_TOWER ( 2, "ice_tower", new ResourceLocation( TwilightForestMod.ID, "progress_yeti" )) {
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.3"))));
+
+			book.setTagInfo("pages", bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title", new NBTTagString("Notes on Auroral Fortification"));
+		}
+	},
+	QUEST_ISLAND   ( 1, "quest_island"                                                                  ) { { this.disableStructure(); } },
+	QUEST_GROVE    ( 1, "quest_grove"                                                                   ) { { this.enableTerrainAlterations(); } },
+	DRUID_GROVE    ( 1, "druid_grove"                                                                   ) { { this.disableStructure(); } },
+	FLOATING_RUINS ( 3, "floating_ruins"                                                                ) { { this.disableStructure(); } },
+	HYDRA_LAIR     ( 2, "hydra_lair", new ResourceLocation( TwilightForestMod.ID, "progress_labyrinth" )) {
+		{
+			this.enableTerrainAlterations();
+		}
+
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.3"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.4"))));
+
+			book.setTagInfo("pages", bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title", new NBTTagString("Notes on the Fire Swamp"));
+		}
+	},
+	LABYRINTH ( 3, "labyrinth", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
+		{
+			this.enableDecorations();
+		}
+
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.3"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.4"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.5"))));
+
+			book.setTagInfo("pages", bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title", new NBTTagString("Notes on a Swampy Labyrinth"));
+		}
+	},
+	DARK_TOWER ( 1, "dark_tower", new ResourceLocation(TwilightForestMod.ID, "progress_knights" )) {
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.3"))));
+
+			book.setTagInfo("pages", bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title", new NBTTagString("Notes on a Wooden Tower"));
+		}
+	},
+	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", new ResourceLocation( TwilightForestMod.ID, "progress_trophy_pedestal" )) {
+		{
+			this.enableDecorations().disableProtectionAura();
+		}
+
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.3"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.4"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.5"))));
+
+			book.setTagInfo("pages", bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title", new NBTTagString("Notes on a Stronghold"));
+		}
+	},
+	WORLD_TREE ( 3, "world_tree"                                                               ) { { this.disableStructure(); } },
+	YETI_CAVE  ( 2, "yeti_lairs", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
+		{
+			this.enableDecorations().enableTerrainAlterations();
+		}
+
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.3"))));
+
+			book.setTagInfo("pages" , bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title" , new NBTTagString("Notes on an Icy Cave"));
+		}
+	},
+	TROLL_CAVE ( 3, "troll_lairs", new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
+		{
+			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
+		}
+
+		@Override
+		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.1"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.2"))));
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.3"))));
+
+			book.setTagInfo("pages", bookPages);
+			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("title", new NBTTagString("Notes on an the Highlands"));
+		}
+	},
+	FINAL_CASTLE   ( 3, "final_castle"  , new ResourceLocation( TwilightForestMod.ID, "progress_troll" )),
+	MUSHROOM_TOWER ( 2, "mushroom_tower");
 
 	static {
 		// spawn lists!
-		lichTower.addMonster(EntityZombie.class, 10, 4, 4);
-		lichTower.addMonster(EntitySkeleton.class, 10, 4, 4);
-		lichTower.addMonster(EntityCreeper.class, 1, 4, 4);
-		lichTower.addMonster(EntityEnderman.class, 1, 1, 4);
-		lichTower.addMonster(EntityTFDeathTome.class, 10, 4, 4);
-		lichTower.addMonster(EntityWitch.class, 1, 1, 1);
+		LICH_TOWER.addMonster(EntityZombie.class, 10, 4, 4);
+		LICH_TOWER.addMonster(EntitySkeleton.class, 10, 4, 4);
+		LICH_TOWER.addMonster(EntityCreeper.class, 1, 4, 4);
+		LICH_TOWER.addMonster(EntityEnderman.class, 1, 1, 4);
+		LICH_TOWER.addMonster(EntityTFDeathTome.class, 10, 4, 4);
+		LICH_TOWER.addMonster(EntityWitch.class, 1, 1, 1);
 
-		hill1.addMonster(EntitySpider.class, 10, 4, 4);
-		hill1.addMonster(EntityZombie.class, 10, 4, 4);
-		hill1.addMonster(EntityTFRedcap.class, 10, 4, 4);
-		hill1.addMonster(EntityTFSwarmSpider.class, 10, 4, 4);
-		hill1.addMonster(EntityTFKobold.class, 10, 4, 8);
+		SMALL_HILL.addMonster(EntitySpider.class, 10, 4, 4);
+		SMALL_HILL.addMonster(EntityZombie.class, 10, 4, 4);
+		SMALL_HILL.addMonster(EntityTFRedcap.class, 10, 4, 4);
+		SMALL_HILL.addMonster(EntityTFSwarmSpider.class, 10, 4, 4);
+		SMALL_HILL.addMonster(EntityTFKobold.class, 10, 4, 8);
 
-		hill2.addMonster(EntityTFRedcap.class, 10, 4, 4);
-		hill2.addMonster(EntityTFRedcapSapper.class, 1, 1, 4);
-		hill2.addMonster(EntityTFKobold.class, 10, 4, 8);
-		hill2.addMonster(EntitySkeleton.class, 10, 4, 4);
-		hill2.addMonster(EntityTFSwarmSpider.class, 10, 4, 4);
-		hill2.addMonster(EntitySpider.class, 10, 4, 4);
-		hill2.addMonster(EntityCreeper.class, 10, 4, 4);
-		hill2.addMonster(EntityTFFireBeetle.class, 5, 4, 4);
-		hill2.addMonster(EntityTFSlimeBeetle.class, 5, 4, 4);
-		hill2.addMonster(EntityWitch.class, 1, 1, 1);
+		MEDIUM_HILL.addMonster(EntityTFRedcap.class, 10, 4, 4);
+		MEDIUM_HILL.addMonster(EntityTFRedcapSapper.class, 1, 1, 4);
+		MEDIUM_HILL.addMonster(EntityTFKobold.class, 10, 4, 8);
+		MEDIUM_HILL.addMonster(EntitySkeleton.class, 10, 4, 4);
+		MEDIUM_HILL.addMonster(EntityTFSwarmSpider.class, 10, 4, 4);
+		MEDIUM_HILL.addMonster(EntitySpider.class, 10, 4, 4);
+		MEDIUM_HILL.addMonster(EntityCreeper.class, 10, 4, 4);
+		MEDIUM_HILL.addMonster(EntityTFFireBeetle.class, 5, 4, 4);
+		MEDIUM_HILL.addMonster(EntityTFSlimeBeetle.class, 5, 4, 4);
+		MEDIUM_HILL.addMonster(EntityWitch.class, 1, 1, 1);
 
-		hill3.addMonster(EntityTFRedcap.class, 10, 4, 4);
-		hill3.addMonster(EntityTFRedcapSapper.class, 2, 1, 4);
-		hill3.addMonster(EntitySkeleton.class, 10, 4, 4);
-		hill3.addMonster(EntityCaveSpider.class, 10, 4, 4);
-		hill3.addMonster(EntityCreeper.class, 10, 4, 4);
-		hill3.addMonster(EntityEnderman.class, 1, 1, 4);
-		hill3.addMonster(EntityTFWraith.class, 2, 1, 4);
-		hill3.addMonster(EntityTFFireBeetle.class, 10, 4, 4);
-		hill3.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
-		hill3.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
-		hill3.addMonster(EntityWitch.class, 1, 1, 1);
+		LARGE_HILL.addMonster(EntityTFRedcap.class, 10, 4, 4);
+		LARGE_HILL.addMonster(EntityTFRedcapSapper.class, 2, 1, 4);
+		LARGE_HILL.addMonster(EntitySkeleton.class, 10, 4, 4);
+		LARGE_HILL.addMonster(EntityCaveSpider.class, 10, 4, 4);
+		LARGE_HILL.addMonster(EntityCreeper.class, 10, 4, 4);
+		LARGE_HILL.addMonster(EntityEnderman.class, 1, 1, 4);
+		LARGE_HILL.addMonster(EntityTFWraith.class, 2, 1, 4);
+		LARGE_HILL.addMonster(EntityTFFireBeetle.class, 10, 4, 4);
+		LARGE_HILL.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
+		LARGE_HILL.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
+		LARGE_HILL.addMonster(EntityWitch.class, 1, 1, 1);
 
-		labyrinth.addMonster(EntityTFMinotaur.class, 20, 2, 4);
-		labyrinth.addMonster(EntityCaveSpider.class, 10, 4, 4);
-		labyrinth.addMonster(EntityCreeper.class, 10, 4, 4);
-		labyrinth.addMonster(EntityTFMazeSlime.class, 10, 4, 4);
-		labyrinth.addMonster(EntityEnderman.class, 1, 1, 4);
-		labyrinth.addMonster(EntityTFFireBeetle.class, 10, 4, 4);
-		labyrinth.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
-		labyrinth.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
+		LABYRINTH.addMonster(EntityTFMinotaur.class, 20, 2, 4);
+		LABYRINTH.addMonster(EntityCaveSpider.class, 10, 4, 4);
+		LABYRINTH.addMonster(EntityCreeper.class, 10, 4, 4);
+		LABYRINTH.addMonster(EntityTFMazeSlime.class, 10, 4, 4);
+		LABYRINTH.addMonster(EntityEnderman.class, 1, 1, 4);
+		LABYRINTH.addMonster(EntityTFFireBeetle.class, 10, 4, 4);
+		LABYRINTH.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
+		LABYRINTH.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
 
-		darkTower.addMonster(EntityTFTowerGolem.class, 10, 4, 4);
-		darkTower.addMonster(EntitySkeleton.class, 10, 4, 4);
-		darkTower.addMonster(EntityCreeper.class, 10, 4, 4);
-		darkTower.addMonster(EntityEnderman.class, 2, 1, 4);
-		darkTower.addMonster(EntityWitch.class, 1, 1, 1);
-		darkTower.addMonster(EntityTFMiniGhast.class, 10, 1, 4);
-		darkTower.addMonster(EntityTFTowerBroodling.class, 10, 8, 8);
-		darkTower.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
+		DARK_TOWER.addMonster(EntityTFTowerGolem.class, 10, 4, 4);
+		DARK_TOWER.addMonster(EntitySkeleton.class, 10, 4, 4);
+		DARK_TOWER.addMonster(EntityCreeper.class, 10, 4, 4);
+		DARK_TOWER.addMonster(EntityEnderman.class, 2, 1, 4);
+		DARK_TOWER.addMonster(EntityWitch.class, 1, 1, 1);
+		DARK_TOWER.addMonster(EntityTFMiniGhast.class, 10, 1, 4);
+		DARK_TOWER.addMonster(EntityTFTowerBroodling.class, 10, 8, 8);
+		DARK_TOWER.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
 		// roof ghasts
-		darkTower.addMonster(1, EntityTFTowerGhast.class, 10, 1, 4);
+		DARK_TOWER.addMonster(1, EntityTFTowerGhast.class, 10, 1, 4);
 		// aquarium squids (only in aquariums between y = 35 and y = 64. :/
-		darkTower.addWaterCreature(EntitySquid.class, 10, 4, 4);
+		DARK_TOWER.addWaterCreature(EntitySquid.class, 10, 4, 4);
 
-		tfStronghold.addMonster(EntityTFBlockGoblin.class, 10, 4, 4);
-		tfStronghold.addMonster(EntityTFGoblinKnightLower.class, 5, 1, 2);
-		tfStronghold.addMonster(EntityTFHelmetCrab.class, 10, 4, 4);
-		tfStronghold.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
-		tfStronghold.addMonster(EntityTFRedcapSapper.class, 2, 1, 4);
-		tfStronghold.addMonster(EntityTFKobold.class, 10, 4, 8);
-		tfStronghold.addMonster(EntityCreeper.class, 10, 4, 4);
-		tfStronghold.addMonster(EntitySlime.class, 5, 4, 4);
+		KNIGHT_STRONGHOLD.addMonster(EntityTFBlockGoblin.class, 10, 4, 4);
+		KNIGHT_STRONGHOLD.addMonster(EntityTFGoblinKnightLower.class, 5, 1, 2);
+		KNIGHT_STRONGHOLD.addMonster(EntityTFHelmetCrab.class, 10, 4, 4);
+		KNIGHT_STRONGHOLD.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
+		KNIGHT_STRONGHOLD.addMonster(EntityTFRedcapSapper.class, 2, 1, 4);
+		KNIGHT_STRONGHOLD.addMonster(EntityTFKobold.class, 10, 4, 8);
+		KNIGHT_STRONGHOLD.addMonster(EntityCreeper.class, 10, 4, 4);
+		KNIGHT_STRONGHOLD.addMonster(EntitySlime.class, 5, 4, 4);
 
-		yetiCave.addMonster(EntityTFYeti.class, 10, 4, 4);
+		YETI_CAVE.addMonster(EntityTFYeti.class, 10, 4, 4);
 
-		iceTower.addMonster(EntityTFSnowGuardian.class, 10, 4, 4);
-		iceTower.addMonster(EntityTFIceShooter.class, 10, 4, 4);
-		iceTower.addMonster(EntityTFIceExploder.class, 5, 4, 4);
+		ICE_TOWER.addMonster(EntityTFSnowGuardian.class, 10, 4, 4);
+		ICE_TOWER.addMonster(EntityTFIceShooter.class, 10, 4, 4);
+		ICE_TOWER.addMonster(EntityTFIceExploder.class, 5, 4, 4);
 
-		trollCave.addMonster(EntityCreeper.class, 5, 4, 4);
-		trollCave.addMonster(EntitySkeleton.class, 10, 4, 4);
-		trollCave.addMonster(EntityTFTroll.class, 20, 4, 4);
-		trollCave.addMonster(EntityWitch.class, 5, 1, 1);
+		TROLL_CAVE.addMonster(EntityCreeper.class, 5, 4, 4);
+		TROLL_CAVE.addMonster(EntitySkeleton.class, 10, 4, 4);
+		TROLL_CAVE.addMonster(EntityTFTroll.class, 20, 4, 4);
+		TROLL_CAVE.addMonster(EntityWitch.class, 5, 1, 1);
 		// cloud monsters
-		trollCave.addMonster(1, EntityTFGiantMiner.class, 10, 1, 4);
-		trollCave.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 4);
+		TROLL_CAVE.addMonster(1, EntityTFGiantMiner.class, 10, 1, 4);
+		TROLL_CAVE.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 4);
 
 		// plain parts of the castle, like the tower maze
-		finalCastle.addMonster(EntityTFKobold.class, 10, 4, 4);
-		finalCastle.addMonster(EntityTFAdherent.class, 10, 1, 1);
-		finalCastle.addMonster(EntityTFHarbingerCube.class, 10, 1, 1);
-		finalCastle.addMonster(EntityEnderman.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(EntityTFKobold.class, 10, 4, 4);
+		FINAL_CASTLE.addMonster(EntityTFAdherent.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(EntityTFHarbingerCube.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(EntityEnderman.class, 10, 1, 1);
 
 		// internal castle
-		finalCastle.addMonster(1, EntityTFKobold.class, 10, 4, 4);
-		finalCastle.addMonster(1, EntityTFAdherent.class, 10, 1, 1);
-		finalCastle.addMonster(1, EntityTFHarbingerCube.class, 10, 1, 1);
-		finalCastle.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(1, EntityTFKobold.class, 10, 4, 4);
+		FINAL_CASTLE.addMonster(1, EntityTFAdherent.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(1, EntityTFHarbingerCube.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 1);
 
 		// dungeons
-		finalCastle.addMonster(2, EntityTFAdherent.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(2, EntityTFAdherent.class, 10, 1, 1);
 
 		// forge
-		finalCastle.addMonster(3, EntityBlaze.class, 10, 1, 1);
+		FINAL_CASTLE.addMonster(3, EntityBlaze.class, 10, 1, 1);
 	}
 
 	//public int featureID;
@@ -181,12 +296,10 @@ public enum TFFeature {
 	private long lastSpawnedHintMonsterTime;
 
 	private static class NoU {
-		private static int maxSize;
+		private static int maxSize = 0;
 	}
 
 	TFFeature(int parSize, String parName, ResourceLocation... requiredAdvancements) {
-		//this.featureID = parID;
-		//TFFeature.featureList[parID] = this;
 		this.size = parSize;
 		this.name = parName;
 		this.areChunkDecorationsEnabled = false;
@@ -216,7 +329,7 @@ public enum TFFeature {
 			if (feature != null && feature.name.equalsIgnoreCase(name))
 				return feature;
 		}
-		return nothing;
+		return NOTHING;
 	}
 
 	/**
@@ -225,7 +338,7 @@ public enum TFFeature {
 	public static TFFeature getFeatureByName(ResourceLocation name) {
 		if (name.getResourceDomain().equalsIgnoreCase(TwilightForestMod.ID))
 			return getFeatureByName(name.getResourcePath());
-		return nothing;
+		return NOTHING;
 	}
 
 	public static TFFeature getFeatureByID(int id){
@@ -233,7 +346,7 @@ public enum TFFeature {
 			if (feature != null && feature.ordinal() == id)
 				return feature;
 		}
-		return nothing;
+		return NOTHING;
 	}
 
 	public static int getFeatureID(int mapX, int mapZ, World world) {
@@ -322,10 +435,10 @@ public enum TFFeature {
 			if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
 				return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 			} else {
-				return nothing;
+				return NOTHING;
 			}
 		} else {
-			return nothing;
+			return NOTHING;
 		}
 	}
 
@@ -345,57 +458,57 @@ public enum TFFeature {
 		// Remove above block comment start marker to enable debug
 		// noinspection ConstantConditions
 		if (true) {
-			return nagaCourtyard;
+			return NAGA_COURTYARD;
 		}//*/
 
 		// glaciers have ice towers
 		if (biomeAt == TFBiomes.glacier) {
-			return iceTower;
+			return ICE_TOWER;
 		}
 		// snow has yeti lair
 		if (biomeAt == TFBiomes.snowy_forest) {
-			return yetiCave;
+			return YETI_CAVE;
 		}
 
 		// lakes have quest islands
 		if (biomeAt == TFBiomes.tfLake) {
-			return questIsland;
+			return QUEST_ISLAND;
 		}
 
 		// enchanted forests have groves
 		if (biomeAt == TFBiomes.enchantedForest) {
-			return questGrove;
+			return QUEST_GROVE;
 		}
 
 		// fire swamp has hydra lair
 		if (biomeAt == TFBiomes.fireSwamp) {
-			return hydraLair;
+			return HYDRA_LAIR;
 		}
 		// swamp has labyrinth
 		if (biomeAt == TFBiomes.tfSwamp) {
-			return labyrinth;
+			return LABYRINTH;
 		}
 
 		// dark forests have their own things
 		if (biomeAt == TFBiomes.darkForest) {
-			return tfStronghold;
+			return KNIGHT_STRONGHOLD;
 		}
 		if (biomeAt == TFBiomes.darkForestCenter) {
-			return darkTower;
+			return DARK_TOWER;
 		}
 
 		// highlands center has castle
 		if (biomeAt == TFBiomes.highlandsCenter) {
-			return finalCastle;
+			return FINAL_CASTLE;
 		}
 		// highlands has trolls
 		if (biomeAt == TFBiomes.highlands) {
-			return trollCave;
+			return TROLL_CAVE;
 		}
 
 		// deep mushrooms has mushroom tower
 		if (biomeAt == TFBiomes.deepMushrooms) {
-			return mushroomTower;
+			return MUSHROOM_TOWER;
 		}
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
@@ -403,12 +516,12 @@ public enum TFFeature {
 
 		// plant two lich towers near the center of each 2048x2048 map area
 		if ((regionOffsetX == 4 && regionOffsetZ == 5) || (regionOffsetX == 4 && regionOffsetZ == 3)) {
-			return lichTower;
+			return LICH_TOWER;
 		}
 
 		// also two nagas
 		if ((regionOffsetX == 5 && regionOffsetZ == 4) || (regionOffsetX == 3 && regionOffsetZ == 4)) {
-			return nagaCourtyard;
+			return NAGA_COURTYARD;
 		}
 
 		// get random value
@@ -424,22 +537,22 @@ public enum TFFeature {
 			case 3:
 			case 4:
 			case 5:
-				return hill1;
+				return SMALL_HILL;
 			case 6:
 			case 7:
 			case 8:
-				return hill2;
+				return MEDIUM_HILL;
 			case 9:
-				return hill3;
+				return LARGE_HILL;
 			case 10:
 			case 11:
-				return hedgeMaze;
+				return HEDGE_MAZE;
 			case 12:
 			case 13:
-				return nagaCourtyard;
+				return NAGA_COURTYARD;
 			case 14:
 			case 15:
-				return lichTower;
+				return LICH_TOWER;
 		}
 	}
 
@@ -451,7 +564,7 @@ public enum TFFeature {
 		int cf = 16;
 
 		if (chunkX % cf != 0 || chunkZ % cf != 0) {
-			return TFFeature.nothing;
+			return TFFeature.NOTHING;
 		}
 
 		int mx = (chunkX / cf) + 4;
@@ -471,7 +584,7 @@ public enum TFFeature {
 		if (mx >= 0 && mx < 8 && mz >= 0 && mz < 8) {
 			return TFFeature.featureList[map[mz][mx]];
 		} else {
-			return TFFeature.nothing;
+			return TFFeature.NOTHING;
 		}
 	}*/
 
@@ -483,7 +596,7 @@ public enum TFFeature {
 		int cf = 16;
 
 		if (chunkX % cf != 0 || chunkZ % cf != 0) {
-			return TFFeature.nothing;
+			return TFFeature.NOTHING;
 		}
 
 		int mx = (chunkX / cf) + 3;
@@ -503,7 +616,7 @@ public enum TFFeature {
 		if (mx >= 0 && mx < 8 && mz >= 0 && mz < 8) {
 			return TFFeature.featureList[map[mz][mx]];
 		} else {
-			return TFFeature.nothing;
+			return TFFeature.NOTHING;
 		}
 	} */
 
@@ -522,7 +635,7 @@ public enum TFFeature {
 			}
 		}
 
-		return nothing;
+		return NOTHING;
 	}
 
 	// [Vanilla Copy] from MapGenStructure#findNearestStructurePosBySpacing; changed 2nd param to be TFFeature instead of MapGenStructure
@@ -605,7 +718,7 @@ public enum TFFeature {
     			for (int z = -rad; z <= rad; z++)
     			{
     				TFFeature directlyAt = getFeatureDirectlyAt(x + chunkX, z + chunkZ, world);
-    				if (directlyAt != TFFeature.nothing)
+    				if (directlyAt != TFFeature.NOTHING)
     				{
     					return directlyAt;
     				}
@@ -613,7 +726,7 @@ public enum TFFeature {
     		}
     	}
     	
-    	return nothing;
+    	return NOTHING;
     	*/
 	}
 
@@ -788,96 +901,17 @@ public enum TFFeature {
 	public ItemStack createHintBook() {
 		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
 
-		NBTTagList bookPages = new NBTTagList();
-
-		if (this == TFFeature.lichTower) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.4"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on a Pointy Tower"));
-		} else if (this == TFFeature.labyrinth) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.4"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.5"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on a Swampy Labyrinth"));
-
-		} else if (this == TFFeature.hydraLair) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.4"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on the Fire Swamp"));
-
-		} else if (this == TFFeature.tfStronghold) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.4"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.5"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on a Stronghold"));
-
-		} else if (this == TFFeature.darkTower) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.3"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on a Wooden Tower"));
-
-		} else if (this == TFFeature.yetiCave) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.3"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on an Icy Cave"));
-
-		} else if (this == TFFeature.iceTower) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.3"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on Auroral Fortification"));
-
-		} else if (this == TFFeature.trollCave) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.3"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on an the Highlands"));
-
-		} else {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.unknown.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.unknown.2"))));
-
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on the Unexplained"));
-		}
-
+		this.addBookInformation(book, new NBTTagList());
 
 		return book;
 	}
 
+	protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
+		bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.unknown.1"))));
+		bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.unknown.2"))));
+
+		book.setTagInfo("pages", bookPages);
+		book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+		book.setTagInfo("title", new NBTTagString("Notes on the Unexplained"));
+	}
 }

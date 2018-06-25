@@ -125,7 +125,7 @@ public class TFStrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.nothing, index, facing, x, y, z);
+		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.NOTHING, index, facing, x, y, z);
 
 		if (StructureComponent.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;

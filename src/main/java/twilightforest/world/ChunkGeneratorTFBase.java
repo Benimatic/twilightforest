@@ -99,7 +99,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		int hx = nearCenter[0];
 		int hz = nearCenter[1];
 
-		if (nearFeature == TFFeature.trollCave) {
+		if (nearFeature == TFFeature.TROLL_CAVE) {
 			// troll cloud, more like
 			deformTerrainForTrollCloud2(primer, nearFeature, cx, cz, hx, hz);
 		}
@@ -109,17 +109,17 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 				int dx = x - hx;
 				int dz = z - hz;
 
-				if (nearFeature == TFFeature.hill1 || nearFeature == TFFeature.hill2 || nearFeature == TFFeature.hill3 || nearFeature == TFFeature.hydraLair) {
+				if (nearFeature == TFFeature.SMALL_HILL || nearFeature == TFFeature.MEDIUM_HILL || nearFeature == TFFeature.LARGE_HILL || nearFeature == TFFeature.HYDRA_LAIR) {
 					// hollow hills
 					int hdiam = ((nearFeature.size * 2 + 1) * 16);
 					int dist = (int) Math.sqrt(dx * dx + dz * dz);
 					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * ((float) hdiam / 3F));
 
 					raiseHills(primer, nearFeature, hdiam, x, z, dx, dz, hheight);
-				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
+				} else if (nearFeature == TFFeature.HEDGE_MAZE || nearFeature == TFFeature.NAGA_COURTYARD || nearFeature == TFFeature.QUEST_GROVE) {
 					// hedge mazes, naga arena
 					flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.yetiCave) {
+				} else if (nearFeature == TFFeature.YETI_CAVE) {
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
 				}
@@ -150,7 +150,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		int hollow = hillHeight - 4 - nearFeature.size;
 
 		// hydra lair has a piece missing
-		if (nearFeature == TFFeature.hydraLair) {
+		if (nearFeature == TFFeature.HYDRA_LAIR) {
 			int mx = dx + 16;
 			int mz = dz + 16;
 			int mdist = (int) Math.sqrt(mx * mx + mz * mz);
@@ -165,7 +165,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 		// hollow out the hollow parts
 		int hollowFloor = TFWorld.SEALEVEL - 3 - (hollow / 8);
-		if (nearFeature == TFFeature.hydraLair) {
+		if (nearFeature == TFFeature.HYDRA_LAIR) {
 			// different floor
 			hollowFloor = TFWorld.SEALEVEL;
 		}
@@ -428,7 +428,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// are the specified coordinates precisely in a feature?
 		TFFeature nearestFeature = TFFeature.getFeatureForRegion(pos.getX() >> 4, pos.getZ() >> 4, world);
 
-		if (nearestFeature != TFFeature.nothing) {
+		if (nearestFeature != TFFeature.NOTHING) {
 			// if the feature is already conquered, no spawns
 			if (this.isStructureConquered(pos)) {
 				return null;
@@ -455,7 +455,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	@Override
 	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position, boolean findUnexplored) {
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		if (feature != TFFeature.nothing) {
+		if (feature != TFFeature.NOTHING) {
 			return TFFeature.findNearestFeaturePosBySpacing(world, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
 		}
 		return null;
@@ -513,6 +513,6 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	@Override
 	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return feature != TFFeature.nothing && getFeatureAt(pos) == feature;
+		return feature != TFFeature.NOTHING && getFeatureAt(pos) == feature;
 	}
 }

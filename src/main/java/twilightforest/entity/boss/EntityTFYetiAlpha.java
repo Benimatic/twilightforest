@@ -335,7 +335,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.yetiCave) {
+				if (nearbyFeature == TFFeature.YETI_CAVE) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}

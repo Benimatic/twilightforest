@@ -744,7 +744,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-			if (nearbyFeature == TFFeature.hydraLair) {
+			if (nearbyFeature == TFFeature.HYDRA_LAIR) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}

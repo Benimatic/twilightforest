@@ -587,7 +587,7 @@ public class EntityTFLich extends EntityMob {
 				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.lichTower) {
+				if (nearbyFeature == TFFeature.LICH_TOWER) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}

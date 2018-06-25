@@ -122,7 +122,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {
-				TFFeature.tfStronghold.trySpawnHintMonster(world, player);
+				TFFeature.KNIGHT_STRONGHOLD.trySpawnHintMonster(world, player);
 			}
 		}
 	}

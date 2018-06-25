@@ -175,7 +175,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-			if (nearbyFeature == TFFeature.tfStronghold) {
+			if (nearbyFeature == TFFeature.KNIGHT_STRONGHOLD) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}
