@@ -1,84 +1,51 @@
 package twilightforest.structures.start;
 
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces;
-import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomes;
-import twilightforest.block.TFBlocks;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
-import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
-import twilightforest.structures.darktower.TFDarkTowerPieces;
 import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
-import twilightforest.structures.finalcastle.TFFinalCastlePieces;
 import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
 import twilightforest.structures.icetower.ComponentTFIceTowerMain;
-import twilightforest.structures.icetower.TFIceTowerPieces;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
-import twilightforest.structures.lichtower.TFLichTowerPieces;
 import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
-import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
-import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
 import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
-import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
-import twilightforest.structures.trollcave.TFTrollCavePieces;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 // Big ball of dough, let's roll it out into smaller pieces
 @SuppressWarnings("ALL")
 @Deprecated
-public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStart {
+public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
 	public TFFeature feature;
 
 	static {
-		MapGenStructureIO.registerStructure(StructureTFMajorFeatureStartCluster.class, "TFFeature");
+		MapGenStructureIO.registerStructure(StructureTFMajorFeatureCluster.class, "TFFeature");
 		MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
 
-		TFFinalCastlePieces.registerFinalCastlePieces();
-		TFStrongholdPieces.registerPieces();
-		TFMushroomTowerPieces.registerPieces();
-		TFMinotaurMazePieces.registerPieces();
-		TFDarkTowerPieces.registerPieces();
-		TFIceTowerPieces.registerPieces();
-		TFTrollCavePieces.registerPieces();
+		MapGenStructureIO.registerStructure(StructureStartNothing.class, "TFFeature");
+
 		TFHollowTreePieces.registerPieces();
-		TFLichTowerPieces.registerPieces();
-		NagaCourtyardPieces.registerPieces();
-
-		// register one-off pieces here
-		MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
-		MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
-		MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
-		//MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardMain.class, "TFNaga");
-		MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
-		MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 	}
 
-	public StructureTFMajorFeatureStartCluster() {
+	public StructureTFMajorFeatureCluster() {
 	}
 
-	public StructureTFMajorFeatureStartCluster(World world, Random rand, int chunkX, int chunkZ) {
+	public StructureTFMajorFeatureCluster(World world, Random rand, int chunkX, int chunkZ) {
+		super(world, rand, chunkX, chunkZ);
 		StructureStrongholdPieces.prepareStructurePieces();
 		//TFStrongholdPieces.prepareStructurePieces();
 
@@ -204,44 +171,6 @@ public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStar
 		return feature.isStructureEnabled;
 	}
 
-
-	/**
-	 * Move the whole structure up or down
-	 */
-	protected void moveToAvgGroundLevel(World world, int x, int z) {
-		if (world.getBiomeProvider() instanceof TFBiomeProvider) {
-			// determine the biome at the origin
-			Biome biomeAt = world.getBiome(new BlockPos(x, 0, z));
-
-			int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
-
-			// dark forest doesn't seem to get the right value.  Why is my calculation so bad?
-			if (biomeAt == TFBiomes.darkForest) {
-				offY += 4;
-			}
-
-			if (offY > 0) {
-				boundingBox.offset(0, offY, 0);
-
-				for (StructureComponent com : getComponents()) {
-					com.getBoundingBox().offset(0, offY, 0);
-				}
-			}
-		}
-	}
-
-	private void setupComponents(World world) {
-
-		TemplateManager templateManager = world.getSaveHandler().getStructureTemplateManager();
-		MinecraftServer server = world.getMinecraftServer();
-
-		for (StructureComponent component : components) {
-			if (component instanceof StructureTFComponentTemplate) {
-				((StructureTFComponentTemplate) component).setup(templateManager, server);
-			}
-		}
-	}
-
 //    /**
 //     * Keeps iterating Structure Pieces and spawning them until the checks tell it to stop
 //     */
@@ -252,9 +181,9 @@ public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStar
 //
 //			for (StructureComponent component : (LinkedList<StructureComponent>) getComponents())
 //			{
-//				
+//
 //				// TODO: we need to test the shield bounding box here, otherwise we lose shield facings across chunk boundires
-//				
+//
 //	            if (isShieldable(component) ? isIntersectingLarger(par3StructureBoundingBox, component) : isIntersectingLarger(par3StructureBoundingBox, component))
 //	            {
 //	            	if (isShieldable(component))
@@ -282,14 +211,14 @@ public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStar
 
 	}
 
-	private boolean isShieldable(StructureComponent component) {
-		return component.getBoundingBox().maxY <= 32;
-	}
+	//private boolean isShieldable(StructureComponent component) {
+	//	return component.getBoundingBox().maxY <= 32;
+	//}
 
 	/**
 	 * Make the stronghold shield around a component's bounding box
 	 */
-	private void addShieldFor(World world, StructureComponent component, List<StructureComponent> otherComponents, StructureBoundingBox chunkBox) {
+	/*private void addShieldFor(World world, StructureComponent component, List<StructureComponent> otherComponents, StructureBoundingBox chunkBox) {
 		StructureBoundingBox shieldBox = new StructureBoundingBox(component.getBoundingBox());
 
 		shieldBox.minX--;
@@ -334,9 +263,9 @@ public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStar
 				}
 			}
 		}
-	}
+	}*/
 
-	private EnumFacing calculateShieldFacing(StructureBoundingBox shieldBox, int x, int y, int z) {
+	/*private EnumFacing calculateShieldFacing(StructureBoundingBox shieldBox, int x, int y, int z) {
 		EnumFacing facing = EnumFacing.DOWN;
 		if (x == shieldBox.minX) {
 			facing = EnumFacing.EAST;
@@ -357,7 +286,7 @@ public class StructureTFMajorFeatureStartCluster extends StructureTFAbstractStar
 			facing = EnumFacing.DOWN;
 		}
 		return facing;
-	}
+	}*/
 
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {

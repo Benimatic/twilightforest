@@ -29,8 +29,21 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.MapGenBase;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
+import twilightforest.structures.*;
+import twilightforest.structures.courtyard.NagaCourtyardPieces;
+import twilightforest.structures.darktower.TFDarkTowerPieces;
+import twilightforest.structures.finalcastle.TFFinalCastlePieces;
+import twilightforest.structures.icetower.TFIceTowerPieces;
+import twilightforest.structures.lichtower.TFLichTowerPieces;
+import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
+import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
+import twilightforest.structures.start.StructureStartNothing;
+import twilightforest.structures.start.StructureStartTFAbstract;
+import twilightforest.structures.stronghold.TFStrongholdPieces;
+import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
@@ -43,13 +56,84 @@ import java.util.Random;
  */
 
 public enum TFFeature {
-	NOTHING        ( 0, "no_feature"                                                               ) { { this.enableDecorations().disableStructure();         } },
-	SMALL_HILL     ( 1, "small_hollow_hill"                                                        ) { { this.enableDecorations().enableTerrainAlterations(); } },
-	MEDIUM_HILL    ( 2, "medium_hollow_hill"                                                       ) { { this.enableDecorations().enableTerrainAlterations(); } },
-	LARGE_HILL     ( 3, "large_hollow_hill"                                                        ) { { this.enableDecorations().enableTerrainAlterations(); } },
-	HEDGE_MAZE     ( 2, "hedge_maze"                                                               ) { { this.enableTerrainAlterations();                     } },
-	NAGA_COURTYARD ( 3, "naga_courtyard"                                                           ) { { this.enableTerrainAlterations();                     } },
-	LICH_TOWER     ( 1, "lich_tower", new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
+	NOTHING    ( 0, "no_feature"        ) {{ this.enableDecorations().disableStructure(); } },
+	SMALL_HILL ( 1, "small_hollow_hill" ) {
+		{
+			this.enableDecorations().enableTerrainAlterations();
+
+			MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+
+			this.addMonster(EntitySpider.class, 10, 4, 4)
+					.addMonster(EntityZombie.class, 10, 4, 4)
+					.addMonster(EntityTFRedcap.class, 10, 4, 4)
+					.addMonster(EntityTFSwarmSpider.class, 10, 4, 4)
+					.addMonster(EntityTFKobold.class, 10, 4, 8);
+		}
+	},
+	MEDIUM_HILL ( 2, "medium_hollow_hill" ) {
+		{
+			this.enableDecorations().enableTerrainAlterations();
+
+			//MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+
+			this.addMonster(EntityTFRedcap.class, 10, 4, 4)
+					.addMonster(EntityTFRedcapSapper.class, 1, 1, 4)
+					.addMonster(EntityTFKobold.class, 10, 4, 8)
+					.addMonster(EntitySkeleton.class, 10, 4, 4)
+					.addMonster(EntityTFSwarmSpider.class, 10, 4, 4)
+					.addMonster(EntitySpider.class, 10, 4, 4)
+					.addMonster(EntityCreeper.class, 10, 4, 4)
+					.addMonster(EntityTFFireBeetle.class, 5, 4, 4)
+					.addMonster(EntityTFSlimeBeetle.class, 5, 4, 4)
+					.addMonster(EntityWitch.class, 1, 1, 1);
+		}
+	},
+	LARGE_HILL ( 3, "large_hollow_hill" ) {
+		{
+			this.enableDecorations().enableTerrainAlterations();
+
+			//MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+
+			this.addMonster(EntityTFRedcap.class, 10, 4, 4)
+					.addMonster(EntityTFRedcapSapper.class, 2, 1, 4)
+					.addMonster(EntitySkeleton.class, 10, 4, 4)
+					.addMonster(EntityCaveSpider.class, 10, 4, 4)
+					.addMonster(EntityCreeper.class, 10, 4, 4)
+					.addMonster(EntityEnderman.class, 1, 1, 4)
+					.addMonster(EntityTFWraith.class, 2, 1, 4)
+					.addMonster(EntityTFFireBeetle.class, 10, 4, 4)
+					.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4)
+					.addMonster(EntityTFPinchBeetle.class, 10, 2, 4)
+					.addMonster(EntityWitch.class, 1, 1, 1);
+		}
+	},
+	HEDGE_MAZE ( 2, "hedge_maze" ) {
+		{
+			this.enableTerrainAlterations();
+
+			MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
+		}
+	},
+	NAGA_COURTYARD ( 3, "naga_courtyard" ) {
+		{
+			this.enableTerrainAlterations();
+
+			//MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardMain.class, "TFNaga");
+			NagaCourtyardPieces.registerPieces();
+		}
+	},
+	LICH_TOWER ( 1, "lich_tower", new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
+		{
+			TFLichTowerPieces.registerPieces();
+
+			this.addMonster(EntityZombie.class, 10, 4, 4)
+					.addMonster(EntitySkeleton.class, 10, 4, 4)
+					.addMonster(EntityCreeper.class, 1, 4, 4)
+					.addMonster(EntityEnderman.class, 1, 1, 4)
+					.addMonster(EntityTFDeathTome.class, 10, 4, 4)
+					.addMonster(EntityWitch.class, 1, 1, 1);
+		}
+
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.1"))));
@@ -63,6 +147,14 @@ public enum TFFeature {
 		}
 	},
 	ICE_TOWER ( 2, "ice_tower", new ResourceLocation( TwilightForestMod.ID, "progress_yeti" )) {
+		{
+			TFIceTowerPieces.registerPieces();
+
+			this.addMonster(EntityTFSnowGuardian.class, 10, 4, 4)
+					.addMonster(EntityTFIceShooter.class, 10, 4, 4)
+					.addMonster(EntityTFIceExploder.class, 5, 4, 4);
+		}
+
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.1"))));
@@ -74,13 +166,21 @@ public enum TFFeature {
 			book.setTagInfo("title", new NBTTagString("Notes on Auroral Fortification"));
 		}
 	},
-	QUEST_ISLAND   ( 1, "quest_island"                                                                  ) { { this.disableStructure(); } },
-	QUEST_GROVE    ( 1, "quest_grove"                                                                   ) { { this.enableTerrainAlterations(); } },
+	QUEST_ISLAND ( 1, "quest_island" ) { { this.disableStructure(); } },
+	QUEST_GROVE  ( 1, "quest_grove"  ) {
+		{
+			this.enableTerrainAlterations();
+
+			MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
+		}
+	},
 	DRUID_GROVE    ( 1, "druid_grove"                                                                   ) { { this.disableStructure(); } },
 	FLOATING_RUINS ( 3, "floating_ruins"                                                                ) { { this.disableStructure(); } },
 	HYDRA_LAIR     ( 2, "hydra_lair", new ResourceLocation( TwilightForestMod.ID, "progress_labyrinth" )) {
 		{
 			this.enableTerrainAlterations();
+
+			MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
 		}
 
 		@Override
@@ -98,6 +198,17 @@ public enum TFFeature {
 	LABYRINTH ( 3, "labyrinth", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
 		{
 			this.enableDecorations();
+
+			TFMinotaurMazePieces.registerPieces();
+
+			this.addMonster(EntityTFMinotaur.class, 20, 2, 4)
+					.addMonster(EntityCaveSpider.class, 10, 4, 4)
+					.addMonster(EntityCreeper.class, 10, 4, 4)
+					.addMonster(EntityTFMazeSlime.class, 10, 4, 4)
+					.addMonster(EntityEnderman.class, 1, 1, 4)
+					.addMonster(EntityTFFireBeetle.class, 10, 4, 4)
+					.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4)
+					.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
 		}
 
 		@Override
@@ -114,6 +225,23 @@ public enum TFFeature {
 		}
 	},
 	DARK_TOWER ( 1, "dark_tower", new ResourceLocation(TwilightForestMod.ID, "progress_knights" )) {
+		{
+			TFDarkTowerPieces.registerPieces();
+
+			this.addMonster(EntityTFTowerGolem.class, 10, 4, 4)
+					.addMonster(EntitySkeleton.class, 10, 4, 4)
+					.addMonster(EntityCreeper.class, 10, 4, 4)
+					.addMonster(EntityEnderman.class, 2, 1, 4)
+					.addMonster(EntityWitch.class, 1, 1, 1)
+					.addMonster(EntityTFMiniGhast.class, 10, 1, 4)
+					.addMonster(EntityTFTowerBroodling.class, 10, 8, 8)
+					.addMonster(EntityTFPinchBeetle.class, 10, 2, 4)
+					// roof ghasts
+					.addMonster(1, EntityTFTowerGhast.class, 10, 1, 4)
+					// aquarium squids (only in aquariums between y = 35 and y = 64. :/
+					.addWaterCreature(EntitySquid.class, 10, 4, 4);
+		}
+
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.1"))));
@@ -128,6 +256,17 @@ public enum TFFeature {
 	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", new ResourceLocation( TwilightForestMod.ID, "progress_trophy_pedestal" )) {
 		{
 			this.enableDecorations().disableProtectionAura();
+
+			TFStrongholdPieces.registerPieces();
+
+			this.addMonster(EntityTFBlockGoblin.class, 10, 4, 4)
+					.addMonster(EntityTFGoblinKnightLower.class, 5, 1, 2)
+					.addMonster(EntityTFHelmetCrab.class, 10, 4, 4)
+					.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4)
+					.addMonster(EntityTFRedcapSapper.class, 2, 1, 4)
+					.addMonster(EntityTFKobold.class, 10, 4, 8)
+					.addMonster(EntityCreeper.class, 10, 4, 4)
+					.addMonster(EntitySlime.class, 5, 4, 4);
 		}
 
 		@Override
@@ -147,6 +286,10 @@ public enum TFFeature {
 	YETI_CAVE  ( 2, "yeti_lairs", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
+
+			MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
+
+			this.addMonster(EntityTFYeti.class, 10, 4, 4);
 		}
 
 		@Override
@@ -160,9 +303,20 @@ public enum TFFeature {
 			book.setTagInfo("title" , new NBTTagString("Notes on an Icy Cave"));
 		}
 	},
+	// TODO split cloud giants from this
 	TROLL_CAVE ( 3, "troll_lairs", new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
+
+			TFTrollCavePieces.registerPieces();
+
+			this.addMonster(EntityCreeper.class, 5, 4, 4)
+					.addMonster(EntitySkeleton.class, 10, 4, 4)
+					.addMonster(EntityTFTroll.class, 20, 4, 4)
+					.addMonster(EntityWitch.class, 5, 1, 1)
+					// cloud monsters
+					.addMonster(1, EntityTFGiantMiner.class, 10, 1, 4)
+					.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 4);
 		}
 
 		@Override
@@ -176,112 +330,32 @@ public enum TFFeature {
 			book.setTagInfo("title", new NBTTagString("Notes on an the Highlands"));
 		}
 	},
-	FINAL_CASTLE   ( 3, "final_castle"  , new ResourceLocation( TwilightForestMod.ID, "progress_troll" )),
-	MUSHROOM_TOWER ( 2, "mushroom_tower");
+	FINAL_CASTLE ( 3, "final_castle", new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
+		{
+			TFFinalCastlePieces.registerFinalCastlePieces();
 
-	static {
-		// spawn lists!
-		LICH_TOWER.addMonster(EntityZombie.class, 10, 4, 4);
-		LICH_TOWER.addMonster(EntitySkeleton.class, 10, 4, 4);
-		LICH_TOWER.addMonster(EntityCreeper.class, 1, 4, 4);
-		LICH_TOWER.addMonster(EntityEnderman.class, 1, 1, 4);
-		LICH_TOWER.addMonster(EntityTFDeathTome.class, 10, 4, 4);
-		LICH_TOWER.addMonster(EntityWitch.class, 1, 1, 1);
+			// plain parts of the castle, like the tower maze
+			this.addMonster(EntityTFKobold.class, 10, 4, 4)
+					.addMonster(EntityTFAdherent.class, 10, 1, 1)
+					.addMonster(EntityTFHarbingerCube.class, 10, 1, 1)
+					.addMonster(EntityEnderman.class, 10, 1, 1)
+					// internal castle
+					.addMonster(1, EntityTFKobold.class, 10, 4, 4)
+					.addMonster(1, EntityTFAdherent.class, 10, 1, 1)
+					.addMonster(1, EntityTFHarbingerCube.class, 10, 1, 1)
+					.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 1)
+					// dungeons
+					.addMonster(2, EntityTFAdherent.class, 10, 1, 1)
+					// forge
+					.addMonster(3, EntityBlaze.class, 10, 1, 1);
+		}
+	},
+	MUSHROOM_TOWER ( 2, "mushroom_tower" ) {
+		{
+			TFMushroomTowerPieces.registerPieces();
+		}
+	};
 
-		SMALL_HILL.addMonster(EntitySpider.class, 10, 4, 4);
-		SMALL_HILL.addMonster(EntityZombie.class, 10, 4, 4);
-		SMALL_HILL.addMonster(EntityTFRedcap.class, 10, 4, 4);
-		SMALL_HILL.addMonster(EntityTFSwarmSpider.class, 10, 4, 4);
-		SMALL_HILL.addMonster(EntityTFKobold.class, 10, 4, 8);
-
-		MEDIUM_HILL.addMonster(EntityTFRedcap.class, 10, 4, 4);
-		MEDIUM_HILL.addMonster(EntityTFRedcapSapper.class, 1, 1, 4);
-		MEDIUM_HILL.addMonster(EntityTFKobold.class, 10, 4, 8);
-		MEDIUM_HILL.addMonster(EntitySkeleton.class, 10, 4, 4);
-		MEDIUM_HILL.addMonster(EntityTFSwarmSpider.class, 10, 4, 4);
-		MEDIUM_HILL.addMonster(EntitySpider.class, 10, 4, 4);
-		MEDIUM_HILL.addMonster(EntityCreeper.class, 10, 4, 4);
-		MEDIUM_HILL.addMonster(EntityTFFireBeetle.class, 5, 4, 4);
-		MEDIUM_HILL.addMonster(EntityTFSlimeBeetle.class, 5, 4, 4);
-		MEDIUM_HILL.addMonster(EntityWitch.class, 1, 1, 1);
-
-		LARGE_HILL.addMonster(EntityTFRedcap.class, 10, 4, 4);
-		LARGE_HILL.addMonster(EntityTFRedcapSapper.class, 2, 1, 4);
-		LARGE_HILL.addMonster(EntitySkeleton.class, 10, 4, 4);
-		LARGE_HILL.addMonster(EntityCaveSpider.class, 10, 4, 4);
-		LARGE_HILL.addMonster(EntityCreeper.class, 10, 4, 4);
-		LARGE_HILL.addMonster(EntityEnderman.class, 1, 1, 4);
-		LARGE_HILL.addMonster(EntityTFWraith.class, 2, 1, 4);
-		LARGE_HILL.addMonster(EntityTFFireBeetle.class, 10, 4, 4);
-		LARGE_HILL.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
-		LARGE_HILL.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
-		LARGE_HILL.addMonster(EntityWitch.class, 1, 1, 1);
-
-		LABYRINTH.addMonster(EntityTFMinotaur.class, 20, 2, 4);
-		LABYRINTH.addMonster(EntityCaveSpider.class, 10, 4, 4);
-		LABYRINTH.addMonster(EntityCreeper.class, 10, 4, 4);
-		LABYRINTH.addMonster(EntityTFMazeSlime.class, 10, 4, 4);
-		LABYRINTH.addMonster(EntityEnderman.class, 1, 1, 4);
-		LABYRINTH.addMonster(EntityTFFireBeetle.class, 10, 4, 4);
-		LABYRINTH.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
-		LABYRINTH.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
-
-		DARK_TOWER.addMonster(EntityTFTowerGolem.class, 10, 4, 4);
-		DARK_TOWER.addMonster(EntitySkeleton.class, 10, 4, 4);
-		DARK_TOWER.addMonster(EntityCreeper.class, 10, 4, 4);
-		DARK_TOWER.addMonster(EntityEnderman.class, 2, 1, 4);
-		DARK_TOWER.addMonster(EntityWitch.class, 1, 1, 1);
-		DARK_TOWER.addMonster(EntityTFMiniGhast.class, 10, 1, 4);
-		DARK_TOWER.addMonster(EntityTFTowerBroodling.class, 10, 8, 8);
-		DARK_TOWER.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
-		// roof ghasts
-		DARK_TOWER.addMonster(1, EntityTFTowerGhast.class, 10, 1, 4);
-		// aquarium squids (only in aquariums between y = 35 and y = 64. :/
-		DARK_TOWER.addWaterCreature(EntitySquid.class, 10, 4, 4);
-
-		KNIGHT_STRONGHOLD.addMonster(EntityTFBlockGoblin.class, 10, 4, 4);
-		KNIGHT_STRONGHOLD.addMonster(EntityTFGoblinKnightLower.class, 5, 1, 2);
-		KNIGHT_STRONGHOLD.addMonster(EntityTFHelmetCrab.class, 10, 4, 4);
-		KNIGHT_STRONGHOLD.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4);
-		KNIGHT_STRONGHOLD.addMonster(EntityTFRedcapSapper.class, 2, 1, 4);
-		KNIGHT_STRONGHOLD.addMonster(EntityTFKobold.class, 10, 4, 8);
-		KNIGHT_STRONGHOLD.addMonster(EntityCreeper.class, 10, 4, 4);
-		KNIGHT_STRONGHOLD.addMonster(EntitySlime.class, 5, 4, 4);
-
-		YETI_CAVE.addMonster(EntityTFYeti.class, 10, 4, 4);
-
-		ICE_TOWER.addMonster(EntityTFSnowGuardian.class, 10, 4, 4);
-		ICE_TOWER.addMonster(EntityTFIceShooter.class, 10, 4, 4);
-		ICE_TOWER.addMonster(EntityTFIceExploder.class, 5, 4, 4);
-
-		TROLL_CAVE.addMonster(EntityCreeper.class, 5, 4, 4);
-		TROLL_CAVE.addMonster(EntitySkeleton.class, 10, 4, 4);
-		TROLL_CAVE.addMonster(EntityTFTroll.class, 20, 4, 4);
-		TROLL_CAVE.addMonster(EntityWitch.class, 5, 1, 1);
-		// cloud monsters
-		TROLL_CAVE.addMonster(1, EntityTFGiantMiner.class, 10, 1, 4);
-		TROLL_CAVE.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 4);
-
-		// plain parts of the castle, like the tower maze
-		FINAL_CASTLE.addMonster(EntityTFKobold.class, 10, 4, 4);
-		FINAL_CASTLE.addMonster(EntityTFAdherent.class, 10, 1, 1);
-		FINAL_CASTLE.addMonster(EntityTFHarbingerCube.class, 10, 1, 1);
-		FINAL_CASTLE.addMonster(EntityEnderman.class, 10, 1, 1);
-
-		// internal castle
-		FINAL_CASTLE.addMonster(1, EntityTFKobold.class, 10, 4, 4);
-		FINAL_CASTLE.addMonster(1, EntityTFAdherent.class, 10, 1, 1);
-		FINAL_CASTLE.addMonster(1, EntityTFHarbingerCube.class, 10, 1, 1);
-		FINAL_CASTLE.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 1);
-
-		// dungeons
-		FINAL_CASTLE.addMonster(2, EntityTFAdherent.class, 10, 1, 1);
-
-		// forge
-		FINAL_CASTLE.addMonster(3, EntityBlaze.class, 10, 1, 1);
-	}
-
-	//public int featureID;
 	public int size;
 	public String name;
 	public boolean areChunkDecorationsEnabled;
@@ -341,12 +415,8 @@ public enum TFFeature {
 		return NOTHING;
 	}
 
-	public static TFFeature getFeatureByID(int id){
-		for (TFFeature feature : TFFeature.values()) {
-			if (feature != null && feature.ordinal() == id)
-				return feature;
-		}
-		return NOTHING;
+	public static TFFeature getFeatureByID(int id) {
+		return id < TFFeature.values().length ? TFFeature.values()[id] : NOTHING;
 	}
 
 	public static int getFeatureID(int mapX, int mapZ, World world) {
@@ -447,19 +517,18 @@ public enum TFFeature {
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
 	public static TFFeature generateFeature(int chunkX, int chunkZ, World world) {
+		// FIXME Remove block comment start-marker to enable debug
+		// noinspection ConstantConditions
+		/*if (true) {
+			return NAGA_COURTYARD;
+		}//*/
+
 		// set the chunkX and chunkZ to the center of the biome
 		chunkX = Math.round(chunkX / 16F) * 16;
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
-
-		/*
-		// Remove above block comment start marker to enable debug
-		// noinspection ConstantConditions
-		if (true) {
-			return NAGA_COURTYARD;
-		}//*/
 
 		// glaciers have ice towers
 		if (biomeAt == TFBiomes.glacier) {
@@ -525,11 +594,8 @@ public enum TFFeature {
 		}
 
 		// get random value
-		Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
-		int randnum = hillRNG.nextInt(16);
-
 		// okay, well that takes care of most special cases
-		switch (randnum) {
+		switch (new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121).nextInt(16)) {
 			default:
 			case 0:
 			case 1:
@@ -849,5 +915,9 @@ public enum TFFeature {
 		book.setTagInfo("pages", bookPages);
 		book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 		book.setTagInfo("title", new NBTTagString("Notes on the Unexplained"));
+	}
+
+	public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+		return new StructureStartNothing(world, rand, chunkX, chunkZ);
 	}
 }

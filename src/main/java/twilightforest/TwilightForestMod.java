@@ -27,7 +27,7 @@ import twilightforest.entity.passive.*;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.structures.start.StructureTFMajorFeatureStartCluster;
+import twilightforest.structures.start.StructureTFMajorFeatureCluster;
 import twilightforest.tileentity.*;
 import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
@@ -86,7 +86,8 @@ public class TwilightForestMod {
 		TFTreasure.init();
 
 		// just call this so that we register structure IDs correctly
-		new StructureTFMajorFeatureStartCluster();
+		LOGGER.debug("Max size of any structure is " + TFFeature.getMaxSize());
+		new StructureTFMajorFeatureCluster();
 
 		compat = TFConfig.doCompat;
 
