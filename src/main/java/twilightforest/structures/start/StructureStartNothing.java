@@ -14,6 +14,8 @@ public class StructureStartNothing extends StructureStartTFAbstract {
 
     @Override
     protected StructureComponent makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
+        TwilightForestMod.LOGGER.warn("Generating nothing at pos " + x + ", " + y + ", " + z + "!");
+
         return null;
     }
 

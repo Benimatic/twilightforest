@@ -28,7 +28,6 @@ import twilightforest.entity.passive.*;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
 import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;

@@ -13,219 +13,230 @@ import twilightforest.structures.start.StructureStartTFAbstract;
 
 import javax.annotation.Nullable;
 
+import static twilightforest.TFFeature.NOTHING;
 
 public class MapGenTFMajorFeature extends MapGenStructure {
+    private final TFFeature FEATURE;
 
-	public MapGenTFMajorFeature() {
-	}
+    public MapGenTFMajorFeature() {
+        this.FEATURE = NOTHING;
+    }
 
-	@Override
-	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
-		return TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world).isStructureEnabled;
-	}
+    public MapGenTFMajorFeature(TFFeature feature) {
+        this.FEATURE = feature;
+    }
 
-	@Override
-	protected StructureStart getStructureStart(int chunkX, int chunkZ) {
-		// fix rand
-		this.rand.setSeed(world.getSeed());
-		long rand1 = this.rand.nextLong();
-		long rand2 = this.rand.nextLong();
-		long chunkXr1 = (long) (chunkX) * rand1;
-		long chunkZr2 = (long) (chunkZ) * rand2;
-		this.rand.setSeed(chunkXr1 ^ chunkZr2 ^ world.getSeed());
-		this.rand.nextInt();
+    @SuppressWarnings("ConstantConditions")
+    public TFFeature getFeature() {
+        return FEATURE != null ? FEATURE : NOTHING;
+    }
 
-		TFFeature feature = TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world);
+    @Override
+    public String getStructureName() {
+        return this.getFeature().name.toLowerCase();
+    }
 
-		TwilightForestMod.LOGGER.info(feature + " @ chunk {} {}", chunkX, chunkZ);
+    @Nullable
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
+        this.world = worldIn;
+        return findNearestStructurePosBySpacing(worldIn, this, pos, 20, 11, 10387313, true, 100, findUnexplored);
+    }
 
-		return feature.provideStructureStart(world, rand, chunkX, chunkZ);
-	}
+    @Override
+    protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
+        return TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world).isStructureEnabled;
+    }
 
-	@Override
-	public String getStructureName() {
-		return "TFFeature";
-	}
+    @Override
+    protected StructureStart getStructureStart(int chunkX, int chunkZ) {
+        // fix rand
+        this.rand.setSeed(world.getSeed());
+        long rand1 = this.rand.nextLong();
+        long rand2 = this.rand.nextLong();
+        long chunkXr1 = (long) (chunkX) * rand1;
+        long chunkZr2 = (long) (chunkZ) * rand2;
+        this.rand.setSeed(chunkXr1 ^ chunkZr2 ^ world.getSeed());
+        this.rand.nextInt();
 
-	@Nullable
-	@Override
-	public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
-		this.world = worldIn;
-		return findNearestStructurePosBySpacing(worldIn, this, pos, 20, 11, 10387313, true, 100, findUnexplored);
-	}
+        //TFFeature feature = TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world);
 
-	/**
-	 * Returns true if the structure generator has generated a structure located at the given position tuple.
-	 */
-	public int getSpawnListIndexAt(BlockPos pos) {
-		int highestFoundIndex = -1;
+        TwilightForestMod.LOGGER.info(this.FEATURE + " @ chunk {} {}", chunkX, chunkZ);
 
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
+        return this.getFeature().provideStructureStart(world, rand, chunkX, chunkZ);
+    }
 
-				for (StructureComponent component : start.getComponents()) {
-					if (component != null && component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos)) {
-						if (component instanceof StructureTFComponent) {
-							StructureTFComponent tfComponent = (StructureTFComponent) component;
+    /**
+     * Returns true if the structure generator has generated a structure located at the given position tuple.
+     */
+    public int getSpawnListIndexAt(BlockPos pos) {
+        int highestFoundIndex = -1;
 
-							if (tfComponent.spawnListIndex > highestFoundIndex) {
-								highestFoundIndex = tfComponent.spawnListIndex;
-							}
-						} else {
-							return 0;
-						}
-					}
-				}
-			}
-		}
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 
-		return highestFoundIndex;
-	}
+                for (StructureComponent component : start.getComponents()) {
+                    if (component != null && component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos)) {
+                        if (component instanceof StructureTFComponent) {
+                            StructureTFComponent tfComponent = (StructureTFComponent) component;
 
-	/**
-	 * Get the structure bounding box, if any, at the specified position
-	 */
-	public StructureBoundingBox getSBBAt(BlockPos pos) {
-		StructureBoundingBox boxFound = null;
+                            if (tfComponent.spawnListIndex > highestFoundIndex) {
+                                highestFoundIndex = tfComponent.spawnListIndex;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
 
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
+        return highestFoundIndex;
+    }
 
-				for (StructureComponent component : start.getComponents()) {
-					if (component.getBoundingBox().isVecInside(pos)) {
-						boxFound = component.getBoundingBox();
-					}
-				}
-			}
-		}
+    /**
+     * Get the structure bounding box, if any, at the specified position
+     */
+    public StructureBoundingBox getSBBAt(BlockPos pos) {
+        StructureBoundingBox boxFound = null;
 
-		return boxFound;
-	}
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 
-	public TFFeature getFeatureAt(BlockPos pos) {
-		for (StructureStart start : this.structureMap.values())
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-				for (StructureComponent component : start.getComponents())
-					if (component.getBoundingBox().isVecInside(pos))
-						if (component instanceof StructureTFComponent)
-							return ((StructureTFComponent) component).getFeatureType();
-		return TFFeature.NOTHING;
-	}
+                for (StructureComponent component : start.getComponents()) {
+                    if (component.getBoundingBox().isVecInside(pos)) {
+                        boxFound = component.getBoundingBox();
+                    }
+                }
+            }
+        }
 
-	/**
-	 * Is the block at the coordinates given a protected one?
-	 */
-	public boolean isBlockProtectedAt(BlockPos pos) {
-		boolean blockProtected = false;
+        return boxFound;
+    }
 
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
+    public TFFeature getFeatureAt(BlockPos pos) {
+        for (StructureStart start : this.structureMap.values())
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
+                for (StructureComponent component : start.getComponents())
+                    if (component.getBoundingBox().isVecInside(pos))
+                        if (component instanceof StructureTFComponent)
+                            return ((StructureTFComponent) component).getFeatureType();
+        return NOTHING;
+    }
 
-				for (StructureComponent component : start.getComponents()) {
-					if (component.getBoundingBox().isVecInside(pos)) {
+    /**
+     * Is the block at the coordinates given a protected one?
+     */
+    public boolean isBlockProtectedAt(BlockPos pos) {
+        boolean blockProtected = false;
 
-						if (component instanceof StructureTFComponent) {
-							StructureTFComponent tfComp = (StructureTFComponent) component;
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 
-							blockProtected = tfComp.isComponentProtected();
+                for (StructureComponent component : start.getComponents()) {
+                    if (component.getBoundingBox().isVecInside(pos)) {
 
-						} else {
-							blockProtected = true;
-						}
+                        if (component instanceof StructureTFComponent) {
+                            StructureTFComponent tfComp = (StructureTFComponent) component;
 
-						// check if it's a twilight forest component, then check if it's protected
-					}
-				}
-			}
-		}
+                            blockProtected = tfComp.isComponentProtected();
 
-		return blockProtected;
+                        } else {
+                            blockProtected = true;
+                        }
 
-	}
+                        // check if it's a twilight forest component, then check if it's protected
+                    }
+                }
+            }
+        }
 
-	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
-				if (start instanceof StructureStartTFAbstract) {
-					StructureStartTFAbstract featureStart = (StructureStartTFAbstract) start;
-					featureStart.isConquered = flag;
-					this.structureData.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
-					this.structureData.setDirty(true);
-				}
-			}
-		}
-	}
+        return blockProtected;
 
-	public boolean isStructureConquered(BlockPos pos) {
-		boolean conquered = false;
+    }
 
-		for (StructureStart start : this.structureMap.values())
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-				if (start instanceof StructureStartTFAbstract)
-					conquered = ((StructureStartTFAbstract) start).isConquered;
+    public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
+                if (start instanceof StructureStartTFAbstract) {
+                    StructureStartTFAbstract featureStart = (StructureStartTFAbstract) start;
+                    featureStart.isConquered = flag;
+                    this.structureData.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
+                    this.structureData.setDirty(true);
+                }
+            }
+        }
+    }
 
-		return conquered;
-	}
+    public boolean isStructureConquered(BlockPos pos) {
+        boolean conquered = false;
 
-	/**
-	 * Check the lock at the specified lockIndex for the structure at the specified coords
-	 */
-	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
+        for (StructureStart start : this.structureMap.values())
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
+                if (start instanceof StructureStartTFAbstract)
+                    conquered = ((StructureStartTFAbstract) start).isConquered;
 
-		boolean locked = false;
+        return conquered;
+    }
 
-		for (StructureStart start : this.structureMap.values())
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-				if (start instanceof StructureStartTFAbstract)
-					locked = ((StructureStartTFAbstract) start).isLocked(lockIndex);
+    /**
+     * Check the lock at the specified lockIndex for the structure at the specified coords
+     */
+    public boolean isStructureLocked(BlockPos pos, int lockIndex) {
+        boolean locked = false;
 
-		return locked;
-	}
+        for (StructureStart start : this.structureMap.values())
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
+                if (start instanceof StructureStartTFAbstract)
+                    locked = ((StructureStartTFAbstract) start).isLocked(lockIndex);
 
-	/**
-	 * Do the specified x & z coordinates intersect the full structure?
-	 */
-	public boolean isBlockInFullStructure(int mapX, int mapZ) {
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
-				return true;
-			}
-		}
-		return false;
-	}
+        return locked;
+    }
 
-	/**
-	 * Are the specified x & z coordinates close to a full structure?
-	 */
-	public boolean isBlockNearFullStructure(int mapX, int mapZ, int range) {
-		StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Do the specified x & z coordinates intersect the full structure?
+     */
+    public boolean isBlockInFullStructure(int mapX, int mapZ) {
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Get full structure bounding box at the specified x, z coordinates.
-	 */
-	public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
-				return start.getBoundingBox();
-			}
-		}
-		return null;
-	}
+    /**
+     * Are the specified x & z coordinates close to a full structure?
+     */
+    public boolean isBlockNearFullStructure(int mapX, int mapZ, int range) {
+        StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
-		for (StructureStart start : this.structureMap.values()) {
-			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
-				return start.getBoundingBox();
-			}
-		}
-		return null;
-	}
+    /**
+     * Get full structure bounding box at the specified x, z coordinates.
+     */
+    public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
+                return start.getBoundingBox();
+            }
+        }
+        return null;
+    }
+
+    public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
+        StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
+        for (StructureStart start : this.structureMap.values()) {
+            if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
+                return start.getBoundingBox();
+            }
+        }
+        return null;
+    }
 }

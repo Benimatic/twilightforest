@@ -37,7 +37,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	protected double[] depthBuffer = new double[256];
 	protected Biome[] biomesForGeneration;
 
-	protected final MapGenTFMajorFeature majorFeatureGenerator = new MapGenTFMajorFeature();
+	//protected final MapGenTFMajorFeatureOld majorFeatureGenerator = new MapGenTFMajorFeatureOld();
 
 	private final boolean shouldGenerateBedrock;
 
@@ -430,12 +430,12 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 		if (nearestFeature != TFFeature.NOTHING) {
 			// if the feature is already conquered, no spawns
-			if (this.isStructureConquered(pos)) {
-				return null;
-			}
+			//if (this.isStructureConquered(pos)) {
+			//	return null;
+			//}
 
 			// check the precise coords.
-			int spawnListIndex = this.majorFeatureGenerator.getSpawnListIndexAt(pos);
+			int spawnListIndex = nearestFeature.getFeatureGenerator().getSpawnListIndexAt(pos);
 			if (spawnListIndex >= 0) {
 				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
 			}
@@ -455,59 +455,60 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	@Override
 	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position, boolean findUnexplored) {
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		if (feature != TFFeature.NOTHING) {
+
+		if (feature != TFFeature.NOTHING)
 			return TFFeature.findNearestFeaturePosBySpacing(world, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
-		}
+
 		return null;
 	}
 
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
+		TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-		return this.majorFeatureGenerator.isStructureLocked(pos, lockIndex);
+		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureLocked(pos, lockIndex);
 	}
 
 	public boolean isBlockInStructureBB(BlockPos pos) {
-		return this.majorFeatureGenerator.isInsideStructure(pos);
+		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isInsideStructure(pos);
 	}
 
 	public StructureBoundingBox getSBBAt(BlockPos pos) {
-		return this.majorFeatureGenerator.getSBBAt(pos);
+		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().getSBBAt(pos);
 	}
 
 	public boolean isBlockProtected(BlockPos pos) {
-		return this.majorFeatureGenerator.isBlockProtectedAt(pos);
+		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isBlockProtectedAt(pos);
 	}
 
 	public boolean isStructureConquered(BlockPos pos) {
-		return this.majorFeatureGenerator.isStructureConquered(pos);
+		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureConquered(pos);
 	}
 
 	public boolean isBlockInFullStructure(int x, int z) {
-		return this.majorFeatureGenerator.isBlockInFullStructure(x, z);
+		return TFFeature.getFeatureAt(x, z, world).getFeatureGenerator().isBlockInFullStructure(x, z);
 	}
 
 	public boolean isBlockNearFullStructure(int x, int z, int range) {
-		return this.majorFeatureGenerator.isBlockNearFullStructure(x, z, range);
+		return TFFeature.getFeatureAt(x, z, world).getFeatureGenerator().isBlockNearFullStructure(x, z, range);
 	}
 
-	public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
-		return this.majorFeatureGenerator.getFullSBBAt(mapX, mapZ);
-	}
+	//public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
+	//	TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().getFullSBBAt(mapX, mapZ);
+	//}
 
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		return this.majorFeatureGenerator.getFullSBBNear(mapX, mapZ, range);
+		return TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().getFullSBBNear(mapX, mapZ, range);
 	}
 
 	public TFFeature getFeatureAt(BlockPos pos) {
-		return majorFeatureGenerator.getFeatureAt(pos);
+		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().getFeatureAt(pos);
 	}
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {
-		majorFeatureGenerator.generate(world, x, z, null);
+		TFFeature.getFeatureDirectlyAt(x, z, chunk.getWorld()).getFeatureGenerator().generate(world, x, z, null);
 	}
 
 	@Override

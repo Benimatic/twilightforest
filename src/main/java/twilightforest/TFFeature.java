@@ -30,29 +30,20 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
-import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
-import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 import twilightforest.structures.darktower.TFDarkTowerPieces;
-import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
 import twilightforest.structures.finalcastle.TFFinalCastlePieces;
-import twilightforest.structures.icetower.ComponentTFIceTowerMain;
 import twilightforest.structures.icetower.TFIceTowerPieces;
-import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.lichtower.TFLichTowerPieces;
-import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
-import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
 import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
 import twilightforest.structures.start.*;
-import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
-import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
+import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
@@ -65,8 +56,8 @@ import java.util.Random;
  */
 
 public enum TFFeature {
-	NOTHING    ( 0, "no_feature"        ) { { this.enableDecorations().disableStructure(); } },
-	SMALL_HILL ( 1, "small_hollow_hill" ) {
+	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
+	SMALL_HILL ( 1, "small_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -85,7 +76,7 @@ public enum TFFeature {
 			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	MEDIUM_HILL ( 2, "medium_hollow_hill" ) {
+	MEDIUM_HILL ( 2, "medium_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -106,7 +97,7 @@ public enum TFFeature {
 			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	LARGE_HILL ( 3, "large_hollow_hill" ) {
+	LARGE_HILL ( 3, "large_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -128,7 +119,7 @@ public enum TFFeature {
 			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	HEDGE_MAZE ( 2, "hedge_maze" ) {
+	HEDGE_MAZE ( 2, "hedge_maze", true ) {
 		{
 			this.enableTerrainAlterations();
 
@@ -141,7 +132,7 @@ public enum TFFeature {
 			return new StructureStartHedgeMaze(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	NAGA_COURTYARD ( 3, "naga_courtyard" ) {
+	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
 		{
 			this.enableTerrainAlterations();
 
@@ -154,7 +145,7 @@ public enum TFFeature {
 			return new StructureStartCourtyard(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	LICH_TOWER ( 1, "lich_tower", new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
+	LICH_TOWER ( 1, "lich_tower", true, new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
 		{
 			TFLichTowerPieces.registerPieces();
 
@@ -183,7 +174,7 @@ public enum TFFeature {
 			return new StructureStartLichTower(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	ICE_TOWER ( 2, "ice_tower", new ResourceLocation( TwilightForestMod.ID, "progress_yeti" )) {
+	ICE_TOWER ( 2, "ice_tower", true, new ResourceLocation( TwilightForestMod.ID, "progress_yeti" )) {
 		{
 			TFIceTowerPieces.registerPieces();
 
@@ -208,8 +199,8 @@ public enum TFFeature {
 			return new StructureStartAuroraPalace(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	QUEST_ISLAND ( 1, "quest_island" ) { { this.disableStructure(); } },
-	QUEST_GROVE  ( 1, "quest_grove"  ) {
+	QUEST_ISLAND ( 1, "quest_island", false ) { { this.disableStructure(); } },
+	QUEST_GROVE  ( 1, "quest_grove" , true  ) {
 		{
 			this.enableTerrainAlterations();
 
@@ -222,9 +213,9 @@ public enum TFFeature {
 			return new StructureStartQuestGrove(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	DRUID_GROVE    ( 1, "druid_grove"                                                                   ) { { this.disableStructure(); } },
-	FLOATING_RUINS ( 3, "floating_ruins"                                                                ) { { this.disableStructure(); } },
-	HYDRA_LAIR     ( 2, "hydra_lair", new ResourceLocation( TwilightForestMod.ID, "progress_labyrinth" )) {
+	DRUID_GROVE    ( 1, "druid_grove"   , false                                                                    ) { { this.disableStructure(); } },
+	FLOATING_RUINS ( 3, "floating_ruins", false                                                                    ) { { this.disableStructure(); } },
+	HYDRA_LAIR     ( 2, "hydra_lair"    , true , new ResourceLocation( TwilightForestMod.ID, "progress_labyrinth" )) {
 		{
 			this.enableTerrainAlterations();
 
@@ -249,7 +240,7 @@ public enum TFFeature {
 			return new StructureStartHydraLair(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	LABYRINTH ( 3, "labyrinth", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
+	LABYRINTH ( 3, "labyrinth", true, new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
 		{
 			this.enableDecorations();
 
@@ -283,7 +274,7 @@ public enum TFFeature {
 			return new StructureStartLabyrinth(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	DARK_TOWER ( 1, "dark_tower", new ResourceLocation(TwilightForestMod.ID, "progress_knights" )) {
+	DARK_TOWER ( 1, "dark_tower", true, new ResourceLocation(TwilightForestMod.ID, "progress_knights" )) {
 		{
 			TFDarkTowerPieces.registerPieces();
 
@@ -317,7 +308,7 @@ public enum TFFeature {
 			return new StructureStartDarkTower(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", new ResourceLocation( TwilightForestMod.ID, "progress_trophy_pedestal" )) {
+	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", true, new ResourceLocation( TwilightForestMod.ID, "progress_trophy_pedestal" )) {
 		{
 			this.enableDecorations().disableProtectionAura();
 
@@ -351,8 +342,8 @@ public enum TFFeature {
 			return new StructureStartKnightStronghold(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	WORLD_TREE ( 3, "world_tree"                                                               ) { { this.disableStructure(); } },
-	YETI_CAVE  ( 2, "yeti_lairs", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
+	WORLD_TREE ( 3, "world_tree", false                                                               ) { { this.disableStructure(); } },
+	YETI_CAVE  ( 2, "yeti_lairs", true , new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -379,7 +370,7 @@ public enum TFFeature {
 		}
 	},
 	// TODO split cloud giants from this
-	TROLL_CAVE ( 3, "troll_lairs", new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
+	TROLL_CAVE ( 3, "troll_lairs", true, new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
@@ -410,7 +401,7 @@ public enum TFFeature {
 			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	FINAL_CASTLE ( 3, "final_castle", new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
+	FINAL_CASTLE ( 3, "final_castle", true, new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
 		{
 			TFFinalCastlePieces.registerFinalCastlePieces();
 
@@ -435,7 +426,7 @@ public enum TFFeature {
 			return new StructureStartFinalCastle(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	MUSHROOM_TOWER ( 2, "mushroom_tower" ) {
+	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
 		{
 			TFMushroomTowerPieces.registerPieces();
 		}
@@ -448,6 +439,7 @@ public enum TFFeature {
 
 	public int size;
 	public String name;
+	private final boolean shouldHaveFeatureGenerator;
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
 	public boolean isTerrainAltered;
@@ -457,13 +449,16 @@ public enum TFFeature {
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
+	private MapGenTFMajorFeature featureGenerator;
+
 	private long lastSpawnedHintMonsterTime;
 
 	private static class NoU {
 		private static int maxSize = 0;
+		private static final MapGenTFMajorFeature NOTHING_GENERATOR = new MapGenTFMajorFeature( NOTHING );
 	}
 
-	TFFeature(int parSize, String parName, ResourceLocation... requiredAdvancements) {
+	TFFeature(int parSize, String parName, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
 		this.size = parSize;
 		this.name = parName;
 		this.areChunkDecorationsEnabled = false;
@@ -479,10 +474,16 @@ public enum TFFeature {
 		NoU.maxSize = Math.max(NoU.maxSize, parSize);
 
 		this.requiredAdvancements = requiredAdvancements;
+
+		shouldHaveFeatureGenerator = featureGenerator;
 	}
 
 	public static int getMaxSize() {
 		return NoU.maxSize;
+	}
+
+	public MapGenTFMajorFeature getFeatureGenerator() {
+		return this.shouldHaveFeatureGenerator ? this.featureGenerator == null ? (this.featureGenerator = new MapGenTFMajorFeature(this)) : this.featureGenerator : NoU.NOTHING_GENERATOR;
 	}
 
 	/**
@@ -590,16 +591,10 @@ public enum TFFeature {
 	 * @return The type of feature directly at the specified Chunk coordinates
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
+		if (world.getBiomeProvider() instanceof TFBiomeProvider && isInFeatureChunk(world, chunkX << 4, chunkZ << 4))
+			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 
-		if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider) {
-			if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
-				return getFeatureAt(chunkX << 4, chunkZ << 4, world);
-			} else {
-				return NOTHING;
-			}
-		} else {
-			return NOTHING;
-		}
+		return NOTHING;
 	}
 
 	/**
@@ -801,25 +796,6 @@ public enum TFFeature {
 		int featureZ = Math.round(chunkZ / 16F) * 16;
 
 		return TFFeature.generateFeature(featureX, featureZ, world);
-
-    	/* old version
-    	for (int rad = 1; rad <= 3; rad++)
-    	{
-    		for (int x = -rad; x <= rad; x++)
-    		{
-    			for (int z = -rad; z <= rad; z++)
-    			{
-    				TFFeature directlyAt = getFeatureDirectlyAt(x + chunkX, z + chunkZ, world);
-    				if (directlyAt != TFFeature.NOTHING)
-    				{
-    					return directlyAt;
-    				}
-    			}
-    		}
-    	}
-    	
-    	return NOTHING;
-    	*/
 	}
 
 	/**

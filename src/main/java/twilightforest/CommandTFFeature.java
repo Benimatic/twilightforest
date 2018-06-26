@@ -216,33 +216,19 @@ public class CommandTFFeature extends CommandBase {
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				changeStructureActivity(sender, false);
 			}
-		}; /*, RELOADSHADERS {
-			@Override
-			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-				// Reload our shaders without reloading all of the game resources
-				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-					TwilightForestMod.LOGGER.info("Reloaded");
-					twilightforest.client.shader.ShaderHelper.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
-				}
-			}
-		};//*/
+		};
 
 		private final static String[] ACTION_LIST;
-		//private final static String actionListInOneLine;
 
 		static {
 			int length = EnumActions.values().length;
 
 			String[] list = new String[length];
-			//StringBuilder oneLine = new StringBuilder("<");
 
-			for (EnumActions action : EnumActions.values()) {
+			for (EnumActions action : EnumActions.values())
 				list[action.ordinal()] = action.toString().toLowerCase(Locale.ROOT);
-				//oneLine.append(action.toString().toLowerCase(Locale.ROOT)).append(action.ordinal() < length - 1 ? "|" : ">");
-			}
 
 			ACTION_LIST = list;
-			//actionListInOneLine = oneLine.toString();
 		}
 
 		protected abstract void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException;

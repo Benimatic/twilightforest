@@ -87,7 +87,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 		caveGenerator.generate(world, x, z, primer);
 		ravineGenerator.generate(world, x, z, primer);
-		majorFeatureGenerator.generate(world, x, z, primer);
+		TFFeature.getFeatureDirectlyAt(x, z, world).getFeatureGenerator().generate(world, x, z, primer);
 		hollowTreeGenerator.generate(world, x, z, primer);
 
 		return makeChunk(x, z, primer);
@@ -423,7 +423,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
-		boolean disableFeatures = this.majorFeatureGenerator.generateStructure(world, rand, chunkpos)
+		boolean disableFeatures = TFFeature.getFeatureDirectlyAt(x, z, world).getFeatureGenerator().generateStructure(world, rand, chunkpos)
 				|| !TFFeature.getNearestFeature(x, z, world).areChunkDecorationsEnabled;
 
 		hollowTreeGenerator.generateStructure(world, rand, chunkpos);
