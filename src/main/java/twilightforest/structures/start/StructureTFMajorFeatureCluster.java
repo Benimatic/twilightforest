@@ -1,9 +1,7 @@
 package twilightforest.structures.start;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces;
 import twilightforest.TFFeature;
@@ -23,15 +21,13 @@ import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 // Big ball of dough, let's roll it out into smaller pieces
-@SuppressWarnings("ALL")
+@SuppressWarnings("DeprecatedIsStillUsed")
 @Deprecated
 public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
-	public TFFeature feature;
-
+	// TODO figure out what to do with these
 	static {
 		MapGenStructureIO.registerStructure(StructureTFMajorFeatureCluster.class, "TFFeature");
 		MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
@@ -44,8 +40,8 @@ public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
 	public StructureTFMajorFeatureCluster() {
 	}
 
-	public StructureTFMajorFeatureCluster(World world, Random rand, int chunkX, int chunkZ) {
-		super(world, rand, chunkX, chunkZ);
+	public StructureTFMajorFeatureCluster(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
+		super(world, feature, rand, chunkX, chunkZ);
 		StructureStrongholdPieces.prepareStructurePieces();
 		//TFStrongholdPieces.prepareStructurePieces();
 
@@ -53,10 +49,10 @@ public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
 		int z = (chunkZ << 4) + 8;
 		int y = TFWorld.SEALEVEL + 1; //TODO: maybe a biome-specific altitude for some of them?
 
-		this.feature = TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world);
+		//this.feature = TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world);
 		this.isConquered = false;
 
-		StructureComponent firstComponent = makeFirstComponent(world, rand, feature, x, y, z);
+		StructureComponent firstComponent = makeFirstComponent(world, rand, x, y, z);
 		if (firstComponent != null) {
 			components.add(firstComponent);
 			firstComponent.buildComponent(firstComponent, components, rand);
@@ -64,25 +60,25 @@ public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
 
 		updateBoundingBox();
 
-		if (firstComponent instanceof StructureStrongholdPieces.Stairs2) {
-			List<StructureComponent> var6 = ((StructureStrongholdPieces.Stairs2) firstComponent).pendingChildren;
+		//if (firstComponent instanceof StructureStrongholdPieces.Stairs2) {
+		//	List<StructureComponent> var6 = ((StructureStrongholdPieces.Stairs2) firstComponent).pendingChildren;
 
-			while (!var6.isEmpty()) {
-				int var7 = rand.nextInt(var6.size());
-				StructureComponent var8 = var6.remove(var7);
-				var8.buildComponent(firstComponent, this.components, rand);
-			}
+		//	while (!var6.isEmpty()) {
+		//		int var7 = rand.nextInt(var6.size());
+		//		StructureComponent var8 = var6.remove(var7);
+		//		var8.buildComponent(firstComponent, this.components, rand);
+		//	}
 
-			updateBoundingBox();
+		//	updateBoundingBox();
 
-			int offY = -33;
+		//	int offY = -33;
 
-			boundingBox.offset(0, offY, 0);
+		//	boundingBox.offset(0, offY, 0);
 
-			for (StructureComponent com : getComponents()) {
-				com.getBoundingBox().offset(0, offY, 0);
-			}
-		}
+		//	for (StructureComponent com : getComponents()) {
+		//		com.getBoundingBox().offset(0, offY, 0);
+		//	}
+		//}
 
 		if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain) {
 			moveToAvgGroundLevel(world, x, z);
@@ -94,82 +90,66 @@ public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
 	/**
 	 * @return The first component we should add to our structure
 	 */
-	@Nullable
-	public StructureComponent makeFirstComponent(World world, Random rand, @Nullable TFFeature feature, int x, int y, int z) {
+	public StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+		return null;
+	}
 		/*if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);
 			return new ComponentNagaCourtyardMain(feature, world, rand, 0, x, y, z);
 		}//*/
 
-		if (feature == TFFeature.NAGA_COURTYARD) {
+		/*if (feature == TFFeature.NAGA_COURTYARD) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
-			return new ComponentNagaCourtyardMain(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.HEDGE_MAZE) {
 			TwilightForestMod.LOGGER.info("Hedge Maze @ {} {} {}", x, y, z);
-			return new ComponentTFHedgeMaze(feature, world, rand, 0, x, y, z);
-		}
-		if (feature == TFFeature.SMALL_HILL) {
-			TwilightForestMod.LOGGER.info("Hill 1 @ {} {} {}", x, y, z);
-			return new ComponentTFHollowHill(feature, world, rand, 0, 1, x, y, z);
-		}
-		if (feature == TFFeature.MEDIUM_HILL) {
-			TwilightForestMod.LOGGER.info("Hill 2 @ {} {} {}", x, y, z);
-			return new ComponentTFHollowHill(feature, world, rand, 0, 2, x, y, z);
-		}
-		if (feature == TFFeature.LARGE_HILL) {
-			TwilightForestMod.LOGGER.info("Hill 3 @ {} {} {}", x, y, z);
-			return new ComponentTFHollowHill(feature, world, rand, 0, 3, x, y, z);
+
 		}
 		if (feature == TFFeature.QUEST_GROVE) {
 			TwilightForestMod.LOGGER.info("Quest Grove @ {} {} {}", x, y, z);
-			return new ComponentTFQuestGrove(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.HYDRA_LAIR) {
 			TwilightForestMod.LOGGER.info("Hydra Lair @ {} {} {}", x, y, z);
-			return new ComponentTFHydraLair(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.YETI_CAVE) {
 			TwilightForestMod.LOGGER.info("Yeti Cave @ {} {} {}", x, y, z);
-			return new ComponentTFYetiCave(feature, world, rand, 0, x, y, z);
+			return
 		}
 
 		if (feature == TFFeature.LICH_TOWER) {
 			TwilightForestMod.LOGGER.info("Lich Tower @ {} {} {}", x, y, z);
-			return new ComponentTFTowerMain(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.TROLL_CAVE) {
 			TwilightForestMod.LOGGER.info("Troll Cave @ {} {} {}", x, y, z);
-			return new ComponentTFTrollCaveMain(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.ICE_TOWER) {
 			TwilightForestMod.LOGGER.info("Ice Tower @ {} {} {}", x, y, z);
-			return new ComponentTFIceTowerMain(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.DARK_TOWER) {
-			return new ComponentTFDarkTowerMain(feature, world, rand, 0, x, y - 1, z);
+			return
 		}
 		if (feature == TFFeature.LABYRINTH) {
-			return new ComponentTFMazeRuins(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.MUSHROOM_TOWER) {
-			return new ComponentTFMushroomTowerMain(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.KNIGHT_STRONGHOLD) {
-			return new ComponentTFStrongholdEntrance(feature, world, rand, 0, x, y, z);
+			return
 		}
 		if (feature == TFFeature.FINAL_CASTLE) {
-			return new ComponentTFFinalCastleMain(feature, world, rand, 0, x, y, z);
+			return
 		}
 
 		return null;
-	}
-
-	@Override
-	public boolean isSizeableStructure() {
-		return feature.isStructureEnabled;
-	}
+	} */
 
 //    /**
 //     * Keeps iterating Structure Pieces and spawning them until the checks tell it to stop
@@ -203,13 +183,13 @@ public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
 	/**
 	 * Check if the component is within the chunk bounding box, but check as if it was one larger
 	 */
-	private boolean isIntersectingLarger(StructureBoundingBox chunkBB, StructureComponent component) {
-		StructureBoundingBox compBB = component.getBoundingBox();
+	//private boolean isIntersectingLarger(StructureBoundingBox chunkBB, StructureComponent component) {
+	//	StructureBoundingBox compBB = component.getBoundingBox();
 
-		// don't bother checking Y
-		return (compBB.maxX + 1) >= chunkBB.minX && (compBB.minX - 1) <= chunkBB.maxX && (compBB.maxZ + 1) >= chunkBB.minZ && (compBB.minZ - 1) <= chunkBB.maxZ;
+	//	// don't bother checking Y
+	//	return (compBB.maxX + 1) >= chunkBB.minX && (compBB.minX - 1) <= chunkBB.maxX && (compBB.maxZ + 1) >= chunkBB.minZ && (compBB.minZ - 1) <= chunkBB.maxZ;
 
-	}
+	//}
 
 	//private boolean isShieldable(StructureComponent component) {
 	//	return component.getBoundingBox().maxY <= 32;
@@ -287,36 +267,4 @@ public class StructureTFMajorFeatureCluster extends StructureStartTFAbstract {
 		}
 		return facing;
 	}*/
-
-	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("FeatureID", this.feature.ordinal());
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		this.feature = TFFeature.values()[nbttagcompound.getInteger("FeatureID")];
-	}
-
-	public boolean isLocked(int lockIndex) {
-		if (lockIndex < this.lockBytes.length) {
-
-			TwilightForestMod.LOGGER.info("Checking locks for lockIndex " + lockIndex);
-
-			for (int i = 0; i < this.lockBytes.length; i++) {
-				TwilightForestMod.LOGGER.info("Lock " + i + " = " + this.lockBytes[i]);
-			}
-
-			return this.lockBytes[lockIndex] != 0;
-		} else {
-
-			TwilightForestMod.LOGGER.info("Current lock index, " + lockIndex + " is beyond array bounds " + this.lockBytes.length);
-
-
-			return false;
-		}
-	}
-
 }

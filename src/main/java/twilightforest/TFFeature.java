@@ -30,19 +30,29 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
+import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
+import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 import twilightforest.structures.darktower.TFDarkTowerPieces;
+import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
 import twilightforest.structures.finalcastle.TFFinalCastlePieces;
+import twilightforest.structures.icetower.ComponentTFIceTowerMain;
 import twilightforest.structures.icetower.TFIceTowerPieces;
+import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.lichtower.TFLichTowerPieces;
+import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
+import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
 import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
 import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.structures.start.StructureStartTFAbstract;
+import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
+import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
@@ -56,7 +66,7 @@ import java.util.Random;
  */
 
 public enum TFFeature {
-	NOTHING    ( 0, "no_feature"        ) {{ this.enableDecorations().disableStructure(); } },
+	NOTHING    ( 0, "no_feature"        ) { { this.enableDecorations().disableStructure(); } },
 	SMALL_HILL ( 1, "small_hollow_hill" ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
@@ -68,6 +78,16 @@ public enum TFFeature {
 					.addMonster(EntityTFRedcap.class, 10, 4, 4)
 					.addMonster(EntityTFSwarmSpider.class, 10, 4, 4)
 					.addMonster(EntityTFKobold.class, 10, 4, 8);
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFHollowHill(SMALL_HILL, world, rand, 0, 1, x, y, z);
+				}
+			};
 		}
 	},
 	MEDIUM_HILL ( 2, "medium_hollow_hill" ) {
@@ -86,6 +106,16 @@ public enum TFFeature {
 					.addMonster(EntityTFFireBeetle.class, 5, 4, 4)
 					.addMonster(EntityTFSlimeBeetle.class, 5, 4, 4)
 					.addMonster(EntityWitch.class, 1, 1, 1);
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFHollowHill(MEDIUM_HILL, world, rand, 0, 2, x, y, z);
+				}
+			};
 		}
 	},
 	LARGE_HILL ( 3, "large_hollow_hill" ) {
@@ -106,12 +136,32 @@ public enum TFFeature {
 					.addMonster(EntityTFPinchBeetle.class, 10, 2, 4)
 					.addMonster(EntityWitch.class, 1, 1, 1);
 		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFHollowHill(LARGE_HILL, world, rand, 0, 3, x, y, z);
+				}
+			};
+		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze" ) {
 		{
 			this.enableTerrainAlterations();
 
 			MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFHedgeMaze(HEDGE_MAZE, world, rand, 0, x, y, z);
+				}
+			};
 		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard" ) {
@@ -120,6 +170,16 @@ public enum TFFeature {
 
 			//MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardMain.class, "TFNaga");
 			NagaCourtyardPieces.registerPieces();
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentNagaCourtyardMain(NAGA_COURTYARD, world, rand, 0, x, y, z);
+				}
+			};
 		}
 	},
 	LICH_TOWER ( 1, "lich_tower", new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
@@ -145,6 +205,16 @@ public enum TFFeature {
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title", new NBTTagString("Notes on a Pointy Tower"));
 		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFTowerMain(LICH_TOWER, world, rand, 0, x, y, z);
+				}
+			};
+		}
 	},
 	ICE_TOWER ( 2, "ice_tower", new ResourceLocation( TwilightForestMod.ID, "progress_yeti" )) {
 		{
@@ -165,6 +235,16 @@ public enum TFFeature {
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title", new NBTTagString("Notes on Auroral Fortification"));
 		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFIceTowerMain(ICE_TOWER, world, rand, 0, x, y, z);
+				}
+			};
+		}
 	},
 	QUEST_ISLAND ( 1, "quest_island" ) { { this.disableStructure(); } },
 	QUEST_GROVE  ( 1, "quest_grove"  ) {
@@ -172,6 +252,16 @@ public enum TFFeature {
 			this.enableTerrainAlterations();
 
 			MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFQuestGrove(QUEST_GROVE, world, rand, 0, x, y, z);
+				}
+			};
 		}
 	},
 	DRUID_GROVE    ( 1, "druid_grove"                                                                   ) { { this.disableStructure(); } },
@@ -193,6 +283,16 @@ public enum TFFeature {
 			book.setTagInfo("pages", bookPages);
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title", new NBTTagString("Notes on the Fire Swamp"));
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFHydraLair(HYDRA_LAIR, world, rand, 0, x, y, z);
+				}
+			};
 		}
 	},
 	LABYRINTH ( 3, "labyrinth", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
@@ -223,6 +323,16 @@ public enum TFFeature {
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title", new NBTTagString("Notes on a Swampy Labyrinth"));
 		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFMazeRuins(LABYRINTH, world, rand, 0, x, y, z);
+				}
+			};
+		}
 	},
 	DARK_TOWER ( 1, "dark_tower", new ResourceLocation(TwilightForestMod.ID, "progress_knights" )) {
 		{
@@ -251,6 +361,16 @@ public enum TFFeature {
 			book.setTagInfo("pages", bookPages);
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title", new NBTTagString("Notes on a Wooden Tower"));
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFDarkTowerMain(DARK_TOWER, world, rand, 0, x, y - 1, z);
+				}
+			};
 		}
 	},
 	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", new ResourceLocation( TwilightForestMod.ID, "progress_trophy_pedestal" )) {
@@ -281,6 +401,16 @@ public enum TFFeature {
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title", new NBTTagString("Notes on a Stronghold"));
 		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFStrongholdEntrance(KNIGHT_STRONGHOLD, world, rand, 0, x, y, z);
+				}
+			};
+		}
 	},
 	WORLD_TREE ( 3, "world_tree"                                                               ) { { this.disableStructure(); } },
 	YETI_CAVE  ( 2, "yeti_lairs", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
@@ -301,6 +431,16 @@ public enum TFFeature {
 			book.setTagInfo("pages" , bookPages);
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title" , new NBTTagString("Notes on an Icy Cave"));
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFYetiCave(YETI_CAVE, world, rand, 0, x, y, z);
+				}
+			};
 		}
 	},
 	// TODO split cloud giants from this
@@ -329,6 +469,16 @@ public enum TFFeature {
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
 			book.setTagInfo("title", new NBTTagString("Notes on an the Highlands"));
 		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFTrollCaveMain(TROLL_CAVE, world, rand, 0, x, y, z);
+				}
+			};
+		}
 	},
 	FINAL_CASTLE ( 3, "final_castle", new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
 		{
@@ -349,10 +499,30 @@ public enum TFFeature {
 					// forge
 					.addMonster(3, EntityBlaze.class, 10, 1, 1);
 		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFFinalCastleMain(FINAL_CASTLE, world, rand, 0, x, y, z);
+				}
+			};
+		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower" ) {
 		{
 			TFMushroomTowerPieces.registerPieces();
+		}
+
+		@Override
+		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
+				@Override
+				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+					return new ComponentTFMushroomTowerMain(MUSHROOM_TOWER, world, rand, 0, x, y, z);
+				}
+			};
 		}
 	};
 
