@@ -12,6 +12,8 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.structures.StructureTFComponentTemplate;
+import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
+import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
@@ -35,6 +37,8 @@ public abstract class StructureStartTFAbstract extends StructureStart {
         int z = (chunkZ << 4) + 8;
         int y = TFWorld.SEALEVEL + 1; //TODO: maybe a biome-specific altitude for some of them?
 
+        this.isConquered = false;
+
         StructureComponent firstComponent = makeFirstComponent(world, rand, x, y, z);
         if (firstComponent != null) {
             components.add(firstComponent);
@@ -42,6 +46,9 @@ public abstract class StructureStartTFAbstract extends StructureStart {
         }
 
         updateBoundingBox();
+
+        if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain)
+            moveToAvgGroundLevel(world, x, z);
 
         setupComponents(world);
     }

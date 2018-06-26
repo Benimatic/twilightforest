@@ -3,6 +3,7 @@ package twilightforest;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
@@ -27,7 +28,9 @@ import twilightforest.entity.passive.*;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.structures.start.StructureTFMajorFeatureCluster;
+import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
+import twilightforest.structures.hollowtree.TFHollowTreePieces;
+import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;
 import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
@@ -87,7 +90,10 @@ public class TwilightForestMod {
 
 		// just call this so that we register structure IDs correctly
 		LOGGER.debug("Max size of any structure is " + TFFeature.getMaxSize());
-		new StructureTFMajorFeatureCluster();
+
+		MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHollowTree");
+		MapGenStructureIO.registerStructure(StructureStartNothing.class, "TFFeature");
+		TFHollowTreePieces.registerPieces();
 
 		compat = TFConfig.doCompat;
 
