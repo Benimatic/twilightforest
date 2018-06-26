@@ -13,7 +13,7 @@ public class StructureStartNothing extends StructureStartTFAbstract {
     }
 
     @Override
-    protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
+    protected StructureComponent makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
         return null;
     }
 

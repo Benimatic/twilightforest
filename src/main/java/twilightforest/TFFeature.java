@@ -48,8 +48,7 @@ import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
 import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
-import twilightforest.structures.start.StructureStartNothing;
-import twilightforest.structures.start.StructureStartTFAbstract;
+import twilightforest.structures.start.*;
 import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
@@ -71,6 +70,7 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
+			MapGenStructureIO.registerStructure(StructureStartHollowHill.class, "TFHill");
 			MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
 
 			this.addMonster(EntitySpider.class, 10, 4, 4)
@@ -82,19 +82,12 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFHollowHill(SMALL_HILL, world, rand, 0, 1, x, y, z);
-				}
-			};
+			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	MEDIUM_HILL ( 2, "medium_hollow_hill" ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
-
-			//MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
 
 			this.addMonster(EntityTFRedcap.class, 10, 4, 4)
 					.addMonster(EntityTFRedcapSapper.class, 1, 1, 4)
@@ -110,19 +103,12 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFHollowHill(MEDIUM_HILL, world, rand, 0, 2, x, y, z);
-				}
-			};
+			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	LARGE_HILL ( 3, "large_hollow_hill" ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
-
-			//MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
 
 			this.addMonster(EntityTFRedcap.class, 10, 4, 4)
 					.addMonster(EntityTFRedcapSapper.class, 2, 1, 4)
@@ -139,29 +125,20 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFHollowHill(LARGE_HILL, world, rand, 0, 3, x, y, z);
-				}
-			};
+			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze" ) {
 		{
 			this.enableTerrainAlterations();
 
+			MapGenStructureIO.registerStructure(StructureStartHedgeMaze.class, "TFHedge");
 			MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
 		}
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFHedgeMaze(HEDGE_MAZE, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartHedgeMaze(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard" ) {
@@ -174,12 +151,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentNagaCourtyardMain(NAGA_COURTYARD, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartCourtyard(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	LICH_TOWER ( 1, "lich_tower", new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
@@ -208,12 +180,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFTowerMain(LICH_TOWER, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartLichTower(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	ICE_TOWER ( 2, "ice_tower", new ResourceLocation( TwilightForestMod.ID, "progress_yeti" )) {
@@ -238,12 +205,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFIceTowerMain(ICE_TOWER, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartAuroraPalace(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	QUEST_ISLAND ( 1, "quest_island" ) { { this.disableStructure(); } },
@@ -251,17 +213,13 @@ public enum TFFeature {
 		{
 			this.enableTerrainAlterations();
 
+			MapGenStructureIO.registerStructure(StructureStartQuestGrove.class, "TFQuest1");
 			MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
 		}
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFQuestGrove(QUEST_GROVE, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartQuestGrove(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	DRUID_GROVE    ( 1, "druid_grove"                                                                   ) { { this.disableStructure(); } },
@@ -270,6 +228,7 @@ public enum TFFeature {
 		{
 			this.enableTerrainAlterations();
 
+			MapGenStructureIO.registerStructure(StructureStartHydraLair.class, "TFHydra");
 			MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
 		}
 
@@ -287,12 +246,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFHydraLair(HYDRA_LAIR, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartHydraLair(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	LABYRINTH ( 3, "labyrinth", new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
@@ -326,12 +280,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFMazeRuins(LABYRINTH, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartLabyrinth(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	DARK_TOWER ( 1, "dark_tower", new ResourceLocation(TwilightForestMod.ID, "progress_knights" )) {
@@ -365,12 +314,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFDarkTowerMain(DARK_TOWER, world, rand, 0, x, y - 1, z);
-				}
-			};
+			return new StructureStartDarkTower(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", new ResourceLocation( TwilightForestMod.ID, "progress_trophy_pedestal" )) {
@@ -404,12 +348,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFStrongholdEntrance(KNIGHT_STRONGHOLD, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartKnightStronghold(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	WORLD_TREE ( 3, "world_tree"                                                               ) { { this.disableStructure(); } },
@@ -417,6 +356,7 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
+			MapGenStructureIO.registerStructure(StructureStartYetiCave.class, "TFYeti");
 			MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 
 			this.addMonster(EntityTFYeti.class, 10, 4, 4);
@@ -435,12 +375,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFYetiCave(YETI_CAVE, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartYetiCave(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	// TODO split cloud giants from this
@@ -472,12 +407,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFTrollCaveMain(TROLL_CAVE, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	FINAL_CASTLE ( 3, "final_castle", new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
@@ -502,12 +432,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFFinalCastleMain(FINAL_CASTLE, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartFinalCastle(world, this, rand, chunkX, chunkZ);
 		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower" ) {
@@ -517,12 +442,7 @@ public enum TFFeature {
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTFAbstract(world, this, rand, chunkX, chunkZ) {
-				@Override
-				protected StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z) {
-					return new ComponentTFMushroomTowerMain(MUSHROOM_TOWER, world, rand, 0, x, y, z);
-				}
-			};
+			return new StructureStartMushroomTower(world, this, rand, chunkX, chunkZ);
 		}
 	};
 
@@ -910,8 +830,7 @@ public enum TFFeature {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					if (getFeatureDirectlyAt(x + cx, z + cz, world).size == rad) {
-						int[] center = {x * 16 + 8, z * 16 + 8};
-						return center;
+						return new int[]{x * 16 + 8, z * 16 + 8};
 					}
 				}
 			}
@@ -928,12 +847,9 @@ public enum TFFeature {
 	 * Maybe in the future we'll have to actually search for a feature chunk nearby, but for now this will work.
 	 */
 	public static BlockPos getNearestCenterXYZ(int cx, int cz, World world) {
-		int chunkX = cx;
-		int chunkZ = cz;
-
 		// generate random number for the whole biome area
-		int regionX = (chunkX + 8) >> 4;
-		int regionZ = (chunkZ + 8) >> 4;
+		int regionX = (cx + 8) >> 4;
+		int regionZ = (cz + 8) >> 4;
 
 		long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
 		seed = seed * seed * 42317861L + seed * 7L;

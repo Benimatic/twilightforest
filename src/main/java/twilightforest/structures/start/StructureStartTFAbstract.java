@@ -39,7 +39,7 @@ public abstract class StructureStartTFAbstract extends StructureStart {
 
         this.isConquered = false;
 
-        StructureComponent firstComponent = makeFirstComponent(world, rand, x, y, z);
+        StructureComponent firstComponent = makeFirstComponent(world, feature, rand, x, y, z);
         if (firstComponent != null) {
             components.add(firstComponent);
             firstComponent.buildComponent(firstComponent, components, rand);
@@ -53,7 +53,7 @@ public abstract class StructureStartTFAbstract extends StructureStart {
         setupComponents(world);
     }
 
-    protected abstract StructureComponent makeFirstComponent(World world, Random rand, int x, int y, int z);
+    protected abstract StructureComponent makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z);
 
     /**
      * Move the whole structure up or down
