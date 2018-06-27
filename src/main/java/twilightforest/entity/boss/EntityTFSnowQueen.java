@@ -243,9 +243,9 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 
 			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getNearestFeature(dx, dz, world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.ICE_TOWER) {
+				if (nearbyFeature == TFFeature.iceTower) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}
