@@ -454,11 +454,7 @@ public enum TFFeature {
 
 	private long lastSpawnedHintMonsterTime;
 
-	private static final int maxSize;
-
-	static {
-		maxSize = Arrays.stream(values()).mapToInt(v -> v.size).max().orElse(0);
-	}
+	private static final int maxSize = Arrays.stream(values()).mapToInt(v -> v.size).max().orElse(0);
 
 	private static class NoU {
 		private static final MapGenTFMajorFeature NOTHING_GENERATOR = new MapGenTFMajorFeature( NOTHING );
