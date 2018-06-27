@@ -48,6 +48,7 @@ import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -453,8 +454,13 @@ public enum TFFeature {
 
 	private long lastSpawnedHintMonsterTime;
 
+	private static final int maxSize;
+
+	static {
+		maxSize = Arrays.stream(values()).mapToInt(v -> v.size).max().orElse(0);
+	}
+
 	private static class NoU {
-		private static int maxSize = 0;
 		private static final MapGenTFMajorFeature NOTHING_GENERATOR = new MapGenTFMajorFeature( NOTHING );
 	}
 
@@ -471,15 +477,13 @@ public enum TFFeature {
 
 		ambientCreatureList.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
 
-		NoU.maxSize = Math.max(NoU.maxSize, parSize);
-
 		this.requiredAdvancements = requiredAdvancements;
 
 		shouldHaveFeatureGenerator = featureGenerator;
 	}
 
 	public static int getMaxSize() {
-		return NoU.maxSize;
+		return maxSize;
 	}
 
 	public MapGenTFMajorFeature getFeatureGenerator() {
@@ -711,7 +715,7 @@ public enum TFFeature {
 	 * @return The feature nearest to the specified chunk coordinates
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, World world) {
-		for (int rad = 1; rad <= NoU.maxSize; rad++) {
+		for (int rad = 1; rad <= maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					TFFeature directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
@@ -813,7 +817,7 @@ public enum TFFeature {
 	 * If we're near a hollow hill, this returns relative block coordinates indicating the center of that hill relative to the current chunk block coordinate system.
 	 */
 	public static int[] getNearestCenter(int cx, int cz, World world) {
-		for (int rad = 1; rad <= NoU.maxSize; rad++) {
+		for (int rad = 1; rad <= maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					if (getFeatureDirectlyAt(x + cx, z + cz, world).size == rad) {
