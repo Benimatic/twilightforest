@@ -601,9 +601,9 @@ public enum TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
+	@SuppressWarnings("ConstantConditions")
 	public static TFFeature generateFeature(int chunkX, int chunkZ, World world) {
 		// FIXME Remove block comment start-marker to enable debug
-		// noinspection ConstantConditions
 		/*if (true) {
 			return NAGA_COURTYARD;
 		}//*/
@@ -794,6 +794,17 @@ public enum TFFeature {
 		//just round to the nearest multiple of 16 chunks?
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
+
+		return TFFeature.generateFeature(featureX, featureZ, world);
+	}
+
+	/**
+	 * @return The feature in the chunk "region"
+	 */
+	public static TFFeature getFeatureForRegionPos(int posX, int posZ, World world) {
+		//just round to the nearest multiple of 16 chunks?
+		int featureX = Math.round((posX >> 4) / 16F) * 16;
+		int featureZ = Math.round((posZ >> 4) / 16F) * 16;
 
 		return TFFeature.generateFeature(featureX, featureZ, world);
 	}

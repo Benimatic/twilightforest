@@ -21,6 +21,7 @@ import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -123,6 +124,10 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
 				}
+				//else if (nearFeature != TFFeature.NOTHING) {
+				//	// hedge mazes, naga arena
+				//	flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
+				//}
 			}
 		}
 
@@ -426,13 +431,13 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precisely in a feature?
-		TFFeature nearestFeature = TFFeature.getFeatureForRegion(pos.getX() >> 4, pos.getZ() >> 4, world);
+		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
 		if (nearestFeature != TFFeature.NOTHING) {
 			// if the feature is already conquered, no spawns
-			//if (this.isStructureConquered(pos)) {
-			//	return null;
-			//}
+			if (this.isStructureConquered(pos)) {
+				return Collections.emptyList();
+			}
 
 			// check the precise coords.
 			int spawnListIndex = nearestFeature.getFeatureGenerator().getSpawnListIndexAt(pos);
@@ -463,35 +468,35 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	}
 
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().setStructureConquered(mapX, mapY, mapZ, flag);
+		TFFeature.getFeatureForRegionPos(mapX, mapZ, world).getFeatureGenerator().setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureLocked(pos, lockIndex);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureLocked(pos, lockIndex);
 	}
 
 	public boolean isBlockInStructureBB(BlockPos pos) {
-		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isInsideStructure(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isInsideStructure(pos);
 	}
 
 	public StructureBoundingBox getSBBAt(BlockPos pos) {
-		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().getSBBAt(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().getSBBAt(pos);
 	}
 
 	public boolean isBlockProtected(BlockPos pos) {
-		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isBlockProtectedAt(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isBlockProtectedAt(pos);
 	}
 
 	public boolean isStructureConquered(BlockPos pos) {
-		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureConquered(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureConquered(pos);
 	}
 
 	public boolean isBlockInFullStructure(int x, int z) {
-		return TFFeature.getFeatureAt(x, z, world).getFeatureGenerator().isBlockInFullStructure(x, z);
+		return TFFeature.getFeatureForRegionPos(x, z, world).getFeatureGenerator().isBlockInFullStructure(x, z);
 	}
 
 	public boolean isBlockNearFullStructure(int x, int z, int range) {
-		return TFFeature.getFeatureAt(x, z, world).getFeatureGenerator().isBlockNearFullStructure(x, z, range);
+		return TFFeature.getFeatureForRegionPos(x, z, world).getFeatureGenerator().isBlockNearFullStructure(x, z, range);
 	}
 
 	//public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
@@ -499,16 +504,18 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	//}
 
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		return TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().getFullSBBNear(mapX, mapZ, range);
+		return TFFeature.getFeatureForRegionPos(mapX, mapZ, world).getFeatureGenerator().getFullSBBNear(mapX, mapZ, range);
 	}
 
 	public TFFeature getFeatureAt(BlockPos pos) {
-		return TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world).getFeatureGenerator().getFeatureAt(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().getFeatureAt(pos);
 	}
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {
-		TFFeature.getFeatureDirectlyAt(x, z, chunk.getWorld()).getFeatureGenerator().generate(world, x, z, null);
+		TFFeature feature = TFFeature.getFeatureForRegion(x, z, chunk.getWorld());
+		if (feature != TFFeature.NOTHING)
+			feature.getFeatureGenerator().generate(world, x, z, null);
 	}
 
 	@Override
