@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import java.util.Map;
 
 public class TFDataFixers {
-    public static final int DATA_FIXER_VERSION = 2;
+    public static final int DATA_FIXER_VERSION = 1;
 
     public static void init() {
         ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(TwilightForestMod.ID, DATA_FIXER_VERSION);
@@ -115,7 +115,7 @@ public class TFDataFixers {
 
         @Override
         public int getFixVersion() {
-            return 2;
+            return 1;
         }
 
         // Basically we just need to shove the structure ID from the `FeatureID` key to the regular `id`.
