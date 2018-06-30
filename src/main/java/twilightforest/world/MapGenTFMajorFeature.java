@@ -76,7 +76,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 
                 for (StructureComponent component : start.getComponents()) {
-                    if (component != null && component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos)) {
+                    if (component.getBoundingBox().isVecInside(pos)) {
                         if (component instanceof StructureTFComponent) {
                             StructureTFComponent tfComponent = (StructureTFComponent) component;
 
@@ -97,6 +97,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     /**
      * Get the structure bounding box, if any, at the specified position
      */
+    @Nullable
     public StructureBoundingBox getSBBAt(BlockPos pos) {
         StructureBoundingBox boxFound = null;
 

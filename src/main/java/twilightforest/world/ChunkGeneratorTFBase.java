@@ -479,6 +479,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isInsideStructure(pos);
 	}
 
+	@Nullable
 	public StructureBoundingBox getSBBAt(BlockPos pos) {
 		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().getSBBAt(pos);
 	}
@@ -503,6 +504,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	//	TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().getFullSBBAt(mapX, mapZ);
 	//}
 
+	@Nullable
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
 		return TFFeature.getFeatureForRegionPos(mapX, mapZ, world).getFeatureGenerator().getFullSBBNear(mapX, mapZ, range);
 	}
@@ -513,9 +515,11 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {
-		TFFeature feature = TFFeature.getFeatureForRegion(x, z, chunk.getWorld());
-		if (feature != TFFeature.NOTHING)
-			feature.getFeatureGenerator().generate(world, x, z, null);
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING) {
+				feature.getFeatureGenerator().generate(world, x, z, null);
+			}
+		}
 	}
 
 	@Override
