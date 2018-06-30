@@ -45,7 +45,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
-        return TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world).isStructureEnabled;
+        return FEATURE.isStructureEnabled && TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world) == FEATURE;
     }
 
     @Override
@@ -221,6 +221,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     /**
      * Get full structure bounding box at the specified x, z coordinates.
      */
+    @Nullable
     public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
@@ -230,6 +231,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         return null;
     }
 
+    @Nullable
     public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
         StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
         for (StructureStart start : this.structureMap.values()) {

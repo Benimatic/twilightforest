@@ -85,9 +85,14 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		addGlaciers(x, z, primer, biomesForGeneration);
 		deformTerrainForFeature(x, z, primer);
 		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
+
 		caveGenerator.generate(world, x, z, primer);
 		ravineGenerator.generate(world, x, z, primer);
-		TFFeature.getFeatureDirectlyAt(x, z, world).getFeatureGenerator().generate(world, x, z, primer);
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING) {
+				feature.getFeatureGenerator().generate(world, x, z, primer);
+			}
+		}
 		hollowTreeGenerator.generate(world, x, z, primer);
 
 		return makeChunk(x, z, primer);
@@ -423,8 +428,15 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
-		boolean disableFeatures = TFFeature.getFeatureDirectlyAt(x, z, world).getFeatureGenerator().generateStructure(world, rand, chunkpos)
-				|| !TFFeature.getNearestFeature(x, z, world).areChunkDecorationsEnabled;
+		boolean disableFeatures = false;
+
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING && feature.getFeatureGenerator().generateStructure(world, rand, chunkpos)) {
+				disableFeatures = true;
+			}
+		}
+
+		disableFeatures = disableFeatures || !TFFeature.getNearestFeature(x, z, world).areChunkDecorationsEnabled;
 
 		hollowTreeGenerator.generateStructure(world, rand, chunkpos);
 

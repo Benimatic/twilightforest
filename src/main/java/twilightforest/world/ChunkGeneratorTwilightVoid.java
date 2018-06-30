@@ -27,9 +27,11 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		deformTerrainForFeature(x, z, primer);
 		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
-		TFFeature feature = TFFeature.getFeatureDirectlyAt(x, z, world);
-		if (feature != TFFeature.NOTHING)
-			feature.getFeatureGenerator().generate(world, x, z, primer);
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING) {
+				feature.getFeatureGenerator().generate(world, x, z, primer);
+			}
+		}
 
 		return makeChunk(x, z, primer);
 	}
@@ -51,7 +53,11 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
-		TFFeature.getFeatureForRegion(x, z, world).getFeatureGenerator().generateStructure(world, rand, chunkpos);
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING) {
+				feature.getFeatureGenerator().generateStructure(world, rand, chunkpos);
+			}
+		}
 
 		blockpos = blockpos.add(8, 0, 8);
 
