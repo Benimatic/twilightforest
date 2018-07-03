@@ -247,6 +247,7 @@ tile.TFDeadrock.surface.name=Weathered Deadrock
 tile.TFDeadrock.cracked.name=Cracked Deadrock
 tile.TFDeadrock.solid.name=Deadrock
 tile.DarkLeaves.name=Darkwood Leaves
+tile.AuroralizedGlass.name=Auroralized Glass
 tile.AuroraPillar.name=Aurora Pillar
 tile.AuroraSlab.name=Aurora Slab
 tile.TrollSteinn.name=Trollsteinn
