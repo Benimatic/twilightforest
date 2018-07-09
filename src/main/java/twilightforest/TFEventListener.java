@@ -215,11 +215,15 @@ public class TFEventListener {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onDeath(LivingDeathEvent evt) {
+
 		EntityLivingBase living = evt.getEntityLiving();
-		if (charmOfLife(living))
+		if (living.world.isRemote) return;
+
+		if (charmOfLife(living)) {
 			evt.setCanceled(true);
-		else
+		} else {
 			charmOfKeeping(living);
+		}
 	}
 
 	private static boolean charmOfLife(EntityLivingBase living) {
@@ -274,10 +278,6 @@ public class TFEventListener {
 			if (tier1) {
 				keepAllArmor(player, keepInventory);
 				keepOffHand(player, keepInventory);
-				if (!tier2 && !player.inventory.getCurrentItem().isEmpty()) {
-					keepInventory.mainInventory.set(player.inventory.currentItem, player.inventory.mainInventory.get(player.inventory.currentItem).copy());
-					player.inventory.mainInventory.set(player.inventory.currentItem, ItemStack.EMPTY);
-				}
 			}
 
 			if (tier3) {
@@ -285,11 +285,22 @@ public class TFEventListener {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
+				keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_3));
+
 			} else if (tier2) {
 				for (int i = 0; i < 9; i++) {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
+				keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_2));
+
+			} else if (tier1) {
+				int i = player.inventory.currentItem;
+				if (InventoryPlayer.isHotbar(i)) {
+					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+				}
+				keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_1));
 			}
 
 			// always keep tower keys
@@ -341,6 +352,9 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerRespawnEvent event) {
+
+		if (event.isEndConquered()) return;
+
 		EntityPlayer player = event.player;
 		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
@@ -390,7 +404,7 @@ public class TFEventListener {
 				effect2.offset = (float) Math.PI;
 				player.world.spawnEntity(effect2);
 
-				player.world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1.5F, 1.0F, true);
+				player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, player.getSoundCategory(), 1.5F, 1.0F);
 			}
 		}
 
