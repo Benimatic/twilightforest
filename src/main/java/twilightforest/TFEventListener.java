@@ -425,17 +425,15 @@ public class TFEventListener {
 		EntityPlayer player = event.player;
 		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
-
+			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player {} but they logged out! Items are being dropped.", player.getName());
 			// set player to the player logging out
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
-
 		if (TFCompat.BAUBLES.isActivated()) {
 			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
 			if (baubles != null) {
-				TwilightForestMod.LOGGER.warn("Mod was keeping bauble items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
+				TwilightForestMod.LOGGER.warn("Mod was keeping bauble items in reserve for player {} but they logged out! Items are being dropped.", player.getName());
 				for (ItemStack itemStack : baubles) {
 					if (!itemStack.isEmpty()) {
 						player.dropItem(itemStack, true, false);
