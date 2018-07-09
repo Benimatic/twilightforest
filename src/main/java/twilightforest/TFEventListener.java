@@ -214,19 +214,11 @@ public class TFEventListener {
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onDeath(LivingDeathEvent evt) {
+	public static void charmOfLife(LivingDeathEvent event) {
 
-		EntityLivingBase living = evt.getEntityLiving();
+		EntityLivingBase living = event.getEntityLiving();
 		if (living.world.isRemote) return;
 
-		if (charmOfLife(living)) {
-			evt.setCanceled(true);
-		} else {
-			charmOfKeeping(living);
-		}
-	}
-
-	private static boolean charmOfLife(EntityLivingBase living) {
 		boolean charm1 = false;
 		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> s.getItem() == TFItems.charm_of_life_2, 1);
 		if (!charm2) {
@@ -257,12 +249,17 @@ public class TFEventListener {
 			living.world.spawnEntity(effect2);
 
 			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
-			return true;
+
+			event.setCanceled(true);
 		}
-		return false;
 	}
 
-	private static void charmOfKeeping(EntityLivingBase living) {
+	@SubscribeEvent(priority = EventPriority.HIGH)
+	public static void charmOfKeeping(LivingDeathEvent event) {
+
+		EntityLivingBase living = event.getEntityLiving();
+		if (living.world.isRemote) return;
+
 		if (living instanceof EntityPlayer && !living.world.getGameRules().getBoolean("keepInventory")) {
 			EntityPlayer player = (EntityPlayer) living;
 
