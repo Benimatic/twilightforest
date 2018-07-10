@@ -263,6 +263,9 @@ public class TFEventListener {
 		if (living instanceof EntityPlayer && !living.world.getGameRules().getBoolean("keepInventory")) {
 			EntityPlayer player = (EntityPlayer) living;
 
+			// drop any existing held items, just in case
+			dropStoredItems(player);
+
 			// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
 			boolean tier3 =          TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_3, 1);
 			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_2, 1);
@@ -310,9 +313,9 @@ public class TFEventListener {
 			}
 
 			if (tier1 && TFCompat.BAUBLES.isActivated()) {
-				NonNullList<ItemStack> items = NonNullList.withSize(Baubles.getSlotAmount(player), ItemStack.EMPTY);
-				Baubles.keepBaubles(player, items);
-				playerKeepsMapBaubles.put(playerUUID, items);
+				NonNullList<ItemStack> baubles = NonNullList.withSize(Baubles.getSlotAmount(player), ItemStack.EMPTY);
+				Baubles.keepBaubles(player, baubles);
+				playerKeepsMapBaubles.put(playerUUID, baubles);
 			}
 
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) { // TODO also consider Phantom tools, when those get added
@@ -419,18 +422,20 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void onPlayerLogout(PlayerLoggedOutEvent event) {
-		EntityPlayer player = event.player;
+		dropStoredItems(event.player);
+	}
+
+	private static void dropStoredItems(EntityPlayer player) {
 		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player {} but they logged out! Items are being dropped.", player.getName());
-			// set player to the player logging out
+			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {}", player.getName());
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
 		if (TFCompat.BAUBLES.isActivated()) {
 			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
 			if (baubles != null) {
-				TwilightForestMod.LOGGER.warn("Mod was keeping bauble items in reserve for player {} but they logged out! Items are being dropped.", player.getName());
+				TwilightForestMod.LOGGER.warn("Dropping baubles previously held in reserve for player {}", player.getName());
 				for (ItemStack itemStack : baubles) {
 					if (!itemStack.isEmpty()) {
 						player.dropItem(itemStack, true, false);
