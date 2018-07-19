@@ -67,10 +67,10 @@ public class TFTickHandler {
 		}
 
 		// check for advancement get.
-		if (event.phase == TickEvent.Phase.END && player.ticksExisted % 50 == 0
-				&& player instanceof EntityPlayerMP) {
-			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
-		}
+		//if (event.phase == TickEvent.Phase.END && player.ticksExisted % 50 == 0
+		//		&& player instanceof EntityPlayerMP) {
+		//	TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
+		//}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
