@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.enums.Leaves3Variant;
 import twilightforest.enums.LeavesVariant;
 import twilightforest.enums.MagicWoodVariant;
@@ -300,6 +301,7 @@ public final class ColorHandler {
 
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			itemColors.registerItemColorHandler(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
+			itemColors.registerItemColorHandler((stack, tintIndex) -> blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).rarityColor), twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag);
 		}
 	}
 

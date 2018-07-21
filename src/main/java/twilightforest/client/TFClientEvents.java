@@ -74,7 +74,7 @@ public class TFClientEvents {
 		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), twilightforest.compat.ie.IEShaderRegister.PROCESSED_MINECART_LAYER     , true, EASY_GRAYSCALING_MAP ));
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), twilightforest.compat.ie.IEShaderRegister.PROCESSED_BALLOON_LAYER      , true, EASY_GRAYSCALING_MAP ));
 
-			final String[] types = new String[]{ "1_0", "1_2", "1_4", "1_5", "1_6" };
+			final String[] types = new String[]{ "1_0", "1_2", "1_4", "1_5", "1_6", "circuit" };
 
 			for (twilightforest.compat.ie.IEShaderRegister.CaseType caseType: twilightforest.compat.ie.IEShaderRegister.CaseType.everythingButMinecart())
 				for (String type : types)

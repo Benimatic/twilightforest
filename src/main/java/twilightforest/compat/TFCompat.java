@@ -21,6 +21,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.compat.ie.ItemTFShader;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
@@ -88,6 +89,7 @@ public enum TFCompat {
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
             items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+            items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setUnlocalizedName("tfEngineeringShaderBag"));
 
             new IEShaderRegister(); // Calling to initialize it all
         }
