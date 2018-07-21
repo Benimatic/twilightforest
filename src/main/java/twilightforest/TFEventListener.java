@@ -718,6 +718,7 @@ public class TFEventListener {
 				EntityLivingBase entityBlocking = (EntityLivingBase) entity;
 
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					@Override
 					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
 				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksArrow) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
@@ -746,6 +747,7 @@ public class TFEventListener {
 				EntityLivingBase entityBlocking = (EntityLivingBase) entity;
 
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					@Override
 					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
 				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksFireball) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
@@ -788,6 +790,7 @@ public class TFEventListener {
 				EntityLivingBase entityBlocking = (EntityLivingBase) entity;
 
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					@Override
 					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
 				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksThrowable) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
