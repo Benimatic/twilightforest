@@ -11,8 +11,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
-import net.minecraftforge.fml.common.versioning.VersionRange;
 import org.apache.commons.lang3.tuple.Pair;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;

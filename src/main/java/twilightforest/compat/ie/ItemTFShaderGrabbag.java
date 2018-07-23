@@ -2,6 +2,7 @@ package twilightforest.compat.ie;
 
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -23,14 +25,36 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.model.item.ShaderGrabbagStackRenderer;
+import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
+    public ItemTFShaderGrabbag() {
+        this.setHasSubtypes(true);
+        this.setCreativeTab(TFItems.creativeTab);
+    }
+
     private static final String TAG_SHADER = "shader_rarity";
     public static final ItemTFShaderGrabbag shader_bag = new ItemTFShaderGrabbag();
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab == TFItems.creativeTab) {
+            for(int i = ShaderRegistry.sortedRarityMap.size() - 1; i >= 0; i--) {
+                ItemStack stack = new ItemStack(this, 1, 0);
+
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setString(TAG_SHADER, ShaderRegistry.sortedRarityMap.get(i).toString());
+
+                stack.setTagCompound(compound);
+
+                items.add(stack);
+            }
+        }
+    }
 
     @Override
     public EnumRarity getRarity(ItemStack stack) {

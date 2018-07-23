@@ -285,7 +285,6 @@ public final class ColorHandler {
 
 	@SubscribeEvent
 	public static void registerItemColors(ColorHandlerEvent.Item event) {
-
 		ItemColors itemColors = event.getItemColors();
 		BlockColors blockColors = event.getBlockColors();
 
@@ -301,7 +300,15 @@ public final class ColorHandler {
 
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			itemColors.registerItemColorHandler(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
-			itemColors.registerItemColorHandler((stack, tintIndex) -> blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).rarityColor), twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag);
+			itemColors.registerItemColorHandler((stack, tintIndex) -> {
+				int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).rarityColor);
+
+				float d = tintIndex + 1;
+
+				return (int) ((c >> 16 & 0xFF) / d) << 16
+						| (int) ((c >> 8 & 0xFF) / d) << 8
+						| (int) ((c & 0xFF) / d);
+			}, twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag);
 		}
 	}
 
