@@ -44,7 +44,8 @@ public final class ShaderHelper {
             towerDeviceShader,
             yellowCircuitShader,
             bloomShader,
-            starburstShader;
+            starburstShader,
+            outlineShader;
 
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (Minecraft.getMinecraft().player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
@@ -73,6 +74,8 @@ public final class ShaderHelper {
                 deleteShader(towerDeviceShader);
                 deleteShader(yellowCircuitShader);
                 //deleteShader(bloomShader);
+                deleteShader(starburstShader);
+                //deleteShader(outlineShader);
 
                 initShaderList();
             }));
@@ -99,6 +102,7 @@ public final class ShaderHelper {
         yellowCircuitShader    = createProgram("standard_texcoord2.vert", "pulsing_yellow.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
         starburstShader        = createProgram("standard_texcoord2.vert", "starburst.frag");
+        //outlineShader          = createProgram("outline.vert", "outline.frag");
     }
 
     public static void useShader(int shader, @Nullable IntConsumer callback) {

@@ -5,6 +5,7 @@ import blusunrize.immersiveengineering.api.shader.*;
 import blusunrize.immersiveengineering.client.ClientUtils;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.EnumRarity;
@@ -77,11 +78,11 @@ public class IEShaderRegister {
 
     private static final TriConsumer<IntConsumer, Boolean, Float> DEVICE_YELLOW_ENERGY_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
         if (pre) {
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+            GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             ShaderHelper.useShader(ShaderHelper.yellowCircuitShader, shaderCallback);
         } else {
             ShaderHelper.releaseShader();
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         }
     };
 
@@ -93,6 +94,29 @@ public class IEShaderRegister {
     private static final TriConsumer<IntConsumer, Boolean, Float> RAM_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
         ClientUtils.toggleLightmap(pre, true);
     };
+
+    //private static final TriConsumer<IntConsumer, Boolean, Float> OUTLINE_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
+    //    if (pre) {
+    //        GlStateManager.pushMatrix();
+    //    } else {
+    //        GlStateManager.popMatrix();
+    //    }
+    //    //if (pre) {
+    //    //    //GlStateManager.pushMatrix();
+    //    //    //GlStateManager.scale(1.05f, 1.05f, 1.05f);
+    //    //    GlStateManager.enableCull();
+    //    //    //GL11.glFrontFace(GL11.GL_CW);
+    //    //    GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
+    //    //    ShaderHelper.useShader(ShaderHelper.outlineShader, shaderCallback);
+    //    //} else {
+    //    //    ShaderHelper.releaseShader();
+    //    //    GlStateManager.cullFace(GlStateManager.CullFace.BACK);
+    //    //    //GL11.glFrontFace(GL11.GL_CCW);
+    //    //    GlStateManager.disableCull();
+    //    //    //GlStateManager.scale(0.8333f, 0.8333f, 0.8333f);
+    //    //    //GlStateManager.popMatrix();
+    //    //}
+    //};
 
     // m Mod
     // t CaseType
@@ -133,14 +157,14 @@ public class IEShaderRegister {
                 registerShaderCases      ( "Auroralized"         , ModType.TWILIGHTFOREST, "1_5"      , RARITY, 0xFF_00_FF_FF, 0xFF_00_FF_00, 0xFF_00_00_FF, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFFFFFFFF, AURORA_TRICONSUMER   , ShaderHelper.TIME_UNIFORM  )                                                               ).setInfo("Twilight Forest", "Aurora Palace"            , "aurora"             ),
 
                 registerShaderCases      ( "Ironwood"            , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_6B_61_61, 0xFF_5F_4D_40, 0xFF_5E_57_4B, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "streaks") ), 0xFF_79_7C_43 ), LAYER_PROVIDER                                                             ).setInfo("Twilight Forest", "Ironwood"                 , "ironwood"           ),
-                // TODO Colors
-                registerShaderCases      ( "Steeleaf"            , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                   ).setInfo("Twilight Forest", "Steeleaf"                 , "steeleaf"           ),
+                registerShaderCases      ( "Steeleaf"            , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_52_87_3A, 0xFF_1E_32_14, 0xFF_41_62_30, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.IMMERSIVEENGINEERING.provideTex(t, "1_4") ), 0xFF_41_62_30 ), (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "streaks") ), 0xFF_6D_A2_5E ), LAYER_PROVIDER ).setInfo("Twilight Forest", "Steeleaf"                 , "steeleaf"           ),
                 registerShaderCases      ( "Knightly"            , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_E7_FC_CD, 0xFF_4D_4C_4B, 0xFF_80_8C_72, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                   ).setInfo("Twilight Forest", "Knightly"                 , "knightly"           ),
                 registerShaderCases      ( "Fiery"               , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_19_13_13, 0xFF_FD_D4_5D, 0xFF_77_35_11, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                   ).setInfo("Twilight Forest", "Fiery"                    , "fiery"              ),
 
                 registerShaderCases      ( "Final Castle"        , ModType.TWILIGHTFOREST, "scales"   , RARITY, 0xFF_EC_EA_E6, 0xFF_C8_BB_BC, 0xFF_00_FF_FF, 0xFF_00_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                   ).setInfo("Twilight Forest", "Final Castle"             , "finalcastle"        ),
-                // TODO Throbbing effect & Colors
-                registerShaderCases      ( "Cube of Annihilation", ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                   ).setInfo("Twilight Forest", "Cube of Annilation"       , "cube_of_annilation" )
+                // TODO Throbbing effect
+                //registerShaderCases      ( "Cube of Annihilation", ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_00_00_03, 0xFF_14_00_40, 0xFF_00_00_03, 0xFF_14_00_40, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFF_14_00_40, OUTLINE_TRICONSUMER, ShaderHelper.TIME_UNIFORM )                                                             ).setInfo("Twilight Forest", "Cube of Annilation"       , "cube_of_annilation" )
+                registerShaderCases      ( "Cube of Annihilation", ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_00_00_03, 0xFF_14_00_40, 0xFF_00_00_03, 0xFF_14_00_40, (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation(m.provideTex(t, s)), 0xFF_14_00_40 )                                                                                                            ).setInfo("Twilight Forest", "Cube of Annilation"       , "cube_of_annilation" )
         );
 
         ImmutableList.Builder<ShaderRegistry.ShaderRegistryEntry> listBuilder = ImmutableList.builder();
