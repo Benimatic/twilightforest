@@ -417,10 +417,19 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		world.spawnEntity(minion);
 
 		for (int i = 0; i < 100; i++) {
-			double attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
-			double attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
-			double attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
-
+			double attemptX;
+			double attemptY;
+			double attemptZ;
+			if (hasHome()) {
+				BlockPos home = getHomePosition();
+				attemptX = home.getX() + rand.nextGaussian() * 7D;
+				attemptY = home.getY() + rand.nextGaussian() * 2D;
+				attemptZ = home.getZ() + rand.nextGaussian() * 7D;
+			} else {
+				attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
+				attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
+				attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
+			}
 			if (minion.attemptTeleport(attemptX, attemptY, attemptZ)) {
 				break;
 			}
