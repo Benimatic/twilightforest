@@ -26,6 +26,8 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.model.entity.ModelTFLich;
+import twilightforest.client.renderer.entity.RenderTFLich;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
@@ -125,13 +127,16 @@ public class TFClientEvents {
 			new AttributeModifier(UUID.fromString(PotionFrosted.MODIFIER_UUID), "doesntmatter", 0, 0);
 
 	/**
-	 * Do ice effect on slowed monsters
+	 * Render various effects such as an iced entity
 	 */
 	@SubscribeEvent
 	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
+		// Ice effect
 		if (event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(FROSTED_POTION_MODIFIER)) {
 			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
+		// Shields
+		renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 	}
 
 	/**
@@ -185,6 +190,26 @@ public class TFClientEvents {
 		}
 
 		GlStateManager.disableBlend();
+	}
+
+
+	private static final ModelTFLich model = new ModelTFLich(true);
+
+	private static void renderShields(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y, z);
+		GlStateManager.rotate(180, 1, 0, 0);
+		GlStateManager.translate(0, 0.5F - entity.getEyeHeight(), 0);
+		GlStateManager.enableBlend();
+		GlStateManager.disableCull();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RenderTFLich.LICH_TEXTURE);
+		float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+		model.setLivingAnimations(entity, 0F, 0F, partialTicks);
+		model.render(entity, 0F, 0F, 0F, 0F, 0F, 0.0625F);
+		GlStateManager.enableCull();
+		GlStateManager.disableBlend();
+		GlStateManager.popMatrix();
 	}
 
 	/**

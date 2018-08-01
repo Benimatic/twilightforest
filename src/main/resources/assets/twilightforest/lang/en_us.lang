@@ -41,7 +41,7 @@ advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
 advancement.twilight_kill_lich=Bring Out Your Dead
 advancement.twilight_kill_lich.desc=Slay the Lich at top of his tower and retrieve a Scepter to clear poisonous mosquitoes from the swamp, see through blinding darkness of the Dark Forest's curse, and resist the snow forest's chill.
 advancement.twilight_lich_scepters=By Our Powers Combined!
-advancement.twilight_lich_scepters.desc=Acquire all three scepters of power.
+advancement.twilight_lich_scepters.desc=Acquire all four scepters of power.
 
 # Swamp Progression
 advancement.twilight_progress_labyrinth=Mighty Stroganoff
@@ -345,6 +345,7 @@ item.legsNaga.name=Naga Scale Leggings
 item.scepterTwilight.name=Scepter of Twilight
 item.scepterLifeDrain.name=Scepter of Life Draining
 item.scepterZombie.name=Zombie Scepter
+item.scepterShield.name=Scepter of Fortification
 item.oreMeter.name=Ore Meter [WIP]
 item.magicMap.name=Magic Map
 item.mazeMap.name=Maze Map

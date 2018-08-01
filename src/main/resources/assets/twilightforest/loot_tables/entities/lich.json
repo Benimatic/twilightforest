@@ -15,6 +15,10 @@
         {
           "type": "item",
           "name": "twilightforest:twilight_scepter"
+        },
+        {
+          "type": "item",
+          "name": "twilightforest:shield_scepter"
         }
       ]
     },

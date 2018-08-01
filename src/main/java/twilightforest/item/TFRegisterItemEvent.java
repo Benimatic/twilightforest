@@ -37,6 +37,7 @@ public class TFRegisterItemEvent {
 		items.register("twilight_scepter", new ItemTFTwilightWand().setUnlocalizedName("scepterTwilight").setMaxStackSize(1));
 		items.register("lifedrain_scepter", new ItemTFScepterLifeDrain().setUnlocalizedName("scepterLifeDrain").setMaxStackSize(1));
 		items.register("zombie_scepter", new ItemTFZombieWand().setUnlocalizedName("scepterZombie").setMaxStackSize(1));
+		items.register("shield_scepter", new ItemTFShieldWand().setUnlocalizedName("scepterShield").setMaxStackSize(1));
 		//items.register("Wand of Pacification [NYI]", new ItemTF().setIconIndex(6).setUnlocalizedName("wandPacification").setMaxStackSize(1));
 		items.register("ore_meter", new ItemTFOreMeter().setUnlocalizedName("oreMeter").setMaxStackSize(1));
 		items.register("magic_map", new ItemTFMagicMap().setUnlocalizedName("magicMap").setMaxStackSize(1));

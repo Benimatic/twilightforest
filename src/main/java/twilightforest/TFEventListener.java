@@ -26,7 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
@@ -49,7 +48,11 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.*;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -58,12 +61,28 @@ import twilightforest.block.BlockTFCritter;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
+import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.compat.Baubles;
 import twilightforest.compat.TFCompat;
 import twilightforest.enchantment.TFEnchantment;
-import twilightforest.entity.*;
-import twilightforest.entity.boss.*;
+import twilightforest.entity.EntityIceArrow;
+import twilightforest.entity.EntitySeekerArrow;
+import twilightforest.entity.EntityTFCharmEffect;
+import twilightforest.entity.EntityTFIceSnowball;
+import twilightforest.entity.EntityTFMoonwormShot;
+import twilightforest.entity.EntityTFNatureBolt;
+import twilightforest.entity.EntityTFPinchBeetle;
+import twilightforest.entity.EntityTFSlimeProjectile;
+import twilightforest.entity.EntityTFTomeBolt;
+import twilightforest.entity.EntityTFTwilightWandBolt;
+import twilightforest.entity.EntityTFYeti;
+import twilightforest.entity.boss.EntityTFIceBomb;
+import twilightforest.entity.boss.EntityTFLichBolt;
+import twilightforest.entity.boss.EntityTFLichBomb;
+import twilightforest.entity.boss.EntityTFThrownWep;
+import twilightforest.entity.boss.EntityTFUrGhastFireball;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
@@ -74,7 +93,9 @@ import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * So much of the mod logic in this one class
@@ -452,6 +473,11 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static boolean livingUpdate(LivingUpdateEvent event) {
+		if (event.getEntityLiving().hasCapability(CapabilityList.SHIELDS, null)) {
+			IShieldCapability cap = event.getEntityLiving().getCapability(CapabilityList.SHIELDS, null);
+			if (cap != null)
+				cap.update();
+		}
 		if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().isSneaking() && isRidingUnfriendly(event.getEntityLiving())) {
 			event.getEntityLiving().setSneaking(false);
 		}
@@ -599,26 +625,34 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void livingAttack(LivingAttackEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
 		// area protection check
-		if (event.getEntityLiving() instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer)event.getSource().getTrueSource()).capabilities.isCreativeMode && TFWorld.getChunkGenerator(event.getEntityLiving().world) instanceof ChunkGeneratorTFBase && event.getEntityLiving().world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (living instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer) event.getSource().getTrueSource()).capabilities.isCreativeMode && TFWorld.getChunkGenerator(living.world) instanceof ChunkGeneratorTFBase && living.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
-			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(event.getEntityLiving().getEntityWorld());
+			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(living.getEntityWorld());
 
-			BlockPos pos = new BlockPos(event.getEntityLiving());
+			BlockPos pos = new BlockPos(living);
 
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos) && chunkProvider.isBlockProtected(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), event.getEntityLiving().world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), living.world);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements((EntityPlayer) event.getSource().getTrueSource())) {
 					event.setResult(Result.DENY);
 					event.setCanceled(true);
-					
-					
+
+
 					for (int i = 0; i < 20; i++) {
-						TwilightForestMod.proxy.spawnParticle(event.getEntityLiving().world, TFParticleType.PROTECTION, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, 0, 0, 0);
+						TwilightForestMod.proxy.spawnParticle(living.world, TFParticleType.PROTECTION, living.posX, living.posY, living.posZ, 0, 0, 0);
 					}
 				}
+			}
+		}
+		if (!living.world.isRemote && living.hasCapability(CapabilityList.SHIELDS, null) && !(event.getSource().damageType.equals("inWall") || event.getSource().damageType.equals("cramming") || event.getSource().damageType.equals("drown") || event.getSource().damageType.equals("starve") || event.getSource().damageType.equals("fall") || event.getSource().damageType.equals("flyIntoWall") || event.getSource().damageType.equals("outOfWorld") || event.getSource().damageType.equals("fallingBlock"))) {
+			IShieldCapability cap = living.getCapability(CapabilityList.SHIELDS, null);
+			if (cap != null && cap.shieldsLeft() > 0) {
+				cap.breakShield();
+				event.setCanceled(true);
 			}
 		}
 	}

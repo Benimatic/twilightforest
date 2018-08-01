@@ -5,6 +5,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +21,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.capabilities.shield.ShieldCapabilityHandler;
+import twilightforest.capabilities.shield.ShieldCapabilityStorage;
 import twilightforest.compat.TFCompat;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
@@ -76,6 +80,8 @@ public class TwilightForestMod {
 
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.preInit();
+
+		CapabilityManager.INSTANCE.register(IShieldCapability.class, new ShieldCapabilityStorage(), ShieldCapabilityHandler.class);
 
 		TFTreasure.init();
 
