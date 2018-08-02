@@ -2,9 +2,13 @@ package twilightforest.item;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.ItemSlab;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -159,7 +163,12 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.uncrafting_table);
 		items.registerSubItemBlock(TFBlocks.fire_jet);
 		items.registerSubItemBlock(TFBlocks.naga_stone);
-		items.registerSubItemBlock(TFBlocks.twilight_sapling);
+		items.register(new ItemBlockTFMeta(TFBlocks.twilight_sapling) {
+			@Override
+			public int getItemBurnTime(ItemStack itemStack) {
+				return 100;
+			}
+		}.setAppend(true));
 		items.register(new ItemBlockWearable(TFBlocks.moonworm));
 		items.registerSubItemBlock(TFBlocks.magic_log);
 		items.register(new ItemBlockTFLeaves(TFBlocks.magic_leaves));
