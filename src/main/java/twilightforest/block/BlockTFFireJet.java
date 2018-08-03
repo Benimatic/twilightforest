@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
@@ -33,6 +34,7 @@ import java.util.Random;
 public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	public static final PropertyEnum<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
+	private static final ImmutableList<FireJetVariant> ENCASED = ImmutableList.of(FireJetVariant.ENCASED_JET_IDLE, FireJetVariant.ENCASED_JET_FLAME, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_SMOKER_ON, FireJetVariant.ENCASED_JET_POPPING);
 
 	protected BlockTFFireJet() {
 		super(Material.ROCK);
@@ -84,6 +86,10 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 		}
 
 		return getMetaFromState(state);
+	}
+	@Override
+	public Material getMaterial(IBlockState state) {
+		return ENCASED.contains(state.getValue(VARIANT)) ? Material.WOOD : Material.ROCK;
 	}
 
 	@Override
