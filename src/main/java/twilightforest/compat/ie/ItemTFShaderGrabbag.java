@@ -137,14 +137,13 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
         ForgeHooksClient.registerTESRItemStack(this, 0, ShaderGrabbagStackRenderer.DummyTile.class);
     }
 
-    @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
+    // Register subscriber with IE, so if IE isn't installed, this shouldn't exist in bus... right?
+    @Mod.EventBusSubscriber(modid = "immersiveengineering", value = Side.CLIENT)
     private static final class ClientEventHandler {
-
         static ShaderGrabbagStackRenderer.BakedModel dummyModel;
 
         @SubscribeEvent
         public static void onModelBake(ModelBakeEvent event) {
-            System.out.println("wubba lubba dub dub");
             event.getModelRegistry().putObject(new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"), dummyModel);
         }
     }
