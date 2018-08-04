@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
 	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
-	private InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
+	public InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
 	private InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
 	public IInventory tinkerInput = new InventoryTFGoblinInput(this);
 	private InventoryCraftResult tinkerResult = new InventoryCraftResult();
@@ -43,6 +43,8 @@ public class ContainerTFUncrafting extends Container {
 	private final BlockPos pos;
 	private final EntityPlayer player;
 
+	public int unrecipeInCycle = 0;
+	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
@@ -91,14 +93,14 @@ public class ContainerTFUncrafting extends Container {
 			int size = recipes.length;
 
 			if (size > 0) {
-				int recipeType = this.recipeInCycle % size;
+				int recipeType = this.unrecipeInCycle % size;
 				IRecipe recipe = recipes[recipeType];
 
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe) {
-					int recipeWidth = getRecipeWidth(recipe);
-					int recipeHeight = getRecipeHeight(recipe);
+					int recipeWidth = getRecipeWidth((IShapedRecipe) recipe);
+					int recipeHeight = getRecipeHeight((IShapedRecipe) recipe);
 
 					// empty whole grid to start with
 					// let's not get leftovers if something changes like the recipe size
@@ -186,12 +188,19 @@ public class ContainerTFUncrafting extends Container {
 		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
-				recipe = CraftingManager.findMatchingRecipe(this.assemblyMatrix, this.world);
+				IRecipe[] recipes = this.getRecipesFor(assemblyMatrix, world);
 
-				if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
-					this.tinkerResult.setRecipeUsed(recipe);
+				if (recipes.length > 0) {
+					int recipeType = this.recipeInCycle % recipes.length;
+					recipe = recipes[recipeType];
 
-					this.tinkerResult.setInventorySlotContents(0, result = recipe.getCraftingResult(this.assemblyMatrix));
+					if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
+						this.tinkerResult.setRecipeUsed(recipe);
+
+						this.tinkerResult.setInventorySlotContents(0, result = recipe.getCraftingResult(this.assemblyMatrix));
+					} else {
+						this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+					}
 				} else {
 					this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
 				}
@@ -290,13 +299,23 @@ public class ContainerTFUncrafting extends Container {
 			for (IRecipe recipe : CraftingManager.REGISTRY) {
 				if (
 						recipe.canFit(3, 3)
-						&& !recipe.getIngredients().isEmpty()
-						&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
-						&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
+								&& !recipe.getIngredients().isEmpty()
+								&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
+								&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
 					recipes.add(recipe);
 				}
 			}
 		}
+
+		return recipes.toArray(new IRecipe[recipes.size()]);
+	}
+
+	private IRecipe[] getRecipesFor(InventoryCrafting matrix, World world) {
+		ArrayList<IRecipe> recipes = new ArrayList<>();
+
+		for (IRecipe recipe : CraftingManager.REGISTRY)
+			if (recipe.matches(matrix, world))
+				recipes.add(recipe);
 
 		return recipes.toArray(new IRecipe[recipes.size()]);
 	}
@@ -535,22 +554,35 @@ public class ContainerTFUncrafting extends Container {
 			ItemStack transferStack = transferSlot.getStack();
 			copyItem = transferStack.copy();
 
-			if (slotNum == 0 || slotNum == 1) {
+			if (slotNum == 0) {
 				// result or input goes to inventory or hotbar
 				if (!this.mergeItemStack(transferStack, 20, 56, true)) {
 					return ItemStack.EMPTY;
 				}
 
 				transferSlot.onSlotChange(transferStack, copyItem);  // what does this do?
-			} else if (slotNum >= 20 && slotNum < 47) {
-				// inventory goes to hotbar
-				if (!this.mergeItemStack(transferStack, 47, 56, false)) {
+			} else if (slotNum == 1) {
+				transferStack.getItem().onCreated(transferStack, this.world, player);
+
+				if (!this.mergeItemStack(transferStack, 20, 56, true))
 					return ItemStack.EMPTY;
+
+				transferSlot.onSlotChange(transferStack, copyItem);
+			} else if (slotNum >= 20 && slotNum < 47) {
+				// Checks uncrafting input slot first
+				if (!this.mergeItemStack(transferStack, 0, 1, false)) {
+					// inventory goes to hotbar
+					if (!this.mergeItemStack(transferStack, 47, 56, false)) {
+						return ItemStack.EMPTY;
+					}
 				}
 			} else if (slotNum >= 47 && slotNum < 56) {
-				// hotbar goes to inventory
-				if (!this.mergeItemStack(transferStack, 20, 47, false)) {
-					return ItemStack.EMPTY;
+				// Checks uncrafting input slot first
+				if (!this.mergeItemStack(transferStack, 0, 1, false)) {
+					// hotbar goes to inventory
+					if (!this.mergeItemStack(transferStack, 20, 47, false)) {
+						return ItemStack.EMPTY;
+					}
 				}
 			} else if (!this.mergeItemStack(transferStack, 20, 56, false)) {
 				// crafting area goes to inventory or hotbar
@@ -583,37 +615,31 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
+	//private static Random rand = new Random();
+
 	private ItemStack[] getIngredients(IRecipe recipe) {
 		// todo 1.12 recheck
 		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
 		for (int i = 0; i < recipe.getIngredients().size(); i++) {
 			ItemStack[] matchingStacks = recipe.getIngredients().get(i).getMatchingStacks();
-			stacks[i] = matchingStacks.length > 0 ? matchingStacks[0] : ItemStack.EMPTY;
+			stacks[i] = matchingStacks.length > 0 ? matchingStacks[this.ingredientsInCycle % matchingStacks.length] : ItemStack.EMPTY;
 		}
 
 		return stacks;
 	}
 
-	private int getRecipeWidth(IRecipe recipe) {
-		if (recipe instanceof IShapedRecipe) {
-			return ((IShapedRecipe) recipe).getRecipeWidth();
-		}
-
-		return -1;
+	private int getRecipeWidth(IShapedRecipe recipe) {
+		return recipe.getRecipeWidth();
 	}
 
-	private int getRecipeHeight(IRecipe recipe) {
-		if (recipe instanceof IShapedRecipe) {
-			return ((IShapedRecipe) recipe).getRecipeHeight();
-		}
+	private int getRecipeHeight(IShapedRecipe recipe) {
+		return recipe.getRecipeHeight();
 
-		return -1;
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;
+		return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 	}
-
 }
