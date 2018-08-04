@@ -3,6 +3,7 @@ package twilightforest.inventory;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
@@ -22,25 +23,33 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.TFConfig;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
-
 	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
 	private InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
 	private InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
 	private IInventory tinkerInput = new InventoryTFGoblinInput(this);
-	private IInventory tinkerResult = new InventoryCraftResult();
+	private InventoryCraftResult tinkerResult = new InventoryCraftResult();
 	private World world;
+	private final BlockPos pos;
+	private final EntityPlayer player;
+
+	private int recipeInCycle = 0;
 
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 		this.world = world;
+		this.pos = new BlockPos(x, y, z);
+		this.player = inventory.player;
+
 		this.addSlotToContainer(new Slot(this.tinkerInput, 0, 13, 35));
 		this.addSlotToContainer(new SlotTFGoblinCraftResult(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, this.tinkerResult, 0, 147, 35));
 
@@ -77,37 +86,57 @@ public class ContainerTFUncrafting extends Container {
 		if (inventory == this.tinkerInput) {
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getStackInSlot(0);
-			IRecipe recipe = getRecipeFor(inputStack);
+			IRecipe[] recipes = getRecipesFor(inputStack);
 
-			if (recipe != null && recipe.canFit(3, 3)) {
+			int size = recipes.length;
 
-				int recipeWidth = getRecipeWidth(recipe);
-				int recipeHeight = getRecipeHeight(recipe);
+			if (size > 0) {
+				int recipeType = this.recipeInCycle % size;
+				IRecipe recipe = recipes[recipeType];
+
 				ItemStack[] recipeItems = getIngredients(recipe);
 
-				// empty whole grid to start with
-				// let's not get leftovers if something changes like the recipe size
-				for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
-					this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-				}
+				if (recipe instanceof IShapedRecipe) {
+					int recipeWidth = getRecipeWidth(recipe);
+					int recipeHeight = getRecipeHeight(recipe);
 
-				// set uncrafting grid
-				for (int invY = 0; invY < recipeHeight; invY++) {
-					for (int invX = 0; invX < recipeWidth; invX++) {
+					// empty whole grid to start with
+					// let's not get leftovers if something changes like the recipe size
+					for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
+						this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+					}
 
-						int index = invX + invY * recipeWidth;
-						if (index >= recipeItems.length) continue;
+					// set uncrafting grid
+					for (int invY = 0; invY < recipeHeight; invY++) {
+						for (int invX = 0; invX < recipeWidth; invX++) {
 
-						ItemStack ingredient = recipeItems[index].copy();
+							int index = invX + invY * recipeWidth;
+							if (index >= recipeItems.length) continue;
+
+							ItemStack ingredient = recipeItems[index].copy();
+
+							// fix weird recipe for diamond/ingot blocks
+							if (!ingredient.isEmpty() && ingredient.getCount() > 1) {
+								ingredient.setCount(1);
+							}
+							if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+								ingredient.setItemDamage(0);
+							}
+							this.uncraftingMatrix.setInventorySlotContents(invX + invY * 3, ingredient);
+						}
+					}
+				} else {
+					for (int i = 0; i < recipeItems.length; i++) {
+						ItemStack ingredient = recipeItems[i].copy();
 
 						// fix weird recipe for diamond/ingot blocks
-						if (!ingredient.isEmpty() && ingredient.getCount() > 1) {
+						if (!ingredient.isEmpty() && ingredient.getCount() > 1)
 							ingredient.setCount(1);
-						}
-						if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+
+						if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
 							ingredient.setItemDamage(0);
-						}
-						this.uncraftingMatrix.setInventorySlotContents(invX + invY * 3, ingredient);
+
+						this.uncraftingMatrix.setInventorySlotContents(i, ingredient);
 					}
 				}
 
@@ -147,10 +176,22 @@ public class ContainerTFUncrafting extends Container {
 			}
 		}
 
+		IRecipe recipe;
+		ItemStack result = ItemStack.EMPTY;
+
 		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
-				this.tinkerResult.setInventorySlotContents(0, CraftingManager.findMatchingResult(this.assemblyMatrix, this.world));
+				recipe = CraftingManager.findMatchingRecipe(this.assemblyMatrix, this.world);
+
+				if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
+					this.tinkerResult.setRecipeUsed(recipe);
+
+					this.tinkerResult.setInventorySlotContents(0, result = recipe.getCraftingResult(this.assemblyMatrix));
+				} else {
+					this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+				}
+
 				this.uncraftingMatrix.recraftingCost = 0;
 			} else {
 //    			if (isMatrixEmpty(this.assemblyMatrix)) {
@@ -181,7 +222,7 @@ public class ContainerTFUncrafting extends Container {
 				}
 			}
 			// is there a result from this combined thing?
-			ItemStack result = CraftingManager.findMatchingResult(this.combineMatrix, this.world);
+			//ItemStack result = CraftingManager.findMatchingResult(this.combineMatrix, this.world);
 			ItemStack input = this.tinkerInput.getStackInSlot(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
@@ -197,7 +238,10 @@ public class ContainerTFUncrafting extends Container {
 
 				// check if the input enchantments can even go onto the result item
 				Map<Enchantment, Integer> inputEnchantments = EnchantmentHelper.getEnchantments(input);
-				inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(result));
+
+				// Needed for Lambda
+				final ItemStack finalResult = result;
+				inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(finalResult));
 
 				if (inputTags != null) {
 					// remove enchantments, copy tags, re-add filtered enchantments
@@ -232,28 +276,31 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private boolean isIngredientProblematic(ItemStack ingredient) {
-		return !ingredient.isEmpty() && (ingredient.getItem().hasContainerItem(ingredient) || ingredient.getUnlocalizedName().contains("itemMatter"));
+		return !ingredient.isEmpty() && (ingredient.getItem().hasContainerItem(ingredient));
 	}
 
-	/**
-	 * Get the first valid shaped recipe for the item in the input
-	 */
-	private IRecipe getRecipeFor(ItemStack inputStack) {
+	private IRecipe[] getRecipesFor(ItemStack inputStack) {
+		ArrayList<IRecipe> recipes = new ArrayList<>();
+
 		if (!inputStack.isEmpty()) {
 			for (IRecipe recipe : CraftingManager.REGISTRY) {
-				if (recipe instanceof IShapedRecipe
+				if (
+						recipe.canFit(3, 3)
+						&& !recipe.getIngredients().isEmpty()
 						&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
 						&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
-					return recipe;
+					recipes.add(recipe);
 				}
 			}
 		}
-		return null;
+
+		return recipes.toArray(new IRecipe[recipes.size()]);
 	}
 
 	/**
 	 * Checks if the result is a valid match for the input.  Currently only accepts armor or tools that are the same type as the input
 	 */
+	// TODO Should we also check the slot the armors can go into, in case they don't extend armor class..?
 	private boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
 		if (inputStack.getItem() instanceof ItemPickaxe && resultStack.getItem() instanceof ItemPickaxe) {
 			return true;
@@ -389,7 +436,6 @@ public class ContainerTFUncrafting extends Container {
 
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer player) {
-
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && player.inventory.getItemStack().isEmpty() && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix && !this.inventorySlots.get(slotNum).getHasStack()) {
 			// is the assembly matrix empty?
@@ -535,24 +581,21 @@ public class ContainerTFUncrafting extends Container {
 
 	private ItemStack[] getIngredients(IRecipe recipe) {
 		// todo 1.12 recheck
-		if (recipe instanceof IShapedRecipe) {
-			ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
+		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
-			for (int i = 0; i < recipe.getIngredients().size(); i++) {
-				ItemStack[] matchingStacks = recipe.getIngredients().get(i).getMatchingStacks();
-				stacks[i] = matchingStacks.length > 0 ? matchingStacks[0] : ItemStack.EMPTY;
-			}
-
-			return stacks;
+		for (int i = 0; i < recipe.getIngredients().size(); i++) {
+			ItemStack[] matchingStacks = recipe.getIngredients().get(i).getMatchingStacks();
+			stacks[i] = matchingStacks.length > 0 ? matchingStacks[0] : ItemStack.EMPTY;
 		}
 
-		return null;
+		return stacks;
 	}
 
 	private int getRecipeWidth(IRecipe recipe) {
 		if (recipe instanceof IShapedRecipe) {
 			return ((IShapedRecipe) recipe).getRecipeWidth();
 		}
+
 		return -1;
 	}
 
@@ -560,6 +603,7 @@ public class ContainerTFUncrafting extends Container {
 		if (recipe instanceof IShapedRecipe) {
 			return ((IShapedRecipe) recipe).getRecipeHeight();
 		}
+
 		return -1;
 	}
 
