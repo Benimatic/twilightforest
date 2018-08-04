@@ -1,11 +1,9 @@
 package twilightforest.client;
 
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -24,9 +22,6 @@ import twilightforest.network.TFPacketHandler;
 import java.io.IOException;
 
 public class GuiTFGoblinCrafting extends GuiContainer {
-	private CycleButton cycleUp;
-	private CycleButton cycleDown;
-
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.GUI_DIR + "guigoblintinkering.png");
 
 	public GuiTFGoblinCrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
@@ -172,10 +167,8 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 			this.up = up;
 		}
 
-		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
-		{
-			if (this.visible)
-			{
+		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+			if (this.visible) {
 				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
