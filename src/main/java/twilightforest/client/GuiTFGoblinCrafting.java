@@ -1,8 +1,11 @@
 package twilightforest.client;
 
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -15,14 +18,27 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.ContainerTFUncrafting;
+import twilightforest.network.PacketCycleUncraftingRecipe;
+import twilightforest.network.TFPacketHandler;
+
+import java.io.IOException;
 
 public class GuiTFGoblinCrafting extends GuiContainer {
+	private CycleButton cycleUp;
+	private CycleButton cycleDown;
 
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.GUI_DIR + "guigoblintinkering.png");
 
-
 	public GuiTFGoblinCrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 		super(new ContainerTFUncrafting(inventory, world, x, y, z));
+	}
+
+	@Override
+	public void initGui() {
+		super.initGui();
+
+		this.buttonList.add(new CycleButton(1, guiLeft + 40, guiTop + 22, true));
+		this.buttonList.add(new CycleButton(2, guiLeft + 40, guiTop + 55, false));
 	}
 
 	@Override
@@ -112,7 +128,6 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 			itemBroken = true;
 		}
 
-
 		// draw 50% gray rectangle over the item
 		GlStateManager.disableLighting();
 		GlStateManager.disableDepth();
@@ -123,5 +138,58 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 
 		itemRender.zLevel = 0.0F;
 		this.zLevel = 0.0F;
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton button) throws IOException {
+		super.actionPerformed(button);
+
+		if (button instanceof CycleButton) {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketCycleUncraftingRecipe(((CycleButton) button).up));
+			if (this.inventorySlots instanceof ContainerTFUncrafting) {
+				ContainerTFUncrafting uncrafting = (ContainerTFUncrafting) this.inventorySlots;
+
+				if (((CycleButton) button).up) {
+					uncrafting.recipeInCycle++;
+				} else {
+					uncrafting.recipeInCycle--;
+				}
+
+				uncrafting.onCraftMatrixChanged(uncrafting.tinkerInput);
+			}
+
+			this.buttonList.clear();
+			this.initGui();
+			this.updateScreen();
+		}
+	}
+
+	static class CycleButton extends GuiButton {
+		private final boolean up;
+
+		CycleButton(int buttonId, int x, int y, boolean up) {
+			super(buttonId, x, y, 14, 9, "");
+			this.up = up;
+		}
+
+		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
+		{
+			if (this.visible)
+			{
+				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+
+				int textureX = 176;
+				int textureY = 0;
+
+				if (this.hovered) textureX += this.width;
+
+				// what's up
+				if (!this.up) textureY += this.height;
+
+				this.drawTexturedModalRect(this.x, this.y, textureX, textureY, this.width, this.height);
+			}
+		}
 	}
 }

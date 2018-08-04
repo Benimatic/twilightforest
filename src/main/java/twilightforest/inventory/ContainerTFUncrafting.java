@@ -37,13 +37,13 @@ public class ContainerTFUncrafting extends Container {
 	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
 	private InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
 	private InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
-	private IInventory tinkerInput = new InventoryTFGoblinInput(this);
+	public IInventory tinkerInput = new InventoryTFGoblinInput(this);
 	private InventoryCraftResult tinkerResult = new InventoryCraftResult();
 	private World world;
 	private final BlockPos pos;
 	private final EntityPlayer player;
 
-	private int recipeInCycle = 0;
+	public int recipeInCycle = 0;
 
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 		this.world = world;
@@ -126,17 +126,21 @@ public class ContainerTFUncrafting extends Container {
 						}
 					}
 				} else {
-					for (int i = 0; i < recipeItems.length; i++) {
-						ItemStack ingredient = recipeItems[i].copy();
+					for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
+						if (i < recipeItems.length) {
+							ItemStack ingredient = recipeItems[i].copy();
 
-						// fix weird recipe for diamond/ingot blocks
-						if (!ingredient.isEmpty() && ingredient.getCount() > 1)
-							ingredient.setCount(1);
+							// fix weird recipe for diamond/ingot blocks
+							if (!ingredient.isEmpty() && ingredient.getCount() > 1)
+								ingredient.setCount(1);
 
-						if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-							ingredient.setItemDamage(0);
+							if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+								ingredient.setItemDamage(0);
 
-						this.uncraftingMatrix.setInventorySlotContents(i, ingredient);
+							this.uncraftingMatrix.setInventorySlotContents(i, ingredient);
+						} else {
+							this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+						}
 					}
 				}
 

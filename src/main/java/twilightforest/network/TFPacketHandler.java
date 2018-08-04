@@ -8,6 +8,7 @@ import twilightforest.TwilightForestMod;
 public class TFPacketHandler {
 	public static final SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(TwilightForestMod.ID);
 
+	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
 		int id = 0;
 		CHANNEL.registerMessage(PacketAnnihilateBlock.Handler.class, PacketAnnihilateBlock.class, id++, Side.CLIENT);
@@ -20,6 +21,8 @@ public class TFPacketHandler {
 		CHANNEL.registerMessage(PacketMagicMap.Handler.class, PacketMagicMap.class, id++, Side.CLIENT);
 		CHANNEL.registerMessage(PacketMazeMap.Handler.class, PacketMazeMap.class, id++, Side.CLIENT);
 		CHANNEL.registerMessage(PacketUpdateShield.Handler.class, PacketUpdateShield.class, id++, Side.CLIENT);
+
+		CHANNEL.registerMessage(PacketCycleUncraftingRecipe.Handler.class, PacketCycleUncraftingRecipe.class, id++, Side.SERVER);
 	}
 
 }
