@@ -30,7 +30,6 @@ import twilightforest.item.TFItems;
 import javax.annotation.Nullable;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
     public ItemTFShaderGrabbag() {
         this.setHasSubtypes(true);
@@ -126,9 +125,6 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
     }
 
     @SideOnly(Side.CLIENT)
-    private static ShaderGrabbagStackRenderer.BakedModel dummyModel;
-
-    @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
         ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"));
@@ -136,16 +132,20 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
         ShaderGrabbagStackRenderer tesr = new ShaderGrabbagStackRenderer();
 
         ClientRegistry.bindTileEntitySpecialRenderer(ShaderGrabbagStackRenderer.DummyTile.class, tesr);
-        dummyModel = tesr.baked;
+        ClientEventHandler.dummyModel = tesr.baked;
 
         ForgeHooksClient.registerTESRItemStack(this, 0, ShaderGrabbagStackRenderer.DummyTile.class);
     }
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public static void onModelBake(ModelBakeEvent event) {
-        System.out.println("wubba lubba dub dub");
+    @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
+    private static final class ClientEventHandler {
 
-        event.getModelRegistry().putObject(new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"), dummyModel);
+        static ShaderGrabbagStackRenderer.BakedModel dummyModel;
+
+        @SubscribeEvent
+        public static void onModelBake(ModelBakeEvent event) {
+            System.out.println("wubba lubba dub dub");
+            event.getModelRegistry().putObject(new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"), dummyModel);
+        }
     }
 }
