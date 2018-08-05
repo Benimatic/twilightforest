@@ -141,10 +141,10 @@ public enum TFCompat {
         }
     },
     THAUMCRAFT("Thaumcraft") {
-        @Override
+        /*@Override
         protected void postInit() {
             Thaumcraft.init();
-        }
+        }*/
     };
 
     protected boolean preInit() { return true; }
