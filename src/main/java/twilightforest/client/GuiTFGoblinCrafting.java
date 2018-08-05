@@ -214,6 +214,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 			this.constructive = constructive;
 		}
 
+		@Override
 		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
@@ -262,6 +263,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 			this.up = up;
 		}
 
+		@Override
 		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);

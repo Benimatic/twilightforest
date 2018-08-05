@@ -88,6 +88,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 		return super.onTake(par1EntityPlayer, par1ItemStack);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean isEnabled() {
 		return false;
