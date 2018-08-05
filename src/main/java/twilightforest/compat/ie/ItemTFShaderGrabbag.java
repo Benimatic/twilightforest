@@ -19,6 +19,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -138,12 +139,15 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
     }
 
     // Register subscriber with IE, so if IE isn't installed, this shouldn't exist in bus... right?
-    @Mod.EventBusSubscriber(modid = "immersiveengineering", value = Side.CLIENT)
+    @Mod.EventBusSubscriber(value = Side.CLIENT)
     private static final class ClientEventHandler {
         static ShaderGrabbagStackRenderer.BakedModel dummyModel;
 
+        @Optional.Method(modid = "immersiveengineering")
         @SubscribeEvent
         public static void onModelBake(ModelBakeEvent event) {
+            TwilightForestMod.LOGGER.debug("Registering fancy item model for TF Shader Grabbag!");
+
             event.getModelRegistry().putObject(new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"), dummyModel);
         }
     }
