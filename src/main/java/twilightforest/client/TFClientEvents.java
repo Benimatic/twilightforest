@@ -138,7 +138,7 @@ public class TFClientEvents {
 		}
 		// Shields
 		if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null)) {
-			renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
+			renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick());
 		}
 	}
 
@@ -198,7 +198,7 @@ public class TFClientEvents {
 
 	private static final ModelTFLich model = new ModelTFLich(true);
 
-	private static void renderShields(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z) {
+	private static void renderShields(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		GlStateManager.rotate(180, 1, 0, 0);
@@ -207,7 +207,6 @@ public class TFClientEvents {
 		GlStateManager.disableCull();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RenderTFLich.LICH_TEXTURE);
-		float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
 		model.setLivingAnimations(entity, 0F, 0F, partialTicks);
 		model.render(entity, 0F, 0F, 0F, 0F, 0F, 0.0625F);
 		GlStateManager.enableCull();
