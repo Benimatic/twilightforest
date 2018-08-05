@@ -88,8 +88,10 @@ public class GradientMappedTexture extends TextureAtlasSprite {
             for (int i = 0; i < framesTextureData.size(); i++) {
                 int [][] texture = this.framesTextureData.get(i);
 
-                for (int j = 0; j < texture[0].length; j++) {
-                    texture[0][j] = getGradient(texture[0][j], GRADIENT_MAP, 0.0f, 1.0f);
+                for (int l = 0; l < texture.length; l++) {
+                    for (int j = 0; j < texture[l].length; j++) {
+                        texture[l][j] = getGradient(texture[l][j], GRADIENT_MAP, 0.0f, 1.0f);
+                    }
                 }
             }
 
