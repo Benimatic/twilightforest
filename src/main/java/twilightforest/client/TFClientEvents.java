@@ -35,6 +35,7 @@ import twilightforest.client.texture.MoltenFieryTexture;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
+import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.item.ItemTFBowBase;
 import twilightforest.potions.PotionFrosted;
@@ -77,9 +78,9 @@ public class TFClientEvents {
 		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), twilightforest.compat.ie.IEShaderRegister.PROCESSED_MINECART_LAYER     , true, EASY_GRAYSCALING_MAP ));
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), twilightforest.compat.ie.IEShaderRegister.PROCESSED_BALLOON_LAYER      , true, EASY_GRAYSCALING_MAP ));
 
-			final String[] types = new String[]{ "1_0", "1_2", "1_4", "1_5", "1_6", "circuit" };
+			final String[] types = new String[]{ "1_0", "1_2", "1_4", "1_5", "1_6" };
 
-			for (twilightforest.compat.ie.IEShaderRegister.CaseType caseType: twilightforest.compat.ie.IEShaderRegister.CaseType.everythingButMinecart())
+			for (twilightforest.compat.ie.IEShaderRegister.CaseType caseType : twilightforest.compat.ie.IEShaderRegister.CaseType.everythingButMinecart())
 				for (String type : types)
 					map.setTextureEntry( new GradientMappedTexture(
 							new ResourceLocation(twilightforest.compat.ie.IEShaderRegister.ModType.IMMERSIVEENGINEERING.provideTex(caseType, type)),
@@ -137,7 +138,7 @@ public class TFClientEvents {
 			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
 		// Shields
-		if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null)) {
+		if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null) && !(event.getEntity() instanceof EntityTFLich)) {
 			renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick());
 		}
 	}
@@ -194,7 +195,6 @@ public class TFClientEvents {
 
 		GlStateManager.disableBlend();
 	}
-
 
 	private static final ModelTFLich model = new ModelTFLich(true);
 
