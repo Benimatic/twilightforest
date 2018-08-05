@@ -97,51 +97,68 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
 
     @Override
     public void render(DummyTile te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        GlStateManager.pushMatrix();
+        GlStateManager.pushMatrix(); // Stack + 1
         GlStateManager.disableCull();
 
         if (modelCase == null) modelCase = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":shader", "inventory"));
 
+        // Render the trophy-backing if it's in a GUI.
         if (transform == ItemCameraTransforms.TransformType.GUI) {
+            // Lazy init. If modelBack is null, pull a new instance.
             if (modelBack == null) modelBack = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory"));
 
             GlStateManager.disableLighting();
-            GlStateManager.pushMatrix();
+            GlStateManager.pushMatrix(); // Stack + 2
             GlStateManager.translate(0.5F, 0.5F, -1.5F);
 
             Minecraft.getMinecraft().getRenderItem().renderItem(stack, ForgeHooksClient.handleCameraTransforms(modelBack, transform, transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND));
 
-            GlStateManager.popMatrix();
+            GlStateManager.popMatrix(); // Stack + 1
             GlStateManager.enableLighting();
 
             GlStateManager.disableLighting();
             GlStateManager.translate(0.5F, 0.5F, 0F);
+            // Rotate the lunchbox if we're in the Gui. This is a setup for the next bit of rendering.
             GlStateManager.rotate(TFConfig.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : 0F, 0.125F, 1F, 0.125F);
             //GlStateManager.translate(0F, -0.5F, 0F);
 
         }
 
-        // FIXME transformations; Why are they all over the place??
-        GlStateManager.pushMatrix();
+        GlStateManager.pushMatrix(); // Stack + 2
+        // Translate the item render to the right place if it's in inventory.
+        // Otherwise just re-scale the item because it's a bit big for the trophy sprite backing.
         if (transform != ItemCameraTransforms.TransformType.GUI) GlStateManager.translate(0.5F, 0.5F, 0.5F);
         else GlStateManager.scale(0.9F, 0.9F, 0.9F);
-        Minecraft.getMinecraft().getRenderItem().renderItem(stack, ForgeHooksClient.handleCameraTransforms(modelCase, transform, false));
-        GlStateManager.popMatrix();
 
+        // Render the lunchbox
+        Minecraft.getMinecraft().getRenderItem().renderItem(stack, ForgeHooksClient.handleCameraTransforms(modelCase, transform, false));
+        GlStateManager.popMatrix(); // Stack + 1
+
+        // Render the star burst
         if (transform == ItemCameraTransforms.TransformType.GUI) {
+            // Forgot why this was needed but it's needed
             GlStateManager.enableLighting();
 
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
+            // Pop the previous stack and push new stack
+            GlStateManager.popMatrix(); // Stack + 0
+            GlStateManager.pushMatrix(); // Stack + 1
 
-            GlStateManager.pushMatrix();
+            GlStateManager.pushMatrix(); // Stack + 2
+
+            // Since we're in a new stack different than above rendering calls, we'll also need to re-translate.
+            // Z value -1 puts us behind the lunchbox but in front of trophy sprite
             GlStateManager.translate(0.5F, 0.5F, -1.0F);
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
+
+            // Bind the star burst mask tex
             Minecraft.getMinecraft().getTextureManager().bindTexture(bg);
 
+            // Just gonna borrow your code for a sec blu, thnx
             int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).rarityColor);
+
+            // unpack colors
             float r = (c >> 16 & 0xFF) / 255.0f;
             float g = (c >> 8 & 0xFF) / 255.0f;
             float b = (c & 0xFF) / 255.0f;
@@ -164,18 +181,23 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
                     .color(r, g, b, 1f)
                     .endVertex();
 
+            // Shader, engage!
             ShaderHelper.useShader(ShaderHelper.starburstShader, ShaderHelper.TIME);
+            // Blur the star burst mask
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             tessellator.draw();
+            // Deblur, so we don't blur all of the textures in rendering calls afterwards
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            // Disengage shader
             ShaderHelper.releaseShader();
 
+            // reset color
             GlStateManager.color(1f, 1f, 1f, 1f);
 
-            GlStateManager.popMatrix();
+            GlStateManager.popMatrix(); // Stack + 1
         }
 
         GlStateManager.enableCull();
-        GlStateManager.popMatrix();
+        GlStateManager.popMatrix(); // Stack + 0
     }
 }
