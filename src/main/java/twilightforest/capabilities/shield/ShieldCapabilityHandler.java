@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.network.PacketUpdateShield;
 import twilightforest.network.TFPacketHandler;
 
@@ -49,9 +50,15 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	private void sendUpdatePacket() {
 		if (!host.world.isRemote) {
-			TFPacketHandler.CHANNEL.sendToAllTracking(new PacketUpdateShield(host, this), host);
-			if (host instanceof EntityPlayerMP) // sendToAllTracking doesn't send to your own client so we need to send that as well.
-				TFPacketHandler.CHANNEL.sendTo(new PacketUpdateShield(host, this), (EntityPlayerMP) host);
+			IMessage message = new PacketUpdateShield(host, this);
+			TFPacketHandler.CHANNEL.sendToAllTracking(message, host);
+			// sendToAllTracking doesn't send to your own client so we need to send that as well.
+			if (host instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) host;
+				if (player.connection != null) {
+					TFPacketHandler.CHANNEL.sendTo(message, player);
+				}
+			}
 		}
 	}
 }
