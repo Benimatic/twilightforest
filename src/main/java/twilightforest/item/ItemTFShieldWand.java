@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
@@ -29,7 +27,6 @@ public class ItemTFShieldWand extends ItemTF {
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
-
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getItemDamage() == stack.getMaxDamage()) {
@@ -42,7 +39,9 @@ public class ItemTFShieldWand extends ItemTF {
 				cap.replenishShields();
 			stack.damageItem(1, player);
 		}
-		player.getCooldownTracker().setCooldown(this, 1200);
+
+		if (!player.isCreative())
+			player.getCooldownTracker().setCooldown(this, 1200);
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
