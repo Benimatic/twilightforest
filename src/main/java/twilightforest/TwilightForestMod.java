@@ -1,21 +1,33 @@
 package twilightforest;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +45,7 @@ import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;
 import twilightforest.world.WorldProviderTwilightForest;
 
+@SuppressWarnings({"Guava", "unchecked"})
 @Mod( modid = TwilightForestMod.ID,
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
@@ -88,7 +101,7 @@ public class TwilightForestMod {
 		// just call this so that we register structure IDs correctly
 		LOGGER.debug("There are " + TFFeature.values().length + " entries in TTFeature enum. Maximum structure size is " + TFFeature.getMaxSize());
 
-		MapGenStructureIO.registerStructure(StructureStartNothing.class, "TFNothing");
+		MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing");
 		TFHollowTreePieces.registerPieces();
 
 		compat = TFConfig.doCompat;
@@ -149,6 +162,125 @@ public class TwilightForestMod {
 		}
 	}
 
+	private static final ImmutableSet.Builder<IBlockState> BLACKLIST_BUILDER = ImmutableSet.builder();
+	private static final ImmutableList.Builder<IBlockState> HILL_BLOCKS_BUILDER = ImmutableList.builder();
+	private static final ImmutableList.Builder<ItemStack> LOADING_ICONS_BUILDER = ImmutableList.builder();
+	private static final ImmutableMultimap.Builder<IBlockState, IBlockState> CRUMBLE_BLOCKS_BUILDER = ImmutableMultimap.builder();
+
+	/**
+	 IMC NBT Format: You can send all of your requests as one big NBT list rather than needing to shotgun a ton of tiny NBT messages.
+
+	 root:
+	 	• "Blacklist"                               - NBTTagList     : List of blockstates to blacklist from blockbreaking (antibuilders, naga, hydra, etc)
+	 		• List Entry                            - NBTTagCompound : An IBlockState
+	 			• "Name"                            - String         : Resource location of block. Is not allowed to be Air.
+	 			• "Properties"                      - NBTTagCompound : Additional blockstate modifications to apply to block
+	 				• [String Property Key]         - String         : Key is nameable to a property key, and the string value attached to it is value to property.
+
+	 	• "Hollow_Hill"                             - NBTTagList     : List of blockstates to add to hollow hills - May chance this to a function in the future
+	 		• List Entry                            - NBTTagCompound : An IBlockState
+	 			• "Name"                            - String         : Resource location of block. Is not allowed to be Air.
+	 			• "Properties"                      - NBTTagCompound : Additional blockstate modifications to apply to block
+	 				• [String Property Key]         - String         : Key is nameable to a property key, and the string value attached to it is value to property.
+
+	 	• "Crumbling"                               - NBTTagList     : List of blockstates to add to hollow hills - May chance this to a function in the future
+	 		• List Entry                            - NBTTagCompound : An IBlockState
+	 			• "Name"                            - String         : Resource location of block. Is not allowed to be Air.
+	 			• "Properties"                      - NBTTagCompound : Additional blockstate modifications to apply to block
+	 			• "Crumbles"                        - NBTTagList     : List of different blockstates that the blockstate can crumble into
+	 				• List Entry                    - NBTTagCompound : An IBlockState.
+	 					• "Name"                    - String         : Resource location of block. Can be Air.
+	 					• "Properties"              - NBTTagCompound : Additional blockstate modifications to apply to block
+	 						• [String Property Key] - String         : Key is nameable to a property key, and the string value attached to it is value to property.
+	 */
+
+	@EventHandler
+	public void onIMC(FMLInterModComms.IMCEvent event) {
+		for (FMLInterModComms.IMCMessage message : event.getMessages()) {
+			if (message.isNBTMessage()) {
+				NBTTagCompound imcCompound = message.getNBTValue();
+
+				deserializeBlockstatesFromTagList(imcCompound.getTagList("Blacklist"  , Constants.NBT.TAG_COMPOUND), BLACKLIST_BUILDER     );
+				deserializeBlockstatesFromTagList(imcCompound.getTagList("Hollow_Hill", Constants.NBT.TAG_COMPOUND), HILL_BLOCKS_BUILDER   );
+
+				deserializeBlockstatesFromTagList(imcCompound.getTagList("Crumbling"  , Constants.NBT.TAG_COMPOUND), CRUMBLE_BLOCKS_BUILDER);
+			}
+
+			if (message.isItemStackMessage()) {
+				LOADING_ICONS_BUILDER.add(message.getItemStackValue());
+			}
+		}
+	}
+
+	private void deserializeBlockstatesFromTagList(NBTTagList list, ImmutableMultimap.Builder<IBlockState, IBlockState> builder) {
+		for (int blockAt = 0; blockAt < list.tagCount(); blockAt++) {
+			NBTTagCompound main = list.getCompoundTagAt(blockAt);
+			IBlockState key = NBTUtil.readBlockState(main);
+
+			if (key.getBlock() != Blocks.AIR) {
+				NBTTagList crumbles = main.getTagList("Crumbling", Constants.NBT.TAG_COMPOUND);
+
+				for (int crumble = 0; crumble < crumbles.tagCount(); crumble++) {
+					IBlockState value = NBTUtil.readBlockState(crumbles.getCompoundTagAt(crumble));
+
+					builder.put(key, value);
+				}
+			}
+		}
+	}
+
+	private void deserializeBlockstatesFromTagList(NBTTagList list, ImmutableCollection.Builder<IBlockState> builder) {
+		for (int blockAt = 0; blockAt < list.tagCount(); blockAt++) {
+			IBlockState state = NBTUtil.readBlockState(list.getCompoundTagAt(blockAt));
+
+			if (state.getBlock() != Blocks.AIR)
+				builder.add(state);
+
+			//Block block = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("name")));
+
+			//if (block != Blocks.AIR) {
+			//	IBlockState blockState = block.getStateFromMeta(compound.getInteger("meta"));
+
+			//	BlockStateContainer stateContainer = block.getBlockState();
+
+			//	NBTTagList properties = compound.getTagList("state", Constants.NBT.TAG_COMPOUND);
+			//	for (int stateAt = 0; stateAt < properties.tagCount(); stateAt++) {
+			//		NBTTagCompound property = properties.getCompoundTagAt(stateAt);
+
+			//		IProperty prop = stateContainer.getProperty(property.getString("property"));
+
+			//		if (prop != null)
+			//			blockState = applyBlockStateProperty(blockState, prop, prop.getValueClass(), prop.parseValue(property.getString("value")));
+			//	}
+
+			//	builder.add(blockState);
+			//}
+		}
+	}
+
+	/*private <V extends Comparable<V>> IBlockState applyBlockStateProperty(IBlockState state, IProperty<V> property, Class<V> target, Optional optional) {
+		if (optional.isPresent() && target.isInstance(optional.get()))
+			return state.withProperty(property, (V) optional.get());
+		else
+			return state;
+	}*/
+
+	public static ImmutableSet<IBlockState> getBlacklistedBlocksFromIMC() {
+		return BLACKLIST_BUILDER.build();
+	}
+
+	public static ImmutableList<IBlockState> getHollowHillBlocksFromIMC() {
+		return HILL_BLOCKS_BUILDER.build();
+	}
+
+	public static ImmutableList<ItemStack> getLoadingIconStacksFromIMC() {
+		return LOADING_ICONS_BUILDER.build();
+	}
+
+	public static ImmutableMultimap<IBlockState, IBlockState> getCrumblingBlocksFromIMC() {
+		return CRUMBLE_BLOCKS_BUILDER.build();
+	}
+
 	@SuppressWarnings("unused")
 	@EventHandler
 	public void startServer(FMLServerStartingEvent event) {
@@ -158,24 +290,24 @@ public class TwilightForestMod {
 	private void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
-		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner.class, "twilightforest:naga_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFLichSpawner.class, "twilightforest:lich_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner.class, "twilightforest:hydra_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSmoker.class, "twilightforest:smoker");
-		GameRegistry.registerTileEntity(TileEntityTFPoppingJet.class, "twilightforest:popping_jet");
-		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "twilightforest:flame_jet");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "twilightforest:tower_builder");
-		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "twilightforest:tower_reverter");
-		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "twilightforest:trophy");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner.class, "twilightforest:tower_boss_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive.class, "twilightforest:ghast_trap_inactive");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive.class, "twilightforest:ghast_trap_active");
-		GameRegistry.registerTileEntity(TileEntityTFCReactorActive.class, "twilightforest:carminite_reactor_active");
-		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, "twilightforest:knight_phantom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner.class, "twilightforest:snow_queen_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "twilightforest:cinder_furnace");
-		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "twilightforest:minoshroom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "twilightforest:alpha_yeti_spawner"); //*/
+		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, new ResourceLocation("twilightforest", "naga_spawner"             ));
+		GameRegistry.registerTileEntity(TileEntityTFLichSpawner          .class, new ResourceLocation("twilightforest", "lich_spawner"             ));
+		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner         .class, new ResourceLocation("twilightforest", "hydra_spawner"            ));
+		GameRegistry.registerTileEntity(TileEntityTFSmoker               .class, new ResourceLocation("twilightforest", "smoker"                   ));
+		GameRegistry.registerTileEntity(TileEntityTFPoppingJet           .class, new ResourceLocation("twilightforest", "popping_jet"              ));
+		GameRegistry.registerTileEntity(TileEntityTFFlameJet             .class, new ResourceLocation("twilightforest", "flame_jet"                ));
+		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder         .class, new ResourceLocation("twilightforest", "tower_builder"            ));
+		GameRegistry.registerTileEntity(TileEntityTFAntibuilder          .class, new ResourceLocation("twilightforest", "tower_reverter"           ));
+		GameRegistry.registerTileEntity(TileEntityTFTrophy               .class, new ResourceLocation("twilightforest", "trophy"                   ));
+		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner     .class, new ResourceLocation("twilightforest", "tower_boss_spawner"       ));
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive    .class, new ResourceLocation("twilightforest", "ghast_trap_inactive"      ));
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive      .class, new ResourceLocation("twilightforest", "ghast_trap_active"        ));
+		GameRegistry.registerTileEntity(TileEntityTFCReactorActive       .class, new ResourceLocation("twilightforest", "carminite_reactor_active" ));
+		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, new ResourceLocation("twilightforest", "knight_phantom_spawner"   ));
+		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner     .class, new ResourceLocation("twilightforest", "snow_queen_spawner"       ));
+		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace        .class, new ResourceLocation("twilightforest", "cinder_furnace"           ));
+		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, new ResourceLocation("twilightforest", "minoshroom_spawner"       ));
+		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, new ResourceLocation("twilightforest", "alpha_yeti_spawner"       ));
 	}
 
 	public static EnumRarity getRarity() {

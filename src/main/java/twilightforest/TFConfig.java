@@ -1,5 +1,7 @@
 package twilightforest;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -14,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
@@ -220,7 +223,9 @@ public class TFConfig {
 		}
 
 		void loadLoadingScreenIcons() {
-			List<ItemStack> iconList = Lists.newArrayList();
+			ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
+
+			iconList.addAll(TwilightForestMod.getLoadingIconStacksFromIMC());
 
 			for (String s : loadingIconStacks) {
 				String[] data = s.split(":");
@@ -235,7 +240,7 @@ public class TFConfig {
 				iconList.add(new ItemStack(item, 1, meta));
 			}
 
-			loadingScreenIcons = iconList;
+			loadingScreenIcons = iconList.build();
 		}
 	}
 
@@ -251,7 +256,10 @@ public class TFConfig {
 	}
 
 	private static void loadAntiBuilderBlacklist() {
-		List<IBlockState> blacklist = Lists.newArrayList();
+		ImmutableSet.Builder<IBlockState> builder = ImmutableSet.builder();
+
+		builder.addAll(TwilightForestMod.getBlacklistedBlocksFromIMC());
+
 		for (String s : antibuilderBlacklist) {
 			String[] data = s.split(":");
 			if (data.length < 2)
@@ -259,6 +267,7 @@ public class TFConfig {
 			Block block = Block.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
 			if (block != Blocks.AIR) {
 				int meta = 0;
+
 				if (data.length >= 3) {
 					try {
 						meta = Integer.parseInt(data[2]);
@@ -267,18 +276,19 @@ public class TFConfig {
 						meta = 0;
 					}
 				}
-				blacklist.add(block.getStateFromMeta(meta));
+
+				builder.add(block.getStateFromMeta(meta));
 			}
 		}
 
-		antibuilderStateBlacklist = blacklist;
+		disallowBreakingBlockList = builder.build();
 	}
 
 	@Config.Ignore
-	private static List<IBlockState> antibuilderStateBlacklist;
+	private static ImmutableSet<IBlockState> disallowBreakingBlockList;
 
-	public static List<IBlockState> getAntiBuilderBlacklist() {
-		if (antibuilderStateBlacklist == null || antibuilderStateBlacklist.isEmpty()) loadAntiBuilderBlacklist();
-		return antibuilderStateBlacklist;
+	public static ImmutableSet<IBlockState> getDisallowedBlocks() {
+		if (disallowBreakingBlockList == null || disallowBreakingBlockList.isEmpty()) loadAntiBuilderBlacklist();
+		return disallowBreakingBlockList;
 	}
 }
