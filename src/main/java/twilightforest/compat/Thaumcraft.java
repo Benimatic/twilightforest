@@ -3,8 +3,6 @@ package twilightforest.compat;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.aspects.Aspect;
@@ -14,10 +12,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
-@Mod.EventBusSubscriber()
+//@Mod.EventBusSubscriber()
 public class Thaumcraft {
     // Use the thaumcraft API to register our things with aspects and biomes with values
-    @Optional.Method(modid = "thaumcraft")
+    //@Optional.Method(modid = "thaumcraft")
     @SubscribeEvent
     public static void registerAspects(AspectRegistryEvent event) {
         TwilightForestMod.LOGGER.debug("Attempting to register Thaumcraft Aspects for Twilight Forest items!");

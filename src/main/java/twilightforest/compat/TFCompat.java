@@ -8,15 +8,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.tuple.Pair;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
@@ -68,16 +72,20 @@ public enum TFCompat {
         }
     }, // TODO Forestry
     IMMERSIVEENGINEERING("Immersive Engineering") {
-        //@Override
-        //protected boolean preInit() {
-        //    try {
-        //        VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
+        @Override
+        protected boolean preInit() {
+            //try {
+            //    VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
 
-        //        return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
-        //    } catch (InvalidVersionSpecificationException e) {
-        //        return false;
-        //    }
-        //}
+            //    return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
+            //} catch (InvalidVersionSpecificationException e) {
+            //    return false;
+            //}
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                MinecraftForge.EVENT_BUS.register(ItemTFShaderGrabbag.class);
+
+            return true;
+        }
 
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
@@ -141,10 +149,14 @@ public enum TFCompat {
         }
     },
     THAUMCRAFT("Thaumcraft") {
-        /*@Override
-        protected void postInit() {
-            Thaumcraft.init();
-        }*/
+        @Override
+        protected boolean preInit() {
+            //Thaumcraft.init();
+
+            MinecraftForge.EVENT_BUS.register(Thaumcraft.class);
+
+            return true;
+        }
     };
 
     protected boolean preInit() { return true; }
