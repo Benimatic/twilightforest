@@ -128,6 +128,15 @@ public class TFClientEvents {
 	private static final AttributeModifier FROSTED_POTION_MODIFIER =
 			new AttributeModifier(UUID.fromString(PotionFrosted.MODIFIER_UUID), "doesntmatter", 0, 0);
 
+	//FIXME shove onto an external player layer, like armor
+	//@SubscribeEvent
+	//public static void renderLivingPre(RenderLivingEvent.Pre<EntityLivingBase> event) {
+	//	// Shields
+	//	if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null)) {
+	//		ShaderManager.useShader(ShaderManager.shieldShader, ShaderManager.TIME);
+	//	}
+	//}
+
 	/**
 	 * Render various effects such as an iced entity
 	 */
@@ -139,6 +148,8 @@ public class TFClientEvents {
 		}
 		// Shields
 		if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null) && !(event.getEntity() instanceof EntityTFLich)) {
+			//ShaderManager.releaseShader();
+
 			renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick());
 		}
 	}

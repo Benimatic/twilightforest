@@ -42,7 +42,7 @@ import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
 import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 import twilightforest.client.renderer.entity.*;
-import twilightforest.client.shader.ShaderHelper;
+import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
@@ -197,7 +197,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 3600);
 
-		ShaderHelper.initShaders();
+		ShaderManager.initShaders();
 
 		ClientCommandHandler.instance.registerCommand(new CommandBase() {
 			@Override
@@ -214,7 +214,7 @@ public class TFClientProxy extends TFCommonProxy {
 			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
-					twilightforest.client.shader.ShaderHelper.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
 					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
 						twilightforest.compat.ie.IEShaderRegister.initShaders();
 				}

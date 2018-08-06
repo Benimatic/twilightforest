@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.shader.ShaderHelper;
+import twilightforest.client.shader.ShaderManager;
 import twilightforest.client.shader.ShaderUniform;
 import twilightforest.item.TFItems;
 
@@ -45,7 +45,7 @@ public class IEShaderRegister {
 
     private static final TriConsumer<IntConsumer, Boolean, Float> TWILIGHT_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
         if (pre) {
-            ShaderHelper.useShader(ShaderHelper.twilightSkyShader, shaderCallback);
+            ShaderManager.useShader(ShaderManager.twilightSkyShader, shaderCallback);
 
             OpenGlHelper.setActiveTexture(OpenGlHelper.GL_TEXTURE2);
             Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_STARS);
@@ -53,7 +53,7 @@ public class IEShaderRegister {
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
             Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         } else {
-            ShaderHelper.releaseShader();
+            ShaderManager.releaseShader();
 
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
             Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -62,33 +62,33 @@ public class IEShaderRegister {
 
     // TODO There's got to be a better way!
     private static final TriConsumer<IntConsumer, Boolean, Float> FIREFLY_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
-        if (pre) ShaderHelper.useShader(ShaderHelper.fireflyShader, shaderCallback);
-        else     ShaderHelper.releaseShader();
+        if (pre) ShaderManager.useShader(ShaderManager.fireflyShader, shaderCallback);
+        else     ShaderManager.releaseShader();
     };
 
     private static final TriConsumer<IntConsumer, Boolean, Float> CARMINITE_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
-        if (pre) ShaderHelper.useShader(ShaderHelper.carminiteShader, shaderCallback);
-        else ShaderHelper.releaseShader();
+        if (pre) ShaderManager.useShader(ShaderManager.carminiteShader, shaderCallback);
+        else ShaderManager.releaseShader();
     };
 
     private static final TriConsumer<IntConsumer, Boolean, Float> DEVICE_RED_ENERGY_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
-        if (pre) ShaderHelper.useShader(ShaderHelper.towerDeviceShader, shaderCallback);
-        else     ShaderHelper.releaseShader();
+        if (pre) ShaderManager.useShader(ShaderManager.towerDeviceShader, shaderCallback);
+        else     ShaderManager.releaseShader();
     };
 
     private static final TriConsumer<IntConsumer, Boolean, Float> DEVICE_YELLOW_ENERGY_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
         if (pre) {
             GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-            ShaderHelper.useShader(ShaderHelper.yellowCircuitShader, shaderCallback);
+            ShaderManager.useShader(ShaderManager.yellowCircuitShader, shaderCallback);
         } else {
-            ShaderHelper.releaseShader();
+            ShaderManager.releaseShader();
             GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         }
     };
 
     private static final TriConsumer<IntConsumer, Boolean, Float> AURORA_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
-        if (pre) ShaderHelper.useShader(ShaderHelper.auroraShader, shaderCallback);
-        else     ShaderHelper.releaseShader();
+        if (pre) ShaderManager.useShader(ShaderManager.auroraShader, shaderCallback);
+        else     ShaderManager.releaseShader();
     };
 
     private static final TriConsumer<IntConsumer, Boolean, Float> RAM_TRICONSUMER = (shaderCallback, pre, partialTick) -> {
@@ -123,8 +123,8 @@ public class IEShaderRegister {
     // s Suffix
     // c Color
     private static final ShaderLayerProvider LAYER_PROVIDER                 = (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( m.provideTex(t, s) ), c );
-    private static final ShaderLayerProvider TOWER_DEVICE_SHADER_PROVIDER   = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "energy")), 0xFFFFFFFF, DEVICE_RED_ENERGY_TRICONSUMER, ShaderHelper.STAR_UNIFORMS );
-    private static final ShaderLayerProvider YELLOW_CIRCUIT_SHADER_PROVIDER = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.IMMERSIVEENGINEERING.provideTex(t, "circuit")), 0xFF_BA_EE_02, DEVICE_YELLOW_ENERGY_TRICONSUMER, ShaderHelper.STAR_UNIFORMS );
+    private static final ShaderLayerProvider TOWER_DEVICE_SHADER_PROVIDER   = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "energy")), 0xFFFFFFFF, DEVICE_RED_ENERGY_TRICONSUMER, ShaderManager.STAR_UNIFORMS );
+    private static final ShaderLayerProvider YELLOW_CIRCUIT_SHADER_PROVIDER = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.IMMERSIVEENGINEERING.provideTex(t, "circuit")), 0xFF_BA_EE_02, DEVICE_YELLOW_ENERGY_TRICONSUMER, ShaderManager.STAR_UNIFORMS );
 
     // Registering
     private static List<ShaderRegistry.ShaderRegistryEntry> SHADERS;
@@ -142,8 +142,8 @@ public class IEShaderRegister {
     public static void initShaders() {
         NONBOSSES = ImmutableList.of(
                 // MAIN COLOR, MINOR COLOR (EDGES), SECONDARY COLOR (GRIP, etc)
-                registerShaderCases      ( "Twilight"            , ModType.TWILIGHTFOREST, "1_4"      , RARITY, 0xFF_4C_64_5B, 0xFF_28_25_3F, 0xFF_00_AA_00, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFFFFFFFF, TWILIGHT_TRICONSUMER , ShaderHelper.STAR_UNIFORMS )                                                               ).setInfo("Twilight Forest", "Twilight Forest"          , "twilightforest"     ),
-                registerShaderCases      ( "Firefly"             , ModType.TWILIGHTFOREST, "1_6"      , RARITY, 0xFF_66_41_40, 0xFF_F5_99_2F, 0xFF_C0_FF_00, 0xFF_C0_FF_00, LAYER_PROVIDER, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(ModType.TWILIGHTFOREST.provideTex(t, "processed")), 0xFFFFFFFF, FIREFLY_TRICONSUMER  , ShaderHelper.TIME_UNIFORM  )                ).setInfo("Twilight Forest", "Firefly"                  , "firefly"            ),
+                registerShaderCases      ( "Twilight"            , ModType.TWILIGHTFOREST, "1_4"      , RARITY, 0xFF_4C_64_5B, 0xFF_28_25_3F, 0xFF_00_AA_00, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFFFFFFFF, TWILIGHT_TRICONSUMER , ShaderManager.STAR_UNIFORMS )                                                               ).setInfo("Twilight Forest", "Twilight Forest"          , "twilightforest"     ),
+                registerShaderCases      ( "Firefly"             , ModType.TWILIGHTFOREST, "1_6"      , RARITY, 0xFF_66_41_40, 0xFF_F5_99_2F, 0xFF_C0_FF_00, 0xFF_C0_FF_00, LAYER_PROVIDER, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(ModType.TWILIGHTFOREST.provideTex(t, "processed")), 0xFFFFFFFF, FIREFLY_TRICONSUMER  , ShaderManager.TIME_UNIFORM  )                ).setInfo("Twilight Forest", "Firefly"                  , "firefly"            ),
                 registerShaderCases      ( "Pinch Beetle"        , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_BC_93_27, 0xFF_24_16_09, 0xFF_24_16_09, 0xFF_44_44_44, LAYER_PROVIDER, (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( m.provideTex(t, "1_6" )), c )                                                                                                  ).setInfo("Twilight Forest", "Pinch Beetle"             , "pinch_beetle"       ),
 
                 registerShaderCases      ( "Snakestone"          , ModType.TWILIGHTFOREST, "streaks"  , RARITY, 0xFF_9F_9F_9F, 0xFF_68_68_68, 0xFF_60_60_60, 0xFF_FF_FF_FF, LAYER_PROVIDER, (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "scales") ), 0xFF_50_50_50 ), (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.IMMERSIVEENGINEERING.provideTex(t, "circuit") ), 0xFF_58_58_58 ) ).setInfo("Twilight Forest", "Nagastone"                , "courtyard"          ),
@@ -152,9 +152,9 @@ public class IEShaderRegister {
 
                 registerShaderCases      ( "Underbrick"          , ModType.TWILIGHTFOREST, "scales"   , RARITY, 0xFF_85_68_45, 0xFF_76_7F_76, 0xFF_61_4D_33, 0xFF_FF_FF_FF, LAYER_PROVIDER                                                                                                                                                                                                   ).setInfo("Twilight Forest", "Underbrick"               , "underbrick"         ),
                 registerShaderCasesTopped( "Towerwood"           , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_A6_65_3A, 0xFF_F5_DA_93, 0xFF_83_5A_35, 0xFF_FF_FF_FF, new ShaderLayerProvider<?>[]{ LAYER_PROVIDER, YELLOW_CIRCUIT_SHADER_PROVIDER }                                                                                                    , TOWER_DEVICE_SHADER_PROVIDER ).setInfo("Twilight Forest", "Towerwood Planks"         , "towerwood"          ),
-                registerShaderCasesTopped( "Carminite"           , ModType.TWILIGHTFOREST, "carminite", RARITY, 0xFF_72_00_00, 0xFF_FF_00_00, 0xFF_FF_00_00, 0xFF_FF_00_00, new ShaderLayerProvider<?>[]{ (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFFFFFFFF, CARMINITE_TRICONSUMER, ShaderHelper.STAR_UNIFORMS ) }, TOWER_DEVICE_SHADER_PROVIDER ).setInfo("Twilight Forest", "Carminite"                , "carminite"          ),
+                registerShaderCasesTopped( "Carminite"           , ModType.TWILIGHTFOREST, "carminite", RARITY, 0xFF_72_00_00, 0xFF_FF_00_00, 0xFF_FF_00_00, 0xFF_FF_00_00, new ShaderLayerProvider<?>[]{ (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFFFFFFFF, CARMINITE_TRICONSUMER, ShaderManager.STAR_UNIFORMS ) }, TOWER_DEVICE_SHADER_PROVIDER ).setInfo("Twilight Forest", "Carminite"                , "carminite"          ),
 
-                registerShaderCases      ( "Auroralized"         , ModType.TWILIGHTFOREST, "1_5"      , RARITY, 0xFF_00_FF_FF, 0xFF_00_FF_00, 0xFF_00_00_FF, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFFFFFFFF, AURORA_TRICONSUMER   , ShaderHelper.TIME_UNIFORM  )                                                               ).setInfo("Twilight Forest", "Aurora Palace"            , "aurora"             ),
+                registerShaderCases      ( "Auroralized"         , ModType.TWILIGHTFOREST, "1_5"      , RARITY, 0xFF_00_FF_FF, 0xFF_00_FF_00, 0xFF_00_00_FF, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderConsumerLayer( new ResourceLocation(m.provideTex(t, s)), 0xFFFFFFFF, AURORA_TRICONSUMER   , ShaderManager.TIME_UNIFORM  )                                                               ).setInfo("Twilight Forest", "Aurora Palace"            , "aurora"             ),
 
                 registerShaderCases      ( "Ironwood"            , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_6B_61_61, 0xFF_5F_4D_40, 0xFF_5E_57_4B, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "streaks") ), 0xFF_79_7C_43 ), LAYER_PROVIDER                                                             ).setInfo("Twilight Forest", "Ironwood"                 , "ironwood"           ),
                 registerShaderCases      ( "Steeleaf"            , ModType.TWILIGHTFOREST, "1_0"      , RARITY, 0xFF_52_87_3A, 0xFF_1E_32_14, 0xFF_41_62_30, 0xFF_FF_FF_FF, (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.IMMERSIVEENGINEERING.provideTex(t, "1_4") ), 0xFF_41_62_30 ), (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "streaks") ), 0xFF_6D_A2_5E ), LAYER_PROVIDER ).setInfo("Twilight Forest", "Steeleaf"                 , "steeleaf"           ),

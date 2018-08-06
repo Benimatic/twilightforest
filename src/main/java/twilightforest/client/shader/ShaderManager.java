@@ -27,7 +27,7 @@ import twilightforest.client.TFClientEvents;
 
 import javax.annotation.Nullable;
 
-public final class ShaderHelper {
+public final class ShaderManager {
     private static IResourceManagerReloadListener shaderReloadListener;
 
     private static final int VERT = ARBVertexShader.GL_VERTEX_SHADER_ARB;
@@ -45,6 +45,7 @@ public final class ShaderHelper {
             yellowCircuitShader,
             bloomShader,
             starburstShader,
+            shieldShader,
             outlineShader;
 
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
@@ -102,6 +103,7 @@ public final class ShaderHelper {
         yellowCircuitShader    = createProgram("standard_texcoord2.vert", "pulsing_yellow.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
         starburstShader        = createProgram("standard_texcoord2.vert", "starburst.frag");
+        shieldShader           = createProgram("standard_texcoord2.vert", "shield.frag");
         //outlineShader          = createProgram("outline.vert", "outline.frag");
     }
 
@@ -121,6 +123,19 @@ public final class ShaderHelper {
         ARBShaderObjects.glUseProgramObjectARB(shader);
 
         if(shader != 0) uniform.assignUniform(shader);
+    }
+
+    public static void useShader(int shader, ShaderUniform... uniforms) {
+        if(!useShaders())
+            return;
+
+        ARBShaderObjects.glUseProgramObjectARB(shader);
+
+        if(shader != 0) {
+            for (ShaderUniform uniform : uniforms) {
+                uniform.assignUniform(shader);
+            }
+        }
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -204,7 +219,7 @@ public final class ShaderHelper {
 
     private static String readFileAsString(String filename) throws Exception {
         StringBuilder source = new StringBuilder();
-        InputStream in = ShaderHelper.class.getResourceAsStream(filename);
+        InputStream in = ShaderManager.class.getResourceAsStream(filename);
         Exception exception = null;
         BufferedReader reader;
 

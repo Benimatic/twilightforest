@@ -1,13 +1,24 @@
 #version 120
 
-uniform sampler2D zero;
-uniform vec2 texSize;
+#define M_PI 3.1415926535897932384626433832795
 
+uniform sampler2D texture;
 uniform float time;
+uniform vec3 position;
 
-varying vec3 position;
-varying vec3 worldPos;
+uniform vec2 secondPass  = vec2(2.0, 1.0);
+uniform vec2 thirdPass   = vec2(3.0, 1.0);
+uniform vec2 fourthPass  = vec2(4.0, 1.0);
+uniform vec2 fifthPass   = vec2(5.0, 1.0);
+uniform vec2 sixthPass   = vec2(6.0, 1.0);
+uniform vec2 seventhPass = vec2(7.0, 1.0);
+uniform vec2 eighthPass  = vec2(8.0, 1.0);
+
 varying vec2 texCoord0;
+
+varying vec3 worldPos;
+
+varying vec4 colorIn;
 
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
 vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
@@ -106,8 +117,29 @@ float snoise(vec4 v){
                + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
 }
 
-void main() {
-    vec4 color = texture2D(zero, vec2(texCoord0));
+float noiseMultiPass(vec4 v) {
+    return snoise(v)
+        + snoise(v/secondPass .xxxx)
+        + snoise(v/thirdPass  .xxxx)
+        + snoise(v/fourthPass .xxxx)
+        + snoise(v/fifthPass  .xxxx)
+        + snoise(v/sixthPass  .xxxx)
+        + snoise(v/seventhPass.xxxx)
+        + snoise(v/eighthPass .xxxx)
+        ;
+}
 
-    gl_FragColor = vec4( (color.xyz * 0.5 + 0.5) * vec3( 0.7529411765, 1.0, 0.0 ), color.a * sin(snoise(vec4(worldPos.xyz, time / 128.0))) * 2.0 - 0.75);
+void main( void ) {
+    vec4 tex = texture2D(texture, vec2(texCoord0));
+
+    float noise = noiseMultiPass(vec4(worldPos * 2.5, time/100)) * 0.25 + 0.5;
+    //float noise2 = noiseTwoPass(vec4(worldPos * 2, time/50)) * 0.25 + 0.5;
+
+    //float effect = sin(time/10 + noise * 10 + worldPos.y * 10) * 2 - 1;
+    float effect  = sin(time/10 + noise * 20) * 1.5 - 0.5;
+    float effect2 = sin(time/5 + noise * 10) * 100 - 99;
+
+    //gl_FragColor = vec4(vec3(1, 1, 0.5), tex.a * effect);
+    gl_FragColor = vec4(vec3(max(effect, effect2)), 1);
+    //gl_FragColor = vec4(vec3(noise), 1);
 }

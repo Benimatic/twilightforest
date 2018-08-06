@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientEvents;
-import twilightforest.client.shader.ShaderHelper;
+import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
 
 import javax.annotation.Nullable;
@@ -182,14 +182,14 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
                     .endVertex();
 
             // Shader, engage!
-            ShaderHelper.useShader(ShaderHelper.starburstShader, ShaderHelper.TIME);
+            ShaderManager.useShader(ShaderManager.starburstShader, ShaderManager.TIME);
             // Blur the star burst mask
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             tessellator.draw();
             // Deblur, so we don't blur all of the textures in rendering calls afterwards
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
             // Disengage shader
-            ShaderHelper.releaseShader();
+            ShaderManager.releaseShader();
 
             // reset color
             GlStateManager.color(1f, 1f, 1f, 1f);

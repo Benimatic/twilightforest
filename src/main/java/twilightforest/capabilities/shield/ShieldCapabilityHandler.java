@@ -1,6 +1,7 @@
 package twilightforest.capabilities.shield;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
@@ -20,7 +21,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	@Override
 	public void update() {
-		if (!host.world.isRemote && shieldsLeft() > 0 && host.ticksExisted % 240 == 0)
+		if (!host.world.isRemote && shieldsLeft() > 0 && host.ticksExisted % 240 == 0 && (!(host instanceof EntityPlayer) || !((EntityPlayer) host).isCreative()))
 			breakShield();
 	}
 
