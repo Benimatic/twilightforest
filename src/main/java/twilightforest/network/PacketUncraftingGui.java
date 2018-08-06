@@ -49,27 +49,21 @@ public class PacketUncraftingGui implements IMessage {
                         switch (message.type) {
                             case 0:
                                 uncrafting.unrecipeInCycle++;
-                                if (uncrafting.unrecipeInCycle < 0) uncrafting.unrecipeInCycle &= 0x7FFFFFFF;
                                 break;
                             case 1:
                                 uncrafting.unrecipeInCycle--;
-                                if (uncrafting.unrecipeInCycle < 0) uncrafting.unrecipeInCycle &= 0x7FFFFFFF;
                                 break;
                             case 2:
                                 uncrafting.ingredientsInCycle++;
-                                if (uncrafting.ingredientsInCycle < 0) uncrafting.ingredientsInCycle &= 0x7FFFFFFF;
                                 break;
                             case 3:
                                 uncrafting.ingredientsInCycle--;
-                                if (uncrafting.ingredientsInCycle < 0) uncrafting.ingredientsInCycle &= 0x7FFFFFFF;
                                 break;
                             case 4:
                                 uncrafting.recipeInCycle++;
-                                if (uncrafting.recipeInCycle < 0) uncrafting.recipeInCycle &= 0x7FFFFFFF;
                                 break;
                             case 5:
                                 uncrafting.recipeInCycle--;
-                                if (uncrafting.recipeInCycle < 0) uncrafting.recipeInCycle &= 0x7FFFFFFF;
                                 break;
                         }
 

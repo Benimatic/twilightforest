@@ -166,8 +166,6 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 						uncrafting.recipeInCycle--;
 					}
 
-					if (uncrafting.recipeInCycle < 0) uncrafting.recipeInCycle &= 0x7FFFFFFF;
-
 					uncrafting.onCraftMatrixChanged(uncrafting.assemblyMatrix);
 				} else {
 					TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(cycleButton.up ? 0 : 1));
@@ -177,8 +175,6 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 					} else {
 						uncrafting.unrecipeInCycle--;
 					}
-
-					if (uncrafting.unrecipeInCycle < 0) uncrafting.unrecipeInCycle &= 0x7FFFFFFF;
 
 					uncrafting.onCraftMatrixChanged(uncrafting.tinkerInput);
 				}
@@ -198,8 +194,6 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 				} else {
 					uncrafting.ingredientsInCycle--;
 				}
-
-				if (uncrafting.ingredientsInCycle < 0) uncrafting.ingredientsInCycle &= 0x7FFFFFFF;
 
 				uncrafting.onCraftMatrixChanged(uncrafting.tinkerInput);
 			}

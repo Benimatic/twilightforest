@@ -93,7 +93,7 @@ public class ContainerTFUncrafting extends Container {
 			int size = recipes.length;
 
 			if (size > 0) {
-				int recipeType = this.unrecipeInCycle % size;
+				int recipeType = Math.floorMod(this.unrecipeInCycle, size);
 				IRecipe recipe = recipes[recipeType];
 
 				ItemStack[] recipeItems = getIngredients(recipe);
@@ -191,7 +191,7 @@ public class ContainerTFUncrafting extends Container {
 				IRecipe[] recipes = this.getRecipesFor(assemblyMatrix, world);
 
 				if (recipes.length > 0) {
-					int recipeType = this.recipeInCycle % recipes.length;
+					int recipeType = Math.floorMod(this.recipeInCycle, recipes.length);
 					recipe = recipes[recipeType];
 
 					if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
@@ -623,7 +623,7 @@ public class ContainerTFUncrafting extends Container {
 
 		for (int i = 0; i < recipe.getIngredients().size(); i++) {
 			ItemStack[] matchingStacks = recipe.getIngredients().get(i).getMatchingStacks();
-			stacks[i] = matchingStacks.length > 0 ? matchingStacks[this.ingredientsInCycle % matchingStacks.length] : ItemStack.EMPTY;
+			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
 		}
 
 		return stacks;
