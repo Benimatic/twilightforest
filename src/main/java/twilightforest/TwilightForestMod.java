@@ -94,7 +94,7 @@ public class TwilightForestMod {
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.preInit();
 
-		CapabilityManager.INSTANCE.register(IShieldCapability.class, new ShieldCapabilityStorage(), ShieldCapabilityHandler.class);
+		CapabilityManager.INSTANCE.register(IShieldCapability.class, new ShieldCapabilityStorage(), ShieldCapabilityHandler::new);
 
 		TFTreasure.init();
 
