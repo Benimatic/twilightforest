@@ -12,7 +12,7 @@ public class TFGenLampposts extends TFGenerator {
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
 		// we should start on a grass block
-		if (world.getBlockState(pos.down()) == Blocks.GRASS) {
+		if (world.getBlockState(pos.down()).getBlock() == Blocks.GRASS) {
 			// generate a height
 			int height = 1 + rand.nextInt(4);
 			boolean clear = true;

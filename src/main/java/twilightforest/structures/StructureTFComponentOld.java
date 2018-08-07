@@ -119,7 +119,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos) != Blocks.MOB_SPAWNER) {
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER) {
 			world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), 2);
 			tileEntitySpawner = (TileEntityMobSpawner) world.getTileEntity(pos);
 			if (tileEntitySpawner != null) {
