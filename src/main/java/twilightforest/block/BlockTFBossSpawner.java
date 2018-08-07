@@ -3,6 +3,7 @@ package twilightforest.block;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +28,8 @@ import java.util.Random;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
-	public static final PropertyEnum<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class);
+
+	public static final IProperty<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class);
 
 	protected BlockTFBossSpawner() {
 		super(Material.ROCK);
@@ -49,24 +51,18 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, BossVariant.values()[meta]);
+		return getDefaultState().withProperty(VARIANT, BossVariant.getVariant(meta));
 	}
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return true;
+		return state.getValue(VARIANT).hasSpawner();
 	}
 
 	@Override
 	@Nullable
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		try {
-			return state.getValue(VARIANT).getSpawnerClass().newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return state.getValue(VARIANT).getSpawner();
 	}
 
 	@Override
