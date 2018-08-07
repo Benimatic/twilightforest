@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFScepterLifeDrain extends ItemTF {
@@ -69,6 +70,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	/**
 	 * What, if anything, is the player currently looking at?
 	 */
+	@Nullable
 	private Entity getPlayerLookTarget(World world, EntityLivingBase living) {
 		Entity pointedEntity = null;
 		double range = 20.0D;

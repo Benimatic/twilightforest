@@ -198,7 +198,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	public boolean isSpooked() {
 		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
 
-		return this.hurtTime > 0 || (closestPlayer != null && (closestPlayer.inventory.getCurrentItem() == null || closestPlayer.inventory.getCurrentItem().getItem() != Items.WHEAT_SEEDS));
+		return this.hurtTime > 0 || (closestPlayer != null && closestPlayer.inventory.getCurrentItem().getItem() != Items.WHEAT_SEEDS);
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {

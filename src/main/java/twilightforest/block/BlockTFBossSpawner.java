@@ -7,6 +7,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -19,7 +20,7 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
@@ -57,7 +58,7 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	@Nonnull
+	@Nullable
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		try {
 			return state.getValue(VARIANT).getSpawnerClass().newInstance();
@@ -70,7 +71,7 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int fortune) {
-		return null;
+		return Items.AIR;
 	}
 
 	@Override

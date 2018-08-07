@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -453,7 +454,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
 		switch (state.getValue(VARIANT)) {
 			case ANTIBUILDER:
-				return null;
+				return Items.AIR;
 			default:
 				return Item.getItemFromBlock(this);
 		}

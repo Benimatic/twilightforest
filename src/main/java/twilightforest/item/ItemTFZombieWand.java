@@ -4,7 +4,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -17,6 +16,7 @@ import net.minecraft.world.World;
 import twilightforest.entity.EntityTFLoyalZombie;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 
@@ -64,6 +64,7 @@ public class ItemTFZombieWand extends ItemTF {
 	 *
 	 * @return
 	 */
+	@Nullable
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, float range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);

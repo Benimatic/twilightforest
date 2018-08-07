@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -170,7 +171,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
 			return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 		} else {
-			return null;
+			return Items.AIR;
 		}
 	}
 

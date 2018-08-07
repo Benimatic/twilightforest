@@ -18,6 +18,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -700,7 +701,8 @@ public class HydraHeadContainer {
 		}
 	}
 
-	// TODO this seems copied from somwhere?
+	// TODO this seems copied from somewhere?
+	@Nullable
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
@@ -751,6 +753,7 @@ public class HydraHeadContainer {
 	/**
 	 * Search for nearby heads with the string as their name
 	 */
+	@Nullable
 	private EntityTFHydraHead findNearbyHead(String string) {
 		List<EntityTFHydraHead> nearbyHeads = hydraObj.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).grow(16.0D, 16.0D, 16.0D));
 

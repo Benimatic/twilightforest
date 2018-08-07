@@ -9,6 +9,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -78,7 +79,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
-		return null;
+		return Items.AIR;
 	}
 
 	@Override

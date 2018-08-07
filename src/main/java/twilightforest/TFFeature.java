@@ -47,6 +47,7 @@ import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -726,6 +727,7 @@ public enum TFFeature {
 	}
 
 	// [Vanilla Copy] from MapGenStructure#findNearestStructurePosBySpacing; changed 2nd param to be TFFeature instead of MapGenStructure
+	@Nullable
 	public static BlockPos findNearestFeaturePosBySpacing(World worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
 		int i = blockPos.getX() >> 4;
 		int j = blockPos.getZ() >> 4;

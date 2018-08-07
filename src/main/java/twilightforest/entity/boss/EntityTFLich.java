@@ -35,6 +35,7 @@ import twilightforest.entity.ai.EntityAITFLichShadows;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -412,6 +413,7 @@ public class EntityTFLich extends EntityMob {
 	 * Returns coords that would be good to teleport to.
 	 * Returns null if we can't find anything
 	 */
+	@Nullable
 	public Vec3d findVecInLOSOf(Entity targetEntity) {
 		if (targetEntity == null) return null;
 		double origX = posX;

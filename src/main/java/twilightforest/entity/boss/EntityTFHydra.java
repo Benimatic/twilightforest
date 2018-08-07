@@ -37,6 +37,7 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -541,6 +542,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		return distX * distX + distZ * distZ;
 	}
 
+	@Nullable
 	private EntityLivingBase findSecondaryTarget(double range) {
 		return this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).grow(range, range, range))
 				.stream()
