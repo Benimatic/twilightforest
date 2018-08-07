@@ -418,7 +418,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (bottom == 0)
 		{
 			makeLargeStairsUp(world, sbb, rotation, 0);
-			rotation.add(Rotation.COUNTERCLOCKWISE_90);
+			rotation = rotation.add(Rotation.COUNTERCLOCKWISE_90);
 			bottom += spacing;
 		}
 
