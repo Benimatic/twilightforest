@@ -126,15 +126,13 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
-
 	@Override
 	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
-		// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
 		if (creatureType == EnumCreatureType.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : Lists.newArrayList();
-		} else {
-			return creatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (creatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (creatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
 		}
+		return super.getSpawnableList(creatureType);
 	}
 
 	@Override

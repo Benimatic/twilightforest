@@ -67,12 +67,11 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	@Override
 	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
-		// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
 		if (creatureType == EnumCreatureType.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : emptyList;
-		} else {
-			return creatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (creatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (creatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
 		}
+		return super.getSpawnableList(creatureType);
 	}
 
 	@Override
