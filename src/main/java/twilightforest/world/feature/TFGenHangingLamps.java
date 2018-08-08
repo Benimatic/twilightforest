@@ -20,38 +20,34 @@ public class TFGenHangingLamps extends TFGenerator {
 			return false;
 		}
 
-		// there should be leaves or wood within 12 blocks above
-		if (!areLeavesAbove(world, pos)) {
-			return false;
-		}
-
 		// we need to be at least 4 above ground
 		if (!isClearBelow(world, pos)) {
 			return false;
 		}
 
+		// there should be leaves or wood within 12 blocks above
+		int dist = findLeavesAbove(world, pos);
+		if (dist < 0) {
+			return false;
+		}
+
 		// generate lamp
 		world.setBlockState(pos, TFBlocks.firefly_jar.getDefaultState());
-
-		for (int cy = 1; cy < MAX_HANG; cy++) {
-			Material above = world.getBlockState(pos.up(cy)).getMaterial();
-			if (above.isSolid() || above == Material.LEAVES) {
-				break;
-			}
+		for (int cy = 1; cy < dist; cy++) {
 			world.setBlockState(pos.up(cy), Blocks.OAK_FENCE.getDefaultState());
 		}
 
 		return true;
 	}
 
-	private boolean areLeavesAbove(World world, BlockPos pos) {
+	private int findLeavesAbove(World world, BlockPos pos) {
 		for (int cy = 1; cy < MAX_HANG; cy++) {
 			Material above = world.getBlockState(pos.up(cy)).getMaterial();
 			if (above.isSolid() || above == Material.LEAVES) {
-				return true;
+				return cy;
 			}
 		}
-		return false;
+		return -1;
 	}
 
 	private boolean isClearBelow(World world, BlockPos pos) {
