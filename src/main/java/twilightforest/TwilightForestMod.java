@@ -57,10 +57,11 @@ public class TwilightForestMod {
 	public static final String ID = "twilightforest";
 	public static final String VERSION = "@VERSION@";
 
-	public static final String MODEL_DIR = "twilightforest:textures/model/";
-	public static final String GUI_DIR = "twilightforest:textures/gui/";
-	public static final String ENVRIO_DIR = "twilightforest:textures/environment/";
-	public static final String ARMOR_DIR = "twilightforest:textures/armor/";
+	public static final String MODEL_DIR  = ID + ":textures/model/";
+	public static final String GUI_DIR    = ID + ":textures/gui/";
+	public static final String ENVIRO_DIR = ID + ":textures/environment/";
+	public static final String ARMOR_DIR  = ID + ":textures/armor/";
+
 	public static final String ENFORCED_PROGRESSION_RULE = "tfEnforcedProgression";
 
 	public static final int GUI_ID_UNCRAFTING = 1;
@@ -290,24 +291,28 @@ public class TwilightForestMod {
 	private void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
-		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, new ResourceLocation("twilightforest", "naga_spawner"             ));
-		GameRegistry.registerTileEntity(TileEntityTFLichSpawner          .class, new ResourceLocation("twilightforest", "lich_spawner"             ));
-		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner         .class, new ResourceLocation("twilightforest", "hydra_spawner"            ));
-		GameRegistry.registerTileEntity(TileEntityTFSmoker               .class, new ResourceLocation("twilightforest", "smoker"                   ));
-		GameRegistry.registerTileEntity(TileEntityTFPoppingJet           .class, new ResourceLocation("twilightforest", "popping_jet"              ));
-		GameRegistry.registerTileEntity(TileEntityTFFlameJet             .class, new ResourceLocation("twilightforest", "flame_jet"                ));
-		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder         .class, new ResourceLocation("twilightforest", "tower_builder"            ));
-		GameRegistry.registerTileEntity(TileEntityTFAntibuilder          .class, new ResourceLocation("twilightforest", "tower_reverter"           ));
-		GameRegistry.registerTileEntity(TileEntityTFTrophy               .class, new ResourceLocation("twilightforest", "trophy"                   ));
-		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner     .class, new ResourceLocation("twilightforest", "tower_boss_spawner"       ));
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive    .class, new ResourceLocation("twilightforest", "ghast_trap_inactive"      ));
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive      .class, new ResourceLocation("twilightforest", "ghast_trap_active"        ));
-		GameRegistry.registerTileEntity(TileEntityTFCReactorActive       .class, new ResourceLocation("twilightforest", "carminite_reactor_active" ));
-		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, new ResourceLocation("twilightforest", "knight_phantom_spawner"   ));
-		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner     .class, new ResourceLocation("twilightforest", "snow_queen_spawner"       ));
-		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace        .class, new ResourceLocation("twilightforest", "cinder_furnace"           ));
-		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, new ResourceLocation("twilightforest", "minoshroom_spawner"       ));
-		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, new ResourceLocation("twilightforest", "alpha_yeti_spawner"       ));
+		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, prefix("naga_spawner"            ));
+		GameRegistry.registerTileEntity(TileEntityTFLichSpawner          .class, prefix("lich_spawner"            ));
+		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner         .class, prefix("hydra_spawner"           ));
+		GameRegistry.registerTileEntity(TileEntityTFSmoker               .class, prefix("smoker"                  ));
+		GameRegistry.registerTileEntity(TileEntityTFPoppingJet           .class, prefix("popping_jet"             ));
+		GameRegistry.registerTileEntity(TileEntityTFFlameJet             .class, prefix("flame_jet"               ));
+		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder         .class, prefix("tower_builder"           ));
+		GameRegistry.registerTileEntity(TileEntityTFAntibuilder          .class, prefix("tower_reverter"          ));
+		GameRegistry.registerTileEntity(TileEntityTFTrophy               .class, prefix("trophy"                  ));
+		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner     .class, prefix("tower_boss_spawner"      ));
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive    .class, prefix("ghast_trap_inactive"     ));
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive      .class, prefix("ghast_trap_active"       ));
+		GameRegistry.registerTileEntity(TileEntityTFCReactorActive       .class, prefix("carminite_reactor_active"));
+		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, prefix("knight_phantom_spawner"  ));
+		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner     .class, prefix("snow_queen_spawner"      ));
+		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace        .class, prefix("cinder_furnace"          ));
+		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, prefix("minoshroom_spawner"      ));
+		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, prefix("alpha_yeti_spawner"      ));
+	}
+
+	private static ResourceLocation prefix(String name) {
+		return new ResourceLocation(ID, name);
 	}
 
 	public static EnumRarity getRarity() {
