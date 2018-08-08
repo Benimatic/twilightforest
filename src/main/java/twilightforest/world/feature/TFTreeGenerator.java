@@ -29,8 +29,8 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 		this(false);
 	}
 
-	public TFTreeGenerator(boolean par1) {
-		super(par1);
+	public TFTreeGenerator(boolean notify) {
+		super(notify);
 	}
 
 	@Override

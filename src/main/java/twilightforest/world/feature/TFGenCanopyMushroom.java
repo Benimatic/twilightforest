@@ -21,8 +21,8 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		this(false);
 	}
 
-	public TFGenCanopyMushroom(boolean par1) {
-		super(par1);
+	public TFGenCanopyMushroom(boolean notify) {
+		super(notify);
 		treeState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
 		branchState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
 		leafState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);

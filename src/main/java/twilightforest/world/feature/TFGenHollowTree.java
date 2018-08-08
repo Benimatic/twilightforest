@@ -33,8 +33,8 @@ public class TFGenHollowTree extends TFGenerator {
 		this(false);
 	}
 
-	public TFGenHollowTree(boolean par1) {
-		super(par1);
+	public TFGenHollowTree(boolean notify) {
+		super(notify);
 	}
 
 	public static boolean canGrowInto(Block blockType) {

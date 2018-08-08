@@ -25,10 +25,10 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		this(false);
 	}
 
-	public TFGenMangroveTree(boolean par1) {
-		super(par1);
+	public TFGenMangroveTree(boolean notify) {
+		super(notify);
 
-		this.checkForWater = !par1;
+		this.checkForWater = !notify;
 
 		treeState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);

@@ -13,8 +13,8 @@ import java.util.Random;
 
 public class TFGenTreeOfTime extends TFGenHollowTree {
 
-	public TFGenTreeOfTime(boolean par1) {
-		super(par1);
+	public TFGenTreeOfTime(boolean notify) {
+		super(notify);
 
 		this.treeState = TFBlocks.magic_log.getDefaultState();
 		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
