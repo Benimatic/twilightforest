@@ -26,7 +26,7 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallback {
 
-	private static final PropertyEnum<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
+	private static final IProperty<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
 
 	private final boolean isDouble;
 

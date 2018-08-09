@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
@@ -38,8 +39,9 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BlockTFExperiment115 extends Block implements ModelRegisterCallback {
-    public static final PropertyInteger NOMS = PropertyInteger.create("omnomnom", 0, 7);
-    private static final PropertyBool REGENERATE = PropertyBool.create("regenerate");
+
+    public static final IProperty<Integer> NOMS = PropertyInteger.create("omnomnom", 0, 7);
+    private static final IProperty<Boolean> REGENERATE = PropertyBool.create("regenerate");
 
     private static final AxisAlignedBB[] AABB = new AxisAlignedBB[] {
             new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),

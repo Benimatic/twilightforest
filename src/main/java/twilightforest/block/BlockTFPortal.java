@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -35,7 +36,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class BlockTFPortal extends BlockBreakable {
-	public static final PropertyBool DISALLOW_RETURN = PropertyBool.create("is_one_way");
+
+	public static final IProperty<Boolean> DISALLOW_RETURN = PropertyBool.create("is_one_way");
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
 	private static final AxisAlignedBB AABB_ITEM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.4F, 1.0F);

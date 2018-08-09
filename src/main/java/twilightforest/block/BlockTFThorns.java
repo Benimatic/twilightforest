@@ -36,7 +36,7 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
 
-	public static final PropertyEnum<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
+	public static final IProperty<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
 
 	private static final float THORN_DAMAGE = 4.0F;
 
@@ -203,9 +203,9 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		for (int i = 0; i < (hasVariant() ? ThornVariant.values().length : 1); i++) {
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 

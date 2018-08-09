@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,7 +34,8 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockTFHedge extends Block implements ModelRegisterCallback {
-	public static final PropertyEnum<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
+
+	public static final IProperty<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
 	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
 
 	private final int damageDone;
@@ -162,12 +164,12 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
-		return par1Random.nextInt(40) == 0 ? 1 : 0;
+	public int quantityDropped(Random random) {
+		return random.nextInt(40) == 0 ? 1 : 0;
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int par3) {
 		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
 			return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 		} else {
@@ -181,10 +183,10 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int fortune) {
-		if (!par1World.isRemote && state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
-			if (par1World.rand.nextInt(40) == 0) {
-				this.dropBlockAsItem(par1World, pos, state, fortune);
+	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+		if (!world.isRemote && state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
+			if (world.rand.nextInt(40) == 0) {
+				this.dropBlockAsItem(world, pos, state, fortune);
 			}
 		}
 	}

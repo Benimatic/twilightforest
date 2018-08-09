@@ -34,7 +34,7 @@ import java.util.Set;
 
 public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
-	public static final PropertyEnum<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
+	public static final IProperty<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
 	private static final Set<FireJetVariant> ENCASED = EnumSet.of(FireJetVariant.ENCASED_JET_IDLE, FireJetVariant.ENCASED_JET_FLAME, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_SMOKER_ON, FireJetVariant.ENCASED_JET_POPPING);
 
 	protected BlockTFFireJet() {

@@ -3,6 +3,7 @@ package twilightforest.block;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
@@ -36,8 +37,9 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
-	public static final PropertyBool ACTIVE = PropertyBool.create("active");
-	public static final PropertyInteger LOCK_INDEX = PropertyInteger.create("lock_index", 0, 3);
+
+	public static final IProperty<Boolean> ACTIVE = PropertyBool.create("active");
+	public static final IProperty<Integer> LOCK_INDEX = PropertyInteger.create("lock_index", 0, 3);
 	private final boolean isVanished;
 
 	private static final AxisAlignedBB REAPPEARING_BB = new AxisAlignedBB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F);
@@ -233,11 +235,11 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random) {
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 		if (state.getValue(ACTIVE)) ;
 		{
 			for (int i = 0; i < 1; ++i) {
-				//this.sparkle(par1World, x, y, z, par5Random);
+				//this.sparkle(world, x, y, z, random);
 			}
 		}
 	}
@@ -299,10 +301,10 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		if (this == TFBlocks.castle_door)
 			for (int i = 0; i < LOCK_INDEX.getAllowedValues().size(); i++) {
-				par3List.add(new ItemStack(this, 1, i));
+				list.add(new ItemStack(this, 1, i));
 			}
 	}
 

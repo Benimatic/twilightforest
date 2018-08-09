@@ -66,7 +66,7 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int fortune) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Items.AIR;
 	}
 

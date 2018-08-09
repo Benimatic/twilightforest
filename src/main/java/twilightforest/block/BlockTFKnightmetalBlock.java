@@ -59,7 +59,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 	@Override
 	@SideOnly(Side.CLIENT)
 	@Deprecated
-	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 

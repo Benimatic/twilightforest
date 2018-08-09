@@ -34,7 +34,7 @@ public class BlockTFWispyCloud extends BlockBreakable implements ModelRegisterCa
 	}
 
 	@Override
-	public int quantityDropped(Random p_149745_1_) {
+	public int quantityDropped(Random random) {
 		return 0;
 	}
 }

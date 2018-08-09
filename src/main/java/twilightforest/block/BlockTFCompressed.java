@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -36,7 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockTFCompressed extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
+
+    public static final IProperty<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
 
     public BlockTFCompressed() {
         super(Material.IRON, MapColor.IRON);

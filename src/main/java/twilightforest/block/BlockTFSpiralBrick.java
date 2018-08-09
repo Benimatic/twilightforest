@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,8 +30,9 @@ import twilightforest.item.TFItems;
 import javax.annotation.Nullable;
 
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
-    public static final PropertyEnum<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
+
+    public static final IProperty<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
+    public static final IProperty<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 
     public BlockTFSpiralBrick() {
         super(Material.ROCK, MapColor.STONE);

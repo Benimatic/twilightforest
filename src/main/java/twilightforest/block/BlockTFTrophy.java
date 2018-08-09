@@ -49,9 +49,9 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockSkull.FACING);
-		TileEntityTFTrophy trophy = (TileEntityTFTrophy) par1IBlockAccess.getTileEntity(pos);
+		TileEntityTFTrophy trophy = (TileEntityTFTrophy) access.getTileEntity(pos);
 
 		if (trophy != null && trophy.getSkullType() == 0) {
 			// hydra bounds
@@ -71,7 +71,7 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 		} else if (trophy != null && trophy.getSkullType() == 3) {
 			return URGHAST_BB;
 		} else {
-			return super.getBoundingBox(state, par1IBlockAccess, pos);
+			return super.getBoundingBox(state, access, pos);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World var1, IBlockState state) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTFTrophy();
 	}
 

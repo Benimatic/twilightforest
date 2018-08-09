@@ -47,7 +47,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
+	public int quantityDropped(Random random) {
 		return 0;
 	}
 

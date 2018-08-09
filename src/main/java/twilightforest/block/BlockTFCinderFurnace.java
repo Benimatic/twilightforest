@@ -65,7 +65,7 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 	}
 
 	@Override
-	public TileEntity createTileEntity(World p_149915_1_, IBlockState state) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTFCinderFurnace();
 	}
 

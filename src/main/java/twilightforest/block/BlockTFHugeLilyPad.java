@@ -8,6 +8,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -38,8 +39,8 @@ import java.util.List;
 @MethodsReturnNonnullByDefault
 public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallback {
 
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	public static final PropertyEnum<HugeLilypadPiece> PIECE = PropertyEnum.create("piece", HugeLilypadPiece.class);
+	public static final IProperty<EnumFacing> FACING = BlockHorizontal.FACING;
+	public static final IProperty<HugeLilypadPiece> PIECE = PropertyEnum.create("piece", HugeLilypadPiece.class);
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1);
 
 	private boolean isSelfDestructing = false;
