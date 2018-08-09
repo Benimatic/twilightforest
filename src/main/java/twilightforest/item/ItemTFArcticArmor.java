@@ -30,13 +30,14 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallback {
-	public ItemTFArcticArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+
+	public ItemTFArcticArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType) {
+		super(armorMaterial, 0, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.UNCOMMON;
 	}
 

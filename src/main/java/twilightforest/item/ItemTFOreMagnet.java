@@ -68,8 +68,8 @@ public class ItemTFOreMagnet extends ItemTF {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining) {
-		int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
+		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
 
 		if (!world.isRemote && useTime > 10) {
 			int moved = doMagnet(world, living, 0, 0);
@@ -100,7 +100,7 @@ public class ItemTFOreMagnet extends ItemTF {
 			}
 
 			if (moved > 0) {
-				par1ItemStack.damageItem(moved, living);
+				stack.damageItem(moved, living);
 				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
@@ -109,12 +109,12 @@ public class ItemTFOreMagnet extends ItemTF {
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 

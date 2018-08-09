@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 
 public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
 
-	public ItemTFGlassSword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	public ItemTFGlassSword(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

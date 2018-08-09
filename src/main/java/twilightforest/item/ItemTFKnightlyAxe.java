@@ -23,7 +23,7 @@ public class ItemTFKnightlyAxe extends ItemAxe implements ModelRegisterCallback 
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 

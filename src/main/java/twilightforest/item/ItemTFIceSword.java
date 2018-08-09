@@ -15,18 +15,18 @@ import twilightforest.potions.TFPotions;
 
 public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
 
-	public ItemTFIceSword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	public ItemTFIceSword(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
-		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result) {
 			int chillLevel = 2;
-			par2EntityLiving.addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, chillLevel));
+			target.addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, chillLevel));
 		}
 
 		return result;

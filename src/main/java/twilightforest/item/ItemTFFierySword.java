@@ -20,28 +20,28 @@ import java.util.List;
 
 public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback {
 
-	public ItemTFFierySword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	public ItemTFFierySword(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
-		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !par2EntityLiving.isImmuneToFire()) {
-			if (par2EntityLiving.world.isRemote) {
+		if (result && !target.isImmuneToFire()) {
+			if (target.world.isRemote) {
 				for (int var1 = 0; var1 < 20; ++var1) {
 					double var2 = itemRand.nextGaussian() * 0.02D;
 					double var4 = itemRand.nextGaussian() * 0.02D;
 					double var6 = itemRand.nextGaussian() * 0.02D;
 					double var8 = 10.0D;
-					par2EntityLiving.world.spawnParticle(EnumParticleTypes.FLAME, par2EntityLiving.posX + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var2 * var8, par2EntityLiving.posY + itemRand.nextFloat() * par2EntityLiving.height - var4 * var8, par2EntityLiving.posZ + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var6 * var8, var2, var4, var6);
+					target.world.spawnParticle(EnumParticleTypes.FLAME, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - var2 * var8, target.posY + itemRand.nextFloat() * target.height - var4 * var8, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - var6 * var8, var2, var4, var6);
 				}
 			}
 		}

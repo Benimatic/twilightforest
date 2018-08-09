@@ -38,8 +38,8 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	private static final int YSEARCH = 3;
 	protected boolean mapOres;
 
-	protected ItemTFMazeMap(boolean par2MapOres) {
-		this.mapOres = par2MapOres;
+	protected ItemTFMazeMap(boolean mapOres) {
+		this.mapOres = mapOres;
 	}
 
 	// [VanillaCopy] super with own item and id, and y parameter, also whether we have an ore map or not
@@ -274,12 +274,12 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		// disable zooming
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return mapOres ? EnumRarity.EPIC : EnumRarity.UNCOMMON;
 	}
 
