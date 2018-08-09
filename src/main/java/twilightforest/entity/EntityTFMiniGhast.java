@@ -18,8 +18,8 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/mini_ghast");
 	private boolean isMinion = false;
 
-	public EntityTFMiniGhast(World par1World) {
-		super(par1World);
+	public EntityTFMiniGhast(World world) {
+		super(world);
 		this.setSize(1.1F, 1.5F);
 		this.wanderFactor = 4.0F;
 	}
@@ -102,15 +102,15 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		nbttagcompound.setBoolean("isMinion", this.isMinion);
-		super.writeEntityToNBT(nbttagcompound);
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		compound.setBoolean("isMinion", this.isMinion);
+		super.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		if (nbttagcompound.getBoolean("isMinion")) {
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		if (compound.getBoolean("isMinion")) {
 			makeBossMinion();
 		}
 	}

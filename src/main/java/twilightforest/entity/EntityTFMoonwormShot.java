@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.TFBlocks;
 
 public class EntityTFMoonwormShot extends EntityThrowable {
-	public EntityTFMoonwormShot(World par1World) {
-		super(par1World);
+	public EntityTFMoonwormShot(World world) {
+		super(world);
 	}
 
 	public EntityTFMoonwormShot(World world, EntityLivingBase thrower) {
@@ -84,16 +84,16 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
+	protected void onImpact(RayTraceResult ray) {
 		if (!world.isRemote) {
-			if (mop.typeOfHit == Type.BLOCK) {
-				IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(BlockDirectional.FACING, mop.sideHit);
-				world.setBlockState(mop.getBlockPos().offset(mop.sideHit), state);
+			if (ray.typeOfHit == Type.BLOCK) {
+				IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(BlockDirectional.FACING, ray.sideHit);
+				world.setBlockState(ray.getBlockPos().offset(ray.sideHit), state);
 				// todo sound
 			}
 
-			if (mop.entityHit != null) {
-				mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+			if (ray.entityHit != null) {
+				ray.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
 			}
 
 			this.world.setEntityState(this, (byte) 3);

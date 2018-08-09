@@ -53,8 +53,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	private int collisionCounter;
 	private boolean canRampage;
 
-	public EntityTFYetiAlpha(World par1World) {
-		super(par1World);
+	public EntityTFYetiAlpha(World world) {
+		super(world);
 		this.setSize(3.8F, 5.0F);
 		this.experienceValue = 317;
 	}
@@ -147,14 +147,14 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
-		if (!this.canRampage && !this.isTired() && par1DamageSource.isProjectile()) {
+		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
 			return false;
 		}
 
 		this.canRampage = true;
-		return super.attackEntityFrom(par1DamageSource, par2);
+		return super.attackEntityFrom(source, amount);
 	}
 
 	@Override
@@ -286,16 +286,16 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 		return this.canRampage;
 	}
 
-	public void setRampaging(boolean par1) {
-		dataManager.set(RAMPAGE_FLAG, (byte) (par1 ? 1 : 0));
+	public void setRampaging(boolean rampaging) {
+		dataManager.set(RAMPAGE_FLAG, (byte) (rampaging ? 1 : 0));
 	}
 
 	public boolean isRampaging() {
 		return dataManager.get(RAMPAGE_FLAG) == 1;
 	}
 
-	public void setTired(boolean par1) {
-		dataManager.set(TIRED_FLAG, (byte) (par1 ? 1 : 0));
+	public void setTired(boolean tired) {
+		dataManager.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
 		this.canRampage = false;
 	}
 
@@ -304,8 +304,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void fall(float par1, float mult) {
-		super.fall(par1, mult);
+	public void fall(float distance, float multiplier) {
+		super.fall(distance, multiplier);
 
 		if (!this.world.isRemote && isRampaging()) {
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -322,8 +322,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 
 		// mark the lair as defeated
 		if (!world.isRemote) {
@@ -361,24 +361,24 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		BlockPos home = this.getHomePosition();
-		nbttagcompound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
-		nbttagcompound.setBoolean("HasHome", this.hasHome());
-		super.writeEntityToNBT(nbttagcompound);
+		compound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
+		compound.setBoolean("HasHome", this.hasHome());
+		super.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		if (nbttagcompound.hasKey("Home", 9)) {
-			NBTTagList nbttaglist = nbttagcompound.getTagList("Home", 6);
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		if (compound.hasKey("Home", 9)) {
+			NBTTagList nbttaglist = compound.getTagList("Home", 6);
 			int hx = (int) nbttaglist.getDoubleAt(0);
 			int hy = (int) nbttaglist.getDoubleAt(1);
 			int hz = (int) nbttaglist.getDoubleAt(2);
 			this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 30);
 		}
-		if (!nbttagcompound.getBoolean("HasHome")) {
+		if (!compound.getBoolean("HasHome")) {
 			this.detachHome();
 		}
 		if (this.hasCustomName()) {

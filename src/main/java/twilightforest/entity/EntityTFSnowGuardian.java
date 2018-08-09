@@ -27,8 +27,8 @@ import twilightforest.item.TFItems;
 public class EntityTFSnowGuardian extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/snow_guardian");
 
-	public EntityTFSnowGuardian(World par1World) {
-		super(par1World);
+	public EntityTFSnowGuardian(World world) {
+		super(world);
 		this.setSize(0.6F, 1.8F);
 	}
 

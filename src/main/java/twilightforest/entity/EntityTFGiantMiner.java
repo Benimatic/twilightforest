@@ -23,8 +23,8 @@ import twilightforest.TwilightForestMod;
 public class EntityTFGiantMiner extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/giant_miner");
 
-	public EntityTFGiantMiner(World par1World) {
-		super(par1World);
+	public EntityTFGiantMiner(World world) {
+		super(world);
 		this.setSize(this.width * 4.0F, this.height * 4.0F);
 
 		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {

@@ -58,7 +58,7 @@ public class EntityTFPinchBeetle extends EntityMob {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block var4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 
@@ -87,12 +87,12 @@ public class EntityTFPinchBeetle extends EntityMob {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		if (this.getPassengers().isEmpty() && !par1Entity.isRiding()) {
-			par1Entity.startRiding(this);
+	public boolean attackEntityAsMob(Entity entity) {
+		if (this.getPassengers().isEmpty() && !entity.isRiding()) {
+			entity.startRiding(this);
 		}
 
-		return super.attackEntityAsMob(par1Entity);
+		return super.attackEntityAsMob(entity);
 	}
 
 	@Override

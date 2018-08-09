@@ -12,8 +12,8 @@ public class EntityTFArmoredGiant extends EntityTFGiantMiner {
 
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/armored_giant");
 
-	public EntityTFArmoredGiant(World par1World) {
-		super(par1World);
+	public EntityTFArmoredGiant(World world) {
+		super(world);
 	}
 
 	@Override

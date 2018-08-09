@@ -70,8 +70,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	private int maxDrops;
 	private int damageWhileBeaming;
 
-	public EntityTFSnowQueen(World par1World) {
-		super(par1World);
+	public EntityTFSnowQueen(World world) {
+		super(world);
 		this.setSize(0.7F, 2.2F);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
@@ -249,8 +249,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
 			int dx = MathHelper.floor(this.posX);
@@ -308,8 +308,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float damage) {
-		boolean result = super.attackEntityFrom(par1DamageSource, damage);
+	public boolean attackEntityFrom(DamageSource source, float damage) {
+		boolean result = super.attackEntityFrom(source, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
 			this.damageWhileBeaming += damage;
@@ -349,7 +349,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart MultiPartEntityPart, DamageSource damagesource, float i) {
+	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
 		return false;
 	}
 
@@ -474,8 +474,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
 		if (this.hasCustomName())
 			this.bossInfo.setName(this.getDisplayName());
 	}

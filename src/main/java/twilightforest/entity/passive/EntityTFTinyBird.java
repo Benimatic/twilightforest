@@ -35,8 +35,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 	private BlockPos spawnPosition;
 	private int currentFlightTime;
 
-	public EntityTFTinyBird(World par1World) {
-		super(par1World);
+	public EntityTFTinyBird(World world) {
+		super(world);
 		this.setSize(0.5F, 0.9F);
 		setBirdType(rand.nextInt(4));
 		setIsBirdLanded(true);
@@ -67,23 +67,23 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("BirdType", this.getBirdType());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setInteger("BirdType", this.getBirdType());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setBirdType(par1NBTTagCompound.getInteger("BirdType"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setBirdType(compound.getInteger("BirdType"));
 	}
 
 	public int getBirdType() {
 		return dataManager.get(DATA_BIRDTYPE);
 	}
 
-	public void setBirdType(int par1) {
-		dataManager.set(DATA_BIRDTYPE, (byte) par1);
+	public void setBirdType(int type) {
+		dataManager.set(DATA_BIRDTYPE, (byte) type);
 	}
 
 	@Override
@@ -217,10 +217,10 @@ public class EntityTFTinyBird extends EntityTFBird {
 		return (dataManager.get(DATA_BIRDFLAGS) & 1) != 0;
 	}
 
-	public void setIsBirdLanded(boolean par1) {
+	public void setIsBirdLanded(boolean landed) {
 		byte b0 = dataManager.get(DATA_BIRDFLAGS);
 
-		if (par1) {
+		if (landed) {
 			dataManager.set(DATA_BIRDFLAGS, (byte) (b0 | 1));
 		} else {
 			dataManager.set(DATA_BIRDFLAGS, (byte) (b0 & -2));
@@ -233,7 +233,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	protected void collideWithEntity(Entity par1Entity) {
+	protected void collideWithEntity(Entity entity) {
 	}
 
 	@Override

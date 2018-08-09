@@ -557,27 +557,27 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		super.writeEntityToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("ShadowClone", isShadowClone());
-		nbttagcompound.setByte("ShieldStrength", getShieldStrength());
-		nbttagcompound.setByte("MinionsToSummon", getMinionsToSummon());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("ShadowClone", isShadowClone());
+		compound.setByte("ShieldStrength", getShieldStrength());
+		compound.setByte("MinionsToSummon", getMinionsToSummon());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		setShadowClone(nbttagcompound.getBoolean("ShadowClone"));
-		setShieldStrength(nbttagcompound.getByte("ShieldStrength"));
-		setMinionsToSummon(nbttagcompound.getByte("MinionsToSummon"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		setShadowClone(compound.getBoolean("ShadowClone"));
+		setShieldStrength(compound.getByte("ShieldStrength"));
+		setMinionsToSummon(compound.getByte("MinionsToSummon"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 
 		// mark the tower as defeated
 		if (!world.isRemote && !this.isShadowClone()) {

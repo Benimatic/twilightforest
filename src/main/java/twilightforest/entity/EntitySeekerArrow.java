@@ -26,8 +26,8 @@ public class EntitySeekerArrow extends EntityArrow {
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
-	public EntitySeekerArrow(World par1World) {
-		super(par1World);
+	public EntitySeekerArrow(World world) {
+		super(world);
 	}
 
 	public EntitySeekerArrow(World world, EntityPlayer player) {

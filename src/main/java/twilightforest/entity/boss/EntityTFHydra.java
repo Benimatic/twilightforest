@@ -270,17 +270,17 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		super.writeEntityToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("SpawnHeads", shouldSpawnHeads());
-		nbttagcompound.setByte("NumHeads", (byte) countActiveHeads());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("SpawnHeads", shouldSpawnHeads());
+		compound.setByte("NumHeads", (byte) countActiveHeads());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		setSpawnHeads(nbttagcompound.getBoolean("SpawnHeads"));
-		activateNumberOfHeads(nbttagcompound.getByte("NumHeads"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		setSpawnHeads(compound.getBoolean("SpawnHeads"));
+		activateNumberOfHeads(compound.getByte("NumHeads"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -621,13 +621,13 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart dragonpart, DamageSource damagesource, float i) {
-		return calculateRange(damagesource) <= 400 && super.attackEntityFrom(damagesource, Math.round(i / 8.0F));
+	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
+		return calculateRange(source) <= 400 && super.attackEntityFrom(source, Math.round(damage / 8.0F));
 	}
 
-	public boolean attackEntityFromPart(EntityTFHydraPart part, DamageSource damagesource, float damageAmount) {
+	public boolean attackEntityFromPart(EntityTFHydraPart part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
-		if (!world.isRemote && damagesource == DamageSource.IN_WALL) {
+		if (!world.isRemote && source == DamageSource.IN_WALL) {
 			destroyBlocksInAABB(part.getEntityBoundingBox());
 		}
 
@@ -639,7 +639,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			}
 		}
 
-		double range = calculateRange(damagesource);
+		double range = calculateRange(source);
 
 		if (range > 400) {
 			return false;
@@ -652,11 +652,11 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 		boolean tookDamage;
 		if (headCon != null && headCon.getCurrentMouthOpen() > 0.5) {
-			tookDamage = super.attackEntityFrom(damagesource, damageAmount);
-			headCon.addDamage(damageAmount);
+			tookDamage = super.attackEntityFrom(source, damage);
+			headCon.addDamage(damage);
 		} else {
-			int armoredDamage = Math.round(damageAmount / ARMOR_MULTIPLIER);
-			tookDamage = super.attackEntityFrom(damagesource, armoredDamage);
+			int armoredDamage = Math.round(damage / ARMOR_MULTIPLIER);
+			tookDamage = super.attackEntityFrom(source, armoredDamage);
 
 			if (headCon != null) {
 				headCon.addDamage(armoredDamage);
@@ -733,8 +733,8 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 
 		// mark the lair as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {

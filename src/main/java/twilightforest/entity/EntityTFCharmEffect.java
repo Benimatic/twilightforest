@@ -27,13 +27,13 @@ public class EntityTFCharmEffect extends Entity {
 
 	public float offset;
 
-	public EntityTFCharmEffect(World par1World) {
-		super(par1World);
+	public EntityTFCharmEffect(World world) {
+		super(world);
 		this.setSize(0.25F, 0.25F);
 	}
 
-	public EntityTFCharmEffect(World par1World, EntityLivingBase owner, Item item) {
-		this(par1World);
+	public EntityTFCharmEffect(World world, EntityLivingBase owner, Item item) {
+		this(world);
 
 		this.setOwner(owner);
 		this.setItemID(item);

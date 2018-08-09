@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class EntityTFHydraPart extends EntityLiving {
 	private static final DataParameter<String> PART_NAME = EntityDataManager.createKey(EntityTFHydraPart.class, DataSerializers.STRING);
 
-	public EntityTFHydra hydraObj;
+	public EntityTFHydra hydra;
 
 	public EntityTFHydraPart(World world) {
 		super(world);
@@ -25,7 +25,7 @@ public class EntityTFHydraPart extends EntityLiving {
 	public EntityTFHydraPart(EntityTFHydra hydra, String s, float f, float f1) {
 		super(hydra.world);
 		setSize(f, f1);
-		hydraObj = hydra;
+		this.hydra = hydra;
 		setPartName(s);
 
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
@@ -48,25 +48,25 @@ public class EntityTFHydraPart extends EntityLiving {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		super.writeEntityToNBT(nbttagcompound);
-		nbttagcompound.setString("PartName", getPartName());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setString("PartName", getPartName());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		setPartName(nbttagcompound.getString("PartName"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		setPartName(compound.getString("PartName"));
 	}
 
 	@Override
 	public void onUpdate() {
-		if (this.hydraObj != null && this.hydraObj.deathTime > 190) {
+		if (this.hydra != null && this.hydra.deathTime > 190) {
 			setDead();
 		}
 
 		//  just die if we've been alive 60 seconds and there's still no body
-		if (this.hydraObj == null && this.ticksExisted > 1200) {
+		if (this.hydra == null && this.ticksExisted > 1200) {
 			setDead();
 		}
 
@@ -119,9 +119,9 @@ public class EntityTFHydraPart extends EntityLiving {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (hydraObj != null) {
-			return hydraObj.attackEntityFromPart(this, damagesource, i);
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (hydra != null) {
+			return hydra.attackEntityFromPart(this, source, amount);
 		} else {
 			return false;
 		}
@@ -129,13 +129,13 @@ public class EntityTFHydraPart extends EntityLiving {
 
 	@Override
 	public boolean isEntityEqual(Entity entity) {
-		return this == entity || hydraObj == entity;
+		return this == entity || hydra == entity;
 	}
 
 	@Override
-	protected void setRotation(float par1, float par2) {
-		this.rotationYaw = par1 % 360.0F;
-		this.rotationPitch = par2 % 360.0F;
+	protected void setRotation(float yaw, float pitch) {
+		this.rotationYaw = yaw % 360.0F;
+		this.rotationPitch = pitch % 360.0F;
 	}
 
 	@Override

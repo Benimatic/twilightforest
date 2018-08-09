@@ -20,13 +20,13 @@ public class EntityTFThrownWep extends EntityThrowable {
 
 	private float projectileDamage = 6;
 
-	public EntityTFThrownWep(World par1World, EntityLivingBase par2EntityLivingBase) {
-		super(par1World, par2EntityLivingBase);
+	public EntityTFThrownWep(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 		this.setSize(0.5F, 0.5F);
 	}
 
-	public EntityTFThrownWep(World par1World) {
-		super(par1World);
+	public EntityTFThrownWep(World world) {
+		super(world);
 		this.setSize(0.5F, 0.5F);
 	}
 

@@ -51,7 +51,7 @@ public class RenderTFHydraHead extends RenderLiving<EntityTFHydraHead> {
 	}
 
 	private HydraHeadContainer getHeadObject(Entity entity) {
-		EntityTFHydra hydra = ((EntityTFHydraPart) entity).hydraObj;
+		EntityTFHydra hydra = ((EntityTFHydraPart) entity).hydra;
 
 		if (hydra != null) {
 			for (int i = 0; i < hydra.numHeads; i++) {

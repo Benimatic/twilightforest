@@ -32,8 +32,8 @@ public class EntityTFYeti extends EntityMob {
 	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, 0).setSaved(false);
 
-	public EntityTFYeti(World par1World) {
-		super(par1World);
+	public EntityTFYeti(World world) {
+		super(world);
 		this.setSize(1.4F, 2.4F);
 	}
 
@@ -85,13 +85,13 @@ public class EntityTFYeti extends EntityMob {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (par1DamageSource.getTrueSource() != null) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (source.getTrueSource() != null) {
 			// become angry
 			this.setAngry(true);
 		}
 
-		return super.attackEntityFrom(par1DamageSource, par2);
+		return super.attackEntityFrom(source, amount);
 	}
 
 	public boolean isAngry() {
@@ -113,15 +113,15 @@ public class EntityTFYeti extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("Angry", this.isAngry());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("Angry", this.isAngry());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setAngry(par1NBTTagCompound.getBoolean("Angry"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setAngry(compound.getBoolean("Angry"));
 	}
 
 	/**

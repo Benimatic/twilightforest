@@ -13,8 +13,8 @@ import twilightforest.item.TFItems;
 public class EntityTFMinoshroom extends EntityTFMinotaur {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minoshroom");
 
-	public EntityTFMinoshroom(World par1World) {
-		super(par1World);
+	public EntityTFMinoshroom(World world) {
+		super(world);
 		this.setSize(1.49F, 2.9F);
 		this.experienceValue = 100;
 		this.setDropChance(EntityEquipmentSlot.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped

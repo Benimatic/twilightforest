@@ -128,7 +128,7 @@ public class HydraHeadContainer {
 	private int damageTaken;
 	public int respawnCounter;
 
-	private final EntityTFHydra hydraObj;
+	private final EntityTFHydra hydra;
 
 	private final Map<State, Float>[] stateNeckLength;
 	private final Map<State, Float>[] stateXRotations;
@@ -139,24 +139,24 @@ public class HydraHeadContainer {
 	@SuppressWarnings("unchecked")
 	public HydraHeadContainer(EntityTFHydra hydra, int number, boolean startActive) {
 		this.headNum = number;
-		this.hydraObj = hydra;
+		this.hydra = hydra;
 
 		this.damageTaken = 0;
 		this.respawnCounter = -1;
 
-		necka = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "a", 2F, 2F);
-		neckb = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "b", 2F, 2F);
-		neckc = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "c", 2F, 2F);
-		neckd = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "d", 2F, 2F);
-		necke = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "e", 2F, 2F);
+		necka = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "a", 2F, 2F);
+		neckb = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "b", 2F, 2F);
+		neckc = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "c", 2F, 2F);
+		neckd = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "d", 2F, 2F);
+		necke = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "e", 2F, 2F);
 
 		// state positions, where is each state positioned?
-		stateNeckLength = new Map[hydraObj.numHeads];
-		stateXRotations = new Map[hydraObj.numHeads];
-		stateYRotations = new Map[hydraObj.numHeads];
-		stateMouthOpen = new Map[hydraObj.numHeads];
+		stateNeckLength = new Map[this.hydra.numHeads];
+		stateXRotations = new Map[this.hydra.numHeads];
+		stateYRotations = new Map[this.hydra.numHeads];
+		stateMouthOpen = new Map[this.hydra.numHeads];
 
-		for (int i = 0; i < hydraObj.numHeads; i++) {
+		for (int i = 0; i < this.hydra.numHeads; i++) {
 			stateNeckLength[i] = new EnumMap<>(State.class);
 			stateXRotations[i] = new EnumMap<>(State.class);
 			stateYRotations[i] = new EnumMap<>(State.class);
@@ -340,7 +340,7 @@ public class HydraHeadContainer {
 			headEntity.width = headEntity.height = this.isActive() ? 4.0F : 1.0F;
 
 			// only actually do these things on the server
-			if (!hydraObj.world.isRemote) {
+			if (!hydra.world.isRemote) {
 				advanceRespawnCounter();
 				advanceHeadState();
 				setHeadPosition();
@@ -448,7 +448,7 @@ public class HydraHeadContainer {
 	private void setHeadFacing() {
 		if (this.currentState == HydraHeadContainer.State.BITE_READY) {
 			// face target within certain constraints
-			this.faceEntity(targetEntity, 5F, hydraObj.getVerticalFaceSpeed());
+			this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
 
 			// head 0 and 1 max yaw
 			float biteMaxYaw = -60;
@@ -460,13 +460,13 @@ public class HydraHeadContainer {
 				biteMinYaw = 90;
 			}
 
-			float yawOffOffset = MathHelper.wrapDegrees(headEntity.rotationYaw - hydraObj.renderYawOffset);
+			float yawOffOffset = MathHelper.wrapDegrees(headEntity.rotationYaw - hydra.renderYawOffset);
 
 			if (yawOffOffset > biteMaxYaw) {
-				headEntity.rotationYaw = hydraObj.renderYawOffset + biteMaxYaw;
+				headEntity.rotationYaw = hydra.renderYawOffset + biteMaxYaw;
 			}
 			if (yawOffOffset < biteMinYaw) {
-				headEntity.rotationYaw = hydraObj.renderYawOffset + biteMinYaw;
+				headEntity.rotationYaw = hydra.renderYawOffset + biteMinYaw;
 			}
 
 			// make the target vector be a point off in the distance in the direction we're already facing
@@ -476,24 +476,24 @@ public class HydraHeadContainer {
 			this.targetY = headEntity.posY + 1.5 + look.y * distance;
 			this.targetZ = headEntity.posZ + look.z * distance;
 		} else if (this.currentState == State.BITING || this.currentState == HydraHeadContainer.State.BITE_ENDING) {
-			this.faceEntity(targetEntity, 5F, hydraObj.getVerticalFaceSpeed());
+			this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
 			headEntity.rotationPitch += Math.PI / 4;
 		} else if (this.currentState == HydraHeadContainer.State.ROAR_RAWR) {
 			// keep facing target vector, don't move
-			this.faceVec(this.targetX, this.targetY, this.targetZ, 10F, hydraObj.getVerticalFaceSpeed());
+			this.faceVec(this.targetX, this.targetY, this.targetZ, 10F, hydra.getVerticalFaceSpeed());
 		} else if (this.currentState == HydraHeadContainer.State.FLAMING || (this.currentState == HydraHeadContainer.State.FLAME_BEGINNING)) {
 			// move flame breath slowly towards the player
 			moveTargetCoordsTowardsTargetEntity(FLAME_BREATH_TRACKING_SPEED);
 			// face the target coordinates
-			this.faceVec(this.targetX, this.targetY, this.targetZ, 5F, hydraObj.getVerticalFaceSpeed());
+			this.faceVec(this.targetX, this.targetY, this.targetZ, 5F, hydra.getVerticalFaceSpeed());
 		} else {
 			if (this.isActive()) {
 				if (this.targetEntity != null) {
 					// watch the target entity
-					this.faceEntity(targetEntity, 5F, hydraObj.getVerticalFaceSpeed());
+					this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
 				} else {
 					// while idle, look where the body is looking?
-					faceIdle(1.5F, hydraObj.getVerticalFaceSpeed());
+					faceIdle(1.5F, hydra.getVerticalFaceSpeed());
 				}
 			}
 		}
@@ -604,8 +604,8 @@ public class HydraHeadContainer {
 		}
 
 
-		vector = vector.rotateYaw((-(hydraObj.renderYawOffset + neckRotation) * 3.141593F) / 180F);
-		setNeckPositon(hydraObj.posX + vector.x, hydraObj.posY + vector.y, hydraObj.posZ + vector.z, hydraObj.renderYawOffset, 0);
+		vector = vector.rotateYaw((-(hydra.renderYawOffset + neckRotation) * 3.141593F) / 180F);
+		setNeckPositon(hydra.posX + vector.x, hydra.posY + vector.y, hydra.posZ + vector.z, hydra.renderYawOffset, 0);
 	}
 
 	protected void setHeadPosition() {
@@ -626,8 +626,8 @@ public class HydraHeadContainer {
 		float periodX = (headNum == 0 || headNum == 3) ? 20F : ((headNum == 1 || headNum == 4) ? 5.0f : 7.0F);
 		float periodY = (headNum == 0 || headNum == 4) ? 10F : ((headNum == 1 || headNum == 6) ? 6.0f : 5.0F);
 
-		float xSwing = MathHelper.sin(hydraObj.ticksExisted / periodX) * 3.0F;
-		float ySwing = MathHelper.sin(hydraObj.ticksExisted / periodY) * 5.0F;
+		float xSwing = MathHelper.sin(hydra.ticksExisted / periodX) * 3.0F;
+		float ySwing = MathHelper.sin(hydra.ticksExisted / periodY) * 5.0F;
 
 		if (!this.isActive()) {
 			xSwing = ySwing = 0;
@@ -635,11 +635,11 @@ public class HydraHeadContainer {
 
 		vector = new Vec3d(0, 0, neckLength); // -53 = 3.3125
 		vector = vector.rotatePitch((xRotation * 3.141593F + xSwing) / 180F);
-		vector = vector.rotateYaw((-(hydraObj.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
+		vector = vector.rotateYaw((-(hydra.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
 
-		dx = hydraObj.posX + vector.x;
-		dy = hydraObj.posY + vector.y + 3;
-		dz = hydraObj.posZ + vector.z;
+		dx = hydra.posX + vector.x;
+		dy = hydra.posY + vector.y + 3;
+		dz = hydra.posZ + vector.z;
 
 		headEntity.setPosition(dx, dy, dz);
 		headEntity.setMouthOpen(getCurrentMouthOpen());
@@ -672,7 +672,7 @@ public class HydraHeadContainer {
 			for (Entity nearby : nearbyList) {
 				if (nearby instanceof EntityLivingBase && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra) && !(nearby instanceof MultiPartEntityPart)) {
 					// bite it!
-					nearby.attackEntityFrom(DamageSource.causeMobDamage(hydraObj), BITE_DAMAGE);
+					nearby.attackEntityFrom(DamageSource.causeMobDamage(hydra), BITE_DAMAGE);
 				}
 			}
 		}
@@ -693,7 +693,7 @@ public class HydraHeadContainer {
 	}
 
 	private void setDifficultyVariables() {
-		if (this.hydraObj.world.getDifficulty() != EnumDifficulty.HARD) {
+		if (this.hydra.world.getDifficulty() != EnumDifficulty.HARD) {
 			HydraHeadContainer.FLAME_BREATH_TRACKING_SPEED = 0.04D;
 		} else {
 			// hard mode!
@@ -755,11 +755,11 @@ public class HydraHeadContainer {
 	 */
 	@Nullable
 	private EntityTFHydraHead findNearbyHead(String string) {
-		List<EntityTFHydraHead> nearbyHeads = hydraObj.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydraObj.posX, hydraObj.posY, hydraObj.posZ, hydraObj.posX + 1, hydraObj.posY + 1, hydraObj.posZ + 1).grow(16.0D, 16.0D, 16.0D));
+		List<EntityTFHydraHead> nearbyHeads = hydra.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydra.posX, hydra.posY, hydra.posZ, hydra.posX + 1, hydra.posY + 1, hydra.posZ + 1).grow(16.0D, 16.0D, 16.0D));
 
 		for (EntityTFHydraHead nearbyHead : nearbyHeads) {
 			if (nearbyHead.getPartName().equals(string)) {
-				nearbyHead.hydraObj = hydraObj;
+				nearbyHead.hydra = hydra;
 				return nearbyHead;
 			}
 		}
@@ -870,12 +870,12 @@ public class HydraHeadContainer {
 	}
 
 	private void faceIdle(float yawConstraint, float pitchConstraint) {
-		float angle = (((hydraObj.rotationYaw) * 3.141593F) / 180F);
+		float angle = (((hydra.rotationYaw) * 3.141593F) / 180F);
 		float distance = 30.0F;
 
-		double dx = hydraObj.posX - MathHelper.sin(angle) * distance;
-		double dy = hydraObj.posY + 3.0;
-		double dz = hydraObj.posZ + MathHelper.cos(angle) * distance;
+		double dx = hydra.posX - MathHelper.sin(angle) * distance;
+		double dy = hydra.posY + 3.0;
+		double dz = hydra.posZ + MathHelper.cos(angle) * distance;
 
 		faceVec(dx, dy, dz, yawConstraint, pitchConstraint);
 	}

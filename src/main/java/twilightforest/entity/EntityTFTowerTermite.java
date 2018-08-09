@@ -33,8 +33,8 @@ public class EntityTFTowerTermite extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_termite");
 	private AISummonSilverfish summonSilverfish;
 
-	public EntityTFTowerTermite(World par1World) {
-		super(par1World);
+	public EntityTFTowerTermite(World world) {
+		super(world);
 		this.setSize(0.3F, 0.7F);
 	}
 
@@ -94,7 +94,7 @@ public class EntityTFTowerTermite extends EntityMob {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
 	}
 

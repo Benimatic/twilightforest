@@ -657,8 +657,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (damagesource != DamageSource.FALL && super.attackEntityFrom(damagesource, i)) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (source != DamageSource.FALL && super.attackEntityFrom(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			return true;
 		} else {
@@ -799,21 +799,21 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		if (hasHome()) {
 			BlockPos home = this.getHomePosition();
-			nbttagcompound.setTag("Home", new NBTTagIntArray(new int[]{home.getX(), home.getY(), home.getZ()}));
+			compound.setTag("Home", new NBTTagIntArray(new int[]{home.getX(), home.getY(), home.getZ()}));
 		}
 
-		super.writeEntityToNBT(nbttagcompound);
+		super.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
 
-		if (nbttagcompound.hasKey("Home", Constants.NBT.TAG_INT_ARRAY)) {
-			int[] home = nbttagcompound.getIntArray("Home");
+		if (compound.hasKey("Home", Constants.NBT.TAG_INT_ARRAY)) {
+			int[] home = compound.getIntArray("Home");
 			this.setHomePosAndDistance(new BlockPos(home[0], home[1], home[2]), 20);
 		} else {
 			this.detachHome();
@@ -825,8 +825,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 		// mark the courtyard as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 			int dx = MathHelper.floor(this.posX);

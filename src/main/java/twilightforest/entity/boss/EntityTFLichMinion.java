@@ -14,22 +14,22 @@ import java.util.List;
 public class EntityTFLichMinion extends EntityZombie {
 	EntityTFLich master;
 
-	public EntityTFLichMinion(World par1World) {
-		super(par1World);
+	public EntityTFLichMinion(World world) {
+		super(world);
 		this.master = null;
 	}
 
-	public EntityTFLichMinion(World par1World, EntityTFLich entityTFLich) {
-		super(par1World);
+	public EntityTFLichMinion(World world, EntityTFLich entityTFLich) {
+		super(world);
 		this.master = entityTFLich;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		EntityLivingBase prevTarget = getAttackTarget();
 
-		if (super.attackEntityFrom(par1DamageSource, par2)) {
-			if (par1DamageSource.getTrueSource() instanceof EntityTFLich) {
+		if (super.attackEntityFrom(source, amount)) {
+			if (source.getTrueSource() instanceof EntityTFLich) {
 				// return to previous target but speed up
 				setRevengeTarget(prevTarget);
 				addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 4));

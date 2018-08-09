@@ -178,8 +178,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		}
 	}
 
-	private void damageKnockbackEntities(List<Entity> par1List) {
-		for (Entity entity : par1List) {
+	private void damageKnockbackEntities(List<Entity> entities) {
+		for (Entity entity : entities) {
 			if (entity instanceof EntityLivingBase) {
 				entity.attackEntityFrom(DamageSource.GENERIC, 5);
 
@@ -192,7 +192,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBox(Entity p_70114_1_) {
+	public AxisAlignedBB getCollisionBox(Entity entity) {
 		return null;
 	}
 
@@ -203,22 +203,23 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	//Atomic: Suppressed deprecation, Ideally I'd use a state string here, but that is more work than I'm willing to put in right now.
+	// TODO: use NBTUtil functions
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void readEntityFromNBT(@Nonnull NBTTagCompound nbtTagCompound) {
-		Block b = Block.REGISTRY.getObject(new ResourceLocation(nbtTagCompound.getString("TileID")));
-		int meta = nbtTagCompound.getByte("Meta");
+	protected void readEntityFromNBT(@Nonnull NBTTagCompound compound) {
+		Block b = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("TileID")));
+		int meta = compound.getByte("Meta");
 		this.myState = b.getStateFromMeta(meta);
-		this.slideTime = nbtTagCompound.getInteger("Time");
-		dataManager.set(MOVE_DIRECTION, EnumFacing.getFront(nbtTagCompound.getByte("Direction")));
+		this.slideTime = compound.getInteger("Time");
+		dataManager.set(MOVE_DIRECTION, EnumFacing.getFront(compound.getByte("Direction")));
 	}
 
 	@Override
-	protected void writeEntityToNBT(@Nonnull NBTTagCompound nbtTagCompound) {
-		nbtTagCompound.setString("TileID", myState.getBlock().getRegistryName().toString());
-		nbtTagCompound.setByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
-		nbtTagCompound.setInteger("Time", this.slideTime);
-		nbtTagCompound.setByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
+	protected void writeEntityToNBT(@Nonnull NBTTagCompound compound) {
+		compound.setString("TileID", myState.getBlock().getRegistryName().toString());
+		compound.setByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
+		compound.setInteger("Time", this.slideTime);
+		compound.setByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
 	}
 
 	@Override

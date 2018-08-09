@@ -24,16 +24,16 @@ public class EntityTFIceBomb extends EntityThrowable {
 	private int zoneTimer = 80;
 	private boolean hasHit;
 
-	public EntityTFIceBomb(World par1World) {
-		super(par1World);
+	public EntityTFIceBomb(World world) {
+		super(world);
 	}
 
-	public EntityTFIceBomb(World par1World, EntityLivingBase thrower) {
-		super(par1World, thrower);
+	public EntityTFIceBomb(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
+	protected void onImpact(RayTraceResult ray) {
 		this.motionY = 0;
 		this.hasHit = true;
 
