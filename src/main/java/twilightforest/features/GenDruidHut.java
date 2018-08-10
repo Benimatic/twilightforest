@@ -66,16 +66,18 @@ public class GenDruidHut extends TFGenerator {
 
     private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos startPos, BlockPos size) {
 
-        int originLevel = startPos.getY();
         StatsAccumulator heights = new StatsAccumulator();
 
-        for (int x = 0; x < size.getX(); x++) {
-            for (int z = 0; z < size.getZ(); z++) {
+        for (int dx = 0; dx < size.getX(); dx++) {
+            for (int dz = 0; dz < size.getZ(); dz++) {
 
-                int y = originLevel;
+                int x = startPos.getX() + dx;
+                int z = startPos.getZ() + dz;
+
+                int y = world.getHeight(x, z);
 
                 while (y >= 0) {
-                    IBlockState state = world.getBlockState(new BlockPos(startPos.getX() + x, y, startPos.getZ() + z));
+                    IBlockState state = world.getBlockState(new BlockPos(x, y, z));
                     if (isBlockNotOk(state)) return false;
                     if (isBlockOk(state)) break;
                     y--;
