@@ -29,5 +29,8 @@
   "requirements": [
     [ "yeti", "fur" ],
     [ "previous_progression" ]
-  ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
 }

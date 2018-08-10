@@ -484,6 +484,7 @@ public class TFEventListener {
 			if (cap != null)
 				cap.update();
 		}
+
 		if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().isSneaking() && isRidingUnfriendly(event.getEntityLiving())) {
 			event.getEntityLiving().setSneaking(false);
 		}

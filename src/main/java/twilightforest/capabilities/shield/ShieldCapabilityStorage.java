@@ -13,7 +13,8 @@ public class ShieldCapabilityStorage implements Capability.IStorage<IShieldCapab
 	@Override
 	public NBTBase writeNBT(Capability<IShieldCapability> capability, IShieldCapability instance, EnumFacing side) {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setInteger("shields", instance.shieldsLeft());
+		tag.setInteger("tempshields", instance.temporaryShieldsLeft());
+		tag.setInteger("permshields", instance.permamentShieldsLeft());
 		return tag;
 	}
 
@@ -21,7 +22,8 @@ public class ShieldCapabilityStorage implements Capability.IStorage<IShieldCapab
 	public void readNBT(Capability<IShieldCapability> capability, IShieldCapability instance, EnumFacing side, NBTBase nbt) {
 		if (nbt instanceof NBTTagCompound) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
-			instance.setShields(tag.getInteger("shields"));
+			instance.setShields(tag.getInteger("tempshields"), true);
+			instance.setShields(tag.getInteger("permshields"), false);
 		}
 	}
 }
