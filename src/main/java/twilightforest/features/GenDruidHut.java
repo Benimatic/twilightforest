@@ -46,7 +46,7 @@ public class GenDruidHut extends TFGenerator {
         StructureBoundingBox structureboundingbox = new StructureBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
         PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-        BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1,8);
+        BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
 
         BlockPos transformedSize = template.transformedSize(rotation);
         int dx = random.nextInt(17 - transformedSize.getX());
@@ -54,10 +54,12 @@ public class GenDruidHut extends TFGenerator {
 
         BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.add(dx, 0, dz));
 
-        if (offsetToAverageGroundLevel(world, startPos, transformedSize)) {
-            BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-            template.addBlocksToWorld(world, placementPos, placementsettings, 20);
+        if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
+            return false;
         }
+
+        BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
+        template.addBlocksToWorld(world, placementPos, placementsettings, 20);
 
         return true;
     }
