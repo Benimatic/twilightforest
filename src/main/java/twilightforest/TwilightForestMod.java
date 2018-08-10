@@ -1,15 +1,12 @@
 package twilightforest;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -285,7 +282,7 @@ public class TwilightForestMod {
 	@SuppressWarnings("unused")
 	@EventHandler
 	public void startServer(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandTFFeature());
+		event.registerServerCommand(new CommandTF());
 	}
 
 	private void registerTileEntities() {

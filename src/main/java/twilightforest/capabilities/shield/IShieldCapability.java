@@ -14,10 +14,15 @@ public interface IShieldCapability {
 
 	int shieldsLeft();
 
+	int temporaryShieldsLeft();
+
+	int permamentShieldsLeft();
+
 	void breakShield();
 
 	void replenishShields();
 
-	void setShields(int amount);
+	void setShields(int amount, boolean temp);
 
+    void addShields(int amount, boolean temp);
 }

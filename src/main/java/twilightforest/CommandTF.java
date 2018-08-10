@@ -5,11 +5,14 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
+import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
@@ -20,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class CommandTFFeature extends CommandBase {
+public class CommandTF extends CommandBase {
 	private static final List<String> aliases = ImmutableList.of("tffeature", "twilightforest", "tf");
 
 	@Override
@@ -30,7 +33,7 @@ public class CommandTFFeature extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "tffeature";
+		return "tffeature"; // This has become more of a general-purpose command now, but keeping this for legacy
 	}
 
 	@Override
@@ -97,6 +100,17 @@ public class CommandTFFeature extends CommandBase {
 				throw new CommandException("commands.tffeature.structure.required");
 			}
 		}
+	}
+
+	@Override
+	public boolean isUsernameIndex(String[] args, int index) {
+		try {
+			return EnumActions.valueOf(args[0].toUpperCase(Locale.ROOT)).isUsernameIndex(args, index);
+		} catch (Throwable t) {
+			// Blah blah
+		}
+
+		return false;
 	}
 
 	private enum EnumActions {
@@ -216,6 +230,32 @@ public class CommandTFFeature extends CommandBase {
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				changeStructureActivity(sender, false);
 			}
+		},
+		SHIELD {
+			@Override
+			protected boolean isUsernameIndex(String[] args, int index) {
+				return index == 1;
+			}
+
+			@Override
+			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+				Entity entity = getEntity(server, sender, args[1]);
+
+				if (args.length >= 4 && entity.hasCapability(CapabilityList.SHIELDS, null)) {
+					// If no boolean param is around, then default val is true
+					boolean temp = args.length < 5 || Boolean.valueOf(args[4]);
+
+					IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
+
+					if (cap != null) {
+						if ("set".equals(args[2].toLowerCase(Locale.ROOT))) {
+							cap.setShields(Integer.valueOf(args[3]), temp);
+						} else if ("add".equals(args[2].toLowerCase(Locale.ROOT))) {
+							cap.addShields(Integer.valueOf(args[3]), temp);
+						}
+					}
+				}
+			}
 		};
 
 		private final static String[] ACTION_LIST;
@@ -235,6 +275,10 @@ public class CommandTFFeature extends CommandBase {
 
 		protected List<String> tabCompletion(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 			return Collections.emptyList();
+		}
+
+		protected boolean isUsernameIndex(String[] args, int index) {
+			return false;
 		}
 	}
 }

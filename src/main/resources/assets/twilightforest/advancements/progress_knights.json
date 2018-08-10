@@ -28,5 +28,8 @@
         "advancement": "twilightforest:progress_trophy_pedestal"
       }
     }
+  },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
   }
 }
