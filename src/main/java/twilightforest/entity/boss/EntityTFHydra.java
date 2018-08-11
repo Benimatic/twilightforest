@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -606,9 +607,13 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	private void destroyBlocksInAABB(AxisAlignedBB box) {
 		if (world.getGameRules().getBoolean("mobGriefing")) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+
 				IBlockState state = world.getBlockState(pos);
-				if (!state.getBlock().isAir(state, world, pos) && state.getBlock() != Blocks.OBSIDIAN
-						&& state.getBlock() != Blocks.END_STONE && state.getBlock() != Blocks.BEDROCK) {
+				Block block = state.getBlock();
+
+				if (!block.isAir(state, world, pos) && block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK
+						&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
+
 					world.destroyBlock(pos, false);
 				}
 			}

@@ -99,6 +99,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 			}
 		} else if (canBreak) {
 			if (!charger.world.isRemote && charger.world.getGameRules().getBoolean("mobGriefing")) {
+
 				AxisAlignedBB bb = charger.getEntityBoundingBox();
 				int minx = MathHelper.floor(bb.minX - 0.75D);
 				int miny = MathHelper.floor(bb.minY + 0.0D);
@@ -106,15 +107,21 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 				int maxx = MathHelper.floor(bb.maxX + 0.75D);
 				int maxy = MathHelper.floor(bb.maxY + 0.15D);
 				int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+
 				if (charger.world.isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
 					for (int dx = minx; dx <= maxx; dx++) {
 						for (int dy = miny; dy <= maxy; dy++) {
 							for (int dz = minz; dz <= maxz; dz++) {
+
 								BlockPos pos = new BlockPos(dx, dy, dz);
 								IBlockState state = charger.world.getBlockState(pos);
 								float hardness = state.getBlockHardness(charger.world, pos);
-								if (hardness >= 0 && hardness < 50 && charger.world.getTileEntity(pos) == null)
+
+								if (hardness >= 0 && hardness < 50 && state.getBlock().canEntityDestroy(state, charger.world, pos, charger)
+										&& charger.world.getTileEntity(pos) == null) {
+
 									charger.world.destroyBlock(pos, true);
+								}
 							}
 						}
 					}

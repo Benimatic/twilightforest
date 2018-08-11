@@ -158,10 +158,12 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(world, pos) >= 0) {
+			if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F
+					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) getThrower();
