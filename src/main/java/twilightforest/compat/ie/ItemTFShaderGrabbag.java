@@ -18,8 +18,6 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -133,18 +131,19 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
         ShaderGrabbagStackRenderer tesr = new ShaderGrabbagStackRenderer();
 
         ClientRegistry.bindTileEntitySpecialRenderer(ShaderGrabbagStackRenderer.DummyTile.class, tesr);
-        dummyModel = tesr.baked;
+        ClientEventHandler.dummyModel = tesr.baked;
 
         ForgeHooksClient.registerTESRItemStack(this, 0, ShaderGrabbagStackRenderer.DummyTile.class);
     }
 
-    private static ShaderGrabbagStackRenderer.BakedModel dummyModel;
+    public static final class ClientEventHandler {
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public static void onModelBake(ModelBakeEvent event) {
-        TwilightForestMod.LOGGER.debug("Registering fancy item model for TF Shader Grabbag!");
+        static ShaderGrabbagStackRenderer.BakedModel dummyModel;
 
-        event.getModelRegistry().putObject(new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"), dummyModel);
+        @SubscribeEvent
+        public static void onModelBake(ModelBakeEvent event) {
+            TwilightForestMod.LOGGER.debug("Registering fancy item model for TF Shader Grabbag!");
+            event.getModelRegistry().putObject(new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"), dummyModel);
+        }
     }
 }

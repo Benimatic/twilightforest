@@ -20,6 +20,8 @@ import team.chisel.api.IMC;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.ie.IEShaderRegister;
+import twilightforest.compat.ie.ItemTFShader;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
@@ -72,28 +74,25 @@ public enum TFCompat {
         }
     }, // TODO Forestry
     IMMERSIVEENGINEERING("Immersive Engineering") {
-        //@Override
-        //protected boolean preInit() {
-        //    //try {
-        //    //    VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
+        @Override
+        protected boolean preInit() {
+            //try {
+            //    VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
 
-        //    //    return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
-        //    //} catch (InvalidVersionSpecificationException e) {
-        //    //    return false;
-        //    //}
-        //    if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        //        MinecraftForge.EVENT_BUS.register(ItemTFShaderGrabbag.class);
-
-        //    return true;
-        //}
-        // FIXME uncomment above and event handlers within, when https://github.com/Azanor/thaumcraft-api/issues/38 is fixed.
+            //    return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
+            //} catch (InvalidVersionSpecificationException e) {
+            //    return false;
+            //}
+            registerHandler(Side.CLIENT, ItemTFShaderGrabbag.ClientEventHandler.class);
+            return true;
+        }
 
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
-            items.register("shader", twilightforest.compat.ie.ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
-            items.register("shader_bag", twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag.setUnlocalizedName("tfEngineeringShaderBag"));
+            items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+            items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setUnlocalizedName("tfEngineeringShaderBag"));
 
-            new twilightforest.compat.ie.IEShaderRegister(); // Calling to initialize it all
+            new IEShaderRegister(); // Calling to initialize it all
         }
 
         @Override
@@ -243,6 +242,12 @@ public enum TFCompat {
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }
+        }
+    }
+
+    static void registerHandler(Side side, Object handler) {
+        if (FMLCommonHandler.instance().getSide() == side) {
+            MinecraftForge.EVENT_BUS.register(handler);
         }
     }
 }
