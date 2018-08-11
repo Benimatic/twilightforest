@@ -111,11 +111,11 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 				BlockPos max = new BlockPos(maxx, maxy, maxz);
 
 				if (charger.world.isAreaLoaded(min, max)) {
-				    for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
-                        if (EntityUtil.canDestroyBlock(charger.world, pos, charger) && charger.world.getTileEntity(pos) == null) {
-                            charger.world.destroyBlock(pos, true);
-                        }
-                    }
+					for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+						if (EntityUtil.canDestroyBlock(charger.world, pos, charger) && charger.world.getTileEntity(pos) == null) {
+							charger.world.destroyBlock(pos, true);
+						}
+					}
 				}
 			}
 		}
