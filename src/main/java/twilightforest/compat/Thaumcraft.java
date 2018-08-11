@@ -3,22 +3,23 @@ package twilightforest.compat;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.AspectRegistryEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class Thaumcraft {
     // Use the thaumcraft API to register our things with aspects and biomes with values
-    //@SubscribeEvent
-    public static void registerAspects(/*AspectRegistryEvent event*/) {
+    @SubscribeEvent
+    public static void registerAspects(AspectRegistryEvent event) {
         TwilightForestMod.LOGGER.debug("Attempting to register Thaumcraft Aspects for Twilight Forest items!");
 
         try {
-            TFAspectRegisterHelper helper = new TFAspectRegisterHelper(/*event*/);
+            TFAspectRegisterHelper helper = new TFAspectRegisterHelper(event);
 
             helper.registerTCObjectTag(TFBlocks.twilight_log, new int[]{0, 1}, new AspectList()
                     .add(Aspect.PLANT, 20));
@@ -822,17 +823,17 @@ public class Thaumcraft {
     }
 
     private static class TFAspectRegisterHelper {
-        //private final AspectRegistryEvent event;
 
-        private TFAspectRegisterHelper(/*AspectRegistryEvent event*/) {
-            //this.event = event;
+        private final AspectRegistryEvent event;
+
+        private TFAspectRegisterHelper(AspectRegistryEvent event) {
+            this.event = event;
         }
 
         // Register a block with Thaumcraft aspects
         private void registerTCObjectTag(Block block, int meta, AspectList list) {
             if (meta == -1) meta = OreDictionary.WILDCARD_VALUE;
-            //event.registerObjectTag(new ItemStack(block, 1, meta), list);
-            ThaumcraftApi.registerObjectTag(new ItemStack(block, 1, meta), list);
+            event.register.registerObjectTag(new ItemStack(block, 1, meta), list);
         }
 
         // Register blocks with Thaumcraft aspects
@@ -844,8 +845,7 @@ public class Thaumcraft {
         // Register an item with Thaumcraft aspects
         private void registerTCObjectTag(Item item, int meta, AspectList list) {
             if (meta == -1) meta = OreDictionary.WILDCARD_VALUE;
-            //event.registerObjectTag(new ItemStack(item, 1, meta), list);
-            ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), list);
+            event.register.registerObjectTag(new ItemStack(item, 1, meta), list);
         }
 
         // Register item swith Thaumcraft aspects

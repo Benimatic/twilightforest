@@ -83,7 +83,7 @@ public enum TFCompat {
             //} catch (InvalidVersionSpecificationException e) {
             //    return false;
             //}
-            registerHandler(Side.CLIENT, ItemTFShaderGrabbag.ClientEventHandler.class);
+            registerSidedHandler(Side.CLIENT, ItemTFShaderGrabbag.ClientEventHandler.class);
             return true;
         }
 
@@ -151,14 +151,8 @@ public enum TFCompat {
     THAUMCRAFT("Thaumcraft") {
         @Override
         protected boolean preInit() {
-            //MinecraftForge.EVENT_BUS.register(Thaumcraft.class);
+            MinecraftForge.EVENT_BUS.register(Thaumcraft.class);
             return true;
-        }
-
-        // FIXME uncomment event handler and delete method below, when https://github.com/Azanor/thaumcraft-api/issues/38 is fixed.
-        @Override
-        protected void postInit() {
-            Thaumcraft.registerAspects();
         }
     };
 
@@ -245,7 +239,7 @@ public enum TFCompat {
         }
     }
 
-    static void registerHandler(Side side, Object handler) {
+    static void registerSidedHandler(Side side, Object handler) {
         if (FMLCommonHandler.instance().getSide() == side) {
             MinecraftForge.EVENT_BUS.register(handler);
         }
