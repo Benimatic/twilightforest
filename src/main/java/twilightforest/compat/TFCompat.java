@@ -86,11 +86,7 @@ public enum TFCompat {
 
         //    return true;
         //}
-        // FIXME uncomment above and event handlers within and delete method below, when https://github.com/Azanor/thaumcraft-api/issues/38 is fixed.
-        @Override
-        protected void postInit() {
-            Thaumcraft.registerAspects();
-        }
+        // FIXME uncomment above and event handlers within, when https://github.com/Azanor/thaumcraft-api/issues/38 is fixed.
 
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
@@ -156,11 +152,14 @@ public enum TFCompat {
     THAUMCRAFT("Thaumcraft") {
         @Override
         protected boolean preInit() {
-            //Thaumcraft.init();
-
-            MinecraftForge.EVENT_BUS.register(Thaumcraft.class);
-
+            //MinecraftForge.EVENT_BUS.register(Thaumcraft.class);
             return true;
+        }
+
+        // FIXME uncomment event handler and delete method below, when https://github.com/Azanor/thaumcraft-api/issues/38 is fixed.
+        @Override
+        protected void postInit() {
+            Thaumcraft.registerAspects();
         }
     };
 
