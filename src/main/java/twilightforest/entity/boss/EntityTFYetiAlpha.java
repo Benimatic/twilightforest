@@ -1,8 +1,6 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -41,6 +39,7 @@ import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
 import twilightforest.entity.ai.EntityAITFYetiTired;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
@@ -197,15 +196,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
 		if (world.getGameRules().getBoolean("mobGriefing")) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-
-				IBlockState state = world.getBlockState(pos);
-				Block block = state.getBlock();
-
-				if (!block.isAir(state, world, pos)
-						&& block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK
-						&& state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA
-						&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
-
+				if (EntityUtil.canDestroyBlock(world, pos, this)) {
 					world.destroyBlock(pos, false);
 				}
 			}

@@ -9,7 +9,6 @@ import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -162,7 +161,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(this) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof EntityPlayer) {

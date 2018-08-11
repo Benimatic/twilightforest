@@ -47,6 +47,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.EntityUtil;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -203,7 +204,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		@Override
 		public void startExecuting() {
 			// NAGA SMASH!
-			if (!taskOwner.getWorld().isRemote) {
+			if (!taskOwner.world.isRemote) {
 
 				AxisAlignedBB bb = taskOwner.getEntityBoundingBox();
 				int minx = MathHelper.floor(bb.minX - 0.75D);
@@ -213,20 +214,13 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				int maxy = MathHelper.floor(bb.maxY + 0.0D);
 				int maxz = MathHelper.floor(bb.maxZ + 0.75D);
 
-				if (taskOwner.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
-					for (int dx = minx; dx <= maxx; dx++) {
-						for (int dy = miny; dy <= maxy; dy++) {
-							for (int dz = minz; dz <= maxz; dz++) {
+				BlockPos min = new BlockPos(minx, miny, minz);
+				BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-								BlockPos pos = new BlockPos(dx, dy, dz);
-								IBlockState state = taskOwner.getWorld().getBlockState(pos);
-
-								if (state.getBlockHardness(taskOwner.getWorld(), pos) >= 0
-										&& state.getBlock().canEntityDestroy(state, taskOwner.getWorld(), pos, taskOwner)) {
-
-									taskOwner.getWorld().destroyBlock(pos, true);
-								}
-							}
+				if (taskOwner.world.isAreaLoaded(min, max)) {
+					for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+						if (EntityUtil.canDestroyBlock(taskOwner.world, pos, taskOwner)) {
+							taskOwner.world.destroyBlock(pos, true);
 						}
 					}
 				}
@@ -396,6 +390,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		super.onLivingUpdate();
 
 		if (!world.isRemote && this.world.getGameRules().getBoolean("mobGriefing")) {
+
 			AxisAlignedBB bb = this.getEntityBoundingBox();
 			int minx = MathHelper.floor(bb.minX - 0.75D);
 			int miny = MathHelper.floor(bb.minY + 1.01D);
@@ -403,16 +398,15 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			int maxx = MathHelper.floor(bb.maxX + 0.75D);
 			int maxy = MathHelper.floor(bb.maxY + 0.0D);
 			int maxz = MathHelper.floor(bb.maxZ + 0.75D);
-			if (this.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
-				for (int dx = minx; dx <= maxx; dx++) {
-					for (int dy = miny; dy <= maxy; dy++) {
-						for (int dz = minz; dz <= maxz; dz++) {
-							BlockPos pos = new BlockPos(dx, dy, dz);
-							IBlockState state = this.getWorld().getBlockState(pos);
-							if (state.getMaterial() == Material.LEAVES && state.getBlockHardness(this.getWorld(), pos) >= 0 && state.getBlock().canEntityDestroy(state, this.getWorld(), pos, this)) {
-								this.getWorld().destroyBlock(pos, true);
-							}
-						}
+
+			BlockPos min = new BlockPos(minx, miny, minz);
+			BlockPos max = new BlockPos(maxx, maxy, maxz);
+
+			if (world.isAreaLoaded(min, max)) {
+				for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+					IBlockState state = world.getBlockState(pos);
+					if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(world, pos, state, this)) {
+						world.destroyBlock(pos, true);
 					}
 				}
 			}
@@ -585,9 +579,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			}
 
 			BlockPos pos = new BlockPos(dx, dy, dz);
-			IBlockState state = world.getBlockState(pos);
 
-			if (state.getBlockHardness(world, pos) >= 0.0F && !state.getBlock().isAir(state, world, pos) && state.getBlock().canEntityDestroy(state, world, pos, this)) {
+			if (EntityUtil.canDestroyBlock(world, pos, this)) {
 				// todo limit what can be broken
 				world.destroyBlock(pos, true);
 

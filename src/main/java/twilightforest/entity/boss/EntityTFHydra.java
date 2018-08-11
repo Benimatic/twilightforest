@@ -1,7 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,7 +10,6 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -34,6 +31,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
@@ -607,13 +605,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	private void destroyBlocksInAABB(AxisAlignedBB box) {
 		if (world.getGameRules().getBoolean("mobGriefing")) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-
-				IBlockState state = world.getBlockState(pos);
-				Block block = state.getBlock();
-
-				if (!block.isAir(state, world, pos) && block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK
-						&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
-
+				if (EntityUtil.canDestroyBlock(world, pos, this)) {
 					world.destroyBlock(pos, false);
 				}
 			}
