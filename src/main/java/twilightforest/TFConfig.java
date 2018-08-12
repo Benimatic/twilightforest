@@ -2,7 +2,6 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -16,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
@@ -225,7 +223,7 @@ public class TFConfig {
 		void loadLoadingScreenIcons() {
 			ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
 
-			iconList.addAll(TwilightForestMod.getLoadingIconStacksFromIMC());
+			iconList.addAll(IMCHandler.getLoadingIconStacks());
 
 			for (String s : loadingIconStacks) {
 				String[] data = s.split(":");
@@ -258,7 +256,7 @@ public class TFConfig {
 	private static void loadAntiBuilderBlacklist() {
 		ImmutableSet.Builder<IBlockState> builder = ImmutableSet.builder();
 
-		builder.addAll(TwilightForestMod.getBlacklistedBlocksFromIMC());
+		builder.addAll(IMCHandler.getBlacklistedBlocks());
 
 		for (String s : antibuilderBlacklist) {
 			String[] data = s.split(":");
