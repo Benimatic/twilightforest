@@ -51,8 +51,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
@@ -60,7 +59,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 	@SideOnly(Side.CLIENT)
 	@Deprecated
 	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing side) {
-		return true;
+		return !access.getBlockState(pos.offset(side)).doesSideBlockRendering(access, pos.offset(side), side.getOpposite());
 	}
 
 	@SideOnly(Side.CLIENT)
