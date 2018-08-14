@@ -178,8 +178,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
-    {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
@@ -205,6 +204,11 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         } else {
             return BlockFaceShape.UNDEFINED;
         }
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return getBlockFaceShape(world, state, pos, face) == BlockFaceShape.SOLID;
     }
 
     @Override
