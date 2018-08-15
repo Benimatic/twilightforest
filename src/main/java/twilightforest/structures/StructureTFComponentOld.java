@@ -217,8 +217,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 */
 	protected void placeTripwire(World world, int x, int y, int z, int size, EnumFacing facing, StructureBoundingBox sbb) {
 
-		int dx = facing.getFrontOffsetX();
-		int dz = facing.getFrontOffsetZ();
+		int dx = facing.getXOffset();
+		int dz = facing.getZOffset();
 
 		world.captureBlockSnapshots = true;
 

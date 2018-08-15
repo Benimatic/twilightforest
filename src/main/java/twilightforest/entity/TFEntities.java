@@ -31,7 +31,7 @@ public class TFEntities {
 		}
 
 		private static String toString(ResourceLocation registryName) {
-			return registryName.getResourceDomain() + "." + registryName.getResourcePath();
+			return registryName.getNamespace() + "." + registryName.getPath();
 		}
 
 		final <T extends Entity> EntityEntryBuilder<T> builder(ResourceLocation registryName, Class<T> entity, Function<World, T> factory) {

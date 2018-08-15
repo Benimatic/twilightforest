@@ -24,7 +24,7 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
 		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentYaw;
 
 		GlStateManager.pushMatrix();
-		EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
+		EnumFacing facing = EnumFacing.byIndex(tileentity != null ? tileentity.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;

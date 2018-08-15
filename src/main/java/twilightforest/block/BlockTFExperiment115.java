@@ -177,7 +177,7 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 

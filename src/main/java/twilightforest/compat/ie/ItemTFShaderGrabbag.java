@@ -76,7 +76,7 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
     public String getItemStackDisplayName(ItemStack stack) {
         String name = this.getRarity(stack).rarityName;
 
-        return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), name);
+        return I18n.translateToLocalFormatted(this.getTranslationKey(stack), name);
     }
 
     @Override

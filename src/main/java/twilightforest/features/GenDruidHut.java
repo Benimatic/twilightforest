@@ -34,7 +34,7 @@ public class GenDruidHut extends TFGenerator {
         TemplateManager templatemanager = world.getSaveHandler().getStructureTemplateManager();
         Template template = templatemanager.getTemplate(minecraftserver, STRUCTURE);
 
-        Random random = world.getChunkFromBlockCoords(pos).getRandomWithSeed(987234911L);
+        Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 
         Rotation[] rotations = Rotation.values();
         Rotation rotation = rotations[random.nextInt(rotations.length)];

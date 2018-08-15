@@ -132,7 +132,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 				Biome biomeAt = world.getBiome(dPos);
 
 				if (biomeAt != TFBiomes.enchantedForest) {
-					Chunk chunkAt = world.getChunkFromBlockCoords(dPos);
+					Chunk chunkAt = world.getChunk(dPos);
 					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(TFBiomes.enchantedForest);
 
 					if (world instanceof WorldServer) {

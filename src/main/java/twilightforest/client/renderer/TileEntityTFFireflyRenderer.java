@@ -31,7 +31,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 		float glow = tileentity != null ? tileentity.glowIntensity : BugModelAnimationHelper.glowIntensity;
 
 		GlStateManager.pushMatrix();
-		EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
+		EnumFacing facing = EnumFacing.byIndex(tileentity != null ? tileentity.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;

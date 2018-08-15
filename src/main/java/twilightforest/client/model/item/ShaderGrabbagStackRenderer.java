@@ -156,7 +156,7 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
             Minecraft.getMinecraft().getTextureManager().bindTexture(bg);
 
             // Just gonna borrow your code for a sec blu, thnx
-            int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).rarityColor);
+            int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).color);
 
             // unpack colors
             float r = (c >> 16 & 0xFF) / 255.0f;

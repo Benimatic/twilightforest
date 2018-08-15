@@ -502,8 +502,8 @@ public enum TFFeature {
 	 * modid sensitive
 	 */
 	public static TFFeature getFeatureByName(ResourceLocation name) {
-		if (name.getResourceDomain().equalsIgnoreCase(TwilightForestMod.ID))
-			return getFeatureByName(name.getResourcePath());
+		if (name.getNamespace().equalsIgnoreCase(TwilightForestMod.ID))
+			return getFeatureByName(name.getPath());
 		return NOTHING;
 	}
 

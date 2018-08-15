@@ -123,7 +123,7 @@ public class TFTeleporter extends Teleporter {
 	private boolean checkStructure(BlockPos pos) {
 		IChunkGenerator generator = world.getChunkProvider().chunkGenerator;
 		if (generator instanceof ChunkGeneratorTFBase) {
-			if (!world.isBlockLoaded(pos)) generator.recreateStructures(world.getChunkFromBlockCoords(pos), pos.getX() >> 4, pos.getZ() >> 4);
+			if (!world.isBlockLoaded(pos)) generator.recreateStructures(world.getChunk(pos), pos.getX() >> 4, pos.getZ() >> 4);
 
 			return !((ChunkGeneratorTFBase) generator).isBlockInFullStructure(pos.getX(), pos.getZ());
 		}
@@ -177,7 +177,7 @@ public class TFTeleporter extends Teleporter {
 					}
 
 					// TF - explicitly fetch chunk so it can be unloaded if needed
-					Chunk chunk = this.world.getChunkFromChunkCoords(chunkPos.x, chunkPos.z);
+					Chunk chunk = this.world.getChunk(chunkPos.x, chunkPos.z);
 
 					for (BlockPos blockpos1 = blockpos3.add(i1, getScanHeight(blockpos3) - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
 						blockpos2 = blockpos1.down();
@@ -245,7 +245,7 @@ public class TFTeleporter extends Teleporter {
 
 	private int getScanHeight(int x, int z) {
 		int worldHeight = world.getActualHeight() - 1;
-		int chunkHeight = world.getChunkFromChunkCoords(x >> 4, z >> 4).getTopFilledSegment() + 15;
+		int chunkHeight = world.getChunk(x >> 4, z >> 4).getTopFilledSegment() + 15;
 		return Math.min(worldHeight, chunkHeight);
 	}
 
@@ -316,7 +316,7 @@ public class TFTeleporter extends Teleporter {
 
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
-				world.getChunkFromChunkCoords(x + dx, z + dz);
+				world.getChunk(x + dx, z + dz);
 			}
 		}
 	}

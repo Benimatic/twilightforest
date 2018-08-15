@@ -122,7 +122,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block myBlockID, BlockPos fromPos) {
 		if (!world.isRemote) {
 			FireJetVariant variant = state.getValue(VARIANT);
-			boolean powered = world.isBlockIndirectlyGettingPowered(pos) > 0;
+			boolean powered = world.getRedstonePowerFromNeighbors(pos) > 0;
 
 			if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered) {
 				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);

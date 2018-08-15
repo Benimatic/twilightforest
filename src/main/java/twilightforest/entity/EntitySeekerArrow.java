@@ -60,8 +60,8 @@ public class EntitySeekerArrow extends EntityArrow {
 				Vec3d courseVec = getMotionVec();
 
 				// vector lengths
-				double courseLen = courseVec.lengthVector();
-				double targetLen = targetVec.lengthVector();
+				double courseLen = courseVec.length();
+				double targetLen = targetVec.length();
 				double totalLen = MathHelper.sqrt(courseLen*courseLen + targetLen*targetLen);
 
 				double dotProduct = courseVec.dotProduct(targetVec) / (courseLen * targetLen); // cosine similarity

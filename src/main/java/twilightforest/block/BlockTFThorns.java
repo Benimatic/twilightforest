@@ -99,7 +99,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
 	}
 
@@ -108,7 +108,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 		IBlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() instanceof BlockTFThorns && state.getValue(AXIS) == EnumFacing.Axis.Y)
-			onEntityCollidedWithBlock(world, pos, state, entity);
+			onEntityCollision(world, pos, state, entity);
 
 		super.onEntityWalk(world, pos, entity);
 	}
@@ -131,7 +131,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getMobilityFlag(IBlockState state) {
+	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 
@@ -216,7 +216,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

@@ -61,7 +61,7 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockFurnace.FACING, EnumFacing.getHorizontal(meta));
+		return getDefaultState().withProperty(BlockFurnace.FACING, EnumFacing.byHorizontalIndex(meta));
 	}
 
 	@Override

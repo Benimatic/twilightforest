@@ -39,7 +39,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, BLOCK_DAMAGE);
 	}
 
