@@ -99,7 +99,7 @@ public final class ShaderManager {
         fireflyShader          = createProgram("standard_texcoord2.vert", "firefly.frag");
         auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
         carminiteShader        = createProgram("camera_fixed.vert"      , "spiral.frag");
-        towerDeviceShader      = createProgram("standard_texcoord2.vert", "pulsing.frag");
+        towerDeviceShader      = createProgram("camera_fixed.vert"      , "pulsing.frag");
         yellowCircuitShader    = createProgram("standard_texcoord2.vert", "pulsing_yellow.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
         starburstShader        = createProgram("standard_texcoord2.vert", "starburst.frag");
