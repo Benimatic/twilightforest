@@ -149,9 +149,7 @@ public class TwilightForestMod {
 
 	@EventHandler
 	public void onIMC(FMLInterModComms.IMCEvent event) {
-		for (FMLInterModComms.IMCMessage message : event.getMessages()) {
-			IMCHandler.handleMessage(message);
-		}
+		IMCHandler.onIMC(event);
 	}
 
 	@EventHandler
