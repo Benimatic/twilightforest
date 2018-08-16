@@ -79,6 +79,12 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	@Override
 	@Deprecated
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	@Deprecated
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
