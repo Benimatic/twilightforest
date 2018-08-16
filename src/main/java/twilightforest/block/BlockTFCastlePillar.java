@@ -95,4 +95,9 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     public int damageDropped(IBlockState state) {
         return state.getValue(VARIANT).ordinal() << 1 | (state.getValue(LOG_AXIS) == BlockLog.EnumAxis.NONE ? 1 : 0);
     }
+
+    @Override
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
+        return new ItemStack(this, 1, damageDropped(state));
+    }
 }
