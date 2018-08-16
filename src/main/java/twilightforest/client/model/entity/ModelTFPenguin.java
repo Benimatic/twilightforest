@@ -4,15 +4,13 @@
 // Keep in mind that you still need to fill in some blanks
 // - ZeuX
 
-
 package twilightforest.client.model.entity;
-
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 public class ModelTFPenguin extends ModelBase {
 	//fields
@@ -74,19 +72,19 @@ public class ModelTFPenguin extends ModelBase {
 
 		if (isChild) {
 			float f = 2.0F;
-			GL11.glPushMatrix();
-			GL11.glTranslatef(0.0F, 5F * par7, 0.75F * par7);
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(0.0F, 5F * par7, 0.75F * par7);
 			head.render(par7);
-			GL11.glPopMatrix();
-			GL11.glPushMatrix();
-			GL11.glScalef(1.0F / f, 1.0F / f, 1.0F / f);
-			GL11.glTranslatef(0.0F, 24F * par7, 0.0F);
+			GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
+			GlStateManager.scale(1.0F / f, 1.0F / f, 1.0F / f);
+			GlStateManager.translate(0.0F, 24F * par7, 0.0F);
 			body.render(par7);
 			rightleg.render(par7);
 			leftleg.render(par7);
 			rightarm.render(par7);
 			leftarm.render(par7);
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 		} else {
 			head.render(par7);
 			body.render(par7);

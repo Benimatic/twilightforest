@@ -2,6 +2,7 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
@@ -47,16 +48,15 @@ public class ModelTFIceCrystal extends ModelBase {
 		for (int i = 0; i < spikes.length; i++) {
 
 			if (entity.isEntityAlive()) {
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				GlStateManager.enableBlend();
+				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-				GL11.glColor4f(1F, 1F, 1F, 0.6F);
+				GlStateManager.color(1F, 1F, 1F, 0.6F);
 			}
 
 			this.spikes[i].render(f5);
 
-			GL11.glDisable(GL11.GL_BLEND);
-
+			GlStateManager.disableBlend();
 		}
 	}
 

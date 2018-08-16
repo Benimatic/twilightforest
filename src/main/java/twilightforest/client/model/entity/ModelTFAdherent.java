@@ -2,10 +2,10 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 public class ModelTFAdherent extends ModelBiped {
 
@@ -84,6 +84,6 @@ public class ModelTFAdherent extends ModelBiped {
 		float bounce = par1EntityLiving.ticksExisted + partialTick;
 
 		// this is where we add the floating
-		GL11.glTranslatef(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
+		GlStateManager.translate(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
 	}
 }

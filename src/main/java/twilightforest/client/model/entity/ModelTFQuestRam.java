@@ -6,17 +6,15 @@
 
 package twilightforest.client.model.entity;
 
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.passive.EntityTFQuestRam;
-
 
 public class ModelTFQuestRam extends ModelBase {
 	//fields
@@ -165,12 +163,12 @@ public class ModelTFQuestRam extends ModelBase {
 				float var4 = 1.0F;
 				final float[] dyeRgb = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i));
 
-				GL11.glColor3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
+				GlStateManager.color(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
 				segments[i].render(f5);
 
 			}
 		}
-		GL11.glColor3f(1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {

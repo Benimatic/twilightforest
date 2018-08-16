@@ -28,7 +28,7 @@ public class RenderTFMobileFirefly extends Render<EntityTFMobileFirefly> {
 		// undo rotations so we can draw a billboarded firefly
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
 
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
+		GlStateManager.getFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
