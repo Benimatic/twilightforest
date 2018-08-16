@@ -6,8 +6,8 @@ import twilightforest.entity.EntityTFAdherent;
 
 public class RenderTFAdherent extends RenderTFBiped<EntityTFAdherent> {
 
-	public RenderTFAdherent(RenderManager manager, ModelBiped modelBiped, float scale, String textureName) {
-		super(manager, modelBiped, scale, textureName);
+	public RenderTFAdherent(RenderManager manager, ModelBiped modelBiped, float shadowSize, String textureName) {
+		super(manager, modelBiped, shadowSize, textureName);
 	}
 
 	@Override
