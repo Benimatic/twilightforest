@@ -67,7 +67,7 @@ public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFIceBomb var1) {
+	protected ResourceLocation getEntityTexture(EntityTFIceBomb entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

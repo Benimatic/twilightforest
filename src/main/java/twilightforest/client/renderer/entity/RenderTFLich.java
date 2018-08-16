@@ -24,12 +24,12 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 		private final ModelTFLich model = new ModelTFLich(true);
 
 		@Override
-		public void doRenderLayer(EntityTFLich entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		public void doRenderLayer(EntityTFLich lich, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 			// TODO fix this
 			GlStateManager.enableBlend();
 //	        GlStateManager.disableAlpha();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			if (entitylivingbaseIn.isShadowClone()) {
+			if (lich.isShadowClone()) {
 				// clone alpha
 				float shadow = 0.33f;
 				GlStateManager.color(shadow, shadow, shadow, 0.8F);
@@ -42,7 +42,7 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 
 			bindTexture(LICH_TEXTURE);
 			model.setModelAttributes(RenderTFLich.this.getMainModel());
-			model.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			model.render(lich, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		}
 
 		@Override
@@ -52,7 +52,7 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFLich par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFLich entity) {
 		return LICH_TEXTURE;
 	}
 

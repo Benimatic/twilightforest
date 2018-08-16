@@ -11,7 +11,7 @@ public class RenderTFYeti extends RenderTFBiped<EntityLiving> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityLiving living, float par2) {
+	protected void preRenderCallback(EntityLiving living, float partialTicks) {
 		float scale = 1.0F;
 		GlStateManager.scale(scale, scale, scale);
 	}

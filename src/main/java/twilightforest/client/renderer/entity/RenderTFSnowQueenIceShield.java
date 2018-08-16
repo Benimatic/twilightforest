@@ -65,7 +65,7 @@ public class RenderTFSnowQueenIceShield extends Render<EntityTFSnowQueenIceShiel
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSnowQueenIceShield var1) {
+	protected ResourceLocation getEntityTexture(EntityTFSnowQueenIceShield entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

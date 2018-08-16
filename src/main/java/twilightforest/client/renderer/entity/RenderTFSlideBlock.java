@@ -107,7 +107,7 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSlideBlock p_110775_1_) {
+	protected ResourceLocation getEntityTexture(EntityTFSlideBlock entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

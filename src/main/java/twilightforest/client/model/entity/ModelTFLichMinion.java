@@ -16,8 +16,8 @@ public class ModelTFLichMinion extends ModelZombie {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
-		EntityTFLichMinion minion = (EntityTFLichMinion) par1EntityLiving;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		EntityTFLichMinion minion = (EntityTFLichMinion) entity;
 		// make minions greener
 		if (minion.getActivePotionEffect(MobEffects.STRENGTH) != null) {
 			GlStateManager.color(0.25F, 2.0F, 0.25F);
@@ -27,13 +27,13 @@ public class ModelTFLichMinion extends ModelZombie {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		EntityTFLichMinion minion = (EntityTFLichMinion) par1Entity;
-		// make strong minions bigger
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		EntityTFLichMinion minion = (EntityTFLichMinion) entity;
+		// make strong minions bigger FIXME: actually do this?
 		if (minion.getActivePotionEffect(MobEffects.STRENGTH) != null) {
-			super.render(par1Entity, par2, par3, par4, par5, par6, par7);
+			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		} else {
-			super.render(par1Entity, par2, par3, par4, par5, par6, par7);
+			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		}
 	}
 
