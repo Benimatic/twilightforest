@@ -163,7 +163,7 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
             float g = (c >> 8 & 0xFF) / 255.0f;
             float b = (c & 0xFF) / 255.0f;
 
-            buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
             buffer.pos(x - 1, y + 1, 0)
                     .tex(0, 1)
                     .color(r, g, b, 1f)
