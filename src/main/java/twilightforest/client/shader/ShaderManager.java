@@ -256,4 +256,28 @@ public final class ShaderManager {
             GL20.glValidateProgram(program);
         }
     }
+
+    static void glUniform2i(int location, int v0, int v1) {
+        if (OpenGlHelper.arbShaders) {
+            ARBShaderObjects.glUniform2iARB(location, v0, v1);
+        } else {
+            GL20.glUniform2i(location, v0, v1);
+        }
+    }
+
+    static void glUniform1f(int location, float v0) {
+        if (OpenGlHelper.arbShaders) {
+            ARBShaderObjects.glUniform1fARB(location, v0);
+        } else {
+            GL20.glUniform1f(location, v0);
+        }
+    }
+
+    static void glUniform2f(int location, float v0, float v1) {
+        if (OpenGlHelper.arbShaders) {
+            ARBShaderObjects.glUniform2fARB(location, v0, v1);
+        } else {
+            GL20.glUniform2f(location, v0, v1);
+        }
+    }
 }

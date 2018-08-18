@@ -1,10 +1,11 @@
 package twilightforest.client.shader;
 
-import org.lwjgl.opengl.ARBShaderObjects;
+import net.minecraft.client.renderer.OpenGlHelper;
 
 import java.util.function.IntSupplier;
 
 public class ShaderUniformInt2 extends ShaderUniform {
+
     private final IntSupplier supplier0;
     private final IntSupplier supplier1;
 
@@ -17,6 +18,6 @@ public class ShaderUniformInt2 extends ShaderUniform {
 
     @Override
     public final void assignUniform(int shader) {
-        ARBShaderObjects.glUniform2iARB(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier0.getAsInt(), supplier1.getAsInt());
+        ShaderManager.glUniform2i(OpenGlHelper.glGetUniformLocation(shader, name), supplier0.getAsInt(), supplier1.getAsInt());
     }
 }

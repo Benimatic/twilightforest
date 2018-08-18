@@ -1,15 +1,14 @@
 package twilightforest.client.shader;
 
-import org.lwjgl.opengl.ARBShaderObjects;
-
-import java.util.function.Supplier;
+import net.minecraft.client.renderer.OpenGlHelper;
 
 public class ShaderUniformFloat2 extends ShaderUniform {
-    private final Supplier<Float> supplier0;
-    private final Supplier<Float> supplier1;
+
+    private final FloatSupplier supplier0;
+    private final FloatSupplier supplier1;
 
     @SuppressWarnings("WeakerAccess")
-    public ShaderUniformFloat2(String name, Supplier<Float> supplier0, Supplier<Float> supplier1) {
+    public ShaderUniformFloat2(String name, FloatSupplier supplier0, FloatSupplier supplier1) {
         super(name);
         this.supplier0 = supplier0;
         this.supplier1 = supplier1;
@@ -17,6 +16,6 @@ public class ShaderUniformFloat2 extends ShaderUniform {
 
     @Override
     public final void assignUniform(int shader) {
-        ARBShaderObjects.glUniform2fARB(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier0.get(), supplier1.get());
+        ShaderManager.glUniform2f(OpenGlHelper.glGetUniformLocation(shader, name), supplier0.get(), supplier1.get());
     }
 }
