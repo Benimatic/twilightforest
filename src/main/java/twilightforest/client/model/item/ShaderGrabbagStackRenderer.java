@@ -156,14 +156,14 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
             Minecraft.getMinecraft().getTextureManager().bindTexture(bg);
 
             // Just gonna borrow your code for a sec blu, thnx
-            int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).rarityColor);
+            int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).color);
 
             // unpack colors
             float r = (c >> 16 & 0xFF) / 255.0f;
             float g = (c >> 8 & 0xFF) / 255.0f;
             float b = (c & 0xFF) / 255.0f;
 
-            buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
             buffer.pos(x - 1, y + 1, 0)
                     .tex(0, 1)
                     .color(r, g, b, 1f)
@@ -184,10 +184,10 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
             // Shader, engage!
             ShaderManager.useShader(ShaderManager.starburstShader, ShaderManager.TIME);
             // Blur the star burst mask
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+            GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             tessellator.draw();
             // Deblur, so we don't blur all of the textures in rendering calls afterwards
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
             // Disengage shader
             ShaderManager.releaseShader();
 

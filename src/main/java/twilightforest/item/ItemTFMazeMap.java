@@ -124,7 +124,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
 							Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
-							Chunk chunk = world.getChunkFromBlockCoords(new BlockPos(worldX, 0, worldZ));
+							Chunk chunk = world.getChunk(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
 							if (!chunk.isEmpty()) {
@@ -187,7 +187,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 											multiset.add(MapColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MapColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
+										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getTranslationKey().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
 										{
 											// any other ore, catchall
 											multiset.add(MapColor.PINK, 1000);

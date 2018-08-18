@@ -52,7 +52,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		} else {
 			Vec3d vec3d = living.getLook(1.0F).normalize();
 			Vec3d vec3d1 = new Vec3d(this.posX - living.posX, this.getEntityBoundingBox().minY + (double) this.getEyeHeight() - (living.posY + (double) living.getEyeHeight()), this.posZ - living.posZ);
-			double d0 = vec3d1.lengthVector();
+			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
 			double d1 = vec3d.dotProduct(vec3d1);
 			return d1 > 1.0D - 0.025D / d0 ? living.canEntityBeSeen(this) : false;

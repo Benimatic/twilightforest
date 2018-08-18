@@ -587,7 +587,7 @@ public class TFEventListener {
 
 	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
 		// todo improve
-		return !world.getBlockState(pos).getBlock().getRegistryName().getResourcePath().contains("grave");
+		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave");
 	}
 
 	/**

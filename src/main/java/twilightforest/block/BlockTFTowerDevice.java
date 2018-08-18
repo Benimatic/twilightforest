@@ -192,7 +192,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		if (!world.isRemote) {
-			if (state.getValue(VARIANT) == TowerDeviceVariant.BUILDER_INACTIVE && world.isBlockIndirectlyGettingPowered(pos) > 0) {
+			if (state.getValue(VARIANT) == TowerDeviceVariant.BUILDER_INACTIVE && world.getRedstonePowerFromNeighbors(pos) > 0) {
 				changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
 				world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			}
@@ -207,32 +207,32 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		TowerDeviceVariant variant = state.getValue(VARIANT);
 
 		if (!world.isRemote) {
-			if (variant == TowerDeviceVariant.VANISH_INACTIVE && world.isBlockIndirectlyGettingPowered(pos) > 0 && !areNearbyLockBlocks(world, pos)) {
+			if (variant == TowerDeviceVariant.VANISH_INACTIVE && world.getRedstonePowerFromNeighbors(pos) > 0 && !areNearbyLockBlocks(world, pos)) {
 				changeToActiveVanishBlock(world, pos, TowerDeviceVariant.VANISH_ACTIVE);
 			}
 
-			if (variant == TowerDeviceVariant.REAPPEARING_INACTIVE && world.isBlockIndirectlyGettingPowered(pos) > 0 && !areNearbyLockBlocks(world, pos)) {
+			if (variant == TowerDeviceVariant.REAPPEARING_INACTIVE && world.getRedstonePowerFromNeighbors(pos) > 0 && !areNearbyLockBlocks(world, pos)) {
 				changeToActiveVanishBlock(world, pos, TowerDeviceVariant.REAPPEARING_ACTIVE);
 			}
 
-			if (variant == TowerDeviceVariant.BUILDER_INACTIVE && world.isBlockIndirectlyGettingPowered(pos) > 0) {
+			if (variant == TowerDeviceVariant.BUILDER_INACTIVE && world.getRedstonePowerFromNeighbors(pos) > 0) {
 				changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
 				world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 
 				world.scheduleUpdate(pos, this, 4);
 			}
 
-			if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.isBlockIndirectlyGettingPowered(pos) == 0) {
+			if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.getRedstonePowerFromNeighbors(pos) == 0) {
 				changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE));
 				world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
 				world.scheduleUpdate(pos, this, 4);
 			}
 
-			if (variant == TowerDeviceVariant.BUILDER_TIMEOUT && world.isBlockIndirectlyGettingPowered(pos) == 0) {
+			if (variant == TowerDeviceVariant.BUILDER_TIMEOUT && world.getRedstonePowerFromNeighbors(pos) == 0) {
 				changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE));
 			}
 
-			if (variant == TowerDeviceVariant.GHASTTRAP_INACTIVE && isInactiveTrapCharged(world, pos) && world.isBlockIndirectlyGettingPowered(pos) > 0) {
+			if (variant == TowerDeviceVariant.GHASTTRAP_INACTIVE && isInactiveTrapCharged(world, pos) && world.getRedstonePowerFromNeighbors(pos) > 0) {
 				List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 6, pos.getY() - 6, pos.getZ() - 6, pos.getX() + 6, pos.getZ() + 6, pos.getZ() + 6));
 				for (Entity entity : entities)
 					if (entity instanceof EntityPlayerMP)
@@ -272,7 +272,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 				}
 			}
 
-			if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.isBlockIndirectlyGettingPowered(pos) > 0) {
+			if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.getRedstonePowerFromNeighbors(pos) > 0) {
 				this.letsBuild(world, pos);
 			}
 
@@ -506,7 +506,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 }

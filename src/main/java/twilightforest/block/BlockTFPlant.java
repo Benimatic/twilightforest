@@ -299,7 +299,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

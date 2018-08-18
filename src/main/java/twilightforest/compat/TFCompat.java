@@ -89,8 +89,8 @@ public enum TFCompat {
 
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
-            items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
-            items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setUnlocalizedName("tfEngineeringShaderBag"));
+            items.register("shader", ItemTFShader.shader.setTranslationKey("tfEngineeringShader"));
+            items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setTranslationKey("tfEngineeringShaderBag"));
 
             new IEShaderRegister(); // Calling to initialize it all
         }

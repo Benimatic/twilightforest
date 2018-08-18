@@ -14,7 +14,7 @@ public class BlockTFAuroralizedGlass extends BlockGlass implements ModelRegister
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.TRANSLUCENT;
     }
 }

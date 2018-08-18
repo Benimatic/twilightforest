@@ -96,37 +96,37 @@ public class ModelTFLich extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		if(entity instanceof EntityTFLich) {
 			EntityTFLich lich = (EntityTFLich) entity;
 
 			// on regular pass, render everything about the master lich except the shield
 			if (!renderPass) {
 				if (!lich.isShadowClone()) {
-					super.render(entity, f, f1, f2, f3, f4, f5 * 1.125F);
-					collar.render(f5 * 1.125F);
-					cloak.render(f5 * 1.125F);
+					super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale * 1.125F);
+					collar.render(scale * 1.125F);
+					cloak.render(scale * 1.125F);
 				}
 			} else {
 				// on the special render pass, render the shadow clone and the shield
 				if (lich.isShadowClone()) {
 					//    	        GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-					super.render(entity, f, f1, f2, f3, f4, f5 * 1.125F);
+					super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale * 1.125F);
 					//               	GL11.glEnable(GL11.GL_DEPTH_TEST);
 
 				} else {
 					if (lich.getShieldStrength() > 0) {
-						//shieldBelt.render(f5 * 1.125F);
-						renderShields(f5 * 13, lich.getShieldStrength(), lich);
+						//shieldBelt.render(scale * 1.125F);
+						renderShields(scale * 13, lich.getShieldStrength(), lich);
 					}
 				}
 			}
 		} else if (entity.hasCapability(CapabilityList.SHIELDS, null)) {
 			IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
 			if (cap != null && cap.shieldsLeft() > 0 && (entity instanceof EntityLivingBase)) {
-				//shieldBelt.render(f5 * 1.125F);
-				renderShields(f5 * 13, cap.shieldsLeft(), (EntityLivingBase) entity);
+				//shieldBelt.render(scale * 1.125F);
+				renderShields(scale * 13, cap.shieldsLeft(), (EntityLivingBase) entity);
 			}
 		}
 	}
@@ -174,14 +174,14 @@ public class ModelTFLich extends ModelBiped {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		EntityTFLich lich = null;
-		if (par1EntityLiving instanceof EntityTFLich)
-			lich = (EntityTFLich) par1EntityLiving;
+		if (entity instanceof EntityTFLich)
+			lich = (EntityTFLich) entity;
 
 		IShieldCapability cap = null;
-		if (par1EntityLiving.hasCapability(CapabilityList.SHIELDS, null))
-			cap = par1EntityLiving.getCapability(CapabilityList.SHIELDS, null);
+		if (entity.hasCapability(CapabilityList.SHIELDS, null))
+			cap = entity.getCapability(CapabilityList.SHIELDS, null);
 
 		// make the shield belt
 		int shields = lich != null ? lich.getShieldStrength() : cap != null ? cap.shieldsLeft() : 0;
@@ -207,15 +207,15 @@ public class ModelTFLich extends ModelBiped {
 			//}
 
 			// rotate the belt
-			shieldBelt.rotateAngleY = (par1EntityLiving.ticksExisted + time) / 5.0F;
-			shieldBelt.rotateAngleX = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
-			shieldBelt.rotateAngleZ = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+			shieldBelt.rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
+			shieldBelt.rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
+			shieldBelt.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 		}
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 		float ogSin = MathHelper.sin(swingProgress * 3.141593F);
 		float otherSin = MathHelper.sin((1.0F - (1.0F - swingProgress) * (1.0F - swingProgress)) * 3.141593F);
 		bipedRightArm.rotateAngleZ = 0.0F;
@@ -226,10 +226,10 @@ public class ModelTFLich extends ModelBiped {
 		bipedLeftArm.rotateAngleX = -3.141593F;
 		bipedRightArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
 		bipedLeftArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
-		bipedRightArm.rotateAngleZ += MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;
-		bipedLeftArm.rotateAngleZ -= MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;
-		bipedRightArm.rotateAngleX += MathHelper.sin(f2 * 0.167F) * 0.15F;
-		bipedLeftArm.rotateAngleX -= MathHelper.sin(f2 * 0.167F) * 0.15F;
+		bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+		bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+		bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.167F) * 0.15F;
+		bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.167F) * 0.15F;
 
 		bipedHead.rotationPointY = -4.0F;
 		bipedHeadwear.rotationPointY = -4.0F;

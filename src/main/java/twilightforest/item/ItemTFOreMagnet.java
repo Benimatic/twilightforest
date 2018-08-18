@@ -127,7 +127,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		double range = 32.0D;
 		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
 		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
-		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 
 		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
@@ -269,7 +269,7 @@ public class ItemTFOreMagnet extends ItemTF {
                 || state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)
                 // todo 1.9 oh god
                 // Good enough for now -Drullkus
-                || state.getBlock().getRegistryName().getResourcePath().contains("ore"))
+                || state.getBlock().getRegistryName().getPath().contains("ore"))
 		    return true;
 
 		return false;

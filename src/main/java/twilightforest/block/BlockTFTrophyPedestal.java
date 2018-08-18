@@ -64,7 +64,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		IBlockState ret = getDefaultState();
-		ret = ret.withProperty(FACING, EnumFacing.getHorizontal(meta & 0b11));
+		ret = ret.withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 0b11));
 		if ((meta & 0b100) > 0) {
 			ret = ret.withProperty(LATENT, true);
 		}
@@ -75,6 +75,12 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 
 	@Override

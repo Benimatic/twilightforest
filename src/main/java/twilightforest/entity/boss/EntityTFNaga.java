@@ -779,7 +779,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position
-			diff = diff.addVector(idealX, 0, idealZ).normalize();
+			diff = diff.add(idealX, 0, idealZ).normalize();
 
 			double f = 2.0D;
 
@@ -793,7 +793,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 			if (i == 0) {
 				// tilt segment next to head up towards head
-				diff = diff.addVector(0, -0.15, 0);
+				diff = diff.add(0, -0.15, 0);
 			}
 
 			bodySegments[i].setRotation((float) (Math.atan2(diff.z, diff.x) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.y, distance) * 180.0D / Math.PI));

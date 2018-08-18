@@ -122,9 +122,9 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			++this.slideTime;
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
-				this.motionX += dataManager.get(MOVE_DIRECTION).getFrontOffsetX() * 0.04;
-				this.motionY += dataManager.get(MOVE_DIRECTION).getFrontOffsetY() * 0.04;
-				this.motionZ += dataManager.get(MOVE_DIRECTION).getFrontOffsetZ() * 0.04;
+				this.motionX += dataManager.get(MOVE_DIRECTION).getXOffset() * 0.04;
+				this.motionY += dataManager.get(MOVE_DIRECTION).getYOffset() * 0.04;
+				this.motionZ += dataManager.get(MOVE_DIRECTION).getZOffset() * 0.04;
 				this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 			}
 			this.motionX *= 0.98;
@@ -211,7 +211,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		int meta = compound.getByte("Meta");
 		this.myState = b.getStateFromMeta(meta);
 		this.slideTime = compound.getInteger("Time");
-		dataManager.set(MOVE_DIRECTION, EnumFacing.getFront(compound.getByte("Direction")));
+		dataManager.set(MOVE_DIRECTION, EnumFacing.byIndex(compound.getByte("Direction")));
 	}
 
 	@Override

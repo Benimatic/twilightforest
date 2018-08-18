@@ -3,6 +3,9 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.MobEffects;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -10,8 +13,10 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-
 public class EntityTFLichMinion extends EntityZombie {
+
+	private static final DataParameter<Boolean> STRONG = EntityDataManager.createKey(EntityTFLichMinion.class, DataSerializers.BOOLEAN);
+
 	EntityTFLich master;
 
 	public EntityTFLichMinion(World world) {
@@ -22,6 +27,12 @@ public class EntityTFLichMinion extends EntityZombie {
 	public EntityTFLichMinion(World world, EntityTFLich entityTFLich) {
 		super(world);
 		this.master = entityTFLich;
+	}
+
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(STRONG, false);
 	}
 
 	@Override
@@ -70,5 +81,25 @@ public class EntityTFLichMinion extends EntityZombie {
 				break;
 			}
 		}
+	}
+
+	@Override
+	protected void onNewPotionEffect(PotionEffect effect) {
+		super.onNewPotionEffect(effect);
+		if (!world.isRemote && effect.getPotion() == MobEffects.STRENGTH) {
+			dataManager.set(STRONG, true);
+		}
+	}
+
+	@Override
+	protected void onFinishedPotionEffect(PotionEffect effect) {
+		super.onFinishedPotionEffect(effect);
+		if (!world.isRemote && effect.getPotion() == MobEffects.STRENGTH) {
+			dataManager.set(STRONG, false);
+		}
+	}
+
+	public boolean isStrong() {
+		return dataManager.get(STRONG);
 	}
 }

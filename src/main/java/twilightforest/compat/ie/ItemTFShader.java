@@ -58,15 +58,15 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
         String localizedShaderName = I18n.translateToLocal(unlocalizedShaderName);
 
         if (unlocalizedShaderName.equals(localizedShaderName))
-            return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), rawShaderName); // Translation failure
+            return I18n.translateToLocalFormatted(this.getTranslationKey(stack), rawShaderName); // Translation failure
         else
-            return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), localizedShaderName);
+            return I18n.translateToLocalFormatted(this.getTranslationKey(stack), localizedShaderName);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<String> list, ITooltipFlag flag) {
-        list.add(I18n.translateToLocalFormatted("Level: " + this.getRarity(stack).rarityColor + this.getRarity(stack).rarityName));
+        list.add(I18n.translateToLocalFormatted("Level: " + this.getRarity(stack).color + this.getRarity(stack).rarityName));
 
         if(!GuiScreen.isShiftKeyDown())
             list.add(I18n.translateToLocalFormatted(Lib.DESC_INFO + "shader.applyTo") + " " + I18n.translateToLocalFormatted(Lib.DESC_INFO + "holdShift"));

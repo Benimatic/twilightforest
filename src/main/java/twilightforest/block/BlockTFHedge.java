@@ -82,7 +82,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE && shouldDamage(entity)) {
 			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
 		}
@@ -144,7 +144,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
+		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
 	}
 

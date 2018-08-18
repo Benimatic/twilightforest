@@ -301,7 +301,7 @@ public final class ColorHandler {
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			itemColors.registerItemColorHandler(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
 			itemColors.registerItemColorHandler((stack, tintIndex) -> {
-				int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).rarityColor);
+				int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).color);
 
 				float d = tintIndex + 1;
 

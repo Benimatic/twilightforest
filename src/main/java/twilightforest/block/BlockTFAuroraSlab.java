@@ -52,8 +52,8 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	}
 
 	@Override
-	public String getUnlocalizedName(int meta) {
-		return super.getUnlocalizedName();
+	public String getTranslationKey(int meta) {
+		return super.getTranslationKey();
 	}
 
 	@Override
