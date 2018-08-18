@@ -27,10 +27,10 @@ public class CapabilityList {
 
 	@SubscribeEvent
 	public static void attachCapabilityEntity(AttachCapabilitiesEvent<Entity> e) {
-		if (e.getObject() instanceof EntityLivingBase) {
+		if (SHIELDS != null && e.getObject() instanceof EntityLivingBase) {
 			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<NBTTagCompound>() {
 
-				IShieldCapability inst = CapabilityList.SHIELDS.getDefaultInstance();
+				IShieldCapability inst = SHIELDS.getDefaultInstance();
 
 				{
 					inst.setEntity((EntityLivingBase) e.getObject());
@@ -38,22 +38,22 @@ public class CapabilityList {
 
 				@Override
 				public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
-					return capability == CapabilityList.SHIELDS;
+					return capability == SHIELDS;
 				}
 
 				@Override
 				public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
-					return capability == CapabilityList.SHIELDS ? CapabilityList.SHIELDS.<T>cast(inst) : null;
+					return capability == SHIELDS ? SHIELDS.<T>cast(inst) : null;
 				}
 
 				@Override
 				public NBTTagCompound serializeNBT() {
-					return (NBTTagCompound) CapabilityList.SHIELDS.getStorage().writeNBT(CapabilityList.SHIELDS, inst, null);
+					return (NBTTagCompound) SHIELDS.getStorage().writeNBT(SHIELDS, inst, null);
 				}
 
 				@Override
 				public void deserializeNBT(NBTTagCompound nbt) {
-					CapabilityList.SHIELDS.getStorage().readNBT(CapabilityList.SHIELDS, inst, null, nbt);
+					SHIELDS.getStorage().readNBT(SHIELDS, inst, null, nbt);
 				}
 
 			});
