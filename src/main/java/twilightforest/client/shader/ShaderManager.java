@@ -52,16 +52,20 @@ public final class ShaderManager {
             shieldShader,
             outlineShader;
 
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (Minecraft.getMinecraft().player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat PITCH      = new ShaderUniformFloat("pitch"     , () -> -(Minecraft.getMinecraft().player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt2  RESOLUTION = new ShaderUniformInt2 ("resolution", () -> Minecraft.getMinecraft().displayWidth, () -> Minecraft.getMinecraft().displayHeight);
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   ZERO       = new ShaderUniformInt  ("zero"      , () -> 0);
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   ONE        = new ShaderUniformInt  ("one"       , () -> 1);
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   TWO        = new ShaderUniformInt  ("two"       , () -> 2);
+    @SuppressWarnings("WeakerAccess")
+    public static final class Uniforms {
 
-    public static final ShaderUniform[] STAR_UNIFORMS = { TIME, YAW, PITCH, RESOLUTION, ZERO, TWO };
-    public static final ShaderUniform[] TIME_UNIFORM  = { TIME };
+        public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
+        public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (Minecraft.getMinecraft().player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniformFloat PITCH      = new ShaderUniformFloat("pitch"     , () -> -(Minecraft.getMinecraft().player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniformInt2  RESOLUTION = new ShaderUniformInt2 ("resolution", () -> Minecraft.getMinecraft().displayWidth, () -> Minecraft.getMinecraft().displayHeight);
+        public static final ShaderUniformInt   ZERO       = new ShaderUniformInt  ("zero"      , () -> 0);
+        public static final ShaderUniformInt   ONE        = new ShaderUniformInt  ("one"       , () -> 1);
+        public static final ShaderUniformInt   TWO        = new ShaderUniformInt  ("two"       , () -> 2);
+
+        public static final ShaderUniform[] STAR_UNIFORMS = { TIME, YAW, PITCH, RESOLUTION, ZERO, TWO };
+        public static final ShaderUniform[] TIME_UNIFORM  = { TIME };
+    }
 
     //@SuppressWarnings("WeakerAccess")
     //public static Framebuffer bloomFbo;

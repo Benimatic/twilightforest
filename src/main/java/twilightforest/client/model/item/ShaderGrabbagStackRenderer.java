@@ -182,7 +182,7 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
                     .endVertex();
 
             // Shader, engage!
-            ShaderManager.useShader(ShaderManager.starburstShader, ShaderManager.TIME);
+            ShaderManager.useShader(ShaderManager.starburstShader, ShaderManager.Uniforms.TIME);
             // Blur the star burst mask
             GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             tessellator.draw();
