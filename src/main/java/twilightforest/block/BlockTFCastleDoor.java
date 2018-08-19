@@ -12,11 +12,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -195,8 +195,13 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return TFItems.castle_door;
+	}
+
+	@Override
 	public int damageDropped(IBlockState state) {
-		return getMetaFromState(state);
+		return state.getValue(LOCK_INDEX);
 	}
 
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
@@ -302,10 +307,11 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		if (this == TFBlocks.castle_door)
+		if (this == TFBlocks.castle_door) {
 			for (int i = 0; i < LOCK_INDEX.getAllowedValues().size(); i++) {
 				list.add(new ItemStack(this, 1, i));
 			}
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -315,7 +321,12 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(TFItems.castle_door, 1, state.getValue(LOCK_INDEX));
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+		return new ItemStack(TFItems.castle_door, 1, damageDropped(state));
+	}
+
+	@Override
+	protected ItemStack getSilkTouchDrop(IBlockState state) {
+		return new ItemStack(TFItems.castle_door, 1, damageDropped(state));
 	}
 }
