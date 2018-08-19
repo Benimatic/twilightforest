@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -13,15 +13,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.ForgeHooksClient;
-import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.item.TFItems;
 
 public class ModelTFLich extends ModelBiped {
+
 	ModelRenderer collar;
 	ModelRenderer cloak;
 	ModelRenderer shieldBelt;
@@ -132,10 +131,17 @@ public class ModelTFLich extends ModelBiped {
 	}
 
 	private static final float PI = (float) Math.PI;
-	//private static final RenderItem RENDER_ITEM = Minecraft.getMinecraft().getRenderItem();
 
 	private void renderShields(float scale, int count, EntityLivingBase entityLivingBase) {
+
 		ItemStack shieldStack = new ItemStack(TFItems.experiment_115, 1, 3);
+		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(shieldStack, entityLivingBase.world, entityLivingBase);
+
+		// Texture was bound to the Lich texture, re-bind to the blocks texture
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+		float prevX = OpenGlHelper.lastBrightnessX, prevY = OpenGlHelper.lastBrightnessY;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 
 		for (int c = 0; c < count; c++) {
 			GlStateManager.pushMatrix();
@@ -153,12 +159,12 @@ public class ModelTFLich extends ModelBiped {
 			// Move the draw away from the entity being drawn around
 			GlStateManager.translate(0F, 0F, 1F);
 
-			// Texture was bound to the Lich texture, re-bind to the blocks texture
-			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-			Minecraft.getMinecraft().getRenderItem().renderItem(shieldStack, ForgeHooksClient.handleCameraTransforms(Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(shieldStack, entityLivingBase.world, entityLivingBase), ItemCameraTransforms.TransformType.NONE, false));
+			Minecraft.getMinecraft().getRenderItem().renderItem(shieldStack, ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false));
 
 			GlStateManager.popMatrix();
 		}
+
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevX, prevY);
 	}
 
 	@Override
