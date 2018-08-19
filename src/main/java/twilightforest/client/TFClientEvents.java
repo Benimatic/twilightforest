@@ -3,8 +3,10 @@ package twilightforest.client;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -15,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -155,6 +158,23 @@ public class TFClientEvents {
 	}
 
 	/**
+	 * Render effects in first-person perspective
+	 */
+	@SubscribeEvent
+	public static void renderWorldLast(RenderWorldLastEvent event) {
+		GameSettings settings = Minecraft.getMinecraft().gameSettings;
+		if (settings.thirdPersonView == 0 && !settings.hideGUI) {
+			Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+			if (entity instanceof EntityLivingBase) {
+				Render<? extends Entity> renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
+				if (renderer instanceof RenderLivingBase<?>) {
+					renderShields((EntityLivingBase) entity, (RenderLivingBase<? extends EntityLivingBase>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks());
+				}
+			}
+		}
+	}
+
+	/**
 	 * Alter FOV for our bows
 	 */
 	@SubscribeEvent
@@ -177,7 +197,7 @@ public class TFClientEvents {
 	 * Render an entity with the ice effect.
 	 * This just displays a bunch of ice cubes around on their model
 	 */
-	private static void renderIcedEntity(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z) {
+	private static void renderIcedEntity(EntityLivingBase entity, RenderLivingBase<? extends EntityLivingBase> renderer, double x, double y, double z) {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -209,7 +229,7 @@ public class TFClientEvents {
 
 	private static final ModelTFLich model = new ModelTFLich(true);
 
-	private static void renderShields(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z, float partialTicks) {
+	private static void renderShields(EntityLivingBase entity, RenderLivingBase<? extends EntityLivingBase> renderer, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		GlStateManager.rotate(180, 1, 0, 0);
