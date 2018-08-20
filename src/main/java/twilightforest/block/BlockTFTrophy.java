@@ -50,29 +50,30 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
-		EnumFacing facing = state.getValue(BlockSkull.FACING);
-		TileEntityTFTrophy trophy = (TileEntityTFTrophy) access.getTileEntity(pos);
-
-		if (trophy != null && trophy.getSkullType() == 0) {
-			// hydra bounds
-			switch (facing) {
-				case UP:
-				default:
-					return HYDRA_Y_BB;
-				case NORTH:
-					return HYDRA_NORTH_BB;
-				case SOUTH:
-					return HYDRA_SOUTH_BB;
-				case WEST:
-					return HYDRA_WEST_BB;
-				case EAST:
-					return HYDRA_EAST_BB;
+		TileEntity te = access.getTileEntity(pos);
+		if (te instanceof TileEntityTFTrophy) {
+			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
+				case HYDRA:
+					// hydra bounds TODO: actually use non-default bounds here
+					switch (state.getValue(BlockSkull.FACING)) {
+						case UP:
+						default:
+							return HYDRA_Y_BB;
+						case NORTH:
+							return HYDRA_NORTH_BB;
+						case SOUTH:
+							return HYDRA_SOUTH_BB;
+						case WEST:
+							return HYDRA_WEST_BB;
+						case EAST:
+							return HYDRA_EAST_BB;
+					}
+				case UR_GHAST:
+					return URGHAST_BB;
+				// TODO: also add case for Questing Ram?
 			}
-		} else if (trophy != null && trophy.getSkullType() == 3) {
-			return URGHAST_BB;
-		} else {
-			return super.getBoundingBox(state, access, pos);
 		}
+		return super.getBoundingBox(state, access, pos);
 	}
 
 	@Override

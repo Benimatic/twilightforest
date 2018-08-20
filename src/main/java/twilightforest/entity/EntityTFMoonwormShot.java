@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
@@ -87,9 +88,14 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 	protected void onImpact(RayTraceResult ray) {
 		if (!world.isRemote) {
 			if (ray.typeOfHit == Type.BLOCK) {
-				IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(BlockDirectional.FACING, ray.sideHit);
-				world.setBlockState(ray.getBlockPos().offset(ray.sideHit), state);
-				// todo sound
+
+				BlockPos pos = ray.getBlockPos().offset(ray.sideHit);
+				IBlockState currentState = world.getBlockState(pos);
+
+				if (currentState.getBlock().isReplaceable(world, pos)) {
+					world.setBlockState(pos, TFBlocks.moonworm.getDefaultState().withProperty(BlockDirectional.FACING, ray.sideHit));
+					// todo sound
+				}
 			}
 
 			if (ray.entityHit != null) {
