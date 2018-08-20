@@ -28,9 +28,6 @@ import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
 import twilightforest.compat.TFCompat;
-import twilightforest.entity.EntityTFPinchBeetle;
-import twilightforest.entity.EntityTFYeti;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.item.ItemTFBowBase;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -195,9 +192,8 @@ public class TFClientEvents {
 				}
 			}//*/
 
-			if (minecraft.player != null) {
-				Entity riding = minecraft.player.getRidingEntity();
-				if (riding instanceof EntityTFPinchBeetle || riding instanceof EntityTFYeti || riding instanceof EntityTFYetiAlpha) {
+			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
+				if (minecraft.ingameGUI != null) {
 					minecraft.ingameGUI.setOverlayMessage("", false);
 				}
 			}

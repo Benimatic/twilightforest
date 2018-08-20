@@ -84,6 +84,7 @@ import twilightforest.entity.boss.EntityTFLichBolt;
 import twilightforest.entity.boss.EntityTFLichBomb;
 import twilightforest.entity.boss.EntityTFThrownWep;
 import twilightforest.entity.boss.EntityTFUrGhastFireball;
+import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
@@ -474,17 +475,13 @@ public class TFEventListener {
 		}
 	}
 
-	/**
-	 * Stop the player from sneaking while riding an unfriendly creature
-	 */
 	@SubscribeEvent
 	public static boolean livingUpdate(LivingUpdateEvent event) {
 		if (event.getEntityLiving().hasCapability(CapabilityList.SHIELDS, null)) {
 			IShieldCapability cap = event.getEntityLiving().getCapability(CapabilityList.SHIELDS, null);
-			if (cap != null)
-				cap.update();
+			if (cap != null) cap.update();
 		}
-
+		// Stop the player from sneaking while riding an unfriendly creature
 		if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().isSneaking() && isRidingUnfriendly(event.getEntityLiving())) {
 			event.getEntityLiving().setSneaking(false);
 		}
@@ -492,7 +489,7 @@ public class TFEventListener {
 	}
 
 	public static boolean isRidingUnfriendly(EntityLivingBase entity) {
-		return entity.isRiding() && (entity.getRidingEntity() instanceof EntityTFPinchBeetle || entity.getRidingEntity() instanceof EntityTFYeti);
+		return entity.isRiding() && (entity.getRidingEntity() instanceof EntityTFPinchBeetle || entity.getRidingEntity() instanceof EntityTFYeti || entity.getRidingEntity() instanceof EntityTFYetiAlpha);
 	}
 
 	/**
