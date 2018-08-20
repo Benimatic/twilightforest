@@ -575,10 +575,13 @@ twilightforest.config.glacer_packed_ice.tooltip=Setting this true will make Twil
 twilightforest.config.silent_cicadas=Silent Cicadas
 twilightforest.config.silent_cicadas.tooltip=Make cicadas silent for those having sound library problems, or otherwise finding them annoying.
 
+twilightforest.config.first_person_effects=Render 1st Person Effects
+twilightforest.config.first_person_effects.tooltip=Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.
+
 twilightforest.config.portals_in_other_dimensions=Portals in other dimensions
 twilightforest.config.portals_in_other_dimensions.tooltip=Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.
 twilightforest.config.admin_portals=Admin-Only Twilight Portals
-twilightforest.config.admin_portals.tooltip=Allow portals only for admins (Operators). This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.
+twilightforest.config.admin_portals.tooltip=Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.
 twilightforest.config.portals=Disable Twilight Portals
 twilightforest.config.portals.tooltip=Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.
 twilightforest.config.portal_creator=Portal Creation Item

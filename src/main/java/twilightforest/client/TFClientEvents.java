@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
@@ -136,16 +137,19 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public static void renderWorldLast(RenderWorldLastEvent event) {
+
+		if (!TFConfig.firstPersonEffects) return;
+
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
-		if (settings.thirdPersonView == 0 && !settings.hideGUI) {
-			Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-			if (entity instanceof EntityLivingBase) {
-				Render<? extends Entity> renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
-				if (renderer instanceof RenderLivingBase<?>) {
-					for (RenderEffect effect : RenderEffect.VALUES) {
-						if (effect.shouldRender((EntityLivingBase) entity, true)) {
-							effect.render((EntityLivingBase) entity, (RenderLivingBase<? extends EntityLivingBase>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks(), true);
-						}
+		if (settings.thirdPersonView != 0 || settings.hideGUI) return;
+
+		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		if (entity instanceof EntityLivingBase) {
+			Render<? extends Entity> renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
+			if (renderer instanceof RenderLivingBase<?>) {
+				for (RenderEffect effect : RenderEffect.VALUES) {
+					if (effect.shouldRender((EntityLivingBase) entity, true)) {
+						effect.render((EntityLivingBase) entity, (RenderLivingBase<? extends EntityLivingBase>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks(), true);
 					}
 				}
 			}

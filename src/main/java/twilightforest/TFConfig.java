@@ -84,12 +84,16 @@ public class TFConfig {
 	@Config.Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
 	public static boolean silentCicadas = false;
 
+	@Config.LangKey(config + "first_person_effects")
+	@Config.Comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
+	public static boolean firstPersonEffects = true;
+
 	@Config.LangKey(config + "portals_in_other_dimensions")
 	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.")
 	public static boolean allowPortalsInOtherDimensions = false;
 
 	@Config.LangKey(config + "admin_portals")
-	@Config.Comment("Allow portals only for admins (Operators). This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
+	@Config.Comment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
 	public static boolean adminOnlyPortals = false;
 
 	@Config.LangKey(config + "portals")
@@ -120,10 +124,6 @@ public class TFConfig {
 	@Config.Comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
 	public static boolean rotateTrophyHeadsGui = true;
 
-	@Config.LangKey(config + "loading_screen")
-	@Config.Comment("Client only: Controls for the Loading screen")
-	public static final TFConfig.loadingScreen loadingScreen = new loadingScreen();
-
 	@Config.LangKey(config + "shield_parry")
 	public static ShieldInteractions shieldInteractions = new ShieldInteractions();
 
@@ -148,7 +148,11 @@ public class TFConfig {
 		public int shieldParryTicksBeam = 10;
 	}
 
-	public static class loadingScreen {
+	@Config.LangKey(config + "loading_screen")
+	@Config.Comment("Client only: Controls for the Loading screen")
+	public static final LoadingScreen loadingScreen = new LoadingScreen();
+
+	public static class LoadingScreen {
 		@Config.LangKey(config + "loading_icon_enable")
 		@Config.Comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
 		public boolean enable = true;
