@@ -2,18 +2,13 @@ package twilightforest.client;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -24,34 +19,23 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.client.model.entity.ModelTFLich;
-import twilightforest.client.renderer.entity.RenderTFLich;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
-import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.item.ItemTFBowBase;
-import twilightforest.potions.PotionFrosted;
 import twilightforest.world.WorldProviderTwilightForest;
-
-import java.util.Random;
-import java.util.UUID;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class TFClientEvents {
-	private static final Minecraft minecraft = Minecraft.getMinecraft();
-	private static final Random random = new Random();
 
 	@SubscribeEvent
 	public static void texStitch(TextureStitchEvent.Pre evt) {
@@ -118,18 +102,13 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
-			if (TFEventListener.isRidingUnfriendly(minecraft.player)) {
+			if (TFEventListener.isRidingUnfriendly(Minecraft.getMinecraft().player)) {
 				event.setCanceled(true);
 				return false;
 			}
 		}
 		return true;
 	}
-
-	// Frost effect uses an attribute modifier with specific UUID
-	// We can detect whether an entity has the effect from the client by looking for this UUID
-	private static final AttributeModifier FROSTED_POTION_MODIFIER =
-			new AttributeModifier(UUID.fromString(PotionFrosted.MODIFIER_UUID), "doesntmatter", 0, 0);
 
 	//FIXME shove onto an external player layer, like armor
 	//@SubscribeEvent
@@ -145,15 +124,10 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
-		// Ice effect
-		if (event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(FROSTED_POTION_MODIFIER)) {
-			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
-		}
-		// Shields
-		if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null) && !(event.getEntity() instanceof EntityTFLich)) {
-			//ShaderManager.releaseShader();
-
-			renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick());
+		for (RenderEffect effect : RenderEffect.VALUES) {
+			if (effect.shouldRender(event.getEntity(), false)) {
+				effect.render(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick(), false);
+			}
 		}
 	}
 
@@ -168,7 +142,11 @@ public class TFClientEvents {
 			if (entity instanceof EntityLivingBase) {
 				Render<? extends Entity> renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
 				if (renderer instanceof RenderLivingBase<?>) {
-					renderShields((EntityLivingBase) entity, (RenderLivingBase<? extends EntityLivingBase>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks());
+					for (RenderEffect effect : RenderEffect.VALUES) {
+						if (effect.shouldRender((EntityLivingBase) entity, true)) {
+							effect.render((EntityLivingBase) entity, (RenderLivingBase<? extends EntityLivingBase>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks(), true);
+						}
+					}
 				}
 			}
 		}
@@ -194,71 +172,19 @@ public class TFClientEvents {
 	}
 
 	/**
-	 * Render an entity with the ice effect.
-	 * This just displays a bunch of ice cubes around on their model
-	 */
-	private static void renderIcedEntity(EntityLivingBase entity, RenderLivingBase<? extends EntityLivingBase> renderer, double x, double y, double z) {
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-		minecraft.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
-		random.setSeed(entity.getEntityId() * entity.getEntityId() * 3121 + entity.getEntityId() * 45238971);
-
-		// number of cubes
-		int numCubes = (int) (entity.height / 0.4F);
-
-		// make cubes
-		for (int i = 0; i < numCubes; i++) {
-			GlStateManager.pushMatrix();
-			float dx = (float) (x + random.nextGaussian() * 0.2F * entity.width);
-			float dy = (float) (y + random.nextGaussian() * 0.2F * entity.height) + entity.height / 2F;
-			float dz = (float) (z + random.nextGaussian() * 0.2F * entity.width);
-			GlStateManager.translate(dx, dy, dz);
-			GlStateManager.scale(0.5F, 0.5F, 0.5F);
-			GlStateManager.rotate(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
-			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
-			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
-
-			minecraft.getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
-			GlStateManager.popMatrix();
-		}
-
-		GlStateManager.disableBlend();
-	}
-
-	private static final ModelTFLich model = new ModelTFLich(true);
-
-	private static void renderShields(EntityLivingBase entity, RenderLivingBase<? extends EntityLivingBase> renderer, double x, double y, double z, float partialTicks) {
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x, y, z);
-		GlStateManager.rotate(180, 1, 0, 0);
-		GlStateManager.translate(0, 0.5F - entity.getEyeHeight(), 0);
-		GlStateManager.enableBlend();
-		GlStateManager.disableCull();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		Minecraft.getMinecraft().renderEngine.bindTexture(RenderTFLich.LICH_TEXTURE);
-		model.setLivingAnimations(entity, 0F, 0F, partialTicks);
-		model.render(entity, 0F, 0F, 0F, 0F, 0F, 0.0625F);
-		GlStateManager.enableCull();
-		GlStateManager.disableBlend();
-		GlStateManager.popMatrix();
-	}
-
-	/**
 	 * On the tick, we kill the vignette
 	 */
 	@SubscribeEvent
 	public static void renderTick(TickEvent.RenderTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
-			World world = minecraft.world;
+			Minecraft minecraft = Minecraft.getMinecraft();
 
 			((BlockLeaves) TFBlocks.twilight_leaves).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
 			((BlockLeaves) TFBlocks.twilight_leaves_3).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
 			((BlockLeaves) TFBlocks.magic_leaves).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
 
 			// only fire if we're in the twilight forest
-			if (world != null && (world.provider instanceof WorldProviderTwilightForest)) {
+			if (minecraft.world != null && (minecraft.world.provider instanceof WorldProviderTwilightForest)) {
 				// vignette
 				if (minecraft.ingameGUI != null) {
 					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;
@@ -279,7 +205,7 @@ public class TFClientEvents {
 		if (event.phase != TickEvent.Phase.END) return;
 		time++;
 
-		float partial = minecraft.getRenderPartialTicks();
+		float partial = Minecraft.getMinecraft().getRenderPartialTicks();
 
 		rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
 		sineTickerI = (sineTickerI >= SINE_TICKER_BOUND ? 0 : sineTickerI + 1);
