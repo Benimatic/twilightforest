@@ -39,6 +39,8 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         this.setHardness(1.5F);
         this.setResistance(10.0F);
         this.setSoundType(SoundType.STONE);
+        this.setLightOpacity(255);
+        this.useNeighborBrightness = true;
         this.setCreativeTab(TFItems.creativeTab);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DIAGONAL, Diagonals.TOP_RIGHT).withProperty(AXIS_FACING, EnumFacing.Axis.X));
     }
