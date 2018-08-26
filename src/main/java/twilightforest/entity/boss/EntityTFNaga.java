@@ -671,8 +671,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	@Override
 	public boolean attackEntityAsMob(Entity toAttack) {
 		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof EntityLivingBase && ((EntityLivingBase) toAttack).isActiveItemStackBlocking()) {
-			toAttack.setVelocity(motionX * 1.25D, 0.5D, motionZ * 1.25D);
-			setVelocity(motionX * -2D, 0.5D, motionZ * -2D);
+			toAttack.addVelocity(motionX * 1.25D, 0.5D, motionZ * 1.25D);
+			motionX *= -1.5D;
+			motionY += 0.5D;
+			motionZ *= -1.5D;
 			if (toAttack instanceof EntityPlayerMP)
 				TFPacketHandler.CHANNEL.sendTo(new PacketThrowPlayer((float) toAttack.motionX, (float) toAttack.motionY, (float) toAttack.motionZ), (EntityPlayerMP) toAttack);
 			attackEntityFrom(DamageSource.GENERIC, 4F);
