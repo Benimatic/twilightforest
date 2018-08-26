@@ -4,18 +4,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.capabilities.shield.ShieldCapabilityHandler;
+import twilightforest.capabilities.shield.ShieldCapabilityStorage;
 
 import javax.annotation.Nonnull;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CapabilityList {
 
 	@CapabilityInject(IShieldCapability.class)
@@ -25,9 +26,14 @@ public class CapabilityList {
 		SHIELDS = null;
 	}
 
+	public static void registerCapabilities() {
+		CapabilityManager.INSTANCE.register(IShieldCapability.class, new ShieldCapabilityStorage(), ShieldCapabilityHandler::new);
+		MinecraftForge.EVENT_BUS.register(CapabilityList.class);
+	}
+
 	@SubscribeEvent
-	public static void attachCapabilityEntity(AttachCapabilitiesEvent<Entity> e) {
-		if (SHIELDS != null && e.getObject() instanceof EntityLivingBase) {
+	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e) {
+		if (e.getObject() instanceof EntityLivingBase) {
 			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<NBTTagCompound>() {
 
 				IShieldCapability inst = SHIELDS.getDefaultInstance();
