@@ -14,6 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -68,6 +69,11 @@ public class ItemTFTransformPowder extends ItemTF {
 		Entity newEntity = EntityList.createEntityByIDFromName(location, target.world);
 		if (newEntity == null) return false;
 
+		newEntity.setLocationAndAngles(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
+		if (newEntity instanceof EntityLiving) {
+			((EntityLiving) newEntity).onInitialSpawn(target.world.getDifficultyForLocation(new BlockPos(target)), null);
+		}
+
 		try { // try copying what can be copied
 			UUID uuid = newEntity.getUniqueID();
 			newEntity.readFromNBT(target.writeToNBT(new NBTTagCompound()));
@@ -76,7 +82,6 @@ public class ItemTFTransformPowder extends ItemTF {
 			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data: {}", e);
 		}
 
-		newEntity.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
 		target.world.spawnEntity(newEntity);
 		target.setDead();
 		stack.shrink(1);
