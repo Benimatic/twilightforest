@@ -3,7 +3,6 @@ package twilightforest.client.model.armor;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import twilightforest.client.model.entity.ModelTFArmor;
 
 public class ModelTFYetiArmor extends ModelTFArmor {
 

@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -14,6 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.ForgeHooksClient;
+import org.lwjgl.opengl.GL11;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.EntityTFLich;
@@ -142,6 +144,7 @@ public class ModelTFLich extends ModelBiped {
 
 		float prevX = OpenGlHelper.lastBrightnessX, prevY = OpenGlHelper.lastBrightnessY;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
+		GL11.glMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_EMISSION, RenderHelper.setColorBuffer(1f, 1f, 1f, 1f));
 
 		for (int c = 0; c < count; c++) {
 			GlStateManager.pushMatrix();
@@ -164,6 +167,7 @@ public class ModelTFLich extends ModelBiped {
 			GlStateManager.popMatrix();
 		}
 
+		GL11.glMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_EMISSION, RenderHelper.setColorBuffer(0f, 0f, 0f, 1f));
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevX, prevY);
 	}
 

@@ -1,4 +1,4 @@
-package twilightforest.client.model.entity;
+package twilightforest.client.model.armor;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
