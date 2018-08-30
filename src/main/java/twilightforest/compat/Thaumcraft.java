@@ -79,7 +79,7 @@ public class Thaumcraft {
                     .add(Aspect.PLANT, 5)
                     .add(Aspect.AVERSION, 2));
 
-            helper.registerTCObjectTag(TFBlocks.firefly_jar, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.firefly_jar, new AspectList()
                     .add(Aspect.CRYSTAL, 35)
                     .add(Aspect.LIGHT, 20)
                     .add(Aspect.SENSES, 10));
@@ -260,38 +260,38 @@ public class Thaumcraft {
                     .add(Aspect.COLD, 3)
                     .add(Aspect.ORDER, 1));
 
-            helper.registerTCObjectTag(TFBlocks.trollsteinn, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.trollsteinn, new AspectList()
                     .add(Aspect.EARTH, 5));
 
-            helper.registerTCObjectTag(TFBlocks.wispy_cloud, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.wispy_cloud, new AspectList()
                     .add(Aspect.AIR, 20)
                     .add(Aspect.FLIGHT, 5));
 
-            helper.registerTCObjectTag(TFBlocks.fluffy_cloud, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.fluffy_cloud, new AspectList()
                     .add(Aspect.AIR, 20)
                     .add(Aspect.FLIGHT, 5));
 
-            helper.registerTCObjectTag(TFBlocks.giant_cobblestone, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.giant_cobblestone, new AspectList()
                     .add(Aspect.EARTH, 320)
                     .add(Aspect.ENTROPY, 64));
 
-            helper.registerTCObjectTag(TFBlocks.giant_log, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.giant_log, new AspectList()
                     .add(Aspect.PLANT, 1280));
 
-            helper.registerTCObjectTag(TFBlocks.giant_leaves, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.giant_leaves, new AspectList()
                     .add(Aspect.PLANT, 320));
 
-            helper.registerTCObjectTag(TFBlocks.giant_obsidian, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.giant_obsidian, new AspectList()
                     .add(Aspect.EARTH, 320)
                     .add(Aspect.FIRE, 320)
                     .add(Aspect.DARKNESS, 320));
 
-            helper.registerTCObjectTag(TFBlocks.uberous_soil, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.uberous_soil, new AspectList()
                     .add(Aspect.EARTH, 5)
                     .add(Aspect.PLANT, 2)
                     .add(Aspect.LIFE, 15));
 
-            helper.registerTCObjectTag(TFBlocks.huge_stalk, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.huge_stalk, new AspectList()
                     .add(Aspect.PLANT, 25));
 
             helper.registerTCObjectTag(TFBlocks.huge_mushgloom, -1, new AspectList()
@@ -299,20 +299,20 @@ public class Thaumcraft {
                     .add(Aspect.LIGHT, 5)
                     .add(Aspect.AIR, 5));
 
-            helper.registerTCObjectTag(TFBlocks.trollvidr, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.trollvidr, new AspectList()
                     .add(Aspect.PLANT, 5)
                     .add(Aspect.DARKNESS, 3));
 
-            helper.registerTCObjectTag(TFBlocks.unripe_trollber, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.unripe_trollber, new AspectList()
                     .add(Aspect.PLANT, 5)
                     .add(Aspect.DARKNESS, 6));
 
-            helper.registerTCObjectTag(TFBlocks.trollber, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.trollber, new AspectList()
                     .add(Aspect.PLANT, 5)
                     .add(Aspect.LIGHT, 25)
                     .add(Aspect.DARKNESS, 3));
 
-            helper.registerTCObjectTag(TFBlocks.knightmetal_block, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.knightmetal_block, new AspectList()
                     .add(Aspect.METAL, 121)
                     .add(Aspect.CRAFT, 40)
                     .add(Aspect.AVERSION, 6));
@@ -321,7 +321,7 @@ public class Thaumcraft {
                     .add(Aspect.PLANT, 25)
                     .add(Aspect.WATER, 5));
 
-            helper.registerTCObjectTag(TFBlocks.huge_waterlily, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.huge_waterlily, new AspectList()
                     .add(Aspect.PLANT, 10)
                     .add(Aspect.WATER, 2));
 
@@ -407,7 +407,7 @@ public class Thaumcraft {
                     .add(Aspect.EARTH, 5)
                     .add(Aspect.ENTROPY, 1));
 
-            helper.registerTCObjectTag(TFItems.naga_scale, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.naga_scale, new AspectList()
                     .add(Aspect.PROTECT, 5)
                     .add(Aspect.BEAST, 4)
                     .add(Aspect.MOTION, 2));
@@ -438,7 +438,7 @@ public class Thaumcraft {
                     .add(Aspect.SOUL, 25)
                     .add(Aspect.TRAP, 22));
 
-            helper.registerTCObjectTag(TFItems.ore_meter, 0, new AspectList()
+            helper.registerTCObjectTag(TFItems.ore_meter, new AspectList()
                     .add(Aspect.SENSES, 17)
                     .add(Aspect.DESIRE, 8)
                     .add(Aspect.MECHANISM, 15)
@@ -465,56 +465,56 @@ public class Thaumcraft {
                     .add(Aspect.SENSES, 10)
                     .add(Aspect.DESIRE, 72));
 
-            helper.registerTCObjectTag(TFItems.raven_feather, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.raven_feather, new AspectList()
                     .add(Aspect.FLIGHT, 5)
                     .add(Aspect.AIR, 5)
                     .add(Aspect.DARKNESS, 1));
 
-            helper.registerTCObjectTag(TFItems.magic_map_focus, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.magic_map_focus, new AspectList()
                     .add(Aspect.FLIGHT, 5)
                     .add(Aspect.AIR, 5)
                     .add(Aspect.LIGHT, 14));
 
-            helper.registerTCObjectTag(TFItems.maze_map_focus, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.maze_map_focus, new AspectList()
                     .add(Aspect.TRAP, 10)
                     .add(Aspect.MECHANISM, 15));
 
-            helper.registerTCObjectTag(TFItems.liveroot, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.liveroot, new AspectList()
                     .add(Aspect.EARTH, 9)
                     .add(Aspect.LIFE, 6)
                     .add(Aspect.PLANT, 7));
 
-            helper.registerTCObjectTag(TFItems.ironwood_raw, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.ironwood_raw, new AspectList()
                     .add(Aspect.EARTH, 9)
                     .add(Aspect.LIFE, 6)
                     .add(Aspect.PLANT, 7)
                     .add(Aspect.METAL, 16)
                     .add(Aspect.DESIRE, 1));
 
-            helper.registerTCObjectTag(TFItems.ironwood_ingot, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.ironwood_ingot, new AspectList()
                     .add(Aspect.METAL, 8)
                     .add(Aspect.PLANT, 3));
 
-            helper.registerTCObjectTag(TFItems.torchberries, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.torchberries, new AspectList()
                     .add(Aspect.LIGHT, 8)
                     .add(Aspect.PLANT, 3));
 
-            helper.registerTCObjectTag(TFItems.raw_venison, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.raw_venison, new AspectList()
                     .add(Aspect.BEAST, 5)
                     .add(Aspect.LIFE, 5)
                     .add(Aspect.EARTH, 5));
 
-            helper.registerTCObjectTag(TFItems.cooked_venison, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.cooked_venison, new AspectList()
                     .add(Aspect.BEAST, 5)
                     .add(Aspect.LIFE, 5)
                     .add(Aspect.CRAFT, 1));
 
-            helper.registerTCObjectTag(TFItems.hydra_chop, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.hydra_chop, new AspectList()
                     .add(Aspect.BEAST, 25)
                     .add(Aspect.LIFE, 25)
                     .add(Aspect.FIRE, 5));
 
-            helper.registerTCObjectTag(TFItems.fiery_blood, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.fiery_blood, new AspectList()
                     .add(Aspect.FIRE, 40)
                     .add(Aspect.LIFE, 22));
 
@@ -566,7 +566,7 @@ public class Thaumcraft {
                     .add(Aspect.DESIRE, 40)
                     .add(Aspect.EXCHANGE, 40));
 
-            helper.registerTCObjectTag(TFItems.steeleaf_ingot, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.steeleaf_ingot, new AspectList()
                     .add(Aspect.PLANT, 12)
                     .add(Aspect.METAL, 4));
 
@@ -581,27 +581,27 @@ public class Thaumcraft {
                     .add(Aspect.TRAP, 8)
                     .add(Aspect.METAL, 33));
 
-            helper.registerTCObjectTag(TFItems.transformation_powder, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.transformation_powder, new AspectList()
                     .add(Aspect.EXCHANGE, 30)
                     .add(Aspect.MAGIC, 12));
 
-            helper.registerTCObjectTag(TFItems.raw_meef, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.raw_meef, new AspectList()
                     .add(Aspect.BEAST, 5)
                     .add(Aspect.LIFE, 5)
                     .add(Aspect.EARTH, 5));
 
-            helper.registerTCObjectTag(TFItems.cooked_meef, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.cooked_meef, new AspectList()
                     .add(Aspect.BEAST, 5)
                     .add(Aspect.LIFE, 5)
                     .add(Aspect.CRAFT, 1));
 
-            helper.registerTCObjectTag(TFItems.meef_stroganoff, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.meef_stroganoff, new AspectList()
                     .add(Aspect.BEAST, 25)
                     .add(Aspect.MAN, 15)
                     .add(Aspect.LIFE, 25)
                     .add(Aspect.CRAFT, 5));
 
-            helper.registerTCObjectTag(TFItems.maze_wafer, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.maze_wafer, new AspectList()
                     .add(Aspect.PLANT, 2));
 
             helper.registerTCObjectTag(TFItems.ore_magnet, -1, new AspectList()
@@ -625,23 +625,23 @@ public class Thaumcraft {
                     .add(Aspect.LIFE, 36)
                     .add(Aspect.EXCHANGE, 28));
 
-            helper.registerTCObjectTag(TFItems.charm_of_life_1, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.charm_of_life_1, new AspectList()
                     .add(Aspect.LIFE, 10)
                     .add(Aspect.DEATH, 10)
                     .add(Aspect.EXCHANGE, 16 )
                     .add(Aspect.MAGIC, 8));
 
-            helper.registerTCObjectTag(TFItems.charm_of_keeping_1, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.charm_of_keeping_1, new AspectList()
                     .add(Aspect.EXCHANGE, 16)
                     .add(Aspect.MAGIC, 8));
 
-            helper.registerTCObjectTag(TFItems.tower_key, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.tower_key, new AspectList()
                     .add(Aspect.TRAP, 16));
 
-            helper.registerTCObjectTag(TFItems.armor_shard, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.armor_shard, new AspectList()
                     .add(Aspect.METAL, 2));
 
-            helper.registerTCObjectTag(TFItems.knightmetal_ingot, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.knightmetal_ingot, new AspectList()
                     .add(Aspect.METAL, 18)
                     .add(Aspect.CRAFT, 6));
 
@@ -664,23 +664,23 @@ public class Thaumcraft {
                     .add(Aspect.FIRE, 87)
                     .add(Aspect.ENERGY, 42));
 
-            helper.registerTCObjectTag(TFItems.fiery_tears, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.fiery_tears, new AspectList()
                     .add(Aspect.FIRE, 40)
                     .add(Aspect.WATER, 22));
 
-            helper.registerTCObjectTag(TFItems.alpha_fur, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.alpha_fur, new AspectList()
                     .add(Aspect.BEAST, 48)
                     .add(Aspect.COLD, 28));
 
-            helper.registerTCObjectTag(TFItems.ice_bomb, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.ice_bomb, new AspectList()
                     .add(Aspect.COLD, 22)
                     .add(Aspect.MOTION, 8));
 
-            helper.registerTCObjectTag(TFItems.arctic_fur, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.arctic_fur, new AspectList()
                     .add(Aspect.BEAST, 12)
                     .add(Aspect.COLD, 7));
 
-            helper.registerTCObjectTag(TFItems.magic_beans, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.magic_beans, new AspectList()
                     .add(Aspect.PLANT, 8)
                     .add(Aspect.MAGIC, 36));
 
@@ -712,7 +712,7 @@ public class Thaumcraft {
                     .add(Aspect.AVERSION, 148)
                     .add(Aspect.CRYSTAL, 96));
 
-            helper.registerTCObjectTag(TFItems.fiery_ingot, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.fiery_ingot, new AspectList()
                     .add(Aspect.FIRE, 40)
                     .add(Aspect.METAL, 15)
                     .add(Aspect.AURA, 12));
@@ -765,35 +765,35 @@ public class Thaumcraft {
                     .add(Aspect.PROTECT, 16)
                     .add(Aspect.AURA, 45));
 
-            helper.registerTCObjectTag(TFItems.borer_essence, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.borer_essence, new AspectList()
                     .add(Aspect.ALCHEMY, 10));
 
-            helper.registerTCObjectTag(TFItems.carminite, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.carminite, new AspectList()
                     .add(Aspect.ALCHEMY, 38)
                     .add(Aspect.ENERGY, 30)
                     .add(Aspect.FLUX, 26)
                     .add(Aspect.SOUL, 7)
                     .add(Aspect.UNDEAD, 3));
 
-            helper.registerTCObjectTag(TFItems.experiment_115, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.experiment_115, new AspectList()
                     .add(Aspect.FLUX, 15)
                     .add(Aspect.ALCHEMY, 2));
 
-            helper.registerTCObjectTag(TFItems.magic_map_empty, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.magic_map_empty, new AspectList()
                     .add(Aspect.PLANT, 18)
                     .add(Aspect.MIND, 16)
                     .add(Aspect.MAGIC, 12)
                     .add(Aspect.SENSES, 10)
                     .add(Aspect.LIGHT, 5));
 
-            helper.registerTCObjectTag(TFItems.maze_map_empty, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.maze_map_empty, new AspectList()
                     .add(Aspect.PLANT, 18)
                     .add(Aspect.MIND, 16)
                     .add(Aspect.MAGIC, 12)
                     .add(Aspect.SENSES, 10)
                     .add(Aspect.TRAP, 10));
 
-            helper.registerTCObjectTag(TFItems.ore_map_empty, -1, new AspectList()
+            helper.registerTCObjectTag(TFItems.ore_map_empty, new AspectList()
                     .add(Aspect.PLANT, 18)
                     .add(Aspect.MIND, 16)
                     .add(Aspect.MAGIC, 12)
@@ -810,7 +810,7 @@ public class Thaumcraft {
                     .add(Aspect.LIGHT, 10)
                     .add(Aspect.PLANT, 5));
 
-            helper.registerTCObjectTag(TFBlocks.thorn_rose, -1, new AspectList()
+            helper.registerTCObjectTag(TFBlocks.thorn_rose, new AspectList()
                     .add(Aspect.PLANT, 5)
                     .add(Aspect.AVERSION, 2)
                     .add(Aspect.SENSES, 2));
@@ -830,10 +830,14 @@ public class Thaumcraft {
             this.event = event;
         }
 
+        private void registerTCObjectTag(Block block, AspectList list) {
+            registerTCObjectTag(new ItemStack(block), list);
+        }
+
         // Register a block with Thaumcraft aspects
         private void registerTCObjectTag(Block block, int meta, AspectList list) {
             if (meta == -1) meta = OreDictionary.WILDCARD_VALUE;
-            event.register.registerObjectTag(new ItemStack(block, 1, meta), list);
+            registerTCObjectTag(new ItemStack(block, 1, meta), list);
         }
 
         // Register blocks with Thaumcraft aspects
@@ -842,16 +846,24 @@ public class Thaumcraft {
                 this.registerTCObjectTag(block, meta, list);
         }
 
+        private void registerTCObjectTag(Item item, AspectList list) {
+            registerTCObjectTag(new ItemStack(item), list);
+        }
+
         // Register an item with Thaumcraft aspects
         private void registerTCObjectTag(Item item, int meta, AspectList list) {
             if (meta == -1) meta = OreDictionary.WILDCARD_VALUE;
-            event.register.registerObjectTag(new ItemStack(item, 1, meta), list);
+            registerTCObjectTag(new ItemStack(item, 1, meta), list);
         }
 
         // Register item swith Thaumcraft aspects
         private void registerTCObjectTag(Item item, int[] metas, AspectList list) {
             for (int meta : metas)
                 this.registerTCObjectTag(item, meta, list);
+        }
+
+        private void registerTCObjectTag(ItemStack stack, AspectList list) {
+            event.register.registerObjectTag(stack, list);
         }
     }
 }
