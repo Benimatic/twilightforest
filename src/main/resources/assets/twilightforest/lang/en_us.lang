@@ -7,39 +7,39 @@ advancement.twilightforest.desc=Enter the mysterious magical woodlands; the Twil
 
 # General progression
 advancement.twilight_hedge=Bug Stomper
-advancement.twilight_hedge.desc=Defeat a spider in a hedge maze.
+advancement.twilight_hedge.desc=Defeat a spider in a Hedge Maze.
 
 advancement.twilight_hill1=The Boots Are Mine!
-advancement.twilight_hill1.desc=Defeat a redcap goblin in a small hollow hill.
+advancement.twilight_hill1.desc=Defeat a %s in a small %s.
 advancement.twilight_hill2=What Was That Noise?
-advancement.twilight_hill2.desc=Defeat a redcap sapper in a medium hollow hill.
+advancement.twilight_hill2.desc=Defeat a %s in a medium %s.
 advancement.twilight_hill3=I See Right Through You
-advancement.twilight_hill3.desc=Defeat a twilight wraith in a large hollow hill.
+advancement.twilight_hill3.desc=Defeat a %s in a large %s.
 
 advancement.twilight_quest_ram=Consummate Baaahs
-advancement.twilight_quest_ram.desc=Give the Quest Ram what it is missing.
+advancement.twilight_quest_ram.desc=Give the %s what it is missing.
 
 # Map
 advancement.twilight_magic_map_focus=With Fire It Writes
-advancement.twilight_magic_map_focus.desc=Craft the magic map focus with a raven's feather, glowstone dust, and torchberries.
-advancement.twilight_magic_map=I Can See For Miles
-advancement.twilight_magic_map.desc=Craft the magic map.
+advancement.twilight_magic_map_focus.desc=Craft the %s with a %s, %s, and %s.
+advancement.twilight_magic_map=I Can See Forever
+advancement.twilight_magic_map.desc=Craft the %s.
 advancement.twilight_maze_map=And Now, to Find the Exit
-advancement.twilight_maze_map.desc=Craft the maze map after obtaining the focus from the labyrinth.
+advancement.twilight_maze_map.desc=Craft the %s after obtaining the focus from the labyrinth.
 advancement.twilight_ore_map=How Can That Be Worth It?
-advancement.twilight_ore_map.desc=Craft the maze/ore map.
+advancement.twilight_ore_map.desc=Craft the %s.
 
 # Mainline beginning progression
 advancement.twilight_hunter=The Silence of the Forest
 advancement.twilight_hunter.desc=Hunt some of the local wildlife.
 
 advancement.twilight_kill_naga=Time To Even The Scales
-advancement.twilight_kill_naga.desc=Slay the naga in its forest courtyard and obtain a Naga Scale to overcome the barrier magic surrounding the Lich's Tower.
+advancement.twilight_kill_naga.desc=Slay the %s in its forest courtyard and obtain a %s to overcome the barrier magic surrounding the Lich's tower.
 advancement.twilight_naga_armors=Naga Armorer
-advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
+advancement.twilight_naga_armors.desc=Craft both %s chest and leg armor.
 
 advancement.twilight_kill_lich=Bring Out Your Dead
-advancement.twilight_kill_lich.desc=Slay the Lich at top of his tower and retrieve a Scepter to clear poisonous mosquitoes from the swamp, see through blinding darkness of the Dark Forest's curse, and resist the snow forest's chill.
+advancement.twilight_kill_lich.desc=Slay the %s at top of his tower and retrieve a scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the Snowy Forest's chill.
 advancement.twilight_lich_scepters=By Our Powers Combined!
 advancement.twilight_lich_scepters.desc=Acquire all four scepters of power.
 
@@ -47,11 +47,11 @@ advancement.twilight_lich_scepters.desc=Acquire all four scepters of power.
 advancement.twilight_progress_labyrinth=Mighty Stroganoff
 advancement.twilight_progress_labyrinth.desc=The meat & mushroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.
 advancement.twilight_kill_hydra=Hydra Slayer
-advancement.twilight_kill_hydra.desc=Defeat the mighty hydra and empower yourself.
+advancement.twilight_kill_hydra.desc=Defeat the mighty %s and empower yourself.
 advancement.twilight_mazebreaker=Breaking the Maze
-advancement.twilight_mazebreaker.desc=Find the Mazebreaker pickaxe in the secret labyrinth vault.
+advancement.twilight_mazebreaker.desc=Find the %s pickaxe in the secret labyrinth vault.
 advancement.twilight_hydra_chop=Hydra Chop, Baby!
-advancement.twilight_hydra_chop.desc=Chow down on some overpowered hydra meat when your food bar is empty.
+advancement.twilight_hydra_chop.desc=Chow down on some overpowered %s meat when your food bar is empty.
 
 # Dark Forest Progression
 advancement.twilight_progress_trophy_pedestal=Trophied Champion
@@ -59,9 +59,9 @@ advancement.twilight_progress_trophy_pedestal.desc=Claim your title by placing a
 advancement.twilight_progress_knights=Carminite Acclimation
 advancement.twilight_progress_knights.desc=Settle the restless phantoms in the Knight's Tomb and the carminite tower's devices will obey you.
 advancement.twilight_ghast_trap=Something Strange in Towerwood
-advancement.twilight_ghast_trap.desc=Slay the Ghastlings around a Ghast Trap and activate to wrench the Ur-Ghast from the sky!
+advancement.twilight_ghast_trap.desc=Slay the %ss around a %s and activate to wrench the %s from the sky!
 advancement.twilight_progress_urghast=Tears of Fire
-advancement.twilight_progress_urghast.desc=Touch the fiery red tears of the Ur-ghast.
+advancement.twilight_progress_urghast.desc=Touch the fiery red tears of the %s.
 
 advancement.twilight_experiment_115=Mystery Meat?
 advancement.twilight_experiment_115.desc=It looks like cake, though...
@@ -72,9 +72,9 @@ advancement.twilight_experiment_115_3.desc=eating experiment one-hundred-fifteen
 
 # Snow Forest Progression
 advancement.twilight_progress_yeti=Alpha Fur
-advancement.twilight_progress_yeti.desc=Line your garments with the soft fur from the alpha yeti, keeping you safe from the glacier's cold.
+advancement.twilight_progress_yeti.desc=Line your garments with the soft fur from the %s, keeping you safe from the Glacier's cold.
 advancement.twilight_progress_glacier=Clear Skies
-advancement.twilight_progress_glacier.desc=Defeat the Snow Queen atop the Aurora Palace.
+advancement.twilight_progress_glacier.desc=Defeat the %s atop the %s.
 advancement.twilight_arctic_dyed=Getting in Fashion
 advancement.twilight_arctic_dyed.desc=Dye all four pieces of Arctic Armor.
 
@@ -90,11 +90,11 @@ advancement.twilight_fiery_set.desc=Wield a fiery tool or weapon while wearing a
 
 # Highlands
 advancement.twilight_progress_merge=Ultimate Showdown
-advancement.twilight_progress_merge.desc=Slay the Hydra, Ur-Ghast, and Snow Queen to clear the acid rain and embolden yourself for the Highlands.
+advancement.twilight_progress_merge.desc=Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands.
 advancement.twilight_progress_troll=I Wish For More Burning
-advancement.twilight_progress_troll.desc=Find the Lamp of Cinders in the troll caves, and you can burn away the thorn barriers.
+advancement.twilight_progress_troll.desc=Find the %s in the troll caves, and you can burn away the thorn barriers.
 advancement.twilight_progress_thorns=Past the Thorns [NYI]
-advancement.twilight_progress_thorns.desc=Make it past the thornlands, and unlock the door of the castle.
+advancement.twilight_progress_thorns.desc=Make it past the Thornlands, and unlock the door of the castle.
 advancement.twilight_progress_castle=So Castle Very Wow [NYI]
 advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 
@@ -145,7 +145,7 @@ tile.TFHedge.2.name=Hedge
 tile.TFBossSpawner.0.name=Naga Spawner
 tile.TFBossSpawner.1.name=Lich Spawner
 tile.TFBossSpawner.2.name=Hydra Spawner
-tile.TFBossSpawner.3.name=Ur-ghast Spawner
+tile.TFBossSpawner.3.name=Ur-Ghast Spawner
 tile.TFBossSpawner.4.name=Knight Phantoms Spawner
 tile.TFFireflyJar.name=Firefly Jar
 tile.TFPlant.0.name=Moss Patch
@@ -160,7 +160,7 @@ tile.TFPlant.8.name=Root Strands
 tile.TFRoots.0.name=Roots
 tile.TFRoots.1.name=Liveroots
 tile.TFUncraftingTable.name=Uncrafting Table
-tile.TFFireJet.0.name=Smoking block
+tile.TFFireJet.0.name=Smoking Block
 tile.TFFireJet.1.name=Encased Smoker
 tile.TFFireJet.2.name=Encased Smoker
 tile.TFFireJet.3.name=Fire Jet
@@ -350,7 +350,7 @@ item.oreMeter.name=Ore Meter [WIP]
 item.magicMap.name=Magic Map
 item.mazeMap.name=Maze Map
 item.oreMap.name=Maze/Ore Map
-item.tfFeather.name=Raven's Feather
+item.tfFeather.name=Raven Feather
 item.magicMapFocus.name=Magic Map Focus
 item.mazeMapFocus.name=Maze Map Focus
 item.liveRoot.name=Liveroot
@@ -413,7 +413,7 @@ item.tf_trophy.name=%s Trophy
 item.trophy.hydra.name=Hydra Trophy
 item.trophy.naga.name=Naga Trophy
 item.trophy.lich.name=Lich Trophy
-item.trophy.ur_ghast.name=Ur-ghast Trophy
+item.trophy.ur_ghast.name=Ur-Ghast Trophy
 item.trophy.snow_queen.name=Snow Queen Trophy
 item.experiment115.name=Experiment 115
 item.armorShards.name=Armor Shard
@@ -478,7 +478,7 @@ item.arctic_armor.tooltip=Dyeable like Leather Armor
 entity.twilightforest.wild_boar.name=Wild Boar
 entity.twilightforest.bighorn_sheep.name=Bighorn Sheep
 entity.twilightforest.deer.name=Wild Deer
-entity.twilightforest.redcap.name=Redcap
+entity.twilightforest.redcap.name=Redcap Goblin
 entity.twilightforest.swarm_spider.name=Swarm Spider
 entity.twilightforest.naga.name=Naga
 entity.twilightforest.naga_segment.name=Naga Segment
@@ -492,7 +492,7 @@ entity.twilightforest.lich.name=Twilight Lich
 entity.twilightforest.penguin.name=Penguin
 entity.twilightforest.tiny_bird.name=Tiny Bird
 entity.twilightforest.squirrel.name=Forest Squirrel
-entity.twilightforest.bunny.name=Forest Bunny
+entity.twilightforest.bunny.name=Dwarf Rabbit
 entity.twilightforest.raven.name=Forest Raven
 entity.twilightforest.quest_ram.name=Questing Ram
 entity.twilightforest.kobold.name=Kobold
@@ -516,7 +516,7 @@ entity.twilightforest.tower_ghast.name=Carminite Ghastguard
 entity.twilightforest.tower_golem.name=Carminite Golem
 entity.twilightforest.tower_termite.name=Towerwood Borer
 entity.twilightforest.tower_broodling.name=Carminite Broodling
-entity.twilightforest.ur_ghast.name=Ur-ghast
+entity.twilightforest.ur_ghast.name=Ur-Ghast
 entity.twilightforest.blockchain_goblin.name=Block and Chain Goblin
 entity.twilightforest.goblin_knight_upper.name=Upper Goblin Knight
 entity.twilightforest.goblin_knight_lower.name=Lower Goblin Knight
@@ -533,7 +533,7 @@ entity.twilightforest.troll.name=Cave Troll
 entity.twilightforest.giant_miner.name=Giant Miner
 entity.twilightforest.armored_giant.name=Armored Giant
 entity.twilightforest.ice_crystal.name=Ice Crystal
-entity.twilightforest.apocalypse_cube.name=Apocolypse Cube [NYI]
+entity.twilightforest.apocalypse_cube.name=Apocalypse Cube [NYI]
 entity.twilightforest.adherent.name=Adherent [NYI]
 entity.twilightforest.castle_guardian.name=Castle Guardian [NYI]
 
