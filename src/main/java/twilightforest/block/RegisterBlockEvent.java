@@ -24,95 +24,95 @@ public final class RegisterBlockEvent {
 	public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
 		BlockRegistryHelper blocks = new BlockRegistryHelper(event.getRegistry());
 
-		blocks.register("twilight_log", (new BlockTFLog()).setTranslationKey("TFLog"));
-		blocks.register("root", (new BlockTFRoots()).setTranslationKey("TFRoots"));
-		blocks.register("twilight_leaves", (new BlockTFLeaves()).setTranslationKey("TFLeaves"));
-		blocks.register("firefly", (new BlockTFFirefly()).setTranslationKey("TFFirefly"));
-		blocks.register("cicada", (new BlockTFCicada()).setTranslationKey("TFCicada"));
-		blocks.register("twilight_portal", (new BlockTFPortal()).setTranslationKey("TFPortal"));
-		blocks.register("maze_stone", (new BlockTFMazestone()).setTranslationKey("TFMazestone"));
-		blocks.register("hedge", (new BlockTFHedge()).setTranslationKey("TFHedge"));
-		blocks.register("boss_spawner", (new BlockTFBossSpawner()).setTranslationKey("TFBossSpawner").setBlockUnbreakable());
-		blocks.register("firefly_jar", (new BlockTFFireflyJar()).setTranslationKey("TFFireflyJar"));
-		blocks.register("twilight_plant", (new BlockTFPlant()).setTranslationKey("TFPlant"));
-		blocks.register("uncrafting_table", (new BlockTFUncraftingTable()).setTranslationKey("TFUncraftingTable"));
-		blocks.register("fire_jet", (new BlockTFFireJet()).setTranslationKey("TFFireJet"));
-		blocks.register("naga_stone", (new BlockTFNagastone()).setTranslationKey("TFNagastone"));
-		blocks.register("twilight_sapling", (new BlockTFSapling()).setTranslationKey("TFSapling"));
-		blocks.register("moonworm", (new BlockTFMoonworm()).setTranslationKey("TFMoonworm"));
-		blocks.register("magic_log", (new BlockTFMagicLog()).setTranslationKey("TFMagicLog"));
-		blocks.register("magic_leaves", (new BlockTFMagicLeaves()).setTranslationKey("TFMagicLeaves"));
-		blocks.register("magic_log_core", (new BlockTFMagicLogSpecial()).setTranslationKey("TFMagicLogSpecial"));
-		blocks.register("tower_wood", (new BlockTFTowerWood()).setTranslationKey("TFTowerStone"));
-		blocks.register("tower_device", (new BlockTFTowerDevice()).setTranslationKey("TFTowerDevice"));
-		blocks.register("tower_translucent", (new BlockTFTowerTranslucent()).setTranslationKey("TFTowerTranslucent"));
-		blocks.register("trophy", (new BlockTFTrophy()).setTranslationKey("TFTrophy"));
-		blocks.register("stronghold_shield", (new BlockTFShield()).setTranslationKey("TFShield"));
-		blocks.register("trophy_pedestal", (new BlockTFTrophyPedestal()).setTranslationKey("TFTrophyPedestal"));
-		blocks.register("aurora_block", (new BlockTFAuroraBrick()).setTranslationKey("TFAuroraBrick"));
-		blocks.register("underbrick", (new BlockTFUnderBrick()).setTranslationKey("TFUnderBrick"));
-		blocks.register("thorns", (new BlockTFThorns()).setTranslationKey("TFThorns"));
-		blocks.register("burnt_thorns", (new BlockTFBurntThorns()).setTranslationKey("TFBurntThorns"));
-		blocks.register("thorn_rose", (new BlockTFThornRose()).setTranslationKey("TFThornRose"));
-		blocks.register("twilight_leaves_3", (new BlockTFLeaves3()).setTranslationKey("TFLeaves3"));
-		blocks.register("deadrock", (new BlockTFDeadrock()).setTranslationKey("TFDeadrock"));
-		blocks.register("dark_leaves", (new BlockTFDarkLeaves()).setTranslationKey("DarkLeaves"));
-		blocks.register("aurora_pillar", (new BlockTFAuroraPillar()).setTranslationKey("AuroraPillar"));
-		blocks.register("aurora_slab", (new BlockTFAuroraSlab(false)).setTranslationKey("AuroraSlab"));
-		blocks.register("double_aurora_slab", (new BlockTFAuroraSlab(true)).setTranslationKey("AuroraDoubleSlab"));
-		blocks.register("trollsteinn", (new BlockTFTrollSteinn()).setTranslationKey("TrollSteinn"));
-		blocks.register("wispy_cloud", (new BlockTFWispyCloud()).setTranslationKey("WispyCloud"));
-		blocks.register("fluffy_cloud", (new BlockTFFluffyCloud()).setTranslationKey("FluffyCloud"));
-		blocks.register("giant_cobblestone", (new BlockTFGiantCobble()).setTranslationKey("GiantCobble"));
-		blocks.register("giant_log", (new BlockTFGiantLog()).setTranslationKey("GiantLog"));
-		blocks.register("giant_leaves", (new BlockTFGiantLeaves()).setTranslationKey("GiantLeaves"));
-		blocks.register("giant_obsidian", (new BlockTFGiantObsidian()).setTranslationKey("GiantObsidian"));
-		blocks.register("uberous_soil", (new BlockTFUberousSoil()).setTranslationKey("UberousSoil"));
-		blocks.register("huge_stalk", (new BlockTFHugeStalk()).setTranslationKey("HugeStalk"));
-		blocks.register("huge_mushgloom", (new BlockTFHugeGloomBlock()).setTranslationKey("HugeGloomBlock"));
-		blocks.register("trollvidr", (new BlockTFTrollRoot()).setTranslationKey("TrollVidr"));
-		blocks.register("unripe_trollber", (new BlockTFUnripeTorchCluster()).setTranslationKey("UnripeTrollBer"));
-		blocks.register("trollber", (new BlockTFRipeTorchCluster()).setTranslationKey("TrollBer"));
-		blocks.register("knightmetal_block", (new BlockTFKnightmetalBlock()).setTranslationKey("KnightmetalBlock"));
-		blocks.register("huge_lilypad", (new BlockTFHugeLilyPad()).setTranslationKey("HugeLilyPad"));
-		blocks.register("huge_waterlily", (new BlockTFHugeWaterLily()).setTranslationKey("HugeWaterLily"));
-		blocks.register("slider", (new BlockTFSlider()).setTranslationKey("Slider"));
-		Block castleBrick = new BlockTFCastleBlock().setTranslationKey("CastleBrick");
+		blocks.register("twilight_log", "Log", new BlockTFLog());
+		blocks.register("root", "Roots", new BlockTFRoots());
+		blocks.register("twilight_leaves", "Leaves", new BlockTFLeaves());
+		blocks.register("firefly", "Firefly", new BlockTFFirefly());
+		blocks.register("cicada", "Cicada", new BlockTFCicada());
+		blocks.register("twilight_portal", "Portal", new BlockTFPortal());
+		blocks.register("maze_stone", "Mazestone", new BlockTFMazestone());
+		blocks.register("hedge", "Hedge", new BlockTFHedge());
+		blocks.register("boss_spawner", "BossSpawner", new BlockTFBossSpawner().setBlockUnbreakable());
+		blocks.register("firefly_jar", "FireflyJar", new BlockTFFireflyJar());
+		blocks.register("twilight_plant", "Plant", new BlockTFPlant());
+		blocks.register("uncrafting_table", "UncraftingTable", new BlockTFUncraftingTable());
+		blocks.register("fire_jet", "FireJet", new BlockTFFireJet());
+		blocks.register("naga_stone", "Nagastone", new BlockTFNagastone());
+		blocks.register("twilight_sapling", "Sapling", new BlockTFSapling());
+		blocks.register("moonworm", "Moonworm", new BlockTFMoonworm());
+		blocks.register("magic_log", "MagicLog", new BlockTFMagicLog());
+		blocks.register("magic_leaves", "MagicLeaves", new BlockTFMagicLeaves());
+		blocks.register("magic_log_core", "MagicLogSpecial", new BlockTFMagicLogSpecial());
+		blocks.register("tower_wood", "TowerStone", new BlockTFTowerWood());
+		blocks.register("tower_device", "TowerDevice", new BlockTFTowerDevice());
+		blocks.register("tower_translucent", "TowerTranslucent", new BlockTFTowerTranslucent());
+		blocks.register("trophy", "Trophy", new BlockTFTrophy());
+		blocks.register("stronghold_shield", "Shield", new BlockTFShield());
+		blocks.register("trophy_pedestal", "TrophyPedestal", new BlockTFTrophyPedestal());
+		blocks.register("aurora_block", "AuroraBrick", new BlockTFAuroraBrick());
+		blocks.register("underbrick", "UnderBrick", new BlockTFUnderBrick());
+		blocks.register("thorns", "Thorns", new BlockTFThorns());
+		blocks.register("burnt_thorns", "BurntThorns", new BlockTFBurntThorns());
+		blocks.register("thorn_rose", "ThornRose", new BlockTFThornRose());
+		blocks.register("twilight_leaves_3", "Leaves3", new BlockTFLeaves3());
+		blocks.register("deadrock", "Deadrock", new BlockTFDeadrock());
+		blocks.register("dark_leaves", "DarkLeaves", new BlockTFDarkLeaves());
+		blocks.register("aurora_pillar", "AuroraPillar", new BlockTFAuroraPillar());
+		blocks.register("aurora_slab", "AuroraSlab", new BlockTFAuroraSlab(false));
+		blocks.register("double_aurora_slab", "AuroraDoubleSlab", new BlockTFAuroraSlab(true));
+		blocks.register("trollsteinn", "TrollSteinn", new BlockTFTrollSteinn());
+		blocks.register("wispy_cloud", "WispyCloud", new BlockTFWispyCloud());
+		blocks.register("fluffy_cloud", "FluffyCloud", new BlockTFFluffyCloud());
+		blocks.register("giant_cobblestone", "GiantCobble", new BlockTFGiantCobble());
+		blocks.register("giant_log", "GiantLog", new BlockTFGiantLog());
+		blocks.register("giant_leaves", "GiantLeaves", new BlockTFGiantLeaves());
+		blocks.register("giant_obsidian", "GiantObsidian", new BlockTFGiantObsidian());
+		blocks.register("uberous_soil", "UberousSoil", new BlockTFUberousSoil());
+		blocks.register("huge_stalk", "HugeStalk", new BlockTFHugeStalk());
+		blocks.register("huge_mushgloom", "HugeGloomBlock", new BlockTFHugeGloomBlock());
+		blocks.register("trollvidr", "TrollVidr", new BlockTFTrollRoot());
+		blocks.register("unripe_trollber", "UnripeTrollBer", new BlockTFUnripeTorchCluster());
+		blocks.register("trollber", "TrollBer", new BlockTFRipeTorchCluster());
+		blocks.register("knightmetal_block", "KnightmetalBlock", new BlockTFKnightmetalBlock());
+		blocks.register("huge_lilypad", "HugeLilyPad", new BlockTFHugeLilyPad());
+		blocks.register("huge_waterlily", "HugeWaterLily", new BlockTFHugeWaterLily());
+		blocks.register("slider", "Slider", new BlockTFSlider());
+		Block castleBrick = new BlockTFCastleBlock();
 		IBlockState castleState = castleBrick.getDefaultState();
-		blocks.register("castle_brick", castleBrick);
-		blocks.register("castle_stairs_brick", new BlockTFStairs(castleState).setTranslationKey("CastleStairsBrick"));
-		blocks.register("castle_stairs_worn", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.WORN)).setTranslationKey("CastleStairsWorn"));
-		blocks.register("castle_stairs_cracked", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.CRACKED)).setTranslationKey("CastleStairsCracked"));
-		blocks.register("castle_stairs_mossy", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.MOSSY)).setTranslationKey("CastleStairsMossy"));
+		blocks.register("castle_brick", "CastleBrick", castleBrick);
+		blocks.register("castle_stairs_brick", "CastleStairsBrick", new BlockTFStairs(castleState));
+		blocks.register("castle_stairs_worn", "CastleStairsWorn", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.WORN)));
+		blocks.register("castle_stairs_cracked", "CastleStairsCracked", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.CRACKED)));
+		blocks.register("castle_stairs_mossy", "CastleStairsMossy", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.MOSSY)));
 		Block castlePillar = new BlockTFCastlePillar();
-		blocks.register("castle_pillar", castlePillar.setTranslationKey("CastlePillar"));
-		blocks.register("castle_stairs", (new BlockTFCastleStairs(castlePillar.getDefaultState())).setTranslationKey("CastleStairs"));
-		blocks.register("castle_rune_brick", (new BlockTFCastleMagic()).setTranslationKey("CastleMagic"));
-		blocks.register("force_field", (new BlockTFForceField()).setTranslationKey("ForceField"));
-		blocks.register("cinder_furnace", (new BlockTFCinderFurnace(false)).setTranslationKey("CinderFurnaceIdle"));
-		blocks.register("cinder_furnace_lit", (new BlockTFCinderFurnace(true)).setTranslationKey("CinderFurnaceLit"));
-		blocks.register("cinder_log", (new BlockTFCinderLog()).setTranslationKey("CinderLog"));
-		blocks.register("castle_door", (new BlockTFCastleDoor(false)).setTranslationKey("CastleDoor"));
-		blocks.register("castle_door_vanished", (new BlockTFCastleDoor(true)).setTranslationKey("CastleDoorVanished"));
-		blocks.register("castle_unlock", (new BlockTFCastleUnlock()).setTranslationKey("CastleUnlock"));
-		blocks.register("experiment_115", (new BlockTFExperiment115()).setTranslationKey("experiment115").setHardness(0.5F));
-		blocks.register("miniature_structure", (new BlockTFMiniatureStructure()).setTranslationKey("MiniatureStructure").setHardness(0.75F));
-		blocks.register("block_storage", new BlockTFCompressed().setTranslationKey("BlockOfStorage"));
-		blocks.register("lapis_block", new BlockTFLapisBlock().setTranslationKey("BlockOfLapisTF"));
-		blocks.register("spiral_bricks", new BlockTFSpiralBrick().setTranslationKey("SpiralBricks"));
-		Block etchedNagastone = new BlockTFNagastoneEtched().setTranslationKey("EtchedNagastone").setHardness(1.5F).setResistance(10.0F);
-		blocks.register("etched_nagastone", etchedNagastone);
-		blocks.register("nagastone_stairs", new BlockTFNagastoneStairs(etchedNagastone.getDefaultState()).setTranslationKey("NagastoneStairs").setHardness(1.5F).setResistance(10.0F));
-		blocks.register("nagastone_pillar", new BlockTFNagastonePillar().setTranslationKey("NagastonePillar").setHardness(1.5F).setResistance(10.0F));
-		Block etchedNagastoneMossy = new BlockTFNagastoneEtched().setTranslationKey("EtchedNagastoneMossy").setHardness(1.5F).setResistance(10.0F);
-		blocks.register("etched_nagastone_mossy", etchedNagastoneMossy);
-		blocks.register("nagastone_stairs_mossy", new BlockTFNagastoneStairs(etchedNagastoneMossy.getDefaultState()).setTranslationKey("NagastoneStairsMossy").setHardness(1.5F).setResistance(10.0F));
-		blocks.register("nagastone_pillar_mossy", new BlockTFNagastonePillar().setTranslationKey("NagastonePillarMossy").setHardness(1.5F).setResistance(10.0F));
-		Block etchedNagastoneWeathered = new BlockTFNagastoneEtched().setTranslationKey("EtchedNagastoneWeathered").setHardness(1.5F).setResistance(10.0F);
-		blocks.register("etched_nagastone_weathered", etchedNagastoneWeathered);
-		blocks.register("nagastone_stairs_weathered", new BlockTFNagastoneStairs(etchedNagastoneWeathered.getDefaultState()).setTranslationKey("NagastoneStairsWeathered").setHardness(1.5F).setResistance(10.0F));
-		blocks.register("nagastone_pillar_weathered", new BlockTFNagastonePillar().setTranslationKey("NagastonePillarWeathered").setHardness(1.5F).setResistance(10.0F));
-		blocks.register("auroralized_glass", new BlockTFAuroralizedGlass().setTranslationKey("AuroralizedGlass"));
+		blocks.register("castle_pillar", "CastlePillar", castlePillar);
+		blocks.register("castle_stairs", "CastleStairs", new BlockTFCastleStairs(castlePillar.getDefaultState()));
+		blocks.register("castle_rune_brick", "CastleMagic", new BlockTFCastleMagic());
+		blocks.register("force_field", "ForceField", new BlockTFForceField());
+		blocks.register("cinder_furnace", "CinderFurnaceIdle", new BlockTFCinderFurnace(false));
+		blocks.register("cinder_furnace_lit", "CinderFurnaceLit", new BlockTFCinderFurnace(true));
+		blocks.register("cinder_log", "CinderLog", new BlockTFCinderLog());
+		blocks.register("castle_door", "CastleDoor", new BlockTFCastleDoor(false));
+		blocks.register("castle_door_vanished", "CastleDoorVanished", new BlockTFCastleDoor(true));
+		blocks.register("castle_unlock", "CastleUnlock", new BlockTFCastleUnlock());
+		blocks.register("experiment_115", "experiment115", new BlockTFExperiment115().setHardness(0.5F));
+		blocks.register("miniature_structure", "MiniatureStructure", new BlockTFMiniatureStructure().setHardness(0.75F));
+		blocks.register("block_storage", "BlockOfStorage", new BlockTFCompressed());
+		blocks.register("lapis_block", "BlockOfLapisTF", new BlockTFLapisBlock());
+		blocks.register("spiral_bricks", "SpiralBricks", new BlockTFSpiralBrick());
+		Block etchedNagastone = new BlockTFNagastoneEtched().setHardness(1.5F).setResistance(10.0F);
+		blocks.register("etched_nagastone", "EtchedNagastone", etchedNagastone);
+		blocks.register("nagastone_stairs", "NagastoneStairs", new BlockTFNagastoneStairs(etchedNagastone.getDefaultState()).setHardness(1.5F).setResistance(10.0F));
+		blocks.register("nagastone_pillar", "NagastonePillar", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
+		Block etchedNagastoneMossy = new BlockTFNagastoneEtched().setHardness(1.5F).setResistance(10.0F);
+		blocks.register("etched_nagastone_mossy", "EtchedNagastoneMossy", etchedNagastoneMossy);
+		blocks.register("nagastone_stairs_mossy", "NagastoneStairsMossy", new BlockTFNagastoneStairs(etchedNagastoneMossy.getDefaultState()).setHardness(1.5F).setResistance(10.0F));
+		blocks.register("nagastone_pillar_mossy", "NagastonePillarMossy", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
+		Block etchedNagastoneWeathered = new BlockTFNagastoneEtched().setHardness(1.5F).setResistance(10.0F);
+		blocks.register("etched_nagastone_weathered", "EtchedNagastoneWeathered", etchedNagastoneWeathered);
+		blocks.register("nagastone_stairs_weathered", "NagastoneStairsWeathered", new BlockTFNagastoneStairs(etchedNagastoneWeathered.getDefaultState()).setHardness(1.5F).setResistance(10.0F));
+		blocks.register("nagastone_pillar_weathered", "NagastonePillarWeathered", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
+		blocks.register("auroralized_glass", "AuroralizedGlass", new BlockTFAuroralizedGlass());
 
 		registerFluidBlock(blocks, moltenFiery);
 		registerFluidBlock(blocks, moltenKnightmetal);
@@ -124,6 +124,7 @@ public final class RegisterBlockEvent {
 	}
 
 	private static class BlockRegistryHelper {
+
 		private final IForgeRegistry<Block> registry;
 
 		private static List<ModelRegisterCallback> blockModels = new ArrayList<>();
@@ -132,10 +133,16 @@ public final class RegisterBlockEvent {
 			this.registry = registry;
 		}
 
-		private void register(String registryName, Block block) {
+		void register(String registryName, String translationKey, Block block) {
+			block.setTranslationKey(TwilightForestMod.ID + "." + translationKey);
+			register(registryName, block);
+		}
+
+		void register(String registryName, Block block) {
 			block.setRegistryName(TwilightForestMod.ID, registryName);
-			if (block instanceof ModelRegisterCallback)
+			if (block instanceof ModelRegisterCallback) {
 				blockModels.add((ModelRegisterCallback) block);
+			}
 			registry.register(block);
 		}
 	}

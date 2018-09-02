@@ -4,10 +4,10 @@
       "item": "twilightforest:alpha_fur"
     },
     "title": {
-      "translate": "advancement.twilight_progress_yeti"
+      "translate": "advancement.twilightforest.progress_yeti"
     },
     "description": {
-      "translate": "advancement.twilight_progress_yeti.desc",
+      "translate": "advancement.twilightforest.progress_yeti.desc",
       "with": [
         { "translate": "entity.twilightforest.yeti_alpha.name" }
       ]

@@ -5,10 +5,10 @@
       "data": 1
     },
     "title": {
-      "translate": "advancement.twilight_kill_lich"
+      "translate": "advancement.twilightforest.kill_lich"
     },
     "description": {
-      "translate": "advancement.twilight_kill_lich.desc",
+      "translate": "advancement.twilightforest.kill_lich.desc",
       "with": [
         { "translate": "entity.twilightforest.lich.name" }
       ]

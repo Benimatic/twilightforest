@@ -4,12 +4,12 @@
       "item": "twilightforest:mazebreaker_pickaxe"
     },
     "title": {
-      "translate": "advancement.twilight_mazebreaker"
+      "translate": "advancement.twilightforest.mazebreaker"
     },
     "description": {
-      "translate": "advancement.twilight_mazebreaker.desc",
+      "translate": "advancement.twilightforest.mazebreaker.desc",
       "with": [
-        { "translate": "item.mazebreakerPick.name" }
+        { "translate": "item.twilightforest.mazebreakerPick.name" }
       ]
     },
     "frame": "challenge"

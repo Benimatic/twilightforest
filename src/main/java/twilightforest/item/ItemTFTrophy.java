@@ -128,7 +128,7 @@ public class ItemTFTrophy extends ItemTF {
 	@Override
 	public String getTranslationKey(ItemStack stack) {
 		//int meta = MathHelper.clamp(stack.getItemDamage(), 0, BossVariant.values().length);
-		return "item.tf_trophy.name"; //super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
+		return "item.twilightforest.tf_trophy.name"; //super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
 	}
 
 	@Override

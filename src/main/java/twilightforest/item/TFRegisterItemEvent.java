@@ -35,117 +35,117 @@ public class TFRegisterItemEvent {
 	public static void onRegisterItems(RegistryEvent.Register<Item> event) {
 		ItemRegistryHelper items = new ItemRegistryHelper(event.getRegistry());
 
-		items.register("naga_scale", new ItemTF().setTranslationKey("nagaScale"));
-		items.register("naga_chestplate", new ItemTFNagaArmor(ARMOR_NAGA, CHEST).setTranslationKey("plateNaga").setMaxStackSize(1));
-		items.register("naga_leggings", new ItemTFNagaArmor(ARMOR_NAGA, LEGS).setTranslationKey("legsNaga").setMaxStackSize(1));
-		items.register("twilight_scepter", new ItemTFTwilightWand().setTranslationKey("scepterTwilight").setMaxStackSize(1));
-		items.register("lifedrain_scepter", new ItemTFScepterLifeDrain().setTranslationKey("scepterLifeDrain").setMaxStackSize(1));
-		items.register("zombie_scepter", new ItemTFZombieWand().setTranslationKey("scepterZombie").setMaxStackSize(1));
-		items.register("shield_scepter", new ItemTFShieldWand().setTranslationKey("scepterShield").setMaxStackSize(1));
+		items.register("naga_scale", "nagaScale", new ItemTF());
+		items.register("naga_chestplate", "plateNaga", new ItemTFNagaArmor(ARMOR_NAGA, CHEST).setMaxStackSize(1));
+		items.register("naga_leggings", "legsNaga", new ItemTFNagaArmor(ARMOR_NAGA, LEGS).setMaxStackSize(1));
+		items.register("twilight_scepter", "scepterTwilight", new ItemTFTwilightWand().setMaxStackSize(1));
+		items.register("lifedrain_scepter", "scepterLifeDrain", new ItemTFScepterLifeDrain().setMaxStackSize(1));
+		items.register("zombie_scepter", "scepterZombie", new ItemTFZombieWand().setMaxStackSize(1));
+		items.register("shield_scepter", "scepterShield", new ItemTFShieldWand().setMaxStackSize(1));
 		//items.register("Wand of Pacification [NYI]", new ItemTF().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
-		items.register("ore_meter", new ItemTFOreMeter().setTranslationKey("oreMeter").setMaxStackSize(1));
-		items.register("magic_map", new ItemTFMagicMap().setTranslationKey("magicMap").setMaxStackSize(1));
-		items.register("maze_map", new ItemTFMazeMap(false).setTranslationKey("mazeMap").setMaxStackSize(1));
-		items.register("ore_map", new ItemTFMazeMap(true).setTranslationKey("oreMap").setMaxStackSize(1));
-		items.register("raven_feather", new ItemTF().setTranslationKey("tfFeather"));
-		items.register("magic_map_focus", new ItemTF().setTranslationKey("magicMapFocus"));
-		items.register("maze_map_focus", new ItemTF().setTranslationKey("mazeMapFocus"));
-		items.register("liveroot", new ItemTF().setTranslationKey("liveRoot"));
-		items.register("ironwood_raw", new ItemTF().setTranslationKey("ironwoodRaw"));
-		items.register("ironwood_ingot", new ItemTF().setTranslationKey("ironwoodIngot"));
-		items.register("ironwood_helmet", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, HEAD).setTranslationKey("ironwoodHelm").setMaxStackSize(1));
-		items.register("ironwood_chestplate", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, CHEST).setTranslationKey("ironwoodPlate").setMaxStackSize(1));
-		items.register("ironwood_leggings", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, LEGS).setTranslationKey("ironwoodLegs").setMaxStackSize(1));
-		items.register("ironwood_boots", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, FEET).setTranslationKey("ironwoodBoots").setMaxStackSize(1));
-		items.register("ironwood_sword", new ItemTFIronwoodSword(TOOL_IRONWOOD).setTranslationKey("ironwoodSword").setMaxStackSize(1));
-		items.register("ironwood_shovel", new ItemTFIronwoodShovel(TOOL_IRONWOOD).setTranslationKey("ironwoodShovel").setMaxStackSize(1));
-		items.register("ironwood_pickaxe", new ItemTFIronwoodPick(TOOL_IRONWOOD).setTranslationKey("ironwoodPick").setMaxStackSize(1));
-		items.register("ironwood_axe", new ItemTFIronwoodAxe(TOOL_IRONWOOD).setTranslationKey("ironwoodAxe").setMaxStackSize(1));
-		items.register("ironwood_hoe", new ItemTFIronwoodHoe(TOOL_IRONWOOD).setTranslationKey("ironwoodHoe").setMaxStackSize(1));
-		items.register("torchberries", new ItemTF().setTranslationKey("torchberries"));
-		items.register("raw_venison", (new ItemTFFood(3, 0.3F, true)).setTranslationKey("venisonRaw"));
-		items.register("cooked_venison", (new ItemTFFood(8, 0.8F, true)).setTranslationKey("venisonCooked"));
-		items.register("hydra_chop", (new ItemTFHydraChops(18, 2.0F)).setPotionEffect(new PotionEffect(REGENERATION, 100, 0), 1.0F).setTranslationKey("hydraChop"));
-		items.register("fiery_blood", new ItemTF().makeRare().setTranslationKey("fieryBlood"));
-		items.register("trophy", new ItemTFTrophy().setTranslationKey("trophy"));
-		items.register("fiery_ingot", new ItemTF().makeRare().setTranslationKey("fieryIngot"));
-		items.register("fiery_helmet", new ItemTFFieryArmor(ARMOR_FIERY, HEAD).setTranslationKey("fieryHelm").setMaxStackSize(1));
-		items.register("fiery_chestplate", new ItemTFFieryArmor(ARMOR_FIERY, CHEST).setTranslationKey("fieryPlate").setMaxStackSize(1));
-		items.register("fiery_leggings", new ItemTFFieryArmor(ARMOR_FIERY, LEGS).setTranslationKey("fieryLegs").setMaxStackSize(1));
-		items.register("fiery_boots", new ItemTFFieryArmor(ARMOR_FIERY, FEET).setTranslationKey("fieryBoots").setMaxStackSize(1));
-		items.register("fiery_sword", new ItemTFFierySword(TOOL_FIERY).setTranslationKey("fierySword").setMaxStackSize(1));
-		items.register("fiery_pickaxe", new ItemTFFieryPick(TOOL_FIERY).setTranslationKey("fieryPick").setMaxStackSize(1));
-		items.register("steeleaf_ingot", new ItemTF().setTranslationKey("steeleafIngot"));
-		items.register("steeleaf_helmet", new ItemTFSteeleafArmor(ARMOR_STEELEAF, HEAD).setTranslationKey("steeleafHelm").setMaxStackSize(1));
-		items.register("steeleaf_chestplate", new ItemTFSteeleafArmor(ARMOR_STEELEAF, CHEST).setTranslationKey("steeleafPlate").setMaxStackSize(1));
-		items.register("steeleaf_leggings", new ItemTFSteeleafArmor(ARMOR_STEELEAF, LEGS).setTranslationKey("steeleafLegs").setMaxStackSize(1));
-		items.register("steeleaf_boots", new ItemTFSteeleafArmor(ARMOR_STEELEAF, FEET).setTranslationKey("steeleafBoots").setMaxStackSize(1));
-		items.register("steeleaf_sword", new ItemTFSteeleafSword(TOOL_STEELEAF).setTranslationKey("steeleafSword").setMaxStackSize(1));
-		items.register("steeleaf_shovel", new ItemTFSteeleafShovel(TOOL_STEELEAF).setTranslationKey("steeleafShovel").setMaxStackSize(1));
-		items.register("steeleaf_pickaxe", new ItemTFSteeleafPick(TOOL_STEELEAF).setTranslationKey("steeleafPick").setMaxStackSize(1));
-		items.register("steeleaf_axe", new ItemTFSteeleafAxe(TOOL_STEELEAF).setTranslationKey("steeleafAxe").setMaxStackSize(1));
-		items.register("steeleaf_hoe", new ItemTFSteeleafHoe(TOOL_STEELEAF).setTranslationKey("steeleafHoe").setMaxStackSize(1));
-		items.register("minotaur_axe", new ItemTFMinotaurAxe(DIAMOND).setTranslationKey("minotaurAxe").setMaxStackSize(1));
-		items.register("mazebreaker_pickaxe", new ItemTFMazebreakerPick(DIAMOND).setTranslationKey("mazebreakerPick").setMaxStackSize(1));
-		items.register("transformation_powder", new ItemTFTransformPowder().makeRare().setTranslationKey("transformPowder"));
-		items.register("raw_meef", (new ItemTFFood(2, 0.3F, true)).setTranslationKey("meefRaw"));
-		items.register("cooked_meef", (new ItemTFFood(6, 0.6F, true)).setTranslationKey("meefSteak"));
-		items.register("meef_stroganoff", (new ItemTFSoup(8)).setTranslationKey("meefStroganoff"));
-		items.register("maze_wafer", (new ItemTFFood(4, 0.6F, false)).setTranslationKey("mazeWafer"));
-		items.register("magic_map_empty", (new ItemTFEmptyMagicMap()).setTranslationKey("emptyMagicMap"));
-		items.register("maze_map_empty", (new ItemTFEmptyMazeMap(false)).setTranslationKey("emptyMazeMap"));
-		items.register("ore_map_empty", (new ItemTFEmptyMazeMap(true)).setTranslationKey("emptyOreMap"));
-		items.register("ore_magnet", (new ItemTFOreMagnet()).setTranslationKey("oreMagnet"));
-		items.register("crumble_horn", (new ItemTFCrumbleHorn()).setTranslationKey("crumbleHorn"));
-		items.register("peacock_fan", (new ItemTFPeacockFan()).setTranslationKey("peacockFan"));
-		items.register("moonworm_queen", (new ItemTFMoonwormQueen()).setTranslationKey("moonwormQueen"));
-		items.register("charm_of_life_1", new ItemCharmBaubleable().setTranslationKey("charmOfLife1"));
-		items.register("charm_of_life_2", new ItemCharmBaubleable().setTranslationKey("charmOfLife2"));
-		items.register("charm_of_keeping_1", new ItemCharmBaubleable().setTranslationKey("charmOfKeeping1"));
-		items.register("charm_of_keeping_2", new ItemCharmBaubleable().setTranslationKey("charmOfKeeping2"));
-		items.register("charm_of_keeping_3", new ItemCharmBaubleable().setTranslationKey("charmOfKeeping3"));
-		items.register("tower_key", new ItemTFTowerKey().setTranslationKey("towerKey"));
-		items.register("borer_essence", new ItemTF().setTranslationKey("borerEssence"));
-		items.register("carminite", new ItemTF().makeRare().setTranslationKey("carminite"));
-		items.register("experiment_115", new ItemTFExperiment115().setTranslationKey("experiment115"));
-		items.register("armor_shard", new ItemTF().setTranslationKey("armorShards"));
-		items.register("knightmetal_ingot", new ItemTF().setTranslationKey("knightMetal"));
-		items.register("armor_shard_cluster", new ItemTF().setTranslationKey("shardCluster"));
-		items.register("knightmetal_helmet", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, HEAD).setTranslationKey("knightlyHelm").setMaxStackSize(1));
-		items.register("knightmetal_chestplate", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, CHEST).setTranslationKey("knightlyPlate").setMaxStackSize(1));
-		items.register("knightmetal_leggings", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, LEGS).setTranslationKey("knightlyLegs").setMaxStackSize(1));
-		items.register("knightmetal_boots", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, FEET).setTranslationKey("knightlyBoots").setMaxStackSize(1));
-		items.register("knightmetal_sword", new ItemTFKnightlySword(TOOL_KNIGHTLY).setTranslationKey("knightlySword").setMaxStackSize(1));
-		items.register("knightmetal_pickaxe", new ItemTFKnightlyPick(TOOL_KNIGHTLY).setTranslationKey("knightlyPick").setMaxStackSize(1));
-		items.register("knightmetal_axe", new ItemTFKnightlyAxe(TOOL_KNIGHTLY).setTranslationKey("knightlyAxe").setMaxStackSize(1));
-		items.register("phantom_helmet", new ItemTFPhantomArmor(ARMOR_PHANTOM, HEAD).setTranslationKey("phantomHelm").setMaxStackSize(1));
-		items.register("phantom_chestplate", new ItemTFPhantomArmor(ARMOR_PHANTOM, CHEST).setTranslationKey("phantomPlate").setMaxStackSize(1));
-		items.register("lamp_of_cinders", new ItemTFLampOfCinders().setTranslationKey("lampOfCinders"));
-		items.register("fiery_tears", new ItemTF().makeRare().setTranslationKey("fieryTears"));
-		items.register("alpha_fur", new ItemTF().makeRare().setTranslationKey("alphaFur"));
-		items.register("yeti_helmet", new ItemTFYetiArmor(ARMOR_YETI, HEAD).setTranslationKey("yetiHelm").setMaxStackSize(1));
-		items.register("yeti_chestplate", new ItemTFYetiArmor(ARMOR_YETI, CHEST).setTranslationKey("yetiPlate").setMaxStackSize(1));
-		items.register("yeti_leggings", new ItemTFYetiArmor(ARMOR_YETI, LEGS).setTranslationKey("yetiLegs").setMaxStackSize(1));
-		items.register("yeti_boots", new ItemTFYetiArmor(ARMOR_YETI, FEET).setTranslationKey("yetiBoots").setMaxStackSize(1));
-		items.register("ice_bomb", new ItemTFIceBomb().makeRare().setTranslationKey("iceBomb").setMaxStackSize(16));
-		items.register("arctic_fur", new ItemTF().setTranslationKey("arcticFur"));
-		items.register("arctic_helmet", new ItemTFArcticArmor(ARMOR_ARCTIC, HEAD).setTranslationKey("arcticHelm").setMaxStackSize(1));
-		items.register("arctic_chestplate", new ItemTFArcticArmor(ARMOR_ARCTIC, CHEST).setTranslationKey("arcticPlate").setMaxStackSize(1));
-		items.register("arctic_leggings", new ItemTFArcticArmor(ARMOR_ARCTIC, LEGS).setTranslationKey("arcticLegs").setMaxStackSize(1));
-		items.register("arctic_boots", new ItemTFArcticArmor(ARMOR_ARCTIC, FEET).setTranslationKey("arcticBoots").setMaxStackSize(1));
-		items.register("magic_beans", new ItemTFMagicBeans().setTranslationKey("magicBeans"));
-		items.register("giant_pickaxe", new ItemTFGiantPick(TOOL_GIANT).setTranslationKey("giantPick").setMaxStackSize(1));
-		items.register("giant_sword", new ItemTFGiantSword(TOOL_GIANT).setTranslationKey("giantSword").setMaxStackSize(1));
-		items.register("triple_bow", new ItemTFTripleBow().setTranslationKey("tripleBow").setMaxStackSize(1));
-		items.register("seeker_bow", new ItemTFSeekerBow().setTranslationKey("seekerBow").setMaxStackSize(1));
-		items.register("ice_bow", new ItemTFIceBow().setTranslationKey("iceBow").setMaxStackSize(1));
-		items.register("ender_bow", new ItemTFEnderBow().setTranslationKey("enderBow").setMaxStackSize(1));
-		items.register("ice_sword", new ItemTFIceSword(TOOL_ICE).setTranslationKey("iceSword").setMaxStackSize(1));
-		items.register("glass_sword", new ItemTFGlassSword(TOOL_GLASS).setTranslationKey("glassSword").setMaxStackSize(1));
-		items.register("knightmetal_ring", new ItemTF().setTranslationKey("knightmetalRing"));
-		items.register("block_and_chain", new ItemTFChainBlock().setTranslationKey("chainBlock").setMaxStackSize(1));
-		items.register("cube_talisman", new ItemTF().setTranslationKey("cubeTalisman"));
-		items.register("cube_of_annihilation", new ItemTFCubeOfAnnihilation().setTranslationKey("cubeOfAnnihilation").setMaxStackSize(1));
+		items.register("ore_meter", "oreMeter", new ItemTFOreMeter().setMaxStackSize(1));
+		items.register("magic_map", "magicMap", new ItemTFMagicMap().setMaxStackSize(1));
+		items.register("maze_map", "mazeMap", new ItemTFMazeMap(false).setMaxStackSize(1));
+		items.register("ore_map", "oreMap", new ItemTFMazeMap(true).setMaxStackSize(1));
+		items.register("raven_feather", "tfFeather", new ItemTF());
+		items.register("magic_map_focus", "magicMapFocus", new ItemTF());
+		items.register("maze_map_focus", "mazeMapFocus", new ItemTF());
+		items.register("liveroot", "liveRoot", new ItemTF());
+		items.register("ironwood_raw", "ironwoodRaw", new ItemTF());
+		items.register("ironwood_ingot", "ironwoodIngot", new ItemTF());
+		items.register("ironwood_helmet", "ironwoodHelm", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, HEAD).setMaxStackSize(1));
+		items.register("ironwood_chestplate", "ironwoodPlate", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, CHEST).setMaxStackSize(1));
+		items.register("ironwood_leggings", "ironwoodLegs", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, LEGS).setMaxStackSize(1));
+		items.register("ironwood_boots", "ironwoodBoots", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, FEET).setMaxStackSize(1));
+		items.register("ironwood_sword", "ironwoodSword", new ItemTFIronwoodSword(TOOL_IRONWOOD).setMaxStackSize(1));
+		items.register("ironwood_shovel", "ironwoodShovel", new ItemTFIronwoodShovel(TOOL_IRONWOOD).setMaxStackSize(1));
+		items.register("ironwood_pickaxe", "ironwoodPick", new ItemTFIronwoodPick(TOOL_IRONWOOD).setMaxStackSize(1));
+		items.register("ironwood_axe", "ironwoodAxe", new ItemTFIronwoodAxe(TOOL_IRONWOOD).setMaxStackSize(1));
+		items.register("ironwood_hoe", "ironwoodHoe", new ItemTFIronwoodHoe(TOOL_IRONWOOD).setMaxStackSize(1));
+		items.register("torchberries", "torchberries", new ItemTF());
+		items.register("raw_venison", "venisonRaw", new ItemTFFood(3, 0.3F, true));
+		items.register("cooked_venison", "venisonCooked", new ItemTFFood(8, 0.8F, true));
+		items.register("hydra_chop", "hydraChop", new ItemTFHydraChops(18, 2.0F).setPotionEffect(new PotionEffect(REGENERATION, 100, 0), 1.0F));
+		items.register("fiery_blood", "fieryBlood", new ItemTF().makeRare());
+		items.register("trophy", "trophy", new ItemTFTrophy());
+		items.register("fiery_ingot", "fieryIngot", new ItemTF().makeRare());
+		items.register("fiery_helmet", "fieryHelm", new ItemTFFieryArmor(ARMOR_FIERY, HEAD).setMaxStackSize(1));
+		items.register("fiery_chestplate", "fieryPlate", new ItemTFFieryArmor(ARMOR_FIERY, CHEST).setMaxStackSize(1));
+		items.register("fiery_leggings", "fieryLegs", new ItemTFFieryArmor(ARMOR_FIERY, LEGS).setMaxStackSize(1));
+		items.register("fiery_boots", "fieryBoots", new ItemTFFieryArmor(ARMOR_FIERY, FEET).setMaxStackSize(1));
+		items.register("fiery_sword", "fierySword", new ItemTFFierySword(TOOL_FIERY).setMaxStackSize(1));
+		items.register("fiery_pickaxe", "fieryPick", new ItemTFFieryPick(TOOL_FIERY).setMaxStackSize(1));
+		items.register("steeleaf_ingot", "steeleafIngot", new ItemTF());
+		items.register("steeleaf_helmet", "steeleafHelm", new ItemTFSteeleafArmor(ARMOR_STEELEAF, HEAD).setMaxStackSize(1));
+		items.register("steeleaf_chestplate", "steeleafPlate", new ItemTFSteeleafArmor(ARMOR_STEELEAF, CHEST).setMaxStackSize(1));
+		items.register("steeleaf_leggings", "steeleafLegs", new ItemTFSteeleafArmor(ARMOR_STEELEAF, LEGS).setMaxStackSize(1));
+		items.register("steeleaf_boots", "steeleafBoots", new ItemTFSteeleafArmor(ARMOR_STEELEAF, FEET).setMaxStackSize(1));
+		items.register("steeleaf_sword", "steeleafSword", new ItemTFSteeleafSword(TOOL_STEELEAF).setMaxStackSize(1));
+		items.register("steeleaf_shovel", "steeleafShovel", new ItemTFSteeleafShovel(TOOL_STEELEAF).setMaxStackSize(1));
+		items.register("steeleaf_pickaxe", "steeleafPick", new ItemTFSteeleafPick(TOOL_STEELEAF).setMaxStackSize(1));
+		items.register("steeleaf_axe", "steeleafAxe", new ItemTFSteeleafAxe(TOOL_STEELEAF).setMaxStackSize(1));
+		items.register("steeleaf_hoe", "steeleafHoe", new ItemTFSteeleafHoe(TOOL_STEELEAF).setMaxStackSize(1));
+		items.register("minotaur_axe", "minotaurAxe", new ItemTFMinotaurAxe(DIAMOND).setMaxStackSize(1));
+		items.register("mazebreaker_pickaxe", "mazebreakerPick", new ItemTFMazebreakerPick(DIAMOND).setMaxStackSize(1));
+		items.register("transformation_powder", "transformPowder", new ItemTFTransformPowder().makeRare());
+		items.register("raw_meef", "meefRaw", new ItemTFFood(2, 0.3F, true));
+		items.register("cooked_meef", "meefSteak", new ItemTFFood(6, 0.6F, true));
+		items.register("meef_stroganoff", "meefStroganoff", new ItemTFSoup(8));
+		items.register("maze_wafer", "mazeWafer", new ItemTFFood(4, 0.6F, false));
+		items.register("magic_map_empty", "emptyMagicMap", new ItemTFEmptyMagicMap());
+		items.register("maze_map_empty", "emptyMazeMap", new ItemTFEmptyMazeMap(false));
+		items.register("ore_map_empty", "emptyOreMap", new ItemTFEmptyMazeMap(true));
+		items.register("ore_magnet", "oreMagnet", new ItemTFOreMagnet());
+		items.register("crumble_horn", "crumbleHorn", new ItemTFCrumbleHorn());
+		items.register("peacock_fan", "peacockFan", new ItemTFPeacockFan());
+		items.register("moonworm_queen", "moonwormQueen", new ItemTFMoonwormQueen());
+		items.register("charm_of_life_1", "charmOfLife1", new ItemCharmBaubleable());
+		items.register("charm_of_life_2", "charmOfLife2", new ItemCharmBaubleable());
+		items.register("charm_of_keeping_1", "charmOfKeeping1", new ItemCharmBaubleable());
+		items.register("charm_of_keeping_2", "charmOfKeeping2", new ItemCharmBaubleable());
+		items.register("charm_of_keeping_3", "charmOfKeeping3", new ItemCharmBaubleable());
+		items.register("tower_key", "towerKey", new ItemTFTowerKey());
+		items.register("borer_essence", "borerEssence", new ItemTF());
+		items.register("carminite", "carminite", new ItemTF().makeRare());
+		items.register("experiment_115", "experiment115", new ItemTFExperiment115());
+		items.register("armor_shard", "armorShards", new ItemTF());
+		items.register("knightmetal_ingot", "knightMetal", new ItemTF());
+		items.register("armor_shard_cluster", "shardCluster", new ItemTF());
+		items.register("knightmetal_helmet", "knightlyHelm", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, HEAD).setMaxStackSize(1));
+		items.register("knightmetal_chestplate", "knightlyPlate", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, CHEST).setMaxStackSize(1));
+		items.register("knightmetal_leggings", "knightlyLegs", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, LEGS).setMaxStackSize(1));
+		items.register("knightmetal_boots", "knightlyBoots", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, FEET).setMaxStackSize(1));
+		items.register("knightmetal_sword", "knightlySword", new ItemTFKnightlySword(TOOL_KNIGHTLY).setMaxStackSize(1));
+		items.register("knightmetal_pickaxe", "knightlyPick", new ItemTFKnightlyPick(TOOL_KNIGHTLY).setMaxStackSize(1));
+		items.register("knightmetal_axe", "knightlyAxe", new ItemTFKnightlyAxe(TOOL_KNIGHTLY).setMaxStackSize(1));
+		items.register("phantom_helmet", "phantomHelm", new ItemTFPhantomArmor(ARMOR_PHANTOM, HEAD).setMaxStackSize(1));
+		items.register("phantom_chestplate", "phantomPlate", new ItemTFPhantomArmor(ARMOR_PHANTOM, CHEST).setMaxStackSize(1));
+		items.register("lamp_of_cinders", "lampOfCinders", new ItemTFLampOfCinders());
+		items.register("fiery_tears", "fieryTears", new ItemTF().makeRare());
+		items.register("alpha_fur", "alphaFur", new ItemTF().makeRare());
+		items.register("yeti_helmet", "yetiHelm", new ItemTFYetiArmor(ARMOR_YETI, HEAD).setMaxStackSize(1));
+		items.register("yeti_chestplate", "yetiPlate", new ItemTFYetiArmor(ARMOR_YETI, CHEST).setMaxStackSize(1));
+		items.register("yeti_leggings", "yetiLegs", new ItemTFYetiArmor(ARMOR_YETI, LEGS).setMaxStackSize(1));
+		items.register("yeti_boots", "yetiBoots", new ItemTFYetiArmor(ARMOR_YETI, FEET).setMaxStackSize(1));
+		items.register("ice_bomb", "iceBomb", new ItemTFIceBomb().makeRare().setMaxStackSize(16));
+		items.register("arctic_fur", "arcticFur", new ItemTF());
+		items.register("arctic_helmet", "arcticHelm", new ItemTFArcticArmor(ARMOR_ARCTIC, HEAD).setMaxStackSize(1));
+		items.register("arctic_chestplate", "arcticPlate", new ItemTFArcticArmor(ARMOR_ARCTIC, CHEST).setMaxStackSize(1));
+		items.register("arctic_leggings", "arcticLegs", new ItemTFArcticArmor(ARMOR_ARCTIC, LEGS).setMaxStackSize(1));
+		items.register("arctic_boots", "arcticBoots", new ItemTFArcticArmor(ARMOR_ARCTIC, FEET).setMaxStackSize(1));
+		items.register("magic_beans", "magicBeans", new ItemTFMagicBeans());
+		items.register("giant_pickaxe", "giantPick", new ItemTFGiantPick(TOOL_GIANT).setMaxStackSize(1));
+		items.register("giant_sword", "giantSword", new ItemTFGiantSword(TOOL_GIANT).setMaxStackSize(1));
+		items.register("triple_bow", "tripleBow", new ItemTFTripleBow().setMaxStackSize(1));
+		items.register("seeker_bow", "seekerBow", new ItemTFSeekerBow().setMaxStackSize(1));
+		items.register("ice_bow", "iceBow", new ItemTFIceBow().setMaxStackSize(1));
+		items.register("ender_bow", "enderBow", new ItemTFEnderBow().setMaxStackSize(1));
+		items.register("ice_sword", "iceSword", new ItemTFIceSword(TOOL_ICE).setMaxStackSize(1));
+		items.register("glass_sword", "glassSword", new ItemTFGlassSword(TOOL_GLASS).setMaxStackSize(1));
+		items.register("knightmetal_ring", "knightmetalRing", new ItemTF());
+		items.register("block_and_chain", "chainBlock", new ItemTFChainBlock().setMaxStackSize(1));
+		items.register("cube_talisman", "cubeTalisman", new ItemTF());
+		items.register("cube_of_annihilation", "cubeOfAnnihilation", new ItemTFCubeOfAnnihilation().setMaxStackSize(1));
 
 		String[] thornNames = stream(ThornVariant.values()).map(IStringSerializable::getName).toArray(String[]::new);
 		String[] deadrockNames = stream(DeadrockVariant.values()).map(IStringSerializable::getName).toArray(String[]::new);
@@ -237,6 +237,7 @@ public class TFRegisterItemEvent {
 	}
 
 	public static class ItemRegistryHelper {
+
 		private final IForgeRegistry<Item> registry;
 
 		private static List<ModelRegisterCallback> itemModels = new ArrayList<>();
@@ -249,28 +250,34 @@ public class TFRegisterItemEvent {
 			this.registry = registry;
 		}
 
+		void register(String registryName, String translationKey, Item item) {
+			item.setTranslationKey(TwilightForestMod.ID + "." + translationKey);
+			register(registryName, item);
+		}
+
 		public void register(String registryName, Item item) {
 			item.setRegistryName(TwilightForestMod.ID, registryName);
-			if (item instanceof ModelRegisterCallback)
+			if (item instanceof ModelRegisterCallback) {
 				itemModels.add((ModelRegisterCallback) item);
+			}
 			registry.register(item);
 		}
 
-		private void registerBlock(Block block) {
+		void registerBlock(Block block) {
 			ItemBlock metaItemBlock = new ItemBlock(block);
 			register(metaItemBlock);
 		}
 
-		private void registerSubItemBlock(Block block) {
+		void registerSubItemBlock(Block block) {
 			registerSubItemBlock(block, true);
 		}
 
-		private void registerSubItemBlock(Block block, boolean shouldAppendNumber) {
+		void registerSubItemBlock(Block block, boolean shouldAppendNumber) {
 			ItemBlockTFMeta metaItemBlock = new ItemBlockTFMeta(block).setAppend(shouldAppendNumber);
 			register(metaItemBlock);
 		}
 
-		private void register(ItemBlock item) {
+		void register(ItemBlock item) {
 			item.setRegistryName(item.getBlock().getRegistryName());
 			item.setTranslationKey(item.getBlock().getTranslationKey());
 			registry.register(item);
