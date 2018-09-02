@@ -55,13 +55,13 @@ public final class ShaderManager {
     @SuppressWarnings("WeakerAccess")
     public static final class Uniforms {
 
-        public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
-        public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (Minecraft.getMinecraft().player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
-        public static final ShaderUniformFloat PITCH      = new ShaderUniformFloat("pitch"     , () -> -(Minecraft.getMinecraft().player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
-        public static final ShaderUniformInt2  RESOLUTION = new ShaderUniformInt2 ("resolution", () -> Minecraft.getMinecraft().displayWidth, () -> Minecraft.getMinecraft().displayHeight);
-        public static final ShaderUniformInt   ZERO       = new ShaderUniformInt  ("zero"      , () -> 0);
-        public static final ShaderUniformInt   ONE        = new ShaderUniformInt  ("one"       , () -> 1);
-        public static final ShaderUniformInt   TWO        = new ShaderUniformInt  ("two"       , () -> 2);
+        public static final ShaderUniform TIME       = ShaderUniform.create("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
+        public static final ShaderUniform YAW        = ShaderUniform.create("yaw"       , () ->  (Minecraft.getMinecraft().player.rotationYaw   * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniform PITCH      = ShaderUniform.create("pitch"     , () -> -(Minecraft.getMinecraft().player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniform RESOLUTION = ShaderUniform.create("resolution", () -> Minecraft.getMinecraft().displayWidth, () -> Minecraft.getMinecraft().displayHeight);
+        public static final ShaderUniform ZERO       = ShaderUniform.create("zero"      , 0);
+        public static final ShaderUniform ONE        = ShaderUniform.create("one"       , 1);
+        public static final ShaderUniform TWO        = ShaderUniform.create("two"       , 2);
 
         public static final ShaderUniform[] STAR_UNIFORMS = { TIME, YAW, PITCH, RESOLUTION, ZERO, TWO };
         public static final ShaderUniform[] TIME_UNIFORM  = { TIME };
