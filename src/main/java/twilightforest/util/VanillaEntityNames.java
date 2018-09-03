@@ -8,6 +8,8 @@ public class VanillaEntityNames {
 	public static final ResourceLocation SHEEP         = prefix("sheep");
 	public static final ResourceLocation COW           = prefix("cow");
 	public static final ResourceLocation CHICKEN       = prefix("chicken");
+	public static final ResourceLocation RABBIT        = prefix("rabbit");
+	public static final ResourceLocation PARROT        = prefix("parrot");
 	public static final ResourceLocation WOLF          = prefix("wolf");
 
 	public static final ResourceLocation VILLAGER      = prefix("villager");

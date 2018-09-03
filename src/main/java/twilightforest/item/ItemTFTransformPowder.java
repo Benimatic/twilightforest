@@ -39,6 +39,8 @@ public class ItemTFTransformPowder extends ItemTF {
 		addTwoWayTransformation(TFEntityNames.DEER,           VanillaEntityNames.COW);
 		addTwoWayTransformation(TFEntityNames.BIGHORN_SHEEP,  VanillaEntityNames.SHEEP);
 		addTwoWayTransformation(TFEntityNames.WILD_BOAR,      VanillaEntityNames.PIG);
+		addTwoWayTransformation(TFEntityNames.BUNNY,          VanillaEntityNames.RABBIT);
+		addTwoWayTransformation(TFEntityNames.TINY_BIRD,      VanillaEntityNames.PARROT);
 		addTwoWayTransformation(TFEntityNames.RAVEN,          VanillaEntityNames.BAT);
 		addTwoWayTransformation(TFEntityNames.HOSTILE_WOLF,   VanillaEntityNames.WOLF);
 		addTwoWayTransformation(TFEntityNames.PENGUIN,        VanillaEntityNames.CHICKEN);
