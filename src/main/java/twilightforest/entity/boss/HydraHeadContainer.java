@@ -923,11 +923,12 @@ public class HydraHeadContainer {
 		return MathHelper.wrapDegrees(current + delta);
 	}
 
+	@Nullable
 	public Entity getTargetEntity() {
 		return targetEntity;
 	}
 
-	public void setTargetEntity(Entity targetEntity) {
+	public void setTargetEntity(@Nullable Entity targetEntity) {
 		this.targetEntity = targetEntity;
 	}
 
@@ -962,6 +963,10 @@ public class HydraHeadContainer {
 	 */
 	public boolean isActive() {
 		return this.currentState != State.DYING && this.currentState != State.DEAD;
+	}
+
+	public boolean isIdle() {
+		return this.currentState == State.IDLE && (this.nextState == NEXT_AUTOMATIC || this.nextState == State.IDLE);
 	}
 
 	/**

@@ -355,7 +355,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 			// set idle heads to no target
 			for (int i = 0; i < numHeads; i++) {
-				if (hc[i].currentState == HydraHeadContainer.State.IDLE) {
+				if (hc[i].isIdle()) {
 					hc[i].setTargetEntity(null);
 				}
 			}
@@ -415,7 +415,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 		// three main heads can do these kinds of attacks
 		for (int i = 0; i < 3; i++) {
-			if (hc[i].currentState == HydraHeadContainer.State.IDLE && !areTooManyHeadsAttacking(i)) {
+			if (hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
 				if (distance > 4 && distance < 10 && rand.nextInt(BITE_CHANCE) == 0 && this.countActiveHeads() > 2 && !areOtherHeadsBiting(i)) {
 					hc[i].setNextState(HydraHeadContainer.State.BITE_BEGINNING);
 				} else if (distance > 0 && distance < 20 && rand.nextInt(FLAME_CHANCE) == 0) {
@@ -428,7 +428,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 		// heads 4-7 can do everything but bite
 		for (int i = 3; i < numHeads; i++) {
-			if (hc[i].currentState == HydraHeadContainer.State.IDLE && !areTooManyHeadsAttacking(i)) {
+			if (hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
 				if (distance > 0 && distance < 20 && rand.nextInt(FLAME_CHANCE) == 0) {
 					hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
 				} else if (distance > 8 && distance < 32 && !targetAbove && rand.nextInt(MORTAR_CHANCE) == 0) {
@@ -508,7 +508,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			float distance = secondaryTarget.getDistance(this);
 
 			for (int i = 1; i < numHeads; i++) {
-				if (hc[i].isActive() && hc[i].currentState == HydraHeadContainer.State.IDLE && isTargetOnThisSide(i, secondaryTarget)) {
+				if (hc[i].isActive() && hc[i].isIdle() && isTargetOnThisSide(i, secondaryTarget)) {
 					if (distance > 0 && distance < 20 && rand.nextInt(SECONDARY_FLAME_CHANCE) == 0) {
 						hc[i].setTargetEntity(secondaryTarget);
 						hc[i].isSecondaryAttacking = true;
