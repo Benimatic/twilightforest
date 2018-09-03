@@ -78,7 +78,7 @@ public class ItemTFTransformPowder extends ItemTF {
 
 		try { // try copying what can be copied
 			UUID uuid = newEntity.getUniqueID();
-			newEntity.readFromNBT(target.writeToNBT(new NBTTagCompound()));
+			newEntity.readFromNBT(target.writeToNBT(newEntity.writeToNBT(new NBTTagCompound())));
 			newEntity.setUniqueId(uuid);
 		} catch (Exception e) {
 			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data: {}", e);
