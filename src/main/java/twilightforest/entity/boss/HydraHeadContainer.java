@@ -70,12 +70,11 @@ public class HydraHeadContainer {
 			this.duration = duration;
 		}
 
-
 		static {
-			ImmutableMap.Builder<State, State> b = ImmutableMap.builder();
+			EnumMap<State, State> b = new EnumMap<>(State.class);
 			b.put(IDLE, IDLE);
 
-			b.put(BITE_BEGINNING, State.BITE_READY);
+			b.put(BITE_BEGINNING, BITE_READY);
 			b.put(BITE_READY, BITING);
 			b.put(BITING, BITE_ENDING);
 			b.put(BITE_ENDING, ATTACK_COOLDOWN);
@@ -97,7 +96,7 @@ public class HydraHeadContainer {
 			b.put(BORN, ROAR_START);
 			b.put(ROAR_START, ROAR_RAWR);
 			b.put(ROAR_RAWR, IDLE);
-			NEXT_STATE = b.build();
+			NEXT_STATE = ImmutableMap.copyOf(b);
 		}
 	}
 
@@ -134,7 +133,6 @@ public class HydraHeadContainer {
 	private final Map<State, Float>[] stateXRotations;
 	private final Map<State, Float>[] stateYRotations;
 	private final Map<State, Float>[] stateMouthOpen;
-
 
 	@SuppressWarnings("unchecked")
 	public HydraHeadContainer(EntityTFHydra hydra, int number, boolean startActive) {
@@ -300,8 +298,6 @@ public class HydraHeadContainer {
 		setAnimation(4, State.ROAR_RAWR, 50, -90, 10, 1);
 		setAnimation(5, State.ROAR_RAWR, -10, 90, 11, 1);
 		setAnimation(6, State.ROAR_RAWR, -10, -90, 11, 1);
-
-
 	}
 
 	private void setAnimation(int head, State state, float xRotation, float yRotation, float neckLength, float mouthOpen) {
@@ -357,7 +353,7 @@ public class HydraHeadContainer {
 	}
 
 	public boolean canRespawn() {
-		return this.currentState == HydraHeadContainer.State.DEAD && this.respawnCounter == -1;
+		return this.currentState == State.DEAD && this.respawnCounter == -1;
 	}
 
 	private void advanceRespawnCounter() {
@@ -373,7 +369,7 @@ public class HydraHeadContainer {
 
 	private void clientAnimateHeadDeath() {
 		// this will start the animation
-		if (headEntity.getState() == HydraHeadContainer.State.DYING) {
+		if (headEntity.getState() == State.DYING) {
 			// several things, like head visibility animate off this
 			this.headEntity.deathTime++;
 
@@ -400,6 +396,7 @@ public class HydraHeadContainer {
 			neckc.hurtTime = 20;
 			neckd.hurtTime = 20;
 			necke.hurtTime = 20;
+
 		} else {
 			this.headEntity.deathTime = 0;
 			this.headEntity.setHealth((float) this.headEntity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
@@ -426,9 +423,9 @@ public class HydraHeadContainer {
 				myNext = State.NEXT_STATE.get(this.currentState);
 				if (myNext != currentState) {
 					// when returning from a secondary attack, no attack cooldown
-					if (this.isSecondaryAttacking && myNext == HydraHeadContainer.State.ATTACK_COOLDOWN) {
+					if (this.isSecondaryAttacking && myNext == State.ATTACK_COOLDOWN) {
 						this.isSecondaryAttacking = false;
-						myNext = HydraHeadContainer.State.IDLE;
+						myNext = State.IDLE;
 					}
 				}
 			} else {
@@ -446,11 +443,10 @@ public class HydraHeadContainer {
 		if (headEntity.getState() != this.currentState) {
 			headEntity.setState(this.currentState);
 		}
-
 	}
 
 	private void setHeadFacing() {
-		if (this.currentState == HydraHeadContainer.State.BITE_READY) {
+		if (this.currentState == State.BITE_READY) {
 			// face target within certain constraints
 			this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
 
@@ -479,17 +475,21 @@ public class HydraHeadContainer {
 			this.targetX = headEntity.posX + look.x * distance;
 			this.targetY = headEntity.posY + 1.5 + look.y * distance;
 			this.targetZ = headEntity.posZ + look.z * distance;
-		} else if (this.currentState == State.BITING || this.currentState == HydraHeadContainer.State.BITE_ENDING) {
+
+		} else if (this.currentState == State.BITING || this.currentState == State.BITE_ENDING) {
 			this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
 			headEntity.rotationPitch += Math.PI / 4;
-		} else if (this.currentState == HydraHeadContainer.State.ROAR_RAWR) {
+
+		} else if (this.currentState == State.ROAR_RAWR) {
 			// keep facing target vector, don't move
 			this.faceVec(this.targetX, this.targetY, this.targetZ, 10F, hydra.getVerticalFaceSpeed());
-		} else if (this.currentState == HydraHeadContainer.State.FLAMING || (this.currentState == HydraHeadContainer.State.FLAME_BEGINNING)) {
+
+		} else if (this.currentState == State.FLAMING || this.currentState == State.FLAME_BEGINNING) {
 			// move flame breath slowly towards the player
 			moveTargetCoordsTowardsTargetEntity(FLAME_BREATH_TRACKING_SPEED);
 			// face the target coordinates
 			this.faceVec(this.targetX, this.targetY, this.targetZ, 5F, hydra.getVerticalFaceSpeed());
+
 		} else {
 			if (this.isActive()) {
 				if (this.targetEntity != null) {
@@ -607,9 +607,8 @@ public class HydraHeadContainer {
 			neckRotation = -135;
 		}
 
-
 		vector = vector.rotateYaw((-(hydra.renderYawOffset + neckRotation) * 3.141593F) / 180F);
-		setNeckPositon(hydra.posX + vector.x, hydra.posY + vector.y, hydra.posZ + vector.z, hydra.renderYawOffset, 0);
+		setNeckPosition(hydra.posX + vector.x, hydra.posY + vector.y, hydra.posZ + vector.z, hydra.renderYawOffset, 0);
 	}
 
 	protected void setHeadPosition() {
@@ -653,7 +652,7 @@ public class HydraHeadContainer {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
 			Entity lookTarget = getHeadLookTarget();
 
-			if (lookTarget != null && (lookTarget instanceof EntityTFHydraPart || lookTarget instanceof MultiPartEntityPart)) {
+			if (lookTarget instanceof EntityTFHydraPart || lookTarget instanceof MultiPartEntityPart) {
 				// stop hurting yourself!
 				this.endCurrentAction();
 			} else {
@@ -693,7 +692,6 @@ public class HydraHeadContainer {
 				}
 			}
 		}
-
 	}
 
 	private void setDifficultyVariables() {
@@ -787,7 +785,6 @@ public class HydraHeadContainer {
 		return (float) MathHelper.clampedLerp(prevRotation, currentRotation, progress);
 	}
 
-
 	private float getCurrentHeadYRotation() {
 		float prevRotation = stateYRotations[this.headNum].get(prevState);
 		float currentRotation = stateYRotations[this.headNum].get(currentState);
@@ -795,7 +792,6 @@ public class HydraHeadContainer {
 
 		return (float) MathHelper.clampedLerp(prevRotation, currentRotation, progress);
 	}
-
 
 	protected float getCurrentMouthOpen() {
 		float prevOpen = stateMouthOpen[this.headNum].get(prevState);
@@ -808,7 +804,7 @@ public class HydraHeadContainer {
 	/**
 	 * Sets the four neck positions ranging from the start position to the head position.
 	 */
-	protected void setNeckPositon(double startX, double startY, double startZ, float startYaw, float startPitch) {
+	protected void setNeckPosition(double startX, double startY, double startZ, float startYaw, float startPitch) {
 
 		double endX = headEntity.posX;
 		double endY = headEntity.posY;
@@ -824,7 +820,6 @@ public class HydraHeadContainer {
 		}
 		for (; startPitch - endPitch >= 180F; endPitch += 360F) {
 		}
-
 
 		// translate the end position back 1 unit
 		if (endPitch > 0) {
@@ -843,7 +838,6 @@ public class HydraHeadContainer {
 			endZ -= vector.z * dist;
 
 		}
-
 
 		float factor = 0F;
 
