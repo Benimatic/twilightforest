@@ -42,14 +42,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMob {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/hydra");
+
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
 	private static final int HEAD_MAX_DAMAGE = 120;
 	private static final float ARMOR_MULTIPLIER = 8.0F;
-	private static int MAX_HEALTH = 360;
+	private static final int MAX_HEALTH = 360;
 	private static float HEADS_ACTIVITY_FACTOR = 0.3F;
 
 	private static final int SECONDARY_FLAME_CHANCE = 10;
@@ -326,7 +327,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 			// have any heads not currently attacking switch to the primary target
 			for (int i = 0; i < numHeads; i++) {
-				if (!isHeadAttacking(hc[i]) && !hc[i].isSecondaryAttacking) {
+				if (!hc[i].isAttacking() && !hc[i].isSecondaryAttacking) {
 					hc[i].setTargetEntity(getAttackTarget());
 				}
 			}
@@ -373,12 +374,10 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		}
 	}
 
-	/**
-	 * TODO: make random
-	 */
+	// TODO: make random
 	private int getRandomDeadHead() {
 		for (int i = 0; i < numHeads; i++) {
-			if (hc[i].currentState == HydraHeadContainer.State.DEAD && hc[i].respawnCounter == -1) {
+			if (hc[i].canRespawn()) {
 				return i;
 			}
 		}
@@ -395,7 +394,6 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			int otherHead = getRandomDeadHead();
 			if (otherHead != -1) {
 				// move directly into not dead
-				hc[otherHead].currentState = HydraHeadContainer.State.IDLE;
 				hc[otherHead].setNextState(HydraHeadContainer.State.IDLE);
 				hc[otherHead].endCurrentAction();
 			}
@@ -442,11 +440,11 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		int otherAttacks = 0;
 
 		for (int i = 0; i < numHeads; i++) {
-			if (i != testHead && isHeadAttacking(hc[i])) {
+			if (i != testHead && hc[i].isAttacking()) {
 				otherAttacks++;
 
 				// biting heads count triple
-				if (isHeadBiting(hc[i])) {
+				if (hc[i].isBiting()) {
 					otherAttacks += 2;
 				}
 			}
@@ -467,27 +465,13 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		return count;
 	}
 
-	private boolean isHeadAttacking(HydraHeadContainer head) {
-		return head.currentState == HydraHeadContainer.State.BITE_BEGINNING || head.currentState == HydraHeadContainer.State.BITE_READY
-				|| head.currentState == HydraHeadContainer.State.BITING || head.currentState == HydraHeadContainer.State.FLAME_BEGINNING
-				|| head.currentState == HydraHeadContainer.State.FLAMING || head.currentState == HydraHeadContainer.State.MORTAR_BEGINNING
-				|| head.currentState == HydraHeadContainer.State.MORTAR_SHOOTING;
-
-	}
-
 	private boolean areOtherHeadsBiting(int testHead) {
 		for (int i = 0; i < numHeads; i++) {
-			if (i != testHead && isHeadBiting(hc[i])) {
+			if (i != testHead && hc[i].isBiting()) {
 				return true;
 			}
 		}
-
 		return false;
-	}
-
-	private boolean isHeadBiting(HydraHeadContainer head) {
-		return head.currentState == HydraHeadContainer.State.BITE_BEGINNING || head.currentState == HydraHeadContainer.State.BITE_READY
-				|| head.currentState == HydraHeadContainer.State.BITING || head.nextState == HydraHeadContainer.State.BITE_BEGINNING;
 	}
 
 	/**
@@ -701,13 +685,10 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	protected void collideWithEntity(Entity entityIn) {
-
-	}
+	protected void collideWithEntity(Entity entity) {}
 
 	@Override
-	public void knockBack(Entity entity, float i, double d, double d1) {
-	}
+	public void knockBack(Entity entity, float strength, double xRatio, double zRatio) {}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -803,12 +784,17 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			this.setDead();
 		}
 
-		for (int var1 = 0; var1 < 20; ++var1) {
-			double var8 = this.rand.nextGaussian() * 0.02D;
-			double var4 = this.rand.nextGaussian() * 0.02D;
-			double var6 = this.rand.nextGaussian() * 0.02D;
+		for (int i = 0; i < 20; ++i) {
+			double vx = this.rand.nextGaussian() * 0.02D;
+			double vy = this.rand.nextGaussian() * 0.02D;
+			double vz = this.rand.nextGaussian() * 0.02D;
 			EnumParticleTypes particle = rand.nextInt(2) == 0 ? EnumParticleTypes.EXPLOSION_LARGE : EnumParticleTypes.EXPLOSION_NORMAL;
-			this.world.spawnParticle(particle, this.posX + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width, this.posY + this.rand.nextFloat() * this.body.height, this.posZ + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width, var8, var4, var6);
+			this.world.spawnParticle(particle,
+					this.posX + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
+					this.posY + this.rand.nextFloat() * this.body.height,
+					this.posZ + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
+					vx, vy, vz
+			);
 		}
 	}
 

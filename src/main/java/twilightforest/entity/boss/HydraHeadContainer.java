@@ -115,8 +115,8 @@ public class HydraHeadContainer {
 	private double targetZ;
 
 	private State prevState;
-	public State currentState;
-	public State nextState = NEXT_AUTOMATIC;
+	private State currentState;
+	private State nextState = NEXT_AUTOMATIC;
 
 	public boolean isSecondaryAttacking;
 
@@ -126,7 +126,7 @@ public class HydraHeadContainer {
 	private final int headNum;
 
 	private int damageTaken;
-	public int respawnCounter;
+	private int respawnCounter;
 
 	private final EntityTFHydra hydra;
 
@@ -354,6 +354,10 @@ public class HydraHeadContainer {
 			setNeckPosition();
 			addMouthParticles();
 		}
+	}
+
+	public boolean canRespawn() {
+		return this.currentState == HydraHeadContainer.State.DEAD && this.respawnCounter == -1;
 	}
 
 	private void advanceRespawnCounter() {
@@ -967,6 +971,18 @@ public class HydraHeadContainer {
 
 	public boolean isIdle() {
 		return this.currentState == State.IDLE && (this.nextState == NEXT_AUTOMATIC || this.nextState == State.IDLE);
+	}
+
+	public boolean isAttacking() {
+		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
+				|| this.currentState == State.BITING || this.currentState == State.FLAME_BEGINNING
+				|| this.currentState == State.FLAMING || this.currentState == State.MORTAR_BEGINNING
+				|| this.currentState == State.MORTAR_SHOOTING;
+	}
+
+	public boolean isBiting() {
+		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
+				|| this.currentState == State.BITING || this.nextState == State.BITE_BEGINNING;
 	}
 
 	/**
