@@ -20,8 +20,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.TFSounds;
 import twilightforest.enums.BossVariant;
 import twilightforest.client.ModelRegisterCallback;
@@ -31,7 +33,9 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
+@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, IInfusionStabiliser {
+
 	private static final AxisAlignedBB HYDRA_Y_BB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 	private static final AxisAlignedBB HYDRA_EAST_BB = new AxisAlignedBB(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
 	private static final AxisAlignedBB HYDRA_WEST_BB = new AxisAlignedBB(0.5F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
@@ -178,4 +182,8 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(NODROP).ignore(FACING).build());
 	}
 
+	@Override
+	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
+		return true;
+	}
 }

@@ -21,6 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
@@ -30,7 +32,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallback {
+@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallback, IInfusionStabiliser {
 
 	public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final IProperty<Boolean> LATENT = PropertyBool.create("latent");
@@ -174,5 +177,10 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Override
 	public int damageDropped(IBlockState state) {
 		return 0;
+	}
+
+	@Override
+	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
+		return true;
 	}
 }
