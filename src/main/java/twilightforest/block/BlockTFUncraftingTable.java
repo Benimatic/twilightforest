@@ -17,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -41,15 +43,15 @@ public class BlockTFUncraftingTable extends Block implements ModelRegisterCallba
 		return true;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		final ResourceLocation rl = this.getRegistryName();
-		final ModelResourceLocation mrl = new ModelResourceLocation(rl, "normal");
+		final ModelResourceLocation mrl = Loader.isModLoaded("ctm") ? new ModelResourceLocation(this.getRegistryName(), "ctm") : new ModelResourceLocation(this.getRegistryName(), "normal");
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return Loader.isModLoaded("ctm") ? new ModelResourceLocation(rl, "ctm") : mrl;
+				return mrl;
 			}
 		});
 
