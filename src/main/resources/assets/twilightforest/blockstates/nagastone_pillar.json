@@ -4,7 +4,7 @@
     "model": "cube_column",
     "textures": {
       "side": "twilightforest:blocks/nagastone_pillar_side",
-      "end":  "twilightforest:blocks/nagastone_pillar_end"
+      "end" : "twilightforest:blocks/nagastone_pillar_end"
     }
   },
   "variants": {
@@ -14,7 +14,12 @@
       "x": { "x": -90, "y": -90 }
     },
     "reversed": {
-      "true":  { "model": "twilightforest:util/cube_column_reverse" },
+      "true":  {
+        "textures": {
+          "side": "twilightforest:blocks/nagastone_pillar_side_alt",
+          "end" : "twilightforest:blocks/nagastone_pillar_end_alt"
+        }
+      },
       "false": {}
     }
   }
