@@ -9,10 +9,12 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -21,11 +23,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import thaumcraft.api.crafting.IInfusionStabiliser;
-import twilightforest.advancements.TFAdvancements;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
+import twilightforest.advancements.TFAdvancements;
+import twilightforest.client.ModelRegisterCallbackCTM;
 import twilightforest.item.TFItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -33,7 +37,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 @Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
-public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallback, IInfusionStabiliser {
+public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbackCTM, IInfusionStabiliser {
 
 	public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final IProperty<Boolean> LATENT = PropertyBool.create("latent");
@@ -182,5 +186,15 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Override
 	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
 		return true;
+	}
+
+	@Override
+	public void registerItemModel() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, Loader.isModLoaded("ctm") ? new ModelResourceLocation(this.getRegistryName() + "_ctm", "latent=false") : new ModelResourceLocation(this.getRegistryName(), "latent=false"));
+	}
+
+	@Override
+	public IProperty<?>[] getIgnoredProperties() {
+		return new IProperty[] { FACING };
 	}
 }

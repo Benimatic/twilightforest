@@ -118,6 +118,7 @@ public class TFRegisterItemEvent {
 		items.register("knightmetal_sword", "knightlySword", new ItemTFKnightlySword(TOOL_KNIGHTLY).setMaxStackSize(1));
 		items.register("knightmetal_pickaxe", "knightlyPick", new ItemTFKnightlyPick(TOOL_KNIGHTLY).setMaxStackSize(1));
 		items.register("knightmetal_axe", "knightlyAxe", new ItemTFKnightlyAxe(TOOL_KNIGHTLY).setMaxStackSize(1));
+		items.register("knightmetal_shield", "knightlyShield", new ItemKnightlyShield().setMaxStackSize(1));
 		items.register("phantom_helmet", "phantomHelm", new ItemTFPhantomArmor(ARMOR_PHANTOM, HEAD).setMaxStackSize(1));
 		items.register("phantom_chestplate", "phantomPlate", new ItemTFPhantomArmor(ARMOR_PHANTOM, CHEST).setMaxStackSize(1));
 		items.register("lamp_of_cinders", "lampOfCinders", new ItemTFLampOfCinders());
