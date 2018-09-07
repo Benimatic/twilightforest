@@ -16,8 +16,7 @@
     "reversed": {
       "true":  {
         "textures": {
-          "side": "twilightforest:blocks/nagastone_pillar_side_weathered_alt",
-          "end" : "twilightforest:blocks/nagastone_pillar_end_weathered_alt"
+          "side": "twilightforest:blocks/nagastone_pillar_side_weathered_alt"
         }
       },
       "false": {}
