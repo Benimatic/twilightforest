@@ -1,9 +1,11 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -14,6 +16,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.enums.CastleBrickVariant;
+import twilightforest.enums.MagicWoodVariant;
+import twilightforest.enums.WoodVariant;
+import twilightforest.util.IMapColorSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,9 +119,41 @@ public final class RegisterBlockEvent {
 		blocks.register("nagastone_pillar_weathered", "NagastonePillarWeathered", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
 		blocks.register("auroralized_glass", "AuroralizedGlass", new BlockTFAuroralizedGlass());
 
+		registerWoodVariants(blocks, BlockTFLog.VARIANT, WoodVariant.values());
+		//registerWoodVariants(blocks, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
+
 		registerFluidBlock(blocks, moltenFiery);
 		registerFluidBlock(blocks, moltenKnightmetal);
 		registerFluidBlock("fiery_essence", blocks, essenceFiery);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T extends IStringSerializable & Comparable<T> & IMapColorSupplier> void registerWoodVariants(BlockRegistryHelper blocks, IProperty<T> key, T[] types) {
+		for (T woodType : types) {
+			String woodName = woodType.getName();
+			String woodNameCapitalized;
+
+			if ("oak".equals(woodName)) { // Not really going to rename that enum entry just yet
+				woodName = "twilight_oak";
+				woodNameCapitalized = "TwilightOak";
+			} else {
+				woodNameCapitalized = woodName.substring(0, 1).toUpperCase() + woodName.substring(1);
+			}
+
+			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new Block(Material.WOOD, woodType.supplyMapColor()));
+
+			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()));
+			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return true ; } @Override public IProperty<T> getVariantProperty() { return key; }});
+			blocks.register(woodName + "_slab"      , woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return false; } @Override public IProperty<T> getVariantProperty() { return key; }});
+			//blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood());
+			//blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD));
+			//blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD));
+			//blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()));
+			//blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()));
+			//blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING));
+
+			// TODO chests? boats?
+		}
 	}
 
 	public static List<ModelRegisterCallback> getBlockModels() {
@@ -133,17 +170,21 @@ public final class RegisterBlockEvent {
 			this.registry = registry;
 		}
 
-		void register(String registryName, String translationKey, Block block) {
+		Block register(String registryName, String translationKey, Block block) {
 			block.setTranslationKey(TwilightForestMod.ID + "." + translationKey);
 			register(registryName, block);
+
+			return block;
 		}
 
-		void register(String registryName, Block block) {
+		Block register(String registryName, Block block) {
 			block.setRegistryName(TwilightForestMod.ID, registryName);
 			if (block instanceof ModelRegisterCallback) {
 				blockModels.add((ModelRegisterCallback) block);
 			}
 			registry.register(block);
+
+			return block;
 		}
 	}
 

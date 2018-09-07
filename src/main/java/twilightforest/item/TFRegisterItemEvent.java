@@ -2,23 +2,27 @@ package twilightforest.item;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemMultiTexture;
-import net.minecraft.item.ItemSlab;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFLog;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.compat.TFCompat;
 import twilightforest.enums.DeadrockVariant;
+import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.ThornVariant;
+import twilightforest.enums.WoodVariant;
+import twilightforest.util.IMapColorSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,7 +238,33 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
 		items.registerBlock(TFBlocks.auroralized_glass);
 
+		registerWoodVariants(items, BlockTFLog.VARIANT, WoodVariant.values());
+		//registerWoodVariants(items, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
+
 		TFCompat.initCompatItems(items);
+	}
+
+	private static <T extends IStringSerializable & Comparable<T> & IMapColorSupplier> void registerWoodVariants(ItemRegistryHelper items, IProperty<T> key, T[] types) {
+		for (T woodType : types) {
+			String woodName = woodType.getName();
+
+			if ("oak".equals(woodName)) // Not really going to rename that enum entry just yet
+				woodName = "twilight_oak";
+
+			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_planks")));
+			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_stairs")));
+			BlockSlab slab = (BlockSlab) Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_slab"));
+			items.register(woodName + "_slab", new ItemSlab(slab, slab, (BlockSlab) Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_doubleslab"))));
+			//items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_button")));
+
+			//ResourceLocation doorRL = new ResourceLocation(TwilightForestMod.ID, woodName + "_door");
+			//items.register(doorRL.getPath(), new ItemDoor(Block.REGISTRY.getObject(doorRL)));
+
+			//items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_trapdoor")));
+			//items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_fence")));
+			//items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_gate")));
+			//items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_plate")));
+		}
 	}
 
 	public static class ItemRegistryHelper {
