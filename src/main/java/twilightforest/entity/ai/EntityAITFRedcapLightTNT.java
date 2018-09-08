@@ -20,6 +20,10 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public boolean shouldExecute() {
+		if (!entityObj.world.getGameRules().getBoolean("mobGriefing")) {
+			return false;
+		}
+
 		if (this.delay > 0) {
 			--this.delay;
 			return false;
