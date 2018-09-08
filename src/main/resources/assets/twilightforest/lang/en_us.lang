@@ -323,6 +323,38 @@ tile.twilightforest.NagastonePillarWeathered.name=Ruined Nagastone Pillar
 tile.twilightforest.NagastoneStairsWeathered.0.name=Weathered Nagastone Stairs (Left)
 tile.twilightforest.NagastoneStairsWeathered.8.name=Weathered Nagastone Stairs (Right)
 
+tile.twilightforest.CanopyPlanks.name=Canopy Wood Planks
+tile.twilightforest.CanopyStairs.name=Canopy Wood Stairs
+tile.twilightforest.CanopySlab.name=Canopy Wood Slab
+tile.twilightforest.CanopyButton.name=Canopy Wood Button
+tile.twilightforest.CanopyFence.name=Canopy Fence
+tile.twilightforest.CanopyGate.name=Canopy Gate
+tile.twilightforest.CanopyPlate.name=Canopy Wood Pressure Plate
+
+tile.twilightforest.DarkPlanks.name=Darkwood Wood Planks
+tile.twilightforest.DarkStairs.name=Darkwood Wood Stairs
+tile.twilightforest.DarkSlab.name=Darkwood Wood Slab
+tile.twilightforest.DarkButton.name=Darkwood Wood Button
+tile.twilightforest.DarkFence.name=Darkwood Fence
+tile.twilightforest.DarkGate.name=Darkwood Gate
+tile.twilightforest.DarkPlate.name=Darkwood Wood Pressure Plate
+
+tile.twilightforest.MangrovePlanks.name=Mangrove Wood Planks
+tile.twilightforest.MangroveStairs.name=Mangrove Wood Stairs
+tile.twilightforest.MangroveSlab.name=Mangrove Wood Slab
+tile.twilightforest.MangroveButton.name=Mangrove Wood Button
+tile.twilightforest.MangroveFence.name=Mangrove Fence
+tile.twilightforest.MangroveGate.name=Mangrove Gate
+tile.twilightforest.MangrovePlate.name=Mangrove Wood Pressure Plate
+
+tile.twilightforest.TwilightOakPlanks.name=Twilight Oak Wood Planks
+tile.twilightforest.TwilightOakStairs.name=Twilight Oak Wood Stairs
+tile.twilightforest.TwilightOakSlab.name=Twilight Oak Wood Slab
+tile.twilightforest.TwilightOakButton.name=Twilight Oak Wood Button
+tile.twilightforest.TwilightOakFence.name=Twilight Oak Fence
+tile.twilightforest.TwilightOakGate.name=Twilight Oak Gate
+tile.twilightforest.TwilightOakPlate.name=Twilight Oak Wood Pressure Plate
+
 structure.twilight_portal.name=Twilight Portal
 structure.hedge_maze.name=Hedge Maze
 structure.hollow_hill.name=Hollow Hill

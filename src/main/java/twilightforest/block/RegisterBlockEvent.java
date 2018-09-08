@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.enums.CastleBrickVariant;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.WoodVariant;
@@ -140,17 +141,20 @@ public final class RegisterBlockEvent {
 				woodNameCapitalized = woodName.substring(0, 1).toUpperCase() + woodName.substring(1);
 			}
 
-			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new Block(Material.WOOD, woodType.supplyMapColor()));
+			final String inventory = "inventory";
+			final IProperty[] noProperty = new IProperty[0];
 
-			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()));
-			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return true ; } @Override public IProperty<T> getVariantProperty() { return key; }});
-			blocks.register(woodName + "_slab"      , woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return false; } @Override public IProperty<T> getVariantProperty() { return key; }});
-			//blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood());
-			//blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD));
-			//blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD));
-			//blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()));
-			//blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()));
-			//blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING));
+			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+
+			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return true ; } @Override public IProperty<T> getVariantProperty() { return key; } @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_slab"      , woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return false; } @Override public IProperty<T> getVariantProperty() { return key; } @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			//blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			//blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ BlockFenceGate.POWERED }); }});
+			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
 
 			// TODO chests? boats?
 		}

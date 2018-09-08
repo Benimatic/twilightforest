@@ -1,15 +1,13 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube_all"
+    "model": "cube_all",
+    "textures": { "all": "twilightforest:blocks/wood/planks_mangrove_0" }
   },
   "variants": {
-    "inventory": [{ "textures": { "all": "twilightforest:blocks/wood/planks_mangrove_0" }}],
+    "inventory": [{}],
     "normal": [{
-      "weight": 10,
-      "textures": {
-        "all": "twilightforest:blocks/wood/planks_mangrove_0"
-      }
+      "weight": 10
     }, {
       "weight": 10,
       "textures": {
