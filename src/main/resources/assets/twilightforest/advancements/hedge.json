@@ -7,7 +7,10 @@
       "translate": "advancement.twilightforest.hedge"
     },
     "description": {
-      "translate": "advancement.twilightforest.hedge.desc"
+      "translate": "advancement.twilightforest.hedge.desc",
+      "with": [
+        { "translate": "structure.hedge_maze.name" }
+      ]
     }
   },
   "parent": "twilightforest:root",

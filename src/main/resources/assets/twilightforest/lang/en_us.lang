@@ -7,7 +7,7 @@ advancement.twilightforest.root.desc=Enter the mysterious magical woodlands; the
 
 # General progression
 advancement.twilightforest.hedge=Bug Stomper
-advancement.twilightforest.hedge.desc=Defeat a spider in a Hedge Maze.
+advancement.twilightforest.hedge.desc=Defeat a spider in a %s.
 
 advancement.twilightforest.hill1=The Boots Are Mine!
 advancement.twilightforest.hill1.desc=Defeat a %s in a small %s.
