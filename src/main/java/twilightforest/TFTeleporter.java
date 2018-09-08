@@ -51,60 +51,61 @@ public class TFTeleporter extends Teleporter {
 	public void placeInPortal(Entity entity, float facing) {
 		if (!this.placeInExistingPortal(entity, facing)) {
 			// if we're in enforced progression mode, check the biomes for safety
-			if (entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-				BlockPos pos = new BlockPos(entity);
-				if (!isSafeAround(pos, entity)) {
-					TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
+			boolean checkProgression = entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
 
-					BlockPos safeCoords = findSafeCoords(200, pos, entity);
+			BlockPos pos = new BlockPos(entity);
+			if (!isSafeAround(pos, entity, checkProgression)) {
+				TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
+
+				BlockPos safeCoords = findSafeCoords(200, pos, entity, checkProgression);
+				if (safeCoords != null) {
+					entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+					TwilightForestMod.LOGGER.debug("Safely rerouted!");
+
+				} else {
+					TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
+					safeCoords = findSafeCoords(400, pos, entity, checkProgression);
 
 					if (safeCoords != null) {
 						entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+						TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
 
-						TwilightForestMod.LOGGER.debug("Safely rerouted!");
 					} else {
-						TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
-						safeCoords = findSafeCoords(400, pos, entity);
-						if (safeCoords != null) {
-							entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
-
-							TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
-						} else {
-							TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
-						}
+						TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
 					}
 				}
-
 			}
+
 			this.makePortal(entity);
 			this.placeInExistingPortal(entity, facing);
 		}
 	}
 
 	@Nullable
-	private BlockPos findSafeCoords(int range, BlockPos pos, Entity entity) {
-		for (int i = 0; i < 25; i++) {
+	private BlockPos findSafeCoords(int range, BlockPos pos, Entity entity, boolean checkProgression) {
+		int attempts = range / 8;
+		for (int i = 0; i < attempts; i++) {
 			BlockPos dPos = new BlockPos(
 					pos.getX() + random.nextInt(range) - random.nextInt(range),
 					100,
 					pos.getZ() + random.nextInt(range) - random.nextInt(range)
 			);
 
-			if (isSafeAround(dPos, entity)) {
+			if (isSafeAround(dPos, entity, checkProgression)) {
 				return dPos;
 			}
 		}
 		return null;
 	}
 
-	private boolean isSafeAround(BlockPos pos, Entity entity) {
+	private boolean isSafeAround(BlockPos pos, Entity entity, boolean checkProgression) {
 
-		if (!isSafe(pos, entity)) {
+		if (!isSafe(pos, entity, checkProgression)) {
 			return false;
 		}
 
 		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
-			if (!isSafe(pos.offset(facing, 16), entity)) {
+			if (!isSafe(pos.offset(facing, 16), entity, checkProgression)) {
 				return false;
 			}
 		}
@@ -112,8 +113,8 @@ public class TFTeleporter extends Teleporter {
 		return true;
 	}
 
-	private boolean isSafe(BlockPos pos, Entity entity) {
-		return checkPos(pos) && checkBiome(pos, entity) && checkStructure(pos);
+	private boolean isSafe(BlockPos pos, Entity entity, boolean checkProgression) {
+		return checkPos(pos) && (!checkProgression || checkBiome(pos, entity)) && checkStructure(pos);
 	}
 
 	private boolean checkPos(BlockPos pos) {
