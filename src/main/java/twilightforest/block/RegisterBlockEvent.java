@@ -12,6 +12,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
@@ -144,17 +146,17 @@ public final class RegisterBlockEvent {
 			final String inventory = "inventory";
 			final IProperty[] noProperty = new IProperty[0];
 
-			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
 
-			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return true ; } @Override public IProperty<T> getVariantProperty() { return key; } @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_slab"      , woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return false; } @Override public IProperty<T> getVariantProperty() { return key; } @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			//blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			//blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ BlockFenceGate.POWERED }); }});
-			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING) { @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return true ; } @Override public IProperty<T> getVariantProperty() { return key; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_slab"      , woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return false; } @Override public IProperty<T> getVariantProperty() { return key; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			//blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			//blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ BlockFenceGate.POWERED }); }});
+			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
 
 			// TODO chests? boats?
 		}
