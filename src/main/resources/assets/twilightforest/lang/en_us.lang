@@ -67,8 +67,6 @@ advancement.twilightforest.experiment_115=Mystery Meat?
 advancement.twilightforest.experiment_115.desc=It looks like cake, though...
 advancement.twilightforest.experiment_115_2=Making a note: Huge Success!
 advancement.twilightforest.experiment_115_2.desc=It's so delicious and moist!
-advancement.twilightforest.experiment_115_3=Eating 115 Everyday, 115 Years, Forever
-advancement.twilightforest.experiment_115_3.desc=eating experiment one-hundred-fifteen all day, forever, one-hundred-fifteen times experiment one-hundred-fifteen, experiment one-hundred-fifteen dot com, double-u double-u double-u dot experiment one-hundred-fifteen dot com, one-hundred-fifteen years, every minute experiment one-hundred-fifteen dot com, double-u double-u double-u dot one-hundred-fifteen times experiment one-hundred-fifteen dot com
 
 # Snow Forest Progression
 advancement.twilightforest.progress_yeti=Alpha Fur
@@ -82,9 +80,6 @@ advancement.twilightforest.arctic_dyed.desc=Dye all four pieces of Arctic Armor.
 advancement.twilightforest.glass_sword=One Hit Wonder
 advancement.twilightforest.glass_sword.desc=Hope you made good use of that.
 
-advancement.twilightforest.twilight_dining=We Dine At Eternal Sundown
-advancement.twilightforest.twilight_dining.desc=Eat ALL of the Food exclusive to the Twilight Forest.
-
 advancement.twilightforest.fiery_set=Gallons of Blood and Tears
 advancement.twilightforest.fiery_set.desc=Wield a fiery tool or weapon while wearing at least one piece of fiery armor.
 
@@ -97,6 +92,14 @@ advancement.twilightforest.progress_thorns=Past the Thorns [NYI]
 advancement.twilightforest.progress_thorns.desc=Make it past the Thornlands, and unlock the door of the castle.
 advancement.twilightforest.progress_castle=So Castle Very Wow [NYI]
 advancement.twilightforest.progress_castle.desc=What could even be in that castle?!?
+
+# Collections
+advancement.twilightforest.twilight_dining=We Dine At Eternal Sundown
+advancement.twilightforest.twilight_dining.desc=Eat ALL of the Food exclusive to the Twilight Forest.
+advancement.twilightforest.experiment_115_3=Eating 115 Everyday, 115 Years, Forever
+advancement.twilightforest.experiment_115_3.desc=eating experiment one-hundred-fifteen all day, forever, one-hundred-fifteen times experiment one-hundred-fifteen, experiment one-hundred-fifteen dot com, double-u double-u double-u dot experiment one-hundred-fifteen dot com, one-hundred-fifteen years, every minute experiment one-hundred-fifteen dot com, double-u double-u double-u dot one-hundred-fifteen times experiment one-hundred-fifteen dot com
+advancement.twilightforest.arborist=Maniacal Dendrologist
+advancement.twilightforest.arborist.desc=Get your axes and shears ready. Search every nook and cranny and get anything and everything that comes from trees! Craft, loot, obtain every slab... sapling... leaves... more... everything. ALL OF IT!
 
 twilightforest.trophy_pedestal.ineligible=You are unworthy.
 twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
