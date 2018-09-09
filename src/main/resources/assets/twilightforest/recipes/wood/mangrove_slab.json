@@ -1,16 +1,16 @@
 {
   "result": {
-    "item": "minecraft:planks",
+    "item": "twilightforest:mangrove_stairs",
     "data": 0,
-    "count": 4
+    "count": 6
   },
   "pattern": [
-    "w"
+    "###"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
-    "w": {
-      "item": "twilightforest:twilight_log",
+    "#": {
+      "item": "twilightforest:mangrove_planks",
       "data": 0
     }
   }
