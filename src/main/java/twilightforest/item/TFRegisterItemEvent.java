@@ -239,7 +239,7 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.auroralized_glass);
 
 		registerWoodVariants(items, BlockTFLog.VARIANT, WoodVariant.values());
-		//registerWoodVariants(items, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
+		registerWoodVariants(items, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
 
 		TFCompat.initCompatItems(items);
 	}

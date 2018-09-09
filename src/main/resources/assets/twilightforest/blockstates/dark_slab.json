@@ -11,7 +11,7 @@
         "side"  : "twilightforest:blocks/wood/planks_darkwood_0"
       }
     }],
-    "half=bottom,variant=dark": [{
+    "half=bottom": [{
       "weight": 10,
       "textures": {
         "bottom": "twilightforest:blocks/wood/planks_darkwood_0",
@@ -40,7 +40,7 @@
         "side"  : "twilightforest:blocks/wood/planks_darkwood_3"
       }
     }],
-    "half=top,variant=dark": [{
+    "half=top": [{
       "model": "upper_slab",
       "weight": 10,
       "textures": {

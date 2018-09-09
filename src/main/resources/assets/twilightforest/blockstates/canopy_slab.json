@@ -11,7 +11,7 @@
         "side"  : "twilightforest:blocks/wood/planks_canopy_0"
       }
     }],
-    "half=bottom,variant=canopy": [{
+    "half=bottom": [{
       "weight": 10,
       "textures": {
         "bottom": "twilightforest:blocks/wood/planks_canopy_0",
@@ -40,7 +40,7 @@
         "side"  : "twilightforest:blocks/wood/planks_canopy_3"
       }
     }],
-    "half=top,variant=canopy": [{
+    "half=top": [{
       "model": "upper_slab",
       "weight": 10,
       "textures": {

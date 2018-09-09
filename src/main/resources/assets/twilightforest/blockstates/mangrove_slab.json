@@ -11,7 +11,7 @@
         "side"  : "twilightforest:blocks/wood/planks_mangrove_0"
       }
     }],
-    "half=bottom,variant=mangrove": [{
+    "half=bottom": [{
       "weight": 10,
       "textures": {
         "bottom": "twilightforest:blocks/wood/planks_mangrove_0",
@@ -40,7 +40,7 @@
         "side"  : "twilightforest:blocks/wood/planks_mangrove_3"
       }
     }],
-    "half=top,variant=mangrove": [{
+    "half=top": [{
       "model": "upper_slab",
       "weight": 10,
       "textures": {

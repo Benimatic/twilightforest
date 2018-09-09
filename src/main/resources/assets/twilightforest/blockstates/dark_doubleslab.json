@@ -4,7 +4,7 @@
     "model": "cube_all"
   },
   "variants": {
-    "variant=dark": [{
+    "normal": [{
       "weight": 10,
       "textures": {
         "all": "twilightforest:blocks/wood/planks_darkwood_0"
