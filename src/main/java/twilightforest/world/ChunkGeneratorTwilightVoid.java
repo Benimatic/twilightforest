@@ -83,4 +83,19 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 		BlockFalling.fallInstantly = false;
 	}
+
+	@Override
+	protected void deformTerrainForTrollCaves(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+
+		int radius = (nearFeature.size * 2 + 1) * 8;
+		int dist = (int) Math.sqrt(dx * dx + dz * dz);
+
+		if (dist > radius) return;
+
+		for (int y = 0; y < 60; y++) {
+			if (primer.getBlockState(x, y, z).getBlock() != Blocks.STONE) {
+				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
+			}
+		}
+	}
 }

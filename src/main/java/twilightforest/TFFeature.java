@@ -372,7 +372,7 @@ public enum TFFeature {
 		}
 	},
 	// TODO split cloud giants from this
-	TROLL_CAVE ( 3, "troll_lairs", true, new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
+	TROLL_CAVE ( 4, "troll_lairs", true, new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
@@ -403,7 +403,7 @@ public enum TFFeature {
 			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	FINAL_CASTLE ( 3, "final_castle", true, new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
+	FINAL_CASTLE ( 4, "final_castle", true, new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
 		{
 			TFFinalCastlePieces.registerFinalCastlePieces();
 

@@ -86,9 +86,6 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		}
 	}
 
-	/**
-	 * Raises up and hollows out the hollow hills.
-	 */
 	protected final void deformTerrainForFeature(int cx, int cz, ChunkPrimer primer) {
 		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world);
 		if (!nearFeature.isTerrainAltered) {
@@ -107,6 +104,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
+
 				int dx = x - hx;
 				int dz = z - hz;
 
@@ -117,12 +115,17 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * ((float) hdiam / 3F));
 
 					raiseHills(primer, nearFeature, hdiam, x, z, dx, dz, hheight);
+
 				} else if (nearFeature == TFFeature.HEDGE_MAZE || nearFeature == TFFeature.NAGA_COURTYARD || nearFeature == TFFeature.QUEST_GROVE) {
 					// hedge mazes, naga arena
 					flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
+
 				} else if (nearFeature == TFFeature.YETI_CAVE) {
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
+
+				} else if (nearFeature == TFFeature.TROLL_CAVE) {
+					deformTerrainForTrollCaves(primer, nearFeature, x, z, dx, dz);
 				}
 				//else if (nearFeature != TFFeature.NOTHING) {
 				//	// hedge mazes, naga arena
@@ -134,6 +137,9 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// done!
 	}
 
+	/**
+	 * Raises up and hollows out the hollow hills.
+	 */
 	private void raiseHills(ChunkPrimer primer, TFFeature nearFeature, int hdiam, int x, int z, int dx, int dz, int hillHeight) {
 		int newGround = -1;
 		boolean foundGroundLevel = false;
@@ -329,6 +335,8 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 			}
 		}
 	}
+
+	protected void deformTerrainForTrollCaves(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {}
 
 	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
