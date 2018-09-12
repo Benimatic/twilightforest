@@ -54,6 +54,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	private final float[] biomeWeights;
 
 	//protected final MapGenTFMajorFeatureOld majorFeatureGenerator = new MapGenTFMajorFeatureOld();
+	protected final MapGenTFHollowTree hollowTreeGenerator = new MapGenTFHollowTree();
 
 	private final boolean shouldGenerateBedrock;
 
@@ -692,11 +693,13 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	@Nullable
 	@Override
 	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position, boolean findUnexplored) {
+		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
+			return hollowTreeGenerator.getNearestStructurePos(world, position, findUnexplored);
+		}
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-
-		if (feature != TFFeature.NOTHING)
+		if (feature != TFFeature.NOTHING) {
 			return TFFeature.findNearestFeaturePosBySpacing(world, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
-
+		}
 		return null;
 	}
 
@@ -757,6 +760,9 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 	@Override
 	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
+		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
+			return hollowTreeGenerator.isInsideStructure(pos);
+		}
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
 		return feature != TFFeature.NOTHING && getFeatureAt(pos) == feature;
 	}

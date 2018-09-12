@@ -46,6 +46,11 @@ public class TFConfig {
 		@Config.RequiresWorldRestart
 		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
 		public boolean skylightForest = false;
+
+		@Config.LangKey(config + "skylight_oaks")
+		@Config.RequiresWorldRestart
+		@Config.Comment("If true, giant Twilight Oaks will also spawn in void worlds")
+		public boolean skylightOaks = true;
 	}
 
 	@Config.LangKey(config + "compat")

@@ -22,7 +22,6 @@ import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 
-import javax.annotation.Nullable;
 import java.util.BitSet;
 
 // TODO: doc out all the vanilla copying
@@ -34,7 +33,6 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 	private final TFGenCaves caveGenerator = new TFGenCaves();
 	private final TFGenRavine ravineGenerator = new TFGenRavine();
-	private final MapGenTFHollowTree hollowTreeGenerator = new MapGenTFHollowTree();
 
 	public ChunkGeneratorTwilightForest(World world, long seed, boolean enableFeatures) {
 		super(world, seed, enableFeatures, true);
@@ -318,26 +316,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		BlockFalling.fallInstantly = false;
 	}
 
-	@Nullable
-	@Override
-	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position, boolean findUnexplored) {
-		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
-			return hollowTreeGenerator.getNearestStructurePos(world, position, findUnexplored);
-		}
-		return super.getNearestStructurePos(world, structureName, position, findUnexplored);
-	}
-
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {
 		super.recreateStructures(chunk, x, z);
 		hollowTreeGenerator.generate(world, x, z, null);
-	}
-
-	@Override
-	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
-		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
-			return hollowTreeGenerator.isInsideStructure(pos);
-		}
-		return super.isInsideStructure(world, structureName, pos);
 	}
 }

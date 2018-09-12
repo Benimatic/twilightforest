@@ -12,12 +12,15 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 
 import java.util.BitSet;
 
 public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
+
+	private final boolean generateHollowTrees = TFConfig.dimension.skylightOaks;
 
 	public ChunkGeneratorTwilightVoid(World world, long seed, boolean enableFeatures) {
 		super(world, seed, enableFeatures, false);
@@ -41,6 +44,9 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
 		generateFeatures(x, z, primer);
+		if (generateHollowTrees) {
+			hollowTreeGenerator.generate(world, x, z, primer);
+		}
 
 		return makeChunk(x, z, primer);
 	}
@@ -88,6 +94,10 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 			}
 		}
 
+		if (generateHollowTrees) {
+			hollowTreeGenerator.generateStructure(world, rand, chunkpos);
+		}
+
 		blockpos = blockpos.add(8, 0, 8);
 
 		if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.ICE)) {
@@ -127,6 +137,14 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 			if (primer.getBlockState(x, y, z).getBlock() != Blocks.STONE) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
+		}
+	}
+
+	@Override
+	public void recreateStructures(Chunk chunk, int x, int z) {
+		super.recreateStructures(chunk, x, z);
+		if (generateHollowTrees) {
+			hollowTreeGenerator.generate(world, x, z, null);
 		}
 	}
 }
