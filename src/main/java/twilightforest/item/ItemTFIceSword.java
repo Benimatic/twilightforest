@@ -36,7 +36,7 @@ public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
 		if (player.world.isRemote) {
 			// snow animation!
-			for (int var1 = 0; var1 < 20; ++var1) {
+			for (int i = 0; i < 20; ++i) {
 				double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
 				double py = entity.posY + itemRand.nextFloat() * entity.height;
 				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;

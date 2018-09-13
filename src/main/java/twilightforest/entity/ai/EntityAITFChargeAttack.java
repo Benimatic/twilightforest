@@ -121,9 +121,9 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		}
 
 		// attack the target when we get in range
-		double var1 = this.charger.width * 2.1F * this.charger.width * 2.1F;
+		double rangeSq = this.charger.width * 2.1F * this.charger.width * 2.1F;
 
-		if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getEntityBoundingBox().minY, this.chargeTarget.posZ) <= var1) {
+		if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getEntityBoundingBox().minY, this.chargeTarget.posZ) <= rangeSq) {
 			if (!this.hasAttacked) {
 				this.hasAttacked = true;
 				this.charger.attackEntityAsMob(this.chargeTarget);

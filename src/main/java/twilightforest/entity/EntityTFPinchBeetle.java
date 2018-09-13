@@ -118,10 +118,10 @@ public class EntityTFPinchBeetle extends EntityMob {
 		if (!this.getPassengers().isEmpty()) {
 			float distance = 0.9F;
 
-			double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-			double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + var3);
+			return new Vec3d(this.posX + dx, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + dz);
 		} else {
 			return new Vec3d(this.posX, this.posY, this.posZ);
 		}

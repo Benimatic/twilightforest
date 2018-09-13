@@ -56,13 +56,13 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int var1, int var2) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		this.fontRenderer.drawString(I18n.format(TFBlocks.uncrafting_table.getTranslationKey() + ".name"), 8, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1, 1, 1, 1);
 		this.mc.getTextureManager().bindTexture(textureLoc);
 		int frameX = (this.width - this.xSize) / 2;

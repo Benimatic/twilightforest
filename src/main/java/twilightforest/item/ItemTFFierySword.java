@@ -36,12 +36,12 @@ public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback
 
 		if (result && !target.isImmuneToFire()) {
 			if (target.world.isRemote) {
-				for (int var1 = 0; var1 < 20; ++var1) {
-					double var2 = itemRand.nextGaussian() * 0.02D;
-					double var4 = itemRand.nextGaussian() * 0.02D;
-					double var6 = itemRand.nextGaussian() * 0.02D;
+				for (int i = 0; i < 20; ++i) {
+					double vx = itemRand.nextGaussian() * 0.02D;
+					double vy = itemRand.nextGaussian() * 0.02D;
+					double vz = itemRand.nextGaussian() * 0.02D;
 					double var8 = 10.0D;
-					target.world.spawnParticle(EnumParticleTypes.FLAME, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - var2 * var8, target.posY + itemRand.nextFloat() * target.height - var4 * var8, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - var6 * var8, var2, var4, var6);
+					target.world.spawnParticle(EnumParticleTypes.FLAME, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - vx * var8, target.posY + itemRand.nextFloat() * target.height - vy * var8, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - vz * var8, vx, vy, vz);
 				}
 			}
 		}

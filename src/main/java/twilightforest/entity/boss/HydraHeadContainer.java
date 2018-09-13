@@ -405,11 +405,11 @@ public class HydraHeadContainer {
 
 	private void doExplosionOn(EntityTFHydraPart part, boolean large) {
 		for (int i = 0; i < 10; ++i) {
-			double var8 = part.getRNG().nextGaussian() * 0.02D;
-			double var4 = part.getRNG().nextGaussian() * 0.02D;
-			double var6 = part.getRNG().nextGaussian() * 0.02D;
+			double vx = part.getRNG().nextGaussian() * 0.02D;
+			double vy = part.getRNG().nextGaussian() * 0.02D;
+			double vz = part.getRNG().nextGaussian() * 0.02D;
 			EnumParticleTypes particle = large && part.getRNG().nextInt(5) == 0 ? EnumParticleTypes.EXPLOSION_LARGE : EnumParticleTypes.EXPLOSION_NORMAL;
-			part.world.spawnParticle(particle, part.posX + part.getRNG().nextFloat() * part.width * 2.0F - part.width, part.posY + part.getRNG().nextFloat() * part.height, part.posZ + part.getRNG().nextFloat() * part.width * 2.0F - part.width, var8, var4, var6);
+			part.world.spawnParticle(particle, part.posX + part.getRNG().nextFloat() * part.width * 2.0F - part.width, part.posY + part.getRNG().nextFloat() * part.height, part.posZ + part.getRNG().nextFloat() * part.width * 2.0F - part.width, vx, vy, vz);
 		}
 	}
 

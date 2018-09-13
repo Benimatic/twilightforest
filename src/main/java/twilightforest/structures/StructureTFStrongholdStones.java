@@ -14,13 +14,13 @@ public class StructureTFStrongholdStones extends StructureComponent.BlockSelecto
 		if (!wall) {
 			blockstate = Blocks.AIR.getDefaultState();
 		} else {
-			float var6 = random.nextFloat();
+			float f = random.nextFloat();
 
-			if (var6 < 0.2F) {
+			if (f < 0.2F) {
 				blockstate = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
-			} else if (var6 < 0.5F) {
+			} else if (f < 0.5F) {
 				blockstate = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
-			} else if (var6 < 0.55F) {
+			} else if (f < 0.55F) {
 				blockstate = Blocks.MONSTER_EGG.getDefaultState().withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK);
 			} else {
 				blockstate = Blocks.STONEBRICK.getDefaultState();

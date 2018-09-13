@@ -50,20 +50,18 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
 	private static void animateTargetShatter(World world, EntityLivingBase target) {
-		for (int var1 = 0; var1 < 50; ++var1) {
+		int itemId = Item.getIdFromItem(getTargetDropItem(target));
+		for (int i = 0; i < 50; ++i) {
 			double gaussX = itemRand.nextGaussian() * 0.02D;
 			double gaussY = itemRand.nextGaussian() * 0.02D;
 			double gaussZ = itemRand.nextGaussian() * 0.02D;
 			double gaussFactor = 10.0D;
-
-			Item popItem = getTargetDropItemId(target) != null ? getTargetDropItemId(target) : Items.ROTTEN_FLESH;
-
-			world.spawnParticle(EnumParticleTypes.ITEM_CRACK, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
+			world.spawnParticle(EnumParticleTypes.ITEM_CRACK, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, itemId);
 		}
 	}
 
-	private static Item getTargetDropItemId(EntityLivingBase target) {
-		//TODO: make this actually work
+	private static Item getTargetDropItem(EntityLivingBase target) {
+		// TODO: make this actually work
 		return Items.ROTTEN_FLESH;
 	}
 

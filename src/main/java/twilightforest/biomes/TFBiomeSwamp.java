@@ -114,16 +114,16 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 	@Override
 	public int getGrassColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerGrass.getGrassColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerGrass.getGrassColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override
 	public int getFoliageColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerFoliage.getFoliageColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override

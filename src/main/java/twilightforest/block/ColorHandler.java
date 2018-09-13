@@ -175,12 +175,12 @@ public final class ColorHandler {
 				int green = 0;
 				int blue = 0;
 
-				for (int var9 = -1; var9 <= 1; ++var9) {
-					for (int var10 = -1; var10 <= 1; ++var10) {
-						int var11 = world.getBiome(pos.add(var10, 0, var9)).getFoliageColorAtPos(pos);
-						red += (var11 & 16711680) >> 16;
-						green += (var11 & 65280) >> 8;
-						blue += var11 & 255;
+				for (int dz = -1; dz <= 1; ++dz) {
+					for (int dx = -1; dx <= 1; ++dx) {
+						int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColorAtPos(pos);
+						red += (color & 16711680) >> 16;
+						green += (color & 65280) >> 8;
+						blue += color & 255;
 					}
 				}
 

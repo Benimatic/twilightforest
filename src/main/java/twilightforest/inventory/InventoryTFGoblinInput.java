@@ -58,9 +58,9 @@ public class InventoryTFGoblinInput implements IInventory {
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		if (!this.stackInput.isEmpty()) {
-			ItemStack var2 = this.stackInput;
+			ItemStack stack = this.stackInput;
 			this.stackInput = ItemStack.EMPTY;
-			return var2;
+			return stack;
 		} else {
 			return ItemStack.EMPTY;
 		}

@@ -23,14 +23,14 @@ public class EntityAITFKidnapRider extends EntityAIBase {
 		if (this.theEntityCreature.getRidingEntity() == null || this.theEntityCreature.getRNG().nextInt(5) > 0) {
 			return false;
 		} else {
-			Vec3d var1 = RandomPositionGenerator.findRandomTarget(this.theEntityCreature, 5, 4);
+			Vec3d target = RandomPositionGenerator.findRandomTarget(this.theEntityCreature, 5, 4);
 
-			if (var1 == null) {
+			if (target == null) {
 				return false;
 			} else {
-				this.randPosX = var1.x;
-				this.randPosY = var1.y;
-				this.randPosZ = var1.z;
+				this.randPosX = target.x;
+				this.randPosY = target.y;
+				this.randPosZ = target.z;
 				return true;
 			}
 		}
