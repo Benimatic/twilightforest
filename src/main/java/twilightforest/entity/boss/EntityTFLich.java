@@ -507,9 +507,9 @@ public class EntityTFLich extends EntityMob {
 		return dataManager.get(DATA_ISCLONE);
 	}
 
-	public void setShadowClone(boolean par1) {
-		bossInfo.setVisible(!par1);
-		dataManager.set(DATA_ISCLONE, par1);
+	public void setShadowClone(boolean shadowClone) {
+		bossInfo.setVisible(!shadowClone);
+		dataManager.set(DATA_ISCLONE, shadowClone);
 	}
 
 	public byte getShieldStrength() {

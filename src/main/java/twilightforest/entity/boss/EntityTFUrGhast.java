@@ -492,8 +492,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		return dataManager.get(DATA_TANTRUM);
 	}
 
-	public void setInTantrum(boolean par1) {
-		dataManager.set(DATA_TANTRUM, par1);
+	public void setInTantrum(boolean inTantrum) {
+		dataManager.set(DATA_TANTRUM, inTantrum);
 		this.damageUntilNextPhase = 48;
 	}
 

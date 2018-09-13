@@ -18,9 +18,9 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
 
 	private int fleeTimer;
 
-	public EntityAITFPanicOnFlockDeath(EntityCreature par1EntityCreature, float par2) {
-		this.flockCreature = par1EntityCreature;
-		this.speed = par2;
+	public EntityAITFPanicOnFlockDeath(EntityCreature creature, float speed) {
+		this.flockCreature = creature;
+		this.speed = speed;
 		this.setMutexBits(1);
 		this.fleeTimer = 0;
 	}

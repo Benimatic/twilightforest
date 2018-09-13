@@ -27,8 +27,8 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 
 	private int durationLeft;
 
-	public EntityAITFBreathAttack(EntityLiving par1EntityLiving, float speed, float range, int time, float chance) {
-		this.entityHost = par1EntityLiving;
+	public EntityAITFBreathAttack(EntityLiving living, float speed, float range, int time, float chance) {
+		this.entityHost = living;
 		this.breathRange = range;
 		this.maxDuration = time;
 		this.attackChance = chance;
@@ -163,18 +163,18 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	/**
 	 * Arguments: current rotation, intended rotation, max increment.
 	 */
-	private float updateRotation(float par1, float par2, float par3) {
-		float var4 = MathHelper.wrapDegrees(par2 - par1);
+	private float updateRotation(float current, float target, float maxDelta) {
+		float delta = MathHelper.wrapDegrees(target - current);
 
-		if (var4 > par3) {
-			var4 = par3;
+		if (delta > maxDelta) {
+			delta = maxDelta;
 		}
 
-		if (var4 < -par3) {
-			var4 = -par3;
+		if (delta < -maxDelta) {
+			delta = -maxDelta;
 		}
 
-		return par1 + var4;
+		return current + delta;
 	}
 
 

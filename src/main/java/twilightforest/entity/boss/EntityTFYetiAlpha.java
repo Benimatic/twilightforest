@@ -254,7 +254,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float par2) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		if (!this.canRampage) {
 			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 

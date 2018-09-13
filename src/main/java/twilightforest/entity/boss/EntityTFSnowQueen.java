@@ -340,7 +340,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public void fall(float par1, float mult) {
+	public void fall(float distance, float damageMultiplier) {
 	}
 
 	@Override

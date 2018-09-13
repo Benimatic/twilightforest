@@ -142,8 +142,8 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 	/**
 	 * Renders the breastplate, if we're wearing armor
 	 */
-	public void renderBreastplate(float par1) {
-		this.breastplate.render(par1);
+	public void renderBreastplate(float scale) {
+		this.breastplate.render(scale);
 	}
 
 

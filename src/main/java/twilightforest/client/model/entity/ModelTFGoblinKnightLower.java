@@ -75,8 +75,8 @@ public class ModelTFGoblinKnightLower extends ModelBiped {
 	/**
 	 * Renders the tunic, if we're wearing armor
 	 */
-	public void renderTunic(float par1) {
-		this.tunic.render(par1);
+	public void renderTunic(float scale) {
+		this.tunic.render(scale);
 	}
 
 	/**

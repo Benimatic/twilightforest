@@ -12,9 +12,9 @@ public class EntityAITFKidnapRider extends EntityAIBase {
 	private double randPosY;
 	private double randPosZ;
 
-	public EntityAITFKidnapRider(EntityCreature par1EntityCreature, float par2) {
-		this.theEntityCreature = par1EntityCreature;
-		this.speed = par2;
+	public EntityAITFKidnapRider(EntityCreature creature, float speed) {
+		this.theEntityCreature = creature;
+		this.speed = speed;
 		this.setMutexBits(1);
 	}
 

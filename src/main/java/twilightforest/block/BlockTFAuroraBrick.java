@@ -72,8 +72,8 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		items.add(new ItemStack(this, 1, 0));
 	}
 
 	@Override

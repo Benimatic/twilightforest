@@ -48,7 +48,7 @@ public class BlockTFDarkLeaves extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 	}
 

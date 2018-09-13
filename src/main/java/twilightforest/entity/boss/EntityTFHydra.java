@@ -545,11 +545,11 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	// [VanillaCopy] based on EntityDragon.collideWithEntities
-	private void collideWithEntities(List<Entity> par1List, Entity part) {
+	private void collideWithEntities(List<Entity> entities, Entity part) {
 		double d0 = (part.getEntityBoundingBox().minX + part.getEntityBoundingBox().maxX) / 2.0D;
 		double d1 = (part.getEntityBoundingBox().minZ + part.getEntityBoundingBox().maxZ) / 2.0D;
 
-		for (Entity entity : par1List) {
+		for (Entity entity : entities) {
 			if (entity instanceof EntityLivingBase) {
 				double d2 = entity.posX - d0;
 				double d3 = entity.posZ - d1;

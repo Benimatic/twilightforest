@@ -164,7 +164,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 				world.setBlockToAir(pos);
 				world.notifyNeighborsRespectDebug(pos, this, false);
 				world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
-				//par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+				//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
 
 				// activate all adjacent inactive vanish blocks
 				for (EnumFacing e : EnumFacing.VALUES) {
@@ -175,7 +175,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 				world.setBlockState(pos, TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
 				world.notifyNeighborsRespectDebug(pos, this, false);
 				world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
-				//par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+				//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
 			} else if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE) {
 				BlockTFTowerDevice.changeToActiveVanishBlock(world, pos, TowerTranslucentVariant.REAPPEARING_ACTIVE);
 			}

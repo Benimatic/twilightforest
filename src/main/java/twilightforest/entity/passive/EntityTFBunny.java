@@ -83,8 +83,8 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		return dataManager.get(DATA_TYPE);
 	}
 
-	public void setBunnyType(int par1) {
-		dataManager.set(DATA_TYPE, (byte) par1);
+	public void setBunnyType(int type) {
+		dataManager.set(DATA_TYPE, (byte) type);
 	}
 
 	@Override

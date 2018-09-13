@@ -169,7 +169,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
 			return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 		} else {

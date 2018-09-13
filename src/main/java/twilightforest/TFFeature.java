@@ -873,31 +873,30 @@ public enum TFFeature {
 	/**
 	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
 	 */
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType) {
-		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
-			return this.getSpawnableList(EnumCreatureType.MONSTER, 0);
-		} else if (par1EnumCreatureType == EnumCreatureType.AMBIENT) {
-			return this.ambientCreatureList;
-		} else if (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE) {
-			return this.waterCreatureList;
-		} else {
-			return Lists.newArrayList();
+	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+		switch (creatureType) {
+			case MONSTER:
+				return this.getSpawnableList(EnumCreatureType.MONSTER, 0);
+			case AMBIENT:
+				return this.ambientCreatureList;
+			case WATER_CREATURE:
+				return this.waterCreatureList;
+			default:
+				return Lists.newArrayList();
 		}
 	}
 
 	/**
 	 * Returns a list of hostile monsters in the specified indexed category
 	 */
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType, int index) {
-		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
-			if (index >= 0 && index < this.spawnableMonsterLists.size()) {
-				return this.spawnableMonsterLists.get(index);
-			} else {
-				return Lists.newArrayList();
-			}
-		} else {
-			return getSpawnableList(par1EnumCreatureType);
+	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType, int index) {
+		if (creatureType != EnumCreatureType.MONSTER) {
+			return getSpawnableList(creatureType);
 		}
+		if (index >= 0 && index < this.spawnableMonsterLists.size()) {
+			return this.spawnableMonsterLists.get(index);
+		}
+		return Lists.newArrayList();
 	}
 
 	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
