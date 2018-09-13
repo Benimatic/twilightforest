@@ -13,6 +13,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -588,6 +589,26 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		return 0;
 	}
 
+	protected boolean isBoundingBoxOutsideBiomes(World world, StructureBoundingBox sbb, Predicate<Biome> predicate) {
+
+		int minX = this.boundingBox.minX - 1;
+		int minZ = this.boundingBox.minZ - 1;
+		int maxX = this.boundingBox.maxX + 1;
+		int maxZ = this.boundingBox.maxZ + 1;
+
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+		for (int x = minX; x <= maxX; x++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				if (!predicate.test(world.getBiome(pos.setPos(x, 0, z)))) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
@@ -607,7 +628,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 		return structurecomponent;
 	}
-
 
 	public BlockPos getBlockPosWithOffset(int x, int y, int z) {
 		return new BlockPos(

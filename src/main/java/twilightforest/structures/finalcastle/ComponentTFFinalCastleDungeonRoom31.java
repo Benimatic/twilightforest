@@ -29,8 +29,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
-	public ComponentTFFinalCastleDungeonRoom31() {
-	}
+	public ComponentTFFinalCastleDungeonRoom31() {}
 
 	public ComponentTFFinalCastleDungeonRoom31(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
 		super(feature, i);
@@ -75,15 +74,13 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	private boolean isExitBuildForLevel(StructureComponent parent) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
 			return ((ComponentTFFinalCastleDungeonEntrance) parent).hasExit;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private void setExitBuiltForLevel(StructureComponent parent, boolean exit) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
 			((ComponentTFFinalCastleDungeonEntrance) parent).hasExit = exit;
-		} else {
 		}
 	}
 
@@ -107,9 +104,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 			list.add(dRoom);
 			dRoom.buildComponent(parent, list, rand);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	protected boolean addDungeonExit(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation) {
@@ -124,9 +120,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 			list.add(dRoom);
 			dRoom.buildComponent(this, list, rand);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private BlockPos getNewRoomCoords(Random rand, Rotation rotation) {
@@ -152,7 +147,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
-		if (this.isBoundingBoxOutOfPlateau(world, sbb)) {
+		if (this.isBoundingBoxOutsideBiomes(world, sbb, plateauBiomes)) {
 			return false;
 		}
 
@@ -197,26 +192,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		return true;
 	}
 
-	private boolean isBoundingBoxOutOfPlateau(World world, StructureBoundingBox sbb) {
-
-		int minX = this.boundingBox.minX - 1;
-		int minZ = this.boundingBox.minZ - 1;
-		int maxX = this.boundingBox.maxX + 1;
-		int maxZ = this.boundingBox.maxZ + 1;
-
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-		for (int x = minX; x <= maxX; x++) {
-			for (int z = minZ; z <= maxZ; z++) {
-				Biome biome = world.getBiome(pos.setPos(x, 0, z));
-				if (biome != TFBiomes.highlandsCenter && biome != TFBiomes.thornlands) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
+	protected static final Predicate<Biome> plateauBiomes = biome ->
+			biome == TFBiomes.highlandsCenter || biome == TFBiomes.thornlands;
 
 	protected EnumDyeColor getRuneColor(EnumDyeColor forceFieldColor) {
 		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldColor == BlockTFForceField.VALID_COLORS.get(4) ? 1 : 2);
