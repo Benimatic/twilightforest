@@ -481,6 +481,32 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		setCoordBaseMode(oldBaseMode);
 	}
 
+	protected void fillWithAir(World world, StructureBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Predicate<IBlockState> predicate) {
+		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, Blocks.AIR.getDefaultState(), predicate);
+	}
+
+	protected void fillWithBlocks(World world, StructureBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, IBlockState state, Predicate<IBlockState> predicate) {
+		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, state, state, predicate);
+	}
+
+	protected void fillWithBlocks(World world, StructureBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, IBlockState borderState, IBlockState interiorState, Predicate<IBlockState> predicate) {
+		for (int y = yMin; y <= yMax; ++y) {
+			for (int x = xMin; x <= xMax; ++x) {
+				for (int z = zMin; z <= zMax; ++z) {
+
+					if (predicate.test(this.getBlockStateFromPos(world, x, y, z, boundingBox))) {
+
+						boolean isBorder = yMin != yMax && (y == yMin || y == yMax)
+								|| xMin != xMax && (x == xMin || x == xMax)
+								|| zMin != zMax && (z == zMin || z == zMax);
+
+						this.setBlockState(world, isBorder ? borderState : interiorState, x, y, z, boundingBox);
+					}
+				}
+			}
+		}
+	}
+
 	protected static StructureComponent.BlockSelector getStrongholdStones() {
 		return strongholdStones;
 	}
