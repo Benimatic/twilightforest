@@ -15,7 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.TFBlocks;
 
-public class EntityTFMoonwormShot extends EntityThrowable {
+public class EntityTFMoonwormShot extends EntityThrowable implements ITFProjectile {
+
 	public EntityTFMoonwormShot(World world) {
 		super(world);
 	}

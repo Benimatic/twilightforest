@@ -68,23 +68,9 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.compat.Baubles;
 import twilightforest.compat.TFCompat;
 import twilightforest.enchantment.TFEnchantment;
-import twilightforest.entity.EntityIceArrow;
-import twilightforest.entity.EntitySeekerArrow;
 import twilightforest.entity.EntityTFCharmEffect;
-import twilightforest.entity.EntityTFIceSnowball;
-import twilightforest.entity.EntityTFMoonwormShot;
-import twilightforest.entity.EntityTFNatureBolt;
-import twilightforest.entity.EntityTFPinchBeetle;
-import twilightforest.entity.EntityTFSlimeProjectile;
-import twilightforest.entity.EntityTFTomeBolt;
-import twilightforest.entity.EntityTFTwilightWandBolt;
-import twilightforest.entity.EntityTFYeti;
-import twilightforest.entity.boss.EntityTFIceBomb;
-import twilightforest.entity.boss.EntityTFLichBolt;
-import twilightforest.entity.boss.EntityTFLichBomb;
-import twilightforest.entity.boss.EntityTFThrownWep;
-import twilightforest.entity.boss.EntityTFUrGhastFireball;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
+import twilightforest.entity.IHostileMount;
+import twilightforest.entity.ITFProjectile;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
@@ -489,7 +475,7 @@ public class TFEventListener {
 	}
 
 	public static boolean isRidingUnfriendly(EntityLivingBase entity) {
-		return entity.isRiding() && (entity.getRidingEntity() instanceof EntityTFPinchBeetle || entity.getRidingEntity() instanceof EntityTFYeti || entity.getRidingEntity() instanceof EntityTFYetiAlpha);
+		return entity.isRiding() && entity.getRidingEntity() instanceof IHostileMount;
 	}
 
 	/**
@@ -573,13 +559,9 @@ public class TFEventListener {
 	 */
 	private static boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
-
-		if (block == TFBlocks.tower_device || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
-				|| block == Blocks.STONE_BUTTON || block == Blocks.WOODEN_BUTTON || block == Blocks.LEVER) {
-			return true;
-		} else {
-			return false;
-		}
+		// TODO: improve this?
+		return block == TFBlocks.tower_device || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
+				|| block == Blocks.STONE_BUTTON || block == Blocks.WOODEN_BUTTON || block == Blocks.LEVER;
 	}
 
 	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
@@ -743,8 +725,7 @@ public class TFEventListener {
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
 				(TFConfig.shieldInteractions.parryNonTwilightAttacks
-				|| projectile instanceof EntityIceArrow)
-				|| projectile instanceof EntitySeekerArrow) {
+				|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
 
@@ -773,7 +754,7 @@ public class TFEventListener {
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
 				(TFConfig.shieldInteractions.parryNonTwilightAttacks
-				|| projectile instanceof EntityTFUrGhastFireball)) {
+				|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
 
@@ -807,16 +788,7 @@ public class TFEventListener {
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
 				(TFConfig.shieldInteractions.parryNonTwilightAttacks
-				|| projectile instanceof EntityTFTwilightWandBolt
-				|| projectile instanceof EntityTFLichBolt
-				|| projectile instanceof EntityTFLichBomb
-				|| projectile instanceof EntityTFThrownWep
-				|| projectile instanceof EntityTFIceBomb
-				|| projectile instanceof EntityTFIceSnowball
-				|| projectile instanceof EntityTFSlimeProjectile
-				|| projectile instanceof EntityTFMoonwormShot
-				|| projectile instanceof EntityTFTomeBolt
-				|| projectile instanceof EntityTFNatureBolt)) {
+				|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
 

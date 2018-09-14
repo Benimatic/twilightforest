@@ -20,7 +20,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
-public class EntityTFPinchBeetle extends EntityMob {
+public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
+
 	public EntityTFPinchBeetle(World world) {
 		super(world);
 		setSize(1.2F, 1.1F);

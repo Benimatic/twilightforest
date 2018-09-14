@@ -11,9 +11,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.entity.ITFProjectile;
 
+public class EntityTFLichBolt extends EntityThrowable implements ITFProjectile {
 
-public class EntityTFLichBolt extends EntityThrowable {
 	@SuppressWarnings("unused")
 	public EntityTFLichBolt(World world) {
 		super(world);

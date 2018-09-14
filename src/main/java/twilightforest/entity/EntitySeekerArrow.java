@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class EntitySeekerArrow extends EntityArrow {
+public class EntitySeekerArrow extends EntityArrow implements ITFProjectile {
 
 	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntitySeekerArrow.class, DataSerializers.VARINT);
 

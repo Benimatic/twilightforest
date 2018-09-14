@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+public class EntityTFTwilightWandBolt extends EntityThrowable implements ITFProjectile {
 
-public class EntityTFTwilightWandBolt extends EntityThrowable {
 	@SuppressWarnings("unused")
 	public EntityTFTwilightWandBolt(World world) {
 		super(world);

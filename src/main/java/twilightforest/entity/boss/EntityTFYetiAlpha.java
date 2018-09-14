@@ -35,6 +35,7 @@ import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
@@ -44,7 +45,8 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
-public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
+public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IHostileMount {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti_alpha");
 	private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);

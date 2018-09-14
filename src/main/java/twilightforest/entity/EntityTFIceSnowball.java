@@ -9,7 +9,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFIceSnowball extends EntityThrowable {
+public class EntityTFIceSnowball extends EntityThrowable implements ITFProjectile {
+
 	private static final int DAMAGE = 8;
 
 	public EntityTFIceSnowball(World world) {

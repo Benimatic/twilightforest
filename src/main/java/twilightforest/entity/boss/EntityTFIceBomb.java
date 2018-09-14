@@ -6,7 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -15,11 +14,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.entity.EntityTFYeti;
+import twilightforest.entity.ITFProjectile;
 import twilightforest.potions.TFPotions;
 
 import java.util.List;
 
-public class EntityTFIceBomb extends EntityThrowable {
+public class EntityTFIceBomb extends EntityThrowable implements ITFProjectile {
 
 	private int zoneTimer = 80;
 	private boolean hasHit;

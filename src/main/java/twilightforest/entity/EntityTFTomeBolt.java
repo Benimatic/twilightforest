@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+public class EntityTFTomeBolt extends EntityThrowable implements ITFProjectile {
 
-public class EntityTFTomeBolt extends EntityThrowable {
 	public EntityTFTomeBolt(World world, EntityLivingBase thrower) {
 		super(world, thrower);
 	}

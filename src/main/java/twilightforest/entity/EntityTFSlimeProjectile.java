@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFSlimeProjectile extends EntityThrowable {
+public class EntityTFSlimeProjectile extends EntityThrowable implements ITFProjectile {
 
 	public EntityTFSlimeProjectile(World world) {
 		super(world);
