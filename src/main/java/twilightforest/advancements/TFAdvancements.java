@@ -10,6 +10,7 @@ public class TFAdvancements {
     public static final QuestRamCompletionTrigger QUEST_RAM_COMPLETED = CriteriaTriggers.register(new QuestRamCompletionTrigger());
     public static final TrophyPedestalTrigger PLACED_TROPHY_ON_PEDESTAL = CriteriaTriggers.register(new TrophyPedestalTrigger());
     public static final ActivateGhastTrapTrigger ACTIVATED_GHAST_TRAP = CriteriaTriggers.register(new ActivateGhastTrapTrigger());
+    public static final StructureClearedTrigger STRUCTURE_CLEARED = CriteriaTriggers.register(new StructureClearedTrigger());
 
     public static void init() {}
 }

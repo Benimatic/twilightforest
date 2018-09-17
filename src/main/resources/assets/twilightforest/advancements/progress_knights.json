@@ -22,6 +22,12 @@
         }
       }
     },
+    "structure": {
+      "trigger": "twilightforest:structure_cleared",
+      "conditions": {
+        "structure": "knight_stronghold"
+      }
+    },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
