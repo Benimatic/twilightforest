@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import twilightforest.client.ModelRegisterCallback;
@@ -10,7 +11,8 @@ public class BlockTF extends Block implements ModelRegisterCallback {
         super(blockMaterialIn, blockMapColorIn);
     }
 
-    public BlockTF(Material materialIn) {
-        super(materialIn);
+    @Override
+    public Block setSoundType(SoundType sound) {
+        return super.setSoundType(sound);
     }
 }
