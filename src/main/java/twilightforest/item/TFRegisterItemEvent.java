@@ -151,6 +151,7 @@ public class TFRegisterItemEvent {
 		items.register("block_and_chain", "chainBlock", new ItemTFChainBlock().setMaxStackSize(1));
 		items.register("cube_talisman", "cubeTalisman", new ItemTF());
 		items.register("cube_of_annihilation", "cubeOfAnnihilation", new ItemTFCubeOfAnnihilation().setMaxStackSize(1));
+		items.register("moon_dial", "moonDial", new ItemTFMoonDial());
 
 		String[] thornNames = stream(ThornVariant.values()).map(IStringSerializable::getName).toArray(String[]::new);
 		String[] deadrockNames = stream(DeadrockVariant.values()).map(IStringSerializable::getName).toArray(String[]::new);
