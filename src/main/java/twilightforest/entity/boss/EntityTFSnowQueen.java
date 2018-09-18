@@ -241,7 +241,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			if (hasHome()) {
 				BlockPos home = this.getHomePosition();
-				world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
+				world.setBlockState(home, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
 			}
 
 			setDead();

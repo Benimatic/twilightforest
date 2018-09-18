@@ -705,7 +705,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			if (hasHome()) {
 				BlockPos home = this.getHomePosition();
-				world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+				world.setBlockState(home, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
 			}
 
 			setDead();

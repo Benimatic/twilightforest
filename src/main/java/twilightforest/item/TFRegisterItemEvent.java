@@ -162,7 +162,7 @@ public class TFRegisterItemEvent {
 		items.register(new ItemBlockWearable(TFBlocks.cicada));
 		items.registerSubItemBlock(TFBlocks.maze_stone);
 		items.registerSubItemBlock(TFBlocks.hedge);
-		items.registerSubItemBlock(TFBlocks.bossSpawner);
+		items.registerSubItemBlock(TFBlocks.boss_spawner);
 		items.registerBlock(TFBlocks.firefly_jar);
 		items.register(new ItemBlockTFPlant(TFBlocks.twilight_plant));
 		items.registerBlock(TFBlocks.uncrafting_table);

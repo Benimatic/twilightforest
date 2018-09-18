@@ -76,7 +76,7 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 			return (blockState.getBlockHardness(world, pos) >= 0)
 					&& blockID != TFBlocks.stronghold_shield
 					&& blockID != TFBlocks.trophy_pedestal
-					&& blockID != TFBlocks.bossSpawner
+					&& blockID != TFBlocks.boss_spawner
 					&& (blockState.getMaterial() == Material.GRASS || blockState.getMaterial() == Material.GROUND || blockState.getMaterial() == Material.ROCK);
 		}
 	}

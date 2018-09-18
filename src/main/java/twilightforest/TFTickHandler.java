@@ -163,7 +163,7 @@ public class TFTickHandler {
 				IBlockState state = world.getBlockState(entityItem.getPosition());
 				if (validItems.containsKey(entityItem.getItem().getItem())) {
 					int metadata = validItems.get(entityItem.getItem().getItem());
-					if ((state.getBlock() == Blocks.WATER || state == TFBlocks.portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true))
+					if ((state.getBlock() == Blocks.WATER || state == TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true))
 							&& (metadata == -1 || entityItem.getItem().getMetadata() == metadata)) {
 						Random rand = new Random();
 						for (int k = 0; k < 2; k++) {
@@ -174,7 +174,7 @@ public class TFTickHandler {
 							world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 						}
 
-						if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
+						if (((BlockTFPortal) TFBlocks.twilight_portal).tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
 							return;
 						}

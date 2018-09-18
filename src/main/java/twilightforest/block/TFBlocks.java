@@ -10,171 +10,151 @@ import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 @SuppressWarnings("WeakerAccess")
 @ObjectHolder(TwilightForestMod.ID)
 public class TFBlocks {
-	@ObjectHolder("twilight_log")
-	public static Block twilight_log;
-	@ObjectHolder("twilight_leaves")
-	public static Block twilight_leaves;
-	@ObjectHolder("firefly")
-	public static Block firefly;
-	@ObjectHolder("twilight_portal")
-	public static Block portal;
-	@ObjectHolder("maze_stone")
-	public static Block maze_stone;
-	@ObjectHolder("hedge")
-	public static Block hedge;
-	@ObjectHolder("boss_spawner")
-	public static Block bossSpawner;
-	@ObjectHolder("firefly_jar")
-	public static Block firefly_jar;
-	@ObjectHolder("twilight_plant")
-	public static Block twilight_plant;
-	@ObjectHolder("cicada")
-	public static Block cicada;
-	@ObjectHolder("root")
-	public static Block root;
-	@ObjectHolder("uncrafting_table")
-	public static Block uncrafting_table;
-	@ObjectHolder("fire_jet")
-	public static Block fire_jet;
-	@ObjectHolder("naga_stone")
-	public static Block naga_stone;
-	@ObjectHolder("twilight_sapling")
-	public static BlockBush twilight_sapling;
-	@ObjectHolder("magic_log")
-	public static Block magic_log;
-	@ObjectHolder("magic_log_core")
-	public static Block magic_log_core;
-	@ObjectHolder("magic_leaves")
-	public static Block magic_leaves;
-	@ObjectHolder("moonworm")
-	public static Block moonworm;
-	@ObjectHolder("tower_wood")
-	public static Block tower_wood;
-	@ObjectHolder("tower_device")
-	public static Block tower_device;
-	//public static Block towerAntenna;
-	@ObjectHolder("tower_translucent")
-	public static Block tower_translucent;
-	@ObjectHolder("trophy")
-	public static Block trophy;
-	@ObjectHolder("stronghold_shield")
-	public static Block stronghold_shield;
-	@ObjectHolder("trophy_pedestal")
-	public static Block trophy_pedestal;
-	@ObjectHolder("aurora_block")
-	public static Block aurora_block;
-	@ObjectHolder("underbrick")
-	public static Block underbrick;
-	@ObjectHolder("thorns")
-	public static Block thorns;
-	@ObjectHolder("burnt_thorns")
-	public static Block burnt_thorns;
-	@ObjectHolder("thorn_rose")
-	public static Block thorn_rose;
-	@ObjectHolder("twilight_leaves_3")
-	public static Block twilight_leaves_3;
-	@ObjectHolder("deadrock")
-	public static Block deadrock;
-	@ObjectHolder("dark_leaves")
-	public static Block dark_leaves;
-	@ObjectHolder("aurora_pillar")
-	public static Block aurora_pillar;
-	@ObjectHolder("aurora_slab")
-	public static BlockSlab aurora_slab;
-	@ObjectHolder("double_aurora_slab")
-	public static BlockSlab double_aurora_slab;
-	@ObjectHolder("trollsteinn")
-	public static Block trollsteinn;
-	@ObjectHolder("wispy_cloud")
-	public static Block wispy_cloud;
-	@ObjectHolder("fluffy_cloud")
-	public static Block fluffy_cloud;
-	@ObjectHolder("giant_cobblestone")
-	public static Block giant_cobblestone;
-	@ObjectHolder("giant_log")
-	public static Block giant_log;
-	@ObjectHolder("giant_leaves")
-	public static Block giant_leaves;
-	@ObjectHolder("giant_obsidian")
-	public static Block giant_obsidian;
-	@ObjectHolder("uberous_soil")
-	public static Block uberous_soil;
-	@ObjectHolder("huge_stalk")
-	public static Block huge_stalk;
-	@ObjectHolder("huge_mushgloom")
-	public static Block huge_mushgloom;
-	@ObjectHolder("trollvidr")
-	public static Block trollvidr;
-	@ObjectHolder("unripe_trollber")
-	public static Block unripe_trollber;
-	@ObjectHolder("trollber")
-	public static Block trollber;
-	@ObjectHolder("knightmetal_block")
-	public static Block knightmetal_block;
-	@ObjectHolder("huge_lilypad")
-	public static Block huge_lilypad;
-	@ObjectHolder("huge_waterlily")
-	public static Block huge_waterlily;
-	@ObjectHolder("slider")
-	public static Block slider;
-	@ObjectHolder("castle_brick")
-	public static Block castle_brick;
-	@ObjectHolder("castle_stairs")
-	public static Block castle_stairs;
-	@ObjectHolder("castle_pillar")
-	public static Block castle_pillar;
-	@ObjectHolder("castle_rune_brick")
-	public static Block castle_rune_brick;
-	@ObjectHolder("force_field")
-	public static Block force_field;
-	@ObjectHolder("cinder_furnace")
-	public static Block cinder_furnace;
-	@ObjectHolder("cinder_furnace_lit")
-	public static Block cinder_furnace_lit;
-	@ObjectHolder("cinder_log")
-	public static Block cinder_log;
-	@ObjectHolder("castle_door")
-	public static Block castle_door;
-	@ObjectHolder("castle_door_vanished")
-	public static Block castle_door_vanished;
-	@ObjectHolder("castle_unlock")
-	public static Block castle_unlock;
-	@ObjectHolder("experiment_115")
-	public static Block experiment_115;
-	@ObjectHolder("miniature_structure")
-	public static Block miniature_structure;
-	@ObjectHolder("block_storage")
-	public static Block block_storage;
-	@ObjectHolder("lapis_block")
-	public static Block lapis_block;
-	@ObjectHolder("spiral_bricks")
-	public static Block spiral_bricks;
-	@ObjectHolder("etched_nagastone")
-	public static Block etched_nagastone;
-	@ObjectHolder("nagastone_pillar")
-	public static Block nagastone_pillar;
-	@ObjectHolder("nagastone_stairs")
-	public static Block nagastone_stairs;
-	@ObjectHolder("etched_nagastone_mossy")
-	public static Block etched_nagastone_mossy;
-	@ObjectHolder("nagastone_pillar_mossy")
-	public static Block nagastone_pillar_mossy;
-	@ObjectHolder("nagastone_stairs_mossy")
-	public static Block nagastone_stairs_mossy;
-	@ObjectHolder("etched_nagastone_weathered")
-	public static Block etched_nagastone_weathered;
-	@ObjectHolder("nagastone_pillar_weathered")
-	public static Block nagastone_pillar_weathered;
-	@ObjectHolder("nagastone_stairs_weathered")
-	public static Block nagastone_stairs_weathered;
-	@ObjectHolder("auroralized_glass")
-	public static Block auroralized_glass;
-	@ObjectHolder("castle_stairs_brick")
-	public static Block castle_stairs_brick;
-	@ObjectHolder("castle_stairs_cracked")
-	public static Block castle_stairs_cracked;
-	@ObjectHolder("castle_stairs_worn")
-	public static Block castle_stairs_worn;
-	@ObjectHolder("castle_stairs_mossy")
-	public static Block castle_stairs_mossy;
+	public static final Block twilight_log               = null;
+	public static final Block twilight_leaves            = null;
+	public static final Block firefly                    = null;
+	public static final Block twilight_portal            = null;
+	public static final Block maze_stone                 = null;
+	public static final Block hedge                      = null;
+	public static final Block boss_spawner               = null;
+	public static final Block firefly_jar                = null;
+	public static final Block twilight_plant             = null;
+	public static final Block cicada                     = null;
+	public static final Block root                       = null;
+	public static final Block uncrafting_table           = null;
+	public static final Block fire_jet                   = null;
+	public static final Block naga_stone                 = null;
+	public static final BlockBush twilight_sapling       = null;
+	public static final Block magic_log                  = null;
+	public static final Block magic_log_core             = null;
+	public static final Block magic_leaves               = null;
+	public static final Block moonworm                   = null;
+	public static final Block tower_wood                 = null;
+	public static final Block tower_device               = null;
+	//public static Block towerAntenna                     = null;
+	public static final Block tower_translucent          = null;
+	public static final Block trophy                     = null;
+	public static final Block stronghold_shield          = null;
+	public static final Block trophy_pedestal            = null;
+	public static final Block aurora_block               = null;
+	public static final Block underbrick                 = null;
+	public static final Block thorns                     = null;
+	public static final Block burnt_thorns               = null;
+	public static final Block thorn_rose                 = null;
+	public static final Block twilight_leaves_3          = null;
+	public static final Block deadrock                   = null;
+	public static final Block dark_leaves                = null;
+	public static final Block aurora_pillar              = null;
+	public static final BlockSlab aurora_slab            = null;
+	public static final BlockSlab double_aurora_slab     = null;
+	public static final Block trollsteinn                = null;
+	public static final Block wispy_cloud                = null;
+	public static final Block fluffy_cloud               = null;
+	public static final Block giant_cobblestone          = null;
+	public static final Block giant_log                  = null;
+	public static final Block giant_leaves               = null;
+	public static final Block giant_obsidian             = null;
+	public static final Block uberous_soil               = null;
+	public static final Block huge_stalk                 = null;
+	public static final Block huge_mushgloom             = null;
+	public static final Block trollvidr                  = null;
+	public static final Block unripe_trollber            = null;
+	public static final Block trollber                   = null;
+	public static final Block knightmetal_block          = null;
+	public static final Block huge_lilypad               = null;
+	public static final Block huge_waterlily             = null;
+	public static final Block slider                     = null;
+	public static final Block castle_brick               = null;
+	public static final Block castle_stairs              = null;
+	public static final Block castle_pillar              = null;
+	public static final Block castle_rune_brick          = null;
+	public static final Block force_field                = null;
+	public static final Block cinder_furnace             = null;
+	public static final Block cinder_furnace_lit         = null;
+	public static final Block cinder_log                 = null;
+	public static final Block castle_door                = null;
+	public static final Block castle_door_vanished       = null;
+	public static final Block experiment_115             = null;
+	public static final Block miniature_structure        = null;
+	public static final Block block_storage              = null;
+	public static final Block spiral_bricks              = null;
+	public static final Block etched_nagastone           = null;
+	public static final Block nagastone_pillar           = null;
+	public static final Block nagastone_stairs           = null;
+	public static final Block etched_nagastone_mossy     = null;
+	public static final Block nagastone_pillar_mossy     = null;
+	public static final Block nagastone_stairs_mossy     = null;
+	public static final Block etched_nagastone_weathered = null;
+	public static final Block nagastone_pillar_weathered = null;
+	public static final Block nagastone_stairs_weathered = null;
+	public static final Block auroralized_glass          = null;
+	public static final Block castle_stairs_brick        = null;
+	public static final Block castle_stairs_cracked      = null;
+	public static final Block castle_stairs_worn         = null;
+	public static final Block castle_stairs_mossy        = null;
+
+	public static final BlockTF              twilight_oak_planks     = null;
+	public static final BlockTFStairs        twilight_oak_stairs     = null;
+	public static final BlockTFSlab          twilight_oak_doubleslab = null;
+	public static final BlockTFSlab          twilight_oak_slab       = null;
+	public static final BlockTFButtonWood    twilight_oak_button     = null;
+	public static final BlockTFFence         twilight_oak_fence      = null;
+	public static final BlockTFFenceGate     twilight_oak_gate       = null;
+	public static final BlockTFPressurePlate twilight_oak_plate      = null;
+	public static final BlockTF              canopy_planks           = null;
+	public static final BlockTFStairs        canopy_stairs           = null;
+	public static final BlockTFSlab          canopy_doubleslab       = null;
+	public static final BlockTFSlab          canopy_slab             = null;
+	public static final BlockTFButtonWood    canopy_button           = null;
+	public static final BlockTFFence         canopy_fence            = null;
+	public static final BlockTFFenceGate     canopy_gate             = null;
+	public static final BlockTFPressurePlate canopy_plate            = null;
+	public static final BlockTF              mangrove_planks         = null;
+	public static final BlockTFStairs        mangrove_stairs         = null;
+	public static final BlockTFSlab          mangrove_doubleslab     = null;
+	public static final BlockTFSlab          mangrove_slab           = null;
+	public static final BlockTFButtonWood    mangrove_button         = null;
+	public static final BlockTFFence         mangrove_fence          = null;
+	public static final BlockTFFenceGate     mangrove_gate           = null;
+	public static final BlockTFPressurePlate mangrove_plate          = null;
+	public static final BlockTF              dark_planks             = null;
+	public static final BlockTFStairs        dark_stairs             = null;
+	public static final BlockTFSlab          dark_doubleslab         = null;
+	public static final BlockTFSlab          dark_slab               = null;
+	public static final BlockTFButtonWood    dark_button             = null;
+	public static final BlockTFFence         dark_fence              = null;
+	public static final BlockTFFenceGate     dark_gate               = null;
+	public static final BlockTFPressurePlate dark_plate              = null;
+	public static final BlockTF              time_planks             = null;
+	public static final BlockTFStairs        time_stairs             = null;
+	public static final BlockTFSlab          time_doubleslab         = null;
+	public static final BlockTFSlab          time_slab               = null;
+	public static final BlockTFButtonWood    time_button             = null;
+	public static final BlockTFFence         time_fence              = null;
+	public static final BlockTFFenceGate     time_gate               = null;
+	public static final BlockTFPressurePlate time_plate              = null;
+	public static final BlockTF              trans_planks            = null;
+	public static final BlockTFStairs        trans_stairs            = null;
+	public static final BlockTFSlab          trans_doubleslab        = null;
+	public static final BlockTFSlab          trans_slab              = null;
+	public static final BlockTFButtonWood    trans_button            = null;
+	public static final BlockTFFence         trans_fence             = null;
+	public static final BlockTFFenceGate     trans_gate              = null;
+	public static final BlockTFPressurePlate trans_plate             = null;
+	public static final BlockTF              mine_planks             = null;
+	public static final BlockTFStairs        mine_stairs             = null;
+	public static final BlockTFSlab          mine_doubleslab         = null;
+	public static final BlockTFSlab          mine_slab               = null;
+	public static final BlockTFButtonWood    mine_button             = null;
+	public static final BlockTFFence         mine_fence              = null;
+	public static final BlockTFFenceGate     mine_gate               = null;
+	public static final BlockTFPressurePlate mine_plate              = null;
+	public static final BlockTF              sort_planks             = null;
+	public static final BlockTFStairs        sort_stairs             = null;
+	public static final BlockTFSlab          sort_doubleslab         = null;
+	public static final BlockTFSlab          sort_slab               = null;
+	public static final BlockTFButtonWood    sort_button             = null;
+	public static final BlockTFFence         sort_fence              = null;
+	public static final BlockTFFenceGate     sort_gate               = null;
+	public static final BlockTFPressurePlate sort_plate              = null;
 }

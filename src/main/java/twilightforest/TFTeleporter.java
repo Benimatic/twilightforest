@@ -189,8 +189,8 @@ public class TFTeleporter extends Teleporter {
 						}
 
 						// TF - use our portal block
-						if (chunk.getBlockState(blockpos1).getBlock() == TFBlocks.portal) {
-							for (blockpos2 = blockpos1.down(); chunk.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down()) {
+						if (chunk.getBlockState(blockpos1).getBlock() == TFBlocks.twilight_portal) {
+							for (blockpos2 = blockpos1.down(); chunk.getBlockState(blockpos2).getBlock() == TFBlocks.twilight_portal; blockpos2 = blockpos2.down()) {
 								blockpos1 = blockpos2;
 							}
 
@@ -272,7 +272,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private boolean isBlockPortal(World world, BlockPos pos) {
-		return world.getBlockState(pos).getBlock() == TFBlocks.portal;
+		return world.getBlockState(pos).getBlock() == TFBlocks.twilight_portal;
 	}
 
 	@Override
@@ -440,7 +440,7 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
-		IBlockState portal = TFBlocks.portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
+		IBlockState portal = TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
 
 		world.setBlockState(pos, portal, 2);
 		world.setBlockState(pos.east(), portal, 2);
