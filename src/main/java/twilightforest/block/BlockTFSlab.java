@@ -1,6 +1,8 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -8,7 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import twilightforest.client.ModelRegisterCallback;
 
-public abstract class BlockTFSlab<T extends Comparable<T>> extends BlockSlab implements ModelRegisterCallback {
+public abstract class BlockTFSlab<T extends Enum<T>> extends BlockSlab implements ModelRegisterCallback {
     private final Comparable<T> propertyValue;
 
     BlockTFSlab(Material materialIn, T propertyValue) {
@@ -48,5 +50,10 @@ public abstract class BlockTFSlab<T extends Comparable<T>> extends BlockSlab imp
     @Override
     public Comparable<T> getTypeForItem(ItemStack stack) {
         return propertyValue;
+    }
+
+    @Override
+    public Block setSoundType(SoundType sound) {
+        return super.setSoundType(sound);
     }
 }

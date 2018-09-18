@@ -1,9 +1,11 @@
 package twilightforest.block;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
@@ -21,8 +23,11 @@ import twilightforest.client.ModelUtils;
 import twilightforest.enums.CastleBrickVariant;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.WoodVariant;
+import twilightforest.item.CreativeTabTwilightForest;
+import twilightforest.item.TFItems;
 import twilightforest.util.IMapColorSupplier;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,8 +135,7 @@ public final class RegisterBlockEvent {
 		registerFluidBlock("fiery_essence", blocks, essenceFiery);
 	}
 
-	@SuppressWarnings("unchecked")
-	private static <T extends IStringSerializable & Comparable<T> & IMapColorSupplier> void registerWoodVariants(BlockRegistryHelper blocks, final IProperty<T> key, final T[] types) {
+	private static <T extends Enum<T> & IStringSerializable & IMapColorSupplier> void registerWoodVariants(BlockRegistryHelper blocks, final IProperty<T> key, final T[] types) {
 		for (T woodType : types) {
 			String woodName = woodType.getName();
 			String woodNameCapitalized;
@@ -143,20 +147,23 @@ public final class RegisterBlockEvent {
 				woodNameCapitalized = woodName.substring(0, 1).toUpperCase() + woodName.substring(1);
 			}
 
+			// Not going to initialize these two over 60 times
 			final String inventory = "inventory";
 			final IProperty[] noProperty = new IProperty[0];
 
-			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			// Make special property key that allows ONLY one value because slabs are special level of stupid
+			final PropertyEnum<T> restrictedKey = PropertyEnum.create("variant", key.getValueClass(), input -> input == woodType);
 
-			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return true ; } @Override public IProperty<T> getVariantProperty() { return key; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ key }); }});
-			blocks.register(woodName + "_slab"      , woodNameCapitalized + "Slab"    , new BlockTFSlab(Material.WOOD, woodType) { @Override public boolean isDouble() { return false; } @Override public IProperty<T> getVariantProperty() { return key; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ key }); }});
-			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}); // No hardness/soundType, that's derived from IBlockState in
+			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab<T>(Material.WOOD, woodType) { @Override public boolean isDouble() { return true ; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ key }); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_slab"      , woodNameCapitalized + "Slab"    , new BlockTFSlab<T>(Material.WOOD, woodType) { @Override public boolean isDouble() { return false; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ key }); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
 			//blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
 			//blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
-			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ BlockFenceGate.POWERED }); }});
-			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }});
+			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, new IProperty[]{ BlockFenceGate.POWERED }); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
 
 			// TODO chests? boats?
 		}
@@ -176,18 +183,21 @@ public final class RegisterBlockEvent {
 			this.registry = registry;
 		}
 
-		Block register(String registryName, String translationKey, Block block) {
+		<T extends Block> T register(String registryName, String translationKey, T block) {
 			block.setTranslationKey(TwilightForestMod.ID + "." + translationKey);
 			register(registryName, block);
 
 			return block;
 		}
 
-		Block register(String registryName, Block block) {
+		<T extends Block> T register(String registryName, T block) {
 			block.setRegistryName(TwilightForestMod.ID, registryName);
 			if (block instanceof ModelRegisterCallback) {
 				blockModels.add((ModelRegisterCallback) block);
 			}
+
+			block.setCreativeTab(TFItems.creativeTab);
+
 			registry.register(block);
 
 			return block;
