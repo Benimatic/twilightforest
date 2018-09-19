@@ -21,6 +21,7 @@ public class TFPacketHandler {
 		CHANNEL.registerMessage(PacketMagicMap.Handler.class, PacketMagicMap.class, id++, Side.CLIENT);
 		CHANNEL.registerMessage(PacketMazeMap.Handler.class, PacketMazeMap.class, id++, Side.CLIENT);
 		CHANNEL.registerMessage(PacketUpdateShield.Handler.class, PacketUpdateShield.class, id++, Side.CLIENT);
+		CHANNEL.registerMessage(PacketSetSkylightEnabled.Handler.class, PacketSetSkylightEnabled.class, id++, Side.CLIENT);
 
 		CHANNEL.registerMessage(PacketUncraftingGui.Handler.class, PacketUncraftingGui.class, id++, Side.SERVER);
 	}

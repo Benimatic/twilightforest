@@ -24,6 +24,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
@@ -54,6 +56,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensio
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -76,10 +79,12 @@ import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.network.PacketSetSkylightEnabled;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
+import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -663,6 +668,24 @@ public class TFEventListener {
 
 	private static void sendEnforcedProgressionStatus(EntityPlayerMP player, boolean isEnforced) {
 		TFPacketHandler.CHANNEL.sendTo(new PacketEnforceProgressionStatus(isEnforced), player);
+	}
+
+	private static void sendSkylightEnabled(EntityPlayerMP player, boolean skylightEnabled) {
+		TFPacketHandler.CHANNEL.sendTo(new PacketSetSkylightEnabled(skylightEnabled), player);
+	}
+
+	@SubscribeEvent
+	public static void onClientConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
+		INetHandlerPlayServer handler = event.getHandler();
+		if (handler instanceof NetHandlerPlayServer) {
+			EntityPlayerMP player = ((NetHandlerPlayServer) handler).player;
+			sendSkylightEnabled(player, WorldProviderTwilightForest.isSkylightEnabled(TFWorld.getDimensionData(player.world)));
+		}
+	}
+
+	@SubscribeEvent
+	public static void onServerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+		WorldProviderTwilightForest.syncFromConfig();
 	}
 
 	/**

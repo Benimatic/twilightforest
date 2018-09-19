@@ -74,6 +74,7 @@ public class TwilightForestMod {
 
 		registerTileEntities();
 		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
+		WorldProviderTwilightForest.syncFromConfig();
 
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.preInit();

@@ -13,6 +13,7 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.List;
 
@@ -80,6 +81,12 @@ public class TFConfig {
 		@Config.LangKey(config + "glacer_packed_ice")
 		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
 		public boolean glacierPackedIce = false;
+
+		@Config.LangKey(config + "enable_skylight")
+		@Config.Comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
+				"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!")
+		@Config.RequiresWorldRestart
+		public boolean enableSkylight = true;
 
 		@Config.Ignore
 		public boolean shadersSupported = true;
@@ -255,10 +262,11 @@ public class TFConfig {
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
-
 			loadAntiBuilderBlacklist();
-
 			loadingScreen.loadLoadingScreenIcons();
+			if (!event.isWorldRunning()) {
+				WorldProviderTwilightForest.syncFromConfig();
+			}
 		}
 	}
 
