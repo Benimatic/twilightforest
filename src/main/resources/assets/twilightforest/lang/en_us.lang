@@ -666,6 +666,9 @@ twilightforest.config.portal_lighting.tooltip=Set this true if you want the ligh
 twilightforest.config.portal_return=Should Portals generate as a two-way portal
 twilightforest.config.portal_return.tooltip=If false, the return portal will require the activation item.
 
+twilightforest.config.progression_default=Progression Rule Default
+twilightforest.config.progression_default.tooltip=Sets the default value of the game rule controlling enforced progression.
+
 twilightforest.config.uncrafting=Disable Uncrafting in Uncrafting Table
 twilightforest.config.uncrafting.tooltip=Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.
 

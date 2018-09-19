@@ -693,11 +693,9 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void worldLoaded(WorldEvent.Load event) {
-		// check rule
 		if (!event.getWorld().isRemote && !event.getWorld().getGameRules().hasRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-			TwilightForestMod.LOGGER.info("Loaded a world with the tfEnforcedProgression game rule not defined.  Defining it.");
-
-			event.getWorld().getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, "true", GameRules.ValueType.BOOLEAN_VALUE);
+			TwilightForestMod.LOGGER.info("Loaded a world with the {} game rule not defined. Defining it.", TwilightForestMod.ENFORCED_PROGRESSION_RULE);
+			event.getWorld().getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(TFConfig.progressionRuleDefault), GameRules.ValueType.BOOLEAN_VALUE);
 		}
 	}
 
@@ -707,7 +705,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void commandSent(CommandEvent event) {
 		if (event.getCommand() instanceof CommandGameRule && event.getParameters().length > 1 && TwilightForestMod.ENFORCED_PROGRESSION_RULE.equals(event.getParameters()[0])) {
-			boolean isEnforced = Boolean.valueOf(event.getParameters()[1]);
+			boolean isEnforced = Boolean.parseBoolean(event.getParameters()[1]);
 			TFPacketHandler.CHANNEL.sendToAll(new PacketEnforceProgressionStatus(isEnforced));
 		}
 	}

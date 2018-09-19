@@ -128,6 +128,10 @@ public class TFConfig {
 	@Config.Comment("If false, the return portal will require the activation item.")
 	public static boolean shouldReturnPortalBeUsable = true;
 
+	@Config.LangKey(config + "progression_default")
+	@Config.Comment("Sets the default value of the game rule controlling enforced progression.")
+	public static boolean progressionRuleDefault = true;
+
 	@Config.LangKey(config + "uncrafting")
 	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;
