@@ -651,8 +651,10 @@ twilightforest.config.silent_cicadas.tooltip=Make cicadas silent for those havin
 twilightforest.config.first_person_effects=Render 1st Person Effects
 twilightforest.config.first_person_effects.tooltip=Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.
 
+twilightforest.config.origin_dimension=Origin Dimension
+twilightforest.config.origin_dimension.tooltip=The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.
 twilightforest.config.portals_in_other_dimensions=Portals in other dimensions
-twilightforest.config.portals_in_other_dimensions.tooltip=Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.
+twilightforest.config.portals_in_other_dimensions.tooltip=Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.
 twilightforest.config.admin_portals=Admin-Only Twilight Portals
 twilightforest.config.admin_portals.tooltip=Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.
 twilightforest.config.portals=Disable Twilight Portals

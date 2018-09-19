@@ -134,9 +134,10 @@ public class TFTickHandler {
 	}
 
 	private static void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
-		if (world.provider.getDimension() == 0
+		if (world.provider.getDimension() == TFConfig.originDimension
 				|| world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions) {
+
 			Map<Item, Integer> validItems = Maps.newHashMap();
 			for (String s : TFConfig.portalCreationItems) {
 				String[] split = s.split(":");

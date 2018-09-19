@@ -130,9 +130,13 @@ public class TwilightForestMod {
 		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
 			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, TwilightForestMod.dimType);
 		} else {
-			TwilightForestMod.LOGGER.warn("Detected that the configured dimension id '{}' is being used. Using backup ID. It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
+			TwilightForestMod.LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID. It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
 			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimType);
 			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
+		}
+		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
+			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
+			TFConfig.originDimension = 0;
 		}
 
 		if (compat) {

@@ -100,8 +100,12 @@ public class TFConfig {
 	@Config.Comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
 	public static boolean firstPersonEffects = true;
 
+	@Config.LangKey(config + "origin_dimension")
+	@Config.Comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.")
+	public static int originDimension = 0;
+
 	@Config.LangKey(config + "portals_in_other_dimensions")
-	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.")
+	@Config.Comment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.")
 	public static boolean allowPortalsInOtherDimensions = false;
 
 	@Config.LangKey(config + "admin_portals")

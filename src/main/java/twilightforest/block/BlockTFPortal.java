@@ -240,11 +240,12 @@ public class BlockTFPortal extends BlockBreakable {
 		// set a cooldown before this can run again
 		entity.timeUntilPortal = 10;
 
-		int destination = entity.dimension != TFConfig.dimension.dimensionID ? TFConfig.dimension.dimensionID : 0;
+		int destination = entity.dimension != TFConfig.dimension.dimensionID
+				? TFConfig.dimension.dimensionID : TFConfig.originDimension;
 
 		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-		if (destination != 0 && entity instanceof EntityPlayerMP) {
+		if (destination == TFConfig.dimension.dimensionID && entity instanceof EntityPlayerMP) {
 			EntityPlayerMP playerMP = (EntityPlayerMP) entity;
 			// set respawn point for TF dimension to near the arrival portal
 			playerMP.setSpawnChunk(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
