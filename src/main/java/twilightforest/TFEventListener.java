@@ -15,7 +15,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -220,16 +219,7 @@ public class TFEventListener {
 		Item item = living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
 		if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
 			BlockTFCritter poorBug = (BlockTFCritter)((ItemBlock) item).getBlock();
-
-			if (poorBug == TFBlocks.firefly)
-				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GLOWSTONE_DUST));
-
-			if (poorBug == TFBlocks.cicada)
-				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 8));
-
-			if (poorBug == TFBlocks.moonworm)
-				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 10));
-
+			living.setItemStackToSlot(EntityEquipmentSlot.HEAD, poorBug.getSquishResult());
 			living.world.playSound(null, living.posX, living.posY, living.posZ, poorBug.getSoundType().getBreakSound(), living.getSoundCategory(), 1, 1);
 		}
 	}

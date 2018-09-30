@@ -5,6 +5,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,9 +26,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallback {
+
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return TwilightForestMod.proxy.getNewCicadaTE();
+	}
+
+	@Override
+	public ItemStack getSquishResult() {
+		return new ItemStack(Items.DYE, 1, EnumDyeColor.GRAY.getDyeDamage());
 	}
 
 	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
