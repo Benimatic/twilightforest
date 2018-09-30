@@ -1,6 +1,5 @@
 package twilightforest.client;
 
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -180,9 +179,10 @@ public class TFClientEvents {
 		if (event.phase == TickEvent.Phase.START) {
 			Minecraft minecraft = Minecraft.getMinecraft();
 
-			((BlockLeaves) TFBlocks.twilight_leaves).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.twilight_leaves_3).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.magic_leaves).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
+			boolean fancyGraphics = minecraft.gameSettings.fancyGraphics;
+			TFBlocks.twilight_leaves.setGraphicsLevel(fancyGraphics);
+			TFBlocks.twilight_leaves_3.setGraphicsLevel(fancyGraphics);
+			TFBlocks.magic_leaves.setGraphicsLevel(fancyGraphics);
 
 			// only fire if we're in the twilight forest
 			if (minecraft.world != null && (minecraft.world.provider instanceof WorldProviderTwilightForest)) {

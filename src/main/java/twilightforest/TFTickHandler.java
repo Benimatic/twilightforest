@@ -175,7 +175,7 @@ public class TFTickHandler {
 							world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 						}
 
-						if (((BlockTFPortal) TFBlocks.twilight_portal).tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
+						if (TFBlocks.twilight_portal.tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
 							return;
 						}

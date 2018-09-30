@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockSlab;
 import twilightforest.TwilightForestMod;
 
@@ -14,9 +15,9 @@ import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 @Nonnull
 public class TFBlocks {
 	public static final Block twilight_log               = iCantBelieveItsNotNull();
-	public static final Block twilight_leaves            = iCantBelieveItsNotNull();
+	public static final BlockLeaves twilight_leaves      = iCantBelieveItsNotNull();
 	public static final Block firefly                    = iCantBelieveItsNotNull();
-	public static final Block twilight_portal            = iCantBelieveItsNotNull();
+	public static final BlockTFPortal twilight_portal    = iCantBelieveItsNotNull();
 	public static final Block maze_stone                 = iCantBelieveItsNotNull();
 	public static final Block hedge                      = iCantBelieveItsNotNull();
 	public static final Block boss_spawner               = iCantBelieveItsNotNull();
@@ -30,7 +31,7 @@ public class TFBlocks {
 	public static final BlockBush twilight_sapling       = iCantBelieveItsNotNull();
 	public static final Block magic_log                  = iCantBelieveItsNotNull();
 	public static final Block magic_log_core             = iCantBelieveItsNotNull();
-	public static final Block magic_leaves               = iCantBelieveItsNotNull();
+	public static final BlockLeaves magic_leaves         = iCantBelieveItsNotNull();
 	public static final Block moonworm                   = iCantBelieveItsNotNull();
 	public static final Block tower_wood                 = iCantBelieveItsNotNull();
 	public static final Block tower_device               = iCantBelieveItsNotNull();
@@ -44,7 +45,7 @@ public class TFBlocks {
 	public static final Block thorns                     = iCantBelieveItsNotNull();
 	public static final Block burnt_thorns               = iCantBelieveItsNotNull();
 	public static final Block thorn_rose                 = iCantBelieveItsNotNull();
-	public static final Block twilight_leaves_3          = iCantBelieveItsNotNull();
+	public static final BlockLeaves twilight_leaves_3    = iCantBelieveItsNotNull();
 	public static final Block deadrock                   = iCantBelieveItsNotNull();
 	public static final Block dark_leaves                = iCantBelieveItsNotNull();
 	public static final Block aurora_pillar              = iCantBelieveItsNotNull();
