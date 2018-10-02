@@ -303,7 +303,7 @@ public class TFTeleporter extends Teleporter {
 		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for {}", name);
 
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
+		double yFactor = getYFactor();
 		// modified copy of base Teleporter method:
 		cachePortalCoords(entity, makePortalAt(world, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ)));
 
@@ -322,10 +322,14 @@ public class TFTeleporter extends Teleporter {
 		}
 	}
 
+	private double getYFactor() {
+		return world.provider.getDimension() == TFConfig.originDimension ? 2.0 : 0.5;
+	}
+
 	@Nullable
 	private BlockPos findPortalCoords(Entity entity, boolean ideal) {
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
+		double yFactor = getYFactor();
 		// modified copy of base Teleporter method:
 		int entityX = MathHelper.floor(entity.posX);
 		int entityZ = MathHelper.floor(entity.posZ);
