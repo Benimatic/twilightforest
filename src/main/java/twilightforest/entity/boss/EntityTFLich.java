@@ -26,12 +26,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
+import twilightforest.enums.BossVariant;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -40,6 +44,7 @@ import java.util.List;
 import java.util.Set;
 
 public class EntityTFLich extends EntityMob {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/lich");
 	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(EntitySkeleton.class, EntityZombie.class, EntityEnderman.class, EntitySpider.class, EntityCreeper.class, EntityTFSwarmSpider.class);
 	private static final DataParameter<Boolean> DATA_ISCLONE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BOOLEAN);
@@ -150,6 +155,18 @@ public class EntityTFLich extends EntityMob {
 	@Override
 	protected boolean canDespawn() {
 		return false;
+	}
+
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL && !isShadowClone()) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
 	}
 
 	/**

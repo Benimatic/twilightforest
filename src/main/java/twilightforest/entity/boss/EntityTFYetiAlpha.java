@@ -31,15 +31,19 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
 import twilightforest.entity.ai.EntityAITFYetiTired;
+import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -278,6 +282,18 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	@Override
 	public boolean canDespawn() {
 		return false;
+	}
+
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
 	}
 
 	public boolean canRampage() {

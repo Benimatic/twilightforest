@@ -5,12 +5,17 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMinotaur;
+import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minoshroom");
 
 	public EntityTFMinoshroom(World world) {
@@ -43,8 +48,19 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	}
 
 	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
+	}
+
+	@Override
 	public boolean isNonBoss() {
 		return false;
 	}
-
 }

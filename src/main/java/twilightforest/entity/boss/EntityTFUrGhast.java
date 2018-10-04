@@ -19,9 +19,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.enums.BossVariant;
 import twilightforest.loot.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
@@ -177,6 +180,18 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	protected boolean canDespawn() {
 		return false;
+	}
+
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
 	}
 
 	@Override

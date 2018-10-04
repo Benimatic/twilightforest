@@ -200,8 +200,6 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	public void onUpdate() {
 		super.onUpdate();
 
-		despawnIfPeaceful();
-
 		for (int i = 0; i < this.iceArray.length; i++) {
 
 			this.iceArray[i].onUpdate();
@@ -237,14 +235,20 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		}
 	}
 
-	private void despawnIfPeaceful() {
-		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
-			if (hasHome()) {
-				BlockPos home = this.getHomePosition();
-				world.setBlockState(home, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
-			}
+	@Override
+	protected boolean canDespawn() {
+		return false;
+	}
 
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
+			}
 			setDead();
+		} else {
+			super.despawnEntity();
 		}
 	}
 

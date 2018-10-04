@@ -120,14 +120,18 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		this.bossInfo.removePlayer(player);
 	}
 
-	private void despawnIfPeaceful() {
-		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
 			setDead();
 			for (HydraHeadContainer container : hc) {
-				if (container.headEntity != null)
+				if (container.headEntity != null) {
 					container.headEntity.setDead();
+				}
 			}
+		} else {
+			super.despawnEntity();
 		}
 	}
 
@@ -252,7 +256,6 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 		}
-		despawnIfPeaceful();
 	}
 
 	@Override

@@ -457,8 +457,6 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public void onUpdate() {
-		despawnIfPeaceful();
-
 		if (deathTime > 0) {
 			for (int k = 0; k < 5; k++) {
 				double d = rand.nextGaussian() * 0.02D;
@@ -701,14 +699,15 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 	}
 
-	private void despawnIfPeaceful() {
-		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			if (hasHome()) {
-				BlockPos home = this.getHomePosition();
-				world.setBlockState(home, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
 			}
-
 			setDead();
+		} else {
+			super.despawnEntity();
 		}
 	}
 
