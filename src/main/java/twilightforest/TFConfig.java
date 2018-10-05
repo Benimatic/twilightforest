@@ -5,16 +5,21 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.world.WorldProviderTwilightForest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
@@ -271,6 +276,7 @@ public class TFConfig {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
 			loadAntiBuilderBlacklist();
+			rebuildPortalIngredient();
 			loadingScreen.loadLoadingScreenIcons();
 			if (!event.isWorldRunning()) {
 				WorldProviderTwilightForest.syncFromConfig();
@@ -313,5 +319,39 @@ public class TFConfig {
 	public static ImmutableSet<IBlockState> getDisallowedBlocks() {
 		if (disallowBreakingBlockList == null || disallowBreakingBlockList.isEmpty()) loadAntiBuilderBlacklist();
 		return disallowBreakingBlockList;
+	}
+
+	@Config.Ignore
+	public static Ingredient portalIngredient;
+
+	private static void rebuildPortalIngredient() {
+
+		List<ItemStack> stacks = new ArrayList<>();
+
+		for (String s : portalCreationItems) {
+
+			String[] split = s.split(":");
+			if (split.length < 2) continue;
+
+			Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
+			if (item == null) continue;
+
+			int meta = OreDictionary.WILDCARD_VALUE;
+			if (split.length > 2) {
+				try {
+					meta = Integer.parseInt(split[2]);
+				} catch (NumberFormatException e) {
+					continue;
+				}
+			}
+
+			stacks.add(new ItemStack(item, 1, meta));
+		}
+
+		if (stacks.isEmpty()) {
+			stacks.add(new ItemStack(Items.DIAMOND));
+		}
+
+		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
 	}
 }

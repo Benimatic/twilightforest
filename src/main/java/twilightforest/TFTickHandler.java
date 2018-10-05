@@ -1,15 +1,11 @@
 package twilightforest;
 
-import com.google.common.collect.Maps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
@@ -23,7 +19,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
@@ -37,13 +32,14 @@ import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
+
 	@SubscribeEvent
 	public static void playerTick(PlayerTickEvent event) {
+
 		EntityPlayer player = event.player;
 		World world = player.world;
 
@@ -68,12 +64,6 @@ public class TFTickHandler {
 				&& !player.isCreative() && !player.isSpectator()) {
 			checkBiomeForProgression(player, world);
 		}
-
-		// check for advancement get.
-		//if (event.phase == TickEvent.Phase.END && player.ticksExisted % 50 == 0
-		//		&& player instanceof EntityPlayerMP) {
-		//	TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
-		//}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
@@ -126,11 +116,8 @@ public class TFTickHandler {
 				sendStructureProtectionPacket(world, player, fullSBB);
 				return true;
 			}
-
-
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private static void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
@@ -138,41 +125,19 @@ public class TFTickHandler {
 				|| world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions) {
 
-			Map<Item, Integer> validItems = Maps.newHashMap();
-			for (String s : TFConfig.portalCreationItems) {
-				String[] split = s.split(":");
-				if (split.length < 2)
-					continue;
-				Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
-				if (item == null)
-					continue;
-				int meta = -1;
-				if (split.length > 2)
-					try {
-						meta = Integer.parseInt(split[2]);
-					} catch (NumberFormatException e) {
+			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
 
-					}
-				validItems.put(item, meta);
-			}
-			if (validItems.isEmpty())
-				validItems.put(Items.DIAMOND, -1);
-
-			final List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
-
-			for (final EntityItem entityItem : itemList) {
-				IBlockState state = world.getBlockState(entityItem.getPosition());
-				if (validItems.containsKey(entityItem.getItem().getItem())) {
-					int metadata = validItems.get(entityItem.getItem().getItem());
-					if ((state.getBlock() == Blocks.WATER || state == TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true))
-							&& (metadata == -1 || entityItem.getItem().getMetadata() == metadata)) {
+			for (EntityItem entityItem : itemList) {
+				if (TFConfig.portalIngredient.apply(entityItem.getItem())) {
+					IBlockState state = world.getBlockState(entityItem.getPosition());
+					if (state.getBlock() == Blocks.WATER || state == TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true)) {
 						Random rand = new Random();
-						for (int k = 0; k < 2; k++) {
-							double d = rand.nextGaussian() * 0.02D;
-							double d1 = rand.nextGaussian() * 0.02D;
-							double d2 = rand.nextGaussian() * 0.02D;
+						for (int i = 0; i < 2; i++) {
+							double vx = rand.nextGaussian() * 0.02D;
+							double vy = rand.nextGaussian() * 0.02D;
+							double vz = rand.nextGaussian() * 0.02D;
 
-							world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
+							world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, vx, vy, vz);
 						}
 
 						if (TFBlocks.twilight_portal.tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
