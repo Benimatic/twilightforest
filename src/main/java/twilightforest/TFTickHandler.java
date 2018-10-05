@@ -125,7 +125,7 @@ public class TFTickHandler {
 				|| world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions) {
 
-			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
+			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck));
 
 			for (EntityItem entityItem : itemList) {
 				if (TFConfig.portalIngredient.apply(entityItem.getItem())) {
