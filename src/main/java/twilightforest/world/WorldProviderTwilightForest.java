@@ -89,10 +89,10 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public void init() {
-		biomeProvider = new TFBiomeProvider(world);
 		NBTTagCompound data = TFWorld.getDimensionData(world);
 		seed = data.hasKey(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
 		hasSkyLight = isSkylightEnabled(data);
+		biomeProvider = new TFBiomeProvider(world);
 	}
 
 	@Override
