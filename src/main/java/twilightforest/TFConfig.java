@@ -242,10 +242,9 @@ public class TFConfig {
 		};
 
 		@Config.Ignore
-		private List<ItemStack> loadingScreenIcons;
+		private ImmutableList<ItemStack> loadingScreenIcons;
 
-		public List<ItemStack> getLoadingScreenIcons() {
-			if (loadingScreenIcons == null || loadingScreenIcons.isEmpty()) loadLoadingScreenIcons();
+		public ImmutableList<ItemStack> getLoadingScreenIcons() {
 			return loadingScreenIcons;
 		}
 
@@ -275,13 +274,17 @@ public class TFConfig {
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
-			loadAntiBuilderBlacklist();
-			rebuildPortalIngredient();
-			loadingScreen.loadLoadingScreenIcons();
 			if (!event.isWorldRunning()) {
 				WorldProviderTwilightForest.syncFromConfig();
 			}
+			build();
 		}
+	}
+
+	public static void build() {
+		loadAntiBuilderBlacklist();
+		buildPortalIngredient();
+		loadingScreen.loadLoadingScreenIcons();
 	}
 
 	private static void loadAntiBuilderBlacklist() {
@@ -317,14 +320,13 @@ public class TFConfig {
 	private static ImmutableSet<IBlockState> disallowBreakingBlockList;
 
 	public static ImmutableSet<IBlockState> getDisallowedBlocks() {
-		if (disallowBreakingBlockList == null || disallowBreakingBlockList.isEmpty()) loadAntiBuilderBlacklist();
 		return disallowBreakingBlockList;
 	}
 
 	@Config.Ignore
 	public static Ingredient portalIngredient;
 
-	private static void rebuildPortalIngredient() {
+	private static void buildPortalIngredient() {
 
 		List<ItemStack> stacks = new ArrayList<>();
 

@@ -147,6 +147,8 @@ public class TwilightForestMod {
 				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 			}
 		}
+
+		TFConfig.build();
 	}
 
 	@EventHandler
