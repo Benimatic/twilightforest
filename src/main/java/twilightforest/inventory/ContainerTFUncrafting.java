@@ -34,15 +34,24 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
+	// Inaccessible grid, for uncrafting logic
 	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
+	// Accessible grid, for actual crafting
 	public InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
+	// Inaccessible grid, for recrafting logic
 	private InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
+
+	// Input slot for uncrafting
 	public IInventory tinkerInput = new InventoryTFGoblinInput(this);
+	// Crafting Output
 	private InventoryCraftResult tinkerResult = new InventoryCraftResult();
+
+	// Other Data, to kick the player from GUI if they stray too far from table
 	private World world;
 	private final BlockPos pos;
 	private final EntityPlayer player;
 
+	// Conflict resolution
 	public int unrecipeInCycle = 0;
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
@@ -99,7 +108,7 @@ public class ContainerTFUncrafting extends Container {
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe) {
-					int recipeWidth = getRecipeWidth((IShapedRecipe) recipe);
+					int recipeWidth  = getRecipeWidth ((IShapedRecipe) recipe);
 					int recipeHeight = getRecipeHeight((IShapedRecipe) recipe);
 
 					// empty whole grid to start with
@@ -117,13 +126,16 @@ public class ContainerTFUncrafting extends Container {
 
 							ItemStack ingredient = recipeItems[index].copy();
 
-							// fix weird recipe for diamond/ingot blocks
-							if (!ingredient.isEmpty() && ingredient.getCount() > 1) {
-								ingredient.setCount(1);
+							if (!ingredient.isEmpty()) {
+								// OLD: fix weird recipe for diamond/ingot blocks
+								// Leaving this in, in case some modder does weird crap with an IRecipe
+								if (ingredient.getCount() > 1)
+									ingredient.setCount(1);
+
+								if (ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+									ingredient.setItemDamage(0);
 							}
-							if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-								ingredient.setItemDamage(0);
-							}
+
 							this.uncraftingMatrix.setInventorySlotContents(invX + invY * 3, ingredient);
 						}
 					}
@@ -181,9 +193,10 @@ public class ContainerTFUncrafting extends Container {
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
 		}
+		// Now we've got the uncrafting logic set in, currently we don't modify the uncraftingMatrix. That's fine.
 
-		IRecipe recipe;
-		ItemStack result = ItemStack.EMPTY;
+		IRecipe recipe; // Recipe for crafting
+		//ItemStack result = ItemStack.EMPTY; // Crafting Output
 
 		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
@@ -197,7 +210,7 @@ public class ContainerTFUncrafting extends Container {
 					if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
 						this.tinkerResult.setRecipeUsed(recipe);
 
-						this.tinkerResult.setInventorySlotContents(0, result = recipe.getCraftingResult(this.assemblyMatrix));
+						this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(this.assemblyMatrix));
 					} else {
 						this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
 					}
@@ -236,7 +249,26 @@ public class ContainerTFUncrafting extends Container {
 			}
 			// is there a result from this combined thing?
 			//ItemStack result = CraftingManager.findMatchingResult(this.combineMatrix, this.world);
+
+			IRecipe[] recipes = this.getRecipesFor(combineMatrix, world);
+
+			if (recipes.length > 0) {
+				int recipeType = Math.floorMod(this.recipeInCycle, recipes.length);
+				recipe = recipes[recipeType];
+
+				if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
+					this.tinkerResult.setRecipeUsed(recipe);
+
+					this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(this.combineMatrix));
+				} else {
+					this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+				}
+			} else {
+				this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+			}
+
 			ItemStack input = this.tinkerInput.getStackInSlot(0);
+			ItemStack result = this.tinkerResult.getStackInSlot(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
 				// copy the tag compound
@@ -252,8 +284,7 @@ public class ContainerTFUncrafting extends Container {
 				// check if the input enchantments can even go onto the result item
 				Map<Enchantment, Integer> inputEnchantments = EnchantmentHelper.getEnchantments(input);
 
-				// Needed for Lambda
-				final ItemStack finalResult = result;
+				final ItemStack finalResult = result; // Needed for Lambda
 				inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(finalResult));
 
 				if (inputTags != null) {
