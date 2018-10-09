@@ -126,6 +126,7 @@ public final class RegisterBlockEvent {
 		blocks.register("nagastone_stairs_weathered", "NagastoneStairsWeathered", new BlockTFNagastoneStairs(etchedNagastoneWeathered.getDefaultState()).setHardness(1.5F).setResistance(10.0F));
 		blocks.register("nagastone_pillar_weathered", "NagastonePillarWeathered", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
 		blocks.register("auroralized_glass", "AuroralizedGlass", new BlockTFAuroralizedGlass());
+		blocks.register("iron_ladder", "IronLadder", new BlockTFLadderBars().setSoundType(SoundType.METAL).setHardness(5.0F).setResistance(10.0F));
 
 		registerWoodVariants(blocks, BlockTFLog.VARIANT, WoodVariant.values());
 		registerWoodVariants(blocks, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());

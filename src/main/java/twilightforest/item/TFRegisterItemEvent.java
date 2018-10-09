@@ -238,6 +238,7 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.nagastone_pillar_weathered);
 		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
 		items.registerBlock(TFBlocks.auroralized_glass);
+		items.registerBlock(TFBlocks.iron_ladder);
 
 		registerWoodVariants(items, BlockTFLog.VARIANT, WoodVariant.values());
 		registerWoodVariants(items, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
