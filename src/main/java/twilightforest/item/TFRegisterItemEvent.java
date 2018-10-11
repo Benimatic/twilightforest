@@ -259,10 +259,10 @@ public class TFRegisterItemEvent {
 			items.register(woodName + "_slab", new ItemSlab(slab, slab, (BlockSlab) Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_doubleslab"))));
 			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_button")));
 
-			//ResourceLocation doorRL = new ResourceLocation(TwilightForestMod.ID, woodName + "_door");
-			//items.register(doorRL.getPath(), new ItemDoor(Block.REGISTRY.getObject(doorRL)));
+			ResourceLocation doorRL = new ResourceLocation(TwilightForestMod.ID, woodName + "_door");
+			items.register(doorRL.getPath(), new ItemDoor(Block.REGISTRY.getObject(doorRL)));
 
-			//items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_trapdoor")));
+			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_trapdoor")));
 			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_fence")));
 			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_gate")));
 			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_plate")));

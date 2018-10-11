@@ -36,7 +36,7 @@ public class ModelUtils {
 		}
 	}
 
-	public static void registerIncludingItemModels(Block b, String inventoryPrefix, IProperty<?>[] blockIgnorables) {
+	public static void registerIncludingItemModels(Block b, String inventoryPrefix, IProperty<?>... blockIgnorables) {
 		registerIncludingItemModels(b, inventoryPrefix, blockIgnorables, new IProperty[0]);
 	}
 
