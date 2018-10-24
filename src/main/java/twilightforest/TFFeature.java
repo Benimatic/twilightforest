@@ -22,7 +22,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -56,7 +55,6 @@ import java.util.Random;
 /**
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
-
 public enum TFFeature {
 	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
 	SMALL_HILL ( 1, "small_hollow_hill", true ) {
@@ -161,13 +159,11 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.lichtower.4"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.lichtower", 4);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 			book.setTagInfo("title", new NBTTagString("Notes on a Pointy Tower"));
 		}
 
@@ -187,12 +183,11 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.icetower.3"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.icetower", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 			book.setTagInfo("title", new NBTTagString("Notes on Auroral Fortification"));
 		}
 
@@ -227,13 +222,11 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.hydralair.4"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.hydralair", 4);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 			book.setTagInfo("title", new NBTTagString("Notes on the Fire Swamp"));
 		}
 
@@ -260,14 +253,11 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.4"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.labyrinth.5"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.labyrinth", 5);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 			book.setTagInfo("title", new NBTTagString("Notes on a Swampy Labyrinth"));
 		}
 
@@ -296,12 +286,11 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.darktower.3"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.darktower", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 			book.setTagInfo("title", new NBTTagString("Notes on a Wooden Tower"));
 		}
 
@@ -328,14 +317,11 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.4"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.tfstronghold.5"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.tfstronghold", 5);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 			book.setTagInfo("title", new NBTTagString("Notes on a Stronghold"));
 		}
 
@@ -357,12 +343,11 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.3"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.yeticave", 3);
 
 			book.setTagInfo("pages" , bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 			book.setTagInfo("title" , new NBTTagString("Notes on an Icy Cave"));
 		}
 
@@ -389,13 +374,12 @@ public enum TFFeature {
 
 		@Override
 		protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.1"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.2"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.trollcave.3"))));
+
+			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.trollcave", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
-			book.setTagInfo("title", new NBTTagString("Notes on an the Highlands"));
+			book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
+			book.setTagInfo("title", new NBTTagString("Notes on the Highlands"));
 		}
 
 		@Override
@@ -454,6 +438,8 @@ public enum TFFeature {
 	private MapGenTFMajorFeature featureGenerator;
 
 	private long lastSpawnedHintMonsterTime;
+
+	private static final String BOOK_AUTHOR = "A Forgotten Explorer";
 
 	private static final int maxSize = Arrays.stream(values()).mapToInt(v -> v.size).max().orElse(0);
 
@@ -812,7 +798,8 @@ public enum TFFeature {
 	}
 
 	/**
-	 * If we're near a hollow hill, this returns relative block coordinates indicating the center of that hill relative to the current chunk block coordinate system.
+	 * If we're near a hollow hill, this returns relative block coordinates indicating
+	 * the center of that hill relative to the current chunk block coordinate system.
 	 */
 	public static int[] getNearestCenter(int cx, int cz, World world) {
 		for (int rad = 1; rad <= maxSize; rad++) {
@@ -912,13 +899,13 @@ public enum TFFeature {
 	 * Try to spawn a hint monster near the specified player
 	 */
 	public void trySpawnHintMonster(World world, EntityPlayer player) {
-		this.trySpawnHintMonster(world, player, MathHelper.floor(player.posX), MathHelper.floor(player.posY), MathHelper.floor(player.posZ));
+		this.trySpawnHintMonster(world, player, new BlockPos(player));
 	}
 
 	/**
 	 * Try several times to spawn a hint monster
 	 */
-	public void trySpawnHintMonster(World world, EntityPlayer player, int x, int y, int z) {
+	public void trySpawnHintMonster(World world, EntityPlayer player, BlockPos pos) {
 		// check if the timer is valid
 		long currentTime = world.getTotalWorldTime();
 
@@ -930,7 +917,7 @@ public enum TFFeature {
 		if (currentTime - this.lastSpawnedHintMonsterTime > 1200) {
 			// okay, time is good, try several times to spawn one
 			for (int i = 0; i < 20; i++) {
-				if (didSpawnHintMonster(world, player, x, y, z)) {
+				if (didSpawnHintMonster(world, player, pos)) {
 					this.lastSpawnedHintMonsterTime = currentTime;
 					break;
 				}
@@ -943,15 +930,15 @@ public enum TFFeature {
 	 * <p>
 	 * We could change up the monster depending on what feature this is, but we currently are not doing that
 	 */
-	private boolean didSpawnHintMonster(World world, EntityPlayer player, int x, int y, int z) {
+	private boolean didSpawnHintMonster(World world, EntityPlayer player, BlockPos pos) {
 		// find a target point
-		int dx = x + world.rand.nextInt(16) - world.rand.nextInt(16);
-		int dy = y + world.rand.nextInt(4) - world.rand.nextInt(4);
-		int dz = z + world.rand.nextInt(16) - world.rand.nextInt(16);
+		int dx = world.rand.nextInt(16) - world.rand.nextInt(16);
+		int dy = world.rand.nextInt( 4) - world.rand.nextInt( 4);
+		int dz = world.rand.nextInt(16) - world.rand.nextInt(16);
 
 		// make our hint monster
 		EntityTFKobold hinty = new EntityTFKobold(world);
-		hinty.setPosition(dx, dy, dz);
+		hinty.moveToBlockPosAndAngles(pos.add(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear
 		if (hinty.isNotColliding() && hinty.getEntitySenses().canSee(player)) {
@@ -965,33 +952,36 @@ public enum TFFeature {
 
 			world.spawnEntity(hinty);
 			return true;
-		} else {
-			return false;
 		}
-	}
 
+		return false;
+	}
 
 	/**
 	 * Create a hint book for the specified feature.  Only features with block protection will need this.
 	 */
 	public ItemStack createHintBook() {
 		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-
 		this.addBookInformation(book, new NBTTagList());
-
 		return book;
 	}
 
 	protected void addBookInformation(ItemStack book, NBTTagList bookPages) {
-		bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.unknown.1"))));
-		bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.unknown.2"))));
+
+		addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.unknown", 2);
 
 		book.setTagInfo("pages", bookPages);
-		book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));
+		book.setTagInfo("author", new NBTTagString(BOOK_AUTHOR));
 		book.setTagInfo("title", new NBTTagString("Notes on the Unexplained"));
 	}
 
 	public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
 		return new StructureStartNothing(world, rand, chunkX, chunkZ);
+	}
+
+	private static void addTranslatedPages(NBTTagList bookPages, String translationKey, int pageCount) {
+		for (int i = 1; i <= pageCount; i++) {
+			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(translationKey + "." + i))));
+		}
 	}
 }

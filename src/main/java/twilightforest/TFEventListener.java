@@ -583,7 +583,7 @@ public class TFEventListener {
 					sendAreaProtectionPacket(world, pos, sbb);
 					
 					// send a hint monster?
-					nearbyFeature.trySpawnHintMonster(world, player, pos.getX(), pos.getY(), pos.getZ());
+					nearbyFeature.trySpawnHintMonster(world, player, pos);
 
 					return true;
 				}
