@@ -88,6 +88,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 		return getMetaFromState(state);
 	}
+
 	@Override
 	public Material getMaterial(IBlockState state) {
 		return ENCASED.contains(state.getValue(VARIANT)) ? Material.WOOD : Material.ROCK;
@@ -120,25 +121,25 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block myBlockID, BlockPos fromPos) {
-		if (!world.isRemote) {
-			FireJetVariant variant = state.getValue(VARIANT);
-			boolean powered = world.getRedstonePowerFromNeighbors(pos) > 0;
 
-			if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered) {
-				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			}
+		if (world.isRemote) return;
 
-			if (variant == FireJetVariant.ENCASED_SMOKER_ON && !powered) {
-				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			}
+		FireJetVariant variant = state.getValue(VARIANT);
+		boolean powered = world.isBlockPowered(pos);
 
-			if (variant == FireJetVariant.ENCASED_JET_IDLE && powered) {
-				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			}
+		if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered) {
+			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+		}
 
+		if (variant == FireJetVariant.ENCASED_SMOKER_ON && !powered) {
+			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+		}
+
+		if (variant == FireJetVariant.ENCASED_JET_IDLE && powered) {
+			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 
@@ -220,5 +221,4 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 			ModelUtils.registerToState(this, variant.ordinal(), getDefaultState().withProperty(VARIANT, variant));
 		}
 	}
-
 }
