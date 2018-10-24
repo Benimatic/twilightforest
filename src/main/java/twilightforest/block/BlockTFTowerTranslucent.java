@@ -143,12 +143,8 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 		switch (world.getBlockState(pos).getValue(VARIANT)) {
 			case REAPPEARING_INACTIVE:
 			case REAPPEARING_ACTIVE:
-			default:
 				return true;
-			case BUILT_INACTIVE:
-			case BUILT_ACTIVE:
-			case REVERTER_REPLACEMENT:
-			case REACTOR_DEBRIS:
+			default:
 				return false;
 		}
 	}
