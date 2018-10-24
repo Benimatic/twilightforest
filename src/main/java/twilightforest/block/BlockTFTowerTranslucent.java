@@ -92,36 +92,36 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	@Override
 	@Deprecated
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		TowerTranslucentVariant variant = state.getValue(VARIANT);
-
-		if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE || variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
-			return NULL_AABB;
-		} else {
-			return super.getCollisionBoundingBox(state, world, pos);
+		switch (state.getValue(VARIANT)) {
+			case REAPPEARING_INACTIVE:
+			case REAPPEARING_ACTIVE:
+				return NULL_AABB;
+			default:
+				return super.getCollisionBoundingBox(state, world, pos);
 		}
 	}
 
 	@Override
 	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		TowerTranslucentVariant variant = state.getValue(VARIANT);
-
-		if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE || variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
-			return REAPPEARING_BB;
-		} else {
-			return FULL_BLOCK_AABB;
+		switch (state.getValue(VARIANT)) {
+			case REAPPEARING_INACTIVE:
+			case REAPPEARING_ACTIVE:
+				return REAPPEARING_BB;
+			default:
+				return FULL_BLOCK_AABB;
 		}
 	}
 
 	@Override
 	@Deprecated
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		TowerTranslucentVariant variant = state.getValue(VARIANT);
-
-		if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE || variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
-			return BlockFaceShape.UNDEFINED;
-		} else {
-			return super.getBlockFaceShape(worldIn, state, pos, face);
+		switch (state.getValue(VARIANT)) {
+			case REAPPEARING_INACTIVE:
+			case REAPPEARING_ACTIVE:
+				return BlockFaceShape.UNDEFINED;
+			default:
+				return super.getBlockFaceShape(worldIn, state, pos, face);
 		}
 	}
 
@@ -129,12 +129,12 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	@Deprecated
 	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
 		// reverter replacement is like glass
-		TowerTranslucentVariant variant = state.getValue(VARIANT);
-
-		if (variant == TowerTranslucentVariant.REVERTER_REPLACEMENT || variant == TowerTranslucentVariant.REACTOR_DEBRIS) {
-			return 0.3F;
-		} else {
-			return super.getBlockHardness(state, world, pos);
+		switch (state.getValue(VARIANT)) {
+			case REVERTER_REPLACEMENT:
+			case REACTOR_DEBRIS:
+				return 0.3F;
+			default:
+				return super.getBlockHardness(state, world, pos);
 		}
 	}
 
@@ -157,29 +157,30 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		if (!world.isRemote) {
-			TowerTranslucentVariant variant = state.getValue(VARIANT);
 
-			if (variant == TowerTranslucentVariant.BUILT_ACTIVE) {
-				world.setBlockToAir(pos);
-				world.notifyNeighborsRespectDebug(pos, this, false);
-				world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
-				//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+		if (world.isRemote) return;
 
-				// activate all adjacent inactive vanish blocks
-				for (EnumFacing e : EnumFacing.VALUES) {
-					BlockTFTowerDevice.checkAndActivateVanishBlock(world, pos.offset(e));
-				}
-			}
-			if (variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
-				world.setBlockState(pos, TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
-				world.notifyNeighborsRespectDebug(pos, this, false);
-				world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
-				//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-			} else if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE) {
-				BlockTFTowerDevice.changeToActiveVanishBlock(world, pos, TowerTranslucentVariant.REAPPEARING_ACTIVE);
+		TowerTranslucentVariant variant = state.getValue(VARIANT);
+
+		if (variant == TowerTranslucentVariant.BUILT_ACTIVE) {
+			world.setBlockToAir(pos);
+			world.notifyNeighborsRespectDebug(pos, this, false);
+			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
+			//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+
+			// activate all adjacent inactive vanish blocks
+			for (EnumFacing e : EnumFacing.VALUES) {
+				BlockTFTowerDevice.checkAndActivateVanishBlock(world, pos.offset(e));
 			}
 
+		} else if (variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
+			world.setBlockState(pos, TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
+			world.notifyNeighborsRespectDebug(pos, this, false);
+			world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+			//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+
+		} else if (variant == TowerTranslucentVariant.REAPPEARING_INACTIVE) {
+			BlockTFTowerDevice.changeToActiveVanishBlock(world, pos, TowerTranslucentVariant.REAPPEARING_ACTIVE);
 		}
 	}
 
@@ -197,5 +198,4 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
-
 }

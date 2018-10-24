@@ -142,8 +142,9 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private void rewardNearbyPlayers(World world, BlockPos pos) {
-		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
+		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).grow(16.0D))) {
 			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
+		}
 	}
 
 	private void removeNearbyShields(World world, BlockPos pos) {
