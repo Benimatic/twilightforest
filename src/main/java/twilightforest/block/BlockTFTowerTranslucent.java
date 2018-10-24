@@ -144,12 +144,12 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 			case REAPPEARING_INACTIVE:
 			case REAPPEARING_ACTIVE:
 			default:
-				return false;
+				return true;
 			case BUILT_INACTIVE:
 			case BUILT_ACTIVE:
 			case REVERTER_REPLACEMENT:
 			case REACTOR_DEBRIS:
-				return true;
+				return false;
 		}
 	}
 

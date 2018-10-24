@@ -352,7 +352,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 			}
 
 			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
-				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D, new int[0]);
+				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -362,13 +362,13 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	 */
 	public static void checkAndActivateVanishBlock(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		Block thereID = state.getBlock();
+		Block block = state.getBlock();
 
-		if (thereID == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_INACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.VANISH_UNLOCKED) && !areNearbyLockBlocks(world, pos)) {
+		if (block == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_INACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.VANISH_UNLOCKED) && !areNearbyLockBlocks(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.VANISH_ACTIVE);
-		} else if (thereID == TFBlocks.tower_device && state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_INACTIVE && !areNearbyLockBlocks(world, pos)) {
+		} else if (block == TFBlocks.tower_device && state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_INACTIVE && !areNearbyLockBlocks(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.REAPPEARING_ACTIVE);
-		} else if (thereID == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_INACTIVE) {
+		} else if (block == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_INACTIVE) {
 			changeToActiveVanishBlock(world, pos, TowerTranslucentVariant.BUILT_ACTIVE);
 		}
 	}
@@ -422,27 +422,33 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		TowerDeviceVariant variant = state.getValue(VARIANT);
-		return variant == TowerDeviceVariant.BUILDER_ACTIVE || variant == TowerDeviceVariant.ANTIBUILDER || variant == TowerDeviceVariant.REACTOR_ACTIVE
-				|| variant == TowerDeviceVariant.GHASTTRAP_INACTIVE || variant == TowerDeviceVariant.GHASTTRAP_ACTIVE;
+		switch (state.getValue(VARIANT)) {
+			case BUILDER_ACTIVE:
+			case ANTIBUILDER:
+			case GHASTTRAP_INACTIVE:
+			case GHASTTRAP_ACTIVE:
+			case REACTOR_ACTIVE:
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		TowerDeviceVariant variant = state.getValue(VARIANT);
-
-		if (variant == TowerDeviceVariant.BUILDER_ACTIVE) {
-			return new TileEntityTFTowerBuilder();
-		} else if (variant == TowerDeviceVariant.ANTIBUILDER) {
-			return new TileEntityTFAntibuilder();
-		} else if (variant == TowerDeviceVariant.GHASTTRAP_INACTIVE) {
-			return new TileEntityTFGhastTrapInactive();
-		} else if (variant == TowerDeviceVariant.GHASTTRAP_ACTIVE) {
-			return new TileEntityTFGhastTrapActive();
-		} else if (variant == TowerDeviceVariant.REACTOR_ACTIVE) {
-			return new TileEntityTFCReactorActive();
-		} else {
-			return null;
+		switch (state.getValue(VARIANT)) {
+			case BUILDER_ACTIVE:
+				return new TileEntityTFTowerBuilder();
+			case ANTIBUILDER:
+				return new TileEntityTFAntibuilder();
+			case GHASTTRAP_INACTIVE:
+				return new TileEntityTFGhastTrapInactive();
+			case GHASTTRAP_ACTIVE:
+				return new TileEntityTFGhastTrapActive();
+			case REACTOR_ACTIVE:
+				return new TileEntityTFCReactorActive();
+			default:
+				return null;
 		}
 	}
 
@@ -457,6 +463,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	@Deprecated
 	protected boolean canSilkHarvest() {
 		return false;
 	}
