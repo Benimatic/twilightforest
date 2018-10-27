@@ -106,6 +106,10 @@ repositories {
         url 'http://blamejared.com/maven'
     }
     maven {
+        name 'player\'s Maven' // Forestry
+        url 'http://maven.ic2.player.to/'
+    }
+    maven {
         name 'Curseforge Maven' // Baubles + Thaumcraft
         url 'http://minecraft.curseforge.com/api/maven/'
     }
@@ -124,6 +128,9 @@ dependencies {
 
     // blamejared
     deobfCompile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"
+
+    // player
+    deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"
 
     // curseforge
     deobfCompile "baubles:Baubles:${minecraft_sub_version}:${baubles_version}"
