@@ -22,6 +22,17 @@
         }
       }
     },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:trophy",
+            "data": 4
+          }
+        ]
+      }
+    },
     "structure": {
       "trigger": "twilightforest:structure_cleared",
       "conditions": {
@@ -35,6 +46,11 @@
       }
     }
   },
+  "requirements": [
+    [ "knight", "trophy" ],
+    [ "structure" ],
+    [ "previous_progression" ]
+  ],
   "rewards": {
     "function": "twilightforest:give_3_shields"
   }

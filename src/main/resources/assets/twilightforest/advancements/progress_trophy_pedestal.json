@@ -16,7 +16,7 @@
     "trophy_pedestal": {
       "trigger": "twilightforest:placed_on_trophy_pedestal"
     },
-    "kill_hydra": {
+    "kill_lich": {
       "trigger": "twilightforest:has_advancement",
       "conditions": { "advancement": "twilightforest:progress_lich" }
     }
