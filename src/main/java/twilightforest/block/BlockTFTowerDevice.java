@@ -26,6 +26,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -141,16 +142,28 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		}
 	}
 
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+		switch (state.getValue(VARIANT)) {
+			case VANISH_INACTIVE:
+				return !areBlocksLocked(world, pos);
+			case VANISH_LOCKED:
+				return false;
+			default:
+				return super.canEntityDestroy(state, world, pos, entity);
+		}
+	}
+
 	/**
 	 * Are any of the connected tower device blocks a locked vanishing block?
 	 */
-	private static boolean areBlocksLocked(World world, BlockPos pos) {
+	private static boolean areBlocksLocked(IBlockAccess world, BlockPos pos) {
 		Set<BlockPos> checked = new HashSet<>();
 		checked.add(pos);
 		return areBlocksLocked(world, pos, checked);
 	}
 
-	private static boolean areBlocksLocked(World world, BlockPos pos, Set<BlockPos> checked) {
+	private static boolean areBlocksLocked(IBlockAccess world, BlockPos pos, Set<BlockPos> checked) {
 		for (EnumFacing facing : EnumFacing.values()) {
 			BlockPos offset = pos.offset(facing);
 			IBlockState state = world.getBlockState(offset);
