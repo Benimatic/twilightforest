@@ -166,12 +166,13 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	private static boolean areBlocksLocked(IBlockAccess world, BlockPos pos, Set<BlockPos> checked) {
 		for (EnumFacing facing : EnumFacing.values()) {
 			BlockPos offset = pos.offset(facing);
+			if (!checked.add(offset)) continue;
 			IBlockState state = world.getBlockState(offset);
 			if (state.getBlock() == TFBlocks.tower_device) {
 				if (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
 					return true;
 				}
-				if (checked.add(offset) && areBlocksLocked(world, offset, checked)) {
+				if (areBlocksLocked(world, offset, checked)) {
 					return true;
 				}
 			}

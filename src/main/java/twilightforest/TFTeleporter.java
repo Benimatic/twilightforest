@@ -261,10 +261,9 @@ public class TFTeleporter extends Teleporter {
 	private void checkAdjacent(BlockPos pos, Set<BlockPos> checked, Set<BlockPos> result) {
 		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
 			BlockPos offset = pos.offset(facing);
+			if (!checked.add(offset)) continue;
 			if (isBlockPortal(world, offset)) {
-				if (checked.add(offset)) {
-					checkAdjacent(offset, checked, result);
-				}
+				checkAdjacent(offset, checked, result);
 			} else {
 				result.add(offset);
 			}
