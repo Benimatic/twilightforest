@@ -39,7 +39,9 @@ import twilightforest.tileentity.*;
 import twilightforest.tileentity.TileEntityTFAntibuilder;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 
@@ -93,7 +95,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		TowerDeviceVariant variant = state.getValue(VARIANT);
 
 		if (variant == TowerDeviceVariant.VANISH_INACTIVE) {
-			if (areNearbyLockBlocks(world, pos)) {
+			if (areBlocksLocked(world, pos)) {
 				world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 1.0F, 0.3F);
 			} else {
 				changeToActiveVanishBlock(world, pos, TowerDeviceVariant.VANISH_ACTIVE);
@@ -101,7 +103,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 			return true;
 
 		} else if (variant == TowerDeviceVariant.REAPPEARING_INACTIVE) {
-			if (areNearbyLockBlocks(world, pos)) {
+			if (areBlocksLocked(world, pos)) {
 				world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 1.0F, 0.3F);
 			} else {
 				changeToActiveVanishBlock(world, pos, TowerDeviceVariant.REAPPEARING_ACTIVE);
@@ -140,22 +142,27 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	/**
-	 * Are any of the 26 adjacent blocks a locked vanishing block?
+	 * Are any of the connected tower device blocks a locked vanishing block?
 	 */
-	private static boolean areNearbyLockBlocks(World world, BlockPos pos) {
-		//TODO: this is hacky.  We really need to determine the exact blocks of the door and check those for locks.
-		for (int dx = -2; dx <= 2; dx++) {
-			for (int dy = -2; dy <= 2; dy++) {
-				for (int dz = -2; dz <= 2; dz++) {
-					IBlockState state = world.getBlockState(pos.add(dx, dy, dz));
-					if (state.getBlock() == TFBlocks.tower_device
-							&& state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
-						return true;
-					}
+	private static boolean areBlocksLocked(World world, BlockPos pos) {
+		Set<BlockPos> checked = new HashSet<>();
+		checked.add(pos);
+		return areBlocksLocked(world, pos, checked);
+	}
+
+	private static boolean areBlocksLocked(World world, BlockPos pos, Set<BlockPos> checked) {
+		for (EnumFacing facing : EnumFacing.values()) {
+			BlockPos offset = pos.offset(facing);
+			IBlockState state = world.getBlockState(offset);
+			if (state.getBlock() == TFBlocks.tower_device) {
+				if (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
+					return true;
+				}
+				if (checked.add(offset) && areBlocksLocked(world, offset, checked)) {
+					return true;
 				}
 			}
 		}
-
 		return false;
 	}
 
@@ -203,11 +210,11 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 
 		TowerDeviceVariant variant = state.getValue(VARIANT);
 
-		if (variant == TowerDeviceVariant.VANISH_INACTIVE && world.isBlockPowered(pos) && !areNearbyLockBlocks(world, pos)) {
+		if (variant == TowerDeviceVariant.VANISH_INACTIVE && world.isBlockPowered(pos) && !areBlocksLocked(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.VANISH_ACTIVE);
 		}
 
-		if (variant == TowerDeviceVariant.REAPPEARING_INACTIVE && world.isBlockPowered(pos) && !areNearbyLockBlocks(world, pos)) {
+		if (variant == TowerDeviceVariant.REAPPEARING_INACTIVE && world.isBlockPowered(pos) && !areBlocksLocked(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.REAPPEARING_ACTIVE);
 		}
 
@@ -363,9 +370,9 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_INACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.VANISH_UNLOCKED) && !areNearbyLockBlocks(world, pos)) {
+		if (block == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_INACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.VANISH_UNLOCKED) && !areBlocksLocked(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.VANISH_ACTIVE);
-		} else if (block == TFBlocks.tower_device && state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_INACTIVE && !areNearbyLockBlocks(world, pos)) {
+		} else if (block == TFBlocks.tower_device && state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_INACTIVE && !areBlocksLocked(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.REAPPEARING_ACTIVE);
 		} else if (block == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_INACTIVE) {
 			changeToActiveVanishBlock(world, pos, TowerTranslucentVariant.BUILT_ACTIVE);
