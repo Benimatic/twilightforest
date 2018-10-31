@@ -1,0 +1,12 @@
+{
+  "name": "Ice Bomb",
+  "icon": "twilightforest:ice_bomb",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/ice_bomb",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

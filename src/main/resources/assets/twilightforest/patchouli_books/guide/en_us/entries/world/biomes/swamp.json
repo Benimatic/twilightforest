@@ -1,0 +1,11 @@
+{
+  "name": "Swamp",
+  "icon": "twilightforest:twilight_sapling:2",
+  "category": "biomes",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

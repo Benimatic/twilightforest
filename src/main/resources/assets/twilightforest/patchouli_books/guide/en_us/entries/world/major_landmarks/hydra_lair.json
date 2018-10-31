@@ -1,0 +1,12 @@
+{
+  "name": "Hydra Lair",
+  "icon": "twilightforest:miniature_structure:8",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/hydra_lair",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

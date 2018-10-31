@@ -1,0 +1,12 @@
+{
+  "name": "Dark Tower",
+  "icon": "twilightforest:miniature_structure:10",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/dark_tower",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

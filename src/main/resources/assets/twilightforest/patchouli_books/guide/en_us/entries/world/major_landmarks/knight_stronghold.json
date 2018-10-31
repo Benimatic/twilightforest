@@ -1,0 +1,12 @@
+{
+  "name": "Knight Stronghold",
+  "icon": "twilightforest:miniature_structure:6",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/knight_stronghold",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

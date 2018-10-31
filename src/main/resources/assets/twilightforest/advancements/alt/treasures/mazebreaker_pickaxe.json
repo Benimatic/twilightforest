@@ -1,0 +1,5 @@
+{
+  "criteria": {
+    "mazebreaker_pickaxe": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:mazebreaker_pickaxe" }]}}
+  }
+}

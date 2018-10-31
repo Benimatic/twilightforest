@@ -1,0 +1,12 @@
+{
+  "name": "Kobold",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:kobold\"}}",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/kobold",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

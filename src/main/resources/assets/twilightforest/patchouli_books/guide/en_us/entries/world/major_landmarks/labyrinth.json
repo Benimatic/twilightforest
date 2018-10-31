@@ -1,0 +1,12 @@
+{
+  "name": "Labyrinth",
+  "icon": "twilightforest:miniature_structure:7",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/labyrinth",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

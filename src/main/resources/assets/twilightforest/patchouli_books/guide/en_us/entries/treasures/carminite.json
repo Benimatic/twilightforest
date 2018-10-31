@@ -1,0 +1,12 @@
+{
+  "name": "Carminite",
+  "icon": "twilightforest:carminite",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/carminite",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Aurora Palace",
+  "icon": "twilightforest:miniature_structure:12",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/ice_tower",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

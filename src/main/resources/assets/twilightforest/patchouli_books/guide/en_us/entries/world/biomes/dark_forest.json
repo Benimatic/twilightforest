@@ -1,0 +1,11 @@
+{
+  "name": "Dark Forest",
+  "icon": "twilightforest:twilight_sapling:3",
+  "category": "biomes",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

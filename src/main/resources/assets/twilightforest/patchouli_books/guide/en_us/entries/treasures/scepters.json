@@ -1,0 +1,11 @@
+{
+  "name": "Scepters",
+  "icon": "twilightforest:twilight_scepter",
+  "category": "treasures",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

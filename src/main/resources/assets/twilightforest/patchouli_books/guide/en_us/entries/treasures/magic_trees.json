@@ -1,0 +1,11 @@
+{
+  "name": "Magical Trees",
+  "icon": "twilightforest:twilight_sapling:4",
+  "category": "treasures",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

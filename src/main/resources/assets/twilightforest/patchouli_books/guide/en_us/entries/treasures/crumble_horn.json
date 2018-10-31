@@ -1,0 +1,12 @@
+{
+  "name": "Crumble Horn",
+  "icon": "twilightforest:crumble_horn",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/crumble_horn",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

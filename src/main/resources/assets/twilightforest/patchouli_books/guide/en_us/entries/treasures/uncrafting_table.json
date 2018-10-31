@@ -1,0 +1,12 @@
+{
+  "name": "Uncrafting Table",
+  "icon": "twilightforest:uncrafting_table",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/uncrafting_table",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

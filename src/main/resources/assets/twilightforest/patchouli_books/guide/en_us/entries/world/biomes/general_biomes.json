@@ -1,0 +1,11 @@
+{
+  "name": "General Biomes",
+  "icon": "twilightforest:magic_map_empty",
+  "category": "biomes",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

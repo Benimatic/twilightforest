@@ -1,0 +1,12 @@
+{
+  "name": "Knight Phantoms",
+  "icon": "twilightforest:trophy:4",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/knight_phantom",
+  "pages": [
+    {
+      "type": "text",
+      "text": "A very bad knightmare"
+    }
+  ]
+}

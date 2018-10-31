@@ -1,0 +1,12 @@
+{
+  "name": "Snow Forest",
+  "icon": "minecraft:snow",
+  "category": "biomes",
+  "advancement": "twilightforest:alt/biomes/snowy_forest",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

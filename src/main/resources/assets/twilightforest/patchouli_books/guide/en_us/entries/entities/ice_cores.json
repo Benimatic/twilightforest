@@ -1,0 +1,11 @@
+{
+  "name": "Ice Cores",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:stable_ice_core\"}}",
+  "category": "entities",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

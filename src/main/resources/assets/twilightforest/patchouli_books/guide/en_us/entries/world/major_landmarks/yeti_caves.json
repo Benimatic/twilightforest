@@ -1,0 +1,12 @@
+{
+  "name": "Yeti Caves",
+  "icon": "twilightforest:miniature_structure:11",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/yeti_caves",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

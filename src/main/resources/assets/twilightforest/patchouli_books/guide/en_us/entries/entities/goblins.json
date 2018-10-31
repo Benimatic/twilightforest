@@ -1,0 +1,11 @@
+{
+  "name": "Goblins",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:blockchain_goblin\"}}",
+  "category": "entities",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

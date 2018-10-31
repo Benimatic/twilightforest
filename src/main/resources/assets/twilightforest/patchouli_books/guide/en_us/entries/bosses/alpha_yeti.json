@@ -1,0 +1,12 @@
+{
+  "name": "Alpha Yeti",
+  "icon": "twilightforest:yeti_helmet",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/yeti_alpha",
+  "pages": [
+    {
+      "type": "text",
+      "text": "He so baddie but not so bad, he don't got no trophy yeti"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Hedge Maze",
+  "icon": "twilightforest:miniature_structure:1",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/hedge_maze",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

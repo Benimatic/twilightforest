@@ -1,0 +1,12 @@
+{
+  "name": "Minoshroom",
+  "icon": "twilightforest:trophy:6",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/minoshroom",
+  "pages": [
+    {
+      "type": "text",
+      "text": "He just wanted to axe you a question"
+    }
+  ]
+}

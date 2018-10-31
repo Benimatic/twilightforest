@@ -1,0 +1,12 @@
+{
+  "name": "Maze Slime",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:maze_slime\"}}",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/maze_slime",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

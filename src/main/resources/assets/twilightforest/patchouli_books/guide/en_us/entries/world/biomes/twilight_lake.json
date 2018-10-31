@@ -1,0 +1,12 @@
+{
+  "name": "Twilight Lake",
+  "icon": "minecraft:dye",
+  "category": "biomes",
+  "advancement": "twilightforest:alt/biomes/twilight_lake",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

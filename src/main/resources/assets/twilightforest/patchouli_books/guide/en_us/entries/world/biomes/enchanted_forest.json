@@ -1,0 +1,12 @@
+{
+  "name": "Enchanted Forest",
+  "icon": "twilightforest:twilight_sapling:9",
+  "category": "biomes",
+  "advancement": "twilightforest:alt/biomes/enchanted_forest",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Wolves",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:hostile_wolf\"}}",
+  "category": "entities",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

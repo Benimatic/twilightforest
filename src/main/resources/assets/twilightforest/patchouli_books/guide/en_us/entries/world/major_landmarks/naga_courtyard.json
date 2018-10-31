@@ -1,0 +1,12 @@
+{
+  "name": "Naga Courtyard",
+  "icon": "twilightforest:miniature_structure:5",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/naga_courtyard",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

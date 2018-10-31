@@ -1,0 +1,12 @@
+{
+  "name": "Lich",
+  "icon": "twilightforest:trophy:1",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/lich",
+  "pages": [
+    {
+      "type": "text",
+      "text": "More evil than you can shake a bone at"
+    }
+  ]
+}

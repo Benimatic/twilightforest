@@ -1,0 +1,12 @@
+{
+  "name": "Adherent",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:adherent\"}}",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/adherent",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

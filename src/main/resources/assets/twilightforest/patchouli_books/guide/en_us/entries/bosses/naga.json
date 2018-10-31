@@ -1,0 +1,12 @@
+{
+  "name": "Naga",
+  "icon": "twilightforest:trophy:0",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/naga",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Sneky thing"
+    }
+  ]
+}

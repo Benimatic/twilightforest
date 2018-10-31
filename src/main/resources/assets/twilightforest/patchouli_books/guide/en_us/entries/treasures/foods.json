@@ -1,0 +1,11 @@
+{
+  "name": "Meats, Meals, and Edibles",
+  "icon": "twilightforest:experiment_115:2",
+  "category": "treasures",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

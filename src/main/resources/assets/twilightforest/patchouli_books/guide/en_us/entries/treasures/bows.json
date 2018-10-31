@@ -1,0 +1,11 @@
+{
+  "name": "Bows",
+  "icon": "twilightforest:seeker_bow",
+  "category": "treasures",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

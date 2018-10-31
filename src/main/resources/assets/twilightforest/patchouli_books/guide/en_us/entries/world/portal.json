@@ -1,0 +1,30 @@
+{
+  "name": "Building a Portal",
+  "icon": "twilightforest:miniature_structure:0",
+  "category": "world",
+  "pages": [
+    {
+      "type": "multiblock",
+      "name": "Twilight Portal",
+      "text": "Once you finish digging and planting the formation, fill it with water and drop a diamond into the water!",
+      "multiblock": {
+        "pattern": [
+          [ " FF ", "F0AF", "FAAF", " FF " ],
+          [ " GG ", "GAAG", "GAAG", " GG " ],
+          [ "    ", " DD ", " DD ", "    " ]
+        ],
+        "mapping": {
+          " ": "ANY",
+          "A": "AIR",
+          "0": "AIR",
+          "F": "minecraft:red_flower",
+          "G": "minecraft:grass",
+          "D": "minecraft:dirt"
+        },
+        "symmetrical": true,
+        "offset"     : [0, 1, 0],
+        "view_offset": [0, 0, 0]
+      }
+    }
+  ]
+}

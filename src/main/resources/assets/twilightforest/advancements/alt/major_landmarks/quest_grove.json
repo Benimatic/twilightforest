@@ -1,0 +1,8 @@
+{
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": { "feature": "twilightforest:quest_grove" }
+    }
+  }
+}

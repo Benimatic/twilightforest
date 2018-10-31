@@ -1,0 +1,11 @@
+{
+  "name": "Druid Hut",
+  "icon": "minecraft:golden_hoe",
+  "category": "minor_landmarks",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

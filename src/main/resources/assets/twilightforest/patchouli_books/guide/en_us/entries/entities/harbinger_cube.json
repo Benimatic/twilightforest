@@ -1,0 +1,12 @@
+{
+  "name": "Harbinger Cube",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:harbinger_cube\"}}",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/harbinger_cube",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

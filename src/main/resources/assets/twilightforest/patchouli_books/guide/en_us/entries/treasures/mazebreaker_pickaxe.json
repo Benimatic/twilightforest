@@ -1,0 +1,12 @@
+{
+  "name": "Mazebreaker",
+  "icon": "twilightforest:mazebreaker_pickaxe",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/mazebreaker_pickaxe",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

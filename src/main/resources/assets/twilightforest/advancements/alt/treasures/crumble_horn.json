@@ -1,0 +1,5 @@
+{
+  "criteria": {
+    "crumble_horn": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:crumble_horn" }]}}
+  }
+}

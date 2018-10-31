@@ -1,0 +1,12 @@
+{
+  "name": "Glacier",
+  "icon": "minecraft:packed_ice",
+  "category": "biomes",
+  "advancement": "twilightforest:alt/biomes/twilight_glacier",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

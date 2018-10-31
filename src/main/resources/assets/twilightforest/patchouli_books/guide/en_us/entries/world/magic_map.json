@@ -1,0 +1,11 @@
+{
+  "name": "Magic Map",
+  "icon": "twilightforest:magic_map",
+  "category": "world",
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}
