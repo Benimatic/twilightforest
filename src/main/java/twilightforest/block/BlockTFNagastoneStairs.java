@@ -67,8 +67,8 @@ public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegister
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
-		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.SOUTH).withProperty(DIRECTION, LeftRight.RIGHT));
+		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.EAST));
+		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.EAST).withProperty(DIRECTION, LeftRight.RIGHT));
 	}
 
 	private enum LeftRight implements IStringSerializable {

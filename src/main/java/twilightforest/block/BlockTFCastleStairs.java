@@ -61,8 +61,8 @@ public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCal
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
-		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.SOUTH).withProperty(VARIANT, CastlePillarVariant.BOLD));
+		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.EAST));
+		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.EAST).withProperty(VARIANT, CastlePillarVariant.BOLD));
 	}
 
 }

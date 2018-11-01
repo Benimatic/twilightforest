@@ -20,6 +20,6 @@ public class BlockTFStairs extends BlockStairs implements ModelRegisterCallback 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
+        ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.EAST));
     }
 }
