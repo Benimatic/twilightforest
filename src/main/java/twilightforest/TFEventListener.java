@@ -653,9 +653,11 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void playerPortals(PlayerChangedDimensionEvent event) {
-		// check enforced progression
-		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TFConfig.dimension.dimensionID) {
-			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
+			if (event.toDim == TFConfig.dimension.dimensionID) {
+				sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			}
+			updateShieldStatus((EntityPlayerMP) event.player, event.player);
 		}
 	}
 
