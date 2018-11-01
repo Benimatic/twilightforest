@@ -1,4 +1,5 @@
 {
+  "parent": "block/thin_block",
   "textures": {
     "particle": "#texture"
   },

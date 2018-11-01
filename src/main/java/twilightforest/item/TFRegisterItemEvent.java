@@ -260,7 +260,8 @@ public class TFRegisterItemEvent {
 			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_button")));
 
 			ResourceLocation doorRL = new ResourceLocation(TwilightForestMod.ID, woodName + "_door");
-			items.register(doorRL.getPath(), new ItemDoor(Block.REGISTRY.getObject(doorRL)));
+			Block doorBlock = Block.REGISTRY.getObject(doorRL);
+			items.register(doorRL.getPath(), new ItemDoor(doorBlock)).setTranslationKey(doorBlock.getTranslationKey());
 
 			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_trapdoor")));
 			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_fence")));
@@ -275,7 +276,7 @@ public class TFRegisterItemEvent {
 
 		private static List<ModelRegisterCallback> itemModels = new ArrayList<>();
 
-		public static List<ModelRegisterCallback> getItemModels() {
+		static List<ModelRegisterCallback> getItemModels() {
 			return ImmutableList.copyOf(itemModels);
 		}
 
@@ -283,17 +284,19 @@ public class TFRegisterItemEvent {
 			this.registry = registry;
 		}
 
-		void register(String registryName, String translationKey, Item item) {
+		<T extends Item> void register(String registryName, String translationKey, T item) {
 			item.setTranslationKey(TwilightForestMod.ID + "." + translationKey);
 			register(registryName, item);
 		}
 
-		public void register(String registryName, Item item) {
+		public <T extends Item> Item register(String registryName, T item) {
 			item.setRegistryName(TwilightForestMod.ID, registryName);
 			if (item instanceof ModelRegisterCallback) {
 				itemModels.add((ModelRegisterCallback) item);
 			}
 			registry.register(item);
+
+			return item;
 		}
 
 		void registerBlock(Block block) {
@@ -310,7 +313,7 @@ public class TFRegisterItemEvent {
 			register(metaItemBlock);
 		}
 
-		void register(ItemBlock item) {
+		<T extends ItemBlock> void register(T item) {
 			item.setRegistryName(item.getBlock().getRegistryName());
 			item.setTranslationKey(item.getBlock().getTranslationKey());
 			registry.register(item);

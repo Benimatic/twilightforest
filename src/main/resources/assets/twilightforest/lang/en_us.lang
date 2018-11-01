@@ -334,6 +334,8 @@ tile.twilightforest.CanopyButton.name=Canopy Button
 tile.twilightforest.CanopyFence.name=Canopy Fence
 tile.twilightforest.CanopyGate.name=Canopy Gate
 tile.twilightforest.CanopyPlate.name=Canopy Pressure Plate
+tile.twilightforest.CanopyTrapDoor.name=Canopy Trapdoor
+item.tile.twilightforest.CanopyDoor.name=Canopy Door
 
 tile.twilightforest.DarkPlanks.name=Darkwood Planks
 tile.twilightforest.DarkStairs.name=Darkwood Stairs
@@ -342,6 +344,8 @@ tile.twilightforest.DarkButton.name=Darkwood Button
 tile.twilightforest.DarkFence.name=Darkwood Fence
 tile.twilightforest.DarkGate.name=Darkwood Gate
 tile.twilightforest.DarkPlate.name=Darkwood Pressure Plate
+tile.twilightforest.DarkTrapDoor.name=Darkwood Trapdoor
+item.tile.twilightforest.DarkDoor.name=Darkwood Door
 
 tile.twilightforest.MangrovePlanks.name=Mangrove Planks
 tile.twilightforest.MangroveStairs.name=Mangrove Stairs
@@ -350,6 +354,8 @@ tile.twilightforest.MangroveButton.name=Mangrove Button
 tile.twilightforest.MangroveFence.name=Mangrove Fence
 tile.twilightforest.MangroveGate.name=Mangrove Gate
 tile.twilightforest.MangrovePlate.name=Mangrove Pressure Plate
+tile.twilightforest.MangroveTrapDoor.name=Mangrove Trapdoor
+item.tile.twilightforest.MangroveDoor.name=Mangrove Door
 
 tile.twilightforest.TwilightOakPlanks.name=Twilight Oak Planks
 tile.twilightforest.TwilightOakStairs.name=Twilight Oak Stairs
@@ -358,6 +364,8 @@ tile.twilightforest.TwilightOakButton.name=Twilight Oak Button
 tile.twilightforest.TwilightOakFence.name=Twilight Oak Fence
 tile.twilightforest.TwilightOakGate.name=Twilight Oak Gate
 tile.twilightforest.TwilightOakPlate.name=Twilight Oak Pressure Plate
+tile.twilightforest.TwilightOakTrapDoor.name=Twilight Oak Trapdoor
+item.tile.twilightforest.TwilightOakDoor.name=Twilight Oak Door
 
 tile.twilightforest.TimePlanks.name=Timewood Planks
 tile.twilightforest.TimeStairs.name=Timewood Stairs
@@ -366,6 +374,8 @@ tile.twilightforest.TimeButton.name=Timewood Button
 tile.twilightforest.TimeFence.name=Timewood Fence
 tile.twilightforest.TimeGate.name=Timewood Gate
 tile.twilightforest.TimePlate.name=Timewood Pressure Plate
+tile.twilightforest.TimeTrapDoor.name=Timewood Trapdoor
+item.tile.twilightforest.TimeDoor.name=Timewood Door
 
 tile.twilightforest.TransPlanks.name=Transwood Planks
 tile.twilightforest.TransStairs.name=Transwood Stairs
@@ -374,6 +384,8 @@ tile.twilightforest.TransButton.name=Transwood Button
 tile.twilightforest.TransFence.name=Transwood Fence
 tile.twilightforest.TransGate.name=Transwood Gate
 tile.twilightforest.TransPlate.name=Transwood Pressure Plate
+tile.twilightforest.TransTrapDoor.name=Transwood Trapdoor
+item.tile.twilightforest.TransDoor.name=Transwood Door
 
 tile.twilightforest.MinePlanks.name=Minewood Planks
 tile.twilightforest.MineStairs.name=Minewood Stairs
@@ -382,6 +394,8 @@ tile.twilightforest.MineButton.name=Minewood Button
 tile.twilightforest.MineFence.name=Minewood Fence
 tile.twilightforest.MineGate.name=Minewood Gate
 tile.twilightforest.MinePlate.name=Minewood Pressure Plate
+tile.twilightforest.MineTrapDoor.name=Minewood Trapdoor
+item.tile.twilightforest.MineDoor.name=Minewood Door
 
 tile.twilightforest.SortPlanks.name=Sortingwood Planks
 tile.twilightforest.SortStairs.name=Sortingwood Stairs
@@ -390,6 +404,8 @@ tile.twilightforest.SortButton.name=Sortingwood Button
 tile.twilightforest.SortFence.name=Sortingwood Fence
 tile.twilightforest.SortGate.name=Sortingwood Gate
 tile.twilightforest.SortPlate.name=Sortingwood Pressure Plate
+tile.twilightforest.SortTrapDoor.name=Sortingwood Trapdoor
+item.tile.twilightforest.SortDoor.name=Sortingwood Door
 
 structure.twilight_portal.name=Twilight Portal
 structure.hedge_maze.name=Hedge Maze

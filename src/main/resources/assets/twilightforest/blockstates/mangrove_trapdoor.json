@@ -6,6 +6,8 @@
     }
   },
   "variants": {
+    "inventory": [{ "model": "twilightforest:util/trapdoor_bottom", "y": 180 }],
+    
     "facing": { "north": {}, "east": {}, "south": {}, "west": {} },
     "open"  : { "true": {}, "false": {} },
     "half"  : { "bottom": {}, "top": {} },
