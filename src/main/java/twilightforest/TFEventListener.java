@@ -40,6 +40,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
@@ -49,7 +50,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -77,8 +77,9 @@ import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.network.PacketSetSkylightEnabled;
+import twilightforest.network.PacketUpdateShield;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -639,9 +640,11 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerLoggedInEvent event) {
-		// check enforced progression
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
+			// check enforced progression
 			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			// update shields
+			updateShieldStatus((EntityPlayerMP) event.player, event.player);
 		}
 	}
 
@@ -653,6 +656,18 @@ public class TFEventListener {
 		// check enforced progression
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP && event.toDim == TFConfig.dimension.dimensionID) {
 			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+		}
+	}
+
+	@SubscribeEvent
+	public static void onStartTracking(PlayerEvent.StartTracking event) {
+		updateShieldStatus((EntityPlayerMP) event.getEntityPlayer(), event.getTarget());
+	}
+
+	private static void updateShieldStatus(EntityPlayerMP player, Entity entity) {
+		IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
+		if (cap != null && cap.shieldsLeft() > 0) {
+			TFPacketHandler.CHANNEL.sendTo(new PacketUpdateShield(entity, cap), player);
 		}
 	}
 
@@ -704,7 +719,7 @@ public class TFEventListener {
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 	@SubscribeEvent
-	public static void banishNewbieToTwilightZone(PlayerEvent.PlayerLoggedInEvent event) {
+	public static void banishNewbieToTwilightZone(PlayerLoggedInEvent event) {
 		NBTTagCompound tagCompound = event.player.getEntityData();
 		NBTTagCompound playerData = tagCompound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
 
