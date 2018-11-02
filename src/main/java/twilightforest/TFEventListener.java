@@ -365,7 +365,10 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerRespawnEvent event) {
 
-		if (event.isEndConquered()) return;
+		if (event.isEndConquered()) {
+			updateCapabilities((EntityPlayerMP) event.player, event.player);
+			return;
+		}
 
 		EntityPlayer player = event.player;
 		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
@@ -641,10 +644,9 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerLoggedInEvent event) {
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
-			// check enforced progression
 			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
-			// update shields
-			updateShieldStatus((EntityPlayerMP) event.player, event.player);
+			updateCapabilities((EntityPlayerMP) event.player, event.player);
+			banishNewbieToTwilightZone(event.player);
 		}
 	}
 
@@ -657,16 +659,17 @@ public class TFEventListener {
 			if (event.toDim == TFConfig.dimension.dimensionID) {
 				sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
 			}
-			updateShieldStatus((EntityPlayerMP) event.player, event.player);
+			updateCapabilities((EntityPlayerMP) event.player, event.player);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onStartTracking(PlayerEvent.StartTracking event) {
-		updateShieldStatus((EntityPlayerMP) event.getEntityPlayer(), event.getTarget());
+		updateCapabilities((EntityPlayerMP) event.getEntityPlayer(), event.getTarget());
 	}
 
-	private static void updateShieldStatus(EntityPlayerMP player, Entity entity) {
+	// send any capabilities that are needed client-side
+	private static void updateCapabilities(EntityPlayerMP player, Entity entity) {
 		IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
 		if (cap != null && cap.shieldsLeft() > 0) {
 			TFPacketHandler.CHANNEL.sendTo(new PacketUpdateShield(entity, cap), player);
@@ -720,9 +723,9 @@ public class TFEventListener {
 	// Teleport first-time players to Twilight Forest
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
-	@SubscribeEvent
-	public static void banishNewbieToTwilightZone(PlayerLoggedInEvent event) {
-		NBTTagCompound tagCompound = event.player.getEntityData();
+
+	private static void banishNewbieToTwilightZone(EntityPlayer player) {
+		NBTTagCompound tagCompound = player.getEntityData();
 		NBTTagCompound playerData = tagCompound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
 
 		// getBoolean returns false, if false or didn't exist
@@ -731,7 +734,7 @@ public class TFEventListener {
 		playerData.setBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
 		tagCompound.setTag(EntityPlayer.PERSISTED_NBT_TAG, playerData); // commit
 
-		if (shouldBanishPlayer) BlockTFPortal.attemptSendPlayer(event.player, true); // See ya hate to be ya
+		if (shouldBanishPlayer) BlockTFPortal.attemptSendPlayer(player, true); // See ya hate to be ya
 	}
 
 	// Advancement Trigger
