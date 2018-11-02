@@ -21,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -98,7 +99,7 @@ public class EntityTFIceExploder extends EntityMob {
 		if (this.deathTime == 60) // delay until 3 seconds
 		{
 			if (!world.isRemote) {
-				boolean mobGriefing = this.world.getGameRules().getBoolean("mobGriefing");
+				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(world, this);
 				this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
 
 				if (mobGriefing) {

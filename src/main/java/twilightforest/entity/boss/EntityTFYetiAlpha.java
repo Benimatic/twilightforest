@@ -33,6 +33,7 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -200,7 +201,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	}
 
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (world.getGameRules().getBoolean("mobGriefing")) {
+		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(world, pos, this)) {
 					world.destroyBlock(pos, false);
@@ -404,5 +405,4 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	public boolean isNonBoss() {
 		return false;
 	}
-
 }

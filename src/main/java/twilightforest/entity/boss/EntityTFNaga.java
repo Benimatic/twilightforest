@@ -39,6 +39,7 @@ import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -52,6 +53,7 @@ import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/naga");
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -151,6 +153,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	// Similar to EntityAIAttackMelee but simpler (no pathfinding)
 	static class AIAttack extends EntityAIBase {
+
 		private final EntityTFNaga taskOwner;
 		private int attackTick = 20;
 
@@ -190,6 +193,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	static class AISmash extends EntityAIBase {
+
 		private final EntityTFNaga taskOwner;
 
 		AISmash(EntityTFNaga taskOwner) {
@@ -198,30 +202,30 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		@Override
 		public boolean shouldExecute() {
-			return taskOwner.world.getGameRules().getBoolean("mobGriefing") /*&& taskOwner.getAttackTarget() != null*/ && taskOwner.collidedHorizontally;
+			return /*taskOwner.getAttackTarget() != null &&*/ taskOwner.collidedHorizontally && ForgeEventFactory.getMobGriefingEvent(taskOwner.world, taskOwner);
 		}
 
 		@Override
 		public void startExecuting() {
 			// NAGA SMASH!
-			if (!taskOwner.world.isRemote) {
+			if (taskOwner.world.isRemote) return;
 
-				AxisAlignedBB bb = taskOwner.getEntityBoundingBox();
-				int minx = MathHelper.floor(bb.minX - 0.75D);
-				int miny = MathHelper.floor(bb.minY + 1.01D);
-				int minz = MathHelper.floor(bb.minZ - 0.75D);
-				int maxx = MathHelper.floor(bb.maxX + 0.75D);
-				int maxy = MathHelper.floor(bb.maxY + 0.0D);
-				int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+			AxisAlignedBB bb = taskOwner.getEntityBoundingBox();
 
-				BlockPos min = new BlockPos(minx, miny, minz);
-				BlockPos max = new BlockPos(maxx, maxy, maxz);
+			int minx = MathHelper.floor(bb.minX - 0.75D);
+			int miny = MathHelper.floor(bb.minY + 1.01D);
+			int minz = MathHelper.floor(bb.minZ - 0.75D);
+			int maxx = MathHelper.floor(bb.maxX + 0.75D);
+			int maxy = MathHelper.floor(bb.maxY + 0.0D);
+			int maxz = MathHelper.floor(bb.maxZ + 0.75D);
 
-				if (taskOwner.world.isAreaLoaded(min, max)) {
-					for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
-						if (EntityUtil.canDestroyBlock(taskOwner.world, pos, taskOwner)) {
-							taskOwner.world.destroyBlock(pos, true);
-						}
+			BlockPos min = new BlockPos(minx, miny, minz);
+			BlockPos max = new BlockPos(maxx, maxy, maxz);
+
+			if (taskOwner.world.isAreaLoaded(min, max)) {
+				for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+					if (EntityUtil.canDestroyBlock(taskOwner.world, pos, taskOwner)) {
+						taskOwner.world.destroyBlock(pos, true);
 					}
 				}
 			}
@@ -237,6 +241,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	static class AIMovementPattern extends EntityAIBase {
+
 		private final EntityTFNaga taskOwner;
 		private MovementState movementState;
 		private int stateCounter;
@@ -387,27 +392,28 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public void onLivingUpdate() {
+
 		super.onLivingUpdate();
 
-		if (!world.isRemote && this.world.getGameRules().getBoolean("mobGriefing")) {
+		if (world.isRemote || !ForgeEventFactory.getMobGriefingEvent(world, this)) return;
 
-			AxisAlignedBB bb = this.getEntityBoundingBox();
-			int minx = MathHelper.floor(bb.minX - 0.75D);
-			int miny = MathHelper.floor(bb.minY + 1.01D);
-			int minz = MathHelper.floor(bb.minZ - 0.75D);
-			int maxx = MathHelper.floor(bb.maxX + 0.75D);
-			int maxy = MathHelper.floor(bb.maxY + 0.0D);
-			int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+		AxisAlignedBB bb = this.getEntityBoundingBox();
 
-			BlockPos min = new BlockPos(minx, miny, minz);
-			BlockPos max = new BlockPos(maxx, maxy, maxz);
+		int minx = MathHelper.floor(bb.minX - 0.75D);
+		int miny = MathHelper.floor(bb.minY + 1.01D);
+		int minz = MathHelper.floor(bb.minZ - 0.75D);
+		int maxx = MathHelper.floor(bb.maxX + 0.75D);
+		int maxy = MathHelper.floor(bb.maxY + 0.0D);
+		int maxz = MathHelper.floor(bb.maxZ + 0.75D);
 
-			if (world.isAreaLoaded(min, max)) {
-				for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
-					IBlockState state = world.getBlockState(pos);
-					if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(world, pos, state, this)) {
-						world.destroyBlock(pos, true);
-					}
+		BlockPos min = new BlockPos(minx, miny, minz);
+		BlockPos max = new BlockPos(maxx, maxy, maxz);
+
+		if (world.isAreaLoaded(min, max)) {
+			for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+				IBlockState state = world.getBlockState(pos);
+				if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(world, pos, state, this)) {
+					world.destroyBlock(pos, true);
 				}
 			}
 		}
@@ -520,6 +526,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	static class NagaMoveHelper extends EntityMoveHelper {
+
 		public NagaMoveHelper(EntityLiving naga) {
 			super(naga);
 		}
@@ -561,8 +568,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!world.getGameRules().getBoolean("mobGriefing"))
-			return;
+		if (!ForgeEventFactory.getMobGriefingEvent(world, this)) return;
 
 		int floor = (int) getEntityBoundingBox().minY;
 		int targetY = (int) getAttackTarget().getEntityBoundingBox().minY;

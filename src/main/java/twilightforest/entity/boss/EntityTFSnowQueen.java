@@ -34,6 +34,7 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -52,6 +53,7 @@ import twilightforest.world.TFWorld;
 import java.util.List;
 
 public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IBreathAttacker {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/snow_queen");
 	private static final int MAX_SUMMONS = 6;
 	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
@@ -59,7 +61,6 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
-
 
 	public enum Phase {SUMMON, DROP, BEAM}
 
@@ -327,7 +328,6 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		return this.getIceShieldPosition(getIceShieldAngle(idx), 1F);
 	}
 
-
 	private float getIceShieldAngle(int idx) {
 		return 60F * idx + (this.ticksExisted * 5F);
 	}
@@ -366,7 +366,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (world.getGameRules().getBoolean("mobGriefing")) {
+		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				IBlockState state = world.getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {

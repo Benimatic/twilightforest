@@ -12,9 +12,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFHydraMortar extends EntityThrowable {
+
 	private static final int BURN_FACTOR = 5;
 	private static final int DIRECT_DAMAGE = 18;
 
@@ -109,7 +111,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = world.getGameRules().getBoolean("mobGriefing");
+		boolean flag = ForgeEventFactory.getMobGriefingEvent(world, this);
 		this.world.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, flag, flag);
 
 		DamageSource src = new EntityDamageSourceIndirect("onFire", this, getThrower()).setFireDamage().setProjectile();

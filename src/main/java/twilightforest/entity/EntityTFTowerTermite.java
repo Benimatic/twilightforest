@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
@@ -30,6 +31,7 @@ import twilightforest.enums.TowerWoodVariant;
 import java.util.Random;
 
 public class EntityTFTowerTermite extends EntityMob {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_termite");
 	private AISummonSilverfish summonSilverfish;
 
@@ -116,13 +118,12 @@ public class EntityTFTowerTermite extends EntityMob {
 
 	// [VanillaCopy] EntitySilverfish$AIHideInStone. Changes noted
 	private static class AIHideInStone extends EntityAIWander {
-		private final EntityTFTowerTermite silverfish; // TF - type change
+
 		private EnumFacing facing;
 		private boolean doMerge;
 
 		public AIHideInStone(EntityTFTowerTermite silverfishIn) {
 			super(silverfishIn, 1.0D, 10);
-			this.silverfish = silverfishIn;
 			this.setMutexBits(1);
 		}
 
@@ -131,22 +132,20 @@ public class EntityTFTowerTermite extends EntityMob {
 		 */
 		@Override
 		public boolean shouldExecute() {
-			if (!this.silverfish.world.getGameRules().getBoolean("mobGriefing")) {
+			if (this.entity.getAttackTarget() != null) {
 				return false;
-			} else if (this.silverfish.getAttackTarget() != null) {
-				return false;
-			} else if (!this.silverfish.getNavigator().noPath()) {
+			} else if (!this.entity.getNavigator().noPath()) {
 				return false;
 			} else {
-				Random random = this.silverfish.getRNG();
+				Random random = this.entity.getRNG();
 
-				if (random.nextInt(10) == 0) {
+				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.entity.world, this.entity)) {
 					this.facing = EnumFacing.random(random);
-					BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
-					IBlockState iblockstate = this.silverfish.world.getBlockState(blockpos);
+					BlockPos blockpos = (new BlockPos(this.entity.posX, this.entity.posY + 0.5D, this.entity.posZ)).offset(this.facing);
+					IBlockState iblockstate = this.entity.world.getBlockState(blockpos);
 
-					if (iblockstate == TFBlocks.tower_wood.getDefaultState()) // TF - Change block check
-					{
+					// TF - Change block check
+					if (iblockstate == TFBlocks.tower_wood.getDefaultState()) {
 						this.doMerge = true;
 						return true;
 					}
@@ -173,16 +172,16 @@ public class EntityTFTowerTermite extends EntityMob {
 			if (!this.doMerge) {
 				super.startExecuting();
 			} else {
-				World world = this.silverfish.world;
-				BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
+				World world = this.entity.world;
+				BlockPos blockpos = (new BlockPos(this.entity.posX, this.entity.posY + 0.5D, this.entity.posZ)).offset(this.facing);
 				IBlockState iblockstate = world.getBlockState(blockpos);
 
-				if (iblockstate == TFBlocks.tower_wood.getDefaultState()) // TF - Change block check
-				{
+				// TF - Change block check
+				if (iblockstate == TFBlocks.tower_wood.getDefaultState()) {
 					// TF - Change block type
 					world.setBlockState(blockpos, TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED), 3);
-					this.silverfish.spawnExplosionParticle();
-					this.silverfish.setDead();
+					this.entity.spawnExplosionParticle();
+					this.entity.setDead();
 				}
 			}
 		}
@@ -190,6 +189,7 @@ public class EntityTFTowerTermite extends EntityMob {
 
 	// [VanillaCopy] of EntitySilverfish$AISummonSilverfish. Changes noted
 	private static class AISummonSilverfish extends EntityAIBase {
+
 		private EntityTFTowerTermite silverfish; // TF - type change
 		private int lookForFriends;
 
@@ -219,6 +219,7 @@ public class EntityTFTowerTermite extends EntityMob {
 			--this.lookForFriends;
 
 			if (this.lookForFriends <= 0) {
+
 				World world = this.silverfish.world;
 				Random random = this.silverfish.getRNG();
 				BlockPos blockpos = new BlockPos(this.silverfish);
@@ -226,12 +227,13 @@ public class EntityTFTowerTermite extends EntityMob {
 				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : 0 - i) {
 					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : 0 - j) {
 						for (int k = 0; k <= 10 && k >= -10; k = k <= 0 ? 1 - k : 0 - k) {
+
 							BlockPos blockpos1 = blockpos.add(j, i, k);
 							IBlockState iblockstate = world.getBlockState(blockpos1);
 
-							if (iblockstate == TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED)) // TF - Change block check
-							{
-								if (world.getGameRules().getBoolean("mobGriefing")) {
+							// TF - Change block check
+							if (iblockstate == TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED)) {
+								if (ForgeEventFactory.getMobGriefingEvent(world, this.silverfish)) {
 									world.destroyBlock(blockpos1, true);
 								} else {
 									// TF - reset to normal tower wood
@@ -248,5 +250,4 @@ public class EntityTFTowerTermite extends EntityMob {
 			}
 		}
 	}
-
 }

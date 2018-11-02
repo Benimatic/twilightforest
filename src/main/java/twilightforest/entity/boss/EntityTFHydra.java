@@ -25,6 +25,7 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -590,7 +591,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (world.getGameRules().getBoolean("mobGriefing")) {
+		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(world, pos, this)) {
 					world.destroyBlock(pos, false);
@@ -776,7 +777,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		if (this.deathTime == 200) {
 			if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot"))) {
 				int i = this.getExperiencePoints(this.attackingPlayer);
-				i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
+				i = ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
 				while (i > 0) {
 					int j = EntityXPOrb.getXPSplit(i);
 					i -= j;
@@ -810,5 +811,4 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	public boolean isNonBoss() {
 		return false;
 	}
-
 }

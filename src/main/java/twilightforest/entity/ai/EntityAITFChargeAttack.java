@@ -8,6 +8,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.ITFCharger;
 import twilightforest.util.EntityUtil;
 
@@ -97,7 +98,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 				}
 			}
 		} else if (canBreak) {
-			if (!charger.world.isRemote && charger.world.getGameRules().getBoolean("mobGriefing")) {
+			if (!charger.world.isRemote && ForgeEventFactory.getMobGriefingEvent(charger.world, charger)) {
 
 				AxisAlignedBB bb = charger.getEntityBoundingBox();
 				int minx = MathHelper.floor(bb.minX - 0.75D);

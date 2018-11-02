@@ -16,12 +16,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.MazestoneVariant;
 import twilightforest.util.WorldUtil;
 
 public class ItemTFCrumbleHorn extends ItemTF {
+
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
@@ -86,42 +88,42 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		int cost = 0;
 
 		IBlockState state = world.getBlockState(pos);
-		Block currentID = state.getBlock();
+		Block block = state.getBlock();
 
-		if (!currentID.isAir(state, world, pos)) {
-			if (currentID == Blocks.STONE && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
+		if (!block.isAir(state, world, pos)) {
+			if (block == Blocks.STONE && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
 				world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState(), 3);
 				world.playEvent(2001, pos, Block.getStateId(state));
 				cost++;
 			}
 
-			if (currentID == Blocks.STONEBRICK && state.getValue(BlockStoneBrick.VARIANT) == BlockStoneBrick.EnumType.DEFAULT && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
+			if (block == Blocks.STONEBRICK && state.getValue(BlockStoneBrick.VARIANT) == BlockStoneBrick.EnumType.DEFAULT && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
 				world.setBlockState(pos, state.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED), 3);
 				world.playEvent(2001, pos, Block.getStateId(state));
 				cost++;
 			}
 
-			if (currentID == TFBlocks.maze_stone && state.getValue(BlockTFMazestone.VARIANT) == MazestoneVariant.BRICK && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
+			if (block == TFBlocks.maze_stone && state.getValue(BlockTFMazestone.VARIANT) == MazestoneVariant.BRICK && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
 				world.setBlockState(pos, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED), 3);
 				world.playEvent(2001, pos, Block.getStateId(state));
 				cost++;
 			}
 
-			if (currentID == Blocks.COBBLESTONE && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
+			if (block == Blocks.COBBLESTONE && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
 				world.setBlockState(pos, Blocks.GRAVEL.getDefaultState(), 3);
 				world.playEvent(2001, pos, Block.getStateId(state));
 				cost++;
 			}
 
-			if (currentID == Blocks.GRAVEL || currentID == Blocks.DIRT) {
+			if (block == Blocks.GRAVEL || block == Blocks.DIRT) {
 				if (living instanceof EntityPlayer) {
-					if (currentID.canHarvestBlock(world, pos, (EntityPlayer) living) && world.rand.nextInt(CHANCE_HARVEST) == 0) {
+					if (world.rand.nextInt(CHANCE_HARVEST) == 0 && block.canHarvestBlock(world, pos, (EntityPlayer) living)) {
 						world.setBlockToAir(pos);
-						currentID.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
+						block.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 						world.playEvent(2001, pos, Block.getStateId(state));
 						cost++;
 					}
-				} else if (world.getGameRules().getBoolean("mobGriefing") && world.rand.nextInt(CHANCE_HARVEST) == 0) {
+				} else if (world.rand.nextInt(CHANCE_HARVEST) == 0 && ForgeEventFactory.getMobGriefingEvent(world, living)) {
 					world.destroyBlock(pos, true);
 					cost++;
 				}
