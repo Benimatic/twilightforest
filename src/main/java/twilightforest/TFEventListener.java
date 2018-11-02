@@ -57,7 +57,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.BlockTFCritter;
@@ -359,18 +358,19 @@ public class TFEventListener {
 		}
 	}
 
+	@SubscribeEvent
+	public static void onPlayerRespawn(PlayerRespawnEvent event) {
+		if (event.isEndConquered()) {
+			updateCapabilities((EntityPlayerMP) event.player, event.player);
+		} else {
+			returnStoredItems(event.player);
+		}
+	}
+
 	/**
 	 * Maybe we kept some stuff for the player!
 	 */
-	@SubscribeEvent
-	public static void onPlayerRespawn(PlayerRespawnEvent event) {
-
-		if (event.isEndConquered()) {
-			updateCapabilities((EntityPlayerMP) event.player, event.player);
-			return;
-		}
-
-		EntityPlayer player = event.player;
+	private static void returnStoredItems(EntityPlayer player) {
 		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.debug("Player {} respawned and received items held in storage", player.getName());
@@ -583,8 +583,7 @@ public class TFEventListener {
 				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkProvider.isBlockProtected(pos)) {
 					
 					// send protection packet
-					StructureBoundingBox sbb = chunkProvider.getSBBAt(pos);
-					sendAreaProtectionPacket(world, pos, sbb);
+					sendAreaProtectionPacket(world, pos, chunkProvider.getSBBAt(pos));
 					
 					// send a hint monster?
 					nearbyFeature.trySpawnHintMonster(world, player, pos);
@@ -597,12 +596,8 @@ public class TFEventListener {
 	}
 
 	private static void sendAreaProtectionPacket(World world, BlockPos pos, StructureBoundingBox sbb) {
-		// send packet
-		IMessage message = new PacketAreaProtection(sbb, pos);
-
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
-
-		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
+		TFPacketHandler.CHANNEL.sendToAllAround(new PacketAreaProtection(sbb, pos), targetPoint);
 	}
 
 	@SubscribeEvent
@@ -741,9 +736,9 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void onAdvancementGet(AdvancementEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
-
-		if (player instanceof EntityPlayerMP)
+		if (player instanceof EntityPlayerMP) {
 			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
+		}
 	}
 
 	// Parrying
