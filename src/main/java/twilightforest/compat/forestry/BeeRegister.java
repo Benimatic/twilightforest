@@ -40,10 +40,12 @@ public enum BeeRegister implements IBeeDefinition {
     ANIMATED         ( BeeBranchRegister.HIGHLANDS    , "Vividus"      ),
     SENTINEL         ( BeeBranchRegister.HIGHLANDS    , "Excubitor"    ),
 
-    MYTHLOGICAL      ( BeeBranchRegister.TWILIGHT     , "Fabulares"    ),
+    MYTHOLOGICAL     ( BeeBranchRegister.TWILIGHT     , "Fabulares"    ),
     ENTROPHIED       ( BeeBranchRegister.TWILIGHT     , "Champion"     ),
 
-    SERPETINE        ( BeeBranchRegister.TWILIGHT     , "Anguis"       ),
+    SHEEPISH         ( BeeBranchRegister.TWILIGHT     , "Modestus"     ),
+
+    SERPENTINE       ( BeeBranchRegister.TWILIGHT     , "Anguis"       ),
 
     NECROMANTIC      ( BeeBranchRegister.TWILIGHT     , "Necromantiae" ),
 
