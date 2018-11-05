@@ -2,7 +2,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "feature": "twilightforest:labyrinth" }
+      "conditions": { "feature": "twilightforest:labyrinth", "position": { "y": { "max": 30 } } }
     }
   }
 }
