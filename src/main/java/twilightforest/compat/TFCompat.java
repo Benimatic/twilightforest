@@ -1,7 +1,5 @@
 package twilightforest.compat;
 
-import blusunrize.immersiveengineering.api.ApiUtils;
-import blusunrize.immersiveengineering.api.tool.RailgunHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.ItemStack;
@@ -11,12 +9,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.tuple.Pair;
-import team.chisel.api.ChiselAPIProps;
-import team.chisel.api.IMC;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -27,10 +22,6 @@ import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
 
-@Optional.InterfaceList({
-        @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
-        @Optional.Interface(modid = "chisel", iface = "team.chisel.api.IMC")
-})
 public enum TFCompat {
     BAUBLES("Baubles") {},
     CHISEL("Chisel") {
@@ -70,9 +61,12 @@ public enum TFCompat {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setString("group", group);
             nbt.setTag("stack", stack.serializeNBT());
-            FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
+            FMLInterModComms.sendMessage(team.chisel.api.ChiselAPIProps.MOD_ID, team.chisel.api.IMC.ADD_VARIATION_V2.toString(), nbt);
         }
-    }, // TODO Forestry
+    },
+    FORESTRY("Forestry") {
+
+    },
     IMMERSIVEENGINEERING("Immersive Engineering") {
         @Override
         protected boolean preInit() {
@@ -98,7 +92,7 @@ public enum TFCompat {
         @Override
         protected void init() {
             // Yeah, it's a thing! https://twitter.com/AtomicBlom/status/1004931868012056583
-            RailgunHandler.projectilePropertyMap.add(Pair.of(ApiUtils.createIngredientStack(TFBlocks.cicada), new RailgunHandler.RailgunProjectileProperties(2, 0.25){
+            blusunrize.immersiveengineering.api.tool.RailgunHandler.projectilePropertyMap.add(Pair.of(blusunrize.immersiveengineering.api.ApiUtils.createIngredientStack(TFBlocks.cicada), new blusunrize.immersiveengineering.api.tool.RailgunHandler.RailgunProjectileProperties(2, 0.25){
                 @Override
                 public boolean overrideHitEntity(Entity entityHit, Entity shooter) {
                     World world = entityHit.getEntityWorld();
