@@ -3,9 +3,11 @@
   "icon": "twilightforest:trophy:6",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/minoshroom",
+  "sortnum": 30,
   "pages": [
     {
-      "type": "text",
+      "type": "entity",
+      "entity": "twilightforest:minoshroom{HandItems:[{id:\"twilightforest:minotaur_axe\",Count:1}]}",
       "text": "He just wanted to axe you a question"
     }
   ]

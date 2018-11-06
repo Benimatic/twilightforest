@@ -3,9 +3,11 @@
   "icon": "twilightforest:trophy:0",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/naga",
+  "sortnum": 10,
   "pages": [
     {
-      "type": "text",
+      "type": "entity",
+      "entity": "twilightforest:naga",
       "text": "Sneky thing"
     }
   ]

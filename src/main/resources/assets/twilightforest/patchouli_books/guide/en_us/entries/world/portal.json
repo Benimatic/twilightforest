@@ -6,17 +6,47 @@
     {
       "type": "multiblock",
       "name": "Twilight Portal",
-      "text": "Once you finish digging and planting the formation, fill it with water and drop a diamond into the water!",
+      "text": "Once you finish digging and planting the formation, fill it with water!",
       "multiblock": {
         "pattern": [
           [ " FF ", "F0AF", "FAAF", " FF " ],
-          [ " GG ", "GAAG", "GAAG", " GG " ],
+          [ " GG ", "GWWG", "GWWG", " GG " ],
           [ "    ", " DD ", " DD ", "    " ]
         ],
         "mapping": {
           " ": "ANY",
           "A": "AIR",
           "0": "AIR",
+          "W": "minecraft:water",
+          "F": "minecraft:red_flower",
+          "G": "minecraft:grass",
+          "D": "minecraft:dirt"
+        },
+        "symmetrical": true,
+        "offset"     : [0, 1, 0],
+        "view_offset": [0, 0, 0]
+      }
+    }, {
+      "type": "spotlight",
+      "title": "Activation Item",
+      "item": "minecraft:diamond",
+      "text": "Drop a diamond into the water!"
+    },
+    {
+      "type": "multiblock",
+      "name": "Completed Twilight Portal",
+      "text": "If you see the purple swirls, hop right in!",
+      "multiblock": {
+        "pattern": [
+          [ " FF ", "F0AF", "FAAF", " FF " ],
+          [ " GG ", "GWWG", "GWWG", " GG " ],
+          [ "    ", " DD ", " DD ", "    " ]
+        ],
+        "mapping": {
+          " ": "ANY",
+          "A": "AIR",
+          "0": "AIR",
+          "W": "twilightforest:twilight_portal",
           "F": "minecraft:red_flower",
           "G": "minecraft:grass",
           "D": "minecraft:dirt"

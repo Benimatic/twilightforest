@@ -2,9 +2,17 @@
   "name": "Ghasts",
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:mini_ghast\"}}",
   "category": "entities",
+  "sortnum": 100,
   "pages": [
     {
-      "type": "text",
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/mini_ghast",
+      "entity": "twilightforest:mini_ghast",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/tower_ghast",
+      "entity": "twilightforest:tower_ghast",
       "text": "things and stuff"
     }
   ]

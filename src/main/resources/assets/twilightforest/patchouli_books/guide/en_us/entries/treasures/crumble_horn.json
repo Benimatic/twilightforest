@@ -5,7 +5,9 @@
   "advancement": "twilightforest:alt/treasures/crumble_horn",
   "pages": [
     {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Crumble Horn",
+      "item": "twilightforest:crumble_horn",
       "text": "things and stuff"
     }
   ]

@@ -5,7 +5,9 @@
   "advancement": "twilightforest:alt/treasures/uncrafting_table",
   "pages": [
     {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Uncrafting Table",
+      "item": "twilightforest:uncrafting_table",
       "text": "things and stuff"
     }
   ]

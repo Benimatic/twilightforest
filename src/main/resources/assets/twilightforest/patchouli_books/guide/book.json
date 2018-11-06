@@ -4,7 +4,7 @@
     "twilightforest"
   ],
   "creative_tab": "twilightforest",
-  "book_texture": "patchouli:textures/gui/book_green",
+  "book_texture": "patchouli:textures/gui/book_green.png",
   "model": "twilightforest:logbook",
   "version": "1"
 }

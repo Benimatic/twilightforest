@@ -5,7 +5,9 @@
   "advancement": "twilightforest:alt/treasures/carminite",
   "pages": [
     {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Carminite",
+      "item": "twilightforest:carminite",
       "text": "things and stuff"
     }
   ]

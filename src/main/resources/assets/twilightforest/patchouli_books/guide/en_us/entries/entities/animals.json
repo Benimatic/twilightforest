@@ -2,9 +2,47 @@
   "name": "Animals",
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:wild_boar\"}}",
   "category": "entities",
+  "sortnum": 10,
   "pages": [
     {
-      "type": "text",
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/bighorn_sheep",
+      "entity": "twilightforest:bighorn_sheep",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/bunny",
+      "entity": "twilightforest:bunny",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/deer",
+      "entity": "twilightforest:deer",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/raven",
+      "entity": "twilightforest:raven",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/squirrel",
+      "entity": "twilightforest:squirrel",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/wild_boar",
+      "entity": "twilightforest:tiny_bird",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/wild_boar",
+      "entity": "twilightforest:tiny_bird",
+      "text": "things and stuff"
+    }, {
+      "type": "entity",
+      "advancements": "twilightforest:alt/entities/penguin",
+      "entity": "twilightforest:penguin",
       "text": "things and stuff"
     }
   ]

@@ -1,9 +1,1 @@
-{
-  "__hidden": "This whole tab fails and disappears if this item doesn't exist",
-  "criteria": {
-    "hidden": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": { "items": [{ "item": "patchouli:guide_book" }] }
-    }
-  }
-}
+{ "criteria": { "hidden": { "trigger": "minecraft:impossible" }}}

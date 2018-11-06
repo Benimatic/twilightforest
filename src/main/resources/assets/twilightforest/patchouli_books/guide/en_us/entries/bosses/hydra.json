@@ -3,9 +3,11 @@
   "icon": "twilightforest:trophy:2",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/hydra",
+  "sortnum": 40,
   "pages": [
     {
-      "type": "text",
+      "type": "entity",
+      "entity": "twilightforest:hydra",
       "text": "Hail hydra"
     }
   ]

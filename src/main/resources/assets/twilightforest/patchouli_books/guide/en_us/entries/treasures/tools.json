@@ -1,11 +1,44 @@
 {
-  "name": "Various Tools",
+  "name": "Tools",
   "icon": "twilightforest:ironwood_pickaxe",
   "category": "treasures",
   "pages": [
     {
       "type": "text",
-      "text": "things and stuff"
+      "advancement": "twilightforest:alt/treasures/ironwood_tool_set",
+      "text": "Ironwood Tools"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/steeleaf_tool_set",
+      "text": "Steeleaf Tools"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/fiery_tool_set",
+      "text": "Fiery Tools"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/fiery_tool_set",
+      "text": "Fiery Tools"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/knightmetal_tool_set",
+      "text": "Knightly Tools"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/knightmetal_tool_set",
+      "text": "Knightly Tools"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/ice_sword",
+      "text": "Ice Sword"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/glass_sword",
+      "text": "Glass Sword"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/giant_tool_set",
+      "text": "Giant Tools"
     }
   ]
 }

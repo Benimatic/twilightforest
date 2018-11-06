@@ -5,7 +5,9 @@
   "advancement": "twilightforest:alt/treasures/ice_bomb",
   "pages": [
     {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Ice Bomb",
+      "item": "twilightforest:ice_bomb",
       "text": "things and stuff"
     }
   ]

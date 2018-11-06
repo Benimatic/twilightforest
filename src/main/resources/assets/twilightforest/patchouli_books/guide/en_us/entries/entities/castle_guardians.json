@@ -1,11 +1,12 @@
 {
   "name": "Castle Guardians",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:castle_guardian\"}}",
+  "icon": "minecraft:spawn_egg",
   "category": "entities",
+  "sortnum": 170,
   "pages": [
     {
       "type": "text",
-      "text": "things and stuff"
+      "text": ""
     }
   ]
 }
