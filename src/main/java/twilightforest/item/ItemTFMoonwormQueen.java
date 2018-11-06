@@ -1,11 +1,13 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
@@ -28,6 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ItemTFMoonwormQueen extends ItemTF {
+
 	private static final int FIRING_TIME = 12;
 
 	protected ItemTFMoonwormQueen() {
@@ -98,6 +101,9 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		IBlockState real = world.getBlockState(pos);
 		if (real.getBlock() == TFBlocks.moonworm) {
 			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, stack);
+			if (player instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
+			}
 		}
 
 		return true;
@@ -129,5 +135,4 @@ public class ItemTFMoonwormQueen extends ItemTF {
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
-
 }

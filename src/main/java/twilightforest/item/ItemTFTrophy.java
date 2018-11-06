@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -8,6 +9,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -41,6 +43,7 @@ import java.util.Locale;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemTFTrophy extends ItemTF {
+
 	public ItemTFTrophy() {
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setMaxDamage(0);
@@ -113,6 +116,10 @@ public class ItemTFTrophy extends ItemTF {
 						tileentityskull.setType(itemstack.getMetadata());
 
 						tileentityskull.setSkullRotation(i);
+					}
+
+					if (playerIn instanceof EntityPlayerMP) {
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack);
 					}
 
 					itemstack.shrink(1);
