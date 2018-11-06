@@ -1,6 +1,5 @@
 package twilightforest.world.feature;
 
-
 import net.minecraft.block.BlockLeaves;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.TFBlocks;
@@ -12,10 +11,10 @@ public class TFGenSmallRainboak extends TFGenSmallTwilightOak {
 		this(false);
 	}
 
-
 	public TFGenSmallRainboak(boolean notify) {
-		super(notify);
-		this.leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).withProperty(BlockLeaves.CHECK_DECAY, false);
+		super(notify, 4,
+				TFBlocks.twilight_log.getDefaultState(),
+				TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).withProperty(BlockLeaves.CHECK_DECAY, false)
+		);
 	}
-
 }
