@@ -77,8 +77,9 @@ public class EntityTFMoonwormShot extends EntityThrowable implements ITFProjecti
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
+			int stateId = Block.getStateId(TFBlocks.moonworm.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
+				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, stateId);
 			}
 		} else {
 			super.handleStatusUpdate(id);

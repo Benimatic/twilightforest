@@ -16,6 +16,7 @@ import twilightforest.client.particle.TFParticleType;
 import java.util.List;
 
 public class EntityTFFallingIce extends EntityFallingBlock {
+
 	private static final int HANG_TIME = 100;
 
 	public EntityTFFallingIce(World world) {
@@ -85,12 +86,13 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			}
 		}
 
+		int stateId = Block.getStateId(Blocks.PACKED_ICE.getDefaultState());
 		for (int i = 0; i < 200; i++) {
 			double dx = this.posX + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
 
-			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
+			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, stateId);
 		}
 
 		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);

@@ -47,7 +47,9 @@ public class EntityTFIceBomb extends EntityThrowable implements ITFProjectile {
 	}
 
 	private void doTerrainEffects() {
-		int range = 3;
+
+		final int range = 3;
+
 		int ix = MathHelper.floor(this.lastTickPosX);
 		int iy = MathHelper.floor(this.lastTickPosY);
 		int iz = MathHelper.floor(this.lastTickPosZ);
@@ -99,24 +101,26 @@ public class EntityTFIceBomb extends EntityThrowable implements ITFProjectile {
 	}
 
 	public void makeTrail() {
+		int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
 		for (int i = 0; i < 10; i++) {
 			double dx = posX + 0.75F * (rand.nextFloat() - 0.5F);
 			double dy = posY + 0.75F * (rand.nextFloat() - 0.5F);
 			double dz = posZ + 0.75F * (rand.nextFloat() - 0.5F);
 
-			world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, -motionX, -motionY, -motionZ, Block.getStateId(Blocks.SNOW.getDefaultState()));
+			world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, -motionX, -motionY, -motionZ, stateId);
 		}
 	}
 
 	private void makeIceZone() {
 		if (this.world.isRemote) {
 			// sparkles
+			int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
 			for (int i = 0; i < 20; i++) {
 				double dx = this.posX + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dy = this.posY + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dz = this.posZ + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 
-				world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.SNOW.getDefaultState()));
+				world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, 0, 0, 0, stateId);
 			}
 		} else {
 			if (this.zoneTimer % 10 == 0) {
