@@ -150,12 +150,10 @@ public enum StructureWoodVariant implements IStringSerializable {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static IBlockState transferStateKeys(IBlockState stateIn, IBlockState stateOut, IProperty... properties) {
-        for (IProperty property : properties) {
+    public static IBlockState transferStateKeys(IBlockState stateIn, IBlockState stateOut, IProperty<?>... properties) {
+        for (IProperty<?> property : properties) {
             stateOut = transferStateKey(stateIn, stateOut, property);
         }
-
         return stateOut;
     }
 

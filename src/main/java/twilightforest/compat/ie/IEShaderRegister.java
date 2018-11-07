@@ -122,9 +122,9 @@ public class IEShaderRegister {
     // t CaseType
     // s Suffix
     // c Color
-    private static final ShaderLayerProvider LAYER_PROVIDER                 = (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( m.provideTex(t, s) ), c );
-    private static final ShaderLayerProvider TOWER_DEVICE_SHADER_PROVIDER   = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "energy")), 0xFFFFFFFF, DEVICE_RED_ENERGY_TRICONSUMER, ShaderManager.Uniforms.STAR_UNIFORMS );
-    private static final ShaderLayerProvider YELLOW_CIRCUIT_SHADER_PROVIDER = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.IMMERSIVEENGINEERING.provideTex(t, "circuit")), 0xFF_BA_EE_02, DEVICE_YELLOW_ENERGY_TRICONSUMER, ShaderManager.Uniforms.STAR_UNIFORMS );
+    private static final ShaderLayerProvider<?> LAYER_PROVIDER                 = (m, t, s, c) -> new ShaderCase.ShaderLayer( new ResourceLocation( m.provideTex(t, s) ), c );
+    private static final ShaderLayerProvider<?> TOWER_DEVICE_SHADER_PROVIDER   = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.TWILIGHTFOREST.provideTex(t, "energy")), 0xFFFFFFFF, DEVICE_RED_ENERGY_TRICONSUMER, ShaderManager.Uniforms.STAR_UNIFORMS );
+    private static final ShaderLayerProvider<?> YELLOW_CIRCUIT_SHADER_PROVIDER = (m, t, s, c) -> new ShaderConsumerLayer   ( new ResourceLocation( ModType.IMMERSIVEENGINEERING.provideTex(t, "circuit")), 0xFF_BA_EE_02, DEVICE_YELLOW_ENERGY_TRICONSUMER, ShaderManager.Uniforms.STAR_UNIFORMS );
 
     // Registering
     private static List<ShaderRegistry.ShaderRegistryEntry> SHADERS;
