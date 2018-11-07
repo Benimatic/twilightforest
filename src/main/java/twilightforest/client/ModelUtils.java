@@ -19,6 +19,7 @@ import net.minecraftforge.registries.IRegistryDelegate;
 import java.util.*;
 
 public class ModelUtils {
+
 	private static final Map<IRegistryDelegate<Block>, IStateMapper> stateMappers = ReflectionHelper.getPrivateValue(ModelLoader.class, null, "customStateMappers");
 	private static final IStateMapper defaultStateMapper = new DefaultStateMapper();
 
@@ -41,20 +42,20 @@ public class ModelUtils {
 	}
 
 	public static void registerIncludingItemModels(Block b, String inventoryPrefix, IProperty<?>[] blockIgnorables, IProperty<?>[] itemIgnorables) {
-		HashSet<IProperty<?>> properties = new HashSet<>(b.getBlockState().getProperties());
+		Set<IProperty<?>> properties = new HashSet<>(b.getBlockState().getProperties());
 		final Item item = Item.getItemFromBlock(b);
 
 		ModelLoader.setCustomStateMapper(b, new StateMap.Builder().ignore(blockIgnorables).build());
 
 		if (item != Items.AIR) {
 			if (itemIgnorables.length > 0) {
-				for (IProperty ignore : itemIgnorables) properties.remove(ignore);
+				for (IProperty<?> ignore : itemIgnorables) properties.remove(ignore);
 
-				HashSet<IBlockState> states = new HashSet<>();
+				Set<IBlockState> states = new HashSet<>();
 				final IBlockState defaultState = b.getDefaultState();
 				states.add(defaultState);
 
-				for (IProperty prop : properties) {
+				for (IProperty<?> prop : properties) {
 					ImmutableSet.Builder<IBlockState> statesIn = ImmutableSet.builder();
 					statesIn.addAll(states);
 					swizzleStatesWithPropertyKey(defaultState, states, statesIn.build(), prop);
@@ -76,7 +77,7 @@ public class ModelUtils {
 	}
 
 	private static <T extends Comparable<T>> void swizzleStatesWithPropertyKey(IBlockState defaultState, Collection<IBlockState> target, ImmutableCollection<IBlockState> statesIn, IProperty<T> property) {
-		HashSet<T> values = new HashSet<>(property.getAllowedValues());
+		Set<T> values = new HashSet<>(property.getAllowedValues());
 
 		values.remove(defaultState.getValue(property));
 

@@ -338,7 +338,7 @@ public class ContainerTFUncrafting extends Container {
 			}
 		}
 
-		return recipes.toArray(new IRecipe[recipes.size()]);
+		return recipes.toArray(new IRecipe[0]);
 	}
 
 	private IRecipe[] getRecipesFor(InventoryCrafting matrix, World world) {
@@ -348,7 +348,7 @@ public class ContainerTFUncrafting extends Container {
 			if (recipe.matches(matrix, world))
 				recipes.add(recipe);
 
-		return recipes.toArray(new IRecipe[recipes.size()]);
+		return recipes.toArray(new IRecipe[0]);
 	}
 
 	/**

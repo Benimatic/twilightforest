@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<ShaderGrabbagStackRenderer.DummyTile> {
+
     public static class DummyTile extends TileEntity {}
 
     @MethodsReturnNonnullByDefault
@@ -39,7 +40,7 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
     public class BakedModel implements IBakedModel {
         private class Overrides extends ItemOverrideList {
             public Overrides() {
-                super(Collections.EMPTY_LIST);
+                super(Collections.emptyList());
             }
 
             @Override
@@ -51,7 +52,7 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
 
         @Override
         public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         @Override

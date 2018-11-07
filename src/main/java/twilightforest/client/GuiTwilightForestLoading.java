@@ -4,14 +4,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketKeepAlive;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -24,14 +22,14 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class GuiTwilightForestLoading extends GuiScreen {
 
-	private Minecraft client = FMLClientHandler.instance().getClient();
 	private boolean isEntering;
 	private boolean contentNeedsAssignment = false;
 	private long lastWorldUpdateTick = 0L;
 	private long seed;
-	private static Random random = new Random();
 	private BackgroundThemes backgroundTheme;
 	private ItemStack item;
+
+	private static final Random random = new Random();
 	private static final float backgroundScale = 32.0F;
 
 	GuiTwilightForestLoading() {
@@ -76,7 +74,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 		}
 
 		FontRenderer fontRenderer = mc.fontRenderer;
-		ScaledResolution resolution = new ScaledResolution(client);
+		ScaledResolution resolution = new ScaledResolution(mc);
 
 		drawBackground(resolution.getScaledWidth(), resolution.getScaledHeight());
 
@@ -85,11 +83,11 @@ public class GuiTwilightForestLoading extends GuiScreen {
 		String loadTitle = I18n.translateToLocal(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(
-				((resolution.getScaledWidth()) / 2) - (fontRenderer.getStringWidth(loadTitle) / 4),
-				(resolution.getScaledHeight() / 3),
-				0
+				(resolution.getScaledWidth() / 2f) - (fontRenderer.getStringWidth(loadTitle) / 4f),
+				(resolution.getScaledHeight() / 3f),
+				0f
 		);
-		GlStateManager.translate(-(fontRenderer.getStringWidth(loadTitle) / 4), 0, 0);
+		GlStateManager.translate(-(fontRenderer.getStringWidth(loadTitle) / 4f), 0f, 0f);
 		fontRenderer.drawStringWithShadow(loadTitle, 0, 0, 0xEEEEEE); //eeeeeeeeeeeeeeeeee
 		GlStateManager.popMatrix();
 		GlStateManager.color(1F, 1F, 1F, 1F);
@@ -110,22 +108,22 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
 		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * TFConfig.loadingScreen.frequency;
-		float sineTicker2 = (TFClientEvents.sineTicker + 314 + partialTicks) * TFConfig.loadingScreen.frequency;
+		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * TFConfig.loadingScreen.frequency;
 		GlStateManager.pushMatrix();
 
 		// Shove it!
-		GlStateManager.translate(width - ((width / 30) * TFConfig.loadingScreen.scale), height - (height / 10), 0); // Bottom right Corner
+		GlStateManager.translate(width - ((width / 30f) * TFConfig.loadingScreen.scale), height - (height / 10f), 0f); // Bottom right Corner
 
 		if (TFConfig.loadingScreen.enable) {
 			// Wobble it!
-			GlStateManager.rotate((float) Math.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0, 0, 1);
+			GlStateManager.rotate(MathHelper.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0f, 0f, 1f);
 
 			// Bounce it!
-			GlStateManager.scale(((Math.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), ((Math.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), 1F);
+			GlStateManager.scale(((MathHelper.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), ((MathHelper.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), 1F);
 		}
 
 		// Shift it!
-		GlStateManager.translate(-8, -16.5, 0);
+		GlStateManager.translate(-8f, -16.5f, 0f);
 
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
