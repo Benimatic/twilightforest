@@ -17,8 +17,9 @@ import java.util.function.IntConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
+import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
+import net.minecraftforge.client.resource.VanillaResourceType;
 
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
@@ -31,7 +32,7 @@ import javax.annotation.Nullable;
 
 public final class ShaderManager {
 
-    private static IResourceManagerReloadListener shaderReloadListener;
+    private static ISelectiveResourceReloadListener shaderReloadListener;
 
     private static final int VERT = OpenGlHelper.arbShaders ? ARBVertexShader.GL_VERTEX_SHADER_ARB : GL20.GL_VERTEX_SHADER;
     private static final int FRAG = OpenGlHelper.arbShaders ? ARBFragmentShader.GL_FRAGMENT_SHADER_ARB : GL20.GL_FRAGMENT_SHADER;
@@ -74,27 +75,31 @@ public final class ShaderManager {
         IResourceManager iManager;
 
         if ((iManager = Minecraft.getMinecraft().getResourceManager()) instanceof SimpleReloadableResourceManager) {
-            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager -> {
-                //deleteProgram(enderPortalShader);
-                deleteProgram(twilightSkyShader);
-                deleteProgram(fireflyShader);
-                deleteProgram(auroraShader);
-                deleteProgram(carminiteShader);
-                deleteProgram(towerDeviceShader);
-                deleteProgram(yellowCircuitShader);
-                //deleteProgram(bloomShader);
-                deleteProgram(starburstShader);
-                //deleteProgram(outlineShader);
-
-                initShaderList();
-            }));
+            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager, predicate) -> {
+                if (predicate.test(VanillaResourceType.SHADERS)) reloadShaders();
+            });
         }
 
         //bloomFbo = new Framebuffer(MINECRAFT.displayWidth, MINECRAFT.displayHeight, true);
     }
 
-    public static IResourceManagerReloadListener getShaderReloadListener() {
+    public static ISelectiveResourceReloadListener getShaderReloadListener() {
         return shaderReloadListener;
+    }
+
+    private static void reloadShaders() {
+        //deleteProgram(enderPortalShader);
+        deleteProgram(twilightSkyShader);
+        deleteProgram(fireflyShader);
+        deleteProgram(auroraShader);
+        deleteProgram(carminiteShader);
+        deleteProgram(towerDeviceShader);
+        deleteProgram(yellowCircuitShader);
+        //deleteProgram(bloomShader);
+        deleteProgram(starburstShader);
+        //deleteProgram(outlineShader);
+
+        initShaderList();
     }
 
     private static void deleteProgram(int id) {
