@@ -6,7 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +22,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFBirdFly;
+import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFTinyBird extends EntityTFBird {
 
@@ -44,7 +44,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	protected void initEntityAI() {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAITFBirdFly(this));
-		this.tasks.addTask(1, new EntityAITempt(this, 1.0F, true, SEEDS));
+		this.tasks.addTask(1, new EntityAITFTempt(this, 1.0F, true, SEEDS));
 		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(4, new EntityAILookIdle(this));
@@ -202,8 +202,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (this.hurtTime > 0) return true;
 		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
 		return closestPlayer != null
-				&& !SEEDS.contains(closestPlayer.getHeldItemMainhand().getItem())
-				&& !SEEDS.contains(closestPlayer.getHeldItemOffhand().getItem());
+				&& !SEEDS.apply(closestPlayer.getHeldItemMainhand())
+				&& !SEEDS.apply(closestPlayer.getHeldItemOffhand());
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {
