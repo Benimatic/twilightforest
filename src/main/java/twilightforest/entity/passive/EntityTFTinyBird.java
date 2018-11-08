@@ -35,7 +35,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	public EntityTFTinyBird(World world) {
 		super(world);
-		this.setSize(0.5F, 0.9F);
+		this.setSize(0.3F, 0.3F);
 		setBirdType(rand.nextInt(4));
 		setIsBirdLanded(true);
 	}
@@ -97,6 +97,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.TINYBIRD_HURT;
+	}
+
+	@Override
+	public float getEyeHeight() {
+		return this.height * 0.7F;
 	}
 
 	@Override

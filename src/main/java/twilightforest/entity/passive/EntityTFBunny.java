@@ -27,7 +27,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
 	public EntityTFBunny(World world) {
 		super(world);
-		this.setSize(0.3F, 0.7F);
+		this.setSize(0.3F, 0.6F);
 
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
@@ -89,7 +89,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
 	@Override
 	public float getEyeHeight() {
-		return this.height * 0.4F;
+		return this.height * 0.5F;
 	}
 
 	@Override

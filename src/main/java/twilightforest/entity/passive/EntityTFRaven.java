@@ -22,7 +22,7 @@ public class EntityTFRaven extends EntityTFTinyBird {
 
 	public EntityTFRaven(World world) {
 		super(world);
-		this.setSize(0.3F, 0.7F);
+		this.setSize(0.3F, 0.5F);
 
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
@@ -64,6 +64,11 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
+	}
+
+	@Override
+	public float getEyeHeight() {
+		return this.height * 0.75F;
 	}
 
 	@Override
