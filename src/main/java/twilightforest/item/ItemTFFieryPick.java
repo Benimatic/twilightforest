@@ -37,8 +37,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 
 	@SubscribeEvent
 	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
-		if (event.getHarvester() != null && !event.getHarvester().getHeldItemMainhand().isEmpty()
-				&& event.getHarvester().inventory.getCurrentItem().getItem() == TFItems.fiery_pickaxe
+		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe
 				&& ForgeHooks.canHarvestBlock(event.getState().getBlock(), event.getHarvester(), event.getWorld(), event.getPos())) {
 
 			List<ItemStack> removeThese = new ArrayList<ItemStack>();

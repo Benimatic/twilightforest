@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-
 public class EntityTFBighorn extends EntitySheep {
 
 	public EntityTFBighorn(World world) {
@@ -24,11 +23,9 @@ public class EntityTFBighorn extends EntitySheep {
 	}
 
 	private static EnumDyeColor getRandomFleeceColor(Random random) {
-		if (random.nextBoolean()) {
-			return EnumDyeColor.BROWN;
-		} else {
-			return EnumDyeColor.byMetadata(random.nextInt(16));
-		}
+		return random.nextBoolean()
+				? EnumDyeColor.BROWN
+				: EnumDyeColor.byMetadata(random.nextInt(16));
 	}
 
 	@Override
@@ -42,12 +39,7 @@ public class EntityTFBighorn extends EntitySheep {
 	public EntitySheep createChild(EntityAgeable entityanimal) {
 		EntityTFBighorn otherParent = (EntityTFBighorn) entityanimal;
 		EntityTFBighorn babySheep = new EntityTFBighorn(world);
-		if (rand.nextBoolean()) {
-			babySheep.setFleeceColor(getFleeceColor());
-		} else {
-			babySheep.setFleeceColor(otherParent.getFleeceColor());
-		}
+		babySheep.setFleeceColor((rand.nextBoolean() ? this : otherParent).getFleeceColor());
 		return babySheep;
 	}
-
 }

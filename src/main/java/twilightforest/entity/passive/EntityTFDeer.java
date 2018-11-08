@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-
 /**
  * Deer are like quiet, non-milkable cows!
  * <p>
@@ -22,6 +21,7 @@ import twilightforest.TwilightForestMod;
  * @author Ben
  */
 public class EntityTFDeer extends EntityCow {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/deer");
 
 	public EntityTFDeer(World world) {
@@ -51,7 +51,7 @@ public class EntityTFDeer extends EntityCow {
 	@Override
 	public boolean processInteract(EntityPlayer entityplayer, EnumHand hand) {
 		ItemStack itemstack = entityplayer.getHeldItem(hand);
-		if (!itemstack.isEmpty() && itemstack.getItem() == Items.BUCKET) {
+		if (itemstack.getItem() == Items.BUCKET) {
 			// specifically do not respond to this
 			return false;
 		} else {
@@ -68,5 +68,4 @@ public class EntityTFDeer extends EntityCow {
 	public EntityCow createChild(EntityAgeable entityanimal) {
 		return new EntityTFDeer(world);
 	}
-
 }

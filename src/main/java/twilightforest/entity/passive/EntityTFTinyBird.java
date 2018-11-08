@@ -122,19 +122,17 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (underMaterial == Material.GRASS) {
 			return 9.0F;
 		}
-		// default to just prefering lighter areas
+		// default to just preferring lighter areas
 		return this.world.getLightBrightness(pos) - 0.5F;
 	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
 		// while we are flying, try to level out somewhat
 		if (!this.isBirdLanded()) {
 			this.motionY *= 0.6000000238418579D;
 		}
-
 	}
 
 	@Override
@@ -174,9 +172,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.posX;
 			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.posY;
 			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.posZ;
+
 			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
 			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
 			this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
+
 			float f = (float) (MathHelper.atan2(this.motionZ, this.motionX) * (180D / Math.PI)) - 90.0F;
 			float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
 			this.moveForward = 0.5F;
@@ -194,19 +194,18 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	public boolean isSpooked() {
+		if (this.hurtTime > 0) return true;
 		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
-		return this.hurtTime > 0 || (closestPlayer != null && !seeds.contains(closestPlayer.inventory.getCurrentItem().getItem()));
+		return closestPlayer != null
+				&& !seeds.contains(closestPlayer.getHeldItemMainhand().getItem())
+				&& !seeds.contains(closestPlayer.getHeldItemOffhand().getItem());
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-
-		if (block.isAir(state, world, pos)) {
-			return false;
-		} else {
-			return block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, EnumFacing.UP);
-		}
+		return !block.isAir(state, world, pos)
+				&& (block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, EnumFacing.UP));
 	}
 
 	@Override
@@ -215,13 +214,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	public void setIsBirdLanded(boolean landed) {
-		byte b0 = dataManager.get(DATA_BIRDFLAGS);
-
-		if (landed) {
-			dataManager.set(DATA_BIRDFLAGS, (byte) (b0 | 1));
-		} else {
-			dataManager.set(DATA_BIRDFLAGS, (byte) (b0 & -2));
-		}
+		byte flags = dataManager.get(DATA_BIRDFLAGS);
+		dataManager.set(DATA_BIRDFLAGS, (byte) (landed ? flags | 1 : flags & ~1));
 	}
 
 	@Override
