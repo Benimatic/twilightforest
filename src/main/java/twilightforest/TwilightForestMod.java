@@ -81,8 +81,6 @@ public class TwilightForestMod {
 
 		CapabilityList.registerCapabilities();
 
-		TFTreasure.init();
-
 		// just call this so that we register structure IDs correctly
 		LOGGER.debug("There are " + TFFeature.values().length + " entries in TTFeature enum. Maximum structure size is " + TFFeature.getMaxSize());
 
@@ -111,6 +109,7 @@ public class TwilightForestMod {
 		TFPacketHandler.init();
 		proxy.init();
 		TFAdvancements.init();
+		TFTreasure.init();
 
 		if (compat) {
 			try {

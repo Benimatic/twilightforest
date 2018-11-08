@@ -44,7 +44,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	protected void initEntityAI() {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAITFBirdFly(this));
-		this.tasks.addTask(1, new EntityAITempt(this, 1.0F, true, seeds));
+		this.tasks.addTask(1, new EntityAITempt(this, 1.0F, true, SEEDS));
 		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(4, new EntityAILookIdle(this));
@@ -197,8 +197,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (this.hurtTime > 0) return true;
 		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
 		return closestPlayer != null
-				&& !seeds.contains(closestPlayer.getHeldItemMainhand().getItem())
-				&& !seeds.contains(closestPlayer.getHeldItemOffhand().getItem());
+				&& !SEEDS.contains(closestPlayer.getHeldItemMainhand().getItem())
+				&& !SEEDS.contains(closestPlayer.getHeldItemOffhand().getItem());
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {

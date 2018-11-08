@@ -33,7 +33,7 @@ public class EntityTFRaven extends EntityTFTinyBird {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
-		this.tasks.addTask(2, new EntityAITempt(this, 0.85F, true, seeds));
+		this.tasks.addTask(2, new EntityAITempt(this, 0.85F, true, SEEDS));
 		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
