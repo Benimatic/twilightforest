@@ -8,7 +8,6 @@ import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -17,8 +16,8 @@ import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
-
 public class EntityTFRaven extends EntityTFTinyBird {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/raven");
 
 	public EntityTFRaven(World world) {
@@ -34,7 +33,7 @@ public class EntityTFRaven extends EntityTFTinyBird {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
-		this.tasks.addTask(2, new EntityAITempt(this, 0.85F, Items.WHEAT_SEEDS, true));
+		this.tasks.addTask(2, new EntityAITempt(this, 0.85F, true, seeds));
 		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));

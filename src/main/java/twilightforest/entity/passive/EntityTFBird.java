@@ -1,18 +1,25 @@
 package twilightforest.entity.passive;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nonnull;
-
+import java.util.Set;
 
 public abstract class EntityTFBird extends EntityAnimal {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bird");
+
+	// same as EntityChicken / EntityParrot
+	protected final Set<Item> seeds = ImmutableSet.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public float flapLength = 0.0F;
 	public float flapIntensity = 0.0F;

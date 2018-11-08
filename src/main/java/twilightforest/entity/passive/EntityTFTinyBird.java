@@ -10,8 +10,6 @@ import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -46,7 +44,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	protected void initEntityAI() {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAITFBirdFly(this));
-		this.tasks.addTask(1, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
+		this.tasks.addTask(1, new EntityAITempt(this, 1.0F, true, seeds));
 		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(4, new EntityAILookIdle(this));
@@ -197,15 +195,14 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	public boolean isSpooked() {
 		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
-
-		return this.hurtTime > 0 || (closestPlayer != null && closestPlayer.inventory.getCurrentItem().getItem() != Items.WHEAT_SEEDS);
+		return this.hurtTime > 0 || (closestPlayer != null && !seeds.contains(closestPlayer.inventory.getCurrentItem().getItem()));
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block == Blocks.AIR) {
+		if (block.isAir(state, world, pos)) {
 			return false;
 		} else {
 			return block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, EnumFacing.UP);
