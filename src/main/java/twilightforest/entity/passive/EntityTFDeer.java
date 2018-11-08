@@ -50,7 +50,7 @@ public class EntityTFDeer extends EntityCow {
 
 	@Override
 	public boolean processInteract(EntityPlayer entityplayer, EnumHand hand) {
-		ItemStack itemstack = entityplayer.inventory.getCurrentItem();
+		ItemStack itemstack = entityplayer.getHeldItem(hand);
 		if (!itemstack.isEmpty() && itemstack.getItem() == Items.BUCKET) {
 			// specifically do not respond to this
 			return false;
