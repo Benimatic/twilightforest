@@ -27,7 +27,7 @@ public class EntityTFBighorn extends EntitySheep {
 		if (random.nextBoolean()) {
 			return EnumDyeColor.BROWN;
 		} else {
-			return EnumDyeColor.byMetadata(random.nextInt(15));
+			return EnumDyeColor.byMetadata(random.nextInt(16));
 		}
 	}
 
