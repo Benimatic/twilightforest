@@ -12,14 +12,13 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
 
 public abstract class EntityTFBird extends EntityAnimal {
 
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bird");
 
 	// same as EntityChicken / EntityParrot
-	protected final Set<Item> seeds = ImmutableSet.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
+	protected final ImmutableSet<Item> seeds = ImmutableSet.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public float flapLength = 0.0F;
 	public float flapIntensity = 0.0F;

@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -13,12 +14,14 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-
 public class EntityTFSquirrel extends EntityCreature implements IAnimals {
+
+	protected final ImmutableSet<Item> seeds = ImmutableSet.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public EntityTFSquirrel(World world) {
 		super(world);
@@ -33,7 +36,7 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
-		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
+		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, true, seeds));
 		this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.4F));
 		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.25F));
