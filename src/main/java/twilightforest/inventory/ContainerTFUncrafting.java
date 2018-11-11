@@ -101,6 +101,10 @@ public class ContainerTFUncrafting extends Container {
 	public void onCraftMatrixChanged(IInventory inventory) {
 		// we need to see what inventory is calling this, and update appropriately
 		if (inventory == this.tinkerInput) {
+
+			// empty whole grid to start with
+			this.uncraftingMatrix.clear();
+
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getStackInSlot(0);
 			IRecipe[] recipes = getRecipesFor(inputStack);
@@ -108,20 +112,16 @@ public class ContainerTFUncrafting extends Container {
 			int size = recipes.length;
 
 			if (size > 0) {
+
 				int recipeType = Math.floorMod(this.unrecipeInCycle, size);
 				IRecipe recipe = recipes[recipeType];
 
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe) {
+
 					int recipeWidth  = getRecipeWidth ((IShapedRecipe) recipe);
 					int recipeHeight = getRecipeHeight((IShapedRecipe) recipe);
-
-					// empty whole grid to start with
-					// let's not get leftovers if something changes like the recipe size
-					for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
-						this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-					}
 
 					// set uncrafting grid
 					for (int invY = 0; invY < recipeHeight; invY++) {
@@ -130,36 +130,15 @@ public class ContainerTFUncrafting extends Container {
 							int index = invX + invY * recipeWidth;
 							if (index >= recipeItems.length) continue;
 
-							ItemStack ingredient = recipeItems[index].copy();
-
-							if (!ingredient.isEmpty()) {
-								// OLD: fix weird recipe for diamond/ingot blocks
-								// Leaving this in, in case some modder does weird crap with an IRecipe
-								if (ingredient.getCount() > 1)
-									ingredient.setCount(1);
-
-								if (ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-									ingredient.setItemDamage(0);
-							}
-
+							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
 							this.uncraftingMatrix.setInventorySlotContents(invX + invY * 3, ingredient);
 						}
 					}
 				} else {
 					for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
 						if (i < recipeItems.length) {
-							ItemStack ingredient = recipeItems[i].copy();
-
-							// fix weird recipe for diamond/ingot blocks
-							if (!ingredient.isEmpty() && ingredient.getCount() > 1)
-								ingredient.setCount(1);
-
-							if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-								ingredient.setItemDamage(0);
-
+							ItemStack ingredient = normalizeIngredient(recipeItems[i].copy());
 							this.uncraftingMatrix.setInventorySlotContents(i, ingredient);
-						} else {
-							this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
 						}
 					}
 				}
@@ -189,39 +168,17 @@ public class ContainerTFUncrafting extends Container {
 				this.uncraftingMatrix.numberOfInputItems = recipe.getRecipeOutput().getCount();
 				this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
+
 			} else {
-				for (int i = 0; i < 9; i++) {
-					this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-				}
 				this.uncraftingMatrix.numberOfInputItems = 0;
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
 		}
 		// Now we've got the uncrafting logic set in, currently we don't modify the uncraftingMatrix. That's fine.
-
-		IRecipe recipe; // Recipe for crafting
-		//ItemStack result = ItemStack.EMPTY; // Crafting Output
-
 		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
-				IRecipe[] recipes = this.getRecipesFor(assemblyMatrix, world);
-
-				if (recipes.length > 0) {
-					int recipeType = Math.floorMod(this.recipeInCycle, recipes.length);
-					recipe = recipes[recipeType];
-
-					if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
-						this.tinkerResult.setRecipeUsed(recipe);
-
-						this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(this.assemblyMatrix));
-					} else {
-						this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
-					}
-				} else {
-					this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
-				}
-
+				chooseRecipe(this.assemblyMatrix);
 				this.uncraftingMatrix.recraftingCost = 0;
 			} else {
 //    			if (isMatrixEmpty(this.assemblyMatrix)) {
@@ -256,24 +213,7 @@ public class ContainerTFUncrafting extends Container {
 				}
 			}
 			// is there a result from this combined thing?
-			//ItemStack result = CraftingManager.findMatchingResult(this.combineMatrix, this.world);
-
-			IRecipe[] recipes = this.getRecipesFor(combineMatrix, world);
-
-			if (recipes.length > 0) {
-				int recipeType = Math.floorMod(this.recipeInCycle, recipes.length);
-				recipe = recipes[recipeType];
-
-				if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
-					this.tinkerResult.setRecipeUsed(recipe);
-
-					this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(this.combineMatrix));
-				} else {
-					this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
-				}
-			} else {
-				this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
-			}
+			chooseRecipe(this.combineMatrix);
 
 			ItemStack input = this.tinkerInput.getStackInSlot(0);
 			ItemStack result = this.tinkerResult.getStackInSlot(0);
@@ -344,6 +284,20 @@ public class ContainerTFUncrafting extends Container {
 		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
 	}
 
+	private ItemStack normalizeIngredient(ItemStack ingredient) {
+		if (!ingredient.isEmpty()) {
+			// OLD: fix weird recipe for diamond/ingot blocks
+			// Leaving this in, in case some modder does weird crap with an IRecipe
+			if (ingredient.getCount() > 1) {
+				ingredient.setCount(1);
+			}
+			if (ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+				ingredient.setItemDamage(0);
+			}
+		}
+		return ingredient;
+	}
+
 	private IRecipe[] getRecipesFor(ItemStack inputStack) {
 		ArrayList<IRecipe> recipes = new ArrayList<>();
 
@@ -370,6 +324,23 @@ public class ContainerTFUncrafting extends Container {
 				recipes.add(recipe);
 
 		return recipes.toArray(new IRecipe[0]);
+	}
+
+	private void chooseRecipe(InventoryCrafting inventory) {
+		IRecipe[] recipes = this.getRecipesFor(inventory, world);
+		if (recipes.length > 0) {
+			int recipeType = Math.floorMod(this.recipeInCycle, recipes.length);
+			IRecipe recipe = recipes[recipeType];
+
+			if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
+				this.tinkerResult.setRecipeUsed(recipe);
+				this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(inventory));
+			} else {
+				this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+			}
+		} else {
+			this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+		}
 	}
 
 	/**
@@ -674,8 +645,6 @@ public class ContainerTFUncrafting extends Container {
 			clearContainer(player, world, tinkerInput);
 		}
 	}
-
-	//private static Random rand = new Random();
 
 	private ItemStack[] getIngredients(IRecipe recipe) {
 		// todo 1.12 recheck
