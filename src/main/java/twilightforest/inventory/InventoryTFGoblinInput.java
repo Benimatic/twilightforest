@@ -9,7 +9,7 @@ import net.minecraft.util.text.TextComponentString;
 public class InventoryTFGoblinInput implements IInventory {
 
 	private ItemStack stackInput = ItemStack.EMPTY;
-	private ContainerTFUncrafting craftingContainer;
+	private final ContainerTFUncrafting craftingContainer;
 
 	public InventoryTFGoblinInput(ContainerTFUncrafting containerTFGoblinCrafting) {
 		this.craftingContainer = containerTFGoblinCrafting;

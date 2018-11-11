@@ -40,19 +40,19 @@ public class ContainerTFUncrafting extends Container {
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
 	// Inaccessible grid, for uncrafting logic
-	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
+	private final InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
 	// Accessible grid, for actual crafting
-	public InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
+	public final InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
 	// Inaccessible grid, for recrafting logic
-	private InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
+	private final InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
 
 	// Input slot for uncrafting
-	public IInventory tinkerInput = new InventoryTFGoblinInput(this);
+	public final IInventory tinkerInput = new InventoryTFGoblinInput(this);
 	// Crafting Output
-	private InventoryCraftResult tinkerResult = new InventoryCraftResult();
+	private final InventoryCraftResult tinkerResult = new InventoryCraftResult();
 
 	// Other Data, to kick the player from GUI if they stray too far from table
-	private World world;
+	private final World world;
 	private final BlockPos pos;
 	private final EntityPlayer player;
 
@@ -62,6 +62,7 @@ public class ContainerTFUncrafting extends Container {
 	public int recipeInCycle = 0;
 
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
+
 		this.world = world;
 		this.pos = new BlockPos(x, y, z);
 		this.player = inventory.player;
@@ -509,7 +510,7 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer player) {
+	public ItemStack slotClick(int slotNum, int mouseButton, ClickType clickType, EntityPlayer player) {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix
@@ -548,10 +549,10 @@ public class ContainerTFUncrafting extends Container {
 		}
 
 		// also we may need to detect here when the player is increasing the stack size of the input slot
-		ItemStack ret = super.slotClick(slotNum, mouseButton, shiftHeld, player);
+		ItemStack ret = super.slotClick(slotNum, mouseButton, clickType, player);
 
 		// just trigger this event whenever the input slot is clicked for any reason
-		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory instanceof InventoryTFGoblinInput) {
+		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.tinkerInput) {
 			this.onCraftMatrixChanged(this.tinkerInput);
 		}
 

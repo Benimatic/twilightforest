@@ -10,10 +10,10 @@ import twilightforest.TFConfig;
 
 public class SlotTFGoblinUncrafting extends Slot {
 
-	protected EntityPlayer player;
-	protected IInventory inputSlot;
-	protected InventoryTFGoblinUncrafting uncraftingMatrix;
-	protected IInventory assemblyMatrix;
+	protected final EntityPlayer player;
+	protected final IInventory inputSlot;
+	protected final InventoryTFGoblinUncrafting uncraftingMatrix;
+	protected final IInventory assemblyMatrix;
 
 	public SlotTFGoblinUncrafting(EntityPlayer player, IInventory inputSlot, InventoryTFGoblinUncrafting uncraftingMatrix, IInventory assemblyMatrix, int slotNum, int x, int y) {
 		super(uncraftingMatrix, slotNum, x, y);
