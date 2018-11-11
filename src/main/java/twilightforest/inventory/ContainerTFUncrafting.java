@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,11 +30,15 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.TFConfig;
+import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
+
+	private static final String TAG_MARKER = "TwilightForestMarker";
+
 	// Inaccessible grid, for uncrafting logic
 	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
 	// Accessible grid, for actual crafting
@@ -158,26 +163,24 @@ public class ContainerTFUncrafting extends Container {
 					}
 				}
 
-				// mark the appropriate number of components damaged
+				// mark the appropriate number of damaged components
 				if (inputStack.isItemDamaged()) {
 					int damagedParts = countDamagedParts(inputStack);
 
 					for (int i = 0; i < 9 && damagedParts > 0; i++) {
-						if (isDamageableComponent(this.uncraftingMatrix.getStackInSlot(i))) {
-							// todo 1.11 this won't work anymore
-							this.uncraftingMatrix.getStackInSlot(i).setCount(0);
+						ItemStack stack = this.uncraftingMatrix.getStackInSlot(i);
+						if (isDamageableComponent(stack)) {
+							markStack(stack);
 							damagedParts--;
 						}
 					}
 				}
 
-				// mark banned items damaged
+				// mark banned items
 				for (int i = 0; i < 9; i++) {
 					ItemStack ingredient = this.uncraftingMatrix.getStackInSlot(i);
-
 					if (isIngredientProblematic(ingredient)) {
-						// todo 1.11 this won't work anymore
-						ingredient.setCount(0);
+						markStack(ingredient);
 					}
 				}
 
@@ -237,12 +240,16 @@ public class ContainerTFUncrafting extends Container {
 
 		// repairing / recrafting: if there is an input item, and items in both grids, can we combine them to produce an output item that is the same type as the input item?
 		if (inventory != this.combineMatrix && !this.uncraftingMatrix.isEmpty() && !this.assemblyMatrix.isEmpty()) {
-			// combine the two matrixen
+			// combine the two matrices
 			for (int i = 0; i < 9; i++) {
-				if (!this.assemblyMatrix.getStackInSlot(i).isEmpty()) {
-					this.combineMatrix.setInventorySlotContents(i, this.assemblyMatrix.getStackInSlot(i));
-				} else if (!this.uncraftingMatrix.getStackInSlot(i).isEmpty() && this.uncraftingMatrix.getStackInSlot(i).getCount() > 0) {
-					this.combineMatrix.setInventorySlotContents(i, this.uncraftingMatrix.getStackInSlot(i));
+
+				ItemStack assembly = this.assemblyMatrix.getStackInSlot(i);
+				ItemStack uncrafting = this.uncraftingMatrix.getStackInSlot(i);
+
+				if (!assembly.isEmpty()) {
+					this.combineMatrix.setInventorySlotContents(i, assembly);
+				} else if (!uncrafting.isEmpty() && !isMarked(uncrafting)) {
+					this.combineMatrix.setInventorySlotContents(i, uncrafting);
 				} else {
 					this.combineMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
 				}
@@ -319,8 +326,21 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
+	public static void markStack(ItemStack stack) {
+		stack.setTagInfo(TAG_MARKER, new NBTTagByte((byte) 1));
+	}
+
+	public static boolean isMarked(ItemStack stack) {
+		NBTTagCompound stackTag = stack.getTagCompound();
+		return stackTag != null && stackTag.getBoolean(TAG_MARKER);
+	}
+
+	public static void unmarkStack(ItemStack stack) {
+		TFItemStackUtils.clearInfoTag(stack, TAG_MARKER);
+	}
+
 	private boolean isIngredientProblematic(ItemStack ingredient) {
-		return !ingredient.isEmpty() && (ingredient.getItem().hasContainerItem(ingredient));
+		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
 	}
 
 	private IRecipe[] getRecipesFor(ItemStack inputStack) {
@@ -490,8 +510,11 @@ public class ContainerTFUncrafting extends Container {
 
 	@Override
 	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer player) {
+
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
-		if (slotNum > 0 && player.inventory.getItemStack().isEmpty() && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix && !this.inventorySlots.get(slotNum).getHasStack()) {
+		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix
+				&& player.inventory.getItemStack().isEmpty() && !this.inventorySlots.get(slotNum).getHasStack()) {
+
 			// is the assembly matrix empty?
 			if (this.assemblyMatrix.isEmpty()) {
 				slotNum -= 9;
@@ -501,23 +524,27 @@ public class ContainerTFUncrafting extends Container {
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.tinkerResult
 				&& calculateRecraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
+
 			return ItemStack.EMPTY;
 		}
 
-		// similarly, reject uncrafting if they can't do that either
-		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix
-				&& calculateUncraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
-			return ItemStack.EMPTY;
-		}
+		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix) {
 
-		// don't allow uncrafting if the server option is turned off
-		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix && TFConfig.disableUncrafting) {
-			return ItemStack.EMPTY;
-		}
+			// similarly, reject uncrafting if they can't do that either
+			if (calculateUncraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
+				return ItemStack.EMPTY;
+			}
 
-		// finally, don't give them damaged goods
-		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix && this.inventorySlots.get(slotNum).getStack().isEmpty()) {
-			return ItemStack.EMPTY;
+			// don't allow uncrafting if the server option is turned off
+			if (TFConfig.disableUncrafting) {
+				return ItemStack.EMPTY;
+			}
+
+			// finally, don't give them damaged goods
+			ItemStack stackInSlot = this.inventorySlots.get(slotNum).getStack();
+			if (stackInSlot.isEmpty() || isMarked(stackInSlot)) {
+				return ItemStack.EMPTY;
+			}
 		}
 
 		// also we may need to detect here when the player is increasing the stack size of the input slot
@@ -578,12 +605,13 @@ public class ContainerTFUncrafting extends Container {
 	 */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotNum) {
-		ItemStack copyItem = ItemStack.EMPTY;
+
 		Slot transferSlot = this.inventorySlots.get(slotNum);
 
 		if (transferSlot != null && transferSlot.getHasStack()) {
+
 			ItemStack transferStack = transferSlot.getStack();
-			copyItem = transferStack.copy();
+			ItemStack copyItem = transferStack.copy();
 
 			if (slotNum == 0) {
 				// result or input goes to inventory or hotbar
@@ -633,7 +661,7 @@ public class ContainerTFUncrafting extends Container {
 			return transferSlot.onTake(player, transferStack);
 		}
 
-		return copyItem;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -666,7 +694,6 @@ public class ContainerTFUncrafting extends Container {
 
 	private int getRecipeHeight(IShapedRecipe recipe) {
 		return recipe.getRecipeHeight();
-
 	}
 
 	@Override

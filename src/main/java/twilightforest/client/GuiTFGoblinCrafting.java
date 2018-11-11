@@ -22,6 +22,7 @@ import twilightforest.network.TFPacketHandler;
 import java.io.IOException;
 
 public class GuiTFGoblinCrafting extends GuiContainer {
+
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.GUI_DIR + "guigoblintinkering.png");
 
 	public GuiTFGoblinCrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
@@ -80,7 +81,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 			Slot uncrafting = tfContainer.getSlot(2 + i);
 			Slot assembly = tfContainer.getSlot(11 + i);
 
-			if (!uncrafting.getStack().isEmpty()) {
+			if (uncrafting.getHasStack()) {
 				drawSlotAsBackground(uncrafting, assembly);
 			}
 		}
@@ -119,6 +120,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 	}
 
 	private void drawSlotAsBackground(Slot backgroundSlot, Slot appearSlot) {
+
 		int screenX = appearSlot.xPos;
 		int screenY = appearSlot.yPos;
 		ItemStack itemStackToRender = backgroundSlot.getStack();
@@ -128,12 +130,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		itemRender.renderItemIntoGUI(itemStackToRender, screenX, screenY);
 		itemRender.renderItemOverlayIntoGUI(this.fontRenderer, itemStackToRender, screenX, screenY, "");
 
-		boolean itemBroken = false;
-
-		// TODO 1.11 this isn't going to work properly
-		if (backgroundSlot.getHasStack() && backgroundSlot.getStack().getCount() == 0) {
-			itemBroken = true;
-		}
+		boolean itemBroken = ContainerTFUncrafting.isMarked(itemStackToRender);
 
 		// draw 50% gray rectangle over the item
 		GlStateManager.disableLighting();
@@ -141,7 +138,6 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		Gui.drawRect(screenX, screenY, screenX + 16, screenY + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
 		GlStateManager.enableLighting();
 		GlStateManager.enableDepth();
-
 
 		itemRender.zLevel = 0.0F;
 		this.zLevel = 0.0F;

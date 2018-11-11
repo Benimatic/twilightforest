@@ -8,21 +8,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 
-
 public class SlotTFGoblinUncrafting extends Slot {
-	protected EntityPlayer thePlayer;
+
+	protected EntityPlayer player;
 	protected IInventory inputSlot;
 	protected InventoryTFGoblinUncrafting uncraftingMatrix;
 	protected IInventory assemblyMatrix;
 
 	public SlotTFGoblinUncrafting(EntityPlayer player, IInventory inputSlot, InventoryTFGoblinUncrafting uncraftingMatrix, IInventory assemblyMatrix, int slotNum, int x, int y) {
 		super(uncraftingMatrix, slotNum, x, y);
-		this.thePlayer = player;
+		this.player = player;
 		this.inputSlot = inputSlot;
 		this.uncraftingMatrix = uncraftingMatrix;
 		this.assemblyMatrix = assemblyMatrix;
 	}
-
 
 	/**
 	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
@@ -39,10 +38,13 @@ public class SlotTFGoblinUncrafting extends Slot {
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
 		// if there is anything in the assembly matrix, then you cannot have these items
-		for (int i = 0; i < this.assemblyMatrix.getSizeInventory(); i++) {
-			if (!this.assemblyMatrix.getStackInSlot(i).isEmpty()) {
-				return false;
-			}
+		if (!this.assemblyMatrix.isEmpty()) {
+			return false;
+		}
+
+		// can't take a marked stack
+		if (ContainerTFUncrafting.isMarked(this.getStack())) {
+			return false;
 		}
 
 		// if uncrafting is disabled, no!
@@ -65,14 +67,14 @@ public class SlotTFGoblinUncrafting extends Slot {
 	public ItemStack onTake(EntityPlayer player, ItemStack stack) {
 		// charge the player for this
 		if (this.uncraftingMatrix.uncraftingCost > 0) {
-			this.thePlayer.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
+			this.player.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
 		}
 
 		// move all remaining items from the uncrafting grid to the assembly grid
 		// the assembly grid should be empty for this to even happen, so just plop the items right in
 		for (int i = 0; i < 9; i++) {
 			ItemStack transferStack = this.uncraftingMatrix.getStackInSlot(i);
-			if (!transferStack.isEmpty() && transferStack.getCount() > 0) {
+			if (!transferStack.isEmpty() && !ContainerTFUncrafting.isMarked(transferStack)) {
 				this.assemblyMatrix.setInventorySlotContents(i, transferStack.copy());
 			}
 		}
@@ -83,7 +85,6 @@ public class SlotTFGoblinUncrafting extends Slot {
 		if (!inputStack.isEmpty()) {
 			this.inputSlot.decrStackSize(0, uncraftingMatrix.numberOfInputItems);
 		}
-
 
 		return super.onTake(player, stack);
 	}

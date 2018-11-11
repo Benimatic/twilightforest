@@ -3,6 +3,7 @@ package twilightforest.util;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -61,5 +62,15 @@ public class TFItemStackUtils {
 		}
 
 		return false;
+	}
+
+	public static void clearInfoTag(ItemStack stack, String key) {
+		NBTTagCompound nbt = stack.getTagCompound();
+		if (nbt != null) {
+			nbt.removeTag(key);
+			if (nbt.isEmpty()) {
+				stack.setTagCompound(null);
+			}
+		}
 	}
 }
