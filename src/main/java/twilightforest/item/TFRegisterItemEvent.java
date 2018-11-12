@@ -212,10 +212,10 @@ public class TFRegisterItemEvent {
 		items.register(new ItemBlockTFHugeWaterLily(TFBlocks.huge_waterlily));
 		items.registerSubItemBlock(TFBlocks.slider);
 		items.registerSubItemBlock(TFBlocks.castle_brick);
-		items.registerSubItemBlock(TFBlocks.castle_stairs_brick);
-		items.registerSubItemBlock(TFBlocks.castle_stairs_cracked);
-		items.registerSubItemBlock(TFBlocks.castle_stairs_worn);
-		items.registerSubItemBlock(TFBlocks.castle_stairs_mossy);
+		items.registerBlock(TFBlocks.castle_stairs_brick);
+		items.registerBlock(TFBlocks.castle_stairs_cracked);
+		items.registerBlock(TFBlocks.castle_stairs_worn);
+		items.registerBlock(TFBlocks.castle_stairs_mossy);
 		items.registerSubItemBlock(TFBlocks.castle_pillar);
 		items.registerSubItemBlock(TFBlocks.castle_stairs);
 		items.registerSubItemBlock(TFBlocks.castle_rune_brick);
@@ -300,8 +300,7 @@ public class TFRegisterItemEvent {
 		}
 
 		void registerBlock(Block block) {
-			ItemBlock metaItemBlock = new ItemBlock(block);
-			register(metaItemBlock);
+			register(new ItemBlock(block));
 		}
 
 		void registerSubItemBlock(Block block) {
@@ -309,8 +308,7 @@ public class TFRegisterItemEvent {
 		}
 
 		void registerSubItemBlock(Block block, boolean shouldAppendNumber) {
-			ItemBlockTFMeta metaItemBlock = new ItemBlockTFMeta(block).setAppend(shouldAppendNumber);
-			register(metaItemBlock);
+			register(new ItemBlockTFMeta(block).setAppend(shouldAppendNumber));
 		}
 
 		<T extends ItemBlock> void register(T item) {
