@@ -14,7 +14,6 @@ import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
-import twilightforest.structures.StructureTFDecoratorCastle;
 import twilightforest.util.RotationUtil;
 
 import java.util.LinkedList;

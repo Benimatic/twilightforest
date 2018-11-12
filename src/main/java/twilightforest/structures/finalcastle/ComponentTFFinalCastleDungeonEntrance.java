@@ -12,7 +12,6 @@ import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFDecoratorCastle;
 
 import java.util.List;
 import java.util.Random;

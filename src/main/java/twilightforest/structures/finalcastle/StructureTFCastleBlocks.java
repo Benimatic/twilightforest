@@ -1,4 +1,4 @@
-package twilightforest.structures;
+package twilightforest.structures.finalcastle;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;

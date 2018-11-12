@@ -1,4 +1,4 @@
-package twilightforest.structures;
+package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockQuartz;
 import net.minecraft.init.Blocks;
@@ -7,6 +7,7 @@ import twilightforest.block.BlockTFCastlePillar;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.CastleBrickVariant;
 import twilightforest.enums.CastlePillarVariant;
+import twilightforest.structures.StructureTFDecorator;
 
 public class StructureTFDecoratorCastle extends StructureTFDecorator {
 
