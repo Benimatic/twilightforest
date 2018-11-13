@@ -17,7 +17,7 @@ public class StructureTFDecoratorCastle extends StructureTFDecorator {
 		this.roofState = TFBlocks.castle_brick.getDefaultState().withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.ROOF);
 		this.pillarState = TFBlocks.castle_pillar.getDefaultState().withProperty(BlockTFCastlePillar.VARIANT, CastlePillarVariant.BOLD);
 		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
-		this.stairState = Blocks.QUARTZ_STAIRS.getDefaultState();
+		this.stairState = TFBlocks.castle_stairs_brick.getDefaultState();
 		this.randomBlocks = new StructureTFCastleBlocks();
 	}
 
