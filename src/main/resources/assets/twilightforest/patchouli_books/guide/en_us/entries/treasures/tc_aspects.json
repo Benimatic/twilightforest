@@ -3,6 +3,7 @@
   "icon": "thaumcraft:jar_normal:0{Aspects:[{amount:250,key:\"praecantatio\"}]}",
   "category": "treasures",
   "flag": "mod:thaumcraft",
+  "advancement": "twilightforest:alt/compat/tc_aspects",
   "pages": [
     {
       "type": "text",

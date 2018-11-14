@@ -3,6 +3,7 @@
   "icon": "tconstruct:large_plate{Material:\"fierymetal\"}",
   "category": "treasures",
   "flag": "mod:tconstruct",
+  "advancement": "twilightforest:alt/compat/tconstruct",
   "pages": [
     {
       "type": "text",
