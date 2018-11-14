@@ -54,8 +54,7 @@ minecraft {
     replace '@mod_id@', config.mod_id
     replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
 
-    replaceIn "TwilightForestMod.java"
-    replace "@VERSION@", project.version
+    replace '@VERSION@', project.version
 }
 
 processResources

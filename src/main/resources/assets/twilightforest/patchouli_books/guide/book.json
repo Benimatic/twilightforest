@@ -3,8 +3,7 @@
   "advancement_namespaces": [
     "twilightforest"
   ],
-  "creative_tab": "twilightforest",
-  "book_texture": "patchouli:textures/gui/book_green.png",
+  "creative_tab": "twilightForest",
   "model": "twilightforest:logbook",
-  "version": "1"
+  "version": "@VERSION@"
 }
