@@ -3,11 +3,10 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:adherent\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/adherent",
-  "sortnum": 150,
+  "sortnum": 1500,
   "pages": [
     {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/adherent",
       "entity": "twilightforest:adherent",
       "text": "things and stuff"
     }

@@ -1,0 +1,12 @@
+{
+  "name": "[TCon] Tools",
+  "icon": "tconstruct:large_plate{Material:\"fierymetal\"}",
+  "category": "treasures",
+  "flag": "mod:tconstruct",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Tinker's Construct info about TF Tools"
+    }
+  ]
+}

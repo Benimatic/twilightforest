@@ -2,51 +2,52 @@
   "name": "Arthopods",
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:pinch_beetle\"}}",
   "category": "entities",
-  "sortnum": 50,
+  "advancement": "twilightforest:alt/entities/arthopods",
+  "sortnum": 500,
   "pages": [
     {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/hedge_spider",
+      "advancement": "twilightforest:alt/entities/hedge_spider",
       "entity": "twilightforest:hedge_spider",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/swarm_spider",
+      "advancement": "twilightforest:alt/entities/swarm_spider",
       "entity": "twilightforest:swarm_spider",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/slime_beetle",
+      "advancement": "twilightforest:alt/entities/slime_beetle",
       "entity": "twilightforest:slime_beetle",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/fire_beetle",
+      "advancement": "twilightforest:alt/entities/fire_beetle",
       "entity": "twilightforest:fire_beetle",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/pinch_beetle",
+      "advancement": "twilightforest:alt/entities/pinch_beetle",
       "entity": "twilightforest:pinch_beetle",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/mosquito_swarm",
+      "advancement": "twilightforest:alt/entities/mosquito_swarm",
       "entity": "twilightforest:mosquito_swarm",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/king_spider",
+      "advancement": "twilightforest:alt/entities/king_spider",
       "entity": "twilightforest:king_spider",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/tower_termite",
+      "advancement": "twilightforest:alt/entities/tower_termite",
       "entity": "twilightforest:tower_termite",
       "text": "things and stuff"
     }, {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/tower_broodling",
+      "advancement": "twilightforest:alt/entities/tower_broodling",
       "entity": "twilightforest:tower_broodling",
       "text": "things and stuff"
     }

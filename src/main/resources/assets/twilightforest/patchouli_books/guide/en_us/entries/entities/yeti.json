@@ -2,12 +2,12 @@
   "name": "Yeti",
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:yeti\"}}",
   "category": "entities",
-  "advancement": "twilightforest:alt/entities/minotaur",
-  "sortnum": 110,
+  "advancement": "twilightforest:alt/entities/yeti",
+  "sortnum": 1100,
   "pages": [
     {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/yeti",
+      "advancement": "twilightforest:alt/entities/yeti",
       "entity": "twilightforest:yeti",
       "text": "things and stuff"
     }

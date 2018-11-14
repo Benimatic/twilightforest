@@ -2,12 +2,11 @@
   "name": "Troll",
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:troll\"}}",
   "category": "entities",
-  "advancement": "twilightforest:alt/entities/minotaur",
-  "sortnum": 130,
+  "advancement": "twilightforest:alt/entities/troll",
+  "sortnum": 1300,
   "pages": [
     {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/troll",
       "entity": "twilightforest:troll",
       "text": "things and stuff"
     }

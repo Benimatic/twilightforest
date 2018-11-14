@@ -3,11 +3,10 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:kobold\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/kobold",
-  "sortnum": 20,
+  "sortnum": 200,
   "pages": [
     {
       "type": "entity",
-      "advancements": "twilightforest:alt/entities/kobold",
       "entity": "twilightforest:kobold",
       "text": "things and stuff"
     }

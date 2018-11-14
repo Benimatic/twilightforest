@@ -2,11 +2,6 @@
   "name": "Castle Guardians",
   "icon": "minecraft:spawn_egg",
   "category": "entities",
-  "sortnum": 170,
-  "pages": [
-    {
-      "type": "text",
-      "text": ""
-    }
-  ]
+  "sortnum": 1700,
+  "pages": []
 }
