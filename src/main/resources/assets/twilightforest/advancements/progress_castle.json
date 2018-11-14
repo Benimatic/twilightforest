@@ -14,8 +14,9 @@
   },
   "parent": "twilightforest:progress_thorns",
   "criteria": {
-    "not_yet_implemented": {
-      "trigger": "minecraft:impossible"
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": { "feature": "twilightforest:final_castle" }
     },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",

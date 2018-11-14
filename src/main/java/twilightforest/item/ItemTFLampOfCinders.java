@@ -1,9 +1,11 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -40,6 +42,9 @@ public class ItemTFLampOfCinders extends ItemTF {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (burnBlock(world, pos)) {
+			if (player instanceof EntityPlayerMP)
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, player.getHeldItem(hand));
+
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F, 1.5F);
 
 			// spawn flame particles
