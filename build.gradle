@@ -79,7 +79,7 @@ processResources {
                 'forge_version': config.forge_version,
                 'mod_version': config.mod_version,
                 'minecraft_version': config.minecraft_version,
-                'edition': findProperty("CIRevision").toString().minus(config.mod_version + '.')
+                'edition': (project.version - (config.mod_version + '.'))
         ])
     }
 
