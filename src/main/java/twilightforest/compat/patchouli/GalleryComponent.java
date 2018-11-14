@@ -36,7 +36,7 @@ public class GalleryComponent implements ICustomComponent {
     }
 
     @Override
-    public void render(float partialTicks) {
+    public void render(float v, int mouseX, int mouseY) {
         int x = this.x + 5, y = this.y;
         int row, column;
         int listSize = stacks.size();
