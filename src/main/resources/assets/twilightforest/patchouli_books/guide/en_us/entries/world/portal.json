@@ -36,6 +36,7 @@
       "name": "Completed Twilight Portal",
       "text": "If you see the purple swirls, hop right in!",
       "enable_visualize": false,
+      "advancement": "twilightforest:root",
       "multiblock": {
         "pattern": [
           [ " FF ", "F0AF", "FAAF", " FF " ],

@@ -2,9 +2,46 @@
   "name": "Trophies",
   "icon": "twilightforest:trophy_pedestal",
   "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/trophies",
   "pages": [
     {
       "type": "text",
+      "text": "Trophy Info"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_trophy_pedestal",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_naga",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_lich",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_labyrinth",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_hydra",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_knights",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_ur_ghast",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_yeti",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_glacier",
       "text": "things and stuff"
     }
   ]

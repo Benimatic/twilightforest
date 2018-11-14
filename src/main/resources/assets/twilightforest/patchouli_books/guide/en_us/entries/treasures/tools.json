@@ -2,8 +2,12 @@
   "name": "Tools",
   "icon": "twilightforest:ironwood_pickaxe",
   "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/tools",
   "pages": [
     {
+      "type": "text",
+      "text": "This world is magical, I infer that using materials from this world in crafting may potentially result in tools with inherent magical abilities that enchanting would normally offer."
+    }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/ironwood_tool_set",
       "text": "Ironwood Tools"
@@ -19,10 +23,6 @@
       "type": "text",
       "advancement": "twilightforest:alt/treasures/fiery_tool_set",
       "text": "Fiery Tools"
-    }, {
-      "type": "text",
-      "advancement": "twilightforest:alt/treasures/knightmetal_tool_set",
-      "text": "Knightly Tools"
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/knightmetal_tool_set",

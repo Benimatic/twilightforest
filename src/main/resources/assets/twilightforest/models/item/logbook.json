@@ -4,9 +4,9 @@
     "layer0": "twilightforest:items/logbook/fresh"
   },
   "overrides": [
-    { "predicate": { "completion": 0.4 }, "model": "twilightforest:item/logbook/0" },
-    { "predicate": { "completion": 0.6 }, "model": "twilightforest:item/logbook/1" },
-    { "predicate": { "completion": 0.8 }, "model": "twilightforest:item/logbook/2" },
-    { "predicate": { "completion": 1.0 }, "model": "twilightforest:item/logbook/3" }
+    { "predicate": { "completion": 0.0   }, "model": "twilightforest:item/logbook/0" },
+    { "predicate": { "completion": 0.333 }, "model": "twilightforest:item/logbook/1" },
+    { "predicate": { "completion": 0.666 }, "model": "twilightforest:item/logbook/2" },
+    { "predicate": { "completion": 1.0   }, "model": "twilightforest:item/logbook/3" }
   ]
 }
