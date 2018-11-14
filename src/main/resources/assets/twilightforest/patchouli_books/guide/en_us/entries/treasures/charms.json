@@ -2,6 +2,7 @@
   "name": "Charms",
   "icon": "twilightforest:charm_of_keeping_3",
   "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/charms",
   "pages": [
     {
       "type": "text",

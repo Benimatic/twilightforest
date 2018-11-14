@@ -2,8 +2,12 @@
   "name": "Armors",
   "icon": "twilightforest:ironwood_chestplate",
   "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/armors",
   "pages": [
     {
+      "type": "text",
+      "text": "Armor Information"
+    }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/ironwood_armor_set",
       "text": "Ironwood Armors"

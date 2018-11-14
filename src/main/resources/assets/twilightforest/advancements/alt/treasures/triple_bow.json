@@ -1,0 +1,5 @@
+{
+  "criteria": {
+    "bow": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:triple_bow" }]}}
+  }
+}

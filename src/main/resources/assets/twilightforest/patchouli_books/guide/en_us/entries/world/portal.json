@@ -9,14 +9,14 @@
       "text": "Once you finish digging and planting the formation, fill it with water!",
       "multiblock": {
         "pattern": [
-          [ " FF ", "F0AF", "FAAF", " FF " ],
-          [ " GG ", "GWWG", "GWWG", " GG " ],
+          [ " FF ", "FAAF", "FAAF", " FF " ],
+          [ " GG ", "G0WG", "GWWG", " GG " ],
           [ "    ", " DD ", " DD ", "    " ]
         ],
         "mapping": {
           " ": "ANY",
           "A": "AIR",
-          "0": "AIR",
+          "0": "minecraft:water",
           "W": "minecraft:water",
           "F": "minecraft:red_flower",
           "G": "minecraft:grass",
