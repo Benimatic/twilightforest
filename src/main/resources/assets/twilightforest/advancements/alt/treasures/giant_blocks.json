@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "giant_cobblestone" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:giant_cobblestone" }]}},
     "giant_log"         : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:giant_log" }]}},

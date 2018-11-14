@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "ingredient": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:alpha_fur"       }]}},
     "helmet"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:yeti_helmet"     }]}},

@@ -2,6 +2,7 @@
   "name": "Magic Map",
   "icon": "twilightforest:magic_map",
   "category": "world",
+  "advancement": "twilightforest:root",
   "pages": [
     {
       "type": "text",

@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "carminite"       : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:carminite"                }]}},
     "carminite_block" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:block_storage", "data": 4 }]}},

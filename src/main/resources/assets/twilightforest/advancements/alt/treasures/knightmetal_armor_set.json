@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "ingredient": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:armor_shard"            }]}},
     "ingredien2": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:armor_shard_cluster"    }]}},

@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "1": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:charm_of_life_1" }]}},
     "2": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:charm_of_life_2" }]}}

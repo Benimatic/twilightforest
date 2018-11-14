@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "helmet"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:phantom_helmet"     }]}},
     "chestplate": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:phantom_chestplate" }]}}

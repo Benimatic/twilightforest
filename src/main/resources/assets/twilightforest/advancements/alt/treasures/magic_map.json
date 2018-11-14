@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "magic_map_focus": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:magic_map_focus" }]}},
     "magic_map_empty": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:magic_map_empty" }]}},

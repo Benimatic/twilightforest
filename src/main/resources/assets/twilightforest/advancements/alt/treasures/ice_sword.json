@@ -1,4 +1,5 @@
 {
+  "parent": "twilightforest:alt/root",
   "criteria": {
     "ice_sword": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:ice_sword" }]}}
   }

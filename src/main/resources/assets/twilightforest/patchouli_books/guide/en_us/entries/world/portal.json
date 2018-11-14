@@ -31,11 +31,11 @@
       "title": "Activation Item",
       "item": "minecraft:diamond",
       "text": "Drop a diamond into the water!"
-    },
-    {
+    }, {
       "type": "multiblock",
       "name": "Completed Twilight Portal",
       "text": "If you see the purple swirls, hop right in!",
+      "enable_visualize": false,
       "multiblock": {
         "pattern": [
           [ " FF ", "F0AF", "FAAF", " FF " ],
