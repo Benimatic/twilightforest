@@ -79,7 +79,7 @@ processResources {
                 'forge_version': config.forge_version,
                 'mod_version': config.mod_version,
                 'minecraft_version': config.minecraft_version,
-                'edition': (hasProperty("CIRevision") ? CIRevision : "WRITER'S EDITION")
+                'edition': findProperty("CIRevision")
         ])
     }
 
@@ -107,7 +107,7 @@ repositories {
         url 'http://maven.tterrag.com/'
     }
     maven {
-        name 'Jared\'s Maven' // Immersive Engineering
+        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
         url 'http://blamejared.com/maven'
     }
     maven {
