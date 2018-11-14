@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -36,12 +35,9 @@ import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemTFTrophy extends ItemTF {
 
 	public ItemTFTrophy() {

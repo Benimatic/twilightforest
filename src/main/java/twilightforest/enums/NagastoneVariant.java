@@ -1,17 +1,14 @@
 package twilightforest.enums;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public enum NagastoneVariant implements IStringSerializable {
+
 	NORTH_HEAD,
 	SOUTH_HEAD,
 	WEST_HEAD,

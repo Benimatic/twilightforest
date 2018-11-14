@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.IProperty;
@@ -27,13 +26,9 @@ import twilightforest.client.ModelUtils;
 import twilightforest.enums.LeavesVariant;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback {
 
 	public static final IProperty<LeavesVariant> VARIANT = PropertyEnum.create("variant", LeavesVariant.class);

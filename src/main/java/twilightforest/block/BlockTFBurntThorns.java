@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -17,10 +16,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFBurntThorns extends BlockTFThorns {
 
 	protected BlockTFBurntThorns() {

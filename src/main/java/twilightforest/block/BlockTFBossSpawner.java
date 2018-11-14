@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -25,11 +24,8 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 
 	public static final IProperty<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class);

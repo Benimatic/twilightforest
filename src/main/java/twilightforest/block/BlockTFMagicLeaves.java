@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,12 +25,9 @@ import twilightforest.client.ModelUtils;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCallback {
 
 	protected BlockTFMagicLeaves() {

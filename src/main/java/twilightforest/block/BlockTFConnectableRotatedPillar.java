@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.material.Material;
@@ -17,14 +16,10 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-import static twilightforest.block.BlockTFConnectableRotatedPillar.PairHelper.getFacingFromPropertyWithAxis;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar {
+
     protected final int boundingBoxLower;
     protected final int boundingBoxUpper;
 
@@ -64,7 +59,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
         EnumFacing.Axis axis = state.getValue(AXIS);
 
         for (PairHelper pair : PairHelper.values()) {
-            EnumFacing connectTo = getFacingFromPropertyWithAxis(pair.property, axis);
+            EnumFacing connectTo = PairHelper.getFacingFromPropertyWithAxis(pair.property, axis);
             state = state.withProperty(pair.property, canConnectTo(state, world.getBlockState(pos.offset(connectTo)), world, pos, connectTo));
         }
 

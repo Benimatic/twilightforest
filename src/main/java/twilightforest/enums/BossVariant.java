@@ -1,6 +1,5 @@
 package twilightforest.enums;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.IStringSerializable;
 import twilightforest.tileentity.TileEntityTFAlphaYetiSpawner;
 import twilightforest.tileentity.TileEntityTFBossSpawner;
@@ -13,13 +12,11 @@ import twilightforest.tileentity.TileEntityTFSnowQueenSpawner;
 import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public enum BossVariant implements IStringSerializable {
+
 	NAGA          (TrophyType.GOLD    , TileEntityTFNagaSpawner::new),
 	LICH          (TrophyType.GOLD    , TileEntityTFLichSpawner::new),
 	HYDRA         (TrophyType.GOLD    , TileEntityTFHydraSpawner::new),

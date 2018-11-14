@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -33,15 +32,12 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class BlockTFExperiment115 extends Block implements ModelRegisterCallback {
 
     public static final IProperty<Integer> NOMS = PropertyInteger.create("omnomnom", 0, 7);
-    private static final IProperty<Boolean> REGENERATE = PropertyBool.create("regenerate");
+    public static final IProperty<Boolean> REGENERATE = PropertyBool.create("regenerate");
 
     private static final AxisAlignedBB[] AABB = new AxisAlignedBB[] {
             new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),

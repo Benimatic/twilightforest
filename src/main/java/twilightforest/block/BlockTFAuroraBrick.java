@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -15,10 +14,6 @@ import net.minecraft.world.IBlockAccess;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 
 	public static final IProperty<Integer> VARIANT = PropertyInteger.create("variant", 0, 15);

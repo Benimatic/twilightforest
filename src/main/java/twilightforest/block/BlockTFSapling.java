@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -37,11 +36,8 @@ import twilightforest.world.feature.TFGenSortingTree;
 import twilightforest.world.feature.TFGenTreeOfTime;
 import twilightforest.world.feature.TFGenTreeOfTransformation;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegisterCallback {
 
 	public static final IProperty<SaplingVariant> TF_TYPE = PropertyEnum.create("tf_type", SaplingVariant.class);

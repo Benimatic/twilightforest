@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -31,11 +30,8 @@ import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	public static final IProperty<Boolean> ACTIVE = PropertyBool.create("active");
