@@ -28,7 +28,6 @@ import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;
 import twilightforest.world.WorldProviderTwilightForest;
 
-@SuppressWarnings("unused")
 @Mod( modid = TwilightForestMod.ID,
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,

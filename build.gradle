@@ -54,11 +54,14 @@ minecraft {
     replace '@mod_id@', config.mod_id
     replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
 
+    replaceIn 'TwilightForestMod.java'
     replace '@VERSION@', project.version
 }
 
-processResources
-{
+processResources {
+    //replaceIn 'assets/twilightforest/patchouli_books/guide/book.json'
+    //replace '@EDITION@', project.version
+
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
@@ -66,8 +69,8 @@ processResources
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include '**/*.info'
-        include '**/*.properties'
-        include '**/twilightforest/patchouli_books/guide/book.json'
+        //include '**/*.properties'
+        include 'assets/twilightforest/patchouli_books/guide/book.json'
 
         // replace version and mcversion
         expand ([
@@ -75,13 +78,15 @@ processResources
                 'mcversion':project.minecraft.version,
                 'forge_version': config.forge_version,
                 'mod_version': config.mod_version,
-                'minecraft_version': config.minecraft_version
+                'minecraft_version': config.minecraft_version,
+                'edition': (hasProperty("CIRevision") ? CIRevision : "WRITER'S EDITION")
         ])
     }
 
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+        exclude 'assets/twilightforest/patchouli_books/guide/book.json'
     }
 }
 
