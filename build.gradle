@@ -67,6 +67,7 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         include '**/*.info'
         include '**/*.properties'
+        include '**/twilightforest/patchouli_books/guide/book.json'
 
         // replace version and mcversion
         expand ([

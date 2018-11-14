@@ -5,5 +5,5 @@
   ],
   "creative_tab": "twilightForest",
   "model": "twilightforest:logbook",
-  "version": "@VERSION@"
+  "version": "@mod_version@"
 }
