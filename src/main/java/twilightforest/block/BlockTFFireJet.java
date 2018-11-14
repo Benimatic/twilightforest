@@ -12,10 +12,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,6 +30,7 @@ import twilightforest.tileentity.TileEntityTFFlameJet;
 import twilightforest.tileentity.TileEntityTFPoppingJet;
 import twilightforest.tileentity.TileEntityTFSmoker;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
@@ -103,6 +106,21 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 			case SMOKER:
 			default:
 				return 0;
+		}
+	}
+
+	@Nullable
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (state.getValue(VARIANT)) {
+			case JET_POPPING:
+			case ENCASED_JET_POPPING:
+				return PathNodeType.DANGER_FIRE;
+			case JET_FLAME:
+			case ENCASED_JET_FLAME:
+				return PathNodeType.DAMAGE_FIRE;
+			default:
+				return null;
 		}
 	}
 
@@ -186,6 +204,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 		}
 	}
 
+	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		switch (state.getValue(VARIANT)) {

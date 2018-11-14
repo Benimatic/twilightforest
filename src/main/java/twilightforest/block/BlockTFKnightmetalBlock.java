@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -36,6 +37,11 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
+	}
+
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return PathNodeType.DAMAGE_CACTUS;
 	}
 
 	@Override

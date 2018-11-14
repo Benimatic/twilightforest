@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
@@ -12,6 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -29,11 +29,8 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
 
 	public static final IProperty<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
@@ -96,6 +93,11 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	public boolean isFullCube(IBlockState state)
 	{
 		return false;
+	}
+
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return PathNodeType.DAMAGE_CACTUS;
 	}
 
 	@Override
