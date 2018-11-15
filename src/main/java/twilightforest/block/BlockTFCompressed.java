@@ -196,6 +196,11 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	public boolean isStickyBlock(IBlockState state) {
+		return state.getValue(VARIANT) == CompressedVariant.CARMINITE;
+	}
+
+	@Override
 	@Deprecated
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
