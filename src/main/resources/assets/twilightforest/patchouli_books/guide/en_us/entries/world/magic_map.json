@@ -3,6 +3,7 @@
   "icon": "twilightforest:magic_map",
   "category": "world",
   "advancement": "twilightforest:root",
+  "sortnum": -1000,
   "pages": [
     {
       "type": "text",

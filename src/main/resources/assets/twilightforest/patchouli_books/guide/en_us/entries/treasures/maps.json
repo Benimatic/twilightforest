@@ -3,6 +3,7 @@
   "icon": "twilightforest:magic_map",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/maps",
+  "sortnum": 1100,
   "pages": [
     {
       "type": "text",

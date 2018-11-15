@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:pinch_beetle\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/arthopods",
-  "sortnum": 500,
+  "sortnum": 2100,
   "pages": [
     {
       "type": "entity",

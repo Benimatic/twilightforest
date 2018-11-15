@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:wild_boar\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/animals",
-  "sortnum": 100,
+  "sortnum": 1100,
   "pages": [
     {
       "type": "entity",

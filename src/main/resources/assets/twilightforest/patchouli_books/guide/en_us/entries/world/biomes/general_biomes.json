@@ -3,6 +3,7 @@
   "icon": "twilightforest:magic_map_empty",
   "category": "biomes",
   "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 1000,
   "pages": [
     {
       "type": "text",

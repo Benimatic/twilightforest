@@ -3,7 +3,7 @@
   "icon": "twilightforest:trophy:5",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/snow_queen",
-  "sortnum": 80,
+  "sortnum": 7130,
   "pages": [
     {
       "type": "entity",

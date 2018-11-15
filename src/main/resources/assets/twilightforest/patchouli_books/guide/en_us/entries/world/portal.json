@@ -2,6 +2,7 @@
   "name": "Building a Portal",
   "icon": "twilightforest:miniature_structure:0",
   "category": "world",
+  "sortnum": -1010,
   "pages": [
     {
       "type": "multiblock",

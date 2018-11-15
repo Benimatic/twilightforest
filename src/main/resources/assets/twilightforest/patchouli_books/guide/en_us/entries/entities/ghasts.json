@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:mini_ghast\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/ghasts",
-  "sortnum": 1000,
+  "sortnum": 6110,
   "pages": [
     {
       "type": "entity",

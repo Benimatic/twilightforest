@@ -3,6 +3,7 @@
   "icon": "twilightforest:trophy_pedestal",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/trophies",
+  "sortnum": 2310,
   "pages": [
     {
       "type": "text",

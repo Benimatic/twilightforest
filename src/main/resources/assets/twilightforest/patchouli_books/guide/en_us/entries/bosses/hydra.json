@@ -3,7 +3,7 @@
   "icon": "twilightforest:trophy:2",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/hydra",
-  "sortnum": 40,
+  "sortnum": 5110,
   "pages": [
     {
       "type": "entity",

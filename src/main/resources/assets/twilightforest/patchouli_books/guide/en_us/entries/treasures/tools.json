@@ -3,6 +3,7 @@
   "icon": "twilightforest:ironwood_pickaxe",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/tools",
+  "sortnum": 1100,
   "pages": [
     {
       "type": "text",

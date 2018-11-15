@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:giant_miner\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/giants",
-  "sortnum": 1400,
+  "sortnum": 8110,
   "pages": [
     {
       "type": "entity",

@@ -5,6 +5,7 @@
   "category": "treasures",
   "flag": "mod:immersiveengineering",
   "advancement": "twilightforest:alt/compat/ie_shaders",
+  "sortnum": 1200,
   "pages": [
     {
       "type": "text",

@@ -3,7 +3,7 @@
   "icon": "twilightforest:trophy:4",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/knight_phantom",
-  "sortnum": 50,
+  "sortnum": 6020,
   "pages": [
     {
       "type": "entity",

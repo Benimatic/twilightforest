@@ -3,7 +3,7 @@
   "icon": "twilightforest:trophy:3",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/ur_ghast",
-  "sortnum": 60,
+  "sortnum": 6120,
   "pages": [
     {
       "type": "entity",

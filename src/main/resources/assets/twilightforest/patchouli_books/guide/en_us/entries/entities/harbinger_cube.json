@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:harbinger_cube\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/harbinger_cube",
-  "sortnum": 1600,
+  "sortnum": 9010,
   "pages": [
     {
       "type": "entity",

@@ -3,6 +3,7 @@
   "icon": "twilightforest:crumble_horn",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/crumble_horn",
+  "sortnum": 2310,
   "pages": [
     {
       "type": "spotlight",

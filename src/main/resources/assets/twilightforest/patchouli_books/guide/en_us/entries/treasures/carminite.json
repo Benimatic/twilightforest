@@ -3,6 +3,7 @@
   "icon": "twilightforest:carminite",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/carminite",
+  "sortnum": 6110,
   "pages": [
     {
       "type": "spotlight",

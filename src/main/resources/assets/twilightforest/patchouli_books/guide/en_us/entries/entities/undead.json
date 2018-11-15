@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:skeleton_druid\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/undead",
-  "sortnum": 300,
+  "sortnum": 2100,
   "pages": [
     {
       "type": "entity",

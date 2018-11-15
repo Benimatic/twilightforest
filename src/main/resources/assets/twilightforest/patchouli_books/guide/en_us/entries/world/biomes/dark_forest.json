@@ -3,6 +3,7 @@
   "icon": "twilightforest:twilight_sapling:3",
   "category": "biomes",
   "advancement": "twilightforest:alt/biomes/dark_forest",
+  "sortnum": 6000,
   "pages": [
     {
       "type": "text",

@@ -3,6 +3,7 @@
   "icon": "twilightforest:ice_bomb",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/ice_bomb",
+  "sortnum": 7120,
   "pages": [
     {
       "type": "spotlight",

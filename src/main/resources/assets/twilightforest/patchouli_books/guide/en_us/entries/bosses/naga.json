@@ -3,7 +3,7 @@
   "icon": "twilightforest:trophy:0",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/naga",
-  "sortnum": 10,
+  "sortnum": 3010,
   "pages": [
     {
       "type": "entity",

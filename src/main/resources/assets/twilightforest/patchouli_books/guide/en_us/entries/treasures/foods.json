@@ -3,6 +3,7 @@
   "icon": "twilightforest:experiment_115:2",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/foods/any",
+  "sortnum": 1100,
   "pages": [
     {
       "type": "text",

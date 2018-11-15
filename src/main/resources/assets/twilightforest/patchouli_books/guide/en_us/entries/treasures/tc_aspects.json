@@ -4,6 +4,7 @@
   "category": "treasures",
   "flag": "mod:thaumcraft",
   "advancement": "twilightforest:alt/compat/tc_aspects",
+  "sortnum": 1200,
   "pages": [
     {
       "type": "text",

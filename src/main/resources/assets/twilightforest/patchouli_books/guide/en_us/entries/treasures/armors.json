@@ -3,6 +3,7 @@
   "icon": "twilightforest:ironwood_chestplate",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/armors",
+  "sortnum": 1100,
   "pages": [
     {
       "type": "text",

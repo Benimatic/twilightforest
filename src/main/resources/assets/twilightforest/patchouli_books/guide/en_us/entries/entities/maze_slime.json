@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:maze_slime\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/maze_slime",
-  "sortnum": 800,
+  "sortnum": 5020,
   "pages": [
     {
       "type": "entity",

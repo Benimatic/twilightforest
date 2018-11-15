@@ -3,6 +3,7 @@
   "icon": "twilightforest:twilight_sapling:4",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/magic_trees",
+  "sortnum": 2100,
   "pages": [
     {
       "type": "text",

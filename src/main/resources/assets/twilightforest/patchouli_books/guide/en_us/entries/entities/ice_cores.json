@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:stable_ice_core\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/ice_cores",
-  "sortnum": 1200,
+  "sortnum": 7120,
   "pages": [
     {
       "type": "entity",

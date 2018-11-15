@@ -3,7 +3,7 @@
   "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:death_tome\"}}",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/death_tome",
-  "sortnum": 700,
+  "sortnum": 4010,
   "pages": [
     {
       "type": "entity",

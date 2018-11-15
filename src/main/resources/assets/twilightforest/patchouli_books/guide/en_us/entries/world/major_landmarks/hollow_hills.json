@@ -3,6 +3,7 @@
   "icon": "twilightforest:miniature_structure:2",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/hollow_hills",
+  "sortnum": 2000,
   "pages": [
     {
       "type": "text",

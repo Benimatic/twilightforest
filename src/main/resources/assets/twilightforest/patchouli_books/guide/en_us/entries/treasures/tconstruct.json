@@ -4,6 +4,7 @@
   "category": "treasures",
   "flag": "mod:tconstruct",
   "advancement": "twilightforest:alt/compat/tconstruct",
+  "sortnum": 1200,
   "pages": [
     {
       "type": "text",
