@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -33,8 +34,8 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 	private static final int FIRING_TIME = 12;
 
-	protected ItemTFMoonwormQueen() {
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFMoonwormQueen(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(256);
 		addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "alt"), new IItemPropertyGetter() {

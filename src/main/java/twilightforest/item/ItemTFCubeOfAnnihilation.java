@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,9 +25,9 @@ import java.util.UUID;
 public class ItemTFCubeOfAnnihilation extends ItemTF {
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
-	protected ItemTFCubeOfAnnihilation() {
+	protected ItemTFCubeOfAnnihilation(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
-		this.setCreativeTab(TFItems.creativeTab);
 		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
 			@Override

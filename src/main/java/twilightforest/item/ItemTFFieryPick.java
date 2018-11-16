@@ -23,6 +23,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.util.TFItemStackUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,9 +107,12 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 		}
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
+	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

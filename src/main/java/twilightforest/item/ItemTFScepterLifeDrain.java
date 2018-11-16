@@ -228,10 +228,12 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

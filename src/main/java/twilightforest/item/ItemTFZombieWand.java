@@ -72,10 +72,12 @@ public class ItemTFZombieWand extends ItemTF {
 		return world.rayTraceBlocks(position, dest);
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

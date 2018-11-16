@@ -280,7 +280,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return mapOres ? EnumRarity.EPIC : EnumRarity.UNCOMMON;
+		return mapOres ? EnumRarity.UNCOMMON : EnumRarity.COMMON;
 	}
 
 	@Override

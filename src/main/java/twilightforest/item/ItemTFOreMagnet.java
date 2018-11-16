@@ -35,7 +35,6 @@ public class ItemTFOreMagnet extends ItemTF {
 	private static final float WIGGLE = 10F;
 
 	protected ItemTFOreMagnet() {
-		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
 		this.setMaxDamage(12);
 		// [VanillaCopy] ItemBow with our item
@@ -252,7 +251,6 @@ public class ItemTFOreMagnet extends ItemTF {
 		}
 	}
 
-
 	private static boolean isOre(IBlockState state) {
         Block block = state.getBlock();
 
@@ -268,12 +266,10 @@ public class ItemTFOreMagnet extends ItemTF {
                 || block == Blocks.QUARTZ_ORE
                 || state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)
                 // todo 1.9 oh god
-                // Good enough for now -Drullkus
+				// National treasure -Drullkus
                 || state.getBlock().getRegistryName().getPath().contains("ore"))
 		    return true;
 
 		return false;
 	}
-
-
 }

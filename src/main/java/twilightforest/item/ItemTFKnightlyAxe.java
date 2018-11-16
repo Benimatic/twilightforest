@@ -21,12 +21,6 @@ public class ItemTFKnightlyAxe extends ItemAxe implements ModelRegisterCallback 
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltips, ITooltipFlag flags) {

@@ -6,12 +6,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumParticleTypes;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
@@ -41,5 +43,11 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 			player.playSound(Blocks.GLASS.getSoundType(Blocks.GLASS.getDefaultState(), entity.world, entity.getPosition(), player).getBreakSound(), 1F, 0.5F);
 		}
 		return false;
+	}
+
+	@Nonnull
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+		return EnumRarity.RARE;
 	}
 }

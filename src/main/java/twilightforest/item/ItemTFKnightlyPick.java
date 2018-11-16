@@ -21,12 +21,6 @@ public class ItemTFKnightlyPick extends ItemPickaxe implements ModelRegisterCall
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {

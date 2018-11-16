@@ -4,6 +4,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -68,6 +70,14 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {
 		super.addInformation(stack, world, list, flags);
 		list.add(I18n.format(getTranslationKey() + ".tooltip"));
+	}
+
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
+	@Nonnull
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 }
 

@@ -50,12 +50,6 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 		}
 	}
 
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {

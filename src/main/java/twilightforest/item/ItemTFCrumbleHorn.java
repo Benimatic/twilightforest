@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -35,15 +36,14 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class ItemTFCrumbleHorn extends ItemTF {
-
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
 	private final List<Pair<Predicate<IBlockState>, UnaryOperator<IBlockState>>> crumbleTransforms = new ArrayList<>();
 	private final List<Predicate<IBlockState>> harvestedStates = new ArrayList<>();
 
-	protected ItemTFCrumbleHorn() {
-		this.setCreativeTab(TFItems.creativeTab);
+	ItemTFCrumbleHorn(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(1024);
 		this.addCrumbleTransforms();

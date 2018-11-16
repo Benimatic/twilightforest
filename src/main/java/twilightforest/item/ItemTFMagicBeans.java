@@ -17,11 +17,6 @@ import twilightforest.world.WorldProviderTwilightForest;
 import javax.annotation.Nonnull;
 
 public class ItemTFMagicBeans extends ItemTF {
-
-	public ItemTFMagicBeans() {
-		this.makeRare();
-	}
-
 	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -150,12 +145,10 @@ public class ItemTFMagicBeans extends ItemTF {
 		}
 	}
 
-
 	private void tryToPlaceLeaves(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
 			world.setBlockState(pos, TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockTFLeaves3.VARIANT, Leaves3Variant.BEANSTALK), 2);
 		}
 	}
-
 }

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -22,10 +23,10 @@ import twilightforest.block.TFBlocks;
 import javax.annotation.Nonnull;
 
 public class ItemTFLampOfCinders extends ItemTF {
-
 	private static final int FIRING_TIME = 12;
 
-	public ItemTFLampOfCinders() {
+	ItemTFLampOfCinders(EnumRarity rarity) {
+		super(rarity);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
 		this.setMaxDamage(1024);

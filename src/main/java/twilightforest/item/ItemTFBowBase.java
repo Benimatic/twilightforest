@@ -8,10 +8,7 @@ import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCallback {
@@ -141,4 +139,11 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 		}
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
+	@Nonnull
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
+	}
 }

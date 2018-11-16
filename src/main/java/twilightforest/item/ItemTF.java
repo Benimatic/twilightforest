@@ -8,21 +8,21 @@ import twilightforest.client.ModelRegisterCallback;
 import javax.annotation.Nonnull;
 
 public class ItemTF extends Item implements ModelRegisterCallback {
-
-	private boolean isRare = false;
+	private final EnumRarity rarity;
 
 	protected ItemTF() {
 		this.setCreativeTab(TFItems.creativeTab);
+		this.rarity = EnumRarity.COMMON;
+	}
+
+	protected ItemTF(EnumRarity rarity) {
+		this.setCreativeTab(TFItems.creativeTab);
+		this.rarity = rarity;
 	}
 
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return isRare ? EnumRarity.RARE : EnumRarity.UNCOMMON;
-	}
-
-	public ItemTF makeRare() {
-		this.isRare = true;
-		return this;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(rarity) < 1 ? EnumRarity.RARE : rarity : rarity;
 	}
 }

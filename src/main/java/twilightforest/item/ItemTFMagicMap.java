@@ -30,12 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
-
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	private static class MapColorBrightness {
-
 		public MapColor color;
 		public int brightness;
 
@@ -199,11 +197,6 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		// disable zooming
-	}
-
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.UNCOMMON;
 	}
 
 	@Override

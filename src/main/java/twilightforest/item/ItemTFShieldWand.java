@@ -46,10 +46,12 @@ public class ItemTFShieldWand extends ItemTF {
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

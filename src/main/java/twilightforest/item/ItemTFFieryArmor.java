@@ -19,16 +19,11 @@ import twilightforest.client.ModelRegisterCallback;
 
 import java.util.List;
 
-public class ItemTFFieryArmor extends ItemArmor implements ModelRegisterCallback {
+public class ItemTFFieryArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFFieryArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType) {
-		super(armorMaterial, 0, armorType);
+	public ItemTFFieryArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType, EnumRarity rarity) {
+		super(armorMaterial, armorType, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.EPIC;
 	}
 
 	@Override

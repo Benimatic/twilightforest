@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback {
@@ -25,9 +26,12 @@ public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
+	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.entity.EntityTFTwilightWandBolt;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemTFTwilightWand extends ItemTF {
@@ -46,9 +47,12 @@ public class ItemTFTwilightWand extends ItemTF {
 		}
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
+	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
@@ -24,8 +25,8 @@ import twilightforest.util.WorldUtil;
 import javax.annotation.Nonnull;
 
 public class ItemTFPeacockFan extends ItemTF {
-	protected ItemTFPeacockFan() {
-		this.setCreativeTab(TFItems.creativeTab);
+	ItemTFPeacockFan(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(1024);
 	}
