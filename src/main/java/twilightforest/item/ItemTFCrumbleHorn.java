@@ -144,45 +144,42 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	private int crumbleBlocksInAABB(World world, EntityLivingBase living, AxisAlignedBB box) {
 		int crumbled = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			crumbled += crumbleBlock(world, living, pos);
+			if (crumbleBlock(world, living, pos)) crumbled++;
 		}
 		return crumbled;
 	}
 
-	private int crumbleBlock(World world, EntityLivingBase living, BlockPos pos) {
-
-		int cost = 0;
+	private boolean crumbleBlock(World world, EntityLivingBase living, BlockPos pos) {
 
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (!block.isAir(state, world, pos)) {
+		if (block.isAir(state, world, pos)) return false;
 
-			for (Pair<Predicate<IBlockState>, UnaryOperator<IBlockState>> transform : crumbleTransforms) {
-				if (transform.getLeft().test(state) && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
-					world.setBlockState(pos, transform.getRight().apply(state), 3);
-					world.playEvent(2001, pos, Block.getStateId(state));
-					cost++;
-				}
+		for (Pair<Predicate<IBlockState>, UnaryOperator<IBlockState>> transform : crumbleTransforms) {
+			if (transform.getLeft().test(state) && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
+				world.setBlockState(pos, transform.getRight().apply(state), 3);
+				world.playEvent(2001, pos, Block.getStateId(state));
+				return true;
 			}
+		}
 
-			for (Predicate<IBlockState> predicate : harvestedStates) {
-				if (predicate.test(state) && world.rand.nextInt(CHANCE_HARVEST) == 0) {
-					if (living instanceof EntityPlayer) {
-						if (block.canHarvestBlock(world, pos, (EntityPlayer) living)) {
-							world.setBlockToAir(pos);
-							block.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
-							world.playEvent(2001, pos, Block.getStateId(state));
-							cost++;
-						}
-					} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
-						world.destroyBlock(pos, true);
-						cost++;
+		for (Predicate<IBlockState> predicate : harvestedStates) {
+			if (predicate.test(state) && world.rand.nextInt(CHANCE_HARVEST) == 0) {
+				if (living instanceof EntityPlayer) {
+					if (block.canHarvestBlock(world, pos, (EntityPlayer) living)) {
+						world.setBlockToAir(pos);
+						block.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
+						world.playEvent(2001, pos, Block.getStateId(state));
+						return true;
 					}
+				} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
+					world.destroyBlock(pos, true);
+					return true;
 				}
 			}
 		}
 
-		return cost;
+		return false;
 	}
 }
