@@ -78,6 +78,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		addHarvest(() -> Blocks.GRAVEL);
 		addHarvest(() -> Blocks.DIRT);
 		addHarvest(() -> Blocks.SAND);
+		addHarvest(() -> Blocks.CLAY);
 	}
 
 	private void addCrumble(Supplier<Block> block, Supplier<IBlockState> result) {
