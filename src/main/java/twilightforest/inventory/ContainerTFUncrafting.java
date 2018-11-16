@@ -113,9 +113,7 @@ public class ContainerTFUncrafting extends Container {
 
 			if (size > 0) {
 
-				int recipeType = Math.floorMod(this.unrecipeInCycle, size);
-				IRecipe recipe = recipes[recipeType];
-
+				IRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe) {
@@ -327,17 +325,19 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private void chooseRecipe(InventoryCrafting inventory) {
-		IRecipe[] recipes = this.getRecipesFor(inventory, world);
-		if (recipes.length > 0) {
-			int recipeType = Math.floorMod(this.recipeInCycle, recipes.length);
-			IRecipe recipe = recipes[recipeType];
 
-			if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
-				this.tinkerResult.setRecipeUsed(recipe);
-				this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(inventory));
-			} else {
-				this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
-			}
+		IRecipe[] recipes = this.getRecipesFor(inventory, world);
+
+		if (recipes.length == 0) {
+			this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+			return;
+		}
+
+		IRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
+
+		if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
+			this.tinkerResult.setRecipeUsed(recipe);
+			this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(inventory));
 		} else {
 			this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
 		}
@@ -390,46 +390,43 @@ public class ContainerTFUncrafting extends Container {
 	 */
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
-		if (!this.assemblyMatrix.isEmpty()) {
-			return 0;
-		} else {
-			return countDamageableParts(this.uncraftingMatrix);
-		}
+		return !this.assemblyMatrix.isEmpty() ? 0 : countDamageableParts(this.uncraftingMatrix);
 	}
 
 	/**
 	 * Return the cost of recrafting, if any.  Return 0 if recrafting is not available at this time
 	 */
 	private int calculateRecraftingCost() {
-		if (tinkerInput.getStackInSlot(0).isEmpty() || !tinkerInput.getStackInSlot(0).isItemEnchanted() || tinkerResult.getStackInSlot(0).isEmpty()) {
+
+		ItemStack input = tinkerInput.getStackInSlot(0);
+		ItemStack output = tinkerResult.getStackInSlot(0);
+
+		if (input.isEmpty() || !input.isItemEnchanted() || output.isEmpty()) {
 			return 0;
-		} else {
-			// okay, if we're here the input item must be enchanted, and we are repairing or recrafting it
-			ItemStack input = tinkerInput.getStackInSlot(0);
-			ItemStack output = tinkerResult.getStackInSlot(0);
-
-			int cost = 0;
-
-			// add innate repair cost
-			cost += input.getRepairCost();
-
-			// look at the input's enchantments and total them up
-			int enchantCost = countTotalEnchantmentCost(input);
-			cost += enchantCost;
-
-			// broken pieces cost
-			int damagedCost = (1 + countDamagedParts(input)) * EnchantmentHelper.getEnchantments(output).size();
-			cost += damagedCost;
-
-			// factor in enchantibility difference
-			int enchantabilityDifference = input.getItem().getItemEnchantability() - output.getItem().getItemEnchantability();
-			cost += enchantabilityDifference;
-
-			// minimum cost of 1 if we're even calling this part
-			cost = Math.max(1, cost);
-
-			return cost;
 		}
+
+		// okay, if we're here the input item must be enchanted, and we are repairing or recrafting it
+		int cost = 0;
+
+		// add innate repair cost
+		cost += input.getRepairCost();
+
+		// look at the input's enchantments and total them up
+		int enchantCost = countTotalEnchantmentCost(input);
+		cost += enchantCost;
+
+		// broken pieces cost
+		int damagedCost = (1 + countDamagedParts(input)) * EnchantmentHelper.getEnchantments(output).size();
+		cost += damagedCost;
+
+		// factor in enchantibility difference
+		int enchantabilityDifference = input.getItem().getItemEnchantability() - output.getItem().getItemEnchantability();
+		cost += enchantabilityDifference;
+
+		// minimum cost of 1 if we're even calling this part
+		cost = Math.max(1, cost);
+
+		return cost;
 	}
 
 	public int countHighestEnchantmentCost(ItemStack itemStack) {
@@ -568,8 +565,7 @@ public class ContainerTFUncrafting extends Container {
 	private int countDamagedParts(ItemStack input) {
 		int totalMax4 = Math.max(4, countDamageableParts(this.uncraftingMatrix));
 		float damage = (float) input.getItemDamage() / (float) input.getMaxDamage();
-		int damagedParts = (int) Math.ceil(totalMax4 * damage);
-		return damagedParts;
+		return (int) Math.ceil(totalMax4 * damage);
 	}
 
 	/**
@@ -580,60 +576,59 @@ public class ContainerTFUncrafting extends Container {
 
 		Slot transferSlot = this.inventorySlots.get(slotNum);
 
-		if (transferSlot != null && transferSlot.getHasStack()) {
-
-			ItemStack transferStack = transferSlot.getStack();
-			ItemStack copyItem = transferStack.copy();
-
-			if (slotNum == 0) {
-				// result or input goes to inventory or hotbar
-				if (!this.mergeItemStack(transferStack, 20, 56, true)) {
-					return ItemStack.EMPTY;
-				}
-
-				transferSlot.onSlotChange(transferStack, copyItem);  // what does this do?
-			} else if (slotNum == 1) {
-				transferStack.getItem().onCreated(transferStack, this.world, player);
-
-				if (!this.mergeItemStack(transferStack, 20, 56, true))
-					return ItemStack.EMPTY;
-
-				transferSlot.onSlotChange(transferStack, copyItem);
-			} else if (slotNum >= 20 && slotNum < 47) {
-				// Checks uncrafting input slot first
-				if (!this.mergeItemStack(transferStack, 0, 1, false)) {
-					// inventory goes to hotbar
-					if (!this.mergeItemStack(transferStack, 47, 56, false)) {
-						return ItemStack.EMPTY;
-					}
-				}
-			} else if (slotNum >= 47 && slotNum < 56) {
-				// Checks uncrafting input slot first
-				if (!this.mergeItemStack(transferStack, 0, 1, false)) {
-					// hotbar goes to inventory
-					if (!this.mergeItemStack(transferStack, 20, 47, false)) {
-						return ItemStack.EMPTY;
-					}
-				}
-			} else if (!this.mergeItemStack(transferStack, 20, 56, false)) {
-				// crafting area goes to inventory or hotbar
-				return ItemStack.EMPTY;
-			}
-
-			if (transferStack.getCount() == 0) {
-				transferSlot.putStack(ItemStack.EMPTY);
-			} else {
-				transferSlot.onSlotChanged();
-			}
-
-			if (transferStack.getCount() == copyItem.getCount()) {
-				return ItemStack.EMPTY;
-			}
-
-			return transferSlot.onTake(player, transferStack);
+		if (transferSlot == null || !transferSlot.getHasStack()) {
+			return ItemStack.EMPTY;
 		}
 
-		return ItemStack.EMPTY;
+		ItemStack transferStack = transferSlot.getStack();
+		ItemStack copyItem = transferStack.copy();
+
+		if (slotNum == 0) {
+			// result or input goes to inventory or hotbar
+			if (!this.mergeItemStack(transferStack, 20, 56, true)) {
+				return ItemStack.EMPTY;
+			}
+
+			transferSlot.onSlotChange(transferStack, copyItem);  // what does this do?
+		} else if (slotNum == 1) {
+			transferStack.getItem().onCreated(transferStack, this.world, player);
+
+			if (!this.mergeItemStack(transferStack, 20, 56, true))
+				return ItemStack.EMPTY;
+
+			transferSlot.onSlotChange(transferStack, copyItem);
+		} else if (slotNum >= 20 && slotNum < 47) {
+			// Checks uncrafting input slot first
+			if (!this.mergeItemStack(transferStack, 0, 1, false)) {
+				// inventory goes to hotbar
+				if (!this.mergeItemStack(transferStack, 47, 56, false)) {
+					return ItemStack.EMPTY;
+				}
+			}
+		} else if (slotNum >= 47 && slotNum < 56) {
+			// Checks uncrafting input slot first
+			if (!this.mergeItemStack(transferStack, 0, 1, false)) {
+				// hotbar goes to inventory
+				if (!this.mergeItemStack(transferStack, 20, 47, false)) {
+					return ItemStack.EMPTY;
+				}
+			}
+		} else if (!this.mergeItemStack(transferStack, 20, 56, false)) {
+			// crafting area goes to inventory or hotbar
+			return ItemStack.EMPTY;
+		}
+
+		if (transferStack.getCount() == 0) {
+			transferSlot.putStack(ItemStack.EMPTY);
+		} else {
+			transferSlot.onSlotChanged();
+		}
+
+		if (transferStack.getCount() == copyItem.getCount()) {
+			return ItemStack.EMPTY;
+		}
+
+		return transferSlot.onTake(player, transferStack);
 	}
 
 	@Override

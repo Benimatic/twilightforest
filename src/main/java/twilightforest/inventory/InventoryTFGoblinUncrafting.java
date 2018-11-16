@@ -25,8 +25,8 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack s : contents) {
-			if (!s.isEmpty()) {
+		for (ItemStack stack : contents) {
+			if (!stack.isEmpty()) {
 				return false;
 			}
 		}
@@ -39,34 +39,24 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public ItemStack decrStackSize(int slotNum, int amount) {
-		if (!this.contents.get(slotNum).isEmpty()) {
-			ItemStack takenStack;
-
-			if (this.contents.get(slotNum).getCount() <= amount) {
-				takenStack = this.contents.get(slotNum);
-				this.contents.set(slotNum, ItemStack.EMPTY);
-
-				//this.eventHandler.onCraftMatrixChanged(this);
-				return takenStack;
-			} else {
-				takenStack = this.contents.get(slotNum).splitStack(amount);
-				return takenStack;
-			}
+	public ItemStack decrStackSize(int index, int amount) {
+		ItemStack stack = this.contents.get(index);
+		if (stack.isEmpty()) return ItemStack.EMPTY;
+		if (stack.getCount() <= amount) {
+			this.contents.set(index, ItemStack.EMPTY);
+			//this.eventHandler.onCraftMatrixChanged(this);
+			return stack;
 		} else {
-			return ItemStack.EMPTY;
+			return stack.splitStack(amount);
 		}
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		if (!this.contents.get(index).isEmpty()) {
-			ItemStack stack = this.contents.get(index);
-			this.contents.set(index, ItemStack.EMPTY);
-			return stack;
-		} else {
-			return ItemStack.EMPTY;
-		}
+		ItemStack stack = this.contents.get(index);
+		if (stack.isEmpty()) return ItemStack.EMPTY;
+		this.contents.set(index, ItemStack.EMPTY);
+		return stack;
 	}
 
 	@Override
