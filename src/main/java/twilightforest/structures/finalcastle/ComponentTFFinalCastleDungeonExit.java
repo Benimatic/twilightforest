@@ -29,7 +29,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponentOld) {
+		if (parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
@@ -38,7 +38,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		// add stairway down
 		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX, parent.getBoundingBox().minZ);
 
-		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 15, boundingBox.minY + 0, boundingBox.minZ + 15, bestDir.rotate(EnumFacing.SOUTH));
+		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 15, boundingBox.minY, boundingBox.minZ + 15, bestDir.rotate(EnumFacing.SOUTH));
 		list.add(steps0);
 		steps0.buildComponent(this, list, rand);
 
@@ -52,7 +52,10 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
+
+		if (!super.addComponentParts(world, rand, sbb)) {
+			return false;
+		}
 
 		// door
 		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
