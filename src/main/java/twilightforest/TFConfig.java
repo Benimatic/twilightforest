@@ -15,12 +15,12 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
@@ -254,16 +254,7 @@ public class TFConfig {
 			iconList.addAll(IMCHandler.getLoadingIconStacks());
 
 			for (String s : loadingIconStacks) {
-				String[] data = s.split(":");
-
-				Item item = Item.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
-				int meta;
-
-				if (item == null) continue;
-				try                 { meta = Integer.parseInt(data[2]); }
-				catch (Exception e) { meta = 0;                         }
-
-				iconList.add(new ItemStack(item, 1, meta));
+				parseItemStack(s, 0).ifPresent(iconList::add);
 			}
 
 			loadingScreenIcons = iconList.build();
@@ -293,24 +284,7 @@ public class TFConfig {
 		builder.addAll(IMCHandler.getBlacklistedBlocks());
 
 		for (String s : antibuilderBlacklist) {
-			String[] data = s.split(":");
-			if (data.length < 2)
-				continue;
-			Block block = Block.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
-			if (block != Blocks.AIR) {
-				int meta = 0;
-
-				if (data.length >= 3) {
-					try {
-						meta = Integer.parseInt(data[2]);
-					} catch (NumberFormatException e) {
-						TwilightForestMod.LOGGER.warn("Had a slight hiccup processing \"" + s + "\" as part of the antibuilder blacklist.");
-						meta = 0;
-					}
-				}
-
-				builder.add(block.getStateFromMeta(meta));
-			}
+			parseBlockState(s).ifPresent(builder::add);
 		}
 
 		disallowBreakingBlockList = builder.build();
@@ -331,23 +305,7 @@ public class TFConfig {
 		List<ItemStack> stacks = new ArrayList<>();
 
 		for (String s : portalCreationItems) {
-
-			String[] split = s.split(":");
-			if (split.length < 2) continue;
-
-			Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
-			if (item == null) continue;
-
-			int meta = OreDictionary.WILDCARD_VALUE;
-			if (split.length > 2) {
-				try {
-					meta = Integer.parseInt(split[2]);
-				} catch (NumberFormatException e) {
-					continue;
-				}
-			}
-
-			stacks.add(new ItemStack(item, 1, meta));
+			parseItemStack(s, OreDictionary.WILDCARD_VALUE).ifPresent(stacks::add);
 		}
 
 		if (stacks.isEmpty()) {
@@ -355,5 +313,47 @@ public class TFConfig {
 		}
 
 		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
+	}
+
+	private static Optional<ItemStack> parseItemStack(String string, int defaultMeta) {
+
+		String[] split = string.split(":");
+		if (split.length < 2) return Optional.empty();
+
+		Item item = Item.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+		if (item == null || item == Items.AIR) return Optional.empty();
+
+		int meta = defaultMeta;
+		if (split.length > 2) {
+			try {
+				meta = Integer.parseInt(split[2]);
+			} catch (NumberFormatException e) {
+				return Optional.empty();
+			}
+		}
+		if (meta < 0 || meta > Short.MAX_VALUE) return Optional.empty();
+
+		return Optional.of(new ItemStack(item, 1, meta));
+	}
+
+	private static Optional<IBlockState> parseBlockState(String string) {
+
+		String[] split = string.split(":");
+		if (split.length < 2) return Optional.empty();
+
+		Block block = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+		if (block == Blocks.AIR) return Optional.empty();
+
+		int meta = 0;
+		if (split.length > 2) {
+			try {
+				meta = Integer.parseInt(split[2]);
+			} catch (NumberFormatException e) {
+				return Optional.empty();
+			}
+		}
+		if (meta < 0 || meta > 15) return Optional.empty();
+
+		return Optional.of(block.getStateFromMeta(meta));
 	}
 }
