@@ -133,6 +133,8 @@ public class TFItems {
 	public static final Item steeleaf_hoe;
 	@GameRegistry.ObjectHolder("minotaur_axe")
 	public static final Item minotaur_axe;
+	@GameRegistry.ObjectHolder("minotaur_axe_gold")
+	public static final Item minotaur_axe_gold;
 	@GameRegistry.ObjectHolder("mazebreaker_pickaxe")
 	public static final Item mazebreaker_pickaxe;
 	@GameRegistry.ObjectHolder("transformation_powder")
@@ -332,6 +334,7 @@ public class TFItems {
 		steeleaf_axe = null;
 		steeleaf_hoe = null;
 		minotaur_axe = null;
+		minotaur_axe_gold = null;
 		mazebreaker_pickaxe = null;
 		transformation_powder = null;
 		raw_meef = null;

@@ -471,7 +471,8 @@ item.twilightforest.steeleafShovel.name=Steeleaf Shovel
 item.twilightforest.steeleafPick.name=Steeleaf Pick
 item.twilightforest.steeleafAxe.name=Steeleaf Axe
 item.twilightforest.steeleafHoe.name=Steeleaf Hoe
-item.twilightforest.minotaurAxe.name=Minotaur Axe
+item.twilightforest.minotaurAxe.name=Diamond Minotaur Axe
+item.twilightforest.minotaurAxeGold.name=Golden Minotaur Axe
 item.twilightforest.mazebreakerPick.name=Mazebreaker
 item.twilightforest.transformPowder.name=Transformation Powder
 item.twilightforest.meefRaw.name=Raw Meef
@@ -544,6 +545,7 @@ item.twilightforest.moonDial.name=Moon Dial
 item.twilightforest.guide.name=Traveller's Logbook
 
 item.twilightforest.minotaurAxe.tooltip=Extra damage while charging
+item.twilightforest.minotaurAxeGold.tooltip=Extra damage while charging
 item.twilightforest.knightlySword.tooltip=Extra damage to armored targets
 item.twilightforest.knightlyPick.tooltip=Extra damage to armored targets
 item.twilightforest.knightlyAxe.tooltip=Extra damage to unarmored targets

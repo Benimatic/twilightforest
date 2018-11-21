@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.boss.EntityTFMinoshroom;
+import twilightforest.item.TFItems;
 
 public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minotaur");
@@ -73,7 +74,16 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
+		int random = this.rand.nextInt(10);
+
+		float additionalDiff = difficulty.getAdditionalDifficulty() + 1;
+
+		int result = (int) (random / additionalDiff);
+
+		if (result == 0)
+			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold));
+		else
+			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
 
 	@Override

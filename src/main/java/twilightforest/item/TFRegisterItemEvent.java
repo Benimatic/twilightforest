@@ -31,6 +31,7 @@ import static java.util.Arrays.stream;
 import static net.minecraft.init.MobEffects.REGENERATION;
 import static net.minecraft.inventory.EntityEquipmentSlot.*;
 import static net.minecraft.item.Item.ToolMaterial.DIAMOND;
+import static net.minecraft.item.Item.ToolMaterial.GOLD;
 import static twilightforest.item.TFItems.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -90,7 +91,8 @@ public class TFRegisterItemEvent {
 		items.register("steeleaf_pickaxe", "steeleafPick", new ItemTFSteeleafPick(TOOL_STEELEAF).setMaxStackSize(1));
 		items.register("steeleaf_axe", "steeleafAxe", new ItemTFSteeleafAxe(TOOL_STEELEAF).setMaxStackSize(1));
 		items.register("steeleaf_hoe", "steeleafHoe", new ItemTFSteeleafHoe(TOOL_STEELEAF).setMaxStackSize(1));
-		items.register("minotaur_axe", "minotaurAxe", new ItemTFMinotaurAxe(DIAMOND).setMaxStackSize(1));
+		items.register("minotaur_axe_gold", "minotaurAxeGold", new ItemTFMinotaurAxe(GOLD, EnumRarity.COMMON).setMaxStackSize(1));
+		items.register("minotaur_axe", "minotaurAxe", new ItemTFMinotaurAxe(DIAMOND, EnumRarity.UNCOMMON).setMaxStackSize(1));
 		items.register("mazebreaker_pickaxe", "mazebreakerPick", new ItemTFMazebreakerPick(DIAMOND).setMaxStackSize(1));
 		items.register("transformation_powder", "transformPowder", new ItemTFTransformPowder());
 		items.register("raw_meef", "meefRaw", new ItemTFFood(2, 0.3F, true));

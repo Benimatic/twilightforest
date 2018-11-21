@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -27,10 +28,13 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback {
 	private static final int BONUS_CHARGING_DAMAGE = 7;
+	private final EnumRarity RARITY;
 
-	protected ItemTFMinotaurAxe(Item.ToolMaterial material) {
+	protected ItemTFMinotaurAxe(Item.ToolMaterial material, EnumRarity rarity) {
 		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f);
 		this.setCreativeTab(TFItems.creativeTab);
+
+		this.RARITY = rarity;
 	}
 
 	@Override
@@ -45,9 +49,9 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 	@SubscribeEvent
 	public static void onAttack(LivingAttackEvent evt) {
 		EntityLivingBase target = evt.getEntityLiving();
+		Entity source = evt.getSource().getImmediateSource();
 
-		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof EntityLivingBase
-				&& evt.getSource().getImmediateSource().isSprinting()) {
+		if (!target.world.isRemote && source instanceof EntityLivingBase && source.isSprinting()) {
 			ItemStack weapon = ((EntityLivingBase) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
 			if (!weapon.isEmpty() && weapon.getItem() == TFItems.minotaur_axe) {
@@ -72,12 +76,10 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 		list.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
-
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 }
 
