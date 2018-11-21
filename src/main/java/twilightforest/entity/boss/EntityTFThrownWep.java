@@ -1,7 +1,6 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -12,9 +11,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.entity.ITFProjectile;
+import twilightforest.entity.EntityTFThrowable;
 
-public class EntityTFThrownWep extends EntityThrowable implements ITFProjectile {
+public class EntityTFThrownWep extends EntityTFThrowable {
 
 	private static final DataParameter<ItemStack> DATA_ITEMSTACK = EntityDataManager.createKey(EntityTFThrownWep.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<Float> DATA_VELOCITY = EntityDataManager.createKey(EntityTFThrownWep.class, DataSerializers.FLOAT);

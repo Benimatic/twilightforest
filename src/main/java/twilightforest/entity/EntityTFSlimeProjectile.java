@@ -1,7 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -10,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFSlimeProjectile extends EntityThrowable implements ITFProjectile {
+public class EntityTFSlimeProjectile extends EntityTFThrowable {
 
 	public EntityTFSlimeProjectile(World world) {
 		super(world);

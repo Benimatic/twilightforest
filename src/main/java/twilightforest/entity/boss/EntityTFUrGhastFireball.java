@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.util.DamageSource;
@@ -28,6 +30,18 @@ public class EntityTFUrGhastFireball extends EntityLargeFireball implements ITFP
 			boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
 			this.world.newExplosion(null, this.posX, this.posY, this.posZ, (float) this.explosionPower, flag, flag);
 			this.setDead();
+		}
+	}
+
+	@Override
+	public Entity getThrower() {
+		return this.shootingEntity;
+	}
+
+	@Override
+	public void setThrower(Entity entity) {
+		if (entity instanceof EntityLivingBase) {
+			this.shootingEntity = (EntityLivingBase) entity;
 		}
 	}
 }

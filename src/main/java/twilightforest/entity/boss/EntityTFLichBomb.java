@@ -1,14 +1,13 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import twilightforest.entity.ITFProjectile;
+import twilightforest.entity.EntityTFThrowable;
 
-public class EntityTFLichBomb extends EntityThrowable implements ITFProjectile {
+public class EntityTFLichBomb extends EntityTFThrowable {
 
 	public EntityTFLichBomb(World world) {
 		super(world);

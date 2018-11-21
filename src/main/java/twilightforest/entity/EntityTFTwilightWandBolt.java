@@ -1,7 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -12,7 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFTwilightWandBolt extends EntityThrowable implements ITFProjectile {
+public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 
 	@SuppressWarnings("unused")
 	public EntityTFTwilightWandBolt(World world) {

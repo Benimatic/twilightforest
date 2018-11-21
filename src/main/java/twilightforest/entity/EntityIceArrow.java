@@ -3,17 +3,14 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.potions.TFPotions;
 
-public class EntityIceArrow extends EntityArrow implements ITFProjectile {
+public class EntityIceArrow extends EntityTFArrow {
 
 	public EntityIceArrow(World world) {
 		super(world);
@@ -42,10 +39,4 @@ public class EntityIceArrow extends EntityArrow implements ITFProjectile {
 			((EntityLivingBase) ray.entityHit).addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, chillLevel));
 		}
 	}
-
-	@Override
-	protected ItemStack getArrowStack() {
-		return new ItemStack(Items.ARROW);
-	}
-
 }

@@ -1,7 +1,6 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -11,9 +10,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.entity.ITFProjectile;
+import twilightforest.entity.EntityTFThrowable;
 
-public class EntityTFLichBolt extends EntityThrowable implements ITFProjectile {
+public class EntityTFLichBolt extends EntityTFThrowable {
 
 	@SuppressWarnings("unused")
 	public EntityTFLichBolt(World world) {

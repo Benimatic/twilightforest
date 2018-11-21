@@ -1,7 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -14,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFTomeBolt extends EntityThrowable implements ITFProjectile {
+public class EntityTFTomeBolt extends EntityTFThrowable {
 
 	public EntityTFTomeBolt(World world, EntityLivingBase thrower) {
 		super(world, thrower);

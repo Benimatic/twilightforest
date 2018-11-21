@@ -3,9 +3,6 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -17,7 +14,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class EntitySeekerArrow extends EntityArrow implements ITFProjectile {
+public class EntitySeekerArrow extends EntityTFArrow {
 
 	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntitySeekerArrow.class, DataSerializers.VARINT);
 
@@ -141,13 +138,7 @@ public class EntitySeekerArrow extends EntityArrow implements ITFProjectile {
 		dataManager.set(TARGET, e == null ? -1 : e.getEntityId());
 	}
 
-	@Override
-	protected ItemStack getArrowStack() {
-		return new ItemStack(Items.ARROW);
-	}
-
 	private boolean isThisArrowFlying() {
 		return MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) > 1.0;
 	}
-
 }
