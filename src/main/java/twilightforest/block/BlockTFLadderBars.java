@@ -37,9 +37,12 @@ public class BlockTFLadderBars extends BlockLadder implements ModelRegisterCallb
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         EnumFacing facing = state.getValue(BlockLadder.FACING);
 
+        IBlockState leftState  = worldIn.getBlockState(pos.offset(rotateCW (facing)));
+        IBlockState rightState = worldIn.getBlockState(pos.offset(rotateCCW(facing)));
+
         return super.getActualState(state, worldIn, pos)
-                .withProperty(LEFT , worldIn.getBlockState(pos.offset(rotateCW (facing))).getBlock() == this)
-                .withProperty(RIGHT, worldIn.getBlockState(pos.offset(rotateCCW(facing))).getBlock() == this);
+                .withProperty(LEFT , leftState .getBlock() instanceof BlockTFLadderBars && leftState .getValue(BlockLadder.FACING) == facing)
+                .withProperty(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.getValue(BlockLadder.FACING) == facing);
     }
 
     private static EnumFacing rotateCW(EnumFacing facing) {
