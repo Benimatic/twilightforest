@@ -38,38 +38,38 @@ import java.util.List;
 
 public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 
-    public static final IProperty<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
+	public static final IProperty<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
 
-    public BlockTFCompressed() {
-        super(Material.IRON, MapColor.IRON);
-        this.setHardness(5.0F);
-        this.setResistance(10.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, CompressedVariant.IRONWOOD));
+	public BlockTFCompressed() {
+		super(Material.IRON, MapColor.IRON);
+		this.setHardness(5.0F);
+		this.setResistance(10.0F);
+		this.setSoundType(SoundType.METAL);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, CompressedVariant.IRONWOOD));
 		this.setCreativeTab(TFItems.creativeTab);
-    }
+	}
 
-    @Override
-    public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, VARIANT);
-    }
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(VARIANT).ordinal();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
+	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(VARIANT, CompressedVariant.values()[meta]);
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(VARIANT, CompressedVariant.values()[meta]);
+	}
 
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (CompressedVariant variation : CompressedVariant.values() ) {
-            list.add(new ItemStack(this, 1, variation.ordinal()));
-        }
-    }
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+		for (CompressedVariant variation : CompressedVariant.values() ) {
+			list.add(new ItemStack(this, 1, variation.ordinal()));
+		}
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -117,6 +117,11 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getMaterial().getMaterialMapColor();
+	}
+
+	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos) {
 		// ItemShears#getDestroySpeed is really dumb and doesn't check IShearable so we have to do it this way to try to match the wool break speed with shears
 		return state.getValue(VARIANT) == CompressedVariant.ARCTIC_FUR && player.getHeldItemMainhand().getItem() instanceof ItemShears ? 0.2F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
@@ -143,13 +148,13 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-    public int damageDropped(IBlockState state) {
-        return getMetaFromState(state);
-    }
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModel() {
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
 		List<CompressedVariant> variants = new ArrayList<>(VARIANT.getAllowedValues());
 
 		for (int i = 0; i < variants.size(); i++)
@@ -158,9 +163,9 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 
 		ModelResourceLocation mrl = new ModelResourceLocation(this.getRegistryName(), "inventory_fiery");
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), CompressedVariant.FIERY.ordinal(), mrl);
-    }
+	}
 
-    @Override
+	@Override
 	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
 		if ((!entityIn.isImmuneToFire())
 				&& entityIn instanceof EntityLivingBase

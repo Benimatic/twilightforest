@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -95,6 +96,11 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	@Override
 	public Material getMaterial(IBlockState state) {
 		return ENCASED.contains(state.getValue(VARIANT)) ? Material.WOOD : Material.ROCK;
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getMaterial().getMaterialMapColor();
 	}
 
 	@Override
