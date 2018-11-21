@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.VariableHolder;
 import vazkii.patchouli.common.util.ItemStackUtil;
@@ -32,11 +33,10 @@ public class GalleryComponent implements ICustomComponent {
 
         if (xCount <= 0 || xCount > 6)
             xCount = MathHelper.clamp(stacks.size(), 1, 6);
-
     }
 
     @Override
-    public void render(float v, int mouseX, int mouseY) {
+    public void render(IComponentRenderContext context, float pTicks, int mouseX, int mouseY) {
         int x = this.x + 5, y = this.y;
         int row, column;
         int listSize = stacks.size();
@@ -50,11 +50,11 @@ public class GalleryComponent implements ICustomComponent {
 
             // Pages are 108 pixels wide.
             if (c < listBlock) {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(stack, column * 18 + x, row * 18 + y);
+                context.renderItemStack(column * 18 + x, row * 18 + y, mouseX, mouseY, stack);
             } else {
                 int columnPushed = (column * 18) + 54 - (extras * 9);
 
-                mc.getRenderItem().renderItemAndEffectIntoGUI(stack, columnPushed + x, row * 18 + y);
+                context.renderItemStack(columnPushed + x, row * 18 + y, mouseX, mouseY, stack);
             }
         }
 
