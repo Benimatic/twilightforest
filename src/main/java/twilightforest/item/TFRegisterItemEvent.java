@@ -43,10 +43,10 @@ public class TFRegisterItemEvent {
 		items.register("naga_scale", "nagaScale", new ItemTF(EnumRarity.UNCOMMON));
 		items.register("naga_chestplate", "plateNaga", new ItemTFNagaArmor(ARMOR_NAGA, CHEST, EnumRarity.UNCOMMON).setMaxStackSize(1));
 		items.register("naga_leggings", "legsNaga", new ItemTFNagaArmor(ARMOR_NAGA, LEGS, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("twilight_scepter", "scepterTwilight", new ItemTFTwilightWand().setMaxStackSize(1));
-		items.register("lifedrain_scepter", "scepterLifeDrain", new ItemTFScepterLifeDrain().setMaxStackSize(1));
-		items.register("zombie_scepter", "scepterZombie", new ItemTFZombieWand().setMaxStackSize(1));
-		items.register("shield_scepter", "scepterShield", new ItemTFShieldWand().setMaxStackSize(1));
+		items.register("twilight_scepter", "scepterTwilight", new ItemTFTwilightWand(EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("lifedrain_scepter", "scepterLifeDrain", new ItemTFScepterLifeDrain(EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("zombie_scepter", "scepterZombie", new ItemTFZombieWand(EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("shield_scepter", "scepterShield", new ItemTFShieldWand(EnumRarity.UNCOMMON).setMaxStackSize(1));
 		//items.register("Wand of Pacification [NYI]", new ItemTF().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
 		items.register("ore_meter", "oreMeter", new ItemTFOreMeter().setMaxStackSize(1));
 		items.register("magic_map", "magicMap", new ItemTFMagicMap().setMaxStackSize(1));
