@@ -182,7 +182,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
+		return BlockRenderLayer.CUTOUT;
 	}
 
 	@SideOnly(Side.CLIENT)
