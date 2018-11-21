@@ -1,4 +1,8 @@
 {
+  "conditions": [{
+    "type": "forge:mod_loaded",
+    "modid": "patchouli"
+  }],
   "result": {
     "item": "patchouli:guide_book",
     "nbt": "{\"patchouli:book\":\"twilightforest:guide\"}"
