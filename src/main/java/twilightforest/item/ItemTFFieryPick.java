@@ -41,8 +41,8 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe
 				&& ForgeHooks.canHarvestBlock(event.getState().getBlock(), event.getHarvester(), event.getWorld(), event.getPos())) {
 
-			List<ItemStack> removeThese = new ArrayList<ItemStack>();
-			List<ItemStack> addThese = new ArrayList<ItemStack>();
+			List<ItemStack> removeThese = new ArrayList<>();
+			List<ItemStack> addThese = new ArrayList<>();
 
 			for (ItemStack input : event.getDrops()) {
 				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
@@ -112,7 +112,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

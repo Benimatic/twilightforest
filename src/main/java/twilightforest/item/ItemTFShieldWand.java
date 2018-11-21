@@ -18,7 +18,8 @@ import java.util.List;
 
 public class ItemTFShieldWand extends ItemTF {
 
-	protected ItemTFShieldWand() {
+	protected ItemTFShieldWand(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(9);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -44,14 +45,6 @@ public class ItemTFShieldWand extends ItemTF {
 			player.getCooldownTracker().setCooldown(this, 1200);
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

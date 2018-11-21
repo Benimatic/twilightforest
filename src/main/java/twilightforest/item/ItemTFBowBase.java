@@ -144,6 +144,6 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 }

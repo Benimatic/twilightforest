@@ -19,10 +19,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-
 public class ItemTFZombieWand extends ItemTF {
 
-	protected ItemTFZombieWand() {
+	protected ItemTFZombieWand(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(9);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -70,14 +70,6 @@ public class ItemTFZombieWand extends ItemTF {
 		Vec3d look = player.getLook(1.0F);
 		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
-	}
-
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

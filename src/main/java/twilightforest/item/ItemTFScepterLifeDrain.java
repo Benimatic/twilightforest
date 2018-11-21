@@ -33,7 +33,8 @@ import java.util.List;
 
 public class ItemTFScepterLifeDrain extends ItemTF {
 
-	protected ItemTFScepterLifeDrain() {
+	protected ItemTFScepterLifeDrain(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -226,14 +227,6 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
-	}
-
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

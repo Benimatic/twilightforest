@@ -2,10 +2,8 @@ package twilightforest.item;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -16,12 +14,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.entity.EntityTFTwilightWandBolt;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemTFTwilightWand extends ItemTF {
 
-	protected ItemTFTwilightWand() {
+	protected ItemTFTwilightWand(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -45,14 +43,6 @@ public class ItemTFTwilightWand extends ItemTF {
 
 			return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 		}
-	}
-
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) < 1 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

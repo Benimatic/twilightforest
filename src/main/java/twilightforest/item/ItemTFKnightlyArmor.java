@@ -14,8 +14,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
-import javax.annotation.Nonnull;
-
 public class ItemTFKnightlyArmor extends ItemTFArmor implements ModelRegisterCallback {
 
 	public ItemTFKnightlyArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot, EnumRarity rarity) {

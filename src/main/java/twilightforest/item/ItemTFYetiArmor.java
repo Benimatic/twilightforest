@@ -17,7 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemTFYetiArmor extends ItemTFArmor implements ModelRegisterCallback {
