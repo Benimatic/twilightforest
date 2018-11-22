@@ -22,7 +22,8 @@ public class TFMinotaurMazePieces {
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndRoots.class, "TFMMDER");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndShrooms.class, "TFMMDES");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTorches.class, "TFMMDET");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTrappedChest.class, "TFMMDETC");
+		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTrappedChest.class, "TFMMDETrC");
+		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTripwireChest.class, "TFMMDETC");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeEntranceShaft.class, "TFMMES");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeMound.class, "TFMMMound");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeMushRoom.class, "TFMMMR");

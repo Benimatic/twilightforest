@@ -219,7 +219,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 			case 1:
 				return new ComponentTFMazeDeadEndChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 2:
-				return new ComponentTFMazeDeadEndTrappedChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+				return random.nextBoolean() ? new ComponentTFMazeDeadEndTripwireChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeDeadEndTrappedChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 3:
 				return new ComponentTFMazeDeadEndTorches(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 4:
