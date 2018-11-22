@@ -1,8 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:trophy",
-      "data": 1
+      "item": "twilightforest:miniature_structure",
+      "data": 6
     },
     "title": {
       "translate": "advancement.twilightforest.kill_lich"
