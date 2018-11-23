@@ -43,21 +43,21 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	public int lakesPerChunk = 0;
 	public float lavaPoolChance = 0;
 
-	private static final List<RuinEntry> ruinList = new ArrayList<RuinEntry>();
+	private static final List<RuinEntry> ruinList = new ArrayList<>();
 
 	static {
 		// make list of ruins
-		ruinList.add(new RuinEntry(new TFGenStoneCircle(), 10));
-		ruinList.add(new RuinEntry(new TFGenWell(), 10));
-		ruinList.add(new RuinEntry(new TFGenOutsideStalagmite(), 12));
-		ruinList.add(new RuinEntry(new TFGenFoundation(), 10));
-		ruinList.add(new RuinEntry(new TFGenMonolith(), 10));
-		ruinList.add(new RuinEntry(new TFGenGroveRuins(), 5));
-		ruinList.add(new RuinEntry(new TFGenHollowStump(), 12));
-		ruinList.add(new RuinEntry(new TFGenFallenHollowLog(), 10));
-		ruinList.add(new RuinEntry(new TFGenFallenSmallLog(), 10));
+		ruinList.add(new RuinEntry(new TFGenStoneCircle()      , TFConfig.dimension.worldGenWeights.stoneCircleWeight     ));
+		ruinList.add(new RuinEntry(new TFGenWell()             , TFConfig.dimension.worldGenWeights.wellWeight            ));
+		ruinList.add(new RuinEntry(new TFGenOutsideStalagmite(), TFConfig.dimension.worldGenWeights.stalagmiteWeight      ));
+		ruinList.add(new RuinEntry(new TFGenFoundation()       , TFConfig.dimension.worldGenWeights.foundationWeight      ));
+		ruinList.add(new RuinEntry(new TFGenMonolith()         , TFConfig.dimension.worldGenWeights.monolithWeight        ));
+		ruinList.add(new RuinEntry(new TFGenGroveRuins()       , TFConfig.dimension.worldGenWeights.groveRuinsWeight      ));
+		ruinList.add(new RuinEntry(new TFGenHollowStump()      , TFConfig.dimension.worldGenWeights.hollowStumpWeight     ));
+		ruinList.add(new RuinEntry(new TFGenFallenHollowLog()  , TFConfig.dimension.worldGenWeights.fallenHollowLogWeight ));
+		ruinList.add(new RuinEntry(new TFGenFallenSmallLog()   , TFConfig.dimension.worldGenWeights.fallenSmallLogWeight  ));
 
-		ruinList.add(new RuinEntry(new GenDruidHut(), 5));
+		ruinList.add(new RuinEntry(new GenDruidHut()           , TFConfig.dimension.worldGenWeights.druidHutWeight ));
 	}
 
 	private static class RuinEntry extends WeightedRandom.Item {

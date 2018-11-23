@@ -57,6 +57,54 @@ public class TFConfig {
 		@Config.RequiresWorldRestart
 		@Config.Comment("If true, giant Twilight Oaks will also spawn in void worlds")
 		public boolean skylightOaks = true;
+
+		@Config.LangKey(config + "world_gen_weights")
+		@Config.Comment("Weights for various small features")
+		@Config.RequiresMcRestart
+		public WorldGenWeights worldGenWeights = new WorldGenWeights();
+
+		public static class WorldGenWeights {
+			@Config.LangKey(config + "stone_circle_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int stoneCircleWeight = 10;
+			@Config.LangKey(config + "well_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int wellWeight = 10;
+			@Config.LangKey(config + "stalagmite_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int stalagmiteWeight = 12;
+			@Config.LangKey(config + "foundation_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int foundationWeight = 10;
+			@Config.LangKey(config + "monolith_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int monolithWeight = 10;
+			@Config.LangKey(config + "grove_ruins_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int groveRuinsWeight = 5;
+			@Config.LangKey(config + "hollow_stump_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int hollowStumpWeight = 12;
+			@Config.LangKey(config + "fallen_hollow_log_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int fallenHollowLogWeight = 10;
+			@Config.LangKey(config + "fallen_small_log_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int fallenSmallLogWeight = 10;
+			@Config.LangKey(config + "druid_hut_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int druidHutWeight = 10;
+		}
 	}
 
 	@Config.LangKey(config + "compat")
