@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -24,17 +25,14 @@ import twilightforest.world.feature.TFGenerator;
 import java.util.Random;
 
 public class GenDruidHut extends TFGenerator {
-
-    private static final ResourceLocation STRUCTURE = new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut");
-
     @Override // Loosely based on WorldGenFossils
     public boolean generate(World world, Random rand, BlockPos pos) {
+        Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 
         MinecraftServer minecraftserver = world.getMinecraftServer();
         TemplateManager templatemanager = world.getSaveHandler().getStructureTemplateManager();
-        Template template = templatemanager.getTemplate(minecraftserver, STRUCTURE);
-
-        Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
+        //Template template = templatemanager.getTemplate(minecraftserver, HutType.values()[random.nextInt(HutType.size)].RL);
+        Template template = templatemanager.getTemplate(minecraftserver, HutType.values()[2].RL);
 
         Rotation[] rotations = Rotation.values();
         Rotation rotation = rotations[random.nextInt(rotations.length)];
@@ -61,11 +59,17 @@ public class GenDruidHut extends TFGenerator {
         BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
         template.addBlocksToWorld(world, placementPos, placementsettings, 20);
 
+        if (true || random.nextBoolean()) {
+            template = templatemanager.getTemplate(minecraftserver, BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
+            placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(EnumFacing.NORTH)), 1).offset(rotation.rotate(mirror.mirror(EnumFacing.EAST)), 1);
+
+            template.addBlocksToWorld(world, placementPos, placementsettings, 20);
+        }
+
         return true;
     }
 
     private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos startPos, BlockPos size) {
-
         StatsAccumulator heights = new StatsAccumulator();
 
         for (int dx = 0; dx < size.getX(); dx++) {
@@ -135,4 +139,48 @@ public class GenDruidHut extends TFGenerator {
 
         return true;
     }*/
+
+    private enum HutType {
+        REGULAR    (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_hut"        )),
+        SIDEWAYS   (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_sideways"   )),
+        DOUBLE_DECK(new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_doubledeck" ));
+
+        private final ResourceLocation RL;
+
+        HutType(ResourceLocation rl) {
+            this.RL = rl;
+            increment();
+        }
+
+        private static int size;
+
+        private static void increment() {
+            size++;
+        }
+    }
+
+    private enum BasementType {
+        STUDY  (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_study"  ), new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_study_trap"   )),
+        SHELVES(new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_shelves"), new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_shelves_trap" )),
+        GALLERY(new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_gallery"), new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_gallery_trap" ));
+
+        private final ResourceLocation RL;
+        private final ResourceLocation RL_TRAP;
+
+        BasementType(ResourceLocation rl, ResourceLocation rlTrap) {
+            this.RL = rl;
+            this.RL_TRAP = rlTrap;
+            increment();
+        }
+
+        private static int size;
+
+        private static void increment() {
+            size++;
+        }
+
+        private ResourceLocation getBasement(boolean trapped) {
+            return trapped ? RL_TRAP : RL;
+        }
+    }
 }
