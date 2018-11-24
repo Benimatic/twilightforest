@@ -33,9 +33,7 @@ public abstract class RandomizedTemplateProcessor implements ITemplateProcessor 
 
     protected static IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty<?>... properties) {
         IBlockState stateOut = blockOut.getDefaultState();
-        for (IProperty<?> property : properties) {
-            stateOut = copyValue(stateIn, stateOut, property);
-        }
+        for (IProperty<?> property : properties) stateOut = copyValue(stateIn, stateOut, property);
         return stateOut;
     }
 

@@ -82,7 +82,7 @@ public class TFGenWell extends TFGenerator {
 			setBlockAndNotifyAdequately(world, pos.add(1, dy, 1), Blocks.WATER.getDefaultState());
 
 			// if we're below 15 squares, there's a small chance of treasure
-			if (dy < -15 && madeTreasure == false && rand.nextInt(8) == 0) {
+			if (dy < -15 && !madeTreasure && rand.nextInt(8) == 0) {
 				//TODO: more directions
 				setBlockAndNotifyAdequately(world, pos.add(2, dy, 1), Blocks.WATER.getDefaultState());
 				setBlockAndNotifyAdequately(world, pos.add(3, dy + 1, 1), Blocks.AIR.getDefaultState());

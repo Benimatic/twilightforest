@@ -109,4 +109,10 @@ public class TFTreasure {
 			((TileEntityChest) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
 		}
 	}
+
+	public void generateChestContents(World world, BlockPos pos) {
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof TileEntityChest)
+			((TileEntityChest) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+	}
 }

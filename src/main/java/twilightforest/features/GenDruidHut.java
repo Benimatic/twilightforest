@@ -2,10 +2,14 @@ package twilightforest.features;
 
 import com.google.common.math.StatsAccumulator;
 
+import javafx.util.Pair;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -20,8 +24,15 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFSkeletonDruid;
+import twilightforest.enums.StructureWoodVariant;
+import twilightforest.loot.TFTreasure;
+import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.world.feature.TFGenerator;
 
+import javax.annotation.Nullable;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 public class GenDruidHut extends TFGenerator {
@@ -31,8 +42,7 @@ public class GenDruidHut extends TFGenerator {
 
         MinecraftServer minecraftserver = world.getMinecraftServer();
         TemplateManager templatemanager = world.getSaveHandler().getStructureTemplateManager();
-        //Template template = templatemanager.getTemplate(minecraftserver, HutType.values()[random.nextInt(HutType.size)].RL);
-        Template template = templatemanager.getTemplate(minecraftserver, HutType.values()[2].RL);
+        Template template = templatemanager.getTemplate(minecraftserver, HutType.values()[random.nextInt(HutType.size)].RL);
 
         Rotation[] rotations = Rotation.values();
         Rotation rotation = rotations[random.nextInt(rotations.length)];
@@ -57,14 +67,64 @@ public class GenDruidHut extends TFGenerator {
         }
 
         BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-        template.addBlocksToWorld(world, placementPos, placementsettings, 20);
+        template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
 
-        if (true || random.nextBoolean()) {
+        Map<BlockPos, String> data = template.getDataBlocks(placementPos, placementsettings);
+
+        if (random.nextBoolean()) {
             template = templatemanager.getTemplate(minecraftserver, BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
             placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(EnumFacing.NORTH)), 1).offset(rotation.rotate(mirror.mirror(EnumFacing.EAST)), 1);
 
-            template.addBlocksToWorld(world, placementPos, placementsettings, 20);
+            template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
+
+            data.putAll(template.getDataBlocks(placementPos, placementsettings));
         }
+
+        data.forEach((blockPos, s) -> {
+            /*
+            `spawner` will place a Druid spawner.
+
+            `loot` will place a chest facing the was-North.
+
+            `lootT` will place a trapped chest facing the was-North.
+
+            `lootW` will place a chest facing the was-West.
+            `lootS` will place a chest facing the was-South.
+
+            `lootET` will place a trapped chest facing the was-East.
+            `lootNT` will place a trapped chest facing the was-North.
+             */
+            if ("spawner".equals(s)) {
+                if (world.setBlockState(blockPos, Blocks.MOB_SPAWNER.getDefaultState(), 2)) {
+                    TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(blockPos);
+
+                    if (ms != null) {
+                        ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));
+                    }
+                }
+            } else if (s.startsWith("loot")) {
+                IBlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
+
+                switch (s.substring(4, 5)) {
+                    case "W":
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.WEST)));
+                        break;
+                    case "E":
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.EAST)));
+                        break;
+                    case "S":
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.SOUTH)));
+                        break;
+                    default:
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.NORTH)));
+                        break;
+                }
+
+                if (world.setBlockState(blockPos, chest)) {
+                    TFTreasure.basement.generateChestContents(world, blockPos);
+                }
+            }
+        });
 
         return true;
     }
@@ -124,22 +184,6 @@ public class GenDruidHut extends TFGenerator {
         return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
     }
 
-    /*@Override
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
-        int height = this.getAverageGroundLevel(worldIn, structureBoundingBoxIn);
-
-        StructureBoundingBox structureboundingbox = this.getBoundingBox();
-        BlockPos blockpos = new BlockPos(structureboundingbox.minX, height, structureboundingbox.minZ);
-        Rotation[] arotation = Rotation.values();
-        MinecraftServer minecraftserver = worldIn.getMinecraftServer();
-        TemplateManager templatemanager = worldIn.getSaveHandler().getStructureTemplateManager();
-        PlacementSettings placementsettings = (new PlacementSettings()).setRotation(arotation[randomIn.nextInt(arotation.length)]).setReplacedBlock(Blocks.STRUCTURE_VOID).setBoundingBox(structureboundingbox);
-        Template template = templatemanager.getTemplate(minecraftserver, STRUCTURE);
-        template.addBlocksToWorldChunk(worldIn, blockpos, placementsettings);
-
-        return true;
-    }*/
-
     private enum HutType {
         REGULAR    (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_hut"        )),
         SIDEWAYS   (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_sideways"   )),
@@ -155,7 +199,7 @@ public class GenDruidHut extends TFGenerator {
         private static int size;
 
         private static void increment() {
-            size++;
+            ++size;
         }
     }
 
@@ -176,11 +220,57 @@ public class GenDruidHut extends TFGenerator {
         private static int size;
 
         private static void increment() {
-            size++;
+            ++size;
         }
 
         private ResourceLocation getBasement(boolean trapped) {
             return trapped ? RL_TRAP : RL;
+        }
+    }
+
+    public class HutTemplateProcessor extends RandomizedTemplateProcessor {
+        private final StructureWoodVariant OAK_SWIZZLE;
+        private final StructureWoodVariant SPRUCE_SWIZZLE;
+        private final StructureWoodVariant BIRCH_SWIZZLE;
+
+        public HutTemplateProcessor(BlockPos pos, PlacementSettings settings, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {
+            super(pos, settings);
+            int limit = StructureWoodVariant.values().length;
+            this.OAK_SWIZZLE    = StructureWoodVariant.values()[ Math.floorMod(oakSwizzle   , limit) ];
+            this.SPRUCE_SWIZZLE = StructureWoodVariant.values()[ Math.floorMod(spruceSwizzle, limit) ];
+            this.BIRCH_SWIZZLE  = StructureWoodVariant.values()[ Math.floorMod(birchSwizzle , limit) ];
+        }
+
+        @Nullable
+        @Override
+        public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
+            //if (!shouldPlaceBlock()) return null;
+
+            IBlockState state = blockInfo.blockState;
+            Block block = state.getBlock();
+
+            if (block == Blocks.COBBLESTONE)
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
+
+            if (block == Blocks.COBBLESTONE_WALL)
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), null);
+
+            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+
+            BlockPlanks.EnumType type = StructureWoodVariant.getTypeFromBlockState(state);
+            if (type != null) {
+                switch (type) {
+                    case OAK:
+                        return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, OAK_SWIZZLE   ), null);
+                    case SPRUCE:
+                        return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, SPRUCE_SWIZZLE), null);
+                    case BIRCH:
+                        return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, BIRCH_SWIZZLE ), null);
+                }
+            }
+
+            return blockInfo;
         }
     }
 }
