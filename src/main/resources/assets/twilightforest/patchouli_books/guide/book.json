@@ -7,5 +7,9 @@
   "model": "twilightforest:logbook",
   "book_texture": "patchouli:textures/gui/book_green.png",
   "filler_texture": "twilightforest:textures/gui/page_filler.png",
-  "version": "${edition}"
+  "version": "${edition}",
+  "macros": {
+    "$(action)": "$(bold)",
+    "$(result)": "$(italic)"
+  }
 }
