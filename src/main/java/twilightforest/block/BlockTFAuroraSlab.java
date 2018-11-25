@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,8 +75,13 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	}
 
 	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab));
+	}
+
+	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab), 2, 0);
+		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab), isDouble() ? 2 : 1, 0);
 	}
 
 	@Override
