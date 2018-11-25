@@ -9,8 +9,8 @@
   "filler_texture": "twilightforest:textures/gui/page_filler.png",
   "version": "${edition}",
   "macros": {
-    "<action>": "$(bold)",
-    "<result>": "$(italic)",
-    "</>": "$()"
+    "<action>": "${s}(bold)",
+    "<result>": "${s}(italic)",
+    "</>": "${s}()"
   }
 }
