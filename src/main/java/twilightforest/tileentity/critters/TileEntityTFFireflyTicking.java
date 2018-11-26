@@ -15,7 +15,7 @@ public class TileEntityTFFireflyTicking extends TileEntityTFFirefly implements I
 
 	@Override
 	public void update() {
-		if (isClient) {
+		if (world.isRemote) {
 			if (anyPlayerInRange() && world.rand.nextInt(20) == 0) {
 				doFireflyFX();
 			}
