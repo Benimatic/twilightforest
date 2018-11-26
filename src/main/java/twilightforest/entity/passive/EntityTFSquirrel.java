@@ -14,12 +14,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFSquirrel extends EntityCreature implements IAnimals {
-
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/squirrel");
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public EntityTFSquirrel(World world) {
@@ -55,6 +57,11 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 	 */
 	@Override
 	public void fall(float distance, float multiplier) {
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 
 	@Override

@@ -15,10 +15,13 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 
 public class EntityTFPenguin extends EntityTFBird {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/penguin");
 
 	public EntityTFPenguin(World world) {
 		super(world);
@@ -53,5 +56,10 @@ public class EntityTFPenguin extends EntityTFBird {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

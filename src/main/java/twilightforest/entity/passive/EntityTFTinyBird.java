@@ -16,16 +16,18 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBirdFly;
 import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFTinyBird extends EntityTFBird {
-
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tiny_bird");
 	private static final DataParameter<Byte> DATA_BIRDTYPE = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_BIRDFLAGS = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 

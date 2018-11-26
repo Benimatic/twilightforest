@@ -4,13 +4,16 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityTFBighorn extends EntitySheep {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bighorn_sheep");
 
 	public EntityTFBighorn(World world) {
 		super(world);
@@ -20,6 +23,12 @@ public class EntityTFBighorn extends EntitySheep {
 	public EntityTFBighorn(World world, double x, double y, double z) {
 		this(world);
 		this.setPosition(x, y, z);
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		// TODO per-color tables like superclass
+		return LOOT_TABLE;
 	}
 
 	private static EnumDyeColor getRandomFleeceColor(Random random) {

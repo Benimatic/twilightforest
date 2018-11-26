@@ -51,7 +51,9 @@ public class TFTreasure {
 		// Preload all entity tables
 		LootTableList.register(EntityTFArmoredGiant.LOOT_TABLE);
 		LootTableList.register(EntityTFBird.LOOT_TABLE);
+		LootTableList.register(EntityTFBighorn.LOOT_TABLE);
 		LootTableList.register(EntityTFBlockGoblin.LOOT_TABLE);
+		LootTableList.register(EntityTFBoar.LOOT_TABLE);
 		LootTableList.register(EntityTFBunny.LOOT_TABLE);
 		LootTableList.register(EntityTFDeathTome.LOOT_TABLE);
 		LootTableList.register(EntityTFDeathTome.HURT_LOOT_TABLE);
@@ -71,6 +73,8 @@ public class TFTreasure {
 		LootTableList.register(EntityTFMinoshroom.LOOT_TABLE);
 		LootTableList.register(EntityTFMinotaur.LOOT_TABLE);
 		LootTableList.register(EntityTFNaga.LOOT_TABLE);
+		LootTableList.register(EntityTFPenguin.LOOT_TABLE);
+		LootTableList.register(EntityTFQuestRam.LOOT_TABLE);
 		LootTableList.register(EntityTFQuestRam.REWARD_LOOT_TABLE);
 		LootTableList.register(EntityTFRaven.LOOT_TABLE);
 		LootTableList.register(EntityTFRedcap.LOOT_TABLE);
@@ -78,6 +82,8 @@ public class TFTreasure {
 		LootTableList.register(EntityTFSlimeBeetle.LOOT_TABLE);
 		LootTableList.register(EntityTFSnowGuardian.LOOT_TABLE);
 		LootTableList.register(EntityTFSnowQueen.LOOT_TABLE);
+		LootTableList.register(EntityTFSquirrel.LOOT_TABLE);
+		LootTableList.register(EntityTFTinyBird.LOOT_TABLE);
 		LootTableList.register(EntityTFTowerGolem.LOOT_TABLE);
 		LootTableList.register(EntityTFTowerTermite.LOOT_TABLE);
 		LootTableList.register(EntityTFTroll.LOOT_TABLE);
