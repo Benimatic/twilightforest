@@ -161,16 +161,19 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
                     if (property == BlockFence.SOUTH) return EnumFacing.UP;
                     if (property == BlockFence.WEST ) return EnumFacing.NORTH;
                     if (property == BlockFence.EAST ) return EnumFacing.SOUTH;
+                    break;
                 case Z:
                     if (property == BlockFence.NORTH) return EnumFacing.UP;
                     if (property == BlockFence.SOUTH) return EnumFacing.DOWN;
                     if (property == BlockFence.WEST ) return EnumFacing.EAST;
                     if (property == BlockFence.EAST ) return EnumFacing.WEST;
-                default:
+                    break;
+                case Y:
                     if (property == BlockFence.NORTH) return EnumFacing.NORTH;
                     if (property == BlockFence.SOUTH) return EnumFacing.SOUTH;
                     if (property == BlockFence.WEST ) return EnumFacing.WEST;
                     if (property == BlockFence.EAST ) return EnumFacing.EAST;
+                    break;
             }
 
             return EnumFacing.UP;

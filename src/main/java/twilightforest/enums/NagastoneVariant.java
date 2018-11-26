@@ -39,8 +39,6 @@ public enum NagastoneVariant implements IStringSerializable {
 		if (!isHead(variant)) return variant;
 
 		switch (rotation) {
-			case NONE:
-				return variant;
 			case CLOCKWISE_90:
 				switch (variant) {
 					case NORTH_HEAD:
@@ -51,6 +49,8 @@ public enum NagastoneVariant implements IStringSerializable {
 						return NORTH_HEAD;
 					case EAST_HEAD:
 						return SOUTH_HEAD;
+					default:
+						return variant;
 				}
 			case CLOCKWISE_180:
 				switch (variant) {
@@ -62,6 +62,8 @@ public enum NagastoneVariant implements IStringSerializable {
 						return EAST_HEAD;
 					case EAST_HEAD:
 						return WEST_HEAD;
+					default:
+						return variant;
 				}
 			case COUNTERCLOCKWISE_90:
 				switch (variant) {
@@ -73,10 +75,12 @@ public enum NagastoneVariant implements IStringSerializable {
 						return SOUTH_HEAD;
 					case EAST_HEAD:
 						return NORTH_HEAD;
+					default:
+						return variant;
 				}
+			default:
+				return variant;
 		}
-
-		return variant;
 	}
 
 	public static NagastoneVariant mirror(NagastoneVariant variant, Mirror mirror) {
@@ -85,10 +89,6 @@ public enum NagastoneVariant implements IStringSerializable {
 		switch (mirror) {
 			case LEFT_RIGHT:
 				switch (variant) {
-					case NORTH_HEAD:
-						return NORTH_HEAD;
-					case SOUTH_HEAD:
-						return SOUTH_HEAD;
 					case WEST_HEAD:
 						return EAST_HEAD;
 					case EAST_HEAD:
@@ -102,10 +102,6 @@ public enum NagastoneVariant implements IStringSerializable {
 						return SOUTH_HEAD;
 					case SOUTH_HEAD:
 						return NORTH_HEAD;
-					case WEST_HEAD:
-						return WEST_HEAD;
-					case EAST_HEAD:
-						return EAST_HEAD;
 					default:
 						return variant;
 				}
