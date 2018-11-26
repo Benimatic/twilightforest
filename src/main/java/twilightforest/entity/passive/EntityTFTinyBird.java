@@ -87,6 +87,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.TINYBIRD_CHIRP;
 	}
