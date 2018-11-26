@@ -134,7 +134,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 			case FIERY:
 			case IRONWOOD:
 			case STEELLEAF:
-				super.getBlockHardness(blockState, worldIn, pos);
+				return super.getBlockHardness(blockState, worldIn, pos);
 			case ARCTIC_FUR:
 				return 0.8F;
 			case CARMINITE:
