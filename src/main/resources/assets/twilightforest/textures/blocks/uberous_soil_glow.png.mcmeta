@@ -1,10 +1,7 @@
-{ 
-  "animation": {
-    "interpolate": true,
-    "frametime": 18
-  },
+{
   "ctm": {
     "ctm_version": 1,
+    "layer": "TRANSLUCENT",
     "extra": {
       "light": 15
     }
