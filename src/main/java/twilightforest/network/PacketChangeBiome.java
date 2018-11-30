@@ -4,21 +4,23 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketChangeBiome implements IMessage {
+
 	private BlockPos pos;
 	private byte biomeId;
 
 	public PacketChangeBiome() {
 	}
 
-	public PacketChangeBiome(BlockPos pos, byte biomeId) {
+	public PacketChangeBiome(BlockPos pos, Biome biome) {
 		this.pos = pos;
-		this.biomeId = biomeId;
+		this.biomeId = (byte) Biome.getIdForBiome(biome);
 	}
 
 	@Override
