@@ -25,8 +25,14 @@ public enum BeeRegister implements IBeeDefinition {
     ENLIGHTENED      ( BeeBranchRegister.TWILIGHT     , "Cultus"       ),
 
     HERBAL           ( BeeBranchRegister.TWILIGHT     , "Herba"        ),
-    INQUISITOR       ( BeeBranchRegister.TWILIGHT     , "Indagator"    ),
+    TREE             ( BeeBranchRegister.TWILIGHT     , "Arboreal"     ),
+
     DRUIDIC          ( BeeBranchRegister.TWILIGHT     , "Druidae"      ),
+
+    RHYTHMIC         ( BeeBranchRegister.TWILIGHT     , "Tempus"       ),
+    TRANSFIGURATIVE  ( BeeBranchRegister.TWILIGHT     , "Transformato" ),
+    EXCAVATOR        ( BeeBranchRegister.TWILIGHT     , "Tergeo"       ),
+    CATEGORICAL      ( BeeBranchRegister.TWILIGHT     , "Catalogus"    ),
 
     ENTANGLED        ( BeeBranchRegister.SWAMP        , "Capti"        ),
     LABYRINTHINE     ( BeeBranchRegister.SWAMP        , "Labyrinthus"  ),
