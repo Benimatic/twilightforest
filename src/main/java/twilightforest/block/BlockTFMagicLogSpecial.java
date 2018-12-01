@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -190,17 +191,25 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 		for (BlockPos iterPos : WorldUtil.getAllAround(pos, 16)) {
 
-			if (world.getBlockState(iterPos).getBlock() != Blocks.CHEST) continue;
+			IInventory chestInventory = null, teInventory = null;
 
-			IInventory thisChest = Blocks.CHEST.getLockableContainer(world, iterPos);
+			Block block = world.getBlockState(iterPos).getBlock();
+			if (block instanceof BlockChest) {
+				chestInventory = ((BlockChest) block).getContainer(world, iterPos, true);
+			}
+
+			TileEntity te = world.getTileEntity(iterPos);
+			if (te instanceof IInventory && !te.isInvalid()) {
+				teInventory = (IInventory) te;
+			}
 
 			// make sure we haven't counted this chest
-			if (thisChest != null && !checkIfChestsContains(chests, (IInventory) world.getTileEntity(iterPos))) {
+			if (chestInventory != null && teInventory != null && !checkIfChestsContains(chests, teInventory)) {
 
 				boolean empty = true;
 				// count items
-				for (int i = 0; i < thisChest.getSizeInventory(); i++) {
-					if (!thisChest.getStackInSlot(i).isEmpty()) {
+				for (int i = 0; i < chestInventory.getSizeInventory(); i++) {
+					if (!chestInventory.getStackInSlot(i).isEmpty()) {
 						empty = false;
 						itemCount++;
 					}
@@ -208,7 +217,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 				// only add non-empty chests
 				if (!empty) {
-					chests.add(thisChest);
+					chests.add(chestInventory);
 				}
 			}
 		}
