@@ -173,6 +173,11 @@ public class TFConfig {
 	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
 	public static String[] portalCreationItems = {"minecraft:diamond"};
 
+	@Config.LangKey(config + "check_portal_destination")
+	@Config.Comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
+			"\nNote that enabling this also reduces the rate at which portal formation checks are performed.")
+	public static boolean checkPortalDestination = false;
+
 	@Config.LangKey(config + "portal_lighting")
 	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
 	public static boolean portalLightning = false;
