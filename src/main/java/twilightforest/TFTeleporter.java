@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class TFTeleporter extends Teleporter {
 
@@ -281,7 +282,7 @@ public class TFTeleporter extends Teleporter {
 		// ensure area is populated first
 		loadSurroundingArea(entity);
 
-		BlockPos spot = findPortalCoords(entity, true);
+		BlockPos spot = findPortalCoords(entity, this::isIdealPortal);
 		String name = entity.getName();
 
 		if (spot != null) {
@@ -291,7 +292,7 @@ public class TFTeleporter extends Teleporter {
 		}
 
 		TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for {}", name);
-		spot = findPortalCoords(entity, false);
+		spot = findPortalCoords(entity, this::isOkayPortal);
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
@@ -327,12 +328,14 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	@Nullable
-	private BlockPos findPortalCoords(Entity entity, boolean ideal) {
-		// adjust the portal height based on what world we're traveling to
+	private BlockPos findPortalCoords(Entity entity, Predicate<BlockPos> predicate) {
+		// adjust the height based on what world we're traveling to
 		double yFactor = getYFactor();
 		// modified copy of base Teleporter method:
 		int entityX = MathHelper.floor(entity.posX);
 		int entityZ = MathHelper.floor(entity.posZ);
+
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
 		double spotWeight = -1D;
 		BlockPos spot = null;
@@ -344,19 +347,19 @@ public class TFTeleporter extends Teleporter {
 				double zWeight = (rz + 0.5D) - entity.posZ;
 
 				for (int ry = getScanHeight(rx, rz); ry >= 0; ry--) {
-					BlockPos pos = new BlockPos(rx, ry, rz);
+					pos.setPos(rx, ry, rz);
 
 					if (!world.isAirBlock(pos)) {
 						continue;
 					}
 
-					while (pos.getY() > 0 && world.isAirBlock(pos.down())) pos = pos.down();
+					while (ry > 0 && world.isAirBlock(pos)) pos.setY(--ry);
 
-					double yWeight = (pos.getY() + 0.5D) - entity.posY * yFactor;
+					double yWeight = (ry + 1.0D) - entity.posY * yFactor;
 					double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
 
 					if (spotWeight < 0.0D || rPosWeight < spotWeight) {
-						if (ideal ? isIdealPortal(pos) : isOkayPortal(pos)) {
+						if (predicate.test(pos)) {
 							spotWeight = rPosWeight;
 							spot = pos;
 						}
@@ -371,11 +374,11 @@ public class TFTeleporter extends Teleporter {
 	private boolean isIdealPortal(BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = -1; potentialY < 3; potentialY++) {
+				for (int potentialY = 0; potentialY < 4; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
 					Material material = world.getBlockState(tPos).getMaterial();
-					if (potentialY == -1 && material != Material.GRASS
-							|| potentialY >= 0 && !material.isReplaceable()) {
+					if (potentialY == 0 && material != Material.GRASS
+							|| potentialY >= 1 && !material.isReplaceable()) {
 						return false;
 					}
 				}
@@ -387,11 +390,11 @@ public class TFTeleporter extends Teleporter {
 	private boolean isOkayPortal(BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = -1; potentialY < 3; potentialY++) {
+				for (int potentialY = 0; potentialY < 4; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
 					Material material = world.getBlockState(tPos).getMaterial();
-					if (potentialY == -1 && !material.isSolid() && !material.isLiquid()
-							|| potentialY >= 0 && !material.isReplaceable()) {
+					if (potentialY == 0 && !material.isSolid() && !material.isLiquid()
+							|| potentialY >= 1 && !material.isReplaceable()) {
 						return false;
 					}
 				}
@@ -412,9 +415,6 @@ public class TFTeleporter extends Teleporter {
 		} else if (pos.getY() > 128 - 10) {
 			pos = new BlockPos(pos.getX(), 128 - 10, pos.getZ());
 		}
-
-		// sink the portal 1 into the ground
-		pos = pos.down();
 
 		// grass all around it
 		IBlockState grass = Blocks.GRASS.getDefaultState();
