@@ -306,7 +306,7 @@ public class TFTeleporter extends Teleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor();
 		// modified copy of base Teleporter method:
-		cachePortalCoords(entity, makePortalAt(world, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ)));
+		cachePortalCoords(entity, makePortalAt(world, new BlockPos(entity.posX, (entity.posY * yFactor) - 1.0, entity.posZ)));
 
 		return false;
 	}
@@ -347,15 +347,16 @@ public class TFTeleporter extends Teleporter {
 				double zWeight = (rz + 0.5D) - entity.posZ;
 
 				for (int ry = getScanHeight(rx, rz); ry >= 0; ry--) {
-					pos.setPos(rx, ry, rz);
 
-					if (!world.isAirBlock(pos)) {
+					if (!world.isAirBlock(pos.setPos(rx, ry, rz))) {
 						continue;
 					}
 
-					while (ry > 0 && world.isAirBlock(pos)) pos.setY(--ry);
+					while (ry > 0 && world.isAirBlock(pos.setPos(rx, ry - 1, rz))) {
+						ry--;
+					}
 
-					double yWeight = (ry + 1.0D) - entity.posY * yFactor;
+					double yWeight = (ry + 0.5D) - entity.posY * yFactor;
 					double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
 
 					if (spotWeight < 0.0D || rPosWeight < spotWeight) {
