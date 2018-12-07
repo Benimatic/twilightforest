@@ -360,9 +360,10 @@ public class TFTeleporter extends Teleporter {
 					double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
 
 					if (spotWeight < 0.0D || rPosWeight < spotWeight) {
+						// check from the "in ground" pos
 						if (predicate.test(pos)) {
 							spotWeight = rPosWeight;
-							spot = pos;
+							spot = pos.toImmutable();
 						}
 					}
 				}
