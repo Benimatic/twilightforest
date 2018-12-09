@@ -51,34 +51,37 @@ public class TFTeleporter extends Teleporter {
 	@Override
 	public void placeInPortal(Entity entity, float facing) {
 		if (!this.placeInExistingPortal(entity, facing)) {
-			// if we're in enforced progression mode, check the biomes for safety
-			boolean checkProgression = entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-
-			BlockPos pos = new BlockPos(entity);
-			if (!isSafeAround(pos, entity, checkProgression)) {
-				TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
-
-				BlockPos safeCoords = findSafeCoords(200, pos, entity, checkProgression);
-				if (safeCoords != null) {
-					entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
-					TwilightForestMod.LOGGER.debug("Safely rerouted!");
-
-				} else {
-					TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
-					safeCoords = findSafeCoords(400, pos, entity, checkProgression);
-
-					if (safeCoords != null) {
-						entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
-						TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
-
-					} else {
-						TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
-					}
-				}
-			}
-
+			this.moveToSafeCoords(entity);
 			this.makePortal(entity);
 			this.placeInExistingPortal(entity, facing);
+		}
+	}
+
+	private void moveToSafeCoords(Entity entity) {
+		// if we're in enforced progression mode, check the biomes for safety
+		boolean checkProgression = world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
+
+		BlockPos pos = new BlockPos(entity);
+		if (!isSafeAround(pos, entity, checkProgression)) {
+			TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
+
+			BlockPos safeCoords = findSafeCoords(200, pos, entity, checkProgression);
+			if (safeCoords != null) {
+				entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+				TwilightForestMod.LOGGER.debug("Safely rerouted!");
+
+			} else {
+				TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
+				safeCoords = findSafeCoords(400, pos, entity, checkProgression);
+
+				if (safeCoords != null) {
+					entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+					TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
+
+				} else {
+					TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
+				}
+			}
 		}
 	}
 
