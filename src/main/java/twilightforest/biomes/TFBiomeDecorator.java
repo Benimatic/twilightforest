@@ -16,6 +16,7 @@ import twilightforest.TFFeature;
 import twilightforest.features.GenDruidHut;
 import twilightforest.world.feature.*;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -108,7 +109,9 @@ public class TFBiomeDecorator extends BiomeDecorator {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(14) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(14) + 8;
 			TFGenerator rf = randomFeature(randomGenerator);
-			rf.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
+			if (rf != null) {
+				rf.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
+			}
 		}
 
 		if (this.hasCanopy) {
@@ -226,10 +229,11 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	}
 
 	/**
-	 * Gets a random feature suitible to the current biome.
+	 * Gets a random feature suitable for the current biome.
 	 */
+	@Nullable
 	public TFGenerator randomFeature(Random rand) {
-		return WeightedRandom.getRandomItem(rand, ruinList).generator;
+		return ruinList.isEmpty() ? null : WeightedRandom.getRandomItem(rand, ruinList).generator;
 	}
 
 	public void setTreesPerChunk(int treesPerChunk) {
@@ -267,6 +271,4 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	public void setGrassPerChunk(int grassPerChunk) {
 		this.grassPerChunk = grassPerChunk;
 	}
-
-
 }
