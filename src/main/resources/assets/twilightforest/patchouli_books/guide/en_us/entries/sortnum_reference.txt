@@ -137,6 +137,7 @@ aurora_palace.json
 7120
 ice_bomb.json
 ice_cores.json
+glass_sword.json
 
 7130
 snow_queen.json
