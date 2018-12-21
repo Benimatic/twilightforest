@@ -60,9 +60,6 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 		if (isInCreativeTab(tab)) {
 			ItemStack stack = new ItemStack(this);
 			NBTTagCompound tags = new NBTTagCompound();
-			NBTTagCompound display = new NBTTagCompound();
-			display.setString("Name", "\u00A7r\u00A7bTempered Glass Sword\u00A7r\u00A70");
-			tags.setTag("display", display);
 			tags.setBoolean("Unbreakable", true);
 			stack.setTagCompound(tags);
 			items.add(stack);
