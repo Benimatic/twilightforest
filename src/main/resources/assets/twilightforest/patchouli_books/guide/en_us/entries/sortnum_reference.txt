@@ -1,3 +1,33 @@
+How this works:
+
+Digit 'Thousands' is the main progression zone.
+
+-1000s are considered pre-TF or at the start.
+ 1000s are considered very beginning
+ 2000s are considered 'just under the surface' but no real progression started
+
+ 3000s are Naga Courtyard and everything related
+ 4000s are Lich Tower and everything related
+
+ 5000s are the Swamp and everything related
+ 6000s are the Dark Forest and everything related
+ 7000s are the Snow Forest and everything related
+
+ 8000s are the highlands and everything that's around
+
+ 9000s are the Final Plateau and the Final Castle and all that ends after that
+
+Digit 'Hundreds' act as "milestones" within the progression zones.
+Digit 'Tens' act as "minor steps" within the milestones.
+Digit 'Ones' act as minor sorting adjustments.
+
+If the enumeration of a sortnum is ambiguous whereever it comes before or after another thing,
+they can be the same number and the book gui will sort alphabetically.
+
+
+_______________________________________
+
+
 -1010
 portal.json
 
@@ -103,6 +133,9 @@ knight_stronghold.json
 
 6020
 phantom_knights.json
+
+6030
+phantom_armor.json
 
 6100
 dark_tower.json
