@@ -182,8 +182,7 @@ troll_caves.json
 
 8010
 giant_blocks.json
-
-8020
+magic_beans.json
 troll.json
 
 8100
