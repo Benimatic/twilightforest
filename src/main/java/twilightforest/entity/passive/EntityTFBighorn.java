@@ -8,13 +8,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityTFBighorn extends EntitySheep {
+
 	public static final ResourceLocation[] LOOT_TABLES = {
 			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/white"      ),
 			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/orange"     ),
@@ -67,10 +67,10 @@ public class EntityTFBighorn extends EntitySheep {
 	}
 
 	@Override
-	public EntitySheep createChild(EntityAgeable entityanimal) {
-		EntityTFBighorn otherParent = (EntityTFBighorn) entityanimal;
+	public EntitySheep createChild(EntityAgeable ageable) {
+		EntityTFBighorn otherParent = (EntityTFBighorn) ageable;
 		EntityTFBighorn babySheep = new EntityTFBighorn(world);
-		babySheep.setFleeceColor((rand.nextBoolean() ? this : otherParent).getFleeceColor());
+		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));
 		return babySheep;
 	}
 }
