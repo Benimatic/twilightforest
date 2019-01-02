@@ -1,0 +1,5 @@
+{
+  "conditions": {
+    "config": "twilightforest.item.recipe.ConditionFactoryConfig"
+  }
+}

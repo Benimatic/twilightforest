@@ -1,4 +1,11 @@
 {
+  "conditions": [{
+    "type": "twilightforest:config",
+    "mod": "twilightforest",
+    "config": "twilightforest",
+    "key": "disableUncrafting",
+    "value": "false"
+  }],
   "result": {
     "item": "twilightforest:uncrafting_table"
   },
