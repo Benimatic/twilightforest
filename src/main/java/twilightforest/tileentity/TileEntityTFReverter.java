@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFReverter extends TileEntity 
 {
@@ -15,7 +16,7 @@ public class TileEntityTFReverter extends TileEntity
 	public int radius = 4;
 	public int diameter = 2 * radius + 1;
 	public double requiredPlayerRange = 16;
-	public Random rand = new Random();
+	public Random rand = new org.bogdang.modifications.random.XSTR();
 	private int tickCount;
 	
 	private boolean slowScan;
@@ -23,6 +24,17 @@ public class TileEntityTFReverter extends TileEntity
 	
 	private Block[] blockData;
 	private byte[] metaData;
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 			
     /**
      * Determines if this TileEntity requires update calls.
@@ -290,7 +302,6 @@ public class TileEntityTFReverter extends TileEntity
 				replaceMeta = BlockTFTowerTranslucent.META_REVERTER_REPLACEMENT;
 			}
 			
-			worldObj.setBlock(x, y, z, replaceBlockID, replaceMeta, 2);
 			
 			// play a little animation
 			if (thereBlockID == Blocks.air)
@@ -303,6 +314,8 @@ public class TileEntityTFReverter extends TileEntity
 				thereBlockID.dropBlockAsItem(worldObj, x, y, z, thereMeta, 0);
 
 			}
+			
+			worldObj.setBlock(x, y, z, replaceBlockID, replaceMeta, 2);
 		}
 
 		return true;

@@ -29,7 +29,7 @@ public class TFTeleporter extends Teleporter
 		myWorld = par1WorldServer;
 		if (this.rand == null)
 		{
-			this.rand = new Random();
+			this.rand = new org.bogdang.modifications.random.XSTR();
 		}
 
 	}
@@ -46,7 +46,7 @@ public class TFTeleporter extends Teleporter
 				int px = MathHelper.floor_double(par1Entity.posX);
 				int pz = MathHelper.floor_double(par1Entity.posZ);
 				if (!isSafeBiomeAt(px, pz, par1Entity)) {
-					System.out.println("[TwilightForest] Portal destination looks unsafe, rerouting!");
+					cpw.mods.fml.common.FMLLog.info("[TwilightForest] Portal destination looks unsafe, rerouting!");
 					
 					ChunkCoordinates safeCoords = findSafeCoords(200, px, pz, par1Entity);
 					
@@ -55,18 +55,18 @@ public class TFTeleporter extends Teleporter
 			            x = safeCoords.posX;
 			            z = safeCoords.posZ;
 			            
-			            System.out.println("[TwilightForest] Safely rerouted!");
+			            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Safely rerouted!");
 					} else {
-			            System.out.println("[TwilightForest] Did not find a safe spot at first try, trying again with longer range.");
+			            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Did not find a safe spot at first try, trying again with longer range.");
 						safeCoords = findSafeCoords(400, px, pz, par1Entity);
 						if (safeCoords != null) {
 				            par1Entity.setLocationAndAngles(safeCoords.posX, par1Entity.posY, safeCoords.posZ, 90.0F, 0.0F);
 				            x = safeCoords.posX;
 				            z = safeCoords.posZ;
 				            
-				            System.out.println("[TwilightForest] Safely rerouted to long range portal.  Return trip not guaranteed.");
+				            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Safely rerouted to long range portal.  Return trip not guaranteed.");
 						} else {
-				            System.out.println("[TwilightForest] Did not find a safe spot.");
+				            cpw.mods.fml.common.FMLLog.info("[TwilightForest] Did not find a safe spot.");
 						}
 					}
 				}
@@ -401,9 +401,15 @@ public class TFTeleporter extends Teleporter
 	}
 	
 	public Block randNatureBlock(Random random) {
-		Block[] block = {Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower};
+		/*Block[] block = {Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower};
 		
-		return block[random.nextInt(block.length)];
+		return block[random.nextInt(block.length)];*/
+		int value = random.nextInt(5)+1;
+		if (value==1) return Blocks.brown_mushroom;
+		else if (value==2) return Blocks.red_mushroom;
+		else if (value==3) return Blocks.tallgrass;
+		else if (value==4) return Blocks.red_flower;
+		else return Blocks.yellow_flower;
 	}
 
 }

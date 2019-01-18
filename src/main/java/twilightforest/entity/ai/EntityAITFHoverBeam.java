@@ -252,9 +252,9 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 			}
 		}
 		
-        if (tries == 99) {
+        /*if (tries == 99) {
             //System.out.println("Found no spots, giving up");
-        }
+        }*/
 		
 		this.hoverPosX = hx;
 		this.hoverPosY = hy;

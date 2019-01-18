@@ -27,6 +27,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.TFFeature;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.item.TFItems;
@@ -49,11 +50,11 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	EntityTFLich masterLich;
 
 	private static final ItemStack heldItems[] = {new ItemStack(TFItems.scepterTwilight, 1), new ItemStack(TFItems.scepterZombie, 1), new ItemStack(Items.golden_sword, 1)};
-	public static final int MAX_SHADOW_CLONES = 2;
-	public static final int INITIAL_SHIELD_STRENGTH = 5;
-	public static final int MAX_ACTIVE_MINIONS = 3;
-	public static final int INITIAL_MINIONS_TO_SUMMON = 9;
-	public static final int MAX_HEALTH = 100;
+	public static final int MAX_SHADOW_CLONES = (int)(2*1.5);
+	public static final int INITIAL_SHIELD_STRENGTH = (int)(5*1.5);
+	public static final int MAX_ACTIVE_MINIONS = (int)(3*1.5);
+	public static final int INITIAL_MINIONS_TO_SUMMON = (int)(9*1.5);
+	public static final int MAX_HEALTH = (int)(100*1.5);
 
 	
 	/**
@@ -95,11 +96,11 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.dataWatcher.addObject(DATA_ISCLONE, Byte.valueOf((byte)0));
-		this.dataWatcher.addObject(DATA_SHIELDSTRENGTH, Byte.valueOf((byte)0));
-		this.dataWatcher.addObject(DATA_MINIONSLEFT, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BOSSHEALTH, new Integer(EntityTFLich.MAX_HEALTH));
-		this.dataWatcher.addObject(DATA_ATTACKTYPE, Byte.valueOf((byte)0));
+		this.dataWatcher.addObject(DATA_ISCLONE, (byte)0);
+		this.dataWatcher.addObject(DATA_SHIELDSTRENGTH, (byte)0);
+		this.dataWatcher.addObject(DATA_MINIONSLEFT, (byte)0);
+        this.dataWatcher.addObject(DATA_BOSSHEALTH, (EntityTFLich.MAX_HEALTH));
+		this.dataWatcher.addObject(DATA_ATTACKTYPE, (byte)0);
 	}
 
 
@@ -111,9 +112,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.800000011920929D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH+twilightforest.TwilightForestMod.Scatter.nextInt(MAX_HEALTH/3)-twilightforest.TwilightForestMod.Scatter.nextInt(MAX_HEALTH/3)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D*1.5D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.800000011920929D*1.5D); // movement speed
     }
 	
 	
@@ -248,7 +249,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     @Override
 	public void onLivingUpdate() {
         // determine the hand position
-        float angle = ((renderYawOffset * 3.141593F) / 180F);
+        float angle = ((renderYawOffset * (float)Math.PI) / 180F);
         
         double dx = posX + (MathHelper.cos(angle) * 0.65);
         double dy = posY + (height * 0.94);
@@ -290,7 +291,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 		// update health
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
+            this.dataWatcher.updateObject(DATA_BOSSHEALTH, (int)this.getHealth());
         }
 		
         super.onLivingUpdate();
@@ -504,7 +505,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      * @param targetedEntity
      */
 	protected void launchBoltAt(Entity targetedEntity) {
-		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
+		float bodyFacingAngle = ((renderYawOffset * (float)Math.PI) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
 		double sy = posY + (height * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
@@ -527,7 +528,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
      * @param targetedEntity
      */
 	protected void launchBombAt(Entity targetedEntity) {
-		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
+		float bodyFacingAngle = ((renderYawOffset * (float)Math.PI) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
 		double sy = posY + (height * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
@@ -898,9 +899,9 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
     		float f = (rand.nextFloat() - 0.5F) * 0.2F;
     		float f1 = (rand.nextFloat() - 0.5F) * 0.2F;
     		float f2 = (rand.nextFloat() - 0.5F) * 0.2F;
-    		double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
-    		double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * height;
-    		double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
+    		double tx = srcX + (destX - srcX) * trailFactor + (rand.nextFloat() - 0.5D) * width * 2D;
+    		double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * height;
+    		double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextFloat() - 0.5D) * width * 2D;
     		worldObj.spawnParticle("spell", tx, ty, tz, f, f1, f2);
     	}
 	}
@@ -960,11 +961,11 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 
         if (par1)
         {
-            this.dataWatcher.updateObject(DATA_ISCLONE, Byte.valueOf((byte)(var2 | 2)));
+            this.dataWatcher.updateObject(DATA_ISCLONE, ((byte)(var2 | 2)));
         }
         else
         {
-            this.dataWatcher.updateObject(DATA_ISCLONE, Byte.valueOf((byte)(var2 & -3)));
+            this.dataWatcher.updateObject(DATA_ISCLONE, ((byte)(var2 & -3)));
         }
     }
     
@@ -973,7 +974,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	}
 
 	public void setShieldStrength(int shieldStrength) {
-		this.dataWatcher.updateObject(DATA_SHIELDSTRENGTH, Byte.valueOf((byte) shieldStrength));
+		this.dataWatcher.updateObject(DATA_SHIELDSTRENGTH, ((byte) shieldStrength));
 	}
 
 	public byte getMinionsToSummon() {
@@ -981,7 +982,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	}
 
 	public void setMinionsToSummon(int minionsToSummon) {
-		this.dataWatcher.updateObject(DATA_MINIONSLEFT, Byte.valueOf((byte) minionsToSummon));
+		this.dataWatcher.updateObject(DATA_MINIONSLEFT, ((byte) minionsToSummon));
 	}
 
 	public byte getNextAttackType() {
@@ -989,7 +990,7 @@ public class EntityTFLich extends EntityMob implements IBossDisplayData {
 	}
 
 	public void setNextAttackType(int attackType) {
-		this.dataWatcher.updateObject(DATA_ATTACKTYPE, Byte.valueOf((byte) attackType));
+		this.dataWatcher.updateObject(DATA_ATTACKTYPE, ((byte) attackType));
 	}
 
 	/**

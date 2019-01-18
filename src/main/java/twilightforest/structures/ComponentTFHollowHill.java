@@ -129,13 +129,13 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		}
 		
 		// level 3 hills get 2 mid-air wraith spawners
-		if (hillSize == 3)
+		/*if (hillSize == 3)
 		{
 //			int[] dest = getEmptyCoordsInHill(hy + 10, 20);
 //			placeWraithSpawner(dest[0], hy + 10, dest[1]);
 //			dest = getEmptyCoordsInHill(hy + 10, 20);
 //			placeWraithSpawner(dest[0], hy + 10, dest[1]);
-		}
+		}*/
 
 
 		
@@ -148,7 +148,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 	protected void generateTreasureChest(World world, int x, int y, int z, StructureBoundingBox sbb) {
 		// generate an RNG for this chest
     	//TODO: MOAR RANDOM!
-    	Random chestRNG = new Random(world.getSeed() + x * z);
+    	Random chestRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + x * z);
     	
     	// try placing it
     	placeTreasureAtCurrentPosition(world, chestRNG, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
@@ -170,7 +170,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         {
         	// generate an RNG for this stalactite
         	//TODO: MOAR RANDOM!
-        	Random stalRNG = new Random(world.getSeed() + dx * dz);
+        	Random stalRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + dx * dz);
         	
         	// make the actual stalactite
 			TFGenCaveStalactite stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
@@ -190,7 +190,7 @@ public class ComponentTFHollowHill extends StructureTFComponent {
         {
         	// generate an RNG for this stalactite
         	//TODO: MOAR RANDOM!
-        	Random stalRNG = new Random(world.getSeed() + dx * dz);
+        	Random stalRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + dx * dz);
         	
         	if (hillSize == 1) {
         		length *= 1.9F;

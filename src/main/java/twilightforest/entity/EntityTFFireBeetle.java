@@ -17,6 +17,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,8 +26,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker 
 {
 	
-    public static final int BREATH_DURATION = 10;
-    public static final int BREATH_DAMAGE = 2;
+    public static final int BREATH_DURATION = (int)(10*1.5);
+    public static final int BREATH_DAMAGE = (int)(2*1.5);
 
 
     public EntityTFFireBeetle(World world)
@@ -57,7 +58,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(17, Byte.valueOf((byte)0));
+        dataWatcher.addObject(17, (byte)0);
     }
 	
     /**
@@ -76,9 +77,9 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(12)-twilightforest.TwilightForestMod.Scatter.nextInt(12)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D*1.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D*1.5D); // attack damage
     }
     
 
@@ -143,11 +144,11 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     {
         if (flag)
         {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)127));
+            dataWatcher.updateObject(17, ((byte)127));
         }
         else
         {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)0));
+            dataWatcher.updateObject(17, (byte)0);
         }
     }
 
@@ -177,8 +178,8 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     			double dy = look.yCoord;
     			double dz = look.zCoord;
 
-    			double spread = 5 + this.getRNG().nextDouble() * 2.5;
-    			double velocity = 0.15 + this.getRNG().nextDouble() * 0.15;
+    			double spread = 5 + this.getRNG().nextFloat() * 2.5;
+    			double velocity = 0.15 + this.getRNG().nextFloat() * 0.15;
 
     			// spread flame
     			dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
@@ -223,7 +224,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
     @Override
     public void onDeath(DamageSource par1DamageSource) {
     	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+    	if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
     		((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
     	}
     }

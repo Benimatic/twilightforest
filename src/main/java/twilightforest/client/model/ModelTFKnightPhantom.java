@@ -157,10 +157,12 @@ public class ModelTFKnightPhantom extends ModelBiped {
 //        this.bipedRightArm.rotateAngleY = 0.0F;
 //        this.bipedLeftArm.rotateAngleY = 0.0F;
 
-        this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-        this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+        float mcos = MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+        this.bipedRightArm.rotateAngleZ += mcos;
+        this.bipedLeftArm.rotateAngleZ -= mcos;
+        float msin = MathHelper.sin(par3 * 0.067F) * 0.05F;
+        this.bipedRightArm.rotateAngleX += msin;
+        this.bipedLeftArm.rotateAngleX -= msin;
         
      }
 

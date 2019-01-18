@@ -99,6 +99,9 @@ import thaumcraft.api.*;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
+import java.util.Random;
+import org.bogdang.modifications.random.XSTR;
+
 @Mod(modid = TwilightForestMod.ID, name = "The Twilight Forest", version = TwilightForestMod.VERSION)
 public class TwilightForestMod {
 	
@@ -241,6 +244,9 @@ public class TwilightForestMod {
 	public static final TFEventListener eventListener = new TFEventListener();
 	public static final TFTickHandler tickHandler = new TFTickHandler();
 	public static FMLEventChannel genericChannel;
+	
+	//for min-max values adds for N
+	public static Random Scatter = new XSTR();
 
 	
 	@Instance(ID)

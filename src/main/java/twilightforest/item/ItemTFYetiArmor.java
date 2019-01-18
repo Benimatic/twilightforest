@@ -69,11 +69,11 @@ public class ItemTFYetiArmor extends ItemArmor {
     	ItemStack istack = new ItemStack(par1, 1, 0);
     	switch (this.armorType) {
     	case 0:
-    		istack.addEnchantment(Enchantment.protection, 2);
-            break;	
+    		//istack.addEnchantment(Enchantment.protection, 2);
+            //break;	
     	case 1:
-    		istack.addEnchantment(Enchantment.protection, 2);
-            break;	
+    		//istack.addEnchantment(Enchantment.protection, 2);
+            //break;	
     	case 2:
     		istack.addEnchantment(Enchantment.protection, 2);
             break;	

@@ -32,8 +32,8 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class EntityTFKnightPhantom extends EntityFlying implements IMob 
 {
 	
-	private static final float CIRCLE_SMALL_RADIUS = 2.5F;
-	private static final float CIRCLE_LARGE_RADIUS = 8.5F;
+	private static final float CIRCLE_SMALL_RADIUS = 2.5F*1.5F;
+	private static final float CIRCLE_LARGE_RADIUS = 8.5F*1.5F;
 	private static final int FLAG_CHARGING = 17;
 	int number;
 	int ticksProgress;
@@ -48,6 +48,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     private int chargePosZ;
 	
 	public enum Formation { HOVER, LARGE_CLOCKWISE, SMALL_CLOCKWISE, LARGE_ANTICLOCKWISE, SMALL_ANTICLOCKWISE, CHARGE_PLUSX, CHARGE_MINUSX, CHARGE_PLUSZ, CHARGE_MINUSZ, WAITING_FOR_LEADER, ATTACK_PLAYER_START,  ATTACK_PLAYER_ATTACK};
+    public static final Formation[] FVALUES = Formation.values();
 
 	public EntityTFKnightPhantom(World par1World) {
 		super(par1World);
@@ -73,7 +74,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(FLAG_CHARGING, Byte.valueOf((byte)0));
+        dataWatcher.addObject(FLAG_CHARGING, (byte)0);
     }
 
 	/**
@@ -83,9 +84,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(35.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(35.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(18)-twilightforest.TwilightForestMod.Scatter.nextInt(18)); // max health
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage); // initialize this value
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D*1.5D); // attack damage
     }
 	
     /**
@@ -343,7 +344,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
             i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
         }
 
-        boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+        boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), f*1.1F);
 
         if (flag)
         {
@@ -361,10 +362,10 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
                 par1Entity.setFire(j * 4);
             }
 
-            if (par1Entity instanceof EntityLivingBase)
+            /*if (par1Entity instanceof EntityLivingBase)
             {
                 //EnchantmentThorns.func_151367_b(this, (EntityLivingBase)par1Entity, this.rand);
-            }
+            }*/
         }
 
         return flag;
@@ -391,7 +392,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
      * @param targetedEntity
      */
 	protected void launchAxeAt(Entity targetedEntity) {
-		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
+		float bodyFacingAngle = ((renderYawOffset * (float)Math.PI) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 1);
 		double sy = posY + (height * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 1);
@@ -418,7 +419,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 		for (int i = 0; i < 8; i++)
 		{
-			float throwAngle = i * 3.14159165F / 4F; 
+			float throwAngle = i * (float)Math.PI / 4F; 
 
 			
 			double sx = posX + (MathHelper.cos(throwAngle) * 1);
@@ -559,13 +560,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     protected void pickRandomFormation() {
     	switch (rand.nextInt(8))
     	{
-    	case 0:
-    		currentFormation = Formation.SMALL_CLOCKWISE;
-    		break;
+    	//case 0:
+    		//currentFormation = Formation.SMALL_CLOCKWISE;
+    		//break;
     	case 1:
-    		currentFormation = Formation.SMALL_ANTICLOCKWISE;
+    		//currentFormation = Formation.SMALL_ANTICLOCKWISE;
     		//currentFormation = Formation.LARGE_ANTICLOCKWISE;
-    		break;
+    		//break;
     	case 2:
     		currentFormation = Formation.SMALL_ANTICLOCKWISE;
     		break;
@@ -581,6 +582,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     	case 6:
     		currentFormation = Formation.CHARGE_MINUSZ;
     		break;
+    	case 0:
     	case 7:
     		currentFormation = Formation.SMALL_CLOCKWISE;
     		//currentFormation = Formation.LARGE_CLOCKWISE;
@@ -670,11 +672,11 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     {
     	if (flag)
     	{
-    		dataWatcher.updateObject(FLAG_CHARGING, Byte.valueOf((byte)127));
+    		dataWatcher.updateObject(FLAG_CHARGING, ((byte)127));
     	}
     	else
     	{
-    		dataWatcher.updateObject(FLAG_CHARGING, Byte.valueOf((byte)0));
+    		dataWatcher.updateObject(FLAG_CHARGING, (byte)0);
     	}
     }
     
@@ -699,7 +701,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
     private void switchToFormationByNumber(int formationNumber) {
 
-    	currentFormation = Formation.values()[formationNumber];
+    	currentFormation = FVALUES[formationNumber];
 
     	this.ticksProgress = 0;
     }
@@ -763,10 +765,10 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 	private Vec3 getDestination() {
 		
-		if (!this.hasHome())
+		/*if (!this.hasHome())
 		{
 			// hmmm
-		}
+		}*/
 
 		switch (currentFormation)
 		{
@@ -820,7 +822,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		
 		
 		double dx = this.getHomePosition().posX + (alongX ? offset0 : offset1);
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.getHomePosition().posZ + (alongX ? offset1 : offset0);
 		return Vec3.createVectorHelper(dx, dy, dz);	
 	}
@@ -835,9 +837,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		
 		angle += (60F * this.getNumber());
 		
-		double dx = this.getHomePosition().posX + Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
-		double dz = this.getHomePosition().posZ + Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double dx = this.getHomePosition().posX + org.bogdang.modifications.math.MathHelperLite.cos((angle) * Math.PI / 180.0D) * distance;
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
+		double dz = this.getHomePosition().posZ + org.bogdang.modifications.math.MathHelperLite.sin((angle) * Math.PI / 180.0D) * distance;
 		return Vec3.createVectorHelper(dx, dy, dz);
 	}
 
@@ -845,7 +847,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		// bound this by distance so we don't hover in walls if we get knocked into them
 		
 		double dx = this.lastTickPosX;
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.lastTickPosZ;
 		
 		// let's just bound this by 2D distance
@@ -868,7 +870,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
 	private Vec3 getLoiterPosition() {
 		double dx = this.getHomePosition().posX;
-		double dy = this.getHomePosition().posY + Math.cos(this.ticksProgress / 7F + this.getNumber());
+		double dy = this.getHomePosition().posY + org.bogdang.modifications.math.MathHelperLite.cos(this.ticksProgress / 7F + this.getNumber());
 		double dz = this.getHomePosition().posZ;
 		return Vec3.createVectorHelper(dx, dy, dz);
 	}

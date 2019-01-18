@@ -25,7 +25,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*2.5+twilightforest.TwilightForestMod.Scatter.nextInt(15)-twilightforest.TwilightForestMod.Scatter.nextInt(15)); // max health
     }
 
     /**
@@ -63,7 +63,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 
                 if (effectDuration > 0)
                 {
-                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.blindness.id, effectDuration * 20, 0));
+                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.blindness.id, (int)(effectDuration * 20 * 1.5), 0));
                 }
             }
 

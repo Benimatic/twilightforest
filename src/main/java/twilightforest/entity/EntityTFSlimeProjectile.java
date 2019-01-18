@@ -38,9 +38,9 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	 */
 	public void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+			double dx = posX + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dy = posY + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dz = posZ + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
 			worldObj.spawnParticle("slime", dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -65,13 +65,14 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	@Override
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+		if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
 		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8))
+			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8*1.5f);
+			/*if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8))
 			{
 				// damage armor?
 				//TODO:
-			}
+			}*/
 		}
 
 		pop();
@@ -84,7 +85,7 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	protected void pop() {
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("slime", this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.worldObj.spawnParticle("slime", this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextFloat() * 0.2D, rand.nextGaussian() * 0.05D);
 		}
 		
 		// noise

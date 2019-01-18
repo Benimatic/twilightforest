@@ -7,6 +7,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFRedcapPlantTNT;
 import twilightforest.item.TFItems;
@@ -34,7 +35,9 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(15)-twilightforest.TwilightForestMod.Scatter.nextInt(15)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.699999988079071D*1.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D*1.5);
     }
 
     /**
@@ -66,7 +69,7 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+		if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
 			// are we in a level 2 hill?
 			int chunkX = MathHelper.floor_double(posX) >> 4;

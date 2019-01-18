@@ -34,7 +34,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class EntityTFNaga extends EntityMob
 implements IMob, IBossDisplayData, IEntityMultiPart {
 
-	private static int TICKS_BEFORE_HEALING = 600;
+	private static int TICKS_BEFORE_HEALING = (int)(600*0.75);
 
 	private static int MAX_SEGMENTS = 12;
 
@@ -107,25 +107,25 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 		if (worldObj != null) {
 			if (worldObj.difficultySetting == EnumDifficulty.EASY)
 			{
-				return 120;
+				return 180+twilightforest.TwilightForestMod.Scatter.nextInt(60)-twilightforest.TwilightForestMod.Scatter.nextInt(60);
 			}
 			else if (worldObj.difficultySetting == EnumDifficulty.NORMAL)
 			{
-				return 200;
+				return 300+twilightforest.TwilightForestMod.Scatter.nextInt(100)-twilightforest.TwilightForestMod.Scatter.nextInt(100);
 			}
 			else if (worldObj.difficultySetting == EnumDifficulty.HARD)
 			{
-				return 250;
+				return 375+twilightforest.TwilightForestMod.Scatter.nextInt(120)-twilightforest.TwilightForestMod.Scatter.nextInt(120);
 			}
 			else
 			{
 				//????
-				return 200;
+				return 300+twilightforest.TwilightForestMod.Scatter.nextInt(100)-twilightforest.TwilightForestMod.Scatter.nextInt(100);
 			}
 		}
 		else {
 			// why is the world null?
-			return 200;
+			return 300+twilightforest.TwilightForestMod.Scatter.nextInt(100)-twilightforest.TwilightForestMod.Scatter.nextInt(100);
 		}
 
 	}
@@ -145,9 +145,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(getMaxHealthPerDifficulty()); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(2.0D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(getMaxHealthPerDifficulty()*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt((int)(getMaxHealthPerDifficulty()*0.5f))-twilightforest.TwilightForestMod.Scatter.nextInt((int)(getMaxHealthPerDifficulty()*0.5f))); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(2.0D*1.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D*1.5D); // attack damage
     }
     
 
@@ -265,7 +265,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 //		
 //        if (!this.worldObj.isRemote)
 //        {
-//            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
+//            this.dataWatcher.updateObject(DATA_BOSSHEALTH, (int)this.getHealth());
 //        }
 //        else
 //        {
@@ -397,14 +397,14 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
         isJumping = false;
         if(vec3d != null)
         {
-            double d1 = vec3d.xCoord - posX;
-            double d2 = vec3d.zCoord - posZ;
+            float d1 = (float)(vec3d.xCoord - posX);
+            float d2 = (float)(vec3d.zCoord - posZ);
             
-            double dist = MathHelper.sqrt_double(d1 * d1 + d2 * d2);
+            float dist = MathHelper.sqrt_float(d1 * d1 + d2 * d2);
             
             int i = MathHelper.floor_double(boundingBox.minY + 0.5D);
             double d3 = vec3d.yCoord - i;
-            float f2 = (float)((Math.atan2(d2, d1) * 180D) / 3.1415927410125732D) - 90F;
+            float f2 = ((org.bogdang.modifications.math.TrigMath2.atan2(d2, d1) * 180F) / (float)Math.PI) - 90F;
             float f3 = f2 - rotationYaw;
             moveForward = getMoveSpeed();
     		this.setAIMoveSpeed(0.5f);
@@ -412,7 +412,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             //this.moveForward = (float)this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
             
             // slither!
-            if (dist > 4 && chargeCount == 0) {
+            if (dist > 4f && chargeCount == 0) {
             	moveStrafing = MathHelper.cos(this.ticksExisted * 0.3F) * getMoveSpeed() * 0.6F;
             }
             
@@ -750,9 +750,9 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
     protected Vec3 findCirclePoint(Entity toCircle, double radius, double rotation) 
     {
     	// compute angle
-        double vecx = posX - toCircle.posX;
-        double vecz = posZ - toCircle.posZ;
-        float rangle = (float)(Math.atan2(vecz, vecx));
+        float vecx = (float)(posX - toCircle.posX);
+        float vecz = (float)(posZ - toCircle.posZ);
+        float rangle = (org.bogdang.modifications.math.TrigMath2.atan2(vecz, vecx));
 
         // add a little, so he circles (clockwise)
         rangle += clockwise ? rotation : -rotation;
@@ -849,7 +849,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             
             if (getMoveSpeed() > 0.8) {
             	// charging, apply extra pushback
-                toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 1.0F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 1.0F);
+                toAttack.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * 1.0F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * 1.0F);
             }
         }
     }
@@ -1056,7 +1056,7 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
 
 			
 			// also weight the position so that the segments straighten out a little bit, and the front ones straighten more
-	    	float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
+	    	float angle = (((leader.rotationYaw + 180) * (float)Math.PI) / 180F);
 
 			
 			double straightenForce = 0.05D + (1.0 / (float)(i + 1)) * 0.5D;
@@ -1097,14 +1097,14 @@ implements IMob, IBossDisplayData, IEntityMultiPart {
             body[i].motionY = f * diff.yCoord;
             body[i].motionZ = f * diff.zCoord;
             
-            double distance = (double)MathHelper.sqrt_double(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
+            float distance = MathHelper.sqrt_double(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
             
             if (i == 0)
             {
             	diff.yCoord -= 0.15D;
             }
             
-            body[i].setRotation((float) (Math.atan2(diff.zCoord, diff.xCoord) * 180.0D / Math.PI) + 90.0F, -(float)(Math.atan2(diff.yCoord, distance) * 180.0D / Math.PI));
+            body[i].setRotation( (org.bogdang.modifications.math.TrigMath2.atan2((float)diff.zCoord, (float)diff.xCoord) * 180.0F / (float)Math.PI) + 90.0F, -(org.bogdang.modifications.math.TrigMath2.atan2((float)diff.yCoord, (float)distance) * 180.0F / (float)Math.PI));
 
 	
 			

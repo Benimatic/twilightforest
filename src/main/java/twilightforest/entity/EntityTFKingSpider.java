@@ -50,9 +50,9 @@ public class EntityTFKingSpider extends EntitySpider {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*2.5D+twilightforest.TwilightForestMod.Scatter.nextInt(15)-twilightforest.TwilightForestMod.Scatter.nextInt(15)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35D*1.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D*1.5D); // attack damage
     }
 
 	

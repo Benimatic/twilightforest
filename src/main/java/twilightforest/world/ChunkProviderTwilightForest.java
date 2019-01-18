@@ -92,7 +92,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		ravineGenerator = new TFGenRavine();
 		unusedIntArray32x32 = new int[32][32];
 		worldObj = world;
-		rand = new Random(l);
+		rand = new org.bogdang.modifications.random.XSTR(l);
 		//noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
 		//noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
 		//noiseGen3 = new NoiseGeneratorOctaves(rand, 8);
@@ -444,10 +444,10 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 				} else if (nearFeature == TFFeature.yetiCave) {
 					// yeti lairs are square
 					deformTerrainForYetiLair(blockStorage, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.trollCave) {
+				}/* else if (nearFeature == TFFeature.trollCave) {
 					// troll cloud, more like
 					//deformTerrainForTrollCloud(blockStorage, metaStorage, nearFeature, x, z, dx, dz);
-				}
+				}*/
 			}
 		}
 
@@ -698,7 +698,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 		    	int regionX = (cx + 8) >> 4;
 		    	int regionZ = (cx + 8) >> 4;
 
-			    long seed = (long)(regionX * 3129871) ^ (long)regionZ * 116129781L;
+			    long seed = (regionX * 3129871L) ^ (long)regionZ * 116129781L;
 			    seed = seed * seed * 42317861L + seed * 7L;
 			    
 			    int num0 = (int) (seed >> 12 & 3L);
@@ -765,7 +765,7 @@ public class ChunkProviderTwilightForest implements IChunkProvider {
 	}
 
 	private float pseudoRand(int bx, int bz) {
-		Random rand = new Random(this.worldObj.getSeed() + (bx * 321534781) ^ (bz * 756839));
+		Random rand = new org.bogdang.modifications.random.XSTR(this.worldObj.getSeed() + (bx * 321534781L) ^ (bz * 756839L));
 		rand.setSeed(rand.nextLong());
 		return rand.nextFloat();
 	}

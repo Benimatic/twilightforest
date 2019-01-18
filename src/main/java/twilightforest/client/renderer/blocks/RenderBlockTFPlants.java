@@ -6,6 +6,8 @@ import net.minecraft.world.IBlockAccess;
 import twilightforest.block.BlockTFPlant;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
+import org.lwjgl.opengl.GL11;
+
 public class RenderBlockTFPlants implements ISimpleBlockRenderingHandler {
 
 	final int renderID;
@@ -22,6 +24,7 @@ public class RenderBlockTFPlants implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		GL11.glPushMatrix();
 		int meta = world.getBlockMetadata(x, y, z);
 		if (meta == BlockTFPlant.META_MOSSPATCH) {
 			renderMossPatch(x, y, z, block, renderer);
@@ -41,6 +44,7 @@ public class RenderBlockTFPlants implements ISimpleBlockRenderingHandler {
 		{
 			renderer.renderCrossedSquares(block, x, y, z);
 		}
+		GL11.glPopMatrix();
 		
 		return true;
 	}

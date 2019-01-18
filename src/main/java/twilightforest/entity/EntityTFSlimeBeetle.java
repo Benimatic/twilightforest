@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFMagicAttack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -60,8 +61,9 @@ public class EntityTFSlimeBeetle extends EntityMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D*2.5+twilightforest.TwilightForestMod.Scatter.nextInt(12)-twilightforest.TwilightForestMod.Scatter.nextInt(12)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D*1.5); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D*1.5);
     }
 
 	
@@ -128,7 +130,7 @@ public class EntityTFSlimeBeetle extends EntityMob
     @Override
     public void onDeath(DamageSource par1DamageSource) {
     	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+    	if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
     		((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
     	}
     }

@@ -42,7 +42,9 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.isMinion ? 6 : 10); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.isMinion ? 6*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(3)-twilightforest.TwilightForestMod.Scatter.nextInt(3) : 10*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(5)-twilightforest.TwilightForestMod.Scatter.nextInt(5)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.699999988079071D*1.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D*1.5);
     }
     
     @Override

@@ -55,7 +55,7 @@ public class BlockTFCastleMagic extends Block {
 	
 	public static IIcon getMagicIconFor(int x, int y, int z) {
 		
-        long seed = x * 3129871 ^ y * 116129781L ^ z;
+        long seed = x * 3129871L ^ y * 116129781L ^ z;
         seed = seed * seed * 42317861L + seed * 11L;
         
         int index = (int) (seed >> 12 & 7L);

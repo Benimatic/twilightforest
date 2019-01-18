@@ -3,12 +3,24 @@ package twilightforest.tileentity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import twilightforest.entity.TFCreatures;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFTowerBossSpawner extends TileEntityTFBossSpawner {
 
 	public TileEntityTFTowerBossSpawner() {
 		this.mobID = TFCreatures.getSpawnerNameFor("Tower Boss");
 	}
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 	
     @Override
 	public boolean anyPlayerInRange()

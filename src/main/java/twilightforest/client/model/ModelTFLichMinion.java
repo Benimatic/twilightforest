@@ -35,12 +35,12 @@ public class ModelTFLichMinion extends ModelZombie {
     {
         EntityTFLichMinion minion = (EntityTFLichMinion)par1Entity;
         // make strong minions bigger
-        if (minion.getActivePotionEffect(Potion.damageBoost) != null) {
+        //if (minion.getActivePotionEffect(Potion.damageBoost) != null) {
         	super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-        }
-        else {
-        	super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-        }
+        //}
+        //else {
+        	//super.render(par1Entity, par2, par3, par4, par5, par6, par7);
+        //}
     }
 
 }

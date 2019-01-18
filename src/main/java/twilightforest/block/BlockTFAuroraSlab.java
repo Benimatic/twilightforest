@@ -15,6 +15,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
 
 public class BlockTFAuroraSlab extends BlockSlab {
@@ -123,5 +124,11 @@ public class BlockTFAuroraSlab extends BlockSlab {
     private static boolean isSingleSlab(Block p_150003_0_)
     {
         return p_150003_0_ == TFBlocks.auroraSlab;
+    }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
     }
 }

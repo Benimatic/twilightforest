@@ -93,24 +93,27 @@ public class ModelTFDeathTome extends ModelBook {
         this.pagesLeft.rotateAngleY = -openAngle;
         this.flippingPageRight.rotateAngleY = openAngle - openAngle * 2.0F * flipRight;
         this.flippingPageLeft.rotateAngleY = openAngle - openAngle * 2.0F * flipLeft;
-        this.pagesRight.rotationPointX = MathHelper.sin(openAngle);
-        this.pagesLeft.rotationPointX = MathHelper.sin(openAngle);
-        this.flippingPageRight.rotationPointX = MathHelper.sin(openAngle);
-        this.flippingPageLeft.rotationPointX = MathHelper.sin(openAngle);
+        float msin = MathHelper.sin(openAngle);
+        this.pagesRight.rotationPointX = msin;
+        this.pagesLeft.rotationPointX = msin;
+        this.flippingPageRight.rotationPointX = msin;
+        this.flippingPageLeft.rotationPointX = msin;
 
 		
     	// page rotations
 		loosePage1.rotateAngleY = (bounce) / 4.0F;
-		loosePage1.rotateAngleX =  MathHelper.sin((bounce) / 5.0F) / 3.0F;
-		loosePage1.rotateAngleZ =  MathHelper.cos((bounce) / 5.0F) / 5.0F;
+		float msin0 = MathHelper.sin((bounce) / 5.0F);
+		loosePage1.rotateAngleX =  msin0 / 3.0F;
+		float mcos0 = MathHelper.cos((bounce) / 5.0F);
+		loosePage1.rotateAngleZ =  mcos0 / 5.0F;
 
 		loosePage2.rotateAngleY = (bounce) / 3.0F;
-		loosePage2.rotateAngleX =   MathHelper.sin((bounce) / 5.0F) / 3.0F;
-		loosePage2.rotateAngleZ =  MathHelper.cos((bounce) / 5.0F) / 4.0F + 2;
+		loosePage2.rotateAngleX =   msin0 / 3.0F;
+		loosePage2.rotateAngleZ =  mcos0 / 4.0F + 2;
 
 		loosePage3.rotateAngleY = (bounce) / 4.0F;
-		loosePage3.rotateAngleX =  -MathHelper.sin((bounce) / 5.0F) / 3.0F;
-		loosePage3.rotateAngleZ =  MathHelper.cos((bounce) / 5.0F) / 5.0F - 1.0F;
+		loosePage3.rotateAngleX =  -msin0 / 3.0F;
+		loosePage3.rotateAngleZ =  mcos0 / 5.0F - 1.0F;
 
 		loosePage4.rotateAngleY = (bounce) / 4.0F;
 		loosePage4.rotateAngleX =  -MathHelper.sin((bounce) / 2.0F) / 4.0F;

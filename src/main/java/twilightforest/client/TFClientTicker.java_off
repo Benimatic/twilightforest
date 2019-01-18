@@ -12,8 +12,10 @@ public class TFClientTicker {
     /**
      * On the tick, we kill the vignette
 	 */
-	@SubscribeEvent
-	public void clientTick(ClientTickEvent event) {
+	//@//SubscribeEvent
+	/*public void clientTick(ClientTickEvent event) {
+		//Bogdan-G: need? if vignette off or vignette.png = 1x1 fully transparent?
+		//test for off event
 		Minecraft mc = Minecraft.getMinecraft();
 		World world = mc.theWorld;
 		

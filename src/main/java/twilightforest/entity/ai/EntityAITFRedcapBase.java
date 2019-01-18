@@ -23,9 +23,9 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase
 	 */
 	public boolean isTargetLookingAtMe(EntityLivingBase attackTarget) {
 	    	// find angle of approach
-	    	double dx = entityObj.posX - attackTarget.posX;
-	    	double dz = entityObj.posZ - attackTarget.posZ;
-	    	float angle = (float)((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
+	    	float dx = (float)(entityObj.posX - attackTarget.posX);
+	    	float dz = (float)(entityObj.posZ - attackTarget.posZ);
+	    	float angle = ((org.bogdang.modifications.math.TrigMath2.atan2(dz, dx) * 180F) / (float)Math.PI) - 90F;
 	
 	    	float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
 	    	

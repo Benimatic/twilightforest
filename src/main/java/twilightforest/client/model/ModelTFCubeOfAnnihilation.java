@@ -47,9 +47,9 @@ public class ModelTFCubeOfAnnihilation extends ModelBase
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float time, float f5, Entity entity) {
     	
-    	boxX.rotateAngleX = (float) Math.sin((entity.ticksExisted + time)) / 5F;
-    	boxY.rotateAngleY = (float) Math.sin((entity.ticksExisted + time)) / 5F;
-    	boxZ.rotateAngleZ = (float) Math.sin((entity.ticksExisted + time)) / 5F;
+    	boxX.rotateAngleX = (float) org.bogdang.modifications.math.MathHelperLite.sin((entity.ticksExisted + time)) / 5F;
+    	boxY.rotateAngleY = (float) org.bogdang.modifications.math.MathHelperLite.sin((entity.ticksExisted + time)) / 5F;
+    	boxZ.rotateAngleZ = (float) org.bogdang.modifications.math.MathHelperLite.sin((entity.ticksExisted + time)) / 5F;
     	
     }
 

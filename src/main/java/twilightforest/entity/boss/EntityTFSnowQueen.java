@@ -42,14 +42,15 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IEntityMultiPart, IBreathAttacker {
 	
-	private static final int MAX_SUMMONS = 6;
+	private static final int MAX_SUMMONS = (int)(6*1.5);
 	private static final int BEAM_FLAG = 21;
 	private static final int PHASE_FLAG = 22;
-	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
-	private static final float BREATH_DAMAGE = 4.0F;
+	private static final int MAX_DAMAGE_WHILE_BEAMING = (int)(25*1.5);
+	private static final float BREATH_DAMAGE = 4.0F*1.5F;
 
 
 	public enum Phase { SUMMON, DROP, BEAM };
+    public static final Phase[] PVALUES = Phase.values();
 
 	public Entity[] iceArray;
 	
@@ -96,17 +97,17 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(100)-twilightforest.TwilightForestMod.Scatter.nextInt(100));
     }
     
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(BEAM_FLAG, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(PHASE_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(BEAM_FLAG, (byte)0);
+        this.dataWatcher.addObject(PHASE_FLAG, (byte)0);
     }
 
     /**
@@ -206,8 +207,8 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
     			double dy = 0;//look.yCoord;
     			double dz = look.zCoord;
 
-    			double spread = 2 + this.getRNG().nextDouble() * 2.5;
-    			double velocity = 2.0 + this.getRNG().nextDouble() * 0.15;
+    			double spread = 2 + this.getRNG().nextFloat() * 2.5;
+    			double velocity = 2.0 + this.getRNG().nextFloat() * 0.15;
 
     			// beeeam
     			dx += this.getRNG().nextGaussian() * 0.0075D * spread;
@@ -432,8 +433,8 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
      */
     public Vec3 getIceShieldPosition(float angle, float distance)
     {
-		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double var1 = org.bogdang.modifications.math.MathHelperLite.cos((angle) * Math.PI / 180.0D) * distance;
+		double var3 = org.bogdang.modifications.math.MathHelperLite.sin((angle) * Math.PI / 180.0D) * distance;
 
 		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getShieldYOffset(), this.posZ + var3);
     }
@@ -518,17 +519,17 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 	}
 
 	public void setBreathing(boolean flag) {
-        this.getDataWatcher().updateObject(BEAM_FLAG, Byte.valueOf((byte)(flag ? 1 : 0)));
+        this.getDataWatcher().updateObject(BEAM_FLAG, ((byte)(flag ? 1 : 0)));
 	}
 
 
 	public Phase getCurrentPhase() {
-		return Phase.values()[this.getDataWatcher().getWatchableObjectByte(PHASE_FLAG)];
+		return PVALUES[this.getDataWatcher().getWatchableObjectByte(PHASE_FLAG)];
 	}
 
 
 	public void setCurrentPhase(Phase currentPhase) {
-		this.getDataWatcher().updateObject(PHASE_FLAG, Byte.valueOf((byte) currentPhase.ordinal()));
+		this.getDataWatcher().updateObject(PHASE_FLAG, ((byte) currentPhase.ordinal()));
 		
 		// set variables for current phase
 		if (currentPhase == Phase.SUMMON) {
@@ -676,9 +677,10 @@ public class EntityTFSnowQueen extends EntityMob implements IBossDisplayData, IE
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE)) {
+		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
+		/*if (target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE)) {
 			// slow target?
-    	}
+    	}*/
 	}
 	
 

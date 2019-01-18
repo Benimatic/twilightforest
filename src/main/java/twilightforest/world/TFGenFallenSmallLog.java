@@ -40,30 +40,39 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		int logMeta;
 		int logMetaBranch;
 		
+		//need back; parametr?, FB - dead store fall through, overwritten, normal logic?//fix?
+		//test bug gen, back, back
 		switch (rand.nextInt(7))
 		{
-		case 0:
+		//case 0://include in default
 		default:
 			logID = TFBlocks.log;
 			logMeta = 0;
+			break;
 		case 1:
 			logID = TFBlocks.log;
 			logMeta = 1;
+			break;
 		case 2:
 			logID = TFBlocks.log;
-			logMeta = 2;		
+			logMeta = 2;
+			break;
 		case 3:
 			logID = Blocks.log;
 			logMeta = 0;
+			break;
 		case 4:
 			logID = Blocks.log;
 			logMeta = 1;
+			break;
 		case 5:
 			logID = Blocks.log;
 			logMeta = 2;
+			break;
 		case 6:
 			logID = Blocks.log;
 			logMeta = 3;
+			break;
 		}
 		logMetaBranch = logMeta;
 		

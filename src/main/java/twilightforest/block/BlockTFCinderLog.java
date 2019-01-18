@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
+import net.minecraft.world.World;
 
 public class BlockTFCinderLog extends BlockLog {
 
@@ -58,6 +59,12 @@ public class BlockTFCinderLog extends BlockLog {
 	public Item getItemDropped(int par1, Random par2Random, int par3)
     {
         return Item.getItemFromBlock(TFBlocks.cinderLog); // hey that's my block ID!
+    }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
     }
 
 

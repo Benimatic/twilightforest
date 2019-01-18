@@ -318,6 +318,7 @@ public class TFFeature {
 	/**
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
+	 * Bogdan-G: hmm frequent generation dungeon, is not very good in lagre modpack, especially with jetpack (player speed-run in chunks)
 	 */
 	public static TFFeature generateFeatureForOldMapGen(int chunkX, int chunkZ, World world) 
 	{
@@ -331,32 +332,37 @@ public class TFFeature {
     	BiomeGenBase biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
     	
     	// get random value 
-    	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
-    	int randnum = hillRNG.nextInt(16);
+    	Random hillRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + chunkX * 25117L + chunkZ * 151121L);
+    	int randnum = hillRNG.nextInt(32);//old: 16
     	
     	// glaciers have ice towers
     	if (biomeAt == TFBiomeBase.glacier) {
-    		return iceTower;
+    		if (hillRNG.nextInt(41) > 10) return iceTower;
+    		else return nothing;
     	}
     	
     	// lakes have quest islands
     	if (biomeAt == TFBiomeBase.tfLake) {
-    		return questIsland;
+    		if (hillRNG.nextInt(41) > 10) return questIsland;
+    		else return nothing;
     	}
     	
     	// enchanted forests have groves
     	if (biomeAt == TFBiomeBase.enchantedForest) {
-    		return questGrove;
+    		if (hillRNG.nextInt(41) > 10) return questGrove;
+    		else return nothing;
     	}
     	
     	// fire swamp has hydra lair
     	if (biomeAt == TFBiomeBase.fireSwamp) {
-    		return hydraLair;
+    		if (hillRNG.nextInt(41) > 10) return hydraLair;
+    		else return nothing;
     	}
     	
     	// temporary, clearing has maze ruins
     	if (biomeAt == TFBiomeBase.clearing || biomeAt == TFBiomeBase.oakSavanna) {
-    		return labyrinth;
+    		if (hillRNG.nextInt(41) > 10) return labyrinth;
+    		else return nothing;
     	}
     	
     	// dark forests have their own things
@@ -368,53 +374,95 @@ public class TFFeature {
     			//return druidGrove;
     			break;
     		case 1:
-    			return darkTower;
+    			if (hillRNG.nextInt(41) > 10) return darkTower;
+    			else return nothing;
     		case 2:
-    			return tfStronghold;
+    			if (hillRNG.nextInt(41) > 10) return tfStronghold;
+    			else return nothing;
     		}
     	}
     	
     	
     	// highlands center has castle
     	if (biomeAt == TFBiomeBase.highlandsCenter) {
-    		return finalCastle;
+    		if (hillRNG.nextInt(41) > 10) return finalCastle;
+    		else return nothing;
     	}
     	// highlands has trolls
     	if (biomeAt == TFBiomeBase.highlands) {
-    		return trollCave;
+    		if (hillRNG.nextInt(41) > 10) return trollCave;
+    		else return nothing;
     	}    	
 
     	// deep mushrooms has mushroom tower
     	if (biomeAt == TFBiomeBase.deepMushrooms) {
-    		return mushroomTower;
+    		if (hillRNG.nextInt(41) > 10) return mushroomTower;
+    		else return nothing;
     	}
 
     	// okay, well that takes care of most special cases
     	switch (randnum)
     	{
     	default:
-    	case 0: // oops, I forgot about zero for a long time, now there are too many hill 1s
+    	case 0: // oops, I forgot about zero for a long time, now there are too many hill 1s// Bogdan-G: agree, too much of the hills
     	case 1:
     	case 2:
     	case 3:
+    		return nothing;//Bogdan-G: he-he
     	case 4:
     	case 5:
     	case 6:
-    		return hill1;
+    		if (hillRNG.nextInt(3) > 1) return hill1;
+    		else return nothing;
     	case 7:
     	case 8:
+    		return nothing;
     	case 9:
-    		return hill2;
+    		if (hillRNG.nextInt(3) > 1) return hill2;
+    		else return nothing;
     	case 10:
-    		return hill3;
+    		if (hillRNG.nextInt(3) > 1) return hill3;
+    		else return nothing;
     	case 11:
     	case 12:
-    		return hedgeMaze;
+    		if (hillRNG.nextInt(4) > 2) return hedgeMaze;
+    		else return nothing;
        	case 13:
-    		return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
+    		if (hillRNG.nextInt(4) > 2) return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
+    		else return nothing;
     	case 14:
     	case 15:
-    		return lichTower;
+    		if (hillRNG.nextInt(4) > 2) return lichTower;
+    		else return nothing;
+    	case 16:
+    	case 17:
+    	case 18:
+    	case 19:
+    	case 20:
+    	case 21:
+    	case 22:
+    		return nothing;
+    	case 23:
+    	case 24:
+    		if (hillRNG.nextInt(3) > 1) return hill1;
+    		else return nothing;
+    	case 25:
+    		if (hillRNG.nextInt(3) > 1) return hill2;
+    		else return nothing;
+    	case 26:
+    		if (hillRNG.nextInt(3) > 1) return hill3;
+    		else return nothing;
+    	case 27:
+    	case 28:
+    		if (hillRNG.nextInt(4) > 2) return hedgeMaze;
+    		else return nothing;
+       	case 29:
+    		if (hillRNG.nextInt(4) > 2) return (biomeAt != TFBiomeBase.tfSwamp) ? nagaCourtyard : hydraLair; // hydra in the swamp, naga everywhere else
+    		else return nothing;
+    	case 30:
+    	case 31:
+    		if (hillRNG.nextInt(4) > 2) return lichTower;
+    		else return nothing;
     	}	
 	}
 	
@@ -432,63 +480,74 @@ public class TFFeature {
     	BiomeGenBase biomeAt = world.getBiomeGenForCoords((chunkX << 4) + 8, (chunkZ << 4) + 8);
     	
     	// get random value 
-    	Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
-    	int randnum = hillRNG.nextInt(16);
+    	Random hillRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + chunkX * 25117L + chunkZ * 151121L);
+    	int randnum = hillRNG.nextInt(20);
     	
     	// glaciers have ice towers
     	if (biomeAt == TFBiomeBase.glacier) {
-    		return iceTower;
+    		if (hillRNG.nextInt(41) > 10) return iceTower;
+    		else return nothing;
     	}
     	// snow has yeti lair
     	if (biomeAt == TFBiomeBase.tfSnow) {
-    		return yetiCave;
+    		if (hillRNG.nextInt(41) > 10) return yetiCave;
+    		else return nothing;
     	}
     	
     	// lakes have quest islands
     	if (biomeAt == TFBiomeBase.tfLake) {
-    		return questIsland;
+    		if (hillRNG.nextInt(41) > 10) return questIsland;
+    		else return nothing;
     	}
     	
     	// enchanted forests have groves
     	if (biomeAt == TFBiomeBase.enchantedForest) {
-    		return questGrove;
+    		if (hillRNG.nextInt(41) > 10) return questGrove;
+    		else return nothing;
     	}
     	
     	// fire swamp has hydra lair
     	if (biomeAt == TFBiomeBase.fireSwamp) {
-    		return hydraLair;
+    		if (hillRNG.nextInt(41) > 10) return hydraLair;
+    		else return nothing;
     	}
     	// swamp has labyrinth
     	if (biomeAt == TFBiomeBase.tfSwamp) {
-    		return labyrinth;
+    		if (hillRNG.nextInt(41) > 10) return labyrinth;
+    		else return nothing;
     	}
     	
     	// dark forests have their own things
     	if (biomeAt == TFBiomeBase.darkForest)
     	{
-    		return tfStronghold;
+    		if (hillRNG.nextInt(41) > 10) return tfStronghold;
+    		else return nothing;
     	}
     	if (biomeAt == TFBiomeBase.darkForestCenter) {
-    		return darkTower;
+    		if (hillRNG.nextInt(41) > 10) return darkTower;
+    		else return nothing;
     	}
     	
     	// highlands center has castle
     	if (biomeAt == TFBiomeBase.highlandsCenter) {
-    		return finalCastle;
+    		if (hillRNG.nextInt(41) > 10) return finalCastle;
+    		else return nothing;
     	}
     	// highlands has trolls
     	if (biomeAt == TFBiomeBase.highlands) {
-    		return trollCave;
+    		if (hillRNG.nextInt(41) > 10) return trollCave;
+    		else return nothing;
     	}    	
     	
     	// deep mushrooms has mushroom tower
     	if (biomeAt == TFBiomeBase.deepMushrooms) {
-    		return mushroomTower;
+    		if (hillRNG.nextInt(41) > 10) return mushroomTower;
+    		else return nothing;
     	}
        	
     	int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
     	int regionOffsetZ = Math.abs((chunkZ + 64 >> 4) % 8);
-    	
+
     	// plant two lich towers near the center of each 2048x2048 map area
 		if ((regionOffsetX == 4 && regionOffsetZ == 5) || (regionOffsetX == 4 && regionOffsetZ == 3)) {
     		return lichTower;
@@ -498,33 +557,41 @@ public class TFFeature {
 		if ((regionOffsetX == 5 && regionOffsetZ == 4) || (regionOffsetX == 3 && regionOffsetZ == 4)) {
     		return nagaCourtyard;
     	}
-    	
+
     	// okay, well that takes care of most special cases
     	switch (randnum)
     	{
     	default:
+    		return nothing;
     	case 0:
     	case 1:
     	case 2:
+    		return nothing;
     	case 3:
     	case 4:
     	case 5:
-    		return hill1;
+    		if (hillRNG.nextInt(3) > 1) return hill1;
+    		else return nothing;
     	case 6:
     	case 7:
     	case 8:
-    		return hill2;
+    		if (hillRNG.nextInt(3) > 1) return hill2;
+    		else return nothing;
     	case 9:
-    		return hill3;
+    		if (hillRNG.nextInt(3) > 1) return hill3;
+    		else return nothing;
     	case 10:
     	case 11:
-    		return hedgeMaze;
+    		if (hillRNG.nextInt(4) > 2) return hedgeMaze;
+    		else return nothing;
     	case 12:
        	case 13:
-    		return nagaCourtyard;
+    		if (hillRNG.nextInt(4) > 2) return nagaCourtyard;
+    		else return nothing;
     	case 14:
     	case 15:
-    		return lichTower;
+    		if (hillRNG.nextInt(4) > 2) return lichTower;
+    		else return nothing;
     	}	
 	}
 
@@ -706,7 +773,7 @@ public class TFFeature {
     	int regionX = (chunkX + 8) >> 4;
     	int regionZ = (chunkZ + 8) >> 4;
 
-	    long seed = (long)(regionX * 3129871) ^ (long)regionZ * 116129781L;
+	    long seed = (regionX * 3129871L) ^ (long)regionZ * 116129781L;
 	    seed = seed * seed * 42317861L + seed * 7L;
 	    
 	    int num0 = (int) (seed >> 12 & 3L);

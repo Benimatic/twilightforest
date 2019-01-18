@@ -46,13 +46,13 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*1.6D+twilightforest.TwilightForestMod.Scatter.nextInt(15)-twilightforest.TwilightForestMod.Scatter.nextInt(15)); // max health
     }
 	
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(BREATH_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(BREATH_FLAG, (byte)0);
     }
 
     /**
@@ -101,8 +101,8 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
     			double dy = look.yCoord;
     			double dz = look.zCoord;
 
-    			double spread = 5 + this.getRNG().nextDouble() * 2.5;
-    			double velocity = 3.0 + this.getRNG().nextDouble() * 0.15;
+    			double spread = 5 + this.getRNG().nextFloat() * 2.5;
+    			double velocity = 3.0 + this.getRNG().nextFloat() * 0.15;
 
     			// spread flame
     			dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
@@ -141,7 +141,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	public void setBreathing(boolean flag) {
-        this.getDataWatcher().updateObject(BREATH_FLAG, Byte.valueOf((byte)(flag ? 1 : 0)));
+        this.getDataWatcher().updateObject(BREATH_FLAG, ((byte)(flag ? 1 : 0)));
 	}
 
 	@Override

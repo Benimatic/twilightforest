@@ -74,12 +74,12 @@ public class GuiTFGoblinCrafting extends GuiContainer {
         if (costVal > 0) {
 	        if (this.mc.thePlayer.experienceLevel < costVal && !this.mc.thePlayer.capabilities.isCreativeMode) {
 		        int color = 0xA00000;
-		        String cost = "" + costVal;
+		        String cost = String.valueOf(costVal);
 		        fontRendererObj.drawStringWithShadow(cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 	        }
 	        else {
 		        int color = 0x80FF20;
-		        String cost = "" + costVal;
+		        String cost = String.valueOf(costVal);
 		        fontRendererObj.drawStringWithShadow(cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 	        }
         }
@@ -88,12 +88,12 @@ public class GuiTFGoblinCrafting extends GuiContainer {
         if (costVal > 0) {
 	        if (this.mc.thePlayer.experienceLevel < costVal && !this.mc.thePlayer.capabilities.isCreativeMode) {
 		        int color = 0xA00000;
-		        String cost = "" + costVal;
+		        String cost = String.valueOf(costVal);
 		        fontRendererObj.drawStringWithShadow(cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 	        }
 	        else {
 		        int color = 0x80FF20;
-		        String cost = "" + costVal;
+		        String cost = String.valueOf(costVal);
 		        fontRendererObj.drawStringWithShadow(cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 	        }
         }

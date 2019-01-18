@@ -49,7 +49,7 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		
 		for (int y = 0; y <= height; y++) {
 			
-			int radius = (int)(MathHelper.sin((y + height/1.2F) / (height * 2.05F) * 3.14F) * this.size / 2F);
+			int radius = (int)(MathHelper.sin((y + height/1.2F) / (height * 2.05F) * (float)Math.PI) * this.size / 2F);
 			int hollow = MathHelper.floor_float(radius * .9F);
 			
 			if ((height - y) < 3)

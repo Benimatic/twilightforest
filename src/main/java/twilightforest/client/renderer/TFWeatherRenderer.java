@@ -54,7 +54,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	
 	
 	public TFWeatherRenderer() {
-		this.random = new Random();
+		this.random = new org.bogdang.modifications.random.XSTR();
 	}
 
 
@@ -565,7 +565,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                         {
                             this.random.setSeed((long)(dx * dx * 3121 + dx * 45238971 ^ dz * dz * 418711 + dz * 13761));
 
-                            if (true) {
+                            //if (true) {
 
                             	if (drawFlag != 0)
                             	{
@@ -596,7 +596,7 @@ public class TFWeatherRenderer extends IRenderHandler {
                             	tessellator.addVertexWithUV((double)((float)dx - rainX) + 0.5D, (double)rainMax, (double)((float)dz - rainZ) + 0.5D, (double)(0.0F * one + uFactor), (double)((float)rainMax * one / 4.0F + countFactor * one + vFactor));
                             	tessellator.setTranslation(0.0D, 0.0D, 0.0D);
 
-                            }
+                            //}
 
                         }
                     }

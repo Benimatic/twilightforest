@@ -15,6 +15,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
 public class BlockTFRoots extends Block {
 	
@@ -123,6 +124,12 @@ public class BlockTFRoots extends Block {
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
+    }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
     }
 
 }

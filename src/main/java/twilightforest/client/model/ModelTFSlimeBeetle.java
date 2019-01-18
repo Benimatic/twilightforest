@@ -55,7 +55,7 @@ public class ModelTFSlimeBeetle extends ModelBase
 		RearEnd = new ModelRenderer(this, 31, 6);
 		RearEnd.addBox(-4F, -11F, -4F, 8, 10, 8);
 		RearEnd.setRotationPoint(0F, 18F, 7F);
-		setRotation(RearEnd, 1.570796F, 0F, 0F);
+		setRotation(RearEnd, (((float)Math.PI)/2f), 0F, 0F);
 
 		Leg6 = new ModelRenderer(this, 40, 0);
 		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
@@ -98,7 +98,7 @@ public class ModelTFSlimeBeetle extends ModelBase
 		antenna1 = new ModelRenderer(this, 38, 4);
 		antenna1.addBox(0F, -0.5F, -0.5F, 12, 1, 1);
 		antenna1.setRotationPoint(1F, -3F, -5F);
-		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
+		setRotation(antenna1, 0F, (((float)Math.PI)/3f), -0.296706F);
 
 		antenna2 = new ModelRenderer(this, 38, 4);
 		antenna2.addBox(0F, -0.5F, -0.5F, 12, 1, 1);

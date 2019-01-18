@@ -26,6 +26,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInventory {
 	
@@ -47,6 +48,17 @@ public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInven
     /** The number of ticks that the current item has been cooking for */
     public int furnaceCookTime;
 	private String customName;
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 
 	@Override
 	public int getSizeInventory() {

@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityTFGoblinKnightUpper extends EntityMob {
 	
-	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
+	private static final int SHIELD_DAMAGE_THRESHOLD = (int)(10*1.5);
 
 	private static final int DATA_EQUIP = 17;
 	
@@ -81,16 +81,16 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(10)-twilightforest.TwilightForestMod.Scatter.nextInt(10)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D*1.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D*1.5D); // attack damage
     }
 	
 	@Override
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_EQUIP, Byte.valueOf((byte)0));
+        dataWatcher.addObject(DATA_EQUIP, (byte)0);
     }
 	
     public boolean hasArmor()
@@ -105,11 +105,11 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 1)));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte) (otherFlags | 1)));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte)otherFlags));
         }
     }
     
@@ -125,11 +125,11 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
     	
         if (flag)
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte) (otherFlags | 2)));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte) (otherFlags | 2)));
         }
         else
         {
-            dataWatcher.updateObject(DATA_EQUIP, Byte.valueOf((byte)otherFlags));
+            dataWatcher.updateObject(DATA_EQUIP, ((byte)otherFlags));
         }
     }
     
@@ -340,9 +340,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
         {
         	// determine angle
         	
-	    	double dx = this.posX - attacker.posX;
-	    	double dz = this.posZ - attacker.posZ;
-	    	float angle = (float)((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
+	    	float dx = (float)(this.posX - attacker.posX);
+	    	float dz = (float)(this.posZ - attacker.posZ);
+	    	float angle = ((org.bogdang.modifications.math.TrigMath2.atan2(dz, dx) * 180F) / (float)Math.PI) - 90F;
 	
 	    	float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
 	    	
@@ -429,9 +429,9 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
             double d0 = par1DamageSource.getEntity().posX - this.posX;
             double d1;
 
-            for (d1 = par1DamageSource.getEntity().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
+            for (d1 = par1DamageSource.getEntity().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = ((new org.bogdang.modifications.random.XSTR()).nextFloat() - (new org.bogdang.modifications.random.XSTR()).nextFloat()) * 0.01D)
             {
-                d0 = (Math.random() - Math.random()) * 0.01D;
+                d0 = ((new org.bogdang.modifications.random.XSTR()).nextFloat() - (new org.bogdang.modifications.random.XSTR()).nextFloat()) * 0.01D;
             }
         	
             toKnockback.knockBack(par1DamageSource.getEntity(), 0, d0 / 4D, d1 / 4D);

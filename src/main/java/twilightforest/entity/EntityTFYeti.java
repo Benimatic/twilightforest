@@ -17,6 +17,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.item.TFItems;
@@ -60,16 +61,16 @@ public class EntityTFYeti extends EntityMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.38D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(0.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(10)-twilightforest.TwilightForestMod.Scatter.nextInt(10)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.38D*1.5); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(0.0D+2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(4.0D*1.5);
     }
 	
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(ANGER_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(ANGER_FLAG, (byte)0);
     }
 
     /**
@@ -180,9 +181,9 @@ public class EntityTFYeti extends EntityMob
 
         if (anger) {
             this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-            this.dataWatcher.updateObject(ANGER_FLAG, Byte.valueOf((byte)(b0 | 2)));
+            this.dataWatcher.updateObject(ANGER_FLAG, ((byte)(b0 | 2)));
         } else {
-            this.dataWatcher.updateObject(ANGER_FLAG, Byte.valueOf((byte)(b0 & -3)));
+            this.dataWatcher.updateObject(ANGER_FLAG, ((byte)(b0 & -3)));
         }
     }
     
@@ -236,8 +237,8 @@ public class EntityTFYeti extends EntityMob
     	{
     		float distance = 0.4F;
 
-    		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-    		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var1 = org.bogdang.modifications.math.MathHelperLite.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var3 = org.bogdang.modifications.math.MathHelperLite.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
     		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
     	}
@@ -264,7 +265,7 @@ public class EntityTFYeti extends EntityMob
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+		if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
 		}
 	}

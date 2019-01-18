@@ -99,7 +99,7 @@ public class TFMaze {
 		this.rawDepth = depth * 2 + 1;
 		storage = new int [rawWidth * rawDepth];
 		
-		rand = new Random();
+		rand = new org.bogdang.modifications.random.XSTR();
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class TFMaze {
 			return getRaw(sx * 2 + 1, sz * 2 + 0);
 		}
 		
-		System.out.println("Wall check out of bounds; s = " + sx + ", " + sz + "; d = " + dx + ", " + dz);
+		cpw.mods.fml.common.FMLLog.info("Wall check out of bounds; s = " + sx + ", " + sz + "; d = " + dx + ", " + dz);
 		
 		return OUT_OF_BOUNDS;
 	}

@@ -51,10 +51,12 @@ public class ModelTFWraith extends ModelBiped {
         this.bipedLeftArm.rotateAngleX = -((float)Math.PI / 2F);
         this.bipedRightArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
         this.bipedLeftArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
-        this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-        this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+        float c = MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+        this.bipedRightArm.rotateAngleZ += c;
+        this.bipedLeftArm.rotateAngleZ -= c;
+        float s = MathHelper.sin(par3 * 0.067F) * 0.05F;
+        this.bipedRightArm.rotateAngleX += s;
+        this.bipedLeftArm.rotateAngleX -= s;
     }
     
 

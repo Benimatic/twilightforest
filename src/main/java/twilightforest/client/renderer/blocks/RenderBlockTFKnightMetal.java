@@ -45,6 +45,7 @@ public class RenderBlockTFKnightMetal implements ISimpleBlockRenderingHandler {
 		float p = 1F / 16F;
 		float a = 1F / 1024F;
 		float p4 = 4F / 16F - a;
+		GL11.glPushMatrix();
 		
 		for (int rx = 0; rx < 3; rx++) {
 			for (int ry = 0; ry < 3; ry++) {
@@ -61,10 +62,12 @@ public class RenderBlockTFKnightMetal implements ISimpleBlockRenderingHandler {
 
         
         block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
         return true;
 	}
 	
 	public static void renderInvJar(RenderBlocks renderblocks, Block par1Block, int meta) {
+		GL11.glPushMatrix();
 		Tessellator tessellator =  Tessellator.instance;
 		
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -93,9 +96,11 @@ public class RenderBlockTFKnightMetal implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
         par1Block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
 	}
 
 	protected static void renderInvBlock(RenderBlocks renderblocks, Block par1Block, int meta, Tessellator tessellator) {
+		GL11.glPushMatrix();
 		tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
         renderblocks.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(0, meta));
@@ -120,6 +125,7 @@ public class RenderBlockTFKnightMetal implements ISimpleBlockRenderingHandler {
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
         renderblocks.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(5, meta));
         tessellator.draw();
+        GL11.glPopMatrix();
 	}
 
 

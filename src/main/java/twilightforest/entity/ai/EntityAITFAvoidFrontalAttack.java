@@ -118,9 +118,9 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
     protected Vec3 findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
  
     	// compute angle
-        double vecx = circler.posX - toCircle.posX;
-        double vecz = circler.posZ - toCircle.posZ;
-        float rangle = (float)(Math.atan2(vecz, vecx));
+        float vecx = (float)(circler.posX - toCircle.posX);
+        float vecz = (float)(circler.posZ - toCircle.posZ);
+        float rangle = org.bogdang.modifications.math.TrigMath2.atan2(vecz, vecx);
 
         // add a little, so he circles
         rangle += rotation;
@@ -140,9 +140,9 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
      */
     public boolean isTargetLookingAtMe(EntityLivingBase attackTarget) {
     	// find angle of approach
-    	double dx = me.posX - attackTarget.posX;
-    	double dz = me.posZ - attackTarget.posZ;
-    	float angle = (float)((Math.atan2(dz, dx) * 180D) / 3.1415927410125732D) - 90F;
+    	float dx = (float)(me.posX - attackTarget.posX);
+    	float dz = (float)(me.posZ - attackTarget.posZ);
+    	float angle = ((org.bogdang.modifications.math.TrigMath2.atan2(dz, dx) * 180F) / (float)Math.PI) - 90F;
 
     	float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
     	

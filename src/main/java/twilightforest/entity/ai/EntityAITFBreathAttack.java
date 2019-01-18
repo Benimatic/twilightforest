@@ -171,13 +171,13 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	 * Face the head towards a specific Vector
 	 */
 	public void faceVec(double xCoord, double yCoord, double zCoord, float yawConstraint, float pitchConstraint) {
-		double xOffset = xCoord - entityHost.posX;
-		double zOffset = zCoord - entityHost.posZ;
-		double yOffset = (entityHost.posY + 0.25) - yCoord;
+		float xOffset = (float)(xCoord - entityHost.posX);
+		float zOffset = (float)(zCoord - entityHost.posZ);
+		float yOffset = (float)((entityHost.posY + 0.25) - yCoord);
 
-		double distance = MathHelper.sqrt_double(xOffset * xOffset + zOffset * zOffset);
-		float xyAngle = (float)((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
-		float zdAngle = (float)(-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
+		float distance = MathHelper.sqrt_float(xOffset * xOffset + zOffset * zOffset);
+		float xyAngle = ((org.bogdang.modifications.math.TrigMath2.atan2(zOffset, xOffset) * 180F) / (float)Math.PI) - 90F;
+		float zdAngle = (-((org.bogdang.modifications.math.TrigMath2.atan2(yOffset, distance) * 180F) / (float)Math.PI));
 		entityHost.rotationPitch = -updateRotation(entityHost.rotationPitch, zdAngle, pitchConstraint);
 		entityHost.rotationYaw = updateRotation(entityHost.rotationYaw, xyAngle, yawConstraint);
         

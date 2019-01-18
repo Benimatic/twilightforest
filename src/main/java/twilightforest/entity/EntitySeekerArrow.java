@@ -69,7 +69,7 @@ public class EntitySeekerArrow extends EntityArrow {
         			if (thing instanceof EntityLivingBase && !(thing instanceof EntityPlayer)) {
         				EntityLivingBase living = (EntityLivingBase)thing;
 
-        				System.out.println("Possible target : " + living);
+        				cpw.mods.fml.common.FMLLog.info("Possible target : " + living);
         				//System.out.println("Selection box =  " + targetBB);
 
         				courseVec = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ);
@@ -88,10 +88,10 @@ public class EntitySeekerArrow extends EntityArrow {
         				}
         			}
         		}
-        		if (targets.size() > 0) {
+        		/*if (targets.size() > 0) {
         			//System.out.println("--- End of list");
         			//System.out.println("We have chosen " + this.homingTarget + " as the target");
-        		}
+        		}*/
         	} else {
         		// find ideal heading
 				Vec3 targetVec = Vec3.createVectorHelper(this.posX - this.homingTarget.posX, this.posY - (this.homingTarget.posY + this.homingTarget.getEyeHeight()), this.posZ - this.homingTarget.posZ);

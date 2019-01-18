@@ -361,7 +361,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
 	
 //		// clear inside
 //		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);

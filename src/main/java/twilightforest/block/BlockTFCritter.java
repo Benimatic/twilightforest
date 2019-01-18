@@ -254,7 +254,10 @@ public abstract class BlockTFCritter extends Block {
      */
     public boolean canPlaceAt(World world, int x, int y, int z)
     {
-    	return world.isBlockNormalCubeDefault(x, y, z, true) || world.getBlock(x, y, z).getMaterial() == Material.leaves || world.getBlock(x, y, z).getMaterial() == Material.cactus;
+    	//return world.isBlockNormalCubeDefault(x, y, z, true) || world.getBlock(x, y, z).getMaterial() == Material.leaves || world.getBlock(x, y, z).getMaterial() == Material.cactus;
+    	Block block = world.getBlock(x, y, z);
+    	Material mblock = block.getMaterial();
+    	return block.isNormalCube(world, x, y, z) || mblock == Material.leaves || mblock == Material.cactus;
     }	
 	
     /**

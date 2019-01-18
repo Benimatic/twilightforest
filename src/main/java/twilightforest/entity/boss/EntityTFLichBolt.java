@@ -46,9 +46,9 @@ public class EntityTFLichBolt extends EntityThrowable {
 
 	public void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+			double dx = posX + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dy = posY + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dz = posZ + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
 			
 			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
@@ -135,12 +135,12 @@ public class EntityTFLichBolt extends EntityThrowable {
 		boolean passThrough = false;
 		
 		// pass through other lich bolts
-		if (par1MovingObjectPosition.entityHit != null && (par1MovingObjectPosition.entityHit instanceof EntityTFLichBolt || par1MovingObjectPosition.entityHit instanceof EntityTFLichBomb)) {
+		if ((par1MovingObjectPosition.entityHit instanceof EntityTFLichBolt || par1MovingObjectPosition.entityHit instanceof EntityTFLichBomb)) {
 			passThrough = true;
 		}
 		
 		// only damage living things
-        if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+        if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
         {
         	if (par1MovingObjectPosition.entityHit instanceof EntityTFLich) {
         		EntityTFLich lich = (EntityTFLich)par1MovingObjectPosition.entityHit;
@@ -149,16 +149,16 @@ public class EntityTFLichBolt extends EntityThrowable {
         		}
         	}
         	// if we're not set to pass, damage what we hit
-            if (!passThrough && par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6))
+            if (!passThrough)
             {
-                ;
+                par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
             }
         }
         // if we don't pass through, then stop and die
         if (!passThrough) {
 	        for (int i = 0; i < 8; ++i)
 	        {
-	            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ender_pearl), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+	            this.worldObj.spawnParticle("iconcrack_" + Item.getIdFromItem(Items.ender_pearl), this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextFloat() * 0.2D, rand.nextGaussian() * 0.05D);
 	        }
 	
 	        if (!this.worldObj.isRemote)

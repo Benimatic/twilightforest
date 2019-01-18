@@ -34,8 +34,9 @@ public class EntityTFHarbingerCube extends EntityMob {
 	
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(20)-twilightforest.TwilightForestMod.Scatter.nextInt(20));
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D*1.5D);
+		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D*1.5);
 	}
 
 

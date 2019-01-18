@@ -23,7 +23,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 	public EntityAITFRedcapShy(EntityTFRedcap entityTFRedcap, float moveSpeed) {
 		this.entityObj = entityTFRedcap;
 		this.speed = moveSpeed;
-		this.lefty = (new Random()).nextBoolean(); 
+		this.lefty = (new org.bogdang.modifications.random.XSTR()).nextBoolean(); 
         this.setMutexBits(1);
 	}
 
@@ -118,9 +118,9 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
     protected Vec3 findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
  
     	// compute angle
-        double vecx = circler.posX - toCircle.posX;
-        double vecz = circler.posZ - toCircle.posZ;
-        float rangle = (float)(Math.atan2(vecz, vecx));
+        float vecx = (float)(circler.posX - toCircle.posX);
+        float vecz = (float)(circler.posZ - toCircle.posZ);
+        float rangle = org.bogdang.modifications.math.TrigMath2.atan2(vecz, vecx);
 
         // add a little, so he circles
         rangle += rotation;

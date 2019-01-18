@@ -248,8 +248,9 @@ public class BlockTFSlider extends BlockRotatedPillar {
 		int dy = y + dir.offsetY;
 		int dz = z + dir.offsetZ;
 		
+		boolean check_xyz = x==dx && y==dy && z==dz;
 		// are the blocks connected?  (block and meta are the same
-		if (world.getBlock(x, y, z) == world.getBlock(dx, dy, dz) && world.getBlockMetadata(x, y, z) == world.getBlockMetadata(dx, dy, dz)) {
+		if ((check_xyz || world.getBlock(x, y, z) == world.getBlock(dx, dy, dz)) && (check_xyz || world.getBlockMetadata(x, y, z) == world.getBlockMetadata(dx, dy, dz))) {
 			return this.anyPlayerInRange(world, dx, dy, dz) || this.isConnectedInRangeRecursive(world, dx, dy, dz, dir);
 		} else {
 			return false;

@@ -68,7 +68,7 @@ public class TFTreasure {
 		rare = new TFTreasureTable();
 		ultrarare = new TFTreasureTable();
 		
-		treasureRNG = new Random();
+		treasureRNG = new org.bogdang.modifications.random.XSTR();
 
 		// TODO: separate these into plain ol' different classes
 		fill(i);

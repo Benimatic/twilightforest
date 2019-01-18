@@ -64,7 +64,7 @@ public class EntityTFQuestRam extends EntityAnimal {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(70.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(70.0D+twilightforest.TwilightForestMod.Scatter.nextInt(25)-twilightforest.TwilightForestMod.Scatter.nextInt(25)); // max health
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
     }
 	
@@ -72,8 +72,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 	protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Integer.valueOf(0));
-        this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(16, (int)0);
+        this.dataWatcher.addObject(17, (byte)0);
     }
 
 
@@ -209,7 +209,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 //        for (int var1 = 0; var1 < 2; ++var1)
 //        {
-//            this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextDouble());
+//            this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextFloat() - 0.5D) * (double)this.width, this.posY + this.rand.nextFloat() * (double)this.height, this.posZ + (this.rand.nextFloat() - 0.5D) * (double)this.width, 0.44, 0.625, this.rand.nextFloat());
 //        }
     	checkAndAnimateColors();
     }
@@ -259,7 +259,7 @@ public class EntityTFQuestRam extends EntityAnimal {
      */
     public void setColorFlags(int par1)
     {
-    	this.dataWatcher.updateObject(16, Integer.valueOf(par1));
+    	this.dataWatcher.updateObject(16, par1);
     }
 
     /**
@@ -295,7 +295,7 @@ public class EntityTFQuestRam extends EntityAnimal {
      */
     public void setRewarded(boolean par1)
     {
-    	this.dataWatcher.updateObject(17, par1 ? Byte.valueOf((byte)1) : Byte.valueOf((byte)0));
+    	this.dataWatcher.updateObject(17, par1 ? ((byte)1) : (byte)0);
     }
 
 
@@ -308,7 +308,7 @@ public class EntityTFQuestRam extends EntityAnimal {
     	//EntitySheep.fleeceColorTable[i][0]
     	
     	for (int i = 0; i < iterations; i++) {
-          this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, EntitySheep.fleeceColorTable[color][0], EntitySheep.fleeceColorTable[color][1], EntitySheep.fleeceColorTable[color][2]);
+          this.worldObj.spawnParticle("mobSpell", this.posX + (this.rand.nextFloat() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextFloat() * this.height * 1.5, this.posZ + (this.rand.nextFloat() - 0.5D) * this.width * 1.5, EntitySheep.fleeceColorTable[color][0], EntitySheep.fleeceColorTable[color][1], EntitySheep.fleeceColorTable[color][2]);
     	}
     	
     	//TODO: it would be nice to play a custom sound

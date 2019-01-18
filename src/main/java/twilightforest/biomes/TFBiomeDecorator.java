@@ -148,6 +148,8 @@ public class TFBiomeDecorator extends BiomeDecorator {
     protected void genDecorations(BiomeGenBase biome)
     {
         
+    	try {
+    	//at this point the error did not occur, but seeing what could be randomGenerator this null, then add a cap and here
     	// random features!
         if(randomGenerator.nextInt(6) == 0)
         {
@@ -155,15 +157,20 @@ public class TFBiomeDecorator extends BiomeDecorator {
             int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
             int ry =  currentWorld.getHeightValue(rx, rz);
             TFGenerator rf = randomFeature(randomGenerator);
+            //rf.generate(currentWorld, randomGenerator, rx, ry, rz);
             if (rf.generate(currentWorld, randomGenerator, rx, ry, rz))
             {
 //            	System.out.println(rf + " success at " + rx + ", " + ry + ", " + rz);
+            	//cpw.mods.fml.common.FMLLog.info(rf + " success at " + rx + ", " + ry + ", " + rz);
             }
         }
+        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip random feature, ");}
 
 		// add canopy trees
+    	try {
     	int nc = (int)canopyPerChunk + ((randomGenerator.nextFloat() < (canopyPerChunk - (int)canopyPerChunk)) ? 1 : 0);
     	for (int i = 0; i < nc; i++) {
+    		try {//this in order not to miss the party generating the trees and miss only a few trees
     		int rx = chunk_X + randomGenerator.nextInt(16) + 8;
     		int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
     		int ry = currentWorld.getHeightValue(rx,  rz);
@@ -172,37 +179,49 @@ public class TFBiomeDecorator extends BiomeDecorator {
     		} else {
     			canopyTreeGen.generate(currentWorld, randomGenerator, rx, ry, rz);
 	        }
+	        } catch (Throwable thrwe) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrwe, "TwilightForest: skip canopy tree(s), ");}
     	}
+    	} catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip canopy trees gen, ");}
 
     	// mangrove trees
     	for (int i = 0; i < mangrovesPerChunk; i++) {
+	        try {//yes, not good variant, fix NPE, if randomGenerator this null, yeah
 	        int rx = chunk_X + randomGenerator.nextInt(16) + 8;
 	        int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
 	        int ry = currentWorld.getHeightValue(rx, rz);
 	        mangroveTreeGen.generate(currentWorld, randomGenerator, rx, ry, rz);
+	        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip mangrove tree(s), ");}
     	}
     	// add extra lakes for swamps
     	for (int i = 0; i < lakesPerChunk; i++) {
+	        try {
 	        int rx = chunk_X + randomGenerator.nextInt(16) + 8;
 	        int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
 	        int ry = currentWorld.getHeightValue(rx, rz);
 	        extraLakeGen.generate(currentWorld, randomGenerator, rx, ry, rz);
+	        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip extra lakes for swamps, ");}
     	}
     	
+    	try {
     	// add extra lava for fire swamps
     	if (randomGenerator.nextFloat() <= lavaPoolChance) {
+	        try {
 	        int rx = chunk_X + randomGenerator.nextInt(16) + 8;
 	        int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
 	        int ry = currentWorld.getHeightValue(rx, rz);
 	        extraLavaPoolGen.generate(currentWorld, randomGenerator, rx, ry, rz);
+	        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip extra lava for fire swamps, ");}
     	}
+    	} catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip extra lava for fire swamps gen, ");}
     	
     	// mycelium blobs
     	for (int i = 0; i < myceliumPerChunk; i++) {
+	        try {
 	        int rx = chunk_X + randomGenerator.nextInt(16) + 8;
 	        int rz = chunk_Z + randomGenerator.nextInt(16) + 8;
 	        int ry = currentWorld.getHeightValue(rx, rz);
 	        myceliumBlobGen.generate(currentWorld, randomGenerator, rx, ry, rz);
+	        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip mycelium blobs, ");}
     	}
     	
         super.genDecorations(biome);
@@ -219,39 +238,47 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		// generate roots
 		for (int i = 0; i < 12; ++i)
 		{
+		    try {
 		    int rx = mapX + rand.nextInt(16) + 8;
 		    byte ry = 64;
 		    int rz = mapZ + rand.nextInt(16) + 8;
 		    plantRootGen.generate(world, rand, rx, ry, rz);
+		    } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip generate roots, ");}
 		}
 
 		// generate roots
 		for (int i = 0; i < 20; ++i)
 		{
+		    try {
 		    int rx = mapX + rand.nextInt(16) + 8;
 		    int ry = rand.nextInt(64);
 		    int rz = mapZ + rand.nextInt(16) + 8;
 		    woodRootGen.generate(world, rand, rx, ry, rz);
+		    } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip generate roots 2, ");}
 		}
 		
 		// extra underground water sources
 		if (this.generateLakes) {
 			for (int i = 0; i < 50; ++i)
 			{
+				try {
 				int rx = mapX + rand.nextInt(16) + 8;
 				int ry = rand.nextInt(24) + 4;
 				int rz = mapZ + rand.nextInt(16) + 8;
 				caveWaterGen.generate(world, rand, rx, ry, rz);
+				} catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip extra underground water sources, ");}
 			}
 		}
 		
         // torch berries are almost guaranteed to spawn so we don't need many
         for (int i = 0; i < 3; ++i)
         {
+            try {
             int rx = mapX + rand.nextInt(16) + 8;
             int ry = 64;
             int rz = mapZ + rand.nextInt(16) + 8;
             torchBerryGen.generate(world, rand, rx, ry, rz);
+            } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip torch berries, ");}
         }
 	}
 	

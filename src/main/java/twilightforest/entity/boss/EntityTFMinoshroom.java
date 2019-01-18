@@ -27,7 +27,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(120.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(120.0D*1.5F+twilightforest.TwilightForestMod.Scatter.nextInt(60)-twilightforest.TwilightForestMod.Scatter.nextInt(60)); // max health
     }
 
     /**

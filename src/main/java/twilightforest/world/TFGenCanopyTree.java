@@ -133,7 +133,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		if (trunk) 
 		{
 			// add a firefly (torch) to the trunk
-			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+			addFirefly(world, x, y, z, 3 + treeRNG.nextInt(7), treeRNG.nextFloat());
 		}
 
 		makeLeafCircle(world, dest.posX, dest.posY - 1, dest.posZ, 3, leafBlock, leafMeta, true);	

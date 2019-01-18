@@ -85,8 +85,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(RAMPAGE_FLAG, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(TIRED_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(RAMPAGE_FLAG, (byte)0);
+        this.dataWatcher.addObject(TIRED_FLAG, (byte)0);
     }
     
 	/**
@@ -96,10 +96,10 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.38D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D*1.5D+twilightforest.TwilightForestMod.Scatter.nextInt(100)-twilightforest.TwilightForestMod.Scatter.nextInt(100)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.38D*1.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D*1.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D*1.5D);
     }
 
     /**
@@ -163,7 +163,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	{
     		for (int i = 0; i < 20; i++)
     		{
-    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextFloat() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextFloat() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
     		}
     	}
 
@@ -171,9 +171,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
 
 
 	private void addSnowEffect(float rotation, float hgt) {
-		double px = 3F * Math.cos(rotation);
+		double px = 3F * org.bogdang.modifications.math.MathHelperLite.cos(rotation);
 		double py = hgt % 5F;
-		double pz = 3F * Math.sin(rotation);
+		double pz = 3F * org.bogdang.modifications.math.MathHelperLite.sin(rotation);
 		
 		TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowstuff", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 	}
@@ -296,8 +296,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
     	{
     		float distance = 0.4F;
 
-    		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-    		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var1 = org.bogdang.modifications.math.MathHelperLite.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var3 = org.bogdang.modifications.math.MathHelperLite.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
     		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
     	}
@@ -466,7 +466,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
      */
     public void setRampaging(boolean par1)
     {
-        this.getDataWatcher().updateObject(RAMPAGE_FLAG, Byte.valueOf((byte)(par1 ? 1 : 0)));
+        this.getDataWatcher().updateObject(RAMPAGE_FLAG, ((byte)(par1 ? 1 : 0)));
     }
 
     /**
@@ -482,7 +482,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
      */
     public void setTired(boolean par1)
     {
-        this.getDataWatcher().updateObject(TIRED_FLAG, Byte.valueOf((byte)(par1 ? 1 : 0)));
+        this.getDataWatcher().updateObject(TIRED_FLAG, ((byte)(par1 ? 1 : 0)));
         this.canRampage = false;
     }
 

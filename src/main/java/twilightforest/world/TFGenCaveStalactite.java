@@ -20,6 +20,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	public static TFGenCaveStalactite iron = new TFGenCaveStalactite(Blocks.iron_ore, 0.7F, 8, 1); 
 	public static TFGenCaveStalactite coal = new TFGenCaveStalactite(Blocks.coal_ore, 0.8F, 12, 1); 
 	public static TFGenCaveStalactite glowstone = new TFGenCaveStalactite(Blocks.glowstone, 0.5F, 8, 1); 
+	public static TFGenCaveStalactite stone = new TFGenCaveStalactite(Blocks.stone, 0.5F, 8, 1); //Bogdan-G: for no treasure
 	
 	
 	public Block blockID;
@@ -68,7 +69,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	{
 		if (hillSize >= 3 || (hillSize >= 2 && rand.nextInt(5) == 0))
 		{
-			int s3 = rand.nextInt(13);
+			int s3 = rand.nextInt(20);//Bogdan-G: decrease ore for stalactite, old:13
 			if (s3 == 0 || s3 == 1)
 			{
 				return diamond;
@@ -84,7 +85,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 		}
 		if (hillSize >= 2 || (hillSize >= 1 && rand.nextInt(5) == 0))
 		{
-			int s2 = rand.nextInt(6);
+			int s2 = rand.nextInt(10);//Bogdan-G: decrease ore for stalactite, old:6
 			if (s2 == 0)
 			{
 				return gold;
@@ -96,7 +97,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 		}
 		
 		// fall through to size 1
-		int s1 = rand.nextInt(5);
+		int s1 = rand.nextInt(10);//Bogdan-G: decrease ore for stalactite, old:5
 		if (s1 == 0 || s1 == 1)
 		{
 			return iron;
@@ -105,9 +106,13 @@ public class TFGenCaveStalactite extends TFGenerator {
 		{
 			return coal;
 		}
-		else 
+		else if (s1 == 6)
 		{
 			return glowstone;
+		}
+		else
+		{
+			return stone;
 		}
 	}
 

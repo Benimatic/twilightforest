@@ -808,4 +808,10 @@ public class BlockTFNagastone extends Block {
         BlockTFNagastone.TURN_TOP = par1IconRegister.registerIcon(TwilightForestMod.ID + ":nagastone_turn_top");
     }
 
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
+
 }

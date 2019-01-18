@@ -73,7 +73,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 		// only hit living things
         if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase)
         {
-            if (mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10))
+            if (mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10*1.5f))
             {
                 this.ticksExisted += 60;
             }

@@ -61,8 +61,8 @@ public class EntityTFTinyBird extends EntityTFBird {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(DATA_BIRDTYPE, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BIRDFLAGS, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(DATA_BIRDTYPE, (byte)0);
+        this.dataWatcher.addObject(DATA_BIRDFLAGS, (byte)0);
     }
 	
 	/**
@@ -72,7 +72,7 @@ public class EntityTFTinyBird extends EntityTFBird {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0D+twilightforest.TwilightForestMod.Scatter.nextInt(5)); // max health
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000001192092896D);
     }
     
@@ -128,7 +128,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 
     public void setBirdType(int par1)
     {
-        this.dataWatcher.updateObject(DATA_BIRDTYPE, Byte.valueOf((byte)par1));
+        this.dataWatcher.updateObject(DATA_BIRDTYPE, ((byte)par1));
     }
 	
     /**
@@ -272,7 +272,7 @@ public class EntityTFTinyBird extends EntityTFBird {
             this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
             this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
             this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
-            float f = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) - 90.0F;
+            float f = (org.bogdang.modifications.math.TrigMath2.atan2((float)this.motionZ, (float)this.motionX) * 180.0F / (float)Math.PI) - 90.0F;
             float f1 = MathHelper.wrapAngleTo180_float(f - this.rotationYaw);
             this.moveForward = 0.5F;
             this.rotationYaw += f1;
@@ -331,11 +331,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 
         if (par1)
         {
-            this.dataWatcher.updateObject(DATA_BIRDFLAGS, Byte.valueOf((byte)(b0 | 1)));
+            this.dataWatcher.updateObject(DATA_BIRDFLAGS, ((byte)(b0 | 1)));
         }
         else
         {
-            this.dataWatcher.updateObject(DATA_BIRDFLAGS, Byte.valueOf((byte)(b0 & -2)));
+            this.dataWatcher.updateObject(DATA_BIRDFLAGS, ((byte)(b0 & -2)));
         }
     }
     

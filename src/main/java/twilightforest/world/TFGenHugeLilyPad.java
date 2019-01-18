@@ -19,7 +19,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class TFGenHugeLilyPad extends WorldGenerator
 {
 
-	private Random rand = new Random();
+	private Random rand = new org.bogdang.modifications.random.XSTR();
 
 
     public boolean generate(World world, Random random, int x, int y, int z)

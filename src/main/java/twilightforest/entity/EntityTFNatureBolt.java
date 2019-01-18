@@ -57,9 +57,9 @@ public class EntityTFNatureBolt extends EntityThrowable {
 	 */
 	public void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+			double dx = posX + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dy = posY + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+			double dz = posZ + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
 			worldObj.spawnParticle("happyVillager", dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -70,15 +70,15 @@ public class EntityTFNatureBolt extends EntityThrowable {
 	@Override
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+		if (par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
 		{
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2))
+			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2*1.5f))
 			{
 				// similar to EntityCaveSpider
 				byte poisonStrength = (byte) (worldObj.difficultySetting == EnumDifficulty.PEACEFUL ? 0 : worldObj.difficultySetting == EnumDifficulty.NORMAL ? 3 : 7);
 				if(poisonStrength > 0)
 				{
-					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.poison.id, poisonStrength * 20, 0));
+					((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.poison.id, (int)(poisonStrength * 20 * 1.5), 0));
 					
 //					System.out.println("Poisoning entityHit " + par1MovingObjectPosition.entityHit);
 				}
@@ -88,7 +88,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.leaves) + "_0", this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.leaves) + "_0", this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextFloat() * 0.2D, rand.nextGaussian() * 0.05D);
 		}
 
 		if (!this.worldObj.isRemote)

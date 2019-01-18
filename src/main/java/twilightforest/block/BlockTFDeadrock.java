@@ -13,6 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
 public class BlockTFDeadrock extends Block {
 	
@@ -68,5 +69,11 @@ public class BlockTFDeadrock extends Block {
     public int damageDropped(int meta)
     {
         return meta;
+    }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
     }
 }

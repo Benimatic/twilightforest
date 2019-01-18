@@ -43,6 +43,7 @@ public class RenderBlockTFFireflyJar implements ISimpleBlockRenderingHandler {
 	 * Look, this is no longer in the Block class!  I'm an object oriented genius!
 	 */
 	public static boolean renderJar(RenderBlocks renderblocks, IBlockAccess world, int x, int y, int z, Block block) {
+        GL11.glPushMatrix();
         renderblocks.clearOverrideBlockTexture();
         renderblocks.setRenderBounds(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.875F, 0.8125F);
         renderblocks.renderStandardBlock(block, x, y, z);
@@ -53,10 +54,12 @@ public class RenderBlockTFFireflyJar implements ISimpleBlockRenderingHandler {
         renderblocks.clearOverrideBlockTexture();
         
         block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
         return true;
 	}
 	
 	public static void renderInvJar(RenderBlocks renderblocks, Block par1Block, int meta) {
+		GL11.glPushMatrix();
 		Tessellator tessellator =  Tessellator.instance;
 		
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -127,6 +130,7 @@ public class RenderBlockTFFireflyJar implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
         par1Block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
 	}
 
 

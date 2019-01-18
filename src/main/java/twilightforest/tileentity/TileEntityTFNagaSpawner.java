@@ -3,12 +3,24 @@ package twilightforest.tileentity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import twilightforest.entity.TFCreatures;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
 	
 	public TileEntityTFNagaSpawner() {
 		this.mobID = TFCreatures.getSpawnerNameFor("Naga");
 	}
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 	
 	public boolean anyPlayerInRange()
     {

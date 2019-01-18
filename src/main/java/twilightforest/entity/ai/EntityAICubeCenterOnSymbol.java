@@ -59,10 +59,10 @@ public class EntityAICubeCenterOnSymbol extends EntityAIBase {
         this.myCube.getMoveHelper().setMoveTo(this.xPosition + 0.5F, this.yPosition, this.zPosition + 0.5F, this.speed);
 
 
-    	if (this.myCube.ticksExisted % 5 == 0) {
+    	/*if (this.myCube.ticksExisted % 5 == 0) {
     		//System.out.println("Centering cube on symbol. Dist = " + dist);
     		//System.out.println("heading to " + this.xPosition + ", " + this.yPosition + ", " + this.zPosition);
-    	}
+    	}*/
         
         return dist > 0.1F && this.isCourseTraversable();
     }

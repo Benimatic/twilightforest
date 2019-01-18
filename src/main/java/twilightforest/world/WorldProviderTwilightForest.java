@@ -27,10 +27,18 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	public final String saveFolder;
 	public ChunkProviderTwilightForest chunkProvider;
+	private boolean firstsetrnd = false;
 	
 	public WorldProviderTwilightForest() {
 		setDimension(TwilightForestMod.dimensionID);
 		saveFolder = "DIM" + TwilightForestMod.dimensionID;
+		if (!firstsetrnd) { 
+		try{
+		long seed = this.getSeed();
+		TwilightForestMod.Scatter.setSeed(seed);
+		firstsetrnd=true;
+		} catch(Exception e){firstsetrnd=false;}
+		}
 	}
 	
 	/**
@@ -47,7 +55,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
     public Vec3 getFogColor(float f, float f1)
     {
-        float bright = MathHelper.cos(0.25f * 3.141593F * 2.0F) * 2.0F + 0.5F;
+        float bright = MathHelper.cos(0.25f * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
         if(bright < 0.0F)
         {
             bright = 0.0F;

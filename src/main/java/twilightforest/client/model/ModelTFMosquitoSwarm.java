@@ -20,7 +20,7 @@ public class ModelTFMosquitoSwarm extends ModelBase
 	ModelRenderer node5;
 	ModelRenderer node6;
 	
-	Random rand = new Random();
+	Random rand = new org.bogdang.modifications.random.XSTR();
 
 	public ModelTFMosquitoSwarm()
 	{
@@ -83,7 +83,7 @@ public class ModelTFMosquitoSwarm extends ModelBase
 		
 		for (int i = 0; i < bugs; i++) {
 			Vec3 vec = Vec3.createVectorHelper(11, 0, 0);
-			float rotateY = ((i * (360F / bugs)) * 3.141593F) / 180F;
+			float rotateY = ((i * (360F / bugs)) * (float)Math.PI) / 180F;
 			vec.rotateAroundY(rotateY);
 			ModelRenderer bug = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
 			
@@ -101,33 +101,43 @@ public class ModelTFMosquitoSwarm extends ModelBase
 
 	@Override
 	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
-		core.rotateAngleY = (par1EntityLiving.ticksExisted + time) / 5.0F;
-		core.rotateAngleX =  MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
-		core.rotateAngleZ =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		//Bogdan-G: reduce duplicate sin/cos, improve perf
+		float value0 = (par1EntityLiving.ticksExisted + time) / 5.0F;
+		float msin = MathHelper.sin(value0);
+		float mcos = MathHelper.cos(value0);
+		float msin0 = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 6.0F);
+		float msin1 = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 2.0F);
+		float msin2 = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 7.0F);
+		float mcos0 = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 4.0F);
+		float mcos1 = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 7.0F);
+		
+		core.rotateAngleY = value0;
+		core.rotateAngleX =  msin / 4.0F;
+		core.rotateAngleZ =  mcos / 4.0F;
 
 		node1.rotateAngleY = (par1EntityLiving.ticksExisted + time) / 2.0F;
-		node1.rotateAngleX =  MathHelper.sin((par1EntityLiving.ticksExisted + time) / 6.0F) / 2.0F;
-		node1.rotateAngleZ =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node1.rotateAngleX =  msin0 / 2.0F;
+		node1.rotateAngleZ =  mcos / 4.0F;
 
-		node2.rotateAngleY =  MathHelper.sin((par1EntityLiving.ticksExisted + time) / 2.0F) / 3.0F;
-		node2.rotateAngleX =  (par1EntityLiving.ticksExisted + time) / 5.0F;
-		node2.rotateAngleZ =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node2.rotateAngleY =  msin1 / 3.0F;
+		node2.rotateAngleX =  value0;
+		node2.rotateAngleZ =  mcos / 4.0F;
 
-		node3.rotateAngleY =  MathHelper.sin((par1EntityLiving.ticksExisted + time) / 7.0F) / 3.0F;
-		node3.rotateAngleX =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 4.0F) / 2.0F;
-		node3.rotateAngleZ =  (par1EntityLiving.ticksExisted + time) / 5.0F;
+		node3.rotateAngleY =  msin2 / 3.0F;
+		node3.rotateAngleX =  mcos0 / 2.0F;
+		node3.rotateAngleZ =  value0;
 
 		node4.rotateAngleX = (par1EntityLiving.ticksExisted + time) / 2.0F;
-		node4.rotateAngleZ =  MathHelper.sin((par1EntityLiving.ticksExisted + time) / 6.0F) / 2.0F;
-		node4.rotateAngleY =  MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node4.rotateAngleZ =  msin0 / 2.0F;
+		node4.rotateAngleY =  msin / 4.0F;
 
-		node5.rotateAngleZ =  MathHelper.sin((par1EntityLiving.ticksExisted + time) / 2.0F) / 3.0F;
-		node5.rotateAngleY =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
-		node5.rotateAngleX =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node5.rotateAngleZ =  msin1 / 3.0F;
+		node5.rotateAngleY =  mcos / 4.0F;
+		node5.rotateAngleX =  mcos / 4.0F;
 
-		node6.rotateAngleZ =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 7.0F) / 3.0F;
-		node6.rotateAngleX =  MathHelper.cos((par1EntityLiving.ticksExisted + time) / 4.0F) / 2.0F;
-		node6.rotateAngleY =  (par1EntityLiving.ticksExisted + time) / 5.0F;
+		node6.rotateAngleZ =  mcos1 / 3.0F;
+		node6.rotateAngleX =  mcos0 / 2.0F;
+		node6.rotateAngleY =  value0;
 
 	}
 	

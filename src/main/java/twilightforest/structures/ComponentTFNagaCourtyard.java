@@ -270,7 +270,7 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 		}
 		
 		// make a new rand here because we keep getting different results and this actually matters... or should the pillars be different StructureComponents?
-		Random pillarRand = new Random(world.getSeed() + this.boundingBox.minX * this.boundingBox.minZ);
+		Random pillarRand = new org.bogdang.modifications.random.XSTR(world.getSeed() + this.boundingBox.minX * this.boundingBox.minZ);
 		
         // pick a few spots and make pillars
         for (int i = 0; i < 20; i++) {

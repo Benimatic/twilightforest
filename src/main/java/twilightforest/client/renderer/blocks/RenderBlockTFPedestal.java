@@ -42,6 +42,7 @@ public class RenderBlockTFPedestal implements ISimpleBlockRenderingHandler {
 	 * Look, this is no longer in the Block class!  I'm an object oriented genius!
 	 */
 	public static boolean renderPedestal(RenderBlocks renderblocks, IBlockAccess world, int x, int y, int z, Block block) {
+		GL11.glPushMatrix();
 		// top
         renderblocks.setRenderBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.1875F, 0.9375F);
         renderblocks.renderStandardBlock(block, x, y, z);
@@ -55,10 +56,12 @@ public class RenderBlockTFPedestal implements ISimpleBlockRenderingHandler {
         renderblocks.renderStandardBlock(block, x, y, z);
         
         block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
         return true;
 	}
 	
 	public static void renderInvJar(RenderBlocks renderblocks, Block par1Block, int meta) {
+		GL11.glPushMatrix();
 		Tessellator tessellator =  Tessellator.instance;
 		
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -79,6 +82,7 @@ public class RenderBlockTFPedestal implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
         par1Block.setBlockBoundsForItemRender();
+        GL11.glPopMatrix();
 	}
 
 	protected static void renderInvBlock(RenderBlocks renderblocks, Block par1Block, int meta, Tessellator tessellator) {

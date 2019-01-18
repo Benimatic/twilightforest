@@ -29,7 +29,7 @@ public class TFClientEvents {
 	private Random random; 
 	
 	public TFClientEvents() {
-		this.random = new Random();
+		this.random = new org.bogdang.modifications.random.XSTR();
 	}
 
 

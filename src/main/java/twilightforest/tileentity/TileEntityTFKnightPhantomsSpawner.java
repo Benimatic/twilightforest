@@ -4,12 +4,24 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import twilightforest.entity.TFCreatures;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 	
 	public TileEntityTFKnightPhantomsSpawner() {
 		this.mobID = TFCreatures.getSpawnerNameFor("Knight Phantom");
 	}
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 	
     @Override
 	public boolean anyPlayerInRange()
@@ -33,9 +45,9 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			float angle = 60F * i;
 			float distance = 4F;
 
-			double rx = xCoord + 0.5D + Math.cos((angle) * Math.PI / 180.0D) * distance;
+			double rx = xCoord + 0.5D + org.bogdang.modifications.math.MathHelperLite.cos((angle) * Math.PI / 180.0D) * distance;
 			double ry = yCoord + 0.5D;
-			double rz = zCoord + 0.5D + Math.sin((angle) * Math.PI / 180.0D) * distance;
+			double rz = zCoord + 0.5D + org.bogdang.modifications.math.MathHelperLite.sin((angle) * Math.PI / 180.0D) * distance;
 						
 			myCreature.setLocationAndAngles(rx, ry, rz, worldObj.rand.nextFloat() * 360F, 0.0F);
 

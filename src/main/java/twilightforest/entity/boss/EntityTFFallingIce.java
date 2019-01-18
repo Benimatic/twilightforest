@@ -25,8 +25,8 @@ public class EntityTFFallingIce extends Entity {
 		super(par1World);
         this.setSize(2.98F, 2.98F);
         
-        this.hurtAmount = 10;
-        this.hurtMax = 30;
+        this.hurtAmount = 10.0f*1.5f;
+        this.hurtMax = (int)(30*1.5);
 	}
 
 	public EntityTFFallingIce(World par1World, int x, int y, int z) {

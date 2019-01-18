@@ -93,7 +93,7 @@ public class EntityTFCharmEffect extends Entity
         	Vec3 look = Vec3.createVectorHelper(DISTANCE, 0, 0);
         	look.rotateAroundY(rotation);
         	this.posX += look.xCoord;
-//        	this.posY += Math.sin(this.ticksExisted / 3.0F + offset);
+//        	this.posY += org.bogdang.modifications.math.MathHelperLite.sin(this.ticksExisted / 3.0F + offset);
         	this.posZ += look.zCoord;
 
     		this.setPosition(this.posX, this.posY, this.posZ);
@@ -103,9 +103,9 @@ public class EntityTFCharmEffect extends Entity
         if (this.getItemID() > 0)
         {
         	for (int i = 0; i < 3; i++) {
-        		double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-        		double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-        		double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+        		double dx = posX + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+        		double dy = posY + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
+        		double dz = posZ + 0.5 * (rand.nextFloat() - rand.nextFloat()); 
 
         		worldObj.spawnParticle("iconcrack_" + this.getItemID(), dx, dy, dz, 0, 0.2, 0);
         	}
@@ -135,7 +135,7 @@ public class EntityTFCharmEffect extends Entity
 
     protected void entityInit()
     {
-        this.dataWatcher.addObject(DATA_ITEMID, Integer.valueOf(0));
+        this.dataWatcher.addObject(DATA_ITEMID, (int)0);
         this.dataWatcher.addObject(DATA_OWNER, "");
     }
 

@@ -30,17 +30,17 @@ public class EntityTFGhastTrapFX extends EntityFX
         this.originY = y;
         this.originZ = z;
 
-        float f4 = (float)Math.random() * 0.4F;// + 0.6F;
-        //this.particleRed = ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * f4;
-        this.particleGreen = ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * f4;
-        this.particleBlue = ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * f4;
+        float f4 = (float)(new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.4F;// + 0.6F;
+        //this.particleRed = ((float)((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.20000000298023224D) + 0.8F) * f4;
+        this.particleGreen = ((float)((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.20000000298023224F) + 0.8F) * f4;
+        this.particleBlue = ((float)((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.20000000298023224F) + 0.8F) * f4;
         
         this.particleRed  = 1.0F;
         
         this.particleScale *= 0.75F;
         this.particleScale *= scale;
         this.reddustParticleScale = this.particleScale;
-        this.particleMaxAge = (int)(10.0D / (Math.random() * 0.8D + 0.2D));
+        this.particleMaxAge = (int)(10.0F / ((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.8F + 0.2F));
         //this.particleMaxAge = (int)((float)this.particleMaxAge * scale);
         
         this.noClip = false;

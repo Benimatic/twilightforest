@@ -52,9 +52,9 @@ public class EntityTFMosquitoSwarm extends EntityMob {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(12.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(12.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(6)-twilightforest.TwilightForestMod.Scatter.nextInt(6)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D*1.5); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D*1.5); // attack damage
     }
     
 
@@ -91,7 +91,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 
                 if (duration > 0)
                 {
-                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, duration * 20, 0));
+                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, (int)(duration * 20 * 1.5), 0));
                 }
             }
 
@@ -129,7 +129,9 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	public int getMaxSpawnedInChunk()
     {
     	// we are solitary creatures
-        return 1;
+    	//Bogdan-G: where you saw that in the swamp was almost no mosquitoes?(rare mob in tfSwamp, ordinary mobs popping up in the swamp frequency)
+        if (worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ)) == TFBiomeBase.tfSwamp) return 6;
+        else return 1;
     }
 
     /**
@@ -138,7 +140,8 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+		//Bogdan-G: achievement only in Twilight Forest dimension!
+		if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
 		}
 	}

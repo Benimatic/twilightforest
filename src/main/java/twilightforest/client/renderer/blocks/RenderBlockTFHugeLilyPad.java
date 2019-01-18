@@ -26,10 +26,12 @@ public class RenderBlockTFHugeLilyPad implements ISimpleBlockRenderingHandler {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		// rotate the sides
         int meta = world.getBlockMetadata(x, y, z);
+        GL11.glPushMatrix();
         
         setRenderRotate(renderer, meta);
         boolean didRender = renderer.renderStandardBlock(block, x, y, z);
         restoreRendererRotate(renderer);
+        GL11.glPopMatrix();
         
         return didRender;
 

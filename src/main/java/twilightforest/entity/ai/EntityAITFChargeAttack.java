@@ -166,9 +166,9 @@ public class EntityAITFChargeAttack extends EntityAIBase {
     protected Vec3 findChargePoint(Entity attacker, Entity target, double overshoot) {
  
     	// compute angle
-        double vecx = target.posX - attacker.posX;
-        double vecz = target.posZ - attacker.posZ;
-        float rangle = (float)(Math.atan2(vecz, vecx));
+        float vecx = (float)(target.posX - attacker.posX);
+        float vecz = (float)(target.posZ - attacker.posZ);
+        float rangle = org.bogdang.modifications.math.TrigMath2.atan2(vecz, vecx);
         
         double distance = MathHelper.sqrt_double(vecx * vecx + vecz * vecz);
         

@@ -11,6 +11,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
 public class BlockTFAuroraPillar extends BlockRotatedPillar {
 
@@ -81,5 +82,11 @@ public class BlockTFAuroraPillar extends BlockRotatedPillar {
 		this.sideIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurora_pillar_side");
 		this.topIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":aurora_pillar_top");
 	}
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
 
 }

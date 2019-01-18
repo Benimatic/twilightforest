@@ -189,7 +189,7 @@ public class TFGenericPacketHandler {
 
 		boolean isEnforced = buf.readBoolean();
 		
-		worldObj.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, Boolean.valueOf(isEnforced).toString());
+		worldObj.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, Boolean.toString(isEnforced));
 	}
 	
 	

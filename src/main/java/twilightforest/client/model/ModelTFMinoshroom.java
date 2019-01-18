@@ -33,7 +33,7 @@ public class ModelTFMinoshroom extends ModelBiped {
 		body = new ModelRenderer(this, 18, 4);
 		body.addBox(-6F, -10F, -7F, 12, 18, 10);
 		body.setRotationPoint(0F, 5F, 2F);
-		setRotation(body, 1.570796F, 0F, 0F);
+		setRotation(body, (((float)Math.PI)/2f), 0F, 0F);
 		
 		leg1 = new ModelRenderer(this, 0, 16);
 		leg1.addBox(-3F, 0F, -2F, 4, 12, 4);
@@ -54,7 +54,7 @@ public class ModelTFMinoshroom extends ModelBiped {
 		udders = new ModelRenderer(this, 52, 0);
 		udders.addBox(-2F, -3F, 0F, 4, 6, 2);
 		udders.setRotationPoint(0F, 14F, 6F);
-		setRotation(udders, 1.570796F, 0F, 0F);
+		setRotation(udders, (((float)Math.PI)/2f), 0F, 0F);
 		
 		bipedBody = new ModelRenderer(this, 64, 0);
 		bipedBody.addBox(-4F, 0F, -2.5F, 8, 12, 5);
@@ -151,13 +151,15 @@ public class ModelTFMinoshroom extends ModelBiped {
         this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
         this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
         
-        this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2 * 0.5F;
-        this.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+        float c = MathHelper.cos(par1 * 0.6662F);
+        float c0 = MathHelper.cos(par1 * 0.6662F + (float)Math.PI);
+        this.bipedRightArm.rotateAngleX = c0 * 2.0F * par2 * 0.5F;
+        this.bipedLeftArm.rotateAngleX = c * 2.0F * par2 * 0.5F;
         this.bipedRightArm.rotateAngleZ = 0.0F;
         this.bipedLeftArm.rotateAngleZ = 0.0F;
         
-        this.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+        this.bipedRightLeg.rotateAngleX = c * 1.4F * par2;
+        this.bipedLeftLeg.rotateAngleX = c0 * 1.4F * par2;
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
@@ -173,10 +175,12 @@ public class ModelTFMinoshroom extends ModelBiped {
 
 
         
-        this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-        this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+        float c1 = MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+        this.bipedRightArm.rotateAngleZ += c1;
+        this.bipedLeftArm.rotateAngleZ -= c1;
+        float s = MathHelper.sin(par3 * 0.067F) * 0.05F;
+        this.bipedRightArm.rotateAngleX += s;
+        this.bipedLeftArm.rotateAngleX -= s;
 
         if (this.aimedBow)
         {
@@ -190,18 +194,18 @@ public class ModelTFMinoshroom extends ModelBiped {
             this.bipedLeftArm.rotateAngleX = -((float)Math.PI / 2F) + this.bipedHead.rotateAngleX;
             this.bipedRightArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
             this.bipedLeftArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
-            this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-            this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-            this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-            this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+            this.bipedRightArm.rotateAngleZ += c1;
+            this.bipedLeftArm.rotateAngleZ -= c1;
+            this.bipedRightArm.rotateAngleX += s;
+            this.bipedLeftArm.rotateAngleX -= s;
         }
 
         // copied from ModelQuadruped
         this.body.rotateAngleX = ((float)Math.PI / 2F);
-        this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
-        this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
-        this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        this.leg1.rotateAngleX = c * 1.4F * par2;
+        this.leg2.rotateAngleX = c0 * 1.4F * par2;
+        this.leg3.rotateAngleX = c0 * 1.4F * par2;
+        this.leg4.rotateAngleX = c * 1.4F * par2;
 
     }
 }

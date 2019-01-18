@@ -37,13 +37,13 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 
 	private static int TICKS_BEFORE_HEALING = 1000;
 	private static int HEAD_RESPAWN_TICKS = 100;
-	private static int HEAD_MAX_DAMAGE = 120;
-	private static float ARMOR_MULTIPLIER = 8.0F;
-	private static int MAX_HEALTH = 360;
+	private static int HEAD_MAX_DAMAGE = (int)(120*1.5);
+	private static float ARMOR_MULTIPLIER = 8.0F*1.5F;
+	private static int MAX_HEALTH = (int)(360*1.5);
 	private static float HEADS_ACTIVITY_FACTOR = 0.3F;
 
-	private static int SECONDARY_FLAME_CHANCE = 10;
-	private static int SECONDARY_MORTAR_CHANCE = 16;
+	private static int SECONDARY_FLAME_CHANCE = (int)(10*1.5);
+	private static int SECONDARY_MORTAR_CHANCE = (int)(16*1.5);
 	
 	private static final int DATA_SPAWNHEADS = 17;
 	private static final int DATA_BOSSHEALTH = 18;
@@ -113,8 +113,8 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MAX_HEALTH+twilightforest.TwilightForestMod.Scatter.nextInt(MAX_HEALTH/3)-twilightforest.TwilightForestMod.Scatter.nextInt(MAX_HEALTH/3)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D*1.5D); // movement speed
     }
 	
 	
@@ -154,7 +154,7 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
 		// update health
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(DATA_BOSSHEALTH, Integer.valueOf((int)this.getHealth()));
+            this.dataWatcher.updateObject(DATA_BOSSHEALTH, (int)this.getHealth());
         }
         else
         {
@@ -269,16 +269,18 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     	double dx, dy, dz;
 
     	// body goes behind the actual position of the hydra
-    	angle = (((renderYawOffset + 180) * 3.141593F) / 180F);
+    	angle = (((renderYawOffset + 180) * (float)Math.PI) / 180F);
 
-    	dx = posX - MathHelper.sin(angle) * 3.0;
+    	float msin = MathHelper.sin(angle);
+    	dx = posX - msin * 3.0;
     	dy = posY + 0.1;
-    	dz = posZ + MathHelper.cos(angle) * 3.0;
+    	float mcos = MathHelper.cos(angle);
+    	dz = posZ + mcos * 3.0;
     	body.setPosition(dx, dy, dz);
 
-    	dx = posX - MathHelper.sin(angle) * 10.5;
+    	dx = posX - msin * 10.5;
     	dy = posY + 0.1;
-    	dz = posZ + MathHelper.cos(angle) * 10.5;
+    	dz = posZ + mcos * 10.5;
     	tail.setPosition(dx, dy, dz);
 
     	//worldObj.spawnParticle("mobSpell", body.posX, body.posY, body.posZ, 0.2, 0.2, 0.2);
@@ -326,8 +328,8 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DATA_SPAWNHEADS, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BOSSHEALTH, new Integer(MAX_HEALTH));
+        dataWatcher.addObject(DATA_SPAWNHEADS, (byte)0);
+        this.dataWatcher.addObject(DATA_BOSSHEALTH, (MAX_HEALTH));
     }
     
 	
@@ -340,11 +342,11 @@ public class EntityTFHydra extends EntityLiving implements IBossDisplayData, IEn
     {
         if (flag)
         {
-            dataWatcher.updateObject(DATA_SPAWNHEADS, Byte.valueOf((byte)127));
+            dataWatcher.updateObject(DATA_SPAWNHEADS, ((byte)127));
         }
         else
         {
-            dataWatcher.updateObject(DATA_SPAWNHEADS, Byte.valueOf((byte)0));
+            dataWatcher.updateObject(DATA_SPAWNHEADS, (byte)0);
         }
     }
     

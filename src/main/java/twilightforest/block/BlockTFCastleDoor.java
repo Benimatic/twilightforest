@@ -303,14 +303,15 @@ public class BlockTFCastleDoor extends Block
      */
     public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
     {
-    	int meta = par1World.getBlockMetadata(x, y, z);
+    	//FB: Useless control flow -> meh, code dont commented
+    	/*int meta = par1World.getBlockMetadata(x, y, z);
 
     	if (isMetaActive(meta));
     	{
     		for (int i = 0; i < 1; ++i) {
     			//this.sparkle(par1World, x, y, z, par5Random);
     		}
-    	}
+    	}*/
     }
 	
 

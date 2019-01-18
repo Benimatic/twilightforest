@@ -102,16 +102,16 @@ public class TFGenHollowTree extends TFGenerator
 		// fireflies
 		int numFireflies = random.nextInt(3 * diameter) + 5;
 		for (int i = 0; i <= numFireflies; i++) {
-			int fHeight = (int)(height * random.nextDouble() * 0.9) + (height / 10);
-			double fAngle = random.nextDouble();
+			int fHeight = (int)(height * random.nextFloat() * 0.9) + (height / 10);
+			double fAngle = random.nextFloat();
 			addFirefly(world, x, y, z, diameter, fHeight, fAngle);
 		}
 		
 		// cicadas
 		numFireflies = random.nextInt(3 * diameter) + 5;
 		for (int i = 0; i <= numFireflies; i++) {
-			int fHeight = (int)(height * random.nextDouble() * 0.9) + (height / 10);
-			double fAngle = random.nextDouble();
+			int fHeight = (int)(height * random.nextFloat() * 0.9) + (height / 10);
+			double fAngle = random.nextFloat();
 			addCicada(world, x, y, z, diameter, fHeight, fAngle);
 		}
 		
@@ -122,8 +122,8 @@ public class TFGenHollowTree extends TFGenerator
 		// 3-5 couple branches on the way up...
 		int numBranches = random.nextInt(3) + 3;
 		for (int i = 0; i <= numBranches; i++) {
-			int branchHeight = (int)(height * random.nextDouble() * 0.9) + (height / 10);
-			double branchRotation = random.nextDouble();
+			int branchHeight = (int)(height * random.nextFloat() * 0.9) + (height / 10);
+			double branchRotation = random.nextFloat();
 			makeSmallBranch(world, random, x, y, z, diameter, branchHeight, 4, branchRotation, 0.35D, true);
 		}
 
@@ -193,7 +193,7 @@ public class TFGenHollowTree extends TFGenerator
 		int numBranches = random.nextInt(maxBranches - minBranches) + minBranches;
 		;
 		double branchRotation = 1.0 / (numBranches + 1);
-		double branchOffset = random.nextDouble();
+		double branchOffset = random.nextFloat();
 		
 		for (int i = 0; i <= numBranches; i++) {
 			int dHeight;
@@ -268,10 +268,10 @@ public class TFGenHollowTree extends TFGenerator
 
 
 					// fill it with lava!
-					if (dist <= hollow) {
+					/*if (dist <= hollow) {
 						// just kidding!
 						//world.setBlock(dx + x, dy + y, dz + z, Blocks.lava);
-					}
+					}*/
 					
 					// how about a ladder?  is that okay?
 					if (dist == hollow && dx == hollow) {
@@ -313,7 +313,7 @@ public class TFGenHollowTree extends TFGenerator
 			int numLeafBalls = random.nextInt(2) + 1;
 			for(int i = 0; i <= numLeafBalls; i++) {
 
-				double slength = random.nextDouble() * 0.6 + 0.2;
+				double slength = random.nextFloat() * 0.6 + 0.2;
 				int[] bdst = translate(src[0], src[1], src[2], slength, angle, tilt);
 
 
@@ -336,8 +336,8 @@ public class TFGenHollowTree extends TFGenerator
 		for(int i = 0; i <= numShoots; i++) {
 
 			angleVar = (angleInc * i) - 0.4;
-			outVar = (random.nextDouble() * 0.8) + 0.2;
-			tiltVar = (random.nextDouble() * 0.75) + 0.15;
+			outVar = (random.nextFloat() * 0.8) + 0.2;
+			tiltVar = (random.nextFloat() * 0.75) + 0.15;
 
 			int[] bsrc = translate(src[0], src[1], src[2], length * outVar, angle, tilt);
 			double slength = length * 0.4;
@@ -430,8 +430,8 @@ public class TFGenHollowTree extends TFGenerator
 		
 		for (int i = 0; i <= numMedBranches; i++) {
 			
-			double outVar = (random.nextDouble() * 0.3) + 0.3;
-			double angleVar = random.nextDouble() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
+			double outVar = (random.nextFloat() * 0.3) + 0.3;
+			double angleVar = random.nextFloat() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
 			int[] bsrc = translate(src[0], src[1], src[2], length * outVar, angle, tilt);
 			
 			makeMedBranch(world, random, bsrc[0], bsrc[1], bsrc[2], length * 0.6, angle + angleVar, tilt, leafy);
@@ -441,8 +441,8 @@ public class TFGenHollowTree extends TFGenerator
 		int numSmallBranches = random.nextInt(2) + 1;
 		for(int i = 0; i <= numSmallBranches; i++) {
 			
-			double outVar = (random.nextDouble() * 0.25) + 0.25;
-			double angleVar = random.nextDouble() * 0.25 * ((i & 1) == 0 ? 1.0 : -1.0);
+			double outVar = (random.nextFloat() * 0.25) + 0.25;
+			double angleVar = random.nextFloat() * 0.25 * ((i & 1) == 0 ? 1.0 : -1.0);
 			int[] bsrc = translate(src[0], src[1], src[2], length * outVar, angle, tilt);
 			
 			makeSmallBranch(world, random, bsrc[0], bsrc[1], bsrc[2], Math.max(length * 0.3, 2), angle + angleVar, tilt, leafy);

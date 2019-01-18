@@ -54,7 +54,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D+twilightforest.TwilightForestMod.Scatter.nextInt(3)-twilightforest.TwilightForestMod.Scatter.nextInt(3)); // max health
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 	
@@ -62,7 +62,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(16, (byte)0);
     }
 
 	/**
@@ -125,7 +125,7 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 
     public void setBunnyType(int par1)
     {
-        this.dataWatcher.updateObject(16, Byte.valueOf((byte)par1));
+        this.dataWatcher.updateObject(16, ((byte)par1));
     }
 	
 

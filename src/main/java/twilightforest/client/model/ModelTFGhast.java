@@ -22,7 +22,7 @@ public class ModelTFGhast extends ModelBase
         this.body = new ModelRenderer(this, 0, 0);
         this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
         this.body.rotationPointY += (float)(24 + yOffset);
-        Random rand = new Random(1660L);
+        Random rand = new org.bogdang.modifications.random.XSTR(1660L);
 
         for (int i = 0; i < this.tentacles.length; ++i)
         {

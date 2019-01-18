@@ -6,6 +6,7 @@
 
 package twilightforest.client.model;
 
+import java.util.BitSet;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -38,7 +39,7 @@ public class ModelTFQuestRam extends ModelBase
 	ModelRenderer head;
 
 	ModelRenderer[] segments;
-	boolean[] segmentEnabled;
+	BitSet segmentEnabled;
 	
 	int[] colorOrder = new int[] {0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
@@ -136,13 +137,13 @@ public class ModelTFQuestRam extends ModelBase
 		head.addChild(nose);
 		
 		segments = new ModelRenderer[16];
-		segmentEnabled = new boolean[16];
+		segmentEnabled = new BitSet(16);
 		for (int i = 0; i < 16; i++) {
 			segments[i] = new ModelRenderer(this, 0, 104);
 			segments[i].addBox(-9F, -7.5F, 0F, 18, 15, 2);
 			segments[i].setRotationPoint(0F, -1F, 2F);
 			
-			segmentEnabled[i] = false;
+			//segmentEnabled[i] = false;
 		}
 	}
 
@@ -165,7 +166,7 @@ public class ModelTFQuestRam extends ModelBase
 		head.render(f5);
 		
 		for (int i = 0; i < 16; i++) {
-			if (segmentEnabled[i]) {
+			if (segmentEnabled.get(i)) {
 	            float var4 = 1.0F;
 	            GL11.glColor3f(var4 * EntitySheep.fleeceColorTable[i][0], var4 * EntitySheep.fleeceColorTable[i][1], var4 * EntitySheep.fleeceColorTable[i][2]);
 				segments[i].render(f5);
@@ -223,13 +224,13 @@ public class ModelTFQuestRam extends ModelBase
 		int segmentOffset = 2;
 		for (int color : colorOrder) {
 			if (ram.isColorPresent(color)) {
-				segmentEnabled[color] = true;
+				segmentEnabled.set(color);
 				segments[color].rotationPointZ = segmentOffset;
 				
 				segmentOffset += 2;
 			}
 			else {
-				segmentEnabled[color] = false;
+				segmentEnabled.clear(color);
 			}
 		}
 	}

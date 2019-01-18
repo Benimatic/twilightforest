@@ -61,7 +61,7 @@ public class ModelTFPinchBeetle extends ModelBase
 		RearEnd = new ModelRenderer(this, 28, 14);
 		RearEnd.addBox(-5F, -9F, -4F, 10, 10, 8);
 		RearEnd.setRotationPoint(0F, 18F, 7F);
-		setRotation(RearEnd, 1.570796F, 0F, 0F);
+		setRotation(RearEnd, (((float)Math.PI)/2f), 0F, 0F);
 
 		Leg6 = new ModelRenderer(this, 40, 0);
 		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
@@ -109,7 +109,7 @@ public class ModelTFPinchBeetle extends ModelBase
 		jaw1b = new ModelRenderer(this, 40, 10);
 		jaw1b.addBox(-1F, -1F, -1F, 10, 2, 2);
 		jaw1b.setRotationPoint(7F, 0F, 0F);
-		setRotation(jaw1b, 0F, -1.047197F, 0F);
+		setRotation(jaw1b, 0F, -(((float)Math.PI)/3f), 0F);
 		
 		jaw2a = new ModelRenderer(this, 40, 6);
 		jaw2a.addBox(-1F, -1F, -1.5F, 8, 2, 3);
@@ -119,12 +119,12 @@ public class ModelTFPinchBeetle extends ModelBase
 		jaw2b = new ModelRenderer(this, 40, 10);
 		jaw2b.addBox(-1F, -1F, -1F, 10, 2, 2);
 		jaw2b.setRotationPoint(7F, 0F, 0F);
-		setRotation(jaw2b, 0F, 1.047197F, 0F);
+		setRotation(jaw2b, 0F, (((float)Math.PI)/3f), 0F);
 		
 		antenna1 = new ModelRenderer(this, 42, 4);
 		antenna1.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
 		antenna1.setRotationPoint(1F, -3F, -5F);
-		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
+		setRotation(antenna1, 0F, (((float)Math.PI)/3f), -0.296706F);
 		
 		antenna2 = new ModelRenderer(this, 42, 4);
 		antenna2.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
@@ -147,12 +147,12 @@ public class ModelTFPinchBeetle extends ModelBase
 		tooth1b = new ModelRenderer(this, 0, 0);
 		tooth1b.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
 		tooth1b.setRotationPoint(6F, 0F, 0F);
-		setRotation(tooth1b, 0F, 1.5707963F, 0);
+		setRotation(tooth1b, 0F, (((float)Math.PI)/2f), 0);
 
 		tooth1c = new ModelRenderer(this, 0, 0);
 		tooth1c.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
 		tooth1c.setRotationPoint(3F, 0F, 0F);
-		setRotation(tooth1c, 0F, 1.5707963F, 0);
+		setRotation(tooth1c, 0F, (((float)Math.PI)/2f), 0);
 
 		tooth2a = new ModelRenderer(this, 0, 0);
 		tooth2a.addBox(0F, -0.5F, -1F, 2, 1, 1);
@@ -162,12 +162,12 @@ public class ModelTFPinchBeetle extends ModelBase
 		tooth2b = new ModelRenderer(this, 0, 0);
 		tooth2b.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
 		tooth2b.setRotationPoint(6F, 0F, 0F);
-		setRotation(tooth2b, 0F, -1.5707963F, 0);
+		setRotation(tooth2b, 0F, -(((float)Math.PI)/2f), 0);
 
 		tooth2c = new ModelRenderer(this, 0, 0);
 		tooth2c.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
 		tooth2c.setRotationPoint(3F, 0F, 0F);
-		setRotation(tooth2c, 0F, -1.5707963F, 0);
+		setRotation(tooth2c, 0F, -(((float)Math.PI)/2f), 0);
 
 		head.addChild(jaw1a);
 		jaw1a.addChild(jaw1b);

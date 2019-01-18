@@ -21,7 +21,7 @@ public class EntityTFLargeFlameFX extends EntityFX
         this.particleScale *= 5.0D;
         this.flameScale = this.particleScale;
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-        this.particleMaxAge = (int)(8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
+        this.particleMaxAge = (int)(8.0F / ((new org.bogdang.modifications.random.XSTR()).nextFloat() * 0.8F + 0.2F)) + 4;
         //this.noClip = true;
         this.setParticleTextureIndex(48);
     }

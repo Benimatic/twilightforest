@@ -30,6 +30,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.ai.EntityAITFCollideAttackFixed;
 import twilightforest.entity.boss.EntityTFIceBomb;
@@ -79,15 +80,15 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*2.5+twilightforest.TwilightForestMod.Scatter.nextInt(15)-twilightforest.TwilightForestMod.Scatter.nextInt(15)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D*1.5); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D*1.5);
     }
 	
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(ROCK_FLAG, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(ROCK_FLAG, (byte)0);
     }
 
     /**
@@ -116,9 +117,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 
         if (rock) {
             this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-            this.dataWatcher.updateObject(ROCK_FLAG, Byte.valueOf((byte)(b0 | 2)));
+            this.dataWatcher.updateObject(ROCK_FLAG, ((byte)(b0 | 2)));
         } else {
-            this.dataWatcher.updateObject(ROCK_FLAG, Byte.valueOf((byte)(b0 & -3)));
+            this.dataWatcher.updateObject(ROCK_FLAG, ((byte)(b0 & -3)));
         }
         
         this.setCombatTask();
@@ -179,9 +180,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 			this.ripenTrollBerNearby(this.deathTime / 5);
 		}
 		
-		if (this.deathTime == 1) {
+		/*if (this.deathTime == 1) {
 			//this.makeTrollStoneInAABB(this.boundingBox);
-		}
+		}*/
 	}
 
 
@@ -222,7 +223,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+		if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
 		}
 		

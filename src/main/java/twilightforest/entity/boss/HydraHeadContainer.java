@@ -24,9 +24,9 @@ import twilightforest.TwilightForestMod;
 public class HydraHeadContainer {
 	
 	// balancing factors
-	private static int FLAME_BURN_FACTOR = 3;
-	private static int FLAME_DAMAGE = 19;
-	private static int BITE_DAMAGE = 48;
+	private static int FLAME_BURN_FACTOR = (int)(3*1.5);
+	private static int FLAME_DAMAGE = (int)(19*1.5);
+	private static int BITE_DAMAGE = (int)(48*1.5);
 	private static double FLAME_BREATH_TRACKING_SPEED = 0.04D;
 	
 	public static final int NEXT_AUTOMATIC = -1;
@@ -619,8 +619,8 @@ public class HydraHeadContainer {
 
 		if (headEntity.getState() == STATE_FLAME_BEGINNING)
 		{
-			headEntity.worldObj.spawnParticle("flame", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
-			headEntity.worldObj.spawnParticle("smoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("flame", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("smoke", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
 		}
 		
 		if (headEntity.getState() == STATE_FLAME_BREATHING)
@@ -632,8 +632,8 @@ public class HydraHeadContainer {
 				double dy = look.yCoord;
 				double dz = look.zCoord;
 				
-				double spread = 5 + headEntity.getRNG().nextDouble() * 2.5;
-				double velocity = 1.0 + headEntity.getRNG().nextDouble();
+				double spread = 5 + headEntity.getRNG().nextFloat() * 2.5;
+				double velocity = 1.0 + headEntity.getRNG().nextFloat();
 				
 				// spread flame
 		        dx += headEntity.getRNG().nextGaussian() * 0.007499999832361937D * spread;
@@ -649,12 +649,12 @@ public class HydraHeadContainer {
 		
 		if (headEntity.getState() == STATE_BITE_BEGINNING || headEntity.getState() == STATE_BITE_READY)
 		{
-			headEntity.worldObj.spawnParticle("splash", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("splash", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
 		}
 		
 		if (headEntity.getState() == STATE_MORTAR_BEGINNING)
 		{
-			headEntity.worldObj.spawnParticle("largesmoke", px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.worldObj.spawnParticle("largesmoke", px + headEntity.getRNG().nextFloat() - 0.5, py + headEntity.getRNG().nextFloat() - 0.5, pz + headEntity.getRNG().nextFloat() - 0.5, 0, 0, 0);
 		}
 	}
 
@@ -728,7 +728,7 @@ public class HydraHeadContainer {
 		}
 		
 		
-		vector.rotateAroundY((-(hydraObj.renderYawOffset + neckRotation) * 3.141593F) / 180F);
+		vector.rotateAroundY((-(hydraObj.renderYawOffset + neckRotation) * (float)Math.PI) / 180F);
 		setNeckPositon(hydraObj.posX + vector.xCoord, hydraObj.posY + vector.yCoord, hydraObj.posZ + vector.zCoord, hydraObj.renderYawOffset, 0);
 	}
 
@@ -764,8 +764,8 @@ public class HydraHeadContainer {
 		}
 		
 		vector = Vec3.createVectorHelper(0, 0, neckLength); // -53 = 3.3125
-		vector.rotateAroundX((xRotation * 3.141593F + xSwing) / 180F);
-		vector.rotateAroundY((-(hydraObj.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
+		vector.rotateAroundX((xRotation * (float)Math.PI + xSwing) / 180F);
+		vector.rotateAroundY((-(hydraObj.renderYawOffset + yRotation + ySwing) * (float)Math.PI) / 180F);
 
 		dx = hydraObj.posX + vector.xCoord;
 		dy = hydraObj.posY + vector.yCoord + 3;
@@ -1030,7 +1030,7 @@ public class HydraHeadContainer {
 		{
 			// if we are looking down, don't raise the first neck position, it looks weird
 			Vec3 vector = Vec3.createVectorHelper(0, 0, -1.0);
-			vector.rotateAroundY((-endYaw * 3.141593F) / 180F);
+			vector.rotateAroundY((-endYaw * (float)Math.PI) / 180F);
 			endX += vector.xCoord;
 			endY += vector.yCoord;
 			endZ += vector.zCoord;
@@ -1085,7 +1085,7 @@ public class HydraHeadContainer {
 		//headEntity.rotationPitch = hydraObj.rotationPitch;
 		//headEntity.rotationYaw = hydraObj.rotationYaw;
 		
-		float angle = (((hydraObj.rotationYaw) * 3.141593F) / 180F);
+		float angle = (((hydraObj.rotationYaw) * (float)Math.PI) / 180F);
 		float distance = 30.0F;
 
     	double dx = hydraObj.posX - MathHelper.sin(angle) * distance;
@@ -1122,13 +1122,13 @@ public class HydraHeadContainer {
 	 * Face this head towards a specific Vector
 	 */
 	public void faceVec(double xCoord, double yCoord, double zCoord, float yawConstraint, float pitchConstraint) {
-		double xOffset = xCoord - headEntity.posX;
-		double zOffset = zCoord - headEntity.posZ;
-		double yOffset = (headEntity.posY + 1.0) - yCoord;
+		float xOffset = (float)(xCoord - headEntity.posX);
+		float zOffset = (float)(zCoord - headEntity.posZ);
+		float yOffset = (float)((headEntity.posY + 1.0) - yCoord);
 
-		double distance = MathHelper.sqrt_double(xOffset * xOffset + zOffset * zOffset);
-		float xyAngle = (float)((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
-		float zdAngle = (float)(-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
+		float distance = MathHelper.sqrt_float(xOffset * xOffset + zOffset * zOffset);
+		float xyAngle = ((org.bogdang.modifications.math.TrigMath2.atan2(zOffset, xOffset) * 180F) / (float)Math.PI) - 90F;
+		float zdAngle = (-((org.bogdang.modifications.math.TrigMath2.atan2(yOffset, distance) * 180F) / (float)Math.PI));
 		headEntity.rotationPitch = -updateRotation(headEntity.rotationPitch, zdAngle, pitchConstraint);
 		headEntity.rotationYaw = updateRotation(headEntity.rotationYaw, xyAngle, yawConstraint);
         

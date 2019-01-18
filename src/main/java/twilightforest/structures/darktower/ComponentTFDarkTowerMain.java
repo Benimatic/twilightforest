@@ -277,7 +277,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() + (this.boundingBox.minX * 321534781L) ^ (this.boundingBox.minZ * 756839L));
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
@@ -604,7 +604,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		TFMaze maze =  new TFMaze(mazeSize, mazeSize);
 
 		// set the seed to a fixed value based on this maze's x and z
-		maze.setSeed(world.getSeed() + this.boundingBox.minX * 90342903 + y * 90342903 ^ this.boundingBox.minZ);
+		maze.setSeed(world.getSeed() + this.boundingBox.minX * 90342903L + y * 90342903L ^ this.boundingBox.minZ);
 		
 		// tell it not to make outside walls by making them "ROOMS"
 		for (int i = 0; i < 13; i++)
@@ -788,14 +788,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		{
 			for (int z = 3; z < size - 1; z++)
 			{
-				if (x % 2 == 1 && z % 2 == 1)
+				if ((x & 1) == 1 && (z & 1) == 1)
 				{
 					for (int py = 1; py < 5; py++)
 					{
 						placeBlockRotated(world, deco.pillarID, deco.pillarMeta, x, y + py, z, rotation, sbb);
 					}
 				}
-				else if (x % 2 == 1 || z % 2 == 1)
+				else if ((x & 1) == 1 || (z & 1) == 1)
 				{
 					for (int py = 1; py < 5; py++)
 					{
@@ -1526,7 +1526,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		
 		makeBuilderPlatform(world, rand, rotation, y + 5, z, true, sbb);
 		
-		if (y % 2 == 1)
+		if ((y & 1) == 1)
 		{
 			// reverter blocks
 			int sx = pickFrom(rand, 5, 9, 13);

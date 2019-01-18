@@ -38,25 +38,25 @@ public class EntityTFWraith extends EntityFlying implements IMob {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(10)-twilightforest.TwilightForestMod.Scatter.nextInt(10)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D*1.5); // movement speed
         
         // need to initialize damage since we're not an EntityMob
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D*1.5); // attack damage
     }
 
     @Override
 	public void onLivingUpdate()
     {
-        if(worldObj.isDaytime())
+        /*if(worldObj.isDaytime())
         {
             float f = getBrightness(1.0F);
             if(f > 0.5F && worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
             {
 //                fire = 300;
             }
-        }
+        }*/
         super.onLivingUpdate();
     }
     
@@ -135,16 +135,16 @@ public class EntityTFWraith extends EntityFlying implements IMob {
         double d4 = 64D;
         if(targetedEntity != null && targetedEntity.getDistanceSqToEntity(this) < d4 * d4)
         {
-            double d5 = targetedEntity.posX - posX;
+            float d5 = (float)(targetedEntity.posX - posX);
             //double d6 = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
-            double d7 = targetedEntity.posZ - posZ;
-            renderYawOffset = rotationYaw = (-(float)Math.atan2(d5, d7) * 180F) / 3.141593F;
+            float d7 = (float)(targetedEntity.posZ - posZ);
+            renderYawOffset = rotationYaw = (-org.bogdang.modifications.math.TrigMath2.atan2(d5, d7) * 180F) / (float)Math.PI;
             if(canEntityBeSeen(targetedEntity))
             {
-                if(attackCounter == 10)
+                /*if(attackCounter == 10)
                 {
                     //worldObj.playSoundAtEntity(this, "mob.ghast.charge", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-                }
+                }*/
                 attackCounter++;
                 if(attackCounter == 20)
                 {
@@ -162,7 +162,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
             }
         } else
         {
-            renderYawOffset = rotationYaw = (-(float)Math.atan2(motionX, motionZ) * 180F) / 3.141593F;
+            renderYawOffset = rotationYaw = (-org.bogdang.modifications.math.TrigMath2.atan2((float)motionX, (float)motionZ) * 180F) / (float)Math.PI;
             if(attackCounter > 0)
             {
                 attackCounter--;
@@ -286,7 +286,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+		if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
 			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
 			// are we in a level 3 hill?
 			int chunkX = MathHelper.floor_double(posX) >> 4;

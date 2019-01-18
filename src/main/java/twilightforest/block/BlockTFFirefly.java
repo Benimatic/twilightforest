@@ -13,7 +13,7 @@ public class BlockTFFirefly extends BlockTFCritter {
 	
 	public static int sprFirefly = 4;
 	
-	public static Random rand = new Random();
+	public static Random rand = new org.bogdang.modifications.random.XSTR();
 	
 	protected BlockTFFirefly() {
 		super();

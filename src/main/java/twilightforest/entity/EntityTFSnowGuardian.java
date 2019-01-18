@@ -37,9 +37,9 @@ public class EntityTFSnowGuardian extends EntityMob {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D*1.5);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(5)-twilightforest.TwilightForestMod.Scatter.nextInt(5));
     }
     
 

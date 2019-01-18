@@ -93,7 +93,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 
 		// roots!
 		int numRoots = 3 + random.nextInt(2);
-		offset = random.nextDouble();
+		offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++)
 		{
 			buildRoot(world, x, y, z, offset, b);
@@ -139,7 +139,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 
 		if (Math.abs(x - dest.posX) + 2 > 7 || Math.abs(z - dest.posZ) + 2 > 7 )
 		{
-			System.out.println("getting branch too far.  x = " + (x - dest.posX + 2) + ", z = " + (z - dest.posZ + 2));
+			cpw.mods.fml.common.FMLLog.info("getting branch too far.  x = " + (x - dest.posX + 2) + ", z = " + (z - dest.posZ + 2));
 		}
 		
 		leafAround(world, dest.posX, dest.posY, dest.posZ);

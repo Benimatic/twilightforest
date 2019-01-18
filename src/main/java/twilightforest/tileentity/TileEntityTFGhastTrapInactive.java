@@ -11,13 +11,25 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMiniGhast;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityTFGhastTrapInactive extends TileEntity {
 	
 	int counter;
-	Random rand = new Random();
+	Random rand = new org.bogdang.modifications.random.XSTR();
 
 	ArrayList<EntityTFMiniGhast> dyingGhasts = new ArrayList<EntityTFMiniGhast>();
+    protected AxisAlignedBB aabb;
+
+    @Override
+    public void validate() {
+    	aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return aabb;
+    }
 	
     /**
      * Determines if this TileEntity requires update calls.

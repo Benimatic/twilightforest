@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Random;
 
@@ -31,8 +32,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTFPlant extends BlockBush implements IShearable {
 
-    boolean[] isGrassColor = {false, false, false, false, true, true, false, false, true, false, true, false, false, false, false, false};
-    int[] lightValue = {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 8, 0, 0};
+    //boolean[] isGrassColor = {false, false, false, false, true, true, false, false, true, false, true, false, false, false, false, false};
+    BitSet isGrassColor;
+    //int[] lightValue = {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 8, 0, 0};//Bogdan-G: index - value: 9 - 3, 13 - 8; range of values 0-15? if true byte[] enough, but will lead to int; array identical for everyone class BlockTFPlant?
     
 	private IIcon[] icons;
 	private String[] iconNames = new String[] {null, null, null, "mosspatch", "mayapple", "cloverpatch", null, null, "fiddlehead", "mushgloom", null, null, null, "torchberry", "rootstrand", null};
@@ -57,6 +59,9 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         this.setHardness(0.0F);
         this.setStepSound(Block.soundTypeGrass);
 		this.setCreativeTab(TFItems.creativeTab);
+	boolean[] isGrassColor_oldtype = {false, false, false, false, true, true, false, false, true, false, true, false, false, false, false, false};
+	this.isGrassColor=new BitSet(isGrassColor_oldtype.length);
+	for (int i=0;i<isGrassColor_oldtype.length;i++) if (isGrassColor_oldtype[i]) this.isGrassColor.set(i);
 	}
 
     /**
@@ -158,7 +163,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 
         if (meta == META_MOSSPATCH)
         {
-            long seed = x * 3129871 ^ y * 116129781L ^ z;
+            long seed = x * 3129871L ^ y * 116129781L ^ z;
             seed = seed * seed * 42317861L + seed * 11L;
             
             int xOff0 = (int) (seed >> 12 & 3L);
@@ -177,7 +182,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
         }
         else if (meta == META_CLOVERPATCH)
         {
-            long seed = x * 3129871 ^ y * 116129781L ^ z;
+            long seed = x * 3129871L ^ y * 116129781L ^ z;
             seed = seed * seed * 42317861L + seed * 11L;
             
             int xOff0 = (int) (seed >> 12 & 3L);
@@ -216,7 +221,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     @Override
 	public int getRenderColor(int par1)
     {
-        return isGrassColor[par1] ? ColorizerFoliage.getFoliageColorBasic() : 0xFFFFFF;
+        return isGrassColor.get(par1) ? ColorizerFoliage.getFoliageColorBasic() : 0xFFFFFF;
     }
 
     /**
@@ -227,7 +232,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
     {
     	int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-    	return isGrassColor[meta] ? par1IBlockAccess.getBiomeGenForCoords(x, z).getBiomeGrassColor(x, y, z) : 0xFFFFFF; 
+    	return isGrassColor.get(meta) ? par1IBlockAccess.getBiomeGenForCoords(x, z).getBiomeGrassColor(x, y, z) : 0xFFFFFF; 
     }
     
     
@@ -277,11 +282,11 @@ public class BlockTFPlant extends BlockBush implements IShearable {
     @Override
 	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
     {
-    	int meta = par1World.getBlockMetadata(x, y, z);
+    	/*int meta = par1World.getBlockMetadata(x, y, z);
 		if (par1World.getBlockLightValue(x, y, z) < lightValue[meta]) {
 			//par1World.updateLightByType(EnumSkyBlock.Block, x, y, z);
 			//par1World.markBlockForUpdate(x, y, z); // do we need this now?
-		}
+		}*/
 
     }
 	
@@ -297,7 +302,7 @@ public class BlockTFPlant extends BlockBush implements IShearable {
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z) {
     	int meta = world.getBlockMetadata(x, y, z);
-    	return lightValue[meta]; 
+    	return meta==9 ? 3 : meta==13 ? 8 : 0;//lightValue[meta]; 
 	}
 	
     
@@ -519,5 +524,11 @@ public class BlockTFPlant extends BlockBush implements IShearable {
             par1World.spawnParticle("townaura", x + par5Random.nextFloat(), y + 0.1F, z + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
         }
     
+    }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
     }
 }

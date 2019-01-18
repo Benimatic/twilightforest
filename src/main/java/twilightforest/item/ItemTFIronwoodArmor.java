@@ -59,8 +59,8 @@ public class ItemTFIronwoodArmor extends ItemArmor {
     		istack.addEnchantment(Enchantment.aquaAffinity, 1);
             break;	
     	case 1:
-    		istack.addEnchantment(Enchantment.protection, 1);
-            break;	
+    		//istack.addEnchantment(Enchantment.protection, 1);
+            //break;	
     	case 2:
     		istack.addEnchantment(Enchantment.protection, 1);
             break;	

@@ -87,4 +87,10 @@ public class BlockTFKnightmetalBlock extends BlockCompressed {
     {
         return true;
     }
+
+    @Override
+    public int tickRate(World p_149738_1_)
+    {
+        return 20;
+    }
 }

@@ -16,6 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.ai.EntityAITFKidnapRider;
 import cpw.mods.fml.relauncher.Side;
@@ -57,9 +58,9 @@ public class EntityTFPinchBeetle extends EntityMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(20)-twilightforest.TwilightForestMod.Scatter.nextInt(20)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D*1.5); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D*1.5); // attack damage
     }
 
     /**
@@ -162,7 +163,7 @@ public class EntityTFPinchBeetle extends EntityMob
     @Override
     public void onDeath(DamageSource par1DamageSource) {
     	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+    	if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
     		((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
     	}
     }
@@ -264,8 +265,8 @@ public class EntityTFPinchBeetle extends EntityMob
     	{
     		float distance = 0.9F;
 
-    		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-    		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var1 = org.bogdang.modifications.math.MathHelperLite.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+    		double var3 = org.bogdang.modifications.math.MathHelperLite.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
     		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
     	}

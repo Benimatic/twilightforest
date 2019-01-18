@@ -103,8 +103,8 @@ public class TFFieryItemRenderer implements IItemRenderer {
         ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
 
         
-		if (true)
-        {
+		//if (true)
+        //{
         	GL11.glDepthFunc(GL11.GL_EQUAL);
         	GL11.glDisable(GL11.GL_LIGHTING);
         	GL11.glEnable(GL11.GL_BLEND);
@@ -112,10 +112,10 @@ public class TFFieryItemRenderer implements IItemRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
 
         	// pulse yellow
-            float f9 = (float) Math.sin((float)(Minecraft.getSystemTime() % 6000L) / 6000.0F * 2 * 3.14159F) * 0.2F + 0.2F;
+            float f9_0 = (float) org.bogdang.modifications.math.MathHelperLite.sin((float)(Minecraft.getSystemTime() % 6000L) / 6000.0F * 2 * (float)Math.PI) * 0.2F + 0.2F;
             
-            float yellooo = 0.4F;
-        	GL11.glColor4f(yellooo, yellooo, 0.0F, f9);
+            float yellooo_0 = 0.4F;
+        	GL11.glColor4f(yellooo_0, yellooo_0, 0.0F, f9_0);
 
         	ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
 
@@ -124,7 +124,7 @@ public class TFFieryItemRenderer implements IItemRenderer {
         	GL11.glDisable(GL11.GL_BLEND);
         	GL11.glEnable(GL11.GL_LIGHTING);
         	GL11.glDepthFunc(GL11.GL_LEQUAL);
-        }
+        //}
         
         if (par2ItemStack.hasEffect(par3))
         {

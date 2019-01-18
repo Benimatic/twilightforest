@@ -275,7 +275,7 @@ public class ItemTFMagicMap extends ItemMap
 	 */
 	public String getItemStackDisplayName(ItemStack par1ItemStack)
 	{
-		return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(par1ItemStack) + ".name") + " #" + par1ItemStack.getItemDamage()).trim();
+		return (String.valueOf(StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(par1ItemStack) + ".name") + " #" + par1ItemStack.getItemDamage())).trim();
     }
 
 	/**

@@ -39,8 +39,8 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(18, Byte.valueOf((byte)0));
-        dataWatcher.addObject(19, Byte.valueOf((byte)0));
+        dataWatcher.addObject(18, (byte)0);
+        dataWatcher.addObject(19, (byte)0);
     }
 	
 	
@@ -69,13 +69,13 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
     	int openByte = Math.round(openness * 255);
     	
     	openByte &= 0xFF;
-        dataWatcher.updateObject(18, Byte.valueOf((byte)openByte));
+        dataWatcher.updateObject(18, ((byte)openByte));
     }
 
     public void setState(int state)
     {
     	state &= 0xFF;
-        dataWatcher.updateObject(19, Byte.valueOf((byte)state));
+        dataWatcher.updateObject(19, ((byte)state));
     }
 
 }

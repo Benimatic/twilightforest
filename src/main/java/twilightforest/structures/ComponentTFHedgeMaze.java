@@ -160,7 +160,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 	void decorate3x3Room(World world, int x, int z, StructureBoundingBox sbb)
 	{
 		// make a new RNG for this room!
-		Random roomRNG = new Random(world.getSeed() ^ x + z);
+		Random roomRNG = new org.bogdang.modifications.random.XSTR(world.getSeed() ^ x + z);
 		
 		// a few jack-o-lanterns
 		roomJackO(world, roomRNG, x, z, 8, sbb);

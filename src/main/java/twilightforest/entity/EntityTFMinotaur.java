@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.item.TFItems;
 
@@ -47,9 +48,9 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D); // attack damage
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D*1.5+twilightforest.TwilightForestMod.Scatter.nextInt(15)-twilightforest.TwilightForestMod.Scatter.nextInt(15)); // max health
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D*1.5); // movement speed
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D*1.5); // attack damage
     }
     
 
@@ -59,7 +60,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(17, Byte.valueOf((byte)0));
+        dataWatcher.addObject(17, (byte)0);
     }
 	
     /**
@@ -80,11 +81,11 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     {
         if (flag)
         {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)127));
+            dataWatcher.updateObject(17, ((byte)127));
         }
         else
         {
-            dataWatcher.updateObject(17, Byte.valueOf((byte)0));
+            dataWatcher.updateObject(17, (byte)0);
         }
     }
     
@@ -217,7 +218,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
     @Override
     public void onDeath(DamageSource par1DamageSource) {
     	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+    	if (worldObj.provider.dimensionId == TwilightForestMod.dimensionID && par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
     		((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
     	}
     }
