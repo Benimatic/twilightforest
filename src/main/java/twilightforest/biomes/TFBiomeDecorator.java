@@ -202,6 +202,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip extra lakes for swamps, ");}
     	}
     	
+    	try {
     	// add extra lava for fire swamps
     	if (randomGenerator.nextFloat() <= lavaPoolChance) {
 	        try {
@@ -211,6 +212,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	        extraLavaPoolGen.generate(currentWorld, randomGenerator, rx, ry, rz);
 	        } catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip extra lava for fire swamps, ");}
     	}
+    	} catch (Throwable thrw) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.INFO, thrw, "TwilightForest: skip extra lava for fire swamps gen, ");}
     	
     	// mycelium blobs
     	for (int i = 0; i < myceliumPerChunk; i++) {
