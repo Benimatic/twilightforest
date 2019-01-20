@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.DARK_TOWER;
 
-public class StructureStartDarkTower extends StructureStartTFAbstract {
+public class StructureStartDarkTower extends StructureStartTFFeatureAbstract {
     public StructureStartDarkTower() {
         super();
     }

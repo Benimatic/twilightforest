@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.HYDRA_LAIR;
 
-public class StructureStartHydraLair extends StructureStartTFAbstract {
+public class StructureStartHydraLair extends StructureStartTFFeatureAbstract {
     public StructureStartHydraLair() {
         super();
     }

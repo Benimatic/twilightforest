@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.LABYRINTH;
 
-public class StructureStartLabyrinth extends StructureStartTFAbstract {
+public class StructureStartLabyrinth extends StructureStartTFFeatureAbstract {
     public StructureStartLabyrinth() {
         super();
     }

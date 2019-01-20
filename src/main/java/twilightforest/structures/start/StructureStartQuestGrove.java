@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.QUEST_GROVE;
 
-public class StructureStartQuestGrove extends StructureStartTFAbstract {
+public class StructureStartQuestGrove extends StructureStartTFFeatureAbstract {
     public StructureStartQuestGrove() {
         super();
     }

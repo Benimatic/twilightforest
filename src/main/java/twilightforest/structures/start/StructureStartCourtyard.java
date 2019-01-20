@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.NAGA_COURTYARD;
 
-public class StructureStartCourtyard extends StructureStartTFAbstract {
+public class StructureStartCourtyard extends StructureStartTFFeatureAbstract {
     public StructureStartCourtyard() {
         super();
     }

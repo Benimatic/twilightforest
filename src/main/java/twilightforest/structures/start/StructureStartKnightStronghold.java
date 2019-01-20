@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.KNIGHT_STRONGHOLD;
 
-public class StructureStartKnightStronghold extends StructureStartTFAbstract {
+public class StructureStartKnightStronghold extends StructureStartTFFeatureAbstract {
     public StructureStartKnightStronghold() {
         super();
     }

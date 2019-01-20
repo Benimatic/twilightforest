@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.ICE_TOWER;
 
-public class StructureStartAuroraPalace extends StructureStartTFAbstract {
+public class StructureStartAuroraPalace extends StructureStartTFFeatureAbstract {
     public StructureStartAuroraPalace() {
         super();
     }

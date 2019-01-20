@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.HEDGE_MAZE;
 
-public class StructureStartHedgeMaze extends StructureStartTFAbstract {
+public class StructureStartHedgeMaze extends StructureStartTFFeatureAbstract {
     public StructureStartHedgeMaze() {
         super();
     }

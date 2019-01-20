@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.FINAL_CASTLE;
 
-public class StructureStartFinalCastle extends StructureStartTFAbstract {
+public class StructureStartFinalCastle extends StructureStartTFFeatureAbstract {
     public StructureStartFinalCastle() {
         super();
     }

@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.TROLL_CAVE;
 
-public class StructureStartTrollCave extends StructureStartTFAbstract {
+public class StructureStartTrollCave extends StructureStartTFFeatureAbstract {
     public StructureStartTrollCave() {
         super();
     }

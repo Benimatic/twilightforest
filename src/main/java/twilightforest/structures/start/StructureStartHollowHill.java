@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Created by Drullkus on 6/26/18.
  */
-public class StructureStartHollowHill extends StructureStartTFAbstract {
+public class StructureStartHollowHill extends StructureStartTFFeatureAbstract {
     public StructureStartHollowHill() {
         super();
     }

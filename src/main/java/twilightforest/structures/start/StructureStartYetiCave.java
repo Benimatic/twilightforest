@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static twilightforest.TFFeature.YETI_CAVE;
 
-public class StructureStartYetiCave extends StructureStartTFAbstract {
+public class StructureStartYetiCave extends StructureStartTFFeatureAbstract {
     public StructureStartYetiCave() {
         super();
     }
