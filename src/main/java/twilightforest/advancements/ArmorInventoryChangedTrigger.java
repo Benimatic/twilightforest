@@ -13,13 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInventoryChangedTrigger.Instance> {
 
     public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "armor_changed");
-    private final Map<PlayerAdvancements, ArmorInventoryChangedTrigger.Listeners> listeners = Maps.newHashMap();
+    private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
 
     @Override
     public ResourceLocation getId() {
@@ -27,42 +29,43 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
     }
 
     @Override
-    public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<ArmorInventoryChangedTrigger.Instance> listener) {
-        ArmorInventoryChangedTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
+    public void addListener(PlayerAdvancements playerAdvancements, Listener<Instance> listener) {
+        Listeners listeners = this.listeners.computeIfAbsent(playerAdvancements, Listeners::new);
         listeners.add(listener);
     }
 
     @Override
-    public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<ArmorInventoryChangedTrigger.Instance> listener) {
-        ArmorInventoryChangedTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
+    public void removeListener(PlayerAdvancements playerAdvancements, Listener<Instance> listener) {
+        Listeners listeners = this.listeners.get(playerAdvancements);
         if (listeners != null) {
             listeners.remove(listener);
             if (listeners.isEmpty()) {
-                this.listeners.remove(playerAdvancementsIn);
+                this.listeners.remove(playerAdvancements);
             }
         }
     }
 
     @Override
-    public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
-        this.listeners.remove(playerAdvancementsIn);
+    public void removeAllListeners(PlayerAdvancements playerAdvancements) {
+        this.listeners.remove(playerAdvancements);
     }
 
     @Override
     public Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         ItemPredicate from = ItemPredicate.deserialize(json.get("from"));
         ItemPredicate to = ItemPredicate.deserialize(json.get("to"));
-        return new ArmorInventoryChangedTrigger.Instance(from, to);
+        return new Instance(from, to);
     }
 
     public void trigger(EntityPlayerMP player, ItemStack from, ItemStack to) {
-        ArmorInventoryChangedTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
-
-        if (listeners != null)
+        Listeners listeners = this.listeners.get(player.getAdvancements());
+        if (listeners != null) {
             listeners.trigger(from, to);
+        }
     }
 
-    public class Instance extends AbstractCriterionInstance {
+    public static class Instance extends AbstractCriterionInstance {
+
         private final ItemPredicate from;
         private final ItemPredicate to;
 
@@ -83,8 +86,9 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
     }
 
     static class Listeners {
+
         private final PlayerAdvancements playerAdvancements;
-        private final Set<Listener<ArmorInventoryChangedTrigger.Instance>> listeners = Sets.newHashSet();
+        private final Set<Listener<Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn) {
             this.playerAdvancements = playerAdvancementsIn;
@@ -94,18 +98,27 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
             return this.listeners.isEmpty();
         }
 
-        public void add(Listener<ArmorInventoryChangedTrigger.Instance> listener) {
+        public void add(Listener<Instance> listener) {
             this.listeners.add(listener);
         }
 
-        public void remove(Listener<ArmorInventoryChangedTrigger.Instance> listener) {
+        public void remove(Listener<Instance> listener) {
             this.listeners.remove(listener);
         }
 
         public void trigger(ItemStack from, ItemStack to) {
-            for (ICriterionTrigger.Listener<ArmorInventoryChangedTrigger.Instance> listener : this.listeners)
-                if (listener.getCriterionInstance().test(from, to))
-                    listener.grantCriterion(this.playerAdvancements);
+
+            List<Listener<Instance>> list = new ArrayList<>();
+
+			for (Listener<Instance> listener : this.listeners) {
+				if (listener.getCriterionInstance().test(from, to)) {
+					list.add(listener);
+				}
+			}
+
+			for (Listener<Instance> listener : list) {
+				listener.grantCriterion(this.playerAdvancements);
+			}
         }
     }
 }
