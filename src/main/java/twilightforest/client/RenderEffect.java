@@ -3,6 +3,7 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -11,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.client.model.entity.ModelTFLich;
+import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.client.renderer.entity.RenderTFLich;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.potions.PotionFrosted;
@@ -62,8 +64,7 @@ public enum RenderEffect {
 		}
 
 	}, SHIELDS {
-
-		private final ModelTFLich model = new ModelTFLich(true);
+		private final LayerRenderer<EntityLivingBase> layer = new LayerShields();
 
 		@Override
 		public boolean shouldRender(EntityLivingBase entity, boolean firstPerson) {
@@ -83,9 +84,7 @@ public enum RenderEffect {
 			GlStateManager.enableBlend();
 			GlStateManager.disableCull();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			Minecraft.getMinecraft().renderEngine.bindTexture(RenderTFLich.LICH_TEXTURE);
-			model.setLivingAnimations(entity, 0F, 0F, partialTicks);
-			model.render(entity, 0F, 0F, 0F, 0F, 0F, 0.0625F);
+			layer.doRenderLayer(entity, 0, 0, partialTicks, 0, 0, 0, 0.0625F);
 			GlStateManager.enableCull();
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
