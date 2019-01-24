@@ -68,6 +68,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 				doTreeOfTimeEffect(world, pos, rand);
 				break;
 			case TRANS:
+				world.playSound(null, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 				doTreeOfTransformationEffect(world, pos, rand);
 				break;
 			case MINE:
@@ -132,23 +133,21 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 		Biome targetBiome = TFBiomes.enchantedForest;
 
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 16; i++) {
+
 			BlockPos dPos = pos.add(rand.nextInt(33) - 16, 0, rand.nextInt(33) - 16);
-
-			world.playSound(null, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 2F);
-
-			if (dPos.distanceSq(pos) > 256) continue;
+			if (dPos.distanceSq(pos) > 256.0) continue;
 
 			Biome biomeAt = world.getBiome(dPos);
+			if (biomeAt == targetBiome) continue;
 
-			if (biomeAt != targetBiome) {
-				Chunk chunkAt = world.getChunk(dPos);
-				chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(targetBiome);
+			Chunk chunkAt = world.getChunk(dPos);
+			chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(targetBiome);
 
-				if (world instanceof WorldServer) {
-					sendChangedBiome(world, dPos, targetBiome);
-				}
+			if (world instanceof WorldServer) {
+				sendChangedBiome(world, dPos, targetBiome);
 			}
+			break;
 		}
 	}
 
