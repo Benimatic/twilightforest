@@ -104,11 +104,8 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		int numticks = 8 * 3 * this.tickRate(world);
 
 		for (int i = 0; i < numticks; i++) {
-			BlockPos dPos = pos.add(
-					rand.nextInt(33) - 16,
-					rand.nextInt(33) - 16,
-					rand.nextInt(33) - 16
-			);
+
+			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16);
 
 			IBlockState state = world.getBlockState(dPos);
 			Block block = state.getBlock();
@@ -117,7 +114,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 				block.updateTick(world, dPos, state, rand);
 			}
 
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getTileEntity(dPos);
 			if (te instanceof ITickable && !te.isInvalid()) {
 				((ITickable) te).update();
 			}
@@ -135,7 +132,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 		for (int i = 0; i < 16; i++) {
 
-			BlockPos dPos = pos.add(rand.nextInt(33) - 16, 0, rand.nextInt(33) - 16);
+			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16, 0, 16);
 			if (dPos.distanceSq(pos) > 256.0) continue;
 
 			Biome biomeAt = world.getBiome(dPos);
@@ -164,11 +161,8 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	 * The miner's tree generates the ore magnet effect randomly every second
 	 */
 	private void doMinersTreeEffect(World world, BlockPos pos, Random rand) {
-		BlockPos dPos = pos.add(
-				rand.nextInt(65) - 32,
-				rand.nextInt(65) - 32,
-				rand.nextInt(65) - 32
-		);
+
+		BlockPos dPos = WorldUtil.randomOffset(rand, pos, 32);
 
 		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.5F);
 
