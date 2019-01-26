@@ -575,16 +575,16 @@ public class TFEventListener {
 	 */
 	private static boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
 		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
+			ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			
-			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos)) {
+			if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkProvider.isBlockProtected(pos)) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkGenerator.isBlockProtected(pos)) {
 					
 					// send protection packet
-					sendAreaProtectionPacket(world, pos, chunkProvider.getSBBAt(pos));
+					sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
 					
 					// send a hint monster?
 					nearbyFeature.trySpawnHintMonster(world, player, pos);
@@ -605,13 +605,14 @@ public class TFEventListener {
 	public static void livingAttack(LivingAttackEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
 		// cancel attacks in protected areas
-		if (living instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer) event.getSource().getTrueSource()).capabilities.isCreativeMode && TFWorld.getChunkGenerator(living.world) instanceof ChunkGeneratorTFBase && living.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (living instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer) event.getSource().getTrueSource()).capabilities.isCreativeMode
+				&& TFWorld.getChunkGenerator(living.world) instanceof ChunkGeneratorTFBase && living.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
-			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(living.getEntityWorld());
+			ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(living.getEntityWorld());
 
 			BlockPos pos = new BlockPos(living);
 
-			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos) && chunkProvider.isBlockProtected(pos)) {
+			if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos) && chunkGenerator.isBlockProtected(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), living.world);
 

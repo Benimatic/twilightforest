@@ -93,17 +93,17 @@ public class TFTickHandler {
 
 	@SuppressWarnings({"UnusedReturnValue", "ConstantConditions"})
 	private static boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
-		IChunkGenerator uncheckedChunkProvider = TFWorld.getChunkGenerator(world);
-		if (!(uncheckedChunkProvider instanceof ChunkGeneratorTFBase)) return false;
+		IChunkGenerator uncheckedChunkGenerator = TFWorld.getChunkGenerator(world);
+		if (!(uncheckedChunkGenerator instanceof ChunkGeneratorTFBase)) return false;
 
-		ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) uncheckedChunkProvider;
+		ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) uncheckedChunkGenerator;
 
 		int px = MathHelper.floor(player.posX);
 		int pz = MathHelper.floor(player.posZ);
 
-		if (chunkProvider != null && chunkProvider.isBlockNearFullStructure(px, pz, 100)) {
+		if (chunkGenerator != null && chunkGenerator.isBlockNearFullStructure(px, pz, 100)) {
 
-			StructureBoundingBox fullSBB = chunkProvider.getFullSBBNear(px, pz, 100);
+			StructureBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
 
 			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
 

@@ -89,13 +89,13 @@ public class CommandTF extends CommandBase {
 			throw new CommandException("commands.tffeature.not_in_twilight_forest");
 		} else {
 			// are you in a structure?
-			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
+			ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
 
 			final BlockPos pos = new BlockPos(dx, dy, dz);
-			if (chunkProvider.isBlockInStructureBB(pos)) {
-				sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.update", chunkProvider.isStructureConquered(pos), flag));
+			if (chunkGenerator.isBlockInStructureBB(pos)) {
+				sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag));
 
-				chunkProvider.setStructureConquered(dx, dy, dz, flag);
+				chunkGenerator.setStructureConquered(dx, dy, dz, flag);
 			} else {
 				throw new CommandException("commands.tffeature.structure.required");
 			}
@@ -156,18 +156,18 @@ public class CommandTF extends CommandBase {
 					sender.sendMessage(new TextComponentTranslation("commands.tffeature.nearest", nearbyFeature.name));
 
 					// are you in a structure?
-					ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
+					ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
 
 					final BlockPos pos = new BlockPos(dx, dy, dz);
 
-					if (chunkProvider.isBlockInStructureBB(pos)) {
+					if (chunkGenerator.isBlockInStructureBB(pos)) {
 						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.inside"));
 
-						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.status", chunkProvider.isStructureConquered(pos)));
+						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)));
 						// are you in a room?
 
 						// what is the spawn list
-//						List<SpawnListEntry> spawnList = chunkProvider.getPossibleCreatures(EnumCreatureType.monster, dx, dy, dz);
+//						List<SpawnListEntry> spawnList = chunkGenerator.getPossibleCreatures(EnumCreatureType.monster, dx, dy, dz);
 //						sender.sendMessage(new TextComponentTranslation("Spawn list for the area is:"));
 //						for (SpawnListEntry entry : spawnList) {
 //							sender.sendMessage(new TextComponentTranslation(entry.toString()));
