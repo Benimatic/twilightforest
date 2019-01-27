@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,8 +20,8 @@ public abstract class BlockTFSlab<T extends Enum<T>> extends BlockSlab implement
 
     private final Comparable<T> propertyValue;
 
-    BlockTFSlab(Material materialIn, T propertyValue) {
-        super(materialIn);
+    BlockTFSlab(Material material, MapColor mapColor, T propertyValue) {
+        super(material, mapColor);
         this.propertyValue = propertyValue;
 
         if (this.isDouble()) this.setDefaultState(this.blockState.getBaseState().withProperty(this.getVariantProperty(), propertyValue));
