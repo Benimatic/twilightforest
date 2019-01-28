@@ -84,41 +84,17 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-		switch (state.getValue(VARIANT)) {
-			default:
-			case FIERY:
-				return SoundType.METAL;
-			case IRONWOOD:
-				return SoundType.WOOD;
-			case STEELLEAF:
-				return SoundType.PLANT;
-			case ARCTIC_FUR:
-				return SoundType.CLOTH;
-			case CARMINITE:
-				return SoundType.SLIME;
-		}
+		return state.getValue(VARIANT).soundType;
 	}
 
 	@Override
 	public Material getMaterial(IBlockState state) {
-		switch (state.getValue(VARIANT)) {
-			default:
-			case FIERY:
-				return super.getMaterial(state);
-			case IRONWOOD:
-				return Material.WOOD;
-			case STEELLEAF:
-				return Material.LEAVES;
-			case ARCTIC_FUR:
-				return Material.CLOTH;
-			case CARMINITE:
-				return Material.CLAY;
-		}
+		return state.getValue(VARIANT).material;
 	}
 
 	@Override
 	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getMaterial().getMaterialMapColor();
+		return state.getValue(VARIANT).mapColor;
 	}
 
 	@Override
