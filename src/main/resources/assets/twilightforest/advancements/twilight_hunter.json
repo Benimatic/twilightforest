@@ -399,6 +399,17 @@
         }
       }
     },
+    "raven": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:raven",
+          "location": {
+            "dimension": "twilight_forest"
+          }
+        }
+      }
+    },
     "squirrel": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -461,6 +472,7 @@
       "bunny",
       "deer",
       "penguin",
+      "raven",
       "squirrel",
       "tiny_bird"
     ]
