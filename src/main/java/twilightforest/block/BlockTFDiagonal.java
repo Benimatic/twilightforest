@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -16,10 +17,15 @@ import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
 public class BlockTFDiagonal extends Block implements ModelRegisterCallback {
+
     public static final PropertyBool IS_ROTATED = PropertyBool.create("is_rotated");
 
-    public BlockTFDiagonal(Material materialIn) {
-        super(materialIn);
+    public BlockTFDiagonal(Material material) {
+        super(material);
+    }
+
+    public BlockTFDiagonal(Material material, MapColor mapColor) {
+        super(material, mapColor);
     }
 
     @Override

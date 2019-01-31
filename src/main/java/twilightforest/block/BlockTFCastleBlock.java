@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -15,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,7 +25,6 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
-
 
 /**
  * Castle block makes a castle
@@ -35,7 +36,7 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	public static final IProperty<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
 
 	public BlockTFCastleBlock() {
-		super(Material.ROCK);
+		super(Material.ROCK, MapColor.QUARTZ);
 		this.setHardness(100F);
 		this.setResistance(35F);
 		this.setSoundType(SoundType.STONE);
@@ -57,6 +58,11 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, CastleBrickVariant.values()[meta]);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == CastleBrickVariant.ROOF ? MapColor.GRAY : super.getMapColor(state, world, pos);
 	}
 
 	@Override

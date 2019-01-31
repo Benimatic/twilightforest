@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -56,6 +57,11 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, TowerWoodVariant.values()[meta]);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == TowerWoodVariant.ENCASED ? MapColor.SAND : super.getMapColor(state, world, pos);
 	}
 
 	@Override

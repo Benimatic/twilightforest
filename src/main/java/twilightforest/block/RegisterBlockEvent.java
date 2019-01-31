@@ -3,6 +3,7 @@ package twilightforest.block;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -131,8 +132,8 @@ public final class RegisterBlockEvent {
 		registerWoodVariants(blocks, BlockTFLog.VARIANT, WoodVariant.values());
 		registerWoodVariants(blocks, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
 
-		blocks.register("terrorcotta_circle", "TerrorCottaCircle", new BlockTFHorizontal(Material.ROCK).setSoundType(SoundType.STONE).setHardness(1.7F));
-		blocks.register("terrorcotta_diagonal", "TerrorCottaDiagonal", new BlockTFDiagonal(Material.ROCK).setSoundType(SoundType.STONE).setHardness(1.7F));
+		blocks.register("terrorcotta_circle", "TerrorCottaCircle", new BlockTFHorizontal(Material.ROCK, MapColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
+		blocks.register("terrorcotta_diagonal", "TerrorCottaDiagonal", new BlockTFDiagonal(Material.ROCK, MapColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
 
 		registerFluidBlock(blocks, moltenFiery);
 		registerFluidBlock(blocks, moltenKnightmetal);

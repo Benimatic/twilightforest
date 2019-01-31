@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -65,6 +66,11 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return hasVariant() ? super.getStateFromMeta(meta).withProperty(VARIANT, ThornVariant.values()[meta & 0b11]) : super.getStateFromMeta(meta);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == ThornVariant.GREEN ? MapColor.FOLIAGE : super.getMapColor(state, world, pos);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -15,8 +16,13 @@ import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
 public class BlockTFHorizontal extends BlockHorizontal implements ModelRegisterCallback {
-    protected BlockTFHorizontal(Material materialIn) {
-        super(materialIn);
+
+    protected BlockTFHorizontal(Material material) {
+        super(material);
+    }
+
+    protected BlockTFHorizontal(Material material, MapColor mapColor) {
+        super(material, mapColor);
     }
 
     @Override

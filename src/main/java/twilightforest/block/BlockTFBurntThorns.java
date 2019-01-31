@@ -1,12 +1,14 @@
 package twilightforest.block;
 
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -15,6 +17,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 public class BlockTFBurntThorns extends BlockTFThorns {
 
@@ -34,6 +38,17 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 	@Override
 	protected boolean hasVariant() {
 		return false;
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return MapColor.STONE;
+	}
+
+	@Override
+	@Nullable
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return null;
 	}
 
 	@Override

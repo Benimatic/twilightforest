@@ -100,7 +100,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Override
 	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getMaterial().getMaterialMapColor();
+		return ENCASED.contains(state.getValue(VARIANT)) ? MapColor.SAND : MapColor.GRASS;
 	}
 
 	@Override

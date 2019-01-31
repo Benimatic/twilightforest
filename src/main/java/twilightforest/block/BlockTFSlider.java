@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
@@ -42,7 +43,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	private static final AxisAlignedBB X_BB = new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875);
 
 	protected BlockTFSlider() {
-		super(Material.IRON);
+		super(Material.IRON, MapColor.DIRT);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);

@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -42,7 +43,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	private static final AxisAlignedBB REAPPEARING_BB = new AxisAlignedBB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F);
 
 	public BlockTFCastleDoor(boolean isVanished) {
-		super(isVanished ? Material.GLASS : Material.ROCK);
+		super(isVanished ? Material.GLASS : Material.ROCK, isVanished ? MapColor.AIR : MapColor.CYAN);
 
 		//this.setBlockUnbreakable();
 		//this.setResistance(Float.MAX_VALUE);
