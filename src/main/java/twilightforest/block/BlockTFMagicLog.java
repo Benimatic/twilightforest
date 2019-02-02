@@ -1,26 +1,22 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
-
-import java.util.Random;
 
 public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 
@@ -80,12 +76,12 @@ public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	protected boolean canSilkHarvest() {
-		return false;
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT).supplyMapColor();
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	protected boolean canSilkHarvest() {
 		return false;
 	}
 
@@ -106,10 +102,5 @@ public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(state.getBlock(), 1, state.getValue(VARIANT).ordinal());
 	}
 }
