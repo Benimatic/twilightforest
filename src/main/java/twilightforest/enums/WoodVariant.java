@@ -7,30 +7,22 @@ import twilightforest.util.IMapColorSupplier;
 import java.util.Locale;
 
 public enum WoodVariant implements IStringSerializable, IMapColorSupplier {
-	OAK {
-		@Override
-		public BlockPlanks.EnumType supplyPlankColor() {
-			return BlockPlanks.EnumType.OAK;
-		}
-	},
-	CANOPY {
-		@Override
-		public BlockPlanks.EnumType supplyPlankColor() {
-			return BlockPlanks.EnumType.SPRUCE;
-		}
-	},
-	MANGROVE {
-		@Override
-		public BlockPlanks.EnumType supplyPlankColor() {
-			return BlockPlanks.EnumType.JUNGLE;
-		}
-	},
-	DARK {
-		@Override
-		public BlockPlanks.EnumType supplyPlankColor() {
-			return BlockPlanks.EnumType.ACACIA;
-		}
-	};
+
+	OAK(BlockPlanks.EnumType.OAK),
+	CANOPY(BlockPlanks.EnumType.SPRUCE),
+	MANGROVE(BlockPlanks.EnumType.JUNGLE),
+	DARK(BlockPlanks.EnumType.ACACIA);
+
+	private final BlockPlanks.EnumType plankType;
+
+	WoodVariant(BlockPlanks.EnumType plankType) {
+		this.plankType = plankType;
+	}
+
+	@Override
+	public BlockPlanks.EnumType supplyPlankColor() {
+		return plankType;
+	}
 
 	@Override
 	public String getName() {
