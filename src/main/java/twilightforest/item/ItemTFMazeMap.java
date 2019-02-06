@@ -187,8 +187,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 											multiset.add(MapColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MapColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getTranslationKey().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
-										{
+										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getRegistryName().getPath().contains("ore")) { // TODO: improve this 0.o
 											// any other ore, catchall
 											multiset.add(MapColor.PINK, 1000);
 										}
