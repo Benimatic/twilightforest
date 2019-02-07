@@ -15,7 +15,7 @@
   },
   "parent": "twilightforest:progress_hydra",
   "criteria": {
-    "trophy_pedestal": {
+    "hydra_chop": {
       "trigger": "twilightforest:consume_hydra_chop_on_low_hunger"
     }
   }
