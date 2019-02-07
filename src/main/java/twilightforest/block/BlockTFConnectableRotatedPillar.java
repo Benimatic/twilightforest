@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -23,8 +24,12 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
     protected final int boundingBoxLower;
     protected final int boundingBoxUpper;
 
-    BlockTFConnectableRotatedPillar(Material materialIn, int boundingBoxLower, int boundingBoxUpper) {
-        super(materialIn);
+    BlockTFConnectableRotatedPillar(Material material, int boundingBoxLower, int boundingBoxUpper) {
+        this(material, material.getMaterialMapColor(), boundingBoxLower, boundingBoxUpper);
+    }
+
+    BlockTFConnectableRotatedPillar(Material material, MapColor mapColor, int boundingBoxLower, int boundingBoxUpper) {
+        super(material, mapColor);
         this.boundingBoxLower = boundingBoxLower;
         this.boundingBoxUpper = boundingBoxUpper;
 
@@ -35,20 +40,12 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
 
     protected abstract IProperty[] getAdditionalProperties();
 
-    private IProperty[] getPropertiesForInit(IProperty... additionalProperties) {
-        IProperty[] propertiesWithSiding = new IProperty[additionalProperties.length + 5];
-        IProperty[] booleanSides = new IProperty[] { BlockFence.NORTH, BlockFence.EAST, BlockFence.SOUTH, BlockFence.WEST };
-
-        propertiesWithSiding[0] = AXIS;
-        System.arraycopy(booleanSides, 0, propertiesWithSiding, 1, booleanSides.length);
-        System.arraycopy(additionalProperties, 0, propertiesWithSiding, booleanSides.length + 1, additionalProperties.length);
-
-        return propertiesWithSiding;
-    }
-
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, getPropertiesForInit(getAdditionalProperties()));
+        return new BlockStateContainer.Builder(this)
+                .add(AXIS, BlockFence.NORTH, BlockFence.EAST, BlockFence.SOUTH, BlockFence.WEST)
+                .add(getAdditionalProperties())
+                .build();
     }
 
     @Override

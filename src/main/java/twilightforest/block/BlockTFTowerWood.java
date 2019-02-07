@@ -35,7 +35,7 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	public static final IProperty<TowerWoodVariant> VARIANT = PropertyEnum.create("variant", TowerWoodVariant.class);
 
 	public BlockTFTowerWood() {
-		super(Material.WOOD);
+		super(Material.WOOD, MapColor.ADOBE);
 		this.setHardness(40F);
 		this.setResistance(10F);
 		this.setSoundType(SoundType.WOOD);

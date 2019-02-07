@@ -39,14 +39,15 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	private static final float THORN_DAMAGE = 4.0F;
 
 	BlockTFThorns() {
-		super(Material.WOOD, 3, 13);
+		super(Material.WOOD, MapColor.OBSIDIAN, 3, 13);
 		this.setHardness(50.0F);
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
 
-		if (hasVariant())
+		if (hasVariant()) {
 			this.setDefaultState(this.getDefaultState().withProperty(VARIANT, ThornVariant.BROWN));
+		}
 	}
 
 	@Override
