@@ -110,7 +110,6 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 		}
 	}
 
-
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
 		double range = 4.0; // do we need to get this with a better method than hardcoding it?
@@ -135,7 +134,6 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 			}
 		}
 	}
-
 
 	/**
 	 * [VanillaCopy] Exact copy of Entity.rayTrace
@@ -178,7 +176,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return new ItemStack(this, 1, getMetaFromState(state));
 	}
 
@@ -186,7 +184,8 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
 		if (!world.isRemote && state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
 			if (world.rand.nextInt(40) == 0) {
-				this.dropBlockAsItem(world, pos, state, fortune);
+				Item item = this.getItemDropped(state, world.rand, fortune);
+				spawnAsEntity(world, pos, new ItemStack(item, 1, this.damageDropped(state)));
 			}
 		}
 	}
@@ -212,6 +211,4 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
-
 }
-
