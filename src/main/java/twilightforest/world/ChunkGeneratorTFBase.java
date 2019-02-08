@@ -763,6 +763,6 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 			return hollowTreeGenerator.isInsideStructure(pos);
 		}
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return feature != TFFeature.NOTHING && getFeatureAt(pos) == feature;
+		return feature != TFFeature.NOTHING && feature.getFeatureGenerator().isInsideStructure(pos);
 	}
 }

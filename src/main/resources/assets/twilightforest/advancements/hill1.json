@@ -15,13 +15,28 @@
     }
   },
   "parent": "twilightforest:root",
-  "__comment": "These are triggered by code in order to test for a Hill nearby. In the future, these may become data-driven",
   "criteria": {
     "boggard": {
-      "trigger": "minecraft:impossible"
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:boggard",
+          "location": {
+            "feature": "twilightforest:small_hollow_hill"
+          }
+        }
+      }
     },
     "redcap": {
-      "trigger": "minecraft:impossible"
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:redcap",
+          "location": {
+            "feature": "twilightforest:small_hollow_hill"
+          }
+        }
+      }
     }
   },
   "requirements": [

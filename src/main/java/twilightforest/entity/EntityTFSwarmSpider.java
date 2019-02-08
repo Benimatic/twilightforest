@@ -7,16 +7,10 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
-import twilightforest.util.PlayerHelper;
-
 
 public class EntityTFSwarmSpider extends EntitySpider {
 
@@ -146,19 +140,6 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
-		if (cause.getTrueSource() instanceof EntityPlayerMP) {
-			// are we in a hedge maze?
-			int chunkX = MathHelper.floor(posX) >> 4;
-			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) cause.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "swarm_spider");
-			}
-		}
-	}
-
-	@Override
 	protected float getSoundPitch() {
 		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F;
 	}
@@ -167,5 +148,4 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	public int getMaxSpawnedInChunk() {
 		return 16;
 	}
-
 }
