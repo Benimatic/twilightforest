@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -181,11 +182,12 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
-		if (!world.isRemote && state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
-			if (world.rand.nextInt(40) == 0) {
-				Item item = this.getItemDropped(state, world.rand, fortune);
-				spawnAsEntity(world, pos, new ItemStack(item, 1, this.damageDropped(state)));
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
+			Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+			if (rand.nextInt(40) == 0) {
+				Item item = this.getItemDropped(state, rand, fortune);
+				drops.add(new ItemStack(item, 1, this.damageDropped(state)));
 			}
 		}
 	}

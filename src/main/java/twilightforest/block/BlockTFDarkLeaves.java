@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -56,12 +57,11 @@ public class BlockTFDarkLeaves extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
-		if (!world.isRemote) {
-			if (world.rand.nextInt(40) == 0) {
-				Item item = this.getItemDropped(state, world.rand, fortune);
-				spawnAsEntity(world, pos, new ItemStack(item, 1, this.damageDropped(state)));
-			}
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+		if (rand.nextInt(40) == 0) {
+			Item item = this.getItemDropped(state, rand, fortune);
+			drops.add(new ItemStack(item, 1, this.damageDropped(state)));
 		}
 	}
 }
