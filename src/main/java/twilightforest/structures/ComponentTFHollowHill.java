@@ -48,7 +48,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		radius = ((hillSize * 2 + 1) * 8) - 6;
 
 		// can we determine the size here?
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -2 * hillSize, -radius, radius * 2, radius / 2, radius * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / 2, radius * 2, EnumFacing.SOUTH);
 	}
 
 	@Override
