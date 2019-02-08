@@ -16,7 +16,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -124,15 +123,6 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTFTrophy();
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityTFTrophy) {
-			return new ItemStack(TFItems.trophy, 1, ((TileEntityTFTrophy) te).getSkullType());
-		}
-		return ItemStack.EMPTY;
 	}
 
 	@Override

@@ -85,8 +85,8 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(TFBlocks.thorns, 1, state.getValue(VARIANT).ordinal());
+	public int damageDropped(IBlockState state) {
+		return hasVariant() ? state.getValue(VARIANT).ordinal() : 0;
 	}
 
 	@Override
@@ -97,8 +97,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
