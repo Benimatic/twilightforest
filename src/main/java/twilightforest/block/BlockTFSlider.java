@@ -8,6 +8,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -174,9 +175,10 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(DELAY).build());
+		IStateMapper stateMapper = new StateMap.Builder().ignore(DELAY).build();
+		ModelLoader.setCustomStateMapper(this, stateMapper);
 		for (int i = 0; i < 4; i++) {
-			ModelUtils.registerToState(this, i, getDefaultState());
+			ModelUtils.registerToState(this, i, getDefaultState(), stateMapper);
 		}
 	}
 }

@@ -6,6 +6,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -119,8 +120,9 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build());
-		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+		IStateMapper stateMapper = new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build();
+		ModelLoader.setCustomStateMapper(this, stateMapper);
+		ModelUtils.registerToStateSingleVariant(this, VARIANT, stateMapper);
 	}
 
 	@Override

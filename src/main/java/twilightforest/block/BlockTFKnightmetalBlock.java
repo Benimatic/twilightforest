@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
@@ -13,11 +12,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallback {
@@ -66,12 +63,5 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 	@Deprecated
 	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing side) {
 		return !access.getBlockState(pos.offset(side)).doesSideBlockRendering(access, pos.offset(side), side.getOpposite());
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().build());
-		ModelUtils.registerToState(this, 0, getDefaultState());
 	}
 }

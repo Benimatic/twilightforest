@@ -6,6 +6,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -99,10 +100,11 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	@Override
 	public void registerModel() {
 		if (this.isDouble())
-			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).ignore(HALF).build());
+			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT, HALF).build());
 		else {
-			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
-			ModelUtils.registerToState(this, 0, getDefaultState());
+			IStateMapper stateMapper = new StateMap.Builder().ignore(VARIANT).build();
+			ModelLoader.setCustomStateMapper(this, stateMapper);
+			ModelUtils.registerToState(this, 0, getDefaultState(), stateMapper);
 		}
 	}
 

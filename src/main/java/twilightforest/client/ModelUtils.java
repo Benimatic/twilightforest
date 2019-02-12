@@ -13,27 +13,28 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import net.minecraftforge.registries.IRegistryDelegate;
 
 import java.util.*;
 
 public class ModelUtils {
 
-	private static final Map<IRegistryDelegate<Block>, IStateMapper> stateMappers = ReflectionHelper.getPrivateValue(ModelLoader.class, null, "customStateMappers");
-	private static final IStateMapper defaultStateMapper = new DefaultStateMapper();
-
 	public static void registerToState(Block b, int itemMeta, IBlockState state) {
-		ModelResourceLocation mrl = stateMappers.getOrDefault(state.getBlock().delegate, defaultStateMapper)
-				.putStateModelLocations(state.getBlock())
-				.get(state);
+		registerToState(b, itemMeta, state, new DefaultStateMapper());
+	}
+
+	public static void registerToState(Block b, int itemMeta, IBlockState state, IStateMapper stateMapper) {
+		ModelResourceLocation mrl = stateMapper.putStateModelLocations(state.getBlock()).get(state);
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), itemMeta, mrl);
 	}
 
 	public static <T extends Comparable<T>> void registerToStateSingleVariant(Block b, IProperty<T> variant) {
+		registerToStateSingleVariant(b, variant, new DefaultStateMapper());
+	}
+
+	public static <T extends Comparable<T>> void registerToStateSingleVariant(Block b, IProperty<T> variant, IStateMapper stateMapper) {
 		List<T> variants = new ArrayList<>(variant.getAllowedValues());
 		for (int i = 0; i < variants.size(); i++) {
-			registerToState(b, i, b.getDefaultState().withProperty(variant, variants.get(i)));
+			registerToState(b, i, b.getDefaultState().withProperty(variant, variants.get(i)), stateMapper);
 		}
 	}
 

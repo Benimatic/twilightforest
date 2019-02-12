@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -124,8 +125,9 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build());
-        ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(DIAGONAL, Diagonals.BOTTOM_LEFT));
+        IStateMapper stateMapper = new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build();
+        ModelLoader.setCustomStateMapper(this, stateMapper);
+        ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(DIAGONAL, Diagonals.BOTTOM_LEFT), stateMapper);
     }
 
     @Override

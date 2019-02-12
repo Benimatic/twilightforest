@@ -4,6 +4,7 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -143,8 +144,9 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
-		ModelUtils.registerToStateSingleVariant(this, BlockTFMagicLog.VARIANT);
+		IStateMapper stateMapper = new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build();
+		ModelLoader.setCustomStateMapper(this, stateMapper);
+		ModelUtils.registerToStateSingleVariant(this, BlockTFMagicLog.VARIANT, stateMapper);
 	}
 
 	@Override
