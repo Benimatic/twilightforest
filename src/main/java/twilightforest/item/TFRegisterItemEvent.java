@@ -197,7 +197,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.tower_wood);
 		items.registerSubItemBlock(TFBlocks.tower_device);
 		items.registerSubItemBlock(TFBlocks.tower_translucent);
-		items.registerSubItemBlock(TFBlocks.stronghold_shield);
+		items.registerBlock(TFBlocks.stronghold_shield);
 		items.registerSubItemBlock(TFBlocks.trophy_pedestal);
 		items.registerBlock(TFBlocks.aurora_block);
 		items.registerSubItemBlock(TFBlocks.underbrick);
@@ -236,9 +236,8 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.castle_rune_brick);
 		items.registerSubItemBlock(TFBlocks.force_field);
 		items.registerBlock(TFBlocks.cinder_furnace);
-		items.registerSubItemBlock(TFBlocks.cinder_log);
+		items.registerBlock(TFBlocks.cinder_log);
 		items.registerSubItemBlock(TFBlocks.castle_door);
-		items.registerSubItemBlock(TFBlocks.castle_door_vanished);
 		items.register(new ItemTFMiniatureStructure(TFBlocks.miniature_structure));
 		items.register(new ItemTFCompressed(TFBlocks.block_storage));
 		//items.registerBlock(TFBlocks.lapis_block);
