@@ -317,7 +317,9 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelUtils.registerToStateSingleVariant(this, LOCK_INDEX);
+		if (!isVanished) {
+			ModelUtils.registerToStateSingleVariant(this, LOCK_INDEX);
+		}
 	}
 
 	@Override
