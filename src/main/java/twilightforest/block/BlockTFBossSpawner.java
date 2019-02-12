@@ -7,11 +7,14 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -51,6 +54,15 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, BossVariant.getVariant(meta));
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		for (BossVariant variant : BossVariant.values()) {
+			if (variant.hasSpawner()) {
+				list.add(new ItemStack(this, 1, variant.ordinal()));
+			}
+		}
 	}
 
 	@Override
@@ -95,6 +107,6 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
-		ModelUtils.registerToState(this, 0, getDefaultState());
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 }
