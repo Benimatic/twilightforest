@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
  * @author Ben
  */
 public class WorldProviderTwilightForest extends WorldProviderSurface {
-
 	private static final String SEED_KEY = "CustomSeed";
 	private static final String SKYLIGHT_KEY = "HasSkylight";
 
@@ -50,6 +49,14 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	public WorldProviderTwilightForest() {
 		setDimension(TFConfig.dimension.dimensionID);
 	}
+
+	/* TODO Breaking change. Uncomment for 1.13.
+	Reason for adding ID is if we want multiple TF worlds for servers in future.
+
+	@Override
+	public String getSaveFolder() {
+		return "twilightforest" + getDimension();
+	}*/
 
 	@Nullable
 	@Override
