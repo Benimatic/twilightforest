@@ -14,6 +14,6 @@ public class TFRegisterItemRenderingEvent {
 	public static void onModelRegistryReady(ModelRegistryEvent event) {
 		for (ModelRegisterCallback b : RegisterBlockEvent.getBlockModels()) b.registerModel();
 
-		for (ModelRegisterCallback i : TFRegisterItemEvent.ItemRegistryHelper.getItemModels()) i.registerModel();
+		for (ModelRegisterCallback i : RegisterItemEvent.ItemRegistryHelper.getItemModels()) i.registerModel();
 	}
 }

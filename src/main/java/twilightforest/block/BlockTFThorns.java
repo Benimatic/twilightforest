@@ -39,7 +39,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	private static final float THORN_DAMAGE = 4.0F;
 
 	BlockTFThorns() {
-		super(Material.WOOD, MapColor.OBSIDIAN, 3, 13);
+		super(Material.WOOD, MapColor.OBSIDIAN, 10);
 		this.setHardness(50.0F);
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.WOOD);
@@ -87,18 +87,6 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	@Override
 	public int damageDropped(IBlockState state) {
 		return hasVariant() ? state.getValue(VARIANT).ordinal() : 0;
-	}
-
-	@Override
-	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	@Deprecated
-	public boolean isFullCube(IBlockState state) {
-		return false;
 	}
 
 	@Override

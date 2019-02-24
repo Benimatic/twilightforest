@@ -134,6 +134,8 @@ public final class RegisterBlockEvent {
 
 		blocks.register("terrorcotta_circle", "TerrorCottaCircle", new BlockTFHorizontal(Material.ROCK, MapColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
 		blocks.register("terrorcotta_diagonal", "TerrorCottaDiagonal", new BlockTFDiagonal(Material.ROCK, MapColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
+		blocks.register("stone_twist", "StonePillar", new BlockRotatedPillar(Material.ROCK) {}.setHardness(1.5F).setResistance(10.0F));
+		blocks.register("stone_twist_thin", "StonePillarThin", new BlockTFMergedPillar(Material.ROCK, 12, 16).setHardness(1.5F).setResistance(10.0F));
 
 		registerFluidBlock(blocks, moltenFiery);
 		registerFluidBlock(blocks, moltenKnightmetal);

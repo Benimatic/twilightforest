@@ -35,7 +35,7 @@ import static net.minecraft.item.Item.ToolMaterial.GOLD;
 import static twilightforest.item.TFItems.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
-public class TFRegisterItemEvent {
+public class RegisterItemEvent {
 	@SubscribeEvent
 	public static void onRegisterItems(RegistryEvent.Register<Item> event) {
 		ItemRegistryHelper items = new ItemRegistryHelper(event.getRegistry());
@@ -255,6 +255,8 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.iron_ladder);
 		items.registerBlock(TFBlocks.terrorcotta_circle);
 		items.registerBlock(TFBlocks.terrorcotta_diagonal);
+		items.registerBlock(TFBlocks.stone_twist);
+		items.registerBlock(TFBlocks.stone_twist_thin);
 
 		registerWoodVariants(items, BlockTFLog.VARIANT, WoodVariant.values());
 		registerWoodVariants(items, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());

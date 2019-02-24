@@ -1,0 +1,42 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "twilightforest:blocks/stone_twist",
+      "end" : "twilightforest:blocks/stone_cap_side",
+      "cap" : "twilightforest:blocks/stone_cap_end"
+    },
+    "model": "twilightforest:util/pillar_12"
+  },
+  "variants": {
+    "axis": {
+      "x": { "x": 90, "y": 90 },
+      "y": {},
+      "z": { "x": 270, "y": 180 }
+    },
+    "down": {
+      "true": {},
+      "false": { "submodel": { "key_d": { "model": "twilightforest:util/pillar_bottom" } } }
+    },
+    "up":{
+      "true": {},
+      "false": { "submodel": { "key_u": { "model": "twilightforest:util/pillar_top" } } }
+    },
+    "north": {
+      "true": { "submodel": { "key_n": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true, "y": 270 } } },
+      "false": {}
+    },
+    "south": {
+      "true": { "submodel": { "key_s": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true, "y": 90 } } },
+      "false": {}
+    },
+    "east": {
+      "true": { "submodel": { "key_e": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true } } },
+      "false": {}
+    },
+    "west": {
+      "true": { "submodel": { "key_w": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true, "y": 180 } } },
+      "false": {}
+    }
+  }
+}

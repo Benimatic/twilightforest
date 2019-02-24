@@ -20,7 +20,7 @@ import twilightforest.compat.ie.ItemTFShader;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
-import twilightforest.item.TFRegisterItemEvent;
+import twilightforest.item.RegisterItemEvent;
 
 public enum TFCompat {
     BAUBLES("Baubles") {},
@@ -82,7 +82,7 @@ public enum TFCompat {
         }
 
         @Override
-        protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
+        protected void initItems(RegisterItemEvent.ItemRegistryHelper items) {
             items.register("shader", ItemTFShader.shader.setTranslationKey("tfEngineeringShader"));
             items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setTranslationKey("tfEngineeringShaderBag"));
 
@@ -154,7 +154,7 @@ public enum TFCompat {
     protected void init() {}
     protected void postInit() {}
 
-    protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {}
+    protected void initItems(RegisterItemEvent.ItemRegistryHelper items) {}
 
     final private String modName;
 
@@ -168,7 +168,7 @@ public enum TFCompat {
         this.modName = modName;
     }
 
-    public static void initCompatItems(TFRegisterItemEvent.ItemRegistryHelper items) {
+    public static void initCompatItems(RegisterItemEvent.ItemRegistryHelper items) {
         for (TFCompat compat : TFCompat.values()) {
             if (compat.isActivated) {
                 try {

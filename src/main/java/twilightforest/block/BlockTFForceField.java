@@ -34,7 +34,7 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 	public static final IProperty<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
 
 	BlockTFForceField() {
-		super(Material.BARRIER, 7, 9);
+		super(Material.BARRIER, 2);
 		this.setBlockUnbreakable();
 		this.setResistance(Float.MAX_VALUE);
 		this.setLightLevel(2F / 15F);
@@ -60,12 +60,12 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 	@Override
 	protected AxisAlignedBB getSidedAABBStraight(EnumFacing facing, EnumFacing.Axis axis) {
 		return makeQuickAABB(
-				facing == EnumFacing.EAST  || axis == EnumFacing.Axis.X ? 16 : this.boundingBoxLower,
-				facing == EnumFacing.UP    || axis == EnumFacing.Axis.Y ? 16 : this.boundingBoxLower,
-				facing == EnumFacing.SOUTH || axis == EnumFacing.Axis.Z ? 16 : this.boundingBoxLower,
-				facing == EnumFacing.WEST  || axis == EnumFacing.Axis.X ?  0 : this.boundingBoxUpper,
-				facing == EnumFacing.DOWN  || axis == EnumFacing.Axis.Y ?  0 : this.boundingBoxUpper,
-				facing == EnumFacing.NORTH || axis == EnumFacing.Axis.Z ?  0 : this.boundingBoxUpper);
+				facing == EnumFacing.EAST  || axis == EnumFacing.Axis.X ? 16 : this.boundingBoxWidthLower,
+				facing == EnumFacing.UP    || axis == EnumFacing.Axis.Y ? 16 : this.boundingBoxWidthLower,
+				facing == EnumFacing.SOUTH || axis == EnumFacing.Axis.Z ? 16 : this.boundingBoxWidthLower,
+				facing == EnumFacing.WEST  || axis == EnumFacing.Axis.X ?  0 : this.boundingBoxWidthUpper,
+				facing == EnumFacing.DOWN  || axis == EnumFacing.Axis.Y ?  0 : this.boundingBoxWidthUpper,
+				facing == EnumFacing.NORTH || axis == EnumFacing.Axis.Z ?  0 : this.boundingBoxWidthUpper);
 	}
 
 	@Override
