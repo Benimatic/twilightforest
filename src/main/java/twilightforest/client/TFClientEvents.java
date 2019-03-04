@@ -14,9 +14,11 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
@@ -153,11 +155,16 @@ public class TFClientEvents {
 		}
 	}
 
+	// TODO: remove this check (and the event handler) whenever we depend on a greater Forge version
+	private static final boolean shouldUpdateFOV = Loader.instance().getIndexedModList().get("forge")
+			.getProcessedVersion().compareTo(new DefaultArtifactVersion("14.23.5.2813")) < 0;
+
 	/**
 	 * Alter FOV for our bows
 	 */
 	@SubscribeEvent
 	public static void fovUpdate(FOVUpdateEvent event) {
+		if (!shouldUpdateFOV) return;
 		EntityPlayer player = event.getEntity();
 		// Logic from AbstractClientPlayer.getFovModifier()
 		if (player.isHandActive() && player.getActiveItemStack().getItem() instanceof ItemTFBowBase) {
