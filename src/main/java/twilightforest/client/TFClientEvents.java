@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -157,8 +158,10 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public static void fovUpdate(FOVUpdateEvent event) {
-		if (event.getEntity().isHandActive() && (event.getEntity().getHeldItem(event.getEntity().getActiveHand()).getItem() instanceof ItemTFBowBase)) {
-			int i = event.getEntity().getItemInUseCount();
+		EntityPlayer player = event.getEntity();
+		// Logic from AbstractClientPlayer.getFovModifier()
+		if (player.isHandActive() && player.getActiveItemStack().getItem() instanceof ItemTFBowBase) {
+			int i = player.getItemInUseMaxCount();
 			float f1 = (float) i / 20.0F;
 
 			if (f1 > 1.0F) {
