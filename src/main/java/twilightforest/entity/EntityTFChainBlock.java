@@ -17,13 +17,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
-
 public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiPart, IEntityAdditionalSpawnData {
+
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
@@ -167,8 +166,8 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 				if (getThrower() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) getThrower();
 
-					if (ForgeHooks.canHarvestBlock(block, player, world, pos)) {
-						block.harvestBlock(this.world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
+					if (block.canHarvestBlock(world, pos, player)) {
+						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
 					}
 				}
 

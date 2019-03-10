@@ -13,7 +13,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,7 +38,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 	@SubscribeEvent
 	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
 		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe
-				&& ForgeHooks.canHarvestBlock(event.getState().getBlock(), event.getHarvester(), event.getWorld(), event.getPos())) {
+				&& event.getState().getBlock().canHarvestBlock(event.getWorld(), event.getPos(), event.getHarvester())) {
 
 			List<ItemStack> removeThese = new ArrayList<>();
 			List<ItemStack> addThese = new ArrayList<>();
