@@ -17,6 +17,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
@@ -37,14 +40,16 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
 
     @MethodsReturnNonnullByDefault
     @ParametersAreNonnullByDefault
-    public class BakedModel implements IBakedModel {
+    private class BakedModel implements IBakedModel {
+
         private class Overrides extends ItemOverrideList {
-            public Overrides() {
+
+            Overrides() {
                 super(Collections.emptyList());
             }
 
             @Override
-            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
                 ShaderGrabbagStackRenderer.this.stack = stack;
                 return BakedModel.this;
             }
@@ -87,32 +92,43 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
         }
     }
 
-    public final BakedModel baked = new BakedModel();
-
     private ItemStack stack;
     private ItemCameraTransforms.TransformType transform;
-    private IBakedModel modelBack;
-    private IBakedModel modelCase;
 
     private final ResourceLocation bg = new ResourceLocation(TwilightForestMod.ID, "textures/items/star_burst_mask.png");
+
+    private final ModelResourceLocation backModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory");
+    private final ModelResourceLocation caseModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":shader", "inventory");
+
+    private final ModelResourceLocation itemModelLocation;
+
+    public ShaderGrabbagStackRenderer(ModelResourceLocation itemModelLocation) {
+        this.itemModelLocation = itemModelLocation;
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void onModelBake(ModelBakeEvent event) {
+        event.getModelRegistry().putObject(itemModelLocation, new BakedModel());
+    }
 
     @Override
     public void render(DummyTile te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix(); // Stack + 1
         GlStateManager.disableCull();
 
-        if (modelCase == null) modelCase = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":shader", "inventory"));
+        IBakedModel modelCase = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(caseModelLocation);
 
         // Render the trophy-backing if it's in a GUI.
         if (transform == ItemCameraTransforms.TransformType.GUI) {
-            // Lazy init. If modelBack is null, pull a new instance.
-            if (modelBack == null) modelBack = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory"));
+
+            IBakedModel modelBack = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(backModelLocation);
 
             GlStateManager.disableLighting();
             GlStateManager.pushMatrix(); // Stack + 2
             GlStateManager.translate(0.5F, 0.5F, -1.5F);
 
-            Minecraft.getMinecraft().getRenderItem().renderItem(stack, ForgeHooksClient.handleCameraTransforms(modelBack, transform, transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND));
+            Minecraft.getMinecraft().getRenderItem().renderItem(stack, ForgeHooksClient.handleCameraTransforms(modelBack, transform, false));
 
             GlStateManager.popMatrix(); // Stack + 1
             GlStateManager.enableLighting();
@@ -122,7 +138,6 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
             // Rotate the lunchbox if we're in the Gui. This is a setup for the next bit of rendering.
             GlStateManager.rotate(TFConfig.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : 0F, 0.125F, 1F, 0.125F);
             //GlStateManager.translate(0F, -0.5F, 0F);
-
         }
 
         GlStateManager.pushMatrix(); // Stack + 2

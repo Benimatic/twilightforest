@@ -19,6 +19,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
@@ -46,48 +49,61 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 	public static class DummyTile extends TileEntityTFTrophy {}
 
-	private ModelTFHydraHead hydraHeadModel;
+	private final ModelTFHydraHead hydraHeadModel = new ModelTFHydraHead();
 	private static final ResourceLocation textureLocHydra = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
-	private ModelTFNaga nagaHeadModel;
+
+	private final ModelTFNaga nagaHeadModel = new ModelTFNaga();
 	private static final ResourceLocation textureLocNaga = new ResourceLocation(TwilightForestMod.MODEL_DIR + "nagahead.png");
-	private ModelTFLich lichModel;
+
+	private final ModelTFLich lichModel = new ModelTFLich();
 	private static final ResourceLocation textureLocLich = new ResourceLocation(TwilightForestMod.MODEL_DIR + "twilightlich64.png");
-	private ModelTFTowerBoss urGhastModel;
+
+	private final ModelTFTowerBoss urGhastModel = new ModelTFTowerBoss();
 	private static final ResourceLocation textureLocUrGhast = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss.png");
-	private ModelTFSnowQueen snowQueenModel;
+
+	private final ModelTFSnowQueen snowQueenModel = new ModelTFSnowQueen();
 	private static final ResourceLocation textureLocSnowQueen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "snowqueen.png");
-	private ModelTFMinoshroom minoshroomModel;
+
+	private final ModelTFMinoshroom minoshroomModel = new ModelTFMinoshroom();
 	private static final ResourceLocation textureLocMinoshroom = new ResourceLocation(TwilightForestMod.MODEL_DIR + "minoshroomtaur.png");
-	private ModelTFKnightPhantom2 knightPhantomModel;
+
+	private final ModelTFKnightPhantom2 knightPhantomModel = new ModelTFKnightPhantom2();
 	private static final ResourceLocation textureLocKnightPhantom = new ResourceLocation(TwilightForestMod.MODEL_DIR + "phantomskeleton.png");
-	private ModelTFPhantomArmor knightPhantomArmorModel;
+	private final ModelTFPhantomArmor knightPhantomArmorModel = new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F);
 	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
-	private ModelTFQuestRam questRamModel;
+
+	private final ModelTFQuestRam questRamModel = new ModelTFQuestRam();
 	private static final ResourceLocation textureLocQuestRam = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram_lines.png");
 
+	private final ModelResourceLocation itemModelLocation;
+
 	public TileEntityTFTrophyRenderer() {
-		hydraHeadModel = new ModelTFHydraHead();
-		nagaHeadModel = new ModelTFNaga();
-		lichModel = new ModelTFLich();
-		urGhastModel = new ModelTFTowerBoss();
-		snowQueenModel = new ModelTFSnowQueen();
-		minoshroomModel = new ModelTFMinoshroom();
-		knightPhantomModel = new ModelTFKnightPhantom2();
-		knightPhantomArmorModel = new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F);
-		questRamModel = new ModelTFQuestRam();
+		this.itemModelLocation = null;
+	}
+
+	public TileEntityTFTrophyRenderer(ModelResourceLocation itemModelLocation) {
+		this.itemModelLocation = itemModelLocation;
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@SubscribeEvent
+	public void onModelBake(ModelBakeEvent event) {
+		event.getModelRegistry().putObject(itemModelLocation, new BakedModel());
 	}
 
 	@MethodsReturnNonnullByDefault
 	@ParametersAreNonnullByDefault
-	public class BakedModel implements IBakedModel {
+	private class BakedModel implements IBakedModel {
+
 		private class Overrides extends ItemOverrideList {
-			public Overrides() {
+
+			Overrides() {
 				super(Collections.emptyList());
 			}
 
 			@Override
-			public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+			public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
 				TileEntityTFTrophyRenderer.this.stack = stack;
 				return BakedModel.this;
 			}
@@ -130,13 +146,8 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		}
 	}
 
-	public final BakedModel baked = new BakedModel();
-
 	private ItemStack stack;
 	private ItemCameraTransforms.TransformType transform;
-	private IBakedModel model;
-
-	private final IBakedModel[] trophyModels = new IBakedModel[BossVariant.TrophyType.values().length];
 
 	@Override
 	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
@@ -145,16 +156,13 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		if (trophy == null) {
 			if (transform == ItemCameraTransforms.TransformType.GUI) {
-				BossVariant variant = BossVariant.values()[stack.getMetadata() % BossVariant.values().length];
-				BossVariant.TrophyType trophyType = variant.getTrophyType();
-				int trophyVariant = trophyType.ordinal();
-
-				model = trophyModels[trophyVariant] != null ? trophyModels[trophyVariant] : (trophyModels[trophyVariant] = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":" + trophyType.getModelName(), "inventory")));
+				String modelName = BossVariant.getVariant(stack.getMetadata()).getTrophyType().getModelName();
+				ModelResourceLocation trophyModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":" + modelName, "inventory");
+				IBakedModel trophyModel = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(trophyModelLocation);
 
 				GlStateManager.disableLighting();
 				GlStateManager.translate(0.5F, 0.5F, -1.5F);
-				IBakedModel bakedModel = ForgeHooksClient.handleCameraTransforms(model, transform, transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND);
-				Minecraft.getMinecraft().getRenderItem().renderItem(stack, bakedModel);
+				Minecraft.getMinecraft().getRenderItem().renderItem(stack, ForgeHooksClient.handleCameraTransforms(trophyModel, transform, false));
 				GlStateManager.enableLighting();
 				GlStateManager.translate(-0.5F, 0.0F, 1.5F);
 
@@ -162,23 +170,20 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 				//	GlStateManager.translate(0.0F,0.0625F,0.0F);
 
 				GlStateManager.rotate(30, 1F, 0F, 0F);
-			}
 
-			if (transform == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND
+			} else if (transform == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND
 					|| transform == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
 				GlStateManager.scale(0.5F, 0.5F, 0.5F);
 				GlStateManager.rotate(45, 1.0F, 0.0F, 0.0F);
 				GlStateManager.rotate(45, 0.0F, 1.0F, 0.0F);
 				GlStateManager.translate(0.40625F, 1.171875F, 0.0F);
-			}
 
-			if (transform == ItemCameraTransforms.TransformType.GROUND) {
+			} else if (transform == ItemCameraTransforms.TransformType.GROUND) {
 				GlStateManager.translate(0.25F, 0.3F, 0.25F);
 				GlStateManager.scale(0.5F, 0.5F, 0.5F);
-			}
 
-			if (transform == ItemCameraTransforms.TransformType.HEAD) {
-				if (BossVariant.values()[stack.getMetadata() % BossVariant.values().length] == BossVariant.QUEST_RAM) {
+			} else if (transform == ItemCameraTransforms.TransformType.HEAD) {
+				if (BossVariant.getVariant(stack.getMetadata()) == BossVariant.QUEST_RAM) {
 					GlStateManager.scale(3F, 3F, 3F);
 					GlStateManager.translate(-0.33F, -0.13F, -0.33F);
 				} else {
@@ -218,10 +223,11 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-		switch (trophy != null ? BossVariant.values()[trophy.getSkullType()] : BossVariant.values()[stack.getMetadata() % BossVariant.values().length]) {
+		switch (BossVariant.getVariant(trophy != null ? trophy.getSkullType() : stack.getMetadata())) {
 			case HYDRA:
-				if (trophy == null)
+				if (trophy == null) {
 					GlStateManager.translate(0.0F, -0.25F, transform == ItemCameraTransforms.TransformType.HEAD ? -0.125F : 0.0F);
+				}
 				renderHydraHead(rotation, onGround && trophy != null);
 				break;
 			case NAGA:
@@ -407,7 +413,8 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		else
 			GlStateManager.scale(0.5f, 0.5f, 0.5f);
 
-		if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
+		if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND
+				|| transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
 			GlStateManager.translate(0.0F, 0.5F, 0.0F);
 		}
 

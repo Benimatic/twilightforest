@@ -23,7 +23,8 @@ import twilightforest.enums.*;
 import twilightforest.item.RegisterItemEvent;
 
 public enum TFCompat {
-    BAUBLES("Baubles") {},
+
+    BAUBLES("Baubles"),
     CHISEL("Chisel") {
         @Override
         public void init() {
@@ -64,22 +65,8 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(team.chisel.api.ChiselAPIProps.MOD_ID, team.chisel.api.IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     },
-    FORESTRY("Forestry") {
-
-    },
+    FORESTRY("Forestry"),
     IMMERSIVEENGINEERING("Immersive Engineering") {
-        @Override
-        protected boolean preInit() {
-            //try {
-            //    VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
-
-            //    return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
-            //} catch (InvalidVersionSpecificationException e) {
-            //    return false;
-            //}
-            registerSidedHandler(Side.CLIENT, ItemTFShaderGrabbag.ClientEventHandler.class);
-            return true;
-        }
 
         @Override
         protected void initItems(RegisterItemEvent.ItemRegistryHelper items) {
@@ -123,8 +110,7 @@ public enum TFCompat {
             FMLInterModComms.sendMessage("immersiveengineering", "shaderbag_exclude", entityClass.getName());
         }
     },
-    JEI("Just Enough Items") {},
-    @SuppressWarnings("WeakerAccess")
+    JEI("Just Enough Items"),
     TCONSTRUCT("Tinkers' Construct") {
         @Override
         protected boolean preInit() {

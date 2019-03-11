@@ -15,10 +15,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
@@ -30,6 +28,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
+
     public ItemTFShaderGrabbag() {
         this.setHasSubtypes(true);
         this.setCreativeTab(TFItems.creativeTab);
@@ -126,24 +125,9 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"));
-
-        ShaderGrabbagStackRenderer tesr = new ShaderGrabbagStackRenderer();
-
-        ClientRegistry.bindTileEntitySpecialRenderer(ShaderGrabbagStackRenderer.DummyTile.class, tesr);
-        ClientEventHandler.dummyModel = tesr.baked;
-
+        ModelResourceLocation mrl = new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory");
+        ModelLoader.setCustomModelResourceLocation(this, 0, mrl);
+        ClientRegistry.bindTileEntitySpecialRenderer(ShaderGrabbagStackRenderer.DummyTile.class, new ShaderGrabbagStackRenderer(mrl));
         ForgeHooksClient.registerTESRItemStack(this, 0, ShaderGrabbagStackRenderer.DummyTile.class);
-    }
-
-    public static final class ClientEventHandler {
-
-        static ShaderGrabbagStackRenderer.BakedModel dummyModel;
-
-        @SubscribeEvent
-        public static void onModelBake(ModelBakeEvent event) {
-            TwilightForestMod.LOGGER.debug("Registering fancy item model for TF Shader Grabbag!");
-            event.getModelRegistry().putObject(new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory"), dummyModel);
-        }
     }
 }
