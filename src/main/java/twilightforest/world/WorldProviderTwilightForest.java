@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
  * @author Ben
  */
 public class WorldProviderTwilightForest extends WorldProviderSurface {
+
 	private static final String SEED_KEY = "CustomSeed";
 	private static final String SKYLIGHT_KEY = "HasSkylight";
 
@@ -133,6 +134,12 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
+	public double getVoidFogYFactor() {
+		// allow for terrain squashing
+		return super.getVoidFogYFactor() * 2.0;
+	}
+
+	@Override
 	public boolean canRespawnHere() {
 		// lie about this until the world is initialized
 		// otherwise the server will try to generate enough terrain for a spawn point and that's annoying
@@ -146,6 +153,11 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public boolean isDaytime() {
+		return false;
+	}
+
+	@Override
+	public boolean shouldMapSpin(String entityName, double x, double z, double rotation) {
 		return false;
 	}
 
@@ -221,7 +233,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		if (super.getSkyRenderer() == null) {
 			this.setSkyRenderer(new TFSkyRenderer());
 		}
-
 		return super.getSkyRenderer();
 	}
 
@@ -231,7 +242,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		if (super.getWeatherRenderer() == null) {
 			this.setWeatherRenderer(new TFWeatherRenderer());
 		}
-
 		return super.getWeatherRenderer();
 	}
 
