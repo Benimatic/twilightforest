@@ -34,9 +34,11 @@ import twilightforest.network.PacketMazeMap;
 import javax.annotation.Nullable;
 
 public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
-	private static final String STR_ID = "mazemap";
+
+	public static final String STR_ID = "mazemap";
 	private static final int YSEARCH = 3;
-	protected boolean mapOres;
+
+	protected final boolean mapOres;
 
 	protected ItemTFMazeMap(boolean mapOres) {
 		this.mapOres = mapOres;
@@ -58,17 +60,11 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	// [VanillaCopy] super, with own string ID and class, narrowed types
+	@Nullable
 	@SideOnly(Side.CLIENT)
-	public static TFMazeMapData loadMapData(int mapId, World worldIn) {
+	public static TFMazeMapData loadMapData(int mapId, World world) {
 		String s = STR_ID + "_" + mapId;
-		TFMazeMapData mapdata = (TFMazeMapData) worldIn.loadData(TFMazeMapData.class, s);
-
-		if (mapdata == null) {
-			mapdata = new TFMazeMapData(s);
-			worldIn.setData(s, mapdata);
-		}
-
-		return mapdata;
+		return (TFMazeMapData) world.loadData(TFMazeMapData.class, s);
 	}
 
 	// [VanillaCopy] super, with own string ID and class
