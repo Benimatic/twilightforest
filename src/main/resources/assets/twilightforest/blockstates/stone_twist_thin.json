@@ -2,40 +2,92 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "side": "twilightforest:blocks/stone_twist",
-      "end" : "twilightforest:blocks/stone_cap_side",
-      "cap" : "twilightforest:blocks/stone_cap_end"
+      "blank"     : "twilightforest:blocks/stone_twist/twist_blank",
+      "crown"     : "twilightforest:blocks/stone_twist/twist_crown"
     },
-    "model": "twilightforest:util/pillar_12"
+    "model": "twilightforest:pillar/pillar_12_ctm",
+    "uvlock": true
   },
   "variants": {
+    "inventory": [{
+      "textures": {
+        "side_x"    : "twilightforest:blocks/stone_twist/twist_y",
+        "side_z"    : "twilightforest:blocks/stone_twist/twist_y",
+    
+        "bottom_x"  : "twilightforest:blocks/stone_twist/cap/y"  ,
+        "bottom_z"  : "twilightforest:blocks/stone_twist/cap/y"  ,
+        "bottom_cap": "twilightforest:blocks/stone_twist/cap/end",
+        "top_x"     : "twilightforest:blocks/stone_twist/cap/y"  ,
+        "top_z"     : "twilightforest:blocks/stone_twist/cap/y"  ,
+        "top_cap"   : "twilightforest:blocks/stone_twist/cap/end"
+      }
+    }],
     "axis": {
-      "x": { "x": 90, "y": 90 },
-      "y": {},
-      "z": { "x": 270, "y": 180 }
+      "x": {
+        "textures": {
+          "side_x"    : "twilightforest:blocks/stone_twist/twist_x"         ,
+          "side_z"    : "twilightforest:blocks/stone_twist/twist_x"         ,
+          
+          "bottom_x"  : "twilightforest:blocks/stone_twist/cap/x_x_bottom"  ,
+          "bottom_z"  : "twilightforest:blocks/stone_twist/cap/x_x_bottom"  ,
+          "bottom_cap": "twilightforest:blocks/stone_twist/cap/end_bottom_x",
+          "top_x"     : "twilightforest:blocks/stone_twist/cap/x_x_top"     ,
+          "top_z"     : "twilightforest:blocks/stone_twist/cap/x_x_top"     ,
+          "top_cap"   : "twilightforest:blocks/stone_twist/cap/end_top_x"
+        },
+        "x": 90,
+        "y": 90
+      },
+      "y": {
+        "textures": {
+          "side_x"    : "twilightforest:blocks/stone_twist/twist_y"         ,
+          "side_z"    : "twilightforest:blocks/stone_twist/twist_y"         ,
+  
+          "bottom_x"  : "twilightforest:blocks/stone_twist/cap/y_y_bottom"  ,
+          "bottom_z"  : "twilightforest:blocks/stone_twist/cap/y_y_bottom"  ,
+          "bottom_cap": "twilightforest:blocks/stone_twist/cap/end_bottom_y",
+          "top_x"     : "twilightforest:blocks/stone_twist/cap/y_y_top"     ,
+          "top_z"     : "twilightforest:blocks/stone_twist/cap/y_y_top"     ,
+          "top_cap"   : "twilightforest:blocks/stone_twist/cap/end_top_y"
+        }
+      },
+      "z": {
+        "textures": {
+          "side_x"    : "twilightforest:blocks/stone_twist/twist_x"         ,
+          "side_z"    : "twilightforest:blocks/stone_twist/twist_y"         ,
+          
+          "bottom_x"  : "twilightforest:blocks/stone_twist/cap/x_z_bottom"  ,
+          "bottom_z"  : "twilightforest:blocks/stone_twist/cap/y_z_bottom"  ,
+          "bottom_cap": "twilightforest:blocks/stone_twist/cap/end_bottom_z",
+          "top_x"     : "twilightforest:blocks/stone_twist/cap/x_z_top"     ,
+          "top_z"     : "twilightforest:blocks/stone_twist/cap/y_z_top"     ,
+          "top_cap"   : "twilightforest:blocks/stone_twist/cap/end_top_z"
+        },
+        "x": 90
+      }
     },
     "down": {
       "true": {},
-      "false": { "submodel": { "key_d": { "model": "twilightforest:util/pillar_bottom" } } }
+      "false": { "submodel": "twilightforest:pillar/pillar_bottom" }
     },
     "up":{
       "true": {},
-      "false": { "submodel": { "key_u": { "model": "twilightforest:util/pillar_top" } } }
+      "false": { "submodel": "twilightforest:pillar/pillar_top"    }
     },
     "north": {
-      "true": { "submodel": { "key_n": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true, "y": 270 } } },
+      "true": {},
       "false": {}
     },
     "south": {
-      "true": { "submodel": { "key_s": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true, "y": 90 } } },
+      "true": {},
       "false": {}
     },
     "east": {
-      "true": { "submodel": { "key_e": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true } } },
+      "true": {},
       "false": {}
     },
     "west": {
-      "true": { "submodel": { "key_w": { "model": "twilightforest:util/pillar_12_extension", "uvlock": true, "y": 180 } } },
+      "true": {},
       "false": {}
     }
   }

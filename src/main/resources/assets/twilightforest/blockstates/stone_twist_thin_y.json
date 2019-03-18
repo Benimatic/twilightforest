@@ -1,0 +1,47 @@
+{
+  "multipart": [{
+    "apply": { "model": "twilightforest:stone_twist" }
+  }, {
+    "when": { "east": true },
+    "apply": { "model": "twilightforest:stone_twist_extension" }
+  }, {
+    "when": { "south": true },
+    "apply": { "model": "twilightforest:stone_twist_extension", "y": 90 }
+  }, {
+    "when": { "west": true },
+    "apply": { "model": "twilightforest:stone_twist_extension", "y": 180 }
+  }, {
+    "when": { "north": true },
+    "apply": { "model": "twilightforest:stone_twist_extension", "y": 270 }
+  }, {
+    "when": { "up": false },
+    "apply": { "model": "twilightforest:stone_twist_top" }
+  }, {
+    "when": { "up": true, "east": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_top" }
+  }, {
+    "when": { "up": true, "south": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_top", "y": 90 }
+  }, {
+    "when": { "up": true, "west": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_top", "y": 180 }
+  }, {
+    "when": { "up": true, "north": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_top", "y": 270 }
+  }, {
+    "when": { "down": false },
+    "apply": { "model": "twilightforest:stone_twist_bottom" }
+  }, {
+    "when": { "down": true, "east": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_bottom" }
+  }, {
+    "when": { "down": true, "south": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_bottom", "y": 90 }
+  }, {
+    "when": { "down": true, "west": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_bottom", "y": 180 }
+  }, {
+    "when": { "down": true, "north": true },
+    "apply": { "model": "twilightforest:stone_twist_extension_bottom", "y": 270 }
+  }]
+}

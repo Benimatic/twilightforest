@@ -17,6 +17,7 @@ public interface ModelRegisterCallbackCTM extends ModelRegisterCallback {
 	/**
 	 * Should ONLY be implemented on Block or its children.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	default void registerModel() {
 		ModelLoader.setCustomStateMapper((Block) this, new CTMOptionalStateMapper(this.getIgnoredProperties()));
