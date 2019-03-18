@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/util/pillar_12_extension_bottom",
-  "textures": {
-    "side": "twilightforest:blocks/stone_twist"
-  }
-}

@@ -73,22 +73,6 @@ public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar implement
 
     @Override
     public void registerModel() {
-        if (Loader.isModLoaded("ctm")) {
-            ModelUtils.registerToState(this, 0, this.getDefaultState());
-        } else {
-            IStateMapper mapper = new StateMapperBase() {
-                @Override
-                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                    HashMap<IProperty<?>, Comparable<?>> properties = new HashMap<>(state.getProperties());
-
-                    properties.remove(AXIS);
-
-                    return new ModelResourceLocation(state.getBlock().getRegistryName().getNamespace() + ":" + state.getBlock().getRegistryName().getPath() + "_" + state.getValue(AXIS).getName().toLowerCase(Locale.ROOT), this.getPropertyString(properties));
-                }
-            };
-
-            ModelLoader.setCustomStateMapper(this, mapper);
-            ModelUtils.registerToState(this, 0, this.getDefaultState(), mapper);
-        }
+        ModelUtils.registerToState(this, 0, this.getDefaultState());
     }
 }
