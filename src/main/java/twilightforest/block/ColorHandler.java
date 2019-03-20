@@ -289,7 +289,8 @@ public final class ColorHandler {
 		BlockColors blockColors = event.getBlockColors();
 
 		// Atomic: This is one place where getStateFromMeta is still commonly used
-		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.aurora_block, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.auroralized_glass, TFBlocks.dark_leaves, TFBlocks.giant_leaves, TFBlocks.fire_jet, TFBlocks.magic_leaves, TFBlocks.twilight_leaves, TFBlocks.twilight_leaves_3, TFBlocks.twilight_plant, TFBlocks.castle_rune_brick, TFBlocks.castle_door, TFBlocks.castle_door_vanished, TFBlocks.miniature_structure, TFBlocks.force_field, TFBlocks.huge_lilypad);
+		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+				TFBlocks.aurora_block, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.auroralized_glass, TFBlocks.dark_leaves, TFBlocks.giant_leaves, TFBlocks.fire_jet, TFBlocks.magic_leaves, TFBlocks.twilight_leaves, TFBlocks.twilight_leaves_3, TFBlocks.twilight_plant, TFBlocks.castle_rune_brick, TFBlocks.castle_door, TFBlocks.miniature_structure, TFBlocks.force_field, TFBlocks.huge_lilypad);
 		// Honestly I'd say it makes sense in this context. -Drullkus
 
 		itemColors.registerItemColorHandler((stack, tintIndex) ->
