@@ -244,8 +244,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 		boolean disableFeatures = false;
 
-		for (TFFeature feature : TFFeature.values()) {
-			if (feature != TFFeature.NOTHING && feature.getFeatureGenerator().generateStructure(world, rand, chunkpos)) {
+		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
+			if (generator.generateStructure(world, rand, chunkpos)) {
 				disableFeatures = true;
 			}
 		}

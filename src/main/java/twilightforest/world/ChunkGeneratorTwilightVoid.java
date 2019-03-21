@@ -88,10 +88,8 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
-		for (TFFeature feature : TFFeature.values()) {
-			if (feature != TFFeature.NOTHING) {
-				feature.getFeatureGenerator().generateStructure(world, rand, chunkpos);
-			}
+		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
+			generator.generateStructure(world, rand, chunkpos);
 		}
 
 		if (generateHollowTrees) {

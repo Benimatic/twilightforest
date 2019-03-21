@@ -423,8 +423,8 @@ public enum TFFeature {
 		}
 	};
 
-	public int size;
-	public String name;
+	public final int size;
+	public final String name;
 	private final boolean shouldHaveFeatureGenerator;
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
@@ -435,21 +435,15 @@ public enum TFFeature {
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
-	private MapGenTFMajorFeature featureGenerator;
-
 	private long lastSpawnedHintMonsterTime;
 
 	private static final String BOOK_AUTHOR = "A Forgotten Explorer";
 
 	private static final int maxSize = Arrays.stream(values()).mapToInt(v -> v.size).max().orElse(0);
 
-	private static class NoU {
-		private static final MapGenTFMajorFeature NOTHING_GENERATOR = new MapGenTFMajorFeature( NOTHING );
-	}
-
-	TFFeature(int parSize, String parName, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
-		this.size = parSize;
-		this.name = parName;
+	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
+		this.size = size;
+		this.name = name;
 		this.areChunkDecorationsEnabled = false;
 		this.isStructureEnabled = true;
 		this.isTerrainAltered = false;
@@ -469,8 +463,9 @@ public enum TFFeature {
 		return maxSize;
 	}
 
-	public MapGenTFMajorFeature getFeatureGenerator() {
-		return this.shouldHaveFeatureGenerator ? this.featureGenerator == null ? (this.featureGenerator = new MapGenTFMajorFeature(this)) : this.featureGenerator : NoU.NOTHING_GENERATOR;
+	@Nullable
+	public MapGenTFMajorFeature createFeatureGenerator() {
+		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
 	}
 
 	/**

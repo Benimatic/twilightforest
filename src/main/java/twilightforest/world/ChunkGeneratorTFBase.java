@@ -25,7 +25,9 @@ import twilightforest.block.TFBlocks;
 import javax.annotation.Nullable;
 import java.util.BitSet;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 // TODO: doc out all the vanilla copying
@@ -54,6 +56,8 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	private final float[] biomeWeights;
 
 	protected final MapGenTFHollowTree hollowTreeGenerator = new MapGenTFHollowTree();
+	protected final Map<TFFeature, MapGenTFMajorFeature> featureGenerators = new EnumMap<>(TFFeature.class);
+	protected final MapGenTFMajorFeature nothingGenerator = new MapGenTFMajorFeature();
 
 	private final boolean shouldGenerateBedrock;
 
@@ -88,13 +92,18 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 				this.biomeWeights[j + 2 + (k + 2) * 5] = f;
 			}
 		}
+
+		for (TFFeature feature : TFFeature.values()) {
+			MapGenTFMajorFeature generator = feature.createFeatureGenerator();
+			if (generator != null) {
+				featureGenerators.put(feature, generator);
+			}
+		}
 	}
 
 	protected final void generateFeatures(int x, int z, ChunkPrimer primer) {
-		for (TFFeature feature : TFFeature.values()) {
-			if (feature != TFFeature.NOTHING) {
-				feature.getFeatureGenerator().generate(world, x, z, primer);
-			}
+		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
+			generator.generate(world, x, z, primer);
 		}
 	}
 
@@ -673,7 +682,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 			}
 
 			// check the precise coords.
-			int spawnListIndex = nearestFeature.getFeatureGenerator().getSpawnListIndexAt(pos);
+			int spawnListIndex = getFeatureGenerator(nearestFeature).getSpawnListIndexAt(pos);
 			if (spawnListIndex >= 0) {
 				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
 			}
@@ -702,58 +711,60 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		return null;
 	}
 
+	protected final MapGenTFMajorFeature getFeatureGenerator(TFFeature feature) {
+		return featureGenerators.getOrDefault(feature, nothingGenerator);
+	}
+
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		TFFeature.getFeatureForRegionPos(mapX, mapZ, world).getFeatureGenerator().setStructureConquered(mapX, mapY, mapZ, flag);
+		getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world)).setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureLocked(pos, lockIndex);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isStructureLocked(pos, lockIndex);
 	}
 
 	public boolean isBlockInStructureBB(BlockPos pos) {
-		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isInsideStructure(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isInsideStructure(pos);
 	}
 
 	@Nullable
 	public StructureBoundingBox getSBBAt(BlockPos pos) {
-		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().getSBBAt(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).getSBBAt(pos);
 	}
 
 	public boolean isBlockProtected(BlockPos pos) {
-		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isBlockProtectedAt(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isBlockProtectedAt(pos);
 	}
 
 	public boolean isStructureConquered(BlockPos pos) {
-		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureConquered(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isStructureConquered(pos);
 	}
 
 	public boolean isBlockInFullStructure(int x, int z) {
-		return TFFeature.getFeatureForRegionPos(x, z, world).getFeatureGenerator().isBlockInFullStructure(x, z);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world)).isBlockInFullStructure(x, z);
 	}
 
 	public boolean isBlockNearFullStructure(int x, int z, int range) {
-		return TFFeature.getFeatureForRegionPos(x, z, world).getFeatureGenerator().isBlockNearFullStructure(x, z, range);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world)).isBlockNearFullStructure(x, z, range);
 	}
 
 	//public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
-	//	TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().getFullSBBAt(mapX, mapZ);
+	//	getFeatureGenerator(TFFeature.getFeatureAt(mapX, mapZ, world)).getFullSBBAt(mapX, mapZ);
 	//}
 
 	@Nullable
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		return TFFeature.getFeatureForRegionPos(mapX, mapZ, world).getFeatureGenerator().getFullSBBNear(mapX, mapZ, range);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world)).getFullSBBNear(mapX, mapZ, range);
 	}
 
 	public TFFeature getFeatureAt(BlockPos pos) {
-		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().getFeatureAt(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).getFeatureAt(pos);
 	}
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {
-		for (TFFeature feature : TFFeature.values()) {
-			if (feature != TFFeature.NOTHING) {
-				feature.getFeatureGenerator().generate(world, x, z, null);
-			}
+		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
+			generator.generate(world, x, z, null);
 		}
 	}
 
@@ -763,6 +774,6 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 			return hollowTreeGenerator.isInsideStructure(pos);
 		}
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return feature != TFFeature.NOTHING && feature.getFeatureGenerator().isInsideStructure(pos);
+		return feature != TFFeature.NOTHING && getFeatureGenerator(feature).isInsideStructure(pos);
 	}
 }
