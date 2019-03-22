@@ -82,6 +82,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		fireflyModel.glow.render(0.0625f);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.disableBlend();
 		GlStateManager.enableAlpha();
 		GlStateManager.enableLighting();
 

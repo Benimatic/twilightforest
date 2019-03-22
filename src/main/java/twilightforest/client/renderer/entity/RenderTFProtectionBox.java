@@ -57,6 +57,8 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 
 		GlStateManager.disableBlend();
 		GlStateManager.enableCull();
+		GlStateManager.enableAlpha();
+		GlStateManager.enableLighting();
 
 		GlStateManager.matrixMode(GL11.GL_TEXTURE);
 		GlStateManager.loadIdentity();
