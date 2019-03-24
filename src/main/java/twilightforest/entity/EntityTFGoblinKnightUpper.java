@@ -189,11 +189,10 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	@Override
 	public void updateRidden() {
 		super.updateRidden();
-		if (isRiding()) {
+		if (getRidingEntity() instanceof EntityLiving) {
 			this.renderYawOffset = ((EntityLiving) this.getRidingEntity()).renderYawOffset;
 		}
 	}
-
 
 	@SideOnly(Side.CLIENT)
 	@Override
