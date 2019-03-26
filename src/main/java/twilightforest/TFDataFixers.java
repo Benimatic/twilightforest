@@ -16,7 +16,7 @@ public class TFDataFixers {
         ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(TwilightForestMod.ID, DATA_FIXER_VERSION);
 
         fixes.registerFix(FixTypes.BLOCK_ENTITY, new NamespaceTEFixer());
-        fixes.registerFix(FixTypes.STRUCTURE, new structureStartIDDataFixer());
+        fixes.registerFix(FixTypes.STRUCTURE, new StructureStartIDFixer());
     }
 
     private static class NamespaceTEFixer implements IFixableData {
@@ -88,7 +88,7 @@ public class TFDataFixers {
         }
     }
 
-    private static class structureStartIDDataFixer implements IFixableData {
+    private static class StructureStartIDFixer implements IFixableData {
         private final String[] startIDs = {
                 "TFNothing", // Nothing
                 "TFHill"   , // Small Hill
