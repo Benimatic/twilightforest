@@ -2,7 +2,6 @@ package twilightforest.potions;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,7 +16,6 @@ public class TFRegisterPotionEvent {
 	}
 
 	public static void registerPotion(String name, Potion potion, RegistryEvent.Register<Potion> event){
-		event.getRegistry().register(potion.setRegistryName(new ResourceLocation(TwilightForestMod.ID, name)));
+		event.getRegistry().register(potion.setRegistryName(TwilightForestMod.ID, name));
 	}
-
 }

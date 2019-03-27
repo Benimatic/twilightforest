@@ -21,7 +21,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFGiantMiner extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/giant_miner");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/giant_miner");
 
 	public EntityTFGiantMiner(World world) {
 		super(world);

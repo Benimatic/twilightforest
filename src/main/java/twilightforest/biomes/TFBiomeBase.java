@@ -236,7 +236,7 @@ public class TFBiomeBase extends Biome {
 	/**
 	 * Do something bad to a player in the wrong biome.
 	 */
-	public void enforceProgession(EntityPlayer player, World world) {}
+	public void enforceProgression(EntityPlayer player, World world) {}
 
 	/**
 	 * Returns the list of underground creatures.

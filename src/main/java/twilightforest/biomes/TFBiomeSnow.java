@@ -76,11 +76,11 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
-		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_lich") };
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_lich") };
 	}
 
 	@Override
-	public void enforceProgession(EntityPlayer player, World world) {
+	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(TFPotions.frosty, 100, 2));
 

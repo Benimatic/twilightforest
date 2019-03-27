@@ -29,10 +29,10 @@ import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
 
-
 public class EntityTFQuestRam extends EntityAnimal {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/quest_ram");
-	public static final ResourceLocation REWARD_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/questing_ram_rewards");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/quest_ram");
+	public static final ResourceLocation REWARD_LOOT_TABLE = TwilightForestMod.prefix("entities/questing_ram_rewards");
 	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
 

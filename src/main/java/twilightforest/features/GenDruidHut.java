@@ -185,9 +185,9 @@ public class GenDruidHut extends TFGenerator {
     }
 
     private enum HutType {
-        REGULAR    (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_hut"        )),
-        SIDEWAYS   (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_sideways"   )),
-        DOUBLE_DECK(new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/druid_doubledeck" ));
+        REGULAR    (TwilightForestMod.prefix("landscape/druid_hut/druid_hut"       )),
+        SIDEWAYS   (TwilightForestMod.prefix("landscape/druid_hut/druid_sideways"  )),
+        DOUBLE_DECK(TwilightForestMod.prefix("landscape/druid_hut/druid_doubledeck"));
 
         private final ResourceLocation RL;
 
@@ -204,9 +204,9 @@ public class GenDruidHut extends TFGenerator {
     }
 
     private enum BasementType {
-        STUDY  (new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_study"  ), new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_study_trap"   )),
-        SHELVES(new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_shelves"), new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_shelves_trap" )),
-        GALLERY(new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_gallery"), new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut/basement_gallery_trap" ));
+        STUDY  (TwilightForestMod.prefix("landscape/druid_hut/basement_study"  ), TwilightForestMod.prefix("landscape/druid_hut/basement_study_trap"  )),
+        SHELVES(TwilightForestMod.prefix("landscape/druid_hut/basement_shelves"), TwilightForestMod.prefix("landscape/druid_hut/basement_shelves_trap")),
+        GALLERY(TwilightForestMod.prefix("landscape/druid_hut/basement_gallery"), TwilightForestMod.prefix("landscape/druid_hut/basement_gallery_trap"));
 
         private final ResourceLocation RL;
         private final ResourceLocation RL_TRAP;

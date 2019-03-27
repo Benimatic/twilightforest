@@ -213,14 +213,14 @@ public final class RegisterBlockEvent {
 	public static final Fluid moltenKnightmetal;
 	public static final Fluid essenceFiery;
 
-	public static final ResourceLocation moltenFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_fiery_still");
-	public static final ResourceLocation moltenFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_fiery_flow");
+	public static final ResourceLocation moltenFieryStill = TwilightForestMod.prefix("blocks/molten_fiery_still");
+	public static final ResourceLocation moltenFieryFlow  = TwilightForestMod.prefix("blocks/molten_fiery_flow");
 
-	public static final ResourceLocation moltenKnightmetalStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_knightmetal_still");
-	public static final ResourceLocation moltenKnightmetalFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_knightmetal_flow");
+	public static final ResourceLocation moltenKnightmetalStill = TwilightForestMod.prefix("blocks/molten_knightmetal_still");
+	public static final ResourceLocation moltenKnightmetalFlow  = TwilightForestMod.prefix("blocks/molten_knightmetal_flow");
 
-	public static final ResourceLocation essenceFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/fluid_fiery_still");
-	public static final ResourceLocation essenceFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/fluid_fiery_flow");
+	public static final ResourceLocation essenceFieryStill = TwilightForestMod.prefix("blocks/fluid_fiery_still");
+	public static final ResourceLocation essenceFieryFlow  = TwilightForestMod.prefix("blocks/fluid_fiery_flow");
 
 	static {
 		moltenFiery       = registerFluid(new Fluid("fierymetal" , moltenFieryStill, moltenFieryFlow).setTemperature(1000).setLuminosity(15));

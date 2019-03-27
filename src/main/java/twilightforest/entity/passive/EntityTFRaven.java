@@ -18,7 +18,7 @@ import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFRaven extends EntityTFTinyBird {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/raven");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/raven");
 
 	public EntityTFRaven(World world) {
 		super(world);

@@ -16,7 +16,7 @@ import twilightforest.item.TFItems;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minoshroom");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minoshroom");
 
 	public EntityTFMinoshroom(World world) {
 		super(world);

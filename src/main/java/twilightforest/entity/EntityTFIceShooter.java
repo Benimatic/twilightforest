@@ -23,7 +23,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_shooter");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_shooter");
 
 	public EntityTFIceShooter(World world) {
 		super(world);

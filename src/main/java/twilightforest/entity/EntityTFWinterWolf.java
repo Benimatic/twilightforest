@@ -24,7 +24,8 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/winter_wolf");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/winter_wolf");
 	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 	private static final float BREATH_DAMAGE = 2.0F;
 

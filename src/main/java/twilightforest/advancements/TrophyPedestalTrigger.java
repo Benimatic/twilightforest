@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class TrophyPedestalTrigger implements ICriterionTrigger<TrophyPedestalTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "placed_on_trophy_pedestal");
+    public static final ResourceLocation ID = TwilightForestMod.prefix("placed_on_trophy_pedestal");
     private final Map<PlayerAdvancements, TrophyPedestalTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

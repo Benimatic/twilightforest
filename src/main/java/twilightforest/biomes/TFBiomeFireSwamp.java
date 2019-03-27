@@ -99,11 +99,11 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
-		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth") };
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_labyrinth") };
 	}
 
 	@Override
-	public void enforceProgession(EntityPlayer player, World world) {
+	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.setFire(8);
 		}

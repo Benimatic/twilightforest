@@ -32,7 +32,7 @@ import java.util.Random;
 
 public class EntityTFTowerTermite extends EntityMob {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_termite");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_termite");
 	private AISummonSilverfish summonSilverfish;
 
 	public EntityTFTowerTermite(World world) {

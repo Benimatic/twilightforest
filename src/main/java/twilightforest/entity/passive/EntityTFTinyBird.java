@@ -27,7 +27,8 @@ import twilightforest.entity.ai.EntityAITFBirdFly;
 import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFTinyBird extends EntityTFBird {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tiny_bird");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tiny_bird");
 	private static final DataParameter<Byte> DATA_BIRDTYPE = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_BIRDFLAGS = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 

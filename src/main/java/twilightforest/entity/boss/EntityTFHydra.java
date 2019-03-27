@@ -45,7 +45,7 @@ import java.util.List;
 
 public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMob {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/hydra");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hydra");
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;

@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTrigger.Instance> {
 
-    private static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "has_advancement");
+    private static final ResourceLocation ID = TwilightForestMod.prefix("has_advancement");
     private final Map<PlayerAdvancements, HasAdvancementTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

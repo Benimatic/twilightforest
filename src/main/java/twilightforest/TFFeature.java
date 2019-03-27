@@ -145,7 +145,7 @@ public enum TFFeature {
 			return new StructureStartCourtyard(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	LICH_TOWER ( 1, "lich_tower", true, new ResourceLocation( TwilightForestMod.ID, "progress_naga" )) {
+	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
 		{
 			TFLichTowerPieces.registerPieces();
 
@@ -172,7 +172,7 @@ public enum TFFeature {
 			return new StructureStartLichTower(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	ICE_TOWER ( 2, "ice_tower", true, new ResourceLocation( TwilightForestMod.ID, "progress_yeti" )) {
+	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
 			TFIceTowerPieces.registerPieces();
 
@@ -210,9 +210,9 @@ public enum TFFeature {
 			return new StructureStartQuestGrove(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	DRUID_GROVE    ( 1, "druid_grove"   , false                                                                    ) { { this.disableStructure(); } },
-	FLOATING_RUINS ( 3, "floating_ruins", false                                                                    ) { { this.disableStructure(); } },
-	HYDRA_LAIR     ( 2, "hydra_lair"    , true , new ResourceLocation( TwilightForestMod.ID, "progress_labyrinth" )) {
+	DRUID_GROVE    ( 1, "druid_grove"   , false ) { { this.disableStructure(); } },
+	FLOATING_RUINS ( 3, "floating_ruins", false ) { { this.disableStructure(); } },
+	HYDRA_LAIR     ( 2, "hydra_lair"    , true , TwilightForestMod.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
 
@@ -235,7 +235,7 @@ public enum TFFeature {
 			return new StructureStartHydraLair(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	LABYRINTH ( 3, "labyrinth", true, new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
+	LABYRINTH ( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations();
 
@@ -266,7 +266,7 @@ public enum TFFeature {
 			return new StructureStartLabyrinth(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	DARK_TOWER ( 1, "dark_tower", true, new ResourceLocation(TwilightForestMod.ID, "progress_knights" )) {
+	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
 			TFDarkTowerPieces.registerPieces();
 
@@ -299,7 +299,7 @@ public enum TFFeature {
 			return new StructureStartDarkTower(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", true, new ResourceLocation( TwilightForestMod.ID, "progress_trophy_pedestal" )) {
+	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", true, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
 		{
 			this.enableDecorations().disableProtectionAura();
 
@@ -330,8 +330,8 @@ public enum TFFeature {
 			return new StructureStartKnightStronghold(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	WORLD_TREE ( 3, "world_tree", false                                                               ) { { this.disableStructure(); } },
-	YETI_CAVE  ( 2, "yeti_lairs", true , new ResourceLocation( TwilightForestMod.ID, "progress_lich" )) {
+	WORLD_TREE ( 3, "world_tree", false ) { { this.disableStructure(); } },
+	YETI_CAVE  ( 2, "yeti_lairs", true , TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -357,7 +357,7 @@ public enum TFFeature {
 		}
 	},
 	// TODO split cloud giants from this
-	TROLL_CAVE ( 4, "troll_lairs", true, new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
+	TROLL_CAVE ( 4, "troll_lairs", true, TwilightForestMod.prefix("progress_merge") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
@@ -387,7 +387,7 @@ public enum TFFeature {
 			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	FINAL_CASTLE ( 4, "final_castle", true, new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
+	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
 			TFFinalCastlePieces.registerFinalCastlePieces();
 

@@ -6,7 +6,7 @@ import twilightforest.TwilightForestMod;
 
 public interface IShieldCapability {
 
-	ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "cap_shield");
+	ResourceLocation ID = TwilightForestMod.prefix("cap_shield");
 
 	void setEntity(EntityLivingBase entity);
 

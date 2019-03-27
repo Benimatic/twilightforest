@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 
 public abstract class EntityTFBird extends EntityAnimal {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bird");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/bird");
 
 	// same items as EntityChicken / EntityParrot
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);

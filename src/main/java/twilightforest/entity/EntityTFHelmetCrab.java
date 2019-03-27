@@ -22,7 +22,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFHelmetCrab extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/helmet_crab");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/helmet_crab");
 
 	public EntityTFHelmetCrab(World world) {
 		super(world);

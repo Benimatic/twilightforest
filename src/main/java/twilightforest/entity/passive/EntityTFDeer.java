@@ -22,7 +22,7 @@ import twilightforest.TwilightForestMod;
  */
 public class EntityTFDeer extends EntityCow {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/deer");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/deer");
 
 	public EntityTFDeer(World world) {
 		super(world);

@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInventoryChangedTrigger.Instance> {
 
-	public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "armor_changed");
+	public static final ResourceLocation ID = TwilightForestMod.prefix("armor_changed");
 	private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
 
 	@Override

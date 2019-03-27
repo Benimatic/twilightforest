@@ -30,7 +30,7 @@ import twilightforest.entity.ai.EntityAITFRedcapShy;
 
 public class EntityTFRedcap extends EntityMob {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/redcap");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/redcap");
 
 	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
 	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);

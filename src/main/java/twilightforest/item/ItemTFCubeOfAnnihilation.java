@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,12 +22,13 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class ItemTFCubeOfAnnihilation extends ItemTF {
+
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
 	protected ItemTFCubeOfAnnihilation(EnumRarity rarity) {
 		super(rarity);
 		this.maxStackSize = 1;
-		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
+		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {

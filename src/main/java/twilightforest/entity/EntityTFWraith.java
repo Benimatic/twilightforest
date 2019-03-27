@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class EntityTFWraith extends EntityFlying implements IMob {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/wraith");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/wraith");
 
 	public EntityTFWraith(World world) {
 		super(world);

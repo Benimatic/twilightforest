@@ -28,7 +28,7 @@ import twilightforest.TwilightForestMod;
 
 public class EntityTFTowerGolem extends EntityMob {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_golem");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_golem");
 	private int attackTimer;
 
 	public EntityTFTowerGolem(World world) {

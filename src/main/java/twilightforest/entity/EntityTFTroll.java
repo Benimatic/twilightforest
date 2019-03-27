@@ -35,7 +35,8 @@ import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.util.WorldUtil;
 
 public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/troll");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/troll");
 	private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, 0).setSaved(false);
 

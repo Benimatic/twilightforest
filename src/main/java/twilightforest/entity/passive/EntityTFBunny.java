@@ -19,10 +19,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-
 public class EntityTFBunny extends EntityCreature implements IAnimals {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bunny");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/bunny");
 	private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
 
 	public EntityTFBunny(World world) {

@@ -17,7 +17,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -38,7 +37,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(256);
-		addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "alt"), new IItemPropertyGetter() {
+		addPropertyOverride(TwilightForestMod.prefix("alt"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {

@@ -18,7 +18,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFSkeletonDruid extends EntitySkeleton {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/skeleton_druid");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/skeleton_druid");
 
 	public EntityTFSkeletonDruid(World world) {
 		super(world);

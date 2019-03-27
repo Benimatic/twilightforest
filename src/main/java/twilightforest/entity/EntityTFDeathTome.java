@@ -13,7 +13,6 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -25,8 +24,9 @@ import net.minecraft.world.storage.loot.LootContext;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome");
-	public static final ResourceLocation HURT_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome_hurt");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome");
+	public static final ResourceLocation HURT_LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome_hurt");
 
 	public EntityTFDeathTome(World world) {
 		super(world);

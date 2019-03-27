@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class StructureClearedTrigger implements ICriterionTrigger<StructureClearedTrigger.Instance> {
 
-	public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "structure_cleared");
+	public static final ResourceLocation ID = TwilightForestMod.prefix("structure_cleared");
 	private final Map<PlayerAdvancements, StructureClearedTrigger.Listeners> listeners = Maps.newHashMap();
 
 	@Override

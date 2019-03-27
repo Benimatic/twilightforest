@@ -161,7 +161,7 @@ public class TFTickHandler {
 
 			boolean dangerousBiome = !tfBiome.doesPlayerHaveRequiredAchievement(player);
 			if (dangerousBiome) {
-				tfBiome.enforceProgession(player, world);
+				tfBiome.enforceProgression(player, world);
 			}
 		}
 	}

@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 public class EntityTFYeti extends EntityMob implements IHostileMount {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/yeti");
 	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, 0).setSaved(false);
 

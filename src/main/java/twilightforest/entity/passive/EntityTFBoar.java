@@ -6,9 +6,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-
 public class EntityTFBoar extends EntityPig {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/boar");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/boar");
 
 	public EntityTFBoar(World world) {
 		super(world);

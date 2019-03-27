@@ -5,35 +5,28 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Random;
 
 public class EntityTFBighorn extends EntitySheep {
 
-	public static final ResourceLocation[] LOOT_TABLES = {
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/white"      ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/orange"     ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/magenta"    ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/light_blue" ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/yellow"     ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/lime"       ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/pink"       ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/gray"       ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/silver"     ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/cyan"       ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/purple"     ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/blue"       ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/brown"      ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/green"      ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/red"        ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/black"      ),
-			new ResourceLocation( TwilightForestMod.ID, "entities/bighorn_sheep/sheared"    )
-	};
+	public static final ResourceLocation SHEARED_LOOT_TABLE = TwilightForestMod.prefix("entities/bighorn_sheep/sheared");
+	public static final Map<EnumDyeColor, ResourceLocation> COLORED_LOOT_TABLES;
+
+	static {
+		Map<EnumDyeColor, ResourceLocation> map = new EnumMap<>(EnumDyeColor.class);
+		for (EnumDyeColor color : EnumDyeColor.values()) {
+			map.put(color, TwilightForestMod.prefix("entities/bighorn_sheep/" + color.getName()));
+		}
+		COLORED_LOOT_TABLES = Collections.unmodifiableMap(map);
+	}
 
 	public EntityTFBighorn(World world) {
 		super(world);
@@ -47,10 +40,7 @@ public class EntityTFBighorn extends EntitySheep {
 
 	@Override
 	public ResourceLocation getLootTable() {
-		if (this.getSheared())
-			return LOOT_TABLES[16];
-		else
-			return LOOT_TABLES[MathHelper.clamp(this.getFleeceColor().ordinal(), 0, 15)];
+		return this.getSheared() ? SHEARED_LOOT_TABLE : COLORED_LOOT_TABLES.get(this.getFleeceColor());
 	}
 
 	private static EnumDyeColor getRandomFleeceColor(Random random) {

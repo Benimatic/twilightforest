@@ -271,20 +271,20 @@ public class RegisterItemEvent {
 			if ("oak".equals(woodName)) // Not really going to rename that enum entry just yet
 				woodName = "twilight_oak";
 
-			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_planks")));
-			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_stairs")));
-			BlockSlab slab = (BlockSlab) Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_slab"));
-			items.register(woodName + "_slab", new ItemSlab(slab, slab, (BlockSlab) Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_doubleslab"))));
-			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_button")));
+			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_planks")));
+			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_stairs")));
+			BlockSlab slab = (BlockSlab) Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_slab"));
+			items.register(woodName + "_slab", new ItemSlab(slab, slab, (BlockSlab) Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_doubleslab"))));
+			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_button")));
 
-			ResourceLocation doorRL = new ResourceLocation(TwilightForestMod.ID, woodName + "_door");
+			ResourceLocation doorRL = TwilightForestMod.prefix(woodName + "_door");
 			Block doorBlock = Block.REGISTRY.getObject(doorRL);
 			items.register(doorRL.getPath(), new ItemDoor(doorBlock)).setTranslationKey(doorBlock.getTranslationKey());
 
-			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_trapdoor")));
-			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_fence")));
-			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_gate")));
-			items.registerBlock(Block.REGISTRY.getObject(new ResourceLocation(TwilightForestMod.ID, woodName + "_plate")));
+			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_trapdoor")));
+			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_fence")));
+			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_gate")));
+			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_plate")));
 		}
 	}
 

@@ -28,7 +28,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFIceExploder extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_exploder");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;
 
 	public EntityTFIceExploder(World world) {

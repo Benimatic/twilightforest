@@ -77,8 +77,9 @@ public class LootFunctionEnchant extends LootFunction {
 	}
 
 	public static class Serializer extends LootFunction.Serializer<LootFunctionEnchant> {
+
 		protected Serializer() {
-			super(new ResourceLocation(TwilightForestMod.ID, "enchant"), LootFunctionEnchant.class);
+			super(TwilightForestMod.prefix("enchant"), LootFunctionEnchant.class);
 		}
 
 		@Override

@@ -138,15 +138,15 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
 		return new ResourceLocation[] {
-                //new ResourceLocation(TwilightForestMod.ID, "progress_hydra"),
-                //new ResourceLocation(TwilightForestMod.ID, "progress_ur_ghast"),
-                //new ResourceLocation(TwilightForestMod.ID, "progress_glacier")
-                new ResourceLocation(TwilightForestMod.ID, "progress_merge")
+                //TwilightForestMod.prefix("progress_hydra"),
+                //TwilightForestMod.prefix("progress_ur_ghast"),
+                //TwilightForestMod.prefix("progress_glacier")
+				TwilightForestMod.prefix("progress_merge")
 		};
 	}
 
 	@Override
-	public void enforceProgession(EntityPlayer player, World world) {
+	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 5 == 0) {
 			player.attackEntityFrom(DamageSource.MAGIC, 0.5F);
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);

@@ -32,7 +32,8 @@ import twilightforest.entity.boss.EntityTFMinoshroom;
 import twilightforest.item.TFItems;
 
 public class EntityTFMinotaur extends EntityMob implements ITFCharger {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minotaur");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minotaur");
 	private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityTFMinotaur.class, DataSerializers.BOOLEAN);
 
 	public EntityTFMinotaur(World world) {

@@ -18,7 +18,9 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFIceCrystal extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_crystal");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_crystal");
+
 	private int crystalAge;
 	private int maxCrystalAge = -1;
 

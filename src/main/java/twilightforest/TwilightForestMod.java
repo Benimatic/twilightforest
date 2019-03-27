@@ -182,7 +182,7 @@ public class TwilightForestMod {
 		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, prefix("alpha_yeti_spawner"      ));
 	}
 
-	private static ResourceLocation prefix(String name) {
+	public static ResourceLocation prefix(String name) {
 		return new ResourceLocation(ID, name);
 	}
 

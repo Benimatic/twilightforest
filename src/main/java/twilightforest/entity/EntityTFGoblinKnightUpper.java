@@ -36,7 +36,8 @@ import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 import java.util.List;
 
 public class EntityTFGoblinKnightUpper extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/goblin_knight");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/goblin_knight");
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightUpper.class, DataSerializers.BYTE);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, 0).setSaved(false);

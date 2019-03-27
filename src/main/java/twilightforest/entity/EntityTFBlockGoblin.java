@@ -32,7 +32,8 @@ import twilightforest.TwilightForestMod;
 import java.util.List;
 
 public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/block_goblin");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/block_goblin");
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_CHAINPOS = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);

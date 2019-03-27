@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class QuestRamCompletionTrigger implements ICriterionTrigger<QuestRamCompletionTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "complete_quest_ram");
+    public static final ResourceLocation ID = TwilightForestMod.prefix("complete_quest_ram");
     private final Map<PlayerAdvancements, QuestRamCompletionTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

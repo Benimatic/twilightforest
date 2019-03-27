@@ -51,7 +51,8 @@ public class TFTreasure {
 		// Preload all entity tables
 		LootTableList.register(EntityTFArmoredGiant.LOOT_TABLE);
 		LootTableList.register(EntityTFBird.LOOT_TABLE);
-		for (ResourceLocation RL : EntityTFBighorn.LOOT_TABLES) LootTableList.register(RL);
+		LootTableList.register(EntityTFBighorn.SHEARED_LOOT_TABLE);
+		EntityTFBighorn.COLORED_LOOT_TABLES.values().forEach(LootTableList::register);
 		LootTableList.register(EntityTFBlockGoblin.LOOT_TABLE);
 		LootTableList.register(EntityTFBoar.LOOT_TABLE);
 		LootTableList.register(EntityTFBunny.LOOT_TABLE);
@@ -102,7 +103,7 @@ public class TFTreasure {
 	private final ResourceLocation lootTable;
 
 	private TFTreasure(String path) {
-		lootTable = new ResourceLocation(TwilightForestMod.ID, String.format("structures/%s/%s", path, path));
+		lootTable = TwilightForestMod.prefix(String.format("structures/%s/%s", path, path));
 
 		// only preload the primary table, the subtables will be loaded on-demand the first time the primary table is used
 		LootTableList.register(lootTable);

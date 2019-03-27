@@ -7,7 +7,6 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
@@ -17,6 +16,7 @@ import java.util.Random;
 
 // Loot condition for checking that if a mod exists, then swap original item with its deserialized item.
 public class LootFunctionModItemSwap extends LootFunction {
+
     private final Item item;
     private final boolean success;
 
@@ -36,8 +36,9 @@ public class LootFunctionModItemSwap extends LootFunction {
     }
 
     public static class Serializer extends LootFunction.Serializer<LootFunctionModItemSwap> {
+
         protected Serializer() {
-            super(new ResourceLocation(TwilightForestMod.ID, "item_or_default"), LootFunctionModItemSwap.class);
+            super(TwilightForestMod.prefix("item_or_default"), LootFunctionModItemSwap.class);
         }
 
         @Override

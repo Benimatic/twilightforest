@@ -15,7 +15,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFMiniGhast extends EntityTFTowerGhast {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/mini_ghast");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mini_ghast");
 	private boolean isMinion = false;
 
 	public EntityTFMiniGhast(World world) {

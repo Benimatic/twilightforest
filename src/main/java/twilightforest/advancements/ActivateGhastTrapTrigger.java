@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class ActivateGhastTrapTrigger implements ICriterionTrigger<ActivateGhastTrapTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "activate_ghast_trap");
+    public static final ResourceLocation ID = TwilightForestMod.prefix("activate_ghast_trap");
     private final Map<PlayerAdvancements, ActivateGhastTrapTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

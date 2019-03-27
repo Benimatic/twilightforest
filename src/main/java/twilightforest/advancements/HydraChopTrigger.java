@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "consume_hydra_chop_on_low_hunger");
+    public static final ResourceLocation ID = TwilightForestMod.prefix("consume_hydra_chop_on_low_hunger");
     private final Map<PlayerAdvancements, HydraChopTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

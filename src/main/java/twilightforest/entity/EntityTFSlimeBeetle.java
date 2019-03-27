@@ -26,7 +26,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/slime_beetle");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/slime_beetle");
 
 	public EntityTFSlimeBeetle(World world) {
 		super(world);

@@ -21,7 +21,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFSquirrel extends EntityCreature implements IAnimals {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/squirrel");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/squirrel");
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public EntityTFSquirrel(World world) {

@@ -17,7 +17,7 @@ import twilightforest.TwilightForestMod;
 
 public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "make_tf_portal");
+    public static final ResourceLocation ID = TwilightForestMod.prefix("make_tf_portal");
     private final Map<PlayerAdvancements, MakePortalTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

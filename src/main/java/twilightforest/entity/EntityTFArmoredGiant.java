@@ -10,7 +10,7 @@ import twilightforest.TwilightForestMod;
 
 public class EntityTFArmoredGiant extends EntityTFGiantMiner {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/armored_giant");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/armored_giant");
 
 	public EntityTFArmoredGiant(World world) {
 		super(world);

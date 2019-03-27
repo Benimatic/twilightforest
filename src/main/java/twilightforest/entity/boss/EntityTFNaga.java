@@ -54,7 +54,8 @@ import twilightforest.world.TFWorld;
 
 public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/naga");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/naga");
+
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
 	private static final int LEASH_X = 46;

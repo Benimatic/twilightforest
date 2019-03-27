@@ -20,7 +20,7 @@ import twilightforest.entity.ai.EntityAITFChargeAttack;
 
 public class EntityTFBoggard extends EntityMob {
 
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/boggard");
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/boggard");
 
 	public EntityTFBoggard(World world) {
 		super(world);

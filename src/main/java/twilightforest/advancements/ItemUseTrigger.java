@@ -25,7 +25,7 @@ import java.util.Set;
 */
 public class ItemUseTrigger implements ICriterionTrigger<ItemUseTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "on_item_use");
+    public static final ResourceLocation ID = TwilightForestMod.prefix("on_item_use");
     private final Map<PlayerAdvancements, ItemUseTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

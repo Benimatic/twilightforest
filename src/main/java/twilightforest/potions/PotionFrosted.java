@@ -14,7 +14,7 @@ public class PotionFrosted extends Potion {
 
 	public static final UUID MODIFIER_UUID = UUID.fromString("CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9");
 
-	private static final ResourceLocation sprite = new ResourceLocation(TwilightForestMod.ID, "textures/gui/frosty.png");
+	private static final ResourceLocation sprite = TwilightForestMod.prefix("textures/gui/frosty.png");
 
 	public PotionFrosted(boolean isBadEffectIn, int liquidColorIn) {
 		super(isBadEffectIn, liquidColorIn);

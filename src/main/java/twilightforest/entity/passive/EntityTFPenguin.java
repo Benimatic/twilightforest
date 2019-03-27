@@ -19,9 +19,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-
 public class EntityTFPenguin extends EntityTFBird {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/penguin");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/penguin");
 
 	public EntityTFPenguin(World world) {
 		super(world);

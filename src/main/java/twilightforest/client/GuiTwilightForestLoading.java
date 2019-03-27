@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
-import java.io.IOException;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
@@ -47,8 +46,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-	}
+	protected void keyTyped(char typedChar, int keyCode) {}
 
 	@Override
 	public boolean doesGuiPauseGame() {
@@ -137,13 +135,13 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	}
 
 	public enum BackgroundThemes {
-		LABYRINTH(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"),
-				//new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_mossy.png"     ),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_cracked.png")
-		}) {
-			private final ResourceLocation mazestoneDecor = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_decorative.png");
+		LABYRINTH(
+				TwilightForestMod.prefix("textures/blocks/mazestone_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/mazestone_brick.png"),
+				//TwilightForestMod.prefix("textures/blocks/mazestone_mossy.png"     ),
+				TwilightForestMod.prefix("textures/blocks/mazestone_cracked.png")
+		) {
+			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/blocks/mazestone_decorative.png");
 
 			@Override
 			void postRenderBackground(float width, float height) {
@@ -193,20 +191,20 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				tessellator.draw();
 			}
 		},
-		STRONGHOLD(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick_mossy.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick_cracked.png")
-		}),
-		DARKTOWER(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_mossy.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_cracked.png"),
-				//new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_infested.png"  ),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_alt.png")
-		}) {
-			private final ResourceLocation towerwoodEncased = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_encased.png");
+		STRONGHOLD(
+				TwilightForestMod.prefix("textures/blocks/knightbrick.png"),
+				TwilightForestMod.prefix("textures/blocks/knightbrick_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/knightbrick_cracked.png")
+		),
+		DARKTOWER(
+				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
+				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
+				TwilightForestMod.prefix("textures/blocks/towerwood_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/towerwood_cracked.png"),
+				//TwilightForestMod.prefix("textures/blocks/towerwood_infested.png"  ),
+				TwilightForestMod.prefix("textures/blocks/towerwood_alt.png")
+		) {
+			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/blocks/towerwood_encased.png");
 
 			private final float stretch = 0.985F;
 			private final float offset = 0.4F;
@@ -348,25 +346,25 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				tessellator.draw();
 			}
 		},
-		FINALCASTLE(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				//new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_cracked.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_faded.png")
-		}) {
+		FINALCASTLE(
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				//TwilightForestMod.prefix("textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
+				TwilightForestMod.prefix("textures/blocks/castleblock_cracked.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_faded.png")
+		) {
 			private final ResourceLocation[] magic = new ResourceLocation[]{
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_0.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_1.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_2.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_3.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_4.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_5.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_6.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_7.png")
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_0.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_1.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_2.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_3.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_4.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_5.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_6.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_7.png")
 			};
 
 			private final int[] colors = new int[]{0xFF00FF, 0x00FFFF, 0xFFFF00, 0x4B0082};
@@ -432,7 +430,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 		private final ResourceLocation[] backgroundMaterials;
 
-		BackgroundThemes(ResourceLocation[] backgroundMaterials) {
+		BackgroundThemes(ResourceLocation... backgroundMaterials) {
 			this.backgroundMaterials = backgroundMaterials;
 		}
 

@@ -27,9 +27,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
-
 public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/fire_beetle");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/fire_beetle");
 	private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntityTFFireBeetle.class, DataSerializers.BOOLEAN);
 	private static final int BREATH_DURATION = 10;
 	private static final int BREATH_DAMAGE = 2;

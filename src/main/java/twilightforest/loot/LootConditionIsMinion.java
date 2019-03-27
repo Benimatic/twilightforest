@@ -4,7 +4,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import twilightforest.TwilightForestMod;
@@ -14,6 +13,7 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class LootConditionIsMinion implements LootCondition {
+
 	private final boolean inverse;
 
 	public LootConditionIsMinion(boolean inverse) {
@@ -26,8 +26,9 @@ public class LootConditionIsMinion implements LootCondition {
 	}
 
 	public static class Serializer extends LootCondition.Serializer<LootConditionIsMinion> {
+
 		protected Serializer() {
-			super(new ResourceLocation(TwilightForestMod.ID, "is_minion"), LootConditionIsMinion.class);
+			super(TwilightForestMod.prefix("is_minion"), LootConditionIsMinion.class);
 		}
 
 		@Override
