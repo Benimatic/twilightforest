@@ -21,6 +21,7 @@ import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.IntPair;
 
 import java.util.BitSet;
 
@@ -166,20 +167,20 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 				//int thickness = thicks[qz + (qz) * 5];
 
+				IntPair nearCenter = new IntPair();
+				TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world, nearCenter);
+
 				// make sure we're not too close to the tower
-				TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world);
 				if (nearFeature == TFFeature.DARK_TOWER) {
-					// check for closeness
-					int[] nearCenter = TFFeature.getNearestCenter(chunkX, chunkZ, world);
-					int hx = nearCenter[0];
-					int hz = nearCenter[1];
+
+					int hx = nearCenter.x;
+					int hz = nearCenter.z;
 
 					int dx = x - hx;
 					int dz = z - hz;
 					int dist = (int) Math.sqrt(dx * dx + dz * dz);
 
 					if (dist < 24) {
-
 						thickness -= (24 - dist);
 					}
 				}

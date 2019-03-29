@@ -21,6 +21,7 @@ import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
 import java.util.BitSet;
@@ -321,15 +322,16 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	}
 
 	protected final void deformTerrainForFeature(int cx, int cz, ChunkPrimer primer) {
-		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world);
+
+		IntPair nearCenter = new IntPair();
+		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world, nearCenter);
+
 		if (!nearFeature.isTerrainAltered) {
 			return;
 		}
 
-		int[] nearCenter = TFFeature.getNearestCenter(cx, cz, world);
-
-		int hx = nearCenter[0];
-		int hz = nearCenter[1];
+		int hx = nearCenter.x;
+		int hz = nearCenter.z;
 
 		if (nearFeature == TFFeature.TROLL_CAVE) {
 			// troll cloud, more like
@@ -676,13 +678,16 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
 		if (nearestFeature != TFFeature.NOTHING) {
+
+			MapGenTFMajorFeature featureGenerator = getFeatureGenerator(nearestFeature);
+
 			// if the feature is already conquered, no spawns
-			if (this.isStructureConquered(pos)) {
+			if (featureGenerator.isStructureConquered(pos)) {
 				return Collections.emptyList();
 			}
 
 			// check the precise coords.
-			int spawnListIndex = getFeatureGenerator(nearestFeature).getSpawnListIndexAt(pos);
+			int spawnListIndex = featureGenerator.getSpawnListIndexAt(pos);
 			if (spawnListIndex >= 0) {
 				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
 			}

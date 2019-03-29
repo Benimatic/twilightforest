@@ -42,6 +42,7 @@ import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
 import twilightforest.structures.start.*;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
+import twilightforest.util.IntPair;
 import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
@@ -439,7 +440,9 @@ public enum TFFeature {
 
 	private static final String BOOK_AUTHOR = "A Forgotten Explorer";
 
-	private static final int maxSize = Arrays.stream(values()).mapToInt(v -> v.size).max().orElse(0);
+	private static final TFFeature[] VALUES = values();
+
+	private static final int maxSize = Arrays.stream(VALUES).mapToInt(v -> v.size).max().orElse(0);
 
 	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
 		this.size = size;
@@ -472,9 +475,10 @@ public enum TFFeature {
 	 * doesn't require modid
 	 */
 	public static TFFeature getFeatureByName(String name) {
-		for (TFFeature feature : TFFeature.values()) {
-			if (feature != null && feature.name.equalsIgnoreCase(name))
+		for (TFFeature feature : VALUES) {
+			if (feature.name.equalsIgnoreCase(name)) {
 				return feature;
+			}
 		}
 		return NOTHING;
 	}
@@ -483,13 +487,14 @@ public enum TFFeature {
 	 * modid sensitive
 	 */
 	public static TFFeature getFeatureByName(ResourceLocation name) {
-		if (name.getNamespace().equalsIgnoreCase(TwilightForestMod.ID))
+		if (name.getNamespace().equalsIgnoreCase(TwilightForestMod.ID)) {
 			return getFeatureByName(name.getPath());
+		}
 		return NOTHING;
 	}
 
 	public static TFFeature getFeatureByID(int id) {
-		return id < TFFeature.values().length ? TFFeature.values()[id] : NOTHING;
+		return id < VALUES.length ? VALUES[id] : NOTHING;
 	}
 
 	public static int getFeatureID(int mapX, int mapZ, World world) {
@@ -573,9 +578,9 @@ public enum TFFeature {
 	 * @return The type of feature directly at the specified Chunk coordinates
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
-		if (world.getBiomeProvider() instanceof TFBiomeProvider && isInFeatureChunk(world, chunkX << 4, chunkZ << 4))
+		if (world.getBiomeProvider() instanceof TFBiomeProvider && isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
 			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
-
+		}
 		return NOTHING;
 	}
 
@@ -690,20 +695,34 @@ public enum TFFeature {
 	}
 
 	/**
-	 * @return The feature nearest to the specified chunk coordinates
+	 * Returns the feature nearest to the specified chunk coordinates.
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, World world) {
+		return getNearestFeature(cx, cz, world, null);
+	}
+
+	/**
+	 * Returns the feature nearest to the specified chunk coordinates.
+	 *
+	 * If a non-null {@code center} is provided and a valid feature is found,
+	 * it will be set to relative block coordinates indicating the center of
+	 * that feature relative to the current chunk block coordinate system.
+	 */
+	public static TFFeature getNearestFeature(int cx, int cz, World world, @Nullable IntPair center) {
 		for (int rad = 1; rad <= maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					TFFeature directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
 					if (directlyAt.size == rad) {
+						if (center != null) {
+							center.x = (x << 4) + 8;
+							center.z = (z << 4) + 8;
+						}
 						return directlyAt;
 					}
 				}
 			}
 		}
-
 		return NOTHING;
 	}
 
@@ -751,7 +770,7 @@ public enum TFFeature {
 						random.nextInt();
 
 						// Check changed for TFFeature
-						if (TFFeature.getFeatureAt(l1 << 4, i2 << 4, worldIn) == feature) {
+						if (getFeatureAt(l1 << 4, i2 << 4, worldIn) == feature) {
 							if (!findUnexplored || !worldIn.isChunkGeneratedAt(l1, i2)) {
 								return new BlockPos((l1 << 4) + 8, 64, (i2 << 4) + 8);
 							}
@@ -778,36 +797,14 @@ public enum TFFeature {
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
 
-		return TFFeature.generateFeature(featureX, featureZ, world);
+		return generateFeature(featureX, featureZ, world);
 	}
 
 	/**
 	 * @return The feature in the chunk "region"
 	 */
 	public static TFFeature getFeatureForRegionPos(int posX, int posZ, World world) {
-		//just round to the nearest multiple of 16 chunks?
-		int featureX = Math.round((posX >> 4) / 16F) * 16;
-		int featureZ = Math.round((posZ >> 4) / 16F) * 16;
-
-		return TFFeature.generateFeature(featureX, featureZ, world);
-	}
-
-	/**
-	 * If we're near a hollow hill, this returns relative block coordinates indicating
-	 * the center of that hill relative to the current chunk block coordinate system.
-	 */
-	public static int[] getNearestCenter(int cx, int cz, World world) {
-		for (int rad = 1; rad <= maxSize; rad++) {
-			for (int x = -rad; x <= rad; x++) {
-				for (int z = -rad; z <= rad; z++) {
-					if (getFeatureDirectlyAt(x + cx, z + cz, world).size == rad) {
-						return new int[]{x * 16 + 8, z * 16 + 8};
-					}
-				}
-			}
-		}
-		int[] no = {0, 0};
-		return no;
+		return getFeatureForRegion(posX >> 4, posZ >> 4, world);
 	}
 
 	/**
