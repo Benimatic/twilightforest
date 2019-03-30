@@ -17,15 +17,12 @@ import static twilightforest.enums.HugeLilypadPiece.NW;
 import static twilightforest.enums.HugeLilypadPiece.SE;
 import static twilightforest.enums.HugeLilypadPiece.SW;
 
-
 /**
  * Generate huge lily pads
  *
  * @author Ben
  */
 public class TFGenHugeLilyPad extends WorldGenerator {
-
-	private Random rand = new Random();
 
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
@@ -37,7 +34,7 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 			);
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
-				final EnumFacing horizontal = EnumFacing.byHorizontalIndex(rand.nextInt(4));
+				final EnumFacing horizontal = EnumFacing.byHorizontalIndex(random.nextInt(4));
 				final IBlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().withProperty(FACING, horizontal);
 
 				world.setBlockState(dPos, lilypad.withProperty(PIECE, NW), 2);
@@ -49,7 +46,6 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 
 		return true;
 	}
-
 
 	private boolean shouldPlacePadAt(World world, BlockPos pos) {
 		return world.isAirBlock(pos) && world.getBlockState(pos.down()).getMaterial() == Material.WATER

@@ -42,7 +42,7 @@ public abstract class StructureStartTFFeatureAbstract extends StructureStartTFAb
         this.isConquered = compound.getBoolean("Conquered");
         this.lockBytes = compound.getByteArray("Locks");
 
-        this.feature = TFFeature.values()[compound.getInteger("FeatureID")];
+        this.feature = TFFeature.getFeatureByID(compound.getInteger("FeatureID"));
     }
 
     public boolean isLocked(int lockIndex) {
