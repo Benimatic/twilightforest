@@ -105,15 +105,15 @@ jar {
 repositories {
     maven {
         name 'progwm\'s Maven' // JEI + Mantle + TCon
-        url 'http://dvs1.progwml6.com/files/maven'
+        url 'https://dvs1.progwml6.com/files/maven'
     }
     maven {
         name 'tterrag\'s Maven' // CTM
-        url 'http://maven.tterrag.com/'
+        url 'https://maven.tterrag.com/'
     }
     maven {
         name 'Jared\'s Maven' // Immersive Engineering + Patchouli
-        url 'http://blamejared.com/maven'
+        url 'https://blamejared.com/maven'
     }
     maven {
         name 'player\'s Maven' // Forestry
@@ -121,7 +121,7 @@ repositories {
     }
     maven {
         name 'Curseforge Maven' // Baubles + Thaumcraft
-        url 'http://minecraft.curseforge.com/api/maven/'
+        url 'https://minecraft.curseforge.com/api/maven/'
     }
 }
 
