@@ -65,7 +65,6 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.compat.Baubles;
 import twilightforest.compat.TFCompat;
 import twilightforest.enchantment.TFEnchantment;
@@ -483,33 +482,40 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void breakBlock(BreakEvent event) {
-		if (!event.getWorld().isRemote && !event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.getPos()) && isBlockProtectedFromBreaking(event.getWorld(), event.getPos())) {
+
+		World world = event.getWorld();
+		EntityPlayer player = event.getPlayer();
+		BlockPos pos = event.getPos();
+		IBlockState state = event.getState();
+
+		if (!world.isRemote && isBlockProtectedFromBreaking(world, pos) && isAreaProtected(world, player, pos)) {
 			event.setCanceled(true);
+
 		} else if (!isBreakingWithGiantPick
-				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giant_pickaxe
-				&& event.getPlayer().getHeldItemMainhand().getItem().canHarvestBlock(event.getState(), event.getPlayer().getHeldItemMainhand())) {
+				&& player.getHeldItemMainhand().getItem() == TFItems.giant_pickaxe
+				&& player.getHeldItemMainhand().getItem().canHarvestBlock(state, player.getHeldItemMainhand())) {
 
 			isBreakingWithGiantPick = true;
 
-
 			// check nearby blocks for same block or same drop
-			BlockPos bPos = BlockTFGiantBlock.roundCoords(event.getPos());
+			BlockPos bPos = BlockTFGiantBlock.roundCoords(pos);
 
 			// pre-check for cobble!
-			boolean allCobble = event.getState().getBlock().getItemDropped(event.getState(), event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
+			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
+			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
 			for (int dx = 0; dx < 4; dx++) {
 				for (int dy = 0; dy < 4; dy++) {
 					for (int dz = 0; dz < 4; dz++) {
 						BlockPos dPos = bPos.add(dx, dy, dz);
-						IBlockState stateThere = event.getWorld().getBlockState(dPos);
+						IBlockState stateThere = world.getBlockState(dPos);
 						Block blockThere = stateThere.getBlock();
 
-						allCobble &= blockThere.getItemDropped(stateThere, event.getWorld().rand, 0) == Item.getItemFromBlock(Blocks.COBBLESTONE);
+						allCobble &= blockThere.getItemDropped(stateThere, world.rand, 0) == cobbleItem;
 					}
 				}
 			}
 
-			if (allCobble && !event.getPlayer().capabilities.isCreativeMode) {
+			if (allCobble && !player.capabilities.isCreativeMode) {
 				shouldMakeGiantCobble = true;
 				amountOfCobbleToReplace = 64;
 			} else {
@@ -523,11 +529,10 @@ public class TFEventListener {
 					for (int dz = 0; dz < 4; dz++) {
 						BlockPos dPos = bPos.add(dx, dy, dz);
 
-						if (!dPos.equals(event.getPos()) && event.getState() == event.getWorld().getBlockState(dPos)) {
+						if (!dPos.equals(pos) && state == world.getBlockState(dPos)) {
 							// try to break that block too!
-							if (event.getPlayer() instanceof EntityPlayerMP) {
-								EntityPlayerMP playerMP = (EntityPlayerMP) event.getPlayer();
-
+							if (player instanceof EntityPlayerMP) {
+								EntityPlayerMP playerMP = (EntityPlayerMP) player;
 								playerMP.interactionManager.tryHarvestBlock(dPos);
 							}
 						}
@@ -536,20 +541,17 @@ public class TFEventListener {
 			}
 
 			isBreakingWithGiantPick = false;
-
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
-		if (!event.getEntityPlayer().capabilities.isCreativeMode) {
 
-			World world = event.getEntityPlayer().world;
-			EntityPlayer player = event.getEntityPlayer();
+		EntityPlayer player = event.getEntityPlayer();
+		World world = player.world;
 
-			if (!world.isRemote && isBlockProtectedFromInteraction(world, event.getPos()) && isAreaProtected(world, player, event.getPos())) {
-				event.setUseBlock(Result.DENY);
-			}
+		if (!world.isRemote && isBlockProtectedFromInteraction(world, event.getPos()) && isAreaProtected(world, player, event.getPos())) {
+			event.setUseBlock(Result.DENY);
 		}
 	}
 
@@ -573,18 +575,23 @@ public class TFEventListener {
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
 	private static boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
-		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+
+		if (player.capabilities.isCreativeMode || !world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+			return false;
+		}
+
+		if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 			ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-			
-			if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
+
+			if (chunkGenerator.isBlockInStructureBB(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
 				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkGenerator.isBlockProtected(pos)) {
-					
+
 					// send protection packet
 					sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
-					
+
 					// send a hint monster?
 					nearbyFeature.trySpawnHintMonster(world, player, pos);
 
@@ -604,28 +611,14 @@ public class TFEventListener {
 	public static void livingAttack(LivingAttackEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
 		// cancel attacks in protected areas
-		if (living instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer) event.getSource().getTrueSource()).capabilities.isCreativeMode
-				&& TFWorld.getChunkGenerator(living.world) instanceof ChunkGeneratorTFBase && living.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (!living.world.isRemote && living instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayer
+				&& isAreaProtected(living.world, (EntityPlayer) event.getSource().getTrueSource(), new BlockPos(living))) {
 
-			ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(living.getEntityWorld());
-
-			BlockPos pos = new BlockPos(living);
-
-			if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos) && chunkGenerator.isBlockProtected(pos)) {
-				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), living.world);
-
-				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements((EntityPlayer) event.getSource().getTrueSource())) {
-					event.setResult(Result.DENY);
-					event.setCanceled(true);
-					for (int i = 0; i < 20; i++) {
-						TwilightForestMod.proxy.spawnParticle(TFParticleType.PROTECTION, living.posX, living.posY, living.posZ, 0, 0, 0);
-					}
-				}
-			}
+			event.setResult(Result.DENY);
+			event.setCanceled(true);
 		}
 		// shields
-		if (!living.world.isRemote && living.hasCapability(CapabilityList.SHIELDS, null) && !SHIELD_DAMAGE_BLACKLIST.contains(event.getSource().damageType)) {
+		if (!living.world.isRemote && !SHIELD_DAMAGE_BLACKLIST.contains(event.getSource().damageType)) {
 			IShieldCapability cap = living.getCapability(CapabilityList.SHIELDS, null);
 			if (cap != null && cap.shieldsLeft() > 0) {
 				cap.breakShield();
