@@ -19,20 +19,17 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
@@ -55,6 +52,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class TFClientProxy extends TFCommonProxy {
+
 	private final Map<EntityEquipmentSlot, ModelBiped> knightlyArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
 	private final Map<EntityEquipmentSlot, ModelBiped> phantomArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
 	private final Map<EntityEquipmentSlot, ModelBiped> yetiArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
@@ -222,19 +220,13 @@ public class TFClientProxy extends TFCommonProxy {
 		});
 	}
 
-	@Override
-	public World getClientWorld() {
-		return FMLClientHandler.instance().getClient().world;
-	}
-
 	// [VanillaCopy] adapted from RenderGlobal.spawnEntityFX
 	@Override
-	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
+	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
+
 		Minecraft mc = Minecraft.getMinecraft();
 		Entity entity = mc.getRenderViewEntity();
-
-		// ignore the passed-in world, since on SP we get the integrated server world, which is not really what we want
-		world = this.getClientWorld();
+		World world = mc.world;
 
 		if (entity != null && mc.effectRenderer != null) {
 			int i = mc.gameSettings.particleSetting;
@@ -316,7 +308,6 @@ public class TFClientProxy extends TFCommonProxy {
 		return arcticArmorModel.get(armorSlot);
 	}
 
-
 	@Override
 	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
 		return this.fieryArmorModel.get(armorSlot);
@@ -328,26 +319,6 @@ public class TFClientProxy extends TFCommonProxy {
 
 	public void setDangerOverlayShown(boolean isDangerOverlayShown) {
 		this.isDangerOverlayShown = isDangerOverlayShown;
-
-	}
-
-	@Override
-	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
-		for (int dx = 0; dx < 4; ++dx) {
-			for (int dy = 0; dy < 4; ++dy) {
-				for (int dz = 0; dz < 4; ++dz) {
-					double d0 = (double) pos.getX() + ((double) dx + 0.5D) / (double) 4;
-					double d1 = (double) pos.getY() + ((double) dy + 0.5D) / (double) 4;
-					double d2 = (double) pos.getZ() + ((double) dz + 0.5D) / (double) 4;
-
-					double gx = world.rand.nextGaussian() * 0.2D;
-					double gy = world.rand.nextGaussian() * 0.2D;
-					double gz = world.rand.nextGaussian() * 0.2D;
-
-					TwilightForestMod.proxy.spawnParticle(world, TFParticleType.ANNIHILATE, d0, d1, d2, gx, gy, gz);
-				}
-			}
-		}
 	}
 
 	@Override

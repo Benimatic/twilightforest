@@ -546,7 +546,7 @@ public class HydraHeadContainer {
 				dy *= velocity;
 				dz *= velocity;
 
-				TwilightForestMod.proxy.spawnParticle(headEntity.world, TFParticleType.LARGE_FLAME, px, py, pz, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, px, py, pz, dx, dy, dz);
 			}
 		}
 

@@ -75,6 +75,7 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 	}
 
 	private void makeParticlesTo(Entity highlight) {
+
 		double sx = this.pos.getX() + 0.5D;
 		double sy = this.pos.getY() + 1.0D;
 		double sz = this.pos.getZ() + 0.5D;
@@ -84,9 +85,8 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 		double dz = sz - highlight.posZ;
 
 		for (int i = 0; i < 5; i++) {
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, sx, sy, sz, -dx, -dy, -dz);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, sx, sy, sz, -dx, -dy, -dz);
 		}
-
 	}
 
 	public boolean isCharged() {

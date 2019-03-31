@@ -619,7 +619,7 @@ public class TFEventListener {
 					event.setResult(Result.DENY);
 					event.setCanceled(true);
 					for (int i = 0; i < 20; i++) {
-						TwilightForestMod.proxy.spawnParticle(living.world, TFParticleType.PROTECTION, living.posX, living.posY, living.posZ, 0, 0, 0);
+						TwilightForestMod.proxy.spawnParticle(TFParticleType.PROTECTION, living.posX, living.posY, living.posZ, 0, 0, 0);
 					}
 				}
 			}

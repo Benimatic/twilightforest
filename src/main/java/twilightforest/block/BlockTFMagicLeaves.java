@@ -132,7 +132,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 		}
 
 		if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-			TwilightForestMod.proxy.spawnParticle(world, TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

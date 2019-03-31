@@ -64,7 +64,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dz = this.posZ + 2F * (rand.nextFloat() - rand.nextFloat());
 
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_WARNING, dx, dy, dz, 0, -1, 0);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_WARNING, dx, dy, dz, 0, -1, 0);
 		}
 	}
 

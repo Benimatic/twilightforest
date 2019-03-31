@@ -40,7 +40,7 @@ public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
 				double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
 				double py = entity.posY + itemRand.nextFloat() * entity.height;
 				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				TwilightForestMod.proxy.spawnParticle(entity.world, TFParticleType.SNOW, px, py, pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW, px, py, pz, 0, 0, 0);
 			}
 		}
 		return false;

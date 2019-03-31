@@ -23,24 +23,15 @@ public class TFCommonProxy implements IGuiHandler {
 	 * Called during the pre-load step.  Register stuff here.
 	 * Obviously most stuff in the common category will be just registered in the mod file
 	 */
-	public void preInit() {
-		;
-	}
+	public void preInit() {}
 
 	/**
 	 * Called during the load step.  Register stuff here.
 	 * Obviously most stuff in the common category will be just registered in the mod file
 	 */
-	public void init() {
-		;
-	}
+	public void init() {}
 
-	public World getClientWorld() {
-		return null;
-	}
-
-	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
-	}
+	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {}
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -82,9 +73,6 @@ public class TFCommonProxy implements IGuiHandler {
 
 	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
 		return null;
-	}
-
-	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
 	}
 
 	public boolean doesPlayerHaveAdvancement(EntityPlayer player, ResourceLocation advId) {

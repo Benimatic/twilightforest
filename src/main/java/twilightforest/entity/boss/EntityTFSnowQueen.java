@@ -143,25 +143,26 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		if (!world.isRemote)
+		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
+		}
 		// make snow particles
 		for (int i = 0; i < 3; i++) {
 			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 		}
 
 		// during drop phase, all the ice blocks should make particles
 		if (this.getCurrentPhase() == Phase.DROP) {
-			for (int i = 0; i < this.iceArray.length; i++) {
+			for (Entity ice : this.iceArray) {
 				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 				float py = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_WARNING, this.iceArray[i].lastTickPosX + px, this.iceArray[i].lastTickPosY + py, this.iceArray[i].lastTickPosZ + pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_WARNING, ice.lastTickPosX + px, ice.lastTickPosY + py, ice.lastTickPosZ + pz, 0, 0, 0);
 			}
 		}
 
@@ -190,7 +191,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 				dy *= velocity;
 				dz *= velocity;
 
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
 			}
 
 			//playBreathSound();

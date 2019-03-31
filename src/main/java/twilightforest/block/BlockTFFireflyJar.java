@@ -79,17 +79,13 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback, I
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
-		double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
-		double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
+		for (int i = 0; i < 2; i++) {
+			double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
+			double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
+			double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
-
-		dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
-		dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
-		dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
-
-		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
+		}
 	}
 
 	@Override

@@ -50,10 +50,7 @@ public class EntityTFRovingCube extends EntityMob {
 			float py = this.getEyeHeight() - 0.25F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
 			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
 
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.ANNIHILATE, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.ANNIHILATE, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 		}
-
 	}
-
-
 }

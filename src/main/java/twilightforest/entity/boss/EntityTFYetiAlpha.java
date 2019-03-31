@@ -149,7 +149,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
 
-		TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 	}
 
 	@Override
