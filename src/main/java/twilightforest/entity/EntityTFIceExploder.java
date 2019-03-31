@@ -63,13 +63,15 @@ public class EntityTFIceExploder extends EntityMob {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		// make snow particles
-		for (int i = 0; i < 3; i++) {
-			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+		if (this.world.isRemote) {
+			// make snow particles
+			for (int i = 0; i < 3; i++) {
+				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+				float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
+				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			}
 		}
 	}
 

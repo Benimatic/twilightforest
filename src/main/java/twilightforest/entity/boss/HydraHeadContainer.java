@@ -345,10 +345,10 @@ public class HydraHeadContainer {
 				playSounds();
 			} else {
 				clientAnimateHeadDeath();
+				addMouthParticles();
 			}
 
 			setNeckPosition();
-			addMouthParticles();
 		}
 	}
 

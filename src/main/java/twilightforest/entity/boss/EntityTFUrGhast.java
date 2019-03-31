@@ -200,20 +200,31 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
-		}
+		} else {
+			if (this.isInTantrum()) {
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.BOSS_TEAR,
+						this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						this.posY + this.rand.nextDouble() * (double) this.height - 0.25D,
+						this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						0, 0, 0
+				);
+			}
 
-		if (this.isInTantrum()) {
-			TwilightForestMod.proxy.spawnParticle(TFParticleType.BOSS_TEAR, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0, 0, 0);
-		}
+			// extra death explosions
+			if (deathTime > 0) {
+				for (int k = 0; k < 5; k++) {
 
-		// extra death explosions
-		if (deathTime > 0) {
-			for (int k = 0; k < 5; k++) {
-				double d = rand.nextGaussian() * 0.02D;
-				double d1 = rand.nextGaussian() * 0.02D;
-				double d2 = rand.nextGaussian() * 0.02D;
-				EnumParticleTypes explosionType = rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
-				world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+					double d = rand.nextGaussian() * 0.02D;
+					double d1 = rand.nextGaussian() * 0.02D;
+					double d2 = rand.nextGaussian() * 0.02D;
+
+					world.spawnParticle(rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL,
+							(posX + rand.nextFloat() * width * 2.0F) - width,
+							posY + rand.nextFloat() * height,
+							(posZ + rand.nextFloat() * width * 2.0F) - width,
+							d, d1, d2
+					);
+				}
 			}
 		}
 	}

@@ -145,7 +145,12 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		super.onLivingUpdate();
 		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
+		} else {
+			spawnParticles();
 		}
+	}
+
+	private void spawnParticles() {
 		// make snow particles
 		for (int i = 0; i < 3; i++) {
 			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
@@ -193,8 +198,6 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 
 				TwilightForestMod.proxy.spawnParticle(TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
 			}
-
-			//playBreathSound();
 		}
 	}
 
