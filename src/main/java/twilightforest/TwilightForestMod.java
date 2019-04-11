@@ -26,6 +26,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.structures.hollowtree.TFHollowTreePieces;
 import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;
+import twilightforest.tileentity.spawner.*;
 import twilightforest.world.WorldProviderTwilightForest;
 
 @Mod( modid = TwilightForestMod.ID,

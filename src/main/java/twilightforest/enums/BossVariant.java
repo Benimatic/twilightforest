@@ -1,15 +1,15 @@
 package twilightforest.enums;
 
 import net.minecraft.util.IStringSerializable;
-import twilightforest.tileentity.TileEntityTFAlphaYetiSpawner;
-import twilightforest.tileentity.TileEntityTFBossSpawner;
-import twilightforest.tileentity.TileEntityTFHydraSpawner;
-import twilightforest.tileentity.TileEntityTFKnightPhantomsSpawner;
-import twilightforest.tileentity.TileEntityTFLichSpawner;
-import twilightforest.tileentity.TileEntityTFMinoshroomSpawner;
-import twilightforest.tileentity.TileEntityTFNagaSpawner;
-import twilightforest.tileentity.TileEntityTFSnowQueenSpawner;
-import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFAlphaYetiSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFBossSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFHydraSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFKnightPhantomsSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFLichSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFMinoshroomSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFNagaSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFSnowQueenSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFTowerBossSpawner;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
