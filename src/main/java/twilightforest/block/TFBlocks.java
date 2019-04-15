@@ -34,7 +34,7 @@ public class TFBlocks {
 	public static final BlockLeaves magic_leaves         = iCantBelieveItsNotNull();
 	public static final Block moonworm                   = iCantBelieveItsNotNull();
 	public static final Block tower_wood                 = iCantBelieveItsNotNull();
-	public static final Block tower_device               = iCantBelieveItsNotNull();
+	public static final BlockTFTowerDevice tower_device  = iCantBelieveItsNotNull();
 	//public static Block towerAntenna                   = null; // Not you
 	public static final Block tower_translucent          = iCantBelieveItsNotNull();
 	public static final Block trophy                     = iCantBelieveItsNotNull();
