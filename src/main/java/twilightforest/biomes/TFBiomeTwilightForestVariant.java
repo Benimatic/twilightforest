@@ -30,13 +30,13 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(5) == 0) {
-			new WorldGenShrub(
+			return new WorldGenShrub(
 					TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.OAK),
-					TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.OAK));
+					TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.OAK)
+			);
 		} else if (random.nextInt(10) == 0) {
 			return new WorldGenBigTree(false);
 		}
-
 		return TREE_FEATURE;
 	}
 
