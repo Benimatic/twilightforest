@@ -121,7 +121,7 @@ public class TFConfig {
 	@Config.Comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
 	public static boolean doCompat = true;
 
-	@Config.LangKey(config + "tree_tweaks")
+	@Config.LangKey(config + "performance")
 	@Config.Comment("Lets you sacrifice various things to improve world performance.")
 	public static Performance performance = new Performance();
 
@@ -141,7 +141,7 @@ public class TFConfig {
 		@Config.Comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.")
 		public int leavesLightOpacity = 1;
 
-		@Config.LangKey(config + "glacer_packed_ice")
+		@Config.LangKey(config + "glacier_packed_ice")
 		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
 		public boolean glacierPackedIce = false;
 
