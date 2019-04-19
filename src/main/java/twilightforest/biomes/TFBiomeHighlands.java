@@ -33,16 +33,16 @@ import twilightforest.world.feature.TFGenTrollRoots;
 
 import java.util.Random;
 
-
 public class TFBiomeHighlands extends TFBiomeBase {
-	private static final WorldGenTaiga1 taigaGen1 = new WorldGenTaiga1();
-	private static final WorldGenTaiga2 taigaGen2 = new WorldGenTaiga2(false);
-	private static final WorldGenMegaPineTree megaPineGen1 = new WorldGenMegaPineTree(false, false);
-	private static final WorldGenMegaPineTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
-	private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
-	private static final TFGenTrollRoots genTrollRoots = new TFGenTrollRoots();
-	private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
+	private final WorldGenAbstractTree taigaGen1 = new WorldGenTaiga1();
+	private final WorldGenAbstractTree taigaGen2 = new WorldGenTaiga2(false);
+	private final WorldGenAbstractTree megaPineGen1 = new WorldGenMegaPineTree(false, false);
+	private final WorldGenAbstractTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
+
+	private final WorldGenerator genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
+	private final WorldGenerator genTrollRoots = new TFGenTrollRoots();
+	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
 	public TFBiomeHighlands(BiomeProperties props) {
 		super(props);
@@ -77,7 +77,9 @@ public class TFBiomeHighlands extends TFBiomeBase {
 
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
-		return random.nextInt(5) > 0 ? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN) : new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
+		return random.nextInt(5) > 0
+				? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN)
+				: new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 	}
 
 	@Override
@@ -96,22 +98,22 @@ public class TFBiomeHighlands extends TFBiomeBase {
 
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
-		int dx, dy, dz;
 
 		// boulders
 		int maxBoulders = rand.nextInt(2);
 		for (int i = 0; i < maxBoulders; ++i) {
-			dx = pos.getX() + rand.nextInt(16) + 8;
-			dz = pos.getZ() + rand.nextInt(16) + 8;
-			genBoulder.generate(world, rand, world.getHeight(new BlockPos(dx, 0, dz)));
+			int dx = pos.getX() + rand.nextInt(16) + 8;
+			int dz = pos.getZ() + rand.nextInt(16) + 8;
+			int dy = world.getHeight(dx, dz);
+			genBoulder.generate(world, rand, new BlockPos(dx, dy, dz));
 		}
 
 		// giant ferns
 		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
 		for (int i = 0; i < 7; ++i) {
-			dx = pos.getX() + rand.nextInt(16) + 8;
-			dz = pos.getZ() + rand.nextInt(16) + 8;
-			dy = rand.nextInt(world.getHeight(new BlockPos(dx, 0, dz)).getY() + 32);
+			int dx = pos.getX() + rand.nextInt(16) + 8;
+			int dz = pos.getZ() + rand.nextInt(16) + 8;
+			int dy = rand.nextInt(world.getHeight(dx, dz) + 32);
 			DOUBLE_PLANT_GENERATOR.generate(world, rand, new BlockPos(dx, dy, dz));
 		}
 

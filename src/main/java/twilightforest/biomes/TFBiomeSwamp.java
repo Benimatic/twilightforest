@@ -1,6 +1,5 @@
 package twilightforest.biomes;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -34,17 +33,19 @@ import twilightforest.world.feature.TFGenTallGrass;
 import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class TFBiomeSwamp extends TFBiomeBase {
 
 	private static final int MONSTER_SPAWN_RATE = 20;
-	private Random monsterRNG = new Random(53439L);
 
-	private TFGenVines worldgenvines = new TFGenVines();
-	private WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
-	private WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
+	private final Random monsterRNG = new Random(53439L);
+
+	private final WorldGenerator vinesGen = new TFGenVines();
+	private final WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
+	private final WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
 
 	public TFBiomeSwamp(BiomeProperties props) {
 		super(props);
@@ -55,7 +56,6 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().setClayPerChunk(1);
 		getTFBiomeDecorator().setTreesPerChunk(2);
 		getTFBiomeDecorator().setWaterlilyPerChunk(20);
-
 
 		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().lakesPerChunk = 2;
@@ -73,8 +73,9 @@ public class TFBiomeSwamp extends TFBiomeBase {
 					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
 					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK)
 			);
+		} else {
+			return SWAMP_FEATURE;
 		}
-		return SWAMP_FEATURE;
 	}
 
 	@Override
@@ -93,10 +94,10 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		super.decorate(world, random, pos);
 
 		for (int i = 0; i < 50; i++) {
-			int j = pos.getX() + random.nextInt(16) + 8;
-			int l = TFWorld.SEALEVEL + 128;
-			int k = pos.getZ() + random.nextInt(16) + 8;
-			worldgenvines.generate(world, random, new BlockPos(j, l, k));
+			int x = pos.getX() + random.nextInt(16) + 8;
+			int y = TFWorld.SEALEVEL + 128;
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			vinesGen.generate(world, random, new BlockPos(x, y, z));
 		}
 		for (int i = 0; i < 25; i++) {
 			int x = pos.getX() + random.nextInt(15) + 8;
@@ -130,7 +131,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
 		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
 		if (creatureType == EnumCreatureType.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : Lists.newArrayList();
+			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
 		}
 		return super.getSpawnableList(creatureType);
 	}

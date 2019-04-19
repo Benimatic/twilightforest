@@ -16,7 +16,6 @@ import twilightforest.world.feature.TFGenTallGrass;
 
 import java.util.Random;
 
-
 public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 
 	public TFBiomeTwilightForestVariant(BiomeProperties props) {
@@ -36,8 +35,9 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 			);
 		} else if (random.nextInt(10) == 0) {
 			return new WorldGenBigTree(false);
+		} else {
+			return TREE_FEATURE;
 		}
-		return TREE_FEATURE;
 	}
 
 	@Override
@@ -53,17 +53,15 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 
 	@Override
 	public void decorate(World world, Random random, BlockPos pos) {
-		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
 
+		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
 		for (int i = 0; i < 7; ++i) {
 			int rx = pos.getX() + random.nextInt(16) + 8;
 			int rz = pos.getZ() + random.nextInt(16) + 8;
-			int ry = random.nextInt(world.getHeight(new BlockPos(rx, 0, rz)).getY() + 32);
+			int ry = random.nextInt(world.getHeight(rx, rz) + 32);
 			DOUBLE_PLANT_GENERATOR.generate(world, random, new BlockPos(rx, ry, rz));
 		}
 
 		super.decorate(world, random, pos);
 	}
-
-
 }

@@ -22,7 +22,6 @@ import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
-
 public class TFBiomeEnchantedForest extends TFBiomeBase {
 
 	private final Random colorRNG;
@@ -30,7 +29,6 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	public TFBiomeEnchantedForest(BiomeProperties props) {
 		super(props);
 		colorRNG = new Random();
-
 
 		getTFBiomeDecorator().setGrassPerChunk(12);
 		getTFBiomeDecorator().setFlowersPerChunk(8);
@@ -101,26 +99,24 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
-		TFGenVines vines = new TFGenVines();
-		BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(0, 0, 0);
+
+		BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos();
+
+		WorldGenerator vines = new TFGenVines();
 		for (int i = 0; i < 20; i++) {
 			int rx = pos.getX() + rand.nextInt(16) + 8;
 			int ry = TFWorld.SEALEVEL + 128;
 			int rz = pos.getZ() + rand.nextInt(16) + 8;
-			mutPos.setPos(rx, ry, rz);
-			vines.generate(world, rand, mutPos);
+			vines.generate(world, rand, mutPos.setPos(rx, ry, rz));
 		}
 
 		// tall ferns
 		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
-
 		for (int i = 0; i < 20; ++i) {
 			int rx = pos.getX() + rand.nextInt(16) + 8;
 			int rz = pos.getZ() + rand.nextInt(16) + 8;
-			mutPos.setPos(rx, 0, rz);
-			int ry = rand.nextInt(world.getHeight(mutPos).getY() + 32);
-			mutPos.setPos(rx, ry, rz);
-			DOUBLE_PLANT_GENERATOR.generate(world, rand, mutPos);
+			int ry = rand.nextInt(world.getHeight(rx, rz) + 32);
+			DOUBLE_PLANT_GENERATOR.generate(world, rand, mutPos.setPos(rx, ry, rz));
 		}
 
 		super.decorate(world, rand, pos);
@@ -136,15 +132,11 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 
 	@Override
 	public void addDefaultFlowers() {
-		addFlower(Blocks.YELLOW_FLOWER.getDefaultState(), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.POPPY), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.BLUE_ORCHID), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.ALLIUM), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.HOUSTONIA), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.RED_TULIP), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.ORANGE_TULIP), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.WHITE_TULIP), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.PINK_TULIP), 10);
-		addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), BlockFlower.EnumFlowerType.OXEYE_DAISY), 10);
+		for (BlockFlower.EnumFlowerType flowerType : Blocks.YELLOW_FLOWER.getTypeProperty().getAllowedValues()) {
+			addFlower(Blocks.YELLOW_FLOWER.getDefaultState().withProperty(Blocks.YELLOW_FLOWER.getTypeProperty(), flowerType), 10);
+		}
+		for (BlockFlower.EnumFlowerType flowerType : Blocks.RED_FLOWER.getTypeProperty().getAllowedValues()) {
+			addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), flowerType), 10);
+		}
 	}
 }

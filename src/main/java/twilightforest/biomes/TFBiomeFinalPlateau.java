@@ -12,6 +12,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.passive.EntityTFRaven;
 import twilightforest.enums.DeadrockVariant;
 
 import java.util.Random;
@@ -31,7 +32,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 
 		// custom creature list.
 		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFRaven.class, 10, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFRaven.class, 10, 4, 4));
 	}
 
 	@Override

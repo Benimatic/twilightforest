@@ -53,13 +53,13 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 
 	@Override
 	public void decorate(World world, Random random, BlockPos pos) {
-		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.GRASS);
 
-		for (int k = 0; k < 7; ++k) {
-			int l = pos.getX() + random.nextInt(16) + 8;
-			int i1 = pos.getZ() + random.nextInt(16) + 8;
-			int j1 = random.nextInt(world.getHeight(new BlockPos(l, 0, i1)).getY() + 32);
-			DOUBLE_PLANT_GENERATOR.generate(world, random, new BlockPos(l, j1, i1));
+		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.GRASS);
+		for (int i = 0; i < 7; ++i) {
+			int x = pos.getX() + random.nextInt(16) + 8;
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			int y = random.nextInt(world.getHeight(x, z) + 32);
+			DOUBLE_PLANT_GENERATOR.generate(world, random, new BlockPos(x, y, z));
 		}
 
 		super.decorate(world, random, pos);

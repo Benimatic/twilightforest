@@ -8,8 +8,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.passive.EntityTFPenguin;
 import twilightforest.potions.TFPotions;
 import twilightforest.world.feature.TFGenPenguins;
 import twilightforest.world.TFWorld;
@@ -29,7 +31,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		getTFBiomeDecorator().hasCanopy = false;
 
 		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFPenguin.class, 10, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFPenguin.class, 10, 4, 4));
 	}
 
 	@Override
@@ -57,13 +59,13 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	@Override
 	public void decorate(World world, Random random, BlockPos pos) {
 		super.decorate(world, random, pos);
-		TFGenPenguins penguins = new TFGenPenguins();
 
+		WorldGenerator penguins = new TFGenPenguins();
 		if (random.nextInt(4) == 0) {
-			int j = pos.getX() + random.nextInt(16) + 8;
+			int x = pos.getX() + random.nextInt(16) + 8;
 			int y = TFWorld.SEALEVEL;
-			int k = pos.getZ() + random.nextInt(16) + 8;
-			penguins.generate(world, random, new BlockPos(j, y, k));
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			penguins.generate(world, random, new BlockPos(x, y, z));
 		}
 	}
 

@@ -1,6 +1,5 @@
 package twilightforest.biomes;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -19,7 +18,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
 import twilightforest.TFFeature;
@@ -29,13 +27,15 @@ import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.EntityTFMistWolf;
 import twilightforest.entity.EntityTFSkeletonDruid;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class TFBiomeDarkForest extends TFBiomeBase {
 
 	private static final int MONSTER_SPAWN_RATE = 20;
-	private Random monsterRNG;
+
+	private final Random monsterRNG;
 
 	public TFBiomeDarkForest(BiomeProperties props) {
 		super(props);
@@ -63,7 +63,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	}
 
 	@Override
-	public BiomeDecorator createBiomeDecorator() {
+	public TFBiomeDecorator createBiomeDecorator() {
 		return new TFDarkForestBiomeDecorator();
 	}
 
@@ -72,9 +72,9 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		if (random.nextInt(5) == 0) {
 			return new WorldGenShrub(
 					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK));
-		}
-		if (random.nextInt(8) == 0) {
+					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK)
+			);
+		} else if (random.nextInt(8) == 0) {
 			return this.birchGen;
 		} else {
 			return TREE_FEATURE;
@@ -99,7 +99,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
 		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
 		if (creatureType == EnumCreatureType.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : Lists.newArrayList();
+			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
 		}
 		return super.getSpawnableList(creatureType);
 	}

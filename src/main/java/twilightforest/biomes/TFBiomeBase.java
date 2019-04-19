@@ -10,26 +10,26 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenBirchTree;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKobold;
-import twilightforest.entity.passive.EntityTFMobileFirefly;
+import twilightforest.entity.passive.*;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -40,15 +40,12 @@ import java.util.Random;
 
 public class TFBiomeBase extends Biome {
 
-	protected final WorldGenBigMushroom bigMushroomGen;
-	protected final WorldGenBirchTree birchGen;
-	protected final List<SpawnListEntry> undergroundMonsterList;
+	protected final WorldGenAbstractTree birchGen = new WorldGenBirchTree(false, false);
+
+	protected final List<SpawnListEntry> undergroundMonsterList = new ArrayList<>();
 
 	public TFBiomeBase(BiomeProperties props) {
 		super(props);
-
-		bigMushroomGen = new WorldGenBigMushroom();
-		birchGen = new WorldGenBirchTree(false, false);
 
 		// remove normal monster spawns
 		spawnableMonsterList.clear();
@@ -56,18 +53,16 @@ public class TFBiomeBase extends Biome {
 		spawnableWaterCreatureList.clear();
 		// custom creature list.
 		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFBighorn.class, 12, 4, 4));
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFBoar.class, 10, 4, 4));
-		spawnableCreatureList.add(new SpawnListEntry(net.minecraft.entity.passive.EntityChicken.class, 10, 4, 4));
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFDeer.class, 15, 4, 5));
-		spawnableCreatureList.add(new SpawnListEntry(net.minecraft.entity.passive.EntityWolf.class, 5, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFBighorn.class, 12, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFBoar.class, 10, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityChicken.class, 10, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFDeer.class, 15, 4, 5));
+		spawnableCreatureList.add(new SpawnListEntry(EntityWolf.class, 5, 4, 4));
 
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFTinyBird.class, 15, 4, 8));
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFSquirrel.class, 10, 2, 4));
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFBunny.class, 10, 4, 5));
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFRaven.class, 10, 1, 2));
-
-		undergroundMonsterList = new ArrayList<SpawnListEntry>();
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFTinyBird.class, 15, 4, 8));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFSquirrel.class, 10, 2, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFBunny.class, 10, 4, 5));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFRaven.class, 10, 1, 2));
 
 		undergroundMonsterList.add(new SpawnListEntry(EntitySpider.class, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityZombie.class, 10, 4, 4));
@@ -77,9 +72,9 @@ public class TFBiomeBase extends Biome {
 		undergroundMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityTFKobold.class, 10, 4, 8));
 
-		this.spawnableCaveCreatureList.clear();
-		this.spawnableCaveCreatureList.add(new Biome.SpawnListEntry(EntityBat.class, 10, 8, 8));
-		this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityTFMobileFirefly.class, 10, 8, 8));
+		spawnableCaveCreatureList.clear();
+		spawnableCaveCreatureList.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
+		spawnableCaveCreatureList.add(new SpawnListEntry(EntityTFMobileFirefly.class, 10, 8, 8));
 
 		getTFBiomeDecorator().setTreesPerChunk(10);
 		getTFBiomeDecorator().setGrassPerChunk(2);
@@ -92,7 +87,7 @@ public class TFBiomeBase extends Biome {
 	}
 
 	@Override
-	public BiomeDecorator createBiomeDecorator() {
+	public TFBiomeDecorator createBiomeDecorator() {
 		return new TFBiomeDecorator();
 	}
 
@@ -104,8 +99,7 @@ public class TFBiomeBase extends Biome {
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(5) == 0) {
 			return birchGen;
-		}
-		if (random.nextInt(10) == 0) {
+		} else if (random.nextInt(10) == 0) {
 			return new WorldGenBigTree(false);
 		} else {
 			return TREE_FEATURE;
