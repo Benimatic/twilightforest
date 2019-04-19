@@ -214,22 +214,27 @@ public class TFConfig {
 	public static boolean rotateTrophyHeadsGui = true;
 
 	@Config.LangKey(config + "shield_parry")
+	@Config.Comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.")
 	public static ShieldInteractions shieldInteractions = new ShieldInteractions();
 
 	public static class ShieldInteractions {
 		@Config.LangKey(config + "parry_non_twilight")
+		@Config.Comment("Set to true to parry non-Twilight projectiles.")
 		public boolean parryNonTwilightAttacks = false;
 
 		@Config.LangKey(config + "parry_window_arrow")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry an arrow.")
 		public int shieldParryTicksArrow = 40;
 
 		@Config.LangKey(config + "parry_window_fireball")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry a fireball.")
 		public int shieldParryTicksFireball = 40;
 
 		@Config.LangKey(config + "parry_window_throwable")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry a thrown item.")
 		public int shieldParryTicksThrowable = 40;
 
 		@Config.LangKey(config + "parry_window_beam")

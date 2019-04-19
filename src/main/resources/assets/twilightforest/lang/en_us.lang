@@ -406,6 +406,7 @@ tile.twilightforest.SortPlate.name=Sortingwood Pressure Plate
 tile.twilightforest.SortTrapDoor.name=Sortingwood Trapdoor
 item.tile.twilightforest.SortDoor.name=Sortingwood Door
 
+# Structures
 structure.twilight_portal.name=Twilight Portal
 structure.hedge_maze.name=Hedge Maze
 structure.hollow_hill.name=Hollow Hill
@@ -422,6 +423,7 @@ structure.aurora_palace.name=Aurora Palace
 structure.troll_cave_and_cloud_castle.name=Troll Cave and House in the Clouds
 structure.final_castle.name=Final Castle
 
+# Items
 item.twilightforest.nagaScale.name=Naga Scale
 item.twilightforest.plateNaga.name=Naga Scale Tunic
 item.twilightforest.legsNaga.name=Naga Scale Leggings
@@ -564,6 +566,7 @@ item.twilightforest.yetiBoots.tooltip=Chills attackers
 
 item.twilightforest.arctic_armor.tooltip=Dyeable like Leather Armor
 
+# Entities
 entity.twilightforest.wild_boar.name=Wild Boar
 entity.twilightforest.bighorn_sheep.name=Bighorn Sheep
 entity.twilightforest.deer.name=Wild Deer
@@ -649,6 +652,19 @@ twilightforest.config.skylight_forest.tooltip=If true, Twilight Forest will gene
 twilightforest.config.skylight_oaks=Skylight Oaks [WIP]
 twilightforest.config.skylight_oaks.tooltip=If true, giant Twilight Oaks will also spawn in void worlds.
 
+twilightforest.config.world_gen_weights=World-Gen Weights
+twilightforest.config.world_gen_weights.tooltip=Weights for various small features
+twilightforest.config.stone_circle_weight=Stone Circle weight
+twilightforest.config.well_weight=Well weight
+twilightforest.config.stalagmite_weight=Stalagmite weight
+twilightforest.config.foundation_weight=Foundation weight
+twilightforest.config.monolith_weight=Monolith weight
+twilightforest.config.grove_ruins_weight=Grove Ruins weight
+twilightforest.config.hollow_stump_weight=Hollow Stump weight
+twilightforest.config.fallen_hollow_log_weight=Fallen Hollow Log weight
+twilightforest.config.fallen_small_log_weight=Fallen Small Log weight
+twilightforest.config.druid_hut_weight=Druid Hut weight
+
 twilightforest.config.compat=Compatibility
 twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
 
@@ -709,7 +725,7 @@ twilightforest.config.parry_window_arrow.tooltip=The amount of ticks after raisi
 twilightforest.config.parry_window_fireball=Timing Windowspan for Fireballs
 twilightforest.config.parry_window_fireball.tooltip=The amount of ticks after raising a shield that makes it OK to parry a fireball. There is 20 ticks in 1 second.
 twilightforest.config.parry_window_throwable=Timing Windowspan for Throwables
-twilightforest.config.parry_window_throwable.tooltip=The amount of ticks after raising a shield that makes it OK to parry a throwable. There is 20 ticks in 1 second.
+twilightforest.config.parry_window_throwable.tooltip=The amount of ticks after raising a shield that makes it OK to parry a thrown item. There is 20 ticks in 1 second.
 twilightforest.config.shieldParryTicksBeam=Timing Windowspan for Beams???
 twilightforest.config.shieldParryTicksBeam.tooltip=???
 
@@ -730,6 +746,7 @@ twilightforest.config.loading_icon_tilting.tooltip=How far the loading icon wobb
 twilightforest.config.loading_icon_tilt_pushback=Icon Tilt Offset
 twilightforest.config.loading_icon_tilt_pushback.tooltip=Pushback value to re-center the wobble of loading icon.
 
+# Books
 twilightforest.book.lichtower.1=\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse
 twilightforest.book.lichtower.2=is boiling off into the surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...
 twilightforest.book.lichtower.3=\u00A78[[Many entries later]]\u00A70\n\nA breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the
