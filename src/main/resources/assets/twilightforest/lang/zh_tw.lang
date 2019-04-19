@@ -546,8 +546,8 @@ twilightforest.config.spawn_in_tf.tooltip=若是，第一次重生的玩家們�
 twilightforest.config.compat=相容性
 twilightforest.config.compat.tooltip=是否加載暮光森林相容性？如果暮光森林的相容性導致崩潰或不需要，請關閉。
 
-twilightforest.config.tree_tweaks=效能調整
-twilightforest.config.tree_tweaks.tooltip=讓你犧牲各種東西來改善世界的表現。
+twilightforest.config.performance=效能調整
+twilightforest.config.performance.tooltip=讓你犧牲各種東西來改善世界的表現。
 twilightforest.config.canopy_coverage=冠層覆蓋率
 twilightforest.config.canopy_coverage.tooltip=樹冠覆蓋數量。較低的數字以較薄的森林為代價提高了方塊的生成速度。
 twilightforest.config.twilight_oaks=暮光橡樹機率
@@ -556,8 +556,8 @@ twilightforest.config.leaves_light_opacity=暮光樹葉不透明度
 twilightforest.config.leaves_light_opacity.tooltip=如果樹葉不是滿的立方體，這控制葉子的不透明度來控制遮光量。
 twilightforest.config.leaves_full_cube=暮光樹葉是否完全的方塊
 twilightforest.config.leaves_full_cube.tooltip=設定否會使樹葉不完全。這樣就不會阻擋光線，使它們在阻擋光線方面等同於玻璃。減少一些照明檢查的複雜性。
-twilightforest.config.glacer_packed_ice=由冰磚製成的冰川而不是冰
-twilightforest.config.glacer_packed_ice.tooltip=設定為是將使暮光冰川由冰磚生成，而不是普通的半透明的冰，減少檢查計算光量。
+twilightforest.config.glacier_packed_ice=由冰磚製成的冰川而不是冰
+twilightforest.config.glacier_packed_ice.tooltip=設定為是將使暮光冰川由冰磚生成，而不是普通的半透明的冰，減少檢查計算光量。
 
 twilightforest.config.silent_cicadas=沉默的蟬
 twilightforest.config.silent_cicadas.tooltip=讓蟬保持沉默，為那些有音效函式庫問題，或者發現牠們很煩人的人而設。

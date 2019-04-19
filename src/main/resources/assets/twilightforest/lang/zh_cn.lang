@@ -625,16 +625,16 @@ twilightforest.config.skylight_oaks.tooltip=启用后，暮色橡树也会在虚
 twilightforest.config.compat=对其他 Mod 兼容
 twilightforest.config.compat.tooltip=是否加载暮色森林对其他 Mod 的兼容？遇到崩溃时，或者不想要兼容时，请禁用此选项。
 
-twilightforest.config.tree_tweaks=性能
-twilightforest.config.tree_tweaks.tooltip=这些选项可用于牺牲各种特性以换取更好的性能。
+twilightforest.config.performance=性能
+twilightforest.config.performance.tooltip=这些选项可用于牺牲各种特性以换取更好的性能。
 twilightforest.config.canopy_coverage=树冠覆盖范围
 twilightforest.config.canopy_coverage.tooltip=树冠覆盖的区域的大小。该项数值越小，森林会越稀薄，但区块生成速度会因此加快。
 twilightforest.config.twilight_oaks=暮色橡树生成概率
 twilightforest.config.twilight_oaks.tooltip=暮色森林维度的每一个区块中生成暮色橡树的概率。该项数值越大，生成概率就越小，性能也会因此提升。
 twilightforest.config.leaves_light_opacity=暮色树叶不透明度
 twilightforest.config.leaves_light_opacity.tooltip=若树叶不是全方块，此选项可控制树叶阻挡光线的程度。
-twilightforest.config.glacer_packed_ice=冰川由浮冰组成
-twilightforest.config.glacer_packed_ice.tooltip=启用后，暮色冰川将全部由浮冰组成，其不透光的性质可帮助降低冰川附近的光照计算量。
+twilightforest.config.glacier_packed_ice=冰川由浮冰组成
+twilightforest.config.glacier_packed_ice.tooltip=启用后，暮色冰川将全部由浮冰组成，其不透光的性质可帮助降低冰川附近的光照计算量。
 twilightforest.config.enable_skylight=启用天空光照
 twilightforest.config.enable_skylight.tooltip=决定暮色森林维度中的方块是否有基于每个方块的天空光照数据。禁用此选项可极大提升世界生成的性能，但代价是没有阴影的平整光照。\n警告：一旦区块在没有天空光照的情况下加载，相应的数据也会一并丢失且难以恢复，请小心操作！
 

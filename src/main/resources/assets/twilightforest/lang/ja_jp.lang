@@ -533,8 +533,8 @@ twilightforest.config.spawn_in_tf.tooltip=trueにすると、初期スポーン�
 twilightforest.config.compat=互換性
 twilightforest.config.compat.tooltip=Twilight Forestの互換設定を有効にします。 クラッシュが起きる場合や、必要でない場合はfalseにして下さい。
 
-twilightforest.config.tree_tweaks=パフォーマンスの調整
-twilightforest.config.tree_tweaks.tooltip=ワールドのパフォーマンスを向上させるための設定
+twilightforest.config.performance=パフォーマンスの調整
+twilightforest.config.performance.tooltip=ワールドのパフォーマンスを向上させるための設定
 twilightforest.config.canopy_coverage=林冠木のカバレッジ
 twilightforest.config.canopy_coverage.tooltip=林冠木のカバレッジの量。小さな値にするとワールド生成スピードが向上しますが、薄い森になります。
 twilightforest.config.twilight_oaks=トワイライトオークの出現率
@@ -543,8 +543,8 @@ twilightforest.config.leaves_light_opacity=黄昏の森の木の葉の不透明�
 twilightforest.config.leaves_light_opacity.tooltip=葉が完全な立方体でない場合、遮光量を調整するために葉の不透明度を設定します。
 twilightforest.config.leaves_full_cube=Twilight Forestの木の葉をフルブロックにする
 twilightforest.config.leaves_full_cube.tooltip=これをfalseに設定すると、葉は完全な立方体ではなくなります。これにより、光を遮断しなくなるので、ガラスと同等の扱いになります。一部の照明チェックの負担を軽減します。
-twilightforest.config.glacer_packed_ice=氷河の氷を氷塊にする
-twilightforest.config.glacer_packed_ice.tooltip=これを設定すると、黄昏の森の氷河が氷ではなく氷塊になり、 光チェックの計算量が減少します。
+twilightforest.config.glacier_packed_ice=氷河の氷を氷塊にする
+twilightforest.config.glacier_packed_ice.tooltip=これを設定すると、黄昏の森の氷河が氷ではなく氷塊になり、 光チェックの計算量が減少します。
 
 twilightforest.config.silent_cicadas=セミを静かにする
 twilightforest.config.silent_cicadas.tooltip=音が気になる人はtrueに設定してください。
