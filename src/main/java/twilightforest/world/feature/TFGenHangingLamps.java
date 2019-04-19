@@ -32,9 +32,9 @@ public class TFGenHangingLamps extends TFGenerator {
 		}
 
 		// generate lamp
-		world.setBlockState(pos, TFBlocks.firefly_jar.getDefaultState());
+		world.setBlockState(pos, TFBlocks.firefly_jar.getDefaultState(), 16 | 2);
 		for (int cy = 1; cy < dist; cy++) {
-			world.setBlockState(pos.up(cy), Blocks.OAK_FENCE.getDefaultState());
+			world.setBlockState(pos.up(cy), Blocks.OAK_FENCE.getDefaultState(), 16 | 2);
 		}
 
 		return true;

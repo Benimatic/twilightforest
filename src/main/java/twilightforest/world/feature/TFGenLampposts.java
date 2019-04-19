@@ -30,9 +30,9 @@ public class TFGenLampposts extends TFGenerator {
 
 		// generate lamp
 		for (int dy = 0; dy < height; dy++) {
-			world.setBlockState(pos.up(dy), Blocks.OAK_FENCE.getDefaultState());
+			world.setBlockState(pos.up(dy), Blocks.OAK_FENCE.getDefaultState(), 16 | 2);
 		}
-		world.setBlockState(pos.up(height), TFBlocks.firefly_jar.getDefaultState());
+		world.setBlockState(pos.up(height), TFBlocks.firefly_jar.getDefaultState(), 16 | 2);
 		return true;
 	}
 

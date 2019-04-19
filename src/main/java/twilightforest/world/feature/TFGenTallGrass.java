@@ -37,13 +37,13 @@ public class TFGenTallGrass extends WorldGenerator {
 			position = position.down();
 		} while (position.getY() > 0);
 
-		for (int i = 0; i < amount; ++i) // TF - 128 -> amount
-		{
+		// TF - 128 -> amount
+		for (int i = 0; i < amount; ++i) {
 			BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
 			// TF - use our own state
 			if (worldIn.isAirBlock(blockpos) && ((BlockBush) state.getBlock()).canBlockStay(worldIn, blockpos, state)) {
-				worldIn.setBlockState(blockpos, state, 2);
+				worldIn.setBlockState(blockpos, state, 16 | 2);
 			}
 		}
 

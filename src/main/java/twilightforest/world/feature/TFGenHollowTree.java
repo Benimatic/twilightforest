@@ -446,9 +446,8 @@ public class TFGenHollowTree extends TFGenerator {
 		// air
 		drawBlob(this, world, pos, 2, Blocks.AIR.getDefaultState());
 
-
 		// spawner
-		world.setBlockState(pos.up(), Blocks.MOB_SPAWNER.getDefaultState(), 2);
+		world.setBlockState(pos.up(), Blocks.MOB_SPAWNER.getDefaultState(), 16 | 2);
 		TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(pos.up());
 		if (ms != null) {
 			ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSwarmSpider.class));

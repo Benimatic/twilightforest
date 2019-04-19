@@ -35,7 +35,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 
 	private static final int MONSTER_SPAWN_RATE = 20;
 
-	private final Random monsterRNG;
+	private final Random monsterRNG = new Random(53439L);
 
 	public TFBiomeDarkForest(BiomeProperties props) {
 		super(props);
@@ -47,8 +47,6 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		getTFBiomeDecorator().setFlowersPerChunk(-99);
 		getTFBiomeDecorator().setMushroomsPerChunk(2);
 		getTFBiomeDecorator().setDeadBushPerChunk(10);
-
-		this.monsterRNG = new Random();
 
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityZombie.class, 5, 1, 4));

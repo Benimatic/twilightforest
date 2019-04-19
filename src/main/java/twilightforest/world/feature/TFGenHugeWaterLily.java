@@ -8,7 +8,6 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-
 /**
  * Generate huge lily pads
  *
@@ -26,7 +25,7 @@ public class TFGenHugeWaterLily extends WorldGenerator {
 			);
 
 			if (shouldPlacePadAt(world, pos_)) {
-				world.setBlockState(pos_, TFBlocks.huge_waterlily.getDefaultState());
+				world.setBlockState(pos_, TFBlocks.huge_waterlily.getDefaultState(), 16 | 2);
 			}
 		}
 

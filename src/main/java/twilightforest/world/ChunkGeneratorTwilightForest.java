@@ -302,11 +302,11 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 					BlockPos blockpos2 = blockpos1.down();
 
 					if (this.world.canBlockFreezeWater(blockpos2)) {
-						this.world.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 2);
+						this.world.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 16 | 2);
 					}
 
 					if (this.world.canSnowAt(blockpos1, true)) {
-						this.world.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 2);
+						this.world.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 16 | 2);
 					}
 				}
 			}

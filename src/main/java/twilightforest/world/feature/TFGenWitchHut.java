@@ -175,7 +175,7 @@ public class TFGenWitchHut extends TFGenerator {
 		setBlockAndNotifyAdequately(world, pos.add(1, 0, 3), Blocks.FIRE.getDefaultState()); // oh god the roof!
 
 		// skeleton spawner!
-		world.setBlockState(pos.add(3, 1, 3), Blocks.MOB_SPAWNER.getDefaultState(), 2);
+		world.setBlockState(pos.add(3, 1, 3), Blocks.MOB_SPAWNER.getDefaultState(), 16 | 2);
 		TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(pos.add(3, 1, 3));
 		if (ms != null) {
 			ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));

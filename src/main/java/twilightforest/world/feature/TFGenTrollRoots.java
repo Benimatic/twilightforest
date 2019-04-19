@@ -7,8 +7,8 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-
 public class TFGenTrollRoots extends TFGenerator {
+
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
 		int copyX = pos.getX();
@@ -17,9 +17,9 @@ public class TFGenTrollRoots extends TFGenerator {
 		for (; pos.getY() > 5; pos = pos.down()) {
 			if (world.isAirBlock(pos) && BlockTFTrollRoot.canPlaceRootBelow(world, pos.up()) && random.nextInt(6) > 0) {
 				if (random.nextInt(10) == 0) {
-					world.setBlockState(pos, TFBlocks.unripe_trollber.getDefaultState());
+					world.setBlockState(pos, TFBlocks.unripe_trollber.getDefaultState(), 16 | 2);
 				} else {
-					world.setBlockState(pos, TFBlocks.trollvidr.getDefaultState());
+					world.setBlockState(pos, TFBlocks.trollvidr.getDefaultState(), 16 | 2);
 				}
 			} else {
 				pos = new BlockPos(

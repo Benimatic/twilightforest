@@ -95,7 +95,7 @@ public class GenDruidHut extends TFGenerator {
             `lootNT` will place a trapped chest facing the was-North.
              */
             if ("spawner".equals(s)) {
-                if (world.setBlockState(blockPos, Blocks.MOB_SPAWNER.getDefaultState(), 2)) {
+                if (world.setBlockState(blockPos, Blocks.MOB_SPAWNER.getDefaultState(), 16 | 2)) {
                     TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(blockPos);
 
                     if (ms != null) {
@@ -120,7 +120,7 @@ public class GenDruidHut extends TFGenerator {
                         break;
                 }
 
-                if (world.setBlockState(blockPos, chest)) {
+                if (world.setBlockState(blockPos, chest, 16 | 2)) {
                     TFTreasure.basement.generateChestContents(world, blockPos);
                 }
             }

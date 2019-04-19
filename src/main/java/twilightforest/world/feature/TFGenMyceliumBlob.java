@@ -9,15 +9,15 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-
 /**
  * This is a copypasta of the sand/gravel/clay generator that produces mycelium blobs for mushroom biomes
  *
  * @author Ben
  */
 public class TFGenMyceliumBlob extends WorldGenerator {
-	private IBlockState myceliumState;
-	private int numberOfBlocks;
+
+	private final IBlockState myceliumState;
+	private final int numberOfBlocks;
 
 	public TFGenMyceliumBlob(int i) {
 		this(Blocks.MYCELIUM, i);
@@ -47,7 +47,7 @@ public class TFGenMyceliumBlob extends WorldGenerator {
 					BlockPos dPos = new BlockPos(dx, dy, dz);
 					Block blockThere = world.getBlockState(dPos).getBlock();
 					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS || blockThere == Blocks.STONE) {
-						world.setBlockState(dPos, myceliumState, 2);
+						world.setBlockState(dPos, myceliumState, 16 | 2);
 					}
 				}
 			}

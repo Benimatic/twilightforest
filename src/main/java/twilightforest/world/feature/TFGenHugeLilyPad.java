@@ -37,10 +37,10 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 				final EnumFacing horizontal = EnumFacing.byHorizontalIndex(random.nextInt(4));
 				final IBlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().withProperty(FACING, horizontal);
 
-				world.setBlockState(dPos, lilypad.withProperty(PIECE, NW), 2);
-				world.setBlockState(dPos.east(), lilypad.withProperty(PIECE, NE), 2);
-				world.setBlockState(dPos.east().south(), lilypad.withProperty(PIECE, SE), 2);
-				world.setBlockState(dPos.south(), lilypad.withProperty(PIECE, SW), 2);
+				world.setBlockState(dPos, lilypad.withProperty(PIECE, NW), 16 | 2);
+				world.setBlockState(dPos.east(), lilypad.withProperty(PIECE, NE), 16 | 2);
+				world.setBlockState(dPos.east().south(), lilypad.withProperty(PIECE, SE), 16 | 2);
+				world.setBlockState(dPos.south(), lilypad.withProperty(PIECE, SW), 16 | 2);
 			}
 		}
 
