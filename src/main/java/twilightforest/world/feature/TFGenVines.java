@@ -5,49 +5,64 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.world.TFWorld;
 
+import java.util.EnumSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * This class fixes the vanilla WorldGenVines, which appears to be nonfunctional in 1.11
  */
 public class TFGenVines extends WorldGenerator {
+
 	@Override
-	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		Chunk c = worldIn.getChunk(position);
-		BlockPos original = new BlockPos(c.x * 16 + 8, position.getY(), c.z * 16 + 8);
-		
+	public boolean generate(World world, Random rand, BlockPos position) {
+
+		BlockPos original = position;
+
 		for (; position.getY() > TFWorld.SEALEVEL; position = position.down()) {
-			if(isOutsideBounds(7, original, position)) return false;
-			if (worldIn.isAirBlock(position)) {
-				for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL.facings()) {
-					if (Blocks.VINE.canPlaceBlockOnSide(worldIn, position, enumfacing)) {
-						IBlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, enumfacing == EnumFacing.NORTH).withProperty(BlockVine.WEST, enumfacing == EnumFacing.EAST).withProperty(BlockVine.NORTH, enumfacing == EnumFacing.SOUTH).withProperty(BlockVine.EAST, enumfacing == EnumFacing.WEST);
-						worldIn.setBlockState(position, iblockstate, 2);
-						BlockPos down = position.down();
-						while(worldIn.isAirBlock(down)) {
-							worldIn.setBlockState(down, iblockstate, 2);
-							down = down.down();
-						}
-						break;
+
+			if (world.isAirBlock(position)) {
+
+				Set<EnumFacing> facings = EnumSet.noneOf(EnumFacing.class);
+
+				for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL.facings()) {
+					if (Blocks.VINE.canPlaceBlockOnSide(world, position, facing.getOpposite())) {
+						facings.add(facing);
 					}
 				}
+
+				if (!facings.isEmpty()) {
+
+					IBlockState vine = Blocks.VINE.getDefaultState();
+					for (EnumFacing facing : facings) {
+						vine = vine.withProperty(BlockVine.getPropertyFor(facing), true);
+					}
+
+					BlockPos down = position;
+					do {
+						world.setBlockState(down, vine, 16 | 2);
+						down = down.down();
+					} while (down.getY() >= 0 && world.isAirBlock(down));
+
+					return true;
+				}
+
 			} else {
-				position = position.add(MathHelper.getInt(rand, -3, 3), 0, MathHelper.getInt(rand, -3, 3));
+				position = position.add(rand.nextInt(4) - rand.nextInt(4), 0, rand.nextInt(4) - rand.nextInt(4));
+				if (isOutsideBounds(7, original, position)) {
+					break;
+				}
 			}
 		}
 
-		return true;
+		return false;
 	}
-	
-	private boolean isOutsideBounds(int radius, BlockPos original, BlockPos pos) {
-		boolean flag1 = Math.abs(original.getX() - pos.getX()) > radius;
-		boolean flag2 = Math.abs(original.getZ() - pos.getZ()) > radius;
-		return flag1 || flag2;
+
+	private static boolean isOutsideBounds(int radius, BlockPos original, BlockPos pos) {
+		return Math.abs(original.getX() - pos.getX()) > radius || Math.abs(original.getZ() - pos.getZ()) > radius;
 	}
 }
