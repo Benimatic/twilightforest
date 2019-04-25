@@ -7,7 +7,6 @@ import twilightforest.entity.passive.EntityTFRaven;
 
 import java.util.Random;
 
-
 /**
  * A 2x2 monolith of obsidian
  *
@@ -17,6 +16,7 @@ public class TFGenMonolith extends TFGenerator {
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
+
 		int ht = rand.nextInt(10) + 10;
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;
@@ -24,7 +24,6 @@ public class TFGenMonolith extends TFGenerator {
 		if (!isAreaSuitable(world, rand, pos, 2, ht, 2)) {
 			return false;
 		}
-
 
 		switch (dir) {
 			case 0:
@@ -76,14 +75,14 @@ public class TFGenMonolith extends TFGenerator {
 			);
 			dPos = world.getTopSolidOrLiquidBlock(dPos);
 
-			EntityTFRaven raven = new EntityTFRaven(world);
-			raven.setLocationAndAngles(dPos.getX(), dPos.getY(), dPos.getZ(), rand.nextFloat() * 360.0F, 0.0F);
+			if (dPos.getY() > 0) {
+				EntityTFRaven raven = new EntityTFRaven(world);
+				raven.moveToBlockPosAndAngles(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
-			world.spawnEntity(raven);
-
+				world.spawnEntity(raven);
+			}
 		}
 
 		return true;
 	}
 }
-
