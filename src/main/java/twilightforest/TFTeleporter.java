@@ -194,8 +194,8 @@ public class TFTeleporter extends Teleporter {
 						}
 
 						// TF - use our portal block
-						if (chunk.getBlockState(blockpos1).getBlock() == TFBlocks.twilight_portal) {
-							for (blockpos2 = blockpos1.down(); chunk.getBlockState(blockpos2).getBlock() == TFBlocks.twilight_portal; blockpos2 = blockpos2.down()) {
+						if (isPortal(chunk.getBlockState(blockpos1))) {
+							for (blockpos2 = blockpos1.down(); isPortal(chunk.getBlockState(blockpos2)); blockpos2 = blockpos2.down()) {
 								blockpos1 = blockpos2;
 							}
 
@@ -255,6 +255,10 @@ public class TFTeleporter extends Teleporter {
 		return Math.min(worldHeight, chunkHeight);
 	}
 
+	private static boolean isPortal(IBlockState state) {
+		return state.getBlock() == TFBlocks.twilight_portal;
+	}
+
 	// from the start point, builds a set of all directly adjacent non-portal blocks
 	private Set<BlockPos> getBoundaryPositions(BlockPos start) {
 		Set<BlockPos> result = new HashSet<>(), checked = new HashSet<>();
@@ -267,7 +271,7 @@ public class TFTeleporter extends Teleporter {
 		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
 			BlockPos offset = pos.offset(facing);
 			if (!checked.add(offset)) continue;
-			if (isBlockPortal(world, offset)) {
+			if (isPortalAt(offset)) {
 				checkAdjacent(offset, checked, result);
 			} else {
 				result.add(offset);
@@ -275,8 +279,8 @@ public class TFTeleporter extends Teleporter {
 		}
 	}
 
-	private boolean isBlockPortal(World world, BlockPos pos) {
-		return world.getBlockState(pos).getBlock() == TFBlocks.twilight_portal;
+	private boolean isPortalAt(BlockPos pos) {
+		return isPortal(world.getBlockState(pos));
 	}
 
 	@Override
@@ -285,8 +289,16 @@ public class TFTeleporter extends Teleporter {
 		// ensure area is populated first
 		loadSurroundingArea(entity);
 
-		BlockPos spot = findPortalCoords(entity, this::isIdealPortal);
+		BlockPos spot = findPortalCoords(entity, this::isPortalAt);
 		String name = entity.getName();
+
+		if (spot != null) {
+			TwilightForestMod.LOGGER.debug("Found existing portal for {} at {}", name, spot);
+			cachePortalCoords(entity, spot);
+			return true;
+		}
+
+		spot = findPortalCoords(entity, this::isIdealForPortal);
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
@@ -295,7 +307,7 @@ public class TFTeleporter extends Teleporter {
 		}
 
 		TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for {}", name);
-		spot = findPortalCoords(entity, this::isOkayPortal);
+		spot = findPortalCoords(entity, this::isOkayForPortal);
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
@@ -376,7 +388,7 @@ public class TFTeleporter extends Teleporter {
 		return spot;
 	}
 
-	private boolean isIdealPortal(BlockPos pos) {
+	private boolean isIdealForPortal(BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
@@ -392,7 +404,7 @@ public class TFTeleporter extends Teleporter {
 		return true;
 	}
 
-	private boolean isOkayPortal(BlockPos pos) {
+	private boolean isOkayForPortal(BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
