@@ -15,8 +15,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.util.ParticleHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback {
@@ -38,16 +40,8 @@ public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.isImmuneToFire()) {
-			if (target.world.isRemote) {
-				for (int i = 0; i < 20; ++i) {
-					double vx = itemRand.nextGaussian() * 0.02D;
-					double vy = itemRand.nextGaussian() * 0.02D;
-					double vz = itemRand.nextGaussian() * 0.02D;
-					double var8 = 10.0D;
-					target.world.spawnParticle(EnumParticleTypes.FLAME, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - vx * var8, target.posY + itemRand.nextFloat() * target.height - vy * var8, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - vz * var8, vx, vy, vz);
-				}
-			}
+		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+			ParticleHelper.spawnParticles(target, EnumParticleTypes.FLAME, 20, 0.02);
 		}
 
 		return result;
@@ -56,15 +50,15 @@ public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
-			list.add(istack);
+			ItemStack stack = new ItemStack(this);
+			stack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
+			list.add(stack);
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}

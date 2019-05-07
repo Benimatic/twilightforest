@@ -2,10 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -15,36 +12,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.util.ParticleHelper;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
+
 	public ItemTFGlassSword(Item.ToolMaterial toolMaterial) {
 		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		attacker.world.playSound(null, attacker.posX, attacker.posY, attacker.posZ, Blocks.GLASS.getSoundType().getBreakSound(), attacker.getSoundCategory(), 1F, 0.5F);
+		ParticleHelper.spawnParticles(target, EnumParticleTypes.BLOCK_CRACK, 20, 0.0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
 		stack.damageItem(stack.getMaxDamage() + 1, attacker);
 		return true;
-	}
-
-	@Override
-	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-		if (player.world.isRemote) {
-			int stateId = Block.getStateId(Blocks.STAINED_GLASS.getDefaultState());
-			for (int i = 0; i < 20; ++i) {
-				double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				double py = entity.posY + itemRand.nextFloat() * entity.height;
-				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				entity.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, px, py, pz, 0, 0, 0, stateId);
-			}
-
-			player.playSound(Blocks.GLASS.getSoundType(Blocks.GLASS.getDefaultState(), entity.world, entity.getPosition(), player).getBreakSound(), 1F, 0.5F);
-		}
-		return false;
 	}
 
 	@Nonnull

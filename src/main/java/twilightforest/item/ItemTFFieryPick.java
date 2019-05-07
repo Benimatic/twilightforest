@@ -12,7 +12,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.util.ParticleHelper;
 import twilightforest.util.TFItemStackUtils;
 
 import javax.annotation.Nonnull;
@@ -74,7 +74,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 						event.getHarvester().world.spawnEntity(new EntityXPOrb(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
 					}
 
-					spawnParticles((WorldServer) event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), EnumParticleTypes.FLAME, 5, 0.02);
 				}
 			}
 
@@ -84,26 +84,15 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.isImmuneToFire()) {
-			spawnParticles((WorldServer) target.world, target.posX, target.posY, target.posZ);
+		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+			ParticleHelper.spawnParticles(target, EnumParticleTypes.FLAME, 20, 0.02);
 			target.setFire(15);
 		}
 
 		return result;
-	}
-
-	private static void spawnParticles(WorldServer world, double x, double y, double z) {
-		for (int i = 0; i < 5; ++i) {
-			double rx = itemRand.nextGaussian() * 0.02D;
-			double ry = itemRand.nextGaussian() * 0.02D;
-			double rz = itemRand.nextGaussian() * 0.02D;
-			final double magnitude = 20.0;
-			world.spawnParticle(EnumParticleTypes.FLAME, x + 0.5 + (rx * magnitude), y + 0.5 + (ry * magnitude), z + 0.5 + (rz * magnitude),
-					5, 0, 0, 0, 0.02);
-		}
 	}
 
 	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
@@ -116,7 +105,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
