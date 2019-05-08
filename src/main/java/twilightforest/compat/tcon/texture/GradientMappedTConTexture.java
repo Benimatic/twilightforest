@@ -11,10 +11,9 @@ import twilightforest.client.texture.GradientNode;
 
 import java.util.function.Function;
 
-import static net.minecraft.util.math.MathHelper.sqrt;
-
 @SuppressWarnings("WeakerAccess")
 public class GradientMappedTConTexture extends AbstractColoredTexture {
+
     private final ResourceLocation textureIn;
     protected GradientNode[] gradientMap;
     protected boolean shouldStretchMinimumMaximum;

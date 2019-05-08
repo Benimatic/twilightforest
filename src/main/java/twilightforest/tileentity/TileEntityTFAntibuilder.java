@@ -13,19 +13,19 @@ import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.TowerTranslucentVariant;
 
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
+
 	private static final int REVERT_CHANCE = 10;
 
-	public int radius = 4;
-	public int diameter = 2 * radius + 1;
-	private double requiredPlayerRange = 16;
-	public final Random rand = new Random();
-	private int tickCount;
+	private final int radius = 4;
+	private final int diameter = 2 * radius + 1;
+	private final double requiredPlayerRange = 16.0;
 
+	private final Random rand = new Random();
+
+	private int tickCount;
 	private boolean slowScan;
 	private int ticksSinceChange;
 
@@ -293,6 +293,6 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 	}
 
 	private boolean anyPlayerInRange() {
-		return this.world.getClosestPlayer(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange, false) != null;
+		return this.world.isAnyPlayerWithinRangeAt(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange);
 	}
 }

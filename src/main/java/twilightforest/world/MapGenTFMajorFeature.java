@@ -13,7 +13,6 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.structures.StructureTFComponent;
-import twilightforest.structures.start.StructureStartTFAbstract;
 import twilightforest.structures.start.StructureStartTFFeatureAbstract;
 import twilightforest.util.StructureBoundingBoxUtils;
 
@@ -24,6 +23,7 @@ import java.util.List;
 import static twilightforest.TFFeature.NOTHING;
 
 public class MapGenTFMajorFeature extends MapGenStructure {
+
     private final TFFeature FEATURE;
 
     public MapGenTFMajorFeature() {

@@ -3,7 +3,6 @@ package twilightforest.world.feature;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -100,8 +99,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		return true;
 	}
 
-	private void makeLeafBlob(World world, BlockPos leafPos)
-	{
+	private void makeLeafBlob(World world, BlockPos leafPos) {
 		TFGenerator.makeLeafCircle(this, world, leafPos.down(), 3, leafState, true);
 		TFGenerator.makeLeafCircle(this, world, leafPos, 4, leafState, true);
 		TFGenerator.makeLeafCircle(this, world, leafPos.up(), 2, leafState, true);

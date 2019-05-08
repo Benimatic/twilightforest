@@ -2,7 +2,6 @@ package twilightforest.features;
 
 import com.google.common.math.StatsAccumulator;
 
-import javafx.util.Pair;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -31,11 +30,11 @@ import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.world.feature.TFGenerator;
 
 import javax.annotation.Nullable;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
 public class GenDruidHut extends TFGenerator {
+
     @Override // Loosely based on WorldGenFossils
     public boolean generate(World world, Random rand, BlockPos pos) {
         Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
@@ -185,6 +184,7 @@ public class GenDruidHut extends TFGenerator {
     }
 
     private enum HutType {
+
         REGULAR    (TwilightForestMod.prefix("landscape/druid_hut/druid_hut"       )),
         SIDEWAYS   (TwilightForestMod.prefix("landscape/druid_hut/druid_sideways"  )),
         DOUBLE_DECK(TwilightForestMod.prefix("landscape/druid_hut/druid_doubledeck"));
@@ -204,6 +204,7 @@ public class GenDruidHut extends TFGenerator {
     }
 
     private enum BasementType {
+
         STUDY  (TwilightForestMod.prefix("landscape/druid_hut/basement_study"  ), TwilightForestMod.prefix("landscape/druid_hut/basement_study_trap"  )),
         SHELVES(TwilightForestMod.prefix("landscape/druid_hut/basement_shelves"), TwilightForestMod.prefix("landscape/druid_hut/basement_shelves_trap")),
         GALLERY(TwilightForestMod.prefix("landscape/druid_hut/basement_gallery"), TwilightForestMod.prefix("landscape/druid_hut/basement_gallery_trap"));
@@ -229,6 +230,7 @@ public class GenDruidHut extends TFGenerator {
     }
 
     public class HutTemplateProcessor extends RandomizedTemplateProcessor {
+
         private final StructureWoodVariant OAK_SWIZZLE;
         private final StructureWoodVariant SPRUCE_SWIZZLE;
         private final StructureWoodVariant BIRCH_SWIZZLE;

@@ -38,7 +38,6 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.*;
-import twilightforest.tileentity.TileEntityTFAntibuilder;
 
 import java.util.Arrays;
 import java.util.HashSet;

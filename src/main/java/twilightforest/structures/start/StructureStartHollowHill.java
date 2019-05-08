@@ -4,7 +4,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.structures.ComponentTFHollowHill;
-import twilightforest.structures.start.StructureStartTFAbstract;
 
 import java.util.Random;
 
@@ -12,6 +11,7 @@ import java.util.Random;
  * Created by Drullkus on 6/26/18.
  */
 public class StructureStartHollowHill extends StructureStartTFFeatureAbstract {
+
     public StructureStartHollowHill() {
         super();
     }

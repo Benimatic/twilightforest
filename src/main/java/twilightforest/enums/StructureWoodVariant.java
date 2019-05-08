@@ -11,9 +11,9 @@ import twilightforest.block.*;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
-import java.util.function.Supplier;
 
 public enum StructureWoodVariant implements IStringSerializable {
+
     OAK          ( Blocks  .PLANKS             , Blocks  .OAK_STAIRS         , Blocks  .WOODEN_SLAB       , Blocks  .DOUBLE_WOODEN_SLAB     , Blocks  .WOODEN_BUTTON      , Blocks  .OAK_FENCE         , Blocks  .OAK_FENCE_GATE     , Blocks  .WOODEN_PRESSURE_PLATE ),
     SPRUCE       ( Blocks  .PLANKS             , Blocks  .SPRUCE_STAIRS      , Blocks  .WOODEN_SLAB       , Blocks  .DOUBLE_WOODEN_SLAB     , Blocks  .WOODEN_BUTTON      , Blocks  .SPRUCE_FENCE      , Blocks  .SPRUCE_FENCE_GATE  , Blocks  .WOODEN_PRESSURE_PLATE ),
     BIRCH        ( Blocks  .PLANKS             , Blocks  .BIRCH_STAIRS       , Blocks  .WOODEN_SLAB       , Blocks  .DOUBLE_WOODEN_SLAB     , Blocks  .WOODEN_BUTTON      , Blocks  .BIRCH_FENCE       , Blocks  .BIRCH_FENCE_GATE   , Blocks  .WOODEN_PRESSURE_PLATE ),

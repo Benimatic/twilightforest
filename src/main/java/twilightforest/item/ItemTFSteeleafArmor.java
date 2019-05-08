@@ -11,8 +11,6 @@ import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
-import javax.annotation.Nonnull;
-
 public class ItemTFSteeleafArmor extends ItemTFArmor implements ModelRegisterCallback {
 
 	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot, EnumRarity rarity) {

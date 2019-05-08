@@ -11,9 +11,7 @@ import net.minecraft.init.Blocks;
 import org.lwjgl.opengl.GL11;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
-import twilightforest.client.model.entity.ModelTFLich;
 import twilightforest.client.renderer.entity.LayerShields;
-import twilightforest.client.renderer.entity.RenderTFLich;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.potions.PotionFrosted;
 

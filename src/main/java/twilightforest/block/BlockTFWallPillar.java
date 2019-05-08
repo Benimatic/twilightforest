@@ -4,23 +4,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.Loader;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallbackCTM;
 import twilightforest.client.ModelUtils;
 
-import java.util.HashMap;
-import java.util.Locale;
-
 public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar implements ModelRegisterCallbackCTM {
+
     protected static final PropertyBool UP = PropertyBool.create("up");
     protected static final PropertyBool DOWN = PropertyBool.create("down");
 

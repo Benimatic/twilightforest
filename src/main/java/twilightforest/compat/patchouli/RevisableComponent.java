@@ -1,8 +1,6 @@
 package twilightforest.compat.patchouli;
 
 import com.google.gson.annotations.SerializedName;
-import net.minecraft.item.ItemStack;
-import twilightforest.item.TFItems;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.VariableHolder;
@@ -12,6 +10,7 @@ import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.common.base.PatchouliConfig;
 
 public class RevisableComponent implements ICustomComponent {
+
     int x, y;
 
     @SerializedName("advancement_key")

@@ -9,11 +9,10 @@ import forestry.core.genetics.alleles.AlleleHelper;
 import net.minecraft.item.ItemStack;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.Locale;
 
 public enum BeeRegister implements IBeeDefinition {
+
     TWILIT           ( BeeBranchRegister.TWILIGHT     , "Crepusculum"  ),
     ENSORCELIZED     ( BeeBranchRegister.TWILIGHT     , "Carminibus"   ),
     MIRY             ( BeeBranchRegister.SWAMP        , "Paluster"     ),
