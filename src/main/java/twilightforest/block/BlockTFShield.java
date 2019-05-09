@@ -13,13 +13,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
+import twilightforest.util.EntityUtil;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockTFShield extends Block implements ModelRegisterCallback {
@@ -64,7 +63,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
-		RayTraceResult ray = getPlayerPointVec(world, player, 6.0);
+		RayTraceResult ray = EntityUtil.rayTrace(player, 6.0);
 
 		EnumFacing hitFace = ray != null ? ray.sideHit : null;
 		EnumFacing blockFace = state.getValue(BlockDirectional.FACING);
@@ -76,19 +75,6 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 		} else {
 			return super.getPlayerRelativeBlockHardness(state, player, world, pos);
 		}
-	}
-
-	/**
-	 * What block is the player pointing at?
-	 * <p>
-	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 */
-	@Nullable
-	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
-		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
-		return world.rayTraceBlocks(position, dest);
 	}
 
 	@Override

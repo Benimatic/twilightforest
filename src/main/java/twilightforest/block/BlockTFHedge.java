@@ -21,7 +21,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,6 +29,7 @@ import twilightforest.enums.HedgeVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
+import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -114,16 +114,16 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		double range = 4.0; // do we need to get this with a better method than hardcoding it?
+		final double range = 4.0; // do we need to get this with a better method than hardcoding it?
 
 		// find players within harvest range
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(range, range, range));
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(range));
 
 		// are they swinging?
 		for (EntityPlayer player : nearbyPlayers) {
 			if (player.isSwingInProgress) {
 				// are they pointing at this block?
-				RayTraceResult ray = getPlayerPointVec(world, player, range);
+				RayTraceResult ray = EntityUtil.rayTrace(player, range);
 
 				if (ray != null && ray.getBlockPos() != null
 						&& world.getBlockState(ray.getBlockPos()).getBlock() == this) {
@@ -135,18 +135,6 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 				}
 			}
 		}
-	}
-
-	/**
-	 * [VanillaCopy] Exact copy of Entity.rayTrace
-	 * todo 1.9 update it
-	 */
-	@Nullable
-	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
-		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
-		return world.rayTraceBlocks(position, dest);
 	}
 
 	private boolean shouldDamage(Entity entity) {

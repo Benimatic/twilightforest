@@ -4,8 +4,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
+
+import javax.annotation.Nullable;
 
 public class EntityUtil {
 
@@ -19,5 +23,17 @@ public class EntityUtil {
 				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
 				&& (/* rude type limit */!(entity instanceof EntityLivingBase)
 				|| ForgeEventFactory.onEntityDestroyBlock((EntityLivingBase) entity, pos, state));
+	}
+
+	/**
+	 * [VanillaCopy] Exact copy of Entity.rayTrace
+	 * TODO: update it?
+	 */
+	@Nullable
+	public static RayTraceResult rayTrace(Entity entity, double range) {
+		Vec3d position = entity.getPositionEyes(1.0F);
+		Vec3d look = entity.getLook(1.0F);
+		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
+		return entity.world.rayTraceBlocks(position, dest);
 	}
 }

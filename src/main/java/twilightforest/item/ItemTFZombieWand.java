@@ -11,9 +11,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.entity.EntityTFLoyalZombie;
+import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,7 +40,7 @@ public class ItemTFZombieWand extends ItemTF {
 
 		if (!world.isRemote) {
 			// what block is the player pointing at?
-			RayTraceResult ray = getPlayerPointVec(world, player, 20.0F);
+			RayTraceResult ray = EntityUtil.rayTrace(player, 20.0);
 
 			if (ray != null && ray.hitVec != null) {
 				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
@@ -55,19 +55,6 @@ public class ItemTFZombieWand extends ItemTF {
 		}
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	/**
-	 * What block is the player pointing the wand at?
-	 * <p>
-	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 */
-	@Nullable
-	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, float range) {
-		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
-		return world.rayTraceBlocks(position, dest);
 	}
 
 	@Override
