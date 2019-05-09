@@ -68,7 +68,7 @@ public abstract class EntityAITFHoverBase extends EntityAIBase {
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.width / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
-		return !this.attacker.world.checkNoEntityCollision(aabb, attacker) && !this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
+		return !this.attacker.world.checkNoEntityCollision(aabb, attacker) || !this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
 	}
 
 	/**
