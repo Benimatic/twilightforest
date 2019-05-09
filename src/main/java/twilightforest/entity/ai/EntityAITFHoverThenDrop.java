@@ -9,13 +9,6 @@ import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
 public class EntityAITFHoverThenDrop extends EntityAITFHoverBase {
 
-	private static final float HOVER_HEIGHT = 6F;
-	private static final float HOVER_RADIUS = 0F;
-
-	private double hoverPosX;
-	private double hoverPosY;
-	private double hoverPosZ;
-
 	private int hoverTimer;
 	private int dropTimer;
 	private int seekTimer;
@@ -27,7 +20,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase {
 	private double dropY;
 
 	public EntityAITFHoverThenDrop(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, int hoverTime, int dropTime) {
-		super(snowQueen, targetClass);
+		super(snowQueen, targetClass, 6F, 0F);
 
 		this.setMutexBits(3);
 		this.maxHoverTime = hoverTime;
@@ -132,31 +125,8 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase {
 
 	@Override
 	protected void makeNewHoverSpot(EntityLivingBase target) {
-		double hx = 0, hy = 0, hz = 0;
-
-		boolean found = false;
-
-		for (int i = 0; i < 100; i++) {
-			hx = target.posX + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-			hy = target.posY + HOVER_HEIGHT;
-			hz = target.posZ + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-
-			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			TwilightForestMod.LOGGER.debug("Found no spots, giving up");
-		}
-
-		this.hoverPosX = hx;
-		this.hoverPosY = hy;
-		this.hoverPosZ = hz;
-
+		super.makeNewHoverSpot(target);
 		this.dropY = target.posY - 1F;
-
 		this.seekTimer = 0;
 	}
 }

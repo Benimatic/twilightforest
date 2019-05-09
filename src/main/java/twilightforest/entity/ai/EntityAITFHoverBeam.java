@@ -15,13 +15,6 @@ import java.util.List;
 
 public class EntityAITFHoverBeam extends EntityAITFHoverBase {
 
-	private static final float HOVER_HEIGHT = 3F;
-	private static final float HOVER_RADIUS = 4F;
-
-	private double hoverPosX;
-	private double hoverPosY;
-	private double hoverPosZ;
-
 	private int hoverTimer;
 	private int beamTimer;
 	private int seekTimer;
@@ -34,7 +27,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase {
 	private boolean isInPosition;
 
 	public EntityAITFHoverBeam(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, int hoverTime, int dropTime) {
-		super(snowQueen, targetClass);
+		super(snowQueen, targetClass, 3F, 4F);
 
 		this.setMutexBits(3);
 		this.maxHoverTime = hoverTime;
@@ -187,31 +180,8 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase {
 
 	@Override
 	protected void makeNewHoverSpot(EntityLivingBase target) {
-		double hx = 0, hy = 0, hz = 0;
-
-		boolean found = false;
-
-		for (int i = 0; i < 100; i++) {
-			hx = target.posX + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-			hy = target.posY + HOVER_HEIGHT;
-			hz = target.posZ + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-
-			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			TwilightForestMod.LOGGER.debug("Found no spots, giving up");
-		}
-
-		this.hoverPosX = hx;
-		this.hoverPosY = hy;
-		this.hoverPosZ = hz;
-
+		super.makeNewHoverSpot(target);
 		this.beamY = target.posY;
-
 		this.seekTimer = 0;
 	}
 }

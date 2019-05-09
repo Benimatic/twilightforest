@@ -3,27 +3,19 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
 public class EntityAITFHoverSummon extends EntityAITFHoverBase {
 
-	private static final float HOVER_HEIGHT = 6F;
-	private static final float HOVER_RADIUS = 6F;
-
 	private static final int MAX_MINIONS_AT_ONCE = 4;
-
-	private double hoverPosX;
-	private double hoverPosY;
-	private double hoverPosZ;
 
 	private int seekTimer;
 
 	private final int maxSeekTime;
 
 	public EntityAITFHoverSummon(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, double speed) {
-		super(snowQueen, targetClass);
+		super(snowQueen, targetClass, 6F, 6F);
 
 		this.setMutexBits(3);
 		this.maxSeekTime = 80;
@@ -105,29 +97,7 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase {
 
 	@Override
 	protected void makeNewHoverSpot(EntityLivingBase target) {
-		double hx = 0, hy = 0, hz = 0;
-
-		boolean found = false;
-
-		for (int i = 0; i < 100; i++) {
-			hx = target.posX + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-			hy = target.posY + HOVER_HEIGHT;
-			hz = target.posZ + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-
-			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			TwilightForestMod.LOGGER.debug("Found no spots, giving up");
-		}
-
-		this.hoverPosX = hx;
-		this.hoverPosY = hy;
-		this.hoverPosZ = hz;
-
+		super.makeNewHoverSpot(target);
 		this.seekTimer = 0;
 	}
 
