@@ -23,10 +23,12 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback {
+
 	private static final int BONUS_CHARGING_DAMAGE = 7;
 	private final EnumRarity RARITY;
 
@@ -71,9 +73,9 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {
-		super.addInformation(stack, world, list, flags);
-		list.add(I18n.format(getTranslationKey() + ".tooltip"));
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 
 	@Nonnull
@@ -82,4 +84,3 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 }
-

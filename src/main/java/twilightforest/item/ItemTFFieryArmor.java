@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFFieryArmor extends ItemTFArmor implements ModelRegisterCallback {
@@ -38,15 +39,15 @@ public class ItemTFFieryArmor extends ItemTFArmor implements ModelRegisterCallba
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tab)) {
-			ItemStack istack = new ItemStack(this);
-			//istack.addEnchantment(TFEnchantment.fieryAura, 2);
-			list.add(istack);
+			ItemStack stack = new ItemStack(this);
+			//stack.addEnchantment(TFEnchantment.fieryAura, 2);
+			list.add(stack);
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}

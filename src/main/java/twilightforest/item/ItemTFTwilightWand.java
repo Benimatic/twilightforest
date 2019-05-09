@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.entity.EntityTFTwilightWandBolt;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFTwilightWand extends ItemTF {
@@ -25,8 +26,6 @@ public class ItemTFTwilightWand extends ItemTF {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-	//Atomic: Not sure why getMaxDamage was deprecated since it's actively used?
-	@SuppressWarnings("deprecation")
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
@@ -47,7 +46,7 @@ public class ItemTFTwilightWand extends ItemTF {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
 	}

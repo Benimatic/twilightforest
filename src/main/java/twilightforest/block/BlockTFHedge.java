@@ -31,6 +31,7 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -97,17 +98,17 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onBlockClicked(World world, BlockPos pos, EntityPlayer entityplayer) {
+	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
 		if (!world.isRemote && world.getBlockState(pos).getValue(VARIANT) == HedgeVariant.HEDGE) {
 			world.scheduleUpdate(pos, this, 10);
 		}
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
-		super.harvestBlock(world, entityplayer, pos, state, te, stack);
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+		super.harvestBlock(world, player, pos, state, te, stack);
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE) {
-			entityplayer.attackEntityFrom(DamageSource.CACTUS, damageDone);
+			player.attackEntityFrom(DamageSource.CACTUS, damageDone);
 		}
 	}
 
@@ -122,10 +123,10 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 		for (EntityPlayer player : nearbyPlayers) {
 			if (player.isSwingInProgress) {
 				// are they pointing at this block?
-				RayTraceResult mop = getPlayerPointVec(world, player, range);
+				RayTraceResult ray = getPlayerPointVec(world, player, range);
 
-				if (mop != null && mop.getBlockPos() != null
-						&& world.getBlockState(mop.getBlockPos()).getBlock() == this) {
+				if (ray != null && ray.getBlockPos() != null
+						&& world.getBlockState(ray.getBlockPos()).getBlock() == this) {
 					// prick them!  prick them hard!
 					player.attackEntityFrom(DamageSource.CACTUS, damageDone);
 
@@ -140,6 +141,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	 * [VanillaCopy] Exact copy of Entity.rayTrace
 	 * todo 1.9 update it
 	 */
+	@Nullable
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);

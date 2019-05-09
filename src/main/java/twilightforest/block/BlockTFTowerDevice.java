@@ -39,6 +39,7 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.*;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
@@ -115,7 +116,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+	public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
 		switch (world.getBlockState(pos).getValue(VARIANT)) {
 			case VANISH_INACTIVE:
 				return 6000F;

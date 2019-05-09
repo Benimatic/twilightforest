@@ -48,8 +48,8 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-		super.addInformation(stack, player, tooltip, advanced);
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+		super.addInformation(stack, world, tooltip, flag);
 
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			tooltip.add(TextFormatting.ITALIC.toString() + TwilightForestMod.getRarity().color.toString() + I18n.translateToLocalFormatted("tile.twilightforest.Cicada.desc"));

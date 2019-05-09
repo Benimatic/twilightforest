@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFYetiArmor extends ItemTFArmor implements ModelRegisterCallback {
@@ -64,7 +65,7 @@ public class ItemTFYetiArmor extends ItemTFArmor implements ModelRegisterCallbac
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltips, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltips, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltips, flags);
 		tooltips.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}

@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockTFShield extends Block implements ModelRegisterCallback {
@@ -63,9 +64,9 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
-		RayTraceResult mop = getPlayerPointVec(world, player, 6.0);
+		RayTraceResult ray = getPlayerPointVec(world, player, 6.0);
 
-		EnumFacing hitFace = mop != null ? mop.sideHit : null;
+		EnumFacing hitFace = ray != null ? ray.sideHit : null;
 		EnumFacing blockFace = state.getValue(BlockDirectional.FACING);
 
 		//System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
@@ -81,9 +82,8 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	 * What block is the player pointing at?
 	 * <p>
 	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 *
-	 * @return
 	 */
+	@Nullable
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);

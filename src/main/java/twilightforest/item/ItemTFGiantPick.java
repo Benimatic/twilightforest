@@ -17,6 +17,7 @@ import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallback {
@@ -30,7 +31,7 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}

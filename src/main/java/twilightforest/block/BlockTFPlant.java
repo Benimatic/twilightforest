@@ -33,7 +33,7 @@ import twilightforest.enums.PlantVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -217,7 +217,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		List<ItemStack> ret = NonNullList.create();
 
 		switch (state.getValue(VARIANT)) {
 			case TORCHBERRY:
@@ -250,16 +250,16 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+		List<ItemStack> ret = NonNullList.create();
 		ret.add(new ItemStack(this, 1, damageDropped(world.getBlockState(pos))));
 		return ret;
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
 		// do not call normal harvest if the player is shearing
-		if (world.isRemote || stack.isEmpty() || stack.getItem() != Items.SHEARS) {
+		if (world.isRemote || stack.getItem() != Items.SHEARS) {
 			super.harvestBlock(world, player, pos, state, te, stack);
 		}
 	}

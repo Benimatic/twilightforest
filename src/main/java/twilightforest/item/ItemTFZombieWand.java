@@ -40,11 +40,11 @@ public class ItemTFZombieWand extends ItemTF {
 
 		if (!world.isRemote) {
 			// what block is the player pointing at?
-			RayTraceResult mop = getPlayerPointVec(world, player, 20.0F);
+			RayTraceResult ray = getPlayerPointVec(world, player, 20.0F);
 
-			if (mop != null && mop.hitVec != null) {
+			if (ray != null && ray.hitVec != null) {
 				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
-				zombie.setPositionAndRotation(mop.hitVec.x, mop.hitVec.y, mop.hitVec.z, 1.0F, 1.0F);
+				zombie.setPositionAndRotation(ray.hitVec.x, ray.hitVec.y, ray.hitVec.z, 1.0F, 1.0F);
 				zombie.setTamed(true);
 				zombie.setOwnerId(player.getUniqueID());
 				zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
@@ -61,8 +61,6 @@ public class ItemTFZombieWand extends ItemTF {
 	 * What block is the player pointing the wand at?
 	 * <p>
 	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 *
-	 * @return
 	 */
 	@Nullable
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, float range) {
@@ -73,8 +71,8 @@ public class ItemTFZombieWand extends ItemTF {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {
-		super.addInformation(stack, world, list, flags);
-		list.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
 	}
 }

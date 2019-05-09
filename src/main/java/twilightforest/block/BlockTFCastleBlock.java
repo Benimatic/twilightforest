@@ -26,6 +26,8 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nullable;
+
 /**
  * Castle block makes a castle
  *
@@ -66,19 +68,20 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
-		ItemStack cei = entityplayer.getHeldItemMainhand();
-		if (!cei.isEmpty() && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
-			cei.damageItem(16, entityplayer);
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+		ItemStack cei = player.getHeldItemMainhand();
+		if (cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
+			cei.damageItem(16, player);
 		}
 
-		super.harvestBlock(world, entityplayer, pos, state, te, stack);
+		super.harvestBlock(world, player, pos, state, te, stack);
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		for(int i = 0; i < CastleBrickVariant.values().length; i++)
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> items) {
+		for (int i = 0; i < CastleBrickVariant.values().length; i++) {
 			items.add(new ItemStack(this, 1, i));
+		}
 	}
 
 	@Override
