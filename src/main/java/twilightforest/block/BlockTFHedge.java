@@ -88,7 +88,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	@Nullable
 	@Override
 	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity) {
-		return entity != null && shouldDamage(entity) ? PathNodeType.DAMAGE_CACTUS : null;
+		return entity != null && state.getValue(VARIANT) == HedgeVariant.HEDGE && shouldDamage(entity) ? PathNodeType.DAMAGE_CACTUS : null;
 	}
 
 	@Override

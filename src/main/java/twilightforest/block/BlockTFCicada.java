@@ -48,6 +48,7 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		super.addInformation(stack, world, tooltip, flag);
 
