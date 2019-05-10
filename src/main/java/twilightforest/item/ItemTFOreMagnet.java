@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ItemTFOreMagnet extends ItemTF {
+
 	private static final float WIGGLE = 10F;
 
 	protected ItemTFOreMagnet() {
@@ -103,7 +104,11 @@ public class ItemTFOreMagnet extends ItemTF {
 				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
+	}
 
+	@Override
+	public float getXpRepairRatio(ItemStack stack) {
+		return 0.1f;
 	}
 
 	@Nonnull

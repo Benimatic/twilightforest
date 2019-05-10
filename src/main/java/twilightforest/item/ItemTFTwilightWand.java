@@ -45,6 +45,11 @@ public class ItemTFTwilightWand extends ItemTF {
 	}
 
 	@Override
+	public float getXpRepairRatio(ItemStack stack) {
+		return 1f;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);

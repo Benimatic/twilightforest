@@ -12,6 +12,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.entity.EntityTFLoyalZombie;
 import twilightforest.util.EntityUtil;
 
@@ -58,6 +60,12 @@ public class ItemTFZombieWand extends ItemTF {
 	}
 
 	@Override
+	public float getXpRepairRatio(ItemStack stack) {
+		return 0.1f;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));

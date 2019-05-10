@@ -8,12 +8,14 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -81,6 +83,12 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 		} else {
 			return getMetaFromState(state);
 		}
+	}
+
+	@Nullable
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity) {
+		return entity != null && shouldDamage(entity) ? PathNodeType.DAMAGE_CACTUS : null;
 	}
 
 	@Override

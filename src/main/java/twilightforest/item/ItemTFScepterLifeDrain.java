@@ -48,6 +48,11 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 	}
 
+	@Override
+	public float getXpRepairRatio(ItemStack stack) {
+		return 1f;
+	}
+
 	/**
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
