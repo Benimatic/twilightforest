@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
@@ -42,12 +43,15 @@ public class EntityTFKingSpider extends EntitySpider {
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
 		livingData = super.onInitialSpawn(difficulty, livingData);
 
-		// always a spider jockey
+		// will always have a dryad riding the spider or whatever is riding the spider
 		EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.world);
 		druid.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
 		druid.onInitialSpawn(difficulty, null);
 		this.world.spawnEntity(druid);
-		druid.startRiding(this);
+		Entity lastRider = this;
+		while (!lastRider.getPassengers().isEmpty())
+			lastRider = lastRider.getPassengers().get(0);
+		druid.startRiding(lastRider);
 
 		return livingData;
 	}
