@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawnData {
+
 	private static final int WARMUP_TIME = 20;
 	private static final DataParameter<EnumFacing> MOVE_DIRECTION = EntityDataManager.createKey(EntityTFSlideBlock.class, DataSerializers.FACING);
 
@@ -41,7 +42,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		this.setSize(0.98F, 0.98F);
 		//this.yOffset = this.height / 2.0F;
 	}
-
 
 	public EntityTFSlideBlock(World world, double x, double y, double z, IBlockState state) {
 		super(world);
@@ -122,9 +122,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			++this.slideTime;
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
-				this.motionX += dataManager.get(MOVE_DIRECTION).getXOffset() * 0.04;
-				this.motionY += dataManager.get(MOVE_DIRECTION).getYOffset() * 0.04;
-				this.motionZ += dataManager.get(MOVE_DIRECTION).getZOffset() * 0.04;
+				final double moveAcceleration = 0.04;
+				EnumFacing moveDirection = dataManager.get(MOVE_DIRECTION);
+				this.motionX += moveDirection.getXOffset() * moveAcceleration;
+				this.motionY += moveDirection.getYOffset() * moveAcceleration;
+				this.motionZ += moveDirection.getZOffset() * moveAcceleration;
 				this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 			}
 			this.motionX *= 0.98;
