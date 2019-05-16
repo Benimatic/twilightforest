@@ -26,6 +26,7 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
@@ -195,7 +196,7 @@ public class TFClientEvents {
 			TFBlocks.magic_leaves.setGraphicsLevel(fancyGraphics);
 
 			// only fire if we're in the twilight forest
-			if (minecraft.world != null && (minecraft.world.provider instanceof WorldProviderTwilightForest)) {
+			if (minecraft.world != null && minecraft.world.provider instanceof WorldProviderTwilightForest) {
 				// vignette
 				if (minecraft.ingameGUI != null) {
 					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;
@@ -215,7 +216,8 @@ public class TFClientEvents {
 		if (event.phase != TickEvent.Phase.END) return;
 		time++;
 
-		float partial = Minecraft.getMinecraft().getRenderPartialTicks();
+		Minecraft mc = Minecraft.getMinecraft();
+		float partial = mc.getRenderPartialTicks();
 
 		rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
 		sineTickerI = (sineTickerI >= SINE_TICKER_BOUND ? 0 : sineTickerI + 1);
@@ -224,6 +226,10 @@ public class TFClientEvents {
 		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
+
+		if (!mc.isGamePaused() && mc.world != null && mc.world.provider.getWeatherRenderer() instanceof TFWeatherRenderer) {
+			((TFWeatherRenderer) mc.world.provider.getWeatherRenderer()).tick();
+		}
 	}
 
 	public static int time = 0;

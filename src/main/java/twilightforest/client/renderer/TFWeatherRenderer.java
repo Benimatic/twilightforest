@@ -36,12 +36,12 @@ public class TFWeatherRenderer extends IRenderHandler {
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
 
-	private static final ResourceLocation locationBlizzardPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "blizzard.png");
-	private static final ResourceLocation locationMosquitoPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "mosquitoes.png");
-	private static final ResourceLocation locationAshesPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "ashes.png");
-	private static final ResourceLocation locationDarkstreamPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "darkstream.png");
-	private static final ResourceLocation locationBigrainPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "bigrain.png");
-	private static final ResourceLocation locationSparklesPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "sparkles.png");
+	private static final ResourceLocation BLIZZARD_TEXTURE   = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "blizzard.png");
+	private static final ResourceLocation MOSQUITO_TEXTURE   = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "mosquitoes.png");
+	private static final ResourceLocation ASHES_TEXTURE      = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "ashes.png");
+	private static final ResourceLocation DARKSTREAM_TEXTURE = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "darkstream.png");
+	private static final ResourceLocation BIGRAIN_TEXTURE    = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "bigrain.png");
+	private static final ResourceLocation SPARKLES_TEXTURE   = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "sparkles.png");
 
 	private final float[] rainxs = new float[1024];
 	private final float[] rainys = new float[1024];
@@ -63,10 +63,12 @@ public class TFWeatherRenderer extends IRenderHandler {
 		}
 	}
 
+	public void tick() {
+		++this.rendererUpdateCount;
+	}
+
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
-		++this.rendererUpdateCount; // FIXME: count ticks not frames
-
 		// do normal weather rendering
 		renderNormalWeather(partialTicks, mc);
 
@@ -478,7 +480,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 								}
 
 								j1 = 0;
-								mc.getTextureManager().bindTexture(locationSparklesPng);
+								mc.getTextureManager().bindTexture(SPARKLES_TEXTURE);
 								vertexbuffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 							}
 
@@ -569,11 +571,11 @@ public class TFWeatherRenderer extends IRenderHandler {
 
 	private enum RenderType {
 
-		BLIZZARD(locationBlizzardPng),
-		MOSQUITO(locationMosquitoPng),
-		ASHES(locationAshesPng),
-		DARK_STREAM(locationDarkstreamPng),
-		BIG_RAIN(locationBigrainPng);
+		BLIZZARD(BLIZZARD_TEXTURE),
+		MOSQUITO(MOSQUITO_TEXTURE),
+		ASHES(ASHES_TEXTURE),
+		DARK_STREAM(DARKSTREAM_TEXTURE),
+		BIG_RAIN(BIGRAIN_TEXTURE);
 
 		RenderType(ResourceLocation textureLocation) {
 			this.textureLocation = textureLocation;
