@@ -189,7 +189,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	// [VanillaCopy] RenderGlobal.generateStars
 	private void generateStars() {
 		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder vertexbuffer = tessellator.getBuffer();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 		if (this.starVBO != null) {
 			this.starVBO.deleteGlBuffers();
@@ -203,16 +203,16 @@ public class TFSkyRenderer extends IRenderHandler {
 		if (this.vboEnabled) {
 			// TF - inlined RenderGlobal field that's only used once here
 			this.starVBO = new VertexBuffer(DefaultVertexFormats.POSITION);
-			this.renderStars(vertexbuffer);
-			vertexbuffer.finishDrawing();
-			vertexbuffer.reset();
-			this.starVBO.bufferData(vertexbuffer.getByteBuffer());
+			this.renderStars(bufferbuilder);
+			bufferbuilder.finishDrawing();
+			bufferbuilder.reset();
+			this.starVBO.bufferData(bufferbuilder.getByteBuffer());
 
 		} else {
 			this.starGLCallList = GLAllocation.generateDisplayLists(1);
 			GlStateManager.pushMatrix();
 			GlStateManager.glNewList(this.starGLCallList, 4864);
-			this.renderStars(vertexbuffer);
+			this.renderStars(bufferbuilder);
 			tessellator.draw();
 			GlStateManager.glEndList();
 			GlStateManager.popMatrix();
