@@ -33,7 +33,7 @@ public class ParticleIceBeam extends Particle {
 		this.particleMaxAge = 50;
 		this.canCollide = true;
 
-		this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4));
+		this.setParticleTexture(Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)));
 
 		this.onUpdate();
 	}

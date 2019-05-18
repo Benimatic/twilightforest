@@ -19,19 +19,11 @@ import twilightforest.tileentity.critters.*;
 
 public class TFCommonProxy implements IGuiHandler {
 
-	/**
-	 * Called during the pre-load step.  Register stuff here.
-	 * Obviously most stuff in the common category will be just registered in the mod file
-	 */
 	public void preInit() {}
 
-	/**
-	 * Called during the load step.  Register stuff here.
-	 * Obviously most stuff in the common category will be just registered in the mod file
-	 */
 	public void init() {}
 
-	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {}
+	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {}
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {

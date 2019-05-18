@@ -33,7 +33,8 @@ import twilightforest.TFSounds;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
-import twilightforest.client.particle.*;
+import twilightforest.client.particle.TFParticleFactory;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.TileEntityTFCicadaRenderer;
 import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
@@ -220,70 +221,33 @@ public class TFClientProxy extends TFCommonProxy {
 		});
 	}
 
-	// [VanillaCopy] adapted from RenderGlobal.spawnEntityFX
+	// [VanillaCopy] adapted from RenderGlobal.spawnParticle
 	@Override
-	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
+	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {
 
 		Minecraft mc = Minecraft.getMinecraft();
 		Entity entity = mc.getRenderViewEntity();
 		World world = mc.world;
 
 		if (entity != null && mc.effectRenderer != null) {
+
 			int i = mc.gameSettings.particleSetting;
 
 			if (i == 1 && world.rand.nextInt(3) == 0) {
 				i = 2;
 			}
 
-			double d0 = entity.posX - x;
-			double d1 = entity.posY - y;
-			double d2 = entity.posZ - z;
+			if (i > 1) return;
 
-			if (d0 * d0 + d1 * d1 + d2 * d2 <= 1024D && i <= 1) {
-				Particle particle = null;
+			double dx = entity.posX - x;
+			double dy = entity.posY - y;
+			double dz = entity.posZ - z;
 
-				switch (particleType) {
-					case LARGE_FLAME:
-						particle = new ParticleLargeFlame(world, x, y, z, velX, velY, velZ);
-						break;
-					case LEAF_RUNE:
-						particle = new ParticleLeafRune(world, x, y, z, velX, velY, velZ);
-						break;
-					case BOSS_TEAR:
-						particle = new ParticleGhastTear(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR);
-						break;
-					case GHAST_TRAP:
-						particle = new ParticleGhastTrap(world, x, y, z, velX, velY, velZ);
-						break;
-					case PROTECTION:
-						particle = new ParticleProtection(world, x, y, z, velX, velY, velZ);
-						break;
-					case SNOW:
-						particle = new ParticleSnow(world, x, y, z, velX, velY, velZ);
-						break;
-					case SNOW_GUARDIAN:
-						particle = new ParticleSnowGuardian(world, x, y, z, velX, velY, velZ, 0.75F);
-						break;
-					case SNOW_WARNING:
-						particle = new ParticleSnowWarning(world, x, y, z, velX, velY, velZ, 1F);
-						break;
-					case ICE_BEAM:
-						particle = new ParticleIceBeam(world, x, y, z, velX, velY, velZ, 0.75F);
-						break;
-					case ANNIHILATE:
-						particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F);
-						break;
-					case HUGE_SMOKE:
-						particle = new ParticleSmokeScale(world, x, y, z, velX, velY, velZ, 4.0F + world.rand.nextFloat());
-						break;
-					case FIREFLY:
-						particle = new ParticleFirefly(world, x, y, z, velX, velY, velZ);
-						break;
-				}
+			if (dx * dx + dy * dy + dz * dz > 1024.0D) return;
 
-				if (particle != null) {
-					mc.effectRenderer.addEffect(particle);
-				}
+			Particle particle = TFParticleFactory.createParticle(particleType, world, x, y, z, vx, vy, vz);
+			if (particle != null) {
+				mc.effectRenderer.addEffect(particle);
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class ParticleAnnihilate extends Particle {
 		this.particleMaxAge = (int) ((float) this.particleMaxAge * scale);
 		this.canCollide = true;
 
-		this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/annihilate_particle");
+		this.setParticleTexture(Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/annihilate_particle"));
 
 		this.onUpdate();
 	}

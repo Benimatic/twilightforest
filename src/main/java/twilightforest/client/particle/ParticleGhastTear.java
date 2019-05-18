@@ -17,7 +17,7 @@ public class ParticleGhastTear extends Particle {
 
 	public ParticleGhastTear(World world, double x, double y, double z, Item item) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.particleTexture = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(item);
+		this.setParticleTexture(Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(item));
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
 		this.particleGravity = Blocks.SNOW.blockParticleGravity * 2F;
 		this.particleScale = 16.0F;
