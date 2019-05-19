@@ -146,7 +146,7 @@ public enum TFCompat {
 
     protected void initItems(RegisterItemEvent.ItemRegistryHelper items) {}
 
-    final private String modName;
+    private final String modName;
 
     private boolean isActivated = false;
 

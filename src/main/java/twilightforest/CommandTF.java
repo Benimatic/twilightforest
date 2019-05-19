@@ -258,7 +258,7 @@ public class CommandTF extends CommandBase {
 			}
 		};
 
-		private final static String[] ACTION_LIST;
+		private static final String[] ACTION_LIST;
 
 		static {
 			int length = EnumActions.values().length;

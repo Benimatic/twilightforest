@@ -27,7 +27,7 @@ import java.util.Optional;
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
 	@Config.Ignore
-	private final static String config = TwilightForestMod.ID + ".config.";
+	private static final String config = TwilightForestMod.ID + ".config.";
 
 	@Config.LangKey(config + "dimension")
 	@Config.Comment("Settings that are not reversible without consequences.")
