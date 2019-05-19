@@ -28,7 +28,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
-import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
