@@ -47,15 +47,16 @@ public abstract class StructureStartTFFeatureAbstract extends StructureStartTFAb
 
     public boolean isLocked(int lockIndex) {
         if (lockIndex < this.lockBytes.length) {
-            TwilightForestMod.LOGGER.info("Checking locks for lockIndex " + lockIndex);
+            TwilightForestMod.LOGGER.debug("Checking locks for lockIndex {}", lockIndex);
 
-            for (int i = 0; i < this.lockBytes.length; i++)
-                TwilightForestMod.LOGGER.info("Lock " + i + " = " + this.lockBytes[i]);
+            for (int i = 0; i < this.lockBytes.length; i++) {
+                TwilightForestMod.LOGGER.debug("Lock {} = {}", i, this.lockBytes[i]);
+            }
 
             return this.lockBytes[lockIndex] != 0;
-        } else {
-            TwilightForestMod.LOGGER.warn("Current lock index, " + lockIndex + " is beyond array bounds " + this.lockBytes.length);
 
+        } else {
+            TwilightForestMod.LOGGER.warn("Current lock index {} is beyond array bounds {}", lockIndex, this.lockBytes.length);
             return false;
         }
     }

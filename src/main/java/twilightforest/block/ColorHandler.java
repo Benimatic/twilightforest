@@ -241,7 +241,7 @@ public final class ColorHandler {
 				case PURPLE:
 					return 0x4B0082;
 				default:
-					TwilightForestMod.LOGGER.info("Magic happened. Got " + state.getValue(BlockTFCastleMagic.COLOR).getName() + " for Castle Rune");
+					TwilightForestMod.LOGGER.warn("Magic happened. Got {} for Castle Rune", state.getValue(BlockTFCastleMagic.COLOR).getName());
 					return state.getValue(BlockTFCastleMagic.COLOR).getColorValue();
 			}
 		}, TFBlocks.castle_rune_brick);
@@ -277,7 +277,7 @@ public final class ColorHandler {
 				case BLUE:
 					return 0x0DDEFF;
 				default:
-					TwilightForestMod.LOGGER.info("Magic happened. Got " + state.getValue(BlockTFForceField.COLOR).getName() + " for Forcefield");
+					TwilightForestMod.LOGGER.warn("Magic happened. Got {} for Forcefield", state.getValue(BlockTFForceField.COLOR).getName());
 					return state.getValue(BlockTFForceField.COLOR).getColorValue();
 			}
 		}, TFBlocks.force_field);

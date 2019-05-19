@@ -69,7 +69,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		{
 			int amtToLower = (((this.boundingBox.maxY - 245) / 5) * 5) + 5;
 
-			TwilightForestMod.LOGGER.info("[TwilightForest] Lowering Dark Tower max height by %d to be within world bounds", amtToLower);
+			TwilightForestMod.LOGGER.info("Lowering Dark Tower max height by {} to be within world bounds", amtToLower);
 
 			this.height -= amtToLower;
 			this.boundingBox.maxY -= amtToLower;
@@ -200,7 +200,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			{
 				if (possibleKeyTowers.size() < 1)
 				{
-					TwilightForestMod.LOGGER.warn("[TwilightForest] Dark forest tower could not find four small towers to place keys in.");
+					TwilightForestMod.LOGGER.warn("Dark forest tower could not find four small towers to place keys in.");
 					break;
 				}
 

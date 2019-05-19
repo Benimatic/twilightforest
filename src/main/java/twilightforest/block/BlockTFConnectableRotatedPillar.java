@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar {
+
     final double boundingBoxWidthLower;
     final double boundingBoxWidthUpper;
 
@@ -218,7 +219,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
                     break;
             }
 
-            TwilightForestMod.LOGGER.info("ConnectableRotatedPillar helper (getFacingFromPropertyWithAxis) had a problem? " + property.getName() + " with " + axis.getName());
+            TwilightForestMod.LOGGER.warn("ConnectableRotatedPillar helper (getFacingFromPropertyWithAxis) had a problem? (property '{}' with axis '{}')", property.getName(), axis.getName());
             return EnumFacing.UP;
         }
 
@@ -262,7 +263,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
                     break;
             }
 
-            TwilightForestMod.LOGGER.info("ConnectableRotatedPillar helper (getPropertyFromFacingWithAxis) had a problem? " + facing.getName() + " with " + axis.getName());
+            TwilightForestMod.LOGGER.warn("ConnectableRotatedPillar helper (getPropertyFromFacingWithAxis) had a problem? (facing '{}' with axis '{}')", facing.getName(), axis.getName());
             return BlockFence.NORTH;
         }
     }

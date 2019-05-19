@@ -69,7 +69,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
         //TFFeature feature = TFFeature.getFeatureDirectlyAt(chunkX, chunkZ, world);
 
-        TwilightForestMod.LOGGER.info(this.FEATURE + " @ chunk {} {}", chunkX, chunkZ);
+        TwilightForestMod.LOGGER.debug("{} @ chunk [{}, {}]", this.FEATURE, chunkX, chunkZ);
 
         return this.getFeature().provideStructureStart(world, rand, chunkX, chunkZ);
     }

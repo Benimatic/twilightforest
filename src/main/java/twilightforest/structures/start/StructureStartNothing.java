@@ -21,7 +21,6 @@ public class StructureStartNothing extends StructureStartTFAbstract {
 
     public StructureStartNothing(World world, Random rand, int chunkX, int chunkZ) {
         super(world, TFFeature.NOTHING, rand, chunkX, chunkZ);
-
-        TwilightForestMod.LOGGER.warn("Generated nothing at chunk " + chunkX + ", " + chunkZ + "!");
+        TwilightForestMod.LOGGER.warn("Generated nothing at chunk [{}, {}]!", chunkX, chunkZ);
     }
 }

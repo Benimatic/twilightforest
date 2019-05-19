@@ -60,7 +60,7 @@ public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar implement
                 break;
         }
 
-        TwilightForestMod.LOGGER.info("BlockTFWalledPillar helper (getFacingFromPropertyWithAxis) had a problem? " + property.getName() + " with " + axis.getName());
+        TwilightForestMod.LOGGER.warn("BlockTFWallPillar helper (getFacingFromPropertyWithAxis) had a problem? (property '{}' with axis '{}')", property.getName(), axis.getName());
         return BlockTFConnectableRotatedPillar.PairHelper.getFacingFromPropertyWithAxis(property, axis);
     }
 

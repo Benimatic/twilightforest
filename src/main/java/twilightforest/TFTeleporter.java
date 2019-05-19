@@ -62,27 +62,29 @@ public class TFTeleporter extends Teleporter {
 		boolean checkProgression = world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
 
 		BlockPos pos = new BlockPos(entity);
-		if (!isSafeAround(pos, entity, checkProgression)) {
-			TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
-
-			BlockPos safeCoords = findSafeCoords(200, pos, entity, checkProgression);
-			if (safeCoords != null) {
-				entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
-				TwilightForestMod.LOGGER.debug("Safely rerouted!");
-
-			} else {
-				TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
-				safeCoords = findSafeCoords(400, pos, entity, checkProgression);
-
-				if (safeCoords != null) {
-					entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
-					TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
-
-				} else {
-					TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
-				}
-			}
+		if (isSafeAround(pos, entity, checkProgression)) {
+			return;
 		}
+
+		TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
+
+		BlockPos safeCoords = findSafeCoords(200, pos, entity, checkProgression);
+		if (safeCoords != null) {
+			entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+			TwilightForestMod.LOGGER.debug("Safely rerouted!");
+			return;
+		}
+
+		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at first try, trying again with longer range.");
+		safeCoords = findSafeCoords(400, pos, entity, checkProgression);
+
+		if (safeCoords != null) {
+			entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+			TwilightForestMod.LOGGER.info("Safely rerouted to long range portal.  Return trip not guaranteed.");
+			return;
+		}
+
+		TwilightForestMod.LOGGER.warn("Still did not find a safe portal spot.");
 	}
 
 	@Nullable

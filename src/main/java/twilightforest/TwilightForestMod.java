@@ -30,7 +30,7 @@ import twilightforest.tileentity.spawner.*;
 import twilightforest.world.WorldProviderTwilightForest;
 
 @Mod( modid = TwilightForestMod.ID,
-		name = "The Twilight Forest",
+		name = TwilightForestMod.NAME,
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
 		dependencies = "after:ctm@[MC1.12.2-0.3.2.18,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.5.2787,);after:thaumcraft@[6.1.BETA21,)",
@@ -39,6 +39,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 public class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
+	public static final String NAME = "The Twilight Forest";
 	public static final String VERSION = "@VERSION@";
 
 	public static final String MODEL_DIR  = ID + ":textures/model/";
@@ -52,7 +53,7 @@ public class TwilightForestMod {
 	public static final int GUI_ID_FURNACE = 2;
 
 	public static DimensionType dimType;
-	public static int backupdimensionID = -777;
+	public static int backupDimensionID = -777;
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -68,9 +69,11 @@ public class TwilightForestMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		if (Loader.isModLoaded("sponge"))
+		if (Loader.isModLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
-					"If so, please update Sponge to resolve this issue. Have fun!");
+					"If so, please update Sponge to resolve this issue. Have fun!"
+			);
+		}
 
 		registerTileEntities();
 		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
@@ -82,7 +85,8 @@ public class TwilightForestMod {
 		CapabilityList.registerCapabilities();
 
 		// just call this so that we register structure IDs correctly
-		LOGGER.debug("There are " + TFFeature.values().length + " entries in TTFeature enum. Maximum structure size is " + TFFeature.getMaxSize());
+		TFFeature.init();
+		LOGGER.debug("There are {} entries in TFFeature enum. Maximum structure size is {}", TFFeature.getCount(), TFFeature.getMaxSize());
 
 		MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing");
 		TFHollowTreePieces.registerPieces();
@@ -94,11 +98,11 @@ public class TwilightForestMod {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
 				compat = false;
-				TwilightForestMod.LOGGER.error(ID + " had an error loading preInit compatibility!");
-				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+				LOGGER.error("Had an error loading preInit compatibility!");
+				LOGGER.catching(e.fillInStackTrace());
 			}
 		} else {
-			TwilightForestMod.LOGGER.warn(ID + " is skipping! compatibility!");
+			LOGGER.warn("Skipping compatibility!");
 		}
 	}
 
@@ -116,8 +120,8 @@ public class TwilightForestMod {
 				TFCompat.initCompat();
 			} catch (Exception e) {
 				compat = false;
-				TwilightForestMod.LOGGER.error(ID + " had an error loading init compatibility!");
-				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+				LOGGER.error("Had an error loading init compatibility!");
+				LOGGER.catching(e.fillInStackTrace());
 			}
 		}
 
@@ -127,14 +131,14 @@ public class TwilightForestMod {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
-			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, TwilightForestMod.dimType);
+			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, dimType);
 		} else {
-			TwilightForestMod.LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID. It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
-			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimType);
-			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
+			LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID. It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
+			DimensionManager.registerDimension(backupDimensionID, dimType);
+			TFConfig.dimension.dimensionID = backupDimensionID;
 		}
 		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
-			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
+			LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
 			TFConfig.originDimension = 0;
 		}
 
@@ -142,8 +146,9 @@ public class TwilightForestMod {
 			try {
 				TFCompat.postInitCompat();
 			} catch (Exception e) {
-				TwilightForestMod.LOGGER.error(ID + " had an error loading postInit compatibility!");
-				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+				compat = false;
+				LOGGER.error("Had an error loading postInit compatibility!");
+				LOGGER.catching(e.fillInStackTrace());
 			}
 		}
 

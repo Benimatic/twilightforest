@@ -22,6 +22,8 @@ import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.RegisterItemEvent;
 
+import java.util.Locale;
+
 public enum TFCompat {
 
     BAUBLES("Baubles"),
@@ -136,6 +138,8 @@ public enum TFCompat {
         }
     };
 
+    private static final TFCompat[] VALUES = values();
+
     protected boolean preInit() { return true; }
     protected void init() {}
     protected void postInit() {}
@@ -155,13 +159,13 @@ public enum TFCompat {
     }
 
     public static void initCompatItems(RegisterItemEvent.ItemRegistryHelper items) {
-        for (TFCompat compat : TFCompat.values()) {
+        for (TFCompat compat : VALUES) {
             if (compat.isActivated) {
                 try {
                     compat.initItems(items);
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in initializing items!");
+                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in initializing items!", e.getLocalizedMessage(), compat.modName);
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }
@@ -169,36 +173,36 @@ public enum TFCompat {
     }
 
     public static void preInitCompat() {
-        for (TFCompat compat : TFCompat.values()) {
-            if (Loader.isModLoaded(compat.name().toLowerCase())) {
+        for (TFCompat compat : VALUES) {
+            if (Loader.isModLoaded(compat.name().toLowerCase(Locale.ROOT))) {
                 try {
                     compat.isActivated = compat.preInit();
 
-                    if (compat.isActivated()) {
-                        TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + ".");
+                    if (compat.isActivated) {
+                        TwilightForestMod.LOGGER.info("Loaded compatibility for mod {}.", compat.modName);
                     } else {
-                        TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " couldn't activate compatibility for mod " + compat.modName + "!");
+                        TwilightForestMod.LOGGER.warn("Couldn't activate compatibility for mod {}!", compat.modName);
                     }
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility!");
+                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in preInit!", e.getLocalizedMessage(), compat.modName);
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             } else {
                 compat.isActivated = false;
-                TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has skipped compatibility for mod " + compat.modName + ".");
+                TwilightForestMod.LOGGER.info("Skipped compatibility for mod {}.", compat.modName);
             }
         }
     }
 
     public static void initCompat() {
-        for (TFCompat compat : TFCompat.values()) {
+        for (TFCompat compat : VALUES) {
             if (compat.isActivated) {
                 try {
                     compat.init();
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in init!");
+                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in init!", e.getLocalizedMessage(), compat.modName);
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }
@@ -206,13 +210,13 @@ public enum TFCompat {
     }
 
     public static void postInitCompat() {
-        for (TFCompat compat : TFCompat.values()) {
+        for (TFCompat compat : VALUES) {
             if (compat.isActivated) {
                 try {
                     compat.postInit();
                 } catch (Exception e) {
                     compat.isActivated = false;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in postInit!");
+                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in postInit!", e.getLocalizedMessage(), compat.modName);
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }

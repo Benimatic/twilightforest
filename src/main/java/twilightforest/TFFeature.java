@@ -57,6 +57,7 @@ import java.util.Random;
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
 public enum TFFeature {
+
 	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
 	SMALL_HILL ( 1, "small_hollow_hill", true ) {
 		{
@@ -460,6 +461,12 @@ public enum TFFeature {
 		this.requiredAdvancements = requiredAdvancements;
 
 		shouldHaveFeatureGenerator = featureGenerator;
+	}
+
+	static void init() {}
+
+	public static int getCount() {
+		return VALUES.length;
 	}
 
 	public static int getMaxSize() {

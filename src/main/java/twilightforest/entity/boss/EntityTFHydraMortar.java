@@ -46,7 +46,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 		head.motionZ = 0;
 		shoot(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
 
-		TwilightForestMod.LOGGER.info("Launching mortar! Current head motion is {}, {}", head.motionX, head.motionZ);
+		TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.motionX, head.motionZ);
 	}
 
 	@Override
