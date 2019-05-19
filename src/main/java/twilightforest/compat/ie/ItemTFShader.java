@@ -28,8 +28,9 @@ import java.util.List;
 import java.util.Locale;
 
 // TODO Move to shader capability, where we can then just turn item Trophies into the shaders
-@Optional.Interface(modid = "immersiveengineering", iface = "blusunrize.immersiveengineering.api.shader.IShaderItem")
+@Optional.Interface(modid = Lib.MODID, iface = "blusunrize.immersiveengineering.api.shader.IShaderItem")
 public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCallback {
+
     public ItemTFShader() {
         this.setHasSubtypes(true);
         this.setCreativeTab(TFItems.creativeTab);
@@ -39,13 +40,13 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
     public static final ItemTFShader shader = new ItemTFShader();
 
-    @Optional.Method(modid = "immersiveengineering")
+    @Optional.Method(modid = Lib.MODID)
     @Override
     public ShaderCase getShaderCase(ItemStack shader, ItemStack tool, String shaderType) {
         return ShaderRegistry.getShader(getShaderType(shader), shaderType);
     }
 
-    @Optional.Method(modid = "immersiveengineering")
+    @Optional.Method(modid = Lib.MODID)
     @Override
     public String getShaderName(ItemStack stack) {
         return getShaderType(stack);
