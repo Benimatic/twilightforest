@@ -8,7 +8,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.EntityTFDeer;
 
 public class RenderTFDeer extends RenderLiving<EntityTFDeer> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "wilddeer.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wilddeer.png");
 
 	public RenderTFDeer(RenderManager manager, ModelBase model, float shadowSize) {
 		super(manager, model, shadowSize);

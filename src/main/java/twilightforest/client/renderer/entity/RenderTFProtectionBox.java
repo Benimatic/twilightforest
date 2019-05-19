@@ -10,7 +10,8 @@ import twilightforest.client.model.entity.ModelTFProtectionBox;
 import twilightforest.entity.EntityTFProtectionBox;
 
 public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "protectionbox.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("protectionbox.png");
 	private final ModelTFProtectionBox boxModel = new ModelTFProtectionBox();
 
 	public RenderTFProtectionBox(RenderManager manager) {

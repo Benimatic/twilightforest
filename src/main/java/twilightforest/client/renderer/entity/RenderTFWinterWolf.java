@@ -9,7 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFWinterWolf extends RenderWolf {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "winterwolf.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("winterwolf.png");
 
 	public RenderTFWinterWolf(RenderManager manager) {
 		super(manager);

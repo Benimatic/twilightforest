@@ -50,31 +50,31 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	public static class DummyTile extends TileEntityTFTrophy {}
 
 	private final ModelTFHydraHead hydraHeadModel = new ModelTFHydraHead();
-	private static final ResourceLocation textureLocHydra = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
+	private static final ResourceLocation textureLocHydra = TwilightForestMod.getModelTexture("hydra4.png");
 
 	private final ModelTFNaga nagaHeadModel = new ModelTFNaga();
-	private static final ResourceLocation textureLocNaga = new ResourceLocation(TwilightForestMod.MODEL_DIR + "nagahead.png");
+	private static final ResourceLocation textureLocNaga = TwilightForestMod.getModelTexture("nagahead.png");
 
 	private final ModelTFLich lichModel = new ModelTFLich();
-	private static final ResourceLocation textureLocLich = new ResourceLocation(TwilightForestMod.MODEL_DIR + "twilightlich64.png");
+	private static final ResourceLocation textureLocLich = TwilightForestMod.getModelTexture("twilightlich64.png");
 
 	private final ModelTFTowerBoss urGhastModel = new ModelTFTowerBoss();
-	private static final ResourceLocation textureLocUrGhast = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss.png");
+	private static final ResourceLocation textureLocUrGhast = TwilightForestMod.getModelTexture("towerboss.png");
 
 	private final ModelTFSnowQueen snowQueenModel = new ModelTFSnowQueen();
-	private static final ResourceLocation textureLocSnowQueen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "snowqueen.png");
+	private static final ResourceLocation textureLocSnowQueen = TwilightForestMod.getModelTexture("snowqueen.png");
 
 	private final ModelTFMinoshroom minoshroomModel = new ModelTFMinoshroom();
-	private static final ResourceLocation textureLocMinoshroom = new ResourceLocation(TwilightForestMod.MODEL_DIR + "minoshroomtaur.png");
+	private static final ResourceLocation textureLocMinoshroom = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
 	private final ModelTFKnightPhantom2 knightPhantomModel = new ModelTFKnightPhantom2();
-	private static final ResourceLocation textureLocKnightPhantom = new ResourceLocation(TwilightForestMod.MODEL_DIR + "phantomskeleton.png");
+	private static final ResourceLocation textureLocKnightPhantom = TwilightForestMod.getModelTexture("phantomskeleton.png");
 	private final ModelTFPhantomArmor knightPhantomArmorModel = new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F);
 	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
 
 	private final ModelTFQuestRam questRamModel = new ModelTFQuestRam();
-	private static final ResourceLocation textureLocQuestRam = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram.png");
-	private static final ResourceLocation textureLocQuestRamLines = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram_lines.png");
+	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
+	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
 	private final ModelResourceLocation itemModelLocation;
 

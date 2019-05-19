@@ -12,7 +12,8 @@ import twilightforest.entity.boss.EntityTFHydraPart;
 import twilightforest.entity.boss.HydraHeadContainer;
 
 public class RenderTFHydraHead extends RenderLiving<EntityTFHydraHead> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
 	public RenderTFHydraHead(RenderManager manager, ModelBase modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);

@@ -11,7 +11,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFNaga;
 
 public class RenderTFNaga extends RenderLiving<EntityTFNaga> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "nagahead.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
 
 	public RenderTFNaga(RenderManager manager, ModelBase modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);

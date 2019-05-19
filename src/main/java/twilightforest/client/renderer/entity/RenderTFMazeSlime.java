@@ -7,7 +7,8 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFMazeSlime extends RenderSlime {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "mazeslime.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mazeslime.png");
 
 	public RenderTFMazeSlime(RenderManager manager, float shadowSize) {
 		super(manager);

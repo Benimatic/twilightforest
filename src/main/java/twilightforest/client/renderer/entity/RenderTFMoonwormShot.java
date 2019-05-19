@@ -9,9 +9,9 @@ import twilightforest.client.model.entity.ModelTFMoonworm;
 import twilightforest.entity.EntityTFMoonwormShot;
 
 public class RenderTFMoonwormShot extends Render<EntityTFMoonwormShot> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "moonworm.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final ModelTFMoonworm wormModel = new ModelTFMoonworm();
-	;
 
 	public RenderTFMoonwormShot(RenderManager manager) {
 		super(manager);

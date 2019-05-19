@@ -8,7 +8,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKingSpider;
 
 public class RenderTFKingSpider extends RenderSpider<EntityTFKingSpider> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "kingspider.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("kingspider.png");
 
 	public RenderTFKingSpider(RenderManager manager) {
 		super(manager);

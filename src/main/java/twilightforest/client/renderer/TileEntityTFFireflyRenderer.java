@@ -17,8 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileEntityTFFireflyTicking> {
-	private ModelTFFirefly fireflyModel;
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "firefly-tiny.png");
+
+	private final ModelTFFirefly fireflyModel;
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
 
 	public TileEntityTFFireflyRenderer() {
 		fireflyModel = new ModelTFFirefly();

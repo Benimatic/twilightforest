@@ -10,7 +10,8 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFSpikeBlock extends Render<Entity> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 	private final ModelBase model;
 
 	public RenderTFSpikeBlock(RenderManager manager, ModelBase modelTFSpikeBlock) {

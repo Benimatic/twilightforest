@@ -6,11 +6,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 
-
 public class RenderTFUrGhast extends RenderTFTowerGhast {
-	private final ResourceLocation textureLocClosed = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss.png");
-	private final ResourceLocation textureLocOpen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss_openeyes.png");
-	private final ResourceLocation textureLocAttack = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss_fire.png");
+
+	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");
+	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
+	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
 
 	public RenderTFUrGhast(RenderManager manager, ModelTFGhast modelTFGhast, float shadowSize, float scale) {
 		super(manager, modelTFGhast, shadowSize, scale);
@@ -22,10 +22,8 @@ public class RenderTFUrGhast extends RenderTFTowerGhast {
 			default:
 			case 0:
 				return textureLocClosed;
-
 			case 1:
 				return textureLocOpen;
-
 			case 2:
 				return textureLocAttack;
 		}

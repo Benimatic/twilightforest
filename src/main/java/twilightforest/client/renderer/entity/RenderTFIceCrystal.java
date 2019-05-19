@@ -10,7 +10,8 @@ import twilightforest.client.model.entity.ModelTFIceCrystal;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
 public class RenderTFIceCrystal extends RenderLiving<EntityTFIceCrystal> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "icecrystal.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("icecrystal.png");
 
 	public RenderTFIceCrystal(RenderManager manager) {
 		super(manager, new ModelTFIceCrystal(), 0.25F);

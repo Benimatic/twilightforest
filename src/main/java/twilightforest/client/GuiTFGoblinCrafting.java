@@ -23,7 +23,7 @@ import java.io.IOException;
 
 public class GuiTFGoblinCrafting extends GuiContainer {
 
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.GUI_DIR + "guigoblintinkering.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
 
 	public GuiTFGoblinCrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 		super(new ContainerTFUncrafting(inventory, world, x, y, z));

@@ -8,7 +8,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFBlockGoblin;
 
 public class RenderTFBlockGoblin extends RenderBiped<EntityTFBlockGoblin> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 
 	public RenderTFBlockGoblin(RenderManager manager, ModelBiped model, float shadowSize) {
 		super(manager, model, shadowSize);

@@ -9,7 +9,8 @@ import twilightforest.client.model.entity.ModelTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 
 public class RenderTFSnowQueen extends RenderBiped<EntityTFSnowQueen> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "snowqueen.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("snowqueen.png");
 
 	public RenderTFSnowQueen(RenderManager manager) {
 		super(manager, new ModelTFSnowQueen(), 0.625F);

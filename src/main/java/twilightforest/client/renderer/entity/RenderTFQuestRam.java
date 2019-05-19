@@ -12,8 +12,9 @@ import twilightforest.client.model.entity.ModelTFQuestRam;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
 public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram.png");
-	private static final ResourceLocation textureLocLines = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram_lines.png");
+
+	private static final ResourceLocation textureLoc      = TwilightForestMod.getModelTexture("questram.png");
+	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
 	public RenderTFQuestRam(RenderManager manager) {
 		super(manager, new ModelTFQuestRam(), 1.0F);

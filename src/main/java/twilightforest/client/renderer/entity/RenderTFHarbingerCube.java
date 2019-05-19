@@ -9,7 +9,8 @@ import twilightforest.client.model.entity.ModelTFApocalypseCube;
 import twilightforest.entity.EntityTFHarbingerCube;
 
 public class RenderTFHarbingerCube extends RenderLiving<EntityTFHarbingerCube> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "apocalypse2.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("apocalypse2.png");
 
 	public RenderTFHarbingerCube(RenderManager manager) {
 		super(manager, new ModelTFApocalypseCube(), 1.0F);

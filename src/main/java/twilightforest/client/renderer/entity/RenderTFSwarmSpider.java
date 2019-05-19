@@ -8,7 +8,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSwarmSpider;
 
 public class RenderTFSwarmSpider extends RenderSpider<EntityTFSwarmSpider> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "swarmspider.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("swarmspider.png");
 
 	public RenderTFSwarmSpider(RenderManager manager) {
 		super(manager);

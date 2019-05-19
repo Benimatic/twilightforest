@@ -10,7 +10,8 @@ import twilightforest.client.model.entity.ModelTFHydraMortar;
 import twilightforest.entity.boss.EntityTFHydraMortar;
 
 public class RenderTFHydraMortar extends Render<EntityTFHydraMortar> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydramortar.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final ModelTFHydraMortar mortarModel = new ModelTFHydraMortar();
 
 	public RenderTFHydraMortar(RenderManager manager) {

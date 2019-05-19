@@ -11,7 +11,8 @@ import twilightforest.client.model.entity.ModelTFKnightPhantom2;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
 public class RenderTFKnightPhantom extends RenderBiped<EntityTFKnightPhantom> {
-	private static final ResourceLocation PHANTOM_TEXTURE = new ResourceLocation(TwilightForestMod.MODEL_DIR + "phantomskeleton.png");
+
+	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
 	public RenderTFKnightPhantom(RenderManager manager, ModelTFKnightPhantom2 model, float shadowSize) {
 		super(manager, model, shadowSize);

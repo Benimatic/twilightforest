@@ -15,7 +15,7 @@ import twilightforest.entity.boss.EntityTFMinoshroom;
 
 public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
 
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "minoshroomtaur.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
 	public RenderTFMinoshroom(RenderManager manager, ModelBiped model, float shadowSize) {
 		super(manager, model, shadowSize);

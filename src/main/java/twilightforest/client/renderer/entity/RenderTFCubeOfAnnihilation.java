@@ -12,7 +12,8 @@ import twilightforest.client.model.entity.ModelTFCubeOfAnnihilation;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 
 public class RenderTFCubeOfAnnihilation extends Render<EntityTFCubeOfAnnihilation> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cubeofannihilation.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final ModelBase model = new ModelTFCubeOfAnnihilation();
 
 	public RenderTFCubeOfAnnihilation(RenderManager manager) {

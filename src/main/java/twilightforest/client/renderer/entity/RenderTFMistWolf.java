@@ -10,7 +10,8 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFMistWolf extends RenderWolf {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "mistwolf.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mistwolf.png");
 
 	public RenderTFMistWolf(RenderManager manager) {
 		super(manager);

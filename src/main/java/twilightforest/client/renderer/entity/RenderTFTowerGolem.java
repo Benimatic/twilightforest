@@ -9,7 +9,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFTowerGolem;
 
 public class RenderTFTowerGolem extends RenderLiving<EntityTFTowerGolem> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "carminitegolem.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("carminitegolem.png");
 
 	public RenderTFTowerGolem(RenderManager manager, ModelBase model, float shadowSize) {
 		super(manager, model, shadowSize);

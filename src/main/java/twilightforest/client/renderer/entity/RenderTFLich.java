@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -11,7 +10,8 @@ import twilightforest.entity.boss.EntityTFLich;
 import javax.annotation.Nonnull;
 
 public class RenderTFLich extends RenderBiped<EntityTFLich> {
-	private static final ResourceLocation LICH_TEXTURE = new ResourceLocation(TwilightForestMod.MODEL_DIR + "twilightlich64.png");
+
+	private static final ResourceLocation LICH_TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
 
 	public RenderTFLich(RenderManager manager, ModelBiped modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);

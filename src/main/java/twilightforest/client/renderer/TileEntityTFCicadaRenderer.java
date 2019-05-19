@@ -16,8 +16,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEntityTFCicadaTicking> {
+
 	private final ModelTFCicada cicadaModel = new ModelTFCicada();
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cicada-model.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
 
 	@Override
 	public void render(@Nullable TileEntityTFCicadaTicking tileentity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {

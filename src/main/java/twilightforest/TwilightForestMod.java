@@ -42,9 +42,10 @@ public class TwilightForestMod {
 	public static final String NAME = "The Twilight Forest";
 	public static final String VERSION = "@VERSION@";
 
-	public static final String MODEL_DIR  = ID + ":textures/model/";
-	public static final String GUI_DIR    = ID + ":textures/gui/";
-	public static final String ENVIRO_DIR = ID + ":textures/environment/";
+	private static final String MODEL_DIR  = "textures/model/";
+	private static final String GUI_DIR    = "textures/gui/";
+	private static final String ENVIRO_DIR = "textures/environment/";
+	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR  = ID + ":textures/armor/";
 
 	public static final String ENFORCED_PROGRESSION_RULE = "tfEnforcedProgression";
@@ -190,6 +191,18 @@ public class TwilightForestMod {
 
 	public static ResourceLocation prefix(String name) {
 		return new ResourceLocation(ID, name);
+	}
+
+	public static ResourceLocation getModelTexture(String name) {
+		return new ResourceLocation(ID, MODEL_DIR + name);
+	}
+
+	public static ResourceLocation getGuiTexture(String name) {
+		return new ResourceLocation(ID, GUI_DIR + name);
+	}
+
+	public static ResourceLocation getEnvTexture(String name) {
+		return new ResourceLocation(ID, ENVIRO_DIR + name);
 	}
 
 	public static EnumRarity getRarity() {

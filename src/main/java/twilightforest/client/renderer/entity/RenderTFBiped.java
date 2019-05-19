@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFBiped<T extends EntityLiving> extends RenderBiped<T> {
+
 	private final ResourceLocation textureLoc;
 
 	public RenderTFBiped(RenderManager manager, ModelBiped modelBiped, float shadowSize, String textureName) {
@@ -18,7 +19,7 @@ public class RenderTFBiped<T extends EntityLiving> extends RenderBiped<T> {
 		if (textureName.startsWith("textures")) {
 			textureLoc = new ResourceLocation(textureName);
 		} else {
-			textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + textureName);
+			textureLoc = TwilightForestMod.getModelTexture(textureName);
 		}
 	}
 

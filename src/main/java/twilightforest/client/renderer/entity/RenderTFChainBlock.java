@@ -10,7 +10,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFChainBlock;
 
 public class RenderTFChainBlock extends Render<EntityTFChainBlock> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 	private final ModelBase model;
 
 	public RenderTFChainBlock(RenderManager manager, ModelBase modelTFSpikeBlock) {

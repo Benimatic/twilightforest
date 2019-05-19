@@ -36,12 +36,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
 
-	private static final ResourceLocation BLIZZARD_TEXTURE   = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "blizzard.png");
-	private static final ResourceLocation MOSQUITO_TEXTURE   = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "mosquitoes.png");
-	private static final ResourceLocation ASHES_TEXTURE      = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "ashes.png");
-	private static final ResourceLocation DARKSTREAM_TEXTURE = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "darkstream.png");
-	private static final ResourceLocation BIGRAIN_TEXTURE    = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "bigrain.png");
-	private static final ResourceLocation SPARKLES_TEXTURE   = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "sparkles.png");
+	private static final ResourceLocation SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
 
 	private final float[] rainxs = new float[1024];
 	private final float[] rainys = new float[1024];
@@ -571,14 +566,14 @@ public class TFWeatherRenderer extends IRenderHandler {
 
 	private enum RenderType {
 
-		BLIZZARD(BLIZZARD_TEXTURE),
-		MOSQUITO(MOSQUITO_TEXTURE),
-		ASHES(ASHES_TEXTURE),
-		DARK_STREAM(DARKSTREAM_TEXTURE),
-		BIG_RAIN(BIGRAIN_TEXTURE);
+		BLIZZARD("blizzard.png"),
+		MOSQUITO("mosquitoes.png"),
+		ASHES("ashes.png"),
+		DARK_STREAM("darkstream.png"),
+		BIG_RAIN("bigrain.png");
 
-		RenderType(ResourceLocation textureLocation) {
-			this.textureLocation = textureLocation;
+		RenderType(String textureName) {
+			this.textureLocation = TwilightForestMod.getEnvTexture(textureName);
 		}
 
 		private final ResourceLocation textureLocation;
