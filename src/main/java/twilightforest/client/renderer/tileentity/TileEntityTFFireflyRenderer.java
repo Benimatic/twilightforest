@@ -1,6 +1,5 @@
-package twilightforest.client.renderer;
+package twilightforest.client.renderer.tileentity;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
@@ -12,46 +11,34 @@ import twilightforest.client.model.entity.ModelTFFirefly;
 import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileEntityTFFireflyTicking> {
 
-	private final ModelTFFirefly fireflyModel;
+	private final ModelTFFirefly fireflyModel = new ModelTFFirefly();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
 
-	public TileEntityTFFireflyRenderer() {
-		fireflyModel = new ModelTFFirefly();
-	}
-
-
 	@Override
-	public void render(@Nullable TileEntityTFFireflyTicking tileentity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentYaw;
-		float glow = tileentity != null ? tileentity.glowIntensity : BugModelAnimationHelper.glowIntensity;
+	public void render(@Nullable TileEntityTFFireflyTicking te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+
+		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
+		float glow = te != null ? te.glowIntensity : BugModelAnimationHelper.glowIntensity;
 
 		GlStateManager.pushMatrix();
-		EnumFacing facing = EnumFacing.byIndex(tileentity != null ? tileentity.getBlockMetadata() : 0);
+		EnumFacing facing = EnumFacing.byIndex(te != null ? te.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;
 		if (facing == EnumFacing.SOUTH) {
 			rotZ = 0F;
-		}
-		if (facing == EnumFacing.NORTH) {
+		} else if (facing == EnumFacing.NORTH) {
 			rotZ = 180F;
-		}
-		if (facing == EnumFacing.EAST) {
+		} else if (facing == EnumFacing.EAST) {
 			rotZ = -90F;
-		}
-		if (facing == EnumFacing.WEST) {
+		} else if (facing == EnumFacing.WEST) {
 			rotZ = 90F;
-		}
-		if (facing == EnumFacing.UP) {
+		} else if (facing == EnumFacing.UP) {
 			rotX = 0F;
-		}
-		if (facing == EnumFacing.DOWN) {
+		} else if (facing == EnumFacing.DOWN) {
 			rotX = 180F;
 		}
 		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
@@ -91,5 +78,4 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 		GlStateManager.color(1, 1, 1, 1);
 		GlStateManager.popMatrix();
 	}
-
 }

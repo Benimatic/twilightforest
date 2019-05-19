@@ -1,6 +1,5 @@
-package twilightforest.client.renderer;
+package twilightforest.client.renderer.tileentity;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
@@ -11,40 +10,33 @@ import twilightforest.client.model.entity.ModelTFCicada;
 import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEntityTFCicadaTicking> {
 
 	private final ModelTFCicada cicadaModel = new ModelTFCicada();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
 
 	@Override
-	public void render(@Nullable TileEntityTFCicadaTicking tileentity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentYaw;
+	public void render(@Nullable TileEntityTFCicadaTicking te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+
+		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
 
 		GlStateManager.pushMatrix();
-		EnumFacing facing = EnumFacing.byIndex(tileentity != null ? tileentity.getBlockMetadata() : 0);
+		EnumFacing facing = EnumFacing.byIndex(te != null ? te.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;
 		if (facing == EnumFacing.SOUTH) {
 			rotZ = 0F;
-		}
-		if (facing == EnumFacing.NORTH) {
+		} else if (facing == EnumFacing.NORTH) {
 			rotZ = 180F;
-		}
-		if (facing == EnumFacing.EAST) {
+		} else if (facing == EnumFacing.EAST) {
 			rotZ = -90F;
-		}
-		if (facing == EnumFacing.WEST) {
+		} else if (facing == EnumFacing.WEST) {
 			rotZ = 90F;
-		}
-		if (facing == EnumFacing.UP) {
+		} else if (facing == EnumFacing.UP) {
 			rotX = 0F;
-		}
-		if (facing == EnumFacing.DOWN) {
+		} else if (facing == EnumFacing.DOWN) {
 			rotX = 180F;
 		}
 		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
@@ -60,5 +52,4 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
 		GlStateManager.color(1, 1, 1, 1);
 		GlStateManager.popMatrix();
 	}
-
 }

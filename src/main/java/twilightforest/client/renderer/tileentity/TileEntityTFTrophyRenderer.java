@@ -1,6 +1,5 @@
-package twilightforest.client.renderer;
+package twilightforest.client.renderer.tileentity;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -40,7 +39,6 @@ import twilightforest.client.model.entity.ModelTFTowerBoss;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import javax.vecmath.Matrix4f;
 import java.util.Collections;
 import java.util.List;
@@ -92,8 +90,6 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		event.getModelRegistry().putObject(itemModelLocation, new BakedModel());
 	}
 
-	@MethodsReturnNonnullByDefault
-	@ParametersAreNonnullByDefault
 	private class BakedModel implements IBakedModel {
 
 		private class Overrides extends ItemOverrideList {
@@ -324,7 +320,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	}
 
 
-	private void renderUrGhastHead(TileEntityTFTrophy trophy, float rotation, boolean onGround, float partialTime) {
+	private void renderUrGhastHead(@Nullable TileEntityTFTrophy trophy, float rotation, boolean onGround, float partialTime) {
 		GlStateManager.translate(0, 1, 0);
 
 		GlStateManager.scale(0.5f, 0.5f, 0.5f);

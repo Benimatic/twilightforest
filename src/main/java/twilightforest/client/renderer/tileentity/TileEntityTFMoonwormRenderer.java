@@ -1,4 +1,4 @@
-package twilightforest.client.renderer;
+package twilightforest.client.renderer.tileentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,31 +18,27 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
 	private final ModelTFMoonworm moonwormModel = new ModelTFMoonworm();
 
 	@Override
-	public void render(@Nullable TileEntityTFMoonwormTicking tileentity, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
-		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentRotation;
-		if (tileentity == null) partialTime = Minecraft.getMinecraft().getRenderPartialTicks();
+	public void render(@Nullable TileEntityTFMoonwormTicking te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+
+		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
+		if (te == null) partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
 
 		GlStateManager.pushMatrix();
-		EnumFacing facing = EnumFacing.byIndex(tileentity != null ? tileentity.getBlockMetadata() : 0);
+		EnumFacing facing = EnumFacing.byIndex(te != null ? te.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;
 		if (facing == EnumFacing.SOUTH) {
 			rotZ = 0F;
-		}
-		if (facing == EnumFacing.NORTH) {
+		} else if (facing == EnumFacing.NORTH) {
 			rotZ = 180F;
-		}
-		if (facing == EnumFacing.EAST) {
+		} else if (facing == EnumFacing.EAST) {
 			rotZ = -90F;
-		}
-		if (facing == EnumFacing.WEST) {
+		} else if (facing == EnumFacing.WEST) {
 			rotZ = 90F;
-		}
-		if (facing == EnumFacing.UP) {
+		} else if (facing == EnumFacing.UP) {
 			rotX = 0F;
-		}
-		if (facing == EnumFacing.DOWN) {
+		} else if (facing == EnumFacing.DOWN) {
 			rotX = 180F;
 		}
 		GlStateManager.translate(x + 0.5F, y + 0.5F, z + 0.5F);
@@ -54,12 +50,11 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
 
 		GlStateManager.scale(1f, -1f, -1f);
 
-		moonwormModel.setLivingAnimations(tileentity, partialTime);
+		moonwormModel.setLivingAnimations(te, partialTicks);
 
 		// render the firefly body
 		moonwormModel.render(0.0625f);
 
 		GlStateManager.popMatrix();
 	}
-
 }
