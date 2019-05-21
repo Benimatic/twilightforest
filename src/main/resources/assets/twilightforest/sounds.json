@@ -30,9 +30,13 @@
   "mob.ice.death": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/death0", "twilightforest:mob/ice/death1" ] },
   "random.slider": { "category": "block", "sounds": [ "twilightforest:random/creakgo2" ] },
   "music.bg": { "category": "music", "sounds": [
-	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25, "weight": 7 },
-	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25, "weight": 7 },
-	{ "name": "twilightforest:music/radiance", "stream": true, "volume": 0.25, "weight": 7 },
-	{ "name": "music.game", "stream": true, "weight": 1, "type": "event" }
+	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
+	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },
+	{ "name": "twilightforest:music/radiance", "stream": true, "volume": 0.25 },
+	{ "name": "twilightforest:music/ambient1", "stream": true, "volume": 0.75 },
+	{ "name": "twilightforest:music/ambient2", "stream": true, "volume": 0.75 },
+	{ "name": "twilightforest:music/ambient3", "stream": true, "volume": 0.75 },
+	{ "name": "twilightforest:music/ambient4", "stream": true, "volume": 0.75 },
+	{ "name": "twilightforest:music/ambient5", "stream": true, "volume": 0.75 }
   ] }
 }
