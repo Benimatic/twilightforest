@@ -78,7 +78,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 40, 40, 40.0F){
 			@Override
 			public boolean shouldExecute() {
-				return getRNG().nextInt(50) > 0 && super.shouldExecute(); // Give us a chance to move to the next AI
+				return getRNG().nextInt(50) > 0 && getAttackTarget() != null && getDistanceSq(getAttackTarget()) >= 16D && super.shouldExecute(); // Give us a chance to move to the next AI
 			}
 		});
 		this.tasks.addTask(4, new EntityAITFThrowRider(this, 1.0D, false) {
