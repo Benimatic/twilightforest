@@ -1,6 +1,5 @@
 package twilightforest;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -17,6 +16,7 @@ import twilightforest.world.feature.TFGenCaveStalactite;
 import java.util.function.Consumer;
 
 public class IMCHandler {
+
 	private static final ImmutableSet.Builder<IBlockState> BLACKLIST_BUILDER = ImmutableSet.builder();
 	private static final ImmutableList.Builder<IBlockState> ORE_BLOCKS_BUILDER = ImmutableList.builder();
 	private static final ImmutableList.Builder<ItemStack> LOADING_ICONS_BUILDER = ImmutableList.builder();
@@ -34,7 +34,7 @@ public class IMCHandler {
 					 • [String Property Key]         - String         : Key is nameable to a property key, and the string value attached to it is value to property.
 
 		 • "Ore_Blocks"                              - NBTTagList     : List of blockstates to add to Hollow Hills and Ore Magnets - May change this to a function in the future
-			 • List Entry                            - NBTTagCompound : An IBlockState and/or an oredict name
+			 • List Entry                            - NBTTagCompound : An IBlockState
 				 • "Name"                            - String         : Resource location of block. Is not allowed to be Air.
 				 • "Properties"                      - NBTTagCompound : Blockstate Properties
 					 • [String Property Key]         - String         : Key is nameable to a property key, and the string value attached to it is value to property.
@@ -57,12 +57,12 @@ public class IMCHandler {
 	 </pre>
 	 */
 
-	public static void onIMC(FMLInterModComms.IMCEvent event) {
+	static void onIMC(FMLInterModComms.IMCEvent event) {
 		for (FMLInterModComms.IMCMessage message : event.getMessages()) {
 			if (message.isNBTMessage()) {
 				NBTTagCompound imcCompound = message.getNBTValue();
 
-				deserializeBlockstatesFromTagList(imcCompound.getTagList("Blacklist",  Constants.NBT.TAG_COMPOUND), BLACKLIST_BUILDER);
+				readStatesFromTagList(imcCompound.getTagList("Blacklist", Constants.NBT.TAG_COMPOUND), BLACKLIST_BUILDER::add);
 				readFromTagList(imcCompound.getTagList("Ore_Blocks", Constants.NBT.TAG_COMPOUND), IMCHandler::handleOre);
 				readFromTagList(imcCompound.getTagList("Crumbling",  Constants.NBT.TAG_COMPOUND), IMCHandler::handleCrumble);
 			}
@@ -74,31 +74,24 @@ public class IMCHandler {
 	}
 
 	private static void readFromTagList(NBTTagList list, Consumer<NBTTagCompound> consumer) {
-		for (int blockAt = 0; blockAt < list.tagCount(); blockAt++) {
-			consumer.accept(list.getCompoundTagAt(blockAt));
+		for (int i = 0; i < list.tagCount(); i++) {
+			consumer.accept(list.getCompoundTagAt(i));
 		}
 	}
 
-	private static void deserializeBlockstatesFromTagList(NBTTagList list, ImmutableCollection.Builder<IBlockState> builder) {
-		for (int blockAt = 0; blockAt < list.tagCount(); blockAt++) {
-			IBlockState state = NBTUtil.readBlockState(list.getCompoundTagAt(blockAt));
-
-			if (state.getBlock() != Blocks.AIR)
-				builder.add(state);
+	private static void readStatesFromTagList(NBTTagList list, Consumer<IBlockState> consumer) {
+		for (int i = 0; i < list.tagCount(); i++) {
+			IBlockState state = NBTUtil.readBlockState(list.getCompoundTagAt(i));
+			if (state.getBlock() != Blocks.AIR) {
+				consumer.accept(state);
+			}
 		}
 	}
 
 	private static void handleCrumble(NBTTagCompound nbt) {
 		IBlockState key = NBTUtil.readBlockState(nbt);
-
 		if (key.getBlock() != Blocks.AIR) {
-			NBTTagList crumbles = nbt.getTagList("Crumbling", Constants.NBT.TAG_COMPOUND);
-
-			for (int crumble = 0; crumble < crumbles.tagCount(); crumble++) {
-				IBlockState value = NBTUtil.readBlockState(crumbles.getCompoundTagAt(crumble));
-
-				CRUMBLE_BLOCKS_BUILDER.put(key, value);
-			}
+			readStatesFromTagList(nbt.getTagList("Crumbling", Constants.NBT.TAG_COMPOUND), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
 		}
 	}
 
@@ -107,17 +100,25 @@ public class IMCHandler {
 
 		if (nbtState.getBlock() != Blocks.AIR) {
 			ORE_BLOCKS_BUILDER.add(nbtState);
-			
-			if (nbt.hasKey("Stalactite_Settings")) {
+
+			if (nbt.hasKey("Stalactite_Settings", Constants.NBT.TAG_COMPOUND)) {
 				NBTTagCompound settings = nbt.getCompoundTag("Stalactite_Settings");
-				int weight    = settings.hasKey("Weight")     ? settings.getInteger("Weight")     : 15;
-				int hillSize  = settings.hasKey("Hill_Size")  ? settings.getInteger("Hill_Size")  : 3;
-				float size    = settings.hasKey("Size")       ? settings.getFloat("Size")         : 0.7f;
-				int maxLength = settings.hasKey("Max_Length") ? settings.getInteger("Max_Length") : 8;
-				int minHeight = settings.hasKey("Min_Height") ? settings.getInteger("Min_Height") : 1;
+				int weight    = readInt(settings, "Weight", 15);
+				int hillSize  = readInt(settings, "Hill_Size", 3);
+				float size    = readFloat(settings, "Size", 0.7f);
+				int maxLength = readInt(settings, "Max_Length", 8);
+				int minHeight = readInt(settings, "Min_Height", 1);
 				STALACTITE_BUILDER.put(hillSize, new TFGenCaveStalactite.StalactiteEntry(nbtState, size, maxLength, minHeight, weight));
 			}
 		}
+	}
+
+	private static int readInt(NBTTagCompound tag, String key, int defaultValue) {
+		return tag.hasKey(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getInteger(key) : defaultValue;
+	}
+
+	private static float readFloat(NBTTagCompound tag, String key, float defaultValue) {
+		return tag.hasKey(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
 	}
 
 	public static ImmutableSet<IBlockState> getBlacklistedBlocks() {

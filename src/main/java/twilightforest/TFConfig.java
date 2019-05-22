@@ -157,24 +157,30 @@ public class TFConfig {
 
 			private void registerHill(String[] definitions, int tier) {
 				for (String definition : definitions) {
-					String[] split = definition.split(" ");
-					if (split.length != 5) {
+					if (!parseStalactite(definition, tier)) {
 						TwilightForestMod.LOGGER.warn("Invalid hollow hill stalactite definition: {}", definition);
-						continue;
 					}
-					parseBlockState(split[0]).ifPresent(blockstate -> {
-						try {
-							TFGenCaveStalactite.addStalactite(tier, blockstate,
-											Float.parseFloat(split[1]),
-											Integer.parseInt(split[2]),
-											Integer.parseInt(split[3]),
-											Integer.parseInt(split[4])
-							);
-						} catch (NumberFormatException e) {
-							TwilightForestMod.LOGGER.warn("Invalid hollow hill stalactite definition: {}", definition);
-						}
-					});
 				}
+			}
+
+			private boolean parseStalactite(String definition, int tier) {
+				String[] split = definition.split(" ");
+				if (split.length != 5) return false;
+
+				Optional<IBlockState> state = parseBlockState(split[0]);
+				if (!state.isPresent()) return false;
+
+				try {
+					TFGenCaveStalactite.addStalactite(tier, state.get(),
+							Float.parseFloat(split[1]),
+							Integer.parseInt(split[2]),
+							Integer.parseInt(split[3]),
+							Integer.parseInt(split[4])
+					);
+				} catch (NumberFormatException e) {
+					return false;
+				}
+				return true;
 			}
 		}
 	}
@@ -475,13 +481,15 @@ public class TFConfig {
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
 		if (block == Blocks.AIR) return Optional.empty();
 
-		int meta = 0;
-		if (split.length > 2) {
-			try {
-				meta = Integer.parseInt(split[2]);
-			} catch (NumberFormatException e) {
-				return Optional.empty();
-			}
+		if (split.length == 2) {
+			return Optional.of(block.getDefaultState());
+		}
+
+		int meta;
+		try {
+			meta = Integer.parseInt(split[2]);
+		} catch (NumberFormatException e) {
+			return Optional.empty();
 		}
 		if (meta < 0 || meta > 15) return Optional.empty();
 

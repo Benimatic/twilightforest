@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Random;
 
 public class TFGenCaveStalactite extends TFGenerator {
+
 	private static final List<StalactiteEntry> largeHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> mediumHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> smallHillStalactites = new ArrayList<>();
 
-	public IBlockState blockID;
+	public IBlockState blockState;
 	public boolean hang;
 	public float sizeFactor;
 	public int maxLength;
@@ -30,8 +31,12 @@ public class TFGenCaveStalactite extends TFGenerator {
 	/**
 	 * Initializes a stalactite builder.  Actually also makes stalagmites
 	 */
-	public TFGenCaveStalactite(Block blockType, float size, boolean down) {
-		this.blockID = blockType.getDefaultState();
+	public TFGenCaveStalactite(Block block, float size, boolean down) {
+		this(block.getDefaultState(), size, down);
+	}
+
+	public TFGenCaveStalactite(IBlockState blockState, float size, boolean down) {
+		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = -1;
 		this.minHeight = -1;
@@ -41,8 +46,8 @@ public class TFGenCaveStalactite extends TFGenerator {
 	/**
 	 * Initializes a stalactite builder
 	 */
-	public TFGenCaveStalactite(IBlockState blockType, float size, int maxLength, int minHeight) {
-		this.blockID = blockType;
+	public TFGenCaveStalactite(IBlockState blockState, float size, int maxLength, int minHeight) {
+		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = maxLength;
 		this.minHeight = minHeight;
@@ -162,7 +167,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 				}
 
 				for (int dy = 0; dy != (spikeLength * dir); dy += dir) {
-					setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), blockID);
+					setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), blockState);
 				}
 			}
 		}
@@ -171,6 +176,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	}
 
 	public static class StalactiteEntry extends WeightedRandom.Item {
+
 		final TFGenCaveStalactite stalactite;
 
 		StalactiteEntry(TFGenCaveStalactite stalactite, int itemWeight) {
@@ -178,13 +184,15 @@ public class TFGenCaveStalactite extends TFGenerator {
 			this.stalactite = stalactite;
 		}
 
-		public StalactiteEntry(IBlockState blockType, float size, int maxLength, int minHeight, int itemWeight) {
-			this(new TFGenCaveStalactite(blockType, size, maxLength, minHeight), itemWeight);
+		public StalactiteEntry(IBlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
+			this(new TFGenCaveStalactite(blockState, size, maxLength, minHeight), itemWeight);
 		}
 	}
 
-	public static void addStalactite(int hillSize, IBlockState blockType, float size, int maxLength, int minHeight, int itemWeight) {
-		addStalactite(hillSize, new StalactiteEntry(blockType, size, maxLength, minHeight, itemWeight));
+	public static void addStalactite(int hillSize, IBlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
+		if (itemWeight > 0) {
+			addStalactite(hillSize, new StalactiteEntry(blockState, size, maxLength, minHeight, itemWeight));
+		}
 	}
 
 	private static void addStalactite(int hillSize, StalactiteEntry entry) {
@@ -195,6 +203,25 @@ public class TFGenCaveStalactite extends TFGenerator {
 		largeHillStalactites.add(entry);
 	}
 
+	/*
+	 * Current default weights are as follows:
+	 *
+	 * Large (total 195 = 13*15):
+	 * 2/13 diamond
+	 * 2/13 lapis
+	 * 1/13 emerald
+	 * 8/13 [medium pool]
+	 *
+	 * Medium (total 120 = 6*20):
+	 * 1/6 gold
+	 * 1/6 redstone
+	 * 3/6 [small pool]
+	 *
+	 * Small (total 60 = 5*12):
+	 * 2/5 iron
+	 * 2/5 coal
+	 * 1/5 glowstone
+	 */
 	private static void addDefaultStalactites() {
 		addStalactite(3, Blocks.DIAMOND_ORE.getDefaultState(), 0.5F, 4, 16, 30);
 		addStalactite(3, Blocks.LAPIS_ORE.getDefaultState(), 0.8F, 8, 1, 30);
