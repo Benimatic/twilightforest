@@ -130,7 +130,7 @@ public class TFTickHandler {
 			for (EntityItem entityItem : itemList) {
 				if (TFConfig.portalIngredient.apply(entityItem.getItem())) {
 					IBlockState state = world.getBlockState(entityItem.getPosition());
-					if (state.getBlock() == Blocks.WATER || state == TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true)) {
+					if (state.getBlock() == Blocks.WATER || state.getBlock() == TFBlocks.twilight_portal && state.getValue(BlockTFPortal.DISALLOW_RETURN)) {
 						Random rand = new Random();
 						for (int i = 0; i < 2; i++) {
 							double vx = rand.nextGaussian() * 0.02D;
