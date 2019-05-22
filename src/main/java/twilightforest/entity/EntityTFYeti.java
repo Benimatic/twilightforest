@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -20,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.ai.EntityAITFThrowRider;
@@ -40,7 +42,21 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0D, false));
+		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0D, false) {
+			@Override
+			protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_) {
+				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+			}
+
+			@Override
+			public void resetTask() {
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_THROW, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+				super.resetTask();
+			}
+		});
 		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(3, new EntityAILookIdle(this));
