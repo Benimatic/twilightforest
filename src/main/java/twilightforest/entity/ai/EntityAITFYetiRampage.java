@@ -1,6 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
+import twilightforest.TFSounds;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
 public class EntityAITFYetiRampage extends EntityAIBase {
@@ -38,6 +39,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 	public void startExecuting() {
 		this.currentDuration = this.tantrumDuration;
 		this.yeti.setRampaging(true);
+		this.yeti.playSound(TFSounds.ALPHAYETI_ROAR, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
 	}
 
 

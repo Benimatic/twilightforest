@@ -15,6 +15,7 @@ import twilightforest.entity.boss.EntityTFMinoshroom;
 import twilightforest.entity.boss.EntityTFNaga;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFUrGhast;
+import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.entity.passive.EntityTFBighorn;
 import twilightforest.entity.passive.EntityTFBoar;
 import twilightforest.entity.passive.EntityTFDeer;
@@ -55,6 +56,14 @@ public final class TFSounds {
 	public static final SoundEvent ICE_HURT = createEvent("mob.ice.hurt");
 	public static final SoundEvent ICE_DEATH = createEvent("mob.ice.death");
 	public static final SoundEvent SLIDER = createEvent("random.slider");
+	public static final SoundEvent ALPHAYETI_ALERT = createEvent("mob.alphayeti.alert");
+	public static final SoundEvent ALPHAYETI_DIE = createEvent("mob.alphayeti.die");
+	public static final SoundEvent ALPHAYETI_GRAB = createEvent("mob.alphayeti.grab");
+	public static final SoundEvent ALPHAYETI_GROWL = createEvent("mob.alphayeti.growl");
+	public static final SoundEvent ALPHAYETI_HIT = createEvent("mob.alphayeti.hit");
+	public static final SoundEvent ALPHAYETI_PANT = createEvent("mob.alphayeti.pant");
+	public static final SoundEvent ALPHAYETI_ROAR = createEvent("mob.alphayeti.roar");
+	public static final SoundEvent ALPHAYETI_THROW = createEvent("mob.alphayeti.throw");
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
 
@@ -139,6 +148,7 @@ public final class TFSounds {
 		EntityParrot.registerMimicSound(EntityTFNaga.class, NAGA_RATTLE);
 		EntityParrot.registerMimicSound(EntityTFSnowQueen.class, ICE_AMBIENT);
 		EntityParrot.registerMimicSound(EntityTFUrGhast.class, SoundEvents.ENTITY_GHAST_AMBIENT);
+		EntityParrot.registerMimicSound(EntityTFYetiAlpha.class, ALPHAYETI_GROWL);
 	}
 
 	private TFSounds() {
