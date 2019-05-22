@@ -18,6 +18,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -192,6 +193,27 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 	@Override
 	protected boolean isValidLightLevel() {
 		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest || super.isValidLightLevel();
+	}
+
+	@Override
+	protected float getSoundPitch() {
+		return super.getSoundPitch() + 0.55F;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.ALPHAYETI_GROWL;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.ALPHAYETI_HIT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.ALPHAYETI_DIE;
 	}
 
 	@Override
