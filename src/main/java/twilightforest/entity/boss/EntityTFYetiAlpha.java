@@ -200,6 +200,11 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	}
 
 	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.ALPHAYETI_DIE;
+	}
+
+	@Override
 	protected float getSoundPitch() {
 		return 0.5F + getRNG().nextFloat() * 0.5F;
 	}
@@ -385,8 +390,6 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	@Override
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-
-		playSound(TFSounds.ALPHAYETI_DIE, 4F, 0.5F + getRNG().nextFloat() * 0.5F);
 
 		// mark the lair as defeated
 		if (!world.isRemote) {

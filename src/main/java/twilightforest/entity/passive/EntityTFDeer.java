@@ -6,11 +6,13 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
 /**
@@ -41,7 +43,17 @@ public class EntityTFDeer extends EntityCow {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return null;
+		return TFSounds.DEER_IDLE;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.DEER_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.DEER_DEATH;
 	}
 
 	@Override

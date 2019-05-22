@@ -37,6 +37,9 @@
   "mob.alphayeti.pant": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/pant1", "twilightforest:mob/alphayeti/pant2", "twilightforest:mob/alphayeti/pant3" ] },
   "mob.alphayeti.roar": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/roar" ] },
   "mob.alphayeti.throw": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/throw" ] },
+  "mob.deer.death": { "category": "neutral", "sounds": [ "twilightforest:mob/deer/death" ] },
+  "mob.deer.hurt": { "category": "neutral", "sounds": [ "twilightforest:mob/deer/hurt1", "twilightforest:mob/deer/hurt2" ] },
+  "mob.deer.idle": { "category": "neutral", "sounds": [ "twilightforest:mob/deer/idle1", "twilightforest:mob/deer/idle2", "twilightforest:mob/deer/idle3" ] },
   "music.bg": { "category": "music", "sounds": [
 	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
 	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },

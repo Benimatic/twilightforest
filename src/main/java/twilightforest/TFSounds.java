@@ -64,6 +64,9 @@ public final class TFSounds {
 	public static final SoundEvent ALPHAYETI_PANT = createEvent("mob.alphayeti.pant");
 	public static final SoundEvent ALPHAYETI_ROAR = createEvent("mob.alphayeti.roar");
 	public static final SoundEvent ALPHAYETI_THROW = createEvent("mob.alphayeti.throw");
+	public static final SoundEvent DEER_DEATH = createEvent("mob.deer.death");
+	public static final SoundEvent DEER_HURT = createEvent("mob.deer.hurt");
+	public static final SoundEvent DEER_IDLE = createEvent("mob.deer.idle");
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
 
@@ -104,6 +107,17 @@ public final class TFSounds {
 		evt.getRegistry().register(ICE_DEATH);
 		evt.getRegistry().register(ICE_HURT);
 		evt.getRegistry().register(SLIDER);
+		evt.getRegistry().register(ALPHAYETI_ALERT);
+		evt.getRegistry().register(ALPHAYETI_DIE);
+		evt.getRegistry().register(ALPHAYETI_GRAB);
+		evt.getRegistry().register(ALPHAYETI_GROWL);
+		evt.getRegistry().register(ALPHAYETI_HIT);
+		evt.getRegistry().register(ALPHAYETI_PANT);
+		evt.getRegistry().register(ALPHAYETI_ROAR);
+		evt.getRegistry().register(ALPHAYETI_THROW);
+		evt.getRegistry().register(DEER_DEATH);
+		evt.getRegistry().register(DEER_HURT);
+		evt.getRegistry().register(DEER_IDLE);
 
 		evt.getRegistry().register(MUSIC);
 
@@ -136,7 +150,7 @@ public final class TFSounds {
 
 		EntityParrot.registerMimicSound(EntityTFBighorn.class, SoundEvents.ENTITY_SHEEP_AMBIENT);
 		EntityParrot.registerMimicSound(EntityTFBoar.class, SoundEvents.ENTITY_PIG_AMBIENT);
-		EntityParrot.registerMimicSound(EntityTFDeer.class, SoundEvents.ENTITY_COW_AMBIENT);
+		EntityParrot.registerMimicSound(EntityTFDeer.class, DEER_IDLE);
 		EntityParrot.registerMimicSound(EntityTFQuestRam.class, SoundEvents.ENTITY_SHEEP_AMBIENT);
 		EntityParrot.registerMimicSound(EntityTFRaven.class, RAVEN_CAW);
 		EntityParrot.registerMimicSound(EntityTFTinyBird.class, TINYBIRD_CHIRP);
