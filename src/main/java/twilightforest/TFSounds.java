@@ -67,6 +67,9 @@ public final class TFSounds {
 	public static final SoundEvent DEER_DEATH = createEvent("mob.deer.death");
 	public static final SoundEvent DEER_HURT = createEvent("mob.deer.hurt");
 	public static final SoundEvent DEER_IDLE = createEvent("mob.deer.idle");
+	public static final SoundEvent MISTWOLF_TARGET = createEvent("mob.mistwolf.target");
+	public static final SoundEvent MISTWOLF_HURT = createEvent("mob.mistwolf.hurt");
+	public static final SoundEvent MISTWOLF_IDLE = createEvent("mob.mistwolf.idle");
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
 
@@ -118,6 +121,9 @@ public final class TFSounds {
 		evt.getRegistry().register(DEER_DEATH);
 		evt.getRegistry().register(DEER_HURT);
 		evt.getRegistry().register(DEER_IDLE);
+		evt.getRegistry().register(MISTWOLF_TARGET);
+		evt.getRegistry().register(MISTWOLF_HURT);
+		evt.getRegistry().register(MISTWOLF_IDLE);
 
 		evt.getRegistry().register(MUSIC);
 

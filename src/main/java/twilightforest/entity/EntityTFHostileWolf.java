@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.IMob;
@@ -7,13 +8,18 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
+
+import javax.annotation.Nullable;
 
 
 public class EntityTFHostileWolf extends EntityWolf implements IMob {
@@ -79,6 +85,23 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 
 			return i <= this.rand.nextInt(8);
 		}
+	}
+
+	@Override
+	public void setAttackTarget(@Nullable EntityLivingBase entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.MISTWOLF_TARGET, 4F, getSoundPitch());
+		super.setAttackTarget(entity);
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MISTWOLF_IDLE;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.MISTWOLF_HURT;
 	}
 
 	@Override

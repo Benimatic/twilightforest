@@ -40,6 +40,9 @@
   "mob.deer.death": { "category": "neutral", "sounds": [ "twilightforest:mob/deer/death" ] },
   "mob.deer.hurt": { "category": "neutral", "sounds": [ "twilightforest:mob/deer/hurt1", "twilightforest:mob/deer/hurt2" ] },
   "mob.deer.idle": { "category": "neutral", "sounds": [ "twilightforest:mob/deer/idle1", "twilightforest:mob/deer/idle2", "twilightforest:mob/deer/idle3" ] },
+  "mob.mistwolf.target": { "category": "hostile", "sounds": [ "twilightforest:mob/mistwolf/target" ] },
+  "mob.mistwolf.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/mistwolf/hurt1", "twilightforest:mob/mistwolf/hurt2" ] },
+  "mob.mistwolf.idle": { "category": "hostile", "sounds": [ "twilightforest:mob/mistwolf/idle1", "twilightforest:mob/mistwolf/idle2", "twilightforest:mob/mistwolf/idle3" ] },
   "music.bg": { "category": "music", "sounds": [
 	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
 	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },
