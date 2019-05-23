@@ -54,6 +54,7 @@
 	{ "name": "twilightforest:music/ambient2", "stream": true, "volume": 0.75 },
 	{ "name": "twilightforest:music/ambient3", "stream": true, "volume": 0.75 },
 	{ "name": "twilightforest:music/ambient4", "stream": true, "volume": 0.75 },
-	{ "name": "twilightforest:music/ambient5", "stream": true, "volume": 0.75 }
+	{ "name": "twilightforest:music/ambient5", "stream": true, "volume": 0.75 },
+	{ "name": "twilightforest:music/ambient6", "stream": true, "volume": 0.75 }
   ] }
 }
