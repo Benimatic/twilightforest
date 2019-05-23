@@ -82,56 +82,58 @@ public final class TFSounds {
 	}
 
 	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> evt) {
-		evt.getRegistry().register(KOBOLD_DEATH);
-		evt.getRegistry().register(KOBOLD_AMBIENT);
-		evt.getRegistry().register(KOBOLD_HURT);
-		evt.getRegistry().register(CICADA);
-		evt.getRegistry().register(NAGA_HISS);
-		evt.getRegistry().register(NAGA_HURT);
-		evt.getRegistry().register(NAGA_RATTLE);
-		evt.getRegistry().register(RAVEN_CAW);
-		evt.getRegistry().register(RAVEN_SQUAWK);
-		evt.getRegistry().register(REDCAP_DEATH);
-		evt.getRegistry().register(REDCAP_AMBIENT);
-		evt.getRegistry().register(REDCAP_HURT);
-		evt.getRegistry().register(TINYBIRD_CHIRP);
-		evt.getRegistry().register(TINYBIRD_HURT);
-		evt.getRegistry().register(TINYBIRD_SONG);
-		evt.getRegistry().register(URGHAST_TRAP_ACTIVE);
-		evt.getRegistry().register(URGHAST_TRAP_ON);
-		evt.getRegistry().register(URGHAST_TRAP_SPINDOWN);
-		evt.getRegistry().register(URGHAST_TRAP_WARMUP);
-		evt.getRegistry().register(WRAITH);
-		evt.getRegistry().register(HYDRA_DEATH);
-		evt.getRegistry().register(HYDRA_GROWL);
-		evt.getRegistry().register(HYDRA_HURT);
-		evt.getRegistry().register(HYDRA_ROAR);
-		evt.getRegistry().register(HYDRA_WARN);
-		evt.getRegistry().register(MOSQUITO);
-		evt.getRegistry().register(ICE_AMBIENT);
-		evt.getRegistry().register(ICE_DEATH);
-		evt.getRegistry().register(ICE_HURT);
-		evt.getRegistry().register(SLIDER);
-		evt.getRegistry().register(ALPHAYETI_ALERT);
-		evt.getRegistry().register(ALPHAYETI_DIE);
-		evt.getRegistry().register(ALPHAYETI_GRAB);
-		evt.getRegistry().register(ALPHAYETI_GROWL);
-		evt.getRegistry().register(ALPHAYETI_HURT);
-		evt.getRegistry().register(ALPHAYETI_PANT);
-		evt.getRegistry().register(ALPHAYETI_ROAR);
-		evt.getRegistry().register(ALPHAYETI_THROW);
-		evt.getRegistry().register(DEER_DEATH);
-		evt.getRegistry().register(DEER_HURT);
-		evt.getRegistry().register(DEER_IDLE);
-		evt.getRegistry().register(MISTWOLF_TARGET);
-		evt.getRegistry().register(MISTWOLF_HURT);
-		evt.getRegistry().register(MISTWOLF_IDLE);
-		evt.getRegistry().register(TOME_DEATH);
-		evt.getRegistry().register(TOME_HURT);
-		evt.getRegistry().register(TOME_IDLE);
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		event.getRegistry().registerAll(
+				KOBOLD_DEATH,
+				KOBOLD_AMBIENT,
+				KOBOLD_HURT,
+				CICADA,
+				NAGA_HISS,
+				NAGA_HURT,
+				NAGA_RATTLE,
+				RAVEN_CAW,
+				RAVEN_SQUAWK,
+				REDCAP_DEATH,
+				REDCAP_AMBIENT,
+				REDCAP_HURT,
+				TINYBIRD_CHIRP,
+				TINYBIRD_HURT,
+				TINYBIRD_SONG,
+				URGHAST_TRAP_ACTIVE,
+				URGHAST_TRAP_ON,
+				URGHAST_TRAP_SPINDOWN,
+				URGHAST_TRAP_WARMUP,
+				WRAITH,
+				HYDRA_DEATH,
+				HYDRA_GROWL,
+				HYDRA_HURT,
+				HYDRA_ROAR,
+				HYDRA_WARN,
+				MOSQUITO,
+				ICE_AMBIENT,
+				ICE_DEATH,
+				ICE_HURT,
+				SLIDER,
+				ALPHAYETI_ALERT,
+				ALPHAYETI_DIE,
+				ALPHAYETI_GRAB,
+				ALPHAYETI_GROWL,
+				ALPHAYETI_HURT,
+				ALPHAYETI_PANT,
+				ALPHAYETI_ROAR,
+				ALPHAYETI_THROW,
+				DEER_DEATH,
+				DEER_HURT,
+				DEER_IDLE,
+				MISTWOLF_TARGET,
+				MISTWOLF_HURT,
+				MISTWOLF_IDLE,
+				TOME_DEATH,
+				TOME_HURT,
+				TOME_IDLE
+		);
 
-		evt.getRegistry().register(MUSIC);
+		event.getRegistry().register(MUSIC);
 
 		registerParrotSounds();
 	}
@@ -177,7 +179,6 @@ public final class TFSounds {
 		EntityParrot.registerMimicSound(EntityTFYetiAlpha.class, ALPHAYETI_GROWL);
 	}
 
-	private TFSounds() {
-	}
+	private TFSounds() {}
 
 }

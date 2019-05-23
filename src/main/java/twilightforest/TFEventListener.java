@@ -488,29 +488,28 @@ public class TFEventListener {
 		BlockPos pos = event.getPos();
 		IBlockState state = event.getState();
 
-		if (!world.isRemote && isBlockProtectedFromBreaking(world, pos) && isAreaProtected(world, player, pos)) {
+		if (world.isRemote) return;
+
+		if (isBlockProtectedFromBreaking(world, pos) && isAreaProtected(world, player, pos)) {
 			event.setCanceled(true);
 
-		} else if (!isBreakingWithGiantPick
-				&& player.getHeldItemMainhand().getItem() == TFItems.giant_pickaxe
-				&& player.getHeldItemMainhand().getItem().canHarvestBlock(state, player.getHeldItemMainhand())) {
+		} else if (!isBreakingWithGiantPick && canHarvestWithGiantPick(player, state)) {
 
 			isBreakingWithGiantPick = true;
 
 			// check nearby blocks for same block or same drop
-			BlockPos bPos = BlockTFGiantBlock.roundCoords(pos);
 
 			// pre-check for cobble!
 			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
 			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
-			for (int dx = 0; dx < 4; dx++) {
-				for (int dy = 0; dy < 4; dy++) {
-					for (int dz = 0; dz < 4; dz++) {
-						BlockPos dPos = bPos.add(dx, dy, dz);
-						IBlockState stateThere = world.getBlockState(dPos);
-						Block blockThere = stateThere.getBlock();
 
-						allCobble &= blockThere.getItemDropped(stateThere, world.rand, 0) == cobbleItem;
+			if (allCobble) {
+				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+					if (dPos.equals(pos)) continue;
+					IBlockState stateThere = world.getBlockState(dPos);
+					if (stateThere.getBlock().getItemDropped(stateThere, world.rand, 0) != cobbleItem) {
+						allCobble = false;
+						break;
 					}
 				}
 			}
@@ -524,24 +523,24 @@ public class TFEventListener {
 			}
 
 			// break all nearby blocks
-			for (int dx = 0; dx < 4; dx++) {
-				for (int dy = 0; dy < 4; dy++) {
-					for (int dz = 0; dz < 4; dz++) {
-						BlockPos dPos = bPos.add(dx, dy, dz);
-
-						if (!dPos.equals(pos) && state == world.getBlockState(dPos)) {
-							// try to break that block too!
-							if (player instanceof EntityPlayerMP) {
-								EntityPlayerMP playerMP = (EntityPlayerMP) player;
-								playerMP.interactionManager.tryHarvestBlock(dPos);
-							}
-						}
+			if (player instanceof EntityPlayerMP) {
+				EntityPlayerMP playerMP = (EntityPlayerMP) player;
+				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+					if (!dPos.equals(pos) && state == world.getBlockState(dPos)) {
+						// try to break that block too!
+						playerMP.interactionManager.tryHarvestBlock(dPos);
 					}
 				}
 			}
 
 			isBreakingWithGiantPick = false;
 		}
+	}
+
+	private static boolean canHarvestWithGiantPick(EntityPlayer player, IBlockState state) {
+		ItemStack heldStack = player.getHeldItemMainhand();
+		Item heldItem = heldStack.getItem();
+		return heldItem == TFItems.giant_pickaxe && heldItem.canHarvestBlock(state, heldStack);
 	}
 
 	@SubscribeEvent
