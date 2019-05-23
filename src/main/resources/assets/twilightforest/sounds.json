@@ -33,7 +33,7 @@
   "mob.alphayeti.die": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/die" ] },
   "mob.alphayeti.grab": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/grab" ] },
   "mob.alphayeti.growl": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/growl1", "twilightforest:mob/alphayeti/growl2", "twilightforest:mob/alphayeti/growl3" ] },
-  "mob.alphayeti.hit": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/hit1", "twilightforest:mob/alphayeti/hit2", "twilightforest:mob/alphayeti/hit3" ] },
+  "mob.alphayeti.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/hurt1", "twilightforest:mob/alphayeti/hurt2", "twilightforest:mob/alphayeti/hurt3" ] },
   "mob.alphayeti.pant": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/pant1", "twilightforest:mob/alphayeti/pant2", "twilightforest:mob/alphayeti/pant3" ] },
   "mob.alphayeti.roar": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/roar" ] },
   "mob.alphayeti.throw": { "category": "hostile", "sounds": [ "twilightforest:mob/alphayeti/throw" ] },
@@ -43,6 +43,9 @@
   "mob.mistwolf.target": { "category": "hostile", "sounds": [ "twilightforest:mob/mistwolf/target" ] },
   "mob.mistwolf.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/mistwolf/hurt1", "twilightforest:mob/mistwolf/hurt2" ] },
   "mob.mistwolf.idle": { "category": "hostile", "sounds": [ "twilightforest:mob/mistwolf/idle1", "twilightforest:mob/mistwolf/idle2", "twilightforest:mob/mistwolf/idle3" ] },
+  "mob.tome.death": { "category": "hostile", "sounds": [ "twilightforest:mob/tome/death" ] },
+  "mob.tome.hurt": { "category": "hostile", "sounds": [ "twilightforest:mob/tome/hurt1", "twilightforest:mob/tome/hurt2", "twilightforest:mob/tome/hurt3" ] },
+  "mob.tome.idle": { "category": "hostile", "sounds": [ "twilightforest:mob/tome/idle1", "twilightforest:mob/tome/idle2" ] },
   "music.bg": { "category": "music", "sounds": [
 	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
 	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },

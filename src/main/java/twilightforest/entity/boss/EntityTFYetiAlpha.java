@@ -196,7 +196,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.ALPHAYETI_HIT;
+		return TFSounds.ALPHAYETI_HURT;
 	}
 
 	@Override

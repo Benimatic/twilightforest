@@ -208,7 +208,7 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.ALPHAYETI_HIT;
+		return TFSounds.ALPHAYETI_HURT;
 	}
 
 	@Override

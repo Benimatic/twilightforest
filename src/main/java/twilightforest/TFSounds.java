@@ -60,7 +60,7 @@ public final class TFSounds {
 	public static final SoundEvent ALPHAYETI_DIE = createEvent("mob.alphayeti.die");
 	public static final SoundEvent ALPHAYETI_GRAB = createEvent("mob.alphayeti.grab");
 	public static final SoundEvent ALPHAYETI_GROWL = createEvent("mob.alphayeti.growl");
-	public static final SoundEvent ALPHAYETI_HIT = createEvent("mob.alphayeti.hit");
+	public static final SoundEvent ALPHAYETI_HURT = createEvent("mob.alphayeti.hurt");
 	public static final SoundEvent ALPHAYETI_PANT = createEvent("mob.alphayeti.pant");
 	public static final SoundEvent ALPHAYETI_ROAR = createEvent("mob.alphayeti.roar");
 	public static final SoundEvent ALPHAYETI_THROW = createEvent("mob.alphayeti.throw");
@@ -70,6 +70,9 @@ public final class TFSounds {
 	public static final SoundEvent MISTWOLF_TARGET = createEvent("mob.mistwolf.target");
 	public static final SoundEvent MISTWOLF_HURT = createEvent("mob.mistwolf.hurt");
 	public static final SoundEvent MISTWOLF_IDLE = createEvent("mob.mistwolf.idle");
+	public static final SoundEvent TOME_DEATH = createEvent("mob.tome.death");
+	public static final SoundEvent TOME_HURT = createEvent("mob.tome.hurt");
+	public static final SoundEvent TOME_IDLE = createEvent("mob.tome.idle");
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
 
@@ -114,7 +117,7 @@ public final class TFSounds {
 		evt.getRegistry().register(ALPHAYETI_DIE);
 		evt.getRegistry().register(ALPHAYETI_GRAB);
 		evt.getRegistry().register(ALPHAYETI_GROWL);
-		evt.getRegistry().register(ALPHAYETI_HIT);
+		evt.getRegistry().register(ALPHAYETI_HURT);
 		evt.getRegistry().register(ALPHAYETI_PANT);
 		evt.getRegistry().register(ALPHAYETI_ROAR);
 		evt.getRegistry().register(ALPHAYETI_THROW);
@@ -124,6 +127,9 @@ public final class TFSounds {
 		evt.getRegistry().register(MISTWOLF_TARGET);
 		evt.getRegistry().register(MISTWOLF_HURT);
 		evt.getRegistry().register(MISTWOLF_IDLE);
+		evt.getRegistry().register(TOME_DEATH);
+		evt.getRegistry().register(TOME_HURT);
+		evt.getRegistry().register(TOME_IDLE);
 
 		evt.getRegistry().register(MUSIC);
 

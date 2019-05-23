@@ -17,11 +17,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
@@ -87,6 +91,22 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.TOME_IDLE;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.TOME_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.TOME_DEATH;
 	}
 
 	@Override
