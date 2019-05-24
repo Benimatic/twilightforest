@@ -3,11 +3,10 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
-public class EntityAITFHoverThenDrop extends EntityAITFHoverBase {
+public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQueen> {
 
 	private int hoverTimer;
 	private int dropTimer;

@@ -7,13 +7,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
 import java.util.List;
 
-public class EntityAITFHoverBeam extends EntityAITFHoverBase {
+public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> {
 
 	private int hoverTimer;
 	private int beamTimer;
