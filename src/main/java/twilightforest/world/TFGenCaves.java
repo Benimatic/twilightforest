@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenCaves;
 import twilightforest.biomes.TFBiomeHighlands;
@@ -14,12 +14,12 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-
 public class TFGenCaves extends MapGenCaves {
+
+	private Biome[] biomes;
+
 	/**
 	 * Generates a larger initial cave node than usual. Called 25% of the time.
-	 *
-	 * @param isHighlands
 	 */
 	protected void generateLargeCaveNode(long caveSeed, int centerX, int centerZ, ChunkPrimer blockStorage, double randX, double randY, double randZ, boolean isHighlands) {
 		this.generateCaveNode(caveSeed, centerX, centerZ, blockStorage, randX, randY, randZ, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D, isHighlands);
@@ -27,10 +27,9 @@ public class TFGenCaves extends MapGenCaves {
 
 	/**
 	 * Generates a node in the current cave system recursion tree.
-	 *
-	 * @param isHighlands
 	 */
 	protected void generateCaveNode(long caveSeed, int centerX, int centerZ, ChunkPrimer blockStorage, double randX, double randY, double randZ, float caveSize, float randPI, float angleToGenerate, int loopOne, int loopEnd, double yScale, boolean isHighlands) {
+
 		double offsetCenterX = (double) (centerX * 16 + 8);
 		double offsetCenterZ = (double) (centerZ * 16 + 8);
 		float var23 = 0.0F;
@@ -149,18 +148,18 @@ public class TFGenCaves extends MapGenCaves {
 
 					if (!hasHitWater) {
 						for (genX = minX; genX < maxX; ++genX) {
-							double var59 = ((double) (genX + centerX * 16) + 0.5D - randX) / sizeVar;
+							double dx = ((double) (genX + centerX * 16) + 0.5D - randX) / sizeVar;
 
 							for (genZ = minZ; genZ < maxZ; ++genZ) {
-								double var46 = ((double) (genZ + centerZ * 16) + 0.5D - randZ) / sizeVar;
+								double dz = ((double) (genZ + centerZ * 16) + 0.5D - randZ) / sizeVar;
 								//int caveIndex = (genX * 16 + genZ) * TFWorld.CHUNKHEIGHT + minY;
 								boolean hitGrass = false;
 
-								if (var59 * var59 + var46 * var46 < 1.0D) {
+								if (dx * dx + dz * dz < 1.0D) {
 									for (int caveY = minY - 1; caveY >= maxY; --caveY) {
-										double var51 = ((double) caveY + 0.5D - randY) / scaledSize;
+										double dy = ((double) caveY + 0.5D - randY) / scaledSize;
 
-										if (var51 > -0.7D && var59 * var59 + var51 * var51 + var46 * var46 < 20.0D) {
+										if (dy > -0.7D && dx * dx + dy * dy + dz * dz < 20.0D) {
 											final IBlockState blockStateAt = blockStorage.getBlockState(genX, caveY, genZ);
 											Block blockAt = blockStateAt.getBlock();
 
@@ -168,8 +167,8 @@ public class TFGenCaves extends MapGenCaves {
 												hitGrass = true;
 											}
 
-											if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollsteinn || blockStateAt.getMaterial() == Material.GROUND || blockStateAt.getMaterial() == Material.GRASS)) {
-												if (var59 * var59 + var51 * var51 + var46 * var46 < 0.85D) {
+											if (blockAt == Blocks.STONE || blockAt == TFBlocks.trollsteinn || blockStateAt.getMaterial() == Material.GROUND || blockStateAt.getMaterial() == Material.GRASS) {
+												if (dx * dx + dy * dy + dz * dz < 0.85D) {
 													final IBlockState state = (caveY < 10 ? Blocks.WATER : Blocks.AIR).getDefaultState();
 													blockStorage.setBlockState(genX, caveY, genZ, state);
 												} else {
@@ -181,7 +180,7 @@ public class TFGenCaves extends MapGenCaves {
 												}
 
 												if (hitGrass && blockStorage.getBlockState(genX, caveY - 1, genZ).getBlock() == Blocks.DIRT) {
-													IBlockState blockState = this.world.getBiome(new BlockPos(genX + centerX * 16, 0, genZ + centerZ * 16)).topBlock;
+													IBlockState blockState = getBiome(genX, genZ).topBlock;
 													blockStorage.setBlockState(genX, caveY - 1, genZ, blockState);
 												}
 											}
@@ -202,12 +201,16 @@ public class TFGenCaves extends MapGenCaves {
 
 	@Override
 	protected void recursiveGenerate(World world, int genX, int genZ, int centerX, int centerZ, ChunkPrimer primer) {
+
 		int numberOfCaves = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
-		boolean isHighlands = world.getBiome(new BlockPos(genX * 16, 0, genZ * 16)) instanceof TFBiomeHighlands;
 
 		if (this.rand.nextInt(15) != 0) {
-			numberOfCaves = 0;
+			return; // TF - just return here
 		}
+
+		this.biomes = world.getBiomeProvider().getBiomes(this.biomes, genX << 4, genZ << 4, 16, 16);
+
+		boolean isHighlands = getBiome(0, 0) instanceof TFBiomeHighlands;
 
 		for (int i = 0; i < numberOfCaves; ++i) {
 			double randX = (double) (genX * 16 + this.rand.nextInt(16));
@@ -237,5 +240,9 @@ public class TFGenCaves extends MapGenCaves {
 	private boolean isOceanBlock(ChunkPrimer data, int x, int y, int z) {
 		IBlockState state = data.getBlockState(x, y, z);
 		return state.getBlock() == Blocks.FLOWING_WATER || state.getBlock() == Blocks.WATER;
+	}
+
+	private Biome getBiome(int x, int z) {
+		return this.biomes[x & 15 | (z & 15) << 4];
 	}
 }
