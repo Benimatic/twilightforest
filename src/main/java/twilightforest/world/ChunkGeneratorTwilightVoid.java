@@ -37,7 +37,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		this.biomesForGeneration = world.getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		ChunkPrimer primer = new ChunkPrimer();
+		ChunkPrimer primer = new DirectChunkPrimer();
 		initPrimer(primer, data);
 
 		deformTerrainForFeature(x, z, primer);

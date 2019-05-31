@@ -50,7 +50,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		setBlocksInChunk(x, z, data);
 		squishTerrain(data);
 
-		ChunkPrimer primer = new ChunkPrimer();
+		ChunkPrimer primer = new DirectChunkPrimer();
 		initPrimer(primer, data);
 
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
