@@ -34,7 +34,7 @@ import twilightforest.world.feature.TFGenCaveStalactite;
 		name = TwilightForestMod.NAME,
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12.2-0.3.2.18,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.5.2805,);after:thaumcraft@[6.1.BETA21,)",
+		dependencies = "after:ctm@[MC1.12.2-0.3.2.18,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.5.2813,);after:thaumcraft@[6.1.BETA21,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {

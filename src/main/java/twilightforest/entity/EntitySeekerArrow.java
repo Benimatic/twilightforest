@@ -27,8 +27,8 @@ public class EntitySeekerArrow extends EntityTFArrow {
 		super(world);
 	}
 
-	public EntitySeekerArrow(World world, EntityPlayer player) {
-		super(world, player);
+	public EntitySeekerArrow(World world, EntityLivingBase shooter) {
+		super(world, shooter);
 	}
 
 	@Override

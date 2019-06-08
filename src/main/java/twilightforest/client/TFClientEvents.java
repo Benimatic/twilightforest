@@ -7,18 +7,14 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
@@ -32,7 +28,6 @@ import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
 import twilightforest.compat.TFCompat;
 import twilightforest.compat.ie.IEShaderRegister;
-import twilightforest.item.ItemTFBowBase;
 import twilightforest.world.WorldProviderTwilightForest;
 
 @SideOnly(Side.CLIENT)
@@ -157,32 +152,6 @@ public class TFClientEvents {
 					}
 				}
 			}
-		}
-	}
-
-	// TODO: remove this check (and the event handler) whenever we depend on a greater Forge version
-	private static final boolean shouldUpdateFOV = Loader.instance().getIndexedModList().get("forge")
-			.getProcessedVersion().compareTo(new DefaultArtifactVersion("14.23.5.2813")) < 0;
-
-	/**
-	 * Alter FOV for our bows
-	 */
-	@SubscribeEvent
-	public static void fovUpdate(FOVUpdateEvent event) {
-		if (!shouldUpdateFOV) return;
-		EntityPlayer player = event.getEntity();
-		// Logic from AbstractClientPlayer.getFovModifier()
-		if (player.isHandActive() && player.getActiveItemStack().getItem() instanceof ItemTFBowBase) {
-			int i = player.getItemInUseMaxCount();
-			float f1 = (float) i / 20.0F;
-
-			if (f1 > 1.0F) {
-				f1 = 1.0F;
-			} else {
-				f1 *= f1;
-			}
-
-			event.setNewfov(event.getNewfov() * (1.0F - f1 * 0.15F));
 		}
 	}
 
