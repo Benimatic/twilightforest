@@ -132,17 +132,8 @@ public class TwilightForestMod {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
-		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
-			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, dimType);
-		} else {
-			LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID. It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
-			DimensionManager.registerDimension(backupDimensionID, dimType);
-			TFConfig.dimension.dimensionID = backupDimensionID;
-		}
-		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
-			LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
-			TFConfig.originDimension = 0;
-		}
+		registerDimension();
+		checkOriginDimension();
 
 		if (compat) {
 			try {
@@ -168,7 +159,25 @@ public class TwilightForestMod {
 		event.registerServerCommand(new CommandTF());
 	}
 
-	private void registerTileEntities() {
+	private static void registerDimension() {
+		if (DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
+			LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID ({}). It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID, backupDimensionID);
+			TFConfig.dimension.dimensionID = backupDimensionID;
+		}
+		DimensionManager.registerDimension(TFConfig.dimension.dimensionID, dimType);
+	}
+
+	static void checkOriginDimension() {
+		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
+			LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
+			TFConfig.originDimension = 0;
+		} else if (TFConfig.originDimension == TFConfig.dimension.dimensionID) {
+			LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
+			TFConfig.originDimension = 0;
+		}
+	}
+
+	private static void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
 		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, prefix("naga_spawner"            ));
