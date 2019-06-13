@@ -1,14 +1,18 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
 import twilightforest.TFConfig;
+import twilightforest.biomes.TFBiomeBase;
 
 import java.util.function.Predicate;
 
@@ -28,6 +32,13 @@ public class TFWorld {
 
 	public static void setDimensionData(World world, NBTTagCompound data) {
 		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
+	}
+
+	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
+		if (biome instanceof TFBiomeBase && entity instanceof EntityPlayer) {
+			return ((TFBiomeBase) biome).doesPlayerHaveRequiredAdvancements((EntityPlayer) entity);
+		}
+		return true;
 	}
 
 	public static int getGroundLevel(World world, int x, int z) {

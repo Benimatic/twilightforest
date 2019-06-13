@@ -155,12 +155,9 @@ public class TFTickHandler {
 	 */
 	private static void checkBiomeForProgression(EntityPlayer player, World world) {
 		Biome currentBiome = world.getBiome(new BlockPos(player));
-
 		if (currentBiome instanceof TFBiomeBase) {
 			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
-
-			boolean dangerousBiome = !tfBiome.doesPlayerHaveRequiredAchievement(player);
-			if (dangerousBiome) {
+			if (!tfBiome.doesPlayerHaveRequiredAdvancements(player)) {
 				tfBiome.enforceProgression(player, world);
 			}
 		}

@@ -14,13 +14,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -139,13 +138,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private boolean checkBiome(BlockPos pos, Entity entity) {
-		Biome biome = world.getBiome(pos);
-		if (biome instanceof TFBiomeBase && entity instanceof EntityPlayerMP) {
-			TFBiomeBase tfBiome = (TFBiomeBase) biome;
-			EntityPlayerMP player = (EntityPlayerMP) entity;
-			return tfBiome.doesPlayerHaveRequiredAchievement(player);
-		}
-		return true;
+		return TFWorld.isBiomeSafeFor(world.getBiome(pos), entity);
 	}
 
 	// [VanillaCopy] copy of super, edits noted
