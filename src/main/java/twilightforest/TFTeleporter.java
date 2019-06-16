@@ -58,7 +58,7 @@ public class TFTeleporter extends Teleporter {
 
 	private void moveToSafeCoords(Entity entity) {
 		// if we're in enforced progression mode, check the biomes for safety
-		boolean checkProgression = world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
+		boolean checkProgression = TFWorld.isProgressionEnforced(world);
 
 		BlockPos pos = new BlockPos(entity);
 		if (isSafeAround(pos, entity, checkProgression)) {

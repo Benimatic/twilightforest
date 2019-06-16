@@ -12,6 +12,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
 import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
 
 import java.util.function.Predicate;
@@ -32,6 +33,10 @@ public class TFWorld {
 
 	public static void setDimensionData(World world, NBTTagCompound data) {
 		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
+	}
+
+	public static boolean isProgressionEnforced(World world) {
+		return world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {

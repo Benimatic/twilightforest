@@ -32,6 +32,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -117,7 +118,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 				if (TFConfig.checkPortalDestination) {
 					TFTeleporter teleporter = TFTeleporter.getTeleporterForDim(catalyst.getServer(), getDestination(catalyst));
-					boolean checkProgression = catalyst.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
+					boolean checkProgression = TFWorld.isProgressionEnforced(catalyst.world);
 					if (!teleporter.isSafeAround(pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {

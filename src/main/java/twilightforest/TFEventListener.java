@@ -575,7 +575,7 @@ public class TFEventListener {
 	 */
 	private static boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
 
-		if (player.capabilities.isCreativeMode || !world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (player.capabilities.isCreativeMode || !TFWorld.isProgressionEnforced(world)) {
 			return false;
 		}
 
@@ -632,7 +632,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerLoggedInEvent event) {
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
-			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, TFWorld.isProgressionEnforced(event.player.world));
 			updateCapabilities((EntityPlayerMP) event.player, event.player);
 			banishNewbieToTwilightZone(event.player);
 		}
@@ -645,7 +645,7 @@ public class TFEventListener {
 	public static void playerPortals(PlayerChangedDimensionEvent event) {
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
 			if (event.toDim == TFConfig.dimension.dimensionID) {
-				sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+				sendEnforcedProgressionStatus((EntityPlayerMP) event.player, TFWorld.isProgressionEnforced(event.player.world));
 			}
 			updateCapabilities((EntityPlayerMP) event.player, event.player);
 		}
