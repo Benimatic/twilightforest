@@ -143,7 +143,7 @@ public class BlockTFPortal extends BlockBreakable {
 		return false;
 	}
 
-	private boolean canFormPortal(IBlockState state) {
+	public boolean canFormPortal(IBlockState state) {
 		return state == Blocks.WATER.getDefaultState() || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
 	}
 

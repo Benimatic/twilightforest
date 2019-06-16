@@ -4,7 +4,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -18,10 +17,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.biomes.TFBiomeBase;
-import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
@@ -78,21 +75,20 @@ public class TFTickHandler {
 	}
 
 	private static void sendStructureProtectionPacket(World world, EntityPlayer player, StructureBoundingBox sbb) {
-		IMessage message = new PacketStructureProtection(sbb);
 		if (player instanceof EntityPlayerMP) {
-			TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) player);
+			TFPacketHandler.CHANNEL.sendTo(new PacketStructureProtection(sbb), (EntityPlayerMP) player);
 		}
 	}
 
 	private static void sendAllClearPacket(World world, EntityPlayer player) {
-		IMessage message = new PacketStructureProtectionClear();
 		if (player instanceof EntityPlayerMP) {
-			TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) player);
+			TFPacketHandler.CHANNEL.sendTo(new PacketStructureProtectionClear(), (EntityPlayerMP) player);
 		}
 	}
 
-	@SuppressWarnings({"UnusedReturnValue", "ConstantConditions"})
+	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
+
 		IChunkGenerator uncheckedChunkGenerator = TFWorld.getChunkGenerator(world);
 		if (!(uncheckedChunkGenerator instanceof ChunkGeneratorTFBase)) return false;
 
@@ -101,13 +97,12 @@ public class TFTickHandler {
 		int px = MathHelper.floor(player.posX);
 		int pz = MathHelper.floor(player.posZ);
 
-		if (chunkGenerator != null && chunkGenerator.isBlockNearFullStructure(px, pz, 100)) {
-
-			StructureBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
+		StructureBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
+		if (fullSBB != null) {
 
 			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
 
-			TFFeature nearFeature = TFFeature.getFeatureForRegion(center.getX() >> 4, center.getZ() >> 4, world);
+			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), world);
 
 			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
 				sendAllClearPacket(world, player);
@@ -129,8 +124,9 @@ public class TFTickHandler {
 
 			for (EntityItem entityItem : itemList) {
 				if (TFConfig.portalIngredient.apply(entityItem.getItem())) {
-					IBlockState state = world.getBlockState(entityItem.getPosition());
-					if (state.getBlock() == Blocks.WATER || state.getBlock() == TFBlocks.twilight_portal && state.getValue(BlockTFPortal.DISALLOW_RETURN)) {
+					BlockPos pos = entityItem.getPosition();
+					IBlockState state = world.getBlockState(pos);
+					if (TFBlocks.twilight_portal.canFormPortal(state)) {
 						Random rand = new Random();
 						for (int i = 0; i < 2; i++) {
 							double vx = rand.nextGaussian() * 0.02D;
@@ -140,7 +136,7 @@ public class TFTickHandler {
 							world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, vx, vy, vz);
 						}
 
-						if (TFBlocks.twilight_portal.tryToCreatePortal(world, entityItem.getPosition(), entityItem, player)) {
+						if (TFBlocks.twilight_portal.tryToCreatePortal(world, pos, entityItem, player)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
 							return;
 						}
