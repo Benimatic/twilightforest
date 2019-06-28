@@ -3,16 +3,20 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMinotaur;
 import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
+import twilightforest.world.TFWorld;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
 
@@ -35,6 +39,14 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		super.setEquipmentBasedOnDifficulty(difficulty);
 		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe));
+	}
+
+	@Override
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+		if (!world.isRemote) {
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.LABYRINTH);
+		}
 	}
 
 	@Override
