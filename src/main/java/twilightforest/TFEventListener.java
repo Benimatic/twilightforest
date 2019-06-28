@@ -455,7 +455,7 @@ public class TFEventListener {
 	}
 
 	@SubscribeEvent
-	public static boolean livingUpdate(LivingUpdateEvent event) {
+	public static void livingUpdate(LivingUpdateEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
 
 		IShieldCapability cap = living.getCapability(CapabilityList.SHIELDS, null);
@@ -465,7 +465,6 @@ public class TFEventListener {
 		if (living instanceof EntityPlayer && living.isSneaking() && isRidingUnfriendly(living)) {
 			living.setSneaking(false);
 		}
-		return true;
 	}
 
 	public static boolean isRidingUnfriendly(EntityLivingBase entity) {
@@ -575,23 +574,21 @@ public class TFEventListener {
 			return false;
 		}
 
-		if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
+		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(world);
 
-			if (chunkGenerator.isBlockInStructureBB(pos)) {
-				// what feature is nearby?  is it one the player has not unlocked?
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
+		if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
+			// what feature is nearby?  is it one the player has not unlocked?
+			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkGenerator.isBlockProtected(pos)) {
+			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkGenerator.isBlockProtected(pos)) {
 
-					// send protection packet
-					sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
+				// send protection packet
+				sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
 
-					// send a hint monster?
-					nearbyFeature.trySpawnHintMonster(world, player, pos);
+				// send a hint monster?
+				nearbyFeature.trySpawnHintMonster(world, player, pos);
 
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
@@ -609,8 +606,8 @@ public class TFEventListener {
 		if (!living.world.isRemote && living instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayer
 				&& isAreaProtected(living.world, (EntityPlayer) event.getSource().getTrueSource(), new BlockPos(living))) {
 
-			event.setResult(Result.DENY);
 			event.setCanceled(true);
+			return;
 		}
 		// shields
 		if (!living.world.isRemote && !SHIELD_DAMAGE_BLACKLIST.contains(event.getSource().damageType)) {

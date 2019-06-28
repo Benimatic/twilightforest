@@ -19,9 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenBirchTree;
@@ -195,14 +192,8 @@ public class TFBiomeBase extends Biome {
 	}
 
 	private static boolean shouldGenerateBedrock(World world) {
-		IChunkProvider provider = world.getChunkProvider();
-		if (provider instanceof ChunkProviderServer) {
-			IChunkGenerator generator = ((ChunkProviderServer) provider).chunkGenerator;
-			if (generator instanceof ChunkGeneratorTFBase) {
-				return ((ChunkGeneratorTFBase) generator).shouldGenerateBedrock();
-			}
-		}
-		return true;
+		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+		return generator == null || generator.shouldGenerateBedrock();
 	}
 
 	/**

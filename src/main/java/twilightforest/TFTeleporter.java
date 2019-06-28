@@ -15,7 +15,6 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.IChunkGenerator;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -127,12 +126,12 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private boolean checkStructure(BlockPos pos) {
-		IChunkGenerator generator = world.getChunkProvider().chunkGenerator;
-		if (generator instanceof ChunkGeneratorTFBase) {
+		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+		if (generator != null) {
 			if (!world.isBlockLoaded(pos)) {
 				generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4);
 			}
-			return !((ChunkGeneratorTFBase) generator).isBlockInFullStructure(pos.getX(), pos.getZ());
+			return !generator.isBlockInFullStructure(pos.getX(), pos.getZ());
 		}
 		return true;
 	}

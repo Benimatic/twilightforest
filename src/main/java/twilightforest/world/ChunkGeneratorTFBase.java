@@ -720,8 +720,8 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		return featureGenerators.getOrDefault(feature, nothingGenerator);
 	}
 
-	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world)).setStructureConquered(mapX, mapY, mapZ, flag);
+	public void setStructureConquered(BlockPos pos, boolean flag) {
+		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).setStructureConquered(pos, flag);
 	}
 
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {

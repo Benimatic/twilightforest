@@ -10,7 +10,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +25,6 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
-import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.List;
 import java.util.Random;
@@ -57,7 +55,7 @@ public class TFTickHandler {
 		// check the player for being in a forbidden progression area, only every 20 ticks
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0
 				&& TFWorld.isProgressionEnforced(world)
-				&& world.provider instanceof WorldProviderTwilightForest
+				&& TFWorld.isTwilightForest(world)
 				&& !player.isCreative() && !player.isSpectator()) {
 
 			checkBiomeForProgression(player, world);
@@ -65,7 +63,7 @@ public class TFTickHandler {
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && TFWorld.isProgressionEnforced(world)) {
-			if (world.provider instanceof WorldProviderTwilightForest) {
+			if (TFWorld.isTwilightForest(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
 				} else {
@@ -90,10 +88,8 @@ public class TFTickHandler {
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
 
-		IChunkGenerator uncheckedChunkGenerator = TFWorld.getChunkGenerator(world);
-		if (!(uncheckedChunkGenerator instanceof ChunkGeneratorTFBase)) return false;
-
-		ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) uncheckedChunkGenerator;
+		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(world);
+		if (chunkGenerator == null) return false;
 
 		int px = MathHelper.floor(player.posX);
 		int pz = MathHelper.floor(player.posZ);

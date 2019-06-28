@@ -28,7 +28,7 @@ import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
 import twilightforest.compat.TFCompat;
 import twilightforest.compat.ie.IEShaderRegister;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TFWorld;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
@@ -169,7 +169,7 @@ public class TFClientEvents {
 			TFBlocks.magic_leaves.setGraphicsLevel(fancyGraphics);
 
 			// only fire if we're in the twilight forest
-			if (minecraft.world != null && minecraft.world.provider instanceof WorldProviderTwilightForest) {
+			if (minecraft.world != null && TFWorld.isTwilightForest(minecraft.world)) {
 				// vignette
 				if (minecraft.ingameGUI != null) {
 					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;

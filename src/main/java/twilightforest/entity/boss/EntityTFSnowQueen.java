@@ -28,7 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -47,7 +46,6 @@ import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
@@ -262,18 +260,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
-			int dx = MathHelper.floor(this.posX);
-			int dy = MathHelper.floor(this.posY);
-			int dz = MathHelper.floor(this.posZ);
-
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-				if (nearbyFeature == TFFeature.ICE_TOWER) {
-					generator.setStructureConquered(dx, dy, dz, true);
-				}
-			}
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.ICE_TOWER);
 		}
 	}
 
