@@ -163,7 +163,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         return blockProtected;
     }
 
-    public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
+    public void setStructureConquered(BlockPos pos, boolean flag) {
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
                 if (start instanceof StructureStartTFFeatureAbstract) {
