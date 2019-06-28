@@ -15,6 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public class ItemTFTripleBow extends ItemTFBowBase {
+
 	public ItemTFTripleBow() {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
@@ -30,7 +31,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 			ItemStack itemstack = this.findAmmo(entityplayer);
 
 			int i = this.getMaxItemUseDuration(stack) - timeLeft;
-			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, !itemstack.isEmpty() || flag);
+			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
 			if (i < 0) return;
 
 			if (!itemstack.isEmpty() || flag) {
@@ -41,11 +42,11 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 				float f = getArrowVelocity(i);
 
 				if ((double) f >= 0.1D) {
-					boolean flag1 = entityplayer.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow ? ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer) : false);
+					boolean flag1 = entityplayer.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow && ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
 
 					if (!worldIn.isRemote) {
-						ItemArrow itemarrow = (ItemArrow) ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
-						EntityArrow entityarrow = getArrow(worldIn, itemstack, entityplayer); // TF: use own entity creator
+						ItemArrow itemarrow = (ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW);
+						EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
 						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
@@ -54,6 +55,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						entityarrow1.motionY += 0.007499999832361937D * 20F;
 						entityarrow1.posY += 0.025F;
 						entityarrow1.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+
 						EntityArrow entityarrow2 = new EntityTippedArrow(worldIn, entityLiving);
 						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow2.motionY -= 0.007499999832361937D * 20F;

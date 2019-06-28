@@ -1,6 +1,5 @@
 package twilightforest;
 
-import com.google.common.collect.Lists;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -43,6 +42,7 @@ import twilightforest.structures.start.*;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.util.IntPair;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
@@ -868,7 +868,7 @@ public enum TFFeature {
 			case WATER_CREATURE:
 				return this.waterCreatureList;
 			default:
-				return Lists.newArrayList();
+				return new ArrayList<>();
 		}
 	}
 
@@ -882,16 +882,15 @@ public enum TFFeature {
 		if (index >= 0 && index < this.spawnableMonsterLists.size()) {
 			return this.spawnableMonsterLists.get(index);
 		}
-		return Lists.newArrayList();
+		return new ArrayList<>();
+	}
+
+	public int getMaxSpawnIndex() {
+		return this.spawnableMonsterLists.size();
 	}
 
 	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
-		if (this.requiredAdvancements.length > 0)
-			for (ResourceLocation advancement : requiredAdvancements)
-				if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancement))
-					return false;
-
-		return true; // no required achievement
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
 	}
 
 	/**

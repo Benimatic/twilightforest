@@ -19,17 +19,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenBirchTree;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.*;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -43,6 +40,8 @@ public class TFBiomeBase extends Biome {
 	protected final WorldGenAbstractTree birchGen = new WorldGenBirchTree(false, false);
 
 	protected final List<SpawnListEntry> undergroundMonsterList = new ArrayList<>();
+
+	protected final ResourceLocation[] requiredAdvancements = getRequiredAdvancements();
 
 	public TFBiomeBase(BiomeProperties props) {
 		super(props);
@@ -193,14 +192,8 @@ public class TFBiomeBase extends Biome {
 	}
 
 	private static boolean shouldGenerateBedrock(World world) {
-		IChunkProvider provider = world.getChunkProvider();
-		if (provider instanceof ChunkProviderServer) {
-			IChunkGenerator generator = ((ChunkProviderServer) provider).chunkGenerator;
-			if (generator instanceof ChunkGeneratorTFBase) {
-				return ((ChunkGeneratorTFBase) generator).shouldGenerateBedrock();
-			}
-		}
-		return true;
+		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+		return generator == null || generator.shouldGenerateBedrock();
 	}
 
 	/**
@@ -212,15 +205,10 @@ public class TFBiomeBase extends Biome {
 	}
 
 	/**
-	 * Does the player have the achievement needed to be in this biome?
+	 * Does the player have the advancements needed to be in this biome?
 	 */
-	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
-		for (ResourceLocation advancementLocation : getRequiredAdvancements()) {
-			if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancementLocation)) {
-				return false;
-			}
-		}
-		return true;
+	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
 	}
 
 	protected ResourceLocation[] getRequiredAdvancements() {

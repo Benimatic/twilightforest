@@ -34,7 +34,6 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
@@ -552,30 +551,17 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
-
 		if (this.deathTime == 20 && !world.isRemote) {
-			BlockPos chestCoords = this.findChestCoords();
-			TFTreasure.darktower_boss.generateChest(world, chestCoords, false);
+			TFTreasure.darktower_boss.generateChest(world, findChestCoords(), false);
 		}
 	}
 
 	@Override
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-
 		// mark the tower as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			BlockPos chestCoords = this.findChestCoords();
-			int dx = chestCoords.getX();
-			int dy = chestCoords.getY();
-			int dz = chestCoords.getZ();
-
-			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-			if (nearbyFeature == TFFeature.DARK_TOWER) {
-				generator.setStructureConquered(dx, dy, dz, true);
-			}
+		if (!world.isRemote) {
+			TFWorld.markStructureConquered(world, findChestCoords(), TFFeature.DARK_TOWER);
 		}
 	}
 

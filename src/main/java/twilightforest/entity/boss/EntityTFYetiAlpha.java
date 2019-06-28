@@ -49,7 +49,6 @@ import twilightforest.entity.ai.EntityAITFYetiTired;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -390,21 +389,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	@Override
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			int dx = MathHelper.floor(this.posX);
-			int dy = MathHelper.floor(this.posY);
-			int dz = MathHelper.floor(this.posZ);
-
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-				if (nearbyFeature == TFFeature.YETI_CAVE) {
-					generator.setStructureConquered(dx, dy, dz, true);
-				}
-			}
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.YETI_CAVE);
 		}
 	}
 

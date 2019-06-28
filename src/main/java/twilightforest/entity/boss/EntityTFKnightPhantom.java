@@ -43,7 +43,6 @@ import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -51,8 +50,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EntityTFKnightPhantom extends EntityFlying implements IMob {
+
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, 0).setSaved(false);
+
 	private int number;
 	private int ticksProgress;
 	private Formation currentFormation;
@@ -181,19 +182,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
 
 			// mark the stronghold as defeated
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-
-				int dx = treasurePos.getX();
-				int dy = treasurePos.getY();
-				int dz = treasurePos.getZ();
-
-				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-				if (nearbyFeature == TFFeature.KNIGHT_STRONGHOLD) {
-					generator.setStructureConquered(dx, dy, dz, true);
-				}
-			}
+			TFWorld.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
 		}
 	}
 

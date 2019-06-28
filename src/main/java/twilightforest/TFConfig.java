@@ -185,6 +185,7 @@ public class TFConfig {
 		}
 	}
 
+	@Config.RequiresMcRestart
 	@Config.LangKey(config + "compat")
 	@Config.Comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
 	public static boolean doCompat = true;
@@ -401,6 +402,7 @@ public class TFConfig {
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
+			TwilightForestMod.checkOriginDimension();
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
 			if (!event.isWorldRunning()) {
 				WorldProviderTwilightForest.syncFromConfig();
