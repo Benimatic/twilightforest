@@ -7,6 +7,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Function;
 
@@ -54,12 +55,11 @@ public class GradientMappedTexture extends TextureAtlasSprite {
         for (int i = 0; i < sprite.getFrameCount(); i++) {
             // getFrameTextureData() is oddly named; the param passed in is the frame index
             // Returned is an array of mipmaps of each actual texture, from largest to smallest mips.
-            final int[][] textureFrom = sprite.getFrameTextureData(i).clone();
+            final int[][] textureFrom = sprite.getFrameTextureData(i);
             int [][] textureTo = new int[textureFrom.length][];
 
             for (int j = 0; j < textureFrom.length; j++) {
-                textureTo[j] = new int[textureFrom[j].length];
-                System.arraycopy(textureFrom[j], 0, textureTo[j], 0, textureFrom[j].length);
+                textureTo[j] = Arrays.copyOf(textureFrom[j], textureFrom[j].length);
             }
 
             // Graying out textures will usually produce float ranges that are only a fragment the 0.0 -> 1.0 range.
