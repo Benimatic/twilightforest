@@ -142,8 +142,8 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		}
 	}
 
-	private ItemStack stack;
-	private ItemCameraTransforms.TransformType transform;
+	private ItemStack stack = ItemStack.EMPTY;
+	private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
 	@Override
 	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
@@ -404,7 +404,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private void renderQuestRamHead(float rotation, boolean onGround) {
 		if (transform == ItemCameraTransforms.TransformType.GUI)
 			GlStateManager.scale(0.55f, 0.55f, 0.55f);
-		else if (stack == null)
+		else if (stack.isEmpty())
 			GlStateManager.scale(0.65f, 0.65f, 0.65f);
 		else
 			GlStateManager.scale(0.5f, 0.5f, 0.5f);

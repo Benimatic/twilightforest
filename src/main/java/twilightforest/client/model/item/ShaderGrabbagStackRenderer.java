@@ -92,8 +92,8 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
         }
     }
 
-    private ItemStack stack;
-    private ItemCameraTransforms.TransformType transform;
+    private ItemStack stack = ItemStack.EMPTY;
+    private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
     private final ResourceLocation bg = new ResourceLocation(TwilightForestMod.ID, "textures/items/star_burst_mask.png");
 
