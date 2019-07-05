@@ -36,6 +36,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker {
 
 	public EntityTFFireBeetle(World world) {
 		super(world);
+		this.isImmuneToFire = true;
 		setSize(1.1F, .75F);
 	}
 
