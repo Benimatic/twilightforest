@@ -13,9 +13,13 @@ import twilightforest.compat.TFCompat;
 import java.util.function.Predicate;
 
 public class TFItemStackUtils {
+
 	public static boolean consumeInventoryItem(EntityLivingBase living, Predicate<ItemStack> matcher, int count) {
-		boolean consumedSome = false;
+
 		IItemHandler inv = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		if (inv == null) return false;
+
+		boolean consumedSome = false;
 
 		for (int i = 0; i < inv.getSlots() && count > 0; i++) {
 			ItemStack stack = inv.getStackInSlot(i);
@@ -27,8 +31,9 @@ public class TFItemStackUtils {
 			}
 		}
 
-		if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer)
-            consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
+		if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
+			consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
+		}
 
 		return consumedSome;
 	}
