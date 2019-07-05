@@ -318,9 +318,7 @@ public class TFEventListener {
 			}
 
 			if (tier1 && TFCompat.BAUBLES.isActivated()) {
-				NonNullList<ItemStack> baubles = NonNullList.withSize(Baubles.getSlotAmount(player), ItemStack.EMPTY);
-				Baubles.keepBaubles(player, baubles);
-				playerKeepsMapBaubles.put(playerUUID, baubles);
+				playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
 			}
 
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) { // TODO also consider Phantom tools, when those get added

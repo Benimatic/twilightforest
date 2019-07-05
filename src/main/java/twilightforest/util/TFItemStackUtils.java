@@ -24,9 +24,8 @@ public class TFItemStackUtils {
 		for (int i = 0; i < inv.getSlots() && count > 0; i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (matcher.test(stack)) {
-				int consume = Math.min(count, stack.getCount());
-				stack.shrink(consume);
-				count -= consume;
+				ItemStack consumed = inv.extractItem(i, count, false);
+				count -= consumed.getCount();
 				consumedSome = true;
 			}
 		}
