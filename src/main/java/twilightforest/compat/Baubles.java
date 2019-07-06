@@ -44,31 +44,42 @@ public class Baubles {
         NonNullList<ItemStack> kept = NonNullList.withSize(baubles.getSlots(), ItemStack.EMPTY);
 
         for (int i = 0; i < baubles.getSlots(); i++) {
-            kept.set(i, baubles.getStackInSlot(i));
+            kept.set(i, baubles.getStackInSlot(i).copy());
             baubles.setStackInSlot(i, ItemStack.EMPTY);
         }
 
         return kept;
     }
 
-    public static void respawnBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
+    public static void returnBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
+
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
 
-        if (items.size() == baubles.getSlots()) {
-            for (int i = 0; i < baubles.getSlots() && i < items.size(); i++) {
-                baubles.setStackInSlot(i, items.get(i));
-            }
-        } else {
+        if (items.size() != baubles.getSlots()) {
             TwilightForestMod.LOGGER.warn("The list size doesn't equal amount of bauble slots, wtf did you do?");
-            dropTableItems(player, items);
+            giveItems(player, items);
+            return;
         }
+
+        NonNullList<ItemStack> displaced = NonNullList.create();
+
+        for (int i = 0; i < baubles.getSlots(); i++) {
+            ItemStack kept = items.get(i);
+            if (!kept.isEmpty()) {
+                ItemStack existing = baubles.getStackInSlot(i);
+                baubles.setStackInSlot(i, kept);
+                if (!existing.isEmpty()) {
+                    displaced.add(existing);
+                }
+            }
+        }
+
+        giveItems(player, displaced);
     }
 
-    private static void dropTableItems(EntityPlayer player, NonNullList<ItemStack> items) {
+    private static void giveItems(EntityPlayer player, NonNullList<ItemStack> items) {
         for (ItemStack stack : items) {
-            if (!stack.isEmpty()) {
-                ItemHandlerHelper.giveItemToPlayer(player, stack);
-            }
+            ItemHandlerHelper.giveItemToPlayer(player, stack);
         }
     }
 

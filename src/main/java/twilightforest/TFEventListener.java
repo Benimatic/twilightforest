@@ -266,71 +266,74 @@ public class TFEventListener {
 		if (living.world.isRemote) return;
 
 		if (living instanceof EntityPlayer && !living.world.getGameRules().getBoolean("keepInventory")) {
-			EntityPlayer player = (EntityPlayer) living;
-
-			// drop any existing held items, just in case
-			dropStoredItems(player);
-
-			// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
-			boolean tier3 =          TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_3, 1);
-			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_2, 1);
-			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_1, 1);
-
-			InventoryPlayer keepInventory = new InventoryPlayer(null);
-
-			UUID playerUUID = player.getUniqueID();
-
-			if (tier1) {
-				keepAllArmor(player, keepInventory);
-				keepOffHand(player, keepInventory);
-			}
-
-			if (tier3) {
-				for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-				}
-				keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_3));
-
-			} else if (tier2) {
-				for (int i = 0; i < 9; i++) {
-					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-				}
-				keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_2));
-
-			} else if (tier1) {
-				int i = player.inventory.currentItem;
-				if (InventoryPlayer.isHotbar(i)) {
-					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-				}
-				keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_1));
-			}
-
-			// always keep tower keys
-			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-				ItemStack stack = player.inventory.mainInventory.get(i);
-				if (stack.getItem() == TFItems.tower_key) {
-					keepInventory.mainInventory.set(i, stack.copy());
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-				}
-			}
-
-			if (tier1 && TFCompat.BAUBLES.isActivated()) {
-				playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
-			}
-
-			for (int i = 0; i < player.inventory.armorInventory.size(); i++) { // TODO also consider Phantom tools, when those get added
-				ItemStack armor = player.inventory.armorInventory.get(i);
-				if (armor.getItem() instanceof ItemTFPhantomArmor) {
-					keepInventory.armorInventory.set(i, armor.copy());
-					player.inventory.armorInventory.set(i, ItemStack.EMPTY);
-				}
-			}
-
-			playerKeepsMap.put(playerUUID, keepInventory);
+			keepItems((EntityPlayer) living);
 		}
+	}
+
+	private static void keepItems(EntityPlayer player) {
+
+		// drop any existing held items, just in case
+		dropStoredItems(player);
+
+		// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
+		boolean tier3 =          TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_3, 1);
+		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_2, 1);
+		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_1, 1);
+
+		InventoryPlayer keepInventory = new InventoryPlayer(null);
+
+		UUID playerUUID = player.getUniqueID();
+
+		if (tier1) {
+			keepAllArmor(player, keepInventory);
+			keepOffHand(player, keepInventory);
+		}
+
+		if (tier3) {
+			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+				keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			}
+			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_3));
+
+		} else if (tier2) {
+			for (int i = 0; i < 9; i++) {
+				keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			}
+			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_2));
+
+		} else if (tier1) {
+			int i = player.inventory.currentItem;
+			if (InventoryPlayer.isHotbar(i)) {
+				keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			}
+			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_1));
+		}
+
+		// always keep tower keys
+		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+			ItemStack stack = player.inventory.mainInventory.get(i);
+			if (stack.getItem() == TFItems.tower_key) {
+				keepInventory.mainInventory.set(i, stack.copy());
+				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			}
+		}
+
+		if (tier1 && TFCompat.BAUBLES.isActivated()) {
+			playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
+		}
+
+		for (int i = 0; i < player.inventory.armorInventory.size(); i++) { // TODO also consider Phantom tools, when those get added
+			ItemStack armor = player.inventory.armorInventory.get(i);
+			if (armor.getItem() instanceof ItemTFPhantomArmor) {
+				keepInventory.armorInventory.set(i, armor.copy());
+				player.inventory.armorInventory.set(i, ItemStack.EMPTY);
+			}
+		}
+
+		playerKeepsMap.put(playerUUID, keepInventory);
 	}
 
 	/**
@@ -419,7 +422,7 @@ public class TFEventListener {
 			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
 			if (baubles != null) {
 				TwilightForestMod.LOGGER.debug("Player {} respawned and received baubles held in storage", player.getName());
-				Baubles.respawnBaubles(player, baubles);
+				Baubles.returnBaubles(player, baubles);
 			}
 		}
 	}
