@@ -92,7 +92,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 
 						stack.damageItem(1, entityplayer);
 
-						if (flag1) {
+						if (flag1 || entityplayer.capabilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
 							entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
 						}
 
@@ -101,9 +101,9 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						worldIn.spawnEntity(entityarrow2);
 					}
 
-					worldIn.playSound((EntityPlayer) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound((EntityPlayer) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-					if (!flag1) {
+					if (!flag1 && !entityplayer.capabilities.isCreativeMode) {
 						itemstack.shrink(1);
 
 						if (itemstack.isEmpty()) {
