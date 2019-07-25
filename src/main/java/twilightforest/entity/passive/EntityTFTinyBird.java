@@ -41,14 +41,14 @@ public class EntityTFTinyBird extends EntityTFBird {
 		this.setSize(0.3F, 0.3F);
 		setBirdType(rand.nextInt(4));
 		setIsBirdLanded(true);
+		this.setPathPriority(PathNodeType.WATER, -1.0F);
 	}
 
 	@Override
 	protected void initEntityAI() {
-		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAITFBirdFly(this));
 		this.tasks.addTask(1, new EntityAITFTempt(this, 1.0F, true, SEEDS));
-		this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0F));
+		this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(4, new EntityAILookIdle(this));
 	}
