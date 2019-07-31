@@ -143,13 +143,6 @@ public class TFBiomeBase extends Biome {
 				if (iblockstate2.getBlock() == Blocks.AIR) {
 					// j = -1; TF - commented out? todo 1.9
 				} else if (iblockstate2.getBlock() == Blocks.STONE) {
-					IBlockState finalState = STONE;
-
-					// TF - Replace stone
-					if (stoneReplacement != null) {
-						finalState = stoneReplacement;
-					}
-
 					if (j == -1) {
 						if (k <= 0) {
 							iblockstate = AIR;
@@ -171,17 +164,13 @@ public class TFBiomeBase extends Biome {
 						j = k;
 
 						if (j1 >= i - 1) {
-							finalState = iblockstate;
+							primer.setBlockState(i1, j1, l, iblockstate);
 						} else if (j1 < i - 7 - k) {
 							iblockstate = AIR;
 							iblockstate1 = STONE;
-							finalState = GRAVEL;
+							primer.setBlockState(i1, j1, l, GRAVEL);
 						} else {
-							finalState = iblockstate1;
-						}
-
-						if (finalState != iblockstate2) {
-							primer.setBlockState(i1, j1, l, finalState);
+							primer.setBlockState(i1, j1, l, iblockstate1);
 						}
 					} else if (j > 0) {
 						--j;
@@ -191,6 +180,9 @@ public class TFBiomeBase extends Biome {
 							j = rand.nextInt(4) + Math.max(0, j1 - 63);
 							iblockstate1 = iblockstate1.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND ? RED_SANDSTONE : SANDSTONE;
 						}
+					} else if (stoneReplacement != null) {
+						// TF - Replace stone
+						primer.setBlockState(i1, j1, l, stoneReplacement);
 					}
 				}
 			}
