@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -34,6 +35,12 @@ public class EntityTFDeer extends EntityCow {
 	public EntityTFDeer(World world, double x, double y, double z) {
 		this(world);
 		this.setPosition(x, y, z);
+	}
+
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.5D, 1.8D));
 	}
 
 	@Override
