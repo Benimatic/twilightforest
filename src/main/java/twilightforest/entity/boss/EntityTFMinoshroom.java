@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -7,6 +9,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -26,12 +29,12 @@ import twilightforest.item.TFItems;
 import twilightforest.world.TFWorld;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
-	private static final DataParameter<Boolean> GROUND_ATTACK = EntityDataManager.<Boolean>createKey(EntityTFMinoshroom.class, DataSerializers.BOOLEAN);
-
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minoshroom");
+	private static final DataParameter<Boolean> GROUND_ATTACK = EntityDataManager.createKey(EntityTFMinoshroom.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> GROUND_CHARGE = EntityDataManager.createKey(EntityTFMinoshroom.class, DataSerializers.VARINT);
 	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minoshroom");
+	private boolean groundSmashState = false;
 
 	public EntityTFMinoshroom(World world) {
 		super(world);
@@ -50,6 +53,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	protected void entityInit() {
 		super.entityInit();
 		dataManager.register(GROUND_ATTACK, false);
+		dataManager.register(GROUND_CHARGE, 0);
 	}
 
 	public boolean isGroundAttackCharge() {
@@ -72,17 +76,34 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		if (this.world.isRemote) {
 			this.prevClientSideChargeAnimation = this.clientSideChargeAnimation;
 			if (this.isGroundAttackCharge()) {
-				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation + 0.5F, 0.0F, 6.0F);
+				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation + (1F / ((float) dataManager.get(GROUND_CHARGE)) * 6F), 0.0F, 6.0F);
+				groundSmashState = true;
 			} else {
-				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation - 1.5F, 0.0F, 6.0F);
+				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
+				if (groundSmashState) {
+					IBlockState block = world.getBlockState(getPosition().down());
+					int stateId = Block.getStateId(block);
+
+					for (int i = 0; i < 80; i++) {
+						double cx = getPosition().getX() + world.rand.nextFloat() * 10F - 5F;
+						double cy = getEntityBoundingBox().minY + 0.1F + world.rand.nextFloat() * 0.3F;
+						double cz = getPosition().getZ() + world.rand.nextFloat() * 10F - 5F;
+
+						world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, cx, cy, cz, 0D, 0D, 0D, stateId);
+					}
+					groundSmashState = false;
+				}
 			}
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
-	public float getChargeAnimationScale(float p_189795_1_)
-	{
+	public float getChargeAnimationScale(float p_189795_1_) {
 		return (this.prevClientSideChargeAnimation + (this.clientSideChargeAnimation - this.prevClientSideChargeAnimation) * p_189795_1_) / 6.0F;
+	}
+
+	public void setMaxCharge(int charge) {
+		dataManager.set(GROUND_CHARGE, charge);
 	}
 
 	@Override
