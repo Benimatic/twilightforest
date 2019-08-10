@@ -10,7 +10,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -20,9 +19,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.particle.TFParticleType;
 
-public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
+public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_shooter");
 
@@ -57,21 +55,6 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
-	}
-
-	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
-		if (this.world.isRemote) {
-			// make snow particles
-			for (int i = 0; i < 3; i++) {
-				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-				float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
-			}
-		}
 	}
 
 	@Override
@@ -111,5 +94,6 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void setSwingingArms(boolean swingingArms) {}
+	public void setSwingingArms(boolean swingingArms) {
+	}
 }
