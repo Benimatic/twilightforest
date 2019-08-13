@@ -28,7 +28,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
@@ -595,7 +595,6 @@ public enum TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	@SuppressWarnings("ConstantConditions")
 	public static TFFeature generateFeature(int chunkX, int chunkZ, World world) {
 		// FIXME Remove block comment start-marker to enable debug
 		/*if (true) {
@@ -609,54 +608,12 @@ public enum TFFeature {
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
 
-		// glaciers have ice towers
-		if (biomeAt == TFBiomes.glacier) {
-			return ICE_TOWER;
-		}
-		// snow has yeti lair
-		if (biomeAt == TFBiomes.snowy_forest) {
-			return YETI_CAVE;
-		}
-
-		// lakes have quest islands
-		if (biomeAt == TFBiomes.tfLake) {
-			return QUEST_ISLAND;
-		}
-
-		// enchanted forests have groves
-		if (biomeAt == TFBiomes.enchantedForest) {
-			return QUEST_GROVE;
-		}
-
-		// fire swamp has hydra lair
-		if (biomeAt == TFBiomes.fireSwamp) {
-			return HYDRA_LAIR;
-		}
-		// swamp has labyrinth
-		if (biomeAt == TFBiomes.tfSwamp) {
-			return LABYRINTH;
-		}
-
-		// dark forests have their own things
-		if (biomeAt == TFBiomes.darkForest) {
-			return KNIGHT_STRONGHOLD;
-		}
-		if (biomeAt == TFBiomes.darkForestCenter) {
-			return DARK_TOWER;
-		}
-
-		// highlands center has castle
-		if (biomeAt == TFBiomes.highlandsCenter) {
-			return FINAL_CASTLE;
-		}
-		// highlands has trolls
-		if (biomeAt == TFBiomes.highlands) {
-			return TROLL_CAVE;
-		}
-
-		// deep mushrooms has mushroom tower
-		if (biomeAt == TFBiomes.deepMushrooms) {
-			return MUSHROOM_TOWER;
+		// does the biome have a feature?
+		if (biomeAt instanceof TFBiomeBase) {
+			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
+			if (biomeFeature != NOTHING) {
+				return biomeFeature;
+			}
 		}
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);

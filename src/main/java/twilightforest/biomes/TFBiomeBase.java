@@ -24,6 +24,7 @@ import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenBirchTree;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import twilightforest.TFFeature;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.*;
 import twilightforest.util.PlayerHelper;
@@ -42,6 +43,8 @@ public class TFBiomeBase extends Biome {
 	protected final List<SpawnListEntry> undergroundMonsterList = new ArrayList<>();
 
 	protected final ResourceLocation[] requiredAdvancements = getRequiredAdvancements();
+
+	public final TFFeature containedFeature = getContainedFeature();
 
 	public TFBiomeBase(BiomeProperties props) {
 		super(props);
@@ -217,6 +220,16 @@ public class TFBiomeBase extends Biome {
 	 * Do something bad to a player in the wrong biome.
 	 */
 	public void enforceProgression(EntityPlayer player, World world) {}
+
+	protected void trySpawnHintMonster(EntityPlayer player, World world) {
+		if (world.rand.nextInt(4) == 0) {
+			containedFeature.trySpawnHintMonster(world, player);
+		}
+	}
+
+	protected TFFeature getContainedFeature() {
+		return TFFeature.NOTHING;
+	}
 
 	/**
 	 * Returns the list of underground creatures.

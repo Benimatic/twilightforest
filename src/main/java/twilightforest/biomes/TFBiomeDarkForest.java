@@ -116,11 +116,12 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0));
-
-			// hint monster?
-			if (world.rand.nextInt(4) == 0) {
-				TFFeature.KNIGHT_STRONGHOLD.trySpawnHintMonster(world, player);
-			}
+			trySpawnHintMonster(player, world);
 		}
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.KNIGHT_STRONGHOLD;
 	}
 }

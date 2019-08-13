@@ -150,10 +150,12 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 			player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 100, hungerLevel));
 
-			// hint monster?
-			if (world.rand.nextInt(4) == 0) {
-				TFFeature.LABYRINTH.trySpawnHintMonster(world, player);
-			}
+			trySpawnHintMonster(player, world);
 		}
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.LABYRINTH;
 	}
 }

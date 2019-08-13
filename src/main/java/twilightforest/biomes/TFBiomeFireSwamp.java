@@ -107,9 +107,11 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.setFire(8);
 		}
-		// hint monster?
-		if (world.rand.nextInt(4) == 0) {
-			TFFeature.HYDRA_LAIR.trySpawnHintMonster(world, player);
-		}
+		trySpawnHintMonster(player, world);
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.HYDRA_LAIR;
 	}
 }
