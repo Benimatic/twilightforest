@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -44,7 +45,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		if (random.nextInt(3) == 0) {
 			return new WorldGenShrub(
 					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK)
+					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, false)
 			);
 		} else {
 			return SWAMP_FEATURE;
