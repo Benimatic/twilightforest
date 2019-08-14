@@ -12,7 +12,7 @@ import twilightforest.network.TFPacketHandler;
 public class ShieldCapabilityHandler implements IShieldCapability {
 
 	private int temporaryShields;
-	private int permamentShields;
+	private int permanentShields;
 	private EntityLivingBase host;
 	private int timer = 0;
 
@@ -29,7 +29,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	@Override
 	public int shieldsLeft() {
-		return temporaryShields + permamentShields;
+		return temporaryShields + permanentShields;
 	}
 
 	@Override
@@ -38,8 +38,8 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	}
 
 	@Override
-	public int permamentShieldsLeft() {
-		return permamentShields;
+	public int permanentShieldsLeft() {
+		return permanentShields;
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 		if (temporaryShields > 0) {
 			temporaryShields--;
 			timer = 240;
-		} else if (permamentShields > 0) {
-			permamentShields--;
+		} else if (permanentShields > 0) {
+			permanentShields--;
 		}
 
 		host.world.playSound(null, host.getPosition(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, ((host.getRNG().nextFloat() - host.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -68,7 +68,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			temporaryShields = Math.max(amount, 0);
 			timer = 240;
 		} else {
-			permamentShields = Math.max(amount, 0);
+			permanentShields = Math.max(amount, 0);
 		}
 
 		sendUpdatePacket();
@@ -79,12 +79,17 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 		if (temp) {
 			if (temporaryShields <= 0)
 				timer = 240; // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
-			temporaryShields += amount;
+			temporaryShields = Math.max(temporaryShields + amount, 0);
 		} else {
-			permamentShields += amount;
+			permanentShields = Math.max(permanentShields + amount, 0);
 		}
 
 		sendUpdatePacket();
+	}
+
+	void initShields(int temporary, int permanent) {
+		temporaryShields = temporary;
+		permanentShields = permanent;
 	}
 
 	private void sendUpdatePacket() {
