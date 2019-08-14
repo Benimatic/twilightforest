@@ -98,10 +98,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			TFPacketHandler.CHANNEL.sendToAllTracking(message, host);
 			// sendToAllTracking doesn't send to your own client so we need to send that as well.
 			if (host instanceof EntityPlayerMP) {
-				EntityPlayerMP player = (EntityPlayerMP) host;
-				if (player.connection != null) {
-					TFPacketHandler.CHANNEL.sendTo(message, player);
-				}
+				TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) host);
 			}
 		}
 	}
