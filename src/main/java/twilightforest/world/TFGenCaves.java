@@ -126,11 +126,9 @@ public class TFGenCaves extends MapGenCaves {
 					}
 
 					boolean hasHitWater = false;
-					int genX;
-					int genZ;
 
-					for (genX = minX; !hasHitWater && genX < maxX; ++genX) {
-						for (genZ = minZ; !hasHitWater && genZ < maxZ; ++genZ) {
+					for (int genX = minX; !hasHitWater && genX < maxX; ++genX) {
+						for (int genZ = minZ; !hasHitWater && genZ < maxZ; ++genZ) {
 							for (int genY = minY + 1; !hasHitWater && genY >= maxY - 1; --genY) {
 
 								if (genY >= 0 && genY < 128) {
@@ -147,10 +145,10 @@ public class TFGenCaves extends MapGenCaves {
 					}
 
 					if (!hasHitWater) {
-						for (genX = minX; genX < maxX; ++genX) {
+						for (int genX = minX; genX < maxX; ++genX) {
 							double dx = ((double) (genX + centerX * 16) + 0.5D - randX) / sizeVar;
 
-							for (genZ = minZ; genZ < maxZ; ++genZ) {
+							for (int genZ = minZ; genZ < maxZ; ++genZ) {
 								double dz = ((double) (genZ + centerZ * 16) + 0.5D - randZ) / sizeVar;
 								//int caveIndex = (genX * 16 + genZ) * TFWorld.CHUNKHEIGHT + minY;
 								boolean hitGrass = false;
@@ -167,7 +165,7 @@ public class TFGenCaves extends MapGenCaves {
 												hitGrass = true;
 											}
 
-											if (blockAt == Blocks.STONE || blockAt == TFBlocks.trollsteinn || blockStateAt.getMaterial() == Material.GROUND || blockStateAt.getMaterial() == Material.GRASS) {
+											if (blockAt == Blocks.STONE || blockAt == TFBlocks.trollsteinn || canReplace(blockStateAt.getMaterial())) {
 												if (dx * dx + dy * dy + dz * dz < 0.85D) {
 													final IBlockState state = (caveY < 10 ? Blocks.WATER : Blocks.AIR).getDefaultState();
 													blockStorage.setBlockState(genX, caveY, genZ, state);
@@ -197,6 +195,10 @@ public class TFGenCaves extends MapGenCaves {
 				}
 			}
 		}
+	}
+
+	private boolean canReplace(Material material) {
+		return material == Material.GROUND || material == Material.GRASS;
 	}
 
 	@Override
@@ -238,8 +240,8 @@ public class TFGenCaves extends MapGenCaves {
 	}
 
 	private boolean isOceanBlock(ChunkPrimer data, int x, int y, int z) {
-		IBlockState state = data.getBlockState(x, y, z);
-		return state.getBlock() == Blocks.FLOWING_WATER || state.getBlock() == Blocks.WATER;
+		Block block = data.getBlockState(x, y, z).getBlock();
+		return block == Blocks.FLOWING_WATER || block == Blocks.WATER;
 	}
 
 	private Biome getBiome(int x, int z) {
