@@ -1,6 +1,7 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -109,7 +111,9 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 	protected final Chunk makeChunk(int x, int z, ChunkPrimer primer) {
 
-		Chunk chunk = new Chunk(world, primer, x, z);
+		Chunk chunk = new Chunk(world, x, z);
+
+		fillChunk(chunk, primer);
 
 		// load in biomes, to prevent striping?!
 		byte[] chunkBiomes = chunk.getBiomeArray();
@@ -120,6 +124,34 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		chunk.generateSkylightMap();
 
 		return chunk;
+	}
+
+	// [VanillaCopy] Extended Chunk constructor, material check replaced with block check
+	private void fillChunk(Chunk chunk, ChunkPrimer primer) {
+
+		int i = 256;
+		boolean flag = world.provider.hasSkyLight();
+		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
+
+		for (int j = 0; j < 16; ++j) {
+			for (int k = 0; k < 16; ++k) {
+				for (int l = 0; l < 256; ++l) {
+
+					IBlockState iblockstate = primer.getBlockState(j, l, k);
+
+					if (iblockstate.getBlock() != Blocks.AIR) {
+
+						int i1 = l >> 4;
+
+						if (storageArrays[i1] == Chunk.NULL_BLOCK_STORAGE) {
+							storageArrays[i1] = new ExtendedBlockStorage(i1 << 4, flag);
+						}
+
+						storageArrays[i1].set(j, l & 15, k, iblockstate);
+					}
+				}
+			}
+		}
 	}
 
 	// note: ChunkPrimer changed to a BitSet marking 'solid' blocks
