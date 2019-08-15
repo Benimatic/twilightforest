@@ -408,22 +408,29 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	 * Raises up and hollows out the hollow hills.
 	 */
 	private void raiseHills(ChunkPrimer primer, TFFeature nearFeature, int hdiam, int x, int z, int dx, int dz, int hillHeight) {
+
+		int oldGround = -1;
 		int newGround = -1;
 		boolean foundGroundLevel = false;
 
 		// raise the hill
 		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT; y++) {
 			Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-			if (currentTerrain != Blocks.STONE && !foundGroundLevel) {
+			if (currentTerrain != Blocks.STONE) {
 				// we found the top of the stone layer
+				oldGround = y;
 				newGround = y + hillHeight;
-
 				foundGroundLevel = true;
+				break;
 			}
-			if (foundGroundLevel && y <= newGround) {
+		}
+
+		if (foundGroundLevel) {
+			for (int y = oldGround; y <= newGround; y++) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
 		}
+
 		// add the hollow part. Also turn water into stone below that
 		int hollow = hillHeight - 4 - nearFeature.size;
 
@@ -463,78 +470,67 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	}
 
 	private void flattenTerrainForFeature(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int oldGround;
-		int newGround;
-		float squishFactor = 0;
+
+		float squishFactor = 0f;
 		int mazeHeight = TFWorld.SEALEVEL + 1;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATURE_BOUNDARY) {
 			squishFactor = (-dx - FEATURE_BOUNDARY) / 8.0f;
-		}
-
-		if (dx >= FEATURE_BOUNDARY) {
+		} else if (dx >= FEATURE_BOUNDARY) {
 			squishFactor = (dx - FEATURE_BOUNDARY) / 8.0f;
 		}
+
 		if (dz <= -FEATURE_BOUNDARY) {
 			squishFactor = Math.max(squishFactor, (-dz - FEATURE_BOUNDARY) / 8.0f);
-		}
-
-		if (dz >= FEATURE_BOUNDARY) {
+		} else if (dz >= FEATURE_BOUNDARY) {
 			squishFactor = Math.max(squishFactor, (dz - FEATURE_BOUNDARY) / 8.0f);
 		}
 
-		if (squishFactor > 0) {
+		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
-			newGround = -1;
-
 			for (int y = 0; y <= 127; y++) {
 				Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
 				// we're still in ground
 				if (currentTerrain != Blocks.STONE) {
-					if (newGround == -1) {
-						// we found the lowest chunk of earth
-						oldGround = y;
-						mazeHeight += ((oldGround - mazeHeight) * squishFactor);
-
-						newGround = oldGround;
-					}
+					// we found the lowest chunk of earth
+					mazeHeight += ((y - mazeHeight) * squishFactor);
+					break;
 				}
 			}
 		}
 
 		// sets the ground level to the maze height
-		for (int y = 0; y <= 127; y++) {
+		for (int y = 0; y < mazeHeight; y++) {
 			Block b = primer.getBlockState(x, y, z).getBlock();
-			if (y < mazeHeight && (b == Blocks.AIR || b == Blocks.WATER)) {
+			if (b == Blocks.AIR || b == Blocks.WATER) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
-			if (y >= mazeHeight && b != Blocks.WATER) {
+		}
+		for (int y = mazeHeight; y <= 127; y++) {
+			Block b = primer.getBlockState(x, y, z).getBlock();
+			if (b != Blocks.AIR && b != Blocks.WATER) {
 				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
 			}
 		}
 	}
 
 	private void deformTerrainForYetiLair(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int oldGround;
-		int newGround;
-		float squishFactor = 0;
+
+		float squishFactor = 0f;
 		int topHeight = TFWorld.SEALEVEL + 24;
 		int outerBoundary = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		// outer boundary
 		if (dx <= -outerBoundary) {
 			squishFactor = (-dx - outerBoundary) / 8.0f;
-		}
-
-		if (dx >= outerBoundary) {
+		} else if (dx >= outerBoundary) {
 			squishFactor = (dx - outerBoundary) / 8.0f;
 		}
+
 		if (dz <= -outerBoundary) {
 			squishFactor = Math.max(squishFactor, (-dz - outerBoundary) / 8.0f);
-		}
-
-		if (dz >= outerBoundary) {
+		} else if (dz >= outerBoundary) {
 			squishFactor = Math.max(squishFactor, (dz - outerBoundary) / 8.0f);
 		}
 
@@ -559,47 +555,37 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// floor, also with slight slope
 		int hollowFloor = TFWorld.SEALEVEL - 1 + (offset / 6);
 
-		if (squishFactor > 0) {
+		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
-			newGround = -1;
-
 			for (int y = 0; y <= 127; y++) {
 				Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-				if (currentTerrain == Blocks.STONE) {
-					// we're still in ground
-					continue;
-				} else {
-					if (newGround == -1) {
-						// we found the lowest chunk of earth
-						oldGround = y;
-						topHeight += ((oldGround - topHeight) * squishFactor);
-
-						hollowFloor += ((oldGround - hollowFloor) * squishFactor);
-
-						newGround = oldGround;
-					}
+				if (currentTerrain != Blocks.STONE) {
+					// we found the lowest chunk of earth
+					topHeight += ((y - topHeight) * squishFactor);
+					hollowFloor += ((y - hollowFloor) * squishFactor);
+					break;
 				}
 			}
 		}
 
 		// carve the cave into the stone
-		for (int y = 0; y <= 127; y++) {
-			Block b = primer.getBlockState(x, y, z).getBlock();
 
-			// add stone
-			if (y < topHeight && (b == Blocks.AIR || b == Blocks.WATER)) {
+		// add stone
+		for (int y = 0; y < topHeight; y++) {
+			Block b = primer.getBlockState(x, y, z).getBlock();
+			if (b == Blocks.AIR || b == Blocks.WATER) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
+		}
 
-			// hollow out inside
-			if (y > hollowFloor && y < hollowCeiling) {
-				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-			}
+		// hollow out inside
+		for (int y = hollowFloor + 1; y < hollowCeiling; ++y) {
+			primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
+		}
 
-			// ice floor
-			if (y == hollowFloor && y < hollowCeiling && y < TFWorld.SEALEVEL + 3) {
-				primer.setBlockState(x, y, z, Blocks.PACKED_ICE.getDefaultState());
-			}
+		// ice floor
+		if (hollowFloor < hollowCeiling && hollowFloor < TFWorld.SEALEVEL + 3) {
+			primer.setBlockState(x, hollowFloor, z, Blocks.PACKED_ICE.getDefaultState());
 		}
 	}
 
