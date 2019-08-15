@@ -1,10 +1,12 @@
 package twilightforest.world;
 
 import com.google.common.base.Predicates;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -18,6 +20,7 @@ import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
 import static twilightforest.TFFeature.NOTHING;
@@ -100,6 +103,24 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         }
 
         return highestFoundIndex;
+    }
+
+    // TODO: look at combining duplicate logic here
+    @Nullable
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+
+        // if the feature is already conquered, no hostile spawns
+        if (creatureType == EnumCreatureType.MONSTER && isStructureConquered(pos)) {
+            return Collections.emptyList();
+        }
+
+        // check the precise coords.
+        int spawnListIndex = getSpawnListIndexAt(pos);
+        if (spawnListIndex >= 0) {
+            return getFeature().getSpawnableList(creatureType, spawnListIndex);
+        }
+
+        return null;
     }
 
     /**

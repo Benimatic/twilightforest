@@ -26,7 +26,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -694,27 +693,16 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// are the specified coordinates precisely in a feature?
 		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
-		if (nearestFeature != TFFeature.NOTHING) {
-
-			MapGenTFMajorFeature featureGenerator = getFeatureGenerator(nearestFeature);
-
-			// if the feature is already conquered, no spawns
-			if (featureGenerator.isStructureConquered(pos)) {
-				return Collections.emptyList();
-			}
-
-			// check the precise coords.
-			int spawnListIndex = featureGenerator.getSpawnListIndexAt(pos);
-			if (spawnListIndex >= 0) {
-				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
-			}
+		List<SpawnListEntry> featureList = getFeatureGenerator(nearestFeature).getPossibleCreatures(creatureType, pos);
+		if (featureList != null) {
+			return featureList;
 		}
 
 		Biome biome = world.getBiome(pos);
 
-		if (pos.getY() < TFWorld.SEALEVEL && creatureType == EnumCreatureType.MONSTER && biome instanceof TFBiomeBase) {
+		if (pos.getY() < TFWorld.SEALEVEL && biome instanceof TFBiomeBase) {
 			// cave monsters!
-			return ((TFBiomeBase) biome).getUndergroundSpawnableList();
+			return ((TFBiomeBase) biome).getUndergroundSpawnableList(creatureType);
 		} else {
 			return biome.getSpawnableList(creatureType);
 		}

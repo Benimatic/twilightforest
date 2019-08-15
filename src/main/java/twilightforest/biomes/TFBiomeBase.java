@@ -3,6 +3,7 @@ package twilightforest.biomes;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -234,7 +235,7 @@ public class TFBiomeBase extends Biome {
 	/**
 	 * Returns the list of underground creatures.
 	 */
-	public List<SpawnListEntry> getUndergroundSpawnableList() {
-		return this.undergroundMonsterList;
+	public List<SpawnListEntry> getUndergroundSpawnableList(EnumCreatureType type) {
+		return type == EnumCreatureType.MONSTER ? this.undergroundMonsterList : getSpawnableList(type);
 	}
 }

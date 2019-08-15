@@ -853,10 +853,6 @@ public enum TFFeature {
 		return new ArrayList<>();
 	}
 
-	public int getMaxSpawnIndex() {
-		return this.spawnableMonsterLists.size();
-	}
-
 	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
 		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
 	}
