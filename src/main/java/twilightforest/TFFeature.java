@@ -44,7 +44,6 @@ import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.MapGenTFMajorFeature;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -585,7 +584,7 @@ public enum TFFeature {
 	 * @return The type of feature directly at the specified Chunk coordinates
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
-		if (world.getBiomeProvider() instanceof TFBiomeProvider && isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
+		if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
 			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 		}
 		return NOTHING;
