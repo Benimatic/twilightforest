@@ -41,9 +41,9 @@ public class TraitTwilit extends AbstractProjectileTrait {
     public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable EntityLivingBase shooter) {
         if (!TFWorld.isTwilightForest(projectileBase.world)) return;
 
-        projectileBase.motionX += (projectileBase.motionX * bonus);
-        projectileBase.motionY += (projectileBase.motionY * bonus);
-        projectileBase.motionZ += (projectileBase.motionZ * bonus);
+        projectileBase.motionX += (projectileBase.motionX * bonus * 0.1f);
+        projectileBase.motionY += (projectileBase.motionY * bonus * 0.1f);
+        projectileBase.motionZ += (projectileBase.motionZ * bonus * 0.1f);
     }
 
     @Override

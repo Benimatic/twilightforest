@@ -26,7 +26,7 @@ public class TConstruct {
 
     public static final AbstractTrait twilit      = new TraitTwilit();
     public static final AbstractTrait precipitate = new TraitPrecipitate();
-    public static final AbstractTrait valiant     = new TraitStalwart();
+    public static final AbstractTrait stalwart    = new TraitStalwart();
     public static final AbstractTrait synergy     = new TraitSynergy();
     public static final AbstractTrait veiled      = new TraitVeiled();
 
@@ -106,7 +106,7 @@ public class TConstruct {
         TConstruct.knightmetal.addItem(TFItems.block_and_chain, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
         TConstruct.knightmetal
                 .addTrait(TConstruct.twilit)
-                .addTrait(TConstruct.valiant)
+                .addTrait(TConstruct.stalwart)
                 .setCraftable(false).setCastable(true)
                 .setRepresentativeItem(TFItems.knightmetal_ingot);
 
